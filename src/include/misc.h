@@ -62,6 +62,7 @@ wxString ExecProcess(const wxString &cmd);
 
 enum 
 {
+    PGM_SERVER,
     PGM_DATABASE,
     PGM_SCHEMA,
     PGM_UNKNOWN,
@@ -75,9 +76,6 @@ enum        // depends on pgaFactory browserImages->Add order!
 {
     PGICON_PROPERTY,
     PGICON_STATISTICS,
-    PGICON_SERVERS,
-    PGICON_SERVER,
-    PGICON_SERVERBAD,
     PGICON_CHECK,
     PGICON_COLUMN,
     PGICON_INDEX,

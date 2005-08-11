@@ -24,12 +24,26 @@
 
 class frmMain;
 
+
+class pgaServerFactory : public pgaFactory
+{
+public:
+    pgaServerFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    int GetClosedIconId() { return closedId; }
+protected:
+    int closedId;
+};
+extern pgaServerFactory serverFactory;
+
 class pgServer : public pgObject
 {
 public:
     pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, int sslMode=0);
     ~pgServer();
-    int GetType() const { return PG_SERVER; }
+    int GetIconId();
+
     wxString GetTypeName() const { return wxT("Server"); }
     int Connect(frmMain *form, bool askPassword=true, const wxString &pwd=wxEmptyString);
     bool Disconnect(frmMain *form);
@@ -94,7 +108,6 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/managing-databases"); }
-    int GetIconId();
     wxMenu *GetNewMenu();
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded) { return true; }
@@ -122,6 +135,13 @@ private:
     SC_HANDLE serviceHandle;
     wxArrayString GetDependentServices(SC_HANDLE handle);
 #endif
+};
+
+class pgServerCollection : public pgCollection
+{
+public:
+    pgServerCollection(pgaFactory &factory);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0) {};
 };
 
 

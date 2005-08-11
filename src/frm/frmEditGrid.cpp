@@ -141,7 +141,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
         if (!orderBy.IsEmpty())
             orderBy += wxT(" ASC");
     }
-    else if (obj->GetFactory() == &viewFactory)
+    else if (obj->IsCreatedBy(viewFactory))
     {
         pgView *view=(pgView*)obj;
 

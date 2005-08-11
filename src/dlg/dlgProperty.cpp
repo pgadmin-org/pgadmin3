@@ -660,7 +660,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
                                 frame->GetBrowser()->GetItemParent(
                                     node->GetId()));
 
-    if (parentNode && parentNode->IsCollection() && parentNode->GetType() != PG_SERVERS)
+    if (parentNode && parentNode->IsCollection() && parentNode->GetMetaType() != PGM_SERVER)
         parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
                                 frame->GetBrowser()->GetItemParent(
                                     parentNode->GetId()));
@@ -669,10 +669,6 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
     switch (type)
     {
-        case PG_SERVER:
-        case PG_SERVERS:
-            dlg = new dlgServer(frame, (pgServer*)currentNode);
-            break;
         case PG_COLUMN:
         case PG_COLUMNS:
             dlg=new dlgColumn(frame, (pgColumn*)currentNode, (pgTable*)parentNode);
@@ -767,7 +763,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
 bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 {
-    if (node->GetType() != PG_SERVER && node->GetType() != PG_SERVERS)
+    if (node->GetMetaType() != PGM_SERVER)
     {
         pgConn *conn=node->GetConnection();
         if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
@@ -795,7 +791,7 @@ bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 
 bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node)
 {
-    if (node->GetType() != PG_SERVER)
+    if (node->GetMetaType() != PGM_SERVER)
     {
         pgConn *conn=node->GetConnection();
         if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())

@@ -70,9 +70,6 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 #include "images/property.xpm"
 #include "images/public.xpm"
 #include "images/rule.xpm"
-#include "images/server.xpm"
-#include "images/servers.xpm"
-#include "images/serverbad.xpm"
 #include "images/statistics.xpm"
 #include "images/trigger.xpm"
 #include "images/constraints.xpm"
@@ -103,9 +100,6 @@ int pgaFactory::addImage(char **img)
             //Setup the global imagelist
             deferredImagesArray->Add(property_xpm);
             deferredImagesArray->Add(statistics_xpm);
-            deferredImagesArray->Add(servers_xpm);
-            deferredImagesArray->Add(server_xpm);
-            deferredImagesArray->Add(serverbad_xpm);
             deferredImagesArray->Add(check_xpm);
             deferredImagesArray->Add(column_xpm);
             deferredImagesArray->Add(index_xpm);

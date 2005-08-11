@@ -53,7 +53,7 @@ dlgRepClusterBase::dlgRepClusterBase(frmMain *frame, const wxString &dlgName, sl
 
     pgObject *obj=db;
     servers = obj->GetId();
-    while (obj && obj->GetType() != PG_SERVERS)
+    while (obj && obj != frame->GetServerCollection())
     {
         servers = frame->GetBrowser()->GetItemParent(servers);
         if (servers)            
@@ -95,7 +95,7 @@ int dlgRepClusterBase::Go(bool modal)
         while (serverItem)
         {
             pgServer *s = (pgServer*)mainForm->GetBrowser()->GetItemData(serverItem);
-            if (s && s->GetType() == PG_SERVER)
+            if (s && s->IsCreatedBy(serverFactory))
                 cbServer->Append(mainForm->GetBrowser()->GetItemText(serverItem), (void*)s);
 
             serverItem = mainForm->GetBrowser()->GetNextChild(servers, cookie);

@@ -29,7 +29,7 @@
 
 class wxSplitterWindow;
 class dlgProperty;
-
+class serverCollection;
 
 // Class declarations
 class frmMain : public pgFrame
@@ -63,7 +63,7 @@ public:
     void StoreServers();
     int ReconnectServer(pgServer *server);
     void ReportConnError(pgServer *server);
-    wxTreeItemId GetServersNode() { return servers; }
+    pgServerCollection *GetServerCollection() { return serversObj; }
 
 private:
     wxTreeCtrl *browser;
@@ -73,7 +73,7 @@ private:
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenu *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu;
-    wxTreeItemId servers;
+    pgServerCollection *serversObj;
     wxSplitterWindow *horizontal, *vertical;
 
     wxStopWatch stopwatch;

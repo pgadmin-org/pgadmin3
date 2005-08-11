@@ -184,7 +184,6 @@ int pgCollection::GetIconId()
 {
     switch (GetType())
     {
-        case PG_SERVERS:            return PGICON_SERVER;
         case PG_COLUMNS:            return PGICON_COLUMN;
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;

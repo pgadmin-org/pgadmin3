@@ -41,8 +41,6 @@
 pgTypes typesList[] =
 {
     {__("None"), -1, 0, 0},
-    {__("Servers"), PGICON_SERVER, 0, 0},
-    {__("Server"), PGICON_SERVER, __("New Server Registration"), __("Create a new Server registration.") },
     {__("Columns"), PGICON_COLUMN, 0, 0},
     {__("Column"), PGICON_COLUMN, __("New Column"), __("Add a new Column.") },
     {__("Indexes"), PGICON_INDEX, 0, 0},
@@ -690,7 +688,7 @@ pgConn *pgObject::GetConnection() const
     
     pgServer *server;
 
-    if (type == PG_SERVER)
+    if (IsCreatedBy(serverFactory))
         server = (pgServer*)this;
     else
         server = GetServer();

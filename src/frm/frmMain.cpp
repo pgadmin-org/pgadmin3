@@ -301,15 +301,10 @@ frmMain::frmMain(const wxString& title)
 
     browser->SetImageList(imageList);
 
-    // Add the root node
-    pgObject *serversObj = new pgServers();
-    servers = browser->AddRoot(_("Servers"), PGICON_SERVERS, -1, serversObj);
-
     properties->SetImageList(imageList, wxIMAGE_LIST_SMALL);
     // Add the property view columns
     properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
-
 
     statistics->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 
@@ -323,6 +318,11 @@ frmMain::frmMain(const wxString& title)
     pgaFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnNew));
     actionFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
     actionFactory::CheckMenu(0, menuBar, toolBar);
+
+    // Add the root node
+    serversObj = new pgServerCollection(*serverFactory.GetCollectionFactory());
+    wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
+        serversObj->GetIconId(), -1, serversObj);
 
     // Load servers
     RetrieveServers();
@@ -473,12 +473,12 @@ bool frmMain::checkAlive()
     bool closeIt = false;
 
     wxCookieType cookie;
-    wxTreeItemId serverItem=browser->GetFirstChild(servers, cookie);
+    wxTreeItemId serverItem=browser->GetFirstChild(serversObj->GetId(), cookie);
     while (serverItem)
     {
         pgServer *server=(pgServer*)browser->GetItemData(serverItem);
 
-        if (server && server->GetType() == PG_SERVER && server->connection())
+        if (server && server->IsCreatedBy(serverFactory) && server->connection())
         {
             if (server->connection()->IsAlive())
             {
@@ -553,7 +553,7 @@ bool frmMain::checkAlive()
             }
         }
 
-        serverItem = browser->GetNextChild(servers, cookie);
+        serverItem = browser->GetNextChild(serversObj->GetId(), cookie);
     }
     return userInformed;
 }
@@ -751,12 +751,12 @@ void frmMain::StoreServers()
 
     // Write the individual servers
     // Iterate through all the child nodes of the Servers node
-    wxTreeItemId item = browser->GetFirstChild(servers, cookie);
-    while (item) {
-
+    wxTreeItemId item = browser->GetFirstChild(serversObj->GetId(), cookie);
+    while (item)
+    {
         data = (pgObject *)browser->GetItemData(item);
-        if (data->GetType() == PG_SERVER) {
-
+        if (data->IsCreatedBy(serverFactory))
+        {
 			// Cast the object, and check if it was autodiscovered before saving.
 			server = (pgServer *)data;
 
@@ -805,7 +805,7 @@ void frmMain::StoreServers()
 		}
 
         // Get the next item
-        item = browser->GetNextChild(servers, cookie);
+        item = browser->GetNextChild(serversObj->GetId(), cookie);
     }
 
     // Write the server count
@@ -819,131 +819,11 @@ void frmMain::RetrieveServers()
     // Retrieve previously stored servers
     wxLogInfo(wxT("Reloading servers..."));
 
-    long numServers=settings->Read(wxT("Servers/Count"), 0L);
-
-    long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, serviceID;
-    pgServer *server;
-
-    wxArrayString servicedServers;
-
-	// Get the hostname for later...
-	char buf[255];
-	gethostname(buf, 255); 
-    wxString hostname = wxString(buf, wxConvUTF8);
-
-    for (loop = 1; loop <= numServers; ++loop) {
-        
-        // Server
-        key.Printf(wxT("Servers/Server%d"), loop);
-        settings->Read(key, &servername, wxT(""));
-
-        // service location
-        key.Printf(wxT("Servers/ServiceID%d"), loop);
-        settings->Read(key, &serviceID, wxT(""));
-
-        // Comment
-        key.Printf(wxT("Servers/Description%d"), loop);
-        settings->Read(key, &description, wxT(""));
-
-        // Store Password
-        key.Printf(wxT("Servers/StorePwd%d"), loop);
-        settings->Read(key, &storePwd, wxT(""));
-
-        // Port
-        key.Printf(wxT("Servers/Port%d"), loop);
-        settings->Read(key, &port, 0);
-
-        // Database
-        key.Printf(wxT("Servers/Database%d"), loop);
-        settings->Read(key, &database, wxT(""));
-
-        // Username
-        key.Printf(wxT("Servers/Username%d"), loop);
-        settings->Read(key, &username, wxT(""));
-
-        // last Database
-        key.Printf(wxT("Servers/LastDatabase%d"), loop);
-        settings->Read(key, &lastDatabase, wxT(""));
-
-        // last Schema
-        key.Printf(wxT("Servers/LastSchema%d"), loop);
-        settings->Read(key, &lastSchema, wxT(""));
-
-        // SSL mode
-#ifdef SSL
-        key.Printf(wxT("Servers/SSL%d"), loop);
-        settings->Read(key, &ssl, 0);
-#endif
-
-        // Add the Server node
-        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), ssl);
-        server->iSetLastDatabase(lastDatabase);
-        server->iSetLastSchema(lastSchema);
-        server->iSetServiceID(serviceID);
-		server->iSetDiscovered(false);
-        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
-
-
-#ifdef WIN32
-        int bspos = serviceID.Find('\\');
-        if (bspos >= 0)
-        {
-            if (serviceID.Left(2) != wxT(".\\") && !serviceID.Matches(wxGetHostName() + wxT("\\*")))
-                serviceID = wxEmptyString;
-        }
-        if (!serviceID.IsEmpty())
-            servicedServers.Add(serviceID);
-#endif
-
-    }
-
-#ifdef WIN32
-
-	// Add local servers. Will currently only work on Win32 with >= BETA3 
-	// of the Win32 PostgreSQL installer.
-	wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
-
-	if (pgKey->Exists())
-	{
-
-		wxString svcName, temp;
-		long cookie = 0;
-		long *tmpport = 0;
-		bool flag = false;
-
-		flag = pgKey->GetFirstKey(svcName, cookie);
-
-		while (flag != false)
-		{
-            if (servicedServers.Index(svcName, false) < 0)
-            {
-			    key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
-			    wxRegKey *svcKey = new wxRegKey(key);
-
-                servername = wxT("localhost");
-                database = wxEmptyString;
-			    svcKey->QueryValue(wxT("Display Name"), description);
-			    svcKey->QueryValue(wxT("Database Superuser"), username);
-                svcKey->QueryValue(wxT("Port"), &port);
-
-			    // Add the Server node
-			    server = new pgServer(servername, description, database, username, port, false, 0);
-			    server->iSetDiscovered(true);
-			    server->iSetServiceID(svcName);
-			    browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
-            }
-			// Get the next one...
-			flag = pgKey->GetNextKey(svcName, cookie);
-		}
-	}
-#endif //WIN32
-
+    serverFactory.CreateObjects(serversObj, browser);
     // Reset the Servers node text
     wxString label;
-    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, false));
-    browser->SetItemText(servers, label);
-
+    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(serversObj->GetId(), false));
+    browser->SetItemText(serversObj->GetId(), label);
 }
 
 

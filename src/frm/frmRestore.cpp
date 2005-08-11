@@ -63,7 +63,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 {
     object=obj;
 
-    if (object->GetType() == PG_SERVER)
+    if (object->GetMetaType() == PGM_SERVER)
         server = (pgServer*)object;
     else
         server=object->GetDatabase()->GetServer();

@@ -32,7 +32,7 @@
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
 pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, int _ssl)
-: pgObject(PG_SERVER, newName)
+: pgObject(serverFactory, newName)
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
 
@@ -74,9 +74,9 @@ pgServer::~pgServer()
 int pgServer::GetIconId()
 {
     if (GetConnected())
-        return PGICON_SERVER;
+        return serverFactory.GetIconId();
     else
-        return PGICON_SERVERBAD;
+        return serverFactory.GetClosedIconId();
 }
 
 
@@ -860,6 +860,12 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
+pgServerCollection::pgServerCollection(pgaFactory &factory)
+ : pgCollection(factory)
+{
+}
+
+
 pgServerObjCollection::pgServerObjCollection(pgaFactory &factory, pgServer *sv)
 : pgCollection(factory)
 {
@@ -874,3 +880,145 @@ bool pgServerObjCollection::CanCreate()
     else
         return GetServer()->GetSuperUser();
 }
+
+
+pgObject *pgaServerFactory::CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr)
+{
+    long numServers=settings->Read(wxT("Servers/Count"), 0L);
+
+    long loop, port, ssl=0;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, serviceID;
+    pgServer *server;
+
+    wxArrayString servicedServers;
+
+	// Get the hostname for later...
+	char buf[255];
+	gethostname(buf, 255); 
+    wxString hostname = wxString(buf, wxConvUTF8);
+
+    for (loop = 1; loop <= numServers; ++loop) {
+        
+        // Server
+        key.Printf(wxT("Servers/Server%d"), loop);
+        settings->Read(key, &servername, wxT(""));
+
+        // service location
+        key.Printf(wxT("Servers/ServiceID%d"), loop);
+        settings->Read(key, &serviceID, wxT(""));
+
+        // Comment
+        key.Printf(wxT("Servers/Description%d"), loop);
+        settings->Read(key, &description, wxT(""));
+
+        // Store Password
+        key.Printf(wxT("Servers/StorePwd%d"), loop);
+        settings->Read(key, &storePwd, wxT(""));
+
+        // Port
+        key.Printf(wxT("Servers/Port%d"), loop);
+        settings->Read(key, &port, 0);
+
+        // Database
+        key.Printf(wxT("Servers/Database%d"), loop);
+        settings->Read(key, &database, wxT(""));
+
+        // Username
+        key.Printf(wxT("Servers/Username%d"), loop);
+        settings->Read(key, &username, wxT(""));
+
+        // last Database
+        key.Printf(wxT("Servers/LastDatabase%d"), loop);
+        settings->Read(key, &lastDatabase, wxT(""));
+
+        // last Schema
+        key.Printf(wxT("Servers/LastSchema%d"), loop);
+        settings->Read(key, &lastSchema, wxT(""));
+
+        // SSL mode
+#ifdef SSL
+        key.Printf(wxT("Servers/SSL%d"), loop);
+        settings->Read(key, &ssl, 0);
+#endif
+
+        // Add the Server node
+        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), ssl);
+        server->iSetLastDatabase(lastDatabase);
+        server->iSetLastSchema(lastSchema);
+        server->iSetServiceID(serviceID);
+		server->iSetDiscovered(false);
+        browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+
+
+#ifdef WIN32
+        int bspos = serviceID.Find('\\');
+        if (bspos >= 0)
+        {
+            if (serviceID.Left(2) != wxT(".\\") && !serviceID.Matches(wxGetHostName() + wxT("\\*")))
+                serviceID = wxEmptyString;
+        }
+        if (!serviceID.IsEmpty())
+            servicedServers.Add(serviceID);
+#endif
+
+    }
+
+#ifdef WIN32
+
+	// Add local servers. Will currently only work on Win32 with >= BETA3 
+	// of the Win32 PostgreSQL installer.
+	wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
+
+	if (pgKey->Exists())
+	{
+
+		wxString svcName, temp;
+		long cookie = 0;
+		long *tmpport = 0;
+		bool flag = false;
+
+		flag = pgKey->GetFirstKey(svcName, cookie);
+
+		while (flag != false)
+		{
+            if (servicedServers.Index(svcName, false) < 0)
+            {
+			    key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
+			    wxRegKey *svcKey = new wxRegKey(key);
+
+                servername = wxT("localhost");
+                database = wxEmptyString;
+			    svcKey->QueryValue(wxT("Display Name"), description);
+			    svcKey->QueryValue(wxT("Database Superuser"), username);
+                svcKey->QueryValue(wxT("Port"), &port);
+
+			    // Add the Server node
+			    server = new pgServer(servername, description, database, username, port, false, 0);
+			    server->iSetDiscovered(true);
+			    server->iSetServiceID(svcName);
+			    browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+            }
+			// Get the next one...
+			flag = pgKey->GetNextKey(svcName, cookie);
+		}
+	}
+#endif //WIN32
+
+    return server;
+}
+
+
+#include "images/servers.xpm"
+#include "images/server.xpm"
+#include "images/serverbad.xpm"
+
+pgaServerFactory::pgaServerFactory() 
+: pgaFactory(__("Server"), __("New Server Registration"), __("Create a new Server registration."), server_xpm)
+{
+    metaType = PGM_SERVER;
+    closedId = addImage(serverbad_xpm);
+}
+
+
+pgaServerFactory serverFactory;
+static pgaCollectionFactory cf(&serverFactory, __("Servers"), servers_xpm);

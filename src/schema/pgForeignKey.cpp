@@ -139,7 +139,7 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         while (item)
         {
             pgTable *table=(pgTable*)browser->GetItemData(item);
-            if (table->GetFactory() == &tableFactory)
+            if (table->IsCreatedBy(tableFactory))
             {
                 coveringIndex = table->GetCoveringIndex(browser, fkColumns);
                 break;

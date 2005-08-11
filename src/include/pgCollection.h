@@ -59,12 +59,4 @@ protected:
 };
 
 
-class pgServers: public pgCollection
-{
-public:
-    pgServers() : pgCollection(PG_SERVERS, (pgServer*)0) {}
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0) {};
-};
-
-
 #endif

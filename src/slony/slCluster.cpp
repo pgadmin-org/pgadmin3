@@ -105,7 +105,7 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
             // check for server registration
             wxTreeItemId servers = GetId();
             pgObject *obj=this;
-            while (obj && obj->GetType() != PG_SERVERS)
+            while (obj && obj != form->GetServerCollection())
             {
                 servers = form->GetBrowser()->GetItemParent(servers);
                 if (servers)            
@@ -161,7 +161,7 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
             while (serverItem)
             {
                 pgServer *server = (pgServer*)form->GetBrowser()->GetItemData(serverItem);
-                if (server && server->GetType() == PG_SERVER)
+                if (server && server->IsCreatedBy(serverFactory))
                 {
                     if (server->GetName() == host && server->GetPort() == port)
                     {

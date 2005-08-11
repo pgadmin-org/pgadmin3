@@ -35,7 +35,6 @@ class pgServer;
 enum PG_OBJTYPE
 {
     PG_NONE,
-    PG_SERVERS,         PG_SERVER,
     PG_COLUMNS,         PG_COLUMN,
     PG_INDEXES,         PG_INDEX,
     PG_RULES,           PG_RULE,

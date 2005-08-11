@@ -20,9 +20,6 @@
 #include "pgDatabase.h"
 #include <wx/busyinfo.h>
 
-// Images
-#include "images/server.xpm"
-
 
 // pointer to controls
 #define txtDescription  CTRL_TEXT("txtDescription")
@@ -55,12 +52,16 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaServerFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgServer(frame, (pgServer*)node);
+}
+
+
 dlgServer::dlgServer(frmMain *frame, pgServer *node)
 : dlgProperty(frame, wxT("dlgServer"))
 {
-    SetIcon(wxIcon(server_xpm));
     server=node;
-    objectType = PG_SERVER;
 
     cbDatabase->Append(wxT("postgres"));
     cbDatabase->Append(wxT("template1"));
@@ -320,14 +321,19 @@ wxWindow *addServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
         {
             case PGCONN_OK:
             {
+                int icon;
+                if (server->GetConnected())
+                    icon = serverFactory.GetIconId();
+                else
+                    icon = serverFactory.GetClosedIconId();
                 wxLogInfo(wxT("pgServer object initialised as required."));
-                browser->AppendItem(form->GetServersNode(), server->GetFullName(), 
-                    server->GetConnected() ? PGICON_SERVER : PGICON_SERVERBAD, -1, server);
+                browser->AppendItem(form->GetServerCollection()->GetId(), server->GetFullName(), 
+                    icon, -1, server);
 
-                browser->Expand(form->GetServersNode());
+                browser->Expand(form->GetServerCollection()->GetId());
                 wxString label;
-                label.Printf(_("Servers (%d)"), form->GetBrowser()->GetChildrenCount(form->GetServersNode(), false));
-                browser->SetItemText(form->GetServersNode(), label);
+                label.Printf(_("Servers (%d)"), form->GetBrowser()->GetChildrenCount(form->GetServerCollection()->GetId(), false));
+                browser->SetItemText(form->GetServerCollection()->GetId(), label);
                 form->StoreServers();
                 return 0;
             }
@@ -377,7 +383,7 @@ wxWindow *startServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
 
 bool startServiceFactory::CheckEnable(pgObject *obj)
 {
-    if (obj && obj->GetType() == PG_SERVER)
+    if (obj && obj->IsCreatedBy(serverFactory))
     {
         pgServer *server=(pgServer*)obj;
         return server->GetServerControllable() && !server->GetServerRunning();
@@ -420,7 +426,7 @@ wxWindow *stopServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
 
 bool stopServiceFactory::CheckEnable(pgObject *obj)
 {
-    if (obj && obj->GetType() == PG_SERVER)
+    if (obj && obj->IsCreatedBy(serverFactory))
     {
         pgServer *server=(pgServer*)obj;
         return server->GetServerControllable() && server->GetServerRunning();
@@ -446,7 +452,7 @@ wxWindow *connectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
 
 bool connectServerFactory::CheckEnable(pgObject *obj)
 {
-    if (obj && obj->GetType() == PG_SERVER)
+    if (obj && obj->IsCreatedBy(serverFactory))
         return !((pgServer*)obj)->GetConnected();
 
     return false;
@@ -473,7 +479,7 @@ wxWindow *disconnectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
 
 bool disconnectServerFactory::CheckEnable(pgObject *obj)
 {
-    if (obj && obj->GetType() == PG_SERVER)
+    if (obj && obj->IsCreatedBy(serverFactory))
         return ((pgServer*)obj)->GetConnected();
 
     return false;

@@ -350,8 +350,10 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
         browser->DeleteAllItems();
 
         // Add the root node
-        pgObject *serversObj = new pgServers();
-        servers = browser->AddRoot(wxT("Servers"), PGICON_SERVER, -1, serversObj);
+        serversObj = new pgServerCollection(*serverFactory.GetCollectionFactory());
+        wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
+            serversObj->GetIconId(), -1, serversObj);
+
         RetrieveServers();
         browser->Expand(servers);
         browser->SelectItem(servers);
@@ -458,16 +460,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 
     switch (type)
     {
-        case PG_SERVER:
-            StartMsg(_("Retrieving server properties"));
-
-            server = (pgServer *)data;
-
-            data->ShowTree(this, browser, props, sqlbox);
-            showTree=false;
-            EndMsg();
-            break;
-
 //        case PG_SCHEMA:
 //        case PG_SCHEMAS:
         case PG_CONSTRAINTS:
@@ -509,7 +501,20 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         {
             pgaFactory *factory=data->GetFactory();
             if (factory)
-                showTree=true;
+            {
+                if (factory == &serverFactory)
+                {
+                    StartMsg(_("Retrieving server properties"));
+    
+                    server = (pgServer *)data;
+
+                    data->ShowTree(this, browser, props, sqlbox);
+                    showTree=false;
+                    EndMsg();
+                }
+                else
+                    showTree=true;
+            }
             else
                 showTree=false;
 			break;
@@ -591,36 +596,33 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
     pgObject *data = (pgObject *)browser->GetItemData(item);
     if (!data)
         return;
-    int type = data->GetType();
     pgServer *server;
     wxCommandEvent nullEvent;
 
-    switch (type)
+    if (data->IsCreatedBy(serverFactory))
     {
-        case PG_SERVER:
-            server = (pgServer *)data;
-            if (!server->GetConnected())
+        server = (pgServer *)data;
+        if (!server->GetConnected())
+        {
+            if (ReconnectServer(server) == PGCONN_OK)
             {
-                if (ReconnectServer(server) == PGCONN_OK)
-                {
-                    // prevent from being collapsed immediately
+                // prevent from being collapsed immediately
 
-                    denyCollapseItem=item;
-                }
+                denyCollapseItem=item;
             }
-            break;
-
-        default:
-            if (settings->GetDoubleClickProperties())
+        }
+    }
+    else
+    {
+        if (settings->GetDoubleClickProperties())
+        {
+            if (data->CanEdit())
             {
-                if (data->CanEdit())
-                {
-                    OnProperties(nullEvent);
-                    event.Skip();
-                    return;
-                }
+                OnProperties(nullEvent);
+                event.Skip();
+                return;
             }
-            break;
+        }
     }
 
 #ifndef __WXMSW__
@@ -960,9 +962,9 @@ void frmMain::OnCreate(wxCommandEvent &ev)
 void frmMain::OnNew(wxCommandEvent &ev)
 {
     int type=ev.GetId() - MNU_NEW;
-    if (type == PG_SERVER)
+    if (pgaFactory::GetFactory(type) == &serverFactory)
     {
-        if (currentObject && currentObject->GetType() == PG_SERVER)
+        if (currentObject && currentObject->IsCreatedBy(serverFactory))
         {
             pgServer *server=(pgServer*)currentObject;
             if (!server->GetConnected())
