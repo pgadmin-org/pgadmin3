@@ -379,7 +379,7 @@ hintFactory::hintFactory(wxMenu *mnu, wxToolBar *toolbar, bool bigTool)
     mnu->Append(id, _("Hints"), _("Display helpful hints on current object."));
     if (toolbar)
     {
-        char **img=(bigTool ? hint2_xpm : hint_xpm);
+        char **img=(bigTool ? hint_xpm : hint2_xpm);
         toolbar->AddTool(id, _("Hints"), wxBitmap(img), _("Display helpful hints on current object."));
     }
 }
