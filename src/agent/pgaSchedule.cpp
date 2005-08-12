@@ -37,13 +37,13 @@ pgaSchedule::~pgaSchedule()
 }
 
 
-bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgaSchedule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetRecId()));
 }
 
 
-void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgaSchedule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -73,7 +73,7 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
 
 
 
-pgObject *pgaSchedule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgaSchedule::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *schedule=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -88,7 +88,7 @@ pgObject *pgaSchedule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaSchedule::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgaSchedule *schedule=0;
 	wxString tmp;
@@ -165,7 +165,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, schedule);
+                browser->AppendObject(collection, schedule);
 				schedules->MoveNext();
             }
             else

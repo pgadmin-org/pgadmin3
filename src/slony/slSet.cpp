@@ -61,7 +61,7 @@ wxMenu *slSet::GetNewMenu()
 }
 
 
-bool slSet::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slSet::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
@@ -69,7 +69,7 @@ bool slSet::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString slSet::GetSql(wxTreeCtrl *browser)
+wxString slSet::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -143,13 +143,13 @@ void slSet::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxS
 }
 
 
-void slSet::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slSet::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
         // Log
         wxLogInfo(wxT("Adding child object to set ") + GetIdentifier());
 
@@ -186,7 +186,7 @@ void slSet::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *prop
 
 
 
-pgObject *slSet::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slSet::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *set=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -201,7 +201,7 @@ pgObject *slSet::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *slSet::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *slSet::ReadObjects(slCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slSet *set=0;
     wxString prefix=coll->GetCluster()->GetSchemaPrefix();
@@ -227,7 +227,7 @@ pgObject *slSet::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxSt
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, set);
+                browser->AppendObject(coll, set);
 				sets->MoveNext();
             }
             else
@@ -241,7 +241,7 @@ pgObject *slSet::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxSt
 
 
     
-pgObject *slSet::ReadObjects(slCollection *coll, wxTreeCtrl *browser)
+pgObject *slSet::ReadObjects(slCollection *coll, ctlTree *browser)
 {
     // Get the sets
     return ReadObjects(coll, browser, wxEmptyString);

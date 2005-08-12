@@ -30,8 +30,8 @@ public:
     ~pgRule();
 
     int GetIconId() { return PGICON_RULE; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetEvent() const { return event; }
@@ -47,9 +47,9 @@ public:
 
     bool GetSystemObject() const { return GetName() == wxT("_RETURN"); }
     bool CanDrop() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString event, condition, action, quotedFullTable;

@@ -25,17 +25,19 @@
 class frmMain;
 
 
-class pgaServerFactory : public pgaFactory
+class pgServerFactory : public pgaFactory
 {
 public:
-    pgaServerFactory();
+    pgServerFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    virtual pgCollection *CreateCollection(pgObject *obj);
+
     int GetClosedIconId() { return closedId; }
 protected:
     int closedId;
 };
-extern pgaServerFactory serverFactory;
+extern pgServerFactory serverFactory;
 
 class pgServer : public pgObject
 {
@@ -105,12 +107,12 @@ public:
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/managing-databases"); }
     wxMenu *GetNewMenu();
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded) { return true; }
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded) { return true; }
     bool CanEdit() { return true; }
     bool CanDrop() { return true; }
 
@@ -140,16 +142,24 @@ private:
 class pgServerCollection : public pgCollection
 {
 public:
-    pgServerCollection(pgaFactory &factory);
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0) {};
+    pgServerCollection(pgaFactory *factory);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0) {};
 };
 
 
 class pgServerObjCollection : public pgCollection
 {
 public:
-    pgServerObjCollection(pgaFactory &factory, pgServer *server);
+    pgServerObjCollection(pgaFactory *factory, pgServer *server);
     bool CanCreate();
+};
+
+
+class pgServerObjFactory : public pgaFactory
+{
+public:
+    pgServerObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgaFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
 #endif

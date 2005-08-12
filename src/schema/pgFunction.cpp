@@ -30,7 +30,7 @@ pgFunction::~pgFunction()
 }
 
 
-bool pgFunction::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(")");
     if (cascaded)
@@ -54,7 +54,7 @@ pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
 }
 
 
-wxString pgFunction::GetSql(wxTreeCtrl *browser)
+wxString pgFunction::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -106,7 +106,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -139,7 +139,7 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 }
 
 
-wxString pgProcedure::GetSql(wxTreeCtrl *browser)
+wxString pgProcedure::GetSql(ctlTree *browser)
 {
     if (!GetConnection()->EdbMinimumVersion(8, 0))
         return pgFunction::GetSql(browser);
@@ -166,7 +166,7 @@ wxString pgProcedure::GetSql(wxTreeCtrl *browser)
 }
 
 
-bool pgProcedure::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgProcedure::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     if (!GetConnection()->EdbMinimumVersion(8, 0))
         return pgFunction::DropObject(frame, browser, cascaded);
@@ -178,7 +178,7 @@ bool pgProcedure::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 
 
 
-pgFunction *pgaFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction)
+pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, ctlTree *browser, const wxString &restriction)
 {
     pgFunction *function=0;
     wxString argNamesCol;
@@ -334,7 +334,7 @@ pgFunction *pgaFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema,
 
             if (browser)
             {
-                obj->AppendBrowserItem(browser, function);
+                browser->AppendObject(obj, function);
 			    functions->MoveNext();
             }
             else
@@ -349,7 +349,7 @@ pgFunction *pgaFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema,
 
 
 
-pgObject *pgFunction::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgFunction::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *function=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -364,7 +364,7 @@ pgObject *pgFunction::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaFunctionFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restr)
+pgObject *pgFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restr)
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
@@ -380,7 +380,7 @@ pgObject *pgaFunctionFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 }
 
 
-pgObject *pgaTriggerFunctionFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restr)
+pgObject *pgTriggerFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restr)
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
@@ -393,7 +393,7 @@ pgObject *pgaTriggerFunctionFactory::CreateObjects(pgCollection *collection, wxT
 //            if (parentNode->GetType() == PG_TRIGGER)
 //                parentNode = ((pgTrigger*)parentNode)->GetSchema();
 
-pgObject *pgaProcedureFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restr)
+pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restr)
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
@@ -412,32 +412,32 @@ pgObject *pgaProcedureFactory::CreateObjects(pgCollection *collection, wxTreeCtr
 #include "images/function.xpm"
 #include "images/functions.xpm"
 
-pgaFunctionFactory::pgaFunctionFactory(wxChar *tn, wxChar *ns, wxChar *nls, char **img) 
-: pgaFactory(tn, ns, nls, img)
+pgFunctionFactory::pgFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) 
+: pgSchemaObjFactory(tn, ns, nls, img)
 {
     metaType = PGM_FUNCTION;
 }
 
-pgaFunctionFactory functionFactory(__("Function"), __("New Function"), __("Create a new Function."), function_xpm);
+pgFunctionFactory functionFactory(__("Function"), _("New Function"), _("Create a new Function."), function_xpm);
 static pgaCollectionFactory cf(&functionFactory, __("Functions"), functions_xpm);
 
 
 #include "images/triggerfunction.xpm"
 #include "images/triggerfunctions.xpm"
 
-pgaTriggerFunctionFactory::pgaTriggerFunctionFactory() 
-: pgaFunctionFactory(__("Trigger Function"), __("New Trigger Function"), __("Create a new Trigger Function."), triggerfunction_xpm)
+pgTriggerFunctionFactory::pgTriggerFunctionFactory() 
+: pgFunctionFactory(__("Trigger Function"), _("New Trigger Function"), _("Create a new Trigger Function."), triggerfunction_xpm)
 {
 }
 
-pgaTriggerFunctionFactory triggerFunctionFactory;
+pgTriggerFunctionFactory triggerFunctionFactory;
 static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"), triggerfunctions_xpm);
 
-pgaProcedureFactory::pgaProcedureFactory() 
-: pgaFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), function_xpm)
+pgProcedureFactory::pgProcedureFactory() 
+: pgFunctionFactory(__("Procedure"), _("New Procedure"), _("Create a new Procedure."), function_xpm)
 {
 }
 
 
-pgaProcedureFactory procedureFactory;
+pgProcedureFactory procedureFactory;
 static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), functions_xpm);

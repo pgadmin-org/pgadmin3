@@ -32,12 +32,12 @@ pgGroup::~pgGroup()
     wxLogInfo(wxT("Destroying a pgGroup object"));
 }
 
-bool pgGroup::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgGroup::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return server->ExecuteVoid(wxT("DROP GROUP ") + GetQuotedFullIdentifier());
 }
 
-wxString pgGroup::GetSql(wxTreeCtrl *browser)
+wxString pgGroup::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -52,7 +52,7 @@ wxString pgGroup::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgGroup::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -100,7 +100,7 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
 
 
 
-pgObject *pgGroup::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgGroup::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *group=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -115,7 +115,7 @@ pgObject *pgGroup::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaGroupFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgGroupFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgGroup *group=0;
 
@@ -135,7 +135,7 @@ pgObject *pgaGroupFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *b
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, group);
+                browser->AppendObject(collection, group);
 	    		groups->MoveNext();
             }
             else
@@ -151,11 +151,11 @@ pgObject *pgaGroupFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *b
 #include "images/group.xpm"
 #include "images/groups.xpm"
 
-pgaGroupFactory::pgaGroupFactory() 
-: pgaFactory(__("Group"), __("New Group"), __("Create a new Group."), group_xpm)
+pgGroupFactory::pgGroupFactory() 
+: pgServerObjFactory(__("Group"), _("New Group"), _("Create a new Group."), group_xpm)
 {
 }
 
 
-pgaGroupFactory groupFactory;
+pgGroupFactory groupFactory;
 static pgaCollectionFactory cf(&groupFactory, __("Groups"), groups_xpm);

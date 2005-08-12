@@ -23,14 +23,15 @@
 #include "pgSchema.h"
 
 class pgCollection;
-class pgaTableFactory : public pgaFactory
+class pgTableFactory : public pgSchemaObjFactory
 {
 public:
-    pgaTableFactory();
+    pgTableFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    virtual pgCollection *CreateCollection(pgObject *obj);
 };
-extern pgaTableFactory tableFactory;
+extern pgTableFactory tableFactory;
 
 class pgTable : public pgSchemaObject
 {
@@ -38,8 +39,8 @@ public:
     pgTable(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTable();
 
-    wxString GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collectionId, int type);
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    wxString GetAllConstraints(ctlTree *browser, wxTreeItemId collectionId, int type);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowHint(frmMain *form, bool force);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 
@@ -64,11 +65,11 @@ public:
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
     wxString GetQuotedInheritedTables() { GetInheritedTableCount(); return quotedInheritedTables; }
     wxArrayString GetQuotedInheritedTablesList() { GetInheritedTableCount(); return quotedInheritedTablesList; }
-    wxString GetCoveringIndex(wxTreeCtrl *browser, const wxString &collist);
+    wxString GetCoveringIndex(ctlTree *browser, const wxString &collist);
     bool GetHasSubclass() const { return hasSubclass; }
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void UpdateRows();
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool CanView() { return true; }
     bool CanMaintenance() { return true; }
     bool CanBackup() { return true; }
@@ -77,9 +78,9 @@ public:
     bool GetCanHint();
 
     wxMenu *GetNewMenu();
-    wxString GetSql(wxTreeCtrl *browser);
+    wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const;
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     void UpdateInheritance();
@@ -98,7 +99,7 @@ private:
 class pgTableCollection : public pgSchemaObjCollection
 {
 public:
-    pgTableCollection(pgaFactory &factory, pgSchema *sch);
+    pgTableCollection(pgaFactory *factory, pgSchema *sch);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 

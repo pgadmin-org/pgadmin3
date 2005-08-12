@@ -24,7 +24,7 @@
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
 END_EVENT_TABLE();
 
-dlgProperty *pgaSchemaFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgSchemaFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgSchema(frame, (pgSchema*)node);
 }

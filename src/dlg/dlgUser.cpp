@@ -43,7 +43,7 @@
 
 
 
-dlgProperty *pgaUserFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgUserFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgUser(frame, (pgUser*)node);
 }

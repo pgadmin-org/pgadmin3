@@ -27,7 +27,7 @@
 #define cbValidator     CTRL_COMBOBOX("cbValidator")
 
 
-dlgProperty *pgaLanguageFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgLanguageFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgLanguage(frame, (pgLanguage*)node);
 }

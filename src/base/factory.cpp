@@ -20,16 +20,16 @@ wxArrayPtrVoid *factoryArray=0;
 
 #define FACTORY_OFFSET 100
 
-pgaFactory::pgaFactory(wxChar *tn, wxChar *ns, wxChar *nls, char **img)
+pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img)
 {
     if (!factoryArray)
         factoryArray = new wxArrayPtrVoid;
     id=factoryArray->GetCount()+FACTORY_OFFSET;
     factoryArray->Add(this);
     collectionFactory=0;
-    typeName=tn;
-    newString=ns;
-    newLongString=nls;
+    typeName=(wxChar*)tn;
+    newString=(wxChar*)ns;
+    newLongString=(wxChar*)nls;
     metaType=PGM_UNKNOWN;
     image=img;
     if (image)
@@ -187,9 +187,12 @@ void pgaFactory::AppendMenu(wxMenu *menu)
 {
     if (menu)
     {
-        menu->Append(MNU_NEW+GetId(), 
-            wxGetTranslation(GetNewString()),
-            wxGetTranslation(GetNewLongString()));
+        wxMenuItem *item=menu->Append(MNU_NEW+GetId(), GetNewString(), GetNewLongString());
+        if (image)
+        {
+            // doesn't work?
+            // item->SetBitmap(wxBitmap(image));
+        }
     }
 }
 
@@ -217,7 +220,7 @@ pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, wxChar *tn, char **img
 }
 
 
-pgObject *pgaCollectionFactory::CreateObjects(pgCollection  *obj, wxTreeCtrl *browser, const wxString &restr)
+pgObject *pgaCollectionFactory::CreateObjects(pgCollection  *obj, ctlTree *browser, const wxString &restr)
 {
     if (itemFactory)
         return itemFactory->CreateObjects(obj, browser, restr);

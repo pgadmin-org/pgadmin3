@@ -31,7 +31,7 @@ pgLanguage::~pgLanguage()
     wxLogInfo(wxT("Destroying a pgLanguage object"));
 }
 
-bool pgLanguage::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgLanguage::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP LANGUAGE ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -39,7 +39,7 @@ bool pgLanguage::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgLanguage::GetSql(wxTreeCtrl *browser)
+wxString pgLanguage::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -56,7 +56,7 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -76,7 +76,7 @@ void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 
 
 
-pgObject *pgLanguage::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgLanguage::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *language=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -91,7 +91,7 @@ pgObject *pgLanguage::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaLanguageFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgLanguage *language=0;
 
@@ -121,7 +121,7 @@ pgObject *pgaLanguageFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, language);
+                browser->AppendObject(collection, language);
 	
 			    languages->MoveNext();
             }
@@ -140,11 +140,11 @@ pgObject *pgaLanguageFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 #include "images/language.xpm"
 #include "images/languages.xpm"
 
-pgaLanguageFactory::pgaLanguageFactory() 
-: pgaFactory(__("Language"), __("New Language"), __("Create a new Language."), language_xpm)
+pgLanguageFactory::pgLanguageFactory() 
+: pgDatabaseObjFactory(__("Language"), _("New Language"), _("Create a new Language."), language_xpm)
 {
 }
 
 
-pgaLanguageFactory languageFactory;
+pgLanguageFactory languageFactory;
 static pgaCollectionFactory cf(&languageFactory, __("Languages"), languages_xpm);

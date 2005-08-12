@@ -48,19 +48,19 @@ wxMenu *pgaJob::GetNewMenu()
 }
 
 
-bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgaJob::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_job WHERE jobid=") + NumToStr(GetRecId()));
 }
 
 
-void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgaJob::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
 
         // Log
         wxLogInfo(wxT("Adding child objects to Job."));
@@ -101,7 +101,7 @@ void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *pgaJob::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgaJob::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *job=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -116,7 +116,7 @@ pgObject *pgaJob::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaJob::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgaJob *job=0;
 
@@ -164,7 +164,7 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, job);
+                browser->AppendObject(collection, job);
 				jobs->MoveNext();
             }
             else

@@ -68,7 +68,7 @@ wxString pgTable::GetHelpPage(bool forCreate) const
 }
 
 
-bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TABLE ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -77,7 +77,7 @@ bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString pgTable::GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collectionId, int type)
+wxString pgTable::GetAllConstraints(ctlTree *browser, wxTreeItemId collectionId, int type)
 {
     wxString sql;
     wxCookieType cookie;
@@ -116,7 +116,7 @@ wxString pgTable::GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collection
 }
 
 
-wxString pgTable::GetSql(wxTreeCtrl *browser)
+wxString pgTable::GetSql(ctlTree *browser)
 {
 	wxString colDetails;
     if (sql.IsNull())
@@ -229,7 +229,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
 }
 
 
-wxString pgTable::GetCoveringIndex(wxTreeCtrl *browser, const wxString &collist)
+wxString pgTable::GetCoveringIndex(ctlTree *browser, const wxString &collist)
 {
     // delivers the name of the index which covers the named columns
     wxCookieType cookie;
@@ -310,13 +310,13 @@ void pgTable::UpdateInheritance()
 
 
 
-void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
 
         // Log
         wxLogInfo(wxT("Adding child object to table ") + GetIdentifier());
@@ -472,7 +472,7 @@ void pgTable::ShowHint(frmMain *form, bool force)
 
 
 
-pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgTable::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgTable *table=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -489,7 +489,7 @@ pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 ///////////////////////////////////////////////////////////
 
 
-pgTableCollection::pgTableCollection(pgaFactory &factory, pgSchema *sch)
+pgTableCollection::pgTableCollection(pgaFactory *factory, pgSchema *sch)
 : pgSchemaObjCollection(factory, sch)
 {
 }
@@ -581,7 +581,7 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-pgObject *pgaTableFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgTable *table=0;
 
@@ -633,7 +633,7 @@ pgObject *pgaTableFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *b
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, table);
+                browser->AppendObject(collection, table);
                 tables->MoveNext();
             }
             else
@@ -649,12 +649,16 @@ pgObject *pgaTableFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *b
 #include "images/table.xpm"
 #include "images/tables.xpm"
 
-pgaTableFactory::pgaTableFactory() 
-: pgaFactory(__("Table"), __("New Table"), __("Create a new Table."), table_xpm)
+pgTableFactory::pgTableFactory() 
+: pgSchemaObjFactory(__("Table"), _("New Table"), _("Create a new Table."), table_xpm)
 {
     metaType = PGM_TABLE;
 }
 
+pgCollection *pgTableFactory::CreateCollection(pgObject *obj)
+{
+    return new pgTableCollection(GetCollectionFactory(), (pgSchema*)obj);
+}
 
-pgaTableFactory tableFactory;
+pgTableFactory tableFactory;
 static pgaCollectionFactory cf(&tableFactory, __("Tables"), tables_xpm);

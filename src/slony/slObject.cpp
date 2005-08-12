@@ -74,7 +74,7 @@ void slCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-void slCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), false) == 0)
     {
@@ -139,7 +139,7 @@ bool slSetCollection::CanCreate()
     }
 }
 
-void slSetCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slSetCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), false) == 0)
     {
@@ -173,7 +173,7 @@ slNodeCollection::slNodeCollection(int newType, slNode *n)
 }
 
 
-void slNodeCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slNodeCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), false) == 0)
     {

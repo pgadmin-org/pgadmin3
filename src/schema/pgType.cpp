@@ -30,7 +30,7 @@ pgType::~pgType()
 {
 }
 
-bool pgType::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgType::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TYPE ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -38,7 +38,7 @@ bool pgType::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgType::GetSql(wxTreeCtrl *browser)
+wxString pgType::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -74,7 +74,7 @@ wxString pgType::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -160,7 +160,7 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *pgType::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgType::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *type=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -177,7 +177,7 @@ pgObject *pgType::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 /////////////////////////////////////////////////////////
 
 
-pgObject *pgaTypeFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgType *type=0;
     wxString systemRestriction;
@@ -232,7 +232,7 @@ pgObject *pgaTypeFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, type);
+                browser->AppendObject(collection, type);
     			types->MoveNext();
             }
             else
@@ -248,11 +248,11 @@ pgObject *pgaTypeFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 #include "images/type.xpm"
 #include "images/types.xpm"
 
-pgaTypeFactory::pgaTypeFactory() 
-: pgaFactory(__("Type"), __("New Type"), __("Create a new Type."), type_xpm)
+pgTypeFactory::pgTypeFactory() 
+: pgSchemaObjFactory(__("Type"), _("New Type"), _("Create a new Type."), type_xpm)
 {
 }
 
 
-pgaTypeFactory typeFactory;
+pgTypeFactory typeFactory;
 static pgaCollectionFactory cf(&typeFactory, __("Types"), types_xpm);

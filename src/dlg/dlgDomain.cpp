@@ -39,7 +39,7 @@ BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
-dlgProperty *pgaDomainFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgDomainFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgDomain(frame, (pgDomain*)node, (pgSchema*)parent);
 }

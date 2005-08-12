@@ -28,7 +28,7 @@ class pgSchema;
 class pgCollection : public pgObject
 {
 public:
-    pgCollection(pgaFactory &factory);
+    pgCollection(pgaFactory *factory);
     pgCollection(int newType, pgServer *sv);
     pgCollection(int newType, pgDatabase *db);
     pgCollection(int newType, pgSchema *sch);
@@ -44,11 +44,11 @@ public:
 
     int GetIconId();
     pgaFactory *GetItemFactory() { if (factory) return ((pgaCollectionFactory*)factory)->GetItemFactory(); }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowList(const wxString& name, wxTreeCtrl *browser, ctlListView *properties);
-    void ShowList(wxTreeCtrl *browser, ctlListView *properties);
-    void UpdateChildCount(wxTreeCtrl *browser, int substract=0);
-    pgObject *FindChild(wxTreeCtrl *browser, const int index);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowList(const wxString& name, ctlTree *browser, ctlListView *properties);
+    void ShowList(ctlTree *browser, ctlListView *properties);
+    void UpdateChildCount(ctlTree *browser, int substract=0);
+    pgObject *FindChild(ctlTree *browser, const int index);
     bool CanCreate();
 
 protected:

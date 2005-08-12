@@ -20,21 +20,23 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
 class pgFunction;
 
-class pgaFunctionFactory : public pgaFactory
+class pgFunctionFactory : public pgSchemaObjFactory
 {
 public:
-    pgaFunctionFactory(wxChar *tn=0, wxChar *ns=0, wxChar *nls=0, char **img=0);
+    pgFunctionFactory(const wxChar *tn=0, const wxChar *ns=0, const wxChar *nls=0, char **img=0);
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
-    pgFunction *AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+
+    pgFunction *AppendFunctions(pgObject *obj, pgSchema *schema, ctlTree *browser, const wxString &restriction);
 };
 
 
-extern pgaFunctionFactory functionFactory;
+extern pgFunctionFactory functionFactory;
 
 class pgFunction : public pgSchemaObject
 {
@@ -43,7 +45,7 @@ public:
     ~pgFunction();
 
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return true; }
 
     virtual bool GetIsProcedure() const {return false; }
@@ -85,10 +87,10 @@ public:
     void iSetIsStrict(bool b) { isStrict = b; }
 
     bool CanRestore() { return true; }
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createfunction"); }
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
@@ -103,43 +105,43 @@ private:
 };
 
 
-class pgaTriggerFunctionFactory : public pgaFunctionFactory
+class pgTriggerFunctionFactory : public pgFunctionFactory
 {
 public:
-    pgaTriggerFunctionFactory();
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    pgTriggerFunctionFactory();
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaTriggerFunctionFactory triggerFunctionFactory;
+extern pgTriggerFunctionFactory triggerFunctionFactory;
 
 
 class pgTriggerFunction : public pgFunction
 {
 public:
     pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
 };
 
 
-class pgaProcedureFactory : public pgaFunctionFactory
+class pgProcedureFactory : public pgFunctionFactory
 {
 public:
-    pgaProcedureFactory();
+    pgProcedureFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaProcedureFactory procedureFactory;
+extern pgProcedureFactory procedureFactory;
 
 
 class pgProcedure : public pgFunction
 {
 public:
     pgProcedure(pgSchema *newSchema, const wxString& newName = wxT(""));
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
 
     bool GetIsProcedure() const {return true; }
 
-    wxString GetSql(wxTreeCtrl *browser);
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 };
 
 #endif

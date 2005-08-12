@@ -51,7 +51,7 @@ bool slNode::CanDrop()
 }
 
 
-bool slNode::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slNode::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
@@ -59,7 +59,7 @@ bool slNode::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString slNode::GetSql(wxTreeCtrl *browser)
+wxString slNode::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -137,7 +137,7 @@ void slNode::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-void slNode::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     pgConn *conn = GetCluster()->GetNodeConn(form, GetSlId(), pid<0);
 
@@ -145,7 +145,7 @@ void slNode::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
         // Log
         wxLogInfo(wxT("Adding child object to node ") + GetIdentifier());
 
@@ -194,7 +194,7 @@ void slNode::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *slNode::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slNode::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *node=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -209,7 +209,7 @@ pgObject *slNode::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *slNode::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *slNode::ReadObjects(slCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slNode *node=0;
 
@@ -229,7 +229,7 @@ pgObject *slNode::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxS
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, node);
+                browser->AppendObject(coll, node);
 				nodes->MoveNext();
             }
             else
@@ -243,7 +243,7 @@ pgObject *slNode::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxS
 
 
     
-pgObject *slNode::ReadObjects(slCollection *coll, wxTreeCtrl *browser)
+pgObject *slNode::ReadObjects(slCollection *coll, ctlTree *browser)
 {
     // Get the nodes
     return ReadObjects(coll, browser, wxEmptyString);

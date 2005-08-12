@@ -39,7 +39,7 @@ wxMenu *pgView::GetNewMenu()
 }
 
 
-bool pgView::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgView::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP VIEW ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -47,7 +47,7 @@ bool pgView::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgView::GetSql(wxTreeCtrl *browser)
+wxString pgView::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -64,18 +64,18 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids = true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
 
         pgCollection *collection;
         collection = new pgCollection(PG_RULES, GetSchema());
         collection->iSetOid(GetOid());
-        AppendBrowserItem(browser, collection);
+        browser->AppendObject(this, collection);
     }
     if (properties)
     {
@@ -95,7 +95,7 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *pgView::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgView::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *view=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -112,7 +112,7 @@ pgObject *pgView::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 ///////////////////////////////////////////////////////
 
 
-pgObject *pgaViewFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgView *view=0;
 
@@ -160,12 +160,12 @@ pgObject *pgaViewFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 #include "images/view.xpm"
 #include "images/views.xpm"
 
-pgaViewFactory::pgaViewFactory() 
-: pgaFactory(__("View"), __("New View"), __("Create a new View."), view_xpm)
+pgViewFactory::pgViewFactory() 
+: pgSchemaObjFactory(__("View"), _("New View"), _("Create a new View."), view_xpm)
 {
     metaType = PGM_VIEW;
 }
 
 
-pgaViewFactory viewFactory;
+pgViewFactory viewFactory;
 static pgaCollectionFactory cf(&viewFactory, __("Views"), views_xpm);

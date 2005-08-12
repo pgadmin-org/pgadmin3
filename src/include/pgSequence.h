@@ -20,16 +20,17 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
-class pgaSequenceFactory : public pgaFactory
+class pgSequenceFactory : public pgSchemaObjFactory
 {
 public:
-    pgaSequenceFactory();
+    pgSequenceFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaSequenceFactory sequenceFactory;
+extern pgSequenceFactory sequenceFactory;
 
 class pgSequence : public pgSchemaObject
 {
@@ -37,7 +38,7 @@ public:
     pgSequence(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgSequence();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     bool CanDropCascaded() { return true; }
 
@@ -49,9 +50,9 @@ public:
     wxULongLong GetIncrement() const { return increment; }
     bool GetCycled() const { return cycled; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxULongLong lastValue, minValue, maxValue, cacheValue, increment;

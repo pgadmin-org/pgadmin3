@@ -700,6 +700,10 @@ SOURCE=.\ctl\ctlSQLResult.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ctl\ctlTree.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ctl\explainCanvas.cpp
 # End Source File
 # Begin Source File
@@ -1659,6 +1663,10 @@ SOURCE=.\include\ctl\ctlSQLBox.h
 # Begin Source File
 
 SOURCE=.\include\ctl\ctlSQLResult.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\ctl\ctlTree.h
 # End Source File
 # Begin Source File
 

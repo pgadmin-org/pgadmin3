@@ -30,7 +30,7 @@ pgDomain::~pgDomain()
 {
 }
 
-bool pgDomain::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgDomain::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP DOMAIN ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -38,7 +38,7 @@ bool pgDomain::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgDomain::GetSql(wxTreeCtrl *browser)
+wxString pgDomain::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -62,7 +62,7 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -110,7 +110,7 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
 
 
-pgObject *pgDomain::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgDomain::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *domain=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -128,7 +128,7 @@ pgObject *pgDomain::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaDomainFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgDomain *domain=0;
 
@@ -177,7 +177,7 @@ pgObject *pgaDomainFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, domain);
+                browser->AppendObject(collection, domain);
     			domains->MoveNext();
             }
             else
@@ -192,11 +192,11 @@ pgObject *pgaDomainFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *
 #include "images/domain.xpm"
 #include "images/domains.xpm"
 
-pgaDomainFactory::pgaDomainFactory() 
-: pgaFactory(__("Domain"), __("New Domain"), __("Create a new Domain."), domain_xpm)
+pgDomainFactory::pgDomainFactory() 
+: pgSchemaObjFactory(__("Domain"), _("New Domain"), _("Create a new Domain."), domain_xpm)
 {
 }
 
 
-pgaDomainFactory domainFactory;
+pgDomainFactory domainFactory;
 static pgaCollectionFactory cf(&domainFactory, __("Domains"), domains_xpm);

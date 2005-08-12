@@ -35,7 +35,7 @@ slTable::~slTable()
 }
 
 
-bool slTable::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
@@ -43,7 +43,7 @@ bool slTable::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString slTable::GetSql(wxTreeCtrl *browser)
+wxString slTable::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -68,7 +68,7 @@ wxString slTable::GetSql(wxTreeCtrl *browser)
 }
 
 
-void slTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -112,7 +112,7 @@ void slTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
 
 
 
-pgObject *slTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slTable::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *table=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -127,7 +127,7 @@ pgObject *slTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *slTable::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *slTable::ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slTable *table=0;
 
@@ -153,7 +153,7 @@ pgObject *slTable::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, const
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, table);
+                browser->AppendObject(coll, table);
 				tables->MoveNext();
             }
             else
@@ -167,7 +167,7 @@ pgObject *slTable::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, const
 
 
     
-pgObject *slTable::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser)
+pgObject *slTable::ReadObjects(slSetCollection *coll, ctlTree *browser)
 {
     // Get the tables
     wxString restriction = wxT(" WHERE tab_set = ") + NumToStr(coll->GetSet()->GetSlId());

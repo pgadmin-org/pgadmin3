@@ -40,7 +40,7 @@ BEGIN_EVENT_TABLE(dlgConversion, dlgProperty)
 END_EVENT_TABLE();
 
 
-dlgProperty *pgaConversionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgConversionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgConversion(frame, (pgConversion*)node, (pgSchema*)parent);
 }

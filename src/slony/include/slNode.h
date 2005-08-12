@@ -30,11 +30,11 @@ public:
     ~slNode();
 
     int GetIconId() { return SLICON_NODE; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static void ShowStatistics(slCollection *collection, ctlListView *statistics);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser);
+    static pgObject *ReadObjects(slCollection *coll, ctlTree *browser, const wxString &restriction);
+    static pgObject *ReadObjects(slCollection *coll, ctlTree *browser);
 
     bool CanDrop();
     bool RequireDropConfirm() { return true; }
@@ -46,10 +46,10 @@ public:
     void iSetConnInfo(const wxString s) { connInfo = s; }
     long GetPid() { return pid; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     bool active;

@@ -28,12 +28,12 @@ class RemoteConn;
 WX_DECLARE_OBJARRAY(RemoteConn, RemoteConnArray);
 
 
-class pgaSlClusterFactory : public pgaFactory
+class pgaSlClusterFactory : public pgDatabaseObjFactory
 {
 public:
     pgaSlClusterFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
 extern pgaSlClusterFactory slClusterFactory;
 
@@ -44,8 +44,8 @@ public:
     slCluster(const wxString& newName = wxT(""));
     ~slCluster();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *coll, wxTreeCtrl *browser);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(pgCollection *coll, ctlTree *browser);
 
 
     void iSetSchemaPrefix(const wxString &s) { schemaPrefix = s; }
@@ -66,10 +66,10 @@ public:
 
     pgConn *GetNodeConn(frmMain *form, long nodeId, bool create=true);
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString schemaPrefix;

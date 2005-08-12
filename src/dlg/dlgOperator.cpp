@@ -58,7 +58,7 @@ END_EVENT_TABLE();
 
 
 
-dlgProperty *pgaOperatorFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgOperatorFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgOperator(frame, (pgOperator*)node, (pgSchema*)parent);
 }
@@ -448,16 +448,3 @@ wxString dlgOperator::GetSql()
 
     return sql;
 }
-
-
-#include "images/operator.xpm"
-#include "images/operators.xpm"
-
-pgaOperatorFactory::pgaOperatorFactory() 
-: pgaFactory(__("Operator"), __("New Operator"), __("Create a new Operator."), operator_xpm)
-{
-}
-
-
-pgaOperatorFactory operatorFactory;
-static pgaCollectionFactory cf(&operatorFactory, __("Operators"), operators_xpm);

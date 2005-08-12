@@ -37,7 +37,7 @@
 #define btnRemove       CTRL_BUTTON("wxID_REMOVE")
 
 
-dlgProperty *pgaDatabaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgDatabaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     dlgDatabase *dlg=new dlgDatabase(frame, (pgDatabase*)node);
     if (dlg && !node)

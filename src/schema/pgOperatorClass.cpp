@@ -30,7 +30,7 @@ pgOperatorClass::~pgOperatorClass()
 {
 }
 
-bool pgOperatorClass::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgOperatorClass::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod();
     if (cascaded)
@@ -38,7 +38,7 @@ bool pgOperatorClass::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool casca
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
+wxString pgOperatorClass::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -77,7 +77,7 @@ wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -178,7 +178,7 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlList
 
 
 
-pgObject *pgOperatorClass::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgOperatorClass::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *operatorClass=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -195,7 +195,7 @@ pgObject *pgOperatorClass::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 ///////////////////////////////////////////////////
 
 
-pgObject *pgaOperatorClassFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgOperatorClassFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgOperatorClass *operatorClass=0;
 
@@ -225,7 +225,7 @@ pgObject *pgaOperatorClassFactory::CreateObjects(pgCollection *collection, wxTre
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, operatorClass);
+                browser->AppendObject(collection, operatorClass);
 				operatorClasses->MoveNext();
             }
             else
@@ -241,17 +241,15 @@ pgObject *pgaOperatorClassFactory::CreateObjects(pgCollection *collection, wxTre
 #include "images/operatorclass.xpm"
 #include "images/operatorclasses.xpm"
 
-pgaOperatorClassFactory::pgaOperatorClassFactory() 
-: pgaFactory(__("OperatorClass"), __("New OperatorClass"), __("Create a new OperatorClass."), operatorclass_xpm)
+pgOperatorClassFactory::pgOperatorClassFactory() 
+: pgSchemaObjFactory(__("OperatorClass"), _("New Operator Class"), _("Create a new Operator Class."), operatorclass_xpm)
 {
 }
 
-
-dlgProperty *pgaOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return 0;
+    return 0; // not implemented
 }
 
-
-pgaOperatorClassFactory operatorClassFactory;
-static pgaCollectionFactory cf(&operatorClassFactory, __("OperatorClasss"), operatorclasses_xpm);
+pgOperatorClassFactory operatorClassFactory;
+static pgaCollectionFactory cf(&operatorClassFactory, __("Operator Classs"), operatorclasses_xpm);

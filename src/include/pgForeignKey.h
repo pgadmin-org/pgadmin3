@@ -33,8 +33,8 @@ public:
     wxString GetFullName() const;
 
     int GetIconId() { return PGICON_FOREIGNKEY; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
 
     wxString GetOnUpdate() const { return onUpdate; }
     void iSetOnUpdate(const wxString& s) { onUpdate=s; }
@@ -69,11 +69,11 @@ public:
     wxString GetQuotedRefColumns() const { return quotedRefColumns; }
     wxString GetCoveringIndex() const { return coveringIndex; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetConstraint();
-    wxString GetSql(wxTreeCtrl *browser);
+    wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString onUpdate, onDelete, conkey, confkey,

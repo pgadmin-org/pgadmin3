@@ -44,7 +44,7 @@ private:
 
     DECLARE_EVENT_TABLE();
 
-    friend class pgaDatabaseFactory;
+    friend class pgDatabaseFactory;
 };
 
 

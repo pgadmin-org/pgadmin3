@@ -424,7 +424,7 @@ void dlgProperty::OnChangeOwner(wxCommandEvent &ev)
 
 bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 {
-    wxTreeCtrl *browser=mainForm->GetBrowser();
+    ctlTree *browser=mainForm->GetBrowser();
     pgCollection *collection = (pgCollection*)browser->GetItemData(collectionItem);
     if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
     {

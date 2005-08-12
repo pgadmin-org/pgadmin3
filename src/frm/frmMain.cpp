@@ -270,7 +270,7 @@ frmMain::frmMain(const wxString& title)
     // Setup the vertical splitter & treeview
     vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
     horizontal = new wxSplitterWindow(vertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    browser = new wxTreeCtrl(vertical, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
+    browser = new ctlTree(vertical, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
     int splitpos=settings->Read(wxT("frmMain/SplitVertical"), 200);
     if (splitpos < 50)
         splitpos = 50;
@@ -302,11 +302,13 @@ frmMain::frmMain(const wxString& title)
     browser->SetImageList(imageList);
 
     properties->SetImageList(imageList, wxIMAGE_LIST_SMALL);
-    // Add the property view columns
+    statistics->SetImageList(imageList, wxIMAGE_LIST_SMALL);
+    dependsOn->SetImageList(imageList, wxIMAGE_LIST_SMALL);
+    referencedBy->SetImageList(imageList, wxIMAGE_LIST_SMALL);
+
+        // Add the property view columns
     properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
-
-    statistics->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
@@ -320,7 +322,7 @@ frmMain::frmMain(const wxString& title)
     actionFactory::CheckMenu(0, menuBar, toolBar);
 
     // Add the root node
-    serversObj = new pgServerCollection(*serverFactory.GetCollectionFactory());
+    serversObj = new pgServerCollection(&serverFactory);
     wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
         serversObj->GetIconId(), -1, serversObj);
 

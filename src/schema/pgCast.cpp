@@ -28,7 +28,7 @@ pgCast::~pgCast()
 {
 }
 
-bool pgCast::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgCast::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP CAST (") + GetSourceType() + wxT(" AS ") + GetTargetType() + wxT(")");
     if (cascaded)
@@ -36,7 +36,7 @@ bool pgCast::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgCast::GetSql(wxTreeCtrl *browser)
+wxString pgCast::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -57,7 +57,7 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgCast::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -80,7 +80,7 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *pgCast::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgCast::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *cast=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -95,7 +95,7 @@ pgObject *pgCast::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaCastFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgCastFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgCast *cast=0;
     wxString systemRestriction;
@@ -145,7 +145,7 @@ pgObject *pgaCastFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
             {
             if (browser)
             {
-                collection->AppendBrowserItem(browser, cast);
+                browser->AppendObject(collection, cast);
 			    casts->MoveNext();
             }
             else
@@ -165,10 +165,11 @@ pgObject *pgaCastFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 #include "images/cast.xpm"
 #include "images/casts.xpm"
 
-pgaCastFactory::pgaCastFactory() 
-: pgaFactory(__("Cast"), __("New Cast"), __("Create a new Cast."), cast_xpm)
+pgCastFactory::pgCastFactory() 
+: pgDatabaseObjFactory(__("Cast"), _("New Cast"), _("Create a new Cast."), cast_xpm)
 {
 }
 
-pgaCastFactory castFactory;
+
+pgCastFactory castFactory;
 static pgaCollectionFactory cf(&castFactory, __("Casts"), casts_xpm);

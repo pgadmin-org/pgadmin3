@@ -226,7 +226,7 @@ void pgObject::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-bool pgObject::UpdateIcon(wxTreeCtrl *browser)
+bool pgObject::UpdateIcon(ctlTree *browser)
 {
     int icon=GetIconId();
     if (browser->GetItemImage(GetId(), wxTreeItemIcon_Normal) != icon)
@@ -459,7 +459,7 @@ void pgObject::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const 
 }
 
 
-void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgObject::ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     pgConn *conn=GetConnection();
     if (conn)
@@ -506,33 +506,9 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
 }
 
 
-void pgObject::RemoveDummyChild(wxTreeCtrl *browser)
+wxTreeItemId pgObject::AppendBrowserItem(ctlTree *browser, pgObject *object)
 {
-    wxCookieType cookie;
-    wxTreeItemId childItem=browser->GetFirstChild(GetId(), cookie);
-    if (childItem && !browser->GetItemData(childItem))
-    {
-        // The child was a dummy item, which will be replaced by the following ShowTreeDetail by true items
-        browser->Delete(childItem);
-    }
-}
-
-wxTreeItemId pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
-{
-    wxString label;
-    wxTreeItemId item;
-
-    if (object->IsCollection())
-        label = object->GetTypeName();
-    else
-        label = object->GetFullName();
-    item = browser->AppendItem(GetId(), label, object->GetIconId(), -1, object);
-    if (object->IsCollection())
-        object->ShowTreeDetail(browser);
-    else if (object->WantDummyChild())
-        browser->AppendItem(object->GetId(), wxT("Dummy"));
-
-	return item;
+    return browser->AppendObject(this, object);
 }
 
 
@@ -719,7 +695,7 @@ bool pgServerObject::CanCreate()
 }
 
 
-void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query)
+void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query)
 {
     pgCollection *databases=0;
 

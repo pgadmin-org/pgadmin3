@@ -40,7 +40,7 @@ pgTrigger::~pgTrigger()
     }
 }
 
-bool pgTrigger::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgTrigger::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable();
     if (cascaded)
@@ -57,7 +57,7 @@ void pgTrigger::SetDirty()
 }
 
 
-wxString pgTrigger::GetSql(wxTreeCtrl *browser)
+wxString pgTrigger::GetSql(ctlTree *browser)
 {
     if (sql.IsNull() && this->triggerFunction)
     {
@@ -114,7 +114,7 @@ wxString pgTrigger::GetForEach() const
 
 
 
-void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -153,7 +153,7 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *
 
 
 
-pgObject *pgTrigger::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgTrigger::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *trigger=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -168,7 +168,7 @@ pgObject *pgTrigger::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgTrigger::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgTrigger *trigger=0;
 
@@ -229,7 +229,7 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, trigger);
+                browser->AppendObject(collection, trigger);
     			triggers->MoveNext();
             }
             else

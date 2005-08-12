@@ -31,7 +31,7 @@ pgIndex::~pgIndex()
 {
 }
 
-bool pgIndex::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgIndex::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP INDEX ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -78,7 +78,7 @@ wxString pgIndex::GetCreate()
 }
 
 
-wxString pgIndex::GetSql(wxTreeCtrl *browser)
+wxString pgIndex::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -190,7 +190,7 @@ void pgIndex::ReadColumnDetails()
 }
 
 
-void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgIndex::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     ReadColumnDetails();
     if (properties)
@@ -226,7 +226,7 @@ void pgIndex::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-pgObject *pgIndex::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgIndex::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *index=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -241,7 +241,7 @@ pgObject *pgIndex::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgIndex::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgIndex *index=0;
 
@@ -329,7 +329,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, index);
+                browser->AppendObject(collection, index);
         		indexes->MoveNext();
             }
             else
@@ -343,7 +343,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
 
 
-pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+pgObject *pgIndex::ReadObjects(pgCollection *collection, ctlTree *browser)
 {
     return ReadObjects(collection, browser, wxT("\n   AND conname IS NULL"));
 }

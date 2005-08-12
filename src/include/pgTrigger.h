@@ -32,8 +32,8 @@ public:
     ~pgTrigger();
 
     int GetIconId() { return PGICON_TRIGGER; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetFireWhen() const;
@@ -55,9 +55,9 @@ public:
 
     void SetDirty();
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString function, quotedFullTable, arguments;

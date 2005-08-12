@@ -29,7 +29,7 @@ pgConversion::~pgConversion()
 {
 }
 
-bool pgConversion::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgConversion::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP CONVERSION ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -37,7 +37,7 @@ bool pgConversion::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgConversion::GetSql(wxTreeCtrl *browser)
+wxString pgConversion::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -57,7 +57,7 @@ wxString pgConversion::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgConversion::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -79,7 +79,7 @@ void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
 
 
 
-pgObject *pgConversion::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgConversion::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *conversion=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -94,7 +94,7 @@ pgObject *pgConversion::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaConversionFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgConversionFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgConversion *conversion=0;
 
@@ -127,7 +127,7 @@ pgObject *pgaConversionFactory::CreateObjects(pgCollection *collection, wxTreeCt
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, conversion);
+                browser->AppendObject(collection, conversion);
 			    conversions->MoveNext();
             }
             else
@@ -143,11 +143,11 @@ pgObject *pgaConversionFactory::CreateObjects(pgCollection *collection, wxTreeCt
 #include "images/conversion.xpm"
 #include "images/conversions.xpm"
 
-pgaConversionFactory::pgaConversionFactory() 
-: pgaFactory(__("Conversion"), __("New Conversion"), __("Create a new Conversion."), conversion_xpm)
+pgConversionFactory::pgConversionFactory() 
+: pgSchemaObjFactory(__("Conversion"), _("New Conversion"), _("Create a new Conversion."), conversion_xpm)
 {
 }
 
 
-pgaConversionFactory conversionFactory;
+pgConversionFactory conversionFactory;
 static pgaCollectionFactory cf(&conversionFactory, __("Conversions"), conversions_xpm);

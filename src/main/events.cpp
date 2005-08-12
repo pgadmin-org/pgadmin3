@@ -350,7 +350,7 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
         browser->DeleteAllItems();
 
         // Add the root node
-        serversObj = new pgServerCollection(*serverFactory.GetCollectionFactory());
+        serversObj = new pgServerCollection(&serverFactory);
         wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
             serversObj->GetIconId(), -1, serversObj);
 
@@ -450,7 +450,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 
 void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 {
-    data->RemoveDummyChild(browser);
+    browser->RemoveDummyChild(data);
 
     int type = data->GetType();
     pgServer *server=0;

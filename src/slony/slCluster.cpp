@@ -62,7 +62,7 @@ wxMenu *slCluster::GetNewMenu()
 }
 
 
-bool slCluster::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slCluster::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
         wxT("SELECT ") + GetSchemaPrefix() + wxT("uninstallnode();\n")
@@ -70,7 +70,7 @@ bool slCluster::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString slCluster::GetSql(wxTreeCtrl *browser)
+wxString slCluster::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -191,13 +191,13 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
 }
 
 
-void slCluster::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
         pgSet *set;
 
         set=GetDatabase()->ExecuteSet(
@@ -272,7 +272,7 @@ void slCluster::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *
 
 
 
-pgObject *slCluster::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slCluster::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *cluster=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -287,7 +287,7 @@ pgObject *slCluster::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaSlClusterFactory::CreateObjects(pgCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaSlClusterFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slCluster *cluster=0;
 
@@ -311,7 +311,7 @@ pgObject *pgaSlClusterFactory::CreateObjects(pgCollection *coll, wxTreeCtrl *bro
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, cluster);
+                browser->AppendObject(coll, cluster);
 				clusters->MoveNext();
             }
             else
@@ -325,7 +325,7 @@ pgObject *pgaSlClusterFactory::CreateObjects(pgCollection *coll, wxTreeCtrl *bro
 
 
     
-pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser)
+pgObject *slCluster::ReadObjects(pgCollection *coll, ctlTree *browser)
 {
     // Get the clusters
     return slClusterFactory.CreateObjects(coll, browser, wxEmptyString);
@@ -337,7 +337,7 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser)
 #include "images/slclusters.xpm"
 
 pgaSlClusterFactory::pgaSlClusterFactory() 
-: pgaFactory(__("Slony-I Cluster"), __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster"), slcluster_xpm)
+: pgDatabaseObjFactory(__("Slony-I Cluster"), _("New Slony-I Cluster"), _("Create new Slony-I Replication Cluster"), slcluster_xpm)
 {
 }
 

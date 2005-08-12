@@ -18,11 +18,11 @@
 class pgIndexConstraint : public pgIndex
 {
 public:
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browse, bool cascadedr);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    bool DropObject(wxFrame *frame, ctlTree *browse, bool cascadedr);
     wxString GetDefinition();
     wxString GetCreate();
-    wxString GetSql(wxTreeCtrl *browser);
+    wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
 
 protected:
@@ -39,7 +39,7 @@ public:
 
     bool CanCreate() { return false; }
     int GetIconId() { return PGICON_PRIMARYKEY; }
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where=wxT(""));
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where=wxT(""));
 };
 
 class pgUnique : public pgIndexConstraint
@@ -49,7 +49,7 @@ public:
         : pgIndexConstraint(newSchema, newName, PG_UNIQUE) {}
 
     int GetIconId() { return PGICON_UNIQUE; }
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where=wxT(""));
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where=wxT(""));
 };
 
 

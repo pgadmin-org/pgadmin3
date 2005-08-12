@@ -20,17 +20,18 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
 
-class pgaConversionFactory : public pgaFactory
+class pgConversionFactory : public pgSchemaObjFactory
 {
 public:
-    pgaConversionFactory();
+    pgConversionFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaConversionFactory conversionFactory;
+extern pgConversionFactory conversionFactory;
 
 
 class pgConversion : public pgSchemaObject
@@ -39,7 +40,7 @@ public:
     pgConversion(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgConversion();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return true; }
 
     wxString GetProc() const { return proc; }
@@ -53,9 +54,9 @@ public:
     bool GetDefaultConversion() const { return defaultConversion; }
     void iSetDefaultConversion(const bool b) { defaultConversion=b; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString proc, procNamespace, forEncoding, toEncoding;

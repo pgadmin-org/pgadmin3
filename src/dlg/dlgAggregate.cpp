@@ -46,7 +46,7 @@ BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
-dlgProperty *pgaAggregateFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgAggregateFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgAggregate(frame, (pgAggregate*)node, (pgSchema*)parent);
 }

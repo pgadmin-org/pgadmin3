@@ -31,7 +31,7 @@ pgForeignKey::~pgForeignKey()
 }
 
 
-bool pgForeignKey::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgForeignKey::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT(
         "ALTER TABLE ") + GetSchemaPrefix(fkSchema) + qtIdent(fkTable)
@@ -75,7 +75,7 @@ wxString pgForeignKey::GetConstraint()
 }
 
 
-wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
+wxString pgForeignKey::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -99,7 +99,7 @@ wxString pgForeignKey::GetFullName() const
     return GetName() + wxT(" -> ") + GetReferences();
 }
 
-void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -174,7 +174,7 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
 
 
 
-pgObject *pgForeignKey::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgForeignKey::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *foreignKey=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -189,7 +189,7 @@ pgObject *pgForeignKey::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgForeignKey::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgForeignKey *foreignKey=0;
 
@@ -252,7 +252,7 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, foreignKey);
+                browser->AppendObject(collection, foreignKey);
 	    		foreignKeys->MoveNext();
             }
             else

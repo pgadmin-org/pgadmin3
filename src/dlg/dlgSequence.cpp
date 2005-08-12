@@ -42,7 +42,7 @@ BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
-dlgProperty *pgaSequenceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgSequenceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgSequence(frame, (pgSequence*)node, (pgSchema*)parent);
 }

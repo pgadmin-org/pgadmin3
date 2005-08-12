@@ -30,18 +30,18 @@ public:
     ~slListen();
 
     int GetIconId() { return SLICON_LISTEN; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser, const wxString &restriction);
+    static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser);
 
     long GetOriginId() const { return originId; }
     void iSetOriginId(long l) { originId = l; }
     wxString GetOriginName() const { return originName; }
     void iSetOriginName(const wxString &s) { originName = s; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     long originId;

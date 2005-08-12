@@ -85,13 +85,13 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
 }
 
 
-bool pgTablespace::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgTablespace::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetConnection()->ExecuteVoid(wxT("DROP TABLESPACE ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 
 
-wxString pgTablespace::GetSql(wxTreeCtrl *browser)
+wxString pgTablespace::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -109,7 +109,7 @@ wxString pgTablespace::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgTablespace::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgTablespace::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -160,7 +160,7 @@ void pgTablespace::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-pgObject *pgTablespace::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgTablespace::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *tablespace=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -175,7 +175,7 @@ pgObject *pgTablespace::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaTablespaceFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgTablespace *tablespace=0;
 
@@ -201,7 +201,7 @@ pgObject *pgaTablespaceFactory::CreateObjects(pgCollection *collection, wxTreeCt
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, tablespace);
+                browser->AppendObject(collection, tablespace);
 				tablespaces->MoveNext();
             }
             else
@@ -214,7 +214,7 @@ pgObject *pgaTablespaceFactory::CreateObjects(pgCollection *collection, wxTreeCt
 }
 
 
-pgTablespaceCollection::pgTablespaceCollection(pgaFactory &factory, pgServer *sv)
+pgTablespaceCollection::pgTablespaceCollection(pgaFactory *factory, pgServer *sv)
 : pgServerObjCollection(factory, sv)
 { 
 }
@@ -256,11 +256,16 @@ void pgTablespaceCollection::ShowStatistics(frmMain *form, ctlListView *statisti
 #include "images/tablespaces.xpm"
 
 
-pgaTablespaceFactory::pgaTablespaceFactory() 
-: pgaFactory(__("Tablespace"), __("New Tablespace"), __("Create a new Tablespace."), tablespace_xpm)
+pgTablespaceFactory::pgTablespaceFactory() 
+: pgServerObjFactory(__("Tablespace"), _("New Tablespace"), _("Create a new Tablespace."), tablespace_xpm)
 {
 }
 
 
-pgaTablespaceFactory tablespaceFactory;
+pgCollection *pgTablespaceFactory::CreateCollection(pgObject *obj)
+{
+    return new pgTablespaceCollection(GetCollectionFactory(), (pgServer*)obj);
+}
+
+pgTablespaceFactory tablespaceFactory;
 static pgaCollectionFactory cf(&tablespaceFactory, __("Tablespaces"), tablespaces_xpm);

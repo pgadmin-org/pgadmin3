@@ -30,16 +30,16 @@ public:
     ~slSequence();
 
     int GetIconId() { return -1; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slSetCollection *coll, wxTreeCtrl *browser);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction);
+    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser);
 
     bool GetActive() const { return active; }
     void iSetActive(bool b) { active=b; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     bool active;

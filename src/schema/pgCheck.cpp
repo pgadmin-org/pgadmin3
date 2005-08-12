@@ -30,7 +30,7 @@ pgCheck::~pgCheck()
 }
 
 
-bool pgCheck::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgCheck::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
         wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
@@ -45,7 +45,7 @@ wxString pgCheck::GetConstraint()
 }
 
 
-wxString pgCheck::GetSql(wxTreeCtrl *browser)
+wxString pgCheck::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -67,7 +67,7 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgCheck::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -84,7 +84,7 @@ void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
 }
 
 
-pgObject *pgCheck::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgCheck::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *check=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -99,7 +99,7 @@ pgObject *pgCheck::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgCheck::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgCheck *check=0;
     pgSet *checks= collection->GetDatabase()->ExecuteSet(
@@ -130,7 +130,7 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, check);
+                browser->AppendObject(collection, check);
     			checks->MoveNext();
             }
             else

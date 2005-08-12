@@ -36,13 +36,13 @@ pgaStep::~pgaStep()
 }
 
 
-bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgaStep::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") + NumToStr(GetRecId()));
 }
 
 
-void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgaStep::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -67,7 +67,7 @@ void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
 
 
 
-pgObject *pgaStep::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgaStep::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *Step=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -82,7 +82,7 @@ pgObject *pgaStep::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaStep::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgaStep *step=0;
 
@@ -131,7 +131,7 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, step);
+                browser->AppendObject(collection, step);
 				steps->MoveNext();
             }
             else

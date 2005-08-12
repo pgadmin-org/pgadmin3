@@ -29,7 +29,7 @@ pgOperator::~pgOperator()
 {
 }
 
-bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgOperator::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP OPERATOR ") + GetFullIdentifier();
     
@@ -50,7 +50,7 @@ bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString pgOperator::GetSql(wxTreeCtrl *browser)
+wxString pgOperator::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -109,7 +109,7 @@ wxString pgOperator::GetFullName() const
 }
 
 
-void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgOperator::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -141,7 +141,7 @@ void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 
 
 
-pgObject *pgOperator::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgOperator::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *oper=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -159,7 +159,7 @@ pgObject *pgOperator::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 //////////////////////////////////////////////////////
 
 
-pgObject *pgaOperatorFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgOperator *oper=0;
 
@@ -218,7 +218,7 @@ pgObject *pgaOperatorFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, oper);
+                browser->AppendObject(collection, oper);
 			    operators->MoveNext();
             }
             else
@@ -229,3 +229,16 @@ pgObject *pgaOperatorFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
     }
     return oper;
 }
+
+
+#include "images/operator.xpm"
+#include "images/operators.xpm"
+
+pgOperatorFactory::pgOperatorFactory() 
+: pgSchemaObjFactory(__("Operator"), _("New Operator"), _("Create a new Operator."), operator_xpm)
+{
+}
+
+
+pgOperatorFactory operatorFactory;
+static pgaCollectionFactory cf(&operatorFactory, __("Operators"), operators_xpm);

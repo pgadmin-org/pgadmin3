@@ -259,7 +259,7 @@ void pgDatabase::AppendSchemaChange(const wxString &sql)
     schemaChanges.Append(wxT("\n\n"));
 }
 
-bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgDatabase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     if (useServerConnection)
     {
@@ -279,7 +279,7 @@ bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 
 
 
-wxString pgDatabase::GetSql(wxTreeCtrl *browser)
+wxString pgDatabase::GetSql(ctlTree *browser)
 {
     if (sql.IsEmpty())
     {
@@ -305,7 +305,7 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (Connect() == PGCONN_OK)
     {
@@ -320,23 +320,11 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         if (browser->GetChildrenCount(GetId(), false) == 0)
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
-            pgCollection *collection;
 
-            // Casts
-            collection = new pgDatabaseObjCollection(*castFactory.GetCollectionFactory(), this);
-            AppendBrowserItem(browser, collection);
-
-            // Languages
-            collection = new pgDatabaseObjCollection(*languageFactory.GetCollectionFactory(), this);
-            AppendBrowserItem(browser, collection);
-
-            // Schemas
-            collection = new pgDatabaseObjCollection(*schemaFactory.GetCollectionFactory(), this);
-            AppendBrowserItem(browser, collection);
-
-            // Slony-I Clusters
-            collection = new pgDatabaseObjCollection(*slClusterFactory.GetCollectionFactory(), this);
-            AppendBrowserItem(browser, collection);
+            browser->AppendCollection(this, castFactory);
+            browser->AppendCollection(this, languageFactory);
+            browser->AppendCollection(this, schemaFactory);
+            browser->AppendCollection(this, slClusterFactory);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(
                 wxT("SELECT COUNT(*) FROM\n")
@@ -386,7 +374,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 
 
 
-pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgDatabase::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgDatabase *database=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -416,7 +404,7 @@ pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 }
 
 
-pgObject *pgaDatabaseFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgDatabase *database=0;
 
@@ -487,7 +475,7 @@ pgObject *pgaDatabaseFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 }
 
 
-pgDatabaseCollection::pgDatabaseCollection(pgaFactory &factory, pgServer *sv)
+pgDatabaseCollection::pgDatabaseCollection(pgaFactory *factory, pgServer *sv)
 : pgServerObjCollection(factory, sv)
 {
 }
@@ -542,7 +530,7 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 
 /////////////////////////////////////////////////////
 
-pgDatabaseObjCollection::pgDatabaseObjCollection(pgaFactory &factory, pgDatabase *db)
+pgDatabaseObjCollection::pgDatabaseObjCollection(pgaFactory *factory, pgDatabase *db)
 : pgCollection(factory)
 { 
     database = db;
@@ -560,13 +548,23 @@ bool pgDatabaseObjCollection::CanCreate()
 #include "images/databases.xpm"
 #include "images/closeddatabase.xpm"
 
-pgaDatabaseFactory::pgaDatabaseFactory() 
-: pgaFactory(__("Database"), __("New Database"), __("Create a new Database."), database_xpm)
+pgDatabaseFactory::pgDatabaseFactory() 
+: pgServerObjFactory(__("Database"), _("New Database"), _("Create a new Database."), database_xpm)
 {
     metaType = PGM_DATABASE;
     closedId = addImage(closeddatabase_xpm);
 }
 
+pgCollection *pgDatabaseFactory::CreateCollection(pgObject *obj)
+{
+    return new pgDatabaseCollection(GetCollectionFactory(), (pgServer*)obj);
+}
 
-pgaDatabaseFactory databaseFactory;
+pgCollection *pgDatabaseObjFactory::CreateCollection(pgObject *obj)
+{
+    return new pgDatabaseObjCollection(GetCollectionFactory(), (pgDatabase*)obj);
+}
+
+
+pgDatabaseFactory databaseFactory;
 static pgaCollectionFactory cf(&databaseFactory, __("Databases"), databases_xpm);

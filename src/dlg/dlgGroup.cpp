@@ -29,7 +29,7 @@
 #define btnDelUser      CTRL_BUTTON("btnDelUser")
 
 
-dlgProperty *pgaGroupFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgGroupFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgGroup(frame, (pgGroup*)node);
 }

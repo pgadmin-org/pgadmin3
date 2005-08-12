@@ -29,14 +29,14 @@ enum
     SCHEMATYP_NORMAL
 };
 
-class pgaSchemaFactory : public pgaFactory
+class pgSchemaFactory : public pgDatabaseObjFactory
 {
 public:
-    pgaSchemaFactory();
+    pgSchemaFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaSchemaFactory schemaFactory;
+extern pgSchemaFactory schemaFactory;
 
 
 class pgSchema : public pgDatabaseObject
@@ -47,8 +47,8 @@ public:
 
     wxString GetPrefix() const { return database->GetSchemaPrefix(GetName()); }
     wxString GetQuotedPrefix() const { return database->GetQuotedSchemaPrefix(GetName()); }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
     bool CanDropCascaded() { return true; }
 
     long GetSchemaTyp() const { return schemaTyp; }
@@ -61,10 +61,10 @@ public:
     bool RequireDropConfirm() { return true; }
     bool WantDummyChild() { return true; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     long schemaTyp;
@@ -77,9 +77,15 @@ private:
 class pgSchemaObjCollection : public pgCollection
 {
 public:
-    pgSchemaObjCollection(pgaFactory &factory, pgSchema *sch);
+    pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch);
     bool CanCreate();
 };
 
+class pgSchemaObjFactory : public pgDatabaseObjFactory
+{
+public:
+    pgSchemaObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgDatabaseObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
 
 #endif

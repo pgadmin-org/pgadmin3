@@ -22,14 +22,15 @@
 #include "pgDatabase.h"
 
 class pgCollection;
-class pgaAggregateFactory : public pgaFactory
+class pgAggregateFactory : public pgaFactory
 {
 public:
-    pgaAggregateFactory();
+    pgAggregateFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    pgCollection *CreateCollection(pgObject *obj);
 };
-extern pgaAggregateFactory aggregateFactory;
+extern pgAggregateFactory aggregateFactory;
 
 class pgAggregate : public pgSchemaObject
 {
@@ -40,7 +41,7 @@ public:
     pgSchema *GetSchema() const {return schema; }
     bool CanDropCascaded() { return true; }
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     wxString GetFullName() const;
     wxString GetInputType() const { return inputType; }
     void iSetInputType(const wxString& s) { inputType=s; }
@@ -60,9 +61,9 @@ public:
     void iSetQuotedSortOp(const wxString &s) { quotedSortOp=s; }
 
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     pgSchema *schema;

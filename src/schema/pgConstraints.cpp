@@ -65,7 +65,7 @@ bool pgConstraints::IsCollectionForType(int objType)
 }
 
 
-void pgConstraints::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgConstraints::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), false) == 0)
     {

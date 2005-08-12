@@ -33,7 +33,7 @@ class slCollection : public pgCollection
 public:
     slCollection(int newType, slCluster *_cluster);
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     int GetIconId();
     bool CanCreate();
@@ -54,7 +54,7 @@ class slSetCollection : public slCollection
 {
 public:
     slSetCollection(int newType, slSet *_set, slSubscription *sub=0);
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
     int GetIconId();
     bool CanCreate();
 
@@ -71,7 +71,7 @@ class slNodeCollection : public slCollection
 {
 public:
     slNodeCollection(int newType, slNode *n);
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
 
     slNode *GetNode() {return node; }
 

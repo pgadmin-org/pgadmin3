@@ -14,7 +14,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/treectrl.h>
+#include <ctl/ctlTree.h>
 #include "ctl/ctlSQLBox.h"
 
 // App headers
@@ -90,7 +90,7 @@ public:
     wxString GetTypeName() const;
     wxString GetTranslatedTypeName() const;
     virtual int GetIconId();
-    bool UpdateIcon(wxTreeCtrl *browser);
+    bool UpdateIcon(ctlTree *browser);
 
     virtual void ShowProperties() const {};
     virtual pgDatabase *GetDatabase() const { return 0; }
@@ -110,10 +110,9 @@ public:
     virtual bool IsCollection() const { return false; }
     virtual void ShowHint(frmMain *form, bool force) {}
 
-    void ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane);
+    void ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties, ctlSQLBox *sqlPane);
 
-    wxTreeItemId AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
-    void RemoveDummyChild(wxTreeCtrl *browser);
+    wxTreeItemId AppendBrowserItem(ctlTree *browser, pgObject *object);
     
     virtual wxString GetHelpPage(bool forCreate) const;
     virtual wxString GetFullName() const { return name; }
@@ -121,7 +120,7 @@ public:
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
 
     virtual wxMenu *GetNewMenu();
-    virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
+    virtual wxString GetSql(ctlTree *browser) { return wxT(""); }
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""));
     wxString GetCommentSql();
     wxString GetOwnerSql(int major, int minor, wxString objname=wxEmptyString);
@@ -131,14 +130,14 @@ public:
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(name); }
 
-    virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)
+    virtual void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)
         =0;
     virtual void ShowStatistics(frmMain *form, ctlListView *statistics);
     virtual void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
     virtual void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
-    virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
-    virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded=false) {return false; }
-    virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
+    virtual pgObject *Refresh(ctlTree *browser, const wxTreeItemId item) {return this; }
+    virtual bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded=false) {return false; }
+    virtual bool EditObject(wxFrame *frame, ctlTree *browser) {return false; }
 
     virtual bool NeedCascadedDrop() { return false; }
     virtual bool CanCreate() { return false; }
@@ -186,7 +185,7 @@ public:
     void iSetServer(pgServer *s) { server=s; }
     pgServer *GetServer() const { return server; }
 
-    void FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query);
+    void FillOwned(ctlTree *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query);
 
     bool CanCreate();
     bool CanDrop();

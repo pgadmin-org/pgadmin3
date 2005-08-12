@@ -15,14 +15,15 @@
 
 #include "pgServer.h"
 
-class pgaTablespaceFactory : public pgaFactory
+class pgTablespaceFactory : public pgServerObjFactory
 {
 public:
-    pgaTablespaceFactory();
+    pgTablespaceFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    virtual pgCollection *CreateCollection(pgObject *obj);
 };
-extern pgaTablespaceFactory tablespaceFactory;
+extern pgTablespaceFactory tablespaceFactory;
 
 
 class pgTablespace : public pgServerObject
@@ -31,19 +32,19 @@ public:
     pgTablespace(const wxString& newName = wxT(""));
     ~pgTablespace();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
     
     wxString GetLocation() const { return location; };
     void iSetLocation(const wxString& newVal) { location = newVal; }
     
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool RequireDropConfirm() { return true; }
     pgConn *connection();
 
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString location;
@@ -53,7 +54,7 @@ private:
 class pgTablespaceCollection : public pgServerObjCollection
 {
 public:
-    pgTablespaceCollection(pgaFactory &factory, pgServer *sv);
+    pgTablespaceCollection(pgaFactory *factory, pgServer *sv);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 

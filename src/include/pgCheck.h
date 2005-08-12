@@ -32,8 +32,8 @@ public:
     pgSchema *GetSchema() const {return schema; }
     int GetIconId() { return PGICON_CHECK; }
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
 
     wxString GetFkTable() const { return fkTable; }
     void iSetFkTable(const wxString& s) { fkTable=s; }
@@ -46,11 +46,11 @@ public:
     bool GetDeferred() const { return deferred; }
     void iSetDeferred(const bool b) { deferred=b; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetConstraint();
-    wxString GetSql(wxTreeCtrl *browser);
+    wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString definition, fkTable, fkSchema;

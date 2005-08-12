@@ -29,7 +29,7 @@ pgRule::~pgRule()
 {
 }
 
-bool pgRule::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgRule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable();
     if (cascaded)
@@ -38,7 +38,7 @@ bool pgRule::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString pgRule::GetSql(wxTreeCtrl *browser)
+wxString pgRule::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -54,7 +54,7 @@ wxString pgRule::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgRule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -81,7 +81,7 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *pgRule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgRule::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *rule=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -95,7 +95,7 @@ pgObject *pgRule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 }
 
 
-pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgRule::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgRule *rule=0;
 
@@ -139,7 +139,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, rule);
+                browser->AppendObject(collection, rule);
 				rules->MoveNext();
             }
             else

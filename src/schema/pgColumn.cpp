@@ -51,7 +51,7 @@ bool pgColumn::IsReferenced()
 }
 
 
-bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgColumn::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("ALTER TABLE ") + GetQuotedFullTable();
              sql += wxT(" DROP COLUMN ") + GetQuotedIdentifier();
@@ -75,7 +75,7 @@ void pgColumn::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const 
         wxT(" AND dep.refobjsubid=") + NumToStr(colNumber));
 }
 
-wxString pgColumn::GetSql(wxTreeCtrl *browser)
+wxString pgColumn::GetSql(ctlTree *browser)
 {
     if (sql.IsNull() && !GetSystemObject())
     {
@@ -153,7 +153,7 @@ wxString pgColumn::GetDefinition()
 }
 
 
-void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -243,7 +243,7 @@ void pgColumn::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-pgObject *pgColumn::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgColumn::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *column=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -258,7 +258,7 @@ pgObject *pgColumn::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgColumn::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgColumn *column=0;
     pgDatabase *database=collection->GetDatabase();
@@ -349,7 +349,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, column);
+                browser->AppendObject(collection, column);
 				columns->MoveNext();
             }
             else

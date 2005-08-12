@@ -26,7 +26,7 @@
 // pointer to controls
 #define txtLocation     CTRL_TEXT("txtLocation")
 
-dlgProperty *pgaTablespaceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgTablespaceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgTablespace(frame, (pgTablespace*)node);
 }

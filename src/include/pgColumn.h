@@ -30,11 +30,11 @@ public:
     ~pgColumn();
 
     int GetIconId() { return PGICON_COLUMN; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
     void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
 
     wxString GetDefinition();
 
@@ -85,14 +85,14 @@ public:
     void iSetPkCols(const wxString &s) { pkCols = s; }
     void iSetIsFK(const bool b) { isFK = b; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool GetSystemObject() const { return colNumber < 0; }
-    wxString GetSql(wxTreeCtrl *browser);
+    wxString GetSql(ctlTree *browser);
 	wxString GetCommentSql();
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtable"); }
 
     virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop(); }
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;

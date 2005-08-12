@@ -22,7 +22,7 @@
 class pgObject;
 class frmMain;
 class dlgProperty;
-class wxTreeCtrl;
+class ctlTree;
 class pgCollection;
 class pgSchema;
 class pgaCollectionFactory;
@@ -32,7 +32,8 @@ class pgaFactory
 {
 public:
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)=0;
-    virtual pgObject *CreateObjects(pgCollection  *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString) { return 0; }
+    virtual pgObject *CreateObjects(pgCollection  *obj, ctlTree *browser, const wxString &restr=wxEmptyString) { return 0; }
+    virtual pgCollection *CreateCollection(pgObject *obj) =0;
     virtual bool IsCollection() { return false; }
     virtual void AppendMenu(wxMenu *menu);
     bool IsCollectionFor(pgaFactory &f) { return f.GetCollectionFactory() == (pgaCollectionFactory*)this; }
@@ -52,7 +53,7 @@ public:
     char **GetImage() const { return image; }
 
 protected:
-    pgaFactory(wxChar *tn=0, wxChar *ns=0, wxChar *nls=0, char **img=0);
+    pgaFactory(const wxChar *tn=0, const wxChar *ns=0, const wxChar *nls=0, char **img=0);
 
     int addImage(char **img);
 
@@ -73,11 +74,12 @@ public:
     pgaCollectionFactory(pgaFactory *f, wxChar *tn=0, char **img=0);
     wxChar *GetItemTypeName() { return itemFactory->GetTypeName(); }
     pgaFactory *GetItemFactory() { return itemFactory; }
-    pgObject *CreateObjects(pgCollection  *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    pgObject *CreateObjects(pgCollection  *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
     
 protected:
     virtual bool IsCollection() { return true; }
     dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgCollection *CreateCollection(pgObject *obj) { return 0; };
 
     pgaFactory *itemFactory;
 };

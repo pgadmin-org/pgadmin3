@@ -30,10 +30,10 @@ public:
     ~pgIndex();
 
     int GetIconId() { return PGICON_INDEX; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction);
+    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
     bool CanDropCascaded() { return true; }
 
     wxString GetProcArgs() const { return procArgs; }
@@ -79,11 +79,11 @@ public:
     void iSetOperatorClassList(const wxString& s) { operatorClassList=s; }
     void iSetProcArgTypeList(const wxString& s) { procArgTypeList=s; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetCreate();
     bool CanRestore() { return true; }
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool CanMaintenance() { return true; }
 
 protected:

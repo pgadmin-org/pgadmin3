@@ -30,7 +30,7 @@
 #define chkImplicit         CTRL_CHECKBOX("chkImplicit")
 #define stComment           CTRL_STATIC("stComment")
 
-dlgProperty *pgaCastFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgCastFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgCast(frame, (pgCast*)node);
 }

@@ -45,7 +45,7 @@ int slSubscription::GetIconId()
 }
 
 
-bool slSubscription::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slSubscription::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
         wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
@@ -62,7 +62,7 @@ bool slSubscription::CanCreate()
 }
 
 
-wxString slSubscription::GetSql(wxTreeCtrl *browser)
+wxString slSubscription::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -86,13 +86,13 @@ bool slSubscription::WantDummyChild()
 }
 
 
-void slSubscription::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slSubscription::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
         // Log
 
         if (WantDummyChild())
@@ -137,7 +137,7 @@ void slSubscription::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListV
 
 
 
-pgObject *slSubscription::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slSubscription::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *subscription=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -153,7 +153,7 @@ pgObject *slSubscription::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *slSubscription::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *slSubscription::ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slSubscription *subscription=0;
 
@@ -184,7 +184,7 @@ pgObject *slSubscription::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, subscription);
+                browser->AppendObject(coll, subscription);
 				subscriptions->MoveNext();
             }
             else
@@ -198,7 +198,7 @@ pgObject *slSubscription::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser
 
 
     
-pgObject *slSubscription::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser)
+pgObject *slSubscription::ReadObjects(slSetCollection *coll, ctlTree *browser)
 {
     // Get the subscriptions
     wxString restriction = wxT(" WHERE sub_set = ") + NumToStr(coll->GetSet()->GetSlId());

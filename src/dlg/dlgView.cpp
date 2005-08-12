@@ -35,7 +35,7 @@ BEGIN_EVENT_TABLE(dlgView, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
-dlgProperty *pgaViewFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgViewFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgView(frame, (pgView*)node, (pgSchema*)parent);
 }

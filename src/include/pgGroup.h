@@ -22,14 +22,14 @@
 #include "pgServer.h"
 
 
-class pgaGroupFactory : public pgaFactory
+class pgGroupFactory : public pgServerObjFactory
 {
 public:
-    pgaGroupFactory();
+    pgGroupFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaGroupFactory groupFactory;
+extern pgGroupFactory groupFactory;
 
 
 // Class declarations
@@ -51,11 +51,11 @@ public:
     void iSetMembers(const wxString& s) { members=s; }
     wxArrayString& GetUsersIn() { return usersIn; }
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     long groupId, memberCount;

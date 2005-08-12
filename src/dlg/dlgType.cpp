@@ -67,7 +67,7 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
-dlgProperty *pgaTypeFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgTypeFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgType(frame, (pgType*)node, (pgSchema*)parent);
 }

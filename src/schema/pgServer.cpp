@@ -704,7 +704,7 @@ wxString pgServer::GetLastError() const
 
 
 
-void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     // Add child nodes if necessary
     if (GetConnected()) {
@@ -719,14 +719,11 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
-            // Databases
-            AppendBrowserItem(browser, new pgDatabaseCollection(*databaseFactory.GetCollectionFactory(), this));
+            browser->AppendCollection(this, databaseFactory);
 
             if (conn->BackendMinimumVersion(7, 5))
-            {
-                // Tablespaces
-                AppendBrowserItem(browser, new pgTablespaceCollection(*tablespaceFactory.GetCollectionFactory(), this));
-            }
+                browser->AppendCollection(this, tablespaceFactory);
+
             // Jobs
             // We only add the Jobs node if the appropriate objects are the initial DB.
             wxString exists = conn->ExecuteScalar(
@@ -737,11 +734,9 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             {
                 AppendBrowserItem(browser, new pgCollection(PGA_JOBS, this));
             }
-            // Groups
-            AppendBrowserItem(browser, new pgServerObjCollection(*groupFactory.GetCollectionFactory(), this));
-    
-            // Users
-            AppendBrowserItem(browser, new pgServerObjCollection(*userFactory.GetCollectionFactory(), this));
+
+            browser->AppendCollection(this, groupFactory);
+            browser->AppendCollection(this, userFactory);
         }
     }
 
@@ -860,13 +855,13 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-pgServerCollection::pgServerCollection(pgaFactory &factory)
+pgServerCollection::pgServerCollection(pgaFactory *factory)
  : pgCollection(factory)
 {
 }
 
 
-pgServerObjCollection::pgServerObjCollection(pgaFactory &factory, pgServer *sv)
+pgServerObjCollection::pgServerObjCollection(pgaFactory *factory, pgServer *sv)
 : pgCollection(factory)
 {
     server = sv;
@@ -882,7 +877,7 @@ bool pgServerObjCollection::CanCreate()
 }
 
 
-pgObject *pgaServerFactory::CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr)
+pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr)
 {
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
@@ -1012,13 +1007,22 @@ pgObject *pgaServerFactory::CreateObjects(pgCollection *obj, wxTreeCtrl *browser
 #include "images/server.xpm"
 #include "images/serverbad.xpm"
 
-pgaServerFactory::pgaServerFactory() 
-: pgaFactory(__("Server"), __("New Server Registration"), __("Create a new Server registration."), server_xpm)
+pgServerFactory::pgServerFactory() 
+: pgaFactory(__("Server"), _("New Server Registration"), _("Create a new Server registration."), server_xpm)
 {
     metaType = PGM_SERVER;
     closedId = addImage(serverbad_xpm);
 }
 
+pgCollection *pgServerFactory::CreateCollection(pgObject *obj)
+{
+    return new pgCollection(GetCollectionFactory());
+}
 
-pgaServerFactory serverFactory;
+pgCollection *pgServerObjFactory::CreateCollection(pgObject *obj)
+{
+    return new pgServerObjCollection(GetCollectionFactory(), (pgServer*)obj);
+}
+
+pgServerFactory serverFactory;
 static pgaCollectionFactory cf(&serverFactory, __("Servers"), servers_xpm);

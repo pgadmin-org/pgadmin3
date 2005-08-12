@@ -35,7 +35,7 @@ slPath::~slPath()
 }
 
 
-bool slPath::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slPath::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
@@ -45,7 +45,7 @@ bool slPath::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString slPath::GetSql(wxTreeCtrl *browser)
+wxString slPath::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -61,13 +61,13 @@ wxString slPath::GetSql(wxTreeCtrl *browser)
 }
 
 
-void slPath::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slPath::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
     }
 
 
@@ -86,7 +86,7 @@ void slPath::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *slPath::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slPath::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *path=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -104,7 +104,7 @@ pgObject *slPath::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *slPath::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *slPath::ReadObjects(slNodeCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slPath *path=0;
 
@@ -126,7 +126,7 @@ pgObject *slPath::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, const
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, path);
+                browser->AppendObject(coll, path);
 				paths->MoveNext();
             }
             else
@@ -140,7 +140,7 @@ pgObject *slPath::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, const
 
 
     
-pgObject *slPath::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser)
+pgObject *slPath::ReadObjects(slNodeCollection *coll, ctlTree *browser)
 {
     // Get the paths
     wxString restriction = wxT(" WHERE pa_client = ") + NumToStr(coll->GetSlId());

@@ -22,14 +22,14 @@
 #include "pgDatabase.h"
 
 class pgCollection;
-class pgaCastFactory : public pgaFactory
+class pgCastFactory : public pgDatabaseObjFactory
 {
 public:
-    pgaCastFactory();
+    pgCastFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaCastFactory castFactory;
+extern pgCastFactory castFactory;
 
 
 class pgCast : public pgDatabaseObject
@@ -38,7 +38,7 @@ public:
     pgCast(const wxString& newName = wxT(""));
     ~pgCast();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     bool CanDropCascaded() { return true; }
 
@@ -63,9 +63,9 @@ public:
     wxString GetCastContext() const { return castContext; }
     void iSetCastContext(const wxString& s) { castContext=s; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString sourceType, sourceNamespace, targetType, targetNamespace, 

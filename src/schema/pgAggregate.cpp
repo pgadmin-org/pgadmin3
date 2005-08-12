@@ -29,7 +29,7 @@ pgAggregate::~pgAggregate()
 {
 }
 
-bool pgAggregate::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgAggregate::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(")");
     if (cascaded)
@@ -37,7 +37,7 @@ bool pgAggregate::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgAggregate::GetSql(wxTreeCtrl *browser)
+wxString pgAggregate::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -76,7 +76,7 @@ wxString pgAggregate::GetFullName() const
 
 
 
-void pgAggregate::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
@@ -99,7 +99,7 @@ void pgAggregate::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
 }
 
 
-pgObject *pgAggregate::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgAggregate::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *aggregate=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -116,7 +116,7 @@ pgObject *pgAggregate::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 ////////////////////////////////////////////////////////////////////////
 
 
-pgObject *pgaAggregateFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgAggregate *aggregate=0;
     wxString sql=
@@ -185,7 +185,7 @@ pgObject *pgaAggregateFactory::CreateObjects(pgCollection *collection, wxTreeCtr
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, aggregate);
+                browser->AppendObject(collection, aggregate);
                             aggregates->MoveNext();
             }
             else
@@ -201,10 +201,15 @@ pgObject *pgaAggregateFactory::CreateObjects(pgCollection *collection, wxTreeCtr
 #include "images/aggregate.xpm"
 #include "images/aggregates.xpm"
 
-pgaAggregateFactory::pgaAggregateFactory() 
-: pgaFactory(__("Aggregate"), __("New Aggregate"), __("Create a new Aggregate."), aggregate_xpm)
+pgAggregateFactory::pgAggregateFactory() 
+: pgaFactory(__("Aggregate"), _("New Aggregate"), _("Create a new Aggregate."), aggregate_xpm)
 {
 }
 
-pgaAggregateFactory aggregateFactory;
+pgCollection *pgAggregateFactory::CreateCollection(pgObject *obj)
+{
+    return new pgSchemaObjCollection(GetCollectionFactory(), (pgSchema*)obj);
+}
+
+pgAggregateFactory aggregateFactory;
 static pgaCollectionFactory cf(&aggregateFactory, __("Aggregates"), aggregates_xpm);

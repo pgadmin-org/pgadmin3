@@ -22,18 +22,20 @@
 #include "pgCollection.h"
 #include "pgConn.h"
 
-class pgaDatabaseFactory : public pgaFactory
+class pgDatabaseFactory : public pgServerObjFactory
 {
 public:
-    pgaDatabaseFactory();
+    pgDatabaseFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    virtual pgCollection *CreateCollection(pgObject *obj);
+
     int GetClosedIconId() { return closedId; }
 protected:
     int closedId;
 };
 
-extern pgaDatabaseFactory databaseFactory;
+extern pgDatabaseFactory databaseFactory;
 
 
 // Class declarations
@@ -47,7 +49,7 @@ public:
     pgDatabase *GetDatabase() const { return (pgDatabase*)this; }
     bool BackendMinimumVersion(int major, int minor) { return connection()->BackendMinimumVersion(major, minor); }
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
@@ -76,7 +78,7 @@ public:
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
     
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool CanMaintenance() { return true; }
     bool CanBackup() { return connected; }
     bool CanRestore() { return connected; }
@@ -90,8 +92,8 @@ public:
     void ClearSchemaChanges() { schemaChanges=wxEmptyString; }
 
     wxMenu *GetNewMenu();
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     pgConn *conn;
@@ -109,7 +111,7 @@ private:
 class pgDatabaseCollection : public pgServerObjCollection
 {
 public:
-    pgDatabaseCollection(pgaFactory &factory, pgServer *sv);
+    pgDatabaseCollection(pgaFactory *factory, pgServer *sv);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 
@@ -117,9 +119,16 @@ public:
 class pgDatabaseObjCollection : public pgCollection
 {
 public:
-    pgDatabaseObjCollection(pgaFactory &factory, pgDatabase *db);
+    pgDatabaseObjCollection(pgaFactory *factory, pgDatabase *db);
     bool CanCreate();
 };
 
+
+class pgDatabaseObjFactory : public pgServerObjFactory
+{
+public:
+    pgDatabaseObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgServerObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
 
 #endif

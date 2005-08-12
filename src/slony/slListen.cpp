@@ -35,7 +35,7 @@ slListen::~slListen()
 }
 
 
-bool slListen::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slListen::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
@@ -46,7 +46,7 @@ bool slListen::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString slListen::GetSql(wxTreeCtrl *browser)
+wxString slListen::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -63,13 +63,13 @@ wxString slListen::GetSql(wxTreeCtrl *browser)
 }
 
 
-void slListen::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slListen::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
     }
 
 
@@ -88,7 +88,7 @@ void slListen::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
 
 
-pgObject *slListen::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slListen::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *listen=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -107,7 +107,7 @@ pgObject *slListen::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *slListen::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *slListen::ReadObjects(slNodeCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slListen *listen=0;
 
@@ -130,7 +130,7 @@ pgObject *slListen::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, listen);
+                browser->AppendObject(coll, listen);
 				listens->MoveNext();
             }
             else
@@ -144,7 +144,7 @@ pgObject *slListen::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, con
 
 
     
-pgObject *slListen::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser)
+pgObject *slListen::ReadObjects(slNodeCollection *coll, ctlTree *browser)
 {
     // Get the listens
     wxString restriction = wxT(" WHERE li_receiver = ") + NumToStr(coll->GetSlId());

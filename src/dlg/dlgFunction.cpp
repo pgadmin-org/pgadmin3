@@ -77,7 +77,7 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
-dlgProperty *pgaFunctionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgFunctionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgFunction(frame, (pgFunction*)node, (pgSchema*)parent);
 }
@@ -106,7 +106,7 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
 
 
 
-dlgProperty *pgaProcedureFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgProcedureFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgProcedure(frame, (pgFunction*)node, (pgSchema*)parent);
 }

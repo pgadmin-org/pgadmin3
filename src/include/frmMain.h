@@ -15,13 +15,13 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 
 // App headers
 #include "pgAdmin3.h"
 #include "ctl/ctlSQLBox.h"
+#include <ctl/ctlTree.h>
 #include "pgServer.h"
 #include "pgCollection.h"
 #include "pgDatabase.h"
@@ -54,7 +54,7 @@ public:
     void ShowObjStatistics(pgObject *data, int sel);
 
     wxImageList *GetImageList() { return imageList; }
-    wxTreeCtrl *GetBrowser() { return browser; }
+    ctlTree *GetBrowser() { return browser; }
     ctlSQLBox *GetSqlPane() { return sqlPane; }
     ctlListView *GetProperties() { return properties; }
     ctlListView *GetStatistics();
@@ -66,7 +66,7 @@ public:
     pgServerCollection *GetServerCollection() { return serversObj; }
 
 private:
-    wxTreeCtrl *browser;
+    ctlTree *browser;
     ctlListView *properties;
     ctlListView *statistics;
     ctlListView *referencedBy, *dependsOn;

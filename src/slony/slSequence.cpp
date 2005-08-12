@@ -35,7 +35,7 @@ slSequence::~slSequence()
 }
 
 
-bool slSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool slSequence::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
@@ -43,7 +43,7 @@ bool slSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString slSequence::GetSql(wxTreeCtrl *browser)
+wxString slSequence::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -58,13 +58,13 @@ wxString slSequence::GetSql(wxTreeCtrl *browser)
 }
 
 
-void slSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void slSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
         expandedKids=true;
 
-        RemoveDummyChild(browser);
+        browser->RemoveDummyChild(this);
     }
 
 
@@ -82,7 +82,7 @@ void slSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 
 
 
-pgObject *slSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *slSequence::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *sequence=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -97,7 +97,7 @@ pgObject *slSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *slSequence::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *slSequence::ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slSequence *sequence=0;
 
@@ -120,7 +120,7 @@ pgObject *slSequence::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, co
 
             if (browser)
             {
-                coll->AppendBrowserItem(browser, sequence);
+                browser->AppendObject(coll, sequence);
 				sequences->MoveNext();
             }
             else
@@ -134,7 +134,7 @@ pgObject *slSequence::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, co
 
 
     
-pgObject *slSequence::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser)
+pgObject *slSequence::ReadObjects(slSetCollection *coll, ctlTree *browser)
 {
     // Get the sequences
     wxString restriction = wxT(" WHERE seq_set = ") + NumToStr(coll->GetSet()->GetSlId());

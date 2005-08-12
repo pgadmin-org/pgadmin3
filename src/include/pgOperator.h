@@ -20,16 +20,17 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgDatabase.h"
+#include "pgSchema.h"
 
 
-class pgaOperatorFactory : public pgaFactory
+class pgOperatorFactory : public pgSchemaObjFactory
 {
 public:
-    pgaOperatorFactory();
+    pgOperatorFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaOperatorFactory operatorFactory;
+extern pgOperatorFactory operatorFactory;
 
 class pgOperator : public pgSchemaObject
 {
@@ -37,7 +38,7 @@ public:
     pgOperator(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgOperator();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     virtual wxString GetQuotedIdentifier() const { return GetName(); }
     bool CanDropCascaded() { return true; }
 
@@ -76,9 +77,9 @@ public:
     bool GetHashJoins() const { return hashJoins; }
     void iSetHashJoins(bool b) {  hashJoins=b; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString leftType, rightType, resultType,

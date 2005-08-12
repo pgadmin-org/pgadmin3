@@ -36,7 +36,7 @@ pgUser::~pgUser()
 
 
 
-bool pgUser::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgUser::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     if (GetUpdateCatalog())
     {
@@ -51,7 +51,7 @@ bool pgUser::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 }
 
 
-wxString pgUser::GetSql(wxTreeCtrl *browser)
+wxString pgUser::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -169,7 +169,7 @@ void pgUser::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wx
 }
 
 
-void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgUser::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -233,7 +233,7 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
 
 
-pgObject *pgUser::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgUser::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *user=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -248,7 +248,7 @@ pgObject *pgUser::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-pgObject *pgaUserFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgUserFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgUser *user=0;
 
@@ -282,7 +282,7 @@ pgObject *pgaUserFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, user);
+                browser->AppendObject(collection, user);
 				users->MoveNext();
             }
             else
@@ -298,11 +298,11 @@ pgObject *pgaUserFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *br
 #include "images/user.xpm"
 #include "images/users.xpm"
 
-pgaUserFactory::pgaUserFactory() 
-: pgaFactory(__("User"), __("New User"), __("Create a new User."), user_xpm)
+pgUserFactory::pgUserFactory() 
+: pgServerObjFactory(__("User"), _("New User"), _("Create a new User."), user_xpm)
 {
 }
 
 
-pgaUserFactory userFactory;
+pgUserFactory userFactory;
 static pgaCollectionFactory cf(&userFactory, __("Users"), users_xpm);

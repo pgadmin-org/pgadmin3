@@ -21,7 +21,7 @@
 
 
 
-bool pgIndexConstraint::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgIndexConstraint::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT(
         "ALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
@@ -61,7 +61,7 @@ wxString pgIndexConstraint::GetCreate()
 };
 
 
-wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
+wxString pgIndexConstraint::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -84,7 +84,7 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     ReadColumnDetails();
     if (properties)
@@ -112,13 +112,13 @@ void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlLi
 
 
 
-pgObject *pgPrimaryKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where)
+pgObject *pgPrimaryKey::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
 {
     return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='p'\n") + where);
 }
 
 
-pgObject *pgUnique::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &where)
+pgObject *pgUnique::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
 {
     return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='u'\n") + where);
 }

@@ -29,7 +29,7 @@ pgSequence::~pgSequence()
 {
 }
 
-bool pgSequence::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
+bool pgSequence::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -57,7 +57,7 @@ void pgSequence::UpdateValues()
 }
 
 
-wxString pgSequence::GetSql(wxTreeCtrl *browser)
+wxString pgSequence::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -81,7 +81,7 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     UpdateValues();
     if (properties)
@@ -127,7 +127,7 @@ void pgSequence::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-pgObject *pgSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+pgObject *pgSequence::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *sequence=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -144,7 +144,7 @@ pgObject *pgSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 ///////////////////////////////////////////////////////////////////////////////
 
 
-pgObject *pgaSequenceFactory::CreateObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgSequenceFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgSequence *sequence=0;
 
@@ -171,7 +171,7 @@ pgObject *pgaSequenceFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 
             if (browser)
             {
-                collection->AppendBrowserItem(browser, sequence);
+                browser->AppendObject(collection, sequence);
 	  			sequences->MoveNext();
             }
             else
@@ -186,12 +186,12 @@ pgObject *pgaSequenceFactory::CreateObjects(pgCollection *collection, wxTreeCtrl
 #include "images/sequence.xpm"
 #include "images/sequences.xpm"
 
-pgaSequenceFactory::pgaSequenceFactory() 
-: pgaFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_xpm)
+pgSequenceFactory::pgSequenceFactory() 
+: pgSchemaObjFactory(__("Sequence"), _("New Sequence"), _("Create a new Sequence."), sequence_xpm)
 {
     metaType = PGM_SEQUENCE;
 }
 
 
-pgaSequenceFactory sequenceFactory;
+pgSequenceFactory sequenceFactory;
 static pgaCollectionFactory cf(&sequenceFactory, __("Sequences"), sequences_xpm);

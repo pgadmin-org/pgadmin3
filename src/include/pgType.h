@@ -20,16 +20,17 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
-class pgaTypeFactory : public pgaFactory
+class pgTypeFactory : public pgSchemaObjFactory
 {
 public:
-    pgaTypeFactory();
+    pgTypeFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, wxTreeCtrl *browser, const wxString &restr=wxEmptyString);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgaTypeFactory typeFactory;
+extern pgTypeFactory typeFactory;
 
 class pgType : public pgSchemaObject
 {
@@ -37,7 +38,7 @@ public:
     pgType(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgType();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return true; }
 
     wxString GetInputFunction() const { return inputFunction; }
@@ -72,9 +73,9 @@ public:
     wxString GetQuotedTypesList() const {return quotedTypesList; }
     bool GetSystemObject() const { return pgSchemaObject::GetSystemObject() || isRecordType; }
 
-    bool DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded);
-    wxString GetSql(wxTreeCtrl *browser);
-    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetSql(ctlTree *browser);
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
     wxString inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,

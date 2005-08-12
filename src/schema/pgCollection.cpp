@@ -43,8 +43,8 @@
 
 #include "pgSchema.h"
 
-pgCollection::pgCollection(pgaFactory &factory)
-: pgObject(factory)
+pgCollection::pgCollection(pgaFactory *factory)
+: pgObject(*factory)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
 	job=0;
@@ -114,7 +114,7 @@ bool pgCollection::IsCollectionForType(int objType)
 }
 
 
-void pgCollection::ShowList(wxTreeCtrl *browser, ctlListView *properties)
+void pgCollection::ShowList(ctlTree *browser, ctlListView *properties)
 {
     if (GetFactory())
         ShowList(((pgaCollectionFactory*)GetFactory())->GetItemTypeName(), browser, properties);
@@ -123,7 +123,7 @@ void pgCollection::ShowList(wxTreeCtrl *browser, ctlListView *properties)
 }
 
 
-void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, ctlListView *properties)
+void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView *properties)
 {
     if (properties)
     {
@@ -153,7 +153,7 @@ void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, ctlListVi
 
 
 
-void pgCollection::UpdateChildCount(wxTreeCtrl *browser, int substract)
+void pgCollection::UpdateChildCount(ctlTree *browser, int substract)
 {
     wxString label;
     label.Printf(wxString(wxGetTranslation(GetName())) + wxT(" (%d)"), browser->GetChildrenCount(GetId(), false) -substract);
@@ -203,7 +203,7 @@ int pgCollection::GetIconId()
 }
 
 
-pgObject *pgCollection::FindChild(wxTreeCtrl *browser, int index)
+pgObject *pgCollection::FindChild(ctlTree *browser, int index)
 {
     wxCookieType cookie;
     pgObject *data;
@@ -227,7 +227,7 @@ pgObject *pgCollection::FindChild(wxTreeCtrl *browser, int index)
 
 
 
-void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), false) == 0)
     {
