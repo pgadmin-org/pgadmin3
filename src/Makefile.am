@@ -39,7 +39,7 @@ $(srcdir)/agent/pgaJob.cpp $(srcdir)/agent/pgaStep.cpp $(srcdir)/agent/pgaSchedu
 $(srcdir)/agent/dlgJob.cpp $(srcdir)/agent/dlgSchedule.cpp $(srcdir)/agent/dlgStep.cpp \
 \
 $(srcdir)/ctl/xh_sqlbox.cpp $(srcdir)/ctl/xh_calb.cpp $(srcdir)/ctl/xh_timespin.cpp $(srcdir)/ctl/xh_ctlcombo.cpp \
-$(srcdir)/ctl/ctlSecurityPanel.cpp $(srcdir)/ctl/ctlComboBox.cpp \
+$(srcdir)/ctl/ctlSecurityPanel.cpp $(srcdir)/ctl/ctlComboBox.cpp $(srcdir)/ctl/ctlTree.cpp \
 $(srcdir)/ctl/calbox.cpp $(srcdir)/ctl/timespin.cpp $(srcdir)/ctl/ctlListView.cpp \
 $(srcdir)/ctl/ctlSQLBox.cpp $(srcdir)/ctl/ctlSQLResult.cpp \
 $(srcdir)/ctl/explainCanvas.cpp $(srcdir)/ctl/explainShape.cpp \
@@ -87,7 +87,7 @@ $(srcdir)/include/ctl/ctlSQLBox.h $(srcdir)/include/ctl/ctlSQLResult.h \
 $(srcdir)/include/ctl/ctlListView.h $(srcdir)/include/ctl/calbox.h \
 $(srcdir)/include/ctl/timespin.h $(srcdir)/include/ctl/ctlComboBox.h \
 $(srcdir)/include/ctl/xh_timespin.h $(srcdir)/include/ctl/xh_calb.h $(srcdir)/include/ctl/xh_sqlbox.h \
-$(srcdir)/include/ctl/xh_ctlcombo.h \
+$(srcdir)/include/ctl/xh_ctlcombo.h $(srcdir)/include/ctl/ctlTree.h \
 $(srcdir)/include/parser/parse.h $(srcdir)/include/parser/keywords.h $(srcdir)/include/nodes/parsenodes.h \
 $(srcdir)/include/postgres.h $(srcdir)/include/pgDefs.h $(srcdir)/include/pgDatatype.h \
 $(srcdir)/include/ctlSecurityPanel.h $(srcdir)/include/dlgClasses.h $(srcdir)/include/frmGrantWizard.h \
