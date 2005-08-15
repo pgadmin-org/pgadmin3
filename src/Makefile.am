@@ -80,7 +80,7 @@ $(srcdir)/ui/xrcDialogs.cpp
 noinst_HEADERS = \
 $(srcdir)/include/base/base.h $(srcdir)/include/base/appbase.h $(srcdir)/include/base/sysLogger.h \
 $(srcdir)/include/base/pgDefs.h $(srcdir)/include/base/pgConnBase.h $(srcdir)/include/base/pgSetBase.h \
-$(srcdir)/include/base/factory.h \
+$(srcdir)/include/base/factory.h $(srcdir)/include/precomp.h \
 $(srcdir)/include/copyright.h $(srcdir)/include/version.h\
 \
 $(srcdir)/include/ctl/ctlSQLBox.h $(srcdir)/include/ctl/ctlSQLResult.h \
