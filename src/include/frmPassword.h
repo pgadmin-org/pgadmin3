@@ -12,13 +12,10 @@
 #ifndef FRMPASSWORD_H
 #define FRMPASSWORD_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "dlgClasses.h"
+#include "base/factory.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgServer.h"
-
+class pgServer;
 // Class declarations
 class frmPassword : public pgDialog
 {
@@ -38,8 +35,8 @@ private:
 class passwordFactory : public actionFactory
 {
 public:
-    passwordFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    passwordFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

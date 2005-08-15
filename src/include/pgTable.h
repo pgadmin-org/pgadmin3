@@ -9,20 +9,12 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGTable_H
-#define PGTable_H
+#ifndef PGTABLE_H
+#define PGTABLE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
 #include "pgSchema.h"
 
-class pgCollection;
+
 class pgTableFactory : public pgSchemaObjFactory
 {
 public:
@@ -96,11 +88,44 @@ private:
 };
 
 
+class pgTableObject : public pgSchemaObject
+{
+public:
+    pgTableObject(pgTable *newTable, pgaFactory &factory, const wxString& newName = wxT(""))
+        : pgSchemaObject(newTable->GetSchema(), factory, newName) { table = newTable; }
+    pgTable *GetTable() { return table; }
+    OID GetTableOid() const {return table->GetOid(); }
+    wxString GetTableOidStr() const {return NumToStr(table->GetOid()) + wxT("::oid"); }
+
+protected:
+    pgTable *table;
+};
+
+
 class pgTableCollection : public pgSchemaObjCollection
 {
 public:
     pgTableCollection(pgaFactory *factory, pgSchema *sch);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
+
+class pgTableObjCollection : public pgSchemaObjCollection
+{
+public:
+    pgTableObjCollection(pgaFactory *factory, pgTable *_table)
+    : pgSchemaObjCollection(factory, _table->GetSchema()) { iSetOid(_table->GetOid()); table=_table; }
+    pgTable *GetTable() { return table; }
+
+protected:
+    pgTable *table;
+};
+
+class pgTableObjFactory : public pgSchemaObjFactory
+{
+public:
+    pgTableObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgSchemaObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
+
 
 #endif

@@ -9,16 +9,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGCast_H
-#define PGCast_H
+#ifndef PGCAST_H
+#define PGCAST_H
 
-// wxWindows headers
-#include <wx/wx.h>
 
 // App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
 #include "pgDatabase.h"
 
 class pgCollection;

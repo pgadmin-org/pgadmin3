@@ -17,14 +17,13 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "slSequence.h"
-#include "slObject.h"
 #include "slSet.h"
 #include "slCluster.h"
 #include "frmMain.h"
 
 
 slSequence::slSequence(slSet *s, const wxString& newName)
-: slSetObject(s, SL_SEQUENCE, newName)
+: slSetObject(s, slSequenceFactory, newName)
 {
     wxLogInfo(wxT("Creating a slSequence object"));
 }
@@ -88,23 +87,29 @@ pgObject *slSequence::Refresh(ctlTree *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        slSetCollection *coll=(slSetCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == SL_SEQUENCES)
-            sequence = ReadObjects(coll, 0, wxT(" WHERE seq_id=") + NumToStr(GetSlId()) + wxT("\n"));
+        slSetObjCollection *coll=(slSetObjCollection*)browser->GetItemData(parentItem);
+        if (coll->IsCollection())
+            sequence = slSequenceFactory.CreateObjects(coll, 0, wxT(" WHERE seq_id=") + NumToStr(GetSlId()) + wxT("\n"));
     }
     return sequence;
 }
 
 
 
-pgObject *slSequence::ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction)
+pgObject *slSlSequenceFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restr)
 {
+    slSetObjCollection *collection=(slSetObjCollection*)coll;
     slSequence *sequence=0;
+    wxString restriction;
+    if (restr.IsEmpty())
+        restriction = wxT(" WHERE seq_set = ") + NumToStr(collection->GetSlId());
+    else
+        restriction = restr;
 
-    pgSet *sequences = coll->GetDatabase()->ExecuteSet(
+    pgSet *sequences = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT seq_id, seq_set, nspname, relname, seq_comment\n")
-        wxT("  FROM ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_sequence\n")
-        wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_set ON set_id=seq_set\n")
+        wxT("  FROM ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_sequence\n")
+        wxT("  JOIN ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_set ON set_id=seq_set\n")
         wxT("  JOIN pg_class cl ON cl.oid=seq_reloid\n")
         wxT("  JOIN pg_namespace nsp ON nsp.oid=relnamespace\n")
          + restriction +
@@ -114,13 +119,13 @@ pgObject *slSequence::ReadObjects(slSetCollection *coll, ctlTree *browser, const
     {
         while (!sequences->Eof())
         {
-            sequence = new slSequence(coll->GetSet(), sequences->GetVal(wxT("nspname")) + wxT(".") + sequences->GetVal(wxT("relname")));
+            sequence = new slSequence(collection->GetSet(), sequences->GetVal(wxT("nspname")) + wxT(".") + sequences->GetVal(wxT("relname")));
             sequence->iSetSlId(sequences->GetLong(wxT("seq_id")));
             sequence->iSetComment(sequences->GetVal(wxT("seq_comment")));
 
             if (browser)
             {
-                browser->AppendObject(coll, sequence);
+                browser->AppendObject(collection, sequence);
 				sequences->MoveNext();
             }
             else
@@ -133,11 +138,18 @@ pgObject *slSequence::ReadObjects(slSetCollection *coll, ctlTree *browser, const
 }
 
 
-    
-pgObject *slSequence::ReadObjects(slSetCollection *coll, ctlTree *browser)
+
+///////////////////////////////////////////////////
+
+#include "images/sequence.xpm"
+#include "images/sequences.xpm"
+
+slSlSequenceFactory::slSlSequenceFactory() 
+: slSetObjFactory(__("Sequence"), _("New Sequence"), _("Create a new Sequence."), sequence_xpm)
 {
-    // Get the sequences
-    wxString restriction = wxT(" WHERE seq_set = ") + NumToStr(coll->GetSet()->GetSlId());
-    return ReadObjects(coll, browser, restriction);
+    metaType = SLM_SEQUENCE;
 }
 
+
+slSlSequenceFactory slSequenceFactory;
+static pgaCollectionFactory cf(&slSequenceFactory, __("Sequences"), sequences_xpm);

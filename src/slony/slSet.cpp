@@ -17,13 +17,15 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "slSet.h"
-#include "slObject.h"
 #include "slCluster.h"
+#include "slSequence.h"
+#include "slTable.h"
+#include "slSubscription.h"
 #include "frmMain.h"
 
 
 slSet::slSet(slCluster *cl, const wxString& newName)
-: slObject(cl, SL_SET, newName)
+: slObject(cl, setFactory, newName)
 {
     wxLogInfo(wxT("Creating a slSet object"));
 }
@@ -37,9 +39,9 @@ slSet::~slSet()
 int slSet::GetIconId()
 {
     if (GetOriginId() == GetCluster()->GetLocalNodeID())
-        return SLICON_SET;
+        return setFactory.GetExportedIconId();
     else
-        return SLICON_SET2;
+        return setFactory.GetIconId();
 }
 
 
@@ -49,12 +51,12 @@ wxMenu *slSet::GetNewMenu()
 
     if (GetOriginId() == GetCluster()->GetLocalNodeID())
     {
-        AppendMenu(menu, SL_SEQUENCE);
-        AppendMenu(menu, SL_TABLE);
+        slSequenceFactory.AppendMenu(menu);
+        slTableFactory.AppendMenu(menu);
     }
     else
     {
-        AppendMenu(menu, SL_SUBSCRIPTION);
+        subscriptionFactory.AppendMenu(menu);
     }
 
     return menu;
@@ -153,19 +155,12 @@ void slSet::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *propert
         // Log
         wxLogInfo(wxT("Adding child object to set ") + GetIdentifier());
 
-        slCollection *collection;
-
         if (GetOriginId() == GetCluster()->GetLocalNodeID())
         {
-            collection = new slSetCollection(SL_SEQUENCES, this);
-            AppendBrowserItem(browser, collection);
-
-            collection = new slSetCollection(SL_TABLES, this);
-            AppendBrowserItem(browser, collection);
+            browser->AppendCollection(this, slSequenceFactory);
+            browser->AppendCollection(this, slTableFactory);
         }
-
-        collection = new slSetCollection(SL_SUBSCRIPTIONS, this);
-        AppendBrowserItem(browser, collection);
+        browser->AppendCollection(this, subscriptionFactory);
     }
 
 
@@ -192,21 +187,22 @@ pgObject *slSet::Refresh(ctlTree *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        slCollection *coll=(slCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == SL_SETS)
-            set = ReadObjects(coll, 0, wxT(" WHERE set_id=") + NumToStr(GetSlId()) + wxT("\n"));
+        slObjCollection *coll=(slObjCollection*)browser->GetItemData(parentItem);
+        if (coll->IsCollection())
+            set = setFactory.CreateObjects(coll, 0, wxT(" WHERE set_id=") + NumToStr(GetSlId()) + wxT("\n"));
     }
     return set;
 }
 
 
 
-pgObject *slSet::ReadObjects(slCollection *coll, ctlTree *browser, const wxString &restriction)
+pgObject *slSetFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     slSet *set=0;
-    wxString prefix=coll->GetCluster()->GetSchemaPrefix();
+    slObjCollection *collection=(slObjCollection*)coll;
+    wxString prefix=collection->GetCluster()->GetSchemaPrefix();
 
-    pgSet *sets = coll->GetDatabase()->ExecuteSet(
+    pgSet *sets = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT set_id, set_origin, no_comment, set_comment,\n")
         wxT("       (SELECT COUNT(1) FROM ") + prefix+ wxT("sl_subscribe where sub_set=set_id) AS subcount\n")
         wxT("  FROM ") + prefix + wxT("sl_set\n")
@@ -218,7 +214,7 @@ pgObject *slSet::ReadObjects(slCollection *coll, ctlTree *browser, const wxStrin
     {
         while (!sets->Eof())
         {
-            set = new slSet(coll->GetCluster(), sets->GetVal(wxT("set_comment")).BeforeFirst('\n'));
+            set = new slSet(collection->GetCluster(), sets->GetVal(wxT("set_comment")).BeforeFirst('\n'));
             set->iSetSlId(sets->GetLong(wxT("set_id")));
             set->iSetOriginId(sets->GetLong(wxT("set_origin")));
             set->iSetOriginNode(sets->GetVal(wxT("no_comment")));
@@ -239,14 +235,72 @@ pgObject *slSet::ReadObjects(slCollection *coll, ctlTree *browser, const wxStrin
     return set;
 }
 
-
     
-pgObject *slSet::ReadObjects(slCollection *coll, ctlTree *browser)
+//////////////////////////////////////////////////
+
+#include "images/slset.xpm"
+#include "images/slset2.xpm"
+#include "images/slsets.xpm"
+
+slSetFactory::slSetFactory() 
+: slObjFactory(__("Set"), _("New Replication Set"), _("Create a new Replication Set."), slset_xpm)
 {
-    // Get the sets
-    return ReadObjects(coll, browser, wxEmptyString);
+    exportedIconId = addImage(slset2_xpm);
+    metaType = SLM_SET;
 }
 
 
+slSetObject::slSetObject(slSet *s, pgaFactory &factory, const wxString &newName)
+: slObject(s->GetCluster(), factory, newName)
+{
+    set=s;
+}
 
+bool slSetObject::CanDrop()
+{
+    return !set->GetSubscriptionCount() && set->GetOriginId() == GetCluster()->GetLocalNodeID();
+}
+
+
+bool slSetObject::CanCreate()
+{
+    return !set->GetSubscriptionCount() && set->GetOriginId() == GetCluster()->GetLocalNodeID();
+}
+
+
+slSetObjCollection::slSetObjCollection(pgaFactory *factory, slSet *_set)
+: slObjCollection(factory, _set->GetCluster())
+{
+    set = _set;
+    subscription = 0;
+    iSetSlId(set->GetSlId());
+}
+
+
+bool slSetObjCollection::CanCreate()
+{
+    if (set->GetSubscriptionCount())
+        return false;
+
+    switch (GetMetaType())
+    {
+        case SLM_SUBSCRIPTION:
+            return set->GetOriginId() != GetCluster()->GetLocalNodeID();
+
+        case SLM_TABLE:
+        case SLM_SEQUENCE:
+            return set->GetOriginId() == GetCluster()->GetLocalNodeID();
+        default:
+            return false;
+    }
+}
+
+
+pgCollection *slSetObjFactory::CreateCollection(pgObject *obj)
+{
+    return new slSetObjCollection(GetCollectionFactory(), (slSet*)obj);
+}
+
+slSetFactory setFactory;
+static pgaCollectionFactory cf(&setFactory, __("Replication Sets"), slsets_xpm);
 

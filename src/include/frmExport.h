@@ -12,14 +12,11 @@
 #ifndef FRMEXPORT_H
 #define FRMEXPORT_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
 
 class ctlSQLResult;
 class pgSet;
+
+#include "dlgClasses.h"
 
 // Class declarations
 class frmExport : public pgDialog

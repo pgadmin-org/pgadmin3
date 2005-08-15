@@ -17,9 +17,6 @@
 #include <wx/stc/stc.h>
 #include <wx/fdrepdlg.h>
 
-// App headers
-#include "pgAdmin3.h"
-
 
 // Class declarations
 class ctlSQLBox : public wxStyledTextCtrl

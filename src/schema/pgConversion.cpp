@@ -15,9 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgConversion.h"
-#include "pgSchema.h"
 
 
 pgConversion::pgConversion(pgSchema *newSchema, const wxString& newName)

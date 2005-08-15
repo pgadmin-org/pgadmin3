@@ -14,6 +14,8 @@
 
 #include "pgconfig.h"
 #include "frmConfig.h"
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 class ctlListView;
 class pgServer;
@@ -61,8 +63,8 @@ private:
 class mainConfigFactory : public actionFactory
 {
 public:
-    mainConfigFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    mainConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 
@@ -70,8 +72,8 @@ public:
 class mainConfigFileFactory : public actionFactory
 {
 public:
-    mainConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    mainConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 #endif

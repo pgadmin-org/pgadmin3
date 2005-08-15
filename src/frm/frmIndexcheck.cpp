@@ -16,6 +16,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "frmMain.h"
 #include "frmIndexcheck.h"
 #include "sysLogger.h"
 #include "pgTable.h"
@@ -144,21 +145,14 @@ void frmIndexcheck::Go()
 {
     chkList->SetFocus();
 
-    switch (object->GetType())
-    {
-        case PG_FOREIGNKEY:
-            AddObjects(wxT("ct.oid = ") + object->GetOidStr());
-            break;
-        case PG_CONSTRAINTS:
-            AddObjects(wxT("cl.oid = ") + object->GetOidStr());
-            break;
-        default:
-        {
-            break;
-        }
-    }
     switch (object->GetMetaType())
     {
+        case PGM_FOREIGNKEY:
+            AddObjects(wxT("ct.oid = ") + object->GetOidStr());
+            break;
+        case PGM_CONSTRAINT:
+            AddObjects(wxT("cl.oid = ") + object->GetOidStr());
+            break;
         case PGM_SCHEMA:
             AddObjects(wxT("nl.oid = ") + object->GetOidStr());
             break;
@@ -178,15 +172,15 @@ void frmIndexcheck::Go()
 
 
 
-indexCheckFactory::indexCheckFactory(wxMenu *mnu, wxToolBar *toolbar)
+indexCheckFactory::indexCheckFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&FK Index check"), _("Checks existence of foreign key indexes"));
 }
 
 
-wxWindow *indexCheckFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *indexCheckFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmIndexcheck *frm=new frmIndexcheck((frmMain*)form, obj);
+    frmIndexcheck *frm=new frmIndexcheck(form, obj);
     frm->Go();
     return frm;
 }
@@ -196,17 +190,15 @@ bool indexCheckFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
-        switch (obj->GetType())
-        {
-            case PG_FOREIGNKEY:
-            case PG_CONSTRAINTS:
-                return true;
-        }
         switch (obj->GetMetaType())
         {
+        case PGM_CONSTRAINT:
+            case PGM_FOREIGNKEY:
             case PGM_SCHEMA:
             case PGM_TABLE:
                 return true;
+            default:
+                break;
         }
     }
     return false;

@@ -19,9 +19,9 @@
 
 // App headers
 #include "frmStatus.h"
+#include "frmMain.h"
 #include "pgfeatures.h"
-// Icons
-#include "images/pgAdmin3.xpm"
+#include "pgServer.h"
 
 
 #define TIMER_ID 333
@@ -86,7 +86,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 
     RestorePosition(-1, -1, 400, 240, 200, 150);
     SetTitle(_title);
-    SetIcon(wxIcon(pgAdmin3_xpm));
+    appearanceFactory->SetIcons(this);
 
     mainForm=form;
     timer=0;
@@ -987,13 +987,13 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 }
 
 
-serverStatusFactory::serverStatusFactory(wxMenu *mnu, wxToolBar *toolbar)
+serverStatusFactory::serverStatusFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Server Status"), _("Displays the current database status."));
 }
 
 
-wxWindow *serverStatusFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 
     pgServer *server=obj->GetServer();
@@ -1004,7 +1004,7 @@ wxWindow *serverStatusFactory::StartDialog(pgFrame *form, pgObject *obj)
         wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
             + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
 
-        frmStatus *status = new frmStatus((frmMain*)form, txt, conn);
+        frmStatus *status = new frmStatus(form, txt, conn);
         status->Go();
         return status;
     }

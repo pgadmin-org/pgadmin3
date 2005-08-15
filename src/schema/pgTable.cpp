@@ -9,24 +9,24 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows headers
-#include <wx/wx.h>
 
-// App headers
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "frmHint.h"
+#include "frmMain.h"
 #include "frmMaintenance.h"
-#include "pgObject.h"
 #include "pgTable.h"
-#include "pgCollection.h"
-#include "pgConstraints.h"
 #include "pgColumn.h"
 #include "pgIndexConstraint.h"
 #include "pgForeignKey.h"
 #include "pgCheck.h"
 #include "sysSettings.h"
 #include "pgfeatures.h"
+#include "pgRule.h"
+#include "pgTrigger.h"
+#include "pgConstraints.h"
+
+// App headers
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, tableFactory, newName)
@@ -45,15 +45,15 @@ wxMenu *pgTable::GetNewMenu()
     wxMenu *menu=pgObject::GetNewMenu();
     if (schema->GetCreatePrivilege())
     {
-        AppendMenu(menu, PG_COLUMN);
+        columnFactory.AppendMenu(menu);
         if (GetPrimaryKey().IsEmpty())      // Will not notice if pk has been added after last refresh
-            AppendMenu(menu, PG_PRIMARYKEY);
-        AppendMenu(menu, PG_FOREIGNKEY);
-        AppendMenu(menu, PG_UNIQUE);
-        AppendMenu(menu, PG_CHECK);
-        AppendMenu(menu, PG_INDEX);
-        AppendMenu(menu, PG_RULE);
-        AppendMenu(menu, PG_TRIGGER);
+            primaryKeyFactory.AppendMenu(menu);
+        foreignKeyFactory.AppendMenu(menu);
+        uniqueFactory.AppendMenu(menu);
+        checkFactory.AppendMenu(menu);
+        indexFactory.AppendMenu(menu);
+        ruleFactory.AppendMenu(menu);
+        triggerFactory.AppendMenu(menu);
     }
     return menu;
 }
@@ -77,7 +77,7 @@ bool pgTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
-wxString pgTable::GetAllConstraints(ctlTree *browser, wxTreeItemId collectionId, int type)
+wxString pgTable::GetAllConstraints(ctlTree *browser, wxTreeItemId collectionId, int metaType)
 {
     wxString sql;
     wxCookieType cookie;
@@ -87,23 +87,23 @@ wxString pgTable::GetAllConstraints(ctlTree *browser, wxTreeItemId collectionId,
     while (item)
     {
         data=(pgObject*)browser->GetItemData(item);
-        if (type < 0 || type == data->GetType())
+        if (metaType < 0 || metaType == data->GetMetaType())
         {
             sql += wxT(",\n  CONSTRAINT ") + data->GetQuotedIdentifier() 
                 + wxT(" ") + data->GetTypeName().Upper() 
                 + wxT(" ") ;
             data->ShowTreeDetail(browser);
             
-            switch (data->GetType())
+            switch (metaType)
             {
-                case PG_PRIMARYKEY:
-                case PG_UNIQUE:
+                case PGM_PRIMARYKEY:
+                case PGM_UNIQUE:
                     sql += ((pgIndexConstraint*)data)->GetDefinition();
                     break;
-                case PG_FOREIGNKEY:
+                case PGM_FOREIGNKEY:
                     sql += ((pgForeignKey*)data)->GetDefinition();
                     break;
-                case PG_CHECK:
+                case PGM_CHECK:
 				  sql += wxT("(") + ((pgCheck*)data)->GetDefinition() + wxT(")");
                     break;
             }
@@ -134,9 +134,10 @@ wxString pgTable::GetSql(ctlTree *browser)
         while (item)
         {
             data=(pgObject*)browser->GetItemData(item);
-            if (data->GetType() == PG_COLUMNS)
+            pgaFactory *factory=data->GetFactory();
+            if (data->GetMetaType() == PGM_COLUMN)
                 columnsItem = item;
-            else if (data->GetType() == PG_CONSTRAINTS)
+            else if (data->GetMetaType() == PGM_CONSTRAINT)
                 constraintsItem = item;
 
             if (columnsItem && constraintsItem)
@@ -157,7 +158,7 @@ wxString pgTable::GetSql(ctlTree *browser)
             while (item)
             {
                 data=(pgObject*)browser->GetItemData(item);
-                if (data->GetType() == PG_COLUMN)
+                if (data->GetMetaType() == PGM_COLUMN)
                 {
                     pgColumn *column=(pgColumn*)data;
                     // make sure column details are read
@@ -191,10 +192,10 @@ wxString pgTable::GetSql(ctlTree *browser)
             // make sure all kids are read
             coll->ShowTreeDetail(browser);
 
-            sql += GetAllConstraints(browser, constraintsItem, PG_PRIMARYKEY);
-            sql += GetAllConstraints(browser, constraintsItem, PG_FOREIGNKEY);
-            sql += GetAllConstraints(browser, constraintsItem, PG_UNIQUE);
-            sql += GetAllConstraints(browser, constraintsItem, PG_CHECK);
+            sql += GetAllConstraints(browser, constraintsItem, PGM_PRIMARYKEY);
+            sql += GetAllConstraints(browser, constraintsItem, PGM_FOREIGNKEY);
+            sql += GetAllConstraints(browser, constraintsItem, PGM_UNIQUE);
+            sql += GetAllConstraints(browser, constraintsItem, PGM_CHECK);
         }
         sql += wxT("\n) ");
         if (GetInheritedTableCount())
@@ -238,14 +239,14 @@ wxString pgTable::GetCoveringIndex(ctlTree *browser, const wxString &collist)
     while (collItem)
     {
         pgObject *data=(pgObject*)browser->GetItemData(collItem);
-        if (data && (data->GetType() == PG_CONSTRAINTS || data->GetType() == PG_INDEXES))
+        if (data && data->IsCollection() && (data->GetMetaType() == PGM_CONSTRAINT || data->GetMetaType() == PGM_INDEX))
         {
             wxCookieType cookie2;
             wxTreeItemId item=browser->GetFirstChild(collItem, cookie2);
             while (item)
             {
                 pgIndex *index=(pgIndex*)browser->GetItemData(item);
-                if (index && (index->GetType() == PG_INDEX || index->GetType() == PG_PRIMARYKEY || index->GetType() == PG_UNIQUE))
+                if (index && (index->GetMetaType() == PGM_INDEX || index->GetMetaType() == PGM_PRIMARYKEY || index->GetMetaType() == PGM_UNIQUE))
                 {
                     index->ShowTreeDetail(browser);
                     if (collist == index->GetColumns() || 
@@ -321,32 +322,12 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         // Log
         wxLogInfo(wxT("Adding child object to table ") + GetIdentifier());
 
-        pgCollection *collection;
 
-        // Columns
-        collection = new pgCollection(PG_COLUMNS, GetSchema());
-        collection->iSetOid(GetOid());
-        AppendBrowserItem(browser, collection);
-
-        // Constraints
-        collection = new pgConstraints(GetSchema());
-        collection->iSetOid(GetOid());
-        AppendBrowserItem(browser, collection);
-
-        // Indexes
-        collection = new pgCollection(PG_INDEXES, GetSchema());
-        collection->iSetOid(GetOid());
-        AppendBrowserItem(browser, collection);
-
-        // Rules
-        collection = new pgCollection(PG_RULES, GetSchema());
-        collection->iSetOid(GetOid());
-        AppendBrowserItem(browser, collection);
-
-        // Triggers
-        collection = new pgCollection(PG_TRIGGERS, GetSchema());
-        collection->iSetOid(GetOid());
-        AppendBrowserItem(browser, collection);
+        browser->AppendCollection(this, columnFactory);
+        browser->AppendCollection(this, constraintFactory);
+        browser->AppendCollection(this, indexFactory);
+        browser->AppendCollection(this, ruleFactory);
+        browser->AppendCollection(this, triggerFactory);
 
         // convert list of columns numbers to column names
         wxStringTokenizer collist(GetPrimaryKeyColNumbers(), wxT(","));
@@ -662,3 +643,9 @@ pgCollection *pgTableFactory::CreateCollection(pgObject *obj)
 
 pgTableFactory tableFactory;
 static pgaCollectionFactory cf(&tableFactory, __("Tables"), tables_xpm);
+
+
+pgCollection *pgTableObjFactory::CreateCollection(pgObject *obj)
+{
+    return new pgTableObjCollection(GetCollectionFactory(), (pgTable*)obj);
+}

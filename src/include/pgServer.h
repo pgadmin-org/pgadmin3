@@ -12,14 +12,8 @@
 #ifndef PGSERVER_H
 #define PGSERVER_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
 #include "pgConn.h"
 #include "pgCollection.h"
-// Class declarations
 
 
 class frmMain;
@@ -38,6 +32,7 @@ protected:
     int closedId;
 };
 extern pgServerFactory serverFactory;
+
 
 class pgServer : public pgObject
 {
@@ -139,6 +134,8 @@ private:
 #endif
 };
 
+
+// collection of pgServer
 class pgServerCollection : public pgCollection
 {
 public:
@@ -147,12 +144,7 @@ public:
 };
 
 
-class pgServerObjCollection : public pgCollection
-{
-public:
-    pgServerObjCollection(pgaFactory *factory, pgServer *server);
-    bool CanCreate();
-};
+///////////////////////////////////////////////
 
 
 class pgServerObjFactory : public pgaFactory
@@ -161,5 +153,36 @@ public:
     pgServerObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgaFactory(tn, ns, nls, img) {}
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
+
+
+// Object that lives under a server
+class pgServerObject : public pgObject
+{
+public:
+    pgServerObject(pgaFactory &factory, const wxString& newName=wxEmptyString) : pgObject(factory, newName) {}
+    pgServerObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
+
+    void iSetServer(pgServer *s) { server=s; }
+    pgServer *GetServer() const { return server; }
+
+    void FillOwned(ctlTree *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query);
+
+    bool CanCreate();
+    bool CanDrop();
+    bool CanEdit() { return true; }
+
+protected:
+    pgServer *server;
+};
+
+
+// collection of pgServerObject
+class pgServerObjCollection : public pgCollection
+{
+public:
+    pgServerObjCollection(pgaFactory *factory, pgServer *server);
+    bool CanCreate();
+};
+
 
 #endif

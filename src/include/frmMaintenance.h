@@ -12,12 +12,8 @@
 #ifndef FRMMAINTENANCE_H
 #define FRMMAINTENANCE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "frmMain.h"
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 // Class declarations
 class frmMaintenance : public ExecutionDialog
@@ -40,8 +36,8 @@ private:
 class maintenanceFactory : public contextActionFactory
 {
 public:
-    maintenanceFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    maintenanceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

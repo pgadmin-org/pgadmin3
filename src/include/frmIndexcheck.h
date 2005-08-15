@@ -9,15 +9,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef FRMINDEXCHECK_H
-#define FRMINDEXCHECK_H
+#ifndef __FRMINDEXCHECK_H
+#define __FRMINDEXCHECK_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "frmMain.h"
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 
 // Class declarations
@@ -48,8 +44,8 @@ private:
 class indexCheckFactory : public contextActionFactory
 {
 public:
-    indexCheckFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    indexCheckFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

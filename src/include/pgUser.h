@@ -12,13 +12,6 @@
 #ifndef PGUSER_H
 #define PGUSER_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgConn.h"
-#include "pgObject.h"
 #include "pgServer.h"
 
 class pgUserFactory : public pgServerObjFactory

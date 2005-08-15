@@ -2013,29 +2013,29 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
 }
 
 
-editGridFactory::editGridFactory(wxMenu *mnu, wxToolBar *toolbar)
+editGridFactory::editGridFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
 {
     mnu->Append(id, _("View &Data"), _("View the data in the selected object."));
     toolbar->AddTool(id, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
 }
 
 
-wxWindow *editGridFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    return ViewData((frmMain*)form, obj, false);
+    return ViewData(form, obj, false);
 }
 
 
 #include "images/viewfiltereddata.xpm"
-editGridFilteredFactory::editGridFilteredFactory(wxMenu *mnu, wxToolBar *toolbar)
+editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
 {
     mnu->Append(id, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
     toolbar->AddTool(id, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
 }
 
 
-wxWindow *editGridFilteredFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    return ViewData((frmMain*)form, obj, true);
+    return ViewData(form, obj, true);
 }
 

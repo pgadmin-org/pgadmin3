@@ -18,10 +18,16 @@
 #include <wx/xrc/xmlres.h>
 
 #include "misc.h"
+#include <ctl/ctlTree.h>
+#include "ctl/ctlSQLBox.h"
 #include "ctl/ctlListView.h"
 #include "ctl/ctlComboBox.h"
 #include "dlgClasses.h"
+#include "pgConn.h"
+#include "pgSet.h"
 #include "base/factory.h"
+
+#include "precomp.h"
 
 // App headers
 #include "sysSettings.h"
@@ -31,6 +37,7 @@
 #include "config.h"
 #undef VERSION
 #endif
+
 
 const float SERVER_MIN_VERSION = 7.3f;
 
@@ -47,6 +54,21 @@ const float SERVER_MIN_VERSION = 7.3f;
 #define SPLASH_X0       6
 #define SPLASH_Y0       114
 #define SPLASH_OFFS     15
+
+
+class pgAppearanceFactory
+{
+public:
+    pgAppearanceFactory();
+
+    void SetIcons(wxDialog *dlg);
+    void SetIcons(wxTopLevelWindow *dlg);
+    char **GetSmallIconImage();
+    char **GetBigIconImage();
+    char **GetSplashImage();
+};
+
+extern pgAppearanceFactory *appearanceFactory;
 
 
 #endif // PGADMIN3_H

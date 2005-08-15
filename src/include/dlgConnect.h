@@ -9,17 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef dlgConnect_H
-#define dlgConnect_H
+#ifndef DLGCONNECT_H
+#define DLGCONNECT_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgConn.h"
-#include "pgServer.h"
-
+#include "dlgClasses.h"
 
 // Class declarations
 class dlgConnect : public DialogWithHelp

@@ -12,15 +12,18 @@
 #ifndef SLPATH_H
 #define SLPATH_H
 
-// wxWindows headers
-#include <wx/wx.h>
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-#include "slObject.h"
+#include "slNode.h"
+
+
+class slPathFactory : public slNodeObjFactory
+{
+public:
+    slPathFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern slPathFactory pathFactory;
 
 
 class slPath : public slNodeObject
@@ -29,9 +32,7 @@ public:
     slPath(slNode *n, const wxString& newName = wxT(""));
     ~slPath();
 
-    int GetIconId() { return SLICON_PATH; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser, const wxString &restriction);
     static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser);
 
     void iSetConnInfo(const wxString &s) { connInfo = s;}

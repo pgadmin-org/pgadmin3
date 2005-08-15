@@ -17,16 +17,16 @@
 #include <wx/image.h>
 #include <wx/file.h>
 #include "wx/wxhtml.h"
+#include <wx/tipdlg.h>
 
 // App headers
 #include "copyright.h"
 #include "frmHint.h"
 #include "frmMain.h"
-#include "menu.h"
+#include "pgObject.h"
 #include "utffile.h"
 
 // Icons
-#include "images/pgAdmin3.xpm"
 #include "images/hint.xpm"
 #include "images/hint2.xpm"
 
@@ -118,7 +118,7 @@ frmHint::frmHint(wxWindow *fr, bool _force) : DialogWithHelp(0)
     if (force)
         btnCancel->Disable();
 
-    SetIcon(wxIcon(pgAdmin3_xpm));
+    appearanceFactory->SetIcons(this);
 }
 
 
@@ -374,7 +374,7 @@ void frmHint::OnFix(wxCommandEvent &ev)
 
 
 
-hintFactory::hintFactory(wxMenu *mnu, wxToolBar *toolbar, bool bigTool)
+hintFactory::hintFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool) : actionFactory(list)
 {
     mnu->Append(id, _("Hints"), _("Display helpful hints on current object."));
     if (toolbar)
@@ -385,9 +385,9 @@ hintFactory::hintFactory(wxMenu *mnu, wxToolBar *toolbar, bool bigTool)
 }
 
 
-wxWindow *hintFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *hintFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    obj->ShowHint((frmMain*)form, true);
+    obj->ShowHint(form, true);
     return 0;
 }
 
@@ -395,4 +395,37 @@ wxWindow *hintFactory::StartDialog(pgFrame *form, pgObject *obj)
 bool hintFactory::CheckEnable(pgObject *obj)
 {
     return obj && obj->GetCanHint();
+}
+
+
+tipOfDayFactory::tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    if (mnu)
+        mnu->Append(id, _("&Tip of the day"), _("Show a tip of the day."));
+}
+
+
+wxWindow *tipOfDayFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    extern wxString docPath;
+    extern wxLocale *locale;
+
+    wxString file;
+    
+    file = docPath + wxT("/") + locale->GetCanonicalName() + wxT("/tips.txt");
+
+    if (!wxFile::Exists(file))
+        file = docPath + wxT("/en_US/tips.txt");    
+
+    if (!wxFile::Exists(file)) {
+        wxLogError(_("Couldn't open a tips.txt file!"));
+        return 0;
+    }
+
+    wxTipProvider *tipProvider = wxCreateFileTipProvider(file, settings->GetNextTipOfTheDay());
+    settings->SetShowTipOfTheDay(wxShowTip(form, tipProvider));
+    settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
+
+    delete tipProvider;
+    return 0;
 }

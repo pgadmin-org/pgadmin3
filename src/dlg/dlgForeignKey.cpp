@@ -20,6 +20,7 @@
 #include "pgTable.h"
 #include "pgForeignKey.h"
 #include "dlgForeignKey.h"
+#include "pgColumn.h"
 
 
 #define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
@@ -59,6 +60,11 @@ BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgForeignKeyFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgForeignKey(frame, (pgForeignKey*)node, (pgTable*)parent);
+}
+
 
 dlgForeignKey::dlgForeignKey(frmMain *frame, pgForeignKey *node, pgTable *parentNode)
 : dlgCollistProperty(frame, wxT("dlgForeignKey"), parentNode)
@@ -71,7 +77,6 @@ dlgForeignKey::dlgForeignKey(frmMain *frame, ctlListView *colList)
 : dlgCollistProperty(frame, wxT("dlgForeignKey"), colList)
 {
     foreignKey=0;
-    objectType=PG_FOREIGNKEY;
 }
 
 
@@ -243,7 +248,7 @@ void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
     wxString ref=cbRefColumns->GetValue();
     if (!col.IsEmpty() && !ref.IsEmpty())
     {
-        lstColumns->AppendItem(PGICON_COLUMN, col, ref);
+        lstColumns->AppendItem(columnFactory.GetIconId(), col, ref);
         cbColumns->Delete(cbColumns->GetSelection());
         cbRefColumns->Delete(cbRefColumns->GetSelection());
         cbReferences->Disable();
@@ -286,7 +291,7 @@ pgObject *dlgForeignKey::CreateObject(pgCollection *collection)
     if (name.IsEmpty())
         return 0;
 
-    pgObject *obj=pgForeignKey::ReadObjects(collection, 0, wxT(
+    pgObject *obj=foreignKeyFactory.CreateObjects(collection, 0, wxT(
         "\n   AND conname=") + qtString(name) + wxT(
         "\n   AND cl.relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
@@ -354,7 +359,7 @@ int dlgForeignKey::Go(bool modal)
                 col.RemoveLast();       // there's a space
                 ref.RemoveLast();
             }
-            lstColumns->AppendItem(PGICON_COLUMN, col, ref);
+            lstColumns->AppendItem(columnFactory.GetIconId(), col, ref);
         }
     }
     else

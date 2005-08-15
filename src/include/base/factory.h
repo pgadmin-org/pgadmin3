@@ -85,13 +85,31 @@ protected:
 };
 
 
+class actionFactory;
+class menuFactory;
+class menuFactoryList : public wxArrayPtrVoid
+{
+public:
+    ~menuFactoryList();
+
+    void CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar);
+    void AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu);
+    actionFactory *GetFactory(int id, bool actionOnly=true);
+    void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
+
+private:
+    void Add(menuFactory *f) { wxArrayPtrVoid::Add(f); }
+    friend class menuFactory;
+};
+
+
 class menuFactory
 {
 public:
     virtual bool IsAction() { return false; }
 
 protected:
-    menuFactory() {}
+    menuFactory(menuFactoryList *list);
 };
 
 
@@ -99,34 +117,37 @@ class actionFactory : public menuFactory
 {
 public:
     virtual bool IsAction() { return true; }
-    virtual wxWindow *StartDialog(pgFrame *form, pgObject *obj)=0;
+    virtual wxWindow *StartDialog(frmMain *form, pgObject *obj)=0;
     virtual bool CheckEnable(pgObject *obj) { return true; }
-    int GetId() { return id; }
     bool GetContext() { return context; }
-
-
-    static void CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar);
-    static void AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu);
-    static actionFactory *GetFactory(int id, bool actionOnly=true);
-    static void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
+    int GetId() { return id; }
 
 protected:
-    actionFactory();
+    actionFactory(menuFactoryList *list);
 
     int id;
     bool context;
+
+    friend class menuFactoryList;
 };
 
 
 class contextActionFactory : public actionFactory
 {
 protected:
-    contextActionFactory() { context=true; }
+    contextActionFactory(menuFactoryList *list) : actionFactory(list) { context=true; }
+};
+
+class dummyActionFactory : public contextActionFactory
+{
+public:
+    dummyActionFactory(menuFactoryList *list) : contextActionFactory(list) {};
+    wxWindow *StartDialog(frmMain *form, pgObject *obj) { return 0; };
 };
 
 class separatorFactory : public menuFactory
 {
 public:
-    separatorFactory() {}
+    separatorFactory(menuFactoryList *list) : menuFactory(list) {}
 };
 #endif

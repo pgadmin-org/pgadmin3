@@ -15,16 +15,15 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "slSubscription.h"
-#include "slObject.h"
-#include "slCluster.h"
-#include "slSet.h"
+#include "slTable.h"
+#include "slSequence.h"
 #include "frmMain.h"
 
 
+
 slSubscription::slSubscription(slSet *s, const wxString& newName)
-: slSetObject(s, SL_SUBSCRIPTION, newName)
+: slSetObject(s, subscriptionFactory, newName)
 {
     wxLogInfo(wxT("Creating a slSubscription object"));
 }
@@ -39,9 +38,9 @@ slSubscription::~slSubscription()
 int slSubscription::GetIconId()
 {
     if (GetReceiverId() == GetCluster()->GetLocalNodeID())
-        return SLICON_SUBSCRIPTION2;
+        return subscriptionFactory.GetIconId();
     else
-        return SLICON_SUBSCRIPTION;
+        return subscriptionFactory.GetExportedIconId();
 }
 
 
@@ -101,16 +100,12 @@ void slSubscription::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
             if (id)
             {
                 slSet *set=(slSet*)browser->GetItemData(id);
-                if (set && set->GetType() == SL_SET)
+                if (set && set->IsCreatedBy(setFactory))
                 {
                     wxLogInfo(wxT("Adding child object to subscription ") + GetIdentifier());
 
-                    slSetCollection *collection;
-                    collection = new slSetCollection(SL_SEQUENCES, set, this);
-                    AppendBrowserItem(browser, collection);
-
-                    collection = new slSetCollection(SL_TABLES, set, this);
-                    AppendBrowserItem(browser, collection);
+                    browser->AppendCollection(this, slSequenceFactory);
+                    browser->AppendCollection(this, slTableFactory);
                 }
             }
         }
@@ -143,9 +138,9 @@ pgObject *slSubscription::Refresh(ctlTree *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        slSetCollection *coll=(slSetCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == SL_SUBSCRIPTIONS)
-            subscription = ReadObjects(coll, 0, wxT(" WHERE sub_set=") + NumToStr(GetSet()->GetSlId()) 
+        slSetObjCollection *coll=(slSetObjCollection*)browser->GetItemData(parentItem);
+        if (coll->IsCollection())
+            subscription = subscriptionFactory.CreateObjects(coll, 0, wxT(" WHERE sub_set=") + NumToStr(GetSet()->GetSlId()) 
                             + wxT(" AND sub_receiver = ") + NumToStr(GetReceiverId()) + wxT("\n"));
     }
     return subscription;
@@ -153,12 +148,18 @@ pgObject *slSubscription::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 
 
-pgObject *slSubscription::ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction)
+pgObject *slSubscriptionFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restr)
 {
+    slSetObjCollection *collection=(slSetObjCollection*)coll;
     slSubscription *subscription=0;
+    wxString restriction;
+    if (restr.IsEmpty())
+        restriction = wxT(" WHERE sub_set = ") + NumToStr(collection->GetSlId());
+    else
+        restriction = restr;
 
-    wxString prefix=coll->GetCluster()->GetSchemaPrefix();
-    pgSet *subscriptions = coll->GetDatabase()->ExecuteSet(
+    wxString prefix=collection->GetCluster()->GetSchemaPrefix();
+    pgSet *subscriptions = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT sub_set, sub_provider, sub_receiver, sub_forward, sub_active,\n")
               wxT(" re.no_comment as receiver_name, pr.no_comment as provider_name,\n")
               wxT(" EXISTS (SELECT 1 FROM ") + prefix + wxT("sl_subscribe s2 WHERE s2.sub_provider = s1.sub_receiver AND s1.sub_set=s2.sub_set) AS is_subscribed\n")
@@ -173,7 +174,7 @@ pgObject *slSubscription::ReadObjects(slSetCollection *coll, ctlTree *browser, c
     {
         while (!subscriptions->Eof())
         {
-            subscription = new slSubscription(coll->GetSet(), subscriptions->GetVal(wxT("receiver_name")));
+            subscription = new slSubscription(collection->GetSet(), subscriptions->GetVal(wxT("receiver_name")));
             subscription->iSetActive(subscriptions->GetBool(wxT("sub_active")));
             subscription->iSetForward(subscriptions->GetBool(wxT("sub_forward")));
             subscription->iSetReceiverId(subscriptions->GetLong(wxT("sub_receiver")));
@@ -197,11 +198,17 @@ pgObject *slSubscription::ReadObjects(slSetCollection *coll, ctlTree *browser, c
 }
 
 
-    
-pgObject *slSubscription::ReadObjects(slSetCollection *coll, ctlTree *browser)
+///////////////////////////////////////////////////
+
+#include "images/slsubscription.xpm"
+#include "images/slsubscriptions.xpm"
+
+slSubscriptionFactory::slSubscriptionFactory() 
+: slSetObjFactory(__("Subscription"), _("New Subscription"), _("Create a new Subscription."), slsubscription_xpm)
 {
-    // Get the subscriptions
-    wxString restriction = wxT(" WHERE sub_set = ") + NumToStr(coll->GetSet()->GetSlId());
-    return ReadObjects(coll, browser, restriction);
+    metaType = SLM_SUBSCRIPTION;
 }
 
+
+slSubscriptionFactory subscriptionFactory;
+static pgaCollectionFactory cf(&subscriptionFactory, __("Subscriptions"), slsubscriptions_xpm);

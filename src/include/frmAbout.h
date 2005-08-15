@@ -12,12 +12,8 @@
 #ifndef FRMABOUT_H
 #define FRMABOUT_H
 
-// wxWindows headers
-#include <wx/wx.h>
-#include <wx/image.h>
-
-// App headers
-#include "pgAdmin3.h"
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 // Class declarations
 class frmAbout : public wxDialog
@@ -35,8 +31,8 @@ private:
 class aboutFactory : public actionFactory
 {
 public:
-    aboutFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    aboutFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 

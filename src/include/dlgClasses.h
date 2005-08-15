@@ -46,11 +46,12 @@ protected:
 };
 
 
+class menuFactoryList;
+
 class pgFrame : public wxFrame
 {
 public:
-    pgFrame(wxFrame *parent, const wxString &title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long flags=wxDEFAULT_FRAME_STYLE) 
-        : wxFrame(parent, -1, title, pos, size, flags) { changed=false; recentFileMenu=0; }
+    pgFrame(wxFrame *parent, const wxString &title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long flags=wxDEFAULT_FRAME_STYLE) ;
     ~pgFrame();
     void RemoveFrame(wxWindow *frame);
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
@@ -63,7 +64,6 @@ protected:
     void OnRecent(wxCommandEvent& event);
     void OnAction(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
-    void OnBugreport(wxCommandEvent& event);
 
     virtual void OpenLastFile() {}
     virtual wxString GetHelpPage() const { return wxEmptyString; }
@@ -72,7 +72,7 @@ protected:
     void AddFrame(wxWindow *wnd) { frames.Append(wnd); }
 
     windowList frames;
-    wxArrayPtrVoid menuFactories;
+    menuFactoryList *menuFactories;
     wxString dlgName;
     wxString lastFilename, lastDir, lastPath;
     wxString recentKey;

@@ -15,9 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgView.h"
-#include "pgSchema.h"
 
 
 pgView::pgView(pgSchema *newSchema, const wxString& newName)
@@ -34,7 +32,8 @@ wxMenu *pgView::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
     if (schema->GetCreatePrivilege())
-        AppendMenu(menu, PG_RULE);
+        ruleFactory.AppendMenu(menu);
+
     return menu;
 }
 
@@ -69,13 +68,10 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
     if (!expandedKids)
     {
         expandedKids = true;
-
         browser->RemoveDummyChild(this);
-
-        pgCollection *collection;
-        collection = new pgCollection(PG_RULES, GetSchema());
+        
+        pgCollection *collection = browser->AppendCollection(GetSchema(), ruleFactory);
         collection->iSetOid(GetOid());
-        browser->AppendObject(this, collection);
     }
     if (properties)
     {

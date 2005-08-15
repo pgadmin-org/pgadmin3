@@ -12,9 +12,6 @@
 #ifndef PGCOLLECTION_H
 #define PGCOLLECTION_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
 // App headers
 #include "pgAdmin3.h"
 #include "pgObject.h"
@@ -29,13 +26,10 @@ class pgCollection : public pgObject
 {
 public:
     pgCollection(pgaFactory *factory);
-    pgCollection(int newType, pgServer *sv);
-    pgCollection(int newType, pgDatabase *db);
-    pgCollection(int newType, pgSchema *sch);
-	pgCollection(int newType, pgaJob *jb);
     ~pgCollection();
     virtual bool IsCollection() const { return true; }
-    virtual bool IsCollectionForType(int objType);
+    bool IsCollectionForType(int objType);
+    bool IsCollectionFor(pgObject *obj);
 
     pgServer *GetServer() const { return server; }
     pgDatabase *GetDatabase() const { return database; }
@@ -49,7 +43,6 @@ public:
     void ShowList(ctlTree *browser, ctlListView *properties);
     void UpdateChildCount(ctlTree *browser, int substract=0);
     pgObject *FindChild(ctlTree *browser, const int index);
-    bool CanCreate();
 
 protected:
     pgServer *server;

@@ -12,18 +12,11 @@
 #ifndef PGCONN_H
 #define PGCONN_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// PostgreSQL headers
-#include <libpq-fe.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgSet.h"
 #include "base/pgConnBase.h"
 
 // Class declarations
+class pgSet;
+
 class pgConn : public pgConnBase
 {
 public:

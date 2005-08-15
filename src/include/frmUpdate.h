@@ -13,8 +13,8 @@
 #ifndef __FRMUPDATE
 #define __FRMUPDATE
 
-#endif
-
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 class frmUpdate : public DialogWithHelp
 {
@@ -31,4 +31,14 @@ public:
     static bool HasNewBeta();
     DECLARE_EVENT_TABLE()
 };
+
+
+class onlineUpdateFactory : public actionFactory
+{
+public:
+    onlineUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+#endif
 

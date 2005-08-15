@@ -15,9 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgType.h"
-#include "pgSchema.h"
 #include "pgDatatype.h"
 
 

@@ -138,9 +138,14 @@ int dlgTable::Go(bool modal)
         while (item)
         {
             data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
-            if (data->GetType() == PG_COLUMNS)
+            pgaFactory *factory=data->GetFactory();
+            if (factory == columnFactory.GetCollectionFactory())
                 columnsItem = item;
-            else if (data->GetType() == PG_CONSTRAINTS)
+            else if (factory == checkFactory.GetCollectionFactory())
+                constraintsItem = item;
+            if (data->GetMetaType() == PGM_COLUMN && data->IsCollection())
+                columnsItem = item;
+            else if (data->GetMetaType() == PGM_CONSTRAINT)
                 constraintsItem = item;
 
             if (columnsItem && constraintsItem)
@@ -161,7 +166,7 @@ int dlgTable::Go(bool modal)
             while (item)
             {
                 data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
-                if (data->GetType() == PG_COLUMN)
+                if (data->IsCreatedBy(columnFactory))
                 {
                     pgColumn *column=(pgColumn*)data;
                     // make sure column details are read
@@ -195,21 +200,19 @@ int dlgTable::Go(bool modal)
             while (item)
             {
                 data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
-                data->ShowTreeDetail(mainForm->GetBrowser());
-                switch (data->GetType())
+                switch (data->GetMetaType())
                 {
-                    case PG_PRIMARYKEY:
+                    case PGM_PRIMARYKEY:
                         hasPK = true;
-                    case PG_UNIQUE:
+                    case PGM_UNIQUE:
                     {
                         pgIndexConstraint *obj=(pgIndexConstraint*)data;
 
                         lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
-                        break;
                     }
-                    case PG_FOREIGNKEY:
+                    case PGM_FOREIGNKEY:
                     {
                         pgForeignKey *obj=(pgForeignKey*)data;
 
@@ -218,7 +221,7 @@ int dlgTable::Go(bool modal)
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;
                     }
-                    case PG_CHECK:
+                    case PGM_CHECK:
                     {
                         pgCheck *obj=(pgCheck*)data;
 
@@ -284,21 +287,14 @@ wxString dlgTable::GetItemConstraintType(ctlListView *list, long pos)
     item.SetColumn(0);
     item.SetMask(wxLIST_MASK_IMAGE);
     list->GetItem(item);
-    switch (item.GetImage())
-    {
-        case PGICON_PRIMARYKEY:
-            con = wxT("PRIMARY KEY");
-            break;
-        case PGICON_FOREIGNKEY:
-            con = wxT("FOREIGN KEY");
-            break;
-        case PGICON_UNIQUE:
-            con = wxT("UNIQUE");
-            break;
-        case PGICON_CHECK:
-            con = wxT("CHECK");
-            break;
-    }
+    if (item.GetImage() == primaryKeyFactory.GetIconId())
+        con = wxT("PRIMARY KEY");
+    if (item.GetImage() == foreignKeyFactory.GetIconId())
+        con = wxT("FOREIGN KEY");
+    if (item.GetImage() == uniqueFactory.GetIconId())
+        con = wxT("UNIQUE");
+    if (item.GetImage() == checkFactory.GetIconId())
+        con = wxT("CHECK");
     return con;
 }
 
@@ -659,7 +655,7 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
     col.SetDatabase(database);
     if (col.Go(true) >= 0)
     {
-        long pos = lstColumns->AppendItem(PGICON_COLUMN, col.GetName(), col.GetDefinition());
+        long pos = lstColumns->AppendItem(columnFactory.GetIconId(), col.GetName(), col.GetDefinition());
         if (table && !connection->BackendMinimumVersion(8, 0))
             lstColumns->SetItem(pos, 3, col.GetSql());
 		lstColumns->SetItem(pos, 4, col.GetStatistics());
@@ -712,7 +708,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             pk.SetDatabase(database);
             if (pk.Go(true) >= 0)
             {
-                lstConstraints->AppendItem(PGICON_PRIMARYKEY, pk.GetName(), pk.GetDefinition());
+                lstConstraints->AppendItem(primaryKeyFactory.GetIconId(), pk.GetName(), pk.GetDefinition());
                 hasPK=true;
                 FillConstraint();
             }
@@ -727,7 +723,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             {
                 wxString str=fk.GetDefinition();
                 str.Replace(wxT("\n"), wxT(" "));
-                lstConstraints->AppendItem(PGICON_FOREIGNKEY, fk.GetName(), str);
+                lstConstraints->AppendItem(foreignKeyFactory.GetIconId(), fk.GetName(), str);
             }
             break;
         }
@@ -737,7 +733,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             unq.CenterOnParent();
             unq.SetDatabase(database);
             if (unq.Go(true) >= 0)
-                lstConstraints->AppendItem(PGICON_UNIQUE, unq.GetName(), unq.GetDefinition());
+                lstConstraints->AppendItem(uniqueFactory.GetIconId(), unq.GetName(), unq.GetDefinition());
             break;
         }
         case 3: // Check
@@ -746,7 +742,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             chk.CenterOnParent();
             chk.SetDatabase(database);
             if (chk.Go(true) >= 0)
-                lstConstraints->AppendItem(PGICON_CHECK, chk.GetName(), chk.GetDefinition());
+                lstConstraints->AppendItem(checkFactory.GetIconId(), chk.GetName(), chk.GetDefinition());
             break;
         }
     }
@@ -771,7 +767,7 @@ void dlgTable::OnRemoveConstr(wxCommandEvent &ev)
     item.SetColumn(0);
     item.SetMask(wxLIST_MASK_IMAGE);
     lstConstraints->GetItem(item);
-    if (item.GetImage() == PGICON_PRIMARYKEY)
+    if (item.GetImage() == primaryKeyFactory.GetIconId())
     {
         hasPK=false;
         FillConstraint();
@@ -790,15 +786,14 @@ void dlgTable::OnSelChangeConstr(wxListEvent &ev)
 }
 
 
-countRowsFactory::countRowsFactory(wxMenu *mnu, wxToolBar *toolbar)
+countRowsFactory::countRowsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Count"), _("Count rows in the selected object."));
 }
 
 
-wxWindow *countRowsFactory::StartDialog(pgFrame *fr, pgObject *obj)
+wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmMain *form=(frmMain*)fr;
     ((pgTable*)obj)->UpdateRows();
     
     wxTreeItemId item=form->GetBrowser()->GetSelection();

@@ -19,9 +19,6 @@
 #include "sysSettings.h"
 #include "misc.h"
 
-// Icons
-#include "images/pgAdmin3.xpm"
-
 
 #define txtFilename     CTRL_TEXT("txtFilename")
 #define btnOK           CTRL_BUTTON("wxID_OK")
@@ -59,7 +56,7 @@ frmExport::frmExport(wxWindow *p)
     LoadResource(p, wxT("frmExport")); 
 
     // Icon
-    SetIcon(wxIcon(pgAdmin3_xpm));
+    appearanceFactory->SetIcons(this);
     CenterOnParent();
     cbQuoteChar->Disable();
     btnOK->Disable();

@@ -9,14 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGOperatorClass_H
-#define PGOperatorClass_H
+#ifndef PGOPERATORCLASS_H
+#define PGOPERATORCLASS_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
 #include "pgSchema.h"
 
 class pgCollection;

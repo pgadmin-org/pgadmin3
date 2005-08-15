@@ -19,9 +19,6 @@
 #include "slCluster.h"
 #include "slSet.h"
 
-// Images
-#include "images/slset.xpm"
-
 
 // pointer to controls
 #define txtOrigin           CTRL_TEXT("txtOrigin")
@@ -33,10 +30,14 @@ BEGIN_EVENT_TABLE(dlgRepSet, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *slSetFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepSet(frame, (slSet*)node, (slCluster*)parent);
+}
+
 dlgRepSet::dlgRepSet(frmMain *frame, slSet *s, slCluster *c)
 : dlgRepProperty(frame, c, wxT("dlgRepSet"))
 {
-    SetIcon(wxIcon(slset_xpm));
     set=s;
 }
 
@@ -73,7 +74,7 @@ pgObject *dlgRepSet::CreateObject(pgCollection *collection)
     else
         restriction = wxT("(SELECT MAX(set_id) FROM ") + cluster->GetSchemaPrefix() + wxT("sl_set)");
 
-    pgObject *obj=slSet::ReadObjects((slCollection*)collection, 0,
+    pgObject *obj=setFactory.CreateObjects(collection, 0,
          wxT(" WHERE set_id = ") + restriction);
 
     return obj;
@@ -304,4 +305,53 @@ wxString dlgRepSetMove::GetSql()
     return sql;
 }
 
+
+////////////////////////////////////////////////////////////
+
+slonyMergeSetFactory::slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Merge set"), _("Merge two replication sets."));
+}
+
+
+wxWindow *slonyMergeSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    dlgProperty *dlg=new dlgRepSetMerge(form, (slSet*)obj);
+    dlg->InitDialog(form, obj);
+    dlg->CreateAdditionalPages();
+    dlg->Go(false);
+    dlg->CheckChange();
+    return dlg;
+}
+
+
+bool slonyMergeSetFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(setFactory);
+}
+
+
+slonyMoveSetFactory::slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Move set"), _("Move replication set to different node"));
+}
+
+
+wxWindow *slonyMoveSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    dlgProperty *dlg=new dlgRepSetMove(form, (slSet*)obj);
+    dlg->InitDialog(form, obj);
+    dlg->CreateAdditionalPages();
+    dlg->Go(false);
+    dlg->CheckChange();
+    return dlg;
+}
+
+
+bool slonyMoveSetFactory::CheckEnable(pgObject *obj)
+{
+    if (!obj || ! obj->IsCreatedBy(setFactory))
+        return false;
+    return ((slSet*)obj)->GetSubscriptionCount() > 0;
+}
 

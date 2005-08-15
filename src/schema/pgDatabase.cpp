@@ -16,11 +16,6 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgfeatures.h"
-#include "pgDatabase.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgCollection.h"
-#include "menu.h"
 #include "frmMain.h"
 #include "pgCast.h"
 #include "pgLanguage.h"
@@ -312,8 +307,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         // Set the icon if required
         if (UpdateIcon(browser))
         {
-            if (form)
-                form->SetButtons(this);
+//            if (form)
+//                form->->SetButtons(this);
         }
 
             // Add child nodes if necessary

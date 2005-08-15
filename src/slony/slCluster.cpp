@@ -17,7 +17,8 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "slCluster.h"
-#include "slObject.h"
+#include "slNode.h"
+#include "slSet.h"
 #include "frmMain.h"
 
 #include <wx/arrimpl.cpp>
@@ -55,8 +56,8 @@ wxMenu *slCluster::GetNewMenu()
 
 //    if (GetCreatePrivilege())
     {
-        AppendMenu(menu, SL_SET);
-        AppendMenu(menu, SL_NODE);
+        setFactory.AppendMenu(menu);
+        nodeFactory.AppendMenu(menu);
     }
     return menu;
 }
@@ -241,15 +242,9 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
         }
 
         wxLogInfo(wxT("Adding child object to cluster ") + GetIdentifier());
-        pgCollection *collection;
 
-        // Nodes
-        collection = new slCollection(SL_NODES, this);
-        AppendBrowserItem(browser, collection);
-
-        // Sets
-        collection = new slCollection(SL_SETS, this);
-        AppendBrowserItem(browser, collection);
+        browser->AppendCollection(this, nodeFactory);
+        browser->AppendCollection(this, setFactory);
     }
 
 
@@ -339,7 +334,28 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, ctlTree *browser)
 pgaSlClusterFactory::pgaSlClusterFactory() 
 : pgDatabaseObjFactory(__("Slony-I Cluster"), _("New Slony-I Cluster"), _("Create new Slony-I Replication Cluster"), slcluster_xpm)
 {
+//    metaType = SLM_CLUSTER;
 }
+
+
+slObject::slObject(slCluster *cl, pgaFactory &factory, const wxString &newName)
+: pgDatabaseObject(factory, newName)
+{
+    cluster = cl;
+    iSetDatabase(cl->GetDatabase());
+}
+
+slObjCollection::slObjCollection(pgaFactory *factory, slCluster *_cluster)
+: pgDatabaseObjCollection(factory, _cluster->GetDatabase())
+{
+    cluster = _cluster;
+}
+
+pgCollection *slObjFactory::CreateCollection(pgObject *obj)
+{
+    return new slObjCollection(GetCollectionFactory(), (slCluster*)obj);
+}
+
 
 pgaSlClusterFactory slClusterFactory;
 static pgaCollectionFactory cf(&slClusterFactory, __("Replication"), slclusters_xpm);

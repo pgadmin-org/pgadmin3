@@ -12,15 +12,17 @@
 #ifndef SLTABLE_H
 #define SLTABLE_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "slSet.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-#include "slObject.h"
+class slSlTableFactory : public slSetObjFactory
+{
+public:
+    slSlTableFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern slSlTableFactory slTableFactory;
+
 
 class slTable : public slSetObject
 {
@@ -28,10 +30,7 @@ public:
     slTable(slSet *set, const wxString& newName = wxT(""));
     ~slTable();
 
-    int GetIconId() { return -1; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser);
 
     bool GetAltered() const { return altered; }
     void iSetAltered(bool b) { altered=b; }

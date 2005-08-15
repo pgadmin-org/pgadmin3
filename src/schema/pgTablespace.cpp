@@ -17,9 +17,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgfeatures.h"
-#include "pgObject.h"
 #include "pgTablespace.h"
-#include "pgCollection.h"
 #include "pgDatabase.h"
 #include "frmMain.h"
 

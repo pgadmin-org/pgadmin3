@@ -19,13 +19,12 @@
 #include "pgDatabase.h"
 #include "pgCollection.h"
 #include "pgaStep.h"
-#include "pgaStep.h"
 #include "pgaSchedule.h"
 
 extern sysSettings *settings;
 
 pgaStep::pgaStep(pgCollection *_collection, const wxString& newName)
-: pgaJobObject(_collection->GetJob(), PGA_STEP, newName)
+: pgaJobObject(_collection->GetJob(), stepFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgaStep object"));
 }
@@ -74,15 +73,15 @@ pgObject *pgaStep::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PGA_STEPS)
-            Step = ReadObjects(obj, 0, wxT("\n   AND jstid=") + NumToStr(GetRecId()));
+        if (obj->IsCollection())
+            Step = stepFactory.CreateObjects(obj, 0, wxT("\n   AND jstid=") + NumToStr(GetRecId()));
     }
     return Step;
 }
 
 
 
-pgObject *pgaStep::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgaStepFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgaStep *step=0;
 
@@ -211,3 +210,16 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
         }
     }
 }
+
+
+#include "images/step.xpm"
+#include "images/steps.xpm"
+
+pgaStepFactory::pgaStepFactory() 
+: pgServerObjFactory(__("Step"), _("New Step"), _("Create a new Step."), step_xpm)
+{
+}
+
+
+pgaStepFactory stepFactory;
+static pgaCollectionFactory cf(&stepFactory, __("Steps"), steps_xpm);

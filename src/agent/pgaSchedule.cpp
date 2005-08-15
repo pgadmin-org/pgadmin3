@@ -26,7 +26,7 @@
 
 
 pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString& newName)
-: pgaJobObject(_collection->GetJob(), PGA_SCHEDULE, newName)
+: pgaJobObject(_collection->GetJob(), scheduleFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgaSchedule object"));
 }
@@ -80,15 +80,15 @@ pgObject *pgaSchedule::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PGA_SCHEDULES)
-            schedule = ReadObjects(obj, 0, wxT("\n   AND jscid=") + NumToStr(GetRecId()));
+        if (obj->IsCollection())
+            schedule = scheduleFactory.CreateObjects(obj, 0, wxT("\n   AND jscid=") + NumToStr(GetRecId()));
     }
     return schedule;
 }
 
 
 
-pgObject *pgaSchedule::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgaScheduleFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgaSchedule *schedule=0;
 	wxString tmp;
@@ -482,3 +482,16 @@ wxString pgaSchedule::GetExceptionsString()
 
 	return tmp;
 }
+
+
+#include "images/schedule.xpm"
+#include "images/schedules.xpm"
+
+pgaScheduleFactory::pgaScheduleFactory() 
+: pgServerObjFactory(__("Schedule"), _("New Schedule"), _("Create a new Schedule."), schedule_xpm)
+{
+}
+
+
+pgaScheduleFactory scheduleFactory;
+static pgaCollectionFactory cf(&scheduleFactory, __("Schedules"), schedules_xpm);

@@ -25,7 +25,7 @@
 extern sysSettings *settings;
 
 pgaJob::pgaJob(const wxString& newName)
-: pgServerObject(PGA_JOB, newName)
+: pgServerObject(jobFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgaJob object"));
 }
@@ -36,13 +36,22 @@ pgaJob::~pgaJob()
 }
 
 
+int pgaJob::GetIconId()
+{
+    if (GetEnabled())
+        return jobFactory.GetIconId();
+    else
+        return jobFactory.GetDisabledId();
+}
+
+
 wxMenu *pgaJob::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
     if (1) // check priv.
     {
-        AppendMenu(menu, PGA_STEP);
-        AppendMenu(menu, PGA_SCHEDULE);
+        stepFactory.AppendMenu(menu);
+        scheduleFactory.AppendMenu(menu);
     }
     return menu;
 }
@@ -64,16 +73,9 @@ void pgaJob::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
         // Log
         wxLogInfo(wxT("Adding child objects to Job."));
-        pgCollection *collection;
 
-        // Schedules
-        collection = new pgCollection(PGA_SCHEDULES, this);
-        AppendBrowserItem(browser, collection);
-
-        // Steps
-        collection = new pgCollection(PGA_STEPS, this);
-        AppendBrowserItem(browser, collection);
-
+        browser->AppendCollection(this, scheduleFactory);
+        browser->AppendCollection(this, stepFactory);
     }
 
     if (properties)
@@ -108,15 +110,15 @@ pgObject *pgaJob::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PGA_JOBS)
-            job = ReadObjects((pgCollection*)obj, 0, wxT("\n   WHERE j.jobid=") + NumToStr(GetRecId()));
+        if (obj->IsCollection())
+            job = jobFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   WHERE j.jobid=") + NumToStr(GetRecId()));
     }
     return job;
 }
 
 
 
-pgObject *pgaJob::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgaJobFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgaJob *job=0;
 
@@ -238,10 +240,25 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
     }
 }
 
-pgaJobObject::pgaJobObject(pgaJob *_job, int newType, const wxString& newName)
-: pgServerObject(newType, newName)
+pgaJobObject::pgaJobObject(pgaJob *_job, pgaFactory &factory, const wxString& newName)
+: pgServerObject(factory, newName)
 {
     job=_job;
     server=job->GetServer();
 }
 
+
+
+#include "images/job.xpm"
+#include "images/jobs.xpm"
+#include "images/jobdisabled.xpm"
+
+pgaJobFactory::pgaJobFactory() 
+: pgServerObjFactory(__("pgAgent Job"), _("New Job"), _("Create a new Job."), job_xpm)
+{
+    disabledId = addImage(jobdisabled_xpm);
+}
+
+
+pgaJobFactory jobFactory;
+static pgaCollectionFactory cf(&jobFactory, __("Jobs"), jobs_xpm);

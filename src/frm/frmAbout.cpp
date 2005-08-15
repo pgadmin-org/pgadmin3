@@ -17,12 +17,6 @@
 #include "pgAdmin3.h"
 #include "frmAbout.h"
 
-// Icons
-#include "images/pgAdmin3.xpm"
-
-// Splash
-#include "images/splash.xpm"
-
 // Copyright text
 #include "copyright.h"
 #include "version.h"
@@ -38,11 +32,8 @@ frmAbout::frmAbout(wxFrame *parent)
 
     wxLogInfo(wxT("Creating an about box"));
 
-    // Icon
-    SetIcon(wxIcon(pgAdmin3_xpm));
-
-    // Image
-    about = wxBitmap(splash_xpm);
+    appearanceFactory->SetIcons(this);
+    about = wxBitmap(appearanceFactory->GetSplashImage());
 
     SetClientSize(about.GetWidth(), about.GetHeight());
 
@@ -75,13 +66,13 @@ void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 }
 
 
-aboutFactory::aboutFactory(wxMenu *mnu, wxToolBar *toolbar)
+aboutFactory::aboutFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&About..."), _("Show about dialog."));
 }
 
 
-wxWindow *aboutFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *aboutFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmAbout *frm=new frmAbout((wxFrame*)form);
     frm->Show();

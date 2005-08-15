@@ -21,9 +21,6 @@
 #include "slTable.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/table.xpm"
-
 
 // pointer to controls
 #define txtID               CTRL_TEXT("txtID")
@@ -42,10 +39,15 @@ BEGIN_EVENT_TABLE(dlgRepTable, dlgRepProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *slSlTableFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepTable(frame, (slTable*)node, (slSet*)parent);
+}
+
+
 dlgRepTable::dlgRepTable(frmMain *frame, slTable *node, slSet *s)
 : dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepTable"))
 {
-    SetIcon(wxIcon(table_xpm));
     table=node;
     set=s;
 }
@@ -121,7 +123,7 @@ int dlgRepTable::Go(bool modal)
 
 pgObject *dlgRepTable::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=slTable::ReadObjects((slSetCollection*)collection, 0,
+    pgObject *obj=slTableFactory.CreateObjects(collection, 0,
          wxT(" WHERE tab_reloid = ") + NumToStr((OID)cbTable->GetClientData(cbTable->GetGuessedSelection())));
 
     return obj;

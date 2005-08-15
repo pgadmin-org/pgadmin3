@@ -17,10 +17,15 @@
 #include "dlgIndex.h"
 
 
+class pgTable;
+class pgIndexBase;
+class pgPrimaryKey;
+class pgUnique;
+
 class dlgIndexConstraint : public dlgIndexBase
 {
 protected:
-    dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode);
+    dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
     dlgIndexConstraint(frmMain *frame, const wxString &resName, ctlListView *colList);
 
 public:
@@ -41,7 +46,7 @@ private:
 class dlgPrimaryKey : public dlgIndexConstraint
 {
 public:
-    dlgPrimaryKey(frmMain *frame, pgIndex *index, pgTable *parentNode);
+    dlgPrimaryKey(frmMain *frame, pgPrimaryKey *index, pgTable *parentNode);
     dlgPrimaryKey(frmMain *frame, ctlListView *colList);
 
     pgObject *CreateObject(pgCollection *collection);
@@ -51,7 +56,7 @@ public:
 class dlgUnique : public dlgIndexConstraint
 {
 public:
-    dlgUnique(frmMain *frame, pgIndex *index, pgTable *parentNode);
+    dlgUnique(frmMain *frame, pgUnique *index, pgTable *parentNode);
     dlgUnique(frmMain *frame, ctlListView *colList);
 
     pgObject *CreateObject(pgCollection *collection);

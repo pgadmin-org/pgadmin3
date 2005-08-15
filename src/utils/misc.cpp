@@ -33,7 +33,6 @@
 
 // App headers
 #include "misc.h"
-#include "menu.h"
 #include "frmMain.h"
 #include "frmHelp.h"
 

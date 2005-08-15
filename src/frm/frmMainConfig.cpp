@@ -22,8 +22,7 @@
 #include "frmMain.h"
 #include "dlgMainConfig.h"
 #include "utffile.h"
-#include "pgConn.h"
-#include "pgSet.h"
+#include "pgServer.h"
 #include "menu.h"
 #include "pgfeatures.h"
 
@@ -31,9 +30,6 @@
 WX_DEFINE_OBJARRAY(pgConfigOrgLineArray);
 
 #define CTL_CFGVIEW 345
-
-#include "images/pgAdmin3.xpm"
-#include "images/elephant32.xpm"
 
 
 BEGIN_EVENT_TABLE(frmMainConfig, frmConfig)
@@ -128,10 +124,7 @@ void frmMainConfig::Init(pgSettingReader *reader)
 
 void frmMainConfig::Init()
 {
-    wxIconBundle icons;
-    icons.AddIcon(wxIcon(pgAdmin3_xpm));
-    icons.AddIcon(wxIcon(elephant32_xpm));
-    SetIcons(icons);
+    appearanceFactory->SetIcons(this);
  
     InitFrame(wxT("frmMainConfig"));
     RestorePosition(50, 50, 600, 600, 300, 200);
@@ -588,18 +581,18 @@ wxString frmMainConfig::GetHintString()
 }
 
 
-mainConfigFactory::mainConfigFactory(wxMenu *mnu, wxToolBar *toolbar)
+mainConfigFactory::mainConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, wxT("postgresql.conf"), _("Edit general server configuration file."));
 }
 
 
-wxWindow *mainConfigFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *mainConfigFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     pgServer *server=obj->GetServer();
     if (server)
     {
-        frmConfig *frm= new frmMainConfig((frmMain*)form, server);
+        frmConfig *frm= new frmMainConfig(form, server);
         frm->Go();
         return frm;
     }
@@ -620,15 +613,15 @@ bool mainConfigFactory::CheckEnable(pgObject *obj)
 }
 
 
-mainConfigFileFactory::mainConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar)
+mainConfigFileFactory::mainConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("Open postgresql.conf"), _("Open configuration editor with postgresql.conf."));
 }
 
 
-wxWindow *mainConfigFileFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *mainConfigFileFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmConfig *dlg = new frmMainConfig((frmMain*)form);
+    frmConfig *dlg = new frmMainConfig(form);
     dlg->Go();
     dlg->DoOpen();
     return dlg;

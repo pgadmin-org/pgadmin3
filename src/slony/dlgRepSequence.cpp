@@ -21,9 +21,6 @@
 #include "slSequence.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/sequence.xpm"
-
 
 // pointer to controls
 #define txtID               CTRL_TEXT("txtID")
@@ -38,11 +35,15 @@ BEGIN_EVENT_TABLE(dlgRepSequence, dlgProperty)
     EVT_TEXT(XRCID("cbSequence"),           dlgRepSequence::OnChange)
 END_EVENT_TABLE();
 
+dlgProperty *slSlSequenceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepSequence(frame, (slSequence*)node, (slSet*)parent);
+}
+
 
 dlgRepSequence::dlgRepSequence(frmMain *frame, slSequence *node, slSet *s)
 : dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepSequence"))
 {
-    SetIcon(wxIcon(sequence_xpm));
     sequence=node;
     set=s;
 }
@@ -105,7 +106,7 @@ int dlgRepSequence::Go(bool modal)
 
 pgObject *dlgRepSequence::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=slSequence::ReadObjects((slSetCollection*)collection, 0,
+    pgObject *obj=slSequenceFactory.CreateObjects(collection, 0,
          wxT(" WHERE seq_reloid = ") + NumToStr((OID)cbSequence->GetClientData(cbSequence->GetGuessedSelection())));
 
     return obj;

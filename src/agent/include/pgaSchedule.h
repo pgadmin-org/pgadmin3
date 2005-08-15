@@ -12,16 +12,17 @@
 #ifndef PGASCHEDULE_H
 #define PGASCHEDULE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgCollection.h"
-#include "pgConn.h"
-#include "pgObject.h"
 #include "pgaJob.h"
-// Class declarations
+
+
+class pgaScheduleFactory : public pgServerObjFactory
+{
+public:
+    pgaScheduleFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaScheduleFactory scheduleFactory;
 
 
 class pgaSchedule : public pgaJobObject
@@ -30,9 +31,7 @@ public:
     pgaSchedule(pgCollection *collection, const wxString& newName = wxT(""));
     ~pgaSchedule();
 
-    int GetIconId() { return PGAICON_SCHEDULE; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 

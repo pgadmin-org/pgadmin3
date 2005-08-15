@@ -24,17 +24,10 @@
 
 #include <wx/generic/gridctrl.h>
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgDefs.h"
-#include "frmMain.h"
-#include "menu.h"
-
-#include "frmEditGrid.h"
-#include "dlgEditGridOptions.h"
-#include "pgTable.h"
-#include "pgView.h"
-
+#include "dlgClasses.h"
+class ctlSQLGrid;
+class ctlSQLBox;
+class pgConn;
 ////////////////////////////////////////////////////////////////////////////////
 // Class declaration
 ////////////////////////////////////////////////////////////////////////////////

@@ -12,12 +12,7 @@
 #ifndef __DLGMAINCONFIG_H
 #define __DLGMAINCONFIG_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-
+#include "dlgClasses.h"
 #include "pgconfig.h"
 
 // Class declarations

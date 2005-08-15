@@ -15,9 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgOperator.h"
-#include "pgSchema.h"
 
 
 pgOperator::pgOperator(pgSchema *newSchema, const wxString& newName)

@@ -15,7 +15,6 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgConstraints.h"
 #include "pgIndexConstraint.h"
 
@@ -112,14 +111,38 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
 
 
 
-pgObject *pgPrimaryKey::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
+pgObject *pgPrimaryKeyFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
 {
-    return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='p'\n") + where);
+    return pgIndexBaseFactory::CreateObjects(collection, browser, wxT("   AND contype='p'\n") + where);
 }
 
 
-pgObject *pgUnique::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
+pgObject *pgUniqueFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
 {
-    return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='u'\n") + where);
+    return pgIndexBaseFactory::CreateObjects(collection, browser, wxT("   AND contype='u'\n") + where);
 }
 
+
+#include "images/primarykey.xpm"
+
+pgPrimaryKeyFactory::pgPrimaryKeyFactory() 
+: pgIndexBaseFactory(__("Primary Key"), _("New Primary Key"), _("Create a new Primary Key."), primarykey_xpm)
+{
+    metaType = PGM_PRIMARYKEY;
+    collectionFactory = &constraintCollectionFactory;
+}
+
+
+pgPrimaryKeyFactory primaryKeyFactory;
+
+#include "images/unique.xpm"
+
+pgUniqueFactory::pgUniqueFactory() 
+: pgIndexBaseFactory(__("Unique"), _("New Unique Constraint"), _("Create a new Unique Constraint."), unique_xpm)
+{
+    metaType = PGM_UNIQUE;
+    collectionFactory = &constraintCollectionFactory;
+}
+
+
+pgUniqueFactory uniqueFactory;

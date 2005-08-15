@@ -24,9 +24,6 @@
 #include "pgCollection.h"
 
 
-// Images
-#include "images/rule.xpm"
-
 
 // pointer to controls
 #define rbxEvent        CTRL_RADIOBOX("rbxEvent")
@@ -49,10 +46,16 @@ BEGIN_EVENT_TABLE(dlgRule, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgRuleFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRule(frame, (pgRule*)node, (pgTable*)parent);
+}
+
+
+
 dlgRule::dlgRule(frmMain *frame, pgRule *node, pgTable *tab)
 : dlgProperty(frame, wxT("dlgRule"))
 {
-    SetIcon(wxIcon(rule_xpm));
     table=tab;
     rule=node;
 }
@@ -101,7 +104,7 @@ int dlgRule::Go(bool modal)
 
 pgObject *dlgRule::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgRule::ReadObjects(collection, 0, 
+    pgObject *obj=ruleFactory.CreateObjects(collection, 0, 
         wxT("\n   AND rulename=") + qtString(GetName()) +
         wxT("\n   AND rw.ev_class=") + table->GetOidStr());
     return obj;

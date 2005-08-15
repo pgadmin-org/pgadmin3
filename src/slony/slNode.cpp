@@ -17,13 +17,15 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "slNode.h"
-#include "slObject.h"
 #include "slCluster.h"
+#include "slPath.h"
+#include "slListen.h"
+#include "slSet.h"
 #include "frmMain.h"
 
 
 slNode::slNode(slCluster *cl, const wxString& newName)
-: slObject(cl, SL_NODE, newName)
+: slObject(cl, nodeFactory, newName)
 {
     wxLogInfo(wxT("Creating a slNode object"));
     pid = -1;
@@ -149,13 +151,8 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         // Log
         wxLogInfo(wxT("Adding child object to node ") + GetIdentifier());
 
-        slNodeCollection *collection;
-
-        collection = new slNodeCollection(SL_PATHS, this);
-        AppendBrowserItem(browser, collection);
-
-        collection = new slNodeCollection(SL_LISTENS, this);
-        AppendBrowserItem(browser, collection);
+        browser->AppendCollection(this, pathFactory);
+        browser->AppendCollection(this, listenFactory);
     }
 
 
@@ -200,21 +197,22 @@ pgObject *slNode::Refresh(ctlTree *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        slCollection *coll=(slCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == SL_NODES)
-            node = ReadObjects(coll, 0, wxT(" WHERE no_id=") + NumToStr(GetSlId()) + wxT("\n"));
+        pgCollection *coll=(pgCollection*)browser->GetItemData(parentItem);
+        if (coll->IsCollection())
+            node = nodeFactory.CreateObjects(coll, 0, wxT(" WHERE no_id=") + NumToStr(GetSlId()) + wxT("\n"));
     }
     return node;
 }
 
 
 
-pgObject *slNode::ReadObjects(slCollection *coll, ctlTree *browser, const wxString &restriction)
+pgObject *slNodeFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
+    slObjCollection *collection=(slObjCollection*)coll;
     slNode *node=0;
 
-    pgSet *nodes = coll->GetDatabase()->ExecuteSet(
-        wxT("SELECT * FROM ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_node\n")
+    pgSet *nodes = collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT * FROM ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_node\n")
          + restriction +
         wxT(" ORDER BY no_id"));
 
@@ -222,14 +220,14 @@ pgObject *slNode::ReadObjects(slCollection *coll, ctlTree *browser, const wxStri
     {
         while (!nodes->Eof())
         {
-            node = new slNode(coll->GetCluster(), nodes->GetVal(wxT("no_comment")).BeforeFirst('\n'));
+            node = new slNode(collection->GetCluster(), nodes->GetVal(wxT("no_comment")).BeforeFirst('\n'));
             node->iSetSlId(nodes->GetLong(wxT("no_id")));
             node->iSetActive(nodes->GetBool(wxT("no_active")));
             node->iSetComment(nodes->GetVal(wxT("no_comment")));
 
             if (browser)
             {
-                browser->AppendObject(coll, node);
+                browser->AppendObject(collection, node);
 				nodes->MoveNext();
             }
             else
@@ -242,17 +240,9 @@ pgObject *slNode::ReadObjects(slCollection *coll, ctlTree *browser, const wxStri
 }
 
 
-    
-pgObject *slNode::ReadObjects(slCollection *coll, ctlTree *browser)
+void slNodeCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    // Get the nodes
-    return ReadObjects(coll, browser, wxEmptyString);
-}
-
-
-void slNode::ShowStatistics(slCollection *collection, ctlListView *statistics)
-{
-    wxLogInfo(wxT("Displaying statistics for nodes on Cluster ")+ collection->GetCluster()->GetIdentifier());
+    wxLogInfo(wxT("Displaying statistics for nodes on Cluster ")+ GetCluster()->GetIdentifier());
 
     // Add the statistics view columns
     statistics->ClearAll();
@@ -261,19 +251,19 @@ void slNode::ShowStatistics(slCollection *collection, ctlListView *statistics)
     statistics->AddColumn(_("Acks outstanding"), 50);
     statistics->AddColumn(_("Outstanding time"), 50);
 
-   pgSet *stats=collection->GetDatabase()->ExecuteSet(
+   pgSet *stats=GetDatabase()->ExecuteSet(
         wxT("SELECT st_received, st_last_event, st_lag_num_events, st_last_event_ts, st_last_received, st_last_received_ts,\n")
         wxT("       st_last_received_ts - st_last_received_event_ts AS roundtrip,\n")
         wxT("       CASE WHEN st_lag_num_events > 0 THEN st_last_event_ts - st_last_received_ts END AS eventlag")
-        wxT("  FROM ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
-        wxT(" WHERE st_origin = ") + NumToStr(collection->GetCluster()->GetLocalNodeID()));
+        wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
+        wxT(" WHERE st_origin = ") + NumToStr(GetCluster()->GetLocalNodeID()));
 
     if (stats)
     {
         long pos=0;
         while (!stats->Eof())
         {
-            statistics->InsertItem(pos, NumToStr(stats->GetLong(wxT("st_received"))), SLICON_NODE);
+            statistics->InsertItem(pos, NumToStr(stats->GetLong(wxT("st_received"))), nodeFactory.GetIconId());
             statistics->SetItem(pos, 1, stats->GetVal(wxT("roundtrip")));
             statistics->SetItem(pos, 2, NumToStr(stats->GetLong(wxT("st_lag_num_events"))));
             statistics->SetItem(pos, 3, stats->GetVal(wxT("eventlag")));
@@ -284,3 +274,44 @@ void slNode::ShowStatistics(slCollection *collection, ctlListView *statistics)
 	    delete stats;
     }
 }
+
+
+///////////////////////////////////////////////////
+
+#include "images/slnode.xpm"
+#include "images/slnodes.xpm"
+
+slNodeFactory::slNodeFactory() 
+: slObjFactory(__("Node"), _("New Node"), _("Create a new Node."), slnode_xpm)
+{
+    metaType = SLM_NODE;
+}
+
+pgCollection *slNodeFactory::CreateCollection(pgObject *obj)
+{
+    return new slNodeCollection(GetCollectionFactory(), (slCluster*)obj);
+}
+
+
+slNodeObject::slNodeObject(slNode *n, pgaFactory &factory, const wxString &newName)
+: slObject(n->GetCluster(), factory, newName)
+{
+    node = n;
+}
+
+slNodeObjCollection::slNodeObjCollection(pgaFactory *factory, slNode *n)
+: slObjCollection(factory, n->GetCluster())
+{
+    node=n;
+    iSetSlId(n->GetSlId());
+}
+
+
+pgCollection *slNodeObjFactory::CreateCollection(pgObject *obj)
+{
+    return new slNodeObjCollection(GetCollectionFactory(), (slNode*)obj);
+}
+
+
+slNodeFactory nodeFactory;
+static pgaCollectionFactory cf(&nodeFactory, __("Nodes"), slnodes_xpm);

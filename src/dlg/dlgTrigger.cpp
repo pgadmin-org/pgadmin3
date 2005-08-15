@@ -22,9 +22,6 @@
 #include "pgTable.h"
 #include "pgSchema.h"
 
-// Images
-#include "images/trigger.xpm"
-
 
 // pointer to controls
 #define chkRow          CTRL_CHECKBOX("chkRow")
@@ -46,10 +43,17 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgTriggerFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgTrigger(frame, (pgTrigger*)node, (pgTable*)parent);
+}
+
+
+
+
 dlgTrigger::dlgTrigger(frmMain *frame, pgTrigger *node, pgTable *parentNode)
 : dlgProperty(frame, wxT("dlgTrigger"))
 {
-    SetIcon(wxIcon(trigger_xpm));
     trigger=node;
     table=parentNode;
     wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
@@ -171,7 +175,7 @@ wxString dlgTrigger::GetSql()
 
 pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgTrigger::ReadObjects(collection, 0, 
+    pgObject *obj=triggerFactory.CreateObjects(collection, 0, 
         wxT("\n   AND tgname=") + qtString(GetName()) +
         wxT("\n   AND tgrelid=") + table->GetOidStr() +
         wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr());

@@ -15,7 +15,7 @@
 #include <wx/grid.h>
 
 #define CTL_EDITGRID 357
-
+#include "dlgClasses.h"
 
 class cacheLine
 {
@@ -148,6 +148,8 @@ private:
 };
 
 
+class frmMain;
+class pgSchemaObject;
 
 class frmEditGrid : public pgFrame
 {
@@ -205,7 +207,7 @@ public:
     bool CheckEnable(pgObject *obj);
 
 protected:
-    editGridFactoryBase() {}
+    editGridFactoryBase(menuFactoryList *list) : contextActionFactory(list) {}
     wxWindow *ViewData(frmMain *form, pgObject *obj, bool filter);
 };
 
@@ -213,16 +215,16 @@ protected:
 class editGridFactory : public editGridFactoryBase
 {
 public:
-    editGridFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    editGridFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 
 class editGridFilteredFactory : public editGridFactoryBase
 {
 public:
-    editGridFilteredFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 #endif

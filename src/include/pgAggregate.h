@@ -12,14 +12,8 @@
 #ifndef PGAGGREGATE_H
 #define PGAGGREGATE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
 // App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
 class pgAggregateFactory : public pgaFactory

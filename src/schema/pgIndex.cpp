@@ -16,22 +16,17 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgfeatures.h"
-#include "pgObject.h"
 #include "pgIndex.h"
+#include "pgConstraints.h"
 #include "pgIndexConstraint.h"
-#include "pgCollection.h"
 
 
-pgIndex::pgIndex(pgSchema *newSchema, const wxString& newName, int type)
-: pgSchemaObject(newSchema, type, newName)
+pgIndexBase::pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString& newName)
+: pgTableObject(newTable, factory, newName)
 {
 }
 
-pgIndex::~pgIndex()
-{
-}
-
-bool pgIndex::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
+bool pgIndexBase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP INDEX ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -39,7 +34,7 @@ bool pgIndex::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgIndex::GetCreate()
+wxString pgIndexBase::GetCreate()
 {
     wxString str;
 // no functional indexes so far
@@ -78,7 +73,7 @@ wxString pgIndex::GetCreate()
 }
 
 
-wxString pgIndex::GetSql(ctlTree *browser)
+wxString pgIndexBase::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
@@ -92,7 +87,7 @@ wxString pgIndex::GetSql(ctlTree *browser)
 
 
 
-void pgIndex::ReadColumnDetails()
+void pgIndexBase::ReadColumnDetails()
 {
     if (!expandedKids)
     {
@@ -190,7 +185,7 @@ void pgIndex::ReadColumnDetails()
 }
 
 
-void pgIndex::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     ReadColumnDetails();
     if (properties)
@@ -218,7 +213,7 @@ void pgIndex::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 }
 
 
-void pgIndex::ShowStatistics(frmMain *form, ctlListView *statistics)
+void pgIndexBase::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     if (GetConnection()->HasFeature(FEATURE_SIZE))
         DisplayStatistics(statistics, 
@@ -226,24 +221,36 @@ void pgIndex::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
-pgObject *pgIndex::Refresh(ctlTree *browser, const wxTreeItemId item)
+pgObject *pgIndexBase::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *index=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
         pgCollection *collection=(pgCollection*)browser->GetItemData(parentItem);
-        if (collection->IsCollection() && collection->IsCollectionForType(PG_INDEX))
-            index = ReadObjects(collection, 0, wxT("\n   AND cls.oid=") + GetOidStr());
+        if (collection->IsCollection())
+            index = indexFactory.CreateObjects(collection, 0, wxT("\n   AND cls.oid=") + GetOidStr());
     }
     return index;
 }
 
 
-
-pgObject *pgIndex::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgIndex::pgIndex(pgTable *newTable, const wxString& newName)
+: pgIndexBase(newTable, indexFactory, newName)
 {
-    pgIndex *index=0;
+}
+
+
+pgIndex::~pgIndex()
+{
+}
+
+
+
+pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
+{
+    pgTableObjCollection *collection=(pgTableObjCollection*)coll;
+    pgIndexBase *index=0;
 
     wxString proname, projoin;
     if (collection->GetConnection()->BackendMinimumVersion(7, 4))
@@ -286,20 +293,19 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, ctlTree *browser, const
             switch (indexes->GetVal(wxT("contype"))[0U])
             {
                 case 0:
-                    index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+                    index = new pgIndex(collection->GetTable(), indexes->GetVal(wxT("idxname")));
                     break;
                 case 'p':
-                    index = new pgPrimaryKey(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+                    index = new pgPrimaryKey(collection->GetTable(), indexes->GetVal(wxT("idxname")));
                     break;
                 case 'u':
-                    index = new pgUnique(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+                    index = new pgUnique(collection->GetTable(), indexes->GetVal(wxT("idxname")));
                     break;
                 default:
                     index=0;
                     break;
             }
             index->iSetOid(indexes->GetOid(wxT("oid")));
-            index->iSetTableOid(collection->GetOid());
             index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
             index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
             index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
@@ -343,7 +349,22 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, ctlTree *browser, const
 
 
 
-pgObject *pgIndex::ReadObjects(pgCollection *collection, ctlTree *browser)
+pgObject *pgIndexFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
-    return ReadObjects(collection, browser, wxT("\n   AND conname IS NULL"));
+    return pgIndexBaseFactory::CreateObjects(collection, browser, wxT("\n   AND conname IS NULL"));
 }
+
+
+/////////////////////////////
+
+#include "images/index.xpm"
+#include "images/indexes.xpm"
+
+pgIndexFactory::pgIndexFactory()
+: pgIndexBaseFactory(__("Index"), _("New Index"), _("Create a new Index."), index_xpm)
+{
+}
+
+
+pgIndexFactory indexFactory;
+static pgaCollectionFactory cf(&indexFactory, __("Indexes"), indexes_xpm);

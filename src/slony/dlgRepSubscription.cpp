@@ -19,8 +19,7 @@
 #include "slCluster.h"
 #include "slSubscription.h"
 #include "slSet.h"
-// Images
-#include "images/slsubscription.xpm"
+
 
 
 // pointer to controls
@@ -37,10 +36,14 @@ BEGIN_EVENT_TABLE(dlgRepSubscription, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *slSubscriptionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepSubscription(frame, (slSubscription*)node, (slSet*)parent);
+}
+
 dlgRepSubscription::dlgRepSubscription(frmMain *frame, slSubscription *sub, slSet *s)
 : dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepSubscription"))
 {
-    SetIcon(wxIcon(slsubscription_xpm));
     subscription=sub;
     set=s;
 }
@@ -108,7 +111,7 @@ int dlgRepSubscription::Go(bool modal)
 
 pgObject *dlgRepSubscription::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=slSubscription::ReadObjects((slSetCollection*)collection, 0,
+    pgObject *obj=subscriptionFactory.CreateObjects(collection, 0,
          wxT(" WHERE set_id = ") + NumToStr(set->GetSlId()) +
          wxT("   AND sub_receiver = ") + NumToStr(cluster->GetLocalNodeID()));
 

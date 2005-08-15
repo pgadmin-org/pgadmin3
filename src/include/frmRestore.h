@@ -13,16 +13,10 @@
 #ifndef FRMRESTORE_H
 #define FRMRESTORE_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "dlgClasses.h"
+#include "base/factory.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "frmMain.h"
-
-// Class declarations
-
-
+class pgServer;
 class frmRestore : public ExternProcessDialog
 {
 public:
@@ -60,8 +54,8 @@ private:
 class restoreFactory : public contextActionFactory
 {
 public:
-    restoreFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    restoreFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

@@ -26,8 +26,6 @@
 #include "misc.h"
 #include "menu.h"
 
-// Icons
-#include "images/pgAdmin3.xpm"
 
 extern wxLocale *locale;
 extern wxArrayInt existingLangs;
@@ -75,7 +73,7 @@ frmOptions::frmOptions(frmMain *parent)
     LoadResource(parent, wxT("frmOptions")); 
 
     // Icon
-    SetIcon(wxIcon(pgAdmin3_xpm));
+    appearanceFactory->SetIcons(this);
     CenterOnParent();
 
     wxAcceleratorEntry entries[1];
@@ -306,15 +304,15 @@ void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
 }
 
 
-optionsFactory::optionsFactory(wxMenu *mnu, wxToolBar *toolbar)
+optionsFactory::optionsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Options..."), _("Show options dialog."));
 }
 
 
-wxWindow *optionsFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *optionsFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmOptions *frm=new frmOptions((frmMain*)form);
+    frmOptions *frm=new frmOptions(form);
     frm->Show();
     return frm;
 }

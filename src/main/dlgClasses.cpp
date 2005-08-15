@@ -19,8 +19,10 @@
 #include "pgAdmin3.h"
 #include "frmMain.h"
 #include "pgConn.h"
+#include "pgObject.h"
 #include "sysProcess.h"
 #include "menu.h"
+
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(windowList);
@@ -170,29 +172,46 @@ BEGIN_EVENT_TABLE(pgFrame, wxFrame)
     EVT_MENU(MNU_RECENT+7,              pgFrame::OnRecent)
     EVT_MENU(MNU_RECENT+8,              pgFrame::OnRecent)
     EVT_MENU(MNU_RECENT+9,              pgFrame::OnRecent)
-    EVT_MENU(MNU_BUGREPORT,             pgFrame::OnBugreport)
-    EVT_MENU(MNU_HELP,                  pgFrame::OnHelp)
 #ifdef __WXGTK__
     EVT_KEY_DOWN(                       pgFrame::OnKeyDown)
 #endif
 END_EVENT_TABLE()
 
 
+pgFrame::pgFrame(wxFrame *parent, const wxString &title, const wxPoint& pos, const wxSize& size, long flags)
+: wxFrame(parent, -1, title, pos, size, flags)
+{
+    changed = false;
+    recentFileMenu = 0;
+    menuFactories = 0;
+}
+
+
 pgFrame::~pgFrame()
 {
     if (!dlgName.IsEmpty())
         SavePosition();
-    while (menuFactories.GetCount())
-    {
-        delete (actionFactory*)menuFactories.Item(0);
-        menuFactories.RemoveAt(0);
-    }
+    if (menuFactories)
+        delete menuFactories;
+
 }
 
 
 void pgFrame::RemoveFrame(wxWindow *frame)
 {
     frames.DeleteObject(frame);
+}
+
+
+void pgFrame::OnAction(wxCommandEvent &ev)
+{
+    actionFactory *af=menuFactories->GetFactory(ev.GetId());
+    if (af)
+    {
+        wxWindow *wnd=af->StartDialog((frmMain*)this, 0);
+        if (wnd)
+            AddFrame(wnd);
+    }
 }
 
 
@@ -214,24 +233,6 @@ void pgFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
 {
     wxString page=GetHelpPage();
     DisplayHelp(this, page);
-}
-
-
-void pgFrame::OnAction(wxCommandEvent &ev)
-{
-    actionFactory *af=actionFactory::GetFactory(ev.GetId());
-    if (af)
-    {
-        wxWindow *wnd=af->StartDialog(this, 0);
-        if (wnd)
-            AddFrame(wnd);
-    }
-}
-
-
-void pgFrame::OnBugreport(wxCommandEvent& event)
-{
-    DisplayHelp(this, wxT("bugreport"));
 }
 
 

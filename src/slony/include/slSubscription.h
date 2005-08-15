@@ -12,15 +12,21 @@
 #ifndef SLSUBSCRIPTION_H
 #define SLSUBSCRIPTION_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "slSet.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-#include "slObject.h"
+
+class slSubscriptionFactory : public slSetObjFactory
+{
+public:
+    slSubscriptionFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    int GetExportedIconId() { return exportedIconId; }
+    
+protected:
+    int exportedIconId;
+};
+extern slSubscriptionFactory subscriptionFactory;
 
 
 class slSubscription : public slSetObject
@@ -31,8 +37,6 @@ public:
 
     int GetIconId();
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser);
 
     bool WantDummyChild();
     bool RequireDropConfirm() { return true; }

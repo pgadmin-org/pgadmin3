@@ -19,12 +19,11 @@
 #include "misc.h"
 #include "frmMain.h"
 #include "dlgConnect.h"
-#include "pgServer.h"
-#include "pgObject.h"
-#include "pgCollection.h"
+#include "pgDatabase.h"
 #include "pgTablespace.h"
 #include "pgGroup.h"
 #include "pgUser.h"
+#include "pgaJob.h"
 #include "utffile.h"
 #include "pgfeatures.h"
 
@@ -731,9 +730,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                 wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
 
             if (!exists.IsNull())
-            {
-                AppendBrowserItem(browser, new pgCollection(PGA_JOBS, this));
-            }
+                browser->AppendCollection(this, jobFactory);
 
             browser->AppendCollection(this, groupFactory);
             browser->AppendCollection(this, userFactory);

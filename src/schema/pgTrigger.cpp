@@ -19,12 +19,11 @@
 #include "pgObject.h"
 
 #include "pgTrigger.h"
-#include "pgCollection.h"
 #include "pgFunction.h"
 
 
-pgTrigger::pgTrigger(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_TRIGGER, newName)
+pgTrigger::pgTrigger(pgTable *newTable, const wxString& newName)
+: pgTableObject(newTable, tableFactory, newName)
 {
     triggerFunction=0;
 }
@@ -160,16 +159,17 @@ pgObject *pgTrigger::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_TRIGGERS)
-            trigger = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            trigger = triggerFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
     }
     return trigger;
 }
 
 
 
-pgObject *pgTrigger::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
+    pgTableObjCollection *collection=(pgTableObjCollection*)coll;
     pgTrigger *trigger=0;
 
     wxString trig_sql;
@@ -190,10 +190,9 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, ctlTree *browser, con
     {
         while (!triggers->Eof())
         {
-            trigger = new pgTrigger(collection->GetSchema(), triggers->GetVal(wxT("tgname")));
+            trigger = new pgTrigger(collection->GetTable(), triggers->GetVal(wxT("tgname")));
 
             trigger->iSetOid(triggers->GetOid(wxT("oid")));
-            trigger->iSetTableOid(collection->GetOid());
             trigger->iSetComment(triggers->GetVal(wxT("description")));
             trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
             trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
@@ -240,3 +239,18 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, ctlTree *browser, con
     }
     return trigger;
 }
+
+
+/////////////////////////////
+
+#include "images/trigger.xpm"
+#include "images/triggers.xpm"
+
+pgTriggerFactory::pgTriggerFactory() 
+: pgTableObjFactory(__("Trigger"), _("New Trigger"), _("Create a new Trigger."), trigger_xpm)
+{
+}
+
+
+pgTriggerFactory triggerFactory;
+static pgaCollectionFactory cf(&triggerFactory, __("Triggers"), triggers_xpm);

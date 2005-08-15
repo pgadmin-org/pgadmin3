@@ -12,18 +12,18 @@
 #ifndef PGASTEP_H
 #define PGASTEP_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgCollection.h"
-#include "pgConn.h"
-#include "pgObject.h"
 #include "pgaJob.h"
 
-// Class declarations
 
+
+class pgaStepFactory : public pgServerObjFactory
+{
+public:
+    pgaStepFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgaStepFactory stepFactory;
 
 class pgaStep : public pgaJobObject
 {
@@ -31,10 +31,8 @@ public:
     pgaStep(pgCollection *collection, const wxString& newName = wxT(""));
     ~pgaStep();
 
-    int GetIconId() { return PGAICON_STEP; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 

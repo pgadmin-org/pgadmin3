@@ -19,53 +19,37 @@
 #include "pgIndexConstraint.h"
 #include "pgCheck.h"
 #include "pgForeignKey.h"
-#include "pgSchema.h"
-#include "pgTable.h"
 
 
 
-pgConstraints::pgConstraints(pgSchema *sch)
-: pgCollection(PG_CONSTRAINTS, sch)
+pgConstraintCollection::pgConstraintCollection(pgaFactory *factory, pgTable *table)
+: pgTableObjCollection(factory, table)
 { 
-    wxLogInfo(wxT("Creating a pgConstraint object")); 
+    wxLogInfo(wxT("Creating a pgConstraintCollection object")); 
 }
 
-pgConstraints::~pgConstraints()
+pgConstraintCollection::~pgConstraintCollection()
 {
-    wxLogInfo(wxT("Destroying a pgConstraint object"));
+    wxLogInfo(wxT("Destroying a pgConstraintCollection object"));
 }
 
 
-wxMenu *pgConstraints::GetNewMenu()
+wxMenu *pgConstraintCollection::GetNewMenu()
 {
     if (!GetSchema()->GetCreatePrivilege())
         return 0;
 
     wxMenu *menu=new wxMenu();
     if (table->GetPrimaryKey().IsEmpty())
-        AppendMenu(menu, PG_PRIMARYKEY);
-    AppendMenu(menu, PG_FOREIGNKEY);
-    AppendMenu(menu, PG_UNIQUE);
-    AppendMenu(menu, PG_CHECK);
+        primaryKeyFactory.AppendMenu(menu);
+    foreignKeyFactory.AppendMenu(menu);
+    uniqueFactory.AppendMenu(menu);
+    checkFactory.AppendMenu(menu);
     return menu;
 }
 
-bool pgConstraints::IsCollectionForType(int objType)
-{
-    switch (objType)
-    {
-        case PG_FOREIGNKEY:
-        case PG_PRIMARYKEY:
-        case PG_UNIQUE:
-        case PG_CHECK:
-            return true;
-        default:
-            return false;
-    }
-}
 
-
-void pgConstraints::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), false) == 0)
     {
@@ -74,13 +58,35 @@ void pgConstraints::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView 
         table = (pgTable*)browser->GetItemData(id);
         wxASSERT(table && table->GetMetaType() == PGM_TABLE);
 
-        pgPrimaryKey::ReadObjects(this, browser);
-        pgForeignKey::ReadObjects(this, browser);
-        pgUnique::ReadObjects(this, browser);
-        pgCheck::ReadObjects(this, browser);
+        primaryKeyFactory.CreateObjects(this, browser);
+        foreignKeyFactory.CreateObjects(this, browser);
+        uniqueFactory.CreateObjects(this, browser);
+        checkFactory.CreateObjects(this, browser);
     }
     UpdateChildCount(browser);
     if (properties)
-        ShowList(wxT("Constraints"), browser, properties);
+        ShowList(_("Constraints"), browser, properties);
 }
+
+
+
+/////////////////////////////
+
+#include "images/constraints.xpm"
+
+pgConstraintFactory::pgConstraintFactory() 
+: pgTableObjFactory(__("Constraint"), 0, 0, 0)
+{
+    metaType = PGM_CHECK;
+}
+
+pgCollection *pgConstraintFactory::CreateCollection(pgObject *obj)
+{
+    return new pgConstraintCollection(GetCollectionFactory(), (pgTable*)obj);
+}
+
+
+pgConstraintFactory constraintFactory;
+pgaCollectionFactory constraintCollectionFactory(&constraintFactory, __("Constraints"), constraints_xpm);
+
 

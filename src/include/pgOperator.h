@@ -9,17 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGOperator_H
-#define PGOperator_H
+#ifndef PG_OPERATOR_H
+#define PG_OPERATOR_H
 
-// wxWindows headers
-#include <wx/wx.h>
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
 #include "pgSchema.h"
 
 

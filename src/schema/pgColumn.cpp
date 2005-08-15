@@ -17,14 +17,11 @@
 #include "misc.h"
 #include "pgDefs.h"
 #include "pgDatatype.h"
-
-#include "pgObject.h"
 #include "pgColumn.h"
-#include "pgSchema.h"
 
 
-pgColumn::pgColumn(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_COLUMN, newName)
+pgColumn::pgColumn(pgTable *newTable, const wxString& newName)
+: pgTableObject(newTable, columnFactory, newName)
 {
     isFK=false;
     isPK=false;
@@ -63,7 +60,7 @@ bool pgColumn::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 void pgColumn::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where)
 {
     pgObject::ShowDependsOn(form, dependsOn, 
-        wxT("\n WHERE dep.objid=") + NumToStr(tableOid) +
+        wxT("\n WHERE dep.objid=") + table->GetOidStr() +
         wxT(" AND dep.objsubid=") + NumToStr(colNumber));
 }
 
@@ -71,7 +68,7 @@ void pgColumn::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxStri
 void pgColumn::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {
     pgObject::ShowReferencedBy(form, referencedBy, 
-        wxT("\n WHERE dep.refobjid=") + NumToStr(tableOid) +
+        wxT("\n WHERE dep.refobjid=") + table->GetOidStr() +
         wxT(" AND dep.refobjsubid=") + NumToStr(colNumber));
 }
 
@@ -250,16 +247,17 @@ pgObject *pgColumn::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_COLUMNS)
-            column = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND attnum=") + NumToStr(GetColNumber()));
+        if (obj->IsCollection())
+            column = columnFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND attnum=") + NumToStr(GetColNumber()));
     }
     return column;
 }
 
 
 
-pgObject *pgColumn::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
+    pgTableObjCollection *collection=(pgTableObjCollection*)coll;
     pgColumn *column=0;
     pgDatabase *database=collection->GetDatabase();
 
@@ -300,9 +298,8 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, ctlTree *browser, cons
     {
         while (!columns->Eof())
         {
-            column = new pgColumn(collection->GetSchema(), columns->GetVal(wxT("attname")));
+            column = new pgColumn(collection->GetTable(), columns->GetVal(wxT("attname")));
 
-            column->iSetTableOid(collection->GetOid());
             column->iSetAttTypId(columns->GetOid(wxT("atttypid")));
             column->iSetColNumber(columns->GetLong(wxT("attnum")));
             column->iSetIsArray(columns->GetBool(wxT("isarray")));
@@ -360,3 +357,17 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, ctlTree *browser, cons
     }
     return column;
 }
+
+
+#include "images/column.xpm"
+#include "images/columns.xpm"
+
+pgColumnFactory::pgColumnFactory() 
+: pgTableObjFactory(__("Column"), _("New Column"), _("Create a new Column."), column_xpm)
+{
+    metaType = PGM_COLUMN;
+}
+
+
+pgColumnFactory columnFactory;
+static pgaCollectionFactory cf(&columnFactory, __("Columns"), columns_xpm);

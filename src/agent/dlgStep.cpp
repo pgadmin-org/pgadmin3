@@ -9,17 +9,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows headers
-#include <wx/wx.h>
-
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "dlgStep.h"
 #include "pgaStep.h"
-
-// Images
-#include "images/step.xpm"
 
 
 // pointer to controls
@@ -42,11 +36,15 @@ BEGIN_EVENT_TABLE(dlgStep, dlgAgentProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaStepFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgStep(frame, (pgaStep*)node, (pgaJob*)parent);
+}
+
+
 dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
 : dlgAgentProperty(frame, wxT("dlgStep"))
 {
-    SetIcon(wxIcon(step_xpm));
-    objectType=PGA_STEP;
     step=node;
     job=j;
     if (job)
@@ -117,7 +115,7 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaStep::ReadObjects(collection, 0, wxT("   AND jstid=") + NumToStr(recId) + wxT("\n"));
+    pgObject *obj=stepFactory.CreateObjects(collection, 0, wxT("   AND jstid=") + NumToStr(recId) + wxT("\n"));
     return obj;
 }
 

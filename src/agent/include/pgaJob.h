@@ -12,15 +12,21 @@
 #ifndef PGAJOB_H
 #define PGAJOB_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "pgServer.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgConn.h"
-#include "pgObject.h"
-// Class declarations
 
+class pgaJobFactory : public pgServerObjFactory
+{
+public:
+    pgaJobFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    int GetDisabledId() { return disabledId; }
+
+protected:
+    int disabledId;
+};
+extern pgaJobFactory jobFactory;
 
 class pgaJob : public pgServerObject
 {
@@ -28,10 +34,9 @@ public:
     pgaJob(const wxString& newName = wxT(""));
     ~pgaJob();
 
-    int GetIconId() { return enabled ? PGAICON_JOB : PGAICON_JOBDISABLED; }
+    int GetIconId();
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 
@@ -76,7 +81,7 @@ private:
 class pgaJobObject : public pgServerObject
 {
 public:
-    pgaJobObject(pgaJob *job, int newType, const wxString& newName);
+    pgaJobObject(pgaJob *job, pgaFactory &factory, const wxString& newName);
     pgaJob *GetJob() { return job; }
 
     bool CanCreate() { return job->CanCreate(); }

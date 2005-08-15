@@ -28,8 +28,14 @@ pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, ch
     factoryArray->Add(this);
     collectionFactory=0;
     typeName=(wxChar*)tn;
-    newString=(wxChar*)ns;
-    newLongString=(wxChar*)nls;
+    if (ns)
+        newString=(wxChar*)ns;
+    else
+        newString=typeName;
+    if (nls)
+        newLongString=(wxChar*)nls;
+    else
+        newLongString=newString;
     metaType=PGM_UNKNOWN;
     image=img;
     if (image)
@@ -63,41 +69,9 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 }
 
 
-#include "images/check.xpm"
-#include "images/column.xpm"
-#include "images/columns.xpm"
-#include "images/index.xpm"
-#include "images/indexes.xpm"
-#include "images/foreignkey.xpm"
 #include "images/property.xpm"
 #include "images/public.xpm"
-#include "images/rule.xpm"
-#include "images/rules.xpm"
 #include "images/statistics.xpm"
-#include "images/trigger.xpm"
-#include "images/triggers.xpm"
-#include "images/constraints.xpm"
-#include "images/primarykey.xpm"
-#include "images/unique.xpm"
-#include "images/job.xpm"
-#include "images/jobs.xpm"
-#include "images/jobdisabled.xpm"
-#include "images/step.xpm"
-#include "images/steps.xpm"
-#include "images/schedule.xpm"
-#include "images/schedules.xpm"
-#include "images/slnode.xpm"
-#include "images/slnodes.xpm"
-#include "images/slpath.xpm"
-#include "images/slpaths.xpm"
-#include "images/sllisten.xpm"
-#include "images/sllistens.xpm"
-#include "images/slset.xpm"
-#include "images/slsets.xpm"
-#include "images/slset2.xpm"
-#include "images/slsubscription.xpm"
-#include "images/slsubscriptions.xpm"
-#include "images/slsubscription2.xpm"
 
 
 wxArrayPtrVoid *deferredImagesArray=0;
@@ -108,47 +82,12 @@ int pgaFactory::addImage(char **img)
     {
         if (!deferredImagesArray)
         {
-            deferredImagesArray = new wxArrayPtrVoid;
             //Setup the global imagelist
+            deferredImagesArray = new wxArrayPtrVoid;
+
             deferredImagesArray->Add(property_xpm);
             deferredImagesArray->Add(statistics_xpm);
-            deferredImagesArray->Add(check_xpm);
-            deferredImagesArray->Add(columns_xpm);
-            deferredImagesArray->Add(column_xpm);
-            deferredImagesArray->Add(indexes_xpm);
-            deferredImagesArray->Add(index_xpm);
-            deferredImagesArray->Add(rules_xpm);
-            deferredImagesArray->Add(rule_xpm);
-            deferredImagesArray->Add(triggers_xpm);
-            deferredImagesArray->Add(trigger_xpm);
-            deferredImagesArray->Add(foreignkey_xpm);
-            deferredImagesArray->Add(constraints_xpm);
-            deferredImagesArray->Add(primarykey_xpm);
-            deferredImagesArray->Add(unique_xpm);
             deferredImagesArray->Add(public_xpm);
-
-            // job, jobdisabled, step, schedule
-            deferredImagesArray->Add(jobs_xpm);
-            deferredImagesArray->Add(job_xpm);
-            deferredImagesArray->Add(jobdisabled_xpm);
-            deferredImagesArray->Add(steps_xpm);
-            deferredImagesArray->Add(step_xpm);
-            deferredImagesArray->Add(schedules_xpm);
-            deferredImagesArray->Add(schedule_xpm);
-
-            // slony cluster, node, path, listen, set, subscription
-            deferredImagesArray->Add(slnodes_xpm);
-            deferredImagesArray->Add(slnode_xpm);
-            deferredImagesArray->Add(slpaths_xpm);
-            deferredImagesArray->Add(slpath_xpm);
-            deferredImagesArray->Add(sllistens_xpm);
-            deferredImagesArray->Add(sllisten_xpm);
-            deferredImagesArray->Add(slsets_xpm);
-            deferredImagesArray->Add(slset_xpm);
-            deferredImagesArray->Add(slset2_xpm);
-            deferredImagesArray->Add(slsubscriptions_xpm);
-            deferredImagesArray->Add(slsubscription_xpm);
-            deferredImagesArray->Add(slsubscription2_xpm);
         }
 
         deferredImagesArray->Add(img);
@@ -185,7 +124,7 @@ void pgaFactory::RegisterMenu(wxWindow *w, wxObjectEventFunction func)
 
 void pgaFactory::AppendMenu(wxMenu *menu)
 {
-    if (menu)
+    if (menu && GetNewString())
     {
         wxMenuItem *item=menu->Append(MNU_NEW+GetId(), GetNewString(), GetNewLongString());
         if (image)
@@ -238,26 +177,22 @@ dlgProperty *pgaCollectionFactory::CreateDialog(frmMain *frame, pgObject *node, 
 
 ////////////////////////////////////////////////
 
-wxArrayPtrVoid *actionFactoryArray=0;
 
-
-actionFactory::actionFactory()
+menuFactoryList::~menuFactoryList()
 {
-    context=false;
-    if (!actionFactoryArray)
-        actionFactoryArray = new wxArrayPtrVoid;
-
-    id = actionFactoryArray->GetCount()+MNU_ACTION;
-    actionFactoryArray->Add(this);
+    while (GetCount())
+    {
+        delete (actionFactory*)Item(0);
+        RemoveAt(0);
+    }
 }
 
-
-actionFactory *actionFactory::GetFactory(int id, bool actionOnly)
+actionFactory *menuFactoryList::GetFactory(int id, bool actionOnly)
 {
     id -= MNU_ACTION;
-    if (id >= 0 && id < (int)actionFactoryArray->GetCount())
+    if (id >= 0 && id < (int)GetCount())
     {
-        actionFactory *f=(actionFactory*)actionFactoryArray->Item(id);
+        actionFactory *f=(actionFactory*)Item(id);
         if (f->IsAction() || !actionOnly) 
             return f;
     }
@@ -265,23 +200,24 @@ actionFactory *actionFactory::GetFactory(int id, bool actionOnly)
 }
 
 
-void actionFactory::RegisterMenu(wxWindow *w, wxObjectEventFunction func)
+void menuFactoryList::RegisterMenu(wxWindow *w, wxObjectEventFunction func)
 {
-    w->Connect(MNU_ACTION, MNU_ACTION+actionFactoryArray->GetCount()-1, 
+    w->Connect(MNU_ACTION, MNU_ACTION+GetCount()-1, 
         wxEVT_COMMAND_MENU_SELECTED, func);
 }
 
 
-void actionFactory::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar)
+void menuFactoryList::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar)
 {
     size_t id;
-    for (id=MNU_ACTION ; id < actionFactoryArray->GetCount()+MNU_ACTION ; id++)
+    for (id=MNU_ACTION ; id < GetCount()+MNU_ACTION ; id++)
     {
         actionFactory *f=GetFactory(id);
         if (f)
         {
             bool how=f->CheckEnable(obj);
-            menubar->Enable(id, how);
+            if (menubar->FindItem(id))
+                menubar->Enable(id, how);
             if (toolbar)
                 toolbar->EnableTool(id, how);
         }
@@ -289,37 +225,48 @@ void actionFactory::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *tool
 }
 
 
-void actionFactory::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu)
+void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu)
 {
     size_t id;
     wxMenuItem *lastItem=0;
-    for (id=MNU_ACTION ; id < actionFactoryArray->GetCount()+MNU_ACTION ; id++)
+    for (id=MNU_ACTION ; id < GetCount()+MNU_ACTION ; id++)
     {
         actionFactory *f=GetFactory(id, false);
         if (f->IsAction())
         {
             if (f->GetContext())
             {
-                if (menuBar->IsEnabled(id))
-                {
-                    wxMenuItem *menuItem=menuBar->FindItem(id);
-                    if (menuItem)
-                        lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
-                }
+                wxMenuItem *menuItem=menuBar->FindItem(id);
+                if (menuItem && menuItem->IsEnabled())
+                    lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
             }
         }
         else
         {
-            // check here if last menu is already separator
-            if (!lastItem || lastItem->GetId() >= 0)
+            if (lastItem && lastItem->GetId() >= 0)
                 lastItem = treeContextMenu->AppendSeparator();
         }
     }
-    lastItem = treeContextMenu->AppendSeparator();
-    // check here if last menu is separator and remove it
+
     if (lastItem && lastItem->GetId() < 0)
     {
         treeContextMenu->Remove(lastItem);
         delete lastItem;
     }
 }
+
+
+menuFactory::menuFactory(menuFactoryList *list)
+{
+    if (list)
+        list->Add(this);
+}
+
+
+actionFactory::actionFactory(menuFactoryList *list) : menuFactory(list)
+{
+    id = list->GetCount()+MNU_ACTION -1;
+    context=false;
+}
+
+

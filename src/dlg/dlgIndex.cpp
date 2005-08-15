@@ -21,9 +21,6 @@
 #include "pgColumn.h"
 #include "pgTable.h"
 
-// Images
-#include "images/index.xpm"
-
 
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 #define cbType          CTRL_COMBOBOX("cbType")
@@ -44,10 +41,15 @@ BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
 END_EVENT_TABLE();
 
 
-dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *node, pgTable *parentNode)
+dlgProperty *pgIndexFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgIndex(frame, (pgIndex*)node, (pgTable*)parent);
+}
+
+
+dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndexBase *node, pgTable *parentNode)
 : dlgCollistProperty(frame, resName, parentNode)
 {
-    SetIcon(wxIcon(index_xpm));
     index=node;
     wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
 
@@ -58,7 +60,6 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *nod
 dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView *colList)
 : dlgCollistProperty(frame, resName, colList)
 {
-    SetIcon(wxIcon(index_xpm));
     index=0;
     
     lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
@@ -88,7 +89,7 @@ int dlgIndexBase::Go(bool modal)
             wxString str=cols.GetNextToken();
             if (str.Strip() == wxT(""))
                 str.RemoveLast();       // there's a space
-            lstColumns->InsertItem(pos++, str, PGICON_COLUMN);
+            lstColumns->InsertItem(pos++, str, columnFactory.GetIconId());
         }
     }
     else
@@ -105,7 +106,7 @@ void dlgIndexBase::OnAddCol(wxCommandEvent &ev)
     wxString col=cbColumns->GetValue();
     if (!col.IsEmpty())
     {
-        lstColumns->InsertItem(lstColumns->GetItemCount(), col, PGICON_COLUMN);
+        lstColumns->InsertItem(lstColumns->GetItemCount(), col, columnFactory.GetIconId());
         cbColumns->Delete(cbColumns->GetSelection());
         if (cbColumns->GetCount())
             cbColumns->SetSelection(0);
@@ -274,7 +275,7 @@ pgObject *dlgIndex::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgIndex::ReadObjects(collection, 0, wxT(
+    pgObject *obj=indexFactory.CreateObjects(collection, 0, wxT(
         "\n   AND cls.relname=") + qtString(name) + wxT(
         "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;

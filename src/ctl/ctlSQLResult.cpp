@@ -12,9 +12,11 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-
+#include "pgConn.h"
 #include "ctl/ctlSQLResult.h"
+#include "sysSettings.h"
 #include "frmExport.h"
+
 
 
 ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const wxPoint& pos, const wxSize& size)

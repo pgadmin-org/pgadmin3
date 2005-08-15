@@ -15,14 +15,11 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
-#include "pgTable.h"
 #include "pgForeignKey.h"
-#include "pgCollection.h"
-#include "pgTable.h"
+#include "pgConstraints.h"
 
-pgForeignKey::pgForeignKey(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_FOREIGNKEY, newName)
+pgForeignKey::pgForeignKey(pgTable *newTable, const wxString& newName)
+: pgTableObject(newTable, foreignKeyFactory, newName)
 {
 }
 
@@ -181,16 +178,17 @@ pgObject *pgForeignKey::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_CONSTRAINTS)
-            foreignKey = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND ct.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            foreignKey = foreignKeyFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND ct.oid=") + GetOidStr());
     }
     return foreignKey;
 }
 
 
 
-pgObject *pgForeignKey::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
+    pgTableObjCollection *collection=(pgTableObjCollection*)coll;
     pgForeignKey *foreignKey=0;
 
     pgSet *foreignKeys= collection->GetDatabase()->ExecuteSet(
@@ -211,10 +209,9 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, ctlTree *browser, 
     {
         while (!foreignKeys->Eof())
         {
-            foreignKey = new pgForeignKey(collection->GetSchema(), foreignKeys->GetVal(wxT("conname")));
+            foreignKey = new pgForeignKey(collection->GetTable(), foreignKeys->GetVal(wxT("conname")));
 
             foreignKey->iSetOid(foreignKeys->GetOid(wxT("oid")));
-            foreignKey->iSetTableOid(collection->GetOid());
             foreignKey->iSetRelTableOid(foreignKeys->GetOid(wxT("confrelid")));
             foreignKey->iSetFkSchema(foreignKeys->GetVal(wxT("fknsp")));
             foreignKey->iSetComment(foreignKeys->GetVal(wxT("description")));
@@ -263,3 +260,19 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, ctlTree *browser, 
     }
     return foreignKey;
 }
+
+
+/////////////////////////////
+
+#include "images/foreignKey.xpm"
+
+
+pgForeignKeyFactory::pgForeignKeyFactory() 
+: pgTableObjFactory(__("foreignKey"), _("New Foreign Key"), _("Create a new Foreign Key."), foreignkey_xpm)
+{
+    metaType = PGM_FOREIGNKEY;
+    collectionFactory = &constraintCollectionFactory;
+}
+
+
+pgForeignKeyFactory foreignKeyFactory;

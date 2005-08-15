@@ -120,3 +120,17 @@ bool frmUpdate::HasNewBeta()
 #endif
     return false;
 }
+
+
+onlineUpdateFactory::onlineUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("Online Update"), _("Check online for updates"));
+}
+
+
+wxWindow *onlineUpdateFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmUpdate *upd=new frmUpdate(form);
+    upd->Show();
+    return upd;
+}

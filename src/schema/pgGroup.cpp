@@ -15,9 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgGroup.h"
-#include "pgCollection.h"
 
 
 pgGroup::pgGroup(const wxString& newName)

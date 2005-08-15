@@ -18,9 +18,8 @@
 #include <wx/listctrl.h>
 #include <wx/spinctrl.h>
 
-// App headers
-#include "pgAdmin3.h"
-#include "frmMain.h"
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 #define CTL_STATUSLIST 300
 
@@ -85,8 +84,8 @@ private:
 class serverStatusFactory : public actionFactory
 {
 public:
-    serverStatusFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    serverStatusFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

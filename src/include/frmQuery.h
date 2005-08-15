@@ -12,15 +12,11 @@
 #ifndef __FRM_QUERY_H
 #define __FRM_QUERY_H
 
-
-
-// wxWindows headers
-#include <wx/wx.h>
-
-#include "ctl/ctlSQLResult.h"
-
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 class ExplainCanvas;
+class ctlSQLResult;
 
 class frmQuery : public pgFrame
 {
@@ -106,8 +102,8 @@ enum
 class queryToolFactory : public actionFactory
 {
 public:
-    queryToolFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

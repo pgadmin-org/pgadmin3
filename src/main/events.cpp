@@ -19,7 +19,6 @@
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/imaglist.h>
-#include <wx/tipdlg.h>
 #include <wx/stc/stc.h>
 #include <wx/busyinfo.h>
 
@@ -39,7 +38,6 @@
 #include "frmHelp.h"
 #include "dlgProperty.h"
 #include "frmUpdate.h"
-#include "slFunctions.h"
 
 extern wxString loadPath;
 
@@ -47,45 +45,13 @@ extern wxString loadPath;
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
-    EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
-    EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
-    EVT_MENU(MNU_ONLINEUPDATE,              frmMain::OnOnlineUpdate)
     EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
-    EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
-    EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
+
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
-    EVT_MENU(MNU_DROP,                      frmMain::OnDrop)
-    EVT_MENU(MNU_DROPCASCADED,              frmMain::OnDropCascaded)
-    EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
-    EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
-    EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
-    EVT_MENU(MNU_NEW+PG_COLUMN,             frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_PRIMARYKEY,         frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_FOREIGNKEY,         frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_UNIQUE,             frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_CHECK,              frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_INDEX,              frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_RULE,               frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PG_TRIGGER,            frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PGA_JOB,               frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PGA_STEP,              frmMain::OnNew)
-    EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_NODE,               frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_PATH,               frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_LISTEN,             frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_SET,                frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_SEQUENCE,           frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_TABLE,              frmMain::OnNew)
-    EVT_MENU(MNU_NEW+SL_SUBSCRIPTION,       frmMain::OnNew)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
-    EVT_MENU(MNU_SLONY_RESTART,             frmMain::OnRestartNode)
-    EVT_MENU(MNU_SLONY_UPGRADE,             frmMain::OnUpgradeNode)
-    EVT_MENU(MNU_SLONY_FAILOVER,            frmMain::OnFailover)
-    EVT_MENU(MNU_SLONY_MERGESET,            frmMain::OnMergeSet)
-    EVT_MENU(MNU_SLONY_MOVESET,             frmMain::OnMoveSet)
 
     EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
@@ -115,10 +81,10 @@ void frmMain::OnTreeKeyDown(wxTreeEvent& event)
 	    OnHelp(event);
 	    break;
 	case WXK_F5:
-	    OnRefresh(event);
+	    Refresh(currentObject);
 	    break;
 	case WXK_DELETE:
-	    OnDrop(event);
+	    OnDelete(event);
 	    break;
 	default:
 	    event.Skip();
@@ -159,7 +125,7 @@ void frmMain::OnClose(wxCloseEvent& event)
 
 void frmMain::OnAction(wxCommandEvent &ev)
 {
-    actionFactory *af=actionFactory::GetFactory(ev.GetId());
+    actionFactory *af=menuFactories->GetFactory(ev.GetId());
     if (af)
     {
         wxWindow *wnd=af->StartDialog(this, currentObject);
@@ -169,64 +135,9 @@ void frmMain::OnAction(wxCommandEvent &ev)
 }
 
 
-void frmMain::OnTipOfTheDay(wxCommandEvent& WXUNUSED(event))
-{
-    extern wxString docPath;
-    extern wxLocale *locale;
-
-    wxString file;
-    
-    file = docPath + wxT("/") + locale->GetCanonicalName() + wxT("/tips.txt");
-
-    if (!wxFile::Exists(file))
-        file = docPath + wxT("/en_US/tips.txt");    
-
-    if (!wxFile::Exists(file)) {
-        wxLogError(_("Couldn't open a tips.txt file!"));
-        return;
-    }
-
-    wxTipProvider *tipProvider = wxCreateFileTipProvider(file, settings->GetNextTipOfTheDay());
-    settings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
-    settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
-
-    delete tipProvider;
-}
-
-
-
-void frmMain::OnOnlineUpdate(wxCommandEvent &event)
-{
-    frmUpdate *upd=new frmUpdate(this);
-    upd->Show();
-}
-
-
 void frmMain::OnOnlineUpdateNewData(wxCommandEvent &event)
 {
     wxLogError(__("Could not contact pgAdmin web site to check for updates.\nMaybe your proxy option setting need adjustment."));
-}
-
-
-
-void frmMain::OnContents(wxCommandEvent& event)
-{
-    DisplayHelp(this, wxT("index"));
-}
-
-
-void frmMain::OnPgsqlHelp(wxCommandEvent& event)
-{
-    DisplaySqlHelp(this, wxT("index"));
-}
-
-
-void frmMain::OnFaq(wxCommandEvent& event)
-{
-    frmHelp *h=new frmHelp(this);
-    h->Show(true);
-    if (!h->Load(wxT("http://www.pgadmin.org/faq/")))
-        h->Destroy();
 }
 
 
@@ -242,7 +153,6 @@ wxString frmMain::GetHelpPage() const
 
     return page;
 }
-
 
 void frmMain::OnCollapse(wxTreeEvent &event)
 {
@@ -276,92 +186,9 @@ void frmMain::OnExpand(wxTreeEvent &event)
 
 void frmMain::OnCheckAlive(wxCommandEvent &event)
 {
-    checkAlive();
+    CheckAlive();
 }
 
-
-void frmMain::OnSaveDefinition(wxCommandEvent& event)
-{
-
-    wxLogInfo(wxT("Saving object definition"));
-
-    if (sqlPane->GetText().IsNull()) {
-        wxLogError(__("There is nothing in the SQL pane to save!"));
-        return;
-    }
-
-    wxFileDialog filename(this, _("Select output file"), wxT(""), wxT(""), _("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
-    filename.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
-
-    // Show the dialogue
-    if (filename.ShowModal() == wxID_OK)
-    {
-        // Write the file
-        if (!FileWrite(filename.GetPath(), sqlPane->GetText()))
-            wxLogError(__("Failed to write to the output file: %s"), filename.GetPath().c_str());
-    }
-    else
-    {
-        wxLogInfo(wxT("User cancelled"));
-    }
-}
-
-void frmMain::OnShowSystemObjects(wxCommandEvent& event)
-{
-    // Warn the user
-    int rc;
-
-	wxMessageDialog *dlg;
-    if (settings->GetShowSystemObjects())
-	{
-		dlg=new wxMessageDialog(this, 
-							  _("System objects will not be removed from the object tree until a refresh is performed.\nClose all connections now?"),
-							  _("Hide system objects"),
-							  wxYES_NO|wxCANCEL | wxICON_QUESTION);
-	}
-    else
-	{
-        dlg=new wxMessageDialog(this,
-								_("System objects will not show in the the object tree until a refresh is performed.\nClose all connections now?"),
-								_("Show system objects"),
-								wxYES_NO|wxCANCEL | wxICON_QUESTION);
-	}
-	dlg->CenterOnParent();
-	rc=dlg->ShowModal();
-	delete dlg;
-
-    if (rc == wxID_CANCEL)
-    {
-        viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
-        return;
-    }
-
-    settings->SetShowSystemObjects(!settings->GetShowSystemObjects());
-    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
-
-    if (rc == wxID_YES)
-    {
-        wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
-
-		// Store the servers to prevent dropped ones reappearing in a minute.
-		StoreServers();
-
-        // Clear the treeview
-        browser->DeleteAllItems();
-
-        // Add the root node
-        serversObj = new pgServerCollection(&serverFactory);
-        wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
-            serversObj->GetIconId(), -1, serversObj);
-
-        RetrieveServers();
-        browser->Expand(servers);
-        browser->SelectItem(servers);
-#ifdef __WIN32__
-        denyCollapseItem = servers;
-#endif
-    }
-}
 
 
 void frmMain::OnPropSelChanged(wxListEvent& event)
@@ -387,11 +214,8 @@ void frmMain::OnPropSelChanged(wxListEvent& event)
 
 void frmMain::OnPropSelActivated(wxListEvent& event)
 {
-    if (currentObject && currentObject->CanEdit())
-    {
-        wxCommandEvent nullEvent;
-        OnProperties(nullEvent);
-    }
+    if (propFactory->CheckEnable(currentObject))
+        propFactory->StartDialog(this, currentObject);
 }
 
 
@@ -422,10 +246,6 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
         properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
 
         sqlPane->Clear();
-
-        // Reset the toolbar & password menu options
-	    // Handle the menus associated with the buttons
-        SetButtons(0);
     }
 
     // Get the item data, and feed it to the relevant handler,
@@ -456,70 +276,26 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     pgServer *server=0;
 
 
-    bool showTree=true;
+    bool showTree;
 
-    switch (type)
+    pgaFactory *factory=data->GetFactory();
+    if (factory)
     {
-//        case PG_SCHEMA:
-//        case PG_SCHEMAS:
-        case PG_CONSTRAINTS:
-        case PG_FOREIGNKEY:
-        case PG_CHECK:
-        case PG_COLUMNS:
-        case PG_COLUMN:
-        case PG_PRIMARYKEY:
-        case PG_UNIQUE:
-        case PG_INDEXES:
-        case PG_INDEX:
-        case PG_RULES:
-        case PG_RULE:
-        case PG_TRIGGERS:
-        case PG_TRIGGER:
-
-        case PGA_JOBS:
-        case PGA_JOB:
-        case PGA_STEPS:
-        case PGA_STEP:
-		case PGA_SCHEDULES:
-        case PGA_SCHEDULE:
-        case SL_NODE:
-        case SL_NODES:
-        case SL_PATH:
-        case SL_PATHS:
-        case SL_LISTEN:
-        case SL_LISTENS:
-        case SL_SET:
-        case SL_SETS:
-        case SL_SEQUENCE:
-        case SL_SEQUENCES:
-        case SL_TABLE:
-        case SL_TABLES:
-        case SL_SUBSCRIPTION:
-        case SL_SUBSCRIPTIONS:
-            break;
-        default:
+        if (factory == &serverFactory)
         {
-            pgaFactory *factory=data->GetFactory();
-            if (factory)
-            {
-                if (factory == &serverFactory)
-                {
-                    StartMsg(_("Retrieving server properties"));
-    
-                    server = (pgServer *)data;
+            StartMsg(_("Retrieving server properties"));
 
-                    data->ShowTree(this, browser, props, sqlbox);
-                    showTree=false;
-                    EndMsg();
-                }
-                else
-                    showTree=true;
-            }
-            else
-                showTree=false;
-			break;
+            server = (pgServer *)data;
+
+            data->ShowTree(this, browser, props, sqlbox);
+            showTree=false;
+            EndMsg();
         }
+        else
+            showTree=true;
     }
+    else
+        showTree=false;
 
     if (showTree)
         data->ShowTree(this, browser, props, sqlbox);
@@ -534,7 +310,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     pgConn *conn=data->GetConnection();
     if (conn && conn->GetStatus() == PGCONN_BROKEN)
     {
-        checkAlive();
+        CheckAlive();
         return;
     }
     unsigned int i;
@@ -555,14 +331,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             delete newContextMenu->Remove(menuItem);
     }
 
-    editMenu->Enable(MNU_NEWOBJECT, false);
+    editMenu->Enable(newMenuFactory->GetId(), false);
 
     wxMenu *indivMenu=data->GetNewMenu();
     if (indivMenu)
     {
         if (indivMenu->GetMenuItemCount())
         {
-            editMenu->Enable(MNU_NEWOBJECT, true);
+            editMenu->Enable(newMenuFactory->GetId(), true);
 
             for (i=0 ; i < indivMenu->GetMenuItemCount() ; i++)
             {
@@ -576,13 +352,35 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     else
     {
     }
-    actionFactory::CheckMenu(data, menuBar, toolBar);
+    menuFactories->CheckMenu(data, menuBar, toolBar);
 
-    // !!!!! interate submenus to check if any is enabled
-//    toolsMenu->Enable(MNU_CONFIGSUBMENU, checkKids);
-
+    enableSubmenu(MNU_CONFIGSUBMENU);
+    enableSubmenu(MNU_SLONY_SUBMENU);
+    enableSubmenu(newMenuFactory->GetId());
 }
 
+
+void frmMain::enableSubmenu(int id)
+{
+    wxMenuItem *item=menuBar->FindItem(id);
+    if (item)
+    {
+        wxMenu *menu=item->GetMenu();
+        size_t position=0;
+        do
+        {
+            item = menu->FindItemByPosition(position);
+            if (item && item->IsEnabled())
+            {
+                menuBar->Enable(id, true);
+                return;
+            }
+            position++;
+        }
+        while (item);
+        menuBar->Enable(id, false);
+    }
+}
 
 void frmMain::OnSelActivated(wxTreeEvent &event)
 {
@@ -614,14 +412,11 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
     }
     else
     {
-        if (settings->GetDoubleClickProperties())
+        if (settings->GetDoubleClickProperties() && propFactory->CheckEnable(data))
         {
-            if (data->CanEdit())
-            {
-                OnProperties(nullEvent);
-                event.Skip();
-                return;
-            }
+            propFactory->StartDialog(this, data);
+            event.Skip();
+            return;
         }
     }
 
@@ -648,7 +443,19 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
 
     treeContextMenu = new wxMenu();
 
-    appendIfEnabled(MNU_REFRESH);
+    menuFactories->AppendEnabledMenus(menuBar, treeContextMenu);
+
+    wxMenuItem *newItem=treeContextMenu->FindItem(newMenuFactory->GetId());
+    wxASSERT(newItem);
+
+    size_t newItemPos;
+
+    wxMenuItemList mil = treeContextMenu->GetMenuItems();
+    for (newItemPos=0 ; newItemPos < mil.GetCount() ; newItemPos++)
+    {
+        if (mil.Item(newItemPos)->GetData()->GetId() == newItem->GetId())
+            break;
+    }
 
     if (object)
     {
@@ -657,53 +464,26 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
         {
             if (indivMenu->GetMenuItemCount() > 1)
             {
-                wxMenuItem *menuItem = menuBar->FindItem(MNU_NEWOBJECT);
-                treeContextMenu->Append(MNU_NEWOBJECT, menuItem->GetLabel(), indivMenu, menuItem->GetHelp());
+                wxMenuItem *menuItem = menuBar->FindItem(newMenuFactory->GetId());
+                treeContextMenu->Insert(newItemPos, newMenuFactory->GetId(), menuItem->GetLabel(), indivMenu, menuItem->GetHelp());
             }
             else
             {
                 if (indivMenu->GetMenuItemCount() == 1)
                 {
                     wxMenuItem *menuItem=indivMenu->GetMenuItems().Item(0)->GetData();
-                    treeContextMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+                    treeContextMenu->Insert(newItemPos, menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
                 }
                 delete indivMenu;
             }
         }
     }
 
-    int currentSize = treeContextMenu->GetMenuItemCount();
+    treeContextMenu->Remove(newItem);
+    delete newItem;
 
 
-    actionFactory::AppendEnabledMenus(menuBar, treeContextMenu);
-
-    appendIfEnabled(MNU_SLONY_RESTART);
-    appendIfEnabled(MNU_SLONY_UPGRADE);
-    appendIfEnabled(MNU_SLONY_FAILOVER);
-    appendIfEnabled(MNU_SLONY_MERGESET);
-    appendIfEnabled(MNU_SLONY_MOVESET);
-
-
-    int newSize = treeContextMenu->GetMenuItemCount();
-    if (newSize > currentSize)
-    {
-        treeContextMenu->InsertSeparator(currentSize);
-        currentSize = newSize +1;
-    }
-
-    appendIfEnabled(MNU_DROP);
-    appendIfEnabled(MNU_DROPCASCADED);
-    appendIfEnabled(MNU_PROPERTIES);
-
-
-    newSize = treeContextMenu->GetMenuItemCount();
-    if (newSize > currentSize)
-    {
-        treeContextMenu->InsertSeparator(currentSize);
-        currentSize = newSize +1;
-    }
-
-    if (currentSize)
+    if (treeContextMenu->GetMenuItemCount())
         win->PopupMenu(treeContextMenu, point);
 }
 
@@ -753,23 +533,11 @@ void frmMain::OnSelRightClick(wxTreeEvent& event)
 
 void frmMain::OnDelete(wxCommandEvent &ev)
 {
-    OnDrop(ev);
+    ExecDrop(false);
 }
 
 
-void frmMain::OnDropCascaded(wxCommandEvent &ev)
-{
-    execDrop(ev, true);
-}
-
-
-void frmMain::OnDrop(wxCommandEvent &ev)
-{
-    execDrop(ev, false);
-}
-
-
-void frmMain::execDrop(wxCommandEvent &ev, bool cascaded)
+void frmMain::ExecDrop(bool cascaded)
 {
     wxTreeItemId item=browser->GetSelection();
     pgCollection *collection = (pgCollection*)browser->GetItemData(item);
@@ -935,30 +703,6 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 }
 
 
-void frmMain::OnRefresh(wxCommandEvent &ev)
-{
-    // Refresh - Clear the treeview below the current selection
-    // this doesn't use currentObject deliberately!
-
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *data = (pgObject*)browser->GetItemData(item);
-    if (!data)
-        return;
-
-    Refresh(data);
-}
-
-
-void frmMain::OnCreate(wxCommandEvent &ev)
-{
-    if (currentObject)
-    {
-        if (!dlgProperty::CreateObjectDialog(this, currentObject, -1))
-            checkAlive();
-    }
-}
-
-
 void frmMain::OnNew(wxCommandEvent &ev)
 {
     int type=ev.GetId() - MNU_NEW;
@@ -976,66 +720,92 @@ void frmMain::OnNew(wxCommandEvent &ev)
     if (currentObject)
     {
         if (!dlgProperty::CreateObjectDialog(this, currentObject, type))
-            checkAlive();
+            CheckAlive();
     }
 }
 
 
-void frmMain::OnProperties(wxCommandEvent &ev)
+void frmMain::OnSaveDefinition(wxCommandEvent& event)
 {
-    if (currentObject)
+
+    wxLogInfo(wxT("Saving object definition"));
+
+    if (sqlPane->GetText().IsNull()) {
+        wxLogError(__("There is nothing in the SQL pane to save!"));
+        return;
+    }
+
+    wxFileDialog filename(this, _("Select output file"), wxT(""), wxT(""), _("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
+    filename.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
+
+    // Show the dialogue
+    if (filename.ShowModal() == wxID_OK)
     {
-        if (!dlgProperty::EditObjectDialog(this, sqlPane, currentObject))
-            checkAlive();
+        // Write the file
+        if (!FileWrite(filename.GetPath(), sqlPane->GetText()))
+            wxLogError(__("Failed to write to the output file: %s"), filename.GetPath().c_str());
+    }
+    else
+    {
+        wxLogInfo(wxT("User cancelled"));
     }
 }
 
 
-void frmMain::OnMergeSet(wxCommandEvent& event)
+void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 {
-    if (currentObject)
+    // Warn the user
+    int rc;
+
+	wxMessageDialog *dlg;
+    if (settings->GetShowSystemObjects())
+	{
+		dlg=new wxMessageDialog(this, 
+							  _("System objects will not be removed from the object tree until a refresh is performed.\nClose all connections now?"),
+							  _("Hide system objects"),
+							  wxYES_NO|wxCANCEL | wxICON_QUESTION);
+	}
+    else
+	{
+        dlg=new wxMessageDialog(this,
+								_("System objects will not show in the the object tree until a refresh is performed.\nClose all connections now?"),
+								_("Show system objects"),
+								wxYES_NO|wxCANCEL | wxICON_QUESTION);
+	}
+	dlg->CenterOnParent();
+	rc=dlg->ShowModal();
+	delete dlg;
+
+    if (rc == wxID_CANCEL)
     {
-        if (!slFunctions::MergeSet(this, currentObject))
-            checkAlive();
+        viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
+        return;
+    }
+
+    settings->SetShowSystemObjects(!settings->GetShowSystemObjects());
+    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
+
+    if (rc == wxID_YES)
+    {
+        wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
+
+		// Store the servers to prevent dropped ones reappearing in a minute.
+		StoreServers();
+
+        // Clear the treeview
+        browser->DeleteAllItems();
+
+        // Add the root node
+        serversObj = new pgServerCollection(&serverFactory);
+        wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
+            serversObj->GetIconId(), -1, serversObj);
+
+        RetrieveServers();
+        browser->Expand(servers);
+        browser->SelectItem(servers);
+#ifdef __WIN32__
+        denyCollapseItem = servers;
+#endif
     }
 }
 
-
-void frmMain::OnMoveSet(wxCommandEvent& event)
-{
-    if (currentObject)
-    {
-        if (!slFunctions::MoveSet(this, currentObject))
-            checkAlive();
-    }
-}
-
-
-void frmMain::OnFailover(wxCommandEvent& event)
-{
-    if (currentObject)
-    {
-        if (!slFunctions::Failover(this, currentObject))
-            checkAlive();
-    }
-}
-
-
-void frmMain::OnUpgradeNode(wxCommandEvent& event)
-{
-    if (currentObject)
-    {
-        if (!slFunctions::UpgradeNode(this, currentObject))
-            checkAlive();
-    }
-}
-
-
-void frmMain::OnRestartNode(wxCommandEvent& event)
-{
-    if (currentObject)
-    {
-        if (!slFunctions::RestartNode(this, currentObject))
-            checkAlive();
-    }
-}

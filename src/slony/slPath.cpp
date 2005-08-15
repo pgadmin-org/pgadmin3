@@ -17,14 +17,13 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "slPath.h"
-#include "slObject.h"
 #include "slNode.h"
 #include "slCluster.h"
 #include "frmMain.h"
 
 
 slPath::slPath(slNode *n, const wxString& newName)
-: slNodeObject(n, SL_PATH, newName)
+: slNodeObject(n, pathFactory, newName)
 {
     wxLogInfo(wxT("Creating a slPath object"));
 }
@@ -93,8 +92,8 @@ pgObject *slPath::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         slNodeCollection *coll=(slNodeCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == SL_PATHS)
-            path = ReadObjects(coll, 0, 
+        if (coll->IsCollection())
+            path = pathFactory.CreateObjects(coll, 0, 
             wxT(" WHERE pa_server=") + NumToStr(GetSlId()) + 
             wxT("   AND pa_client=") + NumToStr(GetNode()->GetSlId()) +
             wxT("\n"));
@@ -104,14 +103,20 @@ pgObject *slPath::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 
 
-pgObject *slPath::ReadObjects(slNodeCollection *coll, ctlTree *browser, const wxString &restriction)
+pgObject *slPathFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restr)
 {
+    slNodeObjCollection *collection=(slNodeObjCollection*)coll;
     slPath *path=0;
+    wxString restriction;
+    if (restr.IsEmpty())
+        restriction = wxT(" WHERE pa_client = ") + NumToStr(collection->GetSlId());
+    else
+        restriction = restr;
 
-    pgSet *paths = coll->GetDatabase()->ExecuteSet(
+    pgSet *paths = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT pa_client, pa_server, pa_conninfo, pa_connretry, no_comment\n")
-        wxT("  FROM ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_path\n")
-        wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_node on no_id=pa_server\n")
+        wxT("  FROM ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_path\n")
+        wxT("  JOIN ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_node on no_id=pa_server\n")
          + restriction +
         wxT(" ORDER BY pa_server"));
 
@@ -119,14 +124,14 @@ pgObject *slPath::ReadObjects(slNodeCollection *coll, ctlTree *browser, const wx
     {
         while (!paths->Eof())
         {
-            path = new slPath(coll->GetNode(), paths->GetVal(wxT("no_comment")).BeforeFirst('\n'));
+            path = new slPath(collection->GetNode(), paths->GetVal(wxT("no_comment")).BeforeFirst('\n'));
             path->iSetSlId(paths->GetLong(wxT("pa_server")));
             path->iSetConnInfo(paths->GetVal(wxT("pa_conninfo")));
             path->iSetConnRetry(paths->GetLong(wxT("pa_connretry")));
 
             if (browser)
             {
-                browser->AppendObject(coll, path);
+                browser->AppendObject(collection, path);
 				paths->MoveNext();
             }
             else
@@ -139,11 +144,17 @@ pgObject *slPath::ReadObjects(slNodeCollection *coll, ctlTree *browser, const wx
 }
 
 
-    
-pgObject *slPath::ReadObjects(slNodeCollection *coll, ctlTree *browser)
+///////////////////////////////////////////////////
+
+#include "images/slpath.xpm"
+#include "images/slpaths.xpm"
+
+slPathFactory::slPathFactory() 
+: slNodeObjFactory(__("Path"), _("New Path"), _("Create a new Path."), slpath_xpm)
 {
-    // Get the paths
-    wxString restriction = wxT(" WHERE pa_client = ") + NumToStr(coll->GetSlId());
-    return ReadObjects(coll, browser, restriction);
+    metaType = SLM_PATH;
 }
 
+
+slPathFactory pathFactory;
+static pgaCollectionFactory cf(&pathFactory, __("Paths"), slpaths_xpm);

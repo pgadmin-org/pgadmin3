@@ -12,15 +12,21 @@
 #ifndef SLSET_H
 #define SLSET_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "slCluster.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-#include "slObject.h"
+
+class slSetFactory : public slObjFactory
+{
+public:
+    slSetFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    int GetExportedIconId() { return exportedIconId; }
+    
+protected:
+    int exportedIconId;
+};
+extern slSetFactory setFactory;
 
 
 class slSet : public slObject
@@ -31,8 +37,6 @@ public:
 
     int GetIconId();
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slCollection *coll, ctlTree *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slCollection *coll, ctlTree *browser);
 
     bool CanDrop();
     bool RequireDropConfirm() { return true; }
@@ -58,6 +62,45 @@ private:
     long subscriptionCount;
     long originId;
     wxString originNode;
+};
+
+
+// Object in a Slony-I set
+class slSetObject : public slObject
+{
+public:
+    slSetObject(slSet *s, pgaFactory &factory, const wxString& newName = wxT(""));
+    slSet *GetSet() { return set; }
+
+    bool CanDrop();
+    bool CanCreate();
+
+private:
+    slSet *set;
+};
+
+
+// Collection of set objects 
+class slSubscription;
+class slSetObjCollection : public slObjCollection
+{
+public:
+    slSetObjCollection(pgaFactory *factory, slSet *_set);
+    bool CanCreate();
+
+    slSet *GetSet() {return set; }
+
+private:
+    slSet *set;
+    slSubscription *subscription;
+};
+
+
+class slSetObjFactory : public slObjFactory
+{
+public:
+    slSetObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : slObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
 #endif

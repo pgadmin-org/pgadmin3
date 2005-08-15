@@ -23,8 +23,7 @@
 #include "dlgHbaConfig.h"
 #include "frmMain.h"
 #include "utffile.h"
-#include "pgConn.h"
-#include "pgSet.h"
+#include "pgServer.h"
 #include "menu.h"
 #include "pgfeatures.h"
 
@@ -93,10 +92,7 @@ frmHbaConfig::~frmHbaConfig()
 
 void frmHbaConfig::Init()
 {
-    wxIconBundle icons;
-    icons.AddIcon(wxIcon(pgAdmin3_xpm));
-    icons.AddIcon(wxIcon(elephant32_xpm));
-    SetIcons(icons);
+    appearanceFactory->SetIcons(this);
 
     InitFrame(wxT("frmHbaConfig"));
     RestorePosition(150, 150, 650, 300, 300, 200);
@@ -287,18 +283,18 @@ void frmHbaConfig::OnEditSetting(wxListEvent& event)
 }
 
 
-hbaConfigFactory::hbaConfigFactory (wxMenu *mnu, wxToolBar *toolbar)
+hbaConfigFactory::hbaConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, wxT("pg_hba.conf"), _("Edit server access configuration file."));
 }
 
 
-wxWindow *hbaConfigFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *hbaConfigFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     pgServer *server=obj->GetServer();
     if (server)
     {
-        frmHbaConfig *frm=new frmHbaConfig((frmMain*)form, server);
+        frmHbaConfig *frm=new frmHbaConfig(form, server);
         frm->Go();
         return frm;
     }
@@ -319,15 +315,15 @@ bool hbaConfigFactory::CheckEnable(pgObject *obj)
 }
 
 
-hbaConfigFileFactory::hbaConfigFileFactory(wxMenu *mnu, wxToolBar *toolbar)
+hbaConfigFileFactory::hbaConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("Open pg_hba.conf"), _("Open configuration editor with pg_hba.conf."));
 }
 
 
-wxWindow *hbaConfigFileFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *hbaConfigFileFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmConfig *dlg = new frmHbaConfig((frmMain*)form);
+    frmConfig *dlg = new frmHbaConfig(form);
     dlg->Go();
     dlg->DoOpen();
     return dlg;

@@ -21,6 +21,9 @@
 #include "menu.h"
 #include "explainCanvas.h"
 
+#include "ctl/ctlSQLResult.h"
+#include "pgDatabase.h"
+
 #include <wx/clipbrd.h>
 
 // Icons
@@ -1192,16 +1195,15 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 }
 
 
-queryToolFactory::queryToolFactory(wxMenu *mnu, wxToolBar *toolbar)
+queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Query tool"), _("Execute arbitrary SQL queries."));
     toolbar->AddTool(id, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
 }
 
 
-wxWindow *queryToolFactory::StartDialog(pgFrame *fr, pgObject *obj)
+wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmMain *form=(frmMain*)fr;
     pgDatabase *db=obj->GetDatabase();
     pgServer *server=db->GetServer();
     pgConn *conn = db->CreateConn();

@@ -25,7 +25,6 @@
 #include "menu.h"
 
 // Icons
-#include "images/pgAdmin3.xpm"
 #include "images/reload.xpm"
 #include "images/forward.xpm"
 #include "images/back.xpm"
@@ -45,7 +44,7 @@ END_EVENT_TABLE();
 frmHelp::frmHelp(wxWindow *fr) 
 : pgFrame((wxFrame*)fr, wxEmptyString)
 {
-    SetIcon(wxIcon(pgAdmin3_xpm));
+    appearanceFactory->SetIcons(this);
     dlgName = wxT("frmHelp");
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -131,7 +130,6 @@ bool frmHelp::Load(const wxString &page, char **icon)
             SetIcon(wxIcon(help_xpm));
     }
 
-
     currentPage=page;
     bool loaded=htmlWindow->LoadPage(page);
     if (loaded)
@@ -211,4 +209,73 @@ ctlHelpWindow::ctlHelpWindow(frmHelp *frm)
 void ctlHelpWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
 {
     helpForm->OnLinkClicked(link);
+}
+
+
+/////////////////////////////////////////
+
+
+contentsFactory::contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("&Help..."), _("Open the pgAdmin III helpfile."));
+}
+
+
+wxWindow *contentsFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplayHelp(form, wxT("index"));
+    return 0;
+}
+
+
+faqFactory::faqFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("pgAdmin III &FAQ"), _("Frequently asked questions about pgAdmin III."));
+}
+
+
+wxWindow *faqFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    frmHelp *h=new frmHelp(form);
+    h->Show(true);
+    if (!h->Load(wxT("http://www.pgadmin.org/faq/")))
+    {
+        h->Destroy();
+        h=0;
+    }
+   return 0;
+}
+
+
+#include "images/help2.xpm"
+pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigIcon) : actionFactory(list)
+{
+    mnu->Append(id, _("&PostgreSQL Help"), _("Display help on PostgreSQL database system."));
+    if (toolbar)
+    {
+        if (bigIcon)
+            toolbar->AddTool(id, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
+        else
+            toolbar->AddTool(id, _("SQL Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
+    }
+}
+
+
+wxWindow *pgsqlHelpFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplaySqlHelp(form, wxT("index"));
+    return 0;
+}
+
+
+bugReportFactory::bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("&Bugreport"), _("How to send a bugreport to the pgAdmin Development Team."));
+}
+
+
+wxWindow *bugReportFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplaySqlHelp(form, wxT("index"));
+    return 0;
 }

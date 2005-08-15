@@ -9,31 +9,32 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGCheck_H
-#define PGCheck_H
-
-// wxWindows headers
-#include <wx/wx.h>
+#ifndef PGCHECK_H
+#define PGCHECK_H
 
 // App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
+#include "pgTable.h"
+#include "pgConstraints.h"
 
-class pgCollection;
 
-class pgCheck : public pgSchemaObject
+
+class pgCheckFactory : public pgTableObjFactory
 {
 public:
-    pgCheck(pgSchema *newSchema, const wxString& newName = wxT(""));
+    pgCheckFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgCheckFactory checkFactory;
+
+
+class pgCheck : public pgTableObject
+{
+public:
+    pgCheck(pgTable *newTable, const wxString& newName = wxT(""));
     ~pgCheck();
-    void SetSchema(pgSchema *newSchema) { schema = newSchema; }
-    pgSchema *GetSchema() const {return schema; }
-    int GetIconId() { return PGICON_CHECK; }
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
 
     wxString GetFkTable() const { return fkTable; }
     void iSetFkTable(const wxString& s) { fkTable=s; }

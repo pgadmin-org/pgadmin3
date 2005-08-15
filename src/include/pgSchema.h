@@ -12,12 +12,6 @@
 #ifndef PGSCHEMA_H
 #define PGSCHEMA_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgCollection.h"
 #include "pgDatabase.h"
 
 
@@ -74,6 +68,48 @@ private:
 
 /////////////////////////////////////////////////////
 
+class pgSchemaObjFactory : public pgDatabaseObjFactory
+{
+public:
+    pgSchemaObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgDatabaseObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
+
+// Object that lives in a schema
+class pgSchemaObject : public pgDatabaseObject
+{
+public:
+    pgSchemaObject(pgSchema *newSchema, pgaFactory &factory, const wxString& newName=wxEmptyString) : pgDatabaseObject(factory, newName) 
+        { SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
+    pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgDatabaseObject(newType, newName)
+        { SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
+
+    pgSchemaObject::~pgSchemaObject()
+        { wxLogInfo(wxT("Destroying a pg") + GetTypeName() + wxT(" object")); }
+
+    bool GetSystemObject() const;
+
+    bool CanDrop();
+    bool CanEdit() { return true; }
+    bool CanCreate();
+
+    void SetSchema(pgSchema *newSchema);
+    pgSchema *GetSchema() const {return schema; }
+    pgSet *ExecuteSet(const wxString& sql);
+    wxString ExecuteScalar(const wxString& sql);
+    bool ExecuteVoid(const wxString& sql);
+    virtual wxString GetFullIdentifier() const;
+    virtual wxString GetQuotedFullIdentifier() const;
+
+
+protected:
+    virtual void SetContextInfo(frmMain *form);
+
+    pgSchema *schema;
+};
+
+
+// collection of pgSchemaObject
 class pgSchemaObjCollection : public pgCollection
 {
 public:
@@ -81,11 +117,5 @@ public:
     bool CanCreate();
 };
 
-class pgSchemaObjFactory : public pgDatabaseObjFactory
-{
-public:
-    pgSchemaObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgDatabaseObjFactory(tn, ns, nls, img) {}
-    virtual pgCollection *CreateCollection(pgObject *obj);
-};
 
 #endif

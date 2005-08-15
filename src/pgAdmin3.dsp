@@ -1614,6 +1614,10 @@ SOURCE=.\include\pgDefs.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\precomp.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\sysLogger.h
 # End Source File
 # Begin Source File
@@ -1742,19 +1746,11 @@ SOURCE=.\slony\include\slCluster.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\include\slFunctions.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\slony\include\slListen.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\slony\include\slNode.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\slony\include\slObject.h
 # End Source File
 # Begin Source File
 
@@ -1891,19 +1887,11 @@ SOURCE=.\slony\slCluster.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slFunctions.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\slony\slListen.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\slony\slNode.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\slony\slObject.cpp
 # End Source File
 # Begin Source File
 

@@ -13,15 +13,10 @@
 #ifndef FRMBACKUP_H
 #define FRMBACKUP_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "dlgClasses.h"
+#include "base/factory.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "frmMain.h"
-
-// Class declarations
-
+class frmMain;
 
 class frmBackup : public ExternProcessDialog
 {
@@ -51,8 +46,8 @@ private:
 class backupFactory : public contextActionFactory
 {
 public:
-    backupFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    backupFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 

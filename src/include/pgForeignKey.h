@@ -12,29 +12,27 @@
 #ifndef PGFOREIGNKEY_H
 #define PGFOREIGNKEY_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "pgIndex.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-
-class pgCollection;
-
-class pgForeignKey : public pgSchemaObject
+class pgForeignKeyFactory : public pgTableObjFactory
 {
 public:
-    pgForeignKey(pgSchema *newSchema, const wxString& newName = wxT(""));
+    pgForeignKeyFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgForeignKeyFactory foreignKeyFactory;
+
+class pgForeignKey : public pgTableObject
+{
+public:
+    pgForeignKey(pgTable *newTable, const wxString& newName = wxT(""));
     ~pgForeignKey();
     
     wxString GetDefinition();
     wxString GetFullName() const;
 
-    int GetIconId() { return PGICON_FOREIGNKEY; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
 
     wxString GetOnUpdate() const { return onUpdate; }
     void iSetOnUpdate(const wxString& s) { onUpdate=s; }

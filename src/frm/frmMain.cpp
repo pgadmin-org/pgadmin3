@@ -8,7 +8,7 @@
 // frmMain.cpp - The main form
 //
 // Note: Due to the size of frmMain, event handler, browser and statistics 
-//       functions are in events.cpp, browser.cpp and statistics.cpp.
+//       functions are in events.cpp.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +39,6 @@
 #include "pgConn.h"
 #include "pgDatabase.h"
 #include "pgSet.h"
-#include "slSet.h"
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
@@ -57,21 +56,22 @@
 #include "frmPassword.h"
 #include "frmQuery.h"
 #include "frmEditGrid.h"
+#include "frmUpdate.h"
 #include "dlgServer.h"
 #include "dlgDatabase.h"
 #include "dlgTable.h"
 #include "dlgServer.h"
+#include "dlgRepCluster.h"
+#include "dlgRepSet.h"
 
-// Icons
-#include "images/pgAdmin3.xpm"
-#include "images/elephant32.xpm"
 
-#include "images/drop.xpm"
-#include "images/vacuum.xpm"
-#include "images/properties.xpm"
-#include "images/refresh.xpm"
-#include "images/help2.xpm"
-#include "images/create.xpm"
+enum
+{
+    NBP_PROPERTIES=0,
+    NBP_STATISTICS,
+    NBP_DEPENDSON,
+    NBP_REFERENCEDBY
+};
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
@@ -110,13 +110,8 @@ frmMain::frmMain(const wxString& title)
     // Current database
     denyCollapseItem=wxTreeItemId();
     currentObject = 0;
-    m_database = 0;
 
-    // Icon
-    wxIconBundle icons;
-    icons.AddIcon(wxIcon(pgAdmin3_xpm));
-    icons.AddIcon(wxIcon(elephant32_xpm));
-    SetIcons(icons);
+    appearanceFactory->SetIcons(this);
 
     // wxGTK needs this deferred
     pgaFactory::RealizeImages();
@@ -134,94 +129,94 @@ frmMain::frmMain(const wxString& title)
     toolBar=CreateToolBar();
     toolBar->SetToolBitmapSize(wxSize(32, 32));
 
+    menuFactories = new menuFactoryList();
 
 
 
     fileMenu->Append(MNU_SAVEDEFINITION, _("&Save definition..."),_("Save the SQL definition of the selected object."));
     fileMenu->AppendSeparator();
-    menuFactories.Add(new addServerFactory(fileMenu, toolBar));
+    new addServerFactory(menuFactories, fileMenu, toolBar);
 
-    toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_CREATE, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_DROP, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+    actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
+    new countRowsFactory(menuFactories, viewMenu, 0);
+
+    new separatorFactory(menuFactories);
+
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     toolBar->AddSeparator();
 
-    menuFactories.Add(new passwordFactory(fileMenu, 0));
+    new passwordFactory(menuFactories, fileMenu, 0);
     fileMenu->AppendSeparator();
-    optionsFactory *optFact=new optionsFactory(fileMenu, 0);
-    menuFactories.Add(optFact);
+    optionsFactory *optFact=new optionsFactory(menuFactories, fileMenu, 0);
     fileMenu->AppendSeparator();
-    menuFactories.Add(new mainConfigFileFactory(fileMenu, 0));
-    menuFactories.Add(new hbaConfigFileFactory(fileMenu, 0));
+    new mainConfigFileFactory(menuFactories, fileMenu, 0);
+    new hbaConfigFileFactory(menuFactories, fileMenu, 0);
 
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
 
-    editMenu->Append(MNU_NEWOBJECT, _("New &Object"), newMenu,    _("Create a new object."));
-    editMenu->AppendSeparator();
-    editMenu->Append(MNU_CREATE, _("&Create"),                    _("Create a new object of the same type as the selected object."));
-    editMenu->Append(MNU_DROP, _("&Delete/Drop\tDel"),            _("Delete/Drop the selected object."));
-    editMenu->Append(MNU_DROPCASCADED, _("Drop cascaded"),        _("Drop the selected object and all objects dependent on it."));
-    editMenu->Append(MNU_PROPERTIES, _("&Properties"),    		  _("Display/edit the properties of the selected object."));
-
-    menuFactories.Add(new startServiceFactory(toolsMenu, 0));
-    menuFactories.Add(new stopServiceFactory(toolsMenu, 0));
-
-    menuFactories.Add(new connectServerFactory(toolsMenu, 0));
-    menuFactories.Add(new disconnectServerFactory(toolsMenu, 0));
-    toolsMenu->AppendSeparator();
-    menuFactories.Add(new queryToolFactory(toolsMenu, toolBar));
-    menuFactories.Add(new editGridFactory(toolsMenu, toolBar));
-    menuFactories.Add(new editGridFilteredFactory(toolsMenu, toolBar));
-    menuFactories.Add(new maintenanceFactory(toolsMenu, toolBar));
-
-    menuFactories.Add(new backupFactory(toolsMenu, 0));
-    menuFactories.Add(new restoreFactory(toolsMenu, 0));
-
-    menuFactories.Add(new grantWizardFactory(toolsMenu, 0));
-    menuFactories.Add(new mainConfigFactory(cfgMenu, 0));
-    menuFactories.Add(new hbaConfigFactory(cfgMenu, 0));
-
-    toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
-
     slonyMenu=new wxMenu();
-    slonyMenu->Append(MNU_SLONY_RESTART, _("Restart node"),       _("Restart node."));
-    slonyMenu->Append(MNU_SLONY_UPGRADE, _("Upgrade node"),       _("Upgrade node to newest function version."));
-    slonyMenu->Append(MNU_SLONY_FAILOVER, _("Failover"),          _("Failover to backup node."));
-    slonyMenu->Append(MNU_SLONY_MERGESET, _("Merge set"),         _("Merge two replication sets."));
-    slonyMenu->Append(MNU_SLONY_MOVESET, _("Move set"),           _("Move replication set to different node"));
+    new slonyRestartFactory(menuFactories, slonyMenu, 0);
+    new slonyUpgradeFactory(menuFactories, slonyMenu, 0);
+    new slonyFailoverFactory(menuFactories, slonyMenu, 0);
+    new slonyMergeSetFactory(menuFactories, slonyMenu, 0);
+    new slonyMoveSetFactory(menuFactories, slonyMenu, 0);
     toolsMenu->Append(MNU_SLONY_SUBMENU, _("Replication"), slonyMenu);
 
-    toolsMenu->AppendSeparator();
+    propFactory = new propertyFactory(menuFactories, 0, toolBar);
+    new separatorFactory(menuFactories);
 
-    menuFactories.Add(new serverStatusFactory(toolsMenu, 0));
+    newMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "New objects" submenu will be inserted
+    editMenu->Append(newMenuFactory->GetId(), _("New &Object"), newMenu,    _("Create a new object."));
+    editMenu->AppendSeparator();
 
-    viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
-    viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),              _("Refresh the selected object."));
+    new connectServerFactory(menuFactories, toolsMenu, 0);
+    new disconnectServerFactory(menuFactories, toolsMenu, 0);
 
-    menuFactories.Add(new countRowsFactory(viewMenu, 0));
+    new startServiceFactory(menuFactories, toolsMenu, 0);
+    new stopServiceFactory(menuFactories, toolsMenu, 0);
+
+    new createFactory(menuFactories, editMenu, toolBar);
+    new dropFactory(menuFactories, editMenu, toolBar);
+    new dropCascadedFactory(menuFactories, editMenu, 0);
+
+    new separatorFactory(menuFactories);
 
     toolBar->AddSeparator();
-    helpMenu->Append(MNU_PGSQLHELP, _("&PostgreSQL Help"),        _("Display help on PostgreSQL database system."));
+    toolsMenu->AppendSeparator();
+    new queryToolFactory(menuFactories, toolsMenu, toolBar);
+    new editGridFactory(menuFactories, toolsMenu, toolBar);
+    new editGridFilteredFactory(menuFactories, toolsMenu, toolBar);
+    new maintenanceFactory(menuFactories, toolsMenu, toolBar);
 
-    menuFactories.Add(new hintFactory(helpMenu, toolBar));
+    new backupFactory(menuFactories, toolsMenu, 0);
+    new restoreFactory(menuFactories, toolsMenu, 0);
 
-    toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
+    new grantWizardFactory(menuFactories, toolsMenu, 0);
+    new mainConfigFactory(menuFactories, cfgMenu, 0);
+    new hbaConfigFactory(menuFactories, cfgMenu, 0);
+    toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
+    toolsMenu->AppendSeparator();
 
-    helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
-    helpMenu->Append(MNU_FAQ, _("pgAdmin III &FAQ"),              _("Frequently asked questions about pgAdmin III."));
+    new separatorFactory(menuFactories);
 
+    new propertyFactory(menuFactories, editMenu, 0);
+    new serverStatusFactory(menuFactories, toolsMenu, 0);
 
-    helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day"),       _("Show a tip of the day."));
+    toolBar->AddSeparator();
+
+    new hintFactory(menuFactories, helpMenu, toolBar, true);
+    actionFactory *helpFact = new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
+    new contentsFactory(menuFactories, helpMenu, 0);
+    new faqFactory(menuFactories, helpMenu, 0);
+
+    new tipOfDayFactory(menuFactories, helpMenu, 0);
     helpMenu->AppendSeparator();
-    helpMenu->Append(MNU_ONLINEUPDATE, _("Online Update"),        _("Check online for updates"));
-    helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
-    actionFactory *abFact=new aboutFactory(helpMenu, 0);
-    menuFactories.Add(abFact);
-
+    new onlineUpdateFactory(menuFactories, helpMenu, 0);
+    new bugReportFactory(menuFactories, helpMenu, 0);
+    actionFactory *abFact=new aboutFactory(menuFactories, helpMenu, 0);
+    
 #ifdef __WXMAC__
     wxApp::s_macPreferencesMenuItemId = optFact->GetId();
     wxApp::s_macExitMenuItemId = MNU_EXIT;
@@ -240,7 +235,6 @@ frmMain::frmMain(const wxString& title)
     newContextMenu = new wxMenu();
     treeContextMenu = 0;
 
-    editMenu->Enable(MNU_NEWOBJECT, false);
     viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
 
     // Status bar
@@ -253,9 +247,9 @@ frmMain::frmMain(const wxString& title)
     statusBar->SetStatusText(_("0 Secs"), 2);
 
     wxAcceleratorEntry entries[4];
-    entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
+    entries[0].Set(wxACCEL_NORMAL, WXK_F5, refFact->GetId());
     entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DELETE);
-    entries[2].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
+    entries[2].Set(wxACCEL_NORMAL, WXK_F1, helpFact->GetId());
     entries[3].Set(wxACCEL_SHIFT, WXK_F10, MNU_CONTEXTMENU);
     wxAcceleratorTable accel(4, entries);
 
@@ -264,8 +258,6 @@ frmMain::frmMain(const wxString& title)
     
     // Display the bar and configure buttons. 
     toolBar->Realize();
-    SetButtons();
-    toolBar->EnableTool(MNU_STOP, false);
     
     // Setup the vertical splitter & treeview
     vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
@@ -318,11 +310,11 @@ frmMain::frmMain(const wxString& title)
     sqlPane->SetBackgroundColour(background);
 
     pgaFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnNew));
-    actionFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
-    actionFactory::CheckMenu(0, menuBar, toolBar);
+    menuFactories->RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
+    menuFactories->CheckMenu(0, menuBar, toolBar);
 
     // Add the root node
-    serversObj = new pgServerCollection(&serverFactory);
+    serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());
     wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
         serversObj->GetIconId(), -1, serversObj);
 
@@ -469,7 +461,7 @@ ctlListView *frmMain::GetReferencedBy()
 }
 
 
-bool frmMain::checkAlive()
+bool frmMain::CheckAlive()
 {
     bool userInformed = false;
     bool closeIt = false;
@@ -634,6 +626,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 
     return (item ? item : lastItem);
 }
+
 
 int frmMain::ReconnectServer(pgServer *server)
 {
@@ -829,68 +822,6 @@ void frmMain::RetrieveServers()
 }
 
 
-void frmMain::SetButtons(pgObject *obj)
-{
-    bool refresh=false,
-         create=false,
-         drop=false,
-         dropCascaded=false,
-         properties=false,
-         set=false,
-         setissubscribed=false,
-         cluster=false;
-
-    if (obj)
-    {
-        pgConn *conn=obj->GetConnection();
-        pgServer *server=obj->GetServer();
-        refresh = true;
-        create = obj->CanCreate();
-        drop = obj->CanDrop();
-        dropCascaded = obj->CanDropCascaded();
-        properties = obj->CanEdit();
-
-        switch (obj->GetType())
-        {
-            /*
-            case SL_CLUSTER:
-                cluster=true;
-                break;
-                */
-            case SL_SET:
-                set=true;
-                if (((slSet*)obj)->GetSubscriptionCount() > 0)
-                    setissubscribed = true;
-                break;
-        }
-    }
-
-    toolBar->EnableTool(MNU_REFRESH, refresh);
-    toolBar->EnableTool(MNU_CREATE, create);
-    toolBar->EnableTool(MNU_DROP, drop);
-    toolBar->EnableTool(MNU_PROPERTIES, properties);
-
-	// Handle the menus associated with the buttons
-	editMenu->Enable(MNU_CREATE, create);
-	editMenu->Enable(MNU_DROP, drop);
-	editMenu->Enable(MNU_DROPCASCADED, dropCascaded);
-	editMenu->Enable(MNU_PROPERTIES, properties);
-	//toolsMenu->Enable(MNU_INDEXCHECK, false);
-
-
-    toolsMenu->Enable(MNU_SLONY_SUBMENU, cluster || set);
-    slonyMenu->Enable(MNU_SLONY_RESTART, cluster);
-    slonyMenu->Enable(MNU_SLONY_UPGRADE, cluster);
-    slonyMenu->Enable(MNU_SLONY_FAILOVER, cluster);
-    slonyMenu->Enable(MNU_SLONY_MOVESET, setissubscribed);
-    slonyMenu->Enable(MNU_SLONY_MERGESET, set);
-
-    viewMenu->Enable(MNU_REFRESH, refresh);
-}
-
-
-
-
 void frmMain::StartMsg(const wxString& msg)
 {
    if (msgLevel++)
@@ -934,3 +865,5 @@ void frmMain::SetStatusText(const wxString &msg)
     statusBar->SetStatusText(msg, 1);
     statusBar->SetStatusText(wxEmptyString, 2);
 }
+
+

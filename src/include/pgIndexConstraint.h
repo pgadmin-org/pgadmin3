@@ -15,7 +15,7 @@
 
 #include "pgIndex.h"
 
-class pgIndexConstraint : public pgIndex
+class pgIndexConstraint : public pgIndexBase
 {
 public:
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
@@ -26,30 +26,44 @@ public:
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
 
 protected:
-    pgIndexConstraint(pgSchema *newSchema, const wxString& newName, int type)
-        : pgIndex(newSchema, newName, type) {}
+    pgIndexConstraint(pgTable *newTable, pgaFactory &factory, const wxString& newName)
+        : pgIndexBase(newTable, factory, newName) {}
 };
 
+
+class pgPrimaryKeyFactory : public pgIndexBaseFactory
+{
+public:
+    pgPrimaryKeyFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgPrimaryKeyFactory primaryKeyFactory;
 
 class pgPrimaryKey : public pgIndexConstraint
 {
 public:
-    pgPrimaryKey(pgSchema *newSchema, const wxString& newName = wxT(""))
-        : pgIndexConstraint(newSchema, newName, PG_PRIMARYKEY) {}
+    pgPrimaryKey(pgTable *newTable, const wxString& newName = wxT(""))
+        : pgIndexConstraint(newTable, primaryKeyFactory, newName) {}
 
     bool CanCreate() { return false; }
-    int GetIconId() { return PGICON_PRIMARYKEY; }
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where=wxT(""));
 };
+
+
+class pgUniqueFactory : public pgIndexBaseFactory
+{
+public:
+    pgUniqueFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgUniqueFactory uniqueFactory;
 
 class pgUnique : public pgIndexConstraint
 {
 public:
-    pgUnique(pgSchema *newSchema, const wxString& newName = wxT(""))
-        : pgIndexConstraint(newSchema, newName, PG_UNIQUE) {}
-
-    int GetIconId() { return PGICON_UNIQUE; }
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &where=wxT(""));
+    pgUnique(pgTable *newTable, const wxString& newName = wxT(""))
+        : pgIndexConstraint(newTable, uniqueFactory, newName) {}
 };
 
 

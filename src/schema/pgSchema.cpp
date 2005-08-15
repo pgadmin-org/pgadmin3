@@ -15,9 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgSchema.h"
-#include "pgCollection.h"
 #include "frmMain.h"
 #include "pgDomain.h"
 #include "pgAggregate.h"
@@ -96,8 +94,8 @@ wxString pgSchema::GetSql(ctlTree *browser)
 
 void pgSchema::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-    if (form)
-        form->SetDatabase(GetDatabase());
+//    if (form)
+//        form->SetDatabase(GetDatabase());
 
     GetDatabase()->GetServer()->iSetLastDatabase(GetDatabase()->GetName());
     GetDatabase()->GetServer()->iSetLastSchema(GetName());

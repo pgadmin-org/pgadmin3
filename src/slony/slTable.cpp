@@ -15,16 +15,12 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "slTable.h"
-#include "slObject.h"
-#include "slSet.h"
-#include "slCluster.h"
 #include "frmMain.h"
 
 
 slTable::slTable(slSet *s, const wxString& newName)
-: slSetObject(s, SL_TABLE, newName)
+: slSetObject(s, slTableFactory, newName)
 {
     wxLogInfo(wxT("Creating a slTable object"));
 }
@@ -118,23 +114,29 @@ pgObject *slTable::Refresh(ctlTree *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        slSetCollection *coll=(slSetCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == SL_TABLES)
-            table = ReadObjects(coll, 0, wxT(" WHERE tab_id=") + NumToStr(GetSlId()) + wxT("\n"));
+        slSetObjCollection *coll=(slSetObjCollection*)browser->GetItemData(parentItem);
+        if (coll->IsCollection())
+            table = slTableFactory.CreateObjects(coll, 0, wxT(" WHERE tab_id=") + NumToStr(GetSlId()) + wxT("\n"));
     }
     return table;
 }
 
 
 
-pgObject *slTable::ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction)
+pgObject *slSlTableFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restr)
 {
+    slSetObjCollection *collection=(slSetObjCollection*)coll;
     slTable *table=0;
+    wxString restriction;
+    if (restr.IsEmpty())
+        restriction = wxT(" WHERE tab_set = ") + NumToStr(collection->GetSlId());
+    else
+        restriction = restr;
 
-    pgSet *tables = coll->GetDatabase()->ExecuteSet(
+    pgSet *tables = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT tab_id, tab_reloid, tab_set, nspname, relname, tab_idxname, tab_altered, tab_comment")
-        wxT("  FROM ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_table\n")
-        wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_set ON set_id=tab_set\n")
+        wxT("  FROM ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_table\n")
+        wxT("  JOIN ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_set ON set_id=tab_set\n")
         wxT("  JOIN pg_class cl ON cl.oid=tab_reloid\n")
         wxT("  JOIN pg_namespace nsp ON nsp.oid=relnamespace\n")
          + restriction +
@@ -144,7 +146,7 @@ pgObject *slTable::ReadObjects(slSetCollection *coll, ctlTree *browser, const wx
     {
         while (!tables->Eof())
         {
-            table = new slTable(coll->GetSet(), tables->GetVal(wxT("nspname")) + wxT(".") + tables->GetVal(wxT("relname")));
+            table = new slTable(collection->GetSet(), tables->GetVal(wxT("nspname")) + wxT(".") + tables->GetVal(wxT("relname")));
             table->iSetSlId(tables->GetLong(wxT("tab_id")));
             table->iSetIndexName(tables->GetVal(wxT("tab_idxname")));
             table->iSetComment(tables->GetVal(wxT("tab_comment")));
@@ -153,7 +155,7 @@ pgObject *slTable::ReadObjects(slSetCollection *coll, ctlTree *browser, const wx
 
             if (browser)
             {
-                browser->AppendObject(coll, table);
+                browser->AppendObject(collection, table);
 				tables->MoveNext();
             }
             else
@@ -166,11 +168,17 @@ pgObject *slTable::ReadObjects(slSetCollection *coll, ctlTree *browser, const wx
 }
 
 
-    
-pgObject *slTable::ReadObjects(slSetCollection *coll, ctlTree *browser)
+///////////////////////////////////////////////////
+
+#include "images/table.xpm"
+#include "images/tables.xpm"
+
+slSlTableFactory::slSlTableFactory() 
+: slSetObjFactory(__("Table"), _("New Table"), _("Create a new Table."), table_xpm)
 {
-    // Get the tables
-    wxString restriction = wxT(" WHERE tab_set = ") + NumToStr(coll->GetSet()->GetSlId());
-    return ReadObjects(coll, browser, restriction);
+    metaType = SLM_TABLE;
 }
 
+
+slSlTableFactory slTableFactory;
+static pgaCollectionFactory cf(&slTableFactory, __("Tables"), tables_xpm);

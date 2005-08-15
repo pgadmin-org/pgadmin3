@@ -9,19 +9,39 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGRule_H
-#define PGRule_H
+#ifndef PGRULE_H
+#define PGRULE_H
 
-// wxWindows headers
-#include <wx/wx.h>
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
+#include "pgSchema.h"
 
-class pgCollection;
+class pgRuleObject : public pgSchemaObject
+{
+public:
+    pgRuleObject(pgSchema *newSchema, pgaFactory &factory, const wxString& newName=wxEmptyString) : pgSchemaObject(newSchema, factory, newName) {}
+
+    wxString GetFormattedDefinition();
+    wxString GetDefinition() const { return definition; }
+    void iSetDefinition(const wxString& s) { definition=s; }
+
+protected:
+    wxString definition;
+};
+
+
+
+//////////////////////////////////////////////////////////7
+
+
+class pgRuleFactory : public pgSchemaObjFactory
+{
+public:
+    pgRuleFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgRuleFactory ruleFactory;
+
 
 class pgRule : public pgRuleObject
 {
@@ -29,9 +49,7 @@ public:
     pgRule(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgRule();
 
-    int GetIconId() { return PGICON_RULE; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetEvent() const { return event; }

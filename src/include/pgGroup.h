@@ -9,16 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGGroup_H
-#define PGGroup_H
+#ifndef PGGROUP_H
+#define PGGROUP_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgConn.h"
-#include "pgObject.h"
 #include "pgServer.h"
 
 

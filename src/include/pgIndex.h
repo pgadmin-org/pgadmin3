@@ -9,31 +9,23 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGIndex_H
-#define PGIndex_H
+#ifndef PGINDEX_H
+#define PGINDEX_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
+#include "pgTable.h"
 
 class pgCollection;
 
-class pgIndex : public pgSchemaObject
-{
-public:
-    pgIndex(pgSchema *newSchema, const wxString& newName = wxT(""), int type=PG_INDEX);
-    ~pgIndex();
 
-    int GetIconId() { return PGICON_INDEX; }
+
+class pgIndexBase : public pgTableObject
+{
+protected:
+    pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString& newName = wxT(""));
+
+public:
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
     bool CanDropCascaded() { return true; }
 
     wxString GetProcArgs() const { return procArgs; }
@@ -98,6 +90,31 @@ private:
     OID relTableOid;
 };
 
+
+class pgIndex : public pgIndexBase
+{
+public:
+    pgIndex(pgTable *newTable, const wxString& newName = wxT(""));
+    ~pgIndex();
+};
+
+
+class pgIndexBaseFactory : public pgTableObjFactory
+{
+public:
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+protected:
+    pgIndexBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgTableObjFactory(tn, ns, nls, img) {}
+};
+
+class pgIndexFactory : public pgIndexBaseFactory
+{
+public:
+    pgIndexFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgIndexFactory indexFactory;
 
 
 #endif

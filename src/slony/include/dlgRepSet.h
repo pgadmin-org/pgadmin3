@@ -69,4 +69,22 @@ private:
 
     DECLARE_EVENT_TABLE();
 };
+
+
+class slonyMoveSetFactory : public contextActionFactory
+{
+public:
+    slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class slonyMergeSetFactory : public contextActionFactory
+{
+public:
+    slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
 #endif

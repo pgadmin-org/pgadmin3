@@ -9,20 +9,12 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGType_H
-#define PGType_H
+#ifndef PGTYPE_H
+#define PGTYPE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
 #include "pgSchema.h"
 
-class pgCollection;
+
 class pgTypeFactory : public pgSchemaObjFactory
 {
 public:

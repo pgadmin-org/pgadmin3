@@ -17,11 +17,6 @@
 #include "pgAdmin3.h"
 #include "frmSplash.h"
 
-// Icons
-#include "images/pgAdmin3.xpm"
-
-// Splash
-#include "images/splash.xpm"
 
 // Copyright text
 #include "copyright.h"
@@ -37,11 +32,8 @@ frmSplash::frmSplash(wxFrame *parent)
     
     wxLogInfo(wxT("Creating a splash screen"));
 
-    // Icon
-    SetIcon(wxIcon(pgAdmin3_xpm));
-
-    // Image
-    splash = wxBitmap(splash_xpm);
+    appearanceFactory->SetIcons(this);
+    splash = wxBitmap(appearanceFactory->GetSplashImage());
     
     SetClientSize(splash.GetWidth(), splash.GetHeight());
 

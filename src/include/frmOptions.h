@@ -12,11 +12,8 @@
 #ifndef FRMOPTIONS_H
 #define FRMOPTIONS_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 class frmMain;
 
@@ -46,8 +43,8 @@ private:
 class optionsFactory : public actionFactory
 {
 public:
-    optionsFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    optionsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 

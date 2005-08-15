@@ -11,16 +11,10 @@
 
 #include "pgAdmin3.h"
 
-// wxWindows headers
-#include <wx/wx.h>
-
 // App headers
 #include "misc.h"
 #include "dlgSchedule.h"
 #include "pgaSchedule.h"
-
-// Images
-#include "images/schedule.xpm"
 
 
 // pointer to controls
@@ -61,11 +55,15 @@ BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaScheduleFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgSchedule(frame, (pgaSchedule*)node, (pgaJob*)parent);
+}
+
+
 dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
 : dlgAgentProperty(frame, wxT("dlgSchedule"))
 {
-    SetIcon(wxIcon(schedule_xpm));
-    objectType=PGA_SCHEDULE;
     schedule=node;
     job=j;
     if (job)
@@ -189,7 +187,7 @@ int dlgSchedule::Go(bool modal)
 
 pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgaSchedule::ReadObjects(collection, 0, wxT("   AND jscid=") + NumToStr(recId) + wxT("\n"));
+    pgObject *obj=scheduleFactory.CreateObjects(collection, 0, wxT("   AND jscid=") + NumToStr(recId) + wxT("\n"));
     return obj;
 }
 

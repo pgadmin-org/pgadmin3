@@ -12,15 +12,17 @@
 #ifndef SLLISTEN_H
 #define SLLISTEN_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "slNode.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-#include "slObject.h"
+
+class slListenFactory : public slNodeObjFactory
+{
+public:
+    slListenFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern slListenFactory listenFactory;
 
 
 class slListen : public slNodeObject
@@ -29,10 +31,7 @@ public:
     slListen(slNode *n, const wxString& newName = wxT(""));
     ~slListen();
 
-    int GetIconId() { return SLICON_LISTEN; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser);
 
     long GetOriginId() const { return originId; }
     void iSetOriginId(long l) { originId = l; }

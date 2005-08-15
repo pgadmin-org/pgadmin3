@@ -18,6 +18,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmGrantWizard.h"
+#include "frmMain.h"
 #include "sysLogger.h"
 #include "ctlSecurityPanel.h"
 #include "pgFunction.h"
@@ -254,15 +255,15 @@ wxString frmGrantWizard::GetSql()
 }
 
 
-grantWizardFactory::grantWizardFactory(wxMenu *mnu, wxToolBar *toolbar)
+grantWizardFactory::grantWizardFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Grant Wizard"), _("Grants rights to multiple objects"));
 }
 
 
-wxWindow *grantWizardFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *grantWizardFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmGrantWizard *frm=new frmGrantWizard((frmMain*)form, obj);
+    frmGrantWizard *frm=new frmGrantWizard(form, obj);
     frm->Go();
     return frm;
 }

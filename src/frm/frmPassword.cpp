@@ -19,8 +19,6 @@
 #include "frmPassword.h"
 #include "pgServer.h"
 
-// Icons
-#include "images/pgAdmin3.xpm"
 
 #define txtCurrent      CTRL_TEXT("txtCurrent")
 #define txtNew          CTRL_TEXT("txtNew")
@@ -43,7 +41,7 @@ frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 
     server = obj->GetServer();
     // Icon
-    SetIcon(wxIcon(pgAdmin3_xpm));
+    appearanceFactory->SetIcons(this);
     CenterOnParent();
 }
 
@@ -93,15 +91,15 @@ void frmPassword::OnCancel(wxCommandEvent& event)
 }
 
 
-passwordFactory::passwordFactory(wxMenu *mnu, wxToolBar *toolbar)
+passwordFactory::passwordFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("C&hange password..."), _("Change your password."));
 }
 
 
-wxWindow *passwordFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *passwordFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmPassword *frm=new frmPassword(form, obj);
+    frmPassword *frm=new frmPassword((pgFrame*)form, obj);
     frm->Show();
     return frm;
 }

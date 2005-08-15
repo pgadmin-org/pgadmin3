@@ -17,13 +17,15 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmRestore.h"
+#include "frmMain.h"
 #include "sysLogger.h"
-#include "pgSchema.h"
 #include "pgTable.h"
 #include <wx/process.h>
 #include <wx/textbuf.h>
 #include <wx/file.h>
 #include "pgLanguage.h"
+#include "pgConstraints.h"
+#include "pgForeignKey.h"
 
 // Icons
 #include "images/restore.xpm"
@@ -408,7 +410,6 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
             col.GetNextToken();
             wxString type=col.GetNextToken();
 
-            int id=-1;
             int icon = -1;
             wxString typname;
             pgaFactory *factory=0;
@@ -420,27 +421,22 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
             }
             else if (type == wxT("FK"))
             {
-                id=PG_FOREIGNKEY;
+                factory=&foreignKeyFactory;
                 type = col.GetNextToken();
             }
             else if (type == wxT("CONSTRAINT"))
             {
-                typname = _("Constraint");
-                icon = PGICON_CONSTRAINT;
+                factory=constraintFactory.GetCollectionFactory();
+                // ??? type = col.GetNextToken();
             }
             else
-                id = pgObject::GetTypeId(type);
+                factory = pgaFactory::GetFactory(type);
 
             wxString name = str.Mid(str.Find(type)+type.Length()+1).BeforeLast(' ');
             if (factory)
             {
                 typname=factory->GetTypeName();
                 icon = factory->GetIconId();
-            }
-            else if (id >= 0)
-            {
-                typname = wxGetTranslation(typesList[id].typName);
-                icon = typesList[id].typeIcon;
             }
             else if (typname.IsEmpty())
                 typname = type;
@@ -463,15 +459,15 @@ void frmRestore::Go()
 
 
 
-restoreFactory::restoreFactory(wxMenu *mnu, wxToolBar *toolbar)
+restoreFactory::restoreFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, __("&Restore"), _("Restores a backup from a local file"));
 }
 
 
-wxWindow *restoreFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmRestore *frm=new frmRestore((frmMain*)form, obj);
+    frmRestore *frm=new frmRestore(form, obj);
     frm->Go();
     return frm;
 }

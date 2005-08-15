@@ -16,8 +16,6 @@
 #include <wx/wx.h>
 #include <wx/config.h>
 
-// App headers
-#include "pgAdmin3.h"
 
 // Class declarations
 class sysSettings : public wxConfig

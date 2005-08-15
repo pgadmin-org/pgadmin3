@@ -13,17 +13,14 @@
 #ifndef __CONSTRAINTS_H
 #define __CONSTRAINTS_H
 
-#include "pgCollection.h"
+#include "pgTable.h"
 
-class pgTable;
-class pgConstraints : public pgCollection
+
+class pgConstraintCollection : public pgTableObjCollection
 {
 public:
-    pgConstraints(pgSchema *sch);
-    ~pgConstraints();
-    int GetIconId() { return PGICON_CONSTRAINT; }
-    bool IsCollectionForType(int objType);
-    bool CanCreate() { return true; };
+    pgConstraintCollection(pgaFactory *factory, pgTable *table);
+    ~pgConstraintCollection();
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
     wxMenu *GetNewMenu();
 
@@ -31,5 +28,15 @@ public:
     pgTable *table;
 };
 
+
+class pgConstraintFactory : public pgTableObjFactory
+{
+public:
+    pgConstraintFactory();
+    virtual dlgProperty *CreateDialog(class frmMain *,class pgObject *,class pgObject *) { return 0; }
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
+extern pgConstraintFactory constraintFactory;
+extern pgaCollectionFactory constraintCollectionFactory;
 
 #endif

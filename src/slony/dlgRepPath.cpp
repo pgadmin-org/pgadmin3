@@ -21,9 +21,6 @@
 #include "slPath.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/slpath.xpm"
-
 
 // pointer to controls
 #define cbServer      CTRL_COMBOBOX("cbServer")
@@ -31,17 +28,20 @@
 #define txtConnRetry    CTRL_TEXT("txtConnRetry")
 
 
-
 BEGIN_EVENT_TABLE(dlgRepPath, dlgProperty)
     EVT_TEXT(XRCID("txtConnInfo"),          dlgRepPath::OnChange)
     EVT_COMBOBOX(XRCID("cbServer"),       dlgRepPath::OnChange)
 END_EVENT_TABLE();
 
+dlgProperty *slPathFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepPath(frame, (slPath*)node, (slNode*)parent);
+}
+
 
 dlgRepPath::dlgRepPath(frmMain *frame, slPath *p, slNode *n)
 : dlgRepProperty(frame, n->GetCluster(), wxT("dlgRepPath"))
 {
-    SetIcon(wxIcon(slpath_xpm));
     path=p;
     node=n;
 }
@@ -99,7 +99,7 @@ int dlgRepPath::Go(bool modal)
 
 pgObject *dlgRepPath::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=slPath::ReadObjects((slNodeCollection*)collection, 0,
+    pgObject *obj=pathFactory.CreateObjects(collection, 0,
          wxT(" WHERE pa_server = ") + NumToStr((OID)cbServer->GetClientData(cbServer->GetSelection())) +
          wxT("   AND pa_client = ") + NumToStr(node->GetSlId()));
 

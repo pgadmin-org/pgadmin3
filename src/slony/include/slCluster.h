@@ -12,16 +12,8 @@
 #ifndef SLCLUSTER_H
 #define SLCLUSTER_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
 #include "pgDatabase.h"
 
-class pgCollection;
 class frmMain;
 class RemoteConn;
 
@@ -78,6 +70,46 @@ private:
     long localNodeID, adminNodeID;
 
     RemoteConnArray remoteConns;
+};
+
+
+
+// Slony-I object
+class slObject : public pgDatabaseObject
+{
+public:
+    slObject(slCluster *_slCluster, pgaFactory &factory, const wxString& newName = wxT(""));
+    slCluster *GetCluster() { return cluster; }
+
+    void iSetSlId(long i) { slId=i; }
+    long GetSlId() const { return slId; }
+
+private:
+    slCluster *cluster;
+    long slId;
+};
+
+
+// Collection of Slony-I objects
+class slObjCollection : public pgDatabaseObjCollection
+{
+public:
+    slObjCollection(pgaFactory *factory, slCluster *_cluster);
+
+    slCluster *GetCluster() { return cluster; }
+    long GetSlId() const { return slId; }
+    void iSetSlId(long l) { slId = l; }
+
+private:
+    slCluster *cluster;
+    long slId;
+};
+
+class slObjFactory : public pgDatabaseObjFactory
+{
+public:
+    slObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgDatabaseObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
 #endif

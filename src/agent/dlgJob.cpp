@@ -9,8 +9,6 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows headers
-#include <wx/wx.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -22,9 +20,6 @@
 #include "pgaStep.h"
 #include "pgaSchedule.h"
 #include "frmMain.h"
-
-// Images
-#include "images/job.xpm"
 
 
 // pointer to controls
@@ -66,10 +61,15 @@ BEGIN_EVENT_TABLE(dlgJob, dlgAgentProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgaJobFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgJob(frame, (pgaJob*)node);
+}
+
+
 dlgJob::dlgJob(frmMain *frame, pgaJob *node)
 : dlgAgentProperty(frame, wxT("dlgJob"))
 {
-    SetIcon(wxIcon(job_xpm));
     job=node;
 
 	txtID->Disable();
@@ -133,10 +133,9 @@ int dlgJob::Go(bool modal)
 		while (item)
 		{
 			data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
-            if (data->GetType() == PGA_STEPS) 
+            if (data->GetMetaType() == PGM_STEP) 
 				stepsItem = item;
-
-			if (data->GetType() == PGA_SCHEDULES) 
+            else if (data->GetMetaType() == PGM_SCHEDULE) 
 				schedulesItem = item;
 
 			item=mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
@@ -154,10 +153,10 @@ int dlgJob::Go(bool modal)
             while (item)
             {
 				data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
-				if (data->GetType() == PGA_STEP)
+				if (data->IsCreatedBy(stepFactory))
 				{
 					pgaStep *step=(pgaStep*)data;
-					int pos = lstSteps->AppendItem(PGAICON_STEP, step->GetName(), step->GetComment());
+					int pos = lstSteps->AppendItem(stepFactory.GetIconId(), step->GetName(), step->GetComment());
 					lstSteps->SetItem(pos, 3, NumToStr((long)step));
 					previousSteps.Add(NumToStr((long)step));
 				}
@@ -177,10 +176,10 @@ int dlgJob::Go(bool modal)
             while (item)
             {
 				data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
-				if (data->GetType() == PGA_SCHEDULE)
+				if (data->IsCollection())
 				{
 					pgaSchedule *schedule=(pgaSchedule*)data;
-					int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule->GetName(), schedule->GetComment());
+					int pos = lstSchedules->AppendItem(scheduleFactory.GetIconId(), schedule->GetName(), schedule->GetComment());
 					lstSchedules->SetItem(pos, 3, NumToStr((long)schedule));
 					previousSchedules.Add(NumToStr((long)schedule));
 				}
@@ -202,7 +201,7 @@ int dlgJob::Go(bool modal)
 
 pgObject *dlgJob::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   WHERE jobid=") + NumToStr(recId) + wxT("\n"));
+    pgObject *obj=jobFactory.CreateObjects(collection, 0, wxT("   WHERE jobid=") + NumToStr(recId) + wxT("\n"));
     return obj;
 }
 
@@ -276,7 +275,7 @@ void dlgJob::OnAddStep(wxCommandEvent &ev)
     step.SetConnection(connection);
     if (step.Go(true) >= 0)
     {
-        int pos = lstSteps->AppendItem(PGAICON_STEP, step.GetName(), step.GetComment());
+        int pos = lstSteps->AppendItem(stepFactory.GetIconId(), step.GetName(), step.GetComment());
 		wxString *stepSql = new wxString(step.GetInsertSql());
 		lstSteps->SetItemData(pos, (long)stepSql);
         CheckChange();
@@ -340,7 +339,7 @@ void dlgJob::OnAddSchedule(wxCommandEvent &ev)
     schedule.SetConnection(connection);
     if (schedule.Go(true) >= 0)
     {
-        int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule.GetName(), schedule.GetComment());
+        int pos = lstSchedules->AppendItem(scheduleFactory.GetIconId(), schedule.GetName(), schedule.GetComment());
         wxString *scheduleSql = new wxString(schedule.GetInsertSql());
 		lstSchedules->SetItemData(pos, (long)scheduleSql);
         CheckChange();

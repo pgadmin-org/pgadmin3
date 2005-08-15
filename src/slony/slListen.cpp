@@ -17,14 +17,13 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "slListen.h"
-#include "slObject.h"
 #include "slNode.h"
 #include "slCluster.h"
 #include "frmMain.h"
 
 
 slListen::slListen(slNode *n, const wxString& newName)
-: slNodeObject(n, SL_LISTEN, newName)
+: slNodeObject(n, listenFactory, newName)
 {
     wxLogInfo(wxT("Creating a slListen object"));
 }
@@ -94,9 +93,9 @@ pgObject *slListen::Refresh(ctlTree *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        slNodeCollection *coll=(slNodeCollection*)browser->GetItemData(parentItem);
-        if (coll->GetType() == SL_LISTENS)
-            listen = ReadObjects(coll, 0, 
+        slNodeObjCollection *coll=(slNodeObjCollection*)browser->GetItemData(parentItem);
+        if (coll->IsCollection())
+            listen = listenFactory.CreateObjects(coll, 0, 
                 wxT(" WHERE li_origin =") + NumToStr(GetOriginId()) +
                 wxT("   AND li_provider = ") + NumToStr(GetSlId()) +
                 wxT("   AND li_receiver = ") + NumToStr(GetNode()->GetSlId()) +
@@ -107,15 +106,21 @@ pgObject *slListen::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 
 
-pgObject *slListen::ReadObjects(slNodeCollection *coll, ctlTree *browser, const wxString &restriction)
+pgObject *slListenFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restr)
 {
+    slNodeObjCollection *collection=(slNodeObjCollection*)coll;
     slListen *listen=0;
+    wxString restriction;
+    if (restr.IsEmpty())
+        restriction = wxT(" WHERE li_receiver = ") + NumToStr(collection->GetSlId());
+    else
+        restriction = restr;
 
-    pgSet *listens = coll->GetDatabase()->ExecuteSet(
+    pgSet *listens = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT li_origin, li_provider, li_receiver, no.no_comment as origin_name, np.no_comment as provider_name\n")
-        wxT("  FROM ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_listen\n")
-        wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_node no ON no.no_id=li_origin\n")
-        wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_node np ON np.no_id=li_provider\n")
+        wxT("  FROM ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_listen\n")
+        wxT("  JOIN ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_node no ON no.no_id=li_origin\n")
+        wxT("  JOIN ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_node np ON np.no_id=li_provider\n")
          + restriction +
         wxT(" ORDER BY li_origin, li_provider"));
 
@@ -123,14 +128,14 @@ pgObject *slListen::ReadObjects(slNodeCollection *coll, ctlTree *browser, const 
     {
         while (!listens->Eof())
         {
-            listen = new slListen(coll->GetNode(), listens->GetVal(wxT("provider_name")).BeforeFirst('\n'));
+            listen = new slListen(collection->GetNode(), listens->GetVal(wxT("provider_name")).BeforeFirst('\n'));
             listen->iSetSlId(listens->GetLong(wxT("li_provider")));
             listen->iSetOriginId(listens->GetLong(wxT("li_origin")));
             listen->iSetOriginName(listens->GetVal(wxT("origin_name")).BeforeFirst('\n'));
 
             if (browser)
             {
-                browser->AppendObject(coll, listen);
+                browser->AppendObject(collection, listen);
 				listens->MoveNext();
             }
             else
@@ -143,11 +148,17 @@ pgObject *slListen::ReadObjects(slNodeCollection *coll, ctlTree *browser, const 
 }
 
 
-    
-pgObject *slListen::ReadObjects(slNodeCollection *coll, ctlTree *browser)
+///////////////////////////////////////////////////
+
+#include "images/sllisten.xpm"
+#include "images/sllistens.xpm"
+
+slListenFactory::slListenFactory() 
+: slNodeObjFactory(__("Listen"), _("New Listen"), _("Create a new Listen."), sllisten_xpm)
 {
-    // Get the listens
-    wxString restriction = wxT(" WHERE li_receiver = ") + NumToStr(coll->GetSlId());
-    return ReadObjects(coll, browser, restriction);
+    metaType = SLM_LISTEN;
 }
 
+
+slListenFactory listenFactory;
+static pgaCollectionFactory cf(&listenFactory, __("listens"), sllistens_xpm);

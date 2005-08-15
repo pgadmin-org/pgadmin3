@@ -36,8 +36,7 @@ BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
 END_EVENT_TABLE();
 
 
-
-dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode)
+dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode)
 : dlgIndexBase(frame, resName, index, parentNode)
 {
 }
@@ -115,7 +114,8 @@ wxString dlgIndexConstraint::GetSql()
         sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
             + wxT(" ADD");
         AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
-        sql +=wxT(" ") + wxString(typesList[objectType].typName).Upper() + wxT(" ") + GetDefinition()
+        pgaFactory *f=pgaFactory::GetFactory(objectType);
+        sql +=wxT(" ") + wxString(f->GetTypeName()).Upper() + wxT(" ") + GetDefinition()
             + wxT(";\n");
     }
 
@@ -128,8 +128,15 @@ wxString dlgIndexConstraint::GetSql()
 
 
 
+dlgProperty *pgPrimaryKeyFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgPrimaryKey(frame, (pgPrimaryKey*)node, (pgTable*)parent);
+}
 
-dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, pgIndex *index, pgTable *parentNode)
+
+
+
+dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, pgPrimaryKey *index, pgTable *parentNode)
 : dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), index, parentNode)
 {
 }
@@ -138,7 +145,6 @@ dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, pgIndex *index, pgTable *parentNode
 dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, ctlListView *colList)
 : dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), colList)
 {
-    objectType=PG_PRIMARYKEY;
 }
 
 
@@ -148,7 +154,7 @@ pgObject *dlgPrimaryKey::CreateObject(pgCollection *collection)
     if (name.IsEmpty())
         return 0;
 
-    pgObject *obj=pgPrimaryKey::ReadObjects(collection, 0, wxT(
+    pgObject *obj=primaryKeyFactory.CreateObjects(collection, 0, wxT(
         "\n   AND cls.relname=") + qtString(name) + wxT(
         "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
 
@@ -156,7 +162,14 @@ pgObject *dlgPrimaryKey::CreateObject(pgCollection *collection)
 }
 
 
-dlgUnique::dlgUnique(frmMain *frame, pgIndex *index, pgTable *parentNode)
+
+dlgProperty *pgUniqueFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgUnique(frame, (pgUnique*)node, (pgTable*)parent);
+}
+
+
+dlgUnique::dlgUnique(frmMain *frame, pgUnique *index, pgTable *parentNode)
 : dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), index, parentNode)
 {
 }
@@ -165,7 +178,6 @@ dlgUnique::dlgUnique(frmMain *frame, pgIndex *index, pgTable *parentNode)
 dlgUnique::dlgUnique(frmMain *frame, ctlListView *colList)
 : dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), colList)
 {
-    objectType = PG_UNIQUE;
 }
 
 
@@ -173,7 +185,7 @@ pgObject *dlgUnique::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgUnique::ReadObjects(collection, 0, wxT(
+    pgObject *obj=uniqueFactory.CreateObjects(collection, 0, wxT(
         "\n   AND cls.relname=") + qtString(name) + wxT(
         "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;

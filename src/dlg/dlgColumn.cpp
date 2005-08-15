@@ -23,9 +23,6 @@
 #include "pgTable.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/column.xpm"
-
 
 // pointer to controls
 #define txtDefault          CTRL_TEXT("txtDefault")
@@ -46,15 +43,19 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgColumnFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgColumn(frame, (pgColumn*)node, (pgTable*)parent);
+}
+
+
 dlgColumn::dlgColumn(frmMain *frame, pgColumn *node, pgTable *parentNode)
 : dlgTypeProperty(frame, wxT("dlgColumn"))
 {
-    SetIcon(wxIcon(column_xpm));
     column=node;
     table=parentNode;
     wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
 
-    objectType=PG_COLUMN;
     txtAttstattarget->SetValidator(numericValidator);
     cbSequence->Disable();
 }
@@ -353,7 +354,7 @@ wxString dlgColumn::GetDefinition()
 pgObject *dlgColumn::CreateObject(pgCollection *collection)
 {
     pgObject *obj;
-    obj=pgColumn::ReadObjects(collection, 0, 
+    obj=columnFactory.CreateObjects(collection, 0, 
         wxT("\n   AND attname=") + qtString(GetName()) +
         wxT("\n   AND cl.relname=") + qtString(table->GetName()) +
         wxT("\n   AND cl.relnamespace=") + table->GetSchema()->GetOidStr() +

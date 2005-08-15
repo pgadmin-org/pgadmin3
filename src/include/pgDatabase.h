@@ -12,15 +12,7 @@
 #ifndef PGDATABASE_H
 #define PGDATABASE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
 #include "pgServer.h"
-#include "pgCollection.h"
-#include "pgConn.h"
 
 class pgDatabaseFactory : public pgServerObjFactory
 {
@@ -116,6 +108,43 @@ public:
 };
 
 
+////////////////////////////////////////////////
+
+class pgDatabaseObjFactory : public pgServerObjFactory
+{
+public:
+    pgDatabaseObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgServerObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
+
+
+// Object that lives in a database
+class pgDatabaseObject : public pgObject
+{
+public:
+    pgDatabaseObject(pgaFactory &factory, const wxString& newName=wxEmptyString) : pgObject(factory, newName) {}
+    pgDatabaseObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
+
+    void iSetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
+    pgDatabase *GetDatabase() const { return database; }
+    pgServer *GetServer() const;
+
+    void DisplayStatistics(ctlListView *statistics, const wxString& query);
+
+    // compiles a prefix from the schema name with '.', if necessary
+    wxString GetSchemaPrefix(const wxString &schemaname) const;
+    wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
+
+    bool CanDrop();
+    bool CanEdit() { return true; }
+    bool CanCreate();
+
+protected:
+    pgDatabase *database;
+};
+
+
+// collection of pgDatabaseObject
 class pgDatabaseObjCollection : public pgCollection
 {
 public:
@@ -124,11 +153,5 @@ public:
 };
 
 
-class pgDatabaseObjFactory : public pgServerObjFactory
-{
-public:
-    pgDatabaseObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgServerObjFactory(tn, ns, nls, img) {}
-    virtual pgCollection *CreateCollection(pgObject *obj);
-};
 
 #endif

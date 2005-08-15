@@ -9,17 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGFunction_H
-#define PGFunction_H
+#ifndef PGFUNCTION_H
+#define PGFUNCTION_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
 #include "pgSchema.h"
 
 class pgCollection;

@@ -12,15 +12,18 @@
 #ifndef SLNODE_H
 #define SLNODE_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "slCluster.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-#include "slObject.h"
+
+class slNodeFactory : public slObjFactory
+{
+public:
+    slNodeFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
+extern slNodeFactory nodeFactory;
 
 
 class slNode : public slObject
@@ -29,12 +32,8 @@ public:
     slNode(slCluster *_cluster, const wxString& newName = wxT(""));
     ~slNode();
 
-    int GetIconId() { return SLICON_NODE; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static void ShowStatistics(slCollection *collection, ctlListView *statistics);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    static pgObject *ReadObjects(slCollection *coll, ctlTree *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slCollection *coll, ctlTree *browser);
 
     bool CanDrop();
     bool RequireDropConfirm() { return true; }
@@ -56,6 +55,47 @@ private:
     long pid;
     wxString connInfo;
 };
+
+
+class slNodeCollection : public slObjCollection
+{
+public:
+    slNodeCollection(pgaFactory *factory, slCluster *cl) : slObjCollection(factory, cl) {}
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
+};
+
+//////////////////////////////////////////
+
+// Object under a Slony-I node
+class slNodeObject : public slObject
+{
+public:
+    slNodeObject(slNode *n, pgaFactory &factory, const wxString& newName = wxT(""));
+    slNode *GetNode() const { return node; }
+
+private:
+    slNode *node;
+};
+
+// Collection of node objects 
+class slNodeObjCollection : public slObjCollection
+{
+public:
+    slNodeObjCollection(pgaFactory *factory, slNode *n);
+    slNode *GetNode() {return node; }
+
+private:
+    slNode *node;
+};
+
+
+class slNodeObjFactory : public slObjFactory
+{
+public:
+    slNodeObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : slObjFactory(tn, ns, nls, img) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
+
 
 #endif
 

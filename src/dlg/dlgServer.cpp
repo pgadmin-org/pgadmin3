@@ -282,17 +282,16 @@ wxString dlgServer::GetSql()
 
 
 #include "images/connect.xpm"
-addServerFactory::addServerFactory(wxMenu *mnu, wxToolBar *toolbar)
+addServerFactory::addServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Add Server..."), _("Add a connection to a server."));
     toolbar->AddTool(id, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
 }
 
 
-wxWindow *addServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
+wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     int rc = PGCONN_BAD;
-    frmMain *form=(frmMain*)fr;
     
     dlgServer dlg(form, 0);
     dlg.CenterOnParent();
@@ -362,15 +361,14 @@ wxWindow *addServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
 }
 
 
-startServiceFactory::startServiceFactory (wxMenu *mnu, wxToolBar *toolbar)
+startServiceFactory::startServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Start service"), _("Start PostgreSQL Service"));
 }
 
 
-wxWindow *startServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
+wxWindow *startServiceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmMain *form=(frmMain*)fr;
     pgServer *server= (pgServer*)obj;
     form->StartMsg(_("Starting service"));
     bool rc = server->StartService();
@@ -392,15 +390,14 @@ bool startServiceFactory::CheckEnable(pgObject *obj)
 }
 
 
-stopServiceFactory::stopServiceFactory(wxMenu *mnu, wxToolBar *toolbar)
+stopServiceFactory::stopServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Stop service"), _("Stop PostgreSQL Service"));
 }
 
 
-wxWindow *stopServiceFactory::StartDialog(pgFrame *fr, pgObject *obj)
+wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmMain *form=(frmMain*)fr;
     pgServer *server= (pgServer*)obj;
 	wxMessageDialog msg(form, _("Are you sure you wish to shutdown this server?"),
             _("Stop service"), wxYES_NO | wxICON_QUESTION);
@@ -435,16 +432,15 @@ bool stopServiceFactory::CheckEnable(pgObject *obj)
 }
 
 
-connectServerFactory::connectServerFactory(wxMenu *mnu, wxToolBar *toolbar)
+connectServerFactory::connectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Connect"), _("Connect to the selected server."));
 }
 
 
-wxWindow *connectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
+wxWindow *connectServerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     pgServer *server = (pgServer *)obj;
-    frmMain *form=(frmMain*)fr;
     form->ReconnectServer(server);
     return 0;
 }
@@ -459,15 +455,14 @@ bool connectServerFactory::CheckEnable(pgObject *obj)
 }
 
 
-disconnectServerFactory::disconnectServerFactory(wxMenu *mnu, wxToolBar *toolbar)
+disconnectServerFactory::disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Disconnec&t"), _("Disconnect from the selected server."));
 }
 
 
-wxWindow *disconnectServerFactory::StartDialog(pgFrame *fr, pgObject *obj)
+wxWindow *disconnectServerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmMain *form=(frmMain*)fr;
     pgServer *server=(pgServer*)obj;
     server->Disconnect(form);
     server->UpdateIcon(form->GetBrowser());

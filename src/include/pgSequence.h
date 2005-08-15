@@ -9,20 +9,12 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGSequence_H
-#define PGSequence_H
+#ifndef PGSEQUENCE_H
+#define PGSEQUENCE_H
 
-// wxWindows headers
-#include <wx/wx.h>
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
 #include "pgSchema.h"
 
-class pgCollection;
 class pgSequenceFactory : public pgSchemaObjFactory
 {
 public:

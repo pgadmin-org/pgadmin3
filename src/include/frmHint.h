@@ -22,6 +22,8 @@
 #define HINT_QUERYRUNTIME   wxT("query-runtime")
 #define HINT_RC_FIX         42
 
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 class frmMain;
 class frmHint : public DialogWithHelp
@@ -52,12 +54,20 @@ private:
 };
 
 
-class hintFactory : public contextActionFactory
+class hintFactory : public actionFactory
 {
 public:
-    hintFactory(wxMenu *mnu, wxToolBar *toolbar, bool bigTool=true);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    hintFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
+};
+
+
+class tipOfDayFactory : public actionFactory
+{
+public:
+    tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 

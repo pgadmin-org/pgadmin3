@@ -17,11 +17,12 @@
 
 
 class pgIndex;
+class pgIndexBase;
 
 class dlgIndexBase : public dlgCollistProperty
 {
 public:
-    dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode);
+    dlgIndexBase(frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
     dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView *colList);
 
     void CheckChange();
@@ -30,7 +31,7 @@ public:
     int Go(bool modal);
 
 protected:
-    pgIndex *index;
+    pgIndexBase *index;
 
 private:
     void OnAddCol(wxCommandEvent &ev);
@@ -53,7 +54,6 @@ public:
 private:
     DECLARE_EVENT_TABLE();
 };
-
 
 
 #endif

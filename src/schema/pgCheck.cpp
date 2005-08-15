@@ -15,13 +15,11 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgCheck.h"
-#include "pgCollection.h"
 
 
-pgCheck::pgCheck(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_CHECK, newName)
+pgCheck::pgCheck(pgTable *newTable, const wxString& newName)
+: pgTableObject(newTable, checkFactory, newName)
 {
 }
 
@@ -91,16 +89,17 @@ pgObject *pgCheck::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_CONSTRAINTS)
-            check = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND c.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            check = checkFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND c.oid=") + GetOidStr());
     }
     return check;
 }
 
 
 
-pgObject *pgCheck::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
+    pgTableObjCollection *collection=(pgTableObjCollection*)coll;
     pgCheck *check=0;
     pgSet *checks= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT c.oid, conname, condeferrable, condeferred, relname, nspname, description,\n")
@@ -117,10 +116,9 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, ctlTree *browser, const
     {
         while (!checks->Eof())
         {
-            check = new pgCheck(collection->GetSchema(), checks->GetVal(wxT("conname")));
+            check = new pgCheck(collection->GetTable(), checks->GetVal(wxT("conname")));
 
             check->iSetOid(checks->GetOid(wxT("oid")));
-            check->iSetTableOid(collection->GetOid());
             check->iSetDefinition(checks->GetVal(wxT("consrc")));
             check->iSetFkTable(checks->GetVal(wxT("relname")));
             check->iSetFkSchema(checks->GetVal(wxT("nspname")));
@@ -141,3 +139,18 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, ctlTree *browser, const
     }
     return check;
 }
+
+
+/////////////////////////////
+
+#include "images/check.xpm"
+
+pgCheckFactory::pgCheckFactory() 
+: pgTableObjFactory(__("Check"), _("New Check"), _("Create a new Check."), check_xpm)
+{
+    metaType = PGM_CHECK;
+    collectionFactory = &constraintCollectionFactory;
+}
+
+
+pgCheckFactory checkFactory;

@@ -15,6 +15,8 @@
 
 #include "wx/wxhtml.h"
 
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 class ctlHelpWindow;
 class frmMain;
@@ -50,6 +52,38 @@ public:
 private:
     void OnLinkClicked(const wxHtmlLinkInfo& link);
     frmHelp *helpForm;
+};
+
+
+class contentsFactory : public actionFactory
+{
+public:
+    contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class pgsqlHelpFactory : public actionFactory
+{
+public:
+    pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class faqFactory : public actionFactory
+{
+public:
+    faqFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class bugReportFactory : public actionFactory
+{
+public:
+    bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 #endif

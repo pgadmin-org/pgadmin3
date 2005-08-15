@@ -12,15 +12,17 @@
 #ifndef SLSEQUENCE_H
 #define SLSEQUENCE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
 #include "pgDatabase.h"
-#include "slObject.h"
+#include "slSet.h"
+
+class slSlSequenceFactory : public slSetObjFactory
+{
+public:
+    slSlSequenceFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern slSlSequenceFactory slSequenceFactory;
 
 
 class slSequence : public slSetObject
@@ -29,10 +31,7 @@ public:
     slSequence(slSet *set, const wxString& newName = wxT(""));
     ~slSequence();
 
-    int GetIconId() { return -1; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser, const wxString &restriction);
-    static pgObject *ReadObjects(slSetCollection *coll, ctlTree *browser);
 
     bool GetActive() const { return active; }
     void iSetActive(bool b) { active=b; }

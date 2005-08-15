@@ -14,9 +14,8 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
+#include <wx/listctrl.h>
+#include "misc.h"
 
 class frmMain;
 

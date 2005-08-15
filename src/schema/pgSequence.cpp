@@ -15,9 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgSequence.h"
-#include "pgSchema.h"
 
 
 pgSequence::pgSequence(pgSchema *newSchema, const wxString& newName)

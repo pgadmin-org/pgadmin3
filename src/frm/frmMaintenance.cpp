@@ -18,6 +18,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmMaintenance.h"
+#include "frmMain.h"
 #include "sysLogger.h"
 #include "pgIndex.h"
 
@@ -64,7 +65,7 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
 
     txtMessages->SetMaxLength(0L);
 
-    if (object->GetType() == PG_INDEX)
+    if (object->GetMetaType() == PGM_INDEX)
     {
         rbxAction->SetSelection(2);
         rbxAction->Enable(0, false);
@@ -107,9 +108,9 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
     chkAnalyze->Enable(isVacuum);
 
     bool isReindex = (rbxAction->GetSelection() == 2);
-    sbxReindexOptions->Enable(isReindex && object->GetMetaType() == PGM_DATABASE || object->GetType() == PG_INDEX);
+    sbxReindexOptions->Enable(isReindex && object->GetMetaType() == PGM_DATABASE || object->GetMetaType() == PGM_INDEX);
     chkForce->Enable(isReindex && object->GetMetaType() == PGM_DATABASE);
-    chkRecreate->Enable(isReindex && object->GetType() == PG_INDEX);
+    chkRecreate->Enable(isReindex && object->GetMetaType() == PGM_INDEX);
 }
 
 
@@ -181,16 +182,16 @@ void frmMaintenance::Go()
 
 
 
-maintenanceFactory::maintenanceFactory(wxMenu *mnu, wxToolBar *toolbar)
+maintenanceFactory::maintenanceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Maintenance"), _("Maintain the current database or table."));
     toolbar->AddTool(id, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
 }
 
 
-wxWindow *maintenanceFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *maintenanceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmMaintenance *frm=new frmMaintenance((frmMain*)form, obj);
+    frmMaintenance *frm=new frmMaintenance(form, obj);
     frm->Go();
     return frm;
 }

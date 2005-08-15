@@ -15,13 +15,11 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgObject.h"
 #include "pgRule.h"
-#include "pgCollection.h"
 
 
 pgRule::pgRule(pgSchema *newSchema, const wxString& newName)
-: pgRuleObject(newSchema, PG_RULE, newName)
+: pgRuleObject(newSchema, ruleFactory, newName)
 {
 }
 
@@ -88,14 +86,14 @@ pgObject *pgRule::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_RULES)
-            rule = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rw.oid=") + GetOidStr());
+        if (obj->IsCollection())
+            rule = ruleFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND rw.oid=") + GetOidStr());
     }
     return rule;
 }
 
 
-pgObject *pgRule::ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgRule *rule=0;
 
@@ -117,7 +115,6 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, ctlTree *browser, const 
             rule = new pgRule(collection->GetSchema(), rules->GetVal(wxT("rulename")));
 
             rule->iSetOid(rules->GetOid(wxT("oid")));
-            rule->iSetTableOid(collection->GetOid());
             rule->iSetComment(rules->GetVal(wxT("description")));
             rule->iSetDoInstead(rules->GetBool(wxT("is_instead")));
             rule->iSetAction(rules->GetVal(wxT("ev_action")));
@@ -150,3 +147,18 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, ctlTree *browser, const 
     }
     return rule;
 }
+
+
+/////////////////////////////
+
+#include "images/rule.xpm"
+#include "images/rules.xpm"
+
+pgRuleFactory::pgRuleFactory() 
+: pgSchemaObjFactory(__("Rule"), _("New Rule"), _("Create a new Rule."), rule_xpm)
+{
+}
+
+
+pgRuleFactory ruleFactory;
+static pgaCollectionFactory cf(&ruleFactory, __("Rules"), rules_xpm);

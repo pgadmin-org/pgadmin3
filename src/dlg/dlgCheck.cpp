@@ -33,13 +33,17 @@ BEGIN_EVENT_TABLE(dlgCheck, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *pgCheckFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgCheck(frame, (pgCheck*)node, (pgTable*)parent);
+}
+
 
 dlgCheck::dlgCheck(frmMain *frame, pgCheck *node, pgTable *parentNode)
 : dlgProperty(frame, wxT("dlgCheck"))
 {
     check=node;
     table=parentNode;
-    objectType=PG_CHECK;
 }
 
 
@@ -82,7 +86,7 @@ pgObject *dlgCheck::CreateObject(pgCollection *collection)
     if (name.IsEmpty())
         return 0;
 
-    pgObject *obj=pgCheck::ReadObjects(collection, 0, wxT(
+    pgObject *obj=checkFactory.CreateObjects(collection, 0, wxT(
         "\n   AND conname=") + qtString(name) + wxT(
         "\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;

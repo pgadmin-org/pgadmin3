@@ -12,12 +12,8 @@
 #ifndef SPLASH_H
 #define SPLASH_H
 
-// wxWindows headers
-#include <wx/wx.h>
-#include <wx/image.h>
-
-// App headers
-#include "pgAdmin3.h"
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 // Class declarations
 class frmSplash : public pgFrame

@@ -9,16 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGLanguage_H
-#define PGLanguage_H
+#ifndef PGLANGUAGE_H
+#define PGLANGUAGE_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
 #include "pgDatabase.h"
 
 class pgCollection;

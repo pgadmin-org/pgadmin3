@@ -16,6 +16,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "frmMain.h"
 #include "frmBackup.h"
 #include "sysLogger.h"
 #include "pgSchema.h"
@@ -269,15 +270,15 @@ void frmBackup::Go()
 }
 
 
-backupFactory::backupFactory(wxMenu *mnu, wxToolBar *toolbar)
+backupFactory::backupFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Backup"), _("Creates a backup of the current database to a local file"));
 }
 
 
-wxWindow *backupFactory::StartDialog(pgFrame *form, pgObject *obj)
+wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmBackup *frm=new frmBackup((frmMain*)form, obj);
+    frmBackup *frm=new frmBackup(form, obj);
     frm->Go();
     return frm;
 }

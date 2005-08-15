@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 
+#include "pgAdmin3.h"
 
 // wxWindows headers
 #include <wx/wx.h>
@@ -17,6 +18,7 @@
 #include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/image.h>
 #include <wx/imagjpeg.h>
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
@@ -38,7 +40,6 @@
 #endif 
 
 // App headers
-#include "pgAdmin3.h"
 #include "copyright.h"
 #include "version.h"
 #include "misc.h"
@@ -58,6 +59,7 @@
 
 #include <wx/ogl/ogl.h>
 
+#include "frmHint.h"
 
 // Globals
 frmMain *winMain=0;
@@ -67,6 +69,7 @@ sysSettings *settings;
 wxArrayInt existingLangs;
 wxArrayString existingLangNames;
 wxLocale *locale=0;
+pgAppearanceFactory *appearanceFactory=0;
 
 wxString backupExecutable;      // complete filename of pg_dump and pg_restore, if available
 wxString restoreExecutable;
@@ -288,6 +291,7 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->AddHandler(new ctlComboBoxXmlHandler);
 
 
+    appearanceFactory = new pgAppearanceFactory();
     InitXml();
 
     wxOGLInitialize();
@@ -357,7 +361,11 @@ bool pgAdmin3::OnInit()
         // Display a Tip if required.
         extern sysSettings *settings;
         wxCommandEvent evt = wxCommandEvent();
-        if (settings->GetShowTipOfTheDay()) winMain->OnTipOfTheDay(evt);
+        if (settings->GetShowTipOfTheDay())
+        {
+            tipOfDayFactory tip(0, 0, 0);
+            tip.StartDialog(winMain, 0);
+        }
     }
 
     return true;
@@ -377,4 +385,43 @@ int pgAdmin3::OnExit()
     delete settings;
 
     return pgAppBase::OnExit();
+}
+
+#include "images/pgAdmin3.xpm"
+#include "images/elephant32.xpm"
+#include "images/splash.xpm"
+
+pgAppearanceFactory::pgAppearanceFactory()
+{
+}
+
+void pgAppearanceFactory::SetIcons(wxDialog *dlg)
+{
+    wxIconBundle icons;
+    icons.AddIcon(wxIcon(pgAdmin3_xpm));
+    icons.AddIcon(wxIcon(elephant32_xpm));
+    dlg->SetIcons(icons);
+}
+
+void pgAppearanceFactory::SetIcons(wxTopLevelWindow *dlg)
+{
+    wxIconBundle icons;
+    icons.AddIcon(wxIcon(pgAdmin3_xpm));
+    icons.AddIcon(wxIcon(elephant32_xpm));
+    dlg->SetIcons(icons);
+}
+
+char **pgAppearanceFactory::GetSmallIconImage()
+{
+    return pgAdmin3_xpm;
+}
+
+char **pgAppearanceFactory::GetBigIconImage()
+{
+    return elephant32_xpm;
+}
+
+char **pgAppearanceFactory::GetSplashImage()
+{
+    return splash_xpm;
 }

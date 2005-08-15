@@ -24,18 +24,18 @@
 #include "frmHbaConfig.h"
 #include "frmMain.h"
 #include "frmAbout.h"
+#include "frmHelp.h"
 #include "utffile.h"
 #include "pgConn.h"
 #include "pgSet.h"
 #include "menu.h"
 #include "pgfeatures.h"
 
-#include "images/pgAdmin3.xpm"
-#include "images/elephant32.xpm"
 #include "images/file_open.xpm"
 #include "images/file_save.xpm"
 #include "images/edit_undo.xpm"
 #include "images/help.xpm"
+#include "images/hint.xpm"
 #include "images/checked.xpm"
 #include "images/unchecked.xpm"
 #include "images/query_execute.xpm"
@@ -92,6 +92,8 @@ void frmConfig::InitFrame(const wxChar *frameName)
         configImageList->Add(wxIcon(checked_xpm));
     }
 
+    menuFactories = new menuFactoryList();
+
     wxWindowBase::SetFont(settings->GetSystemFont());
 
     toolBar=CreateToolBar();
@@ -132,16 +134,14 @@ void frmConfig::InitFrame(const wxChar *frameName)
 
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
 
-    menuFactories.Add(new hintFactory(helpMenu, toolBar, false));
+    helpMenu->Append(MNU_HINT, _("Hints"), _("Display helpful hints on current object."));
+    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint_xpm), _("Display helpful hints on current object."));
     helpMenu->Append(MNU_HELP, _("&Configuration Help\tF1"),      _("Display help on configuration options."));
     helpMenu->AppendSeparator();
 
-    helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
-
-    aboutFactory *af=new aboutFactory(helpMenu, 0);
-    menuFactories.Add(af);
-
-
+    new bugReportFactory(menuFactories, helpMenu, 0);
+    aboutFactory *af=new aboutFactory(menuFactories, helpMenu, 0);
+    
     menuBar = new wxMenuBar();
     menuBar->Append(fileMenu, _("&File"));
     menuBar->Append(editMenu, _("&Edit"));
@@ -151,6 +151,9 @@ void frmConfig::InitFrame(const wxChar *frameName)
 #ifdef __WXMAC__
     wxApp::s_macAboutMenuItemId = af->GetId();
 #endif 
+
+    menuFactories->RegisterMenu(this, wxCommandEventHandler(pgFrame::OnAction));
+    menuFactories->CheckMenu(0, menuBar, toolBar);
 
     wxAcceleratorEntry entries[3];
 

@@ -12,15 +12,7 @@
 #ifndef PGView_H
 #define PGView_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-#include "pgSchema.h"
+#include "pgRule.h"
 
 class pgCollection;
 

@@ -21,10 +21,6 @@
 #include "slListen.h"
 #include "pgDatatype.h"
 
-// Images
-#include "images/sllisten.xpm"
-
-
 // pointer to controls
 
 #define cbOrigin        CTRL_COMBOBOX("cbOrigin")
@@ -40,10 +36,14 @@ BEGIN_EVENT_TABLE(dlgRepListen, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *slListenFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepListen(frame, (slListen*)node, (slNode*)parent);
+}
+
 dlgRepListen::dlgRepListen(frmMain *frame, slListen *l, slNode *n)
 : dlgRepProperty(frame, n->GetCluster(), wxT("dlgRepListen"))
 {
-    SetIcon(wxIcon(sllisten_xpm));
     listen=l;
     node=n;
 }
@@ -107,7 +107,7 @@ int dlgRepListen::Go(bool modal)
 
 pgObject *dlgRepListen::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=slListen::ReadObjects((slNodeCollection*)collection, 0,
+    pgObject *obj=listenFactory.CreateObjects(collection, 0,
          wxT(" WHERE li_origin = ") + NumToStr((OID)cbOrigin->GetClientData(cbOrigin->GetSelection())) +
          wxT("   AND li_receiver = ") + NumToStr(node->GetSlId()) +
          wxT("   AND li_provider = ") + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetSelection()))

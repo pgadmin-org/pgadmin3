@@ -18,9 +18,6 @@
 #include "slCluster.h"
 #include "slNode.h"
 
-// Images
-#include "images/slnode.xpm"
-
 
 // pointer to controls
 #define txtID               CTRL_TEXT("txtID")
@@ -31,10 +28,14 @@ BEGIN_EVENT_TABLE(dlgRepNode, dlgProperty)
 END_EVENT_TABLE();
 
 
+dlgProperty *slNodeFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRepNode(frame, (slNode*)node, (slCluster*)parent);
+}
+
 dlgRepNode::dlgRepNode(frmMain *frame, slNode *s, slCluster *c)
 : dlgRepProperty(frame, c, wxT("dlgRepNode"))
 {
-    SetIcon(wxIcon(slnode_xpm));
     node=s;
 }
 
@@ -73,7 +74,7 @@ pgObject *dlgRepNode::CreateObject(pgCollection *collection)
     else
         restriction = wxT("(SELECT MAX(no_id) FROM ") + cluster->GetSchemaPrefix() + wxT("sl_node)");
 
-    pgObject *obj=slNode::ReadObjects((slCollection*)collection, 0,
+    pgObject *obj=nodeFactory.CreateObjects(collection, 0,
          wxT(" WHERE no_id = ") + restriction);
 
     return obj;

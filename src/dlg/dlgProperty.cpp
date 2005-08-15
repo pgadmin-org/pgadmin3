@@ -19,7 +19,6 @@
 #include "pgCollection.h"
 #include "pgDatatype.h"
 #include "misc.h"
-#include "menu.h"
 #include "pgDefs.h"
 #include "ctlSecurityPanel.h"
 
@@ -117,11 +116,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
 
 dlgProperty::~dlgProperty()
 {
-    wxString prop=wxT("Properties/");
-    if (factory)
-        prop += factory->GetTypeName();
-    else
-        prop += wxString(typesList[objectType].typName);
+    wxString prop=wxT("Properties/") + wxString(factory->GetTypeName());
 	settings->Write(prop, GetPosition());
 
     if (GetWindowStyle() & wxTHICK_FRAME)
@@ -139,10 +134,7 @@ wxString dlgProperty::GetHelpPage() const
     else
     {
         page=wxT("pg/sql-create");
-        if (factory)
-            page += wxString(factory->GetTypeName()).Lower();
-        else
-            page += wxString(typesList[objectType].typName).Lower();
+        page += wxString(factory->GetTypeName()).Lower();
     }
     return page;
 }
@@ -188,11 +180,7 @@ void dlgProperty::EnableOK(bool enable)
 int dlgProperty::Go(bool modal)
 {
     // restore previous position and size, if applicable
-    wxString prop = wxT("Properties/");
-    if (factory)
-        prop += factory->GetTypeName();
-    else
-        prop += wxString(typesList[objectType].typName);
+    wxString prop = wxT("Properties/") + wxString(factory->GetTypeName());
 
     if (GetWindowStyle() & wxTHICK_FRAME)
         SetSize(settings->Read(prop, GetSize()));
@@ -230,11 +218,7 @@ int dlgProperty::Go(bool modal)
             readOnly=false;
         }
 
-        wxString typeName;
-        if (factory)
-            typeName = factory->GetTypeName();
-        else
-            typeName = typesList[objectType].typName;
+        wxString typeName = factory->GetTypeName();
         SetTitle(wxString(wxGetTranslation(typeName)) + wxT(" ") + GetObject()->GetFullIdentifier());
     }
     else
@@ -243,12 +227,7 @@ int dlgProperty::Go(bool modal)
         if (btn)
             btn->Hide();
         if (objectType >= 0)
-        {
-            if (factory)
-                SetTitle(wxGetTranslation(factory->GetNewString()));
-            else
-                SetTitle(wxGetTranslation(typesList[objectType].newString));
-        }
+            SetTitle(wxGetTranslation(factory->GetNewString()));
     }
     if (statusBar)
         statusBar->SetStatusText(wxEmptyString);
@@ -435,7 +414,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             size_t pos=0;
             wxTreeItemId newItem;
 
-            if (data->GetType() != PG_COLUMN)
+            if (data->IsCreatedBy(columnFactory))
             {
                 // columns should be appended, not inserted alphabetically
 
@@ -667,95 +646,22 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
     dlgProperty *dlg=0;
 
-    switch (type)
+    pgaFactory *factory=pgaFactory::GetFactory(type);
+
+    if (factory)
     {
-        case PG_COLUMN:
-        case PG_COLUMNS:
-            dlg=new dlgColumn(frame, (pgColumn*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_INDEX:
-        case PG_INDEXES:
-            dlg=new dlgIndex(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_PRIMARYKEY:
-            dlg=new dlgPrimaryKey(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_FOREIGNKEY:
-            dlg=new dlgForeignKey(frame, (pgForeignKey*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_UNIQUE:
-            dlg=new dlgUnique(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_CHECK:
-            dlg=new dlgCheck(frame, (pgCheck*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_TRIGGER:
-        case PG_TRIGGERS:
-            dlg=new dlgTrigger(frame, (pgTrigger*)currentNode, (pgTable*)parentNode);
-            break;
-        case PG_RULE:
-        case PG_RULES:
-            dlg=new dlgRule(frame, (pgRule*)currentNode, (pgTable*)parentNode);
-            break;
-        case PGA_JOB:
-            dlg=new dlgJob(frame, (pgaJob*)currentNode);
-            break;
-
-        case PGA_STEP:
-            dlg=new dlgStep(frame, (pgaStep*)currentNode, (pgaJob*)parentNode);
-            break;
-        case PGA_SCHEDULE:
-            dlg=new dlgSchedule(frame, (pgaSchedule*)currentNode, (pgaJob*)parentNode);
-            break;
-        case SL_NODE:
-            dlg=new dlgRepNode(frame, (slNode*)currentNode, (slCluster*)parentNode);
-            break;
-        case SL_PATH:
-            dlg=new dlgRepPath(frame, (slPath*)currentNode, (slNode*)parentNode);
-            break;
-        case SL_LISTEN:
-            dlg=new dlgRepListen(frame, (slListen*)currentNode, (slNode*)parentNode);
-            break;
-        case SL_SET:
-            dlg=new dlgRepSet(frame, (slSet*)currentNode, (slCluster*)parentNode);
-            break;
-        case SL_SEQUENCE:
-            dlg=new dlgRepSequence(frame, (slSequence*)currentNode, (slSet*)parentNode);
-            break;
-        case SL_TABLE:
-            dlg=new dlgRepTable(frame, (slTable*)currentNode, (slSet*)parentNode);
-            break;
-        case SL_SUBSCRIPTION:
-            dlg=new dlgRepSubscription(frame, (slSubscription*)currentNode, (slSet*)parentNode);
-            break;
-
-        default:
+        dlg = factory->CreateDialog(frame, currentNode, parentNode);
+        if (dlg)
         {
-            pgaFactory *factory=pgaFactory::GetFactory(type);
+            if (factory->IsCollection())
+                factory = ((pgaCollectionFactory*)factory)->GetItemFactory();
+            wxASSERT(factory);
 
-            if (factory)
-            {
-                dlg = factory->CreateDialog(frame, currentNode, parentNode);
-                if (dlg)
-                {
-                    if (factory->IsCollection())
-                        factory = ((pgaCollectionFactory*)factory)->GetItemFactory();
-                    wxASSERT(factory);
-
-                    dlg->factory = factory;
-                    dlg->objectType = factory->GetId();
-                    dlg->SetIcon(wxIcon(factory->GetImage()));
-                }
-            }
-            break;
+            dlg->factory = factory;
+            dlg->objectType = factory->GetId();
+            dlg->SetIcon(wxIcon(factory->GetImage()));
+            dlg->InitDialog(frame, node);
         }
-    }
-
-    if (dlg)
-    {
-        if (dlg->objectType < 0)
-            dlg->objectType=type;
-        dlg->InitDialog(frame, node);
     }
     return dlg;
 }
@@ -773,10 +679,7 @@ bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 
     if (dlg)
     {
-        if (dlg->factory)
-            dlg->SetTitle(wxGetTranslation(dlg->factory->GetNewString()));
-        else
-            dlg->SetTitle(wxGetTranslation(typesList[dlg->objectType].newString));
+        dlg->SetTitle(wxGetTranslation(dlg->factory->GetNewString()));
 
         dlg->CreateAdditionalPages();
         dlg->Go();
@@ -801,11 +704,7 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 
     if (dlg)
     {
-        wxString typeName;
-        if (dlg->factory)
-            typeName = dlg->factory->GetTypeName();
-        else
-            typeName = typesList[dlg->objectType].typName;
+        wxString typeName = dlg->factory->GetTypeName();
         dlg->SetTitle(wxString(wxGetTranslation(typeName)) + wxT(" ") + node->GetFullIdentifier());
 
         dlg->CreateAdditionalPages();
@@ -1037,7 +936,7 @@ int dlgCollistProperty::Go(bool modal)
         while (columnsItem)
         {
             data=(pgObject*)mainForm->GetBrowser()->GetItemData(columnsItem);
-            if (data->GetType() == PG_COLUMNS)
+            if (data->GetMetaType() == PGM_COLUMN && data->IsCollection())
                 break;
             columnsItem=mainForm->GetBrowser()->GetNextChild(table->GetId(), cookie);
         }
@@ -1052,7 +951,7 @@ int dlgCollistProperty::Go(bool modal)
             while (item)
             {
                 column=(pgColumn*)mainForm->GetBrowser()->GetItemData(item);
-                if (column->GetType() == PG_COLUMN)
+                if (column->IsCreatedBy(columnFactory))
                 {
                     if (column->GetColNumber() > 0)
                     {
@@ -1362,4 +1261,118 @@ void dlgAgentProperty::OnOK(wxCommandEvent &ev)
     }
 
     Destroy();
+}
+
+
+propertyFactory::propertyFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    if (mnu)
+        mnu->Append(id, _("&Properties"), _("Display/edit the properties of the selected object."));
+    else
+        context=false;
+    if (toolbar)
+        toolbar->AddTool(id, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+}
+
+
+wxWindow *propertyFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (!dlgProperty::EditObjectDialog(form, form->GetSqlPane(), obj))
+        form->CheckAlive();
+
+    return 0;
+}
+
+
+bool propertyFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->CanEdit();
+}
+
+
+#include "images/create.xpm"
+createFactory::createFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("&Create"),  _("Create a new object of the same type as the selected object."));
+    toolbar->AddTool(id, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+}
+
+
+wxWindow *createFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (!dlgProperty::CreateObjectDialog(form, obj, -1))
+        form->CheckAlive();
+
+    return 0;
+}
+
+
+bool createFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->CanCreate();
+}
+
+
+#include "images/drop.xpm"
+dropFactory::dropFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Delete/Drop\tDel"),  _("Delete/Drop the selected object."));
+    toolbar->AddTool(id, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
+}
+
+
+wxWindow *dropFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    form->ExecDrop(false);
+    return 0;
+}
+
+
+bool dropFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->CanDrop();
+}
+
+
+dropCascadedFactory::dropCascadedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Drop cascaded"), _("Drop the selected object and all objects dependent on it."));
+}
+
+
+wxWindow *dropCascadedFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    form->ExecDrop(true);
+    return 0;
+}
+
+
+bool dropCascadedFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->CanDropCascaded();
+}
+
+
+#include "images/refresh.xpm"
+refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    if (mnu)
+        mnu->Append(id, _("Re&fresh\tF5"), _("Refresh the selected object."));
+    else
+        context = false;
+    if (toolbar)
+        toolbar->AddTool(id, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
+}
+
+
+wxWindow *refreshFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    form->ExecDrop(false);
+    return 0;
+}
+
+
+bool refreshFactory::CheckEnable(pgObject *obj)
+{
+    return obj != 0;
 }

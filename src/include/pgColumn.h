@@ -9,32 +9,33 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGColumn_H
-#define PGColumn_H
-
-// wxWindows headers
-#include <wx/wx.h>
+#ifndef PGCOLUMN_H
+#define PGCOLUMN_H
 
 // App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
+#include "pgTable.h"
 
 class pgCollection;
 
-class pgColumn : public pgSchemaObject
+class pgColumnFactory : public pgTableObjFactory
 {
 public:
-    pgColumn(pgSchema *newSchema, const wxString& newName = wxT(""));
+    pgColumnFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgColumnFactory columnFactory;
+
+class pgColumn : public pgTableObject
+{
+public:
+    pgColumn(pgTable *newTable, const wxString& newName = wxT(""));
     ~pgColumn();
 
-    int GetIconId() { return PGICON_COLUMN; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
     void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
 
     wxString GetDefinition();
 

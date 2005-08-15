@@ -9,31 +9,30 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGTrigger_H
-#define PGTrigger_H
+#ifndef PGTRIGGER_H
+#define PGTRIGGER_H
 
-// wxWindows headers
-#include <wx/wx.h>
+#include "pgTable.h"
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgObject.h"
-#include "pgServer.h"
-#include "pgDatabase.h"
-
-class pgCollection;
 class pgFunction;
 
-
-class pgTrigger : public pgSchemaObject
+class pgTriggerFactory : public pgTableObjFactory
 {
 public:
-    pgTrigger(pgSchema *newSchema, const wxString& newName = wxT(""));
+    pgTriggerFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgTriggerFactory triggerFactory;
+
+
+class pgTrigger : public pgTableObject
+{
+public:
+    pgTrigger(pgTable *newTable, const wxString& newName = wxT(""));
     ~pgTrigger();
 
-    int GetIconId() { return PGICON_TRIGGER; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction=wxT(""));
     bool CanDropCascaded() { return true; }
 
     wxString GetFireWhen() const;

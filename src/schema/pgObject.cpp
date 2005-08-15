@@ -15,7 +15,6 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "menu.h"
 #include "pgObject.h"
 #include "pgServer.h"
 #include "frmMain.h"
@@ -34,49 +33,14 @@
 #include "pgTablespace.h"
 #include "pgGroup.h"
 #include "pgUser.h"
+#include "pgIndex.h"
+#include "pgTrigger.h"
+#include "pgCheck.h"
+#include "pgIndexConstraint.h"
+#include "pgForeignKey.h"
+#include "pgRule.h"
 
 // Ordering must match the PG_OBJTYPE enumeration in pgObject.h
-
-
-pgTypes typesList[] =
-{
-    {__("None"), -1, 0, 0},
-    {__("Columns"), PGICON_COLUMNS, 0, 0},
-    {__("Column"), PGICON_COLUMN, __("New Column"), __("Add a new Column.") },
-    {__("Indexes"), PGICON_INDEXES, 0, 0},
-    {__("Index"), PGICON_INDEX, __("New Index"), __("Add a new Index.") },
-    {__("Rules"), PGICON_RULES, 0, 0},
-    {__("Rule"), PGICON_RULE, __("New Rule"), __("Create a new Rule.") },
-    {__("Triggers"), PGICON_TRIGGERS, 0, 0},
-    {__("Trigger"), PGICON_TRIGGER, __("New Trigger"), __("Add a new Trigger.") },
-    {__("Constraints"), PGICON_CONSTRAINT, 0, 0},      
-    {__("Primary Key"), PGICON_PRIMARYKEY, __("New Primary Key"), __("Create a Primary Key.") },
-    {__("Unique"), PGICON_UNIQUE, __("New Unique Constraint"), __("Add a new Unique Constraint.") },
-    {__("Check"), PGICON_CHECK, __("New Check Constraint"), __("Add a new Check Constraint.") },
-    {__("Foreign Key"), PGICON_FOREIGNKEY, __("New Foreign Key"), __("Add a new Foreign Key.") },
-
-    {__("pgAgent Jobs"), PGAICON_JOBS, 0, 0},
-    {__("Job"), PGAICON_JOB, __("New Job"), __("Create a new Job") },
-	{__("Schedules"), PGAICON_SCHEDULES, 0, 0},
-    {__("Schedule"), PGAICON_SCHEDULE, __("New Schedule"), __("Create new Schedule") },
-	{__("Steps"), PGAICON_STEPS, 0, 0},
-    {__("Step"), PGAICON_STEP, __("New Step"), __("Create new Step") }, 
-    
-    {__("Nodes"), SLICON_NODES,  0, 0},
-    {__("Node"), SLICON_NODE, __("New Node"), __("Create new node") },
-    {__("Paths"), SLICON_PATHS,  0, 0},
-    {__("Path"), SLICON_PATH, __("New Path"), __("Create new path to node") },
-    {__("Listens"), SLICON_LISTENS, 0, 0},
-    {__("Listen"), SLICON_LISTEN, __("New Listen"), __("Create new Listen between nodes")},
-    {__("Replication Sets"), SLICON_SETS, 0, 0 },
-    {__("Replication Set"), SLICON_SET, __("New Replication Set"), __("Create new Replication Set") },
-    {__("Subscriptions"), SLICON_SUBSCRIPTIONS, 0, 0 },
-    {__("Subscription"), SLICON_SUBSCRIPTION, __("New Subscription"), __("Create new Subscription") },
-
-    {__("Unknown"), -1, 0, 0},
-    {0,0,0,0}
-};
-
 
 
 int pgObject::GetType() const
@@ -97,9 +61,7 @@ int pgObject::GetMetaType() const
 
 wxString pgObject::GetTypeName() const
 {
-    if (factory)
-        return factory->GetTypeName();
-    return typesList[type].typName; 
+    return factory->GetTypeName();
 }
 
 
@@ -125,13 +87,6 @@ int pgObject::GetTypeId(const wxString &typname)
     pgaFactory *factory=pgaFactory::GetFactory(typname);
     if (factory)
         return factory->GetId();
-
-    int id;
-    for (id=1 ; typesList[id].typName ; id++)
-    {
-        if (typname.IsSameAs(typesList[id].typName, false))
-            return id;
-    }
 
     return -1;
 }
@@ -160,17 +115,10 @@ pgObject::pgObject(int newType, const wxString& newName)
     factory=pgaFactory::GetFactory(newType);
 
     // Set the typename and type
-    if (newType >= PG_UNKNOWN)
-        newType = PG_UNKNOWN;
     type = newType;
 
     if (newName.IsEmpty())
-    {
-        if (factory)
-            name = factory->GetTypeName();
-        else
-            name = typesList[type].typName;
-    }
+        name = factory->GetTypeName();
     else
         name = newName;
     expandedKids=false;
@@ -182,22 +130,7 @@ pgObject::pgObject(int newType, const wxString& newName)
 void pgObject::AppendMenu(wxMenu *menu, int type)
 {
     if (menu)
-    {
-        if (factory)
-            factory->AppendMenu(menu);
-        else
-        {
-            if (type < 0)
-            {
-                type=GetType();
-                if (IsCollection())
-                    type++;
-            }
-            menu->Append(MNU_NEW+type, 
-                wxGetTranslation(typesList[type].newString),
-                wxGetTranslation(typesList[type].newLongString));
-        }
-    }
+        factory->AppendMenu(menu);
 }
 
 
@@ -282,7 +215,6 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                 }
 
                 wxString typestr=set->GetVal(wxT("type"));
-                int id=-1;
                 pgaFactory *depFactory=0;
                 switch (typestr.c_str()[0])
                 {
@@ -291,36 +223,37 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                     case 't':   set->MoveNext(); continue;
 
                     case 'r':   depFactory=&tableFactory;    break;
-                    case 'i':   id=PG_INDEX;    break;
+                    case 'i':   depFactory=&indexFactory;    break;
                     case 'S':   depFactory=&sequenceFactory; break;
                     case 'v':   depFactory=&viewFactory;     break;
                     case 'p':   depFactory=&functionFactory; break;
                     case 'n':   depFactory=&schemaFactory;   break;
                     case 'y':   depFactory=&typeFactory;     break;
-                    case 'T':   id=PG_TRIGGER;  break;
+                    case 'T':   depFactory=&triggerFactory;  break;
                     case 'l':   depFactory=&languageFactory; break;
                     case 'R':
                     {
                         refname = _refname + wxT(" ON ") + refname + set->GetVal(wxT("ownertable"));
                         _refname=wxEmptyString;
-                        id=PG_RULE;
+                        depFactory=&ruleFactory;
                         break;
                     }
                     case 'C':
                     {
                         switch (typestr.c_str()[1])
                         {
-                            case 'c':   id=PG_CHECK;        break;
+                            case 'c':   depFactory=&checkFactory;        break;
                             case 'f':   
                                 refname += set->GetVal(wxT("ownertable")) + wxT(".");
-                                id=PG_FOREIGNKEY;   break;
-                            case 'p':   id=PG_PRIMARYKEY;   break;
-                            case 'u':   id=PG_UNIQUE;       break;
-                            default:    id=PG_UNKNOWN;      break;
+                                depFactory=&foreignKeyFactory;   break;
+                            case 'p':   depFactory=&primaryKeyFactory;   break;
+                            case 'u':   depFactory=&uniqueFactory;       break;
+                            default:    break;
                         }
                         break;
                     }
-                    default:    id=PG_UNKNOWN;  break;
+                    default:
+                        break;
                 }
 
                 refname += _refname;
@@ -334,8 +267,8 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                 }
                 else
                 {
-                    typname = typesList[id].typName;
-                    icon = typesList[id].typeIcon;
+                    typname = _("Unknown");
+                    icon=-1;
                 }
 
                 wxString deptype;
@@ -477,7 +410,6 @@ void pgObject::ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties
     {
         form->StartMsg(wxString::Format(_("Retrieving %s details"), GetTranslatedTypeName().c_str()));
 
-        form->SetButtons(this);
         SetContextInfo(form);
 
         ctlListView *statistics=form->GetStatistics();
@@ -753,8 +685,6 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
             {
                 while (!set->Eof())
                 {
-                    int id=0;
-
                     wxString relname = qtIdent(set->GetVal(wxT("nspname")));
                     if (!relname.IsEmpty())
                         relname += wxT(".");
@@ -764,7 +694,7 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
                     switch (set->GetVal(wxT("relkind")).c_str()[0])
                     {
                         case 'r':   ownerFactory=&tableFactory;            break;
-                        case 'i':   id=PG_INDEX;        
+                        case 'i':   ownerFactory=&indexFactory;        
                                     relname = qtIdent(set->GetVal(wxT("indname"))) + wxT(" ON ") + relname;
                                     break;
                         case 'S':   ownerFactory=&sequenceFactory;         break;
@@ -784,19 +714,12 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
                                     break;
                     }
 
-                    if (id || ownerFactory)
+                    if (ownerFactory)
                     {
                         wxString typname;
                         int icon;
-                        if (ownerFactory)
-                        {
-                            typname = ownerFactory->GetTypeName();
-                            icon = ownerFactory->GetIconId();
-                        }
-                        {
-                            typname = typesList[id].typName;
-                            icon = typesList[id].typeIcon;
-                        }
+                        typname = ownerFactory->GetTypeName();
+                        icon = ownerFactory->GetIconId();
                         referencedBy->AppendItem(icon, typname, dbname, relname);
                     }
 
@@ -899,7 +822,7 @@ bool pgSchemaObject::CanCreate()
 
 void pgSchemaObject::SetContextInfo(frmMain *form)
 {
-    form->SetDatabase(schema->GetDatabase());
+//    form->SetDatabase(schema->GetDatabase());
 }
 
 pgSet *pgSchemaObject::ExecuteSet(const wxString& sql)

@@ -12,14 +12,8 @@
 #ifndef FRMGRANTWIZARD_H
 #define FRMGRANTWIZARD_H
 
-// wxWindows headers
-#include <wx/wx.h>
-
-
-// App headers
-#include "pgAdmin3.h"
-#include "frmMain.h"
-
+#include "dlgClasses.h"
+#include "base/factory.h"
 
 class ctlSecurityPanel;
 
@@ -53,8 +47,8 @@ private:
 class grantWizardFactory : public contextActionFactory
 {
 public:
-    grantWizardFactory(wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(pgFrame *form, pgObject *obj);
+    grantWizardFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 
