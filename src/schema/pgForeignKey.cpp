@@ -264,7 +264,7 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 
 /////////////////////////////
 
-#include "images/foreignKey.xpm"
+#include "images/foreignkey.xpm"
 
 
 pgForeignKeyFactory::pgForeignKeyFactory() 
