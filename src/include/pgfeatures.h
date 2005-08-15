@@ -9,6 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+
+#ifndef __FEATURE_H
+#define __FEATURE_H
+
 enum
 {
     FEATURE_INITIALIZED=0,
@@ -21,3 +25,5 @@ enum
     FEATURE_POSTMASTER_START_TIME,
     FEATURE_LAST
 };
+
+#endif
