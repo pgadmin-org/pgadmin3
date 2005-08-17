@@ -56,13 +56,13 @@ public:
     void RemoveFrame(wxWindow *frame);
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
     void SavePosition();
+    void OnAction(wxCommandEvent& event);
 
 protected:
 
     void OnKeyDown(wxKeyEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnRecent(wxCommandEvent& event);
-    void OnAction(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
 
     virtual void OpenLastFile() {}

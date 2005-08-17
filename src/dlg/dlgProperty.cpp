@@ -1367,7 +1367,7 @@ refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *to
 
 wxWindow *refreshFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    form->ExecDrop(false);
+    form->Refresh(obj);
     return 0;
 }
 

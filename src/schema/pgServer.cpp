@@ -23,6 +23,7 @@
 #include "pgTablespace.h"
 #include "pgGroup.h"
 #include "pgUser.h"
+#include "pgRole.h"
 #include "pgaJob.h"
 #include "utffile.h"
 #include "pgfeatures.h"
@@ -732,8 +733,16 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             if (!exists.IsNull())
                 browser->AppendCollection(this, jobFactory);
 
-            browser->AppendCollection(this, groupFactory);
-            browser->AppendCollection(this, userFactory);
+            if (conn->BackendMinimumVersion(8, 1))
+            {
+                browser->AppendCollection(this, groupRoleFactory);
+                browser->AppendCollection(this, loginRoleFactory);
+            }
+            else
+            {
+                browser->AppendCollection(this, groupFactory);
+                browser->AppendCollection(this, userFactory);
+            }
         }
     }
 

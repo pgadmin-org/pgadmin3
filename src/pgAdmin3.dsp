@@ -195,6 +195,10 @@ SOURCE=.\schema\pgOperatorClass.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgRole.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgRule.cpp
 # End Source File
 # Begin Source File
@@ -923,6 +927,10 @@ SOURCE=.\include\pgOperator.h
 # Begin Source File
 
 SOURCE=.\include\pgOperatorClass.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgRole.h
 # End Source File
 # Begin Source File
 
