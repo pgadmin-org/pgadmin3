@@ -108,6 +108,11 @@ void frmMain::OnClose(wxCloseEvent& event)
     while ((node=frames.GetFirst()) != NULL)
     {
         fr=node->GetData();
+        
+        // if crashes occur here when closing the app,
+        // some actionFactory::StartDialog returned a wxWindow* (which is registered in frames)
+        // without code to handle OnClose (esp. removing itself with RemoveFrame)
+
         if (!fr->Close(!event.CanVeto()))
         {
             if (event.CanVeto())

@@ -314,5 +314,5 @@ wxWindow *optionsFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmOptions *frm=new frmOptions(form);
     frm->Show();
-    return frm;
+    return 0;
 }
