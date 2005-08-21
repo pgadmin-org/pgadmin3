@@ -35,12 +35,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgCheckFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgCheck(frame, (pgCheck*)node, (pgTable*)parent);
+    return new dlgCheck(this, frame, (pgCheck*)node, (pgTable*)parent);
 }
 
 
-dlgCheck::dlgCheck(frmMain *frame, pgCheck *node, pgTable *parentNode)
-: dlgProperty(frame, wxT("dlgCheck"))
+dlgCheck::dlgCheck(pgaFactory *f, frmMain *frame, pgCheck *node, pgTable *parentNode)
+: dlgProperty(f, frame, wxT("dlgCheck"))
 {
     check=node;
     table=parentNode;

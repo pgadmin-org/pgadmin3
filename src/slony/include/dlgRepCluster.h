@@ -23,7 +23,7 @@ class wxProcessEvent;
 class dlgRepClusterBase : public dlgProperty
 {
 public:
-    dlgRepClusterBase(frmMain *frame, const wxString &dlgName, slCluster *cl, pgDatabase *obj);
+    dlgRepClusterBase(pgaFactory *factory, frmMain *frame, const wxString &dlgName, slCluster *cl, pgDatabase *obj);
     ~dlgRepClusterBase();
     pgObject *GetObject();
     int Go(bool modal);
@@ -46,7 +46,7 @@ protected:
 class dlgRepCluster : public dlgRepClusterBase
 {
 public:
-    dlgRepCluster(frmMain *frame, slCluster *cl, pgDatabase *obj);
+    dlgRepCluster(pgaFactory *factory, frmMain *frame, slCluster *cl, pgDatabase *obj);
     int Go(bool modal);
 
     void CheckChange();
@@ -74,7 +74,7 @@ private:
 class dlgRepClusterUpgrade : public dlgRepClusterBase
 {
 public:
-    dlgRepClusterUpgrade(frmMain *frame, slCluster *cl);
+    dlgRepClusterUpgrade(pgaFactory *factory, frmMain *frame, slCluster *cl);
     int Go(bool modal);
 
     void CheckChange();

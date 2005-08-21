@@ -20,7 +20,7 @@ class pgaJob;
 class dlgJob : public dlgAgentProperty
 {
 public:
-    dlgJob(frmMain *frame, pgaJob *j);
+    dlgJob(pgaFactory *factory, frmMain *frame, pgaJob *j);
 
     void CheckChange();
     int Go(bool modal);

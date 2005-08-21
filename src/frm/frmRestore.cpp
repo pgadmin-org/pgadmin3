@@ -469,7 +469,7 @@ wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmRestore *frm=new frmRestore(form, obj);
     frm->Go();
-    return frm;
+    return 0;
 }
 
 

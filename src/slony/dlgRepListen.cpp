@@ -38,11 +38,11 @@ END_EVENT_TABLE();
 
 dlgProperty *slListenFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepListen(frame, (slListen*)node, (slNode*)parent);
+    return new dlgRepListen(this, frame, (slListen*)node, (slNode*)parent);
 }
 
-dlgRepListen::dlgRepListen(frmMain *frame, slListen *l, slNode *n)
-: dlgRepProperty(frame, n->GetCluster(), wxT("dlgRepListen"))
+dlgRepListen::dlgRepListen(pgaFactory *f, frmMain *frame, slListen *l, slNode *n)
+: dlgRepProperty(f, frame, n->GetCluster(), wxT("dlgRepListen"))
 {
     listen=l;
     node=n;

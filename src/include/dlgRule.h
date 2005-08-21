@@ -22,7 +22,7 @@ class ctlSQLBox;
 class dlgRule : public dlgProperty
 {
 public:
-    dlgRule(frmMain *frame, pgRule *r, pgTable *tab);
+    dlgRule(pgaFactory *factory, frmMain *frame, pgRule *r, pgTable *tab);
     int Go(bool modal);
 
     void CheckChange();

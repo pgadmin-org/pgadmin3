@@ -50,7 +50,7 @@ public:
     virtual void CheckChange() =0;
 
 protected:
-    dlgProperty(frmMain *frame, const wxString &resName);
+    dlgProperty(pgaFactory *factory, frmMain *frame, const wxString &resName);
     ~dlgProperty();
 
     void EnableOK(bool enable);
@@ -128,7 +128,7 @@ public:
     int Go(bool modal);
 
 protected:
-    dlgTypeProperty(frmMain *frame, const wxString &resName);
+    dlgTypeProperty(pgaFactory *factory, frmMain *frame, const wxString &resName);
     void CheckLenEnable();
     void FillDatatype(ctlComboBox *cb, bool withDomains=true);
     void FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains=true);
@@ -148,8 +148,8 @@ public:
     int Go(bool modal);
 
 protected:
-    dlgCollistProperty(frmMain *frame, const wxString &resName, pgTable *table);
-    dlgCollistProperty(frmMain *frame, const wxString &resName, ctlListView *colList);
+    dlgCollistProperty(pgaFactory *factory, frmMain *frame, const wxString &resName, pgTable *table);
+    dlgCollistProperty(pgaFactory *factory, frmMain *frame, const wxString &resName, ctlListView *colList);
 
     ctlListView *columns;
     pgTable *table;
@@ -159,7 +159,7 @@ protected:
 class dlgSecurityProperty : public dlgProperty
 {
 protected:
-    dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *privilegeChar);
+    dlgSecurityProperty(pgaFactory *factory, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *privilegeChar);
     ~dlgSecurityProperty();
     void AddGroups(ctlComboBox *comboBox=0);
     void AddUsers(ctlComboBox *comboBox=0);
@@ -188,7 +188,7 @@ class dlgAgentProperty : public dlgProperty
 public:
 
 protected:
-    dlgAgentProperty(frmMain *frame, const wxString &resName);
+    dlgAgentProperty(pgaFactory *factory, frmMain *frame, const wxString &resName);
     void OnOK(wxCommandEvent &ev);
     bool executeSql();
     virtual wxString GetInsertSql() =0;

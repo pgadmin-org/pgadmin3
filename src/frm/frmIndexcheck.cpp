@@ -182,7 +182,7 @@ wxWindow *indexCheckFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmIndexcheck *frm=new frmIndexcheck(form, obj);
     frm->Go();
-    return frm;
+    return 0;
 }
 
 

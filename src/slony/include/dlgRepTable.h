@@ -21,7 +21,7 @@ class slTable;
 class dlgRepTable : public dlgRepProperty
 {
 public:
-    dlgRepTable(frmMain *frame, slTable *tab, slSet *s);
+    dlgRepTable(pgaFactory *factory, frmMain *frame, slTable *tab, slSet *s);
     int Go(bool modal);
 
     void CheckChange();

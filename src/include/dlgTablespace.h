@@ -20,7 +20,7 @@ class pgTablespace;
 class dlgTablespace : public dlgSecurityProperty
 {
 public:
-    dlgTablespace(frmMain *frame, pgTablespace *node=0);
+    dlgTablespace(pgaFactory *factory, frmMain *frame, pgTablespace *node=0);
 
     void CheckChange();
     wxString GetSql();

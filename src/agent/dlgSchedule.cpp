@@ -57,12 +57,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgaScheduleFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgSchedule(frame, (pgaSchedule*)node, (pgaJob*)parent);
+    return new dlgSchedule(this, frame, (pgaSchedule*)node, (pgaJob*)parent);
 }
 
 
-dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
-: dlgAgentProperty(frame, wxT("dlgSchedule"))
+dlgSchedule::dlgSchedule(pgaFactory *f, frmMain *frame, pgaSchedule *node, pgaJob *j)
+: dlgAgentProperty(f, frame, wxT("dlgSchedule"))
 {
     schedule=node;
     job=j;

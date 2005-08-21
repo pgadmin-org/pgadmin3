@@ -48,12 +48,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgAggregateFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgAggregate(frame, (pgAggregate*)node, (pgSchema*)parent);
+    return new dlgAggregate(this, frame, (pgAggregate*)node, (pgSchema*)parent);
 }
 
 
-dlgAggregate::dlgAggregate(frmMain *frame, pgAggregate *node, pgSchema *sch)
-: dlgTypeProperty(frame, wxT("dlgAggregate"))
+dlgAggregate::dlgAggregate(pgaFactory *f, frmMain *frame, pgAggregate *node, pgSchema *sch)
+: dlgTypeProperty(f, frame, wxT("dlgAggregate"))
 {
     SetIcon(wxIcon(aggregateFactory.GetImage()));
     schema=sch;

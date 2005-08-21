@@ -21,7 +21,7 @@ class pgaJob;
 class dlgStep : public dlgAgentProperty
 {
 public:
-    dlgStep(frmMain *frame, pgaStep *s, pgaJob *j);
+    dlgStep(pgaFactory *factory, frmMain *frame, pgaStep *s, pgaJob *j);
 
     void CheckChange();
     int Go(bool modal);

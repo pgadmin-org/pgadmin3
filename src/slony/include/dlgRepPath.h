@@ -21,7 +21,7 @@ class slPath;
 class dlgRepPath : public dlgRepProperty
 {
 public:
-    dlgRepPath(frmMain *frame, slPath *p, slNode *n);
+    dlgRepPath(pgaFactory *factory, frmMain *frame, slPath *p, slNode *n);
     int Go(bool modal);
 
     void CheckChange();

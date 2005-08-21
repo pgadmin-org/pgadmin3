@@ -60,11 +60,11 @@ END_EVENT_TABLE();
 
 dlgProperty *pgOperatorFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgOperator(frame, (pgOperator*)node, (pgSchema*)parent);
+    return new dlgOperator(this, frame, (pgOperator*)node, (pgSchema*)parent);
 }
 
-dlgOperator::dlgOperator(frmMain *frame, pgOperator *node, pgSchema *sch)
-: dlgTypeProperty(frame, wxT("dlgOperator"))
+dlgOperator::dlgOperator(pgaFactory *f, frmMain *frame, pgOperator *node, pgSchema *sch)
+: dlgTypeProperty(f, frame, wxT("dlgOperator"))
 {
     schema=sch;
     oper=node;

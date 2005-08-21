@@ -22,7 +22,7 @@ class pgColumn;
 class dlgTable : public dlgSecurityProperty
 {
 public:
-    dlgTable(frmMain *frame, pgTable *db, pgSchema *sch);
+    dlgTable(pgaFactory *factory, frmMain *frame, pgTable *db, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();

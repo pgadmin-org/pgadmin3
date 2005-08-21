@@ -20,7 +20,7 @@ class pgSchema;
 class dlgSchema : public dlgSecurityProperty
 {
 public:
-    dlgSchema(frmMain *frame, pgSchema *db);
+    dlgSchema(pgaFactory *factory, frmMain *frame, pgSchema *db);
     int Go(bool modal);
 
     void CheckChange();

@@ -21,7 +21,7 @@ class pgSequence;
 class dlgSequence : public dlgSecurityProperty
 {
 public:
-    dlgSequence(frmMain *frame, pgSequence *seq, pgSchema *sch);
+    dlgSequence(pgaFactory *factory, frmMain *frame, pgSequence *seq, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();

@@ -22,7 +22,7 @@ class ctlSQLBox;
 class dlgView : public dlgSecurityProperty
 {
 public:
-    dlgView(frmMain *frame, pgView *v, pgSchema *sch);
+    dlgView(pgaFactory *factory, frmMain *frame, pgView *v, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();

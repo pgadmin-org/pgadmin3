@@ -21,7 +21,7 @@ class pgOperator;
 class dlgOperator : public dlgTypeProperty
 {
 public:
-    dlgOperator(frmMain *frame, pgOperator *op, pgSchema *sch);
+    dlgOperator(pgaFactory *factory, frmMain *frame, pgOperator *op, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();

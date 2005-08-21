@@ -41,12 +41,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgDomainFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgDomain(frame, (pgDomain*)node, (pgSchema*)parent);
+    return new dlgDomain(this, frame, (pgDomain*)node, (pgSchema*)parent);
 }
 
 
-dlgDomain::dlgDomain(frmMain *frame, pgDomain *node, pgSchema *sch)
-: dlgTypeProperty(frame, wxT("dlgDomain"))
+dlgDomain::dlgDomain(pgaFactory *f, frmMain *frame, pgDomain *node, pgSchema *sch)
+: dlgTypeProperty(f, frame, wxT("dlgDomain"))
 {
     schema=sch;
     domain=node;

@@ -253,10 +253,11 @@ bool pgSchemaObjCollection::CanCreate()
 
 
 #include "images/namespace.xpm"
+#include "images/namespace-sm.xpm"
 #include "images/namespaces.xpm"
 
 pgSchemaFactory::pgSchemaFactory() 
-: pgDatabaseObjFactory(__("Schema"), _("New Schema"), _("Create a new Schema."), namespace_xpm)
+: pgDatabaseObjFactory(__("Schema"), _("New Schema"), _("Create a new Schema."), namespace_xpm, namespace_sm_xpm)
 {
     metaType = PGM_SCHEMA;
 }

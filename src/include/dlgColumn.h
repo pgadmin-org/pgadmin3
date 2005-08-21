@@ -21,7 +21,7 @@ class pgTable;
 class dlgColumn : public dlgTypeProperty
 {
 public:
-    dlgColumn(frmMain *frame, pgColumn *column, pgTable *parentNode);
+    dlgColumn(pgaFactory *factory, frmMain *frame, pgColumn *column, pgTable *parentNode);
 
     void CheckChange();
     wxString GetSql();

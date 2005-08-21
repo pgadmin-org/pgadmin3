@@ -48,13 +48,13 @@ END_EVENT_TABLE();
 
 dlgProperty *pgRuleFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRule(frame, (pgRule*)node, (pgTable*)parent);
+    return new dlgRule(this, frame, (pgRule*)node, (pgTable*)parent);
 }
 
 
 
-dlgRule::dlgRule(frmMain *frame, pgRule *node, pgTable *tab)
-: dlgProperty(frame, wxT("dlgRule"))
+dlgRule::dlgRule(pgaFactory *f, frmMain *frame, pgRule *node, pgTable *tab)
+: dlgProperty(f, frame, wxT("dlgRule"))
 {
     table=tab;
     rule=node;

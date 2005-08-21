@@ -73,7 +73,7 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
 END_EVENT_TABLE();
 
 
-dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHelp(frame)
+dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName) : DialogWithHelp(frame)
 {
     readOnly=false;
     objectType=-1;
@@ -82,7 +82,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     mainForm=frame;
     database=0;
     connection=0;
-    factory=0;
+    factory=f;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
@@ -96,7 +96,8 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
         wxMessageBox(wxString::Format(_("Problem with resource %s: Notebook not found.\nPrepare to crash!"), resName.c_str()));
         return;
     }
-    SetIcon(wxIcon(properties_xpm));
+    objectType = factory->GetId();
+    SetIcon(wxIcon(factory->GetImage()));
 
     txtName = CTRL_TEXT("txtName");
     txtOid = CTRL_TEXT("txtOID");
@@ -179,6 +180,8 @@ void dlgProperty::EnableOK(bool enable)
 
 int dlgProperty::Go(bool modal)
 {
+    wxASSERT(factory != 0);
+
     // restore previous position and size, if applicable
     wxString prop = wxT("Properties/") + wxString(factory->GetTypeName());
 
@@ -657,9 +660,6 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
                 factory = ((pgaCollectionFactory*)factory)->GetItemFactory();
             wxASSERT(factory);
 
-            dlg->factory = factory;
-            dlg->objectType = factory->GetId();
-            dlg->SetIcon(wxIcon(factory->GetImage()));
             dlg->InitDialog(frame, node);
         }
     }
@@ -723,8 +723,8 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 /////////////////////////////////////////////////////////////////////////////
 
 
-dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
-: dlgProperty(frame, resName)
+dlgTypeProperty::dlgTypeProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
+: dlgProperty(f, frame, resName)
 {
     isVarLen=false;
     isVarPrec=false;
@@ -899,16 +899,16 @@ void dlgTypeProperty::CheckLenEnable()
 /////////////////////////////////////////////////////////////////////////////
 
 
-dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, pgTable *parentNode)
-: dlgProperty(frame, resName)
+dlgCollistProperty::dlgCollistProperty(pgaFactory *f, frmMain *frame, const wxString &resName, pgTable *parentNode)
+: dlgProperty(f, frame, resName)
 {
     columns=0;
     table=parentNode;
 }
 
 
-dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, ctlListView *colList)
-: dlgProperty(frame, resName)
+dlgCollistProperty::dlgCollistProperty(pgaFactory *f, frmMain *frame, const wxString &resName, ctlListView *colList)
+: dlgProperty(f, frame, resName)
 {
     columns=colList;
     table=0;
@@ -977,8 +977,8 @@ BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
 END_EVENT_TABLE();
 
 
-dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, char *privChar)
-        : dlgProperty(frame, resName)
+dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, char *privChar)
+        : dlgProperty(f, frame, resName)
 {
     securityChanged=false;
 
@@ -1144,8 +1144,8 @@ BEGIN_EVENT_TABLE(dlgAgentProperty, dlgProperty)
     EVT_BUTTON (wxID_OK,                            dlgAgentProperty::OnOK)
 END_EVENT_TABLE();
 
-dlgAgentProperty::dlgAgentProperty(frmMain *frame, const wxString &resName)
-: dlgProperty(frame, resName)
+dlgAgentProperty::dlgAgentProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
+: dlgProperty(f, frame, resName)
 {
     recId=0;
 }

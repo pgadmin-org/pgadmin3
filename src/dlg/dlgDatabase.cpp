@@ -39,13 +39,13 @@
 
 dlgProperty *pgDatabaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    dlgDatabase *dlg=new dlgDatabase(frame, (pgDatabase*)node);
+    dlgDatabase *dlg=new dlgDatabase(this, frame, (pgDatabase*)node);
     if (dlg && !node)
     {
         // use the server's connection to avoid "template1 in use"
         dlg->connection=parent->GetConnection();
     }
-    return new dlgDatabase(frame, (pgDatabase*)node);
+    return dlg;
 }
 
 
@@ -63,8 +63,8 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
-dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
-: dlgSecurityProperty(frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP"), "CT")
+dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
+: dlgSecurityProperty(f, frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP"), "CT")
 {
     database=node;
     lstVariables->CreateColumns(0, _("Variable"), _("Value"));

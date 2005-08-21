@@ -21,7 +21,7 @@ class slListen;
 class dlgRepListen : public dlgRepProperty
 {
 public:
-    dlgRepListen(frmMain *frame, slListen *l, slNode *n);
+    dlgRepListen(pgaFactory *factory, frmMain *frame, slListen *l, slNode *n);
     int Go(bool modal);
 
     void CheckChange();

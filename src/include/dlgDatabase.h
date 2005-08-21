@@ -20,7 +20,7 @@ class pgDatabase;
 class dlgDatabase : public dlgSecurityProperty
 {
 public:
-    dlgDatabase(frmMain *frame, pgDatabase *db);
+    dlgDatabase(pgaFactory *factory, frmMain *frame, pgDatabase *db);
     int Go(bool modal);
 
     void CheckChange();

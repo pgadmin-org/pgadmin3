@@ -43,12 +43,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgIndexFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgIndex(frame, (pgIndex*)node, (pgTable*)parent);
+    return new dlgIndex(this, frame, (pgIndex*)node, (pgTable*)parent);
 }
 
 
-dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndexBase *node, pgTable *parentNode)
-: dlgCollistProperty(frame, resName, parentNode)
+dlgIndexBase::dlgIndexBase(pgaFactory *f, frmMain *frame, const wxString &resName, pgIndexBase *node, pgTable *parentNode)
+: dlgCollistProperty(f, frame, resName, parentNode)
 {
     index=node;
     wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
@@ -57,8 +57,8 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndexBase 
 }
 
 
-dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView *colList)
-: dlgCollistProperty(frame, resName, colList)
+dlgIndexBase::dlgIndexBase(pgaFactory *f, frmMain *frame, const wxString &resName, ctlListView *colList)
+: dlgCollistProperty(f, frame, resName, colList)
 {
     index=0;
     
@@ -169,8 +169,8 @@ BEGIN_EVENT_TABLE(dlgIndex, dlgIndexBase)
 END_EVENT_TABLE();
 
         
-dlgIndex::dlgIndex(frmMain *frame, pgIndex *index, pgTable *parentNode)
-: dlgIndexBase(frame, wxT("dlgIndex"), index, parentNode)
+dlgIndex::dlgIndex(pgaFactory *f, frmMain *frame, pgIndex *index, pgTable *parentNode)
+: dlgIndexBase(f, frame, wxT("dlgIndex"), index, parentNode)
 {
 }
 

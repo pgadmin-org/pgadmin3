@@ -25,8 +25,8 @@ class pgUnique;
 class dlgIndexConstraint : public dlgIndexBase
 {
 protected:
-    dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
-    dlgIndexConstraint(frmMain *frame, const wxString &resName, ctlListView *colList);
+    dlgIndexConstraint(pgaFactory *factory, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
+    dlgIndexConstraint(pgaFactory *factory, frmMain *frame, const wxString &resName, ctlListView *colList);
 
 public:
     ctlListView *columns;
@@ -46,8 +46,8 @@ private:
 class dlgPrimaryKey : public dlgIndexConstraint
 {
 public:
-    dlgPrimaryKey(frmMain *frame, pgPrimaryKey *index, pgTable *parentNode);
-    dlgPrimaryKey(frmMain *frame, ctlListView *colList);
+    dlgPrimaryKey(pgaFactory *factory, frmMain *frame, pgPrimaryKey *index, pgTable *parentNode);
+    dlgPrimaryKey(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
     pgObject *CreateObject(pgCollection *collection);
 };
@@ -56,8 +56,8 @@ public:
 class dlgUnique : public dlgIndexConstraint
 {
 public:
-    dlgUnique(frmMain *frame, pgUnique *index, pgTable *parentNode);
-    dlgUnique(frmMain *frame, ctlListView *colList);
+    dlgUnique(pgaFactory *factory, frmMain *frame, pgUnique *index, pgTable *parentNode);
+    dlgUnique(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
     pgObject *CreateObject(pgCollection *collection);
 };

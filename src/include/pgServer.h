@@ -27,9 +27,9 @@ public:
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
     virtual pgCollection *CreateCollection(pgObject *obj);
 
-    int GetClosedIconId() { return closedId; }
+    int GetClosedIconId() { return WantSmallIcon() ? smallClosedId : closedId; }
 protected:
-    int closedId;
+    int closedId, smallClosedId;
 };
 extern pgServerFactory serverFactory;
 
@@ -150,7 +150,8 @@ public:
 class pgServerObjFactory : public pgaFactory
 {
 public:
-    pgServerObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgaFactory(tn, ns, nls, img) {}
+    pgServerObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **imgSm=0)
+        : pgaFactory(tn, ns, nls, img, imgSm) {}
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
 

@@ -101,7 +101,7 @@ wxWindow *passwordFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmPassword *frm=new frmPassword((pgFrame*)form, obj);
     frm->Show();
-    return frm;
+    return 0;
 }
 
 

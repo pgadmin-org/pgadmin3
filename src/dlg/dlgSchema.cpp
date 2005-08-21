@@ -26,11 +26,11 @@ END_EVENT_TABLE();
 
 dlgProperty *pgSchemaFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgSchema(frame, (pgSchema*)node);
+    return new dlgSchema(this, frame, (pgSchema*)node);
 }
 
-dlgSchema::dlgSchema(frmMain *frame, pgSchema *node)
-: dlgSecurityProperty(frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
+dlgSchema::dlgSchema(pgaFactory *f, frmMain *frame, pgSchema *node)
+: dlgSecurityProperty(f, frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
 {
     schema=node;
 }

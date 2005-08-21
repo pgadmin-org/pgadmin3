@@ -256,7 +256,7 @@ pgaJobObject::pgaJobObject(pgaJob *_job, pgaFactory &factory, const wxString& ne
 pgaJobFactory::pgaJobFactory() 
 : pgServerObjFactory(__("pgAgent Job"), _("New Job"), _("Create a new Job."), job_xpm)
 {
-    disabledId = addImage(jobdisabled_xpm);
+    disabledId = addIcon(jobdisabled_xpm);
 }
 
 

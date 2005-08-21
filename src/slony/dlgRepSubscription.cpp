@@ -38,11 +38,11 @@ END_EVENT_TABLE();
 
 dlgProperty *slSubscriptionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepSubscription(frame, (slSubscription*)node, (slSet*)parent);
+    return new dlgRepSubscription(this, frame, (slSubscription*)node, (slSet*)parent);
 }
 
-dlgRepSubscription::dlgRepSubscription(frmMain *frame, slSubscription *sub, slSet *s)
-: dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepSubscription"))
+dlgRepSubscription::dlgRepSubscription(pgaFactory *f, frmMain *frame, slSubscription *sub, slSet *s)
+: dlgRepProperty(f, frame, s->GetCluster(), wxT("dlgRepSubscription"))
 {
     subscription=sub;
     set=s;

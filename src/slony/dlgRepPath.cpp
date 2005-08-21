@@ -35,12 +35,12 @@ END_EVENT_TABLE();
 
 dlgProperty *slPathFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepPath(frame, (slPath*)node, (slNode*)parent);
+    return new dlgRepPath(this, frame, (slPath*)node, (slNode*)parent);
 }
 
 
-dlgRepPath::dlgRepPath(frmMain *frame, slPath *p, slNode *n)
-: dlgRepProperty(frame, n->GetCluster(), wxT("dlgRepPath"))
+dlgRepPath::dlgRepPath(pgaFactory *f, frmMain *frame, slPath *p, slNode *n)
+: dlgRepProperty(f, frame, n->GetCluster(), wxT("dlgRepPath"))
 {
     path=p;
     node=n;

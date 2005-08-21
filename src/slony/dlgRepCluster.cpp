@@ -44,8 +44,8 @@ END_EVENT_TABLE();
 
 
 
-dlgRepClusterBase::dlgRepClusterBase(frmMain *frame, const wxString &dlgName, slCluster *node, pgDatabase *db)
-: dlgProperty(frame, dlgName)
+dlgRepClusterBase::dlgRepClusterBase(pgaFactory *f, frmMain *frame, const wxString &dlgName, slCluster *node, pgDatabase *db)
+: dlgProperty(f, frame, dlgName)
 {
     cluster=node;
     remoteServer=0;
@@ -216,12 +216,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgaSlClusterFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepCluster(frame, (slCluster*)node, (pgDatabase*)parent);
+    return new dlgRepCluster(this, frame, (slCluster*)node, (pgDatabase*)parent);
 }
 
 
-dlgRepCluster::dlgRepCluster(frmMain *frame, slCluster *node, pgDatabase *db)
-: dlgRepClusterBase(frame, wxT("dlgRepCluster"), node, db)
+dlgRepCluster::dlgRepCluster(pgaFactory *f, frmMain *frame, slCluster *node, pgDatabase *db)
+: dlgRepClusterBase(f, frame, wxT("dlgRepCluster"), node, db)
 {
     process = 0;
 }
@@ -813,8 +813,8 @@ END_EVENT_TABLE();
 
 // no factory needed; called by slFunction
 
-dlgRepClusterUpgrade::dlgRepClusterUpgrade(frmMain *frame, slCluster *cl)
-: dlgRepClusterBase(frame, wxT("dlgRepClusterUpgrade"), cl, cl->GetDatabase())
+dlgRepClusterUpgrade::dlgRepClusterUpgrade(pgaFactory *f, frmMain *frame, slCluster *cl)
+: dlgRepClusterBase(f, frame, wxT("dlgRepClusterUpgrade"), cl, cl->GetDatabase())
 {
 }
 
@@ -1012,7 +1012,7 @@ slonyUpgradeFactory::slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, wxT
 
 wxWindow *slonyUpgradeFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    dlgProperty *dlg=new dlgRepClusterUpgrade(form, (slCluster*)obj);
+    dlgProperty *dlg=new dlgRepClusterUpgrade(&slClusterFactory, form, (slCluster*)obj);
     dlg->InitDialog(form, obj);
     dlg->CreateAdditionalPages();
     dlg->Go(false);

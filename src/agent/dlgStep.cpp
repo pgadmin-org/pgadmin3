@@ -38,12 +38,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgaStepFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgStep(frame, (pgaStep*)node, (pgaJob*)parent);
+    return new dlgStep(this, frame, (pgaStep*)node, (pgaJob*)parent);
 }
 
 
-dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
-: dlgAgentProperty(frame, wxT("dlgStep"))
+dlgStep::dlgStep(pgaFactory *f, frmMain *frame, pgaStep *node, pgaJob *j)
+: dlgAgentProperty(f, frame, wxT("dlgStep"))
 {
     step=node;
     job=j;

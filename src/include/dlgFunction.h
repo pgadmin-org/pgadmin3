@@ -21,7 +21,7 @@ class pgFunction;
 class dlgFunction : public dlgSecurityProperty
 {
 public:
-    dlgFunction(frmMain *frame, pgFunction *func, pgSchema *sch);
+    dlgFunction(pgaFactory *factory, frmMain *frame, pgFunction *func, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();
@@ -64,7 +64,7 @@ protected:
 class dlgProcedure : public dlgFunction
 {
 public:
-    dlgProcedure(frmMain *frame, pgFunction *node, pgSchema *sch);
+    dlgProcedure(pgaFactory *factory, frmMain *frame, pgFunction *node, pgSchema *sch);
 };
 
 

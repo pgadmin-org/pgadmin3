@@ -45,12 +45,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgColumnFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgColumn(frame, (pgColumn*)node, (pgTable*)parent);
+    return new dlgColumn(this, frame, (pgColumn*)node, (pgTable*)parent);
 }
 
 
-dlgColumn::dlgColumn(frmMain *frame, pgColumn *node, pgTable *parentNode)
-: dlgTypeProperty(frame, wxT("dlgColumn"))
+dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *parentNode)
+: dlgTypeProperty(f, frame, wxT("dlgColumn"))
 {
     column=node;
     table=parentNode;

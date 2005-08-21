@@ -79,12 +79,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgFunctionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgFunction(frame, (pgFunction*)node, (pgSchema*)parent);
+    return new dlgFunction(this, frame, (pgFunction*)node, (pgSchema*)parent);
 }
 
 
-dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
-: dlgSecurityProperty(frame, node, wxT("dlgFunction"), wxT("EXECUTE"), "X")
+dlgFunction::dlgFunction(pgaFactory *f, frmMain *frame, pgFunction *node, pgSchema *sch)
+: dlgSecurityProperty(f, frame, node, wxT("dlgFunction"), wxT("EXECUTE"), "X")
 {
     schema=sch;
     function=node;
@@ -108,11 +108,11 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
 
 dlgProperty *pgProcedureFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgProcedure(frame, (pgFunction*)node, (pgSchema*)parent);
+    return new dlgProcedure(this, frame, (pgFunction*)node, (pgSchema*)parent);
 }
 
-dlgProcedure::dlgProcedure(frmMain *frame, pgFunction *node, pgSchema *sch)
-: dlgFunction(frame, node, sch)
+dlgProcedure::dlgProcedure(pgaFactory *f, frmMain *frame, pgFunction *node, pgSchema *sch)
+: dlgFunction(f, frame, node, sch)
 {
     isProcedure = true;
 }

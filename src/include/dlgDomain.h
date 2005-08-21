@@ -21,7 +21,7 @@ class pgDomain;
 class dlgDomain : public dlgTypeProperty
 {
 public:
-    dlgDomain(frmMain *frame, pgDomain *dom, pgSchema *sch);
+    dlgDomain(pgaFactory *factory, frmMain *frame, pgDomain *dom, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();

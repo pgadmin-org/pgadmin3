@@ -21,7 +21,7 @@ class slSet;
 class dlgRepSubscription : public dlgRepProperty
 {
 public:
-    dlgRepSubscription(frmMain *frame, slSubscription *sub, slSet *s);
+    dlgRepSubscription(pgaFactory *factory, frmMain *frame, slSubscription *sub, slSet *s);
     int Go(bool modal);
 
     void CheckChange();

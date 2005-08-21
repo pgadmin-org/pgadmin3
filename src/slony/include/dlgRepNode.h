@@ -22,7 +22,7 @@ class slNode;
 class dlgRepNode : public dlgRepProperty
 {
 public:
-    dlgRepNode(frmMain *frame, slNode *node, slCluster *c);
+    dlgRepNode(pgaFactory *factory, frmMain *frame, slNode *node, slCluster *c);
     int Go(bool modal);
 
     void CheckChange();

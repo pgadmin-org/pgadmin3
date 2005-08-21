@@ -86,9 +86,17 @@ wxMenu *pgServer::GetNewMenu()
     if (connected && GetSuperUser())
     {
         menu=new wxMenu();
-//        AppendMenu(menu, PG_TABLESPACE);
-//        AppendMenu(menu, PG_GROUP);
-//        AppendMenu(menu, PG_USER);
+        tablespaceFactory.AppendMenu(menu);
+        if (GetConnection()->BackendMinimumVersion(8, 1))
+        {
+            groupRoleFactory.AppendMenu(menu);
+            loginRoleFactory.AppendMenu(menu);
+        }
+        else
+        {
+            groupFactory.AppendMenu(menu);
+            userFactory.AppendMenu(menu);
+        }
     }
     return menu;
 }
@@ -1011,13 +1019,16 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
 #include "images/servers.xpm"
 #include "images/server.xpm"
+#include "images/server-sm.xpm"
 #include "images/serverbad.xpm"
+#include "images/serverbad-sm.xpm"
 
 pgServerFactory::pgServerFactory() 
 : pgaFactory(__("Server"), _("New Server Registration"), _("Create a new Server registration."), server_xpm)
 {
     metaType = PGM_SERVER;
-    closedId = addImage(serverbad_xpm);
+    closedId = addIcon(serverbad_xpm);
+    smallClosedId = addIcon(serverbad_sm_xpm);
 }
 
 pgCollection *pgServerFactory::CreateCollection(pgObject *obj)

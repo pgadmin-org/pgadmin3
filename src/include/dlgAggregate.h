@@ -21,7 +21,7 @@ class pgAggregate;
 class dlgAggregate : public dlgTypeProperty
 {
 public:
-    dlgAggregate(frmMain *frame, pgAggregate *agg, pgSchema *sch);
+    dlgAggregate(pgaFactory *factory, frmMain *frame, pgAggregate *agg, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();

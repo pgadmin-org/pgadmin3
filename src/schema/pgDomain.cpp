@@ -188,10 +188,11 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 }
 
 #include "images/domain.xpm"
+#include "images/domain-sm.xpm"
 #include "images/domains.xpm"
 
 pgDomainFactory::pgDomainFactory() 
-: pgSchemaObjFactory(__("Domain"), _("New Domain"), _("Create a new Domain."), domain_xpm)
+: pgSchemaObjFactory(__("Domain"), _("New Domain"), _("Create a new Domain."), domain_xpm, domain_sm_xpm)
 {
 }
 

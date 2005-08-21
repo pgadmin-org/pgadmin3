@@ -21,7 +21,7 @@ class pgTable;
 class dlgTrigger : public dlgProperty
 {
 public:
-    dlgTrigger(frmMain *frame, pgTrigger *trg, pgTable *sch);
+    dlgTrigger(pgaFactory *factory, frmMain *frame, pgTrigger *trg, pgTable *sch);
     int Go(bool modal);
 
     void CheckChange();

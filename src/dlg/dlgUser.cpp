@@ -45,7 +45,7 @@
 
 dlgProperty *pgUserFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgUser(frame, (pgUser*)node);
+    return new dlgUser(this, frame, (pgUser*)node);
 }
 
 
@@ -73,8 +73,8 @@ END_EVENT_TABLE();
 
 
 
-dlgUser::dlgUser(frmMain *frame, pgUser *node)
-: dlgProperty(frame, wxT("dlgUser"))
+dlgUser::dlgUser(pgaFactory *f, frmMain *frame, pgUser *node)
+: dlgProperty(f, frame, wxT("dlgUser"))
 {
     user=node;
     lstVariables->CreateColumns(0, _("Variable"), _("Value"), -1);

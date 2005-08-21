@@ -136,10 +136,11 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 ///////////////////////////////////////////////////
 
 #include "images/language.xpm"
+#include "images/language-sm.xpm"
 #include "images/languages.xpm"
 
 pgLanguageFactory::pgLanguageFactory() 
-: pgDatabaseObjFactory(__("Language"), _("New Language"), _("Create a new Language."), language_xpm)
+: pgDatabaseObjFactory(__("Language"), _("New Language"), _("Create a new Language."), language_xpm, language_sm_xpm)
 {
 }
 

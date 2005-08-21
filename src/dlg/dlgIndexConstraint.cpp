@@ -36,14 +36,14 @@ BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
 END_EVENT_TABLE();
 
 
-dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode)
-: dlgIndexBase(frame, resName, index, parentNode)
+dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode)
+: dlgIndexBase(f, frame, resName, index, parentNode)
 {
 }
 
 
-dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, ctlListView *colList)
-: dlgIndexBase(frame, resName, colList)
+dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxString &resName, ctlListView *colList)
+: dlgIndexBase(f, frame, resName, colList)
 {
 }
 
@@ -130,20 +130,20 @@ wxString dlgIndexConstraint::GetSql()
 
 dlgProperty *pgPrimaryKeyFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgPrimaryKey(frame, (pgPrimaryKey*)node, (pgTable*)parent);
+    return new dlgPrimaryKey(this, frame, (pgPrimaryKey*)node, (pgTable*)parent);
 }
 
 
 
 
-dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, pgPrimaryKey *index, pgTable *parentNode)
-: dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), index, parentNode)
+dlgPrimaryKey::dlgPrimaryKey(pgaFactory *f, frmMain *frame, pgPrimaryKey *index, pgTable *parentNode)
+: dlgIndexConstraint(f, frame, wxT("dlgIndexConstraint"), index, parentNode)
 {
 }
 
 
-dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, ctlListView *colList)
-: dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), colList)
+dlgPrimaryKey::dlgPrimaryKey(pgaFactory *f, frmMain *frame, ctlListView *colList)
+: dlgIndexConstraint(f, frame, wxT("dlgIndexConstraint"), colList)
 {
 }
 
@@ -165,18 +165,18 @@ pgObject *dlgPrimaryKey::CreateObject(pgCollection *collection)
 
 dlgProperty *pgUniqueFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgUnique(frame, (pgUnique*)node, (pgTable*)parent);
+    return new dlgUnique(this, frame, (pgUnique*)node, (pgTable*)parent);
 }
 
 
-dlgUnique::dlgUnique(frmMain *frame, pgUnique *index, pgTable *parentNode)
-: dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), index, parentNode)
+dlgUnique::dlgUnique(pgaFactory *f, frmMain *frame, pgUnique *index, pgTable *parentNode)
+: dlgIndexConstraint(f, frame, wxT("dlgIndexConstraint"), index, parentNode)
 {
 }
 
 
-dlgUnique::dlgUnique(frmMain *frame, ctlListView *colList)
-: dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), colList)
+dlgUnique::dlgUnique(pgaFactory *f, frmMain *frame, ctlListView *colList)
+: dlgIndexConstraint(f, frame, wxT("dlgIndexConstraint"), colList)
 {
 }
 

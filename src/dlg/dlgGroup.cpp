@@ -31,7 +31,7 @@
 
 dlgProperty *pgGroupFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgGroup(frame, (pgGroup*)node);
+    return new dlgGroup(this, frame, (pgGroup*)node);
 }
 
 
@@ -45,8 +45,8 @@ END_EVENT_TABLE();
 
 
 
-dlgGroup::dlgGroup(frmMain *frame, pgGroup *node)
-: dlgProperty(frame, wxT("dlgGroup"))
+dlgGroup::dlgGroup(pgaFactory *f, frmMain *frame, pgGroup *node)
+: dlgProperty(f, frame, wxT("dlgGroup"))
 {
     group=node;
 }

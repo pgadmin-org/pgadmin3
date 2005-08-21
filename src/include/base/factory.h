@@ -37,6 +37,7 @@ public:
     virtual bool IsCollection() { return false; }
     virtual void AppendMenu(wxMenu *menu);
     bool IsCollectionFor(pgaFactory &f) { return f.GetCollectionFactory() == (pgaCollectionFactory*)this; }
+    bool WantSmallIcon();
 
     static pgaFactory *GetFactory(int id);
     static pgaFactory *GetFactory(const wxString &name);
@@ -47,20 +48,20 @@ public:
     wxChar *GetNewLongString() { return newLongString; }
     pgaCollectionFactory *GetCollectionFactory() { return collectionFactory; }
 
-    virtual int GetIconId() { return iconId; }
+    int GetIconId();
     static void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
     static void RealizeImages();
     char **GetImage() const { return image; }
 
 protected:
-    pgaFactory(const wxChar *tn=0, const wxChar *ns=0, const wxChar *nls=0, char **img=0);
+    pgaFactory(const wxChar *tn=0, const wxChar *ns=0, const wxChar *nls=0, char **img=0, char **smImg=0);
 
-    int addImage(char **img);
+    int addIcon(char **img);
 
     int id, metaType;
     wxChar *typeName;
     wxChar *newString, *newLongString;
-    int iconId;
+    int iconId, smallIconId;
     char **image;
 
     pgaCollectionFactory *collectionFactory;
@@ -71,7 +72,7 @@ protected:
 class pgaCollectionFactory : public pgaFactory
 {
 public:
-    pgaCollectionFactory(pgaFactory *f, wxChar *tn=0, char **img=0);
+    pgaCollectionFactory(pgaFactory *f, wxChar *tn=0, char **img=0, char **imgSm=0);
     wxChar *GetItemTypeName() { return itemFactory->GetTypeName(); }
     pgaFactory *GetItemFactory() { return itemFactory; }
     pgObject *CreateObjects(pgCollection  *obj, ctlTree *browser, const wxString &restr=wxEmptyString);

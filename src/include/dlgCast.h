@@ -20,7 +20,7 @@ class pgCast;
 class dlgCast : public dlgTypeProperty
 {
 public:
-    dlgCast(frmMain *frame, pgCast *ca);
+    dlgCast(pgaFactory *factory, frmMain *frame, pgCast *ca);
     int Go(bool modal);
 
     void CheckChange();

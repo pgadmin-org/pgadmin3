@@ -71,7 +71,8 @@ private:
 class pgSchemaObjFactory : public pgDatabaseObjFactory
 {
 public:
-    pgSchemaObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : pgDatabaseObjFactory(tn, ns, nls, img) {}
+    pgSchemaObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **imgSm=0) 
+        : pgDatabaseObjFactory(tn, ns, nls, img, imgSm) {}
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
 

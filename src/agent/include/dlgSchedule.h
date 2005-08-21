@@ -23,7 +23,7 @@ class pgaJob;
 class dlgSchedule : public dlgAgentProperty
 {
 public:
-    dlgSchedule(frmMain *frame, pgaSchedule *s, pgaJob *j);
+    dlgSchedule(pgaFactory *factory, frmMain *frame, pgaSchedule *s, pgaJob *j);
 
     void CheckChange();
     int Go(bool modal);

@@ -62,19 +62,19 @@ END_EVENT_TABLE();
 
 dlgProperty *pgForeignKeyFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgForeignKey(frame, (pgForeignKey*)node, (pgTable*)parent);
+    return new dlgForeignKey(this, frame, (pgForeignKey*)node, (pgTable*)parent);
 }
 
 
-dlgForeignKey::dlgForeignKey(frmMain *frame, pgForeignKey *node, pgTable *parentNode)
-: dlgCollistProperty(frame, wxT("dlgForeignKey"), parentNode)
+dlgForeignKey::dlgForeignKey(pgaFactory *f, frmMain *frame, pgForeignKey *node, pgTable *parentNode)
+: dlgCollistProperty(f, frame, wxT("dlgForeignKey"), parentNode)
 {
     foreignKey=node;
 }
 
 
-dlgForeignKey::dlgForeignKey(frmMain *frame, ctlListView *colList)
-: dlgCollistProperty(frame, wxT("dlgForeignKey"), colList)
+dlgForeignKey::dlgForeignKey(pgaFactory *f, frmMain *frame, ctlListView *colList)
+: dlgCollistProperty(f, frame, wxT("dlgForeignKey"), colList)
 {
     foreignKey=0;
 }

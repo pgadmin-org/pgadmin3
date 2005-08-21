@@ -76,5 +76,5 @@ wxWindow *aboutFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmAbout *frm=new frmAbout((wxFrame*)form);
     frm->Show();
-    return frm;
+    return 0;
 }

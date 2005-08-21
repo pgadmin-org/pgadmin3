@@ -154,10 +154,11 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
 
 #include "images/view.xpm"
+#include "images/view-sm.xpm"
 #include "images/views.xpm"
 
 pgViewFactory::pgViewFactory() 
-: pgSchemaObjFactory(__("View"), _("New View"), _("Create a new View."), view_xpm)
+: pgSchemaObjFactory(__("View"), _("New View"), _("Create a new View."), view_xpm, view_sm_xpm)
 {
     metaType = PGM_VIEW;
 }

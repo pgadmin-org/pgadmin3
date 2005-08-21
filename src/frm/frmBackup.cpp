@@ -280,7 +280,7 @@ wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmBackup *frm=new frmBackup(form, obj);
     frm->Go();
-    return frm;
+    return 0;
 }
 
 

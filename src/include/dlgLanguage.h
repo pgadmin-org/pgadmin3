@@ -20,7 +20,7 @@ class pgLanguage;
 class dlgLanguage : public dlgSecurityProperty
 {
 public:
-    dlgLanguage(frmMain *frame, pgLanguage *db);
+    dlgLanguage(pgaFactory *factory, frmMain *frame, pgLanguage *db);
     int Go(bool modal);
 
     void CheckChange();

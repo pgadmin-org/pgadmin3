@@ -44,12 +44,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgSequenceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgSequence(frame, (pgSequence*)node, (pgSchema*)parent);
+    return new dlgSequence(this, frame, (pgSequence*)node, (pgSchema*)parent);
 }
 
 
-dlgSequence::dlgSequence(frmMain *frame, pgSequence *node, pgSchema *sch)
-: dlgSecurityProperty(frame, node, wxT("dlgSequence"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
+dlgSequence::dlgSequence(pgaFactory *f, frmMain *frame, pgSequence *node, pgSchema *sch)
+: dlgSecurityProperty(f, frame, node, wxT("dlgSequence"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
 {
     schema=sch;
     sequence=node;

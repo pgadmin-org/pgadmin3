@@ -37,12 +37,12 @@ END_EVENT_TABLE();
 
 dlgProperty *slSlSequenceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepSequence(frame, (slSequence*)node, (slSet*)parent);
+    return new dlgRepSequence(this, frame, (slSequence*)node, (slSet*)parent);
 }
 
 
-dlgRepSequence::dlgRepSequence(frmMain *frame, slSequence *node, slSet *s)
-: dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepSequence"))
+dlgRepSequence::dlgRepSequence(pgaFactory *f, frmMain *frame, slSequence *node, slSet *s)
+: dlgRepProperty(f, frame, s->GetCluster(), wxT("dlgRepSequence"))
 {
     sequence=node;
     set=s;

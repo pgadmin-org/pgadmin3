@@ -42,13 +42,13 @@ END_EVENT_TABLE();
 
 dlgProperty *pgConversionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgConversion(frame, (pgConversion*)node, (pgSchema*)parent);
+    return new dlgConversion(this, frame, (pgConversion*)node, (pgSchema*)parent);
 }
 
 
 
-dlgConversion::dlgConversion(frmMain *frame, pgConversion *node, pgSchema *sch)
-: dlgProperty(frame, wxT("dlgConversion"))
+dlgConversion::dlgConversion(pgaFactory *f, frmMain *frame, pgConversion *node, pgSchema *sch)
+: dlgProperty(f, frame, wxT("dlgConversion"))
 {
     conversion=node;
     schema=sch;

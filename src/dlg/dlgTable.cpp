@@ -75,11 +75,11 @@ END_EVENT_TABLE();
 
 dlgProperty *pgTableFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgTable(frame, (pgTable*)node, (pgSchema*)parent);
+    return new dlgTable(this, frame, (pgTable*)node, (pgSchema*)parent);
 }
 
-dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
-: dlgSecurityProperty(frame, node, wxT("dlgTable"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
+dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
+: dlgSecurityProperty(f, frame, node, wxT("dlgTable"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
 {
     schema=sch;
     table=node;
@@ -633,7 +633,7 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
     long pos=lstColumns->GetSelection();
     pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 6));
 
-    dlgColumn col(mainForm, column, table);
+    dlgColumn col(&columnFactory, mainForm, column, table);
     col.CenterOnParent();
     col.SetDatabase(database);
     if (col.Go(true) >= 0)
@@ -650,7 +650,7 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
 
 void dlgTable::OnAddCol(wxCommandEvent &ev)
 {
-    dlgColumn col(mainForm, NULL, table);
+    dlgColumn col(&columnFactory, mainForm, NULL, table);
     col.CenterOnParent();
     col.SetDatabase(database);
     if (col.Go(true) >= 0)
@@ -703,7 +703,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
     {
         case 0: // Primary Key
         {
-            dlgPrimaryKey pk(mainForm, lstColumns);
+            dlgPrimaryKey pk(&primaryKeyFactory, mainForm, lstColumns);
             pk.CenterOnParent();
             pk.SetDatabase(database);
             if (pk.Go(true) >= 0)
@@ -716,7 +716,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
         }
         case 1: // Foreign Key
         {
-            dlgForeignKey fk(mainForm, lstColumns);
+            dlgForeignKey fk(&foreignKeyFactory, mainForm, lstColumns);
             fk.CenterOnParent();
             fk.SetDatabase(database);
             if (fk.Go(true) >= 0)
@@ -729,7 +729,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
         }
         case 2: // Unique
         {
-            dlgUnique unq(mainForm, lstColumns);
+            dlgUnique unq(&uniqueFactory, mainForm, lstColumns);
             unq.CenterOnParent();
             unq.SetDatabase(database);
             if (unq.Go(true) >= 0)
@@ -738,7 +738,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
         }
         case 3: // Check
         {
-            dlgCheck chk(mainForm);
+            dlgCheck chk(&checkFactory, mainForm);
             chk.CenterOnParent();
             chk.SetDatabase(database);
             if (chk.Go(true) >= 0)

@@ -22,7 +22,7 @@ class pgUser;
 class dlgUser : public dlgProperty
 {
 public:
-    dlgUser(frmMain *frame, pgUser *node=0);
+    dlgUser(pgaFactory *factory, frmMain *frame, pgUser *node=0);
 
     void CheckChange();
     wxString GetSql();

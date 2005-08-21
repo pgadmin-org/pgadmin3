@@ -45,14 +45,14 @@ END_EVENT_TABLE();
 
 dlgProperty *pgTriggerFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgTrigger(frame, (pgTrigger*)node, (pgTable*)parent);
+    return new dlgTrigger(this, frame, (pgTrigger*)node, (pgTable*)parent);
 }
 
 
 
 
-dlgTrigger::dlgTrigger(frmMain *frame, pgTrigger *node, pgTable *parentNode)
-: dlgProperty(frame, wxT("dlgTrigger"))
+dlgTrigger::dlgTrigger(pgaFactory *f, frmMain *frame, pgTrigger *node, pgTable *parentNode)
+: dlgProperty(f, frame, wxT("dlgTrigger"))
 {
     trigger=node;
     table=parentNode;

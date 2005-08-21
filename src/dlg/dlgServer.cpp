@@ -54,12 +54,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgServerFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgServer(frame, (pgServer*)node);
+    return new dlgServer(this, frame, (pgServer*)node);
 }
 
 
-dlgServer::dlgServer(frmMain *frame, pgServer *node)
-: dlgProperty(frame, wxT("dlgServer"))
+dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
+: dlgProperty(f, frame, wxT("dlgServer"))
 {
     server=node;
 
@@ -293,7 +293,7 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     int rc = PGCONN_BAD;
     
-    dlgServer dlg(form, 0);
+    dlgServer dlg(&serverFactory, form, 0);
     dlg.CenterOnParent();
 
     ctlTree *browser=form->GetBrowser();

@@ -32,11 +32,11 @@ END_EVENT_TABLE();
 
 dlgProperty *slSetFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepSet(frame, (slSet*)node, (slCluster*)parent);
+    return new dlgRepSet(this, frame, (slSet*)node, (slCluster*)parent);
 }
 
-dlgRepSet::dlgRepSet(frmMain *frame, slSet *s, slCluster *c)
-: dlgRepProperty(frame, c, wxT("dlgRepSet"))
+dlgRepSet::dlgRepSet(pgaFactory *f, frmMain *frame, slSet *s, slCluster *c)
+: dlgRepProperty(f, frame, c, wxT("dlgRepSet"))
 {
     set=s;
 }
@@ -127,8 +127,8 @@ EVT_COMBOBOX(XRCID("cbTargetID"),   dlgRepSetMerge::OnChange)
 END_EVENT_TABLE();
 
 
-dlgRepSetMerge::dlgRepSetMerge(frmMain *frame, slSet *s)
-: dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepSetMerge"))
+dlgRepSetMerge::dlgRepSetMerge(pgaFactory *f, frmMain *frame, slSet *s)
+: dlgRepProperty(f, frame, s->GetCluster(), wxT("dlgRepSetMerge"))
 {
     set=s;
 }
@@ -254,8 +254,8 @@ EVT_COMBOBOX(XRCID("cbTargetNode"),   dlgRepSetMove::OnChange)
 END_EVENT_TABLE();
 
 
-dlgRepSetMove::dlgRepSetMove(frmMain *frame, slSet *s)
-: dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepSetMove"))
+dlgRepSetMove::dlgRepSetMove(pgaFactory *f, frmMain *frame, slSet *s)
+: dlgRepProperty(f, frame, s->GetCluster(), wxT("dlgRepSetMove"))
 {
     set=s;
 }
@@ -316,7 +316,7 @@ slonyMergeSetFactory::slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, w
 
 wxWindow *slonyMergeSetFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    dlgProperty *dlg=new dlgRepSetMerge(form, (slSet*)obj);
+    dlgProperty *dlg=new dlgRepSetMerge(&setFactory, form, (slSet*)obj);
     dlg->InitDialog(form, obj);
     dlg->CreateAdditionalPages();
     dlg->Go(false);
@@ -339,7 +339,7 @@ slonyMoveSetFactory::slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxT
 
 wxWindow *slonyMoveSetFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    dlgProperty *dlg=new dlgRepSetMove(form, (slSet*)obj);
+    dlgProperty *dlg=new dlgRepSetMove(&setFactory, form, (slSet*)obj);
     dlg->InitDialog(form, obj);
     dlg->CreateAdditionalPages();
     dlg->Go(false);

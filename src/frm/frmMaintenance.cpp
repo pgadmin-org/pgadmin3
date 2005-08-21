@@ -193,7 +193,7 @@ wxWindow *maintenanceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmMaintenance *frm=new frmMaintenance(form, obj);
     frm->Go();
-    return frm;
+    return 0;
 }
 
 

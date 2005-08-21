@@ -29,7 +29,7 @@
 
 dlgProperty *pgLanguageFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgLanguage(frame, (pgLanguage*)node);
+    return new dlgLanguage(this, frame, (pgLanguage*)node);
 }
 
 
@@ -39,8 +39,8 @@ BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
-dlgLanguage::dlgLanguage(frmMain *frame, pgLanguage *node)
-: dlgSecurityProperty(frame, node, wxT("dlgLanguage"), wxT("USAGE"), "U")
+dlgLanguage::dlgLanguage(pgaFactory *f, frmMain *frame, pgLanguage *node)
+: dlgSecurityProperty(f, frame, node, wxT("dlgLanguage"), wxT("USAGE"), "U")
 {
     language=node;
 }

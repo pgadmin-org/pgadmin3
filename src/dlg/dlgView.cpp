@@ -37,11 +37,11 @@ END_EVENT_TABLE();
 
 dlgProperty *pgViewFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgView(frame, (pgView*)node, (pgSchema*)parent);
+    return new dlgView(this, frame, (pgView*)node, (pgSchema*)parent);
 }
 
-dlgView::dlgView(frmMain *frame, pgView *node, pgSchema *sch)
-: dlgSecurityProperty(frame, node, wxT("dlgView"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCE,TRIGGER"), "arwdRxt")
+dlgView::dlgView(pgaFactory *f, frmMain *frame, pgView *node, pgSchema *sch)
+: dlgSecurityProperty(f, frame, node, wxT("dlgView"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCE,TRIGGER"), "arwdRxt")
 {
     schema=sch;
     view=node;

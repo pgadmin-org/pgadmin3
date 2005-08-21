@@ -63,12 +63,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgaJobFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgJob(frame, (pgaJob*)node);
+    return new dlgJob(this, frame, (pgaJob*)node);
 }
 
 
-dlgJob::dlgJob(frmMain *frame, pgaJob *node)
-: dlgAgentProperty(frame, wxT("dlgJob"))
+dlgJob::dlgJob(pgaFactory *f, frmMain *frame, pgaJob *node)
+: dlgAgentProperty(f, frame, wxT("dlgJob"))
 {
     job=node;
 
@@ -236,7 +236,7 @@ void dlgJob::OnChangeStep(wxCommandEvent &ev)
     long pos=lstSteps->GetSelection();
     pgaStep *obj=(pgaStep*) StrToLong(lstSteps->GetText(pos, 3));
 
-    dlgStep step(mainForm, obj, job);
+    dlgStep step(&stepFactory, mainForm, obj, job);
     step.CenterOnParent();
     step.SetConnection(connection);
 
@@ -270,7 +270,7 @@ void dlgJob::OnSelChangeStep(wxListEvent &ev)
 
 void dlgJob::OnAddStep(wxCommandEvent &ev)
 {
-    dlgStep step(mainForm, NULL, job);
+    dlgStep step(&stepFactory, mainForm, NULL, job);
     step.CenterOnParent();
     step.SetConnection(connection);
     if (step.Go(true) >= 0)
@@ -307,7 +307,7 @@ void dlgJob::OnChangeSchedule(wxCommandEvent &ev)
     long pos=lstSchedules->GetSelection();
     pgaSchedule *obj=(pgaSchedule*) StrToLong(lstSchedules->GetText(pos, 3));
 
-    dlgSchedule schedule(mainForm, obj, job);
+    dlgSchedule schedule(&scheduleFactory, mainForm, obj, job);
     schedule.CenterOnParent();
     schedule.SetConnection(connection);
 
@@ -334,7 +334,7 @@ void dlgJob::OnChangeSchedule(wxCommandEvent &ev)
 
 void dlgJob::OnAddSchedule(wxCommandEvent &ev)
 {
-    dlgSchedule schedule(mainForm, NULL, job);
+    dlgSchedule schedule(&scheduleFactory, mainForm, NULL, job);
     schedule.CenterOnParent();
     schedule.SetConnection(connection);
     if (schedule.Go(true) >= 0)

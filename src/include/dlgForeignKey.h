@@ -22,8 +22,8 @@ class pgTable;
 class dlgForeignKey : public dlgCollistProperty
 {
 public:
-    dlgForeignKey(frmMain *frame, pgForeignKey *node, pgTable *parentNode);
-    dlgForeignKey(frmMain *frame, ctlListView *colList);
+    dlgForeignKey(pgaFactory *factory, frmMain *frame, pgForeignKey *node, pgTable *parentNode);
+    dlgForeignKey(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
     void CheckChange();
     wxString GetSql();

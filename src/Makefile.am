@@ -29,7 +29,7 @@ $(srcdir)/schema/pgFunction.cpp $(srcdir)/schema/pgGroup.cpp \
 $(srcdir)/schema/pgIndex.cpp $(srcdir)/schema/pgIndexConstraint.cpp \
 $(srcdir)/schema/pgLanguage.cpp $(srcdir)/schema/pgObject.cpp \
 $(srcdir)/schema/pgOperator.cpp $(srcdir)/schema/pgOperatorClass.cpp \
-$(srcdir)/schema/pgRule.cpp $(srcdir)/schema/pgSchema.cpp \
+$(srcdir)/schema/pgRole.cpp $(srcdir)/schema/pgRule.cpp $(srcdir)/schema/pgSchema.cpp \
 $(srcdir)/schema/pgSequence.cpp $(srcdir)/schema/pgServer.cpp \
 $(srcdir)/schema/pgTable.cpp $(srcdir)/schema/pgTablespace.cpp $(srcdir)/schema/pgTrigger.cpp \
 $(srcdir)/schema/pgType.cpp $(srcdir)/schema/pgUser.cpp $(srcdir)/schema/pgView.cpp \
@@ -59,7 +59,7 @@ $(srcdir)/dlg/dlgProperty.cpp $(srcdir)/dlg/dlgUser.cpp \
 $(srcdir)/dlg/dlgServer.cpp $(srcdir)/dlg/dlgGroup.cpp $(srcdir)/dlg/dlgDatabase.cpp $(srcdir)/dlg/dlgLanguage.cpp \
 $(srcdir)/dlg/dlgSchema.cpp $(srcdir)/dlg/dlgDomain.cpp $(srcdir)/dlg/dlgTable.cpp $(srcdir)/dlg/dlgTablespace.cpp \
 $(srcdir)/dlg/dlgColumn.cpp $(srcdir)/dlg/dlgIndex.cpp $(srcdir)/dlg/dlgFunction.cpp \
-$(srcdir)/dlg/dlgView.cpp $(srcdir)/dlg/dlgRule.cpp $(srcdir)/dlg/dlgOperator.cpp \
+$(srcdir)/dlg/dlgView.cpp $(srcdir)/dlg/dlgRule.cpp $(srcdir)/dlg/dlgRole.cpp $(srcdir)/dlg/dlgOperator.cpp \
 $(srcdir)/dlg/dlgAggregate.cpp $(srcdir)/dlg/dlgCast.cpp $(srcdir)/dlg/dlgConversion.cpp \
 $(srcdir)/dlg/dlgIndexConstraint.cpp $(srcdir)/dlg/dlgForeignKey.cpp \
 $(srcdir)/dlg/dlgSequence.cpp $(srcdir)/dlg/dlgTrigger.cpp $(srcdir)/dlg/dlgType.cpp \
@@ -94,7 +94,7 @@ $(srcdir)/include/ctlSecurityPanel.h $(srcdir)/include/dlgClasses.h $(srcdir)/in
 $(srcdir)/include/dlgCheck.h $(srcdir)/include/dlgColumn.h $(srcdir)/include/dlgServer.h \
 $(srcdir)/include/dlgDatabase.h $(srcdir)/include/dlgDomain.h $(srcdir)/include/frmExport.h \
 $(srcdir)/include/dlgForeignKey.h $(srcdir)/include/dlgFunction.h $(srcdir)/include/dlgGroup.h \
-$(srcdir)/include/dlgIndexConstraint.h $(srcdir)/include/dlgIndex.h \
+$(srcdir)/include/dlgIndexConstraint.h $(srcdir)/include/dlgIndex.h $(srcdir)/include/dlgRole.h \
 $(srcdir)/include/dlgLanguage.h $(srcdir)/include/dlgProperty.h $(srcdir)/include/dlgType.h \
 $(srcdir)/include/dlgView.h $(srcdir)/include/dlgRule.h $(srcdir)/include/dlgOperator.h \
 $(srcdir)/include/dlgAggregate.h $(srcdir)/include/dlgCast.h $(srcdir)/include/dlgConversion.h \
@@ -116,7 +116,7 @@ $(srcdir)/include/pgForeignKey.h $(srcdir)/include/pgFunction.h \
 $(srcdir)/include/pgGroup.h $(srcdir)/include/pgIndexConstraint.h \
 $(srcdir)/include/pgIndex.h $(srcdir)/include/pgLanguage.h $(srcdir)/include/pgObject.h \
 $(srcdir)/include/pgOperatorClass.h $(srcdir)/include/pgOperator.h \
-$(srcdir)/include/pgRule.h $(srcdir)/include/pgSchema.h $(srcdir)/include/pgSequence.h \
+$(srcdir)/include/pgRole.h $(srcdir)/include/pgRule.h $(srcdir)/include/pgSchema.h $(srcdir)/include/pgSequence.h \
 $(srcdir)/include/pgServer.h $(srcdir)/include/pgSet.h $(srcdir)/include/pgTable.h \
 $(srcdir)/include/pgTrigger.h $(srcdir)/include/pgType.h $(srcdir)/include/pgUser.h \
 $(srcdir)/include/pgView.h $(srcdir)/include/sysLogger.h $(srcdir)/include/utffile.h \

@@ -21,7 +21,7 @@ class slSequence;
 class dlgRepSequence : public dlgRepProperty
 {
 public:
-    dlgRepSequence(frmMain *frame, slSequence *tab, slSet *s);
+    dlgRepSequence(pgaFactory *factory, frmMain *frame, slSequence *tab, slSet *s);
     int Go(bool modal);
 
     void CheckChange();

@@ -628,10 +628,11 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 
 
 #include "images/table.xpm"
+#include "images/table-sm.xpm"
 #include "images/tables.xpm"
 
 pgTableFactory::pgTableFactory() 
-: pgSchemaObjFactory(__("Table"), _("New Table"), _("Create a new Table."), table_xpm)
+: pgSchemaObjFactory(__("Table"), _("New Table"), _("Create a new Table."), table_xpm, table_sm_xpm)
 {
     metaType = PGM_TABLE;
 }

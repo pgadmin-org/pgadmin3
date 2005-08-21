@@ -20,7 +20,7 @@ class pgGroup;
 class dlgGroup : public dlgProperty
 {
 public:
-    dlgGroup(frmMain *frame, pgGroup *node=0);
+    dlgGroup(pgaFactory *factory, frmMain *frame, pgGroup *node=0);
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();

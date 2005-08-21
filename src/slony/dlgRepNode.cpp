@@ -30,11 +30,11 @@ END_EVENT_TABLE();
 
 dlgProperty *slNodeFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepNode(frame, (slNode*)node, (slCluster*)parent);
+    return new dlgRepNode(this, frame, (slNode*)node, (slCluster*)parent);
 }
 
-dlgRepNode::dlgRepNode(frmMain *frame, slNode *s, slCluster *c)
-: dlgRepProperty(frame, c, wxT("dlgRepNode"))
+dlgRepNode::dlgRepNode(pgaFactory *f, frmMain *frame, slNode *s, slCluster *c)
+: dlgRepProperty(f, frame, c, wxT("dlgRepNode"))
 {
     node=s;
 }

@@ -197,10 +197,11 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
 
 #include "images/aggregate.xpm"
+#include "images/aggregate-sm.xpm"
 #include "images/aggregates.xpm"
 
 pgAggregateFactory::pgAggregateFactory() 
-: pgaFactory(__("Aggregate"), _("New Aggregate"), _("Create a new Aggregate."), aggregate_xpm)
+: pgaFactory(__("Aggregate"), _("New Aggregate"), _("Create a new Aggregate."), aggregate_xpm, aggregate_sm_xpm)
 {
 }
 

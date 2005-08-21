@@ -342,6 +342,10 @@ SOURCE=.\dlg\dlgProperty.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\dlg\dlgRole.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\dlg\dlgRule.cpp
 # End Source File
 # Begin Source File
@@ -1035,6 +1039,10 @@ SOURCE=.\include\dlgOperator.h
 # Begin Source File
 
 SOURCE=.\include\dlgProperty.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgRole.h
 # End Source File
 # Begin Source File
 

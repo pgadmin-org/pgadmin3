@@ -21,7 +21,7 @@ class pgTable;
 class dlgCheck : public dlgProperty
 {
 public:
-    dlgCheck(frmMain *frame, pgCheck *node=0, pgTable *parentNode=0);
+    dlgCheck(pgaFactory *factory, frmMain *frame, pgCheck *node=0, pgTable *parentNode=0);
 
     void CheckChange();
     wxString GetSql();

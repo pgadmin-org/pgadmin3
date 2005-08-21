@@ -69,12 +69,12 @@ END_EVENT_TABLE();
 
 dlgProperty *pgTypeFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgType(frame, (pgType*)node, (pgSchema*)parent);
+    return new dlgType(this, frame, (pgType*)node, (pgSchema*)parent);
 }
 
 
-dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
-: dlgTypeProperty(frame, wxT("dlgType"))
+dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
+: dlgTypeProperty(f, frame, wxT("dlgType"))
 {
     type=node;
     schema=sch;

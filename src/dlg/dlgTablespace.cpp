@@ -28,18 +28,18 @@
 
 dlgProperty *pgTablespaceFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgTablespace(frame, (pgTablespace*)node);
+    return new dlgTablespace(this, frame, (pgTablespace*)node);
 }
 
 
 BEGIN_EVENT_TABLE(dlgTablespace, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtLocation"),                  dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtLocation"), dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
 
-dlgTablespace::dlgTablespace(frmMain *frame, pgTablespace *node)
-: dlgSecurityProperty(frame, node, wxT("dlgTablespace"), wxT("CREATE"), "C")
+dlgTablespace::dlgTablespace(pgaFactory *f, frmMain *frame, pgTablespace *node)
+: dlgSecurityProperty(f, frame, node, wxT("dlgTablespace"), wxT("CREATE"), "C")
 {
     tablespace=node;
     btnOK->Disable();

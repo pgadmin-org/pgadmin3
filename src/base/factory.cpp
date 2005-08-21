@@ -20,13 +20,14 @@ wxArrayPtrVoid *factoryArray=0;
 
 #define FACTORY_OFFSET 100
 
-pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img)
+pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **smImg)
 {
     if (!factoryArray)
         factoryArray = new wxArrayPtrVoid;
     id=factoryArray->GetCount()+FACTORY_OFFSET;
     factoryArray->Add(this);
     collectionFactory=0;
+    smallIconId=-1;
     typeName=(wxChar*)tn;
     if (ns)
         newString=(wxChar*)ns;
@@ -39,11 +40,32 @@ pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, ch
     metaType=PGM_UNKNOWN;
     image=img;
     if (image)
-        iconId = addImage(image);
+    {
+        iconId = addIcon(image);
+        if (smImg)
+            smallIconId = addIcon(smImg);
+    }
     else
         iconId=-1;
 }
 
+
+bool pgaFactory::WantSmallIcon()
+{
+#ifdef __WXMSW__
+    return true;
+#else
+    return false;
+#endif
+}
+
+int pgaFactory::GetIconId()
+{
+    if (WantSmallIcon() && smallIconId >= 0)
+        return smallIconId;
+
+    return iconId;
+}
 
 pgaFactory *pgaFactory::GetFactory(int id)
 {
@@ -76,7 +98,7 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
 
 wxArrayPtrVoid *deferredImagesArray=0;
 
-int pgaFactory::addImage(char **img)
+int pgaFactory::addIcon(char **img)
 {
     if (!imageList)
     {
@@ -144,7 +166,7 @@ int pgaFactory::GetMetaType()
 }
 
 
-pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, wxChar *tn, char **img) 
+pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, wxChar *tn, char **img, char **imgSm) 
 : pgaFactory(tn, f->GetNewString(), f->GetNewLongString())
 {
     itemFactory=f;
@@ -152,7 +174,9 @@ pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, wxChar *tn, char **img
     if (img)
     {
         image=img;
-        iconId=addImage(image);
+        iconId=addIcon(image);
+        if (imgSm)
+            smallIconId = addIcon(imgSm);
     }
     else
         iconId=f->GetIconId();

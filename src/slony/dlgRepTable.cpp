@@ -41,12 +41,12 @@ END_EVENT_TABLE();
 
 dlgProperty *slSlTableFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRepTable(frame, (slTable*)node, (slSet*)parent);
+    return new dlgRepTable(this, frame, (slTable*)node, (slSet*)parent);
 }
 
 
-dlgRepTable::dlgRepTable(frmMain *frame, slTable *node, slSet *s)
-: dlgRepProperty(frame, s->GetCluster(), wxT("dlgRepTable"))
+dlgRepTable::dlgRepTable(pgaFactory *f, frmMain *frame, slTable *node, slSet *s)
+: dlgRepProperty(f, frame, s->GetCluster(), wxT("dlgRepTable"))
 {
     table=node;
     set=s;

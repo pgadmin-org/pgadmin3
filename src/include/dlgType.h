@@ -20,7 +20,7 @@ class pgType;
 class dlgType : public dlgTypeProperty
 {
 public:
-    dlgType(frmMain *frame, pgType *node, pgSchema *schema);
+    dlgType(pgaFactory *factory, frmMain *frame, pgType *node, pgSchema *schema);
 
     void CheckChange();
     wxString GetSql();

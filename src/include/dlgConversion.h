@@ -21,7 +21,7 @@ class pgConversion;
 class dlgConversion : public dlgProperty
 {
 public:
-    dlgConversion(frmMain *frame, pgConversion *cc, pgSchema *sch);
+    dlgConversion(pgaFactory *factory, frmMain *frame, pgConversion *cc, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();

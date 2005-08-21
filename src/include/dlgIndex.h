@@ -22,8 +22,8 @@ class pgIndexBase;
 class dlgIndexBase : public dlgCollistProperty
 {
 public:
-    dlgIndexBase(frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
-    dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView *colList);
+    dlgIndexBase(pgaFactory *factory, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
+    dlgIndexBase(pgaFactory *factory, frmMain *frame, const wxString &resName, ctlListView *colList);
 
     void CheckChange();
     pgObject *GetObject();
@@ -44,7 +44,7 @@ private:
 class dlgIndex : public dlgIndexBase
 {
 public:
-    dlgIndex(frmMain *frame, pgIndex *index, pgTable *parentNode);
+    dlgIndex(pgaFactory *factory, frmMain *frame, pgIndex *index, pgTable *parentNode);
 
     int Go(bool modal);
     void CheckChange();

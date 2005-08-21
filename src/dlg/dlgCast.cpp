@@ -32,7 +32,7 @@
 
 dlgProperty *pgCastFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgCast(frame, (pgCast*)node);
+    return new dlgCast(this, frame, (pgCast*)node);
 }
 
 
@@ -44,8 +44,8 @@ BEGIN_EVENT_TABLE(dlgCast, dlgTypeProperty)
 END_EVENT_TABLE();
 
 
-dlgCast::dlgCast(frmMain *frame, pgCast *node)
-: dlgTypeProperty(frame, wxT("dlgCast"))
+dlgCast::dlgCast(pgaFactory *f, frmMain *frame, pgCast *node)
+: dlgTypeProperty(f, frame, wxT("dlgCast"))
 {
     cast=node;
 

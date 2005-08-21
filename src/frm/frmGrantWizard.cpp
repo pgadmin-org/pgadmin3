@@ -265,7 +265,7 @@ wxWindow *grantWizardFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmGrantWizard *frm=new frmGrantWizard(form, obj);
     frm->Go();
-    return frm;
+    return 0;
 }
 
 

@@ -21,7 +21,7 @@ class slSet;
 class dlgRepSet : public dlgRepProperty
 {
 public:
-    dlgRepSet(frmMain *frame, slSet *set, slCluster *c);
+    dlgRepSet(pgaFactory *factory, frmMain *frame, slSet *set, slCluster *c);
     int Go(bool modal);
 
     void CheckChange();
@@ -39,7 +39,7 @@ private:
 class dlgRepSetMerge : public dlgRepProperty
 {
 public:
-    dlgRepSetMerge(frmMain *frame, slSet *set);
+    dlgRepSetMerge(pgaFactory *factory, frmMain *frame, slSet *set);
     int Go(bool modal);
 
     void CheckChange();
@@ -56,7 +56,7 @@ private:
 class dlgRepSetMove : public dlgRepProperty
 {
 public:
-    dlgRepSetMove(frmMain *frame, slSet *set);
+    dlgRepSetMove(pgaFactory *f, frmMain *frame, slSet *set);
     int Go(bool modal);
 
     void CheckChange();
