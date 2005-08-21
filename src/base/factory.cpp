@@ -289,7 +289,10 @@ menuFactory::menuFactory(menuFactoryList *list)
 
 actionFactory::actionFactory(menuFactoryList *list) : menuFactory(list)
 {
-    id = list->GetCount()+MNU_ACTION -1;
+    if (list)
+        id = list->GetCount()+MNU_ACTION -1;
+	else
+        id=0;
     context=false;
 }
 
