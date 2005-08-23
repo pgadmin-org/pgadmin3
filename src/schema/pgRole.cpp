@@ -158,6 +158,12 @@ void pgRole::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wx
         delete set;
     }
 
+    // We ignore classid and refclassid here because we hope that oids are unique
+    // across system tables.
+    // Strictly speaking, we'd need to join pg_shdepend to each subquery
+
+    wxString depOids=wxT("(SELECT objid FROM pg_shdepend WHERE refobjid=") + GetOidStr() + wxT(")");
+
     FillOwned(form->GetBrowser(), referencedBy, dblist, 
         wxT("SELECT cl.relkind, COALESCE(cin.nspname, cln.nspname) as nspname, COALESCE(ci.relname, cl.relname) as relname, cl.relname as indname\n")
         wxT("  FROM pg_class cl\n")
@@ -165,19 +171,19 @@ void pgRole::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wx
         wxT("  LEFT OUTER JOIN pg_index ind ON ind.indexrelid=cl.oid\n")
         wxT("  LEFT OUTER JOIN pg_class ci ON ind.indrelid=ci.oid\n")
         wxT("  LEFT OUTER JOIN pg_namespace cin ON ci.relnamespace=cin.oid\n")
-        wxT(" WHERE cl.relowner = ") + GetOidStr() + wxT(" AND cl.oid > ") + sysoid + wxT("\n")
+        wxT(" WHERE cl.oid IN ") + depOids + wxT(" AND cl.oid > ") + sysoid + wxT("\n")
         wxT("UNION ALL\n")
         wxT("SELECT 'n', null, nspname, null\n")
-        wxT("  FROM pg_namespace nsp WHERE nspowner = ") + GetOidStr() + wxT(" AND nsp.oid > ") + sysoid + wxT("\n")
+        wxT("  FROM pg_namespace nsp WHERE nsp.oid IN ") + depOids + wxT(" AND nsp.oid > ") + sysoid + wxT("\n")
         wxT("UNION ALL\n")
         wxT("SELECT CASE WHEN typtype='d' THEN 'd' ELSE 'y' END, null, typname, null\n")
-        wxT("  FROM pg_type ty WHERE typowner = ") + GetOidStr() + wxT(" AND ty.oid > ") + sysoid + wxT("\n")
+        wxT("  FROM pg_type ty WHERE ty.oid IN ") + depOids + wxT(" AND ty.oid > ") + sysoid + wxT("\n")
         wxT("UNION ALL\n")
         wxT("SELECT 'C', null, conname, null\n")
-        wxT("  FROM pg_conversion co WHERE conowner = ") + GetOidStr() + wxT(" AND co.oid > ") + sysoid + wxT("\n")
+        wxT("  FROM pg_conversion co WHERE co.oid IN ") + depOids + wxT(" AND co.oid > ") + sysoid + wxT("\n")
         wxT("UNION ALL\n")
         wxT("SELECT CASE WHEN prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + wxT(" THEN 'T' ELSE 'p' END, null, proname, null\n")
-        wxT("  FROM pg_proc pr WHERE proowner = ") + GetOidStr() + wxT(" AND pr.oid > ") + sysoid + wxT("\n")
+        wxT("  FROM pg_proc pr WHERE pr.oid IN ") + depOids + wxT(" AND pr.oid > ") + sysoid + wxT("\n")
         wxT("UNION ALL\n")
         wxT("SELECT 'o', null, oprname || '('::text || ")
                     wxT("COALESCE(tl.typname, ''::text) || ")
@@ -186,7 +192,7 @@ void pgRole::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wx
         wxT("  FROM pg_operator op\n")
         wxT("  LEFT JOIN pg_type tl ON tl.oid=op.oprleft\n")
         wxT("  LEFT JOIN pg_type tr ON tr.oid=op.oprright\n")
-        wxT(" WHERE oprowner = ") + GetOidStr() + wxT(" AND op.oid > ") + sysoid + wxT("\n")
+        wxT(" WHERE op.oid IN ") + depOids + wxT(" AND op.oid > ") + sysoid + wxT("\n")
         wxT(" ORDER BY 1,2,3"));
             
     form->EndMsg(set != 0);

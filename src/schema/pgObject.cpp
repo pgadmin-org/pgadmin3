@@ -39,8 +39,8 @@
 #include "pgIndexConstraint.h"
 #include "pgForeignKey.h"
 #include "pgRule.h"
-
-// Ordering must match the PG_OBJTYPE enumeration in pgObject.h
+#include "pgRole.h"
+#include "pgDefs.h"
 
 
 int pgObject::GetType() const
@@ -347,6 +347,32 @@ void pgObject::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxStri
         wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.refobjid=ns.oid\n")
         + where, wxT("refclassid"));
+
+    pgConn *conn=GetConnection();
+    if (conn && conn->BackendMinimumVersion(8, 1))
+    {
+        int iconId=groupRoleFactory.GetCollectionFactory()->GetIconId();
+
+        pgSetIterator set(conn, 
+            wxT("SELECT rolname AS refname, refclassid, deptype\n")
+            wxT("  FROM pg_shdepend dep\n")
+            wxT("  LEFT JOIN pg_roles r ON refclassid=1260 AND refobjid=r.oid\n")
+            + where + wxT("\n")
+            wxT(" ORDER BY 1"));
+
+        while (set.RowsLeft())
+        {
+            wxString refname = set.GetVal(wxT("refname"));
+            wxString deptype = set.GetVal(wxT("deptype"));
+            if (deptype == wxT("a"))
+                deptype = wxT("ACL");
+            else if (deptype == wxT("o"))
+                deptype = _("Owner");
+
+            if (set.GetOid(wxT("refclassid")) == PGOID_CLASS_PG_AUTHID)
+                    dependsOn->AppendItem(iconId, wxT("Role"), refname, deptype);
+        }
+    }
 }
 
 

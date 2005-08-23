@@ -16,6 +16,8 @@
 #define PGOID_SCHEMA_TOAST                  99L
 #define PGOID_SCHEMA_PUBLIC                 2200L
 
+#define PGOID_CLASS_PG_AUTHID               1260L
+
 #define PGOID_TYPE_SERIAL                   -42L
 #define PGOID_TYPE_SERIAL8                  -43L
 #define PGOID_TYPE_BOOL                     16L
