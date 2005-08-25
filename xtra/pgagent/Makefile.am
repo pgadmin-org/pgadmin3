@@ -57,4 +57,4 @@ install-exec-hook:
 endif
 
 install-data-local:
-	$(install_sh) -c -m 644 pgagent.sql $(pkgdatadir)/pgagent.sql
+	$(install_sh) -c -m 644 pgagent.sql $(DESTDIR)/$(pkgdatadir)/pgagent.sql
