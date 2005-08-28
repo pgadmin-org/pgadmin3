@@ -480,7 +480,8 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     wxLogInfo(wxT("Displaying statistics for tables on ")+ GetSchema()->GetIdentifier());
 
-    bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
+    // 8.1 has the database size functions built in.
+    bool hasSize=(GetConnection()->HasFeature(FEATURE_SIZE) || GetConnection()->BackendMinimumVersion(8, 1));
 
     // Add the statistics view columns
     statistics->ClearAll();
@@ -545,8 +546,8 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", toast_blks_hit AS ") + qtIdent(_("Toast Blocks Hit")) +
              wxT(", tidx_blks_read AS ") + qtIdent(_("Toast Index Blocks Read")) +
              wxT(", tidx_blks_hit AS ") + qtIdent(_("Toast Index Blocks Hit"));
-    
-    if (GetConnection()->HasFeature(FEATURE_SIZE))
+
+    if (GetConnection()->HasFeature(FEATURE_SIZE) || GetConnection()->BackendMinimumVersion(8, 1))
     {
         sql += wxT(", pg_size_pretty(pg_relation_size(stat.relid)) AS ") + qtIdent(_("Table Size"))
             +  wxT(", CASE WHEN cl.reltoastrelid = 0 THEN ") + qtString(_("none")) + wxT(" ELSE pg_size_pretty(pg_relation_size(cl.reltoastrelid)+ COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0)) END AS ") + qtIdent(_("Toast Table Size"))

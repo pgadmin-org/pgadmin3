@@ -215,7 +215,8 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 void pgIndexBase::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    if (GetConnection()->HasFeature(FEATURE_SIZE))
+    // 8.1 has the database size functions built in.
+    if (GetConnection()->HasFeature(FEATURE_SIZE) || GetConnection()->BackendMinimumVersion(8, 1))
         DisplayStatistics(statistics, 
             wxT("SELECT pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("Index Size")));
 }
