@@ -133,7 +133,7 @@ void pgTablespace::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     if (statistics)
     {
-        if (GetConnection()->HasFeature(FEATURE_SIZE) || GetConnection()->BackendMinimumVersion(8, 1))
+        if (GetConnection()->HasFeature(FEATURE_SIZE))
         {
             wxLogInfo(wxT("Displaying statistics for %s"), GetTypeName().c_str());
 
@@ -220,7 +220,7 @@ pgTablespaceCollection::pgTablespaceCollection(pgaFactory *factory, pgServer *sv
 
 void pgTablespaceCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    if (GetConnection()->HasFeature(FEATURE_SIZE) || GetConnection()->BackendMinimumVersion(8, 1))
+    if (GetConnection()->HasFeature(FEATURE_SIZE))
     {
         wxLogInfo(wxT("Displaying statistics for tablespaces"));
 

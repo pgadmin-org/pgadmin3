@@ -480,8 +480,7 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 {
     wxLogInfo(wxT("Displaying statistics for databases on ") + GetServer()->GetIdentifier());
 
-    // 8.1 has the database size functions built in.
-    bool hasSize=(GetConnection()->HasFeature(FEATURE_SIZE) || GetConnection()->BackendMinimumVersion(8, 1));
+    bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
 
     wxString sql=wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit");
 
