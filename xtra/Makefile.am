@@ -18,4 +18,8 @@ EXTRA_DIST = \
 	$(srcdir)/admin/README.admin \
 	$(srcdir)/admin/admin.sql.in \
 	$(srcdir)/admin/genfile.c \
-	$(srcdir)/admin/misc.c
+	$(srcdir)/admin/misc.c \
+	$(srcdir)/admin81/Makefile \
+	$(srcdir)/admin81/README.admin81 \
+	$(srcdir)/admin81/admin81.sql.in \
+	$(srcdir)/admin81/admin81.c
