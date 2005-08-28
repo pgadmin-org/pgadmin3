@@ -1,0 +1,21 @@
+/* ***********************************************
+ * Administrative functions - for PostgreSQL 8.1.x
+ * *********************************************** */
+
+/* generic file access functions (genfile.c) */
+
+CREATE FUNCTION pg_file_write(text, text, bool) RETURNS bigint
+   AS 'MODULE_PATHNAME', 'pg_file_write'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE FUNCTION pg_file_rename(text, text, text) RETURNS bool
+   AS 'MODULE_PATHNAME', 'pg_file_rename'
+	LANGUAGE C VOLATILE;
+
+CREATE FUNCTION pg_file_unlink(text) RETURNS bool
+   AS 'MODULE_PATHNAME', 'pg_file_unlink'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE FUNCTION pg_file_rename(text, text) RETURNS bool
+   AS 'SELECT pg_file_rename($1, $2, NULL); '
+	LANGUAGE SQL VOLATILE STRICT;
