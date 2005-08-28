@@ -77,6 +77,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("SystemSchemas"), &systemSchemas, wxEmptyString);
     Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
     Read(wxT("Export/Unicode"), &exportUnicode, false);
+    Read(wxT("SlonyPath"), &slonyPath, wxEmptyString);
 
     wxString val;
 #ifdef __WXMSW__
@@ -155,6 +156,7 @@ void sysSettings::Save()
     Write(wxT("SystemSchemas"), systemSchemas);
     Write(wxT("MaxServerLogSize"), maxServerLogSize);
     Write(wxT("SuppressGuruHints"), suppressGuruHints);
+    Write(wxT("SlonyPath"), slonyPath);
 
 
     Write(wxT("Export/Unicode"), exportUnicode);

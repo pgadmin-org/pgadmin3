@@ -26,6 +26,7 @@
 #include "pgTrigger.h"
 #include "pgConstraints.h"
 
+
 // App headers
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
@@ -56,6 +57,57 @@ wxMenu *pgTable::GetNewMenu()
         triggerFactory.AppendMenu(menu);
     }
     return menu;
+}
+
+
+int pgTable::GetReplicationStatus(ctlTree *browser, wxString *clusterNsp, long *setId)
+{
+    wxArrayString clusters;
+
+    pgSetIterator clusterSet(GetConnection(), 
+        wxT("SELECT nspname FROM pg_namespace nsp\n")
+        wxT("  JOIN pg_proc pro ON pronamespace=nsp.oid AND proname = 'slonyversion'"));
+
+    while (clusterSet.RowsLeft())
+        clusters.Add(clusterSet.GetVal(wxT("nspname")));
+
+    bool isSubscribed=false;
+
+    size_t i;
+    for (i=0 ; i < clusters.GetCount() ; i++)
+    {
+        wxString nsp=qtIdent(clusters.Item(i));
+
+        pgSetIterator sets(GetConnection(),
+            wxT("SELECT tab_set, sub_provider, ") + nsp + wxT(".getlocalnodeid(") + qtString(clusters.Item(i)) + wxT(") AS localnode\n")
+            wxT("  FROM ") + nsp + wxT(".sl_table\n")
+            wxT("  LEFT JOIN ") + nsp + wxT(".sl_subscribe ON sub_set=tab_set\n")
+            wxT(" WHERE tab_reloid = ") + GetOidStr());
+
+        if (sets.RowsLeft())
+        {
+            if (clusterNsp)
+                *clusterNsp = clusters.Item(i);
+            if (setId)
+                *setId = sets.GetLong(wxT("tab_set"));
+            if (isSubscribed)
+                return REPLICATIONSTATUS_MULTIPLY_PUBLISHED;
+
+            long provider=sets.GetLong(wxT("sub_provider"));
+            if (provider)
+            {
+                if (provider != sets.GetLong(wxT("localnode")))
+                    return REPLICATIONSTATUS_REPLICATED;
+
+                isSubscribed=true;
+
+            }
+        }
+    }
+    if (isSubscribed)
+        return REPLICATIONSTATUS_SUBSCRIBED;
+
+    return REPLICATIONSTATUS_NONE;
 }
 
 
@@ -380,6 +432,30 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
             properties->AppendItem(_("Rows (counted)"), rows);
         else
             properties->AppendItem(_("Rows (counted)"), _("not counted"));
+
+        long setId;
+        wxString clusterNsp;
+        wxString repString;
+        long repStat=GetReplicationStatus(browser, &clusterNsp, &setId);
+        clusterNsp.Printf(_("Cluster \"%s\", set %ld"), clusterNsp.Mid(1).c_str(), setId);
+
+        switch (repStat)
+        {
+            case REPLICATIONSTATUS_SUBSCRIBED:
+                repString = _("Published");
+                break;
+            case REPLICATIONSTATUS_REPLICATED:
+                repString = _("Replicated");
+                break;
+            case REPLICATIONSTATUS_MULTIPLY_PUBLISHED:
+                repString = _("Replicated");
+                clusterNsp = _("Multiple clusters");
+                break;
+            default:
+                break;
+        }
+        if (!repString.IsEmpty())
+            properties->AppendItem(repString, clusterNsp);
 
         properties->AppendItem(_("Inherits tables"), GetHasSubclass());
         properties->AppendItem(_("Inherited tables count"), GetInheritedTableCount());

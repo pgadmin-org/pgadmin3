@@ -57,7 +57,7 @@ pgObject *dlgRepSubscription::GetObject()
 
 int dlgRepSubscription::Go(bool modal)
 {
-    txtOrigin->SetValue(NumToStr(subscription->GetSet()->GetOriginId()));
+    txtOrigin->SetValue(NumToStr(set->GetOriginId()));
     if (subscription)
     {
         // edit mode

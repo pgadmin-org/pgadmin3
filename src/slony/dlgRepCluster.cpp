@@ -27,11 +27,7 @@
 #include "sysProcess.h"
 
 
-extern wxString slony1BaseScript;
-extern wxString slony1FunctionScript;
-extern wxString slony1XxidScript;
 extern wxString backupExecutable;
-
 
 #define cbServer            CTRL_COMBOBOX("cbServer")
 #define cbDatabase          CTRL_COMBOBOX("cbDatabase")
@@ -77,6 +73,32 @@ pgObject *dlgRepClusterBase::GetObject()
     return cluster;
 }
 
+
+bool dlgRepClusterBase::AddScript(wxString &sql, const wxString &fn)
+{
+    wxFileName filename;
+    filename.Assign(settings->GetSlonyPath(), fn);
+
+    if (!wxFile::Exists(filename.GetFullPath()))
+        return false;
+
+    wxFile file(filename.GetFullPath(), wxFile::read);
+    if (!file.IsOpened())
+        return false;
+
+    char *buffer;
+    size_t done;
+
+    buffer = new char[file.Length()+1];
+    done=file.Read(buffer, file.Length());
+    buffer[done] = 0;
+    sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
+    delete[] buffer;
+
+    return done > 0;
+}
+
+
 int dlgRepClusterBase::Go(bool modal)
 {
     if (cluster)
@@ -90,6 +112,12 @@ int dlgRepClusterBase::Go(bool modal)
     }
     else
     {
+        if (!AddScript(createScript, wxT("xxid.v74.sql")) || 
+            !AddScript(createScript, wxT("slony1_base.sql")) || 
+            !AddScript(createScript, wxT("slony1_funcs.sql")) || 
+            !AddScript(createScript, wxT("slony1_funcs.v74.sql")))
+            createScript = wxEmptyString;
+
         wxCookieType cookie;
         wxTreeItemId serverItem=mainForm->GetBrowser()->GetFirstChild(servers, cookie);        
         while (serverItem)
@@ -308,6 +336,12 @@ void dlgRepCluster::OnChangeJoin(wxCommandEvent &ev)
     txtAdminNodeID->Show(!joinCluster && !cluster);
     txtAdminNodeName->Show(!joinCluster && !cluster);
     cbAdminNode->Show(joinCluster || cluster);
+
+    if (joinCluster && !cbDatabase->GetCount())
+    {
+        OnChangeServer(ev);
+        return;
+    }
 
     OnChange(ev);
 }
@@ -532,12 +566,21 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
 
         // create new node on existing cluster
         if (done)
-            done = remoteConn->ExecuteVoid(
+        {
+            wxString sql=
                 wxT("SELECT ") + schemaPrefix + wxT("storenode(") 
                     + txtNodeID->GetValue() + wxT(", ")
-                    + qtString(txtNodeName->GetValue()) + wxT(");\n")
-                wxT("SELECT ") + schemaPrefix + wxT("enablenode(") 
-                    + txtNodeID->GetValue() + wxT(");\n"));
+                    + qtString(txtNodeName->GetValue());
+
+            // if version >= 1.1
+                sql += wxT(", false");
+
+            sql += wxT(");\n")
+            wxT("SELECT ") + schemaPrefix + wxT("enablenode(") 
+                + txtNodeID->GetValue() + wxT(");\n");
+
+            done = remoteConn->ExecuteVoid(sql);
+        }
 
         // add admin info to cluster
 
@@ -553,28 +596,6 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
                     wxT("0);\n"));
         }
     }
-
-    if (done && !cluster && !chkJoinCluster->GetValue())
-    {
-        wxString schemaPrefix = qtIdent(wxT("_") + txtClusterName->GetValue()) + wxT(".");
-        long adminNode = StrToLong(txtAdminNodeID->GetValue());
-        if (adminNode > 0 && adminNode != StrToLong(txtNodeID->GetValue()))
-        {
-            done = connection->ExecuteVoid(
-                wxT("SELECT ") + schemaPrefix + wxT("storeNode(") +
-                    NumToStr(adminNode) + wxT(", ") +
-                    qtString(txtAdminNodeName->GetValue()) + wxT(");\n")
-                wxT("SELECT ") + schemaPrefix + wxT("storepath(") +
-                    NumToStr(adminNode) + wxT(", ") +
-                    txtNodeID->GetValue() + wxT(", ") +
-                    qtString(wxT("host=") + database->GetServer()->GetName() + 
-                            wxT(" port=") + NumToStr((long)database->GetServer()->GetPort()) +
-                            wxT(" dbname=") + database->GetName()) + wxT(", ")
-                    wxT("0);\n"));
-            
-        }
-    }
-
     if (!done)
     {
         if (remoteConn)
@@ -616,8 +637,7 @@ void dlgRepCluster::CheckChange()
         size_t i;
         bool enable=true;
 
-        CheckValid(enable, chkJoinCluster->GetValue() || 
-            (!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty()),
+        CheckValid(enable, chkJoinCluster->GetValue() || (!createScript.IsEmpty()),
             _("Slony-I creation scripts not available; only joining possible."));
 
         if (chkJoinCluster->GetValue())
@@ -639,7 +659,6 @@ void dlgRepCluster::CheckChange()
 }
 
 
-
 void dlgRepCluster::OnEndProcess(wxProcessEvent &ev)
 {
     if (process)
@@ -649,6 +668,54 @@ void dlgRepCluster::OnEndProcess(wxProcessEvent &ev)
         delete process;
         process=0;
     }
+}
+
+
+// this is necessary because wxString::Replace is ridiculously slow on large strings.
+
+void AppendBuf(wxChar* &buf, int &buflen, int &len, const wxChar *str, int slen=-1)
+{
+    if (slen < 0)
+        slen = wxStrlen(str);
+    if (!slen)
+        return;
+    if (buflen < len+slen)
+    {
+        buflen = (len+slen) *6 /5;
+        wxChar *tmp=new wxChar[buflen+1];
+        memcpy(tmp, buf, len*sizeof(wxChar));
+        delete[] buf;
+        buf=tmp;
+    }
+    memcpy(buf+len, str, slen*sizeof(wxChar));
+    len += slen;
+}
+
+
+wxString ReplaceString(const wxString &str, const wxString &oldStr, const wxString &newStr)
+{
+    int buflen=str.Length() + 100;
+    int len=0;
+
+    wxChar *buf=new wxChar[buflen+1];
+
+    const wxChar *ptrIn=str.c_str();
+    const wxChar *ptrFound = wxStrstr(ptrIn, oldStr.c_str());
+    
+    while (ptrFound)
+    {
+        AppendBuf(buf, buflen, len, ptrIn, ptrFound-ptrIn);
+        AppendBuf(buf, buflen, len, newStr.c_str());
+        ptrIn = ptrFound + oldStr.Length();
+        ptrFound = wxStrstr(ptrIn, oldStr.c_str());
+    }
+
+    AppendBuf(buf, buflen, len, ptrIn);
+    buf[len]=0;
+    wxString tmpstr(buf);
+    delete[] buf;
+
+    return tmpstr;
 }
 
 
@@ -679,7 +746,7 @@ wxString dlgRepCluster::GetSql()
     {
         // create mode
 
-        if (clusterBackup.IsEmpty() && !backupExecutable.IsEmpty())
+        if (remoteServer && clusterBackup.IsEmpty() && !backupExecutable.IsEmpty())
         {
             wxArrayString environment;
             if (!remoteServer->GetPasswordIsStored())
@@ -742,50 +809,25 @@ wxString dlgRepCluster::GetSql()
         }
         else
         {
-            wxFile base(slony1BaseScript, wxFile::read);
-            if (!base.IsOpened())
-                return sql;
+            sql = wxT("CREATE SCHEMA ") + quotedName + wxT(";\n\n")
+                + ReplaceString(createScript, wxT("@NAMESPACE@"), quotedName);
 
-            wxFile func(slony1FunctionScript, wxFile::read);
-            if (!func.IsOpened())
-                return sql;
-
-            wxFile xxid(slony1XxidScript, wxFile::read);
-            if (!xxid.IsOpened())
-                return sql;
-
-            sql = wxT("CREATE SCHEMA ") + quotedName + wxT(";\n\n");
-
-            char *buffer;
-            size_t done;
-
-            buffer = new char[xxid.Length()+1];
-            done=xxid.Read(buffer, xxid.Length());
-            buffer[done] = 0;
-            sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
-            delete[] buffer;
-
-            buffer = new char[base.Length()+1];
-            done=base.Read(buffer, base.Length());
-            buffer[done] = 0;
-            sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
-            delete[] buffer;
-
-            buffer = new char[func.Length()+1];
-            done=func.Read(buffer, func.Length());
-            buffer[done] = 0;
-            sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
-            delete[] buffer;
-
-            sql.Replace(wxT("@NAMESPACE@"), quotedName);
-            sql.Replace(wxT("@CLUSTERNAME@"), GetName());
+            sql = ReplaceString(sql, wxT("@CLUSTERNAME@"), txtClusterName->GetValue());
         }
 
         sql += wxT("\n")
                wxT("SELECT ") + quotedName + wxT(".initializelocalnode(") +
                txtNodeID->GetValue() + wxT(", ") + qtString(txtNodeName->GetValue()) +
-               wxT(");\n");
+               wxT(");\n")
+               wxT("SELECT ") + quotedName;
 
+        if (chkJoinCluster->GetValue())
+            sql += wxT(".enablenode_int(");
+        else
+            sql += wxT(".enablenode(");
+
+        sql += txtNodeID->GetValue() +
+               wxT(");\n");
     }
 
     if (!txtComment->GetValue().IsEmpty())
@@ -796,7 +838,30 @@ wxString dlgRepCluster::GetSql()
 
     if (chkJoinCluster->GetValue())
         sql += wxT("\n\n-- In addition, the configuration is copied from the existing cluster.\n");
-
+    else
+    {
+        wxString schemaPrefix = qtIdent(wxT("_") + txtClusterName->GetValue()) + wxT(".");
+        long adminNode = StrToLong(txtAdminNodeID->GetValue());
+        if (adminNode > 0 && adminNode != StrToLong(txtNodeID->GetValue()))
+        {
+            sql +=
+                wxT("\n-- Create admin node\n")
+                wxT("SELECT ") + schemaPrefix + wxT("storeNode(") +
+                    NumToStr(adminNode) + wxT(", ") +
+                    qtString(txtAdminNodeName->GetValue());
+            // if ()()
+            sql += wxT(", false");
+            
+            sql += wxT(");\n")
+                wxT("SELECT ") + schemaPrefix + wxT("storepath(") +
+                    txtNodeID->GetValue() + wxT(", ") +
+                    NumToStr(adminNode) + wxT(", ") +
+                    qtString(wxT("host=") + database->GetServer()->GetName() + 
+                            wxT(" port=") + NumToStr((long)database->GetServer()->GetPort()) +
+                            wxT(" dbname=") + database->GetName()) + wxT(", ")
+                    wxT("0);\n");
+        }
+    }
     return sql;
 }
 

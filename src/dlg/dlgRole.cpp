@@ -121,6 +121,7 @@ int dlgRole::Go(bool modal)
 
         chkCreateDB->SetValue(role->GetCreateDatabase());
         chkCreateRole->SetValue(role->GetCreateRole());
+        chkSuperuser->SetValue(role->GetSuperuser());
         chkInherits->SetValue(role->GetInherits());
         chkUpdateCat->SetValue(role->GetUpdateCatalog());
         chkCanLogin->SetValue(role->GetCanLogin());
@@ -217,7 +218,7 @@ void dlgRole::OnChangeSpin(wxSpinEvent &ev)
 
 void dlgRole::OnChangeSuperuser(wxCommandEvent &ev)
 {
-    if (role && role->GetSuperuser() && !chkCreateRole->GetValue())
+    if (role && role->GetSuperuser() && !chkSuperuser->GetValue())
     {
         wxMessageDialog dlg(this,
             _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
@@ -225,7 +226,7 @@ void dlgRole::OnChangeSuperuser(wxCommandEvent &ev)
                      wxICON_EXCLAMATION | wxYES_NO |wxNO_DEFAULT);
         if (dlg.ShowModal() != wxID_YES)
         {
-            chkCreateRole->SetValue(true);
+            chkSuperuser->SetValue(true);
             return;
         }
     }
@@ -379,7 +380,7 @@ pgObject *dlgRole::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=loginRoleFactory.CreateObjects(collection, 0, wxT("\n WHERE usename=") + qtString(name));
+    pgObject *obj=loginRoleFactory.CreateObjects(collection, 0, wxT("\n WHERE rolname=") + qtString(name));
     return obj;
 }
 
@@ -416,37 +417,38 @@ wxString dlgRole::GetSql()
 
         if (createDB != role->GetCreateDatabase() || createRole != role->GetCreateRole() 
             || superuser != role->GetSuperuser() || inherits != role->GetInherits())
+        {
             options += wxT("\n ");
         
-        if (superuser != role->GetSuperuser())
-        {
-            if (superuser)
-                options += wxT(" SUPERUSER");
-            else
-                options += wxT(" NOSUPERUSER");
+            if (superuser != role->GetSuperuser())
+            {
+                if (superuser)
+                    options += wxT(" SUPERUSER");
+                else
+                    options += wxT(" NOSUPERUSER");
+            }
+            if (inherits != role->GetInherits())
+            {
+                if (inherits)
+                    options += wxT(" INHERITS");
+                else
+                    options += wxT(" NOINHERITS");
+            }
+            if (createDB != role->GetCreateDatabase())
+            {
+                if (createDB)
+                    options += wxT(" CREATEDB");
+                else
+                    options += wxT(" NOCREATEDB");
+            }
+            if (createRole != role->GetCreateRole())
+            {
+                if (createRole)
+                    options += wxT(" CREATEROLE");
+                else
+                    options += wxT(" NOCREATEROLE");
+            }
         }
-        if (inherits != role->GetInherits())
-        {
-            if (inherits)
-                options += wxT(" INHERITS");
-            else
-                options += wxT(" NOINHERITS");
-        }
-        if (createDB != role->GetCreateDatabase())
-        {
-            if (createDB)
-                options += wxT(" CREATEDB");
-            else
-                options += wxT(" NOCREATEDB");
-        }
-        if (createRole != role->GetCreateRole())
-        {
-            if (createRole)
-                options += wxT(" CREATEROLE");
-            else
-                options += wxT(" NOCREATEROLE");
-        }
-
         if (DateToStr(datValidUntil->GetValue()) != DateToStr(role->GetAccountExpires()))
         {
             if (datValidUntil->GetValue().IsValid())
@@ -520,7 +522,7 @@ wxString dlgRole::GetSql()
                 tmpRoles.RemoveAt(index);
             else
                 sql += wxT("ALTER ROLE ") + qtIdent(roleName)
-                    +  wxT(" ADD ROLE ") + qtIdent(name) + wxT(";\n");
+                    +  wxT(" ROLE ") + qtIdent(name) + wxT(";\n");
         }
         
         // check for removed roles
@@ -574,7 +576,7 @@ wxString dlgRole::GetSql()
         cnt = lbRolesIn->GetCount();
         for (pos=0 ; pos < cnt ; pos++)
             sql += wxT("ALTER ROLE ") + qtIdent(lbRolesIn->GetString(pos))
-                +  wxT(" ADD ROLE ") + qtIdent(name) + wxT(";\n");
+                +  wxT(" ROLE ") + qtIdent(name) + wxT(";\n");
     }
 
 

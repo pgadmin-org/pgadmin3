@@ -38,8 +38,8 @@ bool slListen::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
-            + wxT("droplisten(") + NumToStr(GetOriginId())
-            + wxT(", ") + NumToStr(GetSlId())
+            + wxT("droplisten(") + NumToStr(GetSlId())
+            + wxT(", ") + NumToStr(GetProviderId())
             + wxT(", ") + NumToStr(GetNode()->GetSlId())
             + wxT(");\n"));
 }
@@ -49,12 +49,12 @@ wxString slListen::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Node  will listen to ") + GetName()
+        sql = wxT("-- Node  will listen to ") + GetProviderName()
                 + wxT(" for replication data from ") + GetOriginName() + wxT(".\n\n")
 
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix()
-                    + wxT("storelisten(") + NumToStr(GetOriginId())
-                    + wxT(", ") + NumToStr(GetSlId())
+                    + wxT("storelisten(") + NumToStr(GetSlId())
+                    + wxT(", ") + NumToStr(GetProviderId())
                     + wxT(", ") + NumToStr(GetNode()->GetSlId())
                     + wxT(");\n");
     }
@@ -78,10 +78,10 @@ void slListen::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
         CreateListColumns(properties);
 
-        properties->AppendItem(_("Provider"), GetName());
-        properties->AppendItem(_("Provider ID"), GetSlId());
         properties->AppendItem(_("Origin"), GetOriginName());
-        properties->AppendItem(_("Origin ID"), GetOriginId());
+        properties->AppendItem(_("Origin ID"), GetSlId());
+        properties->AppendItem(_("Provider"), GetProviderName());
+        properties->AppendItem(_("Provider ID"), GetProviderId());
     }
 }
 
@@ -96,8 +96,8 @@ pgObject *slListen::Refresh(ctlTree *browser, const wxTreeItemId item)
         slNodeObjCollection *coll=(slNodeObjCollection*)browser->GetItemData(parentItem);
         if (coll->IsCollection())
             listen = listenFactory.CreateObjects(coll, 0, 
-                wxT(" WHERE li_origin =") + NumToStr(GetOriginId()) +
-                wxT("   AND li_provider = ") + NumToStr(GetSlId()) +
+                wxT(" WHERE li_origin =") + NumToStr(GetSlId()) +
+                wxT("   AND li_provider = ") + NumToStr(GetProviderId()) +
                 wxT("   AND li_receiver = ") + NumToStr(GetNode()->GetSlId()) +
                 wxT("\n"));
     }
@@ -128,10 +128,14 @@ pgObject *slListenFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
     {
         while (!listens->Eof())
         {
-            listen = new slListen(collection->GetNode(), listens->GetVal(wxT("provider_name")).BeforeFirst('\n'));
-            listen->iSetSlId(listens->GetLong(wxT("li_provider")));
-            listen->iSetOriginId(listens->GetLong(wxT("li_origin")));
-            listen->iSetOriginName(listens->GetVal(wxT("origin_name")).BeforeFirst('\n'));
+            wxString orgName=listens->GetVal(wxT("origin_name")).BeforeFirst('\n');
+            wxString provName=listens->GetVal(wxT("provider_name")).BeforeFirst('\n');
+
+            listen = new slListen(collection->GetNode(), orgName + wxT(" (") + provName + wxT(")"));
+            listen->iSetSlId(listens->GetLong(wxT("li_origin")));
+            listen->iSetProviderId(listens->GetLong(wxT("li_provider")));
+            listen->iSetOriginName(orgName);
+            listen->iSetProviderName(provName);
 
             if (browser)
             {

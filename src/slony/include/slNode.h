@@ -41,6 +41,8 @@ public:
 
     bool GetActive() const { return active; }
     void iSetActive(bool b) { active=b; }
+    bool GetSpool() const { return spool; }
+    void iSetSpool(bool b) { spool=b; }
     wxString GetConnInfo() const {return connInfo; }
     void iSetConnInfo(const wxString s) { connInfo = s; }
     long GetPid() { return pid; }
@@ -51,7 +53,7 @@ public:
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
-    bool active;
+    bool active, spool;
     long pid;
     wxString connInfo;
 };

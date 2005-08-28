@@ -58,6 +58,8 @@ public:
     bool GetConfirmDelete() const { return confirmDelete; }
     void SetConfirmDelete(const bool b) { confirmDelete=b; }
 
+    wxString GetSlonyPath() const { return slonyPath; }
+    void SetSlonyPath(const wxString &s) { slonyPath=s; }
     wxString GetSqlHelpSite() const { return sqlHelpSite; }
     void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
     wxString GetProxy() const { return proxy; }
@@ -168,6 +170,7 @@ private:
 
     bool explainVerbose, explainAnalyze;
 
+    wxString slonyPath;
     wxString sqlHelpSite, proxy;
     wxString canonicalLanguage;
     bool showUsersForPrivileges;

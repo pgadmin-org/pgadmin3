@@ -30,6 +30,7 @@ private:
 
     void OnBrowseLogFile(wxCommandEvent &ev);
     void OnSqlFontSelect(wxCommandEvent &ev);
+    void OnSlonyPathSelect(wxCommandEvent &ev);
     void OnFontSelect(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);

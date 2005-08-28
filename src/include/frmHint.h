@@ -13,14 +13,17 @@
 #define __FRMHINT
 
 
-#define HINT_CONNECTSERVER  wxT("conn-listen")
-#define HINT_MISSINGHBA     wxT("conn-hba")
-#define HINT_MISSINGIDENT   wxT("conn-ident")
-#define HINT_PRIMARYKEY     wxT("pk")
-#define HINT_FKINDEX        wxT("fki")
-#define HINT_VACUUM         wxT("vacuum")
-#define HINT_QUERYRUNTIME   wxT("query-runtime")
-#define HINT_RC_FIX         42
+#define HINT_CONNECTSERVER      wxT("conn-listen")
+#define HINT_MISSINGHBA         wxT("conn-hba")
+#define HINT_MISSINGIDENT       wxT("conn-ident")
+#define HINT_PRIMARYKEY         wxT("pk")
+#define HINT_FKINDEX            wxT("fki")
+#define HINT_VACUUM             wxT("vacuum")
+#define HINT_QUERYRUNTIME       wxT("query-runtime")
+#define HINT_INSTRUMENTATION    wxT("instrumentation")
+#define HINT_ENCODING           wxT("encoding")
+
+#define HINT_RC_FIX             42
 
 #include "dlgClasses.h"
 #include "base/factory.h"

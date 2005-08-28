@@ -110,8 +110,12 @@ wxString dlgRepNode::GetSql()
         sql += wxT("(SELECT COALESCE(MAX(no_id), 0) + 1 FROM ") 
             +  cluster->GetSchemaPrefix() + wxT("sl_node)");
 
-    sql += wxT(", ") + qtString(txtComment->GetValue())
-        +  wxT(");\n");
+    sql += wxT(", ") + qtString(txtComment->GetValue());
+
+    // if cluster->GetClusterVersion()
+    sql +=  wxT(", false");
+
+    sql += wxT(");\n");
 
     return sql;
 }

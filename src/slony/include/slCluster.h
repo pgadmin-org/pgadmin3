@@ -39,6 +39,7 @@ public:
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *coll, ctlTree *browser);
 
+    bool ClusterMinimumVersion(int major, int minor);
 
     void iSetSchemaPrefix(const wxString &s) { schemaPrefix = s; }
     wxString GetSchemaPrefix() const { return schemaPrefix; }

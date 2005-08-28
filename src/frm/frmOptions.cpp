@@ -34,6 +34,7 @@ extern wxArrayString existingLangNames;
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtSqlHelpSite              CTRL_TEXT("txtSqlHelpSite")
 #define txtProxy                    CTRL_TEXT("txtProxy")
+#define txtSlonyPath                CTRL_TEXT("txtSlonyPath")
 #define txtSystemSchemas            CTRL_TEXT("txtSystemSchemas")
 #define txtLogfile                  CTRL_TEXT("txtLogfile")
 #define radLoglevel                 CTRL_RADIOBOX("radLoglevel")
@@ -58,6 +59,7 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (XRCID("btnFont"),             frmOptions::OnFontSelect)
     EVT_BUTTON (XRCID("btnSqlFont"),          frmOptions::OnSqlFontSelect)
     EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
+    EVT_BUTTON (XRCID("btnSlonyPath"),        frmOptions::OnSlonyPathSelect)
     EVT_CHECKBOX(XRCID("chkSuppressHints"),   frmOptions::OnSuppressHints)
     EVT_CHECKBOX(XRCID("chkResetHints"),      frmOptions::OnResetHints)
     EVT_BUTTON (wxID_OK,                      frmOptions::OnOK)
@@ -104,6 +106,7 @@ frmOptions::frmOptions(frmMain *parent)
     txtSystemSchemas->SetValue(settings->GetSystemSchemas());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
     chkSuppressHints->SetValue(settings->GetSuppressGuruHints());
+    txtSlonyPath->SetValue(settings->GetSlonyPath());
 
 
     cbLanguage->Append(_("Default"));
@@ -143,6 +146,14 @@ void frmOptions::OnHelp(wxCommandEvent &ev)
 {
     long page=nbOptions->GetSelection();
     DisplayHelp(this, wxT("options-tab") + NumToStr(page+1L));
+}
+
+
+void frmOptions::OnSlonyPathSelect(wxCommandEvent &ev)
+{
+    wxDirDialog dlg(this, _("Select directory with Slony-I creation scripts"), txtSlonyPath->GetValue());
+    if (dlg.ShowModal() == wxID_OK)
+        txtSlonyPath->SetValue(dlg.GetPath());
 }
 
 
@@ -208,6 +219,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetFont(currentFont);
     settings->SetSQLFont(currentSqlFont);
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
+    settings->SetSlonyPath(txtSlonyPath->GetValue());
 
     if (chkResetHints->GetValue())
         frmHint::ResetHints();

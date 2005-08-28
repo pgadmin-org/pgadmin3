@@ -33,8 +33,10 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
-    long GetOriginId() const { return originId; }
-    void iSetOriginId(long l) { originId = l; }
+    long GetProviderId() const { return providerId; }
+    void iSetProviderId(long l) { providerId = l; }
+    wxString GetProviderName() const { return providerName; }
+    void iSetProviderName(const wxString &s) { providerName = s; }
     wxString GetOriginName() const { return originName; }
     void iSetOriginName(const wxString &s) { originName = s; }
 
@@ -43,8 +45,8 @@ public:
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
-    long originId;
-    wxString originName;
+    long providerId;
+    wxString providerName, originName;
 };
 
 #endif

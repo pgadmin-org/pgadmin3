@@ -192,6 +192,14 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
 }
 
 
+bool slCluster::ClusterMinimumVersion(int major, int minor)
+{
+    long ma=StrToLong(clusterVersion);
+    long mi=StrToLong(clusterVersion.BeforeFirst('.'));
+    return ma > major || (ma == major && mi >= minor);
+}
+
+
 void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)

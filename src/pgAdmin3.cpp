@@ -74,10 +74,6 @@ pgAppearanceFactory *appearanceFactory=0;
 wxString backupExecutable;      // complete filename of pg_dump and pg_restore, if available
 wxString restoreExecutable;
 
-wxString slony1BaseScript;
-wxString slony1FunctionScript;
-wxString slony1XxidScript;
-
 
 bool dialogTestMode=false;
 
@@ -159,11 +155,6 @@ bool pgAdmin3::OnInit()
     backupExecutable  = path.FindValidPath(wxT("pg_dump"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore"));
 #endif
-
-    slony1BaseScript=path.FindValidPath(wxT("slony1_base.sql"));
-    slony1FunctionScript=path.FindValidPath(wxT("slony1_funcs.sql"));
-    slony1XxidScript=path.FindValidPath(wxT("slony1_xxid.sql"));
-
 
     // Load the Settings
 #ifdef __WXMSW__

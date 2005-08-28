@@ -59,15 +59,7 @@ wxMenu *pgDatabase::GetNewMenu()
         castFactory.AppendMenu(menu);
         languageFactory.AppendMenu(menu);
         schemaFactory.AppendMenu(menu);
-
-        extern wxString slony1BaseScript;
-        extern wxString slony1FunctionScript;
-        extern wxString slony1XxidScript;
-        extern wxString backupExecutable;
-
-        if ((!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty())
-            || !backupExecutable.IsEmpty())
-            slClusterFactory.AppendMenu(menu);
+        slClusterFactory.AppendMenu(menu);
     }
     return menu;
 }

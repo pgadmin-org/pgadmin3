@@ -29,15 +29,17 @@ public:
     int Go(bool modal);
 
 private:
-    void OnChangeServer(wxCommandEvent &ev);
-    void OnChangeDatabase(wxCommandEvent &ev);
     virtual void OnChangeCluster(wxCommandEvent &ev)=0;
+    bool AddScript(wxString &sql, const wxString &filename);
 
 protected:
+    void OnChangeServer(wxCommandEvent &ev);
+    void OnChangeDatabase(wxCommandEvent &ev);
     slCluster *cluster;
     wxTreeItemId servers;
     pgServer *remoteServer;
     pgConn *remoteConn;
+    wxString createScript;
 
     DECLARE_EVENT_TABLE();
 };

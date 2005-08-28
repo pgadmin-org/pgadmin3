@@ -63,9 +63,9 @@ int dlgRepListen::Go(bool modal)
     if (listen)
     {
         // edit mode
-        cbOrigin->Append(IdAndName(listen->GetOriginId(), listen->GetOriginName()));
+        cbOrigin->Append(IdAndName(listen->GetSlId(), listen->GetName()));
         cbOrigin->SetSelection(0);
-        cbProvider->Append(IdAndName(listen->GetSlId(), listen->GetName()));
+        cbProvider->Append(IdAndName(listen->GetProviderId(), listen->GetProviderName()));
         cbProvider->SetSelection(0);
         cbOrigin->Disable();
         cbProvider->Disable();

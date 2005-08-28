@@ -15,6 +15,15 @@
 #include "pgSchema.h"
 
 
+enum
+{
+    REPLICATIONSTATUS_NONE=0,
+    REPLICATIONSTATUS_SUBSCRIBED,
+    REPLICATIONSTATUS_REPLICATED,
+    REPLICATIONSTATUS_MULTIPLY_PUBLISHED
+};
+
+
 class pgTableFactory : public pgSchemaObjFactory
 {
 public:
@@ -25,6 +34,7 @@ public:
 };
 extern pgTableFactory tableFactory;
 
+class slSet;
 class pgTable : public pgSchemaObject
 {
 public:
@@ -37,6 +47,7 @@ public:
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 
     bool CanDropCascaded() { return true; }
+    int GetReplicationStatus(ctlTree *browser, wxString *clusterNsp=0, long *setId=0);
 
     bool GetHasOids() const { return hasOids; }
     void iSetHasOids(bool b) { hasOids=b; }
@@ -85,6 +96,7 @@ private:
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
         primaryKeyName, primaryKeyColNumbers, tablespace;
     wxArrayString quotedInheritedTablesList;
+    slSet *replicationSet;
 };
 
 

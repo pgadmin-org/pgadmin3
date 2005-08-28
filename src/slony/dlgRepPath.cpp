@@ -123,9 +123,9 @@ void dlgRepPath::CheckChange()
         CheckValid(enable, cbServer->GetSelection() >= 0, _("Please select provider node."));
 
         wxString connInfo=txtConnInfo->GetValue();
-        CheckValid(enable, connInfo.Find(wxT("host=")) >= 0, _("Please provide host info."));
-        CheckValid(enable, connInfo.Find(wxT("dbname=")) >= 0, _("Please provide dbname info."));
-        CheckValid(enable, connInfo.Find(wxT("user=")) >= 0, _("Please provide user info."));
+        CheckValid(enable, connInfo.Find(wxT("host=")) >= 0, _("Please provide host in connect info."));
+        CheckValid(enable, connInfo.Find(wxT("dbname=")) >= 0, _("Please provide dbname in connect info."));
+        CheckValid(enable, connInfo.Find(wxT("user=")) >= 0, _("Please provide user in connect info."));
 
         EnableOK(enable);
     }

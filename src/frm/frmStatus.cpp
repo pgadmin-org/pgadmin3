@@ -269,6 +269,8 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 	if (!connection)
 	    return;
 
+    connection->ExecuteVoid(wxT("SET log_statement='none';"));
+
 	if (nbStatus->GetSelection() == 0)
     {
         // Status
@@ -359,7 +361,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				  wxT("transaction, pid, mode, granted, ")
 				  wxT("pg_stat_get_backend_activity(pid) AS current_query, ")
 				  wxT("pg_stat_get_backend_activity_start(pid) AS query_start ")
-				  wxT("FROM pg_locks ORDER BY pid,transaction");
+				  wxT("FROM pg_locks ORDER BY pid");
 		} else {
 			sql = wxT("SELECT ")
 				  wxT("(SELECT datname FROM pg_database WHERE oid = database) AS dbname, ")
@@ -367,7 +369,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				  wxT("pg_get_userbyid(pg_stat_get_backend_userid(pid)::int4) as user, ")
 				  wxT("transaction, pid, mode, granted, ")
 				  wxT("pg_stat_get_backend_activity(pid) AS current_query ")
-				  wxT("FROM pg_locks ORDER BY pid,transaction");
+				  wxT("FROM pg_locks ORDER BY pid");
 		}
 
 		pgSet *dataSet2=connection->ExecuteSet(sql);
@@ -616,7 +618,7 @@ void frmStatus::addLogFile(wxDateTime *dt, bool skipFirst)
 {
     pgSet *set=connection->ExecuteSet(
         wxT("SELECT filetime, filename, pg_file_length(filename) AS len ")
-        wxT("  FROM pg_logdir_ls ")
+        wxT("  FROM pg_logdir_ls() AS A(filetime timestamp, filename text) ")
         wxT(" WHERE filetime = '") + DateToAnsiStr(*dt) + wxT("'::timestamp"));
     if (set)
     {
@@ -779,7 +781,8 @@ int frmStatus::fillLogfileCombo()
         count--;
 
     pgSet *set=connection->ExecuteSet(
-        wxT("SELECT filename, filetime FROM pg_logdir_ls ")
+        wxT("SELECT filename, filetime\n")
+        wxT("  FROM pg_logdir_ls() AS A(filetime timestamp, filename text)\n")
         wxT(" ORDER BY filetime ASC"));
     if (set)
     {

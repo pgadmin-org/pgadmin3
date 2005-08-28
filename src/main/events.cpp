@@ -670,7 +670,10 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 
         if (updateFinal)
         {
-            wxTreeItemId nextItem=browser->GetNextVisible(data->GetId());
+            wxTreeItemId nextItem;
+            if (browser->IsVisible(data->GetId()))
+                nextItem=browser->GetNextVisible(data->GetId());
+
             if (nextItem)
             {
                 pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);

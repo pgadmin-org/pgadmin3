@@ -68,7 +68,11 @@ wxString slNode::GetSql(ctlTree *browser)
         sql = wxT("-- Create replication node ") + GetName() + wxT(".\n\n")
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("storenode(") 
                     + NumToStr(GetSlId()) + wxT(", ")
-                    + qtString(GetComment()) + wxT(");\n");
+                    + qtString(GetComment());
+
+        if (GetCluster()->ClusterMinimumVersion(1, 1))
+            sql += wxT(", ") + BoolToStr(GetSpool());
+        sql += wxT(");\n");
     }
     return sql;
 }
@@ -167,6 +171,8 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         if (GetCluster()->GetLocalNodeID() == GetSlId())
             properties->AppendItem(_("Local node"), true);
         properties->AppendItem(_("Active"), GetActive());
+        if (GetCluster()->ClusterMinimumVersion(1,1))
+            properties->AppendItem(_("Log spooler"), GetSpool());
         properties->AppendItem(_("Connected"), conn != NULL);
         properties->AppendItem(_("Comment"), GetComment());
 
@@ -224,6 +230,9 @@ pgObject *slNodeFactory::CreateObjects(pgCollection *coll, ctlTree *browser, con
             node->iSetSlId(nodes->GetLong(wxT("no_id")));
             node->iSetActive(nodes->GetBool(wxT("no_active")));
             node->iSetComment(nodes->GetVal(wxT("no_comment")));
+
+            if (collection->GetCluster()->ClusterMinimumVersion(1,1))
+                node->iSetSpool(nodes->GetBool(wxT("no_spool")));
 
             if (browser)
             {
