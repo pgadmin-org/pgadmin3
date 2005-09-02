@@ -48,20 +48,33 @@ void pgAppBase::InitPaths()
 
 #if defined(__WXMSW__)
 
+    // Search for the right paths. We check the following locations:
+    //
+    // 1) ./xxx               - Running as a standalone install
+    // 2) ../pgAdmin/xxx      - Running in a pgInstaller 8.1 installation 
+    //                          (with the .exe and dlls in the main bin dir)
+    // 3) ../../xxx or ../xxx - Running in a development environment
+    
     if (wxDir::Exists(loadPath + I18N_DIR))
         i18nPath = loadPath + I18N_DIR;
-    else if (wxDir::Exists(loadPath + wxT("/../..") + I18N_DIR))
+    else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + I18N_DIR))
+        i18nPath = loadPath + wxT("/../pgAdmin III") + I18N_DIR;
+    else 
         i18nPath = loadPath + wxT("/../..") + I18N_DIR;
-
-    if (wxDir::Exists(loadPath + UI_DIR))
-        uiPath = loadPath + UI_DIR;
-    else
-        uiPath = loadPath + wxT("/..") UI_DIR;
 
     if (wxDir::Exists(loadPath + DOC_DIR))
         docPath = loadPath + DOC_DIR;
+    else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") DOC_DIR))
+        docPath = loadPath + wxT("/../pgAdmin III") DOC_DIR;
     else
         docPath = loadPath + wxT("/../..") DOC_DIR;
+
+    if (wxDir::Exists(loadPath + UI_DIR))
+        uiPath = loadPath + UI_DIR;
+    if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + UI_DIR))
+        uiPath = loadPath + wxT("/../pgAdmin III") + UI_DIR;
+    else
+        uiPath = loadPath + wxT("/..") UI_DIR;
 
     // Look for a path 'hint' on Windows. This registry setting may
     // be set by the Win32 PostgreSQL installer which will generally
