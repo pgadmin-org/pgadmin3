@@ -51,8 +51,8 @@ const float SERVER_MIN_VERSION = 7.3f;
 #endif
 #endif
 
-#define SPLASH_X0       6
-#define SPLASH_Y0       114
+#define SPLASH_X0       128
+#define SPLASH_Y0       281
 #define SPLASH_OFFS     15
 
 
