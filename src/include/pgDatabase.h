@@ -42,7 +42,8 @@ public:
     bool BackendMinimumVersion(int major, int minor) { return connection()->BackendMinimumVersion(major, minor); }
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    
+    void ShowHint(frmMain *form, bool force);
+
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     bool ExecuteVoid(const wxString& sql);
@@ -69,11 +70,13 @@ public:
     bool GetConnected() { return connected; }
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
+    wxArrayString GetSlonyClusters(ctlTree *browser);
     
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool CanMaintenance() { return true; }
     bool CanBackup() { return connected; }
     bool CanRestore() { return connected; }
+    bool GetCanHint();
     bool RequireDropConfirm() { return true; }
     pgConn *connection();
     int Connect();

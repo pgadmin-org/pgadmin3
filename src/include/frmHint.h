@@ -21,7 +21,9 @@
 #define HINT_VACUUM             wxT("vacuum")
 #define HINT_QUERYRUNTIME       wxT("query-runtime")
 #define HINT_INSTRUMENTATION    wxT("instrumentation")
-#define HINT_ENCODING           wxT("encoding")
+#define HINT_ENCODING_ASCII     wxT("encoding-ascii")
+#define HINT_ENCODING_UNICODE   wxT("encoding-unicode")
+#define HINT_READONLY_NOPK      wxT("view-without-pk")
 
 #define HINT_RC_FIX             42
 

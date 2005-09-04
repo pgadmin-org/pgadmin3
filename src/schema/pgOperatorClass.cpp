@@ -250,4 +250,4 @@ dlgProperty *pgOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *node
 }
 
 pgOperatorClassFactory operatorClassFactory;
-static pgaCollectionFactory cf(&operatorClassFactory, __("Operator Classs"), operatorclasses_xpm);
+static pgaCollectionFactory cf(&operatorClassFactory, __("Operator Classes"), operatorclasses_xpm);

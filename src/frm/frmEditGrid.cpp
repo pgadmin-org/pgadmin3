@@ -669,6 +669,9 @@ void frmEditGrid::Go()
     wxSizeEvent event;
     event.m_size = GetSize();
     OnSize(event);
+
+    if (!hasOids && primaryKeyColNumbers.IsEmpty())
+        frmHint::ShowHint(this, HINT_READONLY_NOPK, tableName);
 }
 
 

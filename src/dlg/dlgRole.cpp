@@ -36,6 +36,7 @@
 #define lbRolesIn       CTRL_LISTBOX("lbRolesIn")
 #define btnAddRole      CTRL_BUTTON("btnAddRole")
 #define btnDelRole      CTRL_BUTTON("btnDelRole")
+#define chkAdminOption  CTRL_CHECKBOX("chkAdminOption")
 
 #define lstVariables    CTRL_LISTVIEW("lstVariables")
 #define btnAdd          CTRL_BUTTON("wxID_ADD")
@@ -46,11 +47,15 @@
 
 
 
-dlgProperty *pgRoleBaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgLoginRoleFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgRole(this, frame, (pgRole*)node);
+    return new dlgRole(this, frame, (pgRole*)node, true);
 }
 
+dlgProperty *pgGroupRoleFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgRole(this, frame, (pgRole*)node, false);
+}
 
 BEGIN_EVENT_TABLE(dlgRole, dlgProperty)
     EVT_CALENDAR_SEL_CHANGED(XRCID("datValidUntil"),dlgRole::OnChangeCal)
@@ -76,17 +81,21 @@ BEGIN_EVENT_TABLE(dlgRole, dlgProperty)
     EVT_BUTTON(wxID_REMOVE,                         dlgRole::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgRole::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgRole::OnVarnameSelChange)
+
+    EVT_BUTTON(wxID_OK,                             dlgRole::OnOK)
 END_EVENT_TABLE();
 
 
 
-dlgRole::dlgRole(pgaFactory *f, frmMain *frame, pgRole *node)
+dlgRole::dlgRole(pgaFactory *f, frmMain *frame, pgRole *node, bool chkLogin)
 : dlgProperty(f, frame, wxT("dlgRole"))
 {
     role=node;
     lstVariables->CreateColumns(0, _("Variable"), _("Value"), -1);
     btnOK->Disable();
     chkValue->Hide();
+    if (chkLogin)
+        chkCanLogin->SetValue(true);
 }
 
 
@@ -98,24 +107,22 @@ pgObject *dlgRole::GetObject()
 
 int dlgRole::Go(bool modal)
 {
-    pgSet *set=connection->ExecuteSet(wxT("SELECT rolname FROM pg_authid"));
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString roleName=set->GetVal(wxT("rolname"));
-            if (role && role->GetRolesIn().Index(roleName) >= 0)
-                lbRolesIn->Append(roleName);
-            else
-                lbRolesNotIn->Append(roleName);
-
-            set->MoveNext();
-        }
-        delete set;
-    }
+    wxString roleSql=
+        wxT("SELECT rolname\n")
+        wxT("  FROM pg_roles r\n");
 
     if (role)
     {
+        wxArrayString roles=role->GetRolesIn();
+        size_t i;
+        for (i=0 ; i < roles.GetCount() ; i++)
+            lbRolesIn->Append(roles.Item(i));
+
+        roleSql += 
+            wxT("  LEFT JOIN pg_auth_members ON r.oid=roleid AND member = ") + role->GetOidStr() + wxT("\n")
+            wxT(" WHERE r.oid <> ") + role->GetOidStr() + wxT("\n")
+            wxT("   AND roleid IS NULL");
+
         // Edit Mode
         readOnly=!role->GetServer()->GetSuperUser();
 
@@ -179,8 +186,23 @@ int dlgRole::Go(bool modal)
     }
     else
     {
+        chkCanLogin->Disable();
         timValidUntil->Disable();
     }
+
+    if (!settings->GetShowUsersForPrivileges())
+    {
+        if (role)
+            roleSql += wxT("\n   AND NOT rolcanlogin");
+        else
+            roleSql += wxT("\n WHERE NOT rolcanlogin");
+    }
+    roleSql += wxT("\n ORDER BY rolname");
+
+    pgSetIterator roles(connection, roleSql);
+
+    while (roles.RowsLeft())
+        lbRolesNotIn->Append(roles.GetVal(wxT("rolname")));
 
     return dlgProperty::Go(modal);
 }
@@ -191,6 +213,17 @@ wxString dlgRole::GetHelpPage() const
     if (nbNotebook->GetSelection() == 2)
         return wxT("pg/runtime-config");
     return dlgProperty::GetHelpPage();
+}
+
+
+void dlgRole::OnOK(wxCommandEvent &ev)
+{
+    dlgProperty::OnOK(ev);
+
+    if (role && role->GetCanLogin() != chkCanLogin->GetValue() == !btnOK->IsEnabled())
+    {
+        // LOGIN attribute changed successfully; need to put object under different collection
+    }
 }
 
 
@@ -277,7 +310,10 @@ void dlgRole::OnRoleAdd(wxCommandEvent &ev)
         int pos=lbRolesNotIn->GetSelection();
         if (pos >= 0)
         {
-            lbRolesIn->Append(lbRolesNotIn->GetString(pos));
+            wxString roleName=lbRolesNotIn->GetString(pos);
+            if (chkAdminOption->GetValue())
+                roleName += PGROLE_ADMINOPTION;
+            lbRolesIn->Append(roleName);
             lbRolesNotIn->Delete(pos);
         }
         CheckChange();
@@ -292,7 +328,11 @@ void dlgRole::OnRoleRemove(wxCommandEvent &ev)
         int pos=lbRolesIn->GetSelection();
         if (pos >= 0)
         {
-            lbRolesNotIn->Append(lbRolesIn->GetString(pos));
+            wxString role=lbRolesIn->GetString(pos);
+            if (role.Right(PGROLE_ADMINOPTION_LEN) == PGROLE_ADMINOPTION)
+                role = role.Left(role.Length()-PGROLE_ADMINOPTION_LEN);
+
+            lbRolesNotIn->Append(role);
             lbRolesIn->Delete(pos);
         }
         CheckChange();
@@ -430,9 +470,9 @@ wxString dlgRole::GetSql()
             if (inherits != role->GetInherits())
             {
                 if (inherits)
-                    options += wxT(" INHERITS");
+                    options += wxT(" INHERIT");
                 else
-                    options += wxT(" NOINHERITS");
+                    options += wxT(" NOINHERIT");
             }
             if (createDB != role->GetCreateDatabase())
             {
@@ -519,17 +559,54 @@ wxString dlgRole::GetSql()
 
             int index=tmpRoles.Index(roleName);
             if (index >= 0)
+            {
+                // role membership unchanged
                 tmpRoles.RemoveAt(index);
+            }
             else
-                sql += wxT("ALTER ROLE ") + qtIdent(roleName)
-                    +  wxT(" ROLE ") + qtIdent(name) + wxT(";\n");
+            {
+                bool admin=false;
+                if (roleName.Right(PGROLE_ADMINOPTION_LEN) == PGROLE_ADMINOPTION)
+                {
+                    admin=true;
+                    roleName=roleName.Left(roleName.Length()-PGROLE_ADMINOPTION_LEN);
+                }
+                else
+                {
+                    // new role membership without admin option
+                    index=tmpRoles.Index(roleName + PGROLE_ADMINOPTION);
+                    if (index >= 0)
+                    {
+                        // old membership with admin option
+                        tmpRoles.RemoveAt(index);
+                        sql += wxT("REVOKE ADMIN OPTION FOR ") + qtIdent(roleName)
+                            + wxT(" FROM ") + qtIdent(name) + wxT(";\n");
+                        continue;
+                    }
+                }
+
+                index=tmpRoles.Index(roleName);
+                if (index >= 0)
+                {
+                    // admin option added to existing membership
+                    tmpRoles.RemoveAt(index);
+                }
+
+                sql += wxT("GRANT ") + qtIdent(roleName)
+                    +  wxT(" TO ") + qtIdent(name);
+
+                if (admin)
+                    sql += wxT(" WITH ADMIN OPTION");
+
+                sql += wxT(";\n");
+            }
         }
         
         // check for removed roles
         for (pos=0 ; pos < (int)tmpRoles.GetCount() ; pos++)
         {
-            sql += wxT("ALTER ROLE ") + qtIdent(tmpRoles.Item(pos))
-                +  wxT(" DROP ROLE ") + qtIdent(name) + wxT(";\n");
+            sql += wxT("REVOKE ") + qtIdent(tmpRoles.Item(pos))
+                +  wxT(" FROM ") + qtIdent(name) + wxT(";\n");
         }
     }
     else
@@ -549,7 +626,7 @@ wxString dlgRole::GetSql()
         if (superuser)
             sql += wxT(" SUPERUSER");
         if (inherits)
-            sql += wxT(" INHERITS");
+            sql += wxT(" INHERIT");
         if (createDB)
             sql += wxT(" CREATEDB");
         if (createRole)
@@ -558,13 +635,26 @@ wxString dlgRole::GetSql()
             sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
         else
             sql += wxT("\n   VALID UNTIL 'infinity'");
+        
+        int cnt = lbRolesIn->GetCount();
+        int pos;
+
+        if (cnt)
+        {
+            sql += wxT("\n   IN ROLE ");
+            for (pos=0 ; pos < cnt ; pos++)
+            {
+                if (pos)
+                    sql += wxT(", ");
+                sql += qtIdent(lbRolesIn->GetString(pos));
+            }
+        }
         sql += wxT(";\n");
 
         if (chkUpdateCat->GetValue())
             sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE OID=") + role->GetOidStr() + wxT(";\n");
 
-        int cnt=lstVariables->GetItemCount();
-        int pos;
+        cnt=lstVariables->GetItemCount();
         for (pos=0 ; pos < cnt ; pos++)
         {
             sql += wxT("ALTER ROLE ") + qtIdent(name) 
@@ -572,11 +662,6 @@ wxString dlgRole::GetSql()
                 +  wxT("=") + lstVariables->GetText(pos, 1)
                 +  wxT(";\n");
         }
-
-        cnt = lbRolesIn->GetCount();
-        for (pos=0 ; pos < cnt ; pos++)
-            sql += wxT("ALTER ROLE ") + qtIdent(lbRolesIn->GetString(pos))
-                +  wxT(" ROLE ") + qtIdent(name) + wxT(";\n");
     }
 
 

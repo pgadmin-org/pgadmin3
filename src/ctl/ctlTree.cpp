@@ -62,3 +62,59 @@ pgCollection *ctlTree::AppendCollection(pgObject *parent, pgaFactory &factory)
     AppendObject(parent, collection);
     return collection;
 }
+
+
+pgObject *ctlTree::FindObject(pgaFactory &factory, wxTreeItemId parent)
+{
+    wxCookieType cookie;
+    wxTreeItemId item = GetFirstChild(parent, cookie);
+    while (item)
+    {
+        pgObject *obj=(pgObject*)GetItemData(item);
+        if (obj && obj->IsCreatedBy(factory))
+            return obj;
+        item = GetNextChild(parent, cookie);
+    }
+    return 0;
+}
+
+
+pgCollection *ctlTree::FindCollection(pgaFactory &factory, wxTreeItemId parent)
+{
+    pgaFactory *cf=factory.GetCollectionFactory();
+    if (!cf)
+        return 0;
+
+    pgCollection *collection=(pgCollection*)FindObject(*cf, parent);
+
+    if (!collection->IsCollection())
+        return 0;
+    return collection;
+}
+
+
+treeObjectIterator::treeObjectIterator(ctlTree *brow, pgObject *obj)
+{
+    browser=brow;
+    object=obj;
+    lastItem=0;
+}
+
+
+pgObject *treeObjectIterator::GetNextObject()
+{
+    if (!object ||!browser)
+        return 0;
+
+    if (!lastItem)
+        lastItem = browser->GetFirstChild(object->GetId(), cookie);
+    else
+        lastItem = browser->GetNextChild(object->GetId(), cookie);
+
+    if (lastItem)
+        return browser->GetObject(lastItem);
+    else
+        object=0;
+
+    return 0;
+}

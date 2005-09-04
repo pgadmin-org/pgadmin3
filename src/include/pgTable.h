@@ -41,13 +41,12 @@ public:
     pgTable(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTable();
 
-    wxString GetAllConstraints(ctlTree *browser, wxTreeItemId collectionId, int type);
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowHint(frmMain *form, bool force);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 
     bool CanDropCascaded() { return true; }
-    int GetReplicationStatus(ctlTree *browser, wxString *clusterNsp=0, long *setId=0);
+    int GetReplicationStatus(ctlTree *browser, wxString *clusterName=0, long *setId=0);
 
     bool GetHasOids() const { return hasOids; }
     void iSetHasOids(bool b) { hasOids=b; }
@@ -89,6 +88,7 @@ private:
     void UpdateInheritance();
     bool GetVacuumHint();
 
+    void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
     wxULongLong rows;
     double estimatedRows;
     bool hasOids, hasSubclass, rowsCounted;

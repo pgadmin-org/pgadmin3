@@ -91,6 +91,34 @@ hintArray[]=
         wxT("pgadmin/query"),
         HINT_CANSUPPRESS|HINT_CANABORT|HINT_YESNO
     },
+    {
+        HINT_INSTRUMENTATION,
+        __(""),
+        0,
+        wxT("pgadmin/instrumentation"),
+        HINT_CANSUPPRESS
+    },
+    {
+        HINT_ENCODING_UNICODE,
+        __(""),
+        0,
+        wxT("multibyte"),
+        HINT_CANSUPPRESS
+    },
+    {
+        HINT_ENCODING_ASCII,
+        __(""),
+        0,
+        wxT("multibyte"),
+        HINT_CANSUPPRESS
+    },
+    {
+        HINT_READONLY_NOPK,
+        __(""),
+        0,
+        wxT("pgadmin/editgrid"),
+        HINT_CANSUPPRESS
+    },
     { 0,0,0,0 }
 };
 

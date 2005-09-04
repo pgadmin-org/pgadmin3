@@ -68,6 +68,11 @@ int dlgIndexConstraint::Go(bool modal)
     else
     {
         txtComment->Disable();
+        if (!table)
+        {
+            cbClusterSet->Disable();
+            cbClusterSet = 0;
+        }
     }
 
     OnCheckDeferrable(event);

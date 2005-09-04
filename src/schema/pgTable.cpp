@@ -60,34 +60,27 @@ wxMenu *pgTable::GetNewMenu()
 }
 
 
-int pgTable::GetReplicationStatus(ctlTree *browser, wxString *clusterNsp, long *setId)
+int pgTable::GetReplicationStatus(ctlTree *browser, wxString *clusterName, long *setId)
 {
-    wxArrayString clusters;
-
-    pgSetIterator clusterSet(GetConnection(), 
-        wxT("SELECT nspname FROM pg_namespace nsp\n")
-        wxT("  JOIN pg_proc pro ON pronamespace=nsp.oid AND proname = 'slonyversion'"));
-
-    while (clusterSet.RowsLeft())
-        clusters.Add(clusterSet.GetVal(wxT("nspname")));
+    wxArrayString clusters=GetDatabase()->GetSlonyClusters(browser);
 
     bool isSubscribed=false;
 
     size_t i;
     for (i=0 ; i < clusters.GetCount() ; i++)
     {
-        wxString nsp=qtIdent(clusters.Item(i));
+        wxString nsp=qtIdent(wxT("_") + clusters.Item(i));
 
         pgSetIterator sets(GetConnection(),
-            wxT("SELECT tab_set, sub_provider, ") + nsp + wxT(".getlocalnodeid(") + qtString(clusters.Item(i)) + wxT(") AS localnode\n")
+            wxT("SELECT tab_set, sub_provider, ") + nsp + wxT(".getlocalnodeid(") + qtString(wxT("_") + clusters.Item(i)) + wxT(") AS localnode\n")
             wxT("  FROM ") + nsp + wxT(".sl_table\n")
             wxT("  LEFT JOIN ") + nsp + wxT(".sl_subscribe ON sub_set=tab_set\n")
             wxT(" WHERE tab_reloid = ") + GetOidStr());
 
         if (sets.RowsLeft())
         {
-            if (clusterNsp)
-                *clusterNsp = clusters.Item(i);
+            if (clusterName)
+                *clusterName = clusters.Item(i);
             if (setId)
                 *setId = sets.GetLong(wxT("tab_set"));
             if (isSubscribed)
@@ -129,48 +122,31 @@ bool pgTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
-wxString pgTable::GetAllConstraints(ctlTree *browser, wxTreeItemId collectionId, int metaType)
+void pgTable::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 {
-    wxString sql;
-    wxCookieType cookie;
-    pgObject *data;
-    wxTreeItemId item=browser->GetFirstChild(collectionId, cookie);
-            
-    while (item)
+    pgCollection *collection=browser->FindCollection(factory, GetId());
+    if (collection)
     {
-        data=(pgObject*)browser->GetItemData(item);
-        if (metaType < 0 || metaType == data->GetMetaType())
-        {
-            sql += wxT(",\n  CONSTRAINT ") + data->GetQuotedIdentifier() 
-                + wxT(" ") + data->GetTypeName().Upper() 
-                + wxT(" ") ;
-            data->ShowTreeDetail(browser);
-            
-            switch (metaType)
-            {
-                case PGM_PRIMARYKEY:
-                case PGM_UNIQUE:
-                    sql += ((pgIndexConstraint*)data)->GetDefinition();
-                    break;
-                case PGM_FOREIGNKEY:
-                    sql += ((pgForeignKey*)data)->GetDefinition();
-                    break;
-                case PGM_CHECK:
-				  sql += wxT("(") + ((pgCheck*)data)->GetDefinition() + wxT(")");
-                    break;
-            }
-        }
-        
-        item=browser->GetNextChild(collectionId, cookie);
-    }
+		sql += wxT("\n");
+        collection->ShowTreeDetail(browser);
 
-    return sql;
+        treeObjectIterator idxIt(browser, collection);
+        pgObject *obj;
+        while ((obj = idxIt.GetNextObject()) != 0)
+        {
+            obj->ShowTreeDetail(browser);
+
+            sql += obj->GetSql(browser) + wxT("\n");
+        }
+    }
 }
 
 
 wxString pgTable::GetSql(ctlTree *browser)
 {
 	wxString colDetails;
+    wxString prevComment;
+
     if (sql.IsNull())
     {
         // make sure all kids are appended
@@ -179,76 +155,85 @@ wxString pgTable::GetSql(ctlTree *browser)
             + wxT("-- DROP TABLE ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE TABLE ") + GetQuotedFullIdentifier() + wxT("\n(\n");
 
-        pgObject *data;
-        wxCookieType cookie;
-        wxTreeItemId item=browser->GetFirstChild(GetId(), cookie);
-        wxTreeItemId columnsItem, constraintsItem;
-        while (item)
+        pgCollection *columns=browser->FindCollection(columnFactory, GetId());
+        if (columns)
         {
-            data=(pgObject*)browser->GetItemData(item);
-            pgaFactory *factory=data->GetFactory();
-            if (data->GetMetaType() == PGM_COLUMN)
-                columnsItem = item;
-            else if (data->GetMetaType() == PGM_CONSTRAINT)
-                constraintsItem = item;
+            columns->ShowTreeDetail(browser);
+            treeObjectIterator colIt(browser, columns);
 
-            if (columnsItem && constraintsItem)
-                break;
-
-            item=browser->GetNextChild(GetId(), cookie);
-        }
-        if (columnsItem)
-        {
-            pgCollection *coll=(pgCollection*)browser->GetItemData(columnsItem);
-            // make sure all columns are appended
-            coll->ShowTreeDetail(browser);
-            // this is the columns collection
-            wxTreeItemId item=browser->GetFirstChild(columnsItem, cookie); 
-
-            // add columns
             int colCount=0;
-            while (item)
+            pgColumn *column;
+            while ((column = (pgColumn*)colIt.GetNextObject()) != 0)
             {
-                data=(pgObject*)browser->GetItemData(item);
-                if (data->GetMetaType() == PGM_COLUMN)
+                column->ShowTreeDetail(browser);
+                if (column->GetColNumber() > 0)
                 {
-                    pgColumn *column=(pgColumn*)data;
-                    // make sure column details are read
-                    column->ShowTreeDetail(browser);
-
-                    if (column->GetColNumber() > 0)
+                    if (colCount)
                     {
-                        if (colCount)
-                            sql += wxT(",\n");
+                        sql += wxT(",");
+                        if (!prevComment.IsEmpty())
+                            sql += wxT(" -- ") + prevComment.BeforeFirst('\n');
 
-                        sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
-                            + column->GetDefinition();
-
-						// Whilst we are looping round the columns, grab their comments as well.
-						// Perhaps we should also get storage types here?
-						colDetails += column->GetCommentSql();
-						if (colDetails.Length() > 0)
-							if (colDetails.Last() != '\n') colDetails += wxT("\n");
-
-                        colCount++;
+                        sql += wxT("\n");
                     }
+
+                    sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
+                        + column->GetDefinition();
+
+                    prevComment = column->GetComment();
+
+					// Whilst we are looping round the columns, grab their comments as well.
+					// Perhaps we should also get storage types here?
+					colDetails += column->GetCommentSql();
+					if (colDetails.Length() > 0)
+						if (colDetails.Last() != '\n') colDetails += wxT("\n");
+
+                    colCount++;
                 }
-                
-                item=browser->GetNextChild(columnsItem, cookie);
             }
         }
 
-        if (constraintsItem)
+        pgCollection *constraints=browser->FindCollection(primaryKeyFactory, GetId());
+        if (constraints)
         {
-            pgCollection *coll=(pgCollection*)browser->GetItemData(constraintsItem);
-            // make sure all kids are read
-            coll->ShowTreeDetail(browser);
+            constraints->ShowTreeDetail(browser);
+            treeObjectIterator consIt(browser, constraints);
 
-            sql += GetAllConstraints(browser, constraintsItem, PGM_PRIMARYKEY);
-            sql += GetAllConstraints(browser, constraintsItem, PGM_FOREIGNKEY);
-            sql += GetAllConstraints(browser, constraintsItem, PGM_UNIQUE);
-            sql += GetAllConstraints(browser, constraintsItem, PGM_CHECK);
+            pgObject *data;
+            
+            while ((data=consIt.GetNextObject()) != 0)
+            {
+                data->ShowTreeDetail(browser);
+
+                sql += wxT(",");
+
+                if (!prevComment.IsEmpty())
+                    sql += wxT(" -- ") + prevComment.BeforeFirst('\n');
+
+                sql += wxT("\n  CONSTRAINT ") + data->GetQuotedIdentifier() 
+                    + wxT(" ") + data->GetTypeName().Upper() 
+                    + wxT(" ") ;
+
+                prevComment = data->GetComment();
+            
+                switch (data->GetMetaType())
+                {
+                    case PGM_PRIMARYKEY:
+                    case PGM_UNIQUE:
+                        sql += ((pgIndexConstraint*)data)->GetDefinition();
+                        break;
+                    case PGM_FOREIGNKEY:
+                        sql += ((pgForeignKey*)data)->GetDefinition();
+                        break;
+                    case PGM_CHECK:
+				      sql += wxT("(") + ((pgCheck*)data)->GetDefinition() + wxT(")");
+                        break;
+                }
+            }
         }
+        if (!prevComment.IsEmpty())
+            sql += wxT(" -- ") + prevComment.BeforeFirst('\n');
+
         sql += wxT("\n) ");
         if (GetInheritedTableCount())
         {
@@ -268,15 +253,11 @@ wxString pgTable::GetSql(ctlTree *browser)
             + GetCommentSql();
 
 		// Column comments
-		sql += colDetails;
+		sql += colDetails + wxT("\n");
 
-        // add indexes here
-
-        // add triggers here 
-
-		if (sql.Length() > 0)
-			if (sql.Last() != '\n') sql += wxT("\n");
-
+        AppendStuff(sql, browser, indexFactory);
+        AppendStuff(sql, browser, ruleFactory);
+        AppendStuff(sql, browser, triggerFactory);
     }
     return sql;
 }
@@ -434,11 +415,13 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
             properties->AppendItem(_("Rows (counted)"), _("not counted"));
 
         long setId;
-        wxString clusterNsp;
-        wxString repString;
-        long repStat=GetReplicationStatus(browser, &clusterNsp, &setId);
-        clusterNsp.Printf(_("Cluster \"%s\", set %ld"), clusterNsp.Mid(1).c_str(), setId);
+        wxString clusterName;
+        long repStat=GetReplicationStatus(browser, &clusterName, &setId);
 
+        wxString clusterInfo;
+        clusterInfo.Printf(_("Cluster \"%s\", set %ld"), clusterName.c_str(), setId);
+
+        wxString repString;
         switch (repStat)
         {
             case REPLICATIONSTATUS_SUBSCRIBED:
@@ -449,13 +432,13 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
                 break;
             case REPLICATIONSTATUS_MULTIPLY_PUBLISHED:
                 repString = _("Replicated");
-                clusterNsp = _("Multiple clusters");
+                clusterName = _("Multiple clusters");
                 break;
             default:
                 break;
         }
         if (!repString.IsEmpty())
-            properties->AppendItem(repString, clusterNsp);
+            properties->AppendItem(repString, clusterInfo);
 
         properties->AppendItem(_("Inherits tables"), GetHasSubclass());
         properties->AppendItem(_("Inherited tables count"), GetInheritedTableCount());

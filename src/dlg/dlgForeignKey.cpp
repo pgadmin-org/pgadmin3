@@ -388,6 +388,11 @@ int dlgForeignKey::Go(bool modal)
             delete set;
             cbReferences->SetSelection(0);
         }
+        if (!table)
+        {
+            cbClusterSet->Disable();
+            cbClusterSet = 0;
+        }
     }
 
     processing=false;

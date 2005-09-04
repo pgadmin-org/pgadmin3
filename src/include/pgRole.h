@@ -14,11 +14,15 @@
 
 #include "pgServer.h"
 
+
+#define PGROLE_ADMINOPTION      wxT("(*)")
+#define PGROLE_ADMINOPTION_LEN  3
+
+
 class pgRoleBaseFactory : public pgServerObjFactory
 {
 public:
     pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img);
-    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr);
 };
 
@@ -26,6 +30,7 @@ class pgLoginRoleFactory : public pgRoleBaseFactory
 {
 public:
     pgLoginRoleFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr);
 };
 
@@ -33,6 +38,7 @@ class pgGroupRoleFactory : public pgRoleBaseFactory
 {
 public:
     pgGroupRoleFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr);
 };
 
@@ -65,7 +71,7 @@ public:
     bool GetCreateRole() const { return createRole; }
     void iSetCreateRole(const bool b) { createRole=b; }
     bool GetSuperuser() const { return superuser; }
-    void iSetSuperuser(const bool b) { superuser; }
+    void iSetSuperuser(const bool b) { superuser=b; }
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
     wxArrayString& GetRolesIn() { return rolesIn; }

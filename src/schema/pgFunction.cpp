@@ -241,8 +241,10 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             else
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
 
+
             wxString type, name, argTypes, quotedArgTypes, argTypeNames, quotedArgTypeNames, mode;
             wxStringTokenizer names(argNames.Mid(1, argNames.Length()-2), wxT(","));
+
             
             while (args.HasMoreTokens())
             {
@@ -303,6 +305,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             }
 
             function->iSetOid(functions->GetOid(wxT("oid")));
+            function->UpdateSchema(browser, functions->GetOid(wxT("pronamespace")));
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetAcl(functions->GetVal(wxT("proacl")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));

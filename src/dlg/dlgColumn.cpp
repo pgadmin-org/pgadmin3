@@ -162,8 +162,11 @@ int dlgColumn::Go(bool modal)
             }
         }
         else
+        {
             cbSequence->Append(wxT(" "));
-
+            cbClusterSet->Disable();
+            cbClusterSet = 0;
+        }
         cbSequence->SetSelection(0);
     }
     return dlgTypeProperty::Go(modal);

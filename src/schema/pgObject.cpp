@@ -826,6 +826,32 @@ void pgSchemaObject::SetSchema(pgSchema *newSchema)
 }
 
 
+void pgSchemaObject::UpdateSchema(ctlTree *browser, OID schemaOid)
+{
+    // used e.g. for triggers that use trigger functions from other namespaces
+
+    if (schema->GetOid() != schemaOid)
+    {
+        pgObject *schemas=browser->GetObject(browser->GetItemParent(schema->GetId()));
+
+        wxASSERT(schemas);
+        treeObjectIterator schIt(browser, schemas);
+        pgSchema *sch;
+
+        while ((sch=(pgSchema*)schIt.GetNextObject()) != 0)
+        {
+            if (sch->GetOid() == schemaOid)
+            {
+                SetSchema(sch);
+                return;
+            }
+        }
+    }
+    wxMessageBox(_("The schema oid can't be located, please refresh all schemas!"), 
+        _("Missing information"), wxICON_EXCLAMATION | wxOK, browser);
+}
+
+
 bool pgSchemaObject::GetSystemObject() const
 {
     if (!schema)

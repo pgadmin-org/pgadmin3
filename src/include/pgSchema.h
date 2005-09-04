@@ -95,6 +95,7 @@ public:
     bool CanCreate();
 
     void SetSchema(pgSchema *newSchema);
+    void UpdateSchema(ctlTree *browser, OID schemaOid);
     pgSchema *GetSchema() const {return schema; }
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);

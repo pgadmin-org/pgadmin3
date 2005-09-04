@@ -112,6 +112,11 @@ int dlgCheck::Go(bool modal)
     {
         // create mode
         txtComment->Disable();
+        if (!table)
+        {
+            cbClusterSet->Disable();
+            cbClusterSet = 0;
+        }
     }
     return dlgProperty::Go(modal);
 }

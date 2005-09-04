@@ -70,7 +70,7 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         expandedKids = true;
         browser->RemoveDummyChild(this);
         
-        pgCollection *collection = browser->AppendCollection(GetSchema(), ruleFactory);
+        pgCollection *collection = browser->AppendCollection(this, ruleFactory);
         collection->iSetOid(GetOid());
     }
     if (properties)

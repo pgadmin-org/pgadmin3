@@ -49,20 +49,18 @@ frmAbout::~frmAbout()
 
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-    int y=SPLASH_Y0;
-    wxFont fnt(*wxNORMAL_FONT);
-    fnt.SetPointSize(SPLASH_FONTSIZE);
+    wxPoint pos=appearanceFactory->GetSplashTextPos();
 
     wxPaintDC dc(this);
 	dc.DrawBitmap(about, 0, 0);
-    dc.SetTextForeground(wxColour(255, 255, 255));
-    dc.SetFont(fnt);
+    dc.SetTextForeground(appearanceFactory->GetSplashTextColour());
+    dc.SetFont(appearanceFactory->GetSplashTextFont());
 
-    dc.DrawText(VERSION_WITH_DATE, SPLASH_X0, y);
-    y += SPLASH_OFFS;
-    dc.DrawText(COPYRIGHT, SPLASH_X0, y);
-    y += SPLASH_OFFS;
-    dc.DrawText(LICENSE, SPLASH_X0, y);
+    dc.DrawText(VERSION_WITH_DATE, pos);
+    pos.y += appearanceFactory->GetSplashTextOffset();
+    dc.DrawText(COPYRIGHT, pos);
+    pos.y += appearanceFactory->GetSplashTextOffset();
+    dc.DrawText(LICENSE, pos);
 }
 
 

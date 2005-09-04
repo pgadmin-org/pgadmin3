@@ -81,18 +81,18 @@ wxString pgRole::GetSql(ctlTree *browser)
         if (GetCanLogin())
         {
             sql += wxT(" LOGIN");
-            if (GetPassword() != wxT("********"))
+            if (GetPassword() != wxT("********") && !GetPassword().IsEmpty())
                 AppendIfFilled(sql, wxT("\n  ENCRYPTED PASSWORD "), qtString(GetPassword()));
         }
         sql += wxT("\n ");
         if (this->GetSuperuser())   sql += wxT(" SUPERUSER");
         else                        sql += wxT(" NOSUPERUSER");
-        if (GetInherits())          sql += wxT(" INHERITS");
-        else                        sql += wxT(" NOINHERITS");
+        if (GetInherits())          sql += wxT(" INHERIT");
+        else                        sql += wxT(" NOINHERIT");
         if (GetCreateDatabase())    sql += wxT(" CREATEDB");
         else                        sql += wxT(" NOCREATEDB");
-        if (GetUpdateCatalog())     sql += wxT(" CREATERROLE");
-        else                        sql += wxT(" NOCREATERROLE");
+        if (GetUpdateCatalog())     sql += wxT(" CREATEROLE");
+        else                        sql += wxT(" NOCREATEROLE");
         if (GetAccountExpires().IsValid())
         AppendIfFilled(sql, wxT(" VALID UNTIL "), qtString(DateToAnsiStr(GetAccountExpires())));
         sql +=wxT(";\n");
@@ -107,9 +107,22 @@ wxString pgRole::GetSql(ctlTree *browser)
                 + wxT(" SET ") + configList.Item(index) + wxT(";\n");
         }
         for (index=0 ; index < rolesIn.GetCount() ; index++)
-            sql += wxT("ALTER GROUP ") + qtIdent(rolesIn.Item(index))
-                +  wxT(" ADD Role ") + GetQuotedIdentifier() + wxT(";\n");
+        {
+            wxString role=rolesIn.Item(index);
+            bool admin=false;
+            if (role.Right(PGROLE_ADMINOPTION_LEN) == PGROLE_ADMINOPTION)
+            {
+                admin=true;
+                role=role.Left(role.Length()-PGROLE_ADMINOPTION_LEN);
+            }
+            sql += wxT("GRANT ") + qtIdent(role)
+                +  wxT(" TO ") + GetQuotedIdentifier();
 
+            if (admin)
+                sql += wxT(" WITH ADMIN OPTION");
+
+            sql += wxT(";\n");
+        }
     }
     return sql;
 }
@@ -205,28 +218,20 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
     {
         expandedKids=true;
 
-        pgSet *set=GetServer()->ExecuteSet(wxT("SELECT groname, grolist FROM pg_group ORDER BY groname"));
-        if (set)
+        pgSetIterator roles(GetConnection(),
+            wxT("SELECT rolname, admin_option\n")
+            wxT("  FROM pg_roles r\n")
+            wxT("  JOIN pg_auth_members ON r.oid=roleid\n")
+            wxT(" WHERE member=") + GetOidStr() + wxT("\n")
+            wxT(" ORDER BY rolname"));
+
+        while (roles.RowsLeft())
         {
-            while (!set->Eof())
-            {
-                wxString groupName=set->GetVal(wxT("groname"));
-                wxString str=set->GetVal(wxT("grolist"));
-                if (!str.IsNull())
-                {
-                    wxStringTokenizer ids(str.Mid(1, str.Length()-2), wxT(","));
-                    while (ids.HasMoreTokens())
-                    {
-                        if (StrToLong(ids.GetNextToken()) == GetOidStr())
-                        {
-                            rolesIn.Add(groupName);
-                            break;
-                        }
-                    }
-                }
-                set->MoveNext();
-            }
-            delete set;
+            wxString role=roles.GetVal(wxT("rolname"));
+            if (roles.GetBool(wxT("admin_option")))
+                role += PGROLE_ADMINOPTION;
+
+            rolesIn.Add(role);
         }
     }
     if (properties)
@@ -290,7 +295,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     if (collection->GetServer()->HasPrivilege(wxT("table"), wxT("pg_authid"), wxT("SELECT")))
         tabname=wxT("pg_authid");
     else
-        tabname=wxT("pg_role");
+        tabname=wxT("pg_roles");
 
     pgSet *roles = collection->GetServer()->ExecuteSet(wxT(
         "SELECT oid, * FROM ") + tabname + restriction + wxT(" ORDER BY rolname"));

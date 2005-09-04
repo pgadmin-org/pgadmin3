@@ -129,6 +129,30 @@ void pgDatabase::Disconnect()
 }
 
 
+bool pgDatabase::GetCanHint()
+{
+    if (encoding == wxT("SQL_ASCII"))
+        return true;
+
+    if (encoding == wxT("UNICODE"))
+    {
+        wxString ver=GetServer()->GetVersionString();
+        if (ver.Find(wxT("mingw32")) > 0 && ver.Find(wxT("SQL 8.0.") > 0))
+            return true;
+    }
+    return false;
+}
+
+
+void pgDatabase::ShowHint(frmMain *form, bool force)
+{
+    if (encoding == wxT("SQL_ASCII"))
+        frmHint::ShowHint(form, HINT_ENCODING_ASCII, GetName(), force);
+    else if (encoding == wxT("UNICODE"))
+        frmHint::ShowHint(form, HINT_ENCODING_UNICODE, GetName(), force);
+}
+
+
 pgSet *pgDatabase::ExecuteSet(const wxString& sql)
 {
     pgSet *set=0;
@@ -234,6 +258,23 @@ bool pgDatabase::GetSystemObject() const
     } else {
         return false;
     }
+}
+
+
+wxArrayString pgDatabase::GetSlonyClusters(ctlTree *browser)
+{
+    wxArrayString clusters;
+
+    pgCollection *collection=browser->FindCollection(slClusterFactory, GetId());
+    if (collection)
+    {
+        treeObjectIterator clusterIterator(browser, collection);
+
+        slCluster *cluster;
+        while ((cluster=(slCluster*)clusterIterator.GetNextObject()) != 0)
+            clusters.Add(cluster->GetName());
+    }
+    return clusters;
 }
 
 

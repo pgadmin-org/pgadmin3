@@ -1,0 +1,29 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Database encoding</h3>
+<p>
+The database <INFO> is created to store data using the SQL_ASCII encoding. This encoding is defined 
+for 7 bit characters only; the meaning of characters with the 8th bit set (non-ASCII characters 127-255) is not defined.
+Consequently, it is not possible for the server to convert the data to other encodings.
+</p>
+<p>
+If you're storing non-ASCII data in the database, you're strongly encouraged to use a proper 
+database encoding representing your locale character set to take benefit from the automatic conversion to different client encodings
+when needed. If you store non-ASCII data in an SQL_ASCII database, you may encounter
+weird characters written to or read from the database, caused by code conversion problems.
+This may cause you a lot of headache when accessing the database using different 
+client programs and drivers.
+</p>
+<p>
+For most installations, Unicode (UTF8) encoding will provide the most flexible capabilities. 
+</p>
+</body>
+</html>

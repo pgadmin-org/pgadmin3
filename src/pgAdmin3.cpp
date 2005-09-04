@@ -416,3 +416,44 @@ char **pgAppearanceFactory::GetSplashImage()
 {
     return splash_xpm;
 }
+
+
+#ifdef __WIN32__
+#define SPLASH_FONTSIZE 8
+#else
+#if wxCHECK_VERSION(2,5,0)
+#define SPLASH_FONTSIZE 9
+#else
+#define SPLASH_FONTSIZE 11
+#endif
+#endif
+
+#define SPLASH_X0       128
+#define SPLASH_Y0       281
+#define SPLASH_OFFS     15
+
+
+wxPoint pgAppearanceFactory::GetSplashTextPos()
+{
+    return wxPoint(SPLASH_X0, SPLASH_Y0);
+}
+
+
+int pgAppearanceFactory::GetSplashTextOffset()
+{
+    return SPLASH_OFFS;
+}
+
+
+wxFont pgAppearanceFactory::GetSplashTextFont()
+{
+    wxFont fnt(*wxNORMAL_FONT);
+    fnt.SetPointSize(SPLASH_FONTSIZE);
+    return fnt;
+}
+
+
+wxColour pgAppearanceFactory::GetSplashTextColour()
+{
+    return wxColour(255, 255, 255);
+}

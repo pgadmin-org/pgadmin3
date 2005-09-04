@@ -59,6 +59,16 @@
 
 
 
+
+class replClientData : public wxClientData
+{
+public:
+    replClientData(const wxString &c, long s) { cluster=c; setId=s; }
+    wxString cluster;
+    long setId;
+};
+
+
 BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
 
@@ -103,6 +113,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     txtOid = CTRL_TEXT("txtOID");
     txtComment = CTRL_TEXT("txtComment");
     cbOwner = CTRL_COMBOBOX2("cbOwner");
+    cbClusterSet = CTRL_COMBOBOX2("cbClusterSet");
 
     wxNotebookPage *page=nbNotebook->GetPage(0);
     wxASSERT(page != NULL);
@@ -193,6 +204,38 @@ int dlgProperty::Go(bool modal)
         Move(pos);
 
     wxComboBoxFix *cbowner = (wxComboBoxFix*)cbOwner;
+
+    if (cbClusterSet)
+    {
+        cbClusterSet->Append(wxEmptyString);
+        cbClusterSet->SetSelection(0);
+
+        if (mainForm && database)
+        {
+            wxArrayString clusters=database->GetSlonyClusters(mainForm->GetBrowser());
+
+            size_t i;
+            for (i=0 ; i < clusters.GetCount() ; i++)
+            {
+                wxString cluster=wxT("_") + clusters.Item(i);
+                pgSetIterator sets(connection, 
+                    wxT("SELECT set_id\n")
+                    wxT("  FROM ") + qtIdent(cluster) + wxT(".sl_set\n")
+                    wxT(" WHERE set_origin = ") + qtIdent(cluster) + 
+                    wxT(".getlocalnodeid(") + qtString(cluster) + wxT(");"));
+                
+                while (sets.RowsLeft())
+                {
+                    wxString str;
+                    long setId=sets.GetLong(wxT("set_id"));
+                    str.Printf(_("Cluster \"%s\", set %ld"), clusters.Item(i).c_str(), setId);
+                    cbClusterSet->Append(str, new replClientData(cluster, setId));
+                }
+            }
+        }
+        if (cbClusterSet->GetCount() < 2)
+            cbClusterSet->Disable();
+    }
 
     if (cbowner && !cbowner->GetCount())
     {
@@ -497,37 +540,32 @@ void dlgProperty::ShowObject()
                 break;
             collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
         }
-
-        /*
-        if (!collectionItem)
-        {
-            // search leaves for our collection
-            // shouldn't become necessary
-            long cookie;
-            collectionItem=mainForm->GetBrowser()->GetFirstChild(item, cookie);
-
-            while (collectionItem)
-            {
-                if (tryUpdate(collectionItem))
-                    break;
-                collectionItem=mainForm->GetBrowser()->GetNextChild(item, cookie);
-            }
-        }
-        */
     }
 }
 
 
 bool dlgProperty::apply(const wxString &sql)
 {
-    if (!connection->ExecuteVoid(sql))
+    wxString tmp;
+    if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+    {
+        replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+
+        tmp = wxT("SELECT ") + qtIdent(data->cluster)
+            + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
+            + qtString(sql) + wxT(", 0);\n");
+    }
+    else
+        tmp = sql;
+
+    if (!connection->ExecuteVoid(tmp))
     {
         // error message is displayed inside ExecuteVoid
         return false;
     }
 
     if (database)
-        database->AppendSchemaChange(sql);
+        database->AppendSchemaChange(tmp);
 
     ShowObject();
 
@@ -580,7 +618,15 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
     {
         sqlPane->SetReadOnly(false);
         if (btnOK->IsEnabled())
-            sqlPane->SetText(GetSql());
+        {
+            wxString tmp;
+            if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+            {
+                replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+                tmp.Printf(_("-- Execute replicated using cluster \"%s\", set %ld\n"), data->cluster.c_str(), data->setId);
+            }
+            sqlPane->SetText(tmp + GetSql());
+        }
         else
         {
             if (GetObject())

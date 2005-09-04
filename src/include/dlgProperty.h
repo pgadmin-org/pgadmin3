@@ -97,6 +97,7 @@ protected:
     wxNotebook *nbNotebook;
     wxTextCtrl *txtName, *txtOid, *txtComment;
     ctlComboBox *cbOwner;
+    ctlComboBox *cbClusterSet;
 
     int width, height;
     wxTreeItemId item;

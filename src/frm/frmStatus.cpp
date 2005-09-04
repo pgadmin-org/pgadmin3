@@ -170,6 +170,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     }
     else
     {
+        if (!connection->HasFeature(FEATURE_FILEREAD))
+            frmHint::ShowHint(this, HINT_INSTRUMENTATION);
+
         nbStatus->DeletePage(logPage);
         logPage=-5;
     }

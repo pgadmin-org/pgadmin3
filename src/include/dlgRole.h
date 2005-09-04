@@ -22,7 +22,7 @@ class pgRole;
 class dlgRole : public dlgProperty
 {
 public:
-    dlgRole(pgaFactory *factory, frmMain *frame, pgRole *node=0);
+    dlgRole(pgaFactory *factory, frmMain *frame, pgRole *node=0, bool chkLogin=false);
 
     void CheckChange();
     wxString GetSql();
@@ -36,6 +36,7 @@ private:
     pgRole *role;
     wxArrayString varInfo;
 
+    void OnOK(wxCommandEvent &ev);
     void OnChangeSuperuser(wxCommandEvent &ev);
     void OnChangeSpin(wxSpinEvent &ev);
     void OnChangeCal(wxCalendarEvent &ev);

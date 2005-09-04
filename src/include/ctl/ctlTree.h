@@ -21,6 +21,8 @@ class pgObject;
 class pgCollection;
 class pgaFactory;
 
+
+
 class ctlTree : public wxTreeCtrl
 {
 public:
@@ -28,7 +30,25 @@ public:
     wxTreeItemId AppendObject(pgObject *parent, pgObject *object);
     void RemoveDummyChild(pgObject *obj);
     pgCollection *AppendCollection(pgObject *parent, pgaFactory &factory);
+    pgObject *GetObject(wxTreeItemId id) { return (pgObject*)GetItemData(id); }
+    pgObject *FindObject(pgaFactory &factory, wxTreeItemId parent);
+    pgCollection *FindCollection(pgaFactory &factory, wxTreeItemId parent);
 };
+
+
+class treeObjectIterator
+{
+public:
+    treeObjectIterator(ctlTree *browser, pgObject *obj);
+    pgObject *GetNextObject();
+
+private:
+    wxTreeItemId lastItem;
+    ctlTree *browser;
+    pgObject *object;
+    wxCookieType cookie;
+};
+
 
 
 #endif
