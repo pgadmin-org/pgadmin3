@@ -30,6 +30,7 @@
 
 #include "frmEditGrid.h"
 #include "dlgEditGridOptions.h"
+#include "frmHint.h"
 #include "pgTable.h"
 #include "pgView.h"
 

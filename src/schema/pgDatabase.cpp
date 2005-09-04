@@ -21,6 +21,7 @@
 #include "pgLanguage.h"
 #include "pgSchema.h"
 #include "slCluster.h"
+#include "frmHint.h"
 
 pgDatabase::pgDatabase(const wxString& newName)
 : pgServerObject(databaseFactory, newName)

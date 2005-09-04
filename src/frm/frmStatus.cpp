@@ -19,6 +19,7 @@
 
 // App headers
 #include "frmStatus.h"
+#include "frmHint.h"
 #include "frmMain.h"
 #include "pgfeatures.h"
 #include "pgServer.h"
