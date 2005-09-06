@@ -846,9 +846,9 @@ void pgSchemaObject::UpdateSchema(ctlTree *browser, OID schemaOid)
                 return;
             }
         }
+        wxMessageBox(_("The schema oid can't be located, please refresh all schemas!"), 
+            _("Missing information"), wxICON_EXCLAMATION | wxOK, browser);
     }
-    wxMessageBox(_("The schema oid can't be located, please refresh all schemas!"), 
-        _("Missing information"), wxICON_EXCLAMATION | wxOK, browser);
 }
 
 
