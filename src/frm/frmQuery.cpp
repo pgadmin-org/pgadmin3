@@ -1160,9 +1160,9 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         notifies++;
 
         if (notify->data.IsEmpty())
-            notifyStr.Printf(_("\nAsynchronous notification of '%s' received from backend pid %d"), notify->name, notify->pid);
+            notifyStr.Printf(_("\nAsynchronous notification of '%s' received from backend pid %d"), notify->name.c_str(), notify->pid);
         else
-            notifyStr.Printf(_("\nAsynchronous notification of '%s' received from backend pid %d\n   Data: %s"), notify->name, notify->pid, notify->data);
+            notifyStr.Printf(_("\nAsynchronous notification of '%s' received from backend pid %d\n   Data: %s"), notify->name.c_str(), notify->pid, notify->data.c_str());
 
         msgResult->AppendText(notifyStr);
         msgHistory->AppendText(notifyStr);
@@ -1176,7 +1176,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         if (statusMsg.Last() == '.')
             statusMsg = statusMsg.Left(statusMsg.Length() - 1);
 
-        SetStatusText(wxString::Format(_("%s (%d asynchronous notifications received)."), statusMsg, notifies), STATUSPOS_MSGS);
+        SetStatusText(wxString::Format(_("%s (%d asynchronous notifications received)."), statusMsg.c_str(), notifies), STATUSPOS_MSGS);
     }
 
     msgResult->AppendText(wxT("\n"));
