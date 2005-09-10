@@ -142,7 +142,7 @@ int dlgFunction::Go(bool modal)
     // the listview's column that contains the type name
     typeColNo = (connection->BackendMinimumVersion(7, 5) ? 1 : 0);
 
-    if (factory == &triggerFunctionFactory)
+    if (factory != &triggerFunctionFactory)
     {
         if (typeColNo)
             lstArguments->CreateColumns(0, _("Name"), _("Type"));
@@ -258,7 +258,7 @@ int dlgFunction::Go(bool modal)
             types.Add(tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
 
             cbDatatype->Append(tr.GetSchemaPrefix() + dt.FullName());
-            if (factory == &triggerFunctionFactory)
+            if (factory != &triggerFunctionFactory)
                 cbReturntype->Append(tr.GetSchemaPrefix() + dt.FullName());
             tr.MoveNext();
         }
