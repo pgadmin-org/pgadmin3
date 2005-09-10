@@ -97,7 +97,6 @@ treeObjectIterator::treeObjectIterator(ctlTree *brow, pgObject *obj)
 {
     browser=brow;
     object=obj;
-    lastItem=0;
 }
 
 
