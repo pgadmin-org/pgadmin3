@@ -243,6 +243,7 @@ pgSchemaObjCollection::pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch)
     schema = sch;
     database = schema->GetDatabase();
     server= database->GetServer();
+    iSetOid(sch->GetOid());
 }
 
 
