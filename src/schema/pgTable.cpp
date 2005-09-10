@@ -468,12 +468,13 @@ bool pgTable::GetVacuumHint()
 
     if (rowsCounted)
     {
-        if (!estimatedRows || (estimatedRows == 1000 && rows != 1000))
+        if (!estimatedRows || (estimatedRows == 1000 && rows.GetValue() != 1000))
             canHint = (rows >= 20);
         else
         {
-            wxULongLong quot = (wxLongLong_t)(rows.GetValue() *10. / estimatedRows);
-            canHint = ((quot > 12 || quot < 8) && (rows.GetValue() < estimatedRows-20. || rows.GetValue() > estimatedRows+20.));
+            double rowsDbl=(wxLongLong_t)rows.GetValue();
+            double quot=rowsDbl *10. / estimatedRows;
+            canHint = ((quot > 12 || quot < 8) && (rowsDbl < estimatedRows-20. || rowsDbl > estimatedRows+20.));
         }
     }
     else if (estimatedRows == 1000)
