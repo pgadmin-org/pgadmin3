@@ -150,6 +150,8 @@ void frmConfig::InitFrame(const wxChar *frameName)
 
 #ifdef __WXMAC__
     wxApp::s_macAboutMenuItemId = af->GetId();
+#else
+	(void)af;
 #endif 
 
     menuFactories->RegisterMenu(this, wxCommandEventHandler(pgFrame::OnAction));

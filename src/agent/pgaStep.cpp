@@ -160,7 +160,7 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 
     if (statistics)
     {
-        wxLogInfo(wxT("Displaying statistics for job %s"), GetFullIdentifier());
+        wxLogInfo(wxT("Displaying statistics for job %s"), GetFullIdentifier().c_str());
 
         // Add the statistics view columns
 		statistics->ClearAll();

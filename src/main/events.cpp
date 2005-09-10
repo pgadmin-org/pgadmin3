@@ -277,7 +277,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 {
     browser->RemoveDummyChild(data);
 
-    int type = data->GetType();
     pgServer *server=0;
 
 

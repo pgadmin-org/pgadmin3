@@ -29,9 +29,6 @@
 
 #define CTL_CFGVIEW 345
 
-#include "images/pgAdmin3.xpm"
-#include "images/elephant32.xpm"
-
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(pgHbaConfigLineArray);
 

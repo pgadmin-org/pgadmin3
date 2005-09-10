@@ -151,6 +151,7 @@ void pgaFactory::AppendMenu(wxMenu *menu)
         wxMenuItem *item=menu->Append(MNU_NEW+GetId(), GetNewString(), GetNewLongString());
         if (image)
         {
+            (void)item;
             // doesn't work?
             // item->SetBitmap(wxBitmap(image));
         }

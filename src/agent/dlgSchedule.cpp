@@ -133,7 +133,7 @@ int dlgSchedule::Go(bool modal)
 
 		wxString id, dateToken, timeToken;
 		wxDateTime val;
-		long pos;
+		long pos=0;
 		wxStringTokenizer tkz(schedule->GetExceptions(), wxT("|"));
 
 		while (tkz.HasMoreTokens() )

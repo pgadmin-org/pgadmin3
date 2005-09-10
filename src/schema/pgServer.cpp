@@ -897,7 +897,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
     long loop, port, ssl=0;
     wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, serviceID;
-    pgServer *server;
+    pgServer *server=0;
 
     wxArrayString servicedServers;
 
@@ -1024,7 +1024,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 #include "images/serverbad-sm.xpm"
 
 pgServerFactory::pgServerFactory() 
-: pgaFactory(__("Server"), _("New Server Registration"), _("Create a new Server registration."), server_xpm)
+: pgaFactory(__("Server"), _("New Server Registration"), _("Create a new Server registration."), server_xpm, server_sm_xpm)
 {
     metaType = PGM_SERVER;
     closedId = addIcon(serverbad_xpm);

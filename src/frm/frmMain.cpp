@@ -221,6 +221,9 @@ frmMain::frmMain(const wxString& title)
     wxApp::s_macPreferencesMenuItemId = optFact->GetId();
     wxApp::s_macExitMenuItemId = MNU_EXIT;
     wxApp::s_macAboutMenuItemId = abFact->GetId();
+#else
+	(void)optFact;
+	(void)abFact;
 #endif 
 
 

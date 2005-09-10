@@ -127,7 +127,7 @@ wxString NumToStr(double value)
 wxString NumToStr(wxLongLong value)
 {
     wxString str;
-    str.Printf(wxT("%") wxLongLongFmtSpec wxT("d"), value);
+    str.Printf(wxT("%") wxLongLongFmtSpec wxT("d"), value.GetValue());
     return str;
 }
 
