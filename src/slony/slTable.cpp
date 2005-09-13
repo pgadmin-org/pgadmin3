@@ -174,7 +174,7 @@ pgObject *slSlTableFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 #include "images/tables.xpm"
 
 slSlTableFactory::slSlTableFactory() 
-: slSetObjFactory(__("Table"), _("New Table"), _("Create a new Table."), table_xpm)
+: slSetObjFactory(__("Table"), __("New Table"), __("Create a new Table."), table_xpm)
 {
     metaType = SLM_TABLE;
 }

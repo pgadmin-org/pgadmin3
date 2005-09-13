@@ -361,7 +361,7 @@ pgObject *pgIndexFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 #include "images/indexes.xpm"
 
 pgIndexFactory::pgIndexFactory()
-: pgIndexBaseFactory(__("Index"), _("New Index"), _("Create a new Index."), index_xpm)
+: pgIndexBaseFactory(__("Index"), __("New Index"), __("Create a new Index."), index_xpm)
 {
 }
 

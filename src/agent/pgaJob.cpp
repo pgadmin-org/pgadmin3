@@ -254,7 +254,7 @@ pgaJobObject::pgaJobObject(pgaJob *_job, pgaFactory &factory, const wxString& ne
 #include "images/jobdisabled.xpm"
 
 pgaJobFactory::pgaJobFactory() 
-: pgServerObjFactory(__("pgAgent Job"), _("New Job"), _("Create a new Job."), job_xpm)
+: pgServerObjFactory(__("pgAgent Job"), __("New Job"), __("Create a new Job."), job_xpm)
 {
     disabledId = addIcon(jobdisabled_xpm);
 }

@@ -291,7 +291,7 @@ void slNodeCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 #include "images/slnodes.xpm"
 
 slNodeFactory::slNodeFactory() 
-: slObjFactory(__("Node"), _("New Node"), _("Create a new Node."), slnode_xpm)
+: slObjFactory(__("Node"), __("New Node"), __("Create a new Node."), slnode_xpm)
 {
     metaType = SLM_NODE;
 }

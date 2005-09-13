@@ -240,7 +240,7 @@ pgObject *pgOperatorClassFactory::CreateObjects(pgCollection *collection, ctlTre
 #include "images/operatorclasses.xpm"
 
 pgOperatorClassFactory::pgOperatorClassFactory() 
-: pgSchemaObjFactory(__("OperatorClass"), _("New Operator Class"), _("Create a new Operator Class."), operatorclass_xpm)
+: pgSchemaObjFactory(__("OperatorClass"), __("New Operator Class"), __("Create a new Operator Class."), operatorclass_xpm)
 {
 }
 

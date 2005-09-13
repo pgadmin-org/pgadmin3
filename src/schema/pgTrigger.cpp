@@ -247,7 +247,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 #include "images/triggers.xpm"
 
 pgTriggerFactory::pgTriggerFactory() 
-: pgTableObjFactory(__("Trigger"), _("New Trigger"), _("Create a new Trigger."), trigger_xpm)
+: pgTableObjFactory(__("Trigger"), __("New Trigger"), __("Create a new Trigger."), trigger_xpm)
 {
 }
 

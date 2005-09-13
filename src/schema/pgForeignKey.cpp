@@ -268,7 +268,7 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 
 
 pgForeignKeyFactory::pgForeignKeyFactory() 
-: pgTableObjFactory(__("foreignKey"), _("New Foreign Key"), _("Create a new Foreign Key."), foreignkey_xpm)
+: pgTableObjFactory(__("foreignKey"), __("New Foreign Key"), __("Create a new Foreign Key."), foreignkey_xpm)
 {
     metaType = PGM_FOREIGNKEY;
     collectionFactory = &constraintCollectionFactory;

@@ -1024,7 +1024,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 #include "images/serverbad-sm.xpm"
 
 pgServerFactory::pgServerFactory() 
-: pgaFactory(__("Server"), _("New Server Registration"), _("Create a new Server registration."), server_xpm, server_sm_xpm)
+: pgaFactory(__("Server"), __("New Server Registration"), __("Create a new Server registration."), server_xpm, server_sm_xpm)
 {
     metaType = PGM_SERVER;
     closedId = addIcon(serverbad_xpm);

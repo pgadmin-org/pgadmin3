@@ -145,7 +145,7 @@ pgObject *slSlSequenceFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 #include "images/sequences.xpm"
 
 slSlSequenceFactory::slSlSequenceFactory() 
-: slSetObjFactory(__("Sequence"), _("New Sequence"), _("Create a new Sequence."), sequence_xpm)
+: slSetObjFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_xpm)
 {
     metaType = SLM_SEQUENCE;
 }

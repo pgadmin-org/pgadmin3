@@ -580,7 +580,7 @@ bool pgDatabaseObjCollection::CanCreate()
 #include "images/closeddatabase-sm.xpm"
 
 pgDatabaseFactory::pgDatabaseFactory() 
-: pgServerObjFactory(__("Database"), _("New Database"), _("Create a new Database."), database_xpm, database_sm_xpm)
+: pgServerObjFactory(__("Database"), __("New Database"), __("Create a new Database."), database_xpm, database_sm_xpm)
 {
     metaType = PGM_DATABASE;
     closedId = addIcon(closeddatabase_xpm);

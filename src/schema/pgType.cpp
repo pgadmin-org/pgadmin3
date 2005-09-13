@@ -247,7 +247,7 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 #include "images/types.xpm"
 
 pgTypeFactory::pgTypeFactory() 
-: pgSchemaObjFactory(__("Type"), _("New Type"), _("Create a new Type."), type_xpm)
+: pgSchemaObjFactory(__("Type"), __("New Type"), __("Create a new Type."), type_xpm)
 {
 }
 

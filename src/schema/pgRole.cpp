@@ -370,7 +370,7 @@ pgRoleBaseFactory::pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const w
 }
 
 pgLoginRoleFactory::pgLoginRoleFactory()
-: pgRoleBaseFactory(__("Login Role"), _("New Login Role"), _("Create a new Login Role."), user_xpm)
+: pgRoleBaseFactory(__("Login Role"), __("New Login Role"), __("Create a new Login Role."), user_xpm)
 {
 }
 
@@ -379,7 +379,7 @@ static pgaCollectionFactory lcf(&loginRoleFactory, __("Login Roles"), loginroles
 
 
 pgGroupRoleFactory::pgGroupRoleFactory()
-: pgRoleBaseFactory(__("Group Role"), _("New Group Role"), _("Create a new Group Role."), group_xpm)
+: pgRoleBaseFactory(__("Group Role"), __("New Group Role"), __("Create a new Group Role."), group_xpm)
 {
 }
 

@@ -364,7 +364,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 #include "images/columns.xpm"
 
 pgColumnFactory::pgColumnFactory() 
-: pgTableObjFactory(__("Column"), _("New Column"), _("Create a new Column."), column_xpm, column_sm_xpm)
+: pgTableObjFactory(__("Column"), __("New Column"), __("Create a new Column."), column_xpm, column_sm_xpm)
 {
     metaType = PGM_COLUMN;
 }

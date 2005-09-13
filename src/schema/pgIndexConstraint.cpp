@@ -126,7 +126,7 @@ pgObject *pgUniqueFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 #include "images/primarykey.xpm"
 
 pgPrimaryKeyFactory::pgPrimaryKeyFactory() 
-: pgIndexBaseFactory(__("Primary Key"), _("New Primary Key"), _("Create a new Primary Key."), primarykey_xpm)
+: pgIndexBaseFactory(__("Primary Key"), __("New Primary Key"), __("Create a new Primary Key."), primarykey_xpm)
 {
     metaType = PGM_PRIMARYKEY;
     collectionFactory = &constraintCollectionFactory;
@@ -138,7 +138,7 @@ pgPrimaryKeyFactory primaryKeyFactory;
 #include "images/unique.xpm"
 
 pgUniqueFactory::pgUniqueFactory() 
-: pgIndexBaseFactory(__("Unique"), _("New Unique Constraint"), _("Create a new Unique Constraint."), unique_xpm)
+: pgIndexBaseFactory(__("Unique"), __("New Unique Constraint"), __("Create a new Unique Constraint."), unique_xpm)
 {
     metaType = PGM_UNIQUE;
     collectionFactory = &constraintCollectionFactory;

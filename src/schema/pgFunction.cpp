@@ -419,7 +419,7 @@ pgFunctionFactory::pgFunctionFactory(const wxChar *tn, const wxChar *ns, const w
     metaType = PGM_FUNCTION;
 }
 
-pgFunctionFactory functionFactory(__("Function"), _("New Function"), _("Create a new Function."), function_xpm);
+pgFunctionFactory functionFactory(__("Function"), __("New Function"), __("Create a new Function."), function_xpm);
 static pgaCollectionFactory cf(&functionFactory, __("Functions"), functions_xpm);
 
 
@@ -427,7 +427,7 @@ static pgaCollectionFactory cf(&functionFactory, __("Functions"), functions_xpm)
 #include "images/triggerfunctions.xpm"
 
 pgTriggerFunctionFactory::pgTriggerFunctionFactory() 
-: pgFunctionFactory(__("Trigger Function"), _("New Trigger Function"), _("Create a new Trigger Function."), triggerfunction_xpm)
+: pgFunctionFactory(__("Trigger Function"), __("New Trigger Function"), __("Create a new Trigger Function."), triggerfunction_xpm)
 {
 }
 
@@ -435,7 +435,7 @@ pgTriggerFunctionFactory triggerFunctionFactory;
 static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"), triggerfunctions_xpm);
 
 pgProcedureFactory::pgProcedureFactory() 
-: pgFunctionFactory(__("Procedure"), _("New Procedure"), _("Create a new Procedure."), function_xpm)
+: pgFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), function_xpm)
 {
 }
 

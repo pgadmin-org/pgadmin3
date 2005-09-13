@@ -340,7 +340,7 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, ctlTree *browser)
 #include "images/slclusters.xpm"
 
 pgaSlClusterFactory::pgaSlClusterFactory() 
-: pgDatabaseObjFactory(__("Slony-I Cluster"), _("New Slony-I Cluster"), _("Create new Slony-I Replication Cluster"), slcluster_xpm)
+: pgDatabaseObjFactory(__("Slony-I Cluster"), __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster"), slcluster_xpm)
 {
 //    metaType = SLM_CLUSTER;
 }

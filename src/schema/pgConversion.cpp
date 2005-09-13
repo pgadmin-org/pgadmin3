@@ -142,7 +142,7 @@ pgObject *pgConversionFactory::CreateObjects(pgCollection *collection, ctlTree *
 #include "images/conversions.xpm"
 
 pgConversionFactory::pgConversionFactory() 
-: pgSchemaObjFactory(__("Conversion"), _("New Conversion"), _("Create a new Conversion."), conversion_xpm)
+: pgSchemaObjFactory(__("Conversion"), __("New Conversion"), __("Create a new Conversion."), conversion_xpm)
 {
 }
 

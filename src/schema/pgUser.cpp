@@ -297,7 +297,7 @@ pgObject *pgUserFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 #include "images/users.xpm"
 
 pgUserFactory::pgUserFactory() 
-: pgServerObjFactory(__("User"), _("New User"), _("Create a new User."), user_xpm)
+: pgServerObjFactory(__("User"), __("New User"), __("Create a new User."), user_xpm)
 {
 }
 

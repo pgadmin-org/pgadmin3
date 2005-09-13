@@ -233,7 +233,7 @@ pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *br
 #include "images/operators.xpm"
 
 pgOperatorFactory::pgOperatorFactory() 
-: pgSchemaObjFactory(__("Operator"), _("New Operator"), _("Create a new Operator."), operator_xpm)
+: pgSchemaObjFactory(__("Operator"), __("New Operator"), __("Create a new Operator."), operator_xpm)
 {
 }
 

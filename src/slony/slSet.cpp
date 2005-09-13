@@ -243,7 +243,7 @@ pgObject *slSetFactory::CreateObjects(pgCollection *coll, ctlTree *browser, cons
 #include "images/slsets.xpm"
 
 slSetFactory::slSetFactory() 
-: slObjFactory(__("Set"), _("New Replication Set"), _("Create a new Replication Set."), slset_xpm)
+: slObjFactory(__("Set"), __("New Replication Set"), __("Create a new Replication Set."), slset_xpm)
 {
     exportedIconId = addIcon(slset2_xpm);
     metaType = SLM_SET;

@@ -148,7 +148,7 @@ void pgaFactory::AppendMenu(wxMenu *menu)
 {
     if (menu && GetNewString())
     {
-        wxMenuItem *item=menu->Append(MNU_NEW+GetId(), GetNewString(), GetNewLongString());
+        wxMenuItem *item=menu->Append(MNU_NEW+GetId(), wxGetTranslation(GetNewString()), wxGetTranslation(GetNewLongString()));
         if (image)
         {
             (void)item;

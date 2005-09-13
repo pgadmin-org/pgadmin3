@@ -158,7 +158,7 @@ pgObject *slListenFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 #include "images/sllistens.xpm"
 
 slListenFactory::slListenFactory() 
-: slNodeObjFactory(__("Listen"), _("New Listen"), _("Create a new Listen."), sllisten_xpm)
+: slNodeObjFactory(__("Listen"), __("New Listen"), __("Create a new Listen."), sllisten_xpm)
 {
     metaType = SLM_LISTEN;
 }
