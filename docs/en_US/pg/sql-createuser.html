@@ -1,171 +1,331 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CREATE USER</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-createtype.html" title="CREATE TYPE">
-<link rel="next" href="sql-createview.html" title="CREATE VIEW">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createuser"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>CREATE USER &#8212; define a new database user account</p>
-</div>
-<a name="id455152"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">CREATE USER <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE USER</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE TYPE"
+HREF="sql-createtype.html"><LINK
+REL="NEXT"
+TITLE="CREATE VIEW"
+HREF="sql-createview.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtype.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createview.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEUSER"
+></A
+>CREATE USER</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43806"
+></A
+><H2
+>Name</H2
+>CREATE USER&nbsp;--&nbsp;define a new database role</DIV
+><A
+NAME="AEN43809"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43811"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE USER <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [ [ WITH ] <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> [ ... ] ]
 
-where <em class="replaceable"><code>option</code></em> can be:
+where <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> can be:
     
-      SYSID <em class="replaceable"><code>uid</code></em> 
+      SUPERUSER | NOSUPERUSER
     | CREATEDB | NOCREATEDB
+    | CREATEROLE | NOCREATEROLE
     | CREATEUSER | NOCREATEUSER
-    | IN GROUP <em class="replaceable"><code>groupname</code></em> [, ...]
-    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<em class="replaceable"><code>password</code></em>'
-    | VALID UNTIL '<em class="replaceable"><code>abstime</code></em>' </pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id455209"></a><h2>Description</h2>
-<p>   <code class="command">CREATE USER</code> adds a new user to a
-   <span class="productname">PostgreSQL</span> database cluster.  Refer to
-   <a href="user-manag.html" title="Chapter 17. Database Users and Privileges">Chapter 17, <i>Database Users and Privileges</i></a> and <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a> for information about managing
-   users and authentication.  You must be a database superuser to use
-   this command.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id455240"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
-<dd><p>        The name of the new user.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>uid</code></em></span></dt>
-<dd>
-<p>        The <code class="literal">SYSID</code> clause can be used to choose the
-        <span class="productname">PostgreSQL</span> user ID of the new user.
-        This is normally not necessary, but may
-        be useful if you need to recreate the owner of an orphaned
-        object.
-       </p>
-<p>        If this is not specified, the highest assigned user ID plus one
-        (with a minimum of 100) will be used as default.
-       </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CREATEDB</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOCREATEDB</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd><p>        These clauses define a user's ability to create databases.  If
-        <code class="literal">CREATEDB</code> is specified, the user being
-        defined will be allowed to create his own databases. Using
-        <code class="literal">NOCREATEDB</code> will deny a user the ability to
-        create databases. If not specified,
-        <code class="literal">NOCREATEDB</code> is the default.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CREATEUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOCREATEUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd><p>        These clauses determine whether a user will be permitted to
-        create new users himself. <code class="literal">CREATEUSER</code> will also make
-        the user a superuser, who can override all access restrictions.
-        If not specified,
-        <code class="literal">NOCREATEUSER</code> is the default.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>groupname</code></em></span></dt>
-<dd><p>        A name of an existing group into which to insert the user as a new
-        member. Multiple group names may be listed.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>password</code></em></span></dt>
-<dd><p>        Sets the user's password. If you do not plan to use password
-        authentication you can omit this option, but then the user
-        won't be able to connect if you decide to switch to password
-        authentication.  The password can be set or changed later,
-        using <a href="sql-alteruser.html">ALTER USER</a>.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">ENCRYPTED</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">UNENCRYPTED</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd>
-<p>        These key words control whether the password is stored
-        encrypted in the system catalogs.  (If neither is specified,
-        the default behavior is determined by the configuration
-        parameter <a href="runtime-config.html#guc-password-encryption">password_encryption</a>.)  If the
-        presented password string is already in MD5-encrypted format,
-        then it is stored encrypted as-is, regardless of whether
-        <code class="literal">ENCRYPTED</code> or <code class="literal">UNENCRYPTED</code> is specified
-        (since the system cannot decrypt the specified encrypted
-        password string).  This allows reloading of encrypted
-        passwords during dump/restore.
-       </p>
-<p>        Note that older clients may lack support for the MD5
-        authentication mechanism that is needed to work with passwords
-        that are stored encrypted.
-       </p>
-</dd>
-<dt><span class="term"><em class="replaceable"><code>abstime</code></em></span></dt>
-<dd><p>        The <code class="literal">VALID UNTIL</code> clause sets an absolute
-        time after which the user's password is no longer valid.  If
-        this clause is omitted the password will be valid for all time.
-       </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id455440"></a><h2>Notes</h2>
-<p>   Use <a href="sql-alteruser.html">ALTER USER</a> to
-   change the attributes of a user, and <a href="sql-dropuser.html">DROP USER</a> to remove a user.  Use <a href="sql-altergroup.html">ALTER GROUP</a> to add the
-   user to groups or remove the user from groups.
-  </p>
-<p>   <span class="productname">PostgreSQL</span> includes a program <a href="app-createuser.html"><span class="application">createuser</span></a> that has
-   the same functionality as <code class="command">CREATE USER</code> (in fact, it calls this
-   command) but can be run from the command shell.
-  </p>
-<p>   The <code class="literal">VALID UNTIL</code> clause defines an expiration time for a
-   password only, not for the user account <span class="foreignphrase"><em class="foreignphrase">per se</em></span>.  In
-   particular, the expiration time is not enforced when logging in using
-   a non-password-based authentication method.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id455512"></a><h2>Examples</h2>
-<p>   Create a user with no password:
-</p>
-<pre class="programlisting">CREATE USER jonathan;</pre>
-<p>
-  </p>
-<p>   Create a user with a password:
-</p>
-<pre class="programlisting">CREATE USER davide WITH PASSWORD 'jw8s0F4';</pre>
-<p>
-  </p>
-<p>   Create a user with a password that is valid until the end of 2004.
-   After one second has ticked in 2005, the password is no longer
-   valid.
-
-</p>
-<pre class="programlisting">CREATE USER miriam WITH PASSWORD 'jw8s0F4' VALID UNTIL '2005-01-01';</pre>
-<p>
-  </p>
-<p> 
-   Create an account where the user can create databases:
-</p>
-<pre class="programlisting">CREATE USER manuel WITH PASSWORD 'jw8s0F4' CREATEDB;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id455550"></a><h2>Compatibility</h2>
-<p>   The <code class="command">CREATE USER</code> statement is a
-   <span class="productname">PostgreSQL</span> extension.  The SQL standard
+    | INHERIT | NOINHERIT
+    | LOGIN | NOLOGIN
+    | CONNECTION LIMIT <TT
+CLASS="REPLACEABLE"
+><I
+>connlimit</I
+></TT
+>
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
+CLASS="REPLACEABLE"
+><I
+>password</I
+></TT
+>'
+    | VALID UNTIL '<TT
+CLASS="REPLACEABLE"
+><I
+>timestamp</I
+></TT
+>' 
+    | IN ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+> [, ...]
+    | IN GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+> [, ...]
+    | ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+> [, ...]
+    | ADMIN <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+> [, ...]
+    | USER <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+> [, ...]
+    | SYSID <TT
+CLASS="REPLACEABLE"
+><I
+>uid</I
+></TT
+> </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43825"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE USER</TT
+> is now an alias for
+   <A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+>,
+   which see for more information.
+   The only difference is that when the command is spelled
+   <TT
+CLASS="COMMAND"
+>CREATE USER</TT
+>, <TT
+CLASS="LITERAL"
+>LOGIN</TT
+> is assumed
+   by default, whereas <TT
+CLASS="LITERAL"
+>NOLOGIN</TT
+> is assumed when
+   the command is spelled
+   <TT
+CLASS="COMMAND"
+>CREATE ROLE</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43834"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>CREATE USER</TT
+> statement is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.  The SQL standard
    leaves the definition of users to the implementation.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id455569"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alteruser.html">ALTER USER</a>, <a href="sql-dropuser.html">DROP USER</a>, <a href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>, </span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43839"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE TYPE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE VIEW</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

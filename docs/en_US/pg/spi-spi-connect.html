@@ -1,56 +1,279 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_connect</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
-<link rel="prev" href="spi.html" title="Chapter 39. Server Programming Interface">
-<link rel="next" href="spi-spi-finish.html" title="SPI_finish">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-connect"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_connect &#8212; connect a procedure to the SPI manager</p>
-</div>
-<a name="id429880"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">int SPI_connect(void)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id429891"></a><h2>Description</h2>
-<p>   <code class="function">SPI_connect</code> opens a connection from a
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SPI_connect</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="Server Programming Interface"
+HREF="spi.html"><LINK
+REL="NEXT"
+TITLE="SPI_finish"
+HREF="spi-spi-finish.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-finish.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-finish.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-CONNECT"
+></A
+>SPI_connect</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36293"
+></A
+><H2
+>Name</H2
+>SPI_connect&nbsp;--&nbsp;connect a procedure to the SPI manager</DIV
+><A
+NAME="AEN36296"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN36298"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>int SPI_connect(void)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36300"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_connect</CODE
+> opens a connection from a
    procedure invocation to the SPI manager.  You must call this
    function if you want to execute commands through SPI.  Some utility
    SPI functions may be called from unconnected procedures.
-  </p>
-<p>   If your procedure is already connected,
-   <code class="function">SPI_connect</code> will return the error code
-   <span class="returnvalue">SPI_ERROR_CONNECT</span>.  This could happen if
-   a procedure that has called <code class="function">SPI_connect</code>
+  </P
+><P
+>   If your procedure is already connected,
+   <CODE
+CLASS="FUNCTION"
+>SPI_connect</CODE
+> will return the error code
+   <SPAN
+CLASS="RETURNVALUE"
+>SPI_ERROR_CONNECT</SPAN
+>.  This could happen if
+   a procedure that has called <CODE
+CLASS="FUNCTION"
+>SPI_connect</CODE
+>
    directly calls another procedure that calls
-   <code class="function">SPI_connect</code>.  While recursive calls to the
-   <span class="acronym">SPI</span> manager are permitted when an SQL command
+   <CODE
+CLASS="FUNCTION"
+>SPI_connect</CODE
+>.  While recursive calls to the
+   <ACRONYM
+CLASS="ACRONYM"
+>SPI</ACRONYM
+> manager are permitted when an SQL command
    called through SPI invokes another function that uses
-   <span class="acronym">SPI</span>, directly nested calls to
-   <code class="function">SPI_connect</code> and
-   <code class="function">SPI_finish</code> are forbidden.
-   (But see <code class="function">SPI_push</code> and <code class="function">SPI_pop</code>.)
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id429962"></a><h2>Return Value</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><code class="symbol">SPI_OK_CONNECT</code></span></dt>
-<dd><p>      on success
-     </p></dd>
-<dt><span class="term"><code class="symbol">SPI_ERROR_CONNECT</code></span></dt>
-<dd><p>      on error
-     </p></dd>
-</dl></div>
-</div>
-</div></body>
-</html>
+   <ACRONYM
+CLASS="ACRONYM"
+>SPI</ACRONYM
+>, directly nested calls to
+   <CODE
+CLASS="FUNCTION"
+>SPI_connect</CODE
+> and
+   <CODE
+CLASS="FUNCTION"
+>SPI_finish</CODE
+> are forbidden.
+   (But see <CODE
+CLASS="FUNCTION"
+>SPI_push</CODE
+> and <CODE
+CLASS="FUNCTION"
+>SPI_pop</CODE
+>.)
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36315"
+></A
+><H2
+>Return Value</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_OK_CONNECT</TT
+></DT
+><DD
+><P
+>      on success
+     </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_CONNECT</TT
+></DT
+><DD
+><P
+>      on error
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-finish.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Server Programming Interface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_finish</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

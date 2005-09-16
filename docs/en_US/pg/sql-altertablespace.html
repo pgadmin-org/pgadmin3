@@ -1,71 +1,340 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER TABLESPACE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-altertable.html" title="ALTER TABLE">
-<link rel="next" href="sql-altertrigger.html" title="ALTER TRIGGER">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-altertablespace"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ALTER TABLESPACE &#8212; change the definition of a tablespace</p>
-</div>
-<a name="id439544"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER TABLESPACE <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>newname</code></em>
-ALTER TABLESPACE <em class="replaceable"><code>name</code></em> OWNER TO <em class="replaceable"><code>newowner</code></em></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id439573"></a><h2>Description</h2>
-<p>   <code class="command">ALTER TABLESPACE</code> changes the definition of
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER TABLESPACE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER TABLE"
+HREF="sql-altertable.html"><LINK
+REL="NEXT"
+TITLE="ALTER TRIGGER"
+HREF="sql-altertrigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERTABLESPACE"
+></A
+>ALTER TABLESPACE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39529"
+></A
+><H2
+>Name</H2
+>ALTER TABLESPACE&nbsp;--&nbsp;change the definition of a tablespace</DIV
+><A
+NAME="AEN39532"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39534"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER TABLESPACE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> RENAME TO <TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+>
+ALTER TABLESPACE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> OWNER TO <TT
+CLASS="REPLACEABLE"
+><I
+>newowner</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39540"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER TABLESPACE</TT
+> changes the definition of
    a tablespace.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id439585"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
-<dd><p>      The name of an existing tablespace.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
-<dd><p>      The new name of the tablespace.  The new name cannot
-      begin with <code class="literal">pg_</code>, as such names
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39544"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name of an existing tablespace.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+></DT
+><DD
+><P
+>      The new name of the tablespace.  The new name cannot
+      begin with <TT
+CLASS="LITERAL"
+>pg_</TT
+>, as such names
       are reserved for system tablespaces.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>newowner</code></em></span></dt>
-<dd><p>      The new owner of the tablespace.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>newowner</I
+></TT
+></DT
+><DD
+><P
+>      The new owner of the tablespace.
       You must be a superuser to change the owner of a tablespace.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id439628"></a><h2>Examples</h2>
-<p>   Rename tablespace <code class="literal">index_space</code> to <code class="literal">fast_raid</code>:
-</p>
-<pre class="programlisting">ALTER TABLESPACE index_space RENAME TO fast_raid;</pre>
-<p>
-  </p>
-<p>   Change the owner of tablespace <code class="literal">index_space</code>:
-</p>
-<pre class="programlisting">ALTER TABLESPACE index_space OWNER TO mary;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id439666"></a><h2>Compatibility</h2>
-<p>   There is no <code class="command">ALTER TABLESPACE</code> statement in
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39563"
+></A
+><H2
+>Examples</H2
+><P
+>   Rename tablespace <TT
+CLASS="LITERAL"
+>index_space</TT
+> to <TT
+CLASS="LITERAL"
+>fast_raid</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLESPACE index_space RENAME TO fast_raid;</PRE
+><P>
+  </P
+><P
+>   Change the owner of tablespace <TT
+CLASS="LITERAL"
+>index_space</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLESPACE index_space OWNER TO mary;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39572"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>ALTER TABLESPACE</TT
+> statement in
    the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id439678"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createtablespace.html">CREATE TABLESPACE</a>, <a href="sql-droptablespace.html">DROP TABLESPACE</a>, </span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39576"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createtablespace.html"
+><I
+>CREATE TABLESPACE</I
+></A
+>, <A
+HREF="sql-droptablespace.html"
+><I
+>DROP TABLESPACE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER TABLE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

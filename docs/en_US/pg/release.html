@@ -1,428 +1,3423 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Appendix E. Release Notes</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
-<link rel="prev" href="unsupported-features-sql-standard.html" title="D.2. Unsupported Features">
-<link rel="next" href="release-8-0-2.html" title="E.2. Release 8.0.2">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="release">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="release"></a>Appendix E. Release Notes</h2></div></div></div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="release.html#release-8-0-3">E.1. Release 8.0.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release.html#id531716">E.1.1. Migration to version 8.0.3</a></span></dt>
-<dt><span class="sect2"><a href="release.html#id531769">E.1.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-8-0-2.html">E.2. Release 8.0.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-8-0-2.html#id531975">E.2.1. Migration to version 8.0.2</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-2.html#id531989">E.2.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-8-0-1.html">E.3. Release 8.0.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-8-0-1.html#id532464">E.3.1. Migration to version 8.0.1</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-1.html#id532471">E.3.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-8-0.html">E.4. Release 8.0</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-8-0.html#id532578">E.4.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0.html#id532797">E.4.2. Migration to version 8.0</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0.html#id533186">E.4.3. Deprecated Features</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0.html#id533265">E.4.4. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-8.html">E.5. Release 7.4.8</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-8.html#id536058">E.5.1. Migration to version 7.4.8</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-8.html#id536188">E.5.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-7.html">E.6. Release 7.4.7</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-7.html#id536429">E.6.1. Migration to version 7.4.7</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-7.html#id536436">E.6.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-6.html">E.7. Release 7.4.6</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-6.html#id536513">E.7.1. Migration to version 7.4.6</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-6.html#id536520">E.7.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-5.html">E.8. Release 7.4.5</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-5.html#id536647">E.8.1. Migration to version 7.4.5</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-5.html#id536654">E.8.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-4.html">E.9. Release 7.4.4</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-4.html#id536682">E.9.1. Migration to version 7.4.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-4.html#id536688">E.9.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-3.html">E.10. Release 7.4.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-3.html#id536774">E.10.1. Migration to version 7.4.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-3.html#id536781">E.10.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-2.html">E.11. Release 7.4.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-2.html#id536893">E.11.1. Migration to version 7.4.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-2.html#id537043">E.11.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4-1.html">E.12. Release 7.4.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4-1.html#id537196">E.12.1. Migration to version 7.4.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-1.html#id537236">E.12.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-4.html">E.13. Release 7.4</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-4.html#id537483">E.13.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4.html#id537786">E.13.2. Migration to version 7.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4.html#id538064">E.13.3. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-10.html">E.14. Release 7.3.10</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-10.html#id540890">E.14.1. Migration to version 7.3.10</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-10.html#id540972">E.14.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-9.html">E.15. Release 7.3.9</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-9.html#id541115">E.15.1. Migration to version 7.3.9</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-9.html#id541121">E.15.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-8.html">E.16. Release 7.3.8</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-8.html#id541195">E.16.1. Migration to version 7.3.8</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-8.html#id541201">E.16.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-7.html">E.17. Release 7.3.7</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-7.html#id541253">E.17.1. Migration to version 7.3.7</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-7.html#id541259">E.17.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-6.html">E.18. Release 7.3.6</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-6.html#id541302">E.18.1. Migration to version 7.3.6</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-6.html#id541312">E.18.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-5.html">E.19. Release 7.3.5</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-5.html#id541385">E.19.1. Migration to version 7.3.5</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-5.html#id541395">E.19.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-4.html">E.20. Release 7.3.4</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-4.html#id541491">E.20.1. Migration to version 7.3.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-4.html#id541501">E.20.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-3.html">E.21. Release 7.3.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-3.html#id541555">E.21.1. Migration to version 7.3.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-3.html#id541565">E.21.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-2.html">E.22. Release 7.3.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-2.html#id542120">E.22.1. Migration to version 7.3.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-2.html#id542130">E.22.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3-1.html">E.23. Release 7.3.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3-1.html#id542276">E.23.1. Migration to version 7.3.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-1.html#id542294">E.23.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-3.html">E.24. Release 7.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-3.html#id542377">E.24.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3.html#id542550">E.24.2. Migration to version 7.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3.html#id542716">E.24.3. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-8.html">E.25. Release 7.2.8</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-8.html#id543962">E.25.1. Migration to version 7.2.8</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-8.html#id543969">E.25.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-7.html">E.26. Release 7.2.7</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-7.html#id544051">E.26.1. Migration to version 7.2.7</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-7.html#id544058">E.26.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-6.html">E.27. Release 7.2.6</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-6.html#id544117">E.27.1. Migration to version 7.2.6</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-6.html#id544124">E.27.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-5.html">E.28. Release 7.2.5</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-5.html#id544179">E.28.1. Migration to version 7.2.5</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-5.html#id544186">E.28.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-4.html">E.29. Release 7.2.4</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-4.html#id544261">E.29.1. Migration to version 7.2.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-4.html#id544270">E.29.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-3.html">E.30. Release 7.2.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-3.html#id544323">E.30.1. Migration to version 7.2.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-3.html#id544333">E.30.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-2.html">E.31. Release 7.2.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-2.html#id544381">E.31.1. Migration to version 7.2.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-2.html#id544391">E.31.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2-1.html">E.32. Release 7.2.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2-1.html#id544467">E.32.1. Migration to version 7.2.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-1.html#id544477">E.32.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-2.html">E.33. Release 7.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-2.html#id544555">E.33.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2.html#id544640">E.33.2. Migration to version 7.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2.html#id544788">E.33.3. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-1-3.html">E.34. Release 7.1.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-1-3.html#id545857">E.34.1. Migration to version 7.1.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1-3.html#id545867">E.34.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-1-2.html">E.35. Release 7.1.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-1-2.html#id545897">E.35.1. Migration to version 7.1.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1-2.html#id545907">E.35.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-1-1.html">E.36. Release 7.1.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-1-1.html#id545935">E.36.1. Migration to version 7.1.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1-1.html#id545944">E.36.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-1.html">E.37. Release 7.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-1.html#id546041">E.37.1. Migration to version 7.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1.html#id546048">E.37.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-0-3.html">E.38. Release 7.0.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-0-3.html#id546153">E.38.1. Migration to version 7.0.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0-3.html#id546162">E.38.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-0-2.html">E.39. Release 7.0.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-0-2.html#id546205">E.39.1. Migration to version 7.0.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0-2.html#id546215">E.39.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-0-1.html">E.40. Release 7.0.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-0-1.html#id546242">E.40.1. Migration to version 7.0.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0-1.html#id546252">E.40.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-7-0.html">E.41. Release 7.0</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-7-0.html#id546401">E.41.1. Migration to version 7.0</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0.html#id546505">E.41.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-5-3.html">E.42. Release 6.5.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-5-3.html#id546810">E.42.1. Migration to version 6.5.3</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5-3.html#id546820">E.42.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-5-2.html">E.43. Release 6.5.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-5-2.html#id546848">E.43.1. Migration to version 6.5.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5-2.html#id546857">E.43.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-5-1.html">E.44. Release 6.5.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-5-1.html#id546900">E.44.1. Migration to version 6.5.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5-1.html#id546910">E.44.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-5.html">E.45. Release 6.5</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-5.html#id547140">E.45.1. Migration to version 6.5</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5.html#id547263">E.45.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-4-2.html">E.46. Release 6.4.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-4-2.html#id547455">E.46.1. Migration to version 6.4.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-4-2.html#id547464">E.46.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-4-1.html">E.47. Release 6.4.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-4-1.html#id547490">E.47.1. Migration to version 6.4.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-4-1.html#id547499">E.47.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-4.html">E.48. Release 6.4</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-4.html#id547629">E.48.1. Migration to version 6.4</a></span></dt>
-<dt><span class="sect2"><a href="release-6-4.html#id547653">E.48.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-3-2.html">E.49. Release 6.3.2</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-6-3-2.html#id547821">E.49.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-6-3-1.html">E.50. Release 6.3.1</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-6-3-1.html#id547900">E.50.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-6-3.html">E.51. Release 6.3</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-3.html#id548104">E.51.1. Migration to version 6.3</a></span></dt>
-<dt><span class="sect2"><a href="release-6-3.html#id548129">E.51.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-2-1.html">E.52. Release 6.2.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-2-1.html#id548295">E.52.1. Migration from version 6.2 to version 6.2.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-2-1.html#id548324">E.52.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-2.html">E.53. Release 6.2</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-2.html#id548367">E.53.1. Migration from version 6.1 to version 6.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-2.html#id548388">E.53.2. Migration from version 1.<em class="replaceable"><code>x</code></em> to version 6.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-2.html#id548399">E.53.3. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-1-1.html">E.54. Release 6.1.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-1-1.html#id548482">E.54.1. Migration from version 6.1 to version 6.1.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-1-1.html#id548489">E.54.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-1.html">E.55. Release 6.1</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-1.html#id548637">E.55.1. Migration to version 6.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-1.html#id548647">E.55.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-6-0.html">E.56. Release 6.0</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-6-0.html#id548772">E.56.1. Migration from version 1.09 to version 6.0</a></span></dt>
-<dt><span class="sect2"><a href="release-6-0.html#id548779">E.56.2. Migration from pre-1.09 to version 6.0</a></span></dt>
-<dt><span class="sect2"><a href="release-6-0.html#id548786">E.56.3. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-1-09.html">E.57. Release 1.09</a></span></dt>
-<dt><span class="sect1"><a href="release-1-02.html">E.58. Release 1.02</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-1-02.html#id548914">E.58.1. Migration from version 1.02 to version 1.02.1</a></span></dt>
-<dt><span class="sect2"><a href="release-1-02.html#id548999">E.58.2. Dump/Reload Procedure</a></span></dt>
-<dt><span class="sect2"><a href="release-1-02.html#id549042">E.58.3. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-1-01.html">E.59. Release 1.01</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="release-1-01.html#id549071">E.59.1. Migration from version 1.0 to version 1.01</a></span></dt>
-<dt><span class="sect2"><a href="release-1-01.html#id549287">E.59.2. Changes</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="release-1-0.html">E.60. Release 1.0</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-1-0.html#id549338">E.60.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-0-03.html">E.61. <span class="productname">Postgres95</span> Release 0.03</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-0-03.html#id549384">E.61.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-0-02.html">E.62. <span class="productname">Postgres95</span> Release 0.02</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-0-02.html#id549519">E.62.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-0-01.html">E.63. <span class="productname">Postgres95</span> Release 0.01</a></span></dt>
-</dl>
-</div>
-<div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-8-0-3"></a>E.1. Release 8.0.3</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Release date</h3>
-<p>2005-05-09</p>
-</div>
-<p>    This release contains a variety of fixes from 8.0.2, including several
-    security-related issues.
-   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id531716"></a>E.1.1. Migration to version 8.0.3</h3></div></div></div>
-<p>     A dump/restore is not required for those running 8.0.X.  However,
-     it is one possible way of handling two significant security problems
-     that have been found in the initial contents of 8.0.X system
-     catalogs.  A dump/initdb/reload sequence using 8.0.3's initdb will
-     automatically correct these problems.
-    </p>
-<p>     The larger security problem is that the built-in character set encoding
-     conversion functions can be invoked from SQL commands by unprivileged
-     users, but the functions were not designed for such use and are not
-     secure against malicious choices of arguments.  The fix involves changing
-     the declared parameter list of these functions so that they can no longer
-     be invoked from SQL commands.  (This does not affect their normal use
-     by the encoding conversion machinery.)
-    </p>
-<p>     The lesser problem is that the <code class="filename">contrib/tsearch2</code> module
-     creates several functions that are misdeclared to return
-     <code class="type">internal</code> when they do not accept <code class="type">internal</code> arguments.
-     This breaks type safety for all functions using <code class="type">internal</code>
-     arguments.
-    </p>
-<p>     It is strongly recommended that all installations repair these errors,
-     either by initdb or by following the manual repair procedure given
-     below.  The errors at least allow unprivileged database users to crash
-     their server process, and may allow unprivileged users to gain the
-     privileges of a database superuser.
-    </p>
-<p>     If you wish not to do an initdb, perform the same manual repair
-     procedures shown in the <a href="release-7-4-8.html" title="E.5. Release 7.4.8">7.4.8 release
-     notes</a>.
-    </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id531769"></a>E.1.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>Change encoding function signature to prevent
-misuse</p></li>
-<li><p>Change <code class="filename">contrib/tsearch2</code> to avoid unsafe use of
-<code class="type">INTERNAL</code> function results</p></li>
-<li><p>Guard against incorrect second parameter to
-<code class="function">record_out</code></p></li>
-<li>
-<p>Repair ancient race condition that allowed a transaction to be
-seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
-than for other purposes</p>
-<p>This is an extremely serious bug since it could lead to apparent
-data inconsistencies being briefly visible to applications.</p>
-</li>
-<li>
-<p>Repair race condition between relation extension and
-VACUUM</p>
-<p>This could theoretically have caused loss of a page's worth of
-freshly-inserted data, although the scenario seems of very low probability.
-There are no known cases of it having caused more than an Assert failure.</p>
-</li>
-<li>
-<p>Fix comparisons of <code class="type">TIME WITH TIME ZONE</code> values</p>
-<p>The comparison code was wrong in the case where the
-<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.
-NOTE: if you have an index on a <code class="type">TIME WITH TIME ZONE</code> column,
-it will need to be <code class="command">REINDEX</code>ed after installing this update, because
-the fix corrects the sort order of column values.</p>
-</li>
-<li><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
-<code class="type">TIME WITH TIME ZONE</code> values</p></li>
-<li>
-<p>Fix mis-display of negative fractional seconds in
-<code class="type">INTERVAL</code> values</p>
-<p>This error only occurred when the
-<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.</p>
-</li>
-<li><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
-correctly (Neil)</p></li>
-<li><p>Still more 64-bit fixes for
-<code class="filename">contrib/intagg</code></p></li>
-<li><p>Prevent incorrect optimization of functions returning
-<code class="type">RECORD</code></p></li>
-<li><p>Prevent crash on <code class="literal">COALESCE(NULL,NULL)</code></p></li>
-<li><p>Fix Borland makefile for libpq</p></li>
-<li><p>Fix <code class="filename">contrib/btree_gist</code> for <code class="type">timetz</code> type
-(Teodor)</p></li>
-<li><p>Make <code class="command">pg_ctl</code> check the PID found in
-<code class="filename">postmaster.pid</code> to see if it is still a live
-process</p></li>
-<li><p>Fix <code class="command">pg_dump</code>/<code class="command">pg_restore</code> problems caused
-by addition of dump timestamps</p></li>
-<li><p>Fix interaction between materializing holdable cursors and
-firing deferred triggers during transaction commit</p></li>
-<li><p>Fix memory leak in SQL functions returning pass-by-reference
-data types</p></li>
-</ul></div>
-</div>
-</div>
-</div></body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Release Notes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
+REL="PREVIOUS"
+TITLE="Unsupported Features"
+HREF="unsupported-features-sql-standard.html"><LINK
+REL="NEXT"
+TITLE="Release 8.0.3"
+HREF="release-8-0-3.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="APPENDIX"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="unsupported-features-sql-standard.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="features.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cvs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-8-0-3.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="RELEASE"
+></A
+>Appendix E. Release Notes</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>E.1. <A
+HREF="release.html#RELEASE-8-1"
+>Release 8.1</A
+></DT
+><DT
+>E.2. <A
+HREF="release-8-0-3.html"
+>Release 8.0.3</A
+></DT
+><DT
+>E.3. <A
+HREF="release-8-0-2.html"
+>Release 8.0.2</A
+></DT
+><DT
+>E.4. <A
+HREF="release-8-0-1.html"
+>Release 8.0.1</A
+></DT
+><DT
+>E.5. <A
+HREF="release-8-0.html"
+>Release 8.0</A
+></DT
+><DT
+>E.6. <A
+HREF="release-7-4-8.html"
+>Release 7.4.8</A
+></DT
+><DT
+>E.7. <A
+HREF="release-7-4-7.html"
+>Release 7.4.7</A
+></DT
+><DT
+>E.8. <A
+HREF="release-7-4-6.html"
+>Release 7.4.6</A
+></DT
+><DT
+>E.9. <A
+HREF="release-7-4-5.html"
+>Release 7.4.5</A
+></DT
+><DT
+>E.10. <A
+HREF="release-7-4-4.html"
+>Release 7.4.4</A
+></DT
+><DT
+>E.11. <A
+HREF="release-7-4-3.html"
+>Release 7.4.3</A
+></DT
+><DT
+>E.12. <A
+HREF="release-7-4-2.html"
+>Release 7.4.2</A
+></DT
+><DT
+>E.13. <A
+HREF="release-7-4-1.html"
+>Release 7.4.1</A
+></DT
+><DT
+>E.14. <A
+HREF="release-7-4.html"
+>Release 7.4</A
+></DT
+><DT
+>E.15. <A
+HREF="release-7-3-10.html"
+>Release 7.3.10</A
+></DT
+><DT
+>E.16. <A
+HREF="release-7-3-9.html"
+>Release 7.3.9</A
+></DT
+><DT
+>E.17. <A
+HREF="release-7-3-8.html"
+>Release 7.3.8</A
+></DT
+><DT
+>E.18. <A
+HREF="release-7-3-7.html"
+>Release 7.3.7</A
+></DT
+><DT
+>E.19. <A
+HREF="release-7-3-6.html"
+>Release 7.3.6</A
+></DT
+><DT
+>E.20. <A
+HREF="release-7-3-5.html"
+>Release 7.3.5</A
+></DT
+><DT
+>E.21. <A
+HREF="release-7-3-4.html"
+>Release 7.3.4</A
+></DT
+><DT
+>E.22. <A
+HREF="release-7-3-3.html"
+>Release 7.3.3</A
+></DT
+><DT
+>E.23. <A
+HREF="release-7-3-2.html"
+>Release 7.3.2</A
+></DT
+><DT
+>E.24. <A
+HREF="release-7-3-1.html"
+>Release 7.3.1</A
+></DT
+><DT
+>E.25. <A
+HREF="release-7-3.html"
+>Release 7.3</A
+></DT
+><DT
+>E.26. <A
+HREF="release-7-2-8.html"
+>Release 7.2.8</A
+></DT
+><DT
+>E.27. <A
+HREF="release-7-2-7.html"
+>Release 7.2.7</A
+></DT
+><DT
+>E.28. <A
+HREF="release-7-2-6.html"
+>Release 7.2.6</A
+></DT
+><DT
+>E.29. <A
+HREF="release-7-2-5.html"
+>Release 7.2.5</A
+></DT
+><DT
+>E.30. <A
+HREF="release-7-2-4.html"
+>Release 7.2.4</A
+></DT
+><DT
+>E.31. <A
+HREF="release-7-2-3.html"
+>Release 7.2.3</A
+></DT
+><DT
+>E.32. <A
+HREF="release-7-2-2.html"
+>Release 7.2.2</A
+></DT
+><DT
+>E.33. <A
+HREF="release-7-2-1.html"
+>Release 7.2.1</A
+></DT
+><DT
+>E.34. <A
+HREF="release-7-2.html"
+>Release 7.2</A
+></DT
+><DT
+>E.35. <A
+HREF="release-7-1-3.html"
+>Release 7.1.3</A
+></DT
+><DT
+>E.36. <A
+HREF="release-7-1-2.html"
+>Release 7.1.2</A
+></DT
+><DT
+>E.37. <A
+HREF="release-7-1-1.html"
+>Release 7.1.1</A
+></DT
+><DT
+>E.38. <A
+HREF="release-7-1.html"
+>Release 7.1</A
+></DT
+><DT
+>E.39. <A
+HREF="release-7-0-3.html"
+>Release 7.0.3</A
+></DT
+><DT
+>E.40. <A
+HREF="release-7-0-2.html"
+>Release 7.0.2</A
+></DT
+><DT
+>E.41. <A
+HREF="release-7-0-1.html"
+>Release 7.0.1</A
+></DT
+><DT
+>E.42. <A
+HREF="release-7-0.html"
+>Release 7.0</A
+></DT
+><DT
+>E.43. <A
+HREF="release-6-5-3.html"
+>Release 6.5.3</A
+></DT
+><DT
+>E.44. <A
+HREF="release-6-5-2.html"
+>Release 6.5.2</A
+></DT
+><DT
+>E.45. <A
+HREF="release-6-5-1.html"
+>Release 6.5.1</A
+></DT
+><DT
+>E.46. <A
+HREF="release-6-5.html"
+>Release 6.5</A
+></DT
+><DT
+>E.47. <A
+HREF="release-6-4-2.html"
+>Release 6.4.2</A
+></DT
+><DT
+>E.48. <A
+HREF="release-6-4-1.html"
+>Release 6.4.1</A
+></DT
+><DT
+>E.49. <A
+HREF="release-6-4.html"
+>Release 6.4</A
+></DT
+><DT
+>E.50. <A
+HREF="release-6-3-2.html"
+>Release 6.3.2</A
+></DT
+><DT
+>E.51. <A
+HREF="release-6-3-1.html"
+>Release 6.3.1</A
+></DT
+><DT
+>E.52. <A
+HREF="release-6-3.html"
+>Release 6.3</A
+></DT
+><DT
+>E.53. <A
+HREF="release-6-2-1.html"
+>Release 6.2.1</A
+></DT
+><DT
+>E.54. <A
+HREF="release-6-2.html"
+>Release 6.2</A
+></DT
+><DT
+>E.55. <A
+HREF="release-6-1-1.html"
+>Release 6.1.1</A
+></DT
+><DT
+>E.56. <A
+HREF="release-6-1.html"
+>Release 6.1</A
+></DT
+><DT
+>E.57. <A
+HREF="release-6-0.html"
+>Release 6.0</A
+></DT
+><DT
+>E.58. <A
+HREF="release-1-09.html"
+>Release 1.09</A
+></DT
+><DT
+>E.59. <A
+HREF="release-1-02.html"
+>Release 1.02</A
+></DT
+><DT
+>E.60. <A
+HREF="release-1-01.html"
+>Release 1.01</A
+></DT
+><DT
+>E.61. <A
+HREF="release-1-0.html"
+>Release 1.0</A
+></DT
+><DT
+>E.62. <A
+HREF="release-0-03.html"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.03</A
+></DT
+><DT
+>E.63. <A
+HREF="release-0-02.html"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.02</A
+></DT
+><DT
+>E.64. <A
+HREF="release-0-01.html"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.01</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-8-1"
+>E.1. Release 8.1</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2005-1?-??, Current as of 2005-09-15</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN71786"
+>E.1.1. Overview</A
+></H2
+><P
+>     Major changes in this release:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Improve concurrent access to the shared buffer cache (Tom)</DT
+><DD
+><P
+>        Access to the shared buffer cache was identified as a
+        significant scalability problem, particularly on multi-CPU
+        systems. In this release, the way that locking is done in the
+        buffer manager has been overhauled to reduce lock contention
+        and improve scalability. The buffer manager has also been
+        changed to use a <SPAN
+CLASS="QUOTE"
+>"clock sweep"</SPAN
+> replacement
+        policy.
+       </P
+></DD
+><DT
+>Allow index scans to use an intermediate in-memory bitmap (Tom)</DT
+><DD
+><P
+>        In previous releases, only a single index could be used to do
+        lookups on a table. With this feature, if a query has
+        <TT
+CLASS="COMMAND"
+>WHERE tab.col1 = 4 and tab.col2 = 9</TT
+>, and there is
+        no multicolumn index on <TT
+CLASS="LITERAL"
+>col1</TT
+> and <TT
+CLASS="LITERAL"
+>col2</TT
+>,
+        but there is an index on <TT
+CLASS="LITERAL"
+>col1</TT
+> and another on
+        <TT
+CLASS="LITERAL"
+>col2</TT
+>, it is possible to search both indexes and
+        combine the results in memory, then do heap fetches for only
+        the rows matching both the <TT
+CLASS="LITERAL"
+>col1</TT
+> and
+        <TT
+CLASS="LITERAL"
+>col2</TT
+> restrictions. This is very useful in
+        environments that have a lot of unstructured queries where it
+        is impossible to create indexes that match all possible access
+        conditions.  Bitmap scans are useful even with a single index,
+        as they reduce the amount of random access needed; a bitmap
+        index scan is efficient for retrieving fairly large fractions
+        of the complete table, whereas plain index scans are not.
+       </P
+></DD
+><DT
+>Add two-phase commit (Heikki Linnakangas, Alvaro, Tom)</DT
+><DD
+><P
+>        Two-phase commit allows transactions to be "prepared" on several
+        computers, and once all computers have successfully prepared
+        their transactions (none failed), all transactions can be
+        committed. Even if a machine crashes after a prepare, the
+        prepared transaction can be committed after the machine is
+        restarted. New syntax includes <TT
+CLASS="COMMAND"
+>PREPARE TRANSACTION</TT
+> and
+        <TT
+CLASS="COMMAND"
+>COMMIT/ROLLBACK PREPARED</TT
+>. A new system view
+        <TT
+CLASS="LITERAL"
+>pg_prepared_xacts</TT
+> has also been added.
+       </P
+></DD
+><DT
+>Create a new role system that replaces users and groups 
+       (Stephen Frost)</DT
+><DD
+><P
+>        Roles are a combination of users and groups. Like users, they
+        can have login capability, and like groups, a role can have
+        other roles as members. Roles basically remove the distinction
+        between users and groups. For example, a role can:
+       </P
+><P
+></P
+><UL
+><LI
+><P
+>           Have login capability (optionally)
+         </P
+></LI
+><LI
+><P
+>          Own objects
+         </P
+></LI
+><LI
+><P
+>          Hold access permissions for database objects
+         </P
+></LI
+><LI
+><P
+>          Inherit permissions from other roles it is a member of
+         </P
+></LI
+></UL
+><P
+>        Once a user logs into a role, she obtains capabilities of
+        the login role plus any inherited roles, and can use
+        <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> to switch to other roles she is a member of.
+        This feature is a generalization of the SQL standard's concept of
+        roles.
+        This change also replaces <TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+> and 
+        <TT
+CLASS="STRUCTNAME"
+>pg_group</TT
+> by new role-capable catalogs 
+        <TT
+CLASS="STRUCTNAME"
+>pg_authid</TT
+> and <TT
+CLASS="STRUCTNAME"
+>pg_auth_members</TT
+>. The old
+        tables are redefined as read-only views on the new role tables.
+       </P
+></DD
+><DT
+>Automatically use indexes for <CODE
+CLASS="FUNCTION"
+>MIN()</CODE
+> and
+       <CODE
+CLASS="FUNCTION"
+>MAX()</CODE
+> (Tom)</DT
+><DD
+><P
+>        In previous releases, the only way to use an index for
+        <CODE
+CLASS="FUNCTION"
+>MIN()</CODE
+> or <CODE
+CLASS="FUNCTION"
+>MAX()</CODE
+> was to rewrite the
+        query as <TT
+CLASS="COMMAND"
+>SELECT col FROM tab ORDER BY col LIMIT 1</TT
+>.
+        Index usage now happens automatically.
+       </P
+></DD
+><DT
+>Move <TT
+CLASS="FILENAME"
+>/contrib/pg_autovacuum</TT
+> into the main server
+       (Alvaro)</DT
+><DD
+><P
+>        Integrating autovacuum into the server allows it to be
+        automatically started and stopped in sync with the database
+        server, and allows autovacuum to be configured from
+        <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>.
+       </P
+></DD
+><DT
+>Add shared row level locks using <TT
+CLASS="COMMAND"
+>SELECT ... FOR SHARE</TT
+>
+       (Alvaro)</DT
+><DD
+><P
+>        While <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s MVCC locking
+        allows <TT
+CLASS="COMMAND"
+>SELECT</TT
+> to never be blocked by writers and
+        therefore does not need shared row locks for typical operations,
+        shared locks are useful for applications that require shared row
+        locking.  In particular this reduces the locking requirements
+        imposed by referential integrity checks.
+       </P
+></DD
+><DT
+>Add dependencies on shared objects, specifically roles
+       (Alvaro)</DT
+><DD
+><P
+>        This extension of the dependency mechanism prevents roles from
+        being dropped while there are still database objects they own.
+        Formerly it was possible to accidentally <SPAN
+CLASS="QUOTE"
+>"orphan"</SPAN
+> objects by
+        deleting their owner.  While this could be recovered from, it
+        was messy and unpleasant.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN71859"
+>E.1.2. Migration to version 8.1</A
+></H2
+><P
+>     A dump/restore using <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> is required
+     for those wishing to migrate data from any previous release.
+    </P
+><P
+>     The 8.0 release announced that the <CODE
+CLASS="FUNCTION"
+>to_char()</CODE
+> function
+     for intervals would be removed in 8.1. However, since no better API
+     has been suggested, <CODE
+CLASS="FUNCTION"
+>to_char(interval)</CODE
+> has been enhanced in
+     8.1 and will remain in the server.
+    </P
+><P
+>     Observe the following incompatibilities:
+    </P
+><P
+></P
+><UL
+><LI
+><P
+>       <TT
+CLASS="VARNAME"
+>add_missing_from</TT
+> is now false by default (Neil)
+      </P
+><P
+>       By default, we now generate an error if a table is used in a query
+       without a <TT
+CLASS="COMMAND"
+>FROM</TT
+> reference.  The old behavior is still
+       available, but the parameter must be set to 'true' to obtain it.
+      </P
+></LI
+><LI
+><P
+>       Cause input of a zero-length string ('') for float4/float8/oid
+       to throw an error, rather than treating it as a zero (Neil)
+      </P
+><P
+>       This change is consistent with the current handling of
+       zero-length strings for integers. The schedule for this change
+       was announced in 8.0.
+      </P
+></LI
+><LI
+><P
+>       <TT
+CLASS="VARNAME"
+>default_with_oids</TT
+> is now false by default (Neil)
+      </P
+><P
+>       With this option set to false, user-created tables no longer
+       have an OID column unless <TT
+CLASS="COMMAND"
+>WITH OIDS</TT
+> is specified in
+       <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+>. Though OIDs have existed in all
+       releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, their use is limited
+       because they are only four bytes long and the counter is shared
+       across all installed databases. The preferred way of uniquely
+       identifying rows is via sequences and the <TT
+CLASS="TYPE"
+>SERIAL</TT
+> type,
+       which have been supported since <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.4.
+      </P
+></LI
+><LI
+><P
+>       Add <TT
+CLASS="LITERAL"
+>E''</TT
+> syntax so eventually ordinary strings can
+       treat backslashes literally (Bruce)
+      </P
+><P
+>       Currently <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> processes a
+       backslash in a string literal as introducing a special escape sequence,
+       e.g. <TT
+CLASS="LITERAL"
+>\n</TT
+> or <TT
+CLASS="LITERAL"
+>\010</TT
+>.
+       While this allows easy entry of special values, it is
+       non-standard and makes porting of applications from other
+       databases more difficult. For this reason, the
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> project is planning to
+       remove the special meaning of backslashes in strings. For
+       backward compatibility and for users who want special backslash
+       processing, a new string syntax has been created. This new string
+       syntax is formed by writing an <TT
+CLASS="LITERAL"
+>E</TT
+> immediately preceding the
+       single quote that starts the string, e.g. <TT
+CLASS="LITERAL"
+>E'hi\n'</TT
+>. While
+       this release does not change the handling of backslashes in strings, it
+       does add new configuration parameters to help users migrate applications
+       for future releases:
+      </P
+><P
+></P
+><UL
+><LI
+><P
+>         <TT
+CLASS="VARNAME"
+>standard_conforming_strings</TT
+> &mdash; does this release
+         treat backslashes literally in ordinary strings?
+        </P
+></LI
+><LI
+><P
+>        <TT
+CLASS="VARNAME"
+>escape_string_warning</TT
+> &mdash; warn about backslashes in
+        ordinary (non-E) strings
+       </P
+></LI
+></UL
+><P
+>       The <TT
+CLASS="VARNAME"
+>standard_conforming_strings</TT
+> value is read-only.
+       Applications can retrieve the value to know how backslashes are
+       processed.  (Presence of the parameter can also be taken as an
+       indication that <TT
+CLASS="LITERAL"
+>E''</TT
+> string syntax is supported.)
+       In a future release, <TT
+CLASS="VARNAME"
+>standard_conforming_strings</TT
+>
+       will be true, meaning backslashes will be treated literally in
+       non-E strings. To prepare for this change, use <TT
+CLASS="LITERAL"
+>E''</TT
+>
+       strings in places that need special backslash processing, and
+       turn on <TT
+CLASS="VARNAME"
+>escape_string_warning</TT
+> to find additional
+       strings that need to be converted to use <TT
+CLASS="LITERAL"
+>E''</TT
+>.
+       Also, use two single-quotes (<TT
+CLASS="LITERAL"
+>''</TT
+>) to embed a literal
+       single-quote in a string, rather than the
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-supported syntax of
+       backslash single-quote (<TT
+CLASS="LITERAL"
+>\'</TT
+>).  The former is
+       standards-conforming and does not require the use of the
+       <TT
+CLASS="LITERAL"
+>E''</TT
+> string syntax.  You can also use the
+       <TT
+CLASS="LITERAL"
+>$$</TT
+> string syntax, which does not treat backslashes
+       specially.
+      </P
+></LI
+><LI
+><P
+>       Make <TT
+CLASS="COMMAND"
+>REINDEX DATABASE</TT
+> reindex all indexes in the
+       database (Tom)
+      </P
+><P
+>       Formerly, <TT
+CLASS="COMMAND"
+>REINDEX DATABASE</TT
+> reindexed only
+       system tables. This new behavior seems more intuitive. A new
+       command <TT
+CLASS="COMMAND"
+>REINDEX SYSTEM</TT
+> provides the old functionality
+       of reindexing just the system tables.
+      </P
+></LI
+><LI
+><P
+>       In <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, treat unquoted
+       <TT
+CLASS="LITERAL"
+>\{digit}+</TT
+> sequences as octal (Bruce)
+      </P
+><P
+>       In previous releases, <TT
+CLASS="LITERAL"
+>\{digit}+</TT
+> sequences were
+       treated as decimal, and only <TT
+CLASS="LITERAL"
+>\0{digit}+</TT
+> were treated
+       as octal. This change was made for consistency.
+      </P
+></LI
+><LI
+><P
+>       Remove grammar productions for prefix and postfix <TT
+CLASS="LITERAL"
+>%</TT
+>
+       and <TT
+CLASS="LITERAL"
+>^</TT
+> operators
+       (Tom)
+      </P
+><P
+>       These have never been documented and complicated the use of the
+       modulus operator (<TT
+CLASS="LITERAL"
+>%</TT
+>) with negative numbers.
+      </P
+></LI
+><LI
+><P
+>       Make <TT
+CLASS="LITERAL"
+>&amp;&lt;</TT
+> and <TT
+CLASS="LITERAL"
+>&amp;&gt;</TT
+> for polygons
+       consistent with the box "over" operators (Tom)
+      </P
+></LI
+><LI
+><P
+>       <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+> may ignore the provided arguments
+       in favor of information from <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+>
+       (Tom)
+      </P
+><P
+>       A new system catalog <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+> has been defined
+       to carry information about the preferred definitions of procedural
+       languages (such as whether they have validator functions).  When
+       an entry exists in this catalog for the language being created,
+       <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+> will ignore all its parameters except the
+       language name and instead use the catalog information.  This measure
+       was taken because of increasing problems with obsolete language
+       definitions being loaded by old dump files.  As of 8.1,
+       <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> will dump procedural language definitions as
+       just <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></TT
+>, relying
+       on a template entry to exist at load time.  We expect this will be a
+       more future-proof representation.
+      </P
+></LI
+><LI
+><P
+>       Make <CODE
+CLASS="FUNCTION"
+>pg_cancel_backend(int)</CODE
+> return a
+       <TT
+CLASS="TYPE"
+>boolean</TT
+> rather than an <TT
+CLASS="TYPE"
+>integer</TT
+> (Neil)
+      </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN71952"
+>E.1.3. Additional Changes</A
+></H2
+><P
+>     Below you will find a detailed account of the additional changes
+     between <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.1 and the
+     previous major release.
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN71956"
+>E.1.3.1. Performance Improvements</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Improve GiST and rtree index performance (Neil)
+       </P
+></LI
+><LI
+><P
+>        Improve the optimizer, including auto-resizing of hash joins
+        (Tom)
+       </P
+></LI
+><LI
+><P
+>        Overhaul internal API in several areas
+       </P
+></LI
+><LI
+><P
+>        Change WAL record CRCs from 64-bit to 32-bit (Tom)
+       </P
+><P
+>        We determined that the extra cost of computing 64-bit CRCs was
+        significant, and the gain in reliability too marginal to justify it.
+       </P
+></LI
+><LI
+><P
+>        Prevent writing large empty gaps in WAL pages (Tom)
+       </P
+></LI
+><LI
+><P
+>        Allow non-consecutive index columns to be used in a multi-column
+        index (Tom)
+       </P
+><P
+>        For example, this allows an index on columns a,b,c to be used in
+        a query with <TT
+CLASS="COMMAND"
+>WHERE a = 4 and c = 10</TT
+>.
+       </P
+></LI
+><LI
+><P
+>        Skip WAL logging for <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> /
+        <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> (Simon)
+       </P
+><P
+>        Since a crash during <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> would cause the
+        table to be dropped during recovery, there is no reason to WAL
+        log as the table is loaded.  (Logging still happens if WAL
+        archiving is enabled, however.)
+       </P
+></LI
+><LI
+><P
+>        Allow concurrent GIST index access (Teodor, Oleg)
+       </P
+></LI
+><LI
+><P
+>        Add configuration parameter <TT
+CLASS="VARNAME"
+>full_page_writes</TT
+> to
+        control writing full pages to WAL (Bruce)
+       </P
+><P
+>        To prevent partial disk writes from corrupting the database,
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> writes a complete copy of
+        each database disk page to WAL the first time it is modified
+        after a checkpoint. This option turns off that functionality for more
+        speed.  This is safe to use with battery-backed disk caches where
+        partial page writes cannot happen.
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="VARNAME"
+>constraint_exclusion</TT
+> configuration
+        parameter to restrict child table lookups based on table
+        constraints (Simon)
+       </P
+><P
+>        This allows for a type of table partitioning. If child tables
+        store separate key ranges and this is enforced using appropriate
+        <TT
+CLASS="COMMAND"
+>CHECK</TT
+> constraints, the optimizer will skip child
+        table accesses when the constraint guarantees no matching rows
+        exist in the child table.
+       </P
+></LI
+><LI
+><P
+>        Use <TT
+CLASS="LITERAL"
+>O_DIRECT</TT
+> if available when using
+        <TT
+CLASS="LITERAL"
+>O_SYNC</TT
+> for <TT
+CLASS="VARNAME"
+>wal_sync_method</TT
+>
+        (Itagaki Takahiro)
+       </P
+><P
+>        <TT
+CLASS="LITERAL"
+>O_DIRECT</TT
+> causes disk writes to bypass the kernel
+        cache, and for WAL writes, this improves performance.
+       </P
+></LI
+><LI
+><P
+>        Improve <TT
+CLASS="COMMAND"
+>COPY FROM</TT
+> performance (Alon Goldshuv)
+       </P
+><P
+>        This was accomplished by reading <TT
+CLASS="COMMAND"
+>COPY</TT
+> input in
+        larger chunks, rather than character by character.
+       </P
+></LI
+><LI
+><P
+>        Improve the performance of <CODE
+CLASS="FUNCTION"
+>COUNT()</CODE
+>,
+        <CODE
+CLASS="FUNCTION"
+>SUM</CODE
+>, <CODE
+CLASS="FUNCTION"
+>AVG()</CODE
+>,
+        <CODE
+CLASS="FUNCTION"
+>STDDEV()</CODE
+>, and
+        <CODE
+CLASS="FUNCTION"
+>VARIANCE()</CODE
+> (Neil, Tom)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72011"
+>E.1.3.2. Server Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Prevent problems due to transaction ID (XID) wraparound (Tom)
+       </P
+><P
+>        The server will now warn when the transaction counter approaches
+        the wraparound point.  If the counter becomes too close to wraparound,
+        the server will stop accepting queries.  This ensures that data is
+        not lost before needed vacuuming is performed.
+       </P
+></LI
+><LI
+><P
+>        Fix problems with object IDs (OIDs) conflicting with existing system
+        objects after the OID counter has wrapped around (Tom)
+       </P
+></LI
+><LI
+><P
+>        Add warning about the need to increase
+        <TT
+CLASS="VARNAME"
+>max_fsm_relations</TT
+> and <TT
+CLASS="VARNAME"
+>max_fsm_pages</TT
+>
+        during <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> (Ron Mayer)
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="VARNAME"
+>temp_buffers</TT
+> configuration parameter to allow
+        users to determine the size of the local buffer area for
+        temporary table access (Tom)
+       </P
+></LI
+><LI
+><P
+>        Add session start time and client IP address to
+        <TT
+CLASS="LITERAL"
+>pg_stat_activity</TT
+> (Magnus)
+       </P
+></LI
+><LI
+><P
+>        Enhance <TT
+CLASS="LITERAL"
+>pg_locks</TT
+> display (Tom)
+       </P
+></LI
+><LI
+><P
+>        Log queries for client-side <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> and
+        <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> (Simon)
+       </P
+></LI
+><LI
+><P
+>        Allow Kerberos name and user name case sensitivity to be
+        specified in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> (Magnus)
+       </P
+></LI
+><LI
+><P
+>        Add configuration parameter <TT
+CLASS="VARNAME"
+>krb_server_hostname</TT
+> so
+        that the server hostname can be specified as part of service
+        principal (Todd Kover)
+       </P
+><P
+>        If not set, any service principal matching an entry in the
+        keytab can be used. This is new Kerberos matching behavior in
+        this release.
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="VARNAME"
+>log_line_prefix</TT
+> options for millisecond
+        timestamps (<TT
+CLASS="LITERAL"
+>%m</TT
+>) and remote host (<TT
+CLASS="LITERAL"
+>%h</TT
+>) (Ed
+        L.)
+       </P
+></LI
+><LI
+><P
+>        Add WAL logging for GIST indexes (Teodor, Oleg)
+       </P
+><P
+>        GIST indexes are now safe for crash and point-in-time recovery.
+       </P
+></LI
+><LI
+><P
+>        Remove old <TT
+CLASS="FILENAME"
+>*.backup</TT
+> files when we do
+        <CODE
+CLASS="FUNCTION"
+>pg_stop_backup()</CODE
+> (Bruce)
+       </P
+><P
+>        This prevents a large number of <TT
+CLASS="FILENAME"
+>*.backup</TT
+> files from
+        existing in <TT
+CLASS="FILENAME"
+>/pg_xlog</TT
+>.
+       </P
+></LI
+><LI
+><P
+>        Add configuration parameters to control TCP/IP keep-alive
+        times for idle, interval, and count (Oliver Jowett)
+       </P
+><P
+>        These values can be changed to allow more rapid detection of
+        lost client connections.
+       </P
+></LI
+><LI
+><P
+>        Add per-user and per-database connection limits (Petr Jelinek)
+       </P
+><P
+>        Using <TT
+CLASS="COMMAND"
+>ALTER USER</TT
+> and <TT
+CLASS="COMMAND"
+>ALTER DATABASE</TT
+>,
+        limits can now be enforced on the maximum number of sessions that
+        can concurrently connect as a specific user or to a specific database.
+        Setting the limit to zero disables user or database connections.
+       </P
+></LI
+><LI
+><P
+>        Allow more than two gigabytes of shared memory and per-backend
+        work memory on 64-bit machines (Koichi Suzuki)
+       </P
+></LI
+><LI
+><P
+>        New system catalog <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+> allows overriding
+        obsolete procedural-language definitions in dump files (Tom)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72072"
+>E.1.3.3. Query Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Add temporary views (Koju Iijima, Neil) 
+       </P
+></LI
+><LI
+><P
+>        Fix <TT
+CLASS="COMMAND"
+>HAVING</TT
+> without any aggregate functions or
+        <TT
+CLASS="COMMAND"
+>GROUP BY</TT
+> so that the query returns a single group (Tom)
+       </P
+><P
+>        Previously, such a case would treat the <TT
+CLASS="COMMAND"
+>HAVING</TT
+>
+        clause the same as a <TT
+CLASS="COMMAND"
+>WHERE</TT
+> clause.  This was not per spec.
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>USING</TT
+> clause to allow additional tables to be
+        specified to <TT
+CLASS="COMMAND"
+>DELETE</TT
+> (Euler Taveira de Oliveira, Neil)
+       </P
+><P
+>        In prior releases, there was no clear method for specifying
+        additional tables to be used for joins in a <TT
+CLASS="COMMAND"
+>DELETE</TT
+>
+        statement. <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> already has a <TT
+CLASS="LITERAL"
+>FROM</TT
+>
+        clause for this purpose.
+       </P
+></LI
+><LI
+><P
+>        Add support for <TT
+CLASS="LITERAL"
+>\x</TT
+> hex escapes in backend and ecpg
+        strings (Bruce)
+       </P
+><P
+>        This is just like the standard C <TT
+CLASS="LITERAL"
+>\x</TT
+> escape syntax.
+        Octal escapes were already supported.
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>BETWEEN SYMMETRIC</TT
+> query syntax (Pavel Stehule)
+       </P
+><P
+>        This feature allows <TT
+CLASS="COMMAND"
+>BETWEEN</TT
+> comparisons without
+        requiring the first value to be less than the second. For
+        example, <TT
+CLASS="COMMAND"
+>2 BETWEEN [ASYMMETRIC] 3 AND 1</TT
+> returns
+        false, while <TT
+CLASS="COMMAND"
+>2 BETWEEN SYMMETRIC 3 AND 1</TT
+> returns
+        true. <TT
+CLASS="COMMAND"
+>BETWEEN ASYMMETRIC</TT
+> was already supported.
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>NOWAIT</TT
+> option to <TT
+CLASS="COMMAND"
+>SELECT ... FOR
+        UPDATE/SHARE</TT
+> (Hans-Juergen Schoenig)
+       </P
+><P
+>        While the <TT
+CLASS="VARNAME"
+>statement_timeout</TT
+> configuration
+        parameter allows a query taking more than a certain amount of
+        time to be cancelled, the <TT
+CLASS="COMMAND"
+>NOWAIT</TT
+> option allows a
+        query to be canceled as soon as a <TT
+CLASS="COMMAND"
+>SELECT ... FOR
+        UPDATE/SHARE</TT
+> command cannot immediately acquire a row lock.
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72113"
+>E.1.3.4. Object Manipulation Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Track dependencies of shared objects (Alvaro)
+       </P
+><P
+>        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows global tables
+        (users, databases, tablespaces) to reference information in
+        multiple databases. This addition adds dependency information
+        for global tables, so, for example, user ownership can be
+        tracked across databases, so a user who owns something in any
+        database can no longer be removed. Dependency tracking already
+        existed for database-local objects.
+       </P
+></LI
+><LI
+><P
+>        Allow limited <TT
+CLASS="COMMAND"
+>ALTER OWNER</TT
+> commands to be performed 
+        by the object owner (Stephen Frost)
+       </P
+><P
+>        Prior releases allowed only superusers to change object owners.
+        Now, ownership can be transferred if the user executing the command
+        owns the object and would be able to create it as the new owner
+        (that is, the user is a member of the new owning role and that role
+        has the CREATE permission that would be needed to create the object
+        afresh).
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>ALTER</TT
+> object <TT
+CLASS="COMMAND"
+>SET SCHEMA</TT
+> capability
+        for some object types (tables, functions, types) (Bernd Helmle)
+       </P
+><P
+>        This allows objects to be moved to different schemas.
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>ALTER TABLE ENABLE/DISABLE TRIGGER</TT
+> to
+        disable triggers (Satoshi Nagayasu)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72132"
+>E.1.3.5. Utility Command Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Allow <TT
+CLASS="COMMAND"
+>TRUNCATE</TT
+> to truncate multiple tables in a
+        single command (Alvaro)
+       </P
+><P
+>        Because of referential integrity checks, it is not allowed to
+        truncate a table that is part of a referential integrity
+        constraint. Using this new functionality, <TT
+CLASS="COMMAND"
+>TRUNCATE</TT
+>
+        can be used to truncate such tables, if both tables involved in
+        a referential integrity constraint are truncated in a single
+        <TT
+CLASS="COMMAND"
+>TRUNCATE</TT
+> command.
+       </P
+></LI
+><LI
+><P
+>        Properly process carriage returns and line feeds in
+        <TT
+CLASS="COMMAND"
+>COPY CSV</TT
+> mode (Andrew)
+       </P
+><P
+>        In release 8.0, carriage returns and line feeds in <TT
+CLASS="COMMAND"
+>CSV
+        COPY TO</TT
+> were processed in an inconsistent manner. (This was
+        documented on the TODO list.)
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>COPY WITH CSV HEADER</TT
+> to allow a header line as
+        the first line in <TT
+CLASS="COMMAND"
+>COPY</TT
+> (Andrew)
+       </P
+><P
+>        This allows handling of the common <TT
+CLASS="COMMAND"
+>CSV</TT
+> usage of
+        placing the column names on the first line of the data file. For
+        <TT
+CLASS="COMMAND"
+>COPY TO</TT
+>, the first line contains the column names,
+        and for <TT
+CLASS="COMMAND"
+>COPY FROM</TT
+>, the first line is ignored.
+       </P
+></LI
+><LI
+><P
+>        On Windows, display better sub-second precision in
+        <TT
+CLASS="COMMAND"
+>EXPLAIN ANALYZE</TT
+> (Magnus)
+       </P
+></LI
+><LI
+><P
+>        Add trigger duration display to <TT
+CLASS="COMMAND"
+>EXPLAIN ANALYZE</TT
+>
+        (Tom)
+       </P
+><P
+>        Prior releases included trigger execution time as part of the
+        total execution time, but did not show it separately.  It is now
+        possible to see how much time is spent in each trigger.
+       </P
+></LI
+><LI
+><P
+>        Add support for <TT
+CLASS="LITERAL"
+>\x</TT
+> hex escapes in <TT
+CLASS="COMMAND"
+>COPY</TT
+>
+        (Sergey Ten)
+       </P
+><P
+>        Previous releases only supported octal escapes.
+       </P
+></LI
+><LI
+><P
+>        Make <TT
+CLASS="COMMAND"
+>SHOW ALL</TT
+> include variable descriptions
+        (Matthias Schmidt)
+       </P
+><P
+>        <TT
+CLASS="COMMAND"
+>SHOW</TT
+> varname still only displays the variable's
+        value and does not include the description.
+       </P
+></LI
+><LI
+><P
+>        Make <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+> create a new standard
+        database called <TT
+CLASS="LITERAL"
+>postgres</TT
+>, and convert utilities to
+        use <TT
+CLASS="LITERAL"
+>postgres</TT
+> rather than <TT
+CLASS="LITERAL"
+>template1</TT
+> for
+        standard lookups (Dave)
+       </P
+><P
+>        In prior releases, <TT
+CLASS="LITERAL"
+>template1</TT
+> was used both as a
+        default connection for utilities like
+        <SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+>, and as a template for
+        new databases. This caused <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> to
+        sometimes fail, because a new database cannot be created if
+        anyone else is in the template database. With this change, the
+        default connection database is now <TT
+CLASS="LITERAL"
+>postgres</TT
+>,
+        meaning it is much less likely someone will be using
+        <TT
+CLASS="LITERAL"
+>template1</TT
+> during <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+>.
+       </P
+></LI
+><LI
+><P
+>        Create new <SPAN
+CLASS="APPLICATION"
+>reindexdb</SPAN
+> command-line
+        utility by moving <TT
+CLASS="FILENAME"
+>/contrib/reindexdb</TT
+> into the
+        server (Euler Taveira de Oliveira)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72188"
+>E.1.3.6. Data Type and Function Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>MAX()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>MIN()</CODE
+> aggregates for
+        array types (Koju Iijima)
+       </P
+></LI
+><LI
+><P
+>        Fix <CODE
+CLASS="FUNCTION"
+>to_date()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>to_timestamp()</CODE
+> to
+        behave reasonably when <TT
+CLASS="LITERAL"
+>CC</TT
+> and <TT
+CLASS="LITERAL"
+>YY</TT
+> fields
+        are both used (Karel Zak)
+       </P
+><P
+>        If the format specification contains <TT
+CLASS="LITERAL"
+>CC</TT
+> and a year
+        specification is <TT
+CLASS="LITERAL"
+>YYY</TT
+> or longer, ignore the
+        <TT
+CLASS="LITERAL"
+>CC</TT
+>. If the year specification is <TT
+CLASS="LITERAL"
+>YY</TT
+> or
+        shorter, interpret <TT
+CLASS="LITERAL"
+>CC</TT
+> as the previous century.
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>md5(bytea)</CODE
+> (Abhijit Menon-Sen)
+       </P
+><P
+>        <CODE
+CLASS="FUNCTION"
+>md5(text)</CODE
+> already existed.
+       </P
+></LI
+><LI
+><P
+>        Fix <TT
+CLASS="TYPE"
+>CHAR()</TT
+> to properly pad spaces to the specified
+        length when using a multiple-byte character set (Yoshiyuki
+        Asaba)
+       </P
+><P
+>        In prior releases, the padding of <TT
+CLASS="TYPE"
+>CHAR()</TT
+> was incorrect
+        because it only padded to the specified number of bytes without
+        considering how many characters were stored.
+       </P
+></LI
+><LI
+><P
+>        Add support for <TT
+CLASS="COMMAND"
+>numeric ^ numeric</TT
+> based on
+        <CODE
+CLASS="FUNCTION"
+>power(numeric, numeric)</CODE
+>
+       </P
+><P
+>        The function already existed, but there was no operator assigned
+        to it.
+       </P
+></LI
+><LI
+><P
+>        Fix <TT
+CLASS="TYPE"
+>NUMERIC</TT
+> modulus by properly truncating the quotient
+        during computation (Bruce)
+       </P
+><P
+>        In previous releases, modulus for large values sometimes
+        returned negative results due to rounding of the quotient.
+       </P
+></LI
+><LI
+><P
+>        Add a function <CODE
+CLASS="FUNCTION"
+>lastval()</CODE
+>(Dennis Björklund)
+       </P
+><P
+>        <CODE
+CLASS="FUNCTION"
+>lastval()</CODE
+> is a simplified version of
+        <CODE
+CLASS="FUNCTION"
+>currval()</CODE
+>. It automatically determines the proper
+        sequence name based on the most recent <CODE
+CLASS="FUNCTION"
+>nextval()</CODE
+> or
+        <CODE
+CLASS="FUNCTION"
+>setval()</CODE
+> call performed by the current session.
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>to_timestamp(DOUBLE PRECISION)</CODE
+>
+       </P
+><P
+>        Converts Unix seconds since 1970 to a <TT
+CLASS="TYPE"
+>TIMESTAMP WITH
+        TIMEZONE</TT
+>.
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>pg_postmaster_start_time()</CODE
+> function (Euler
+        Taveira de Oliveira, Matthias Schmidt)
+       </P
+></LI
+><LI
+><P
+>        Allow the full use of time zone names in <TT
+CLASS="COMMAND"
+>AT TIME
+        ZONE</TT
+>, not just the short list previously available (Magnus)
+       </P
+><P
+>        Previously, only a predefined list of time zone names were
+        supported by <TT
+CLASS="COMMAND"
+>AT TIME ZONE</TT
+>. Now any supported time
+        zone name can be used, e.g.:
+        </P><PRE
+CLASS="PROGRAMLISTING"
+>         SELECT CURRENT_TIMESTAMP AT TIME ZONE 'Europe/London';
+        </PRE
+><P>
+        In the above query, the time zone used is adjusted based on the
+        daylight savings time rules that were in effect on the supplied
+        date.
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>GREATEST()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>LEAST()</CODE
+> variadic
+        functions (Pavel Stehule)
+       </P
+><P
+>        These functions take a variable number of arguments and return
+        the greatest or least value among the arguments.
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>pg_column_size()</CODE
+> (Mark Kirkwood)
+       </P
+><P
+>        This returns storage size of a column, including any
+        compression used.
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>regexp_replace()</CODE
+> (Atsushi Ogawa)
+       </P
+><P
+>        This allows regular expression replacement, like sed. An optional
+        flag argument allows selection of global (replace all) and
+        case-insensitive modes.
+       </P
+></LI
+><LI
+><P
+>        Fix interval division and multiplication (Bruce)
+       </P
+><P
+>        Previous versions sometimes returned unjustified results, like
+        <TT
+CLASS="COMMAND"
+>'4 months'::interval / 5</TT
+> returning <TT
+CLASS="COMMAND"
+>'1 mon
+        -6 days'</TT
+>.
+       </P
+></LI
+><LI
+><P
+>        Add an internal day field to <TT
+CLASS="TYPE"
+>INTERVAL</TT
+> so a one day
+        interval can be distinguished from a 24 hour interval (Michael
+        Glaesemann)
+       </P
+><P
+>        Days that contain a daylight savings time adjustment are not 24
+        hours, but typically 23 or 25 hours. This change allows days
+        (not fixed 24-hour periods) to be added to dates who's result
+        includes a daylight savings time adjustment period. Therefore,
+        while in previous releases <TT
+CLASS="LITERAL"
+>1 day</TT
+> and <TT
+CLASS="LITERAL"
+>24
+        hours</TT
+> were interchangeable interval values, in this release
+        they are treated differently, e.g.
+        </P><PRE
+CLASS="PROGRAMLISTING"
+>         '2005-05-03 00:00:00 EST' + '1 day' = '2005-05-04 00:00:00-04'
+         '2005-05-03 00:00:00 EST' + '24 hours' = '2005-05-04 01:00:00-04'
+        </PRE
+><P>
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>justify_days()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>justify_hours()</CODE
+>
+        (Michael Glaesemann)
+       </P
+><P
+>        These functions, respectively, adjust days to an appropriate
+        number of full months and days, and adjust hours to an
+        appropriate number of full days and hours.
+       </P
+></LI
+><LI
+><P
+>        Move <TT
+CLASS="FILENAME"
+>/contrib/dbsize</TT
+> into the backend, and rename
+        some of the functions (Dave Page, Andreas Pflug)
+       </P
+><P
+>        <P
+></P
+></P><UL
+><LI
+><P
+>            <CODE
+CLASS="FUNCTION"
+>pg_tablespace_size()</CODE
+>
+          </P
+></LI
+><LI
+><P
+>           <CODE
+CLASS="FUNCTION"
+>pg_database_size()</CODE
+>
+          </P
+></LI
+><LI
+><P
+>           <CODE
+CLASS="FUNCTION"
+>pg_relation_size()</CODE
+>
+          </P
+></LI
+><LI
+><P
+>           <CODE
+CLASS="FUNCTION"
+>pg_total_relation_size()</CODE
+>
+          </P
+></LI
+><LI
+><P
+>           <CODE
+CLASS="FUNCTION"
+>pg_size_pretty()</CODE
+>
+          </P
+></LI
+></UL
+><P>
+       </P
+><P
+>        <CODE
+CLASS="FUNCTION"
+>pg_total_relation_size()</CODE
+> includes indexes and TOAST
+        tables.
+       </P
+></LI
+><LI
+><P
+>        Add functions for read-only file access to the cluster directory
+        (Dave Page, Andreas Pflug)
+       </P
+><P
+>        <P
+></P
+></P><UL
+><LI
+><P
+>           <CODE
+CLASS="FUNCTION"
+>pg_stat_file()</CODE
+>
+          </P
+></LI
+><LI
+><P
+>           <CODE
+CLASS="FUNCTION"
+>pg_read_file()</CODE
+>
+          </P
+></LI
+><LI
+><P
+>           <CODE
+CLASS="FUNCTION"
+>pg_ls_dir()</CODE
+>
+          </P
+></LI
+></UL
+><P>
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>pg_reload_conf()</CODE
+> to force reloading of the
+        configuration files (Dave Page, Andreas Pflug)
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>pg_rotate_logfile()</CODE
+> to force rotation of the
+        server log file (Dave Page, Andreas Pflug)
+       </P
+></LI
+><LI
+><P
+>        Change <TT
+CLASS="LITERAL"
+>pg_stat_*</TT
+> views to include TOAST tables (Tom)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72322"
+>E.1.3.7. Encoding and Locale Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Rename some encodings to be more consistent and to follow
+        international standards (Bruce)
+       </P
+><P
+>        <P
+></P
+></P><UL
+><LI
+><P
+>           <TT
+CLASS="LITERAL"
+>UNICODE</TT
+> is now <TT
+CLASS="LITERAL"
+>UTF8</TT
+>
+          </P
+></LI
+><LI
+><P
+>           <TT
+CLASS="LITERAL"
+>ALT</TT
+> is now <TT
+CLASS="LITERAL"
+>WIN866</TT
+>
+          </P
+></LI
+><LI
+><P
+>           <TT
+CLASS="LITERAL"
+>WIN</TT
+> is now <TT
+CLASS="LITERAL"
+>WIN1251</TT
+>
+          </P
+></LI
+><LI
+><P
+>          <TT
+CLASS="LITERAL"
+>TCVN</TT
+> is now <TT
+CLASS="LITERAL"
+>WIN1258</TT
+>
+          </P
+></LI
+></UL
+><P>
+       </P
+><P
+>        The original names still work.
+       </P
+></LI
+><LI
+><P
+>        Add support for <TT
+CLASS="LITERAL"
+>WIN1252</TT
+> encoding (Roland Volkmann)
+       </P
+></LI
+><LI
+><P
+>        Add support for 3 and 4-byte <TT
+CLASS="LITERAL"
+>UTF8</TT
+> characters (John
+        Hansen)
+       </P
+><P
+>        Previously only one and two-byte <TT
+CLASS="LITERAL"
+>UTF8</TT
+> characters
+        were supported. This is particularly important for support for
+        some Chinese characters.
+       </P
+></LI
+><LI
+><P
+>        Allow direct conversion between <TT
+CLASS="LITERAL"
+>EUC_JP</TT
+> and
+        <TT
+CLASS="LITERAL"
+>SJIS</TT
+> to improve performance (Atsushi Ogawa)
+       </P
+></LI
+><LI
+><P
+>        Allow the UTF8 encoding to work on Windows (Magnus)
+       </P
+><P
+>        This is done by mapping UTF8 to the Windows-native UTF16 
+        implementation.
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72361"
+>E.1.3.8. General Server-Side Language Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Fix <TT
+CLASS="COMMAND"
+>ALTER LANGUAGE RENAME</TT
+> (Sergey Yatskevich)
+       </P
+></LI
+><LI
+><P
+>        Allow function characteristics, like strictness and volatility,
+        to be modified via <TT
+CLASS="COMMAND"
+>ALTER FUNCTION</TT
+> (Neil)
+       </P
+></LI
+><LI
+><P
+>        Increase the maximum number of function arguments to 100 (Tom)
+       </P
+></LI
+><LI
+><P
+>        Allow SQL and PL/PgSQL functions to use <TT
+CLASS="COMMAND"
+>OUT</TT
+> and
+        <TT
+CLASS="COMMAND"
+>INOUT</TT
+> parameters (Tom)
+       </P
+><P
+>        <TT
+CLASS="COMMAND"
+>OUT</TT
+> is an alternate way for a function to return
+        values. Instead of using <TT
+CLASS="COMMAND"
+>RETURN</TT
+>, values can be
+        returned by assigning to parameters declared as <TT
+CLASS="COMMAND"
+>OUT</TT
+> or
+        <TT
+CLASS="COMMAND"
+>INOUT</TT
+>.  This is notationally simpler in some cases,
+        particularly so when multiple values need to be returned.
+        While returning multiple values from a function
+        was possible in previous releases, this greatly simplifies the
+        process.  (The feature will be extended to other server-side
+        languages in future releases.)
+       </P
+></LI
+><LI
+><P
+>        Move language handler functions into the <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+> schema
+       </P
+><P
+>        This makes it easier to drop the public schema if desired.
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>SPI_getnspname()</CODE
+> to SPI (Neil)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72388"
+>E.1.3.9. PL/PgSQL Server-Side Language Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Overhaul the memory management of PL/PgSQL functions (Neil)
+       </P
+><P
+>        The parsetree of each function is now stored in a separate
+        memory context. This allows this memory to be easily reclaimed
+        when it is no longer needed.
+       </P
+></LI
+><LI
+><P
+>        Check function syntax at <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> time,
+        rather than at runtime (Neil)
+       </P
+><P
+>        Previously, most syntax errors were reported only when the
+        function was executed.
+       </P
+></LI
+><LI
+><P
+>        Allow <TT
+CLASS="COMMAND"
+>OPEN</TT
+> to open non-<TT
+CLASS="COMMAND"
+>SELECT</TT
+> queries
+        like <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+> and <TT
+CLASS="COMMAND"
+>SHOW</TT
+> (Tom)
+       </P
+></LI
+><LI
+><P
+>        No longer require functions to issue a <TT
+CLASS="COMMAND"
+>RETURN</TT
+>
+        statement (Tom)
+       </P
+><P
+>        This is a byproduct of the newly added <TT
+CLASS="COMMAND"
+>OUT</TT
+> and
+        <TT
+CLASS="COMMAND"
+>INOUT</TT
+> functionality.  <TT
+CLASS="COMMAND"
+>RETURN</TT
+> can
+        be omitted when it is not needed to provide the function's
+        return value.
+       </P
+></LI
+><LI
+><P
+>        Add support for an optional <TT
+CLASS="COMMAND"
+>INTO</TT
+> clause to
+        PL/PgSQL's <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement (Pavel Stehule, Neil)
+       </P
+></LI
+><LI
+><P
+>        Make <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> set <TT
+CLASS="COMMAND"
+>ROW_COUNT</TT
+> (Tom)
+       </P
+></LI
+><LI
+><P
+>        Define <TT
+CLASS="LITERAL"
+>SQLSTATE</TT
+> and <TT
+CLASS="LITERAL"
+>SQLERRM</TT
+> to return
+        the <TT
+CLASS="LITERAL"
+>SQLSTATE</TT
+> and error message of the current
+        exception (Pavel Stehule, Neil)
+       </P
+><P
+>        These variables are only defined inside exception blocks.
+       </P
+></LI
+><LI
+><P
+>        Allow the parameters to the <TT
+CLASS="COMMAND"
+>RAISE</TT
+> statement to be
+        expressions (Pavel Stehule, Neil)
+       </P
+></LI
+><LI
+><P
+>        Add a loop <TT
+CLASS="COMMAND"
+>CONTINUE</TT
+> statement (Pavel Stehule, Neil)
+       </P
+></LI
+><LI
+><P
+>        Allow block and loop labels (Pavel Stehule)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72433"
+>E.1.3.10. PL/Perl Server-Side Language Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Allow large result sets to be returned efficiently (Abhijit
+        Menon-Sen)
+       </P
+><P
+>        This allows functions to use <CODE
+CLASS="FUNCTION"
+>return_next()</CODE
+> to avoid
+        building the entire result set in memory.
+       </P
+></LI
+><LI
+><P
+>        Allow one-row-at-a-time retrieval of query results (Abhijit Menon-Sen)
+       </P
+><P
+>        This allows functions to use <CODE
+CLASS="FUNCTION"
+>spi_query()</CODE
+> and
+        <CODE
+CLASS="FUNCTION"
+>spi_fetchrow()</CODE
+> to avoid accumulating the entire
+        result set in memory.
+       </P
+></LI
+><LI
+><P
+>        Force PL/Perl to handle strings as <TT
+CLASS="LITERAL"
+>UTF8</TT
+> if the
+        server encoding is <TT
+CLASS="LITERAL"
+>UTF8</TT
+> (David Kamholz)
+       </P
+></LI
+><LI
+><P
+>        Add a validator function for PL/Perl (Andrew)
+       </P
+><P
+>        This allows syntax errors to be reported at definition time,
+        rather than execution time.
+       </P
+></LI
+><LI
+><P
+>        Allow PL/Perl to return a Perl array when the function returns
+        an array type (Andrew)
+       </P
+><P
+>        This basically maps <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> arrays
+        to Perl arrays.
+       </P
+></LI
+><LI
+><P
+>        Allow Perl non-fatal warnings to generate <TT
+CLASS="COMMAND"
+>NOTICE</TT
+>
+        messages (Andrew)
+       </P
+></LI
+><LI
+><P
+>        Allow Perl's <TT
+CLASS="LITERAL"
+>strict</TT
+> mode to be enabled (Andrew)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72462"
+>E.1.3.11. <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>\set ON_ERROR_ROLLBACK</TT
+> to allow statements in
+        a transaction to error without affecting the rest of the
+        transaction (Greg Sabino Mullane)
+       </P
+><P
+>        This is basically implemented by wrapping every statement in a
+        sub-transaction.
+       </P
+></LI
+><LI
+><P
+>        Add support for <TT
+CLASS="LITERAL"
+>\x</TT
+> hex strings in
+        <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> variables (Bruce)
+       </P
+><P
+>        Octal escapes were already supported.
+       </P
+></LI
+><LI
+><P
+>        Add support for <TT
+CLASS="COMMAND"
+>troff -ms</TT
+> output format (Roger
+        Leigh)
+       </P
+></LI
+><LI
+><P
+>        Allow the history file location to be controlled by
+        <TT
+CLASS="ENVAR"
+>HISTFILE</TT
+> (Andreas Seltenreich)
+       </P
+><P
+>        This allows configuration of per-database history storage.
+       </P
+></LI
+><LI
+><P
+>        Prevent <TT
+CLASS="COMMAND"
+>\x</TT
+> (expanded mode) from affecting
+        backslash-command displays (Neil)
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="OPTION"
+>-L</TT
+> option to <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> to
+        log sessions (Lorne Sunley)
+       </P
+><P
+>        This option was added because some operating systems do not have
+        simple command-line activity logging functionality.
+       </P
+></LI
+><LI
+><P
+>        Make <TT
+CLASS="COMMAND"
+>\d</TT
+> show the tablespaces of indexes (Qingqing
+        Zhou)
+       </P
+></LI
+><LI
+><P
+>        Allow <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> help (<TT
+CLASS="COMMAND"
+>\h</TT
+>) to
+        make a best guess on the proper help information (Greg Sabino
+        Mullane)
+       </P
+><P
+>        This allows the user to just add <TT
+CLASS="COMMAND"
+>\h</TT
+> to the front of
+        the syntax error query and get help on the supported syntax.
+        Previously any additional query text beyond the command name
+        had to be removed to use <TT
+CLASS="COMMAND"
+>\h</TT
+>.
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="COMMAND"
+>\pset numericlocale</TT
+> to allow numbers to be
+        output in a locale-aware format (Eugen Nedelcu)
+       </P
+><P
+>        For example, using <TT
+CLASS="LITERAL"
+>C</TT
+> locale <TT
+CLASS="LITERAL"
+>100000</TT
+> would
+        be output as <TT
+CLASS="LITERAL"
+>100,000.0</TT
+> while a European locale might
+        output this value as <TT
+CLASS="LITERAL"
+>100.000,0</TT
+>.
+       </P
+></LI
+><LI
+><P
+>        Make startup banner show both server version number and
+        <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>'s version number, when they are different (Bruce)
+       </P
+><P
+>        Also, a warning will be shown if the server and <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+        are from different major releases.
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72513"
+>E.1.3.12. <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Add <TT
+CLASS="OPTION"
+>-n</TT
+> / <TT
+CLASS="OPTION"
+>--schema</TT
+> switch to 
+        <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+> (Richard van den Berg)
+       </P
+><P
+>        This allows only objects from a specified schema to be restored.
+       </P
+></LI
+><LI
+><P
+>        Allow <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> to dump a consistent snapshot of 
+        large objects (Tom)
+       </P
+></LI
+><LI
+><P
+>        Allow <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> to dump large objects even in 
+        text mode (Tom)
+       </P
+></LI
+><LI
+><P
+>        Dump comments for large objects (Tom)
+       </P
+></LI
+><LI
+><P
+>        Add <TT
+CLASS="OPTION"
+>--encoding</TT
+> to <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> 
+        (Magnus Hagander)
+       </P
+><P
+>        This allows a database to be dumped in an encoding that is
+        different from the server's encoding. This is valuable when
+        transferring the dump to a machine with a different encoding.
+       </P
+></LI
+><LI
+><P
+>        Rely on <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+> for procedural languages (Tom)
+       </P
+><P
+>        If the call handler for a procedural language is in the
+        <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+> schema, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does not
+        dump the handler.  Instead, it dumps the language using just
+        <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></TT
+>,
+        relying on the <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+> catalog to provide
+        the language's creation parameters at load time.
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72545"
+>E.1.3.13. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Add a <TT
+CLASS="ENVAR"
+>PGPASSFILE</TT
+> environment variable to specify the
+        password file's filename (Andrew)
+       </P
+></LI
+><LI
+><P
+>        Add <CODE
+CLASS="FUNCTION"
+>lo_create()</CODE
+>, that is similar to
+        <CODE
+CLASS="FUNCTION"
+>lo_creat()</CODE
+> but allows the OID of the large object
+        to be specified (Tom)
+       </P
+></LI
+><LI
+><P
+>        Make <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> consistently return an error
+        to the client application on <CODE
+CLASS="FUNCTION"
+>malloc()</CODE
+>
+        failure (Neil)
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72560"
+>E.1.3.14. Source Code Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Add spinlock support for the Itanium processor using Intel
+        compiler (Vikram Kalsi)
+       </P
+></LI
+><LI
+><P
+>        Add Kerberos 5 support for Windows (Magnus)
+       </P
+></LI
+><LI
+><P
+>        Add Chinese FAQ (laser@pgsqldb.com)
+       </P
+></LI
+><LI
+><P
+>        Rename Rendezvous to Bonjour to match OS/X feature renaming
+        (Bruce)
+       </P
+></LI
+><LI
+><P
+>        Add support for <TT
+CLASS="LITERAL"
+>fsync_writethrough</TT
+> on
+        Darwin (Chris Campbell)
+       </P
+></LI
+><LI
+><P
+>        Streamline the passing of information within the server, the
+        optimizer, and the lock system (Tom)
+       </P
+></LI
+><LI
+><P
+>        Allow <SPAN
+CLASS="APPLICATION"
+>pg_config</SPAN
+> to be compiled using MSVC (Andrew)
+       </P
+><P
+>        This is required to build DBD::Pg using <SPAN
+CLASS="APPLICATION"
+>MSVC</SPAN
+>.
+       </P
+></LI
+><LI
+><P
+>        Remove support for Kerberos V4 (Magnus)
+       </P
+><P
+>        Kerberos 4 had security vulnerabilities and is no longer
+        maintained.
+       </P
+></LI
+><LI
+><P
+>        Code cleanups (Coverity static analysis performed by
+        EnterpriseDB)
+       </P
+></LI
+><LI
+><P
+>        Modify <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> to use documentation defaults
+        <TT
+CLASS="LITERAL"
+>on</TT
+>/<TT
+CLASS="LITERAL"
+>off</TT
+> rather than
+        <TT
+CLASS="LITERAL"
+>true</TT
+>/<TT
+CLASS="LITERAL"
+>false</TT
+> (Bruce)
+       </P
+></LI
+><LI
+><P
+>        Enhance <SPAN
+CLASS="APPLICATION"
+>pg_config</SPAN
+> to be able to report more
+        build-time values (Tom)
+       </P
+></LI
+><LI
+><P
+>        Allow <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> to be built thread-safe
+        on Windows (Dave Page)
+       </P
+></LI
+><LI
+><P
+>        Allow IPv6 connections to be used on Win32 (Andrew)
+       </P
+></LI
+><LI
+><P
+>        Move private declarations from <TT
+CLASS="FILENAME"
+>gist.h</TT
+> to
+        <TT
+CLASS="FILENAME"
+>gist_private.h</TT
+> (Neil)
+       </P
+><P
+>        In previous releases, <TT
+CLASS="FILENAME"
+>gist.h</TT
+> contained both the
+        public GiST API (intended for use by authors of GiST index
+        implementations) as well as some private declarations used by
+        the implementation of GiST itself. The latter have been moved
+        to a separate file, <TT
+CLASS="FILENAME"
+>gist_private.h</TT
+>. Most GiST
+        index implementations should be unaffected.
+       </P
+></LI
+><LI
+><P
+>        Overhaul GiST memory management (Neil)
+       </P
+><P
+>        GiST methods are now always invoked in a short-lived memory
+        context. Therefore, memory allocated via <CODE
+CLASS="FUNCTION"
+>palloc()</CODE
+>
+        will be reclaimed automatically, so GiST index implementations
+        do not need to manually release allocated memory via
+        <CODE
+CLASS="FUNCTION"
+>pfree()</CODE
+>.
+       </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN72613"
+>E.1.3.15. Contrib Changes</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>        Add <TT
+CLASS="FILENAME"
+>/contrib/pg_buffercache</TT
+> contrib module (Mark
+        Kirkwood)
+       </P
+><P
+>        This displays the contents of the buffer cache, for debugging and
+        performance tuning purposes.
+       </P
+></LI
+><LI
+><P
+>        Remove <TT
+CLASS="FILENAME"
+>/contrib/array</TT
+> because it is obsolete (Tom)
+       </P
+></LI
+><LI
+><P
+>        Clean up the <TT
+CLASS="FILENAME"
+>/contrib/lo</TT
+> module (Tom)
+       </P
+></LI
+><LI
+><P
+>        Move <TT
+CLASS="FILENAME"
+>/contrib/findoidjoins</TT
+> to
+        <TT
+CLASS="FILENAME"
+>/src/tools</TT
+> (Tom)
+       </P
+></LI
+><LI
+><P
+>        Remove the <TT
+CLASS="LITERAL"
+>&lt;&lt;</TT
+>, <TT
+CLASS="LITERAL"
+>&gt;&gt;</TT
+>,
+        <TT
+CLASS="LITERAL"
+>&amp;&lt;</TT
+>, and <TT
+CLASS="LITERAL"
+>&amp;&gt;</TT
+> operators from
+        <TT
+CLASS="FILENAME"
+>/contrib/cube</TT
+>
+       </P
+><P
+>        These operators were not useful.
+       </P
+></LI
+><LI
+><P
+>        Improve <TT
+CLASS="FILENAME"
+>/contrib/btree_gist</TT
+> (Janko Richter)
+       </P
+></LI
+><LI
+><P
+>        Improve <TT
+CLASS="FILENAME"
+>/contrib/pgcrypto</TT
+> (Marko Kreen)
+       </P
+><P
+></P
+><UL
+><LI
+><P
+>          Implementation of OpenPGP symmetric-key and public-key encryption
+         </P
+><P
+>          Both RSA and Elgamal public-key algorithms are supported.
+         </P
+></LI
+><LI
+><P
+>          Stand alone build: include SHA256/384/512 hashes, Fortuna PRNG
+         </P
+></LI
+><LI
+><P
+>          OpenSSL build: support 3DES, use internal AES with OpenSSL &lt; 0.9.7
+         </P
+></LI
+><LI
+><P
+>          Take build parameters (OpenSSL, zlib) from <TT
+CLASS="FILENAME"
+>configure</TT
+> result
+         </P
+><P
+>          There is no need to edit the <TT
+CLASS="FILENAME"
+>Makefile</TT
+> anymore.
+         </P
+></LI
+><LI
+><P
+>          Remove support for <TT
+CLASS="FILENAME"
+>libmhash</TT
+> and <TT
+CLASS="FILENAME"
+>libmcrypt</TT
+>
+         </P
+></LI
+></UL
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="unsupported-features-sql-standard.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-8-0-3.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Unsupported Features</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="appendixes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 8.0.3</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

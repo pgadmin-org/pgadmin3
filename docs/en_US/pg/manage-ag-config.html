@@ -1,40 +1,219 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>18.4. Database Configuration</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="managing-databases.html" title="Chapter 18. Managing Databases">
-<link rel="prev" href="manage-ag-templatedbs.html" title="18.3. Template Databases">
-<link rel="next" href="manage-ag-dropdb.html" title="18.5. Destroying a Database">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="manage-ag-config"></a>18.4. Database Configuration</h2></div></div></div>
-<p>   Recall from <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> that the
-   <span class="productname">PostgreSQL</span> server provides a large number of
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Database Configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Managing Databases"
+HREF="managing-databases.html"><LINK
+REL="PREVIOUS"
+TITLE="Template Databases"
+HREF="manage-ag-templatedbs.html"><LINK
+REL="NEXT"
+TITLE="Destroying a Database"
+HREF="manage-ag-dropdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="manage-ag-templatedbs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. Managing Databases</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-dropdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MANAGE-AG-CONFIG"
+>19.4. Database Configuration</A
+></H1
+><P
+>   Recall from <A
+HREF="runtime-config.html"
+>Chapter 17</A
+> that the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server provides a large number of
    run-time configuration variables.  You can set database-specific
    default values for many of these settings.
-  </p>
-<p>   For example, if for some reason you want to disable the
-   <span class="acronym">GEQO</span> optimizer for a given database, you'd
+  </P
+><P
+>   For example, if for some reason you want to disable the
+   <ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+> optimizer for a given database, you'd
    ordinarily have to either disable it for all databases or make sure
-   that every connecting client is careful to issue <code class="literal">SET geqo
-   TO off;</code>.  To make this setting the default within a particular
+   that every connecting client is careful to issue <TT
+CLASS="LITERAL"
+>SET geqo
+   TO off;</TT
+>.  To make this setting the default within a particular
    database, you can execute the command
-</p>
-<pre class="programlisting">ALTER DATABASE mydb SET geqo TO off;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DATABASE mydb SET geqo TO off;</PRE
+><P>
    This will save the setting (but not set it immediately).  In
    subsequent connections to this database it will appear as though
-   <code class="literal">SET geqo TO off;</code> had been executed just before the
+   <TT
+CLASS="LITERAL"
+>SET geqo TO off;</TT
+> had been executed just before the
    session started.
    Note that users can still alter this setting during their sessions; it
    will only be the default.  To undo any such setting, use
-   <code class="literal">ALTER DATABASE <em class="replaceable"><code>dbname</code></em> RESET
-   <em class="replaceable"><code>varname</code></em>;</code>.
-  </p>
-</div></body>
-</html>
+   <TT
+CLASS="LITERAL"
+>ALTER DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> RESET
+   <TT
+CLASS="REPLACEABLE"
+><I
+>varname</I
+></TT
+>;</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="manage-ag-templatedbs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-dropdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Template Databases</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Destroying a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

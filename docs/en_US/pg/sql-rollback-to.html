@@ -1,74 +1,244 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ROLLBACK TO SAVEPOINT</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-rollback.html" title="ROLLBACK">
-<link rel="next" href="sql-savepoint.html" title="SAVEPOINT">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-rollback-to"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ROLLBACK TO SAVEPOINT &#8212; roll back to a savepoint</p>
-</div>
-<a name="id466439"></a><a name="id466448"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <em class="replaceable"><code>savepoint_name</code></em></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id466468"></a><h2>Description</h2>
-<p>   Roll back all commands that were executed after the savepoint was
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ROLLBACK TO SAVEPOINT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ROLLBACK PREPARED"
+HREF="sql-rollback-prepared.html"><LINK
+REL="NEXT"
+TITLE="SAVEPOINT"
+HREF="sql-savepoint.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-rollback-prepared.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-rollback-prepared.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-savepoint.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-savepoint.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ROLLBACK-TO"
+></A
+>ROLLBACK TO SAVEPOINT</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46975"
+></A
+><H2
+>Name</H2
+>ROLLBACK TO SAVEPOINT&nbsp;--&nbsp;roll back to a savepoint</DIV
+><A
+NAME="AEN46978"
+></A
+><A
+NAME="AEN46980"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46983"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <TT
+CLASS="REPLACEABLE"
+><I
+>savepoint_name</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46986"
+></A
+><H2
+>Description</H2
+><P
+>   Roll back all commands that were executed after the savepoint was
    established.  The savepoint remains valid and can be rolled back to
    again later, if needed.
-  </p>
-<p>   <code class="command">ROLLBACK TO SAVEPOINT</code> implicitly destroys all savepoints that
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>ROLLBACK TO SAVEPOINT</TT
+> implicitly destroys all savepoints that
    were established after the named savepoint.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id466484"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
-<dd><p>      The savepoint to roll back to.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id466499"></a><h2>Notes</h2>
-<p>   Use <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a> to destroy a savepoint without
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46991"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>savepoint_name</I
+></TT
+></DT
+><DD
+><P
+>      The savepoint to roll back to.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46999"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="sql-release-savepoint.html"
+><I
+>RELEASE SAVEPOINT</I
+></A
+> to destroy a savepoint without
    discarding the effects of commands executed after it was established.
-  </p>
-<p>   Specifying a savepoint name that has not been established is an error.
-  </p>
-<p>   Cursors have somewhat non-transactional behavior with respect to
+  </P
+><P
+>   Specifying a savepoint name that has not been established is an error.
+  </P
+><P
+>   Cursors have somewhat non-transactional behavior with respect to
    savepoints.  Any cursor that is opened inside a savepoint will be closed
    when the savepoint is rolled back.  If a previously opened cursor is
    affected by a 
-   <code class="command">FETCH</code> command inside a savepoint that is later rolled
-   back, the cursor position remains at the position that <code class="command">FETCH</code>
-   left it pointing to (that is, <code class="command">FETCH</code> is not rolled back).
+   <TT
+CLASS="COMMAND"
+>FETCH</TT
+> command inside a savepoint that is later rolled
+   back, the cursor position remains at the position that <TT
+CLASS="COMMAND"
+>FETCH</TT
+>
+   left it pointing to (that is, <TT
+CLASS="COMMAND"
+>FETCH</TT
+> is not rolled back).
    Closing a cursor is not undone by rolling back, either.
    A cursor whose execution causes a transaction to abort is put in a
    can't-execute state, so while the transaction can be restored using
-   <code class="command">ROLLBACK TO SAVEPOINT</code>, the cursor can no longer be used.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id466550"></a><h2>Examples</h2>
-<p>   To undo the effects of the commands executed after <code class="literal">my_savepoint</code>
+   <TT
+CLASS="COMMAND"
+>ROLLBACK TO SAVEPOINT</TT
+>, the cursor can no longer be used.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47009"
+></A
+><H2
+>Examples</H2
+><P
+>   To undo the effects of the commands executed after <TT
+CLASS="LITERAL"
+>my_savepoint</TT
+>
    was established:
-</p>
-<pre class="programlisting">ROLLBACK TO SAVEPOINT my_savepoint;</pre>
-<p>
-  </p>
-<p>   Cursor positions are not affected by savepoint rollback:
-</p>
-<pre class="programlisting">BEGIN;
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ROLLBACK TO SAVEPOINT my_savepoint;</PRE
+><P>
+  </P
+><P
+>   Cursor positions are not affected by savepoint rollback:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
 
 DECLARE foo CURSOR FOR SELECT 1 UNION SELECT 2;
 
@@ -86,25 +256,147 @@ FETCH 1 FROM foo;
 ----------
         2
 
-COMMIT;</pre>
-<p>
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id466578"></a><h2>Compatibility</h2>
-<p>   The SQL:2003 standard specifies that the key word
-   <code class="literal">SAVEPOINT</code> is mandatory, but <span class="productname">PostgreSQL</span>
-   and <span class="productname">Oracle</span> allow it to be omitted.  SQL:2003 allows
-   only <code class="literal">WORK</code>, not <code class="literal">TRANSACTION</code>, as a noise word
-   after <code class="literal">ROLLBACK</code>.  Also, SQL:2003 has an optional clause
-   <code class="literal">AND [ NO ] CHAIN</code> which is not currently supported by
-   <span class="productname">PostgreSQL</span>.  Otherwise, this command conforms to
+COMMIT;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47016"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL:2003 standard specifies that the key word
+   <TT
+CLASS="LITERAL"
+>SAVEPOINT</TT
+> is mandatory, but <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   and <SPAN
+CLASS="PRODUCTNAME"
+>Oracle</SPAN
+> allow it to be omitted.  SQL:2003 allows
+   only <TT
+CLASS="LITERAL"
+>WORK</TT
+>, not <TT
+CLASS="LITERAL"
+>TRANSACTION</TT
+>, as a noise word
+   after <TT
+CLASS="LITERAL"
+>ROLLBACK</TT
+>.  Also, SQL:2003 has an optional clause
+   <TT
+CLASS="LITERAL"
+>AND [ NO ] CHAIN</TT
+> which is not currently supported by
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  Otherwise, this command conforms to
    the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id466634"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a>, </span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47027"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>, <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+>, <A
+HREF="sql-release-savepoint.html"
+><I
+>RELEASE SAVEPOINT</I
+></A
+>, <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
+>, <A
+HREF="sql-savepoint.html"
+><I
+>SAVEPOINT</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-rollback-prepared.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-savepoint.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ROLLBACK PREPARED</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SAVEPOINT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

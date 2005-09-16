@@ -1,0 +1,410 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Role Attributes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Database Roles and Privileges"
+HREF="user-manag.html"><LINK
+REL="PREVIOUS"
+TITLE="Database Roles and Privileges"
+HREF="user-manag.html"><LINK
+REL="NEXT"
+TITLE="Role Membership"
+HREF="role-membership.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 18. Database Roles and Privileges</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="role-membership.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ROLE-ATTRIBUTES"
+>18.2. Role Attributes</A
+></H1
+><P
+>    A database role may have a number of attributes that define its
+    privileges and interact with the client authentication system.
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>login privilege<A
+NAME="AEN20683"
+></A
+></DT
+><DD
+><P
+>        Only roles that have the <TT
+CLASS="LITERAL"
+>LOGIN</TT
+> attribute can be used
+        as the initial role name for a database connection.  A role with
+        the <TT
+CLASS="LITERAL"
+>LOGIN</TT
+> attribute can be considered the same thing
+        as a <SPAN
+CLASS="QUOTE"
+>"database user"</SPAN
+>.  To create a role with login privilege,
+        use either
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> LOGIN;
+CREATE USER <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>;</PRE
+><P>
+        (<TT
+CLASS="COMMAND"
+>CREATE USER</TT
+> is equivalent to <TT
+CLASS="COMMAND"
+>CREATE ROLE</TT
+>
+        except that <TT
+CLASS="COMMAND"
+>CREATE USER</TT
+> assumes <TT
+CLASS="LITERAL"
+>LOGIN</TT
+> by
+        default, while <TT
+CLASS="COMMAND"
+>CREATE ROLE</TT
+> does not.)
+       </P
+></DD
+><DT
+>superuser status<A
+NAME="AEN20700"
+></A
+></DT
+><DD
+><P
+>        A database superuser bypasses all permission checks.  This is a
+        dangerous privilege and should not be used carelessly; it is best
+        to do most of your work as a role that is not a superuser.
+        To create a new database superuser, use <TT
+CLASS="LITERAL"
+>CREATE ROLE
+        <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> SUPERUSER</TT
+>.  You must do
+        this as a role that is already a superuser.
+       </P
+></DD
+><DT
+>database creation<A
+NAME="AEN20708"
+></A
+></DT
+><DD
+><P
+>        A role must be explicitly given permission to create databases
+        (except for superusers, since those bypass all permission
+        checks). To create such a role, use <TT
+CLASS="LITERAL"
+>CREATE ROLE
+        <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> CREATEDB</TT
+>.
+       </P
+></DD
+><DT
+>role creation<A
+NAME="AEN20717"
+></A
+></DT
+><DD
+><P
+>        A role must be explicitly given permission to create more roles
+        (except for superusers, since those bypass all permission
+        checks). To create such a role, use <TT
+CLASS="LITERAL"
+>CREATE ROLE
+        <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> CREATEROLE</TT
+>.
+        A role with <TT
+CLASS="LITERAL"
+>CREATEROLE</TT
+> privilege can alter and drop
+        other roles, too.  However, to alter or drop a superuser role,
+        superuser status is required; <TT
+CLASS="LITERAL"
+>CREATEROLE</TT
+> is not sufficient
+        for that.
+       </P
+></DD
+><DT
+>password<A
+NAME="AEN20728"
+></A
+></DT
+><DD
+><P
+>        A password is only significant if the client authentication
+        method requires the user to supply a password when connecting
+        to the database. The <TT
+CLASS="OPTION"
+>password</TT
+>,
+        <TT
+CLASS="OPTION"
+>md5</TT
+>, and <TT
+CLASS="OPTION"
+>crypt</TT
+> authentication methods
+        make use of passwords. Database passwords are separate from
+        operating system passwords. Specify a password upon role
+        creation with <TT
+CLASS="LITERAL"
+>CREATE ROLE
+        <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> PASSWORD '<TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+>'</TT
+>. 
+       </P
+></DD
+></DL
+></DIV
+><P>
+
+    A role's attributes can be modified after creation with
+    <TT
+CLASS="COMMAND"
+>ALTER ROLE</TT
+>.<A
+NAME="AEN20739"
+></A
+>
+    See the reference pages for the <A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+> and <A
+HREF="sql-alterrole.html"
+><I
+>ALTER ROLE</I
+></A
+> commands for details.
+   </P
+><P
+>   A role can also have role-specific defaults for many of the run-time
+   configuration settings described in <A
+HREF="runtime-config.html"
+>Chapter 17</A
+>.  For example, if for some reason you
+   want to disable index scans (hint: not a good idea) anytime you
+   connect, you can use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER ROLE myname SET enable_indexscan TO off;</PRE
+><P>
+   This will save the setting (but not set it immediately).  In
+   subsequent connections by this role it will appear as though
+   <TT
+CLASS="LITERAL"
+>SET enable_indexscan TO off;</TT
+> had been executed
+   just before the session started.
+   You can still alter this setting during the session; it will only
+   be the default. To remove a role-specific default setting, use
+   <TT
+CLASS="LITERAL"
+>ALTER ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+> RESET <TT
+CLASS="REPLACEABLE"
+><I
+>varname</I
+></TT
+>;</TT
+>.
+   Note that role-specific defaults attached to roles without
+   <TT
+CLASS="LITERAL"
+>LOGIN</TT
+> privilege are fairly useless, since they will never
+   be invoked.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="role-membership.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Database Roles and Privileges</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Role Membership</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

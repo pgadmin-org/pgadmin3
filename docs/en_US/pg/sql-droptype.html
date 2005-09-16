@@ -1,66 +1,308 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DROP TYPE</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-droptrigger.html" title="DROP TRIGGER">
-<link rel="next" href="sql-dropuser.html" title="DROP USER">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-droptype"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DROP TYPE &#8212; remove a data type</p>
-</div>
-<a name="id459815"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DROP TYPE <em class="replaceable"><code>name</code></em> [, ...] [ CASCADE | RESTRICT ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id459835"></a><h2>Description</h2>
-<p>   <code class="command">DROP TYPE</code> will remove a user-defined data type.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DROP TYPE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP TRIGGER"
+HREF="sql-droptrigger.html"><LINK
+REL="NEXT"
+TITLE="DROP USER"
+HREF="sql-dropuser.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droptrigger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droptrigger.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropuser.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPTYPE"
+></A
+>DROP TYPE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45183"
+></A
+><H2
+>Name</H2
+>DROP TYPE&nbsp;--&nbsp;remove a data type</DIV
+><A
+NAME="AEN45186"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45188"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP TYPE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [, ...] [ CASCADE | RESTRICT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45191"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP TYPE</TT
+> will remove a user-defined data type.
    Only the owner of a type can remove it.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id459848"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
-<dd><p>      The name (optionally schema-qualified) of the data type to remove.
-     </p></dd>
-<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
-<dd><p>      Automatically drop objects that depend on the type (such as
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45195"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of the data type to remove.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the type (such as
       table columns, functions, operators).
-     </p></dd>
-<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
-<dd><p>      Refuse to drop the type if any objects depend on it.  This is
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>      Refuse to drop the type if any objects depend on it.  This is
       the default.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-droptype-examples"></a><h2>Examples</h2>
-<p>   To remove the data type <code class="type">box</code>:
-</p>
-<pre class="programlisting">DROP TYPE box;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-droptype-compatibility"></a><h2>Compatibility</h2>
-<p>   This command is similar to the corresponding command in the SQL
-   standard, but note that the <code class="command">CREATE TYPE</code> command
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPTYPE-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To remove the data type <TT
+CLASS="TYPE"
+>box</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP TYPE box;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPTYPE-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><P
+>   This command is similar to the corresponding command in the SQL
+   standard, but note that the <TT
+CLASS="COMMAND"
+>CREATE TYPE</TT
+> command
    and the data type extension mechanisms in
-   <span class="productname">PostgreSQL</span> differ from the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="sql-droptype-see-also"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createtype.html">CREATE TYPE</a>, <a href="sql-altertype.html">ALTER TYPE</a>, </span>
-</div>
-</div></body>
-</html>
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> differ from the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPTYPE-SEE-ALSO"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createtype.html"
+><I
+>CREATE TYPE</I
+></A
+>, <A
+HREF="sql-altertype.html"
+><I
+>ALTER TYPE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droptrigger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP TRIGGER</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP USER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

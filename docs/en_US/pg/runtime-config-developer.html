@@ -1,0 +1,406 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Developer Options</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Run-time Configuration"
+HREF="runtime-config.html"><LINK
+REL="PREVIOUS"
+TITLE="Customized Options"
+HREF="runtime-config-custom.html"><LINK
+REL="NEXT"
+TITLE="Short Options"
+HREF="runtime-config-short.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-custom.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Run-time Configuration</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-short.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RUNTIME-CONFIG-DEVELOPER"
+>17.15. Developer Options</A
+></H1
+><P
+>     The following options are intended for work on the
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source, and in some cases
+     to assist with recovery of severely damaged databases.  There
+     should be no reason to use them in a production database setup.
+     As such, they have been excluded from the sample
+     <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.  Note that many of these
+     options require special source compilation flags to work at all.
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+NAME="GUC-DEBUG-ASSERTIONS"
+></A
+><TT
+CLASS="VARNAME"
+>debug_assertions</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Turns on various assertion checks. This is a debugging aid. If
+        you are experiencing strange problems or crashes you might want
+        to turn this on, as it might expose programming mistakes. To use
+        this option, the macro <TT
+CLASS="SYMBOL"
+>USE_ASSERT_CHECKING</TT
+>
+        must be defined when <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is
+        built (accomplished by the <TT
+CLASS="COMMAND"
+>configure</TT
+> option
+        <TT
+CLASS="OPTION"
+>--enable-cassert</TT
+>). Note that
+        <TT
+CLASS="VARNAME"
+>debug_assertions</TT
+> defaults to <TT
+CLASS="LITERAL"
+>on</TT
+>
+        if <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has been built with
+        assertions enabled.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-PRE-AUTH-DELAY"
+></A
+><TT
+CLASS="VARNAME"
+>pre_auth_delay</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        If nonzero, a delay of this many seconds occurs just after a new
+        server process is forked, before it conducts the authentication
+        process.  This is intended to give an opportunity to attach to the
+        server process with a debugger to trace down misbehavior in
+        authentication.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-TRACE-NOTIFY"
+></A
+><TT
+CLASS="VARNAME"
+>trace_notify</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Generates a great amount of debugging output for the
+        <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> and <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>
+        commands.  <A
+HREF="runtime-config-logging.html#GUC-CLIENT-MIN-MESSAGES"
+>client_min_messages</A
+> or
+        <A
+HREF="runtime-config-logging.html#GUC-LOG-MIN-MESSAGES"
+>log_min_messages</A
+> must be
+        <TT
+CLASS="LITERAL"
+>DEBUG1</TT
+> or lower to send this output to the
+        client or server log, respectively.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>trace_locks</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>trace_lwlocks</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>trace_userlocks</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>trace_lock_oidmin</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>trace_lock_table</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>debug_deadlocks</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>log_btree_build_stats</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Various other code tracing and debugging options.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-WAL-DEBUG"
+></A
+><TT
+CLASS="VARNAME"
+>wal_debug</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        If on, emit WAL-related debugging output. This option is
+        only available if the <TT
+CLASS="SYMBOL"
+>WAL_DEBUG</TT
+> macro was
+        defined when <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> was
+        compiled.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-ZERO-DAMAGED-PAGES"
+></A
+><TT
+CLASS="VARNAME"
+>zero_damaged_pages</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Detection of a damaged page header normally causes
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to report an error, aborting the current
+        command.  Setting <TT
+CLASS="VARNAME"
+>zero_damaged_pages</TT
+> to on causes
+        the system to instead report a warning, zero out the damaged page,
+        and continue processing.  This behavior <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>will destroy data</I
+></SPAN
+>,
+        namely all the rows on the damaged page.  But it allows you to get
+        past the error and retrieve rows from any undamaged pages that may
+        be present in the table.  So it is useful for recovering data if
+        corruption has occurred due to hardware or software error.  You should
+        generally not set this on until you have given up hope of recovering
+        data from the damaged page(s) of a table.  The
+        default setting is <TT
+CLASS="LITERAL"
+>off</TT
+>, and it can only be changed
+        by a superuser.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-custom.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-short.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Customized Options</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Short Options</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

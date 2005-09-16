@@ -1,85 +1,349 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>30.24. role_usage_grants</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="prev" href="infoschema-role-table-grants.html" title="30.23. role_table_grants">
-<link rel="next" href="infoschema-routine-privileges.html" title="30.25. routine_privileges">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="infoschema-role-usage-grants"></a>30.24. <code class="literal">role_usage_grants</code></h2></div></div></div>
-<p>   The view <code class="literal">role_usage_grants</code> is meant to identify
-   <code class="literal">USAGE</code> privileges granted on various kinds of
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>role_usage_grants</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="role_table_grants"
+HREF="infoschema-role-table-grants.html"><LINK
+REL="NEXT"
+TITLE="routine_privileges"
+HREF="infoschema-routine-privileges.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-role-table-grants.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 31. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-routine-privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-ROLE-USAGE-GRANTS"
+>31.24. <TT
+CLASS="LITERAL"
+>role_usage_grants</TT
+></A
+></H1
+><P
+>   The view <TT
+CLASS="LITERAL"
+>role_usage_grants</TT
+> is meant to identify
+   <TT
+CLASS="LITERAL"
+>USAGE</TT
+> privileges granted on various kinds of
    objects to a group that the current user is a member of.  In
-   <span class="productname">PostgreSQL</span>, this currently only applies
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, this currently only applies
    to domains, and since domains do not have real privileges in
-   <span class="productname">PostgreSQL</span>, this view is empty.  Further
-   information can be found under <code class="literal">usage_privileges</code>.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, this view is empty.  Further
+   information can be found under <TT
+CLASS="LITERAL"
+>usage_privileges</TT
+>.
    In the future, this view may contain more useful information.
-  </p>
-<div class="table">
-<a name="id401967"></a><p class="title"><b>Table 30.22. <code class="literal">role_usage_grants</code> Columns</b></p>
-<table summary="role_usage_grants Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Data Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="literal">grantor</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>In the future, the name of the user that granted the privilege</td>
-</tr>
-<tr>
-<td><code class="literal">grantee</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>In the future, the name of the group that the privilege was granted to</td>
-</tr>
-<tr>
-<td><code class="literal">object_catalog</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>Name of the database containing the object (always the current database)</td>
-</tr>
-<tr>
-<td><code class="literal">object_schema</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>Name of the schema containing the object</td>
-</tr>
-<tr>
-<td><code class="literal">object_name</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>Name of the object</td>
-</tr>
-<tr>
-<td><code class="literal">object_type</code></td>
-<td><code class="type">character_data</code></td>
-<td>In the future, the type of the object</td>
-</tr>
-<tr>
-<td><code class="literal">privilege_type</code></td>
-<td><code class="type">character_data</code></td>
-<td>Always <code class="literal">USAGE</code>
-</td>
-</tr>
-<tr>
-<td><code class="literal">is_grantable</code></td>
-<td><code class="type">character_data</code></td>
-<td>
-<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></body>
-</html>
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN29358"
+></A
+><P
+><B
+>Table 31-22. <TT
+CLASS="LITERAL"
+>role_usage_grants</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>grantor</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>In the future, the name of the user that granted the privilege</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>grantee</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>In the future, the name of the group that the privilege was granted to</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>object_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database containing the object (always the current database)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>object_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema containing the object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>object_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>object_type</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>In the future, the type of the object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>privilege_type</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Always <TT
+CLASS="LITERAL"
+>USAGE</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>is_grantable</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>YES</TT
+> if the privilege is grantable, <TT
+CLASS="LITERAL"
+>NO</TT
+> if not</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-role-table-grants.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-routine-privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>role_table_grants</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>routine_privileges</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

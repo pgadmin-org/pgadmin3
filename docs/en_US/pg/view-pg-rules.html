@@ -1,66 +1,316 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.34. pg_rules</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="prev" href="view-pg-locks.html" title="41.33. pg_locks">
-<link rel="next" href="view-pg-settings.html" title="41.35. pg_settings">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="view-pg-rules"></a>41.34. <code class="structname">pg_rules</code></h2></div></div></div>
-<a name="id502579"></a><p>   The view <code class="structname">pg_rules</code> provides access to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_rules</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_roles"
+HREF="view-pg-roles.html"><LINK
+REL="NEXT"
+TITLE="pg_settings"
+HREF="view-pg-settings.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-roles.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-settings.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="VIEW-PG-RULES"
+>42.40. <TT
+CLASS="STRUCTNAME"
+>pg_rules</TT
+></A
+></H1
+><A
+NAME="AEN58995"
+></A
+><P
+>   The view <TT
+CLASS="STRUCTNAME"
+>pg_rules</TT
+> provides access to
    useful information about query rewrite rules.
-  </p>
-<div class="table">
-<a name="id502595"></a><p class="title"><b>Table 41.34. <code class="structname">pg_rules</code> Columns</b></p>
-<table summary="pg_rules Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="structfield">schemaname</code></td>
-<td><code class="type">name</code></td>
-<td><code class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><code class="structname">pg_namespace</code></a>.nspname</code></td>
-<td>name of schema containing table</td>
-</tr>
-<tr>
-<td><code class="structfield">tablename</code></td>
-<td><code class="type">name</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.relname</code></td>
-<td>name of table the rule is for</td>
-</tr>
-<tr>
-<td><code class="structfield">rulename</code></td>
-<td><code class="type">name</code></td>
-<td><code class="literal"><a href="catalog-pg-rewrite.html" title="41.25. pg_rewrite"><code class="structname">pg_rewrite</code></a>.rulename</code></td>
-<td>name of rule</td>
-</tr>
-<tr>
-<td><code class="structfield">definition</code></td>
-<td><code class="type">text</code></td>
-<td> </td>
-<td>rule definition (a reconstructed creation command)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   The <code class="structname">pg_rules</code> view excludes the ON SELECT rules of
-   views; those can be seen in <code class="structname">pg_views</code>.
-  </p>
-</div></body>
-</html>
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN58999"
+></A
+><P
+><B
+>Table 42-40. <TT
+CLASS="STRUCTNAME"
+>pg_rules</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>schemaname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.nspname</TT
+></TD
+><TD
+>name of schema containing table</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tablename</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.relname</TT
+></TD
+><TD
+>name of table the rule is for</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>rulename</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-rewrite.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></A
+>.rulename</TT
+></TD
+><TD
+>name of rule</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>definition</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>rule definition (a reconstructed creation command)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The <TT
+CLASS="STRUCTNAME"
+>pg_rules</TT
+> view excludes the ON SELECT rules of
+   views; those can be seen in <TT
+CLASS="STRUCTNAME"
+>pg_views</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="view-pg-roles.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-settings.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_roles</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

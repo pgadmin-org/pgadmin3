@@ -1,73 +1,283 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>37.2. Database Access from PL/Perl</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="plperl.html" title="Chapter 37. PL/Perl - Perl Procedural Language">
-<link rel="prev" href="plperl.html" title="Chapter 37. PL/Perl - Perl Procedural Language">
-<link rel="next" href="plperl-data.html" title="37.3. Data Values in PL/Perl">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plperl-database"></a>37.2. Database Access from PL/Perl</h2></div></div></div>
-<p>   Access to the database itself from your Perl function can be done
-   via the function <code class="function">spi_exec_query</code> described
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Database Access from PL/Perl</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/Perl - Perl Procedural Language"
+HREF="plperl.html"><LINK
+REL="PREVIOUS"
+TITLE="PL/Perl - Perl Procedural Language"
+HREF="plperl.html"><LINK
+REL="NEXT"
+TITLE="Data Values in PL/Perl"
+HREF="plperl-data.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plperl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plperl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 38. PL/Perl - Perl Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plperl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plperl-data.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPERL-DATABASE"
+>38.2. Database Access from PL/Perl</A
+></H1
+><P
+>   Access to the database itself from your Perl function can be done
+   via the function <CODE
+CLASS="FUNCTION"
+>spi_exec_query</CODE
+> described
    below, or via an experimental module 
-   <a href="http://www.cpan.org/modules/by-module/DBD/APILOS/" target="_top">   <code class="literal">DBD::PgSPI</code></a>
-   (also available at <a href="http://www.cpan.org/SITES.html" target="_top">   <span class="acronym">CPAN mirror sites</span></a>).  This module makes available a
-   <span class="acronym">DBI</span>-compliant database-handle named
-   <code class="varname">$pg_dbh</code> that can be used to perform queries with
-   normal <span class="acronym">DBI</span>
-   syntax.<a name="id428251"></a>
-  </p>
-<p>   PL/Perl itself presently provides two additional Perl commands:
+   <A
+HREF="http://www.cpan.org/modules/by-module/DBD/APILOS/"
+TARGET="_top"
+>   <TT
+CLASS="LITERAL"
+>DBD::PgSPI</TT
+></A
+>
+   (also available at <A
+HREF="http://www.cpan.org/SITES.html"
+TARGET="_top"
+>   <ACRONYM
+CLASS="ACRONYM"
+>CPAN mirror sites</ACRONYM
+></A
+>).  This module makes available a
+   <ACRONYM
+CLASS="ACRONYM"
+>DBI</ACRONYM
+>-compliant database-handle named
+   <TT
+CLASS="VARNAME"
+>$pg_dbh</TT
+> that can be used to perform queries with
+   normal <ACRONYM
+CLASS="ACRONYM"
+>DBI</ACRONYM
+>
+   syntax.<A
+NAME="AEN35889"
+></A
+>
+  </P
+><P
+>   PL/Perl provides three additional Perl commands:
 
-   </p>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_query</code>(<em class="replaceable"><code>query</code></em> [, <em class="replaceable"><code>max-rows</code></em>])</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_query</code>(<em class="replaceable"><code>command</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd>
-<p>       Executes an SQL command.  Here is an example of a query
-       (<code class="command">SELECT</code> command) with the optional maximum
-       number of rows:
-</p>
-<pre class="programlisting">$rv = spi_exec_query('SELECT * FROM my_table', 5);</pre>
-<p>
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>spi_exec_query</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> [, <TT
+CLASS="REPLACEABLE"
+><I
+>max-rows</I
+></TT
+>])</TT
+><BR><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>spi_exec_query</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>)</TT
+><BR><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>spi_query</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>)</TT
+><BR><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>spi_fetchrow</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>)</TT
+></DT
+><DD
+><P
+>       <TT
+CLASS="LITERAL"
+>spi_exec_query</TT
+> executes an SQL command and
+returns the entire rowset as a reference to an array of hash
+references.  <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>You should only use this command when you know
+that the result set will be relatively small.</I
+></SPAN
+>  Here is an
+example of a query (<TT
+CLASS="COMMAND"
+>SELECT</TT
+> command) with the
+optional maximum number of rows:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$rv = spi_exec_query('SELECT * FROM my_table', 5);</PRE
+><P>
         This returns up to 5 rows from the table
-        <code class="literal">my_table</code>.  If <code class="literal">my_table</code>
-        has a column <code class="literal">my_column</code>, you can get that
-        value from row <code class="literal">$i</code> of the result like this:
-</p>
-<pre class="programlisting">$foo = $rv-&gt;{rows}[$i]-&gt;{my_column};</pre>
-<p>
-       The total number of rows returned from a <code class="command">SELECT</code>
+        <TT
+CLASS="LITERAL"
+>my_table</TT
+>.  If <TT
+CLASS="LITERAL"
+>my_table</TT
+>
+        has a column <TT
+CLASS="LITERAL"
+>my_column</TT
+>, you can get that
+        value from row <TT
+CLASS="LITERAL"
+>$i</TT
+> of the result like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$foo = $rv-&gt;{rows}[$i]-&gt;{my_column};</PRE
+><P>
+       The total number of rows returned from a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
        query can be accessed like this:
-</p>
-<pre class="programlisting">$nrows = $rv-&gt;{processed}</pre>
-<p>
-      </p>
-<p>       Here is an example using a different command type:
-</p>
-<pre class="programlisting">$query = "INSERT INTO my_table VALUES (1, 'test')";
-$rv = spi_exec_query($query);</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$nrows = $rv-&gt;{processed}</PRE
+><P>
+      </P
+><P
+>       Here is an example using a different command type:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$query = "INSERT INTO my_table VALUES (1, 'test')";
+$rv = spi_exec_query($query);</PRE
+><P>
        You can then access the command status (e.g.,
-       <code class="literal">SPI_OK_INSERT</code>) like this:
-</p>
-<pre class="programlisting">$res = $rv-&gt;{status};</pre>
-<p>
+       <TT
+CLASS="LITERAL"
+>SPI_OK_INSERT</TT
+>) like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$res = $rv-&gt;{status};</PRE
+><P>
        To get the number of rows affected, do:
-</p>
-<pre class="programlisting">$nrows = $rv-&gt;{processed};</pre>
-<p>
-      </p>
-<p>       Here is a complete example:
-</p>
-<pre class="programlisting">CREATE TABLE test (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$nrows = $rv-&gt;{processed};</PRE
+><P>
+      </P
+><P
+>       Here is a complete example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test (
     i int,
     v varchar
 );
@@ -77,8 +287,7 @@ INSERT INTO test (i, v) VALUES (2, 'second line');
 INSERT INTO test (i, v) VALUES (3, 'third line');
 INSERT INTO test (i, v) VALUES (4, 'immortal');
 
-CREATE FUNCTION test_munge() RETURNS SETOF test AS $$
-    my $res = [];
+CREATE OR REPLACE FUNCTION test_munge() RETURNS SETOF test AS $$
     my $rv = spi_exec_query('select i, v from test;');
     my $status = $rv-&gt;{status};
     my $nrows = $rv-&gt;{processed};
@@ -86,35 +295,209 @@ CREATE FUNCTION test_munge() RETURNS SETOF test AS $$
         my $row = $rv-&gt;{rows}[$rn];
         $row-&gt;{i} += 200 if defined($row-&gt;{i});
         $row-&gt;{v} =~ tr/A-Za-z/a-zA-Z/ if (defined($row-&gt;{v}));
-        push @$res, $row;
+        return_next($row);
     }
-    return $res;
+    return undef;
 $$ LANGUAGE plperl;
 
-SELECT * FROM test_munge();</pre>
-<p>
-      </p>
-</dd>
-<dt><span class="term"><code class="literal"><code class="function">elog</code>(<em class="replaceable"><code>level</code></em>, <em class="replaceable"><code>msg</code></em>)</code></span></dt>
-<dd><p>       Emit a log or error message. Possible levels are
-       <code class="literal">DEBUG</code>, <code class="literal">LOG</code>, <code class="literal">INFO</code>,
-       <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>, and <code class="literal">ERROR</code>.
-       <code class="literal">ERROR</code>
+SELECT * FROM test_munge();</PRE
+><P>
+    </P
+><P
+>    <TT
+CLASS="LITERAL"
+>spi_query</TT
+> and <TT
+CLASS="LITERAL"
+>spi_fetchrow</TT
+>
+    work together as a pair for rowsets which may be large, or for cases
+    where you wish to return rows as they arrive.
+    <TT
+CLASS="LITERAL"
+>spi_fetchrow</TT
+> works <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>only</I
+></SPAN
+> with
+    <TT
+CLASS="LITERAL"
+>spi_query</TT
+>. The following example illustrates how
+    you use them together:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TYPE foo_type AS (the_num INTEGER, the_text TEXT);
+
+CREATE OR REPLACE FUNCTION lotsa_md5 (INTEGER) RETURNS SETOF foo_type AS $$
+    use Digest::MD5 qw(md5_hex);
+    my $file = '/usr/share/dict/words';
+    my $t = localtime;
+    elog(NOTICE, "opening file $file at $t" );
+    open my $fh, '&lt;', $file # ooh, it's a file access!
+        or elog(ERROR, "Can't open $file for reading: $!");
+    my @words = &lt;$fh&gt;;
+    close $fh;
+    $t = localtime;
+    elog(NOTICE, "closed file $file at $t");
+    chomp(@words);
+    my $row;
+    my $sth = spi_query("SELECT * FROM generate_series(1,$_[0]) AS b(a)");
+    while (defined ($row = spi_fetchrow($sth))) {
+        return_next({
+            the_num =&gt; $row-&gt;{a},
+            the_text =&gt; md5_hex($words[rand @words])
+        });
+    }
+    return;
+$$ LANGUAGE plperlu;
+
+SELECT * from lotsa_md5(500);</PRE
+><P>
+    </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>elog</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>level</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>msg</I
+></TT
+>)</TT
+></DT
+><DD
+><P
+>       Emit a log or error message. Possible levels are
+       <TT
+CLASS="LITERAL"
+>DEBUG</TT
+>, <TT
+CLASS="LITERAL"
+>LOG</TT
+>, <TT
+CLASS="LITERAL"
+>INFO</TT
+>,
+       <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>, <TT
+CLASS="LITERAL"
+>WARNING</TT
+>, and <TT
+CLASS="LITERAL"
+>ERROR</TT
+>.
+       <TT
+CLASS="LITERAL"
+>ERROR</TT
+>
         raises an error condition; if this is not trapped by the surrounding
         Perl code, the error propagates out to the calling query, causing
         the current transaction or subtransaction to be aborted.  This
-        is effectively the same as the Perl <code class="literal">die</code> command.
+        is effectively the same as the Perl <TT
+CLASS="LITERAL"
+>die</TT
+> command.
         The other levels only generate messages of different
         priority levels.
         Whether messages of a particular priority are reported to the client,
         written to the server log, or both is controlled by the
-        <a href="runtime-config.html#guc-log-min-messages">log_min_messages</a> and
-        <a href="runtime-config.html#guc-client-min-messages">client_min_messages</a> configuration
-        variables. See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more
+        <A
+HREF="runtime-config-logging.html#GUC-LOG-MIN-MESSAGES"
+>log_min_messages</A
+> and
+        <A
+HREF="runtime-config-logging.html#GUC-CLIENT-MIN-MESSAGES"
+>client_min_messages</A
+> configuration
+        variables. See <A
+HREF="runtime-config.html"
+>Chapter 17</A
+> for more
         information.
-      </p></dd>
-</dl></div>
-<p>
-  </p>
-</div></body>
-</html>
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plperl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plperl-data.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>PL/Perl - Perl Procedural Language</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plperl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Data Values in PL/Perl</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

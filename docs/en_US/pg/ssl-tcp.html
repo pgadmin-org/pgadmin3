@@ -1,89 +1,349 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>16.8. Secure TCP/IP Connections with SSL</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-<link rel="prev" href="encryption-options.html" title="16.7. Encryption Options">
-<link rel="next" href="ssh-tunnels.html" title="16.9. Secure TCP/IP Connections with SSH Tunnels">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ssl-tcp"></a>16.8. Secure TCP/IP Connections with SSL</h2></div></div></div>
-<a name="id369258"></a><p>   <span class="productname">PostgreSQL</span> has native support for using
-   <span class="acronym">SSL</span> connections to encrypt client/server communications
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Secure TCP/IP Connections with SSL</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="PREVIOUS"
+TITLE="Encryption Options"
+HREF="encryption-options.html"><LINK
+REL="NEXT"
+TITLE="Secure TCP/IP Connections with SSH Tunnels"
+HREF="ssh-tunnels.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="encryption-options.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 16. Server Run-time Environment</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ssh-tunnels.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SSL-TCP"
+>16.7. Secure TCP/IP Connections with SSL</A
+></H1
+><A
+NAME="AEN17892"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has native support for using
+   <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> connections to encrypt client/server communications
    for increased security. This requires that
-   <span class="productname">OpenSSL</span> is installed on both client and
-   server systems and that support in <span class="productname">PostgreSQL</span> is
-   enabled at build time (see <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>).
-  </p>
-<p>   With <span class="acronym">SSL</span> support compiled in, the
-   <span class="productname">PostgreSQL</span> server can be started with
-   <span class="acronym">SSL</span> enabled by setting the parameter
-   <a href="runtime-config.html#guc-ssl">ssl</a> to <code class="literal">on</code> in
-   <code class="filename">postgresql.conf</code>. When
-   starting in <span class="acronym">SSL</span> mode, the server will look for the
-   files <code class="filename">server.key</code> and <code class="filename">server.crt</code> in the
+   <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> is installed on both client and
+   server systems and that support in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is
+   enabled at build time (see <A
+HREF="installation.html"
+>Chapter 14</A
+>).
+  </P
+><P
+>   With <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> support compiled in, the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server can be started with
+   <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> enabled by setting the parameter
+   <A
+HREF="runtime-config-connection.html#GUC-SSL"
+>ssl</A
+> to <TT
+CLASS="LITERAL"
+>on</TT
+> in
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>. When
+   starting in <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> mode, the server will look for the
+   files <TT
+CLASS="FILENAME"
+>server.key</TT
+> and <TT
+CLASS="FILENAME"
+>server.crt</TT
+> in the
    data directory, which must contain the server private key
    and certificate, respectively. These files must be set up correctly
-   before an <span class="acronym">SSL</span>-enabled server can start. If the private key is
+   before an <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>-enabled server can start. If the private key is
    protected with a passphrase, the server will prompt for the
    passphrase and will not start until it has been entered.
-  </p>
-<p>   The server will listen for both standard and <span class="acronym">SSL</span>
+  </P
+><P
+>   The server will listen for both standard and <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>
    connections on the same TCP port, and will negotiate with any
-   connecting client on whether to use <span class="acronym">SSL</span>.  By default,
-   this is at the client's option; see <a href="client-authentication.html#auth-pg-hba-conf" title="19.1. The pg_hba.conf file">Section 19.1, &#8220;The <code class="filename">pg_hba.conf</code> file&#8221;</a> about how to set up the server to
-   require use of <span class="acronym">SSL</span> for some or all connections.
-  </p>
-<p>   For details on how to create your server private key and certificate,
-   refer to the <span class="productname">OpenSSL</span> documentation. A
+   connecting client on whether to use <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+>.  By default,
+   this is at the client's option; see <A
+HREF="client-authentication.html#AUTH-PG-HBA-CONF"
+>Section 20.1</A
+> about how to set up the server to
+   require use of <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> for some or all connections.
+  </P
+><P
+>   For details on how to create your server private key and certificate,
+   refer to the <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> documentation. A
    self-signed certificate can be used for testing, but a
-   certificate signed by a certificate authority (<span class="acronym">CA</span>)
+   certificate signed by a certificate authority (<ACRONYM
+CLASS="ACRONYM"
+>CA</ACRONYM
+>)
    (either one of the global
-   <span class="acronym">CAs</span> or a local one) should be used in production so the
+   <ACRONYM
+CLASS="ACRONYM"
+>CAs</ACRONYM
+> or a local one) should be used in production so the
    client can verify the server's identity. To create a quick
    self-signed certificate, use the following
-   <span class="productname">OpenSSL</span> command:
-</p>
-<pre class="programlisting">openssl req -new -text -out server.req</pre>
-<p>
-   Fill out the information that <code class="command">openssl</code> asks for. Make sure
-   that you enter the local host name as &#8220;<span class="quote">Common Name</span>&#8221;; the challenge
+   <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>openssl req -new -text -out server.req</PRE
+><P>
+   Fill out the information that <TT
+CLASS="COMMAND"
+>openssl</TT
+> asks for. Make sure
+   that you enter the local host name as <SPAN
+CLASS="QUOTE"
+>"Common Name"</SPAN
+>; the challenge
    password can be left blank. The program will generate a key that is
    passphrase protected; it will not accept a passphrase that is less
    than four characters long. To remove the passphrase (as you must if
    you want automatic start-up of the server), run the commands
-</p>
-<pre class="programlisting">openssl rsa -in privkey.pem -out server.key
-rm privkey.pem</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>openssl rsa -in privkey.pem -out server.key
+rm privkey.pem</PRE
+><P>
    Enter the old passphrase to unlock the existing key. Now do
-</p>
-<pre class="programlisting">openssl req -x509 -in server.req -text -key server.key -out server.crt
-chmod og-rwx server.key</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>openssl req -x509 -in server.req -text -key server.key -out server.crt
+chmod og-rwx server.key</PRE
+><P>
    to turn the certificate into a self-signed certificate and to copy the
    key and certificate to where the server will look for them.
-  </p>
-<p>   If verification of client certificates is required, place the
-   certificates of the <span class="acronym">CA</span>(s) you wish to check for in
-   the file <code class="filename">root.crt</code> in the data directory.  When
+  </P
+><P
+>   If verification of client certificates is required, place the
+   certificates of the <ACRONYM
+CLASS="ACRONYM"
+>CA</ACRONYM
+>(s) you wish to check for in
+   the file <TT
+CLASS="FILENAME"
+>root.crt</TT
+> in the data directory.  When
    present, a client certificate will be requested from the client
    during SSL connection startup, and it must have been signed by one of the
-   certificates present in <code class="filename">root.crt</code>.
-  </p>
-<p>   When the <code class="filename">root.crt</code> file is not present, client
+   certificates present in <TT
+CLASS="FILENAME"
+>root.crt</TT
+>.
+  </P
+><P
+>   When the <TT
+CLASS="FILENAME"
+>root.crt</TT
+> file is not present, client
    certificates will not be requested or checked.  In this mode, SSL
    provides communication security but not authentication.
-  </p>
-<p>   The files <code class="filename">server.key</code>, <code class="filename">server.crt</code>,
-   and <code class="filename">root.crt</code> are only examined during server
+  </P
+><P
+>   The files <TT
+CLASS="FILENAME"
+>server.key</TT
+>, <TT
+CLASS="FILENAME"
+>server.crt</TT
+>,
+   and <TT
+CLASS="FILENAME"
+>root.crt</TT
+> are only examined during server
    start; so you must restart the server to make changes in them take
    effect.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="encryption-options.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ssh-tunnels.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Encryption Options</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Secure TCP/IP Connections with <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> Tunnels</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

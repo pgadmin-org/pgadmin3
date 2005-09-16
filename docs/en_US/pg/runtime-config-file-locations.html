@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>File Locations</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Run-time Configuration"
+HREF="runtime-config.html"><LINK
+REL="PREVIOUS"
+TITLE="Run-time Configuration"
+HREF="runtime-config.html"><LINK
+REL="NEXT"
+TITLE="Connections and Authentication"
+HREF="runtime-config-connection.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Run-time Configuration</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-connection.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RUNTIME-CONFIG-FILE-LOCATIONS"
+>17.2. File Locations</A
+></H1
+><P
+>      In addition to the <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file
+      already mentioned, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses
+      two other manually-edited configuration files, which control
+      client authentication (their use is discussed in <A
+HREF="client-authentication.html"
+>Chapter 20</A
+>).  By default, all three
+      configuration files are stored in the database cluster's data
+      directory.  The options described in this section allow the
+      configuration files to be placed elsewhere.  (Doing so can ease
+      administration.  In particular it is often easier to ensure that
+      the configuration files are properly backed-up when they are
+      kept separate.)
+     </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+NAME="GUC-DATA-DIRECTORY"
+></A
+><TT
+CLASS="VARNAME"
+>data_directory</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>         Specifies the directory to use for data storage.
+         This option can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-CONFIG-FILE"
+></A
+><TT
+CLASS="VARNAME"
+>config_file</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>         Specifies the main server configuration file
+         (customarily called <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>).
+         This option can only be set on the postmaster command line.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-HBA-FILE"
+></A
+><TT
+CLASS="VARNAME"
+>hba_file</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>         Specifies the configuration file for host-based authentication
+         (customarily called <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+>).
+         This option can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-IDENT-FILE"
+></A
+><TT
+CLASS="VARNAME"
+>ident_file</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>         Specifies the configuration file for
+         <SPAN
+CLASS="APPLICATION"
+>ident</SPAN
+> authentication
+         (customarily called <TT
+CLASS="FILENAME"
+>pg_ident.conf</TT
+>).
+         This option can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-EXTERNAL-PID-FILE"
+></A
+><TT
+CLASS="VARNAME"
+>external_pid_file</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Specifies the name of an additional process-id (PID) file that the
+        <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> should create for use by server
+        administration programs.
+        This option can only be set at server start.
+       </P
+></DD
+></DL
+></DIV
+><P
+>      In a default installation, none of the above options are set explicitly.
+      Instead, the
+      data directory is specified by the <TT
+CLASS="OPTION"
+>-D</TT
+> command-line
+      option or the <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable, and the
+      configuration files are all found within the data directory.
+     </P
+><P
+>      If you wish to keep the configuration files elsewhere than the
+      data directory, the postmaster's <TT
+CLASS="OPTION"
+>-D</TT
+>
+      command-line option or <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable
+      must point to the directory containing the configuration files,
+      and the <TT
+CLASS="VARNAME"
+>data_directory</TT
+> option must be set in
+      <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> (or on the command line) to show
+      where the data directory is actually located.  Notice that
+      <TT
+CLASS="VARNAME"
+>data_directory</TT
+> overrides <TT
+CLASS="OPTION"
+>-D</TT
+> and
+      <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> for the location
+      of the data directory, but not for the location of the configuration
+      files.
+     </P
+><P
+>      If you wish, you can specify the configuration file names and locations
+      individually using the options <TT
+CLASS="VARNAME"
+>config_file</TT
+>,
+      <TT
+CLASS="VARNAME"
+>hba_file</TT
+> and/or <TT
+CLASS="VARNAME"
+>ident_file</TT
+>.
+      <TT
+CLASS="VARNAME"
+>config_file</TT
+> can only be specified on the 
+      <TT
+CLASS="COMMAND"
+>postmaster</TT
+> command line, but the others can be
+      set within the main configuration file.  If all three options plus
+      <TT
+CLASS="VARNAME"
+>data_directory</TT
+> are explicitly set, then it is not necessary
+      to specify <TT
+CLASS="OPTION"
+>-D</TT
+> or <TT
+CLASS="ENVAR"
+>PGDATA</TT
+>.
+     </P
+><P
+>      When setting any of these options, a relative path will be interpreted
+      with respect to the directory in which the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
+      is started.
+     </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-connection.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Run-time Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Connections and Authentication</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

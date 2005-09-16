@@ -1,72 +1,306 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.19. pg_largeobject</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="prev" href="catalog-pg-language.html" title="41.18. pg_language">
-<link rel="next" href="catalog-pg-listener.html" title="41.20. pg_listener">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-largeobject"></a>41.19. <code class="structname">pg_largeobject</code></h2></div></div></div>
-<a name="id498475"></a><p>   The catalog <code class="structname">pg_largeobject</code> holds the data making up
-   &#8220;<span class="quote">large objects</span>&#8221;.  A large object is identified by an
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_largeobject</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_language"
+HREF="catalog-pg-language.html"><LINK
+REL="NEXT"
+TITLE="pg_listener"
+HREF="catalog-pg-listener.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-language.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-listener.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-LARGEOBJECT"
+>42.21. <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+></A
+></H1
+><A
+NAME="AEN57001"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+> holds the data making up
+   <SPAN
+CLASS="QUOTE"
+>"large objects"</SPAN
+>.  A large object is identified by an
    OID assigned when it is created.  Each large object is broken into
-   segments or &#8220;<span class="quote">pages</span>&#8221; small enough to be conveniently stored as rows
-   in <code class="structname">pg_largeobject</code>.
-   The amount of data per page is defined to be <code class="literal">LOBLKSIZE</code> (which is currently
-   <code class="literal">BLCKSZ/4</code>, or typically 2 kB).
-  </p>
-<div class="table">
-<a name="id498515"></a><p class="title"><b>Table 41.19. <code class="structname">pg_largeobject</code> Columns</b></p>
-<table summary="pg_largeobject Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="structfield">loid</code></td>
-<td><code class="type">oid</code></td>
-<td> </td>
-<td>Identifier of the large object that includes this page</td>
-</tr>
-<tr>
-<td><code class="structfield">pageno</code></td>
-<td><code class="type">int4</code></td>
-<td> </td>
-<td>Page number of this page within its large object
-      (counting from zero)</td>
-</tr>
-<tr>
-<td><code class="structfield">data</code></td>
-<td><code class="type">bytea</code></td>
-<td> </td>
-<td>       Actual data stored in the large object.
-       This will never be more than <code class="symbol">LOBLKSIZE</code> bytes and may be less.
-      </td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   Each row of <code class="structname">pg_largeobject</code> holds data
+   segments or <SPAN
+CLASS="QUOTE"
+>"pages"</SPAN
+> small enough to be conveniently stored as rows
+   in <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+>.
+   The amount of data per page is defined to be <TT
+CLASS="LITERAL"
+>LOBLKSIZE</TT
+> (which is currently
+   <TT
+CLASS="LITERAL"
+>BLCKSZ/4</TT
+>, or typically 2 kB).
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN57010"
+></A
+><P
+><B
+>Table 42-21. <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>loid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Identifier of the large object that includes this page</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>pageno</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Page number of this page within its large object
+      (counting from zero)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>data</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Actual data stored in the large object.
+       This will never be more than <TT
+CLASS="SYMBOL"
+>LOBLKSIZE</TT
+> bytes and may be less.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   Each row of <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+> holds data
    for one page of a large object, beginning at
-   byte offset (<code class="literal">pageno * LOBLKSIZE</code>) within the object.  The implementation
+   byte offset (<TT
+CLASS="LITERAL"
+>pageno * LOBLKSIZE</TT
+>) within the object.  The implementation
    allows sparse storage: pages may be missing, and may be shorter than
-   <code class="literal">LOBLKSIZE</code> bytes even if they are not the last page of the object.
+   <TT
+CLASS="LITERAL"
+>LOBLKSIZE</TT
+> bytes even if they are not the last page of the object.
    Missing regions within a large object read as zeroes.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-language.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-listener.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_listener</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

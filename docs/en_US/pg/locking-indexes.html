@@ -1,51 +1,162 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>12.5. Locking and Indexes</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
-<link rel="prev" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
-<link rel="next" href="performance-tips.html" title="Chapter 13. Performance Tips">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="locking-indexes"></a>12.5. Locking and Indexes</h2></div></div></div>
-<a name="id350840"></a><p>    Though <span class="productname">PostgreSQL</span>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Locking and Indexes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Concurrency Control"
+HREF="mvcc.html"><LINK
+REL="PREVIOUS"
+TITLE="Data Consistency Checks at the Application Level"
+HREF="applevel-consistency.html"><LINK
+REL="NEXT"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="applevel-consistency.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 12. Concurrency Control</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LOCKING-INDEXES"
+>12.5. Locking and Indexes</A
+></H1
+><A
+NAME="AEN15376"
+></A
+><P
+>    Though <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     provides nonblocking read/write access to table
     data, nonblocking read/write access is not currently offered for every
     index access method implemented
-    in <span class="productname">PostgreSQL</span>.
+    in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
     The various index types are handled as follows:
 
-    </p>
-<div class="variablelist"><dl>
-<dt><span class="term">       B-tree indexes
-      </span></dt>
-<dd><p>	Short-term share/exclusive page-level locks are used for
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>B-tree indexes</DT
+><DD
+><P
+>	Short-term share/exclusive page-level locks are used for
 	read/write access. Locks are released immediately after each
 	index row is fetched or inserted.  B-tree indexes provide
 	the highest concurrency without deadlock conditions.
-       </p></dd>
-<dt><span class="term">       <span class="acronym">GiST</span> and R-tree indexes
-      </span></dt>
-<dd><p>	Share/exclusive index-level locks are used for read/write access.
+       </P
+></DD
+><DT
+><ACRONYM
+CLASS="ACRONYM"
+>GiST</ACRONYM
+> and R-tree indexes</DT
+><DD
+><P
+>	Share/exclusive index-level locks are used for read/write access.
 	Locks are released after the command is done.
-       </p></dd>
-<dt><span class="term">       Hash indexes
-      </span></dt>
-<dd><p>	Share/exclusive hash-bucket-level locks are used for read/write
+       </P
+></DD
+><DT
+>Hash indexes</DT
+><DD
+><P
+>	Share/exclusive hash-bucket-level locks are used for read/write
 	access.  Locks are released after the whole bucket is processed.
 	Bucket-level locks provide better concurrency than index-level
 	ones, but deadlock is possible since the locks are held longer
 	than one index operation.
-       </p></dd>
-</dl></div>
-<p>
-   </p>
-<p>    In short, B-tree indexes offer the best performance for concurrent
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    In short, B-tree indexes offer the best performance for concurrent
     applications; since they also have more features than hash
     indexes, they are the recommended index type for concurrent
     applications that need to index scalar data. When dealing with
@@ -53,6 +164,70 @@
     situation, application developers should be aware of the
     relatively poor concurrent performance of GiST and R-tree
     indexes.
-   </p>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="applevel-consistency.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Data Consistency Checks at the Application Level</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Performance Tips</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,791 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Connections and Authentication</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Run-time Configuration"
+HREF="runtime-config.html"><LINK
+REL="PREVIOUS"
+TITLE="File Locations"
+HREF="runtime-config-file-locations.html"><LINK
+REL="NEXT"
+TITLE="Resource Consumption"
+HREF="runtime-config-resource.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-file-locations.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Run-time Configuration</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-resource.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RUNTIME-CONFIG-CONNECTION"
+>17.3. Connections and Authentication</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RUNTIME-CONFIG-CONNECTION-SETTINGS"
+>17.3.1. Connection Settings</A
+></H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+NAME="GUC-LISTEN-ADDRESSES"
+></A
+><TT
+CLASS="VARNAME"
+>listen_addresses</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>         Specifies the TCP/IP address(es) on which the server is
+         to listen for connections from client applications.  
+         The value takes the form of a comma-separated list of host names
+         and/or numeric IP addresses.  The special entry <TT
+CLASS="LITERAL"
+>*</TT
+>
+         corresponds to all available IP interfaces.
+         If the list is empty, the server does not listen on any IP interface
+         at all, in which case only Unix-domain sockets can be used to connect
+         to it.
+         The default value is <SPAN
+CLASS="SYSTEMITEM"
+>localhost</SPAN
+>,
+         which allows only local <SPAN
+CLASS="QUOTE"
+>"loopback"</SPAN
+> connections to be made.
+         This parameter can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-PORT"
+></A
+><TT
+CLASS="VARNAME"
+>port</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        The TCP port the server listens on; 5432 by default.  Note that the
+        same port number is used for all IP addresses the server listens on.
+        This parameter can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-MAX-CONNECTIONS"
+></A
+><TT
+CLASS="VARNAME"
+>max_connections</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Determines the maximum number of concurrent connections to the
+        database server. The default is typically 100, but may be less
+        if your kernel settings will not support it (as determined
+        during <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>).  This parameter can only be
+        set at server start.
+       </P
+><P
+>        Increasing this parameter may cause <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        to request more <SPAN
+CLASS="SYSTEMITEM"
+>System V</SPAN
+> shared
+        memory or semaphores than your operating system's default configuration
+        allows. See <A
+HREF="kernel-resources.html#SYSVIPC"
+>Section 16.4.1</A
+> for information on how to
+        adjust those parameters, if necessary.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-SUPERUSER-RESERVED-CONNECTIONS"
+></A
+><TT
+CLASS="VARNAME"
+>superuser_reserved_connections</TT
+>
+      (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Determines the number of connection <SPAN
+CLASS="QUOTE"
+>"slots"</SPAN
+> that
+        are reserved for connections by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        superusers.  At most <A
+HREF="runtime-config-connection.html#GUC-MAX-CONNECTIONS"
+>max_connections</A
+>
+        connections can ever be active simultaneously.  Whenever the
+        number of active concurrent connections is at least
+        <TT
+CLASS="VARNAME"
+>max_connections</TT
+> minus
+        <TT
+CLASS="VARNAME"
+>superuser_reserved_connections</TT
+>, new
+        connections will be accepted only for superusers.
+       </P
+><P
+>        The default value is 2. The value must be less than the value of
+        <TT
+CLASS="VARNAME"
+>max_connections</TT
+>. This parameter can only be
+        set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-UNIX-SOCKET-DIRECTORY"
+></A
+><TT
+CLASS="VARNAME"
+>unix_socket_directory</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Specifies the directory of the Unix-domain socket on which the
+        server is to listen for
+        connections from client applications.  The default is normally
+        <TT
+CLASS="FILENAME"
+>/tmp</TT
+>, but can be changed at build time.
+        This parameter can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-UNIX-SOCKET-GROUP"
+></A
+><TT
+CLASS="VARNAME"
+>unix_socket_group</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the owning group of the Unix-domain socket.  (The owning
+        user of the socket is always the user that starts the
+        server.)  In combination with the option
+        <TT
+CLASS="VARNAME"
+>unix_socket_permissions</TT
+> this can be used as
+        an additional access control mechanism for Unix-domain connections.
+        By default this is the empty string, which uses the default
+        group for the current user.  This option can only be set at
+        server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-UNIX-SOCKET-PERMISSIONS"
+></A
+><TT
+CLASS="VARNAME"
+>unix_socket_permissions</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the access permissions of the Unix-domain socket.  Unix-domain
+        sockets use the usual Unix file system permission set.
+        The option value is expected to be a numeric mode
+        specification in the form accepted by the
+        <CODE
+CLASS="FUNCTION"
+>chmod</CODE
+> and <CODE
+CLASS="FUNCTION"
+>umask</CODE
+>
+        system calls.  (To use the customary octal format the number
+        must start with a <TT
+CLASS="LITERAL"
+>0</TT
+> (zero).)
+       </P
+><P
+>        The default permissions are <TT
+CLASS="LITERAL"
+>0777</TT
+>, meaning
+        anyone can connect. Reasonable alternatives are
+        <TT
+CLASS="LITERAL"
+>0770</TT
+> (only user and group, see also
+        <TT
+CLASS="VARNAME"
+>unix_socket_group</TT
+>) and <TT
+CLASS="LITERAL"
+>0700</TT
+>
+        (only user). (Note that for a Unix-domain socket, only write
+        permission matters and so there is no point in setting or revoking
+        read or execute permissions.)
+       </P
+><P
+>        This access control mechanism is independent of the one
+        described in <A
+HREF="client-authentication.html"
+>Chapter 20</A
+>.
+       </P
+><P
+>        This option can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-BONJOUR-NAME"
+></A
+><TT
+CLASS="VARNAME"
+>bonjour_name</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Specifies the <SPAN
+CLASS="PRODUCTNAME"
+>Bonjour</SPAN
+> broadcast
+        name.  By default, the computer name is used, specified as an
+        empty string ''.  This option is ignored if the server was not
+        compiled with <SPAN
+CLASS="PRODUCTNAME"
+>Bonjour</SPAN
+> support.  This
+        option can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-TCP-KEEPALIVES-IDLE"
+></A
+><TT
+CLASS="VARNAME"
+>tcp_keepalives_idle</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        On systems that support the TCP_KEEPIDLE socket option, specifies the
+        number of seconds between sending keepalives on an otherwise idle
+        connection. A value of 0 uses the system default. If TCP_KEEPIDLE is
+        not supported, this parameter must be 0. This option is ignored for
+        connections made via a Unix-domain socket.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-TCP-KEEPALIVES-INTERVAL"
+></A
+><TT
+CLASS="VARNAME"
+>tcp_keepalives_interval</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        On systems that support the TCP_KEEPINTVL socket option, specifies how
+        long, in seconds, to wait for a response to a keepalive before
+        retransmitting. A value of 0 uses the system default. If TCP_KEEPINTVL
+        is not supported, this parameter must be 0. This option is ignored
+        for connections made via a Unix-domain socket.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-TCP-KEEPALIVES-COUNT"
+></A
+><TT
+CLASS="VARNAME"
+>tcp_keepalives_count</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        On systems that support the TCP_KEEPCNT socket option, specifies how
+        many keepalives may be lost before the connection is considered dead. 
+        A value of 0 uses the system default. If TCP_KEEPCNT is not
+        supported, this parameter must be 0. This option is ignored
+        for connections made via a Unix-domain socket.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RUNTIME-CONFIG-CONNECTION-SECURITY"
+>17.3.2. Security and Authentication</A
+></H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+NAME="GUC-AUTHENTICATION-TIMEOUT"
+></A
+><TT
+CLASS="VARNAME"
+>authentication_timeout</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Maximum time to complete client authentication, in seconds. If a
+        would-be client has not completed the authentication protocol in
+        this much time, the server breaks the connection. This prevents
+        hung clients from occupying a connection indefinitely. This
+        option can only be set at server start or in the
+        <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file. The default is 60.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-SSL"
+></A
+><TT
+CLASS="VARNAME"
+>ssl</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> connections. Please read
+        <A
+HREF="ssl-tcp.html"
+>Section 16.7</A
+> before using this. The default
+        is <TT
+CLASS="LITERAL"
+>off</TT
+>. This parameter can only be set at server
+        start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-PASSWORD-ENCRYPTION"
+></A
+><TT
+CLASS="VARNAME"
+>password_encryption</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        When a password is specified in <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+> or
+        <A
+HREF="sql-alteruser.html"
+><I
+>ALTER USER</I
+></A
+>
+        without writing either <TT
+CLASS="LITERAL"
+>ENCRYPTED</TT
+> or
+        <TT
+CLASS="LITERAL"
+>UNENCRYPTED</TT
+>, this option determines whether the
+        password is to be encrypted. The default is <TT
+CLASS="LITERAL"
+>on</TT
+>
+        (encrypt the password).
+       </P
+></DD
+><DT
+><A
+NAME="GUC-KRB-SERVER-KEYFILE"
+></A
+><TT
+CLASS="VARNAME"
+>krb_server_keyfile</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the location of the Kerberos server key file. See
+        <A
+HREF="auth-methods.html#KERBEROS-AUTH"
+>Section 20.2.3</A
+> for details. This parameter
+        can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-KRB-SRVNAME"
+></A
+><TT
+CLASS="VARNAME"
+>krb_srvname</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the Kerberos service name. See <A
+HREF="auth-methods.html#KERBEROS-AUTH"
+>Section 20.2.3</A
+>
+        for details.  This parameter can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-KRB-SERVER-HOSTNAME"
+></A
+><TT
+CLASS="VARNAME"
+>krb_server_hostname</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the hostname part of the service principal.
+        This, combined with <TT
+CLASS="VARNAME"
+>krb_srvname</TT
+>, is used to generate
+        the complete service principal, i.e.
+        <TT
+CLASS="VARNAME"
+>krb_server_hostname</TT
+><TT
+CLASS="LITERAL"
+>/</TT
+><TT
+CLASS="VARNAME"
+>krb_server_hostname</TT
+><TT
+CLASS="LITERAL"
+>@</TT
+>REALM.
+       </P
+><P
+>        If not set, the default is to allow any service principal matching an entry
+        in the keytab.  See <A
+HREF="auth-methods.html#KERBEROS-AUTH"
+>Section 20.2.3</A
+> for details.
+        This parameter can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-KRB-CASEINS-USERS"
+></A
+><TT
+CLASS="VARNAME"
+>krb_caseins_users</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Sets if Kerberos usernames should be treated case-insensitively.
+        The default is <TT
+CLASS="LITERAL"
+>off</TT
+> (case sensitive). This parameter
+        can only be set at server start.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-DB-USER-NAMESPACE"
+></A
+><TT
+CLASS="VARNAME"
+>db_user_namespace</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        This enables per-database user names.  It is off by default.
+       </P
+><P
+>        If this is on, you should create users as <TT
+CLASS="LITERAL"
+>username@dbname</TT
+>.
+        When <TT
+CLASS="LITERAL"
+>username</TT
+> is passed by a connecting client,
+        <TT
+CLASS="LITERAL"
+>@</TT
+> and the database name are appended to the user
+        name and that database-specific user name is looked up by the
+        server. Note that when you create users with names containing
+        <TT
+CLASS="LITERAL"
+>@</TT
+> within the SQL environment, you will need to
+        quote the user name.
+       </P
+><P
+>        With this option enabled, you can still create ordinary global
+        users.  Simply append <TT
+CLASS="LITERAL"
+>@</TT
+> when specifying the user
+        name in the client.  The <TT
+CLASS="LITERAL"
+>@</TT
+> will be stripped off
+        before the user name is looked up by the server.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         This feature is intended as a temporary measure until a
+         complete solution is found.  At that time, this option will
+         be removed.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-file-locations.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-resource.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>File Locations</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Resource Consumption</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

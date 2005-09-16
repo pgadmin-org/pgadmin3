@@ -1,0 +1,451 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_shdepend</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_rewrite"
+HREF="catalog-pg-rewrite.html"><LINK
+REL="NEXT"
+TITLE="pg_statistic"
+HREF="catalog-pg-statistic.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-rewrite.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-statistic.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-SHDEPEND"
+>42.29. <TT
+CLASS="STRUCTNAME"
+>pg_shdepend</TT
+></A
+></H1
+><A
+NAME="AEN57763"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_shdepend</TT
+> records the
+   dependency relationships between database objects and shared objects,
+   such as roles.  This information allows
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to ensure that those objects are
+   unreferenced before attempting to delete them.
+  </P
+><P
+>   See also <A
+HREF="catalog-pg-depend.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></A
+>,
+   which performs a similar function for dependencies involving objects
+   within a single database.
+  </P
+><P
+>   Unlike most system catalogs, <TT
+CLASS="STRUCTNAME"
+>pg_shdepend</TT
+>
+   is shared across all databases of a cluster: there is only one
+   copy of <TT
+CLASS="STRUCTNAME"
+>pg_shdepend</TT
+> per cluster, not
+   one per database.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN57774"
+></A
+><P
+><B
+>Table 42-29. <TT
+CLASS="STRUCTNAME"
+>pg_shdepend</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>dbid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-database.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The OID of the database the dependent object is in,
+       or zero for a shared object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>classid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The OID of the system catalog the dependent object is in</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>objid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>any OID column</TD
+><TD
+>The OID of the specific dependent object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>refclassid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The OID of the system catalog the referenced object is in
+       (must be a shared catalog)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>refobjid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>any OID column</TD
+><TD
+>The OID of the specific referenced object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>deptype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       A code defining the specific semantics of this dependency relationship; see text.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   In all cases, a <TT
+CLASS="STRUCTNAME"
+>pg_shdepend</TT
+> entry indicates that
+   the referenced object may not be dropped without also dropping the dependent
+   object.  However, there are several subflavors identified by
+   <TT
+CLASS="STRUCTFIELD"
+>deptype</TT
+>:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>SHARED_DEPENDENCY_OWNER</TT
+> (<TT
+CLASS="LITERAL"
+>o</TT
+>)</DT
+><DD
+><P
+>       The referenced object (which must be a role) is the owner of the
+       dependent object.
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SHARED_DEPENDENCY_ACL</TT
+> (<TT
+CLASS="LITERAL"
+>a</TT
+>)</DT
+><DD
+><P
+>       The referenced object (which must be a role) is mentioned in the
+       ACL (access control list, i.e., privileges list) of the
+       dependent object.  (A <TT
+CLASS="SYMBOL"
+>SHARED_DEPENDENCY_ACL</TT
+> entry is
+       not made for the owner of the object, since the owner will have
+       a <TT
+CLASS="SYMBOL"
+>SHARED_DEPENDENCY_OWNER</TT
+> entry anyway.)
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SHARED_DEPENDENCY_PIN</TT
+> (<TT
+CLASS="LITERAL"
+>p</TT
+>)</DT
+><DD
+><P
+>       There is no dependent object; this type of entry is a signal
+       that the system itself depends on the referenced object, and so
+       that object must never be deleted.  Entries of this type are
+       created only by <TT
+CLASS="COMMAND"
+>initdb</TT
+>.  The columns for the
+       dependent object contain zeroes.
+      </P
+></DD
+></DL
+></DIV
+><P>
+
+   Other dependency flavors may be needed in future.  Note in particular
+   that the current definition only supports roles as referenced objects.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-rewrite.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-statistic.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

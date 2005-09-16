@@ -1,154 +1,571 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.10. pg_constraint</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="prev" href="catalog-pg-class.html" title="41.9. pg_class">
-<link rel="next" href="catalog-pg-conversion.html" title="41.11. pg_conversion">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-constraint"></a>41.10. <code class="structname">pg_constraint</code></h2></div></div></div>
-<a name="id496559"></a><p>   The catalog <code class="structname">pg_constraint</code> stores check, primary key, unique, and foreign
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_constraint</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_class"
+HREF="catalog-pg-class.html"><LINK
+REL="NEXT"
+TITLE="pg_conversion"
+HREF="catalog-pg-conversion.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-class.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-conversion.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-CONSTRAINT"
+>42.13. <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+></A
+></H1
+><A
+NAME="AEN56245"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+> stores check, primary key, unique, and foreign
    key constraints on tables.  (Column constraints are not treated
    specially.  Every column constraint is equivalent to some table
    constraint.)  Not-null constraints are represented in the
-   <code class="structname">pg_attribute</code> catalog.
-  </p>
-<p>   Check constraints on domains are stored here, too.
-  </p>
-<div class="table">
-<a name="id496582"></a><p class="title"><b>Table 41.10. <code class="structname">pg_constraint</code> Columns</b></p>
-<table summary="pg_constraint Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="structfield">conname</code></td>
-<td><code class="type">name</code></td>
-<td> </td>
-<td>Constraint name (not necessarily unique!)</td>
-</tr>
-<tr>
-<td><code class="structfield">connamespace</code></td>
-<td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
-<td>       The OID of the namespace that contains this constraint
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">contype</code></td>
-<td><code class="type">char</code></td>
-<td> </td>
-<td>        <code class="literal">c</code> = check constraint,
-        <code class="literal">f</code> = foreign key constraint,
-        <code class="literal">p</code> = primary key constraint,
-        <code class="literal">u</code> = unique constraint
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">condeferrable</code></td>
-<td><code class="type">bool</code></td>
-<td> </td>
-<td>Is the constraint deferrable?</td>
-</tr>
-<tr>
-<td><code class="structfield">condeferred</code></td>
-<td><code class="type">bool</code></td>
-<td> </td>
-<td>Is the constraint deferred by default?</td>
-</tr>
-<tr>
-<td><code class="structfield">conrelid</code></td>
-<td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
-<td>The table this constraint is on; 0 if not a table constraint</td>
-</tr>
-<tr>
-<td><code class="structfield">contypid</code></td>
-<td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
-<td>The domain this constraint is on; 0 if not a domain constraint</td>
-</tr>
-<tr>
-<td><code class="structfield">confrelid</code></td>
-<td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
-<td>If a foreign key, the referenced table; else 0</td>
-</tr>
-<tr>
-<td><code class="structfield">confupdtype</code></td>
-<td><code class="type">char</code></td>
-<td> </td>
-<td>Foreign key update action code</td>
-</tr>
-<tr>
-<td><code class="structfield">confdeltype</code></td>
-<td><code class="type">char</code></td>
-<td> </td>
-<td>Foreign key deletion action code</td>
-</tr>
-<tr>
-<td><code class="structfield">confmatchtype</code></td>
-<td><code class="type">char</code></td>
-<td> </td>
-<td>Foreign key match type</td>
-</tr>
-<tr>
-<td><code class="structfield">conkey</code></td>
-<td><code class="type">int2[]</code></td>
-<td><code class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
-<td>If a table constraint, list of columns which the constraint constrains</td>
-</tr>
-<tr>
-<td><code class="structfield">confkey</code></td>
-<td><code class="type">int2[]</code></td>
-<td><code class="literal"><a href="catalog-pg-attribute.html" title="41.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
-<td>If a foreign key, list of the referenced columns</td>
-</tr>
-<tr>
-<td><code class="structfield">conbin</code></td>
-<td><code class="type">text</code></td>
-<td> </td>
-<td>If a check constraint, an internal representation of the expression</td>
-</tr>
-<tr>
-<td><code class="structfield">consrc</code></td>
-<td><code class="type">text</code></td>
-<td> </td>
-<td>If a check constraint, a human-readable representation of the expression</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>    <code class="structfield">consrc</code> is not updated when referenced objects
+   <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> catalog.
+  </P
+><P
+>   Check constraints on domains are stored here, too.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN56251"
+></A
+><P
+><B
+>Table 42-13. <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>conname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Constraint name (not necessarily unique!)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>connamespace</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</TT
+></TD
+><TD
+>       The OID of the namespace that contains this constraint
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>contype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>        <TT
+CLASS="LITERAL"
+>c</TT
+> = check constraint,
+        <TT
+CLASS="LITERAL"
+>f</TT
+> = foreign key constraint,
+        <TT
+CLASS="LITERAL"
+>p</TT
+> = primary key constraint,
+        <TT
+CLASS="LITERAL"
+>u</TT
+> = unique constraint
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>condeferrable</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Is the constraint deferrable?</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>condeferred</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Is the constraint deferred by default?</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>conrelid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The table this constraint is on; 0 if not a table constraint</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>contypid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The domain this constraint is on; 0 if not a domain constraint</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>confrelid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>If a foreign key, the referenced table; else 0</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>confupdtype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Foreign key update action code</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>confdeltype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Foreign key deletion action code</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>confmatchtype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Foreign key match type</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>conkey</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int2[]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+>.attnum</TT
+></TD
+><TD
+>If a table constraint, list of columns which the constraint constrains</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>confkey</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int2[]</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+>.attnum</TT
+></TD
+><TD
+>If a foreign key, list of the referenced columns</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>conbin</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>If a check constraint, an internal representation of the expression</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>consrc</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>If a check constraint, a human-readable representation of the expression</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    <TT
+CLASS="STRUCTFIELD"
+>consrc</TT
+> is not updated when referenced objects
     change; for example, it won't track renaming of columns.  Rather than
-    relying on this field, it's best to use <code class="function">pg_get_constraintdef()</code>
+    relying on this field, it's best to use <CODE
+CLASS="FUNCTION"
+>pg_get_constraintdef()</CODE
+>
     to extract the definition of a check constraint.
-   </p>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>    <code class="literal">pg_class.relchecks</code> needs to agree with the
+   </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    <TT
+CLASS="LITERAL"
+>pg_class.relchecks</TT
+> needs to agree with the
     number of check-constraint entries found in this table for the
     given relation.
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-class.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-conversion.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Customized Options</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Run-time Configuration"
+HREF="runtime-config.html"><LINK
+REL="PREVIOUS"
+TITLE="Preset Options"
+HREF="runtime-config-preset.html"><LINK
+REL="NEXT"
+TITLE="Developer Options"
+HREF="runtime-config-developer.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-preset.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Run-time Configuration</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-developer.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RUNTIME-CONFIG-CUSTOM"
+>17.14. Customized Options</A
+></H1
+><P
+>     This feature was designed to allow options not normally known to
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to be added by add-on modules
+     (such as procedural languages).  This allows add-on modules to be
+     configured in the standard ways.
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+NAME="GUC-CUSTOM-VARIABLE-CLASSES"
+></A
+><TT
+CLASS="VARNAME"
+>custom_variable_classes</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        This variable specifies one or several class names to be used for
+        custom variables, in the form of a comma-separated list. A custom
+        variable is a variable not normally known
+        to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> proper but used by some
+        add-on module.  Such variables must have names consisting of a class
+        name, a dot, and a variable name.  <TT
+CLASS="VARNAME"
+>custom_variable_classes</TT
+>
+        specifies all the class names in use in a particular installation.
+        This option can only be set at server start or in the
+        <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> configuration file.
+       </P
+></DD
+></DL
+></DIV
+><P
+>     The difficulty with setting custom variables in
+     <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> is that the file must be read before add-on
+     modules have been loaded, and so custom variables would ordinarily be
+     rejected as unknown.  When <TT
+CLASS="VARNAME"
+>custom_variable_classes</TT
+> is set,
+     the server will accept definitions of arbitrary variables within each
+     specified class.  These variables will be treated as placeholders and
+     will have no function until the module that defines them is loaded. When a
+     module for a specific class is loaded, it will add the proper variable
+     definitions for its class name, convert any placeholder
+     values according to those definitions, and issue warnings for any
+     placeholders of its class that remain (which presumably would be
+     misspelled configuration variables).
+    </P
+><P
+>     Here is an example of what <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> might contain
+     when using custom variables:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>custom_variable_classes = 'plr,plperl'
+plr.path = '/usr/lib/R'
+plperl.use_strict = true
+plruby.use_strict = true        # generates error: unknown class name</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-preset.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-developer.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Preset Options</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Developer Options</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

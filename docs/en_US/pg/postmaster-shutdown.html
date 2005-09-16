@@ -1,74 +1,329 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>16.6. Shutting Down the Server</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
-<link rel="prev" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
-<link rel="next" href="encryption-options.html" title="16.7. Encryption Options">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="postmaster-shutdown"></a>16.6. Shutting Down the Server</h2></div></div></div>
-<a name="id368889"></a><p>   There are several ways to shut down the database server. You control
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Shutting Down the Server</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="PREVIOUS"
+TITLE="Managing Kernel Resources"
+HREF="kernel-resources.html"><LINK
+REL="NEXT"
+TITLE="Encryption Options"
+HREF="encryption-options.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="kernel-resources.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 16. Server Run-time Environment</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="encryption-options.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="POSTMASTER-SHUTDOWN"
+>16.5. Shutting Down the Server</A
+></H1
+><A
+NAME="AEN17794"
+></A
+><P
+>   There are several ways to shut down the database server. You control
    the type of shutdown by sending different signals to the
-   <code class="command">postmaster</code> process.
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process.
 
-   </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id368916"></a></span></dt>
-<dd><p>       After receiving <span class="systemitem">SIGTERM</span>, the server
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>SIGTERM</SPAN
+><A
+NAME="AEN17802"
+></A
+></DT
+><DD
+><P
+>       After receiving <SPAN
+CLASS="SYSTEMITEM"
+>SIGTERM</SPAN
+>, the server
        disallows new connections, but lets existing sessions end their
        work normally. It shuts down only after all of the sessions
-       terminate normally. This is the <em class="firstterm">Smart
-       Shutdown</em>.
-      </p></dd>
-<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id368943"></a></span></dt>
-<dd><p>       The server disallows new connections and sends all existing
-       server processes <span class="systemitem">SIGTERM</span>, which will cause them
+       terminate normally. This is the <I
+CLASS="FIRSTTERM"
+>Smart
+       Shutdown</I
+>.
+      </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>SIGINT</SPAN
+><A
+NAME="AEN17811"
+></A
+></DT
+><DD
+><P
+>       The server disallows new connections and sends all existing
+       server processes <SPAN
+CLASS="SYSTEMITEM"
+>SIGTERM</SPAN
+>, which will cause them
        to abort their current transactions and exit promptly. It then
        waits for the server processes to exit and finally shuts down. This is the
-       <em class="firstterm">Fast Shutdown</em>.
-      </p></dd>
-<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id368971"></a></span></dt>
-<dd><p>      This is the <em class="firstterm">Immediate Shutdown</em>, which
-      will cause the <code class="command">postmaster</code> process to send a
-      <span class="systemitem">SIGQUIT</span> to all child processes and exit
+       <I
+CLASS="FIRSTTERM"
+>Fast Shutdown</I
+>.
+      </P
+></DD
+><DT
+><SPAN
+CLASS="SYSTEMITEM"
+>SIGQUIT</SPAN
+><A
+NAME="AEN17820"
+></A
+></DT
+><DD
+><P
+>      This is the <I
+CLASS="FIRSTTERM"
+>Immediate Shutdown</I
+>, which
+      will cause the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process to send a
+      <SPAN
+CLASS="SYSTEMITEM"
+>SIGQUIT</SPAN
+> to all child processes and exit
       immediately, without properly shutting itself down. The child processes
       likewise exit immediately upon receiving
-      <span class="systemitem">SIGQUIT</span>. This will lead to recovery (by
+      <SPAN
+CLASS="SYSTEMITEM"
+>SIGQUIT</SPAN
+>. This will lead to recovery (by
       replaying the WAL log) upon next start-up. This is recommended
       only in emergencies.
-      </p></dd>
-</dl></div>
-<p>
-  </p>
-<p>   The <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a> program provides a convenient
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+><P
+>   The <A
+HREF="app-pg-ctl.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></A
+> program provides a convenient
    interface for sending these signals to shut down the server.
-  </p>
-<p>   Alternatively, you can send the signal directly using <code class="command">kill</code>.
-   The <span class="acronym">PID</span> of the <code class="command">postmaster</code> process can be
-   found using the <code class="command">ps</code> program, or from the file
-   <code class="filename">postmaster.pid</code> in the data directory. For
+  </P
+><P
+>   Alternatively, you can send the signal directly using <TT
+CLASS="COMMAND"
+>kill</TT
+>.
+   The <ACRONYM
+CLASS="ACRONYM"
+>PID</ACRONYM
+> of the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process can be
+   found using the <TT
+CLASS="COMMAND"
+>ps</TT
+> program, or from the file
+   <TT
+CLASS="FILENAME"
+>postmaster.pid</TT
+> in the data directory. For
    example, to do a fast shutdown:
-</p>
-<pre class="screen">$ <strong class="userinput"><code>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</code></strong></pre>
-<p>
-  </p>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Important</h3>
-<p>     It is best not to use <span class="systemitem">SIGKILL</span> to shut down
+</P><PRE
+CLASS="SCREEN"
+>$ <KBD
+CLASS="USERINPUT"
+>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</KBD
+></PRE
+><P>
+  </P
+><DIV
+CLASS="IMPORTANT"
+><BLOCKQUOTE
+CLASS="IMPORTANT"
+><P
+><B
+>Important: </B
+>     It is best not to use <SPAN
+CLASS="SYSTEMITEM"
+>SIGKILL</SPAN
+> to shut down
      the server.  Doing so will prevent the server from releasing
      shared memory and semaphores, which may then have to be done
      manually before a new server can be started.  Furthermore,
-     <span class="systemitem">SIGKILL</span> kills the <code class="command">postmaster</code>
+     <SPAN
+CLASS="SYSTEMITEM"
+>SIGKILL</SPAN
+> kills the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
      process without letting it relay the signal to its subprocesses,
      so it will be necessary to kill the individual subprocesses by hand as
      well.
-    </p>
-</div>
-</div></body>
-</html>
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="kernel-resources.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="encryption-options.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Managing Kernel Resources</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Encryption Options</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,1080 +1,4202 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.4. String Functions and Operators</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="prev" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
-<link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-string"></a>9.4. String Functions and Operators</h2></div></div></div>
-<p>    This section describes functions and operators for examining and
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>String Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Mathematical Functions and Operators"
+HREF="functions-math.html"><LINK
+REL="NEXT"
+TITLE="Binary String Functions and Operators"
+HREF="functions-binarystring.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-math.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-STRING"
+>9.4. String Functions and Operators</A
+></H1
+><P
+>    This section describes functions and operators for examining and
     manipulating string values.  Strings in this context include values
-    of all the types <code class="type">character</code>, <code class="type">character
-     varying</code>, and <code class="type">text</code>.  Unless otherwise noted, all
+    of all the types <TT
+CLASS="TYPE"
+>character</TT
+>, <TT
+CLASS="TYPE"
+>character
+     varying</TT
+>, and <TT
+CLASS="TYPE"
+>text</TT
+>.  Unless otherwise noted, all
     of the functions listed below work on all of these types, but be
     wary of potential effects of the automatic padding when using the
-    <code class="type">character</code> type.  Generally, the functions described
+    <TT
+CLASS="TYPE"
+>character</TT
+> type.  Generally, the functions described
     here also work on data of non-string types by converting that data
     to a string representation first.  Some functions also exist
     natively for the bit-string types.
-   </p>
-<p>    <span class="acronym">SQL</span> defines some string functions with a special syntax where
+   </P
+><P
+>    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> defines some string functions with a special syntax where
     certain key words rather than commas are used to separate the
-    arguments.  Details are in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<span class="acronym">SQL</span> String Functions and Operators&#8221;</a>.
+    arguments.  Details are in <A
+HREF="functions-string.html#FUNCTIONS-STRING-SQL"
+>Table 9-5</A
+>.
     These functions are also implemented using the regular syntax for
-    function invocation.  (See <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.)
-   </p>
-<div class="table">
-<a name="functions-string-sql"></a><p class="title"><b>Table 9.5. <span class="acronym">SQL</span> String Functions and Operators</b></p>
-<table summary="SQL String Functions and Operators" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Return Type</th>
-<th>Description</th>
-<th>Example</th>
-<th>Result</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="literal"><em class="parameter"><code>string</code></em> <code class="literal">||</code>
-        <em class="parameter"><code>string</code></em></code></td>
-<td> <code class="type">text</code> </td>
-<td>        String concatenation
-        <a name="id323446"></a>
-       </td>
-<td><code class="literal">'Post' || 'greSQL'</code></td>
-<td><code class="literal">PostgreSQL</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">bit_length</code>(<em class="parameter"><code>string</code></em>)</code></td>
-<td><code class="type">integer</code></td>
-<td>Number of bits in string</td>
-<td><code class="literal">bit_length('jose')</code></td>
-<td><code class="literal">32</code></td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">char_length</code>(<em class="parameter"><code>string</code></em>)</code> or <code class="literal"><code class="function">character_length</code>(<em class="parameter"><code>string</code></em>)</code>
-</td>
-<td><code class="type">integer</code></td>
-<td>        Number of characters in string
-        <a name="id323540"></a>
-        <a name="id323549"></a>
-       </td>
-<td><code class="literal">char_length('jose')</code></td>
-<td><code class="literal">4</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">convert</code>(<em class="parameter"><code>string</code></em>
-       using <em class="parameter"><code>conversion_name</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>        Change encoding using specified conversion name.  Conversions
-        can be defined by <code class="command">CREATE CONVERSION</code>.  Also
-        there are some pre-defined conversion names. See <a href="functions-string.html#conversion-names" title="Table 9.7. Built-in Conversions">Table 9.7, &#8220;Built-in Conversions&#8221;</a> for available conversion
+    function invocation.  (See <A
+HREF="functions-string.html#FUNCTIONS-STRING-OTHER"
+>Table 9-6</A
+>.)
+   </P
+><A
+NAME="AEN6762"
+></A
+><A
+NAME="AEN6764"
+></A
+><A
+NAME="AEN6766"
+></A
+><A
+NAME="AEN6768"
+></A
+><A
+NAME="AEN6770"
+></A
+><A
+NAME="AEN6772"
+></A
+><A
+NAME="AEN6774"
+></A
+><A
+NAME="AEN6776"
+></A
+><A
+NAME="AEN6778"
+></A
+><A
+NAME="AEN6780"
+></A
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-STRING-SQL"
+></A
+><P
+><B
+>Table 9-5. <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> String Functions and Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="LITERAL"
+>||</TT
+>
+        <TT
+CLASS="PARAMETER"
+>string</TT
+></TT
+></TD
+><TD
+> <TT
+CLASS="TYPE"
+>text</TT
+> </TD
+><TD
+>        String concatenation
+        <A
+NAME="AEN6803"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>'Post' || 'greSQL'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>PostgreSQL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>bit_length</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+>Number of bits in string</TD
+><TD
+><TT
+CLASS="LITERAL"
+>bit_length('jose')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>32</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>char_length</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+> or <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>character_length</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+>        Number of characters in string
+        <A
+NAME="AEN6833"
+></A
+>
+        <A
+NAME="AEN6836"
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>char_length('jose')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>4</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>convert</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>
+       using <TT
+CLASS="PARAMETER"
+>conversion_name</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Change encoding using specified conversion name.  Conversions
+        can be defined by <TT
+CLASS="COMMAND"
+>CREATE CONVERSION</TT
+>.  Also
+        there are some pre-defined conversion names. See <A
+HREF="functions-string.html#CONVERSION-NAMES"
+>Table 9-7</A
+> for available conversion
         names.
-       </td>
-<td><code class="literal">convert('PostgreSQL' using iso_8859_1_to_utf8)</code></td>
-<td>
-<code class="literal">'PostgreSQL'</code> in UTF8 (Unicode, 8-bit) encoding</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">lower</code>(<em class="parameter"><code>string</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>Convert string to lower case</td>
-<td><code class="literal">lower('TOM')</code></td>
-<td><code class="literal">tom</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">octet_length</code>(<em class="parameter"><code>string</code></em>)</code></td>
-<td><code class="type">integer</code></td>
-<td>Number of bytes in string</td>
-<td><code class="literal">octet_length('jose')</code></td>
-<td><code class="literal">4</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">overlay</code>(<em class="parameter"><code>string</code></em> placing <em class="parameter"><code>string</code></em> from <code class="type">integer</code> [<span class="optional">for <code class="type">integer</code></span>])</code></td>
-<td><code class="type">text</code></td>
-<td>        Replace substring
-        <a name="id323737"></a>
-       </td>
-<td><code class="literal">overlay('Txxxxas' placing 'hom' from 2 for 4)</code></td>
-<td><code class="literal">Thomas</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">position</code>(<em class="parameter"><code>substring</code></em> in <em class="parameter"><code>string</code></em>)</code></td>
-<td><code class="type">integer</code></td>
-<td>Location of specified substring</td>
-<td><code class="literal">position('om' in 'Thomas')</code></td>
-<td><code class="literal">3</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">integer</code></span>] [<span class="optional">for <code class="type">integer</code></span>])</code></td>
-<td><code class="type">text</code></td>
-<td>        Extract substring
-        <a name="id323830"></a>
-       </td>
-<td><code class="literal">substring('Thomas' from 2 for 3)</code></td>
-<td><code class="literal">hom</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>        Extract substring matching POSIX regular expression
-        <a name="id323876"></a>
-       </td>
-<td><code class="literal">substring('Thomas' from '...$')</code></td>
-<td><code class="literal">mas</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em> for <em class="replaceable"><code>escape</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>        Extract substring matching <span class="acronym">SQL</span> regular
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>convert('PostgreSQL' using iso_8859_1_to_utf8)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>'PostgreSQL'</TT
+> in UTF8 (Unicode, 8-bit) encoding</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>lower</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Convert string to lower case</TD
+><TD
+><TT
+CLASS="LITERAL"
+>lower('TOM')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>tom</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>octet_length</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+>Number of bytes in string</TD
+><TD
+><TT
+CLASS="LITERAL"
+>octet_length('jose')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>4</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>overlay</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> placing <TT
+CLASS="PARAMETER"
+>string</TT
+> from <TT
+CLASS="TYPE"
+>int</TT
+> [<SPAN
+CLASS="OPTIONAL"
+>for <TT
+CLASS="TYPE"
+>int</TT
+></SPAN
+>])</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Replace substring
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>overlay('Txxxxas' placing 'hom' from 2 for 4)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>Thomas</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>position</CODE
+>(<TT
+CLASS="PARAMETER"
+>substring</TT
+> in <TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+>Location of specified substring</TD
+><TD
+><TT
+CLASS="LITERAL"
+>position('om' in 'Thomas')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>3</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>substring</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> [<SPAN
+CLASS="OPTIONAL"
+>from <TT
+CLASS="TYPE"
+>int</TT
+></SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+>for <TT
+CLASS="TYPE"
+>int</TT
+></SPAN
+>])</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Extract substring
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>substring('Thomas' from 2 for 3)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>hom</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>substring</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> from <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Extract substring matching POSIX regular expression
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>substring('Thomas' from '...$')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>mas</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>substring</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> from <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> for <TT
+CLASS="REPLACEABLE"
+><I
+>escape</I
+></TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Extract substring matching <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> regular
         expression
-        <a name="id323928"></a>
-       </td>
-<td><code class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</code></td>
-<td><code class="literal">oma</code></td>
-</tr>
-<tr>
-<td>        <code class="literal"><code class="function">trim</code>([<span class="optional">leading | trailing | both</span>]
-        [<span class="optional"><em class="parameter"><code>characters</code></em></span>] from
-        <em class="parameter"><code>string</code></em>)</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Remove the longest string containing only the
-        <em class="parameter"><code>characters</code></em> (a space by default) from the
-        start/end/both ends of the <em class="parameter"><code>string</code></em>
-       </td>
-<td><code class="literal">trim(both 'x' from 'xTomxx')</code></td>
-<td><code class="literal">Tom</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">upper</code>(<em class="parameter"><code>string</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>Convert string to uppercase</td>
-<td><code class="literal">upper('tom')</code></td>
-<td><code class="literal">TOM</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    Additional string manipulation functions are available and are
-    listed in <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.  Some of them are used internally to implement the
-    <span class="acronym">SQL</span>-standard string functions listed in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<span class="acronym">SQL</span> String Functions and Operators&#8221;</a>.
-   </p>
-<div class="table">
-<a name="functions-string-other"></a><p class="title"><b>Table 9.6. Other String Functions</b></p>
-<table summary="Other String Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Return Type</th>
-<th>Description</th>
-<th>Example</th>
-<th>Result</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="literal"><code class="function">ascii</code>(<code class="type">text</code>)</code></td>
-<td><code class="type">integer</code></td>
-<td>
-<span class="acronym">ASCII</span> code of the first character of the argument</td>
-<td><code class="literal">ascii('x')</code></td>
-<td><code class="literal">120</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">btrim</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>
-       [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code></td>
-<td><code class="type">text</code></td>
-<td>        Remove the longest string consisting only of characters
-        in <em class="parameter"><code>characters</code></em> (a space by default)
-        from the start and end of <em class="parameter"><code>string</code></em>
-       </td>
-<td><code class="literal">btrim('xyxtrimyyx', 'xy')</code></td>
-<td><code class="literal">trim</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">chr</code>(<code class="type">integer</code>)</code></td>
-<td><code class="type">text</code></td>
-<td>Character with the given <span class="acronym">ASCII</span> code</td>
-<td><code class="literal">chr(65)</code></td>
-<td><code class="literal">A</code></td>
-</tr>
-<tr>
-<td>        <code class="literal"><code class="function">convert</code>(<em class="parameter"><code>string</code></em>
-        <code class="type">text</code>,
-        [<span class="optional"><em class="parameter"><code>src_encoding</code></em> <code class="type">name</code>,</span>]
-        <em class="parameter"><code>dest_encoding</code></em> <code class="type">name</code>)</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Convert string to <em class="parameter"><code>dest_encoding</code></em>.
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>substring('Thomas' from '%#"o_a#"_' for '#')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>oma</TT
+></TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>trim</CODE
+>([<SPAN
+CLASS="OPTIONAL"
+>leading | trailing | both</SPAN
+>]
+        [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+>characters</TT
+></SPAN
+>] from
+        <TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Remove the longest string containing only the
+        <TT
+CLASS="PARAMETER"
+>characters</TT
+> (a space by default) from the
+        start/end/both ends of the <TT
+CLASS="PARAMETER"
+>string</TT
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>trim(both 'x' from 'xTomxx')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>Tom</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>upper</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Convert string to uppercase</TD
+><TD
+><TT
+CLASS="LITERAL"
+>upper('tom')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>TOM</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    Additional string manipulation functions are available and are
+    listed in <A
+HREF="functions-string.html#FUNCTIONS-STRING-OTHER"
+>Table 9-6</A
+>.  Some of them are used internally to implement the
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>-standard string functions listed in <A
+HREF="functions-string.html#FUNCTIONS-STRING-SQL"
+>Table 9-5</A
+>.
+   </P
+><A
+NAME="AEN6989"
+></A
+><A
+NAME="AEN6991"
+></A
+><A
+NAME="AEN6993"
+></A
+><A
+NAME="AEN6995"
+></A
+><A
+NAME="AEN6997"
+></A
+><A
+NAME="AEN6999"
+></A
+><A
+NAME="AEN7001"
+></A
+><A
+NAME="AEN7003"
+></A
+><A
+NAME="AEN7005"
+></A
+><A
+NAME="AEN7007"
+></A
+><A
+NAME="AEN7009"
+></A
+><A
+NAME="AEN7011"
+></A
+><A
+NAME="AEN7013"
+></A
+><A
+NAME="AEN7015"
+></A
+><A
+NAME="AEN7017"
+></A
+><A
+NAME="AEN7019"
+></A
+><A
+NAME="AEN7021"
+></A
+><A
+NAME="AEN7023"
+></A
+><A
+NAME="AEN7025"
+></A
+><A
+NAME="AEN7027"
+></A
+><A
+NAME="AEN7029"
+></A
+><A
+NAME="AEN7031"
+></A
+><A
+NAME="AEN7033"
+></A
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-STRING-OTHER"
+></A
+><P
+><B
+>Table 9-6. Other String Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>ascii</CODE
+>(<TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+><ACRONYM
+CLASS="ACRONYM"
+>ASCII</ACRONYM
+> code of the first character of the argument</TD
+><TD
+><TT
+CLASS="LITERAL"
+>ascii('x')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>120</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>btrim</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>
+       [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>characters</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+></SPAN
+>])</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Remove the longest string consisting only of characters
+        in <TT
+CLASS="PARAMETER"
+>characters</TT
+> (a space by default)
+        from the start and end of <TT
+CLASS="PARAMETER"
+>string</TT
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>btrim('xyxtrimyyx', 'xy')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>trim</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>chr</CODE
+>(<TT
+CLASS="TYPE"
+>int</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Character with the given <ACRONYM
+CLASS="ACRONYM"
+>ASCII</ACRONYM
+> code</TD
+><TD
+><TT
+CLASS="LITERAL"
+>chr(65)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>A</TT
+></TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>convert</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>
+        <TT
+CLASS="TYPE"
+>text</TT
+>,
+        [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+>src_encoding</TT
+> <TT
+CLASS="TYPE"
+>name</TT
+>,</SPAN
+>]
+        <TT
+CLASS="PARAMETER"
+>dest_encoding</TT
+> <TT
+CLASS="TYPE"
+>name</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Convert string to <TT
+CLASS="PARAMETER"
+>dest_encoding</TT
+>.
         The original encoding is specified by
-        <em class="parameter"><code>src_encoding</code></em>.  If
-        <em class="parameter"><code>src_encoding</code></em> is omitted, database
+        <TT
+CLASS="PARAMETER"
+>src_encoding</TT
+>.  If
+        <TT
+CLASS="PARAMETER"
+>src_encoding</TT
+> is omitted, database
         encoding is assumed.
-       </td>
-<td><code class="literal">convert( 'text_in_utf8', 'UTF8', 'LATIN1')</code></td>
-<td>
-<code class="literal">text_in_utf8</code> represented in ISO 8859-1 encoding</td>
-</tr>
-<tr>
-<td>        <code class="literal"><code class="function">decode</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
-        <em class="parameter"><code>type</code></em> <code class="type">text</code>)</code>
-       </td>
-<td><code class="type">bytea</code></td>
-<td>        Decode binary data from <em class="parameter"><code>string</code></em> previously 
-        encoded with <code class="function">encode</code>.  Parameter type is same as in <code class="function">encode</code>.
-       </td>
-<td><code class="literal">decode('MTIzAAE=', 'base64')</code></td>
-<td><code class="literal">123\000\001</code></td>
-</tr>
-<tr>
-<td>        <code class="literal"><code class="function">encode</code>(<em class="parameter"><code>data</code></em> <code class="type">bytea</code>,
-        <em class="parameter"><code>type</code></em> <code class="type">text</code>)</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Encode binary data to <span class="acronym">ASCII</span>-only representation.  Supported
-        types are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
-       </td>
-<td><code class="literal">encode( '123\\000\\001', 'base64')</code></td>
-<td><code class="literal">MTIzAAE=</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">initcap</code>(<code class="type">text</code>)</code></td>
-<td><code class="type">text</code></td>
-<td>        Convert the first letter of each word to uppercase and the
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>convert( 'text_in_utf8', 'UTF8', 'LATIN1')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>text_in_utf8</TT
+> represented in ISO 8859-1 encoding</TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>decode</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+        <TT
+CLASS="PARAMETER"
+>type</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>        Decode binary data from <TT
+CLASS="PARAMETER"
+>string</TT
+> previously 
+        encoded with <CODE
+CLASS="FUNCTION"
+>encode</CODE
+>.  Parameter type is same as in <CODE
+CLASS="FUNCTION"
+>encode</CODE
+>.
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>decode('MTIzAAE=', 'base64')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>123\000\001</TT
+></TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>encode</CODE
+>(<TT
+CLASS="PARAMETER"
+>data</TT
+> <TT
+CLASS="TYPE"
+>bytea</TT
+>,
+        <TT
+CLASS="PARAMETER"
+>type</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Encode binary data to <ACRONYM
+CLASS="ACRONYM"
+>ASCII</ACRONYM
+>-only representation.  Supported
+        types are: <TT
+CLASS="LITERAL"
+>base64</TT
+>, <TT
+CLASS="LITERAL"
+>hex</TT
+>, <TT
+CLASS="LITERAL"
+>escape</TT
+>.
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>encode( '123\\000\\001', 'base64')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MTIzAAE=</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>initcap</CODE
+>(<TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Convert the first letter of each word to uppercase and the
         rest to lowercase. Words are sequences of alphanumeric
         characters separated by non-alphanumeric characters.
-       </td>
-<td><code class="literal">initcap('hi THOMAS')</code></td>
-<td><code class="literal">Hi Thomas</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></td>
-<td><code class="type">integer</code></td>
-<td>        Number of characters in <em class="parameter"><code>string</code></em>
-        <a name="id324501"></a>
-        <a name="id324510"></a>
-       </td>
-<td><code class="literal">length('jose')</code></td>
-<td><code class="literal">4</code></td>
-</tr>
-<tr>
-<td>        <code class="literal"><code class="function">lpad</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
-        <em class="parameter"><code>length</code></em> <code class="type">integer</code>
-        [<span class="optional">, <em class="parameter"><code>fill</code></em> <code class="type">text</code></span>])</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Fill up the <em class="parameter"><code>string</code></em> to length
-        <em class="parameter"><code>length</code></em> by prepending the characters
-        <em class="parameter"><code>fill</code></em> (a space by default).  If the
-        <em class="parameter"><code>string</code></em> is already longer than
-        <em class="parameter"><code>length</code></em> then it is truncated (on the
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>initcap('hi THOMAS')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>Hi Thomas</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>length</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+>        Number of characters in <TT
+CLASS="PARAMETER"
+>string</TT
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>length('jose')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>4</TT
+></TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>lpad</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+        <TT
+CLASS="PARAMETER"
+>length</TT
+> <TT
+CLASS="TYPE"
+>int</TT
+>
+        [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>fill</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+></SPAN
+>])</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Fill up the <TT
+CLASS="PARAMETER"
+>string</TT
+> to length
+        <TT
+CLASS="PARAMETER"
+>length</TT
+> by prepending the characters
+        <TT
+CLASS="PARAMETER"
+>fill</TT
+> (a space by default).  If the
+        <TT
+CLASS="PARAMETER"
+>string</TT
+> is already longer than
+        <TT
+CLASS="PARAMETER"
+>length</TT
+> then it is truncated (on the
         right).
-       </td>
-<td><code class="literal">lpad('hi', 5, 'xy')</code></td>
-<td><code class="literal">xyxhi</code></td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">ltrim</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>
-        [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Remove the longest string containing only characters from
-        <em class="parameter"><code>characters</code></em> (a space by default) from the start of
-        <em class="parameter"><code>string</code></em>
-       </td>
-<td><code class="literal">ltrim('zzzytrim', 'xyz')</code></td>
-<td><code class="literal">trim</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">md5</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></td>
-<td><code class="type">text</code></td>
-<td>        Calculates the MD5 hash of <em class="parameter"><code>string</code></em>,
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>lpad('hi', 5, 'xy')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>xyxhi</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>ltrim</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>
+        [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>characters</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+></SPAN
+>])</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Remove the longest string containing only characters from
+        <TT
+CLASS="PARAMETER"
+>characters</TT
+> (a space by default) from the start of
+        <TT
+CLASS="PARAMETER"
+>string</TT
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>ltrim('zzzytrim', 'xyz')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>trim</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>md5</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Calculates the MD5 hash of <TT
+CLASS="PARAMETER"
+>string</TT
+>,
         returning the result in hexadecimal
-       </td>
-<td><code class="literal">md5('abc')</code></td>
-<td><code class="literal">900150983cd24fb0 d6963f7d28e17f72</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_client_encoding</code>()</code></td>
-<td><code class="type">name</code></td>
-<td>        Current client encoding name
-       </td>
-<td><code class="literal">pg_client_encoding()</code></td>
-<td><code class="literal">SQL_ASCII</code></td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">quote_ident</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id324780"></a>
-</td>
-<td><code class="type">text</code></td>
-<td>        Return the given string suitably quoted to be used as an identifier
-        in an <span class="acronym">SQL</span> statement string.
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>md5('abc')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>900150983cd24fb0 d6963f7d28e17f72</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_client_encoding</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>        Current client encoding name
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>pg_client_encoding()</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SQL_ASCII</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>quote_ident</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> text)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Return the given string suitably quoted to be used as an identifier
+        in an <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> statement string.
         Quotes are added only if necessary (i.e., if the string contains
         non-identifier characters or would be case-folded).
         Embedded quotes are properly doubled.
-       </td>
-<td><code class="literal">quote_ident('Foo bar')</code></td>
-<td><code class="literal">"Foo bar"</code></td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">quote_literal</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id324826"></a>
-</td>
-<td><code class="type">text</code></td>
-<td>        Return the given string suitably quoted to be used as a string literal
-        in an <span class="acronym">SQL</span> statement string.
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>quote_ident('Foo bar')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>"Foo bar"</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>quote_literal</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> text)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Return the given string suitably quoted to be used as a string literal
+        in an <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> statement string.
         Embedded quotes and backslashes are properly doubled.
-       </td>
-<td><code class="literal">quote_literal( 'O\'Reilly')</code></td>
-<td><code class="literal">'O''Reilly'</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">repeat</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>number</code></em> <code class="type">integer</code>)</code></td>
-<td><code class="type">text</code></td>
-<td>Repeat <em class="parameter"><code>string</code></em> the specified
-       <em class="parameter"><code>number</code></em> of times</td>
-<td><code class="literal">repeat('Pg', 4)</code></td>
-<td><code class="literal">PgPgPgPg</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">replace</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
-       <em class="parameter"><code>from</code></em> <code class="type">text</code>,
-       <em class="parameter"><code>to</code></em> <code class="type">text</code>)</code></td>
-<td><code class="type">text</code></td>
-<td>Replace all occurrences in <em class="parameter"><code>string</code></em> of substring
-        <em class="parameter"><code>from</code></em> with substring <em class="parameter"><code>to</code></em>
-       </td>
-<td><code class="literal">replace( 'abcdefabcdef', 'cd', 'XX')</code></td>
-<td><code class="literal">abXXefabXXef</code></td>
-</tr>
-<tr>
-<td>        <code class="literal"><code class="function">rpad</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
-        <em class="parameter"><code>length</code></em> <code class="type">integer</code>
-        [<span class="optional">, <em class="parameter"><code>fill</code></em> <code class="type">text</code></span>])</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Fill up the <em class="parameter"><code>string</code></em> to length
-        <em class="parameter"><code>length</code></em> by appending the characters
-        <em class="parameter"><code>fill</code></em> (a space by default).  If the
-        <em class="parameter"><code>string</code></em> is already longer than
-        <em class="parameter"><code>length</code></em> then it is truncated.
-       </td>
-<td><code class="literal">rpad('hi', 5, 'xy')</code></td>
-<td><code class="literal">hixyx</code></td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">rtrim</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>
-        [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Remove the longest string containing only characters from
-        <em class="parameter"><code>characters</code></em> (a space by default) from the end of
-        <em class="parameter"><code>string</code></em>
-       </td>
-<td><code class="literal">rtrim('trimxxxx', 'x')</code></td>
-<td><code class="literal">trim</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">split_part</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
-       <em class="parameter"><code>delimiter</code></em> <code class="type">text</code>,
-       <em class="parameter"><code>field</code></em> <code class="type">integer</code>)</code></td>
-<td><code class="type">text</code></td>
-<td>Split <em class="parameter"><code>string</code></em> on <em class="parameter"><code>delimiter</code></em>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>quote_literal( 'O\'Reilly')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>'O''Reilly'</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>regexp_replace</CODE
+>(<TT
+CLASS="PARAMETER"
+>source</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>pattern</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>replacement</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>
+       [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>flags</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+></SPAN
+>])</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Replace string that matches the regular expression
+        <TT
+CLASS="PARAMETER"
+>pattern</TT
+> in <TT
+CLASS="PARAMETER"
+>source</TT
+> to
+        <TT
+CLASS="PARAMETER"
+>replacement</TT
+>.
+        <TT
+CLASS="PARAMETER"
+>replacement</TT
+> can use <TT
+CLASS="LITERAL"
+>\1</TT
+>-<TT
+CLASS="LITERAL"
+>\9</TT
+> and <TT
+CLASS="LITERAL"
+>\&amp;</TT
+>.
+        <TT
+CLASS="LITERAL"
+>\1</TT
+>-<TT
+CLASS="LITERAL"
+>\9</TT
+> is a back reference to the n'th subexpression, and
+        <TT
+CLASS="LITERAL"
+>\&amp;</TT
+> is the entire matched string.
+        <TT
+CLASS="PARAMETER"
+>flags</TT
+> can use <TT
+CLASS="LITERAL"
+>g</TT
+>(global) and <TT
+CLASS="LITERAL"
+>i</TT
+>(ignore case).
+        When flags is not specified, case sensitive matching is used, and it replaces
+        only the instance.
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>regexp_replace('1112223333', '(\\d{3})(\\d{3})(\\d{4})', '(\\1) \\2-\\3')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>(111) 222-3333</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>repeat</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>, <TT
+CLASS="PARAMETER"
+>number</TT
+> <TT
+CLASS="TYPE"
+>int</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Repeat <TT
+CLASS="PARAMETER"
+>string</TT
+> the specified
+       <TT
+CLASS="PARAMETER"
+>number</TT
+> of times</TD
+><TD
+><TT
+CLASS="LITERAL"
+>repeat('Pg', 4)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>PgPgPgPg</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>replace</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>from</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>to</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Replace all occurrences in <TT
+CLASS="PARAMETER"
+>string</TT
+> of substring
+        <TT
+CLASS="PARAMETER"
+>from</TT
+> with substring <TT
+CLASS="PARAMETER"
+>to</TT
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>replace( 'abcdefabcdef', 'cd', 'XX')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>abXXefabXXef</TT
+></TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>rpad</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+        <TT
+CLASS="PARAMETER"
+>length</TT
+> <TT
+CLASS="TYPE"
+>int</TT
+>
+        [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>fill</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+></SPAN
+>])</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Fill up the <TT
+CLASS="PARAMETER"
+>string</TT
+> to length
+        <TT
+CLASS="PARAMETER"
+>length</TT
+> by appending the characters
+        <TT
+CLASS="PARAMETER"
+>fill</TT
+> (a space by default).  If the
+        <TT
+CLASS="PARAMETER"
+>string</TT
+> is already longer than
+        <TT
+CLASS="PARAMETER"
+>length</TT
+> then it is truncated.
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>rpad('hi', 5, 'xy')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>hixyx</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>rtrim</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>
+        [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>characters</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+></SPAN
+>])</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Remove the longest string containing only characters from
+        <TT
+CLASS="PARAMETER"
+>characters</TT
+> (a space by default) from the end of
+        <TT
+CLASS="PARAMETER"
+>string</TT
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>rtrim('trimxxxx', 'x')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>trim</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>split_part</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>delimiter</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+       <TT
+CLASS="PARAMETER"
+>field</TT
+> <TT
+CLASS="TYPE"
+>int</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Split <TT
+CLASS="PARAMETER"
+>string</TT
+> on <TT
+CLASS="PARAMETER"
+>delimiter</TT
+>
         and return the given field (counting from one)
-       </td>
-<td><code class="literal">split_part( 'abc~@~def~@~ghi', '~@~', 2)</code></td>
-<td><code class="literal">def</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">strpos</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>substring</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>        Location of specified substring (same as
-        <code class="literal">position(<em class="parameter"><code>substring</code></em> in
-         <em class="parameter"><code>string</code></em>)</code>, but note the reversed
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>split_part('abc~@~def~@~ghi', '~@~', 2)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>def</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>strpos</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>, <TT
+CLASS="PARAMETER"
+>substring</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Location of specified substring (same as
+        <TT
+CLASS="LITERAL"
+>position(<TT
+CLASS="PARAMETER"
+>substring</TT
+> in
+         <TT
+CLASS="PARAMETER"
+>string</TT
+>)</TT
+>, but note the reversed
         argument order)
-       </td>
-<td><code class="literal">strpos('high', 'ig')</code></td>
-<td><code class="literal">2</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">substr</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>from</code></em> [<span class="optional">, <em class="parameter"><code>count</code></em></span>])</code></td>
-<td><code class="type">text</code></td>
-<td>        Extract substring (same as
-        <code class="literal">substring(<em class="parameter"><code>string</code></em> from <em class="parameter"><code>from</code></em> for <em class="parameter"><code>count</code></em>)</code>)
-       </td>
-<td><code class="literal">substr('alphabet', 3, 2)</code></td>
-<td><code class="literal">ph</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">to_ascii</code>(<code class="type">text</code>
-        [<span class="optional">, <em class="parameter"><code>encoding</code></em></span>])</code></td>
-<td><code class="type">text</code></td>
-<td>       Convert <em class="parameter"><code>text</code></em> to <span class="acronym">ASCII</span> from another encoding
-       <sup>[<a name="id325378" href="#ftn.id325378">a</a>]</sup>
-       </td>
-<td><code class="literal">to_ascii('Karel')</code></td>
-<td><code class="literal">Karel</code></td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">to_hex</code>(<em class="parameter"><code>number</code></em> <code class="type">integer</code>
-       or <code class="type">bigint</code>)</code></td>
-<td><code class="type">text</code></td>
-<td>Convert <em class="parameter"><code>number</code></em> to its equivalent hexadecimal
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>strpos('high', 'ig')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>2</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>substr</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>, <TT
+CLASS="PARAMETER"
+>from</TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>count</TT
+></SPAN
+>])</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Extract substring (same as
+        <TT
+CLASS="LITERAL"
+>substring(<TT
+CLASS="PARAMETER"
+>string</TT
+> from <TT
+CLASS="PARAMETER"
+>from</TT
+> for <TT
+CLASS="PARAMETER"
+>count</TT
+>)</TT
+>)
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>substr('alphabet', 3, 2)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ph</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>to_ascii</CODE
+>(<TT
+CLASS="TYPE"
+>text</TT
+>
+        [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="PARAMETER"
+>encoding</TT
+></SPAN
+>])</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>       Convert <TT
+CLASS="PARAMETER"
+>text</TT
+> to <ACRONYM
+CLASS="ACRONYM"
+>ASCII</ACRONYM
+> from another encoding
+       <A
+NAME="AEN7443"
+HREF="#FTN.AEN7443"
+><SPAN
+CLASS="footnote"
+>[a]</SPAN
+></A
+>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>to_ascii('Karel')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>Karel</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>to_hex</CODE
+>(<TT
+CLASS="PARAMETER"
+>number</TT
+> <TT
+CLASS="TYPE"
+>int</TT
+>
+       or <TT
+CLASS="TYPE"
+>bigint</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>Convert <TT
+CLASS="PARAMETER"
+>number</TT
+> to its equivalent hexadecimal
         representation
-       </td>
-<td><code class="literal">to_hex(2147483647)</code></td>
-<td><code class="literal">7fffffff</code></td>
-</tr>
-<tr>
-<td>        <code class="literal"><code class="function">translate</code>(<em class="parameter"><code>string</code></em>
-        <code class="type">text</code>,
-        <em class="parameter"><code>from</code></em> <code class="type">text</code>,
-        <em class="parameter"><code>to</code></em> <code class="type">text</code>)</code>
-       </td>
-<td><code class="type">text</code></td>
-<td>        Any character in <em class="parameter"><code>string</code></em> that matches a
-        character in the <em class="parameter"><code>from</code></em> set is replaced by
-        the corresponding character in the <em class="parameter"><code>to</code></em>
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>to_hex(2147483647)</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>7fffffff</TT
+></TD
+></TR
+><TR
+><TD
+>        <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>translate</CODE
+>(<TT
+CLASS="PARAMETER"
+>string</TT
+>
+        <TT
+CLASS="TYPE"
+>text</TT
+>,
+        <TT
+CLASS="PARAMETER"
+>from</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>,
+        <TT
+CLASS="PARAMETER"
+>to</TT
+> <TT
+CLASS="TYPE"
+>text</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>        Any character in <TT
+CLASS="PARAMETER"
+>string</TT
+> that matches a
+        character in the <TT
+CLASS="PARAMETER"
+>from</TT
+> set is replaced by
+        the corresponding character in the <TT
+CLASS="PARAMETER"
+>to</TT
+>
         set
-       </td>
-<td><code class="literal">translate('12345', '14', 'ax')</code></td>
-<td><code class="literal">a23x5</code></td>
-</tr>
-</tbody>
-<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id325378" href="#id325378">a</a>] </sup>         The <code class="function">to_ascii</code> function supports conversion from
-         <code class="literal">LATIN1</code>, <code class="literal">LATIN2</code>, <code class="literal">LATIN9</code>,
-         and <code class="literal">WIN1250</code> encodings only.
-        </p></div></td></tr></tbody>
-</table>
-</div>
-<div class="table">
-<a name="conversion-names"></a><p class="title"><b>Table 9.7. Built-in Conversions</b></p>
-<table summary="Built-in Conversions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Conversion Name
-        <sup>[<a name="id325564" href="#ftn.id325564">a</a>]</sup>
-       </th>
-<th>Source Encoding</th>
-<th>Destination Encoding</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="literal">ascii_to_mic</code></td>
-<td><code class="literal">SQL_ASCII</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">ascii_to_utf8</code></td>
-<td><code class="literal">SQL_ASCII</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">big5_to_euc_tw</code></td>
-<td><code class="literal">BIG5</code></td>
-<td><code class="literal">EUC_TW</code></td>
-</tr>
-<tr>
-<td><code class="literal">big5_to_mic</code></td>
-<td><code class="literal">BIG5</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">big5_to_utf8</code></td>
-<td><code class="literal">BIG5</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_cn_to_mic</code></td>
-<td><code class="literal">EUC_CN</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_cn_to_utf8</code></td>
-<td><code class="literal">EUC_CN</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_jp_to_mic</code></td>
-<td><code class="literal">EUC_JP</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_jp_to_sjis</code></td>
-<td><code class="literal">EUC_JP</code></td>
-<td><code class="literal">SJIS</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_jp_to_utf8</code></td>
-<td><code class="literal">EUC_JP</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_kr_to_mic</code></td>
-<td><code class="literal">EUC_KR</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_kr_to_utf8</code></td>
-<td><code class="literal">EUC_KR</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_tw_to_big5</code></td>
-<td><code class="literal">EUC_TW</code></td>
-<td><code class="literal">BIG5</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_tw_to_mic</code></td>
-<td><code class="literal">EUC_TW</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">euc_tw_to_utf8</code></td>
-<td><code class="literal">EUC_TW</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">gb18030_to_utf8</code></td>
-<td><code class="literal">GB18030</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">gbk_to_utf8</code></td>
-<td><code class="literal">GBK</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_10_to_utf8</code></td>
-<td><code class="literal">LATIN6</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_13_to_utf8</code></td>
-<td><code class="literal">LATIN7</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_14_to_utf8</code></td>
-<td><code class="literal">LATIN8</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_15_to_utf8</code></td>
-<td><code class="literal">LATIN9</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_16_to_utf8</code></td>
-<td><code class="literal">LATIN10</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_1_to_mic</code></td>
-<td><code class="literal">LATIN1</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_1_to_utf8</code></td>
-<td><code class="literal">LATIN1</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_2_to_mic</code></td>
-<td><code class="literal">LATIN2</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_2_to_utf8</code></td>
-<td><code class="literal">LATIN2</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_2_to_windows_1250</code></td>
-<td><code class="literal">LATIN2</code></td>
-<td><code class="literal">WIN1250</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_3_to_mic</code></td>
-<td><code class="literal">LATIN3</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_3_to_utf8</code></td>
-<td><code class="literal">LATIN3</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_4_to_mic</code></td>
-<td><code class="literal">LATIN4</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_4_to_utf8</code></td>
-<td><code class="literal">LATIN4</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_5_to_koi8_r</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-<td><code class="literal">KOI8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_5_to_mic</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_5_to_utf8</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_5_to_windows_1251</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-<td><code class="literal">WIN1251</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_5_to_windows_866</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-<td><code class="literal">WIN866</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_6_to_utf8</code></td>
-<td><code class="literal">ISO_8859_6</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_7_to_utf8</code></td>
-<td><code class="literal">ISO_8859_7</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_8_to_utf8</code></td>
-<td><code class="literal">ISO_8859_8</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">iso_8859_9_to_utf8</code></td>
-<td><code class="literal">LATIN5</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">johab_to_utf8</code></td>
-<td><code class="literal">JOHAB</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">koi8_r_to_iso_8859_5</code></td>
-<td><code class="literal">KOI8</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-</tr>
-<tr>
-<td><code class="literal">koi8_r_to_mic</code></td>
-<td><code class="literal">KOI8</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">koi8_r_to_utf8</code></td>
-<td><code class="literal">KOI8</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">koi8_r_to_windows_1251</code></td>
-<td><code class="literal">KOI8</code></td>
-<td><code class="literal">WIN1251</code></td>
-</tr>
-<tr>
-<td><code class="literal">koi8_r_to_windows_866</code></td>
-<td><code class="literal">KOI8</code></td>
-<td><code class="literal">WIN866</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_ascii</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">SQL_ASCII</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_big5</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">BIG5</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_euc_cn</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">EUC_CN</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_euc_jp</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">EUC_JP</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_euc_kr</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">EUC_KR</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_euc_tw</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">EUC_TW</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_iso_8859_1</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">LATIN1</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_iso_8859_2</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">LATIN2</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_iso_8859_3</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">LATIN3</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_iso_8859_4</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">LATIN4</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_iso_8859_5</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_koi8_r</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">KOI8</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_sjis</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">SJIS</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_windows_1250</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">WIN1250</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_windows_1251</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">WIN1251</code></td>
-</tr>
-<tr>
-<td><code class="literal">mic_to_windows_866</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-<td><code class="literal">WIN866</code></td>
-</tr>
-<tr>
-<td><code class="literal">sjis_to_euc_jp</code></td>
-<td><code class="literal">SJIS</code></td>
-<td><code class="literal">EUC_JP</code></td>
-</tr>
-<tr>
-<td><code class="literal">sjis_to_mic</code></td>
-<td><code class="literal">SJIS</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">sjis_to_utf8</code></td>
-<td><code class="literal">SJIS</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">tcvn_to_utf8</code></td>
-<td><code class="literal">WIN1258</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">uhc_to_utf8</code></td>
-<td><code class="literal">UHC</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_ascii</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">SQL_ASCII</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_big5</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">BIG5</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_euc_cn</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">EUC_CN</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_euc_jp</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">EUC_JP</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_euc_kr</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">EUC_KR</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_euc_tw</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">EUC_TW</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_gb18030</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">GB18030</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_gbk</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">GBK</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_1</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN1</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_10</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN6</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_13</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN7</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_14</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN8</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_15</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN9</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_16</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN10</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_2</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN2</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_3</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN3</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_4</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN4</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_5</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_6</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">ISO_8859_6</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_7</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">ISO_8859_7</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_8</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">ISO_8859_8</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_iso_8859_9</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">LATIN5</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_johab</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">JOHAB</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_koi8_r</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">KOI8</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_sjis</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">SJIS</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_tcvn</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">WIN1258</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_uhc</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">UHC</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_windows_1250</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">WIN1250</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_windows_1251</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">WIN1251</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_windows_1252</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">WIN1252</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_windows_1256</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">WIN1256</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_windows_866</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">WIN866</code></td>
-</tr>
-<tr>
-<td><code class="literal">utf8_to_windows_874</code></td>
-<td><code class="literal">UTF8</code></td>
-<td><code class="literal">WIN874</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1250_to_iso_8859_2</code></td>
-<td><code class="literal">WIN1250</code></td>
-<td><code class="literal">LATIN2</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1250_to_mic</code></td>
-<td><code class="literal">WIN1250</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1250_to_utf8</code></td>
-<td><code class="literal">WIN1250</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1251_to_iso_8859_5</code></td>
-<td><code class="literal">WIN1251</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1251_to_koi8_r</code></td>
-<td><code class="literal">WIN1251</code></td>
-<td><code class="literal">KOI8</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1251_to_mic</code></td>
-<td><code class="literal">WIN1251</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1251_to_utf8</code></td>
-<td><code class="literal">WIN1251</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1251_to_windows_866</code></td>
-<td><code class="literal">WIN1251</code></td>
-<td><code class="literal">WIN866</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1252_to_utf8</code></td>
-<td><code class="literal">WIN1252</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_1256_to_utf8</code></td>
-<td><code class="literal">WIN1256</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_866_to_iso_8859_5</code></td>
-<td><code class="literal">WIN866</code></td>
-<td><code class="literal">ISO_8859_5</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_866_to_koi8_r</code></td>
-<td><code class="literal">WIN866</code></td>
-<td><code class="literal">KOI8</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_866_to_mic</code></td>
-<td><code class="literal">WIN866</code></td>
-<td><code class="literal">MULE_INTERNAL</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_866_to_utf8</code></td>
-<td><code class="literal">WIN866</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_866_to_windows_1251</code></td>
-<td><code class="literal">WIN866</code></td>
-<td><code class="literal">WIN</code></td>
-</tr>
-<tr>
-<td><code class="literal">windows_874_to_utf8</code></td>
-<td><code class="literal">WIN874</code></td>
-<td><code class="literal">UTF8</code></td>
-</tr>
-</tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id325564" href="#id325564">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+       </TD
+><TD
+><TT
+CLASS="LITERAL"
+>translate('12345', '14', 'ax')</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>a23x5</TT
+></TD
+></TR
+></TBODY
+><TR
+><TD
+COLSPAN="5"
+>Notes:<BR><A
+NAME="FTN.AEN7443"
+>a. </A
+>         The <CODE
+CLASS="FUNCTION"
+>to_ascii</CODE
+> function supports conversion from
+         <TT
+CLASS="LITERAL"
+>LATIN1</TT
+>, <TT
+CLASS="LITERAL"
+>LATIN2</TT
+>, <TT
+CLASS="LITERAL"
+>LATIN9</TT
+>,
+         and <TT
+CLASS="LITERAL"
+>WIN1250</TT
+> encodings only.
+        <BR></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="TABLE"
+><A
+NAME="CONVERSION-NAMES"
+></A
+><P
+><B
+>Table 9-7. Built-in Conversions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Conversion Name
+        <A
+NAME="AEN7495"
+HREF="#FTN.AEN7495"
+><SPAN
+CLASS="footnote"
+>[a]</SPAN
+></A
+>
+       </TH
+><TH
+>Source Encoding</TH
+><TH
+>Destination Encoding</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>ascii_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SQL_ASCII</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>ascii_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SQL_ASCII</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>big5_to_euc_tw</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>BIG5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_TW</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>big5_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>BIG5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>big5_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>BIG5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_cn_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_CN</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_cn_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_CN</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_jp_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_JP</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_jp_to_sjis</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_JP</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SJIS</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_jp_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_JP</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_kr_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_KR</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_kr_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_KR</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_tw_to_big5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_TW</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>BIG5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_tw_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_TW</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>euc_tw_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_TW</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>gb18030_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>GB18030</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>gbk_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>GBK</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_10_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN6</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_13_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN7</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_14_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_15_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN9</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_16_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN10</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_1_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN1</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_1_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN1</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_2_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_2_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_2_to_windows_1250</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1250</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_3_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN3</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_3_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN3</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_4_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_4_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_5_to_koi8_r</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_5_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_5_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_5_to_windows_1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_5_to_windows_866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_6_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_6</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_7_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_7</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_8_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>iso_8859_9_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>johab_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>JOHAB</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>koi8_r_to_iso_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>koi8_r_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>koi8_r_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>koi8_r_to_windows_1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>koi8_r_to_windows_866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_ascii</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SQL_ASCII</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_big5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>BIG5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_euc_cn</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_CN</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_euc_jp</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_JP</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_euc_kr</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_KR</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_euc_tw</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_TW</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_iso_8859_1</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN1</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_iso_8859_2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN2</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_iso_8859_3</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN3</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_iso_8859_4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN4</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_iso_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_koi8_r</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_sjis</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SJIS</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_windows_1250</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1250</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_windows_1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>mic_to_windows_866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>sjis_to_euc_jp</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SJIS</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_JP</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>sjis_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SJIS</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>sjis_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SJIS</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>tcvn_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1258</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>uhc_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UHC</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_ascii</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SQL_ASCII</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_big5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>BIG5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_euc_cn</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_CN</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_euc_jp</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_JP</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_euc_kr</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_KR</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_euc_tw</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>EUC_TW</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_gb18030</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>GB18030</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_gbk</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>GBK</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_1</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN1</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_10</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN6</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_13</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN7</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_14</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_15</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN9</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_16</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN10</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN2</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_3</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN3</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN4</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_6</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_6</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_7</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_7</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_iso_8859_9</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_johab</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>JOHAB</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_koi8_r</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_sjis</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>SJIS</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_tcvn</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1258</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_uhc</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UHC</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_windows_1250</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1250</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_windows_1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_windows_1252</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1252</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_windows_1256</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1256</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_windows_866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>utf8_to_windows_874</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN874</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1250_to_iso_8859_2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1250</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>LATIN2</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1250_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1250</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1250_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1250</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1251_to_iso_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1251_to_koi8_r</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1251_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1251_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1251_to_windows_866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1252_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1252</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_1256_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN1256</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_866_to_iso_8859_5</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>ISO_8859_5</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_866_to_koi8_r</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>KOI8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_866_to_mic</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>MULE_INTERNAL</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_866_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_866_to_windows_1251</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN866</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>windows_874_to_utf8</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>WIN874</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>UTF8</TT
+></TD
+></TR
+></TBODY
+><TR
+><TD
+COLSPAN="3"
+>Notes:<BR><A
+NAME="FTN.AEN7495"
+>a. </A
+>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
-          by <code class="literal">_to_</code> followed by the equally processed
+          by <TT
+CLASS="LITERAL"
+>_to_</TT
+> followed by the equally processed
           destination encoding name. Therefore the names might deviate
           from the customary encoding names.
-         </p></div></td></tr></tbody>
-</table>
-</div>
-</div></body>
-</html>
+         <BR></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-math.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Mathematical Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Binary String Functions and Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

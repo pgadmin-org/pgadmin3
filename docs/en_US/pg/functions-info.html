@@ -1,627 +1,2243 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.19. System Information Functions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="prev" href="functions-srf.html" title="9.18. Set Returning Functions">
-<link rel="next" href="functions-admin.html" title="9.20. System Administration Functions">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-info"></a>9.19. System Information Functions</h2></div></div></div>
-<p>   <a href="functions-info.html#functions-info-session-table" title="Table 9.39. Session Information Functions">Table 9.39, &#8220;Session Information Functions&#8221;</a> shows several
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>System Information Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Set Returning Functions"
+HREF="functions-srf.html"><LINK
+REL="NEXT"
+TITLE="System Administration Functions"
+HREF="functions-admin.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-srf.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-admin.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-INFO"
+>9.19. System Information Functions</A
+></H1
+><P
+>   <A
+HREF="functions-info.html#FUNCTIONS-INFO-SESSION-TABLE"
+>Table 9-39</A
+> shows several
    functions that extract session and system information.
-  </p>
-<div class="table">
-<a name="functions-info-session-table"></a><p class="title"><b>Table 9.39. Session Information Functions</b></p>
-<table summary="Session Information Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Return Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="function">current_database()</code></td>
-<td><code class="type">name</code></td>
-<td>name of current database</td>
-</tr>
-<tr>
-<td><code class="function">current_schema()</code></td>
-<td><code class="type">name</code></td>
-<td>name of current schema</td>
-</tr>
-<tr>
-<td><code class="function">current_schemas(boolean)</code></td>
-<td><code class="type">name[]</code></td>
-<td>names of schemas in search path optionally including implicit schemas</td>
-</tr>
-<tr>
-<td><code class="function">current_user</code></td>
-<td><code class="type">name</code></td>
-<td>user name of current execution context</td>
-</tr>
-<tr>
-<td><code class="function">inet_client_addr()</code></td>
-<td><code class="type">inet</code></td>
-<td>address of the remote connection</td>
-</tr>
-<tr>
-<td><code class="function">inet_client_port()</code></td>
-<td><code class="type">int4</code></td>
-<td>port of the remote connection</td>
-</tr>
-<tr>
-<td><code class="function">inet_server_addr()</code></td>
-<td><code class="type">inet</code></td>
-<td>address of the local connection</td>
-</tr>
-<tr>
-<td><code class="function">inet_server_port()</code></td>
-<td><code class="type">int4</code></td>
-<td>port of the local connection</td>
-</tr>
-<tr>
-<td><code class="function">session_user</code></td>
-<td><code class="type">name</code></td>
-<td>session user name</td>
-</tr>
-<tr>
-<td><code class="function">user</code></td>
-<td><code class="type">name</code></td>
-<td>equivalent to <code class="function">current_user</code>
-</td>
-</tr>
-<tr>
-<td><code class="function">version()</code></td>
-<td><code class="type">text</code></td>
-<td>PostgreSQL version information</td>
-</tr>
-</tbody>
-</table>
-</div>
-<a name="id343662"></a><a name="id343673"></a><a name="id343684"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-INFO-SESSION-TABLE"
+></A
+><P
+><B
+>Table 9-39. Session Information Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>current_database</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>name of current database</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>current_schema</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>name of current schema</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>current_schemas</CODE
+>(<TT
+CLASS="TYPE"
+>boolean</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name[]</TT
+></TD
+><TD
+>names of schemas in search path optionally including implicit schemas</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>current_user</CODE
+></TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>user name of current execution context</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>inet_client_addr</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>inet</TT
+></TD
+><TD
+>address of the remote connection</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>inet_client_port</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+>port of the remote connection</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>inet_server_addr</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>inet</TT
+></TD
+><TD
+>address of the local connection</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>inet_server_port</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+></TD
+><TD
+>port of the local connection</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>session_user</CODE
+></TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>session user name</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_postmaster_start_time</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>timestamp with time zone</TT
+></TD
+><TD
+><TT
+CLASS="COMMAND"
+>postmaster</TT
+> start time</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>user</CODE
+></TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>equivalent to <CODE
+CLASS="FUNCTION"
+>current_user</CODE
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>version</CODE
+>()</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> version information</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><A
+NAME="AEN13340"
+></A
+><A
+NAME="AEN13343"
+></A
+><A
+NAME="AEN13346"
+></A
+><P
+>    The <CODE
+CLASS="FUNCTION"
+>session_user</CODE
+> is normally the user who initiated
     the current database connection; but superusers can change this setting
-    with <a href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION"><span class="refentrytitle"><a name="sql-set-session-authorization-title"></a>SET SESSION AUTHORIZATION</span></a>.
-    The <code class="function">current_user</code> is the user identifier
+    with <A
+HREF="sql-set-session-authorization.html"
+><I
+>SET SESSION AUTHORIZATION</I
+></A
+>.
+    The <CODE
+CLASS="FUNCTION"
+>current_user</CODE
+> is the user identifier
     that is applicable for permission checking. Normally, it is equal
-    to the session user, but it changes during the execution of
-    functions with the attribute <code class="literal">SECURITY DEFINER</code>.
-    In Unix parlance, the session user is the &#8220;<span class="quote">real user</span>&#8221; and
-    the current user is the &#8220;<span class="quote">effective user</span>&#8221;.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     <code class="function">current_user</code>, <code class="function">session_user</code>, and
-     <code class="function">user</code> have special syntactic status in <span class="acronym">SQL</span>:
+    to the session user, but it can be changed with
+    <A
+HREF="sql-set-role.html"
+><I
+>SET ROLE</I
+></A
+>.
+    It also changes during the execution of
+    functions with the attribute <TT
+CLASS="LITERAL"
+>SECURITY DEFINER</TT
+>.
+    In Unix parlance, the session user is the <SPAN
+CLASS="QUOTE"
+>"real user"</SPAN
+> and
+    the current user is the <SPAN
+CLASS="QUOTE"
+>"effective user"</SPAN
+>.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     <CODE
+CLASS="FUNCTION"
+>current_user</CODE
+>, <CODE
+CLASS="FUNCTION"
+>session_user</CODE
+>, and
+     <CODE
+CLASS="FUNCTION"
+>user</CODE
+> have special syntactic status in <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>:
      they must be called without trailing parentheses.
-    </p>
-</div>
-<p>    <code class="function">current_schema</code> returns the name of the schema that is
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    <CODE
+CLASS="FUNCTION"
+>current_schema</CODE
+> returns the name of the schema that is
     at the front of the search path (or a null value if the search path is
     empty).  This is the schema that will be used for any tables or
     other named objects that are created without specifying a target schema.
-    <code class="function">current_schemas(boolean)</code> returns an array of the names of all
+    <CODE
+CLASS="FUNCTION"
+>current_schemas(boolean)</CODE
+> returns an array of the names of all
     schemas presently in the search path.  The Boolean option determines whether or not
-    implicitly included system schemas such as <code class="literal">pg_catalog</code> are included in the search 
+    implicitly included system schemas such as <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+> are included in the search 
     path returned.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     The search path may be altered at run time.  The command is:
-</p>
-<pre class="programlisting">SET search_path TO <em class="replaceable"><code>schema</code></em> [<span class="optional">, <em class="replaceable"><code>schema</code></em>, ...</span>]</pre>
-<p>
-    </p>
-</div>
-<a name="id343801"></a><a name="id343810"></a><a name="id343819"></a><a name="id343828"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
-     current client, and <code class="function">inet_client_port</code> returns the
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The search path may be altered at run time.  The command is:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET search_path TO <TT
+CLASS="REPLACEABLE"
+><I
+>schema</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>schema</I
+></TT
+>, ...</SPAN
+>]</PRE
+><P>
+    </P
+></BLOCKQUOTE
+></DIV
+><A
+NAME="AEN13373"
+></A
+><A
+NAME="AEN13375"
+></A
+><A
+NAME="AEN13377"
+></A
+><A
+NAME="AEN13379"
+></A
+><P
+>     <CODE
+CLASS="FUNCTION"
+>inet_client_addr</CODE
+> returns the IP address of the
+     current client, and <CODE
+CLASS="FUNCTION"
+>inet_client_port</CODE
+> returns the
      port number.
-     <code class="function">inet_server_addr</code> returns the IP address on which
+     <CODE
+CLASS="FUNCTION"
+>inet_server_addr</CODE
+> returns the IP address on which
      the server accepted the current connection, and
-     <code class="function">inet_server_port</code> returns the port number.
+     <CODE
+CLASS="FUNCTION"
+>inet_server_port</CODE
+> returns the port number.
      All these functions return NULL if the current connection is via a
      Unix-domain socket.
-   </p>
-<a name="id343865"></a><p>    <code class="function">version()</code> returns a string describing the
-    <span class="productname">PostgreSQL</span> server's version.
-   </p>
-<a name="id343888"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
+   </P
+><A
+NAME="AEN13386"
+></A
+><P
+>     <CODE
+CLASS="FUNCTION"
+>pg_postmaster_start_time</CODE
+> returns the
+     <TT
+CLASS="TYPE"
+>timestamp with time zone</TT
+> when the
+     <TT
+CLASS="COMMAND"
+>postmaster</TT
+> started.
+   </P
+><A
+NAME="AEN13392"
+></A
+><P
+>    <CODE
+CLASS="FUNCTION"
+>version</CODE
+> returns a string describing the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server's version.
+   </P
+><A
+NAME="AEN13397"
+></A
+><P
+>   <A
+HREF="functions-info.html#FUNCTIONS-INFO-ACCESS-TABLE"
+>Table 9-40</A
+> lists functions that
    allow the user to query object access privileges programmatically.
-   See <a href="ddl-priv.html" title="5.7. Privileges">Section 5.7, &#8220;Privileges&#8221;</a> for more information about
+   See <A
+HREF="ddl-priv.html"
+>Section 5.7</A
+> for more information about
    privileges.
-  </p>
-<div class="table">
-<a name="functions-info-access-table"></a><p class="title"><b>Table 9.40. Access Privilege Inquiry Functions</b></p>
-<table summary="Access Privilege Inquiry Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Return Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-<code class="literal"><code class="function">has_table_privilege</code>(<em class="parameter"><code>user</code></em>,
-                                  <em class="parameter"><code>table</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does user have privilege for table</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_table_privilege</code>(<em class="parameter"><code>table</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does current user have privilege for table</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_database_privilege</code>(<em class="parameter"><code>user</code></em>,
-                                  <em class="parameter"><code>database</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does user have privilege for database</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_database_privilege</code>(<em class="parameter"><code>database</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does current user have privilege for database</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_function_privilege</code>(<em class="parameter"><code>user</code></em>,
-                                  <em class="parameter"><code>function</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does user have privilege for function</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_function_privilege</code>(<em class="parameter"><code>function</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does current user have privilege for function</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_language_privilege</code>(<em class="parameter"><code>user</code></em>,
-                                  <em class="parameter"><code>language</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does user have privilege for language</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_language_privilege</code>(<em class="parameter"><code>language</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does current user have privilege for language</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_schema_privilege</code>(<em class="parameter"><code>user</code></em>,
-                                  <em class="parameter"><code>schema</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does user have privilege for schema</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_schema_privilege</code>(<em class="parameter"><code>schema</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does current user have privilege for schema</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_tablespace_privilege</code>(<em class="parameter"><code>user</code></em>,
-                                  <em class="parameter"><code>tablespace</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does user have privilege for tablespace</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">has_tablespace_privilege</code>(<em class="parameter"><code>tablespace</code></em>,
-                                  <em class="parameter"><code>privilege</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>does current user have privilege for tablespace</td>
-</tr>
-</tbody>
-</table>
-</div>
-<a name="id344332"></a><a name="id344341"></a><a name="id344350"></a><a name="id344359"></a><a name="id344368"></a><a name="id344377"></a><p>    <code class="function">has_table_privilege</code> checks whether a user
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-INFO-ACCESS-TABLE"
+></A
+><P
+><B
+>Table 9-40. Access Privilege Inquiry Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>user</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>table</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does user have privilege for table</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>table</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does current user have privilege for table</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_database_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>user</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>database</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does user have privilege for database</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_database_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>database</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does current user have privilege for database</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_function_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>user</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>function</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does user have privilege for function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_function_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>function</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does current user have privilege for function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_language_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>user</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>language</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does user have privilege for language</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_language_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>language</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does current user have privilege for language</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_has_role</CODE
+>(<TT
+CLASS="PARAMETER"
+>user</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>role</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does user have privilege for role</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_has_role</CODE
+>(<TT
+CLASS="PARAMETER"
+>role</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does current user have privilege for role</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_schema_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>user</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>schema</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does user have privilege for schema</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_schema_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>schema</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does current user have privilege for schema</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_tablespace_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>user</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>tablespace</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does user have privilege for tablespace</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>has_tablespace_privilege</CODE
+>(<TT
+CLASS="PARAMETER"
+>tablespace</TT
+>,
+                                  <TT
+CLASS="PARAMETER"
+>privilege</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>does current user have privilege for tablespace</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><A
+NAME="AEN13545"
+></A
+><A
+NAME="AEN13547"
+></A
+><A
+NAME="AEN13549"
+></A
+><A
+NAME="AEN13551"
+></A
+><A
+NAME="AEN13553"
+></A
+><A
+NAME="AEN13555"
+></A
+><A
+NAME="AEN13557"
+></A
+><P
+>    <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+> checks whether a user
     can access a table in a particular way.  The user can be
-    specified by name or by ID
-    (<code class="literal">pg_user.usesysid</code>), or if the argument is
+    specified by name or by OID
+    (<TT
+CLASS="LITERAL"
+>pg_authid.oid</TT
+>), or if the argument is
     omitted
-    <code class="function">current_user</code> is assumed.  The table can be specified
+    <CODE
+CLASS="FUNCTION"
+>current_user</CODE
+> is assumed.  The table can be specified
     by name or by OID.  (Thus, there are actually six variants of
-    <code class="function">has_table_privilege</code>, which can be distinguished by
+    <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>, which can be distinguished by
     the number and types of their arguments.)  When specifying by name,
     the name can be schema-qualified if necessary.
     The desired access privilege type
     is specified by a text string, which must evaluate to one of the
-    values <code class="literal">SELECT</code>, <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>,
-    <code class="literal">DELETE</code>, <code class="literal">RULE</code>, <code class="literal">REFERENCES</code>, or
-    <code class="literal">TRIGGER</code>.  (Case of the string is not significant, however.)
+    values <TT
+CLASS="LITERAL"
+>SELECT</TT
+>, <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>,
+    <TT
+CLASS="LITERAL"
+>DELETE</TT
+>, <TT
+CLASS="LITERAL"
+>RULE</TT
+>, <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+>, or
+    <TT
+CLASS="LITERAL"
+>TRIGGER</TT
+>.  (Case of the string is not significant, however.)
     An example is:
-</p>
-<pre class="programlisting">SELECT has_table_privilege('myschema.mytable', 'select');</pre>
-<p>
-   </p>
-<p>    <code class="function">has_database_privilege</code> checks whether a user
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT has_table_privilege('myschema.mytable', 'select');</PRE
+><P>
+   </P
+><P
+>    <CODE
+CLASS="FUNCTION"
+>has_database_privilege</CODE
+> checks whether a user
     can access a database in a particular way.  The possibilities for its
-    arguments are analogous to <code class="function">has_table_privilege</code>.
+    arguments are analogous to <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>.
     The desired access privilege type must evaluate to
-    <code class="literal">CREATE</code>,
-    <code class="literal">TEMPORARY</code>, or
-    <code class="literal">TEMP</code> (which is equivalent to
-    <code class="literal">TEMPORARY</code>).
-   </p>
-<p>    <code class="function">has_function_privilege</code> checks whether a user
+    <TT
+CLASS="LITERAL"
+>CREATE</TT
+>,
+    <TT
+CLASS="LITERAL"
+>TEMPORARY</TT
+>, or
+    <TT
+CLASS="LITERAL"
+>TEMP</TT
+> (which is equivalent to
+    <TT
+CLASS="LITERAL"
+>TEMPORARY</TT
+>).
+   </P
+><P
+>    <CODE
+CLASS="FUNCTION"
+>has_function_privilege</CODE
+> checks whether a user
     can access a function in a particular way.  The possibilities for its
-    arguments are analogous to <code class="function">has_table_privilege</code>.
+    arguments are analogous to <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>.
     When specifying a function by a text string rather than by OID,
-    the allowed input is the same as for the <code class="type">regprocedure</code> data type
-    (see <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a>).
+    the allowed input is the same as for the <TT
+CLASS="TYPE"
+>regprocedure</TT
+> data type
+    (see <A
+HREF="datatype-oid.html"
+>Section 8.12</A
+>).
     The desired access privilege type must evaluate to
-    <code class="literal">EXECUTE</code>.
+    <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+>.
     An example is:
-</p>
-<pre class="programlisting">SELECT has_function_privilege('joeuser', 'myfunc(int, text)', 'execute');</pre>
-<p>
-   </p>
-<p>    <code class="function">has_language_privilege</code> checks whether a user
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT has_function_privilege('joeuser', 'myfunc(int, text)', 'execute');</PRE
+><P>
+   </P
+><P
+>    <CODE
+CLASS="FUNCTION"
+>has_language_privilege</CODE
+> checks whether a user
     can access a procedural language in a particular way.  The possibilities
-    for its arguments are analogous to <code class="function">has_table_privilege</code>.
+    for its arguments are analogous to <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>.
     The desired access privilege type must evaluate to
-    <code class="literal">USAGE</code>.
-   </p>
-<p>    <code class="function">has_schema_privilege</code> checks whether a user
+    <TT
+CLASS="LITERAL"
+>USAGE</TT
+>.
+   </P
+><P
+>    <CODE
+CLASS="FUNCTION"
+>pg_has_role</CODE
+> checks whether a user
+    can access a role in a particular way.  The possibilities for its
+    arguments are analogous to <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>.
+    The desired access privilege type must evaluate to
+    <TT
+CLASS="LITERAL"
+>MEMBER</TT
+> or
+    <TT
+CLASS="LITERAL"
+>USAGE</TT
+>.
+    <TT
+CLASS="LITERAL"
+>MEMBER</TT
+> denotes direct or indirect membership in
+    the role (that is, the right to do <TT
+CLASS="LITERAL"
+>SET ROLE</TT
+>), while
+    <TT
+CLASS="LITERAL"
+>USAGE</TT
+> denotes whether the privileges of the role
+    are immediately available without doing <TT
+CLASS="LITERAL"
+>SET ROLE</TT
+>.
+   </P
+><P
+>    <CODE
+CLASS="FUNCTION"
+>has_schema_privilege</CODE
+> checks whether a user
     can access a schema in a particular way.  The possibilities for its
-    arguments are analogous to <code class="function">has_table_privilege</code>.
+    arguments are analogous to <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>.
     The desired access privilege type must evaluate to
-    <code class="literal">CREATE</code> or
-    <code class="literal">USAGE</code>.
-   </p>
-<p>    <code class="function">has_tablespace_privilege</code> checks whether a user
+    <TT
+CLASS="LITERAL"
+>CREATE</TT
+> or
+    <TT
+CLASS="LITERAL"
+>USAGE</TT
+>.
+   </P
+><P
+>    <CODE
+CLASS="FUNCTION"
+>has_tablespace_privilege</CODE
+> checks whether a user
     can access a tablespace in a particular way.  The possibilities for its
-    arguments are analogous to <code class="function">has_table_privilege</code>.
+    arguments are analogous to <CODE
+CLASS="FUNCTION"
+>has_table_privilege</CODE
+>.
     The desired access privilege type must evaluate to
-    <code class="literal">CREATE</code>.
-   </p>
-<p>   To test whether a user holds a grant option on the privilege,
-   append <code class="literal"> WITH GRANT OPTION</code> to the privilege key
-   word; for example <code class="literal">'UPDATE WITH GRANT OPTION'</code>.
-  </p>
-<p>   <a href="functions-info.html#functions-info-schema-table" title="Table 9.41. Schema Visibility Inquiry Functions">Table 9.41, &#8220;Schema Visibility Inquiry Functions&#8221;</a> shows functions that
-   determine whether a certain object is <em class="firstterm">visible</em> in the
+    <TT
+CLASS="LITERAL"
+>CREATE</TT
+>.
+   </P
+><P
+>   To test whether a user holds a grant option on the privilege,
+   append <TT
+CLASS="LITERAL"
+> WITH GRANT OPTION</TT
+> to the privilege key
+   word; for example <TT
+CLASS="LITERAL"
+>'UPDATE WITH GRANT OPTION'</TT
+>.
+  </P
+><P
+>   <A
+HREF="functions-info.html#FUNCTIONS-INFO-SCHEMA-TABLE"
+>Table 9-41</A
+> shows functions that
+   determine whether a certain object is <I
+CLASS="FIRSTTERM"
+>visible</I
+> in the
    current schema search path.  A table is said to be visible if its
    containing schema is in the search path and no table of the same
    name appears earlier in the search path.  This is equivalent to the
    statement that the table can be referenced by name without explicit
    schema qualification.  For example, to list the names of all
    visible tables:
-</p>
-<pre class="programlisting">SELECT relname FROM pg_class WHERE pg_table_is_visible(oid);</pre>
-<p>
-  </p>
-<div class="table">
-<a name="functions-info-schema-table"></a><p class="title"><b>Table 9.41. Schema Visibility Inquiry Functions</b></p>
-<table summary="Schema Visibility Inquiry Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Return Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-<code class="literal"><code class="function">pg_table_is_visible</code>(<em class="parameter"><code>table_oid</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>is table visible in search path</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">pg_type_is_visible</code>(<em class="parameter"><code>type_oid</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>is type (or domain) visible in search path</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">pg_function_is_visible</code>(<em class="parameter"><code>function_oid</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>is function visible in search path</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">pg_operator_is_visible</code>(<em class="parameter"><code>operator_oid</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>is operator visible in search path</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">pg_opclass_is_visible</code>(<em class="parameter"><code>opclass_oid</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>is operator class visible in search path</td>
-</tr>
-<tr>
-<td>
-<code class="literal"><code class="function">pg_conversion_is_visible</code>(<em class="parameter"><code>conversion_oid</code></em>)</code>
-       </td>
-<td><code class="type">boolean</code></td>
-<td>is conversion visible in search path</td>
-</tr>
-</tbody>
-</table>
-</div>
-<a name="id344816"></a><a name="id344825"></a><a name="id344834"></a><a name="id344842"></a><a name="id344851"></a><a name="id344860"></a><p>   <code class="function">pg_table_is_visible</code> performs the check for
-   tables (or views, or any other kind of <code class="literal">pg_class</code> entry).
-   <code class="function">pg_type_is_visible</code>,
-   <code class="function">pg_function_is_visible</code>,
-   <code class="function">pg_operator_is_visible</code>,
-   <code class="function">pg_opclass_is_visible</code>, and
-   <code class="function">pg_conversion_is_visible</code> perform the same sort of
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT relname FROM pg_class WHERE pg_table_is_visible(oid);</PRE
+><P>
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-INFO-SCHEMA-TABLE"
+></A
+><P
+><B
+>Table 9-41. Schema Visibility Inquiry Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_table_is_visible</CODE
+>(<TT
+CLASS="PARAMETER"
+>table_oid</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>is table visible in search path</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_type_is_visible</CODE
+>(<TT
+CLASS="PARAMETER"
+>type_oid</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>is type (or domain) visible in search path</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_function_is_visible</CODE
+>(<TT
+CLASS="PARAMETER"
+>function_oid</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>is function visible in search path</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_operator_is_visible</CODE
+>(<TT
+CLASS="PARAMETER"
+>operator_oid</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>is operator visible in search path</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_opclass_is_visible</CODE
+>(<TT
+CLASS="PARAMETER"
+>opclass_oid</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>is operator class visible in search path</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_conversion_is_visible</CODE
+>(<TT
+CLASS="PARAMETER"
+>conversion_oid</TT
+>)</TT
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>is conversion visible in search path</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><A
+NAME="AEN13672"
+></A
+><A
+NAME="AEN13674"
+></A
+><A
+NAME="AEN13676"
+></A
+><A
+NAME="AEN13678"
+></A
+><A
+NAME="AEN13680"
+></A
+><A
+NAME="AEN13682"
+></A
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_table_is_visible</CODE
+> performs the check for
+   tables (or views, or any other kind of <TT
+CLASS="LITERAL"
+>pg_class</TT
+> entry).
+   <CODE
+CLASS="FUNCTION"
+>pg_type_is_visible</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_function_is_visible</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_operator_is_visible</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_opclass_is_visible</CODE
+>, and
+   <CODE
+CLASS="FUNCTION"
+>pg_conversion_is_visible</CODE
+> perform the same sort of
    visibility check for types (and domains), functions, operators, operator classes
    and conversions, respectively.  For functions and operators, an object in
    the search path is visible if there is no object of the same name
-   <span class="emphasis"><em>and argument data type(s)</em></span> earlier in the path.  For
+   <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>and argument data type(s)</I
+></SPAN
+> earlier in the path.  For
    operator classes, both name and associated index access method are
    considered.
-   </p>
-<p>    All these functions require object OIDs to identify the object to be
+   </P
+><P
+>    All these functions require object OIDs to identify the object to be
     checked.  If you want to test an object by name, it is convenient to use
-    the OID alias types (<code class="type">regclass</code>, <code class="type">regtype</code>,
-    <code class="type">regprocedure</code>, or <code class="type">regoperator</code>), for example
-</p>
-<pre class="programlisting">SELECT pg_type_is_visible('myschema.widget'::regtype);</pre>
-<p>
+    the OID alias types (<TT
+CLASS="TYPE"
+>regclass</TT
+>, <TT
+CLASS="TYPE"
+>regtype</TT
+>,
+    <TT
+CLASS="TYPE"
+>regprocedure</TT
+>, or <TT
+CLASS="TYPE"
+>regoperator</TT
+>), for example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT pg_type_is_visible('myschema.widget'::regtype);</PRE
+><P>
     Note that it would not make much sense to test an unqualified name in
-    this way [mdash ] if the name can be recognized at all, it must be visible.
-   </p>
-<a name="id344947"></a><a name="id344956"></a><a name="id344964"></a><a name="id344973"></a><a name="id344982"></a><a name="id344991"></a><a name="id345000"></a><a name="id345009"></a><a name="id345018"></a><a name="id345027"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
+    this way &mdash; if the name can be recognized at all, it must be visible.
+   </P
+><A
+NAME="AEN13699"
+></A
+><A
+NAME="AEN13701"
+></A
+><A
+NAME="AEN13703"
+></A
+><A
+NAME="AEN13705"
+></A
+><A
+NAME="AEN13707"
+></A
+><A
+NAME="AEN13709"
+></A
+><A
+NAME="AEN13711"
+></A
+><A
+NAME="AEN13713"
+></A
+><A
+NAME="AEN13715"
+></A
+><A
+NAME="AEN13717"
+></A
+><P
+>   <A
+HREF="functions-info.html#FUNCTIONS-INFO-CATALOG-TABLE"
+>Table 9-42</A
+> lists functions that
    extract information from the system catalogs.
-  </p>
-<div class="table">
-<a name="functions-info-catalog-table"></a><p class="title"><b>Table 9.42. System Catalog Information Functions</b></p>
-<table summary="System Catalog Information Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Return Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="literal"><code class="function">format_type</code>(<em class="parameter"><code>type_oid</code></em>, <em class="parameter"><code>typemod</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get SQL name of a data type</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE RULE</code> command for rule</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE RULE</code> command for rule</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE INDEX</code> command for index</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>, <em class="parameter"><code>column_no</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE INDEX</code> command for index,
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-INFO-CATALOG-TABLE"
+></A
+><P
+><B
+>Table 9-42. System Catalog Information Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>format_type</CODE
+>(<TT
+CLASS="PARAMETER"
+>type_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>typemod</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get SQL name of a data type</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_viewdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>view_name</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> command for view (<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>deprecated</I
+></SPAN
+>)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_viewdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>view_name</TT
+>, <TT
+CLASS="PARAMETER"
+>pretty_bool</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> command for view (<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>deprecated</I
+></SPAN
+>)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_viewdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>view_oid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> command for view</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_viewdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>view_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>pretty_bool</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> command for view</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_ruledef</CODE
+>(<TT
+CLASS="PARAMETER"
+>rule_oid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> command for rule</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_ruledef</CODE
+>(<TT
+CLASS="PARAMETER"
+>rule_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>pretty_bool</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> command for rule</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_indexdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>index_oid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+> command for index</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_indexdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>index_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>column_no</TT
+>, <TT
+CLASS="PARAMETER"
+>pretty_bool</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+> command for index,
        or definition of just one index column when
-       <em class="parameter"><code>column_no</code></em> is not zero</td>
-</tr>
-<tr>
-<td>
-<code class="function">pg_get_triggerdef</code>(<em class="parameter"><code>trigger_oid</code></em>)</td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE [ CONSTRAINT ] TRIGGER</code> command for trigger</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_constraintdef</code>(<em class="parameter"><code>constraint_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get definition of a constraint</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_constraintdef</code>(<em class="parameter"><code>constraint_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get definition of a constraint</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_expr</code>(<em class="parameter"><code>expr_text</code></em>, <em class="parameter"><code>relation_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>decompile internal form of an expression, assuming that any Vars
-       in it refer to the relation indicated by the second parameter</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_expr</code>(<em class="parameter"><code>expr_text</code></em>, <em class="parameter"><code>relation_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>decompile internal form of an expression, assuming that any Vars
-       in it refer to the relation indicated by the second parameter</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_userbyid</code>(<em class="parameter"><code>userid</code></em>)</code></td>
-<td><code class="type">name</code></td>
-<td>get user name with given ID</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_serial_sequence</code>(<em class="parameter"><code>table_name</code></em>, <em class="parameter"><code>column_name</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get name of the sequence that a <code class="type">serial</code> or <code class="type">bigserial</code> column
-       uses</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_tablespace_databases</code>(<em class="parameter"><code>tablespace_oid</code></em>)</code></td>
-<td><code class="type">setof oid</code></td>
-<td>get set of database OIDs that have objects in the tablespace</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   <code class="function">format_type</code> returns the SQL name of a data type that
+       <TT
+CLASS="PARAMETER"
+>column_no</TT
+> is not zero</TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>pg_get_triggerdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>trigger_oid</TT
+>)</TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE [ CONSTRAINT ] TRIGGER</TT
+> command for trigger</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_constraintdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>constraint_oid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get definition of a constraint</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_constraintdef</CODE
+>(<TT
+CLASS="PARAMETER"
+>constraint_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>pretty_bool</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get definition of a constraint</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_expr</CODE
+>(<TT
+CLASS="PARAMETER"
+>expr_text</TT
+>, <TT
+CLASS="PARAMETER"
+>relation_oid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>decompile internal form of an expression, assuming that any Vars
+       in it refer to the relation indicated by the second parameter</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_expr</CODE
+>(<TT
+CLASS="PARAMETER"
+>expr_text</TT
+>, <TT
+CLASS="PARAMETER"
+>relation_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>pretty_bool</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>decompile internal form of an expression, assuming that any Vars
+       in it refer to the relation indicated by the second parameter</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_userbyid</CODE
+>(<TT
+CLASS="PARAMETER"
+>roleid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>get role name with given ID</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_serial_sequence</CODE
+>(<TT
+CLASS="PARAMETER"
+>table_name</TT
+>, <TT
+CLASS="PARAMETER"
+>column_name</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get name of the sequence that a <TT
+CLASS="TYPE"
+>serial</TT
+> or <TT
+CLASS="TYPE"
+>bigserial</TT
+> column
+       uses</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_tablespace_databases</CODE
+>(<TT
+CLASS="PARAMETER"
+>tablespace_oid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>setof oid</TT
+></TD
+><TD
+>get the set of database OIDs that have objects in the tablespace</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   <CODE
+CLASS="FUNCTION"
+>format_type</CODE
+> returns the SQL name of a data type that
    is identified by its type OID and possibly a type modifier.  Pass NULL
    for the type modifier if no specific modifier is known.
-  </p>
-<p>   <code class="function">pg_get_viewdef</code>,
-   <code class="function">pg_get_ruledef</code>,
-   <code class="function">pg_get_indexdef</code>,
-   <code class="function">pg_get_triggerdef</code>, and
-   <code class="function">pg_get_constraintdef</code> respectively
+  </P
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_get_viewdef</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_get_ruledef</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_get_indexdef</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_get_triggerdef</CODE
+>, and
+   <CODE
+CLASS="FUNCTION"
+>pg_get_constraintdef</CODE
+> respectively
    reconstruct the creating command for a view, rule, index, trigger, or
    constraint.  (Note that this is a decompiled reconstruction, not
    the original text of the command.)
-   <code class="function">pg_get_expr</code> decompiles the internal form of an
+   <CODE
+CLASS="FUNCTION"
+>pg_get_expr</CODE
+> decompiles the internal form of an
    individual expression, such as the default value for a column.  It
    may be useful when examining the contents of system catalogs.
    Most of these functions come in two
-   variants, one of which can optionally &#8220;<span class="quote">pretty-print</span>&#8221; the result.
+   variants, one of which can optionally <SPAN
+CLASS="QUOTE"
+>"pretty-print"</SPAN
+> the result.
    The pretty-printed format is more readable, but the default format is more
    likely to be
-   interpreted the same way by future versions of <span class="productname">PostgreSQL</span>;
+   interpreted the same way by future versions of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>;
    avoid using pretty-printed output for dump purposes.
-   Passing <code class="literal">false</code> for the pretty-print parameter yields the
+   Passing <TT
+CLASS="LITERAL"
+>false</TT
+> for the pretty-print parameter yields the
    same result as the variant that does not have the parameter at all.
-  </p>
-<p>   <code class="function">pg_get_userbyid</code>
-   extracts a user's name given a user ID number.
-   <code class="function">pg_get_serial_sequence</code>
-   fetches the name of the sequence associated with a serial or
-   bigserial column.  The name is suitably formatted
-   for passing to the sequence functions (see <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>).
-   NULL is returned if the column does not have a sequence attached.
-  </p>
-<p>  <code class="function">pg_tablespace_databases</code> allows usage examination of a
-  tablespace. It will return a set of OIDs of databases that have objects
-  stored in the tablespace. If this function returns any row, the
+  </P
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_get_userbyid</CODE
+> extracts a role's name given
+   its OID.
+  </P
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_get_serial_sequence</CODE
+> fetches the name of the
+   sequence associated with a <TT
+CLASS="TYPE"
+>serial</TT
+> or <TT
+CLASS="TYPE"
+>bigserial</TT
+>
+   column.  The name is suitably formatted for passing to the sequence
+   functions (see <A
+HREF="functions-sequence.html"
+>Section 9.12</A
+>).  NULL is
+   returned if the column does not have an associated sequence.
+  </P
+><P
+>  <CODE
+CLASS="FUNCTION"
+>pg_tablespace_databases</CODE
+> allows a tablespace to
+  be examined. It returns the set of OIDs of databases that have objects
+  stored in the tablespace. If this function returns any rows, the
   tablespace is not empty and cannot be dropped. To
   display the specific objects populating the tablespace, you will need
   to connect to the databases identified by 
-  <code class="function">pg_tablespace_databases</code> and query their
-  <code class="structname">pg_class</code> catalogs.
-  </p>
-<a name="id345704"></a><a name="id345713"></a><a name="id345722"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
-    previously stored with the <code class="command">COMMENT</code> command.  A
+  <CODE
+CLASS="FUNCTION"
+>pg_tablespace_databases</CODE
+> and query their
+  <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> catalogs.
+  </P
+><A
+NAME="AEN13913"
+></A
+><A
+NAME="AEN13915"
+></A
+><A
+NAME="AEN13917"
+></A
+><P
+>    The functions shown in <A
+HREF="functions-info.html#FUNCTIONS-INFO-COMMENT-TABLE"
+>Table 9-43</A
+> extract comments
+    previously stored with the <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> command.  A
     null value is returned if no comment could be found matching the
     specified parameters.
-   </p>
-<div class="table">
-<a name="functions-info-comment-table"></a><p class="title"><b>Table 9.43. Comment Information Functions</b></p>
-<table summary="Comment Information Functions" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Return Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="literal"><code class="function">obj_description</code>(<em class="parameter"><code>object_oid</code></em>, <em class="parameter"><code>catalog_name</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get comment for a database object</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">obj_description</code>(<em class="parameter"><code>object_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get comment for a database object (<span class="emphasis"><em>deprecated</em></span>)</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">col_description</code>(<em class="parameter"><code>table_oid</code></em>, <em class="parameter"><code>column_number</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get comment for a table column</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>    The two-parameter form of <code class="function">obj_description</code> returns the
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-INFO-COMMENT-TABLE"
+></A
+><P
+><B
+>Table 9-43. Comment Information Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+>(<TT
+CLASS="PARAMETER"
+>object_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>catalog_name</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get comment for a database object</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+>(<TT
+CLASS="PARAMETER"
+>object_oid</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get comment for a database object (<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>deprecated</I
+></SPAN
+>)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>col_description</CODE
+>(<TT
+CLASS="PARAMETER"
+>table_oid</TT
+>, <TT
+CLASS="PARAMETER"
+>column_number</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get comment for a table column</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    The two-parameter form of <CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+> returns the
     comment for a database object specified by its OID and the name of the
     containing system catalog.  For example,
-    <code class="literal">obj_description(123456,'pg_class')</code>
+    <TT
+CLASS="LITERAL"
+>obj_description(123456,'pg_class')</TT
+>
     would retrieve the comment for a table with OID 123456.
-    The one-parameter form of <code class="function">obj_description</code> requires only
+    The one-parameter form of <CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+> requires only
     the object OID.  It is now deprecated since there is no guarantee that
     OIDs are unique across different system catalogs; therefore, the wrong
     comment could be returned.
-   </p>
-<p>    <code class="function">col_description</code> returns the comment for a table column,
+   </P
+><P
+>    <CODE
+CLASS="FUNCTION"
+>col_description</CODE
+> returns the comment for a table column,
     which is specified by the OID of its table and its column number.
-    <code class="function">obj_description</code> cannot be used for table columns since
+    <CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+> cannot be used for table columns since
     columns do not have OIDs of their own.
-   </p>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-srf.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-admin.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Set Returning Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>System Administration Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

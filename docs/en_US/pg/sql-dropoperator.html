@@ -1,83 +1,375 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>DROP OPERATOR</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-droplanguage.html" title="DROP LANGUAGE">
-<link rel="next" href="sql-dropopclass.html" title="DROP OPERATOR CLASS">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-dropoperator"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>DROP OPERATOR &#8212; remove an operator</p>
-</div>
-<a name="id458485"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">DROP OPERATOR <em class="replaceable"><code>name</code></em> ( { <em class="replaceable"><code>lefttype</code></em> | NONE } , { <em class="replaceable"><code>righttype</code></em> | NONE } ) [ CASCADE | RESTRICT ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id458518"></a><h2>Description</h2>
-<p>   <code class="command">DROP OPERATOR</code> drops an existing operator from
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DROP OPERATOR</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP LANGUAGE"
+HREF="sql-droplanguage.html"><LINK
+REL="NEXT"
+TITLE="DROP OPERATOR CLASS"
+HREF="sql-dropopclass.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droplanguage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droplanguage.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropopclass.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropopclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPOPERATOR"
+></A
+>DROP OPERATOR</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44693"
+></A
+><H2
+>Name</H2
+>DROP OPERATOR&nbsp;--&nbsp;remove an operator</DIV
+><A
+NAME="AEN44696"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44698"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP OPERATOR <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( { <TT
+CLASS="REPLACEABLE"
+><I
+>lefttype</I
+></TT
+> | NONE } , { <TT
+CLASS="REPLACEABLE"
+><I
+>righttype</I
+></TT
+> | NONE } ) [ CASCADE | RESTRICT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44703"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP OPERATOR</TT
+> drops an existing operator from
    the database system.  To execute this command you must be the owner
    of the operator.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id458530"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing operator.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>lefttype</code></em></span></dt>
-<dd><p>      The data type of the operator's left operand; write
-      <code class="literal">NONE</code> if the operator has no left operand.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>righttype</code></em></span></dt>
-<dd><p>      The data type of the operator's right operand; write
-      <code class="literal">NONE</code> if the operator has no right operand.
-     </p></dd>
-<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
-<dd><p>      Automatically drop objects that depend on the operator.
-     </p></dd>
-<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
-<dd><p>      Refuse to drop the operator if any objects depend on it.  This
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44707"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing operator.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>lefttype</I
+></TT
+></DT
+><DD
+><P
+>      The data type of the operator's left operand; write
+      <TT
+CLASS="LITERAL"
+>NONE</TT
+> if the operator has no left operand.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>righttype</I
+></TT
+></DT
+><DD
+><P
+>      The data type of the operator's right operand; write
+      <TT
+CLASS="LITERAL"
+>NONE</TT
+> if the operator has no right operand.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the operator.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>      Refuse to drop the operator if any objects depend on it.  This
       is the default.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id458601"></a><h2>Examples</h2>
-<p>   Remove the power operator <code class="literal">a^b</code> for type <code class="type">integer</code>:
-</p>
-<pre class="programlisting">DROP OPERATOR ^ (integer, integer);</pre>
-<p>
-  </p>
-<p>   Remove the left unary bitwise complement operator
-   <code class="literal">~b</code> for type <code class="type">bit</code>:
-</p>
-<pre class="programlisting">DROP OPERATOR ~ (none, bit);</pre>
-<p>
-  </p>
-<p>   Remove the right unary factorial operator <code class="literal">x!</code>
-   for type <code class="type">bigint</code>:
-</p>
-<pre class="programlisting">DROP OPERATOR ! (bigint, none);</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id458658"></a><h2>Compatibility</h2>
-<p>   There is no <code class="command">DROP OPERATOR</code> statement in the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id458670"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createoperator.html">CREATE OPERATOR</a>, <a href="sql-alteroperator.html">ALTER OPERATOR</a>, </span>
-</div>
-</div></body>
-</html>
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44737"
+></A
+><H2
+>Examples</H2
+><P
+>   Remove the power operator <TT
+CLASS="LITERAL"
+>a^b</TT
+> for type <TT
+CLASS="TYPE"
+>integer</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP OPERATOR ^ (integer, integer);</PRE
+><P>
+  </P
+><P
+>   Remove the left unary bitwise complement operator
+   <TT
+CLASS="LITERAL"
+>~b</TT
+> for type <TT
+CLASS="TYPE"
+>bit</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP OPERATOR ~ (none, bit);</PRE
+><P>
+  </P
+><P
+>   Remove the right unary factorial operator <TT
+CLASS="LITERAL"
+>x!</TT
+>
+   for type <TT
+CLASS="TYPE"
+>bigint</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP OPERATOR ! (bigint, none);</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44751"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>DROP OPERATOR</TT
+> statement in the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44755"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createoperator.html"
+><I
+>CREATE OPERATOR</I
+></A
+>, <A
+HREF="sql-alteroperator.html"
+><I
+>ALTER OPERATOR</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droplanguage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropopclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP LANGUAGE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP OPERATOR CLASS</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

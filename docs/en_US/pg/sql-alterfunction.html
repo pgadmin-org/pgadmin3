@@ -1,115 +1,666 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER FUNCTION</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-alterdomain.html" title="ALTER DOMAIN">
-<link rel="next" href="sql-altergroup.html" title="ALTER GROUP">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alterfunction"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ALTER FUNCTION &#8212; change the definition of a function</p>
-</div>
-<a name="id436491"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER FUNCTION <em class="replaceable"><code>name</code></em> ( [ <em class="replaceable"><code>type</code></em> [, ...] ] ) <em class="replaceable"><code>action</code></em> [, ... ] [ RESTRICT ]
-ALTER FUNCTION <em class="replaceable"><code>name</code></em> ( [ <em class="replaceable"><code>type</code></em> [, ...] ] ) RENAME TO <em class="replaceable"><code>newname</code></em>
-ALTER FUNCTION <em class="replaceable"><code>name</code></em> ( [ <em class="replaceable"><code>type</code></em> [, ...] ] ) OWNER TO <em class="replaceable"><code>newowner</code></em>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER FUNCTION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER DOMAIN"
+HREF="sql-alterdomain.html"><LINK
+REL="NEXT"
+TITLE="ALTER GROUP"
+HREF="sql-altergroup.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdomain.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdomain.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERFUNCTION"
+></A
+>ALTER FUNCTION</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38394"
+></A
+><H2
+>Name</H2
+>ALTER FUNCTION&nbsp;--&nbsp;change the definition of a function</DIV
+><A
+NAME="AEN38397"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38399"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( [ [ <TT
+CLASS="REPLACEABLE"
+><I
+>argmode</I
+></TT
+> ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>argname</I
+></TT
+> ] <TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+> [, ...] ] )
+    <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> [, ... ] [ RESTRICT ]
+ALTER FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( [ [ <TT
+CLASS="REPLACEABLE"
+><I
+>argmode</I
+></TT
+> ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>argname</I
+></TT
+> ] <TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+> [, ...] ] )
+    RENAME TO <TT
+CLASS="REPLACEABLE"
+><I
+>new_name</I
+></TT
+>
+ALTER FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( [ [ <TT
+CLASS="REPLACEABLE"
+><I
+>argmode</I
+></TT
+> ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>argname</I
+></TT
+> ] <TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+> [, ...] ] )
+    OWNER TO <TT
+CLASS="REPLACEABLE"
+><I
+>new_owner</I
+></TT
+>
+ALTER FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( [ [ <TT
+CLASS="REPLACEABLE"
+><I
+>argmode</I
+></TT
+> ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>argname</I
+></TT
+> ] <TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+> [, ...] ] )
+    SET SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>new_schema</I
+></TT
+>
 
-where <em class="replaceable"><code>action</code></em> is one of:
+where <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> is one of:
 
     CALLED ON NULL INPUT | RETURNS NULL ON NULL INPUT | STRICT
     IMMUTABLE | STABLE | VOLATILE
-    [ EXTERNAL ] SECURITY INVOKER | [ EXTERNAL ] SECURITY DEFINER</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id436556"></a><h2>Description</h2>
-<p>   <code class="command">ALTER FUNCTION</code> changes the definition of a
+    [ EXTERNAL ] SECURITY INVOKER | [ EXTERNAL ] SECURITY DEFINER</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38422"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER FUNCTION</TT
+> changes the definition of a
    function.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id436568"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing function.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>type</code></em></span></dt>
-<dd><p>      The data type of an argument of the function.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
-<dd><p>      The new name of the function.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>newowner</code></em></span></dt>
-<dd><p>      The new owner of the function.  To change the owner of a
-      function, you must be a superuser.  Note that if the function is
-      marked <code class="literal">SECURITY DEFINER</code>, it will subsequently
+  </P
+><P
+>   You must own the function to use <TT
+CLASS="COMMAND"
+>ALTER FUNCTION</TT
+>; except for
+   <TT
+CLASS="COMMAND"
+>ALTER FUNCTION OWNER</TT
+>, which may only be executed by a superuser.
+   To change a function's schema, you must also have <TT
+CLASS="LITERAL"
+>CREATE</TT
+>
+   privilege on the new schema.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38430"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing function.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>argmode</I
+></TT
+></DT
+><DD
+><P
+>      The mode of an argument: either <TT
+CLASS="LITERAL"
+>IN</TT
+>, <TT
+CLASS="LITERAL"
+>OUT</TT
+>,
+      or <TT
+CLASS="LITERAL"
+>INOUT</TT
+>.  If omitted, the default is <TT
+CLASS="LITERAL"
+>IN</TT
+>.
+      Note that <TT
+CLASS="COMMAND"
+>ALTER FUNCTION</TT
+> does not actually pay
+      any attention to <TT
+CLASS="LITERAL"
+>OUT</TT
+> arguments, since only the input
+      arguments are needed to determine the function's identity.
+      So it is sufficient to list the <TT
+CLASS="LITERAL"
+>IN</TT
+> and <TT
+CLASS="LITERAL"
+>INOUT</TT
+>
+      arguments.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>argname</I
+></TT
+></DT
+><DD
+><P
+>      The name of an argument.
+      Note that <TT
+CLASS="COMMAND"
+>ALTER FUNCTION</TT
+> does not actually pay
+      any attention to argument names, since only the argument data
+      types are needed to determine the function's identity.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+></DT
+><DD
+><P
+>      The data type(s) of the function's arguments (optionally 
+      schema-qualified), if any.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>new_name</I
+></TT
+></DT
+><DD
+><P
+>      The new name of the function.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>new_owner</I
+></TT
+></DT
+><DD
+><P
+>      The new owner of the function.  Note that if the function is
+      marked <TT
+CLASS="LITERAL"
+>SECURITY DEFINER</TT
+>, it will subsequently
       execute as the new owner.
-     </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CALLED ON NULL INPUT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">RETURNS NULL ON NULL INPUT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">STRICT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd><p>       <code class="literal">CALLED ON NULL INPUT</code> changes the function so
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>new_schema</I
+></TT
+></DT
+><DD
+><P
+>      The new schema for the function.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CALLED ON NULL INPUT</TT
+><BR><TT
+CLASS="LITERAL"
+>RETURNS NULL ON NULL INPUT</TT
+><BR><TT
+CLASS="LITERAL"
+>STRICT</TT
+></DT
+><DD
+><P
+>       <TT
+CLASS="LITERAL"
+>CALLED ON NULL INPUT</TT
+> changes the function so
        that it will be invoked when some or all of its arguments are
-       null. <code class="literal">RETURNS NULL ON NULL INPUT</code> or
-       <code class="literal">STRICT</code> changes the function so that it
-       always returns null if any of its arguments are null. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more information.
-      </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">IMMUTABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">STABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">VOLATILE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd><p>       Change the volatility of the function to the specified
-       type. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more
+       null. <TT
+CLASS="LITERAL"
+>RETURNS NULL ON NULL INPUT</TT
+> or
+       <TT
+CLASS="LITERAL"
+>STRICT</TT
+> changes the function so that it
+       always returns null if any of its arguments are null. See <A
+HREF="sql-createfunction.html"
+>CREATE FUNCTION</A
+> for more information.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>IMMUTABLE</TT
+><BR><TT
+CLASS="LITERAL"
+>STABLE</TT
+><BR><TT
+CLASS="LITERAL"
+>VOLATILE</TT
+></DT
+><DD
+><P
+>       Change the volatility of the function to the specified
+       type. See <A
+HREF="sql-createfunction.html"
+>CREATE FUNCTION</A
+> for more
        information about function volatility.
-      </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">[<span class="optional">EXTERNAL</span>] SECURITY INVOKER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">[<span class="optional">EXTERNAL</span>] SECURITY DEFINER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd><p>      Change whether the function is a security definer or not. The
-      key word <code class="literal">EXTERNAL</code> is ignored for SQL
-      conformance. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>[<SPAN
+CLASS="OPTIONAL"
+> EXTERNAL </SPAN
+>] SECURITY INVOKER</TT
+><BR><TT
+CLASS="LITERAL"
+>[<SPAN
+CLASS="OPTIONAL"
+> EXTERNAL </SPAN
+>] SECURITY DEFINER</TT
+></DT
+><DD
+><P
+>      Change whether the function is a security definer or not. The
+      key word <TT
+CLASS="LITERAL"
+>EXTERNAL</TT
+> is ignored for SQL
+      conformance. See <A
+HREF="sql-createfunction.html"
+>CREATE FUNCTION</A
+> for more
       information about this capability.
-     </p></dd>
-<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
-<dd><p>      Ignored for conformance with the SQL standard.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id436742"></a><h2>Examples</h2>
-<p>   To rename the function <code class="literal">sqrt</code> for type
-   <code class="type">integer</code> to <code class="literal">square_root</code>:
-</p>
-<pre class="programlisting">ALTER FUNCTION sqrt(integer) RENAME TO square_root;</pre>
-<p>
-  </p>
-<p>   To change the owner of the function <code class="literal">sqrt</code> for type
-   <code class="type">integer</code> to <code class="literal">joe</code>:
-</p>
-<pre class="programlisting">ALTER FUNCTION sqrt(integer) OWNER TO joe;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id436793"></a><h2>Compatibility</h2>
-<p>   This statement is partially compatible with the <code class="command">ALTER
-   FUNCTION</code> statement in the SQL standard. The standard allows more
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>      Ignored for conformance with the SQL standard.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38517"
+></A
+><H2
+>Examples</H2
+><P
+>   To rename the function <TT
+CLASS="LITERAL"
+>sqrt</TT
+> for type
+   <TT
+CLASS="TYPE"
+>integer</TT
+> to <TT
+CLASS="LITERAL"
+>square_root</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER FUNCTION sqrt(integer) RENAME TO square_root;</PRE
+><P>
+  </P
+><P
+>   To change the owner of the function <TT
+CLASS="LITERAL"
+>sqrt</TT
+> for type
+   <TT
+CLASS="TYPE"
+>integer</TT
+> to <TT
+CLASS="LITERAL"
+>joe</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER FUNCTION sqrt(integer) OWNER TO joe;</PRE
+><P>
+  </P
+><P
+>   To change the schema of the function <TT
+CLASS="LITERAL"
+>sqrt</TT
+> for type
+   <TT
+CLASS="TYPE"
+>integer</TT
+> to <TT
+CLASS="LITERAL"
+>maths</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER FUNCTION sqrt(integer) SET SCHEMA maths;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38534"
+></A
+><H2
+>Compatibility</H2
+><P
+>   This statement is partially compatible with the <TT
+CLASS="COMMAND"
+>ALTER
+   FUNCTION</TT
+> statement in the SQL standard. The standard allows more
    properties of a function to be modified, but does not provide the
    ability to rename a function, make a function a security definer,
-   or change the owner or volatility of a function. The standard also
-   requires the <code class="literal">RESTRICT</code> key word; it is optional in
-   <span class="productname">PostgreSQL</span>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id436820"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-dropfunction.html">DROP FUNCTION</a>, </span>
-</div>
-</div></body>
-</html>
+   or change the owner, schema, or volatility of a function. The standard also
+   requires the <TT
+CLASS="LITERAL"
+>RESTRICT</TT
+> key word; it is optional in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38540"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>, <A
+HREF="sql-dropfunction.html"
+><I
+>DROP FUNCTION</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdomain.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER DOMAIN</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER GROUP</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

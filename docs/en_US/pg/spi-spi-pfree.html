@@ -1,43 +1,244 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_pfree</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="spi-memory.html" title="39.3. Memory Management">
-<link rel="prev" href="spi-realloc.html" title="SPI_repalloc">
-<link rel="next" href="spi-spi-copytuple.html" title="SPI_copytuple">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-pfree"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_pfree &#8212; free memory in the upper executor context</p>
-</div>
-<a name="id434180"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">void SPI_pfree(void * <em class="parameter"><code>pointer</code></em>)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id434198"></a><h2>Description</h2>
-<p>   <code class="function">SPI_pfree</code> frees memory previously allocated
-   using <code class="function">SPI_palloc</code> or
-   <code class="function">SPI_repalloc</code>.
-  </p>
-<p>   This function is no longer different from plain
-   <code class="function">pfree</code>.  It's kept just for backward
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SPI_pfree</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Memory Management"
+HREF="spi-memory.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_repalloc"
+HREF="spi-realloc.html"><LINK
+REL="NEXT"
+TITLE="SPI_copytuple"
+HREF="spi-spi-copytuple.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-realloc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-realloc.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-copytuple.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-copytuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-PFREE"
+></A
+>SPI_pfree</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37650"
+></A
+><H2
+>Name</H2
+>SPI_pfree&nbsp;--&nbsp;free memory in the upper executor context</DIV
+><A
+NAME="AEN37653"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37655"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>void SPI_pfree(void * <TT
+CLASS="PARAMETER"
+>pointer</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37658"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_pfree</CODE
+> frees memory previously allocated
+   using <CODE
+CLASS="FUNCTION"
+>SPI_palloc</CODE
+> or
+   <CODE
+CLASS="FUNCTION"
+>SPI_repalloc</CODE
+>.
+  </P
+><P
+>   This function is no longer different from plain
+   <CODE
+CLASS="FUNCTION"
+>pfree</CODE
+>.  It's kept just for backward
    compatibility of existing code.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id434230"></a><h2>Arguments</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><code class="literal">void * <em class="parameter"><code>pointer</code></em></code></span></dt>
-<dd><p>      pointer to existing storage to free
-     </p></dd>
-</dl></div>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37666"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>void * <TT
+CLASS="PARAMETER"
+>pointer</TT
+></TT
+></DT
+><DD
+><P
+>      pointer to existing storage to free
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-realloc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-copytuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_repalloc</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-memory.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_copytuple</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

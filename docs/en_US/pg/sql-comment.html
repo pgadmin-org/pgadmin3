@@ -1,128 +1,633 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>COMMENT</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-cluster.html" title="CLUSTER">
-<link rel="next" href="sql-commit.html" title="COMMIT">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-comment"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>COMMENT &#8212; define or change the comment of an object</p>
-</div>
-<a name="id441834"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">COMMENT ON
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>COMMENT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CLUSTER"
+HREF="sql-cluster.html"><LINK
+REL="NEXT"
+TITLE="COMMIT"
+HREF="sql-commit.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-cluster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-cluster.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-commit.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-commit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-COMMENT"
+></A
+>COMMENT</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN40060"
+></A
+><H2
+>Name</H2
+>COMMENT&nbsp;--&nbsp;define or change the comment of an object</DIV
+><A
+NAME="AEN40063"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40065"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>COMMENT ON
 {
-  TABLE <em class="replaceable"><code>object_name</code></em> |
-  COLUMN <em class="replaceable"><code>table_name</code></em>.<em class="replaceable"><code>column_name</code></em> |
-  AGGREGATE <em class="replaceable"><code>agg_name</code></em> (<em class="replaceable"><code>agg_type</code></em>) |
-  CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="replaceable"><code>targettype</code></em>) |
-  CONSTRAINT <em class="replaceable"><code>constraint_name</code></em> ON <em class="replaceable"><code>table_name</code></em> |
-  CONVERSION <em class="replaceable"><code>object_name</code></em> |
-  DATABASE <em class="replaceable"><code>object_name</code></em> |
-  DOMAIN <em class="replaceable"><code>object_name</code></em> |
-  FUNCTION <em class="replaceable"><code>func_name</code></em> (<em class="replaceable"><code>arg1_type</code></em>, <em class="replaceable"><code>arg2_type</code></em>, ...) |
-  INDEX <em class="replaceable"><code>object_name</code></em> |
-  LARGE OBJECT <em class="replaceable"><code>large_object_oid</code></em> |
-  OPERATOR <em class="replaceable"><code>op</code></em> (<em class="replaceable"><code>leftoperand_type</code></em>, <em class="replaceable"><code>rightoperand_type</code></em>) |
-  OPERATOR CLASS <em class="replaceable"><code>object_name</code></em> USING <em class="replaceable"><code>index_method</code></em> |
-  [ PROCEDURAL ] LANGUAGE <em class="replaceable"><code>object_name</code></em> |
-  RULE <em class="replaceable"><code>rule_name</code></em> ON <em class="replaceable"><code>table_name</code></em> |
-  SCHEMA <em class="replaceable"><code>object_name</code></em> |
-  SEQUENCE <em class="replaceable"><code>object_name</code></em> |
-  TRIGGER <em class="replaceable"><code>trigger_name</code></em> ON <em class="replaceable"><code>table_name</code></em> |
-  TYPE <em class="replaceable"><code>object_name</code></em> |
-  VIEW <em class="replaceable"><code>object_name</code></em>
-} IS <em class="replaceable"><code>'text'</code></em></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id442034"></a><h2>Description</h2>
-<p>   <code class="command">COMMENT</code> stores a comment about a database object.
-  </p>
-<p>    To modify a comment, issue a new <code class="command">COMMENT</code> command for the
+  TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  COLUMN <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>column_name</I
+></TT
+> |
+  AGGREGATE <TT
+CLASS="REPLACEABLE"
+><I
+>agg_name</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>agg_type</I
+></TT
+>) |
+  CAST (<TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+>) |
+  CONSTRAINT <TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> |
+  CONVERSION <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  DOMAIN <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>func_name</I
+></TT
+> ( [ [ <TT
+CLASS="REPLACEABLE"
+><I
+>argmode</I
+></TT
+> ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>argname</I
+></TT
+> ] <TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+> [, ...] ] ) |
+  INDEX <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  LARGE OBJECT <TT
+CLASS="REPLACEABLE"
+><I
+>large_object_oid</I
+></TT
+> |
+  OPERATOR <TT
+CLASS="REPLACEABLE"
+><I
+>op</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>leftoperand_type</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>rightoperand_type</I
+></TT
+>) |
+  OPERATOR CLASS <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> USING <TT
+CLASS="REPLACEABLE"
+><I
+>index_method</I
+></TT
+> |
+  [ PROCEDURAL ] LANGUAGE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  RULE <TT
+CLASS="REPLACEABLE"
+><I
+>rule_name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> |
+  SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  SEQUENCE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  TRIGGER <TT
+CLASS="REPLACEABLE"
+><I
+>trigger_name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> |
+  TYPE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  VIEW <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+>
+} IS <TT
+CLASS="REPLACEABLE"
+><I
+>'text'</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40100"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> stores a comment about a database object.
+  </P
+><P
+>    To modify a comment, issue a new <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> command for the
     same object.  Only one comment string is stored for each object.
-    To remove a comment, write <code class="literal">NULL</code> in place of the text
+    To remove a comment, write <TT
+CLASS="LITERAL"
+>NULL</TT
+> in place of the text
     string.
     Comments are automatically dropped when the object is dropped.
-  </p>
-<p>    Comments can be
-    easily retrieved with the <span class="application">psql</span> commands
-    <code class="command">\dd</code>, <code class="command">\d+</code>, and <code class="command">\l+</code>.
+  </P
+><P
+>    Comments can be
+    easily retrieved with the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> commands
+    <TT
+CLASS="COMMAND"
+>\dd</TT
+>, <TT
+CLASS="COMMAND"
+>\d+</TT
+>, and <TT
+CLASS="COMMAND"
+>\l+</TT
+>.
     Other user interfaces to retrieve comments can be built atop
-    the same built-in functions that <span class="application">psql</span> uses, namely
-    <code class="function">obj_description</code> and <code class="function">col_description</code>
-    (see <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a>).
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id442113"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>object_name</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>table_name.column_name</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>agg_name</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>constraint_name</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>func_name</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>op</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>rule_name</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>trigger_name</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br>
-</dt>
-<dd><p>      The name of the object to be commented.  Names of tables,
+    the same built-in functions that <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> uses, namely
+    <CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+> and <CODE
+CLASS="FUNCTION"
+>col_description</CODE
+>
+    (see <A
+HREF="functions-info.html#FUNCTIONS-INFO-COMMENT-TABLE"
+>Table 9-43</A
+>).
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40116"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>table_name.column_name</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>agg_name</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>func_name</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>op</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>rule_name</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>trigger_name</I
+></TT
+></DT
+><DD
+><P
+>      The name of the object to be commented.  Names of tables,
       aggregates, domains, functions, indexes, operators, operator classes,
       sequences, types, and views may be schema-qualified.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>agg_type</code></em></span></dt>
-<dd><p>      The argument data type of the aggregate function, or
-      <code class="literal">*</code> if the function accepts any data type.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>large_object_oid</code></em></span></dt>
-<dd><p>      The OID of the large object.
-     </p></dd>
-<dt><span class="term"><code class="literal">PROCEDURAL</code></span></dt>
-<dd><p>       This is a noise word.
-      </p></dd>
-<dt><span class="term"><em class="replaceable"><code>sourcetype</code></em></span></dt>
-<dd><p>       The name of the source data type of the cast.
-      </p></dd>
-<dt><span class="term"><em class="replaceable"><code>targettype</code></em></span></dt>
-<dd><p>       The name of the target data type of the cast.
-      </p></dd>
-<dt><span class="term"><em class="replaceable"><code>text</code></em></span></dt>
-<dd><p>      The new comment, written as a string literal; or <code class="literal">NULL</code>
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>agg_type</I
+></TT
+></DT
+><DD
+><P
+>      The argument data type of the aggregate function, or
+      <TT
+CLASS="LITERAL"
+>*</TT
+> if the function accepts any data type.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+></DT
+><DD
+><P
+>       The name of the source data type of the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+></DT
+><DD
+><P
+>       The name of the target data type of the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>argmode</I
+></TT
+></DT
+><DD
+><P
+>      The mode of a function argument: either <TT
+CLASS="LITERAL"
+>IN</TT
+>, <TT
+CLASS="LITERAL"
+>OUT</TT
+>,
+      or <TT
+CLASS="LITERAL"
+>INOUT</TT
+>.  If omitted, the default is <TT
+CLASS="LITERAL"
+>IN</TT
+>.
+      Note that <TT
+CLASS="COMMAND"
+>COMMENT ON FUNCTION</TT
+> does not actually pay
+      any attention to <TT
+CLASS="LITERAL"
+>OUT</TT
+> arguments, since only the input
+      arguments are needed to determine the function's identity.
+      So it is sufficient to list the <TT
+CLASS="LITERAL"
+>IN</TT
+> and <TT
+CLASS="LITERAL"
+>INOUT</TT
+>
+      arguments.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>argname</I
+></TT
+></DT
+><DD
+><P
+>      The name of a function argument.
+      Note that <TT
+CLASS="COMMAND"
+>COMMENT ON FUNCTION</TT
+> does not actually pay
+      any attention to argument names, since only the argument data
+      types are needed to determine the function's identity.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+></DT
+><DD
+><P
+>      The data type(s) of the function's arguments (optionally 
+      schema-qualified), if any.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>large_object_oid</I
+></TT
+></DT
+><DD
+><P
+>      The OID of the large object.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>PROCEDURAL</TT
+></DT
+><DD
+><P
+>       This is a noise word.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>text</I
+></TT
+></DT
+><DD
+><P
+>      The new comment, written as a string literal; or <TT
+CLASS="LITERAL"
+>NULL</TT
+>
       to drop the comment.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id442240"></a><h2>Notes</h2>
-<p>   A comment for a database can only be created in that database,
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40194"
+></A
+><H2
+>Notes</H2
+><P
+>   A comment for a database can only be created in that database,
    and will only be visible in that database, not in other databases.
-  </p>
-<p>   There is presently no security mechanism for comments: any user
+  </P
+><P
+>   There is presently no security mechanism for comments: any user
    connected to a database can see all the comments for objects in
    that database (although only superusers can change comments for
    objects that they don't own).  Therefore, don't put
    security-critical information in comments.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id442252"></a><h2>Examples</h2>
-<p>   Attach a comment to the table <code class="literal">mytable</code>:
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40198"
+></A
+><H2
+>Examples</H2
+><P
+>   Attach a comment to the table <TT
+CLASS="LITERAL"
+>mytable</TT
+>:
 
-</p>
-<pre class="programlisting">COMMENT ON TABLE mytable IS 'This is my table.';</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>COMMENT ON TABLE mytable IS 'This is my table.';</PRE
+><P>
 
    Remove it again:
 
-</p>
-<pre class="programlisting">COMMENT ON TABLE mytable IS NULL;</pre>
-<p>
-  </p>
-<p>   Some more examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>COMMENT ON TABLE mytable IS NULL;</PRE
+><P>
+  </P
+><P
+>   Some more examples:
 
-</p>
-<pre class="programlisting">COMMENT ON AGGREGATE my_aggregate (double precision) IS 'Computes sample variance';
+</P><PRE
+CLASS="PROGRAMLISTING"
+>COMMENT ON AGGREGATE my_aggregate (double precision) IS 'Computes sample variance';
 COMMENT ON CAST (text AS int4) IS 'Allow casts from text to int4';
 COMMENT ON COLUMN my_table.my_column IS 'Employee ID number';
 COMMENT ON CONVERSION my_conv IS 'Conversion to UTF8';
@@ -133,7 +638,7 @@ COMMENT ON INDEX my_index IS 'Enforces uniqueness on employee ID';
 COMMENT ON LANGUAGE plpython IS 'Python support for stored procedures';
 COMMENT ON LARGE OBJECT 346344 IS 'Planning document';
 COMMENT ON OPERATOR ^ (text, text) IS 'Performs intersection of two texts';
-COMMENT ON OPERATOR ^ (NONE, text) IS 'This is a prefix operator on text';
+COMMENT ON OPERATOR - (NONE, text) IS 'This is a prefix operator on text';
 COMMENT ON OPERATOR CLASS int4ops USING btree IS '4 byte integer operators for btrees';
 COMMENT ON RULE my_rule ON my_table IS 'Logs updates of employee records';
 COMMENT ON SCHEMA my_schema IS 'Departmental data';
@@ -141,14 +646,86 @@ COMMENT ON SEQUENCE my_sequence IS 'Used to generate primary keys';
 COMMENT ON TABLE my_schema.my_table IS 'Employee Information';
 COMMENT ON TRIGGER my_trigger ON my_table IS 'Used for RI';
 COMMENT ON TYPE complex IS 'Complex number data type';
-COMMENT ON VIEW my_view IS 'View of departmental costs';</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id442306"></a><h2>Compatibility</h2>
-<p>   There is no <code class="command">COMMENT</code> command in the SQL standard.
-  </p>
-</div>
-</div></body>
-</html>
+COMMENT ON VIEW my_view IS 'View of departmental costs';</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40206"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> command in the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-cluster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-commit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CLUSTER</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>COMMIT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

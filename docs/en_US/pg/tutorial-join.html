@@ -1,120 +1,273 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2.6. Joins Between Tables</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="prev" href="tutorial-select.html" title="2.5. Querying a Table">
-<link rel="next" href="tutorial-agg.html" title="2.7. Aggregate Functions">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="tutorial-join"></a>2.6. Joins Between Tables</h2></div></div></div>
-<a name="id301127"></a><p>    Thus far, our queries have only accessed one table at a time.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Joins Between Tables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="tutorial-sql.html"><LINK
+REL="PREVIOUS"
+TITLE="Querying a Table"
+HREF="tutorial-select.html"><LINK
+REL="NEXT"
+TITLE="Aggregate Functions"
+HREF="tutorial-agg.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-select.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-agg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-JOIN"
+>2.6. Joins Between Tables</A
+></H1
+><A
+NAME="AEN764"
+></A
+><P
+>    Thus far, our queries have only accessed one table at a time.
     Queries can access multiple tables at once, or access the same
     table in such a way that multiple rows of the table are being
     processed at the same time.  A query that accesses multiple rows
     of the same or different tables at one time is called a
-    <em class="firstterm">join</em> query.  As an example, say you wish to
+    <I
+CLASS="FIRSTTERM"
+>join</I
+> query.  As an example, say you wish to
     list all the weather records together with the location of the
     associated city.  To do that, we need to compare the city column of
     each row of the weather table with the name column of all rows in
     the cities table, and select the pairs of rows where these values match.
-    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      This  is only a conceptual model.  The join is usually performed
+    </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      This  is only a conceptual model.  The join is usually performed
       in a more efficient manner than actually comparing each possible
       pair of rows, but this is invisible to the user.
-     </p>
-</div>
-<p>
+     </P
+></BLOCKQUOTE
+></DIV
+><P>
     This would be accomplished by the following query:
 
-</p>
-<pre class="programlisting">SELECT *
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT *
     FROM weather, cities
-    WHERE city = name;</pre>
-<p>
+    WHERE city = name;</PRE
+><P>
 
-</p>
-<pre class="screen">     city      | temp_lo | temp_hi | prcp |    date    |     name      | location
+</P><PRE
+CLASS="SCREEN"
+>     city      | temp_lo | temp_hi | prcp |    date    |     name      | location
 ---------------+---------+---------+------+------------+---------------+-----------
  San Francisco |      46 |      50 | 0.25 | 1994-11-27 | San Francisco | (-194,53)
  San Francisco |      43 |      57 |    0 | 1994-11-29 | San Francisco | (-194,53)
-(2 rows)</pre>
-<p>
+(2 rows)</PRE
+><P>
 
-   </p>
-<p>    Observe two things about the result set:
-    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       There is no result row for the city of Hayward.  This is
+   </P
+><P
+>    Observe two things about the result set:
+    <P
+></P
+></P><UL
+><LI
+><P
+>       There is no result row for the city of Hayward.  This is
        because there is no matching entry in the
-       <code class="classname">cities</code> table for Hayward, so the join
+       <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+> table for Hayward, so the join
        ignores the unmatched rows in the weather table.  We will see
        shortly how this can be fixed.
-      </p></li>
-<li>
-<p>       There are two columns containing the city name.  This is
+      </P
+></LI
+><LI
+><P
+>       There are two columns containing the city name.  This is
        correct because the lists of columns of the
-       <code class="classname">weather</code> and the
-       <code class="classname">cities</code> table are concatenated.  In
+       <CODE
+CLASS="CLASSNAME"
+>weather</CODE
+> and the
+       <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+> table are concatenated.  In
        practice this is undesirable, though, so you will probably want
        to list the output columns explicitly rather than using
-       <code class="literal">*</code>:
-</p>
-<pre class="programlisting">SELECT city, temp_lo, temp_hi, prcp, date, location
+       <TT
+CLASS="LITERAL"
+>*</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT city, temp_lo, temp_hi, prcp, date, location
     FROM weather, cities
-    WHERE city = name;</pre>
-<p>
-      </p>
-</li>
-</ul></div>
-<p>
-   </p>
-<p><b>Exercise: </b>     Attempt to find out the semantics of this query when the
-     <code class="literal">WHERE</code> clause is omitted.
-    </p>
-<p>    Since the columns all had different names, the parser
+    WHERE city = name;</PRE
+><P>
+      </P
+></LI
+></UL
+><P>
+   </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Exercise: </B
+>     Attempt to find out the semantics of this query when the
+     <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause is omitted.
+    </P
+></DIV
+><P
+>    Since the columns all had different names, the parser
     automatically found out which table they belong to, but it is good
     style to fully qualify column names in join queries:
 
-</p>
-<pre class="programlisting">SELECT weather.city, weather.temp_lo, weather.temp_hi,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT weather.city, weather.temp_lo, weather.temp_hi,
        weather.prcp, weather.date, cities.location
     FROM weather, cities
-    WHERE cities.name = weather.city;</pre>
-<p>
-   </p>
-<p>    Join queries of the kind seen thus far can also be written in this
+    WHERE cities.name = weather.city;</PRE
+><P>
+   </P
+><P
+>    Join queries of the kind seen thus far can also be written in this
     alternative form:
 
-</p>
-<pre class="programlisting">SELECT *
-    FROM weather INNER JOIN cities ON (weather.city = cities.name);</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT *
+    FROM weather INNER JOIN cities ON (weather.city = cities.name);</PRE
+><P>
 
     This syntax is not as commonly used as the one above, but we show
     it here to help you understand the following topics.
-   </p>
-<p>    <a name="id301245"></a>
+   </P
+><P
+>    <A
+NAME="AEN792"
+></A
+>
 
     Now we will figure out how we can get the Hayward records back in.
     What we want the query to do is to scan the
-    <code class="classname">weather</code> table and for each row to find the
-    matching <code class="classname">cities</code> row.  If no matching row is
-    found we want some &#8220;<span class="quote">empty values</span>&#8221; to be substituted
-    for the <code class="classname">cities</code> table's columns.  This kind
-    of query is called an <em class="firstterm">outer join</em>.  (The
+    <CODE
+CLASS="CLASSNAME"
+>weather</CODE
+> table and for each row to find the
+    matching <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+> row.  If no matching row is
+    found we want some <SPAN
+CLASS="QUOTE"
+>"empty values"</SPAN
+> to be substituted
+    for the <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+> table's columns.  This kind
+    of query is called an <I
+CLASS="FIRSTTERM"
+>outer join</I
+>.  (The
     joins we have seen so far are inner joins.)  The command looks
     like this:
 
-</p>
-<pre class="programlisting">SELECT *
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT *
     FROM weather LEFT OUTER JOIN cities ON (weather.city = cities.name);
 
      city      | temp_lo | temp_hi | prcp |    date    |     name      | location
@@ -122,36 +275,74 @@
  Hayward       |      37 |      54 |      | 1994-11-29 |               |
  San Francisco |      46 |      50 | 0.25 | 1994-11-27 | San Francisco | (-194,53)
  San Francisco |      43 |      57 |    0 | 1994-11-29 | San Francisco | (-194,53)
-(3 rows)</pre>
-<p>
+(3 rows)</PRE
+><P>
 
-    This query is called a <em class="firstterm">left outer
-    join</em> because the table mentioned on the left of the
+    This query is called a <I
+CLASS="FIRSTTERM"
+>left outer
+    join</I
+> because the table mentioned on the left of the
     join operator will have each of its rows in the output at least
     once, whereas the table on the right will only have those rows
     output that match some row of the left table.  When outputting a
     left-table row for which there is no right-table match, empty (null)
     values are substituted for the right-table columns.
-   </p>
-<p><b>Exercise: </b>     There are also right outer joins and full outer joins.  Try to
+   </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Exercise: </B
+>     There are also right outer joins and full outer joins.  Try to
      find out what those do.
-    </p>
-<p>    <a name="id301301"></a>
-    <a name="id301310"></a>
+    </P
+></DIV
+><P
+>    <A
+NAME="AEN806"
+></A
+>
+    <A
+NAME="AEN809"
+></A
+>
 
     We can also join a table against itself.  This is called a
-    <em class="firstterm">self join</em>.  As an example, suppose we wish
+    <I
+CLASS="FIRSTTERM"
+>self join</I
+>.  As an example, suppose we wish
     to find all the weather records that are in the temperature range
     of other weather records.  So we need to compare the
-    <code class="structfield">temp_lo</code> and <code class="structfield">temp_hi</code> columns of
-    each <code class="classname">weather</code> row to the
-    <code class="structfield">temp_lo</code> and
-    <code class="structfield">temp_hi</code> columns of all other
-    <code class="classname">weather</code> rows.  We can do this with the
+    <TT
+CLASS="STRUCTFIELD"
+>temp_lo</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>temp_hi</TT
+> columns of
+    each <CODE
+CLASS="CLASSNAME"
+>weather</CODE
+> row to the
+    <TT
+CLASS="STRUCTFIELD"
+>temp_lo</TT
+> and
+    <TT
+CLASS="STRUCTFIELD"
+>temp_hi</TT
+> columns of all other
+    <CODE
+CLASS="CLASSNAME"
+>weather</CODE
+> rows.  We can do this with the
     following query:
 
-</p>
-<pre class="programlisting">SELECT W1.city, W1.temp_lo AS low, W1.temp_hi AS high,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT W1.city, W1.temp_lo AS low, W1.temp_hi AS high,
     W2.city, W2.temp_lo AS low, W2.temp_hi AS high
     FROM weather W1, weather W2
     WHERE W1.temp_lo &lt; W2.temp_lo
@@ -161,19 +352,90 @@
 ---------------+-----+------+---------------+-----+------
  San Francisco |  43 |   57 | San Francisco |  46 |   50
  Hayward       |  37 |   54 | San Francisco |  46 |   50
-(2 rows)</pre>
-<p>     
+(2 rows)</PRE
+><P>     
 
-    Here we have relabeled the weather table as <code class="literal">W1</code> and
-    <code class="literal">W2</code> to be able to distinguish the left and right side
+    Here we have relabeled the weather table as <TT
+CLASS="LITERAL"
+>W1</TT
+> and
+    <TT
+CLASS="LITERAL"
+>W2</TT
+> to be able to distinguish the left and right side
     of the join.  You can also use these kinds of aliases in other
     queries to save some typing, e.g.:
-</p>
-<pre class="programlisting">SELECT *
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT *
     FROM weather w, cities c
-    WHERE w.city = c.name;</pre>
-<p>
+    WHERE w.city = c.name;</PRE
+><P>
     You will encounter this style of abbreviating quite frequently.
-   </p>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-select.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-agg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Querying a Table</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Aggregate Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

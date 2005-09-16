@@ -1,60 +1,327 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER OPERATOR CLASS</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-alteroperator.html" title="ALTER OPERATOR">
-<link rel="next" href="sql-alterschema.html" title="ALTER SCHEMA">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alteropclass"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ALTER OPERATOR CLASS &#8212; change the definition of an operator class</p>
-</div>
-<a name="id437616"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER OPERATOR CLASS <em class="replaceable"><code>name</code></em> USING <em class="replaceable"><code>index_method</code></em> RENAME TO <em class="replaceable"><code>newname</code></em>
-ALTER OPERATOR CLASS <em class="replaceable"><code>name</code></em> USING <em class="replaceable"><code>index_method</code></em> OWNER TO <em class="replaceable"><code>newowner</code></em></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437658"></a><h2>Description</h2>
-<p>   <code class="command">ALTER OPERATOR CLASS</code> changes the definition of
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER OPERATOR CLASS</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER OPERATOR"
+HREF="sql-alteroperator.html"><LINK
+REL="NEXT"
+TITLE="ALTER ROLE"
+HREF="sql-alterrole.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteroperator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteroperator.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterrole.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterrole.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTEROPCLASS"
+></A
+>ALTER OPERATOR CLASS</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38789"
+></A
+><H2
+>Name</H2
+>ALTER OPERATOR CLASS&nbsp;--&nbsp;change the definition of an operator class</DIV
+><A
+NAME="AEN38792"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38794"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER OPERATOR CLASS <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> USING <TT
+CLASS="REPLACEABLE"
+><I
+>index_method</I
+></TT
+> RENAME TO <TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+>
+ALTER OPERATOR CLASS <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> USING <TT
+CLASS="REPLACEABLE"
+><I
+>index_method</I
+></TT
+> OWNER TO <TT
+CLASS="REPLACEABLE"
+><I
+>newowner</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38802"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER OPERATOR CLASS</TT
+> changes the definition of
    an operator class.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437670"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing operator
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38806"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing operator
       class.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>index_method</code></em></span></dt>
-<dd><p>      The name of the index method this operator class is for.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
-<dd><p>      The new name of the operator class.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>newowner</code></em></span></dt>
-<dd><p>      The new owner of the operator class.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>index_method</I
+></TT
+></DT
+><DD
+><P
+>      The name of the index method this operator class is for.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+></DT
+><DD
+><P
+>      The new name of the operator class.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>newowner</I
+></TT
+></DT
+><DD
+><P
+>      The new owner of the operator class.
       You must be a superuser to change the owner of an operator class.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437718"></a><h2>Compatibility</h2>
-<p>   There is no <code class="command">ALTER OPERATOR CLASS</code> statement in
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38829"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>ALTER OPERATOR CLASS</TT
+> statement in
    the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437730"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createopclass.html">CREATE OPERATOR CLASS</a>, <a href="sql-dropopclass.html">DROP OPERATOR CLASS</a>, </span>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38833"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createopclass.html"
+><I
+>CREATE OPERATOR CLASS</I
+></A
+>, <A
+HREF="sql-dropopclass.html"
+><I
+>DROP OPERATOR CLASS</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteroperator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterrole.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER OPERATOR</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER ROLE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

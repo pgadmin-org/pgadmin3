@@ -1,54 +1,248 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>8.2. Monetary Types</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="prev" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="next" href="datatype-character.html" title="8.3. Character Types">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="datatype-money"></a>8.2. Monetary Types</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     The <code class="type">money</code> type is deprecated. Use
-     <code class="type">numeric</code> or <code class="type">decimal</code> instead, in
-     combination with the <code class="function">to_char</code> function.
-    </p>
-</div>
-<p>    The <code class="type">money</code> type stores a currency amount with a fixed
-    fractional precision; see <a href="datatype-money.html#datatype-money-table" title="Table 8.3. Monetary Types">Table 8.3, &#8220;Monetary Types&#8221;</a>.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Monetary Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="NEXT"
+TITLE="Character Types"
+HREF="datatype-character.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-character.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-MONEY"
+>8.2. Monetary Types</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The <TT
+CLASS="TYPE"
+>money</TT
+> type is deprecated. Use
+     <TT
+CLASS="TYPE"
+>numeric</TT
+> or <TT
+CLASS="TYPE"
+>decimal</TT
+> instead, in
+     combination with the <CODE
+CLASS="FUNCTION"
+>to_char</CODE
+> function.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    The <TT
+CLASS="TYPE"
+>money</TT
+> type stores a currency amount with a fixed
+    fractional precision; see <A
+HREF="datatype-money.html#DATATYPE-MONEY-TABLE"
+>Table 8-3</A
+>.
     Input is accepted in a variety of formats, including integer and
-    floating-point literals, as well as &#8220;<span class="quote">typical</span>&#8221;
-    currency formatting, such as <code class="literal">'$1,000.00'</code>.
+    floating-point literals, as well as <SPAN
+CLASS="QUOTE"
+>"typical"</SPAN
+>
+    currency formatting, such as <TT
+CLASS="LITERAL"
+>'$1,000.00'</TT
+>.
     Output is generally in the latter form but depends on the locale.
-   </p>
-<div class="table">
-<a name="datatype-money-table"></a><p class="title"><b>Table 8.3. Monetary Types</b></p>
-<table summary="Monetary Types" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Storage Size</th>
-<th>Description</th>
-<th>Range</th>
-</tr></thead>
-<tbody><tr>
-<td>money</td>
-<td>4 bytes</td>
-<td>currency amount</td>
-<td>-21474836.48 to +21474836.47</td>
-</tr></tbody>
-</table>
-</div>
-</div></body>
-</html>
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-MONEY-TABLE"
+></A
+><P
+><B
+>Table 8-3. Monetary Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Storage Size</TH
+><TH
+>Description</TH
+><TH
+>Range</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>money</TD
+><TD
+>4 bytes</TD
+><TD
+>currency amount</TD
+><TD
+>-21474836.48 to +21474836.47</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-character.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Data Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Character Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

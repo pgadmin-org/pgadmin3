@@ -1,56 +1,302 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>50.3. Structure of the Bootstrap BKI File</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="bki.html" title="Chapter 50. BKI Backend Interface">
-<link rel="prev" href="bki-commands.html" title="50.2. BKI Commands">
-<link rel="next" href="bki-example.html" title="50.4. Example">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="bki-structure"></a>50.3. Structure of the Bootstrap <span class="acronym">BKI</span> File</h2></div></div></div>
-<p>   The <code class="literal">open</code> command cannot be used until the tables it uses
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Structure of the Bootstrap BKI File</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="BKI Backend Interface"
+HREF="bki.html"><LINK
+REL="PREVIOUS"
+TITLE="BKI Commands"
+HREF="bki-commands.html"><LINK
+REL="NEXT"
+TITLE="Example"
+HREF="bki-example.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="bki-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="bki.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 51. <ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> Backend Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="bki.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="bki-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="BKI-STRUCTURE"
+>51.3. Structure of the Bootstrap <ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> File</A
+></H1
+><P
+>   The <TT
+CLASS="LITERAL"
+>open</TT
+> command cannot be used until the tables it uses
    exist and have entries for the table that is to be opened.
-   (These minimum tables are <code class="structname">pg_class</code>,
-   <code class="structname">pg_attribute</code>, <code class="structname">pg_proc</code>, and
-   <code class="structname">pg_type</code>.)   To allow those tables themselves to be filled,
-   <code class="literal">create</code> with the <code class="literal">bootstrap</code> option implicitly opens
+   (These minimum tables are <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+>,
+   <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+>, <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+>, and
+   <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+>.)   To allow those tables themselves to be filled,
+   <TT
+CLASS="LITERAL"
+>create</TT
+> with the <TT
+CLASS="LITERAL"
+>bootstrap</TT
+> option implicitly opens
    the created table for data insertion.
-  </p>
-<p>   Thus, the structure of the <code class="filename">postgres.bki</code> file has to
+  </P
+><P
+>   Thus, the structure of the <TT
+CLASS="FILENAME"
+>postgres.bki</TT
+> file has to
    be:
-   </p>
-<div class="orderedlist"><ol type="1">
-<li><p>      <code class="literal">create bootstrap</code> one of the critical tables
-     </p></li>
-<li><p>      <code class="literal">insert</code> data describing at least the critical tables
-     </p></li>
-<li><p>      <code class="literal">close</code>
-     </p></li>
-<li><p>      Repeat for the other critical tables.
-     </p></li>
-<li><p>      <code class="literal">create</code> (without <code class="literal">bootstrap</code>) a noncritical table
-     </p></li>
-<li><p>      <code class="literal">open</code>
-     </p></li>
-<li><p>      <code class="literal">insert</code> desired data
-     </p></li>
-<li><p>      <code class="literal">close</code>
-     </p></li>
-<li><p>      Repeat for the other noncritical tables.
-     </p></li>
-<li><p>      Define indexes.
-     </p></li>
-<li><p>      <code class="literal">build indices</code>
-     </p></li>
-</ol></div>
-<p>
-  </p>
-<p>   There are doubtless other, undocumented ordering dependencies.
-  </p>
-</div></body>
-</html>
+   <P
+></P
+></P><OL
+TYPE="1"
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>create bootstrap</TT
+> one of the critical tables
+     </P
+></LI
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>insert</TT
+> data describing at least the critical tables
+     </P
+></LI
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>close</TT
+>
+     </P
+></LI
+><LI
+><P
+>      Repeat for the other critical tables.
+     </P
+></LI
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>create</TT
+> (without <TT
+CLASS="LITERAL"
+>bootstrap</TT
+>) a noncritical table
+     </P
+></LI
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>open</TT
+>
+     </P
+></LI
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>insert</TT
+> desired data
+     </P
+></LI
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>close</TT
+>
+     </P
+></LI
+><LI
+><P
+>      Repeat for the other noncritical tables.
+     </P
+></LI
+><LI
+><P
+>      Define indexes.
+     </P
+></LI
+><LI
+><P
+>      <TT
+CLASS="LITERAL"
+>build indices</TT
+>
+     </P
+></LI
+></OL
+><P>
+  </P
+><P
+>   There are doubtless other, undocumented ordering dependencies.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="bki-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="bki-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> Commands</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="bki.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Example</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

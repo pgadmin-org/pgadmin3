@@ -1,31 +1,145 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.55. Release 6.1</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-1-1.html" title="E.54. Release 6.1.1">
-<link rel="next" href="release-6-0.html" title="E.56. Release 6.0">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-6-1"></a>E.55. Release 6.1</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Release date</h3>
-<p>1997-06-08</p>
-</div>
-<p>  The regression tests have been adapted and extensively modified for the
-  6.1 release of <span class="productname">PostgreSQL</span>.</p>
-<p>  Three new data types (<code class="type">datetime</code>, <code class="type">timespan</code>, and <code class="type">circle</code>) have been added to
-  the native set of <span class="productname">PostgreSQL</span> types. Points, boxes, paths, and polygons
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Release 6.1</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 6.1.1"
+HREF="release-6-1-1.html"><LINK
+REL="NEXT"
+TITLE="Release 6.0"
+HREF="release-6-0.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-6-1-1.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-6-0.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-6-1"
+>E.56. Release 6.1</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>1997-06-08</P
+></BLOCKQUOTE
+></DIV
+><P
+>  The regression tests have been adapted and extensively modified for the
+  6.1 release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.</P
+><P
+>  Three new data types (<TT
+CLASS="TYPE"
+>datetime</TT
+>, <TT
+CLASS="TYPE"
+>timespan</TT
+>, and <TT
+CLASS="TYPE"
+>circle</TT
+>) have been added to
+  the native set of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> types. Points, boxes, paths, and polygons
   have had their output formats made consistent across the data types.
   The polygon output in misc.out has only been spot-checked for correctness
-  relative to the original regression output.</p>
-<p>  <span class="productname">PostgreSQL</span> 6.1 introduces a new, alternate
-optimizer which uses <em class="firstterm">genetic</em>
+  relative to the original regression output.</P
+><P
+>  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.1 introduces a new, alternate
+optimizer which uses <I
+CLASS="FIRSTTERM"
+>genetic</I
+>
   algorithms. These algorithms introduce a random behavior in the ordering
   of query results when the query contains multiple qualifiers or multiple
   tables (giving the optimizer a choice on order of evaluation). Several
@@ -33,32 +147,79 @@ optimizer which uses <em class="firstterm">genetic</em>
   hence are insensitive to optimizer choices. A few regression tests are
   for data types which are inherently unordered (e.g. points and time
   intervals) and tests involving those types are explicitly bracketed with
-  <code class="command">set geqo to 'off'</code> and <code class="command">reset geqo</code>.</p>
-<p>  The interpretation of array specifiers (the curly braces around atomic
+  <TT
+CLASS="COMMAND"
+>set geqo to 'off'</TT
+> and <TT
+CLASS="COMMAND"
+>reset geqo</TT
+>.</P
+><P
+>  The interpretation of array specifiers (the curly braces around atomic
   values) appears to have changed sometime after the original regression
-  tests were generated. The current <code class="filename">./expected/*.out</code> files reflect this
-  new interpretation, which may not be correct!</p>
-<p>  The float8 regression test fails on at least some platforms. This is due
-  to differences in implementations of <code class="function">pow()</code> and <code class="function">exp()</code> and the signaling
-  mechanisms used for overflow and underflow conditions.</p>
-<p>  The &#8220;<span class="quote">random</span>&#8221; results in the random test should cause the
-  &#8220;<span class="quote">random</span>&#8221; test to be &#8220;<span class="quote">failed</span>&#8221;, since the
+  tests were generated. The current <TT
+CLASS="FILENAME"
+>./expected/*.out</TT
+> files reflect this
+  new interpretation, which may not be correct!</P
+><P
+>  The float8 regression test fails on at least some platforms. This is due
+  to differences in implementations of <CODE
+CLASS="FUNCTION"
+>pow()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>exp()</CODE
+> and the signaling
+  mechanisms used for overflow and underflow conditions.</P
+><P
+>  The <SPAN
+CLASS="QUOTE"
+>"random"</SPAN
+> results in the random test should cause the
+  <SPAN
+CLASS="QUOTE"
+>"random"</SPAN
+> test to be <SPAN
+CLASS="QUOTE"
+>"failed"</SPAN
+>, since the
   regression tests are evaluated using a simple diff. However,
-  &#8220;<span class="quote">random</span>&#8221; does not seem to produce random results on my test
-  machine (Linux/<span class="application">gcc</span>/i686).</p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id548637"></a>E.55.1. Migration to version 6.1</h3></div></div></div>
-<p>This migration requires a complete dump of the 6.0 database and a
-restore of the database in 6.1.</p>
-<p>Those migrating from earlier 1.* releases should first upgrade to 1.09
-because the COPY output format was improved from the 1.02 release.</p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id548647"></a>E.55.2. Changes</h3></div></div></div>
-<p>     </p>
-<pre class="programlisting">Bug Fixes
+  <SPAN
+CLASS="QUOTE"
+>"random"</SPAN
+> does not seem to produce random results on my test
+  machine (Linux/<SPAN
+CLASS="APPLICATION"
+>gcc</SPAN
+>/i686).</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN78375"
+>E.56.1. Migration to version 6.1</A
+></H2
+><P
+>This migration requires a complete dump of the 6.0 database and a
+restore of the database in 6.1.</P
+><P
+>Those migrating from earlier 1.* releases should first upgrade to 1.09
+because the COPY output format was improved from the 1.02 release.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN78379"
+>E.56.2. Changes</A
+></H2
+><P
+>     </P><PRE
+CLASS="PROGRAMLISTING"
+>Bug Fixes
 ---------
 packet length checking in library routines
 lock manager priority patch
@@ -151,7 +312,72 @@ now works with eBones, international Kerberos(Jun)
 more shared library support
 c++ include file cleanup(Bruce)
 warn about buggy flex(Bruce)
-DG/UX, Ultrix, IRIX, AIX portability fixes</pre>
-</div>
-</div></body>
-</html>
+DG/UX, Ultrix, IRIX, AIX portability fixes</PRE
+><P></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-6-1-1.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-6-0.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 6.1.1</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 6.0</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

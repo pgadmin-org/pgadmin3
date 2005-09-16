@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_pltemplate</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_operator"
+HREF="catalog-pg-operator.html"><LINK
+REL="NEXT"
+TITLE="pg_proc"
+HREF="catalog-pg-proc.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-operator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-proc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-PLTEMPLATE"
+>42.26. <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+></A
+></H1
+><A
+NAME="AEN57423"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+> stores
+   <SPAN
+CLASS="QUOTE"
+>"template"</SPAN
+> information for procedural languages.
+   A template for a language allows the language to be created in a
+   particular database by a simple <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+> command,
+   with no need to specify implementation details.
+  </P
+><P
+>   Unlike most system catalogs, <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+>
+   is shared across all databases of a cluster: there is only one
+   copy of <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+> per cluster, not
+   one per database.  This allows the information to be accessible in
+   each database as it is needed.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN57432"
+></A
+><P
+><B
+>Table 42-26. <TT
+CLASS="STRUCTNAME"
+>pg_pltemplate</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tmplname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Name of the language this template is for</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tmpltrusted</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>True if language is considered trusted</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tmplhandler</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Name of call handler function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tmplvalidator</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Name of validator function, or NULL if none</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tmpllibrary</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Path of shared library that implements language</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>tmplacl</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>aclitem[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Access privileges for template (not yet used)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   There are not currently any commands that manipulate procedural language
+   templates; to change the built-in information, a superuser must modify
+   the table using ordinary INSERT, DELETE, or UPDATE commands.  It is
+   likely that a future release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   will offer commands to change the entries in a cleaner fashion.
+  </P
+><P
+>   When implemented, the <TT
+CLASS="STRUCTFIELD"
+>tmplacl</TT
+> field will provide
+   access control for the template itself (i.e., the right to create a
+   language using it), not for the languages created from the template.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-operator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-proc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

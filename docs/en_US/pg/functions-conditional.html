@@ -1,57 +1,240 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.13. Conditional Expressions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="prev" href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">
-<link rel="next" href="functions-array.html" title="9.14. Array Functions and Operators">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-conditional"></a>9.13. Conditional Expressions</h2></div></div></div>
-<a name="id340424"></a><a name="id340429"></a><p>   This section describes the <span class="acronym">SQL</span>-compliant conditional expressions
-   available in <span class="productname">PostgreSQL</span>.
-  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>    If your needs go beyond the capabilities of these conditional
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Conditional Expressions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Sequence Manipulation Functions"
+HREF="functions-sequence.html"><LINK
+REL="NEXT"
+TITLE="Array Functions and Operators"
+HREF="functions-array.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-sequence.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-array.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-CONDITIONAL"
+>9.13. Conditional Expressions</A
+></H1
+><A
+NAME="AEN12337"
+></A
+><A
+NAME="AEN12339"
+></A
+><P
+>   This section describes the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>-compliant conditional expressions
+   available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    If your needs go beyond the capabilities of these conditional
     expressions you might want to consider writing a stored procedure
     in a more expressive programming language.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id340452"></a>9.13.1. <code class="literal">CASE</code></h3></div></div></div>
-<p>   The <span class="acronym">SQL</span> <code class="token">CASE</code> expression is a
+   </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12346"
+>9.13.1. <TT
+CLASS="LITERAL"
+>CASE</TT
+></A
+></H2
+><P
+>   The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression is a
    generic conditional expression, similar to if/else statements in
    other languages:
 
-</p>
-<pre class="synopsis">CASE WHEN <em class="replaceable"><code>condition</code></em> THEN <em class="replaceable"><code>result</code></em>
-     [<span class="optional">WHEN ...</span>]
-     [<span class="optional">ELSE <em class="replaceable"><code>result</code></em></span>]
-END</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>CASE WHEN <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> THEN <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+>
+     [<SPAN
+CLASS="OPTIONAL"
+>WHEN ...</SPAN
+>]
+     [<SPAN
+CLASS="OPTIONAL"
+>ELSE <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+></SPAN
+>]
+END</PRE
+><P>
 
-   <code class="token">CASE</code> clauses can be used wherever
-   an expression is valid.  <em class="replaceable"><code>condition</code></em> is an
-   expression that returns a <code class="type">boolean</code> result.  If the result is true
-   then the value of the <code class="token">CASE</code> expression is the
-   <em class="replaceable"><code>result</code></em> that follows the condition.  If the result is false any
-   subsequent <code class="token">WHEN</code> clauses are searched in the same
-   manner.  If no <code class="token">WHEN</code>
-   <em class="replaceable"><code>condition</code></em> is true then the value of the
-   case expression is the <em class="replaceable"><code>result</code></em> in the
-   <code class="token">ELSE</code> clause.  If the <code class="token">ELSE</code> clause is
+   <TT
+CLASS="TOKEN"
+>CASE</TT
+> clauses can be used wherever
+   an expression is valid.  <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> is an
+   expression that returns a <TT
+CLASS="TYPE"
+>boolean</TT
+> result.  If the result is true
+   then the value of the <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression is the
+   <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+> that follows the condition.  If the result is false any
+   subsequent <TT
+CLASS="TOKEN"
+>WHEN</TT
+> clauses are searched in the same
+   manner.  If no <TT
+CLASS="TOKEN"
+>WHEN</TT
+>
+   <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> is true then the value of the
+   case expression is the <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+> in the
+   <TT
+CLASS="TOKEN"
+>ELSE</TT
+> clause.  If the <TT
+CLASS="TOKEN"
+>ELSE</TT
+> clause is
    omitted and no condition matches, the result is null.
-  </p>
-<p>    An example:
-</p>
-<pre class="screen">SELECT * FROM test;
+  </P
+><P
+>    An example:
+</P><PRE
+CLASS="SCREEN"
+>SELECT * FROM test;
 
  a
 ---
@@ -71,36 +254,108 @@ SELECT a,
 ---+-------
  1 | one
  2 | two
- 3 | other</pre>
-<p>
-   </p>
-<p>   The data types of all the <em class="replaceable"><code>result</code></em>
+ 3 | other</PRE
+><P>
+   </P
+><P
+>   The data types of all the <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+>
    expressions must be convertible to a single output type.
-   See <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> Constructs&#8221;</a> for more detail.
-  </p>
-<p>   The following &#8220;<span class="quote">simple</span>&#8221; <code class="token">CASE</code> expression is a
+   See <A
+HREF="typeconv-union-case.html"
+>Section 10.5</A
+> for more detail.
+  </P
+><P
+>   The following <SPAN
+CLASS="QUOTE"
+>"simple"</SPAN
+> <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression is a
    specialized variant of the general form above:
 
-</p>
-<pre class="synopsis">CASE <em class="replaceable"><code>expression</code></em>
-    WHEN <em class="replaceable"><code>value</code></em> THEN <em class="replaceable"><code>result</code></em>
-    [<span class="optional">WHEN ...</span>]
-    [<span class="optional">ELSE <em class="replaceable"><code>result</code></em></span>]
-END</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+>CASE <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>
+    WHEN <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> THEN <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+>
+    [<SPAN
+CLASS="OPTIONAL"
+>WHEN ...</SPAN
+>]
+    [<SPAN
+CLASS="OPTIONAL"
+>ELSE <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+></SPAN
+>]
+END</PRE
+><P>
 
    The
-   <em class="replaceable"><code>expression</code></em> is computed and compared to
-   all the <em class="replaceable"><code>value</code></em> specifications in the
-   <code class="token">WHEN</code> clauses until one is found that is equal.  If
-   no match is found, the <em class="replaceable"><code>result</code></em> in the
-   <code class="token">ELSE</code> clause (or a null value) is returned.  This is similar
-   to the <code class="function">switch</code> statement in C.
-  </p>
-<p>    The example above can be written using the simple
-    <code class="token">CASE</code> syntax:
-</p>
-<pre class="screen">SELECT a,
+   <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> is computed and compared to
+   all the <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> specifications in the
+   <TT
+CLASS="TOKEN"
+>WHEN</TT
+> clauses until one is found that is equal.  If
+   no match is found, the <TT
+CLASS="REPLACEABLE"
+><I
+>result</I
+></TT
+> in the
+   <TT
+CLASS="TOKEN"
+>ELSE</TT
+> clause (or a null value) is returned.  This is similar
+   to the <CODE
+CLASS="FUNCTION"
+>switch</CODE
+> statement in C.
+  </P
+><P
+>    The example above can be written using the simple
+    <TT
+CLASS="TOKEN"
+>CASE</TT
+> syntax:
+</P><PRE
+CLASS="SCREEN"
+>SELECT a,
        CASE a WHEN 1 THEN 'one'
               WHEN 2 THEN 'two'
               ELSE 'other'
@@ -111,50 +366,281 @@ END</pre>
 ---+-------
  1 | one
  2 | two
- 3 | other</pre>
-<p>
-   </p>
-<p>    A <code class="token">CASE</code> expression does not evaluate any subexpressions
+ 3 | other</PRE
+><P>
+   </P
+><P
+>    A <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression does not evaluate any subexpressions
     that are not needed to determine the result.  For example, this is a
     possible way of avoiding a division-by-zero failure:
-</p>
-<pre class="programlisting">SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</pre>
-<p>
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id340648"></a>9.13.2. <code class="literal">COALESCE</code></h3></div></div></div>
-<a name="id340654"></a><pre class="synopsis"><code class="function">COALESCE</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
-<p>   The <code class="function">COALESCE</code> function returns the first of its
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12396"
+>9.13.2. <TT
+CLASS="LITERAL"
+>COALESCE</TT
+></A
+></H2
+><A
+NAME="AEN12399"
+></A
+><PRE
+CLASS="SYNOPSIS"
+><CODE
+CLASS="FUNCTION"
+>COALESCE</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>])</PRE
+><P
+>   The <CODE
+CLASS="FUNCTION"
+>COALESCE</CODE
+> function returns the first of its
    arguments that is not null.  Null is returned only if all arguments
    are null.  This is often useful to substitute a
    default value for null values when data is retrieved for display,
    for example:
-</p>
-<pre class="programlisting">SELECT COALESCE(description, short_description, '(none)') ...</pre>
-<p>
-  </p>
-<p>    Like a <code class="token">CASE</code> expression, <code class="function">COALESCE</code> will
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT COALESCE(description, short_description, '(none)') ...</PRE
+><P>
+  </P
+><P
+>    Like a <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression, <CODE
+CLASS="FUNCTION"
+>COALESCE</CODE
+> will
     not evaluate arguments that are not needed to determine the result;
     that is, arguments to the right of the first non-null argument are
     not evaluated.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id340706"></a>9.13.3. <code class="literal">NULLIF</code></h3></div></div></div>
-<a name="id340713"></a><pre class="synopsis"><code class="function">NULLIF</code>(<em class="replaceable"><code>value1</code></em>, <em class="replaceable"><code>value2</code></em>)</pre>
-<p>   The <code class="function">NULLIF</code> function returns a null value if and only
-   if <em class="replaceable"><code>value1</code></em> and
-   <em class="replaceable"><code>value2</code></em> are equal.  Otherwise it returns
-   <em class="replaceable"><code>value1</code></em>.  This can be used to perform the
-   inverse operation of the <code class="function">COALESCE</code> example
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12411"
+>9.13.3. <TT
+CLASS="LITERAL"
+>NULLIF</TT
+></A
+></H2
+><A
+NAME="AEN12414"
+></A
+><PRE
+CLASS="SYNOPSIS"
+><CODE
+CLASS="FUNCTION"
+>NULLIF</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>value1</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>value2</I
+></TT
+>)</PRE
+><P
+>   The <CODE
+CLASS="FUNCTION"
+>NULLIF</CODE
+> function returns a null value if and only
+   if <TT
+CLASS="REPLACEABLE"
+><I
+>value1</I
+></TT
+> and
+   <TT
+CLASS="REPLACEABLE"
+><I
+>value2</I
+></TT
+> are equal.  Otherwise it returns
+   <TT
+CLASS="REPLACEABLE"
+><I
+>value1</I
+></TT
+>.  This can be used to perform the
+   inverse operation of the <CODE
+CLASS="FUNCTION"
+>COALESCE</CODE
+> example
    given above:
-</p>
-<pre class="programlisting">SELECT NULLIF(value, '(none)') ...</pre>
-<p>
-  </p>
-</div>
-</div></body>
-</html>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT NULLIF(value, '(none)') ...</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN12427"
+>9.13.4. <TT
+CLASS="LITERAL"
+>GREATEST</TT
+> and <TT
+CLASS="LITERAL"
+>LEAST</TT
+></A
+></H2
+><A
+NAME="AEN12431"
+></A
+><A
+NAME="AEN12433"
+></A
+><PRE
+CLASS="SYNOPSIS"
+><CODE
+CLASS="FUNCTION"
+>GREATEST</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>])</PRE
+><PRE
+CLASS="SYNOPSIS"
+><CODE
+CLASS="FUNCTION"
+>LEAST</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>])</PRE
+><P
+>    The <CODE
+CLASS="FUNCTION"
+>GREATEST</CODE
+> and <CODE
+CLASS="FUNCTION"
+>LEAST</CODE
+> functions select the
+    largest or smallest value from a list of any number of expressions.
+    The expressions must all be convertible to a common data type, which
+    will be the type of the result
+    (see <A
+HREF="typeconv-union-case.html"
+>Section 10.5</A
+> for details).  NULL values
+    in the list are ignored.  The result will be NULL only if all the
+    expressions evaluate to NULL.
+   </P
+><P
+>    Note that <CODE
+CLASS="FUNCTION"
+>GREATEST</CODE
+> and <CODE
+CLASS="FUNCTION"
+>LEAST</CODE
+> are not in
+    the SQL standard, but are a common extension.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-sequence.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-array.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Sequence Manipulation Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Array Functions and Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

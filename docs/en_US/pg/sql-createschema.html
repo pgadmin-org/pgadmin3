@@ -1,137 +1,479 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CREATE SCHEMA</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-createrule.html" title="CREATE RULE">
-<link rel="next" href="sql-createsequence.html" title="CREATE SEQUENCE">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-createschema"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>CREATE SCHEMA &#8212; define a new schema</p>
-</div>
-<a name="id450034"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">CREATE SCHEMA <em class="replaceable"><code>schemaname</code></em> [ AUTHORIZATION <em class="replaceable"><code>username</code></em> ] [ <em class="replaceable"><code>schema_element</code></em> [ ... ] ]
-CREATE SCHEMA AUTHORIZATION <em class="replaceable"><code>username</code></em> [ <em class="replaceable"><code>schema_element</code></em> [ ... ] ]</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id450078"></a><h2>Description</h2>
-<p>   <code class="command">CREATE SCHEMA</code> enters a new schema
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE SCHEMA</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE RULE"
+HREF="sql-createrule.html"><LINK
+REL="NEXT"
+TITLE="CREATE SEQUENCE"
+HREF="sql-createsequence.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createrule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createrule.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createsequence.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createsequence.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATESCHEMA"
+></A
+>CREATE SCHEMA</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42537"
+></A
+><H2
+>Name</H2
+>CREATE SCHEMA&nbsp;--&nbsp;define a new schema</DIV
+><A
+NAME="AEN42540"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42542"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>schemaname</I
+></TT
+> [ AUTHORIZATION <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>schema_element</I
+></TT
+> [ ... ] ]
+CREATE SCHEMA AUTHORIZATION <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>schema_element</I
+></TT
+> [ ... ] ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42549"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE SCHEMA</TT
+> enters a new schema
    into the current database.
    The schema name must be distinct from the name of any existing schema
    in the current database.
-  </p>
-<p>   A schema is essentially a namespace:
+  </P
+><P
+>   A schema is essentially a namespace:
    it contains named objects (tables, data types, functions, and operators)
    whose names may duplicate those of other objects existing in other
-   schemas.  Named objects are accessed either by &#8220;<span class="quote">qualifying</span>&#8221;
+   schemas.  Named objects are accessed either by <SPAN
+CLASS="QUOTE"
+>"qualifying"</SPAN
+>
    their names with the schema name as a prefix, or by setting a search
-   path that includes the desired schema(s).  A <code class="literal">CREATE</code> command
+   path that includes the desired schema(s).  A <TT
+CLASS="LITERAL"
+>CREATE</TT
+> command
    specifying an unqualified object name creates the object
    in the current schema (the one at the front of the search path,
-   which can be determined with the function <code class="function">current_schema</code>).
-  </p>
-<p>   Optionally, <code class="command">CREATE SCHEMA</code> can include subcommands
+   which can be determined with the function <CODE
+CLASS="FUNCTION"
+>current_schema</CODE
+>).
+  </P
+><P
+>   Optionally, <TT
+CLASS="COMMAND"
+>CREATE SCHEMA</TT
+> can include subcommands
    to create objects within the new schema.  The subcommands are treated
    essentially the same as separate commands issued after creating the
-   schema, except that if the <code class="literal">AUTHORIZATION</code> clause is used,
+   schema, except that if the <TT
+CLASS="LITERAL"
+>AUTHORIZATION</TT
+> clause is used,
    all the created objects will be owned by that user.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id450130"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>schemaname</code></em></span></dt>
-<dd><p>        The name of a schema to be created.  If this is omitted, the user name
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42560"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>schemaname</I
+></TT
+></DT
+><DD
+><P
+>        The name of a schema to be created.  If this is omitted, the user name
         is used as the schema name.  The name cannot
-        begin with <code class="literal">pg_</code>, as such names
+        begin with <TT
+CLASS="LITERAL"
+>pg_</TT
+>, as such names
         are reserved for system schemas.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>username</code></em></span></dt>
-<dd><p>        The name of the user who will own the schema.  If omitted,
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>        The name of the user who will own the schema.  If omitted,
         defaults to the user executing the command.  Only superusers
         may create schemas owned by users other than themselves.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>schema_element</code></em></span></dt>
-<dd><p>        An SQL statement defining an object to be created within the
-        schema. Currently, only <code class="command">CREATE
-        TABLE</code>, <code class="command">CREATE VIEW</code>, <code class="command">CREATE
-        INDEX</code>, <code class="command">CREATE SEQUENCE</code>, <code class="command">CREATE
-        TRIGGER</code> and <code class="command">GRANT</code> are accepted as clauses
-        within <code class="command">CREATE SCHEMA</code>. Other kinds of objects may
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>schema_element</I
+></TT
+></DT
+><DD
+><P
+>        An SQL statement defining an object to be created within the
+        schema. Currently, only <TT
+CLASS="COMMAND"
+>CREATE
+        TABLE</TT
+>, <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+>, <TT
+CLASS="COMMAND"
+>CREATE
+        INDEX</TT
+>, <TT
+CLASS="COMMAND"
+>CREATE SEQUENCE</TT
+>, <TT
+CLASS="COMMAND"
+>CREATE
+        TRIGGER</TT
+> and <TT
+CLASS="COMMAND"
+>GRANT</TT
+> are accepted as clauses
+        within <TT
+CLASS="COMMAND"
+>CREATE SCHEMA</TT
+>. Other kinds of objects may
         be created in separate commands after the schema is created.
-       </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id450216"></a><h2>Notes</h2>
-<p>   To create a schema, the invoking user must have the
-   <code class="literal">CREATE</code> privilege for the current database.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42586"
+></A
+><H2
+>Notes</H2
+><P
+>   To create a schema, the invoking user must have the
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+> privilege for the current database.
    (Of course, superusers bypass this check.)
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id450229"></a><h2>Examples</h2>
-<p>   Create a schema:
-</p>
-<pre class="programlisting">CREATE SCHEMA myschema;</pre>
-<p>
-  </p>
-<p>   Create a schema for user <code class="literal">joe</code>; the schema will also be
-   named <code class="literal">joe</code>:
-</p>
-<pre class="programlisting">CREATE SCHEMA AUTHORIZATION joe;</pre>
-<p>
-  </p>
-<p>   Create a schema and create a table and view within it:
-</p>
-<pre class="programlisting">CREATE SCHEMA hollywood
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42590"
+></A
+><H2
+>Examples</H2
+><P
+>   Create a schema:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SCHEMA myschema;</PRE
+><P>
+  </P
+><P
+>   Create a schema for user <TT
+CLASS="LITERAL"
+>joe</TT
+>; the schema will also be
+   named <TT
+CLASS="LITERAL"
+>joe</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SCHEMA AUTHORIZATION joe;</PRE
+><P>
+  </P
+><P
+>   Create a schema and create a table and view within it:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SCHEMA hollywood
     CREATE TABLE films (title text, release date, awards text[])
     CREATE VIEW winners AS
-        SELECT title, release FROM films WHERE awards IS NOT NULL;</pre>
-<p>
+        SELECT title, release FROM films WHERE awards IS NOT NULL;</PRE
+><P>
    Notice that the individual subcommands do not end with semicolons.
-  </p>
-<p>   The following is an equivalent way of accomplishing the same result:
-</p>
-<pre class="programlisting">CREATE SCHEMA hollywood;
+  </P
+><P
+>   The following is an equivalent way of accomplishing the same result:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SCHEMA hollywood;
 CREATE TABLE hollywood.films (title text, release date, awards text[]);
 CREATE VIEW hollywood.winners AS
-    SELECT title, release FROM hollywood.films WHERE awards IS NOT NULL;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id450282"></a><h2>Compatibility</h2>
-<p>   The SQL standard allows a <code class="literal">DEFAULT CHARACTER SET</code> clause
-   in <code class="command">CREATE SCHEMA</code>, as well as more subcommand
+    SELECT title, release FROM hollywood.films WHERE awards IS NOT NULL;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42602"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL standard allows a <TT
+CLASS="LITERAL"
+>DEFAULT CHARACTER SET</TT
+> clause
+   in <TT
+CLASS="COMMAND"
+>CREATE SCHEMA</TT
+>, as well as more subcommand
    types than are presently accepted by
-   <span class="productname">PostgreSQL</span>.
-  </p>
-<p>   The SQL standard specifies that the subcommands in <code class="command">CREATE
-   SCHEMA</code> may appear in any order.  The present
-   <span class="productname">PostgreSQL</span> implementation does not
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+  </P
+><P
+>   The SQL standard specifies that the subcommands in <TT
+CLASS="COMMAND"
+>CREATE
+   SCHEMA</TT
+> may appear in any order.  The present
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> implementation does not
    handle all cases of forward references in subcommands; it may
    sometimes be necessary to reorder the subcommands in order to avoid
    forward references.
-  </p>
-<p>   According to the SQL standard, the owner of a schema always owns
-   all objects within it.  <span class="productname">PostgreSQL</span>
+  </P
+><P
+>   According to the SQL standard, the owner of a schema always owns
+   all objects within it.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
    allows schemas to contain objects owned by users other than the
    schema owner.  This can happen only if the schema owner grants the
-   <code class="literal">CREATE</code> privilege on his schema to someone else.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id450339"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterschema.html">ALTER SCHEMA</a>, <a href="sql-dropschema.html">DROP SCHEMA</a>, </span>
-</div>
-</div></body>
-</html>
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+> privilege on his schema to someone else.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42614"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alterschema.html"
+><I
+>ALTER SCHEMA</I
+></A
+>, <A
+HREF="sql-dropschema.html"
+><I
+>DROP SCHEMA</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createrule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createsequence.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE RULE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE SEQUENCE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

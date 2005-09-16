@@ -1,66 +1,207 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>22.2. File system level backup</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="backup.html" title="Chapter 22. Backup and Restore">
-<link rel="prev" href="backup.html" title="Chapter 22. Backup and Restore">
-<link rel="next" href="backup-online.html" title="22.3. On-line backup and point-in-time recovery (PITR)">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="backup-file"></a>22.2. File system level backup</h2></div></div></div>
-<p>   An alternative backup strategy is to directly copy the files that
-   <span class="productname">PostgreSQL</span> uses to store the data in the database. In
-   <a href="creating-cluster.html" title="16.2. Creating a Database Cluster">Section 16.2, &#8220;Creating a Database Cluster&#8221;</a> it is explained where these files
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>File system level backup</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Backup and Restore"
+HREF="backup.html"><LINK
+REL="PREVIOUS"
+TITLE="Backup and Restore"
+HREF="backup.html"><LINK
+REL="NEXT"
+TITLE="On-line backup and point-in-time recovery (PITR)"
+HREF="backup-online.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="backup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="backup.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 23. Backup and Restore</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="backup.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="backup-online.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="BACKUP-FILE"
+>23.2. File system level backup</A
+></H1
+><P
+>   An alternative backup strategy is to directly copy the files that
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses to store the data in the database. In
+   <A
+HREF="creating-cluster.html"
+>Section 16.2</A
+> it is explained where these files
    are located, but you have probably found them already if you are
    interested in this method. You can use whatever method you prefer
    for doing usual file system backups, for example
 
-</p>
-<pre class="programlisting">tar -cf backup.tar /usr/local/pgsql/data</pre>
-<p>
-  </p>
-<p>   There are two restrictions, however, which make this method
-   impractical, or at least inferior to the <span class="application">pg_dump</span>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>tar -cf backup.tar /usr/local/pgsql/data</PRE
+><P>
+  </P
+><P
+>   There are two restrictions, however, which make this method
+   impractical, or at least inferior to the <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>
    method:
 
-   </p>
-<div class="orderedlist"><ol type="1">
-<li><p>      The database server <span class="emphasis"><em>must</em></span> be shut down in order to
+   <P
+></P
+></P><OL
+TYPE="1"
+><LI
+><P
+>      The database server <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be shut down in order to
       get a usable backup. Half-way measures such as disallowing all
-      connections will <span class="emphasis"><em>not</em></span> work
-      (mainly because <code class="command">tar</code> and similar tools do not take an
+      connections will <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> work
+      (mainly because <TT
+CLASS="COMMAND"
+>tar</TT
+> and similar tools do not take an
       atomic snapshot of the state of the file system at a point in
       time). Information about stopping the server can be found in
-      <a href="postmaster-shutdown.html" title="16.6. Shutting Down the Server">Section 16.6, &#8220;Shutting Down the Server&#8221;</a>.  Needless to say that you
+      <A
+HREF="postmaster-shutdown.html"
+>Section 16.5</A
+>.  Needless to say that you
       also need to shut down the server before restoring the data.
-     </p></li>
-<li><p>      If you have dug into the details of the file system layout of the
+     </P
+></LI
+><LI
+><P
+>      If you have dug into the details of the file system layout of the
       database, you may be tempted to try to back up or restore only certain
       individual tables or databases from their respective files or
-      directories. This will <span class="emphasis"><em>not</em></span> work because the
+      directories. This will <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> work because the
       information contained in these files contains only half the
       truth. The other half is in the commit log files
-      <code class="filename">pg_clog/*</code>, which contain the commit status of
+      <TT
+CLASS="FILENAME"
+>pg_clog/*</TT
+>, which contain the commit status of
       all transactions. A table file is only usable with this
       information. Of course it is also impossible to restore only a
-      table and the associated <code class="filename">pg_clog</code> data
+      table and the associated <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> data
       because that would render all other tables in the database
       cluster useless.  So file system backups only work for complete
       restoration of an entire database cluster.
-     </p></li>
-</ol></div>
-<p>
-  </p>
-<p>   An alternative file-system backup approach is to make a
-   &#8220;<span class="quote">consistent snapshot</span>&#8221; of the data directory, if the
+     </P
+></LI
+></OL
+><P>
+  </P
+><P
+>   An alternative file-system backup approach is to make a
+   <SPAN
+CLASS="QUOTE"
+>"consistent snapshot"</SPAN
+> of the data directory, if the
    file system supports that functionality (and you are willing to
    trust that it is implemented correctly).  The typical procedure is
-   to make a &#8220;<span class="quote">frozen snapshot</span>&#8221; of the volume containing the
+   to make a <SPAN
+CLASS="QUOTE"
+>"frozen snapshot"</SPAN
+> of the volume containing the
    database, then copy the whole data directory (not just parts, see
    above) from the snapshot to a backup device, then release the frozen
    snapshot.  This will work even while the database server is running.
@@ -70,8 +211,9 @@
    on the backed-up data, it will think the server had crashed
    and replay the WAL log.  This is not a problem, just be aware of
    it (and be sure to include the WAL files in your backup).
-  </p>
-<p>   If your database is spread across multiple file systems, there may not 
+  </P
+><P
+>   If your database is spread across multiple file systems, there may not 
    be any way to obtain exactly-simultaneous frozen snapshots of all 
    the volumes.  For example, if your data files and WAL log are on different
    disks, or if tablespaces are on different file systems, it might
@@ -81,21 +223,102 @@
    to the consistent-snapshot technique in such situations.  The safest
    approach is to shut down the database server for long enough to
    establish all the frozen snapshots.
-  </p>
-<p>   Another option is to use <span class="application">rsync</span> to perform a file
-   system backup.  This is done by first running <span class="application">rsync</span>
+  </P
+><P
+>   Another option is to use <SPAN
+CLASS="APPLICATION"
+>rsync</SPAN
+> to perform a file
+   system backup.  This is done by first running <SPAN
+CLASS="APPLICATION"
+>rsync</SPAN
+>
    while the database server is running, then shutting down the database
-   server just long enough to do a second <span class="application">rsync</span>.  The
-   second <span class="application">rsync</span> will be much quicker than the first,
+   server just long enough to do a second <SPAN
+CLASS="APPLICATION"
+>rsync</SPAN
+>.  The
+   second <SPAN
+CLASS="APPLICATION"
+>rsync</SPAN
+> will be much quicker than the first,
    because it has relatively little data to transfer, and the end result
    will be consistent because the server was down.  This method
    allows a file system backup to be performed with minimal downtime.
-  </p>
-<p>   Note that a file system backup will not necessarily be
+  </P
+><P
+>   Note that a file system backup will not necessarily be
    smaller than an SQL dump. On the contrary, it will most likely be
-   larger. (<span class="application">pg_dump</span> does not need to dump
+   larger. (<SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does not need to dump
    the contents of indexes for example, just the commands to recreate
    them.)
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="backup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="backup-online.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Backup and Restore</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="backup.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>On-line backup and point-in-time recovery (PITR)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

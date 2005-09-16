@@ -1,274 +1,903 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>27.2. Connection Status Functions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
-<link rel="prev" href="libpq.html" title="Chapter 27. libpq - C Library">
-<link rel="next" href="libpq-exec.html" title="27.3. Command Execution Functions">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="libpq-status"></a>27.2. Connection Status Functions</h2></div></div></div>
-<p>   These functions may be used to interrogate the status
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Connection Status Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="NEXT"
+TITLE="Command Execution Functions"
+HREF="libpq-exec.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 28. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-exec.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-STATUS"
+>28.2. Connection Status Functions</A
+></H1
+><P
+>   These functions may be used to interrogate the status
    of an existing database connection object.
-  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p><a name="id384878"></a>
-<a name="id384884"></a>
-<span class="application">libpq</span> application programmers should be careful to
-maintain the <code class="structname">PGconn</code> abstraction.  Use the accessor
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+><A
+NAME="AEN24402"
+></A
+>
+<A
+NAME="AEN24404"
+></A
+>
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> application programmers should be careful to
+maintain the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> abstraction.  Use the accessor
 functions described below to get
-at the contents of <code class="structname">PGconn</code>.  Avoid directly referencing the fields of the
-<code class="structname">PGconn</code> structure because they are subject to change in the future.
-(Beginning in <span class="productname">PostgreSQL</span> release 6.4, the
-definition of the <code class="type">struct</code> behind <code class="structname">PGconn</code> is not even provided in <code class="filename">libpq-fe.h</code>.
-If you have old code that accesses <code class="structname">PGconn</code> fields directly, you can keep using it
-by including <code class="filename">libpq-int.h</code> too, but you are encouraged to fix the code
-soon.)</p>
-</div>
-<p>The following functions return parameter values established at connection.
-These values are fixed for the life of the <code class="structname">PGconn</code> object.
+at the contents of <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+>.  Avoid directly referencing the fields of the
+<TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> structure because they are subject to change in the future.
+(Beginning in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> release 6.4, the
+definition of the <TT
+CLASS="TYPE"
+>struct</TT
+> behind <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> is not even provided in <TT
+CLASS="FILENAME"
+>libpq-fe.h</TT
+>.
+If you have old code that accesses <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> fields directly, you can keep using it
+by including <TT
+CLASS="FILENAME"
+>libpq-int.h</TT
+> too, but you are encouraged to fix the code
+soon.)</P
+></BLOCKQUOTE
+></DIV
+><P
+>The following functions return parameter values established at connection.
+These values are fixed for the life of the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object.
 
-</p>
-<div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQdb</code><a name="id384955"></a></span></dt>
-<dd>
-<p>         Returns the database name of the connection.
-</p>
-<pre class="synopsis">char *PQdb(const PGconn *conn);</pre>
-</dd>
-<dt><span class="term"><code class="function">PQuser</code><a name="id384976"></a></span></dt>
-<dd>
-<p>         Returns the user name of the connection.
-</p>
-<pre class="synopsis">char *PQuser(const PGconn *conn);</pre>
-</dd>
-<dt><span class="term"><code class="function">PQpass</code><a name="id384997"></a></span></dt>
-<dd>
-<p>         Returns the password of the connection.
-</p>
-<pre class="synopsis">char *PQpass(const PGconn *conn);</pre>
-</dd>
-<dt><span class="term"><code class="function">PQhost</code><a name="id385018"></a></span></dt>
-<dd>
-<p>         Returns the server host name of the connection.
-</p>
-<pre class="synopsis">char *PQhost(const PGconn *conn);</pre>
-</dd>
-<dt><span class="term"><code class="function">PQport</code><a name="id385039"></a></span></dt>
-<dd>
-<p>         Returns the port of the connection.
-</p>
-<pre class="synopsis">char *PQport(const PGconn *conn);</pre>
-</dd>
-<dt><span class="term"><code class="function">PQtty</code><a name="id385060"></a></span></dt>
-<dd>
-<p>         Returns the debug <span class="acronym">TTY</span> of the connection.
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQdb</CODE
+><A
+NAME="AEN24422"
+></A
+></DT
+><DD
+><P
+>         Returns the database name of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQdb(const PGconn *conn);</PRE
+><P></P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQuser</CODE
+><A
+NAME="AEN24430"
+></A
+></DT
+><DD
+><P
+>         Returns the user name of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQuser(const PGconn *conn);</PRE
+><P></P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQpass</CODE
+><A
+NAME="AEN24438"
+></A
+></DT
+><DD
+><P
+>         Returns the password of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQpass(const PGconn *conn);</PRE
+><P></P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQhost</CODE
+><A
+NAME="AEN24446"
+></A
+></DT
+><DD
+><P
+>         Returns the server host name of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQhost(const PGconn *conn);</PRE
+><P></P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQport</CODE
+><A
+NAME="AEN24454"
+></A
+></DT
+><DD
+><P
+>         Returns the port of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQport(const PGconn *conn);</PRE
+><P></P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQtty</CODE
+><A
+NAME="AEN24462"
+></A
+></DT
+><DD
+><P
+>         Returns the debug <ACRONYM
+CLASS="ACRONYM"
+>TTY</ACRONYM
+> of the connection.
          (This is obsolete, since the server no longer pays attention
-         to the <span class="acronym">TTY</span> setting, but the function remains
+         to the <ACRONYM
+CLASS="ACRONYM"
+>TTY</ACRONYM
+> setting, but the function remains
          for backwards compatibility.)
-</p>
-<pre class="synopsis">char *PQtty(const PGconn *conn);</pre>
-</dd>
-<dt><span class="term"><code class="function">PQoptions</code><a name="id385090"></a></span></dt>
-<dd>
-<p>       Returns the command-line options passed in the connection request.
-</p>
-<pre class="synopsis">char *PQoptions(const PGconn *conn);</pre>
-</dd>
-</dl></div>
-<p>The following functions return status data that can change as operations
-are executed on the <code class="structname">PGconn</code> object.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQtty(const PGconn *conn);</PRE
+><P></P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQoptions</CODE
+><A
+NAME="AEN24472"
+></A
+></DT
+><DD
+><P
+>       Returns the command-line options passed in the connection request.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQoptions(const PGconn *conn);</PRE
+><P></P
+></DD
+></DL
+></DIV
+><P></P
+><P
+>The following functions return status data that can change as operations
+are executed on the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object.
 
-</p>
-<div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQstatus</code><a name="id385119"></a></span></dt>
-<dd>
-<p>         Returns the status of the connection. 
-</p>
-<pre class="synopsis">ConnStatusType PQstatus(const PGconn *conn);</pre>
-<p>       The status can be one of a number of values.
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQstatus</CODE
+><A
+NAME="AEN24483"
+></A
+></DT
+><DD
+><P
+>         Returns the status of the connection. 
+</P><PRE
+CLASS="SYNOPSIS"
+>ConnStatusType PQstatus(const PGconn *conn);</PRE
+><P></P
+><P
+>       The status can be one of a number of values.
        However, only two of these are
        seen outside of an asynchronous connection procedure:
-       <code class="literal">CONNECTION_OK</code> and
-       <code class="literal">CONNECTION_BAD</code>. A good
-       connection to the database has the status <code class="literal">CONNECTION_OK</code>.
+       <TT
+CLASS="LITERAL"
+>CONNECTION_OK</TT
+> and
+       <TT
+CLASS="LITERAL"
+>CONNECTION_BAD</TT
+>. A good
+       connection to the database has the status <TT
+CLASS="LITERAL"
+>CONNECTION_OK</TT
+>.
        A failed connection
        attempt is signaled by status
-       <code class="literal">CONNECTION_BAD</code>.
+       <TT
+CLASS="LITERAL"
+>CONNECTION_BAD</TT
+>.
        Ordinarily, an OK status will remain so until
-       <code class="function">PQfinish</code>, but a
+       <CODE
+CLASS="FUNCTION"
+>PQfinish</CODE
+>, but a
        communications failure might result in the status changing to
-       <code class="literal">CONNECTION_BAD</code> prematurely.
+       <TT
+CLASS="LITERAL"
+>CONNECTION_BAD</TT
+> prematurely.
        In that case the application
-       could try to recover by calling <code class="function">PQreset</code>.
-      </p>
-<p>       See the entry for <code class="function">PQconnectStart</code> and <code class="function">PQconnectPoll</code> with regards
+       could try to recover by calling <CODE
+CLASS="FUNCTION"
+>PQreset</CODE
+>.
+      </P
+><P
+>       See the entry for <CODE
+CLASS="FUNCTION"
+>PQconnectStart</CODE
+> and <CODE
+CLASS="FUNCTION"
+>PQconnectPoll</CODE
+> with regards
        to other status codes
        that might be seen.
-      </p>
-</dd>
-<dt><span class="term"><code class="function">PQtransactionStatus</code><a name="id385203"></a></span></dt>
-<dd>
-<p>         Returns the current in-transaction status of the server.
-</p>
-<pre class="synopsis">PGTransactionStatusType PQtransactionStatus(const PGconn *conn);</pre>
-<p>
+      </P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQtransactionStatus</CODE
+><A
+NAME="AEN24502"
+></A
+></DT
+><DD
+><P
+>         Returns the current in-transaction status of the server.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGTransactionStatusType PQtransactionStatus(const PGconn *conn);</PRE
+><P>
 
-The status can be <code class="literal">PQTRANS_IDLE</code> (currently idle),
-<code class="literal">PQTRANS_ACTIVE</code> (a command is in progress),
-<code class="literal">PQTRANS_INTRANS</code> (idle, in a valid transaction block),
-or <code class="literal">PQTRANS_INERROR</code> (idle, in a failed transaction block).
-<code class="literal">PQTRANS_UNKNOWN</code> is reported if the connection is bad.
-<code class="literal">PQTRANS_ACTIVE</code> is reported only when a query
-has been sent to the server and not yet completed.</p>
-<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Caution</h3>
-<p><code class="function">PQtransactionStatus</code> will give incorrect results when using
-a <span class="productname">PostgreSQL</span> 7.3 server that has the parameter <code class="literal">autocommit</code>
+The status can be <TT
+CLASS="LITERAL"
+>PQTRANS_IDLE</TT
+> (currently idle),
+<TT
+CLASS="LITERAL"
+>PQTRANS_ACTIVE</TT
+> (a command is in progress),
+<TT
+CLASS="LITERAL"
+>PQTRANS_INTRANS</TT
+> (idle, in a valid transaction block),
+or <TT
+CLASS="LITERAL"
+>PQTRANS_INERROR</TT
+> (idle, in a failed transaction block).
+<TT
+CLASS="LITERAL"
+>PQTRANS_UNKNOWN</TT
+> is reported if the connection is bad.
+<TT
+CLASS="LITERAL"
+>PQTRANS_ACTIVE</TT
+> is reported only when a query
+has been sent to the server and not yet completed.</P
+><DIV
+CLASS="CAUTION"
+><P
+></P
+><TABLE
+CLASS="CAUTION"
+BORDER="1"
+WIDTH="90%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Caution</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+><CODE
+CLASS="FUNCTION"
+>PQtransactionStatus</CODE
+> will give incorrect results when using
+a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3 server that has the parameter <TT
+CLASS="LITERAL"
+>autocommit</TT
+>
 set to off.  The server-side autocommit feature has been
-deprecated and does not exist in later server versions.</p>
-</div>
-</dd>
-<dt><span class="term"><code class="function">PQparameterStatus</code><a name="id385285"></a></span></dt>
-<dd>
-<p>         Looks up a current parameter setting of the server.
-</p>
-<pre class="synopsis">const char *PQparameterStatus(const PGconn *conn, const char *paramName);</pre>
-<p>
+deprecated and does not exist in later server versions.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQparameterStatus</CODE
+><A
+NAME="AEN24521"
+></A
+></DT
+><DD
+><P
+>         Looks up a current parameter setting of the server.
+</P><PRE
+CLASS="SYNOPSIS"
+>const char *PQparameterStatus(const PGconn *conn, const char *paramName);</PRE
+><P>
 
 Certain parameter values are reported by the server automatically at
 connection startup or whenever their values change.
-<code class="function">PQparameterStatus</code> can be used to interrogate these settings.
-It returns the current value of a parameter if known, or <code class="symbol">NULL</code>
-if the parameter is not known.</p>
-<p>Parameters reported as of the current release include
-<code class="literal">server_version</code>,
-<code class="literal">server_encoding</code>,
-<code class="literal">client_encoding</code>,
-<code class="literal">is_superuser</code>,
-<code class="literal">session_authorization</code>,
-<code class="literal">DateStyle</code>,
-<code class="literal">TimeZone</code>, and
-<code class="literal">integer_datetimes</code>.
-(<code class="literal">server_encoding</code>, <code class="literal">TimeZone</code>, and
-<code class="literal">integer_datetimes</code> were not reported by releases before 8.0.)
+<CODE
+CLASS="FUNCTION"
+>PQparameterStatus</CODE
+> can be used to interrogate these settings.
+It returns the current value of a parameter if known, or <TT
+CLASS="SYMBOL"
+>NULL</TT
+>
+if the parameter is not known.</P
+><P
+>Parameters reported as of the current release include
+<TT
+CLASS="LITERAL"
+>server_version</TT
+>,
+<TT
+CLASS="LITERAL"
+>server_encoding</TT
+>,
+<TT
+CLASS="LITERAL"
+>client_encoding</TT
+>,
+<TT
+CLASS="LITERAL"
+>is_superuser</TT
+>,
+<TT
+CLASS="LITERAL"
+>session_authorization</TT
+>,
+<TT
+CLASS="LITERAL"
+>DateStyle</TT
+>,
+<TT
+CLASS="LITERAL"
+>TimeZone</TT
+>,
+<TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+>, and
+<TT
+CLASS="LITERAL"
+>standard_conforming_strings</TT
+>.
+(<TT
+CLASS="LITERAL"
+>server_encoding</TT
+>, <TT
+CLASS="LITERAL"
+>TimeZone</TT
+>, and
+<TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+> were not reported by releases before 8.0;
+<TT
+CLASS="LITERAL"
+>standard_conforming_strings</TT
+> was not reported by releases
+before 8.1.)
 Note that
-<code class="literal">server_version</code>,
-<code class="literal">server_encoding</code> and
-<code class="literal">integer_datetimes</code>
-cannot change after startup.</p>
-<p>Pre-3.0-protocol servers do not report parameter settings, but
-<span class="application">libpq</span> includes logic to obtain values for
-<code class="literal">server_version</code> and <code class="literal">client_encoding</code> anyway.
-Applications are encouraged to use <code class="function">PQparameterStatus</code>
-rather than <span class="foreignphrase"><em class="foreignphrase">ad hoc</em></span> code to determine these values.
+<TT
+CLASS="LITERAL"
+>server_version</TT
+>,
+<TT
+CLASS="LITERAL"
+>server_encoding</TT
+> and
+<TT
+CLASS="LITERAL"
+>integer_datetimes</TT
+>
+cannot change after startup.</P
+><P
+>Pre-3.0-protocol servers do not report parameter settings, but
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> includes logic to obtain values for
+<TT
+CLASS="LITERAL"
+>server_version</TT
+> and <TT
+CLASS="LITERAL"
+>client_encoding</TT
+> anyway.
+Applications are encouraged to use <CODE
+CLASS="FUNCTION"
+>PQparameterStatus</CODE
+>
+rather than <I
+CLASS="FOREIGNPHRASE"
+>ad hoc</I
+> code to determine these values.
 (Beware however
-that on a pre-3.0 connection, changing <code class="literal">client_encoding</code> via
-<code class="command">SET</code> after connection startup will not be reflected by
-<code class="function">PQparameterStatus</code>.)  For <code class="literal">server_version</code>,
-see also <code class="function">PQserverVersion</code>, which returns the information
-in a numeric form that is much easier to compare against.</p>
-<p>Although the returned pointer is declared <code class="literal">const</code>, it in fact
-points to mutable storage associated with the <code class="literal">PGconn</code> structure.
-It is unwise to assume the pointer will remain valid across queries.</p>
-</dd>
-<dt><span class="term"><code class="function">PQprotocolVersion</code><a name="id385482"></a></span></dt>
-<dd>
-<p>         Interrogates the frontend/backend protocol being used.
-</p>
-<pre class="synopsis">int PQprotocolVersion(const PGconn *conn);</pre>
-<p>
+that on a pre-3.0 connection, changing <TT
+CLASS="LITERAL"
+>client_encoding</TT
+> via
+<TT
+CLASS="COMMAND"
+>SET</TT
+> after connection startup will not be reflected by
+<CODE
+CLASS="FUNCTION"
+>PQparameterStatus</CODE
+>.)  For <TT
+CLASS="LITERAL"
+>server_version</TT
+>,
+see also <CODE
+CLASS="FUNCTION"
+>PQserverVersion</CODE
+>, which returns the information
+in a numeric form that is much easier to compare against.</P
+><P
+>If no value for <TT
+CLASS="LITERAL"
+>standard_conforming_strings</TT
+> is reported,
+applications may assume it is <TT
+CLASS="LITERAL"
+>false</TT
+>, that is, backslashes
+are treated as escapes in string literals.  Also, the presence of this
+parameter may be taken as an indication that the escape string syntax
+(<TT
+CLASS="LITERAL"
+>E'...'</TT
+>) is accepted.</P
+><P
+>Although the returned pointer is declared <TT
+CLASS="LITERAL"
+>const</TT
+>, it in fact
+points to mutable storage associated with the <TT
+CLASS="LITERAL"
+>PGconn</TT
+> structure.
+It is unwise to assume the pointer will remain valid across queries.</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQprotocolVersion</CODE
+><A
+NAME="AEN24566"
+></A
+></DT
+><DD
+><P
+>         Interrogates the frontend/backend protocol being used.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQprotocolVersion(const PGconn *conn);</PRE
+><P>
 Applications may wish to use this to determine whether certain features
 are supported.
 Currently, the possible values are 2 (2.0 protocol), 3 (3.0 protocol),
 or zero (connection bad).  This will not change after connection
 startup is complete, but it could theoretically change during a connection
 reset.  The 3.0 protocol will normally be used when communicating with
-<span class="productname">PostgreSQL</span> 7.4 or later servers; pre-7.4 servers support
-only protocol 2.0.  (Protocol 1.0 is obsolete and not supported by <span class="application">libpq</span>.)</p>
-</dd>
-<dt><span class="term"><code class="function">PQserverVersion</code><a name="id385520"></a></span></dt>
-<dd>
-<p>         Returns an integer representing the backend version.
-</p>
-<pre class="synopsis">int PQserverVersion(const PGconn *conn);</pre>
-<p>
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.4 or later servers; pre-7.4 servers support
+only protocol 2.0.  (Protocol 1.0 is obsolete and not supported by <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>.)</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQserverVersion</CODE
+><A
+NAME="AEN24576"
+></A
+></DT
+><DD
+><P
+>         Returns an integer representing the backend version.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQserverVersion(const PGconn *conn);</PRE
+><P>
 Applications may use this to determine the version of the database server they
 are connected to. The number is formed by converting the major, minor, and
 revision numbers into two-decimal-digit numbers and appending them
 together. For example, version 7.4.2 will be returned as 70402, and version
 8.1 will be returned as 80100 (leading zeroes are not shown).  Zero is
-returned if the connection is bad.</p>
-</dd>
-<dt><span class="term"><code class="function">PQerrorMessage</code><a name="id385546"></a></span></dt>
-<dd>
-<p>       <a name="id385555"></a>
+returned if the connection is bad.</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQerrorMessage</CODE
+><A
+NAME="AEN24584"
+></A
+></DT
+><DD
+><P
+>       <A
+NAME="AEN24588"
+></A
+>
        Returns the error message most recently generated by
        an operation on the connection.
-</p>
-<pre class="synopsis">char *PQerrorMessage(const PGconn *conn);</pre>
-<p>
-      </p>
-<p>       Nearly all <span class="application">libpq</span> functions will set a message for
-       <code class="function">PQerrorMessage</code> if they fail.
-       Note that by <span class="application">libpq</span> convention, a nonempty
-       <code class="function">PQerrorMessage</code> result will
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQerrorMessage(const PGconn *conn);</PRE
+><P>
+      </P
+><P
+>       Nearly all <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> functions will set a message for
+       <CODE
+CLASS="FUNCTION"
+>PQerrorMessage</CODE
+> if they fail.
+       Note that by <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> convention, a nonempty
+       <CODE
+CLASS="FUNCTION"
+>PQerrorMessage</CODE
+> result will
        include a trailing newline. The caller should not free the result 
-       directly. It will be freed when the associated <code class="structname">PGconn</code> 
-       handle is passed to <code class="function">PQfinish</code>.  The result string
+       directly. It will be freed when the associated <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> 
+       handle is passed to <CODE
+CLASS="FUNCTION"
+>PQfinish</CODE
+>.  The result string
        should not be expected to remain the same across operations on the
-       <code class="literal">PGconn</code> structure.
-      </p>
-</dd>
-<dt><span class="term"><code class="function">PQsocket</code><a name="id385620"></a></span></dt>
-<dd>
-<p>       Obtains the file descriptor number of the connection socket to
+       <TT
+CLASS="LITERAL"
+>PGconn</TT
+> structure.
+      </P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQsocket</CODE
+><A
+NAME="AEN24602"
+></A
+></DT
+><DD
+><P
+>       Obtains the file descriptor number of the connection socket to
        the server.  A valid descriptor will be greater than or equal
        to 0; a result of -1 indicates that no server connection is
        currently open.  (This will not change during normal operation,
        but could change during connection setup or reset.)
-</p>
-<pre class="synopsis">int PQsocket(const PGconn *conn);</pre>
-<p>
-      </p>
-</dd>
-<dt><span class="term"><code class="function">PQbackendPID</code><a name="id385644"></a></span></dt>
-<dd>
-<p>       Returns the process <span class="acronym">ID</span>
-       (PID)<a name="id385657"></a> of the backend server
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQsocket(const PGconn *conn);</PRE
+><P>
+      </P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQbackendPID</CODE
+><A
+NAME="AEN24610"
+></A
+></DT
+><DD
+><P
+>       Returns the process <ACRONYM
+CLASS="ACRONYM"
+>ID</ACRONYM
+>
+       (PID)<A
+NAME="AEN24615"
+></A
+> of the backend server
        process handling this connection.
-</p>
-<pre class="synopsis">int PQbackendPID(const PGconn *conn);</pre>
-<p>       The backend <span class="acronym">PID</span> is useful for debugging
-       purposes and for comparison to <code class="command">NOTIFY</code>
-       messages (which include the <span class="acronym">PID</span> of the
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQbackendPID(const PGconn *conn);</PRE
+><P></P
+><P
+>       The backend <ACRONYM
+CLASS="ACRONYM"
+>PID</ACRONYM
+> is useful for debugging
+       purposes and for comparison to <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>
+       messages (which include the <ACRONYM
+CLASS="ACRONYM"
+>PID</ACRONYM
+> of the
        notifying backend process).  Note that the
-       <span class="acronym">PID</span> belongs to a process executing on the
+       <ACRONYM
+CLASS="ACRONYM"
+>PID</ACRONYM
+> belongs to a process executing on the
        database server host, not the local host!
-      </p>
-</dd>
-<dt><span class="term"><code class="function">PQgetssl</code><a name="id385701"></a></span></dt>
-<dd>
-<p>       <a name="id385710"></a>
+      </P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQgetssl</CODE
+><A
+NAME="AEN24628"
+></A
+></DT
+><DD
+><P
+>       <A
+NAME="AEN24632"
+></A
+>
        Returns the SSL structure used in the connection, or null
        if SSL is not in use. 
-</p>
-<pre class="synopsis">SSL *PQgetssl(const PGconn *conn);</pre>
-<p>       This structure can be used to verify encryption levels, check
-       server certificates, and more. Refer to the <span class="productname">OpenSSL</span> documentation
+</P><PRE
+CLASS="SYNOPSIS"
+>SSL *PQgetssl(const PGconn *conn);</PRE
+><P></P
+><P
+>       This structure can be used to verify encryption levels, check
+       server certificates, and more. Refer to the <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> documentation
        for information about this structure.
-      </p>
-<p>       You must define <code class="symbol">USE_SSL</code> in order to get the
+      </P
+><P
+>       You must define <TT
+CLASS="SYMBOL"
+>USE_SSL</TT
+> in order to get the
        correct prototype for this function. Doing this will also 
-       automatically include <code class="filename">ssl.h</code> from <span class="productname">OpenSSL</span>.
-      </p>
-</dd>
-</dl></div>
-</div></body>
-</html>
+       automatically include <TT
+CLASS="FILENAME"
+>ssl.h</TT
+> from <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+>.
+      </P
+></DD
+></DL
+></DIV
+><P></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-exec.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Command Execution Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

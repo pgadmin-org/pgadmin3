@@ -1,27 +1,130 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Appendix B. Date/Time Support</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
-<link rel="prev" href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">
-<link rel="next" href="datetime-keywords.html" title="B.2. Date/Time Key Words">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="datetime-appendix">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="datetime-appendix"></a>Appendix B. Date/Time Support</h2></div></div></div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="datetime-appendix.html#id516733">B.1. Date/Time Input Interpretation</a></span></dt>
-<dt><span class="sect1"><a href="datetime-keywords.html">B.2. Date/Time Key Words</a></span></dt>
-<dt><span class="sect1"><a href="datetime-units-history.html">B.3. History of Units</a></span></dt>
-</dl>
-</div>
-<p>   <span class="productname">PostgreSQL</span> uses an internal heuristic
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Date/Time Support</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
+REL="PREVIOUS"
+TITLE="PostgreSQL Error Codes"
+HREF="errcodes-appendix.html"><LINK
+REL="NEXT"
+TITLE="Date/Time Key Words"
+HREF="datetime-keywords.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="APPENDIX"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="errcodes-appendix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="errcodes-appendix.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-keywords-appendix.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datetime-keywords.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="DATETIME-APPENDIX"
+></A
+>Appendix B. Date/Time Support</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>B.1. <A
+HREF="datetime-appendix.html#AEN63647"
+>Date/Time Input Interpretation</A
+></DT
+><DT
+>B.2. <A
+HREF="datetime-keywords.html"
+>Date/Time Key Words</A
+></DT
+><DT
+>B.3. <A
+HREF="datetime-units-history.html"
+>History of Units</A
+></DT
+></DL
+></DIV
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses an internal heuristic
    parser for all date/time input support. Dates and times are input as
    strings, and are broken up into distinct fields with a preliminary
    determination of what kind of information may be in the
@@ -29,112 +132,335 @@
    value, ignored, or rejected.
    The parser contains internal lookup tables for all textual fields,
    including months, days of the week, and time zones.
-  </p>
-<p>   This appendix includes information on the content of these
+  </P
+><P
+>   This appendix includes information on the content of these
    lookup tables and describes the steps used by the parser to decode
    dates and times.
-  </p>
-<div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id516733"></a>B.1. Date/Time Input Interpretation</h2></div></div></div>
-<p>    The date/time type inputs are all decoded using the following procedure.
-   </p>
-<div class="procedure"><ol type="1">
-<li>
-<p>      Break the input string into tokens and categorize each token as
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN63647"
+>B.1. Date/Time Input Interpretation</A
+></H1
+><P
+>    The date/time type inputs are all decoded using the following procedure.
+   </P
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+CLASS="STEP"
+><P
+>      Break the input string into tokens and categorize each token as
       a string, time, time zone, or number.
-     </p>
-<ol type="a">
-<li><p>        If the numeric token contains a colon (<code class="literal">:</code>), this is
+     </P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+CLASS="STEP"
+><P
+>        If the numeric token contains a colon (<TT
+CLASS="LITERAL"
+>:</TT
+>), this is
         a time string. Include all subsequent digits and colons.
-       </p></li>
-<li><p>        If the numeric token contains a dash (<code class="literal">-</code>), slash
-        (<code class="literal">/</code>), or two or more dots (<code class="literal">.</code>), this is
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If the numeric token contains a dash (<TT
+CLASS="LITERAL"
+>-</TT
+>), slash
+        (<TT
+CLASS="LITERAL"
+>/</TT
+>), or two or more dots (<TT
+CLASS="LITERAL"
+>.</TT
+>), this is
         a date string which may have a text month.
-       </p></li>
-<li><p>        If the token is numeric only, then it is either a single field
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If the token is numeric only, then it is either a single field
         or an ISO 8601 concatenated date (e.g.,
-        <code class="literal">19990113</code> for January 13, 1999) or time
-        (e.g., <code class="literal">141516</code> for 14:15:16).
-       </p></li>
-<li><p>        If the token starts with a plus (<code class="literal">+</code>) or minus
-        (<code class="literal">-</code>), then it is either a time zone or a special
+        <TT
+CLASS="LITERAL"
+>19990113</TT
+> for January 13, 1999) or time
+        (e.g., <TT
+CLASS="LITERAL"
+>141516</TT
+> for 14:15:16).
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If the token starts with a plus (<TT
+CLASS="LITERAL"
+>+</TT
+>) or minus
+        (<TT
+CLASS="LITERAL"
+>-</TT
+>), then it is either a time zone or a special
         field.
-       </p></li>
-</ol>
-</li>
-<li>
-<p>      If the token is a text string, match up with possible strings.
-     </p>
-<ol type="a">
-<li>
-<p>        Do a binary-search table lookup for the token
-        as either a special string (e.g., <code class="literal">today</code>),
-        day (e.g., <code class="literal">Thursday</code>),
-        month (e.g., <code class="literal">January</code>),
-        or noise word (e.g., <code class="literal">at</code>, <code class="literal">on</code>).
-       </p>
-<p>        Set field values and bit mask for fields.
-        For example, set year, month, day for <code class="literal">today</code>,
-        and additionally hour, minute, second for <code class="literal">now</code>.
-       </p>
-</li>
-<li><p>        If not found, do a similar binary-search table lookup to match
+       </P
+></LI
+></OL
+></LI
+><LI
+CLASS="STEP"
+><P
+>      If the token is a text string, match up with possible strings.
+     </P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+CLASS="STEP"
+><P
+>        Do a binary-search table lookup for the token
+        as either a special string (e.g., <TT
+CLASS="LITERAL"
+>today</TT
+>),
+        day (e.g., <TT
+CLASS="LITERAL"
+>Thursday</TT
+>),
+        month (e.g., <TT
+CLASS="LITERAL"
+>January</TT
+>),
+        or noise word (e.g., <TT
+CLASS="LITERAL"
+>at</TT
+>, <TT
+CLASS="LITERAL"
+>on</TT
+>).
+       </P
+><P
+>        Set field values and bit mask for fields.
+        For example, set year, month, day for <TT
+CLASS="LITERAL"
+>today</TT
+>,
+        and additionally hour, minute, second for <TT
+CLASS="LITERAL"
+>now</TT
+>.
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If not found, do a similar binary-search table lookup to match
         the token with a time zone.
-       </p></li>
-<li><p>        If still not found, throw an error.
-       </p></li>
-</ol>
-</li>
-<li>
-<p>      When the token is a number or number field:
-     </p>
-<ol type="a">
-<li><p>        If there are eight or six digits,
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If still not found, throw an error.
+       </P
+></LI
+></OL
+></LI
+><LI
+CLASS="STEP"
+><P
+>      When the token is a number or number field:
+     </P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+CLASS="STEP"
+><P
+>        If there are eight or six digits,
         and if no other date fields have been previously read, then interpret 
-        as a &#8220;<span class="quote">concatenated date</span>&#8221; (e.g.,
-        <code class="literal">19990118</code> or <code class="literal">990118</code>).
-        The interpretation is <code class="literal">YYYYMMDD</code> or <code class="literal">YYMMDD</code>.
-       </p></li>
-<li><p>        If the token is three digits
+        as a <SPAN
+CLASS="QUOTE"
+>"concatenated date"</SPAN
+> (e.g.,
+        <TT
+CLASS="LITERAL"
+>19990118</TT
+> or <TT
+CLASS="LITERAL"
+>990118</TT
+>).
+        The interpretation is <TT
+CLASS="LITERAL"
+>YYYYMMDD</TT
+> or <TT
+CLASS="LITERAL"
+>YYMMDD</TT
+>.
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If the token is three digits
         and a year has already been read, then interpret as day of year.
-       </p></li>
-<li><p>        If four or six digits and a year has already been read, then
-        interpret as a time (<code class="literal">HHMM</code> or <code class="literal">HHMMSS</code>).
-       </p></li>
-<li><p>        If three or more digits and no date fields have yet been found,
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If four or six digits and a year has already been read, then
+        interpret as a time (<TT
+CLASS="LITERAL"
+>HHMM</TT
+> or <TT
+CLASS="LITERAL"
+>HHMMSS</TT
+>).
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        If three or more digits and no date fields have yet been found,
         interpret as a year (this forces yy-mm-dd ordering of the remaining
         date fields).
-       </p></li>
-<li><p>        Otherwise the date field ordering is assumed to follow the
-        <code class="varname">DateStyle</code> setting: mm-dd-yy, dd-mm-yy, or yy-mm-dd.
+       </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>        Otherwise the date field ordering is assumed to follow the
+        <TT
+CLASS="VARNAME"
+>DateStyle</TT
+> setting: mm-dd-yy, dd-mm-yy, or yy-mm-dd.
         Throw an error if a month or day field is found to be out of range.
-       </p></li>
-</ol>
-</li>
-<li><p>      If BC has been specified, negate the year and add one for
+       </P
+></LI
+></OL
+></LI
+><LI
+CLASS="STEP"
+><P
+>      If BC has been specified, negate the year and add one for
       internal storage.  (There is no year zero in the Gregorian
       calendar, so numerically 1 BC becomes year zero.)
-     </p></li>
-<li>
-<p>      If BC was not specified, and if the year field was two digits in length,
+     </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>      If BC was not specified, and if the year field was two digits in length,
       then adjust the year to four digits. If the field is less than 70, then
       add 2000, otherwise add 1900.
 
-      </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>        Gregorian years AD 1-99 may be entered by using 4 digits with leading
-        zeros (e.g., <code class="literal">0099</code> is AD 99). Previous versions of
-        <span class="productname">PostgreSQL</span> accepted years with three
+      <DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>        Gregorian years AD 1-99 may be entered by using 4 digits with leading
+        zeros (e.g., <TT
+CLASS="LITERAL"
+>0099</TT
+> is AD 99). Previous versions of
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> accepted years with three
         digits and with single digits, but as of version 7.0 the rules have
         been tightened up to reduce the possibility of ambiguity.
-       </p>
-</div>
-<p>
-     </p>
-</li>
-</ol></div>
-</div>
-</div></body>
-</html>
+       </P
+></BLOCKQUOTE
+></DIV
+>
+     </P
+></LI
+></OL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="errcodes-appendix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datetime-keywords.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Error Codes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="appendixes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Date/Time Key Words</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

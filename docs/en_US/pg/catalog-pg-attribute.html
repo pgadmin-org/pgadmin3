@@ -1,199 +1,633 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>41.7. pg_attribute</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
-<link rel="prev" href="catalog-pg-attrdef.html" title="41.6. pg_attrdef">
-<link rel="next" href="catalog-pg-cast.html" title="41.8. pg_cast">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-attribute"></a>41.7. <code class="structname">pg_attribute</code></h2></div></div></div>
-<a name="id495360"></a><p>   The catalog <code class="structname">pg_attribute</code> stores information about
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_attribute</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_attrdef"
+HREF="catalog-pg-attrdef.html"><LINK
+REL="NEXT"
+TITLE="pg_authid"
+HREF="catalog-pg-authid.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-attrdef.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-authid.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-ATTRIBUTE"
+>42.7. <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+></H1
+><A
+NAME="AEN55489"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> stores information about
    table columns.  There will be exactly one
-   <code class="structname">pg_attribute</code> row for every column in every
+   <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> row for every column in every
    table in the database.  (There will also be attribute entries for
-   indexes, and indeed all objects that have <code class="structname">pg_class</code>
+   indexes, and indeed all objects that have <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+>
    entries.)
-  </p>
-<p>   The term attribute is equivalent to column and is used for
+  </P
+><P
+>   The term attribute is equivalent to column and is used for
    historical reasons.
-  </p>
-<div class="table">
-<a name="id495388"></a><p class="title"><b>Table 41.7. <code class="structname">pg_attribute</code> Columns</b></p>
-<table summary="pg_attribute Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Type</th>
-<th>References</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="structfield">attrelid</code></td>
-<td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
-<td>The table this column belongs to</td>
-</tr>
-<tr>
-<td><code class="structfield">attname</code></td>
-<td><code class="type">name</code></td>
-<td> </td>
-<td>The column name</td>
-</tr>
-<tr>
-<td><code class="structfield">atttypid</code></td>
-<td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
-<td>The data type of this column</td>
-</tr>
-<tr>
-<td><code class="structfield">attstattarget</code></td>
-<td><code class="type">int4</code></td>
-<td> </td>
-<td>       <code class="structfield">attstattarget</code> controls the level of detail
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN55496"
+></A
+><P
+><B
+>Table 42-7. <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attrelid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The table this column belongs to</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>The column name</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>atttypid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The data type of this column</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attstattarget</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       <TT
+CLASS="STRUCTFIELD"
+>attstattarget</TT
+> controls the level of detail
        of statistics accumulated for this column by
-       <a href="sql-analyze.html">ANALYZE</a>.
+       <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+>.
        A zero value indicates that no statistics should be collected.
        A negative value says to use the system default statistics target.
        The exact meaning of positive values is data type-dependent.
-       For scalar data types, <code class="structfield">attstattarget</code>
-       is both the target number of &#8220;<span class="quote">most common values</span>&#8221;
+       For scalar data types, <TT
+CLASS="STRUCTFIELD"
+>attstattarget</TT
+>
+       is both the target number of <SPAN
+CLASS="QUOTE"
+>"most common values"</SPAN
+>
        to collect, and the target number of histogram bins to create.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attlen</code></td>
-<td><code class="type">int2</code></td>
-<td> </td>
-<td>       A copy of <code class="literal">pg_type.typlen</code> of this column's
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attlen</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       A copy of <TT
+CLASS="LITERAL"
+>pg_type.typlen</TT
+> of this column's
        type
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attnum</code></td>
-<td><code class="type">int2</code></td>
-<td> </td>
-<td>       The number of the column.  Ordinary columns are numbered from 1
-       up.  System columns, such as <code class="structfield">oid</code>,
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attnum</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       The number of the column.  Ordinary columns are numbered from 1
+       up.  System columns, such as <TT
+CLASS="STRUCTFIELD"
+>oid</TT
+>,
        have (arbitrary) negative numbers.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attndims</code></td>
-<td><code class="type">int4</code></td>
-<td> </td>
-<td>       Number of dimensions, if the column is an array type; otherwise 0.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attndims</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Number of dimensions, if the column is an array type; otherwise 0.
        (Presently, the number of dimensions of an array is not enforced,
-       so any nonzero value effectively means &#8220;<span class="quote">it's an array</span>&#8221;.)
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attcacheoff</code></td>
-<td><code class="type">int4</code></td>
-<td> </td>
-<td>       Always -1 in storage, but when loaded into a row descriptor
+       so any nonzero value effectively means <SPAN
+CLASS="QUOTE"
+>"it's an array"</SPAN
+>.)
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attcacheoff</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Always -1 in storage, but when loaded into a row descriptor
        in memory this may be updated to cache the offset of the attribute
        within the row.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">atttypmod</code></td>
-<td><code class="type">int4</code></td>
-<td> </td>
-<td>       <code class="structfield">atttypmod</code> records type-specific data
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>atttypmod</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       <TT
+CLASS="STRUCTFIELD"
+>atttypmod</TT
+> records type-specific data
        supplied at table creation time (for example, the maximum
-       length of a <code class="type">varchar</code> column).  It is passed to
+       length of a <TT
+CLASS="TYPE"
+>varchar</TT
+> column).  It is passed to
        type-specific input functions and length coercion functions.
-       The value will generally be -1 for types that do not need <code class="structfield">atttypmod</code>.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attbyval</code></td>
-<td><code class="type">bool</code></td>
-<td> </td>
-<td>       A copy of <code class="literal">pg_type.typbyval</code> of this column's type
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attstorage</code></td>
-<td><code class="type">char</code></td>
-<td> </td>
-<td>       Normally a copy of <code class="literal">pg_type.typstorage</code> of this
+       The value will generally be -1 for types that do not need <TT
+CLASS="STRUCTFIELD"
+>atttypmod</TT
+>.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attbyval</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       A copy of <TT
+CLASS="LITERAL"
+>pg_type.typbyval</TT
+> of this column's type
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attstorage</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Normally a copy of <TT
+CLASS="LITERAL"
+>pg_type.typstorage</TT
+> of this
        column's type.  For TOAST-able data types, this can be altered
        after column creation to control storage policy.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attalign</code></td>
-<td><code class="type">char</code></td>
-<td> </td>
-<td>       A copy of <code class="literal">pg_type.typalign</code> of this column's type
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attnotnull</code></td>
-<td><code class="type">bool</code></td>
-<td> </td>
-<td>       This represents a not-null constraint.  It is possible to
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attalign</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       A copy of <TT
+CLASS="LITERAL"
+>pg_type.typalign</TT
+> of this column's type
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attnotnull</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       This represents a not-null constraint.  It is possible to
        change this column to enable or disable the constraint.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">atthasdef</code></td>
-<td><code class="type">bool</code></td>
-<td> </td>
-<td>       This column has a default value, in which case there will be a
-       corresponding entry in the <code class="structname">pg_attrdef</code>
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>atthasdef</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       This column has a default value, in which case there will be a
+       corresponding entry in the <TT
+CLASS="STRUCTNAME"
+>pg_attrdef</TT
+>
        catalog that actually defines the value.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attisdropped</code></td>
-<td><code class="type">bool</code></td>
-<td> </td>
-<td>       This column has been dropped and is no longer valid.  A dropped
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attisdropped</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       This column has been dropped and is no longer valid.  A dropped
        column is still physically present in the table, but is
        ignored by the parser and so cannot be accessed via SQL.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attislocal</code></td>
-<td><code class="type">bool</code></td>
-<td> </td>
-<td>       This column is defined locally in the relation.  Note that a column may
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attislocal</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       This column is defined locally in the relation.  Note that a column may
        be locally defined and inherited simultaneously.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">attinhcount</code></td>
-<td><code class="type">int4</code></td>
-<td> </td>
-<td>       The number of direct ancestors this column has.  A column with a 
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>attinhcount</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       The number of direct ancestors this column has.  A column with a 
        nonzero number of ancestors cannot be dropped nor renamed.
-      </td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   In a dropped column's <code class="structname">pg_attribute</code> entry,
-   <code class="structfield">atttypid</code> is reset to zero, but 
-   <code class="structfield">attlen</code> and the other fields copied from
-   <code class="structname">pg_type</code> are still valid.  This arrangement is needed
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   In a dropped column's <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> entry,
+   <TT
+CLASS="STRUCTFIELD"
+>atttypid</TT
+> is reset to zero, but 
+   <TT
+CLASS="STRUCTFIELD"
+>attlen</TT
+> and the other fields copied from
+   <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+> are still valid.  This arrangement is needed
    to cope with the situation where the dropped column's data type was
-   later dropped, and so there is no <code class="structname">pg_type</code> row anymore.
-   <code class="structfield">attlen</code> and the other fields can be used
+   later dropped, and so there is no <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+> row anymore.
+   <TT
+CLASS="STRUCTFIELD"
+>attlen</TT
+> and the other fields can be used
    to interpret the contents of a row of the table.
-  </p>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-attrdef.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-authid.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_attrdef</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_authid</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

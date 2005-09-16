@@ -1,160 +1,576 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>INSERT</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-grant.html" title="GRANT">
-<link rel="next" href="sql-listen.html" title="LISTEN">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-insert"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>INSERT &#8212; create new rows in a table</p>
-</div>
-<a name="id462858"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">INSERT INTO <em class="replaceable"><code>table</code></em> [ ( <em class="replaceable"><code>column</code></em> [, ...] ) ]
-    { DEFAULT VALUES | VALUES ( { <em class="replaceable"><code>expression</code></em> | DEFAULT } [, ...] ) | <em class="replaceable"><code>query</code></em> }</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id462897"></a><h2>Description</h2>
-<p>   <code class="command">INSERT</code> inserts new rows into a table.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>INSERT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="GRANT"
+HREF="sql-grant.html"><LINK
+REL="NEXT"
+TITLE="LISTEN"
+HREF="sql-listen.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-grant.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-grant.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-listen.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-listen.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-INSERT"
+></A
+>INSERT</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45964"
+></A
+><H2
+>Name</H2
+>INSERT&nbsp;--&nbsp;create new rows in a table</DIV
+><A
+NAME="AEN45967"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45969"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>INSERT INTO <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [, ...] ) ]
+    { DEFAULT VALUES | VALUES ( { <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> | DEFAULT } [, ...] ) | <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> }</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45975"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>INSERT</TT
+> inserts new rows into a table.
    One can insert a single row specified by value expressions,
    or several rows as a result of a query.
-  </p>
-<p>   The target column names may be listed in any order.  If no list of
+  </P
+><P
+>   The target column names may be listed in any order.  If no list of
    column names is given at all, the default is all the columns of the
-   table in their declared order; or the first <em class="replaceable"><code>N</code></em> column
-   names, if there are only <em class="replaceable"><code>N</code></em> columns supplied by the
-   <code class="literal">VALUES</code> clause or <em class="replaceable"><code>query</code></em>.  The values
-   supplied by the <code class="literal">VALUES</code> clause or <em class="replaceable"><code>query</code></em> are
+   table in their declared order; or the first <TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> column
+   names, if there are only <TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> columns supplied by the
+   <TT
+CLASS="LITERAL"
+>VALUES</TT
+> clause or <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>.  The values
+   supplied by the <TT
+CLASS="LITERAL"
+>VALUES</TT
+> clause or <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> are
    associated with the explicit or implicit column list left-to-right.
-  </p>
-<p>   Each column not present in the explicit or implicit column list will be
+  </P
+><P
+>   Each column not present in the explicit or implicit column list will be
    filled with a default value, either its declared default value
    or null if there is none.
-  </p>
-<p>   If the expression for any column is not of the correct data type,
+  </P
+><P
+>   If the expression for any column is not of the correct data type,
    automatic type conversion will be attempted.
-  </p>
-<p>   You must have <code class="literal">INSERT</code> privilege to a table in
-   order to insert into it.  If you use the <em class="replaceable"><code>query</code></em> clause to insert rows from a
-   query, you also need to have <code class="literal">SELECT</code> privilege on
+  </P
+><P
+>   You must have <TT
+CLASS="LITERAL"
+>INSERT</TT
+> privilege to a table in
+   order to insert into it.  If you use the <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> clause to insert rows from a
+   query, you also need to have <TT
+CLASS="LITERAL"
+>SELECT</TT
+> privilege on
    any table used in the query.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id462970"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
-<dd><p>      The name (optionally schema-qualified) of an existing table.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>column</code></em></span></dt>
-<dd><p>      The name of a column in <em class="replaceable"><code>table</code></em>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45992"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing table.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+></DT
+><DD
+><P
+>      The name of a column in <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>.
       The column name can be qualified with a subfield name or array
       subscript, if needed.  (Inserting into only some fields of a
       composite column leaves the other fields null.)
-     </p></dd>
-<dt><span class="term"><code class="literal">DEFAULT VALUES</code></span></dt>
-<dd><p>      All columns will be filled with their default values.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>expression</code></em></span></dt>
-<dd><p>      An expression or value to assign to the corresponding <em class="replaceable"><code>column</code></em>.
-     </p></dd>
-<dt><span class="term"><code class="literal">DEFAULT</code></span></dt>
-<dd><p>      The corresponding <em class="replaceable"><code>column</code></em> will be filled with
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DEFAULT VALUES</TT
+></DT
+><DD
+><P
+>      All columns will be filled with their default values.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></DT
+><DD
+><P
+>      An expression or value to assign to the corresponding <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+>.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DEFAULT</TT
+></DT
+><DD
+><P
+>      The corresponding <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> will be filled with
       its default value.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>query</code></em></span></dt>
-<dd><p>      A query (<code class="command">SELECT</code> statement) that supplies the
-      rows to be inserted.  Refer to the <code class="command">SELECT</code>
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></DT
+><DD
+><P
+>      A query (<TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement) that supplies the
+      rows to be inserted.  Refer to the <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
       statement for a description of the syntax.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id463068"></a><h2>Outputs</h2>
-<p>   On successful completion, an <code class="command">INSERT</code> command returns a command
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46030"
+></A
+><H2
+>Outputs</H2
+><P
+>   On successful completion, an <TT
+CLASS="COMMAND"
+>INSERT</TT
+> command returns a command
    tag of the form
-</p>
-<pre class="screen">INSERT <em class="replaceable"><code>oid</code></em> <em class="replaceable"><code>count</code></em></pre>
-<p>
-   The <em class="replaceable"><code>count</code></em> is the number
-   of rows inserted.  If <em class="replaceable"><code>count</code></em>
+</P><PRE
+CLASS="SCREEN"
+>INSERT <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+></PRE
+><P>
+   The <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is the number
+   of rows inserted.  If <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+>
    is exactly one, and the target table has OIDs, then
-   <em class="replaceable"><code>oid</code></em> is the
-   <span class="acronym">OID</span> assigned to the inserted row.  Otherwise
-   <em class="replaceable"><code>oid</code></em> is zero.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id463122"></a><h2>Examples</h2>
-<p>   Insert a single row into table <code class="literal">films</code>:
+   <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+> is the
+   <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+> assigned to the inserted row.  Otherwise
+   <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+> is zero.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46042"
+></A
+><H2
+>Examples</H2
+><P
+>   Insert a single row into table <TT
+CLASS="LITERAL"
+>films</TT
+>:
 
-</p>
-<pre class="programlisting">INSERT INTO films VALUES
-    ('UA502', 'Bananas', 105, '1971-07-13', 'Comedy', '82 minutes');</pre>
-<p>
-  </p>
-<p>   In this example, the <code class="literal">len</code> column is
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films VALUES
+    ('UA502', 'Bananas', 105, '1971-07-13', 'Comedy', '82 minutes');</PRE
+><P>
+  </P
+><P
+>   In this example, the <TT
+CLASS="LITERAL"
+>len</TT
+> column is
    omitted and therefore it will have the default value:
 
-</p>
-<pre class="programlisting">INSERT INTO films (code, title, did, date_prod, kind)
-    VALUES ('T_601', 'Yojimbo', 106, '1961-06-16', 'Drama');</pre>
-<p>
-  </p>
-<p>   This example uses the <code class="literal">DEFAULT</code> clause for
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films (code, title, did, date_prod, kind)
+    VALUES ('T_601', 'Yojimbo', 106, '1961-06-16', 'Drama');</PRE
+><P>
+  </P
+><P
+>   This example uses the <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> clause for
    the date columns rather than specifying a value:
 
-</p>
-<pre class="programlisting">INSERT INTO films VALUES
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films VALUES
     ('UA502', 'Bananas', 105, DEFAULT, 'Comedy', '82 minutes');
 INSERT INTO films (code, title, did, date_prod, kind)
-    VALUES ('T_601', 'Yojimbo', 106, DEFAULT, 'Drama');</pre>
-<p>
-  </p>
-<p>   To insert a row consisting entirely of default values:
+    VALUES ('T_601', 'Yojimbo', 106, DEFAULT, 'Drama');</PRE
+><P>
+  </P
+><P
+>   To insert a row consisting entirely of default values:
 
-</p>
-<pre class="programlisting">INSERT INTO films DEFAULT VALUES;</pre>
-<p>
-  </p>
-<p>   This example inserts some rows into table
-   <code class="literal">films</code> from a table <code class="literal">tmp_films</code>
-   with the same column layout as <code class="literal">films</code>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films DEFAULT VALUES;</PRE
+><P>
+  </P
+><P
+>   This example inserts some rows into table
+   <TT
+CLASS="LITERAL"
+>films</TT
+> from a table <TT
+CLASS="LITERAL"
+>tmp_films</TT
+>
+   with the same column layout as <TT
+CLASS="LITERAL"
+>films</TT
+>:
 
-</p>
-<pre class="programlisting">INSERT INTO films SELECT * FROM tmp_films WHERE date_prod &lt; '2004-05-07';</pre>
-<p>
-  </p>
-<p>   This example inserts into array columns:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films SELECT * FROM tmp_films WHERE date_prod &lt; '2004-05-07';</PRE
+><P>
+  </P
+><P
+>   This example inserts into array columns:
 
-</p>
-<pre class="programlisting">-- Create an empty 3x3 gameboard for noughts-and-crosses
+</P><PRE
+CLASS="PROGRAMLISTING"
+>-- Create an empty 3x3 gameboard for noughts-and-crosses
 -- (these commands create the same board)
 INSERT INTO tictactoe (game, board[1:3][1:3])
     VALUES (1,'{{"","",""},{"","",""},{"","",""}}');
 INSERT INTO tictactoe (game, board)
-    VALUES (2,'{{,,},{,,},{,,}}');</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id463217"></a><h2>Compatibility</h2>
-<p>   <code class="command">INSERT</code> conforms to the SQL standard.  The case in
+    VALUES (2,'{{,,},{,,},{,,}}');</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46062"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>INSERT</TT
+> conforms to the SQL standard.  The case in
    which a column name list is omitted, but not all the columns are
-   filled from the <code class="literal">VALUES</code> clause or <em class="replaceable"><code>query</code></em>,
+   filled from the <TT
+CLASS="LITERAL"
+>VALUES</TT
+> clause or <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>,
    is disallowed by the standard.
-  </p>
-<p>   Possible limitations of the <em class="replaceable"><code>query</code></em> clause are documented under
-   <a href="sql-select.html">SELECT</a>.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+><P
+>   Possible limitations of the <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> clause are documented under
+   <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-grant.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-listen.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>GRANT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LISTEN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

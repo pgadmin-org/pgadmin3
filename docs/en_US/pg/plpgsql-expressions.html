@@ -1,50 +1,168 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>35.5. Expressions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
-<link rel="prev" href="plpgsql-declarations.html" title="35.4. Declarations">
-<link rel="next" href="plpgsql-statements.html" title="35.6. Basic Statements">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-expressions"></a>35.5. Expressions</h2></div></div></div>
-<p>     All expressions used in <span class="application">PL/pgSQL</span>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Expressions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/pgSQL - SQL Procedural Language"
+HREF="plpgsql.html"><LINK
+REL="PREVIOUS"
+TITLE="Declarations"
+HREF="plpgsql-declarations.html"><LINK
+REL="NEXT"
+TITLE="Basic Statements"
+HREF="plpgsql-statements.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-declarations.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 36. <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> - <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-statements.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPGSQL-EXPRESSIONS"
+>36.5. Expressions</A
+></H1
+><P
+>     All expressions used in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>
      statements are processed using the server's regular
-     <span class="acronym">SQL</span> executor.  In effect, a query like
-</p>
-<pre class="synopsis">SELECT <em class="replaceable"><code>expression</code></em></pre>
-<p>
-     is executed using the <span class="acronym">SPI</span> manager. Before evaluation,
-     occurrences of <span class="application">PL/pgSQL</span> variable
+     <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> executor.  In effect, a query like
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></PRE
+><P>
+     is executed using the <ACRONYM
+CLASS="ACRONYM"
+>SPI</ACRONYM
+> manager. Before evaluation,
+     occurrences of <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> variable
      identifiers are replaced by parameters, and the actual values from
      the variables are passed to the executor in the parameter array.
-     This allows the query plan for the <code class="command">SELECT</code> to
+     This allows the query plan for the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> to
      be prepared just once and then reused for subsequent
      evaluations.
-    </p>
-<p>     The evaluation done by the <span class="productname">PostgreSQL</span>
+    </P
+><P
+>     The evaluation done by the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
      main parser has some side
      effects on the interpretation of constant values. In detail there
      is a difference between what these two functions do:
 
-</p>
-<pre class="programlisting">CREATE FUNCTION logfunc1(logtxt text) RETURNS timestamp AS $$
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION logfunc1(logtxt text) RETURNS timestamp AS $$
     BEGIN
         INSERT INTO logtable VALUES (logtxt, 'now');
         RETURN 'now';
     END;
-$$ LANGUAGE plpgsql;</pre>
-<p>
+$$ LANGUAGE plpgsql;</PRE
+><P>
 
      and
 
-</p>
-<pre class="programlisting">CREATE FUNCTION logfunc2(logtxt text) RETURNS timestamp AS $$
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION logfunc2(logtxt text) RETURNS timestamp AS $$
     DECLARE
         curtime timestamp;
     BEGIN
@@ -52,41 +170,162 @@ $$ LANGUAGE plpgsql;</pre>
         INSERT INTO logtable VALUES (logtxt, curtime);
         RETURN curtime;
     END;
-$$ LANGUAGE plpgsql;</pre>
-<p>
-    </p>
-<p>     In the case of <code class="function">logfunc1</code>, the 
-     <span class="productname">PostgreSQL</span> main parser knows when 
-     preparing the plan for the <code class="command">INSERT</code>, that the string 
-     <code class="literal">'now'</code> should be interpreted as 
-     <code class="type">timestamp</code> because the target column of <code class="classname">logtable</code>
+$$ LANGUAGE plpgsql;</PRE
+><P>
+    </P
+><P
+>     In the case of <CODE
+CLASS="FUNCTION"
+>logfunc1</CODE
+>, the 
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> main parser knows when 
+     preparing the plan for the <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, that the string 
+     <TT
+CLASS="LITERAL"
+>'now'</TT
+> should be interpreted as 
+     <TT
+CLASS="TYPE"
+>timestamp</TT
+> because the target column of <CODE
+CLASS="CLASSNAME"
+>logtable</CODE
+>
      is of that type. Thus, it will make a constant from it at this
      time and this constant value is then used in all invocations of 
-     <code class="function">logfunc1</code> during the lifetime of the
+     <CODE
+CLASS="FUNCTION"
+>logfunc1</CODE
+> during the lifetime of the
      session. Needless to say that this isn't what the
      programmer wanted.
-    </p>
-<p>     In the case of <code class="function">logfunc2</code>, the 
-     <span class="productname">PostgreSQL</span> main parser does not know
-     what type <code class="literal">'now'</code> should become and therefore 
-     it returns a data value of type <code class="type">text</code> containing the string 
-     <code class="literal">now</code>. During the ensuing assignment
-     to the local variable <code class="varname">curtime</code>, the
-     <span class="application">PL/pgSQL</span> interpreter casts this
-     string to the <code class="type">timestamp</code> type by calling the
-     <code class="function">text_out</code> and <code class="function">timestamp_in</code>
+    </P
+><P
+>     In the case of <CODE
+CLASS="FUNCTION"
+>logfunc2</CODE
+>, the 
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> main parser does not know
+     what type <TT
+CLASS="LITERAL"
+>'now'</TT
+> should become and therefore 
+     it returns a data value of type <TT
+CLASS="TYPE"
+>text</TT
+> containing the string 
+     <TT
+CLASS="LITERAL"
+>now</TT
+>. During the ensuing assignment
+     to the local variable <TT
+CLASS="VARNAME"
+>curtime</TT
+>, the
+     <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> interpreter casts this
+     string to the <TT
+CLASS="TYPE"
+>timestamp</TT
+> type by calling the
+     <CODE
+CLASS="FUNCTION"
+>text_out</CODE
+> and <CODE
+CLASS="FUNCTION"
+>timestamp_in</CODE
+>
      functions for the conversion.  So, the computed time stamp is updated
      on each execution as the programmer expects.
-    </p>
-<p>     The mutable nature of record variables presents a problem in this
+    </P
+><P
+>     The mutable nature of record variables presents a problem in this
      connection.  When fields of a record variable are used in
      expressions or statements, the data types of the fields must not
      change between calls of one and the same expression, since the
      expression will be planned using the data type that is present
      when the expression is first reached.  Keep this in mind when
      writing trigger procedures that handle events for more than one
-     table.  (<code class="command">EXECUTE</code> can be used to get around
+     table.  (<TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> can be used to get around
      this problem when necessary.)
-    </p>
-</div></body>
-</html>
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-declarations.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-statements.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Declarations</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Basic Statements</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

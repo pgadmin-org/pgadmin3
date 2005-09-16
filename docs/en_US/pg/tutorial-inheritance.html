@@ -1,29 +1,125 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>3.5. Inheritance</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
-<link rel="prev" href="tutorial-transactions.html" title="3.4. Transactions">
-<link rel="next" href="tutorial-conclusion.html" title="3.6. Conclusion">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="tutorial-inheritance"></a>3.5. Inheritance</h2></div></div></div>
-<a name="id302306"></a><p>    Inheritance is a concept from object-oriented databases.  It opens
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Inheritance</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Advanced Features"
+HREF="tutorial-advanced.html"><LINK
+REL="PREVIOUS"
+TITLE="Transactions"
+HREF="tutorial-transactions.html"><LINK
+REL="NEXT"
+TITLE="Conclusion"
+HREF="tutorial-conclusion.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-transactions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Advanced Features</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-conclusion.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-INHERITANCE"
+>3.5. Inheritance</A
+></H1
+><A
+NAME="AEN1008"
+></A
+><P
+>    Inheritance is a concept from object-oriented databases.  It opens
     up interesting new possibilities of database design.
-   </p>
-<p>    Let's create two tables:  A table <code class="classname">cities</code>
-    and a table <code class="classname">capitals</code>.  Naturally, capitals
+   </P
+><P
+>    Let's create two tables:  A table <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+>
+    and a table <CODE
+CLASS="CLASSNAME"
+>capitals</CODE
+>.  Naturally, capitals
     are also cities, so you want some way to show the capitals
     implicitly when you list all cities.  If you're really clever you
     might invent some scheme like this:
 
-</p>
-<pre class="programlisting">CREATE TABLE capitals (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE capitals (
   name       text,
   population real,
   altitude   int,    -- (in ft)
@@ -39,16 +135,18 @@ CREATE TABLE non_capitals (
 CREATE VIEW cities AS
   SELECT name, population, altitude FROM capitals
     UNION
-  SELECT name, population, altitude FROM non_capitals;</pre>
-<p>
+  SELECT name, population, altitude FROM non_capitals;</PRE
+><P>
 
     This works OK as far as querying goes, but it gets ugly when you
     need to update several rows, for one thing.
-   </p>
-<p>    A better solution is this:
+   </P
+><P
+>    A better solution is this:
 
-</p>
-<pre class="programlisting">CREATE TABLE cities (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE cities (
   name       text,
   population real,
   altitude   int     -- (in ft)
@@ -56,74 +154,212 @@ CREATE VIEW cities AS
 
 CREATE TABLE capitals (
   state      char(2)
-) INHERITS (cities);</pre>
-<p>
-   </p>
-<p>    In this case, a row of <code class="classname">capitals</code>
-    <em class="firstterm">inherits</em> all columns (<code class="structfield">name</code>,
-    <code class="structfield">population</code>, and <code class="structfield">altitude</code>) from its
-    <em class="firstterm">parent</em>, <code class="classname">cities</code>.  The
-    type of the column <code class="structfield">name</code> is
-    <code class="type">text</code>, a native <span class="productname">PostgreSQL</span>
+) INHERITS (cities);</PRE
+><P>
+   </P
+><P
+>    In this case, a row of <CODE
+CLASS="CLASSNAME"
+>capitals</CODE
+>
+    <I
+CLASS="FIRSTTERM"
+>inherits</I
+> all columns (<TT
+CLASS="STRUCTFIELD"
+>name</TT
+>,
+    <TT
+CLASS="STRUCTFIELD"
+>population</TT
+>, and <TT
+CLASS="STRUCTFIELD"
+>altitude</TT
+>) from its
+    <I
+CLASS="FIRSTTERM"
+>parent</I
+>, <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+>.  The
+    type of the column <TT
+CLASS="STRUCTFIELD"
+>name</TT
+> is
+    <TT
+CLASS="TYPE"
+>text</TT
+>, a native <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     type for variable length character strings.  State capitals have
     an extra column, state, that shows their state.  In
-    <span class="productname">PostgreSQL</span>, a table can inherit from
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, a table can inherit from
     zero or more other tables.
-   </p>
-<p>    For example, the  following  query finds the  names  of  all  cities,
+   </P
+><P
+>    For example, the  following  query finds the  names  of  all  cities,
     including  state capitals, that are located at an altitude 
     over 500 ft.:
 
-</p>
-<pre class="programlisting">SELECT name, altitude
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name, altitude
   FROM cities
-  WHERE altitude &gt; 500;</pre>
-<p>
+  WHERE altitude &gt; 500;</PRE
+><P>
 
     which returns:
 
-</p>
-<pre class="screen">   name    | altitude
+</P><PRE
+CLASS="SCREEN"
+>   name    | altitude
 -----------+----------
  Las Vegas |     2174
  Mariposa  |     1953
  Madison   |      845
-(3 rows)</pre>
-<p>
-   </p>
-<p>    On the other hand, the  following  query  finds
+(3 rows)</PRE
+><P>
+   </P
+><P
+>    On the other hand, the  following  query  finds
     all  the cities that are not state capitals and
     are situated at an altitude of 500 ft. or higher:
 
-</p>
-<pre class="programlisting">SELECT name, altitude
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name, altitude
     FROM ONLY cities
-    WHERE altitude &gt; 500;</pre>
-<p>
+    WHERE altitude &gt; 500;</PRE
+><P>
 
-</p>
-<pre class="screen">   name    | altitude
+</P><PRE
+CLASS="SCREEN"
+>   name    | altitude
 -----------+----------
  Las Vegas |     2174
  Mariposa  |     1953
-(2 rows)</pre>
-<p>
-   </p>
-<p>    Here the <code class="literal">ONLY</code> before <code class="literal">cities</code>
+(2 rows)</PRE
+><P>
+   </P
+><P
+>    Here the <TT
+CLASS="LITERAL"
+>ONLY</TT
+> before <TT
+CLASS="LITERAL"
+>cities</TT
+>
     indicates that the query should be run over only the
-    <code class="classname">cities</code> table, and not tables below
-    <code class="classname">cities</code> in the inheritance hierarchy.  Many
-    of the commands that we have already discussed [mdash ]
-    <code class="command">SELECT</code>, <code class="command">UPDATE</code>, and
-    <code class="command">DELETE</code> [mdash ] support this <code class="literal">ONLY</code>
+    <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+> table, and not tables below
+    <CODE
+CLASS="CLASSNAME"
+>cities</CODE
+> in the inheritance hierarchy.  Many
+    of the commands that we have already discussed &mdash;
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+> &mdash; support this <TT
+CLASS="LITERAL"
+>ONLY</TT
+>
     notation.
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     Although inheritance is frequently useful, it has not been integrated
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Although inheritance is frequently useful, it has not been integrated
      with unique constraints or foreign keys, which limits its usefulness.
-     See <a href="ddl-inherit.html" title="5.5. Inheritance">Section 5.5, &#8220;Inheritance&#8221;</a> for more detail.
-    </p>
-</div>
-</div></body>
-</html>
+     See <A
+HREF="ddl-inherit.html"
+>Section 5.5</A
+> for more detail.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-transactions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-conclusion.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Transactions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-advanced.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Conclusion</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

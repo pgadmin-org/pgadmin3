@@ -1,115 +1,412 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 40. Overview of PostgreSQL Internals</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="internals.html" title="Part VII. Internals">
-<link rel="prev" href="internals.html" title="Part VII. Internals">
-<link rel="next" href="connect-estab.html" title="40.2. How Connections are Established">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="overview">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="overview"></a>Chapter 40. Overview of PostgreSQL Internals</h2></div></div></div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="overview.html#query-path">40.1. The Path of a Query</a></span></dt>
-<dt><span class="sect1"><a href="connect-estab.html">40.2. How Connections are Established</a></span></dt>
-<dt><span class="sect1"><a href="parser-stage.html">40.3. The Parser Stage</a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="parser-stage.html#id493168">40.3.1. Parser</a></span></dt>
-<dt><span class="sect2"><a href="parser-stage.html#id493340">40.3.2. Transformation Process</a></span></dt>
-</dl></dd>
-<dt><span class="sect1"><a href="rule-system.html">40.4. The <span class="productname">PostgreSQL</span> Rule System</a></span></dt>
-<dt><span class="sect1"><a href="planner-optimizer.html">40.5. Planner/Optimizer</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id493556">40.5.1. Generating Possible Plans</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="executor.html">40.6. Executor</a></span></dt>
-</dl>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Author</h3>
-<p>    This chapter originated as part of
-    [<a href="biblio.html#sim98" title="[sim98]">sim98</a>], Stefan Simkovics'
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview of PostgreSQL Internals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Internals"
+HREF="internals.html"><LINK
+REL="PREVIOUS"
+TITLE="Internals"
+HREF="internals.html"><LINK
+REL="NEXT"
+TITLE="How Connections are Established"
+HREF="connect-estab.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="internals.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="internals.html#AEN54606"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="connect-estab.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="OVERVIEW"
+></A
+>Chapter 41. Overview of PostgreSQL Internals</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>41.1. <A
+HREF="overview.html#QUERY-PATH"
+>The Path of a Query</A
+></DT
+><DT
+>41.2. <A
+HREF="connect-estab.html"
+>How Connections are Established</A
+></DT
+><DT
+>41.3. <A
+HREF="parser-stage.html"
+>The Parser Stage</A
+></DT
+><DD
+><DL
+><DT
+>41.3.1. <A
+HREF="parser-stage.html#AEN54694"
+>Parser</A
+></DT
+><DT
+>41.3.2. <A
+HREF="parser-stage.html#AEN54730"
+>Transformation Process</A
+></DT
+></DL
+></DD
+><DT
+>41.4. <A
+HREF="rule-system.html"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Rule System</A
+></DT
+><DT
+>41.5. <A
+HREF="planner-optimizer.html"
+>Planner/Optimizer</A
+></DT
+><DT
+>41.6. <A
+HREF="executor.html"
+>Executor</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Author: </B
+>    This chapter originated as part of
+    <A
+HREF="biblio.html#SIM98"
+><I
+>Enhancement of the ANSI SQL Implementation of PostgreSQL</I
+></A
+>, Stefan Simkovics'
     Master's Thesis prepared at Vienna University of Technology under the direction
     of O.Univ.Prof.Dr. Georg Gottlob and Univ.Ass. Mag. Katrin Seyr.
-   </p>
-</div>
-<p>   This chapter gives an overview of the internal structure of the
-   backend of <span class="productname">PostgreSQL</span>.  After having
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   This chapter gives an overview of the internal structure of the
+   backend of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  After having
    read the following sections you should have an idea of how a query
    is processed. This chapter does not aim to provide a detailed
    description of the internal operation of
-   <span class="productname">PostgreSQL</span>, as such a document would be
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, as such a document would be
    very extensive. Rather, this chapter is intended to help the reader
    understand the general sequence of operations that occur within the
    backend from the point at which a query is received, to the point
    at which the results are returned to the client.
-  </p>
-<div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="query-path"></a>40.1. The Path of a Query</h2></div></div></div>
-<p>    Here we give a short overview of the stages a query has to pass in
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="QUERY-PATH"
+>41.1. The Path of a Query</A
+></H1
+><P
+>    Here we give a short overview of the stages a query has to pass in
     order to obtain a result.
-   </p>
-<div class="procedure"><ol type="1">
-<li><p>      A connection from an application program to the <span class="productname">PostgreSQL</span>
+   </P
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+CLASS="STEP"
+><P
+>      A connection from an application program to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
       server has to be established. The application program transmits a
       query to the server and waits to receive the results sent back by the
       server.
-     </p></li>
-<li><p>      The <em class="firstterm">parser stage</em> checks the query
+     </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>      The <I
+CLASS="FIRSTTERM"
+>parser stage</I
+> checks the query
       transmitted by the application
       program for correct syntax and creates
-      a <em class="firstterm">query tree</em>.
-     </p></li>
-<li>
-<p>      The <em class="firstterm">rewrite system</em> takes
+      a <I
+CLASS="FIRSTTERM"
+>query tree</I
+>.
+     </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>      The <I
+CLASS="FIRSTTERM"
+>rewrite system</I
+> takes
       the query tree created by the parser stage and looks for
-      any <em class="firstterm">rules</em> (stored in the
-      <em class="firstterm">system catalogs</em>) to apply to 
+      any <I
+CLASS="FIRSTTERM"
+>rules</I
+> (stored in the
+      <I
+CLASS="FIRSTTERM"
+>system catalogs</I
+>) to apply to 
       the query tree.  It performs the
-      transformations given in the <em class="firstterm">rule bodies</em>.
-     </p>
-<p>      One application of the rewrite system is in the realization of
-      <em class="firstterm">views</em>.
+      transformations given in the <I
+CLASS="FIRSTTERM"
+>rule bodies</I
+>.
+     </P
+><P
+>      One application of the rewrite system is in the realization of
+      <I
+CLASS="FIRSTTERM"
+>views</I
+>.
       Whenever a query against a view
-      (i.e. a <em class="firstterm">virtual table</em>) is made,
+      (i.e. a <I
+CLASS="FIRSTTERM"
+>virtual table</I
+>) is made,
       the rewrite system rewrites the user's query to
-      a query that accesses the <em class="firstterm">base tables</em> given in
-      the <em class="firstterm">view definition</em> instead.
-     </p>
-</li>
-<li>
-<p>      The <em class="firstterm">planner/optimizer</em> takes
+      a query that accesses the <I
+CLASS="FIRSTTERM"
+>base tables</I
+> given in
+      the <I
+CLASS="FIRSTTERM"
+>view definition</I
+> instead.
+     </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>      The <I
+CLASS="FIRSTTERM"
+>planner/optimizer</I
+> takes
       the (rewritten) query tree and creates a 
-      <em class="firstterm">query plan</em> that will be the input to the
-      <em class="firstterm">executor</em>.
-     </p>
-<p>      It does so by first creating all possible <em class="firstterm">paths</em>
+      <I
+CLASS="FIRSTTERM"
+>query plan</I
+> that will be the input to the
+      <I
+CLASS="FIRSTTERM"
+>executor</I
+>.
+     </P
+><P
+>      It does so by first creating all possible <I
+CLASS="FIRSTTERM"
+>paths</I
+>
       leading to the same result. For example if there is an index on a
       relation to be scanned, there are two paths for the
       scan. One possibility is a simple sequential scan and the other
       possibility is to use the index. Next the cost for the execution of
       each path is estimated and the cheapest path is chosen.  The cheapest
       path is expanded into a complete plan that the executor can use.
-     </p>
-</li>
-<li><p>      The executor recursively steps through
-      the <em class="firstterm">plan tree</em> and
+     </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>      The executor recursively steps through
+      the <I
+CLASS="FIRSTTERM"
+>plan tree</I
+> and
       retrieves rows in the way represented by the plan.
       The executor makes use of the
-      <em class="firstterm">storage system</em> while scanning
-      relations, performs <em class="firstterm">sorts</em> and <em class="firstterm">joins</em>,
-      evaluates <em class="firstterm">qualifications</em> and finally hands back the rows derived.
-     </p></li>
-</ol></div>
-<p>    In the following sections we will cover each of the above listed items
-    in more detail to give a better understanding of <span class="productname">PostgreSQL</span>'s internal
+      <I
+CLASS="FIRSTTERM"
+>storage system</I
+> while scanning
+      relations, performs <I
+CLASS="FIRSTTERM"
+>sorts</I
+> and <I
+CLASS="FIRSTTERM"
+>joins</I
+>,
+      evaluates <I
+CLASS="FIRSTTERM"
+>qualifications</I
+> and finally hands back the rows derived.
+     </P
+></LI
+></OL
+></DIV
+><P
+>    In the following sections we will cover each of the above listed items
+    in more detail to give a better understanding of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s internal
     control and data structures.
-   </p>
-</div>
-</div></body>
-</html>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="internals.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="connect-estab.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Internals</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="internals.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>How Connections are Established</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

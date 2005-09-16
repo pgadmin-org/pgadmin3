@@ -1,0 +1,427 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Role Membership</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Database Roles and Privileges"
+HREF="user-manag.html"><LINK
+REL="PREVIOUS"
+TITLE="Role Attributes"
+HREF="role-attributes.html"><LINK
+REL="NEXT"
+TITLE="Privileges"
+HREF="privileges.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="role-attributes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 18. Database Roles and Privileges</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ROLE-MEMBERSHIP"
+>18.3. Role Membership</A
+></H1
+><A
+NAME="AEN20753"
+></A
+><P
+>   It is frequently convenient to group users together to ease
+   management of privileges: that way, privileges can be granted to, or
+   revoked from, a group as a whole.  In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   this is done by creating a role that represents the group, and then
+   granting <I
+CLASS="FIRSTTERM"
+>membership</I
+> in the group role to individual user
+   roles.
+  </P
+><P
+>   To set up a group role, first create the role:
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>;</PRE
+><P>
+   Typically a role being used as a group would not have the <TT
+CLASS="LITERAL"
+>LOGIN</TT
+>
+   attribute, though you can set it if you wish.
+  </P
+><P
+>   Once the group role exists, you can add and remove members using the
+   <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> and
+   <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+> commands:
+</P><PRE
+CLASS="SYNOPSIS"
+>GRANT <TT
+CLASS="REPLACEABLE"
+><I
+>group_role</I
+></TT
+> TO <TT
+CLASS="REPLACEABLE"
+><I
+>role1</I
+></TT
+>, ... ;
+REVOKE <TT
+CLASS="REPLACEABLE"
+><I
+>group_role</I
+></TT
+> FROM <TT
+CLASS="REPLACEABLE"
+><I
+>role1</I
+></TT
+>, ... ;</PRE
+><P>
+   You can grant membership to other group roles, too (since there isn't
+   really any distinction between group roles and non-group roles).  The
+   only restriction is that you can't set up circular membership loops.
+  </P
+><P
+>   The members of a role can use the privileges of the group role in two
+   ways.  First, every member of a group can explicitly do
+   <A
+HREF="sql-set-role.html"
+><I
+>SET ROLE</I
+></A
+> to
+   temporarily <SPAN
+CLASS="QUOTE"
+>"become"</SPAN
+> the group role.  In this state, the
+   database session has access to the privileges of the group role rather
+   than the original login role, and any database objects created are
+   considered owned by the group role not the login role.  Second, member
+   roles that have the <TT
+CLASS="LITERAL"
+>INHERIT</TT
+> attribute automatically have use of
+   privileges of roles they are members of.  As an example, suppose we have
+   done
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE ROLE joe LOGIN INHERIT;
+CREATE ROLE admin NOINHERIT;
+CREATE ROLE wheel NOINHERIT;
+GRANT admin TO joe;
+GRANT wheel TO admin;</PRE
+><P>
+   Immediately after connecting as role <TT
+CLASS="LITERAL"
+>joe</TT
+>, a database
+   session will have use of privileges granted directly to <TT
+CLASS="LITERAL"
+>joe</TT
+>
+   plus any privileges granted to <TT
+CLASS="LITERAL"
+>admin</TT
+>, because <TT
+CLASS="LITERAL"
+>joe</TT
+>
+   <SPAN
+CLASS="QUOTE"
+>"inherits"</SPAN
+> <TT
+CLASS="LITERAL"
+>admin</TT
+>'s privileges.  However, privileges
+   granted to <TT
+CLASS="LITERAL"
+>wheel</TT
+> are not available, because even though
+   <TT
+CLASS="LITERAL"
+>joe</TT
+> is indirectly a member of <TT
+CLASS="LITERAL"
+>wheel</TT
+>, the
+   membership is via <TT
+CLASS="LITERAL"
+>admin</TT
+> which has the <TT
+CLASS="LITERAL"
+>NOINHERIT</TT
+>
+   attribute.  After
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET ROLE admin;</PRE
+><P>
+   the session would have use of only those privileges granted to
+   <TT
+CLASS="LITERAL"
+>admin</TT
+>, and not those granted to <TT
+CLASS="LITERAL"
+>joe</TT
+>.  After
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET ROLE wheel;</PRE
+><P>
+   the session would have use of only those privileges granted to
+   <TT
+CLASS="LITERAL"
+>wheel</TT
+>, and not those granted to either <TT
+CLASS="LITERAL"
+>joe</TT
+>
+   or <TT
+CLASS="LITERAL"
+>admin</TT
+>.  The original privilege state can be restored
+   with any of
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET ROLE joe;
+SET ROLE NONE;
+RESET ROLE;</PRE
+><P>
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    The <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> command always allows selecting any role
+    that the original login role is directly or indirectly a member of.
+    Thus, in the above example, it is not necessary to become
+    <TT
+CLASS="LITERAL"
+>admin</TT
+> before becoming <TT
+CLASS="LITERAL"
+>wheel</TT
+>.
+   </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    In the SQL standard, there is a clear distinction between users and roles,
+    and users do not automatically inherit privileges while roles do.  This
+    behavior can be obtained in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> by giving
+    roles being used as SQL roles the <TT
+CLASS="LITERAL"
+>INHERIT</TT
+> attribute, while
+    giving roles being used as SQL users the <TT
+CLASS="LITERAL"
+>NOINHERIT</TT
+> attribute.
+    However, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> defaults to giving all roles
+    the <TT
+CLASS="LITERAL"
+>INHERIT</TT
+> attribute, for backwards compatibility with pre-8.1
+    releases in which users always had use of permissions granted to groups
+    they were members of.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   To destroy a group role, use <A
+HREF="sql-droprole.html"
+><I
+>DROP ROLE</I
+></A
+>:
+</P><PRE
+CLASS="SYNOPSIS"
+>DROP ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>;</PRE
+><P>
+   Any memberships in the group role are automatically revoked (but the
+   member roles are not otherwise affected).  Note however that any objects
+   owned by the group role must first be dropped or reassigned to other
+   owners; and any permissions granted to the group role must be revoked.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="role-attributes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Role Attributes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Privileges</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

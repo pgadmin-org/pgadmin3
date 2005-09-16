@@ -1,90 +1,335 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>30.18. key_column_usage</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="information-schema.html" title="Chapter 30. The Information Schema">
-<link rel="prev" href="infoschema-enabled-roles.html" title="30.17. enabled_roles">
-<link rel="next" href="infoschema-parameters.html" title="30.19. parameters">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="infoschema-key-column-usage"></a>30.18. <code class="literal">key_column_usage</code></h2></div></div></div>
-<p>   The view <code class="literal">key_column_usage</code> identifies all columns
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>key_column_usage</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="enabled_roles"
+HREF="infoschema-enabled-roles.html"><LINK
+REL="NEXT"
+TITLE="parameters"
+HREF="infoschema-parameters.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-enabled-roles.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 31. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-parameters.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-KEY-COLUMN-USAGE"
+>31.18. <TT
+CLASS="LITERAL"
+>key_column_usage</TT
+></A
+></H1
+><P
+>   The view <TT
+CLASS="LITERAL"
+>key_column_usage</TT
+> identifies all columns
    in the current database that are restricted by some unique, primary
    key, or foreign key constraint.  Check constraints are not included
    in this view.  Only those columns are shown that are contained in a
    table owned by the current user.
-  </p>
-<div class="table">
-<a name="id400356"></a><p class="title"><b>Table 30.16. <code class="literal">key_column_usage</code> Columns</b></p>
-<table summary="key_column_usage Columns" border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Name</th>
-<th>Data Type</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code class="literal">constraint_catalog</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>Name of the database that contains the constraint (always the current database)</td>
-</tr>
-<tr>
-<td><code class="literal">constraint_schema</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>Name of the schema that contains the constraint</td>
-</tr>
-<tr>
-<td><code class="literal">constraint_name</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>Name of the constraint</td>
-</tr>
-<tr>
-<td><code class="literal">table_catalog</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>       Name of the database that contains the table that contains the
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN28756"
+></A
+><P
+><B
+>Table 31-16. <TT
+CLASS="LITERAL"
+>key_column_usage</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>constraint_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database that contains the constraint (always the current database)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>constraint_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema that contains the constraint</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>constraint_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the constraint</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>table_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the database that contains the table that contains the
        column that is restricted by some constraint (always the
        current database)
-      </td>
-</tr>
-<tr>
-<td><code class="literal">table_schema</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>       Name of the schema that contains the table that contains the
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>table_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the schema that contains the table that contains the
        column that is restricted by some constraint
-      </td>
-</tr>
-<tr>
-<td><code class="literal">table_name</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>       Name of the table that contains the column that is restricted
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>table_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the table that contains the column that is restricted
        by some constraint
-      </td>
-</tr>
-<tr>
-<td><code class="literal">column_name</code></td>
-<td><code class="type">sql_identifier</code></td>
-<td>       Name of the column that is restricted by some constraint
-      </td>
-</tr>
-<tr>
-<td><code class="literal">ordinal_position</code></td>
-<td><code class="type">cardinal_number</code></td>
-<td>       Ordinal position of the column within the constraint key (count
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>column_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the column that is restricted by some constraint
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>ordinal_position</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       Ordinal position of the column within the constraint key (count
        starts at 1)
-      </td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></body>
-</html>
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-enabled-roles.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-parameters.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>enabled_roles</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>parameters</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

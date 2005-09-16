@@ -1,176 +1,498 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Appendix F. The CVS Repository</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
-<link rel="prev" href="release-0-01.html" title="E.63. Postgres95 Release 0.01">
-<link rel="next" href="cvs-tree.html" title="F.2. CVS Tree Organization">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="cvs">
-<div class="titlepage"><div>
-<div><h2 class="title">
-<a name="cvs"></a>Appendix F. The <span class="productname">CVS</span> Repository</h2></div>
-<div><div class="authorgroup">
-<div class="author"><h3 class="author">
-<span class="firstname">Marc</span> <span class="surname">Fournier</span>
-</h3></div>
-<div class="author"><h3 class="author">
-<span class="firstname">Tom</span> <span class="surname">Lane</span>
-</h3></div>
-<div class="author"><h3 class="author">
-<span class="firstname">Thomas</span> <span class="surname">Lockhart</span>
-</h3></div>
-</div></div>
-</div></div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="cvs.html#anoncvs">F.1. Getting The Source Via Anonymous <span class="productname">CVS</span></a></span></dt>
-<dt><span class="sect1"><a href="cvs-tree.html">F.2. <span class="productname">CVS</span> Tree Organization</a></span></dt>
-<dt><span class="sect1"><a href="cvsup.html">F.3. Getting The Source Via <span class="productname">CVSup</span></a></span></dt>
-<dd><dl>
-<dt><span class="sect2"><a href="cvsup.html#id550129">F.3.1. Preparing A <span class="productname">CVSup</span> Client System</a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id550253">F.3.2. Running a <span class="productname">CVSup</span> Client</a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id550440">F.3.3. Installing <span class="productname">CVSup</span></a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id550613">F.3.4. Installation from Sources</a></span></dt>
-</dl></dd>
-</dl>
-</div>
-<p>  The <span class="productname">PostgreSQL</span> source code is stored and managed using the
-  <span class="productname">CVS</span> code management system.
- </p>
-<p>  At least two methods,
-  anonymous CVS and <span class="productname">CVSup</span>,
-  are available to pull the <span class="productname">CVS</span> code tree from the
-  <span class="productname">PostgreSQL</span> server to your local machine.
- </p>
-<div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="anoncvs"></a>F.1. Getting The Source Via Anonymous <span class="productname">CVS</span></h2></div></div></div>
-<p>   If you would like to keep up with the current sources on a regular
-   basis, you can fetch them from our <span class="productname">CVS</span> server
-   and then use <span class="productname">CVS</span> to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The CVS Repository</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
+REL="PREVIOUS"
+TITLE="Postgres95 Release 0.01"
+HREF="release-0-01.html"><LINK
+REL="NEXT"
+TITLE="CVS Tree Organization"
+HREF="cvs-tree.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="APPENDIX"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-0-01.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="docguide.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cvs-tree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="CVS"
+></A
+>Appendix F. The <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Repository</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>F.1. <A
+HREF="cvs.html#ANONCVS"
+>Getting The Source Via Anonymous <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+></A
+></DT
+><DT
+>F.2. <A
+HREF="cvs-tree.html"
+><SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Tree Organization</A
+></DT
+><DT
+>F.3. <A
+HREF="cvsup.html"
+>Getting The Source Via <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+></A
+></DT
+></DL
+></DIV
+><P
+>  The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source code is stored and managed using the
+  <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> code management system.
+ </P
+><P
+>  At least two methods,
+  anonymous CVS and <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+>,
+  are available to pull the <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> code tree from the
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server to your local machine.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ANONCVS"
+>F.1. Getting The Source Via Anonymous <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+></A
+></H1
+><P
+>   If you would like to keep up with the current sources on a regular
+   basis, you can fetch them from our <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> server
+   and then use <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> to
    retrieve updates from time to time.
-  </p>
-<div class="procedure">
-<a name="id549657"></a><p class="title"><b>Anonymous CVS</b></p>
-<ol type="1">
-<li><p>     You will need a local copy of <span class="productname">CVS</span>
+  </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+>Anonymous CVS</B
+></P
+><OL
+TYPE="1"
+><LI
+CLASS="STEP"
+><P
+>     You will need a local copy of <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+>
      (Concurrent Version Control System), which you can get from
-     <a href="http://www.cvshome.org/" target="_top">http://www.cvshome.org/</a>
+     <A
+HREF="http://www.nongnu.org/cvs/"
+TARGET="_top"
+>http://www.nongnu.org/cvs/</A
+>
      (the official site with the latest version) or any GNU software
      archive site (often somewhat outdated). We recommend version 1.10
      or newer. Many systems have a recent version of
-     <span class="application">cvs</span> installed by default.
-    </p></li>
-<li>
-<p>     Do an initial login to the <span class="productname">CVS</span> server:
+     <SPAN
+CLASS="APPLICATION"
+>cvs</SPAN
+> installed by default.
+    </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>     Do an initial login to the <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> server:
 
-     </p>
-<pre class="programlisting">cvs -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot login
-     </pre>
-<p>
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>cvs -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot login
+     </PRE
+><P>
 
      You will be prompted for a password; you can enter anything except
      an empty string.
-    </p>
-<p>     You should only need to do this once, since the password will be
-     saved in <code class="literal">.cvspass</code> in your home directory.
-    </p>
-</li>
-<li>
-<p>     Fetch the <span class="productname">PostgreSQL</span> sources:
-     </p>
-<pre class="programlisting">cvs -z3 -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot co -P pgsql
-     </pre>
-<p>
+    </P
+><P
+>     You should only need to do this once, since the password will be
+     saved in <TT
+CLASS="LITERAL"
+>.cvspass</TT
+> in your home directory.
+    </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>     Fetch the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sources:
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>cvs -z3 -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot co -P pgsql
+     </PRE
+><P>
 
-     This installs the <span class="productname">PostgreSQL</span> sources into a
-     subdirectory <code class="filename">pgsql</code>
+     This installs the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sources into a
+     subdirectory <TT
+CLASS="FILENAME"
+>pgsql</TT
+>
      of the directory you are currently in.
 
-     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>       If you have a fast link to the Internet, you may not need
-       <code class="option">-z3</code>, which instructs
-       <span class="productname">CVS</span> to use gzip compression for transferred data.  But
+     </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       If you have a fast link to the Internet, you may not need
+       <TT
+CLASS="OPTION"
+>-z3</TT
+>, which instructs
+       <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> to use gzip compression for transferred data.  But
        on a modem-speed link, it's a very substantial win.
-      </p>
-</div>
-<p>
-    </p>
-<p>     This initial checkout is a little slower than simply downloading
-     a <code class="filename">tar.gz</code> file; expect it to take 40 minutes or so if you
+      </P
+></BLOCKQUOTE
+></DIV
+><P>
+    </P
+><P
+>     This initial checkout is a little slower than simply downloading
+     a <TT
+CLASS="FILENAME"
+>tar.gz</TT
+> file; expect it to take 40 minutes or so if you
      have a 28.8K modem.  The advantage of
-     <span class="productname">CVS</span>
+     <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+>
      doesn't show up until you want to update the file set later on.
-    </p>
-</li>
-<li>
-<p>     Whenever you want to update to the latest <span class="productname">CVS</span> sources,
-     <code class="command">cd</code> into
-     the <code class="filename">pgsql</code> subdirectory, and issue
-     </p>
-<pre class="programlisting">$ cvs -z3 update -d -P
-     </pre>
-<p>
+    </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>     Whenever you want to update to the latest <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> sources,
+     <TT
+CLASS="COMMAND"
+>cd</TT
+> into
+     the <TT
+CLASS="FILENAME"
+>pgsql</TT
+> subdirectory, and issue
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>$ cvs -z3 update -d -P
+     </PRE
+><P>
 
      This will fetch only the changes since the last time you updated.
      You can update in just a couple of minutes, typically, even over
      a modem-speed line.
-    </p>
-</li>
-<li>
-<p>     You can save yourself some typing by making a file <code class="filename">.cvsrc</code>
+    </P
+></LI
+><LI
+CLASS="STEP"
+><P
+>     You can save yourself some typing by making a file <TT
+CLASS="FILENAME"
+>.cvsrc</TT
+>
      in your home directory that contains
 
-     </p>
-<pre class="programlisting">cvs -z3
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>cvs -z3
 update -d -P
-     </pre>
-<p>
+     </PRE
+><P>
 
-     This supplies the <code class="option">-z3</code> option to all cvs commands, and the
-     <code class="option">-d</code> and <code class="option">-P</code> options to cvs update.  Then you just have
+     This supplies the <TT
+CLASS="OPTION"
+>-z3</TT
+> option to all cvs commands, and the
+     <TT
+CLASS="OPTION"
+>-d</TT
+> and <TT
+CLASS="OPTION"
+>-P</TT
+> options to cvs update.  Then you just have
      to say
-     </p>
-<pre class="programlisting">$ cvs update
-     </pre>
-<p>
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>$ cvs update
+     </PRE
+><P>
 
      to update your files.
-    </p>
-</li>
-</ol>
-</div>
-<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Caution</h3>
-<p>    Some older versions of <span class="productname">CVS</span> have a bug that
+    </P
+></LI
+></OL
+></DIV
+><DIV
+CLASS="CAUTION"
+><P
+></P
+><TABLE
+CLASS="CAUTION"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Caution</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>    Some older versions of <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> have a bug that
     causes all checked-out files to be stored world-writable in your
     directory.  If you see that this has happened, you can do something like
-    </p>
-<pre class="programlisting">$ chmod -R go-w pgsql
-    </pre>
-<p>
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>$ chmod -R go-w pgsql
+    </PRE
+><P>
     to set the permissions properly.
     This bug is fixed as of
-    <span class="productname">CVS</span> version 1.9.28.
-   </p>
-</div>
-<p>   <span class="productname">CVS</span> can do a lot of other things,
+    <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> version 1.9.28.
+   </P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> can do a lot of other things,
    such as fetching prior revisions
-   of the <span class="productname">PostgreSQL</span> sources
+   of the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sources
    rather than the latest development version.
    For more info consult the manual that comes with
-   <span class="productname">CVS</span>, or see the online
+   <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+>, or see the online
    documentation at
-   <a href="http://www.cvshome.org/" target="_top">http://www.cvshome.org/</a>.
-  </p>
-</div>
-</div></body>
-</html>
+   <A
+HREF="http://www.nongnu.org/cvs/"
+TARGET="_top"
+>http://www.nongnu.org/cvs/</A
+>.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-0-01.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cvs-tree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.01</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="appendixes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Tree Organization</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

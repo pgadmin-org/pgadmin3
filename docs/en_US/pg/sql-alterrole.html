@@ -1,0 +1,679 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER ROLE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER OPERATOR CLASS"
+HREF="sql-alteropclass.html"><LINK
+REL="NEXT"
+TITLE="ALTER SCHEMA"
+HREF="sql-alterschema.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteropclass.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteropclass.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERROLE"
+></A
+>ALTER ROLE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38844"
+></A
+><H2
+>Name</H2
+>ALTER ROLE&nbsp;--&nbsp;change a database role</DIV
+><A
+NAME="AEN38847"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38849"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [ [ WITH ] <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> [ ... ] ]
+
+where <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> can be:
+    
+      SUPERUSER | NOSUPERUSER
+    | CREATEDB | NOCREATEDB
+    | CREATEROLE | NOCREATEROLE
+    | CREATEUSER | NOCREATEUSER
+    | INHERIT | NOINHERIT
+    | LOGIN | NOLOGIN
+    | CONNECTION LIMIT <TT
+CLASS="REPLACEABLE"
+><I
+>connlimit</I
+></TT
+>
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
+CLASS="REPLACEABLE"
+><I
+>password</I
+></TT
+>'
+    | VALID UNTIL '<TT
+CLASS="REPLACEABLE"
+><I
+>timestamp</I
+></TT
+>' 
+
+ALTER ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> RENAME TO <TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+>
+
+ALTER ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> SET <TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+> { TO | = } { <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> | DEFAULT }
+ALTER ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> RESET <TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38864"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER ROLE</TT
+> changes the attributes of a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> role.
+  </P
+><P
+>   The first variant of this command listed in the synopsis can change
+   many of the role attributes that can be specified in 
+   <A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+>,
+   which see for details.  (All the possible attributes are covered,
+   except that there are no options for adding or removing memberships; use
+   <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> and
+   <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+> for that.)
+   Attributes not mentioned in the command retain their previous settings.
+   Database superusers can change any of these settings for any role.
+   Roles having <TT
+CLASS="LITERAL"
+>CREATEROLE</TT
+> privilege can change any of these
+   settings, but only for non-superuser roles.
+   Ordinary roles can only change their own password.
+  </P
+><P
+>   The second variant changes the name of the role.
+   Database superusers can rename any role.
+   Roles having <TT
+CLASS="LITERAL"
+>CREATEROLE</TT
+> privilege can rename non-superuser
+   roles.
+   The current session user cannot be renamed.
+   (Connect as a different user if you need to do that.)
+   Because <TT
+CLASS="LITERAL"
+>MD5</TT
+>-encrypted passwords use the role name as
+   cryptographic salt, renaming a role clears its password if the
+   password is <TT
+CLASS="LITERAL"
+>MD5</TT
+>-encrypted.
+  </P
+><P
+>   The third and the fourth variant change a role's session default for
+   a specified configuration variable.  Whenever the role subsequently
+   starts a new session, the specified value becomes the session default,
+   overriding whatever setting is present in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>
+   or has been received from the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> command line.
+   (For a role without <TT
+CLASS="LITERAL"
+>LOGIN</TT
+> privilege, session defaults have
+   no effect.)
+   Ordinary roles can change their own session defaults.
+   Superusers can change anyone's session defaults.
+   Roles having <TT
+CLASS="LITERAL"
+>CREATEROLE</TT
+> privilege can change defaults for
+   non-superuser roles.
+   Certain variables cannot be set this way, or can only be
+   set if a superuser issues the command.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38883"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>        The name of the role whose attributes are to be altered.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SUPERUSER</TT
+><BR><TT
+CLASS="LITERAL"
+>NOSUPERUSER</TT
+><BR><TT
+CLASS="LITERAL"
+>CREATEDB</TT
+><BR><TT
+CLASS="LITERAL"
+>NOCREATEDB</TT
+><BR><TT
+CLASS="LITERAL"
+>CREATEROLE</TT
+><BR><TT
+CLASS="LITERAL"
+>NOCREATEROLE</TT
+><BR><TT
+CLASS="LITERAL"
+>CREATEUSER</TT
+><BR><TT
+CLASS="LITERAL"
+>NOCREATEUSER</TT
+><BR><TT
+CLASS="LITERAL"
+>INHERIT</TT
+><BR><TT
+CLASS="LITERAL"
+>NOINHERIT</TT
+><BR><TT
+CLASS="LITERAL"
+>LOGIN</TT
+><BR><TT
+CLASS="LITERAL"
+>NOLOGIN</TT
+><BR><TT
+CLASS="LITERAL"
+>CONNECTION LIMIT</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>connlimit</I
+></TT
+><BR><TT
+CLASS="LITERAL"
+>PASSWORD</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>password</I
+></TT
+><BR><TT
+CLASS="LITERAL"
+>ENCRYPTED</TT
+><BR><TT
+CLASS="LITERAL"
+>UNENCRYPTED</TT
+><BR><TT
+CLASS="LITERAL"
+>VALID UNTIL</TT
+> '<TT
+CLASS="REPLACEABLE"
+><I
+>timestamp</I
+></TT
+>'</DT
+><DD
+><P
+>        These clauses alter attributes originally set by
+        <A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+>,
+        which see for more information.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+></DT
+><DD
+><P
+>        The new name of the role.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+></DT
+><DD
+><P
+>        Set this role's session default for the specified configuration
+        parameter to the given value.  If
+        <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+>
+        or, equivalently, <TT
+CLASS="LITERAL"
+>RESET</TT
+> is used, the
+        role-specific variable setting is removed, so the role will
+        inherit the system-wide default setting in new sessions.  Use
+        <TT
+CLASS="LITERAL"
+>RESET ALL</TT
+> to clear all role-specific settings.
+       </P
+><P
+>        See <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> and <A
+HREF="runtime-config.html"
+>Chapter 17</A
+> for more information about allowed
+        parameter names and values.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38951"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+>
+   to add new roles, and <A
+HREF="sql-droprole.html"
+><I
+>DROP ROLE</I
+></A
+> to remove a role.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER ROLE</TT
+> cannot change a role's memberships.
+   Use <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> and
+   <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+>
+   to do that.
+  </P
+><P
+>   It is also possible to tie a
+   session default to a specific database rather than to a role; see
+   <A
+HREF="sql-alterdatabase.html"
+><I
+>ALTER DATABASE</I
+></A
+>.
+   Role-specific settings override database-specific
+   ones if there is a conflict.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38962"
+></A
+><H2
+>Examples</H2
+><P
+>   Change a role's password:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER ROLE davide WITH PASSWORD 'hu8jmn3';</PRE
+><P>
+  </P
+><P
+>   Change a password expiration date, specifying that the password
+   should expire at midday on 4th May 2015 using
+   the time zone which is one hour ahead of <ACRONYM
+CLASS="ACRONYM"
+>UTC</ACRONYM
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER ROLE chris VALID UNTIL 'May 4 12:00:00 2015 +1';</PRE
+><P>
+  </P
+><P
+>   Make a password valid forever:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER ROLE fred VALID UNTIL 'infinity';</PRE
+><P>
+  </P
+><P
+>   Give a role the ability to create other roles and new databases:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER ROLE miriam CREATEROLE CREATEDB;</PRE
+><P>
+  </P
+><P
+>   Give a role a non-default setting of the
+   <A
+HREF="runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM"
+>maintenance_work_mem</A
+> parameter:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER ROLE worker_bee SET maintenance_work_mem = 100000;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38976"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>ALTER ROLE</TT
+> statement is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38981"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+>, <A
+HREF="sql-droprole.html"
+><I
+>DROP ROLE</I
+></A
+>, <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteropclass.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER OPERATOR CLASS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER SCHEMA</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,106 +1,390 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER INDEX</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-altergroup.html" title="ALTER GROUP">
-<link rel="next" href="sql-alterlanguage.html" title="ALTER LANGUAGE">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-alterindex"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>ALTER INDEX &#8212; change the definition of an index</p>
-</div>
-<a name="id437046"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">ALTER INDEX <em class="replaceable"><code>name</code></em> <em class="replaceable"><code>action</code></em> [, ... ]
-ALTER INDEX <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>new_name</code></em>
-
-where <em class="replaceable"><code>action</code></em> is one of:
-
-    OWNER TO <em class="replaceable"><code>new_owner</code></em>
-    SET TABLESPACE <em class="replaceable"><code>indexspace_name</code></em></pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437103"></a><h2>Description</h2>
-<p>   <code class="command">ALTER INDEX</code> changes the definition of an existing index.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER INDEX</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER GROUP"
+HREF="sql-altergroup.html"><LINK
+REL="NEXT"
+TITLE="ALTER LANGUAGE"
+HREF="sql-alterlanguage.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterlanguage.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterlanguage.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERINDEX"
+></A
+>ALTER INDEX</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38617"
+></A
+><H2
+>Name</H2
+>ALTER INDEX&nbsp;--&nbsp;change the definition of an index</DIV
+><A
+NAME="AEN38620"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38622"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER INDEX <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> RENAME TO <TT
+CLASS="REPLACEABLE"
+><I
+>new_name</I
+></TT
+>
+ALTER INDEX <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> SET TABLESPACE <TT
+CLASS="REPLACEABLE"
+><I
+>tablespace_name</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38628"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER INDEX</TT
+> changes the definition of an existing index.
    There are several subforms:
 
-  </p>
-<div class="variablelist"><dl>
-<dt><span class="term"><code class="literal">OWNER</code></span></dt>
-<dd><p>      This form changes the owner of the index to the
-      specified user.  This can only be done by a superuser.
-     </p></dd>
-<dt><span class="term"><code class="literal">SET TABLESPACE</code></span></dt>
-<dd><p>      This form changes the index's tablespace to the specified tablespace and
+  <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>RENAME</TT
+></DT
+><DD
+><P
+>      The <TT
+CLASS="LITERAL"
+>RENAME</TT
+> form changes the name of the index. 
+      There is no effect on the stored data.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SET TABLESPACE</TT
+></DT
+><DD
+><P
+>      This form changes the index's tablespace to the specified tablespace and
       moves the data file(s) associated with the index to the new tablespace.
       See also 
-      <a href="sql-createtablespace.html">CREATE TABLESPACE</a>.
-     </p></dd>
-<dt><span class="term"><code class="literal">RENAME</code></span></dt>
-<dd><p>      The <code class="literal">RENAME</code> form changes the name of the index. 
-	  There is no effect on the stored data.
-     </p></dd>
-</dl></div>
-<p>
-  </p>
-<p>   All the actions except <code class="literal">RENAME</code> can be combined into
-   a list of multiple alterations to apply in parallel.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437176"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
-<dd><p>	The name (possibly schema-qualified) of an existing index to
-	alter.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>new_name</code></em></span></dt>
-<dd><p>	New name for the index.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>new_owner</code></em></span></dt>
-<dd><p>	The user name of the new owner of the index.
-       </p></dd>
-<dt><span class="term"><em class="replaceable"><code>tablespace_name</code></em></span></dt>
-<dd><p>	The tablespace name to which the index will be moved.
-       </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437223"></a><h2>Notes</h2>
-<p>    These operations are also possible using
-    <a href="sql-altertable.html">ALTER TABLE</a>.
-    <code class="command">ALTER INDEX</code> is in fact just an alias for the forms
-    of <code class="command">ALTER TABLE</code> that apply to indexes.
-   </p>
-<p>    Changing any part of a system catalog index is not permitted.
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437254"></a><h2>Examples</h2>
-<p>   To rename an existing index:
-</p>
-<pre class="programlisting">ALTER INDEX distributors RENAME TO suppliers;</pre>
-<p>
-  </p>
-<p> 
-	To move a index to a different tablespace:
-</p>
-<pre class="programlisting">ALTER INDEX distributors SET TABLESPACE fasttablespace;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id437274"></a><h2>Compatibility</h2>
-<p>   <code class="command">ALTER INDEX</code> is a <span class="productname">PostgreSQL</span>
+      <A
+HREF="sql-createtablespace.html"
+><I
+>CREATE TABLESPACE</I
+></A
+>.
+     </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38645"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>        The name (possibly schema-qualified) of an existing index to
+        alter.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>new_name</I
+></TT
+></DT
+><DD
+><P
+>        New name for the index.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>tablespace_name</I
+></TT
+></DT
+><DD
+><P
+>        The tablespace to which the index will be moved.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38663"
+></A
+><H2
+>Notes</H2
+><P
+>    These operations are also possible using
+    <A
+HREF="sql-altertable.html"
+><I
+>ALTER TABLE</I
+></A
+>.
+    <TT
+CLASS="COMMAND"
+>ALTER INDEX</TT
+> is in fact just an alias for the forms
+    of <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+> that apply to indexes.
+   </P
+><P
+>    There was formerly an <TT
+CLASS="COMMAND"
+>ALTER INDEX OWNER</TT
+> variant, but
+    this is now ignored (with a warning).  An index cannot have an owner
+    different from its table's owner.  Changing the table's owner
+    automatically changes the index as well.
+   </P
+><P
+>    Changing any part of a system catalog index is not permitted.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38672"
+></A
+><H2
+>Examples</H2
+><P
+>   To rename an existing index:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER INDEX distributors RENAME TO suppliers;</PRE
+><P>
+  </P
+><P
+> 
+   To move an index to a different tablespace:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER INDEX distributors SET TABLESPACE fasttablespace;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38678"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER INDEX</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
    extension.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterlanguage.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER GROUP</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER LANGUAGE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

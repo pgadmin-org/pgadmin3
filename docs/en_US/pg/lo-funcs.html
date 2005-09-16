@@ -1,36 +1,155 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>28.4. Server-Side Functions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="largeobjects.html" title="Chapter 28. Large Objects">
-<link rel="prev" href="lo-interfaces.html" title="28.3. Client Interfaces">
-<link rel="next" href="lo-examplesect.html" title="28.5. Example Program">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="lo-funcs"></a>28.4. Server-Side Functions</h2></div></div></div>
-<p>   There are server-side functions callable from SQL that correspond to
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Server-Side Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Large Objects"
+HREF="largeobjects.html"><LINK
+REL="PREVIOUS"
+TITLE="Client Interfaces"
+HREF="lo-interfaces.html"><LINK
+REL="NEXT"
+TITLE="Example Program"
+HREF="lo-examplesect.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="lo-interfaces.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 29. Large Objects</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="lo-examplesect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LO-FUNCS"
+>29.4. Server-Side Functions</A
+></H1
+><P
+>   There are server-side functions callable from SQL that correspond to
    each of the client-side functions described above; indeed, for the
    most part the client-side functions are simply interfaces to the
    equivalent server-side functions.  The ones that are actually useful
    to call via SQL commands are
-   <code class="function">lo_creat</code><a name="id393762"></a>,
-   <code class="function">lo_unlink</code><a name="id393774"></a>,
-   <code class="function">lo_import</code><a name="id393786"></a>, and
-   <code class="function">lo_export</code><a name="id393797"></a>.
+   <CODE
+CLASS="FUNCTION"
+>lo_creat</CODE
+><A
+NAME="AEN26608"
+></A
+>,
+   <CODE
+CLASS="FUNCTION"
+>lo_create</CODE
+><A
+NAME="AEN26611"
+></A
+>,
+   <CODE
+CLASS="FUNCTION"
+>lo_unlink</CODE
+><A
+NAME="AEN26614"
+></A
+>,
+   <CODE
+CLASS="FUNCTION"
+>lo_import</CODE
+><A
+NAME="AEN26617"
+></A
+>, and
+   <CODE
+CLASS="FUNCTION"
+>lo_export</CODE
+><A
+NAME="AEN26620"
+></A
+>.
    Here are examples of their use:
 
-</p>
-<pre class="programlisting">CREATE TABLE image (
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE image (
     name            text,
     raster          oid
 );
 
 SELECT lo_creat(-1);       -- returns OID of new, empty large object
+
+SELECT lo_create(43213);   -- attempts to create large object with OID 43213
 
 SELECT lo_unlink(173454);  -- deletes large object with OID 173454
 
@@ -38,18 +157,92 @@ INSERT INTO image (name, raster)
     VALUES ('beautiful image', lo_import('/etc/motd'));
 
 SELECT lo_export(image.raster, '/tmp/motd') FROM image
-    WHERE name = 'beautiful image';</pre>
-<p>
-  </p>
-<p>    The server-side <code class="function">lo_import</code> and
-    <code class="function">lo_export</code> functions behave considerably differently
+    WHERE name = 'beautiful image';</PRE
+><P>
+  </P
+><P
+>    The server-side <CODE
+CLASS="FUNCTION"
+>lo_import</CODE
+> and
+    <CODE
+CLASS="FUNCTION"
+>lo_export</CODE
+> functions behave considerably differently
     from their client-side analogs.  These two functions read and write files
     in the server's file system, using the permissions of the database's
     owning user.  Therefore, their use is restricted to superusers.  In
     contrast, the client-side import and export functions read and write files
     in the client's file system, using the permissions of the client program.
     The client-side functions can be used by any
-    <span class="productname">PostgreSQL</span> user.
-  </p>
-</div></body>
-</html>
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="lo-interfaces.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="lo-examplesect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Client Interfaces</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="largeobjects.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Example Program</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DROP ROLE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP OPERATOR CLASS"
+HREF="sql-dropopclass.html"><LINK
+REL="NEXT"
+TITLE="DROP RULE"
+HREF="sql-droprule.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropopclass.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropopclass.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-droprule.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-droprule.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPROLE"
+></A
+>DROP ROLE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44823"
+></A
+><H2
+>Name</H2
+>DROP ROLE&nbsp;--&nbsp;remove a database role</DIV
+><A
+NAME="AEN44826"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44828"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [, ...]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44831"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP ROLE</TT
+> removes the specified role(s).
+   To drop a superuser role, you must be a superuser yourself;
+   to drop non-superuser roles, you must have <TT
+CLASS="LITERAL"
+>CREATEROLE</TT
+>
+   privilege.
+  </P
+><P
+>   A role cannot be removed if it is still referenced in any database
+   of the cluster; an error will be raised if so.  Before dropping the role,
+   you must drop all the objects it owns (or reassign their ownership)
+   and revoke any privileges the role has been granted.
+  </P
+><P
+>   However, it is not necessary to remove role memberships involving
+   the role; <TT
+CLASS="COMMAND"
+>DROP ROLE</TT
+> automatically revokes any memberships
+   of the target role in other roles, and of other roles in the target role.
+   The other roles are not dropped nor otherwise affected.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44839"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name of the role to remove.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44847"
+></A
+><H2
+>Notes</H2
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> includes a program <A
+HREF="app-dropuser.html"
+><I
+><I
+>dropuser</I
+></I
+></A
+> that has the
+   same functionality as this command (in fact, it calls this command)
+   but can be run from the command shell.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44852"
+></A
+><H2
+>Examples</H2
+><P
+>   To drop a role:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP ROLE jonathan;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44856"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL standard defines <TT
+CLASS="COMMAND"
+>DROP ROLE</TT
+>, but it allows
+   only one role to be dropped at a time, and it specifies different
+   privilege requirements than <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44861"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createrole.html"
+><I
+>CREATE ROLE</I
+></A
+>, <A
+HREF="sql-alterrole.html"
+><I
+>ALTER ROLE</I
+></A
+>, <A
+HREF="sql-set-role.html"
+><I
+>SET ROLE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropopclass.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-droprule.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP OPERATOR CLASS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP RULE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

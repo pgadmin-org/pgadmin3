@@ -1,0 +1,431 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_autovacuum</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_auth_members"
+HREF="catalog-pg-auth-members.html"><LINK
+REL="NEXT"
+TITLE="pg_cast"
+HREF="catalog-pg-cast.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-auth-members.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-cast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-AUTOVACUUM"
+>42.10. <TT
+CLASS="STRUCTNAME"
+>pg_autovacuum</TT
+></A
+></H1
+><A
+NAME="AEN55827"
+></A
+><A
+NAME="AEN55829"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_autovacuum</TT
+> stores optional
+   per-relation configuration parameters for <A
+HREF="maintenance.html#AUTOVACUUM"
+><I
+>The auto-vacuum daemon</I
+></A
+>.
+   If there is an entry here for a particular relation, the given
+   parameters will be used for autovacuuming that table.  If no entry
+   is present, the system-wide defaults will be used.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN55835"
+></A
+><P
+><B
+>Table 42-10. <TT
+CLASS="STRUCTNAME"
+>pg_autovacuum</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>vacrelid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>The table this entry is for</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>enabled</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>If false, this table is never autovacuumed</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>vac_base_thresh</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Minimum number of modified tuples before vacuum</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>vac_scale_factor</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>float4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Multiplier for reltuples to add to
+       <TT
+CLASS="STRUCTFIELD"
+>vac_base_thresh</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>anl_base_thresh</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Minimum number of modified tuples before analyze</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>anl_scale_factor</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>float4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Multiplier for reltuples to add to
+       <TT
+CLASS="STRUCTFIELD"
+>anl_base_thresh</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>vac_cost_delay</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Custom <TT
+CLASS="VARNAME"
+>vacuum_cost_delay</TT
+> parameter</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>vac_cost_limit</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Custom <TT
+CLASS="VARNAME"
+>vacuum_cost_limit</TT
+> parameter</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The autovacuum daemon will initiate a <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> operation
+   on a particular table when the number of updated or deleted tuples
+   exceeds <TT
+CLASS="STRUCTFIELD"
+>vac_base_thresh</TT
+> plus
+   <TT
+CLASS="STRUCTFIELD"
+>vac_scale_factor</TT
+> times the number of
+   live tuples currently estimated to be in the relation.
+   Similarly, it will initiate an <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> operation
+   when the number of inserted, updated or deleted tuples
+   exceeds <TT
+CLASS="STRUCTFIELD"
+>anl_base_thresh</TT
+> plus
+   <TT
+CLASS="STRUCTFIELD"
+>anl_scale_factor</TT
+> times the number of
+   live tuples currently estimated to be in the relation.
+  </P
+><P
+>   Any of the numerical fields can contain <TT
+CLASS="LITERAL"
+>-1</TT
+> (or indeed
+   any negative value) to indicate that the system-wide default should
+   be used for this particular value.  Observe that the
+   <TT
+CLASS="STRUCTFIELD"
+>vac_cost_delay</TT
+> variable inherits its default value from the
+   <TT
+CLASS="VARNAME"
+>autovacuum_vacuum_cost_delay</TT
+> configuration parameter,
+   or from <TT
+CLASS="VARNAME"
+>vacuum_cost_delay</TT
+> if the former is set to a negative
+   value.  The same applies to <TT
+CLASS="STRUCTFIELD"
+>vac_cost_limit</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-auth-members.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-cast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_auth_members</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

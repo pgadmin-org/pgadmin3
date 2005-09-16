@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Preset Options</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Run-time Configuration"
+HREF="runtime-config.html"><LINK
+REL="PREVIOUS"
+TITLE="Version and Platform Compatibility"
+HREF="runtime-config-compatible.html"><LINK
+REL="NEXT"
+TITLE="Customized Options"
+HREF="runtime-config-custom.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-compatible.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Run-time Configuration</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-custom.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RUNTIME-CONFIG-PRESET"
+>17.13. Preset Options</A
+></H1
+><P
+>     The following <SPAN
+CLASS="QUOTE"
+>"parameters"</SPAN
+> are read-only, and are determined
+     when <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is compiled or when it is
+     installed. As such, they have been excluded from the sample
+     <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.  These options report
+     various aspects of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> behavior
+     that may be of interest to certain applications, particularly
+     administrative front-ends.
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+NAME="GUC-BLOCK-SIZE"
+></A
+><TT
+CLASS="VARNAME"
+>block_size</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Reports the size of a disk block.  It is determined by the value
+        of <TT
+CLASS="LITERAL"
+>BLCKSZ</TT
+> when building the server. The default
+        value is 8192 bytes.  The meaning of some configuration
+        variables (such as <A
+HREF="runtime-config-resource.html#GUC-SHARED-BUFFERS"
+>shared_buffers</A
+>) is
+        influenced by <TT
+CLASS="VARNAME"
+>block_size</TT
+>. See <A
+HREF="runtime-config-resource.html"
+>Section 17.4</A
+> for information.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-INTEGER-DATETIMES"
+></A
+><TT
+CLASS="VARNAME"
+>integer_datetimes</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Reports whether <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> was built
+        with support for 64-bit-integer dates and times.  It is set by
+        configuring with <TT
+CLASS="LITERAL"
+>--enable-integer-datetimes</TT
+>
+        when building <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  The
+        default value is <TT
+CLASS="LITERAL"
+>off</TT
+>.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-LC-COLLATE"
+></A
+><TT
+CLASS="VARNAME"
+>lc_collate</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Reports the locale in which sorting of textual data is done.
+        See <A
+HREF="charset.html#LOCALE"
+>Section 21.1</A
+> for more information.
+        The value is determined when the database cluster is initialized.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-LC-CTYPE"
+></A
+><TT
+CLASS="VARNAME"
+>lc_ctype</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Reports the locale that determines character classifications.
+        See <A
+HREF="charset.html#LOCALE"
+>Section 21.1</A
+> for more information.
+        The value is determined when the database cluster is initialized.
+        Ordinarily this will be the same as <TT
+CLASS="VARNAME"
+>lc_collate</TT
+>,
+        but for special applications it might be set differently.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-MAX-FUNCTION-ARGS"
+></A
+><TT
+CLASS="VARNAME"
+>max_function_args</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Reports the maximum number of function arguments. It is determined by
+        the value of <TT
+CLASS="LITERAL"
+>FUNC_MAX_ARGS</TT
+> when building the server. The
+        default value is 100.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-MAX-IDENTIFIER-LENGTH"
+></A
+><TT
+CLASS="VARNAME"
+>max_identifier_length</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Reports the maximum identifier length. It is determined as one
+        less than the value of <TT
+CLASS="LITERAL"
+>NAMEDATALEN</TT
+> when building
+        the server. The default value of <TT
+CLASS="LITERAL"
+>NAMEDATALEN</TT
+> is
+        64; therefore the default
+        <TT
+CLASS="VARNAME"
+>max_identifier_length</TT
+> is 63.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-MAX-INDEX-KEYS"
+></A
+><TT
+CLASS="VARNAME"
+>max_index_keys</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Reports the maximum number of index keys. It is determined by
+        the value of <TT
+CLASS="LITERAL"
+>INDEX_MAX_KEYS</TT
+> when building the server. The
+        default value is 32.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-SERVER-ENCODING"
+></A
+><TT
+CLASS="VARNAME"
+>server_encoding</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Reports the database encoding (character set).
+        It is determined when the database is created.  Ordinarily,
+        clients need only be concerned with the value of <A
+HREF="runtime-config-client.html#GUC-CLIENT-ENCODING"
+>client_encoding</A
+>.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-SERVER-VERSION"
+></A
+><TT
+CLASS="VARNAME"
+>server_version</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Reports the version number of the server. It is determined by the
+        value of <TT
+CLASS="LITERAL"
+>PG_VERSION</TT
+> when building the server.
+       </P
+></DD
+><DT
+><A
+NAME="GUC-STANDARD-CONFORMING-STRINGS"
+></A
+><TT
+CLASS="VARNAME"
+>standard_conforming_strings</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Reports whether ordinary string literals
+        (<TT
+CLASS="LITERAL"
+>'...'</TT
+>) treat backslashes literally, as specified in
+        the SQL standard.  The value is currently always <TT
+CLASS="LITERAL"
+>off</TT
+>,
+        indicating that backslashes are treated as escapes.  It is planned
+        that this will change to <TT
+CLASS="LITERAL"
+>on</TT
+> in a future
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> release when string literal
+        syntax changes to meet the standard.  Applications may check this
+        parameter to determine how string literals will be processed.
+        The presence of this parameter can also be taken as an indication
+        that the escape string syntax (<TT
+CLASS="LITERAL"
+>E'...'</TT
+>) is supported.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime-config-compatible.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime-config-custom.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Version and Platform Compatibility</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime-config.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Customized Options</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

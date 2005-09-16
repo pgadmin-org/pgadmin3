@@ -1,157 +1,521 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CLUSTER</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-close.html" title="CLOSE">
-<link rel="next" href="sql-comment.html" title="COMMENT">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="sql-cluster"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>CLUSTER &#8212; cluster a table according to an index</p>
-</div>
-<a name="id441453"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">CLUSTER <em class="replaceable"><code>indexname</code></em> ON <em class="replaceable"><code>tablename</code></em>
-CLUSTER <em class="replaceable"><code>tablename</code></em>
-CLUSTER</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id441486"></a><h2>Description</h2>
-<p>   <code class="command">CLUSTER</code> instructs <span class="productname">PostgreSQL</span> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CLUSTER</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CLOSE"
+HREF="sql-close.html"><LINK
+REL="NEXT"
+TITLE="COMMENT"
+HREF="sql-comment.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-close.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-close.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-comment.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-comment.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CLUSTER"
+></A
+>CLUSTER</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39971"
+></A
+><H2
+>Name</H2
+>CLUSTER&nbsp;--&nbsp;cluster a table according to an index</DIV
+><A
+NAME="AEN39974"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39976"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CLUSTER <TT
+CLASS="REPLACEABLE"
+><I
+>indexname</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>
+CLUSTER <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>
+CLUSTER</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39981"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> instructs <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
    to cluster the table specified
-   by <em class="replaceable"><code>tablename</code></em>
+   by <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>
    based on the index specified by
-   <em class="replaceable"><code>indexname</code></em>. The index must
+   <TT
+CLASS="REPLACEABLE"
+><I
+>indexname</I
+></TT
+>. The index must
    already have been defined on 
-   <em class="replaceable"><code>tablename</code></em>.
-  </p>
-<p>   When a table is clustered, it is physically reordered
+   <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>.
+  </P
+><P
+>   When a table is clustered, it is physically reordered
    based on the index information. Clustering is a one-time operation:
    when the table is subsequently updated, the changes are
    not clustered.  That is, no attempt is made to store new or
    updated rows according to their index order.  If one wishes, one can
    periodically recluster by issuing the command again.
-  </p>
-<p>   When a table is clustered, <span class="productname">PostgreSQL</span>
+  </P
+><P
+>   When a table is clustered, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
    remembers on which index it was clustered.  The form
-   <code class="command">CLUSTER <em class="replaceable"><code>tablename</code></em></code>
+   <TT
+CLASS="COMMAND"
+>CLUSTER <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+></TT
+>
    reclusters the table on the same index that it was clustered before.
-  </p>
-<p>   <code class="command">CLUSTER</code> without any parameter reclusters all the tables
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> without any parameter reclusters all the tables
    in the
    current database that the calling user owns, or all tables if called
    by a superuser.  (Never-clustered tables are not included.)  This
-   form of <code class="command">CLUSTER</code> cannot be called from inside a
+   form of <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> cannot be called from inside a
    transaction or function.
-  </p>
-<p>   When a table is being clustered, an <code class="literal">ACCESS
-   EXCLUSIVE</code> lock is acquired on it. This prevents any other
+  </P
+><P
+>   When a table is being clustered, an <TT
+CLASS="LITERAL"
+>ACCESS
+   EXCLUSIVE</TT
+> lock is acquired on it. This prevents any other
    database operations (both reads and writes) from operating on the
-   table until the <code class="command">CLUSTER</code> is finished.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id441580"></a><h2>Parameters</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><em class="replaceable"><code>indexname</code></em></span></dt>
-<dd><p>      The name of an index.
-     </p></dd>
-<dt><span class="term"><em class="replaceable"><code>tablename</code></em></span></dt>
-<dd><p>      The name (possibly schema-qualified) of a table.
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id441605"></a><h2>Notes</h2>
-<p>    In cases where you are accessing single rows randomly
+   table until the <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> is finished.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40000"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>indexname</I
+></TT
+></DT
+><DD
+><P
+>      The name of an index.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+></DT
+><DD
+><P
+>      The name (possibly schema-qualified) of a table.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40013"
+></A
+><H2
+>Notes</H2
+><P
+>    In cases where you are accessing single rows randomly
     within a table, the actual order of the data in the
     table is unimportant. However, if you tend to access some
     data more than others, and there is an index that groups
-    them together, you will benefit from using <code class="command">CLUSTER</code>.
+    them together, you will benefit from using <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+>.
     If you are requesting a range of indexed values from a table, or a
     single indexed value that has multiple rows that match,
-    <code class="command">CLUSTER</code> will help because once the index identifies the
+    <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> will help because once the index identifies the
     heap page for the first row that matches, all other rows
     that match are probably already on the same heap page,
     and so you save disk accesses and speed up the query.
-   </p>
-<p>    During the cluster operation, a temporary copy of the table is created
+   </P
+><P
+>    During the cluster operation, a temporary copy of the table is created
     that contains the table data in the index order.  Temporary copies of
     each index on the table are created as well.  Therefore, you need free
     space on disk at least equal to the sum of the table size and the index
     sizes.
-   </p>
-<p>    Because <code class="command">CLUSTER</code> remembers the clustering information,
+   </P
+><P
+>    Because <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> remembers the clustering information,
     one can cluster the tables one wants clustered manually the first time, and
-    setup a timed event similar to <code class="command">VACUUM</code> so that the tables
+    setup a timed event similar to <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> so that the tables
     are periodically reclustered.
-   </p>
-<p>    Because the planner records statistics about the ordering of
-    tables, it is advisable to run <a href="sql-analyze.html">ANALYZE</a> on the newly clustered table.
+   </P
+><P
+>    Because the planner records statistics about the ordering of
+    tables, it is advisable to run <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+> on the newly clustered table.
     Otherwise, the planner may make poor choices of query plans.
-   </p>
-<p>    There is another way to cluster data. The
-    <code class="command">CLUSTER</code> command reorders the original table using
+   </P
+><P
+>    There is another way to cluster data. The
+    <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> command reorders the original table using
     the ordering of the index you specify. This can be slow
     on large tables because the rows are fetched from the heap
     in index order, and if the heap table is unordered, the
     entries are on random pages, so there is one disk page
-    retrieved for every row moved. (<span class="productname">PostgreSQL</span> has a cache,
+    retrieved for every row moved. (<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has a cache,
     but the majority of a big table will not fit in the cache.)
     The other way to cluster a table is to use
 
-</p>
-<pre class="programlisting">CREATE TABLE <em class="replaceable"><code>newtable</code></em> AS
-    SELECT <em class="replaceable"><code>columnlist</code></em> FROM <em class="replaceable"><code>table</code></em> ORDER BY <em class="replaceable"><code>columnlist</code></em>;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>newtable</I
+></TT
+> AS
+    SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>columnlist</I
+></TT
+> FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>columnlist</I
+></TT
+>;</PRE
+><P>
 
-    which uses the <span class="productname">PostgreSQL</span> sorting code in 
-    the <code class="literal">ORDER BY</code> clause to create the desired order; this is usually much
+    which uses the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sorting code in 
+    the <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+> clause to create the desired order; this is usually much
     faster than an index scan for
     unordered data. You then drop the old table, use
-    <code class="command">ALTER TABLE ... RENAME</code>
-    to rename <em class="replaceable"><code>newtable</code></em> to the old name, and
+    <TT
+CLASS="COMMAND"
+>ALTER TABLE ... RENAME</TT
+>
+    to rename <TT
+CLASS="REPLACEABLE"
+><I
+>newtable</I
+></TT
+> to the old name, and
     recreate the table's indexes. However, this approach does not preserve
     OIDs, constraints, foreign key relationships, granted privileges, and
-    other ancillary properties of the table [mdash ] all such items must be
+    other ancillary properties of the table &mdash; all such items must be
     manually recreated.
-   </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id441737"></a><h2>Examples</h2>
-<p>   Cluster the table <code class="literal">employees</code> on the basis of
-   its index <code class="literal">emp_ind</code>:
-</p>
-<pre class="programlisting">CLUSTER emp_ind ON emp;</pre>
-<p>
-  </p>
-<p>   Cluster the <code class="literal">employees</code> table using the same
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40036"
+></A
+><H2
+>Examples</H2
+><P
+>   Cluster the table <TT
+CLASS="LITERAL"
+>employees</TT
+> on the basis of
+   its index <TT
+CLASS="LITERAL"
+>emp_ind</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CLUSTER emp_ind ON emp;</PRE
+><P>
+  </P
+><P
+>   Cluster the <TT
+CLASS="LITERAL"
+>employees</TT
+> table using the same
    index that was used before:
-</p>
-<pre class="programlisting">CLUSTER emp;</pre>
-<p>
-  </p>
-<p>   Cluster all tables in the database that have previously been clustered:
-</p>
-<pre class="programlisting">CLUSTER;</pre>
-<p>
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id441783"></a><h2>Compatibility</h2>
-<p>   There is no <code class="command">CLUSTER</code> statement in the SQL standard.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id441795"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-clusterdb.html"><span class="application">clusterdb</span></a></span>
-</div>
-</div></body>
-</html>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CLUSTER emp;</PRE
+><P>
+  </P
+><P
+>   Cluster all tables in the database that have previously been clustered:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CLUSTER;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40047"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> statement in the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40051"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-clusterdb.html"
+><I
+><I
+>clusterdb</I
+></I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-close.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-comment.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CLOSE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>COMMENT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

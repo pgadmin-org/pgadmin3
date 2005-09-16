@@ -1,82 +1,336 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>33.4. Rules and Privileges</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="rules.html" title="Chapter 33. The Rule System">
-<link rel="prev" href="rules-update.html" title="33.3. Rules on INSERT, UPDATE, and DELETE">
-<link rel="next" href="rules-status.html" title="33.5. Rules and Command Status">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="rules-privileges"></a>33.4. Rules and Privileges</h2></div></div></div>
-<a name="id418239"></a><a name="id418254"></a><p>    Due to rewriting of queries by the <span class="productname">PostgreSQL</span>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Rules and Privileges</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="PREVIOUS"
+TITLE="Rules on INSERT, UPDATE, and DELETE"
+HREF="rules-update.html"><LINK
+REL="NEXT"
+TITLE="Rules and Command Status"
+HREF="rules-status.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 34. The Rule System</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-status.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RULES-PRIVILEGES"
+>34.4. Rules and Privileges</A
+></H1
+><A
+NAME="AEN33710"
+></A
+><A
+NAME="AEN33713"
+></A
+><P
+>    Due to rewriting of queries by the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     rule system, other tables/views than those used in the original
     query get accessed. When update rules are used, this can include write access
-    to tables.</p>
-<p>    Rewrite rules don't have a separate owner. The owner of
+    to tables.</P
+><P
+>    Rewrite rules don't have a separate owner. The owner of
     a relation (table or view) is automatically the owner of the
     rewrite rules that are defined for it.
-    The <span class="productname">PostgreSQL</span> rule system changes the
+    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> rule system changes the
     behavior of the default access control system. Relations that
     are used due to rules get checked against the
     privileges of the rule owner, not the user invoking the rule.
     This means that a user only needs the required privileges
-    for the tables/views that he names explicitly in his queries.</p>
-<p>    For example: A user has a list of phone numbers where some of
+    for the tables/views that he names explicitly in his queries.</P
+><P
+>    For example: A user has a list of phone numbers where some of
     them are private, the others are of interest for the secretary of the office.
     He can construct the following:
 
-</p>
-<pre class="programlisting">CREATE TABLE phone_data (person text, phone text, private boolean);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE phone_data (person text, phone text, private boolean);
 CREATE VIEW phone_number AS
     SELECT person, phone FROM phone_data WHERE NOT private;
-GRANT SELECT ON phone_number TO secretary;</pre>
-<p>
+GRANT SELECT ON phone_number TO secretary;</PRE
+><P>
     
     Nobody except him (and the database superusers) can access the
-    <code class="literal">phone_data</code> table. But because of the <code class="command">GRANT</code>,
-    the secretary can run a <code class="command">SELECT</code> on the
-    <code class="literal">phone_number</code> view. The rule system will rewrite the
-    <code class="command">SELECT</code> from <code class="literal">phone_number</code> into a
-    <code class="command">SELECT</code> from <code class="literal">phone_data</code> and add the
-    qualification that only entries where <code class="literal">private</code> is false
+    <TT
+CLASS="LITERAL"
+>phone_data</TT
+> table. But because of the <TT
+CLASS="COMMAND"
+>GRANT</TT
+>,
+    the secretary can run a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> on the
+    <TT
+CLASS="LITERAL"
+>phone_number</TT
+> view. The rule system will rewrite the
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> from <TT
+CLASS="LITERAL"
+>phone_number</TT
+> into a
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> from <TT
+CLASS="LITERAL"
+>phone_data</TT
+> and add the
+    qualification that only entries where <TT
+CLASS="LITERAL"
+>private</TT
+> is false
     are wanted. Since the user is the owner of
-    <code class="literal">phone_number</code> and therefore the owner of the rule, the
-    read access to <code class="literal">phone_data</code> is now checked against his
+    <TT
+CLASS="LITERAL"
+>phone_number</TT
+> and therefore the owner of the rule, the
+    read access to <TT
+CLASS="LITERAL"
+>phone_data</TT
+> is now checked against his
     privileges and the query is permitted. The check for accessing
-    <code class="literal">phone_number</code> is also performed, but this is done
+    <TT
+CLASS="LITERAL"
+>phone_number</TT
+> is also performed, but this is done
     against the invoking user, so nobody but the user and the
-    secretary can use it.</p>
-<p>    The privileges are checked rule by rule. So the secretary is for now the
+    secretary can use it.</P
+><P
+>    The privileges are checked rule by rule. So the secretary is for now the
     only one who can see the public phone numbers. But the secretary can setup
     another view and grant access to that to the public. Then, anyone
-    can see the <code class="literal">phone_number</code> data through the secretary's view.
+    can see the <TT
+CLASS="LITERAL"
+>phone_number</TT
+> data through the secretary's view.
     What the secretary cannot do is to create a view that directly
-    accesses <code class="literal">phone_data</code>.  (Actually he can, but it will not work since
+    accesses <TT
+CLASS="LITERAL"
+>phone_data</TT
+>.  (Actually he can, but it will not work since
     every access will be denied during the permission checks.)
     And as soon as the user will notice, that the secretary opened
-    his <code class="literal">phone_number</code> view, he can revoke his access. Immediately, any
-    access to the secretary's view would fail.</p>
-<p>    One might think that this rule-by-rule checking is a security
+    his <TT
+CLASS="LITERAL"
+>phone_number</TT
+> view, he can revoke his access. Immediately, any
+    access to the secretary's view would fail.</P
+><P
+>    One might think that this rule-by-rule checking is a security
     hole, but in fact it isn't.   But if it did not work this way, the secretary
-    could set up a table with the same columns as <code class="literal">phone_number</code> and
+    could set up a table with the same columns as <TT
+CLASS="LITERAL"
+>phone_number</TT
+> and
     copy the data to there once per day. Then it's his own data and
     he can grant access to everyone he wants. A
-    <code class="command">GRANT</code> command means, &#8220;<span class="quote">I trust you</span>&#8221;.
+    <TT
+CLASS="COMMAND"
+>GRANT</TT
+> command means, <SPAN
+CLASS="QUOTE"
+>"I trust you"</SPAN
+>.
     If someone you trust does the thing above, it's time to
-    think it over and then use <code class="command">REVOKE</code>.</p>
-<p>    This mechanism also works for update rules. In the examples of
+    think it over and then use <TT
+CLASS="COMMAND"
+>REVOKE</TT
+>.</P
+><P
+>    This mechanism also works for update rules. In the examples of
     the previous section, the owner of the tables in the example
-    database could grant the privileges <code class="literal">SELECT</code>,
-    <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, and <code class="literal">DELETE</code> on
-    the <code class="literal">shoelace</code> view to someone else, but only
-    <code class="literal">SELECT</code> on <code class="literal">shoelace_log</code>. The rule action to
+    database could grant the privileges <TT
+CLASS="LITERAL"
+>SELECT</TT
+>,
+    <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, and <TT
+CLASS="LITERAL"
+>DELETE</TT
+> on
+    the <TT
+CLASS="LITERAL"
+>shoelace</TT
+> view to someone else, but only
+    <TT
+CLASS="LITERAL"
+>SELECT</TT
+> on <TT
+CLASS="LITERAL"
+>shoelace_log</TT
+>. The rule action to
     write log entries will still be executed successfully, and that
     other user could see the log entries.  But he cannot create fake
-    entries, nor could he manipulate or remove existing ones.</p>
-</div></body>
-</html>
+    entries, nor could he manipulate or remove existing ones.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-status.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Rules on <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and <TT
+CLASS="COMMAND"
+>DELETE</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Rules and Command Status</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

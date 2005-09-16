@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SET ROLE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SET CONSTRAINTS"
+HREF="sql-set-constraints.html"><LINK
+REL="NEXT"
+TITLE="SET SESSION AUTHORIZATION"
+HREF="sql-set-session-authorization.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-constraints.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-constraints.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SET-ROLE"
+></A
+>SET ROLE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN48035"
+></A
+><H2
+>Name</H2
+>SET ROLE&nbsp;--&nbsp;set the current user identifier of the current session</DIV
+><A
+NAME="AEN48038"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN48040"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SET [ SESSION | LOCAL ] ROLE <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+>
+SET [ SESSION | LOCAL ] ROLE NONE
+RESET ROLE</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48043"
+></A
+><H2
+>Description</H2
+><P
+>   This command sets the current user
+   identifier of the current SQL-session context to be <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+>.  The role name may be
+   written as either an identifier or a string literal.
+   After <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+>, permissions checking for SQL commands
+   is carried out as though the named role were the one that had logged
+   in originally.
+  </P
+><P
+>   The specified <TT
+CLASS="REPLACEABLE"
+><I
+>rolename</I
+></TT
+>
+   must be a role that the current session user is a member of.
+   (If the session user is a superuser, any role can be selected.)
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>SESSION</TT
+> and <TT
+CLASS="LITERAL"
+>LOCAL</TT
+> modifiers act the same
+   as for the regular <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+>
+   command.
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>NONE</TT
+> and <TT
+CLASS="LITERAL"
+>RESET</TT
+> forms reset the current
+   user identifier to be the current session user identifier.
+   These forms may be executed by any user.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48057"
+></A
+><H2
+>Notes</H2
+><P
+>   Using this command, it is possible to either add privileges or restrict
+   one's privileges.  If the session user role has the <TT
+CLASS="LITERAL"
+>INHERITS</TT
+>
+   attribute, then it automatically has all the privileges of every role that
+   it could <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> to; in this case <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+>
+   effectively drops all the privileges assigned directly to the session user
+   and to the other roles it is a member of, leaving only the privileges
+   available to the named role.  On the other hand, if the session user role
+   has the <TT
+CLASS="LITERAL"
+>NOINHERITS</TT
+> attribute, <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> drops the
+   privileges assigned directly to the session user and instead acquires the
+   privileges available to the named role.
+  </P
+><P
+>   In particular, when a superuser chooses to <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> to a
+   non-superuser role, she loses her superuser privileges.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> has effects comparable to
+   <A
+HREF="sql-set-session-authorization.html"
+><I
+>SET SESSION AUTHORIZATION</I
+></A
+>, but the privilege
+   checks involved are quite different.  Also,
+   <TT
+CLASS="COMMAND"
+>SET SESSION AUTHORIZATION</TT
+> determines which roles are
+   allowable for later <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> commands, whereas changing
+   roles with <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+> does not change the set of roles
+   allowed to a later <TT
+CLASS="COMMAND"
+>SET ROLE</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48074"
+></A
+><H2
+>Examples</H2
+><PRE
+CLASS="PROGRAMLISTING"
+>SELECT SESSION_USER, CURRENT_USER;
+
+ session_user | current_user 
+--------------+--------------
+ peter        | peter
+
+SET ROLE 'paul';
+
+SELECT SESSION_USER, CURRENT_USER;
+
+ session_user | current_user 
+--------------+--------------
+ peter        | paul</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48077"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   allows identifier syntax (<TT
+CLASS="LITERAL"
+>"rolename"</TT
+>), while
+   the SQL standard requires the role name to be written as a string
+   literal.  SQL does not allow this command during a transaction;
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> does not make this
+   restriction because there is no reason to.
+   The <TT
+CLASS="LITERAL"
+>SESSION</TT
+> and <TT
+CLASS="LITERAL"
+>LOCAL</TT
+> modifiers are a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension, as is the
+   <TT
+CLASS="LITERAL"
+>RESET</TT
+> syntax.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48087"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-set-session-authorization.html"
+><I
+>SET SESSION AUTHORIZATION</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-constraints.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SET CONSTRAINTS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SET SESSION AUTHORIZATION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

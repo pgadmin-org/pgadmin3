@@ -1,85 +1,383 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SPI_prepare</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
-<link rel="prev" href="spi-spi-exec.html" title="SPI_exec">
-<link rel="next" href="spi-spi-getargcount.html" title="SPI_getargcount">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
-<a name="spi-spi-prepare"></a><div class="titlepage"></div>
-<div class="refnamediv">
-<h2>Name</h2>
-<p>SPI_prepare &#8212; prepare a plan for a command, without executing it yet</p>
-</div>
-<a name="id430926"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
-<pre class="synopsis">void * SPI_prepare(const char * <em class="parameter"><code>command</code></em>, int <em class="parameter"><code>nargs</code></em>, Oid * <em class="parameter"><code>argtypes</code></em>)</pre>
-</div>
-<div class="refsect1" lang="en">
-<a name="id430955"></a><h2>Description</h2>
-<p>   <code class="function">SPI_prepare</code> creates and returns an execution
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SPI_prepare</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="SPI_exec"
+HREF="spi-spi-exec.html"><LINK
+REL="NEXT"
+TITLE="SPI_getargcount"
+HREF="spi-spi-getargcount.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-exec.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-exec.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getargcount.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getargcount.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-PREPARE"
+></A
+>SPI_prepare</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36620"
+></A
+><H2
+>Name</H2
+>SPI_prepare&nbsp;--&nbsp;prepare a plan for a command, without executing it yet</DIV
+><A
+NAME="AEN36623"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN36625"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>void * SPI_prepare(const char * <TT
+CLASS="PARAMETER"
+>command</TT
+>, int <TT
+CLASS="PARAMETER"
+>nargs</TT
+>, Oid * <TT
+CLASS="PARAMETER"
+>argtypes</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36630"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+> creates and returns an execution
    plan for the specified command but doesn't execute the command.
    This function should only be called from a connected procedure.
-  </p>
-<p>   When the same or a similar command is to be executed repeatedly, it
+  </P
+><P
+>   When the same or a similar command is to be executed repeatedly, it
    may be advantageous to perform the planning only once.
-   <code class="function">SPI_prepare</code> converts a command string into an
+   <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+> converts a command string into an
    execution plan that can be executed repeatedly using
-   <code class="function">SPI_execute_plan</code>.
-  </p>
-<p>   A prepared command can be generalized by writing parameters
-   (<code class="literal">$1</code>, <code class="literal">$2</code>, etc.) in place of what would be
+   <CODE
+CLASS="FUNCTION"
+>SPI_execute_plan</CODE
+>.
+  </P
+><P
+>   A prepared command can be generalized by writing parameters
+   (<TT
+CLASS="LITERAL"
+>$1</TT
+>, <TT
+CLASS="LITERAL"
+>$2</TT
+>, etc.) in place of what would be
    constants in a normal command.  The actual values of the parameters
-   are then specified when <code class="function">SPI_execute_plan</code> is called.
+   are then specified when <CODE
+CLASS="FUNCTION"
+>SPI_execute_plan</CODE
+> is called.
    This allows the prepared command to be used over a wider range of
    situations than would be possible without parameters.
-  </p>
-<p>   The plan returned by <code class="function">SPI_prepare</code> can be used
+  </P
+><P
+>   The plan returned by <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+> can be used
    only in the current invocation of the procedure, since
-   <code class="function">SPI_finish</code> frees memory allocated for a plan.
+   <CODE
+CLASS="FUNCTION"
+>SPI_finish</CODE
+> frees memory allocated for a plan.
    But a plan can be saved for longer using the function
-   <code class="function">SPI_saveplan</code>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id431028"></a><h2>Arguments</h2>
-<div class="variablelist"><dl>
-<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>command</code></em></code></span></dt>
-<dd><p>      command string
-     </p></dd>
-<dt><span class="term"><code class="literal">int <em class="parameter"><code>nargs</code></em></code></span></dt>
-<dd><p>      number of input parameters (<code class="literal">$1</code>, <code class="literal">$2</code>, etc.)
-     </p></dd>
-<dt><span class="term"><code class="literal">Oid * <em class="parameter"><code>argtypes</code></em></code></span></dt>
-<dd><p>      pointer to an array containing the <span class="acronym">OID</span>s of
+   <CODE
+CLASS="FUNCTION"
+>SPI_saveplan</CODE
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36645"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>const char * <TT
+CLASS="PARAMETER"
+>command</TT
+></TT
+></DT
+><DD
+><P
+>      command string
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>int <TT
+CLASS="PARAMETER"
+>nargs</TT
+></TT
+></DT
+><DD
+><P
+>      number of input parameters (<TT
+CLASS="LITERAL"
+>$1</TT
+>, <TT
+CLASS="LITERAL"
+>$2</TT
+>, etc.)
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>Oid * <TT
+CLASS="PARAMETER"
+>argtypes</TT
+></TT
+></DT
+><DD
+><P
+>      pointer to an array containing the <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+>s of
       the data types of the parameters
-     </p></dd>
-</dl></div>
-</div>
-<div class="refsect1" lang="en">
-<a name="id431093"></a><h2>Return Value</h2>
-<p>   <code class="function">SPI_prepare</code> returns a non-null pointer to an
-   execution plan.  On error, <code class="symbol">NULL</code> will be returned,
-   and <code class="varname">SPI_result</code> will be set to one of the same
-   error codes used by <code class="function">SPI_execute</code>, except that
-   it is set to <code class="symbol">SPI_ERROR_ARGUMENT</code> if
-   <em class="parameter"><code>command</code></em> is <code class="symbol">NULL</code>, or if
-   <em class="parameter"><code>nargs</code></em> is less than 0, or if <em class="parameter"><code>nargs</code></em> is
-   greater than 0 and <em class="parameter"><code>argtypes</code></em> is <code class="symbol">NULL</code>.
-  </p>
-</div>
-<div class="refsect1" lang="en">
-<a name="id431154"></a><h2>Notes</h2>
-<p>   There is a disadvantage to using parameters: since the planner does
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36669"
+></A
+><H2
+>Return Value</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+> returns a non-null pointer to an
+   execution plan.  On error, <TT
+CLASS="SYMBOL"
+>NULL</TT
+> will be returned,
+   and <TT
+CLASS="VARNAME"
+>SPI_result</TT
+> will be set to one of the same
+   error codes used by <CODE
+CLASS="FUNCTION"
+>SPI_execute</CODE
+>, except that
+   it is set to <TT
+CLASS="SYMBOL"
+>SPI_ERROR_ARGUMENT</TT
+> if
+   <TT
+CLASS="PARAMETER"
+>command</TT
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>, or if
+   <TT
+CLASS="PARAMETER"
+>nargs</TT
+> is less than 0, or if <TT
+CLASS="PARAMETER"
+>nargs</TT
+> is
+   greater than 0 and <TT
+CLASS="PARAMETER"
+>argtypes</TT
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36683"
+></A
+><H2
+>Notes</H2
+><P
+>   There is a disadvantage to using parameters: since the planner does
    not know the values that will be supplied for the parameters, it
    may make worse planning choices than it would make for a normal
    command with all constants visible.
-  </p>
-</div>
-</div></body>
-</html>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-exec.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getargcount.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_exec</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_getargcount</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

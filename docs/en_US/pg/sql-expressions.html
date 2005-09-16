@@ -1,278 +1,834 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>4.2. Value Expressions</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
-<link rel="prev" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
-<link rel="next" href="ddl.html" title="Chapter 5. Data Definition">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="sql-expressions"></a>4.2. Value Expressions</h2></div></div></div>
-<a name="id304393"></a><a name="id304406"></a><a name="id304415"></a><p>   Value expressions are used in a variety of contexts, such
-   as in the target list of the <code class="command">SELECT</code> command, as
-   new column values in <code class="command">INSERT</code> or
-   <code class="command">UPDATE</code>, or in search conditions in a number of
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Value Expressions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Syntax"
+HREF="sql-syntax.html"><LINK
+REL="PREVIOUS"
+TITLE="SQL Syntax"
+HREF="sql-syntax.html"><LINK
+REL="NEXT"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. SQL Syntax</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SQL-EXPRESSIONS"
+>4.2. Value Expressions</A
+></H1
+><A
+NAME="AEN1552"
+></A
+><A
+NAME="AEN1555"
+></A
+><A
+NAME="AEN1557"
+></A
+><P
+>   Value expressions are used in a variety of contexts, such
+   as in the target list of the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command, as
+   new column values in <TT
+CLASS="COMMAND"
+>INSERT</TT
+> or
+   <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or in search conditions in a number of
    commands.  The result of a value expression is sometimes called a
-   <em class="firstterm">scalar</em>, to distinguish it from the result of
+   <I
+CLASS="FIRSTTERM"
+>scalar</I
+>, to distinguish it from the result of
    a table expression (which is a table).  Value expressions are
-   therefore also called <em class="firstterm">scalar expressions</em> (or
-   even simply <em class="firstterm">expressions</em>).  The expression
+   therefore also called <I
+CLASS="FIRSTTERM"
+>scalar expressions</I
+> (or
+   even simply <I
+CLASS="FIRSTTERM"
+>expressions</I
+>).  The expression
    syntax allows the calculation of values from primitive parts using
    arithmetic, logical, set, and other operations.
-  </p>
-<p>   A value expression is one of the following:
+  </P
+><P
+>   A value expression is one of the following:
 
-   </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      A constant or literal value.
-     </p></li>
-<li><p>      A column reference.
-     </p></li>
-<li><p>      A positional parameter reference, in the body of a function definition
+   <P
+></P
+></P><UL
+><LI
+><P
+>      A constant or literal value.
+     </P
+></LI
+><LI
+><P
+>      A column reference.
+     </P
+></LI
+><LI
+><P
+>      A positional parameter reference, in the body of a function definition
       or prepared statement.
-     </p></li>
-<li><p>      A subscripted expression.
-     </p></li>
-<li><p>      A field selection expression.
-     </p></li>
-<li><p>      An operator invocation.
-     </p></li>
-<li><p>      A function call.
-     </p></li>
-<li><p>      An aggregate expression.
-     </p></li>
-<li><p>      A type cast.
-     </p></li>
-<li><p>      A scalar subquery.
-     </p></li>
-<li><p>      An array constructor.
-     </p></li>
-<li><p>      A row constructor.
-     </p></li>
-<li><p>      Another value expression in parentheses, useful to group
+     </P
+></LI
+><LI
+><P
+>      A subscripted expression.
+     </P
+></LI
+><LI
+><P
+>      A field selection expression.
+     </P
+></LI
+><LI
+><P
+>      An operator invocation.
+     </P
+></LI
+><LI
+><P
+>      A function call.
+     </P
+></LI
+><LI
+><P
+>      An aggregate expression.
+     </P
+></LI
+><LI
+><P
+>      A type cast.
+     </P
+></LI
+><LI
+><P
+>      A scalar subquery.
+     </P
+></LI
+><LI
+><P
+>      An array constructor.
+     </P
+></LI
+><LI
+><P
+>      A row constructor.
+     </P
+></LI
+><LI
+><P
+>      Another value expression in parentheses, useful to group
       subexpressions and override
-      precedence.<a name="id304510"></a>
-     </p></li>
-</ul></div>
-<p>
-  </p>
-<p>   In addition to this list, there are a number of constructs that can
+      precedence.<A
+NAME="AEN1595"
+></A
+>
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   In addition to this list, there are a number of constructs that can
    be classified as an expression but do not follow any general syntax
    rules.  These generally have the semantics of a function or
-   operator and are explained in the appropriate location in <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>.  An example is the <code class="literal">IS NULL</code>
+   operator and are explained in the appropriate location in <A
+HREF="functions.html"
+>Chapter 9</A
+>.  An example is the <TT
+CLASS="LITERAL"
+>IS NULL</TT
+>
    clause.
-  </p>
-<p>   We have already discussed constants in <a href="sql-syntax.html#sql-syntax-constants" title="4.1.2. Constants">Section 4.1.2, &#8220;Constants&#8221;</a>.  The following sections discuss
+  </P
+><P
+>   We have already discussed constants in <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
+>Section 4.1.2</A
+>.  The following sections discuss
    the remaining options.
-  </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id304544"></a>4.2.1. Column References</h3></div></div></div>
-<a name="id304547"></a><p>    A column can be referenced in the form
-</p>
-<pre class="synopsis"><em class="replaceable"><code>correlation</code></em>.<em class="replaceable"><code>columnname</code></em></pre>
-<p>
-   </p>
-<p>    <em class="replaceable"><code>correlation</code></em> is the name of a
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1602"
+>4.2.1. Column References</A
+></H2
+><A
+NAME="AEN1604"
+></A
+><P
+>    A column can be referenced in the form
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>correlation</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>columnname</I
+></TT
+></PRE
+><P>
+   </P
+><P
+>    <TT
+CLASS="REPLACEABLE"
+><I
+>correlation</I
+></TT
+> is the name of a
     table (possibly qualified with a schema name), or an alias for a table
-    defined by means of a <code class="literal">FROM</code> clause, or one of
-    the key words <code class="literal">NEW</code> or <code class="literal">OLD</code>.
-    (<code class="literal">NEW</code> and <code class="literal">OLD</code> can only appear in rewrite rules,
+    defined by means of a <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause, or one of
+    the key words <TT
+CLASS="LITERAL"
+>NEW</TT
+> or <TT
+CLASS="LITERAL"
+>OLD</TT
+>.
+    (<TT
+CLASS="LITERAL"
+>NEW</TT
+> and <TT
+CLASS="LITERAL"
+>OLD</TT
+> can only appear in rewrite rules,
     while other correlation names can be used in any SQL statement.)
     The correlation name and separating dot may be omitted if the column name
-    is unique across all the tables being used in the current query.  (See also <a href="queries.html" title="Chapter 7. Queries">Chapter 7, <i>Queries</i></a>.)
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id304610"></a>4.2.2. Positional Parameters</h3></div></div></div>
-<a name="id304614"></a><a name="id304622"></a><p>    A positional parameter reference is used to indicate a value
+    is unique across all the tables being used in the current query.  (See also <A
+HREF="queries.html"
+>Chapter 7</A
+>.)
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1618"
+>4.2.2. Positional Parameters</A
+></H2
+><A
+NAME="AEN1620"
+></A
+><A
+NAME="AEN1623"
+></A
+><P
+>    A positional parameter reference is used to indicate a value
     that is supplied externally to an SQL statement.  Parameters are
     used in SQL function definitions and in prepared queries.  Some
     client libraries also support specifying data values separately
     from the SQL command string, in which case parameters are used to
     refer to the out-of-line data values.
     The form of a parameter reference is:
-</p>
-<pre class="synopsis">$<em class="replaceable"><code>number</code></em></pre>
-<p>
-   </p>
-<p>    For example, consider the definition of a function,
-    <code class="function">dept</code>, as
+</P><PRE
+CLASS="SYNOPSIS"
+>$<TT
+CLASS="REPLACEABLE"
+><I
+>number</I
+></TT
+></PRE
+><P>
+   </P
+><P
+>    For example, consider the definition of a function,
+    <CODE
+CLASS="FUNCTION"
+>dept</CODE
+>, as
 
-</p>
-<pre class="programlisting">CREATE FUNCTION dept(text) RETURNS dept
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION dept(text) RETURNS dept
     AS $$ SELECT * FROM dept WHERE name = $1 $$
-    LANGUAGE SQL;</pre>
-<p>
+    LANGUAGE SQL;</PRE
+><P>
 
-    Here the <code class="literal">$1</code> will be replaced by the first
+    Here the <TT
+CLASS="LITERAL"
+>$1</TT
+> will be replaced by the first
     function argument when the function is invoked.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id304663"></a>4.2.3. Subscripts</h3></div></div></div>
-<a name="id304666"></a><p>    If an expression yields a value of an array type, then a specific
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1632"
+>4.2.3. Subscripts</A
+></H2
+><A
+NAME="AEN1634"
+></A
+><P
+>    If an expression yields a value of an array type, then a specific
     element of the array value can be extracted by writing
-</p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em>[<em class="replaceable"><code>subscript</code></em>]</pre>
-<p>
-    or multiple adjacent elements (an &#8220;<span class="quote">array slice</span>&#8221;) can be extracted
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>[<TT
+CLASS="REPLACEABLE"
+><I
+>subscript</I
+></TT
+>]</PRE
+><P>
+    or multiple adjacent elements (an <SPAN
+CLASS="QUOTE"
+>"array slice"</SPAN
+>) can be extracted
     by writing
-</p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em>[<em class="replaceable"><code>lower_subscript</code></em>:<em class="replaceable"><code>upper_subscript</code></em>]</pre>
-<p>
-    (Here, the brackets <code class="literal">[ ]</code> are meant to appear literally.)
-    Each <em class="replaceable"><code>subscript</code></em> is itself an expression,
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>[<TT
+CLASS="REPLACEABLE"
+><I
+>lower_subscript</I
+></TT
+>:<TT
+CLASS="REPLACEABLE"
+><I
+>upper_subscript</I
+></TT
+>]</PRE
+><P>
+    (Here, the brackets <TT
+CLASS="LITERAL"
+>[ ]</TT
+> are meant to appear literally.)
+    Each <TT
+CLASS="REPLACEABLE"
+><I
+>subscript</I
+></TT
+> is itself an expression,
     which must yield an integer value.
-   </p>
-<p>    In general the array <em class="replaceable"><code>expression</code></em> must be
+   </P
+><P
+>    In general the array <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> must be
     parenthesized, but the parentheses may be omitted when the expression
     to be subscripted is just a column reference or positional parameter.
     Also, multiple subscripts can be concatenated when the original array
     is multi-dimensional.
     For example,
 
-</p>
-<pre class="programlisting">mytable.arraycolumn[4]
+</P><PRE
+CLASS="PROGRAMLISTING"
+>mytable.arraycolumn[4]
 mytable.two_d_column[17][34]
 $1[10:42]
-(arrayfunction(a,b))[42]</pre>
-<p>
+(arrayfunction(a,b))[42]</PRE
+><P>
 
     The parentheses in the last example are required.
-    See <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a> for more about arrays.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id304738"></a>4.2.4. Field Selection</h3></div></div></div>
-<a name="id304741"></a><p>    If an expression yields a value of a composite type (row type), then a
+    See <A
+HREF="arrays.html"
+>Section 8.10</A
+> for more about arrays.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1651"
+>4.2.4. Field Selection</A
+></H2
+><A
+NAME="AEN1653"
+></A
+><P
+>    If an expression yields a value of a composite type (row type), then a
     specific field of the row can be extracted by writing
-</p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em>.<em class="replaceable"><code>fieldname</code></em></pre>
-<p>
-   </p>
-<p>    In general the row <em class="replaceable"><code>expression</code></em> must be
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>fieldname</I
+></TT
+></PRE
+><P>
+   </P
+><P
+>    In general the row <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> must be
     parenthesized, but the parentheses may be omitted when the expression
     to be selected from is just a table reference or positional parameter.
     For example,
 
-</p>
-<pre class="programlisting">mytable.mycolumn
+</P><PRE
+CLASS="PROGRAMLISTING"
+>mytable.mycolumn
 $1.somecolumn
-(rowfunction(a,b)).col3</pre>
-<p>
+(rowfunction(a,b)).col3</PRE
+><P>
 
     (Thus, a qualified column reference is actually just a special case
     of the field selection syntax.)
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id304775"></a>4.2.5. Operator Invocations</h3></div></div></div>
-<a name="id304778"></a><p>    There are three possible syntaxes for an operator invocation:
-    </p>
-<table class="simplelist" border="0" summary="Simple list">
-<tr><td>
-<em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> <em class="replaceable"><code>expression</code></em> (binary infix operator)</td></tr>
-<tr><td>
-<em class="replaceable"><code>operator</code></em> <em class="replaceable"><code>expression</code></em> (unary prefix operator)</td></tr>
-<tr><td>
-<em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> (unary postfix operator)</td></tr>
-</table>
-<p>
-    where the <em class="replaceable"><code>operator</code></em> token follows the syntax
-    rules of <a href="sql-syntax.html#sql-syntax-operators" title="4.1.3. Operators">Section 4.1.3, &#8220;Operators&#8221;</a>, or is one of the
-    key words <code class="token">AND</code>, <code class="token">OR</code>, and
-    <code class="token">NOT</code>, or is a qualified operator name in the form
-</p>
-<pre class="synopsis"><code class="literal">OPERATOR(</code><em class="replaceable"><code>schema</code></em><code class="literal">.</code><em class="replaceable"><code>operatorname</code></em><code class="literal">)</code></pre>
-<p>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1662"
+>4.2.5. Operator Invocations</A
+></H2
+><A
+NAME="AEN1664"
+></A
+><P
+>    There are three possible syntaxes for an operator invocation:
+    <P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> (binary infix operator)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> (unary prefix operator)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> (unary postfix operator)</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+>
+    where the <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> token follows the syntax
+    rules of <A
+HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
+>Section 4.1.3</A
+>, or is one of the
+    key words <TT
+CLASS="TOKEN"
+>AND</TT
+>, <TT
+CLASS="TOKEN"
+>OR</TT
+>, and
+    <TT
+CLASS="TOKEN"
+>NOT</TT
+>, or is a qualified operator name in the form
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="LITERAL"
+>OPERATOR(</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>schema</I
+></TT
+><TT
+CLASS="LITERAL"
+>.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>operatorname</I
+></TT
+><TT
+CLASS="LITERAL"
+>)</TT
+></PRE
+><P>
     Which particular operators exist and whether
     they are unary or binary depends on what operators have been
-    defined by the system or the user.  <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
+    defined by the system or the user.  <A
+HREF="functions.html"
+>Chapter 9</A
+>
     describes the built-in operators.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id304873"></a>4.2.6. Function Calls</h3></div></div></div>
-<a name="id304876"></a><p>    The syntax for a function call is the name of a function
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1691"
+>4.2.6. Function Calls</A
+></H2
+><A
+NAME="AEN1693"
+></A
+><P
+>    The syntax for a function call is the name of a function
     (possibly qualified with a schema name), followed by its argument list
     enclosed in parentheses:
 
-</p>
-<pre class="synopsis"><em class="replaceable"><code>function</code></em> ([<span class="optional"><em class="replaceable"><code>expression</code></em> [<span class="optional">, <em class="replaceable"><code>expression</code></em> ... </span>]</span>] )</pre>
-<p>
-   </p>
-<p>    For example, the following computes the square root of 2:
-</p>
-<pre class="programlisting">sqrt(2)</pre>
-<p>
-   </p>
-<p>    The list of built-in functions is in <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>.
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>function</I
+></TT
+> ([<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> ... </SPAN
+>]</SPAN
+>] )</PRE
+><P>
+   </P
+><P
+>    For example, the following computes the square root of 2:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>sqrt(2)</PRE
+><P>
+   </P
+><P
+>    The list of built-in functions is in <A
+HREF="functions.html"
+>Chapter 9</A
+>.
     Other functions may be added by the user.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="syntax-aggregates"></a>4.2.7. Aggregate Expressions</h3></div></div></div>
-<a name="id304931"></a><p>    An <em class="firstterm">aggregate expression</em> represents the
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SYNTAX-AGGREGATES"
+>4.2.7. Aggregate Expressions</A
+></H2
+><A
+NAME="AEN1709"
+></A
+><P
+>    An <I
+CLASS="FIRSTTERM"
+>aggregate expression</I
+> represents the
     application of an aggregate function across the rows selected by a
     query.  An aggregate function reduces multiple inputs to a single
     output value, such as the sum or average of the inputs.  The
     syntax of an aggregate expression is one of the following:
 
-</p>
-<pre class="synopsis"><em class="replaceable"><code>aggregate_name</code></em> (<em class="replaceable"><code>expression</code></em>)
-<em class="replaceable"><code>aggregate_name</code></em> (ALL <em class="replaceable"><code>expression</code></em>)
-<em class="replaceable"><code>aggregate_name</code></em> (DISTINCT <em class="replaceable"><code>expression</code></em>)
-<em class="replaceable"><code>aggregate_name</code></em> ( * )</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+<TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> (ALL <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+<TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> (DISTINCT <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+<TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> ( * )</PRE
+><P>
 
-    where <em class="replaceable"><code>aggregate_name</code></em> is a previously
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> is a previously
     defined aggregate (possibly qualified with a schema name), and
-    <em class="replaceable"><code>expression</code></em> is 
+    <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> is 
     any value expression that does not itself contain an aggregate
     expression.
-   </p>
-<p>    The first form of aggregate expression invokes the aggregate
+   </P
+><P
+>    The first form of aggregate expression invokes the aggregate
     across all input rows for which the given expression yields a
     non-null value.  (Actually, it is up to the aggregate function
-    whether to ignore null values or not [mdash ] but all the standard ones do.)
+    whether to ignore null values or not &mdash; but all the standard ones do.)
     The second form is the same as the first, since
-    <code class="literal">ALL</code> is the default.  The third form invokes the
+    <TT
+CLASS="LITERAL"
+>ALL</TT
+> is the default.  The third form invokes the
     aggregate for all distinct non-null values of the expression found
     in the input rows.  The last form invokes the aggregate once for
     each input row regardless of null or non-null values; since no
     particular input value is specified, it is generally only useful
-    for the <code class="function">count()</code> aggregate function.
-   </p>
-<p>    For example, <code class="literal">count(*)</code> yields the total number
-    of input rows; <code class="literal">count(f1)</code> yields the number of
-    input rows in which <code class="literal">f1</code> is non-null;
-    <code class="literal">count(distinct f1)</code> yields the number of
-    distinct non-null values of <code class="literal">f1</code>.
-   </p>
-<p>    The predefined aggregate functions are described in <a href="functions-aggregate.html" title="9.15. Aggregate Functions">Section 9.15, &#8220;Aggregate Functions&#8221;</a>.  Other aggregate functions may be added
+    for the <CODE
+CLASS="FUNCTION"
+>count()</CODE
+> aggregate function.
+   </P
+><P
+>    For example, <TT
+CLASS="LITERAL"
+>count(*)</TT
+> yields the total number
+    of input rows; <TT
+CLASS="LITERAL"
+>count(f1)</TT
+> yields the number of
+    input rows in which <TT
+CLASS="LITERAL"
+>f1</TT
+> is non-null;
+    <TT
+CLASS="LITERAL"
+>count(distinct f1)</TT
+> yields the number of
+    distinct non-null values of <TT
+CLASS="LITERAL"
+>f1</TT
+>.
+   </P
+><P
+>    The predefined aggregate functions are described in <A
+HREF="functions-aggregate.html"
+>Section 9.15</A
+>.  Other aggregate functions may be added
     by the user. 
-   </p>
-<p>    An aggregate expression may only appear in the result list or
-    <code class="literal">HAVING</code> clause of a <code class="command">SELECT</code> command.
-    It is forbidden in other clauses, such as <code class="literal">WHERE</code>,
+   </P
+><P
+>    An aggregate expression may only appear in the result list or
+    <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clause of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command.
+    It is forbidden in other clauses, such as <TT
+CLASS="LITERAL"
+>WHERE</TT
+>,
     because those clauses are logically evaluated before the results
     of aggregates are formed.
-   </p>
-<p>    When an aggregate expression appears in a subquery (see
-    <a href="sql-expressions.html#sql-syntax-scalar-subqueries" title="4.2.9. Scalar Subqueries">Section 4.2.9, &#8220;Scalar Subqueries&#8221;</a> and
-    <a href="functions-subquery.html" title="9.16. Subquery Expressions">Section 9.16, &#8220;Subquery Expressions&#8221;</a>), the aggregate is normally
+   </P
+><P
+>    When an aggregate expression appears in a subquery (see
+    <A
+HREF="sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES"
+>Section 4.2.9</A
+> and
+    <A
+HREF="functions-subquery.html"
+>Section 9.16</A
+>), the aggregate is normally
     evaluated over the rows of the subquery.  But an exception occurs
     if the aggregate's argument contains only outer-level variables:
     the aggregate then belongs to the nearest such outer level, and is
@@ -280,53 +836,136 @@ $1.somecolumn
     as a whole is then an outer reference for the subquery it appears in,
     and acts as a constant over any one evaluation of that subquery.
     The restriction about
-    appearing only in the result list or <code class="literal">HAVING</code> clause
+    appearing only in the result list or <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clause
     applies with respect to the query level that the aggregate belongs to.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="sql-syntax-type-casts"></a>4.2.8. Type Casts</h3></div></div></div>
-<a name="id305108"></a><a name="id305116"></a><p>    A type cast specifies a conversion from one data type to another.
-    <span class="productname">PostgreSQL</span> accepts two equivalent syntaxes
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SQL-SYNTAX-TYPE-CASTS"
+>4.2.8. Type Casts</A
+></H2
+><A
+NAME="AEN1745"
+></A
+><A
+NAME="AEN1748"
+></A
+><P
+>    A type cast specifies a conversion from one data type to another.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> accepts two equivalent syntaxes
     for type casts:
-</p>
-<pre class="synopsis">CAST ( <em class="replaceable"><code>expression</code></em> AS <em class="replaceable"><code>type</code></em> )
-<em class="replaceable"><code>expression</code></em>::<em class="replaceable"><code>type</code></em></pre>
-<p>
-    The <code class="literal">CAST</code> syntax conforms to SQL; the syntax with
-    <code class="literal">::</code> is historical <span class="productname">PostgreSQL</span>
+</P><PRE
+CLASS="SYNOPSIS"
+>CAST ( <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+> )
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>::<TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+></PRE
+><P>
+    The <TT
+CLASS="LITERAL"
+>CAST</TT
+> syntax conforms to SQL; the syntax with
+    <TT
+CLASS="LITERAL"
+>::</TT
+> is historical <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     usage.
-   </p>
-<p>    When a cast is applied to a value expression of a known type, it
+   </P
+><P
+>    When a cast is applied to a value expression of a known type, it
     represents a run-time type conversion.  The cast will succeed only
     if a suitable type conversion operation has been defined.  Notice that this
     is subtly different from the use of casts with constants, as shown in
-    <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  A cast applied to an
+    <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS-GENERIC"
+>Section 4.1.2.5</A
+>.  A cast applied to an
     unadorned string literal represents the initial assignment of a type
     to a literal constant value, and so it will succeed for any type
     (if the contents of the string literal are acceptable input syntax for the
     data type).
-   </p>
-<p>    An explicit type cast may usually be omitted if there is no ambiguity as
+   </P
+><P
+>    An explicit type cast may usually be omitted if there is no ambiguity as
     to the type that a value expression must produce (for example, when it is
     assigned to a table column); the system will automatically apply a
     type cast in such cases.  However, automatic casting is only done for
-    casts that are marked &#8220;<span class="quote">OK to apply implicitly</span>&#8221;
+    casts that are marked <SPAN
+CLASS="QUOTE"
+>"OK to apply implicitly"</SPAN
+>
     in the system catalogs.  Other casts must be invoked with
     explicit casting syntax.  This restriction is intended to prevent
     surprising conversions from being applied silently.
-   </p>
-<p>    It is also possible to specify a type cast using a function-like
+   </P
+><P
+>    It is also possible to specify a type cast using a function-like
     syntax:
-</p>
-<pre class="synopsis"><em class="replaceable"><code>typename</code></em> ( <em class="replaceable"><code>expression</code></em> )</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> )</PRE
+><P>
     However, this only works for types whose names are also valid as
-    function names.  For example, <code class="literal">double precision</code>
-    can't be used this way, but the equivalent <code class="literal">float8</code>
-    can.  Also, the names <code class="literal">interval</code>, <code class="literal">time</code>, and
-    <code class="literal">timestamp</code> can only be used in this fashion if they are
+    function names.  For example, <TT
+CLASS="LITERAL"
+>double precision</TT
+>
+    can't be used this way, but the equivalent <TT
+CLASS="LITERAL"
+>float8</TT
+>
+    can.  Also, the names <TT
+CLASS="LITERAL"
+>interval</TT
+>, <TT
+CLASS="LITERAL"
+>time</TT
+>, and
+    <TT
+CLASS="LITERAL"
+>timestamp</TT
+> can only be used in this fashion if they are
     double-quoted, because of syntactic conflicts.  Therefore, the use of
     the function-like cast syntax leads to inconsistencies and should
     probably be avoided in new applications.
@@ -335,19 +974,40 @@ $1.somecolumn
     one of the two standard cast syntaxes is used to do a run-time
     conversion, it will internally invoke a registered function to
     perform the conversion.  By convention, these conversion functions
-    have the same name as their output type, and thus the &#8220;<span class="quote">function-like
-    syntax</span>&#8221; is nothing more than a direct invocation of the underlying
+    have the same name as their output type, and thus the <SPAN
+CLASS="QUOTE"
+>"function-like
+    syntax"</SPAN
+> is nothing more than a direct invocation of the underlying
     conversion function.  Obviously, this is not something that a portable
     application should rely on.)
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="sql-syntax-scalar-subqueries"></a>4.2.9. Scalar Subqueries</h3></div></div></div>
-<a name="id305255"></a><p>    A scalar subquery is an ordinary
-    <code class="command">SELECT</code> query in parentheses that returns exactly one
-    row with one column.  (See <a href="queries.html" title="Chapter 7. Queries">Chapter 7, <i>Queries</i></a> for information about writing queries.)
-    The <code class="command">SELECT</code> query is executed
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SQL-SYNTAX-SCALAR-SUBQUERIES"
+>4.2.9. Scalar Subqueries</A
+></H2
+><A
+NAME="AEN1776"
+></A
+><P
+>    A scalar subquery is an ordinary
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query in parentheses that returns exactly one
+    row with one column.  (See <A
+HREF="queries.html"
+>Chapter 7</A
+> for information about writing queries.)
+    The <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query is executed
     and the single returned value is used in the surrounding value expression.
     It is an error to use a query that
     returns more than one row or more than one column as a scalar subquery.
@@ -355,44 +1015,85 @@ $1.somecolumn
     there is no error; the scalar result is taken to be null.)
     The subquery can refer to variables from the surrounding query,
     which will act as constants during any one evaluation of the subquery.
-    See also <a href="functions-subquery.html" title="9.16. Subquery Expressions">Section 9.16, &#8220;Subquery Expressions&#8221;</a> for other expressions involving subqueries.
-   </p>
-<p>    For example, the following finds the largest city population in each
+    See also <A
+HREF="functions-subquery.html"
+>Section 9.16</A
+> for other expressions involving subqueries.
+   </P
+><P
+>    For example, the following finds the largest city population in each
     state:
-</p>
-<pre class="programlisting">SELECT name, (SELECT max(pop) FROM cities WHERE cities.state = states.name)
-    FROM states;</pre>
-<p>
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="sql-syntax-array-constructors"></a>4.2.10. Array Constructors</h3></div></div></div>
-<a name="id305312"></a><a name="id305320"></a><p>    An array constructor is an expression that builds an
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name, (SELECT max(pop) FROM cities WHERE cities.state = states.name)
+    FROM states;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SQL-SYNTAX-ARRAY-CONSTRUCTORS"
+>4.2.10. Array Constructors</A
+></H2
+><A
+NAME="AEN1787"
+></A
+><A
+NAME="AEN1790"
+></A
+><P
+>    An array constructor is an expression that builds an
     array value from values for its member elements.  A simple array
     constructor 
-    consists of the key word <code class="literal">ARRAY</code>, a left square bracket
-    <code class="literal">[</code>, one or more expressions (separated by commas) for the
-    array element values, and finally a right square bracket <code class="literal">]</code>.
+    consists of the key word <TT
+CLASS="LITERAL"
+>ARRAY</TT
+>, a left square bracket
+    <TT
+CLASS="LITERAL"
+>[</TT
+>, one or more expressions (separated by commas) for the
+    array element values, and finally a right square bracket <TT
+CLASS="LITERAL"
+>]</TT
+>.
     For example,
-</p>
-<pre class="programlisting">SELECT ARRAY[1,2,3+4];
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[1,2,3+4];
   array
 ---------
  {1,2,7}
-(1 row)</pre>
-<p>
+(1 row)</PRE
+><P>
     The array element type is the common type of the member expressions,
-    determined using the same rules as for <code class="literal">UNION</code> or
-    <code class="literal">CASE</code> constructs (see <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> Constructs&#8221;</a>). 
-   </p>
-<p>    Multidimensional array values can be built by nesting array
+    determined using the same rules as for <TT
+CLASS="LITERAL"
+>UNION</TT
+> or
+    <TT
+CLASS="LITERAL"
+>CASE</TT
+> constructs (see <A
+HREF="typeconv-union-case.html"
+>Section 10.5</A
+>). 
+   </P
+><P
+>    Multidimensional array values can be built by nesting array
     constructors.
-    In the inner constructors, the key word <code class="literal">ARRAY</code> may
+    In the inner constructors, the key word <TT
+CLASS="LITERAL"
+>ARRAY</TT
+> may
     be omitted.  For example, these produce the same result:
 
-</p>
-<pre class="programlisting">SELECT ARRAY[ARRAY[1,2], ARRAY[3,4]];
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[ARRAY[1,2], ARRAY[3,4]];
      array
 ---------------
  {{1,2},{3,4}}
@@ -402,17 +1103,22 @@ SELECT ARRAY[[1,2],[3,4]];
      array
 ---------------
  {{1,2},{3,4}}
-(1 row)</pre>
-<p>
+(1 row)</PRE
+><P>
 
     Since multidimensional arrays must be rectangular, inner constructors
     at the same level must produce sub-arrays of identical dimensions.
-  </p>
-<p>    Multidimensional array constructor elements can be anything yielding
-    an array of the proper kind, not only a sub-<code class="literal">ARRAY</code> construct.
+  </P
+><P
+>    Multidimensional array constructor elements can be anything yielding
+    an array of the proper kind, not only a sub-<TT
+CLASS="LITERAL"
+>ARRAY</TT
+> construct.
     For example:
-</p>
-<pre class="programlisting">CREATE TABLE arr(f1 int[], f2 int[]);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE arr(f1 int[], f2 int[]);
 
 INSERT INTO arr VALUES (ARRAY[[1,2],[3,4]], ARRAY[[5,6],[7,8]]);
 
@@ -420,52 +1126,94 @@ SELECT ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] FROM arr;
                      array
 ------------------------------------------------
  {{{1,2},{3,4}},{{5,6},{7,8}},{{9,10},{11,12}}}
-(1 row)</pre>
-<p>
-  </p>
-<p>   It is also possible to construct an array from the results of a
+(1 row)</PRE
+><P>
+  </P
+><P
+>   It is also possible to construct an array from the results of a
    subquery.  In this form, the array constructor is written with the
-   key word <code class="literal">ARRAY</code> followed by a parenthesized (not
+   key word <TT
+CLASS="LITERAL"
+>ARRAY</TT
+> followed by a parenthesized (not
    bracketed) subquery. For example:
-</p>
-<pre class="programlisting">SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
                           ?column?
 -------------------------------------------------------------
  {2011,1954,1948,1952,1951,1244,1950,2005,1949,1953,2006,31}
-(1 row)</pre>
-<p>
+(1 row)</PRE
+><P>
    The subquery must return a single column. The resulting
    one-dimensional array will have an element for each row in the
    subquery result, with an element type matching that of the
    subquery's output column.
-  </p>
-<p>   The subscripts of an array value built with <code class="literal">ARRAY</code>
+  </P
+><P
+>   The subscripts of an array value built with <TT
+CLASS="LITERAL"
+>ARRAY</TT
+>
    always begin with one.  For more information about arrays, see
-   <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a>.
-  </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="sql-syntax-row-constructors"></a>4.2.11. Row Constructors</h3></div></div></div>
-<a name="id305450"></a><a name="id305459"></a><a name="id305467"></a><p>    A row constructor is an expression that builds a row value (also
+   <A
+HREF="arrays.html"
+>Section 8.10</A
+>.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SQL-SYNTAX-ROW-CONSTRUCTORS"
+>4.2.11. Row Constructors</A
+></H2
+><A
+NAME="AEN1814"
+></A
+><A
+NAME="AEN1817"
+></A
+><A
+NAME="AEN1820"
+></A
+><P
+>    A row constructor is an expression that builds a row value (also
     called a composite value) from values
     for its member fields.  A row constructor consists of the key word
-    <code class="literal">ROW</code>, a left parenthesis, zero or more
+    <TT
+CLASS="LITERAL"
+>ROW</TT
+>, a left parenthesis, zero or more
     expressions (separated by commas) for the row field values, and finally
     a right parenthesis.  For example,
-</p>
-<pre class="programlisting">SELECT ROW(1,2.5,'this is a test');</pre>
-<p>
-    The key word <code class="literal">ROW</code> is optional when there is more than one
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ROW(1,2.5,'this is a test');</PRE
+><P>
+    The key word <TT
+CLASS="LITERAL"
+>ROW</TT
+> is optional when there is more than one
     expression in the list.
-   </p>
-<p>    By default, the value created by a <code class="literal">ROW</code> expression is of
+   </P
+><P
+>    By default, the value created by a <TT
+CLASS="LITERAL"
+>ROW</TT
+> expression is of
     an anonymous record type.  If necessary, it can be cast to a named
-    composite type [mdash ] either the row type of a table, or a composite type
-    created with <code class="command">CREATE TYPE AS</code>.  An explicit cast may be needed
+    composite type &mdash; either the row type of a table, or a composite type
+    created with <TT
+CLASS="COMMAND"
+>CREATE TYPE AS</TT
+>.  An explicit cast may be needed
     to avoid ambiguity.  For example:
-</p>
-<pre class="programlisting">CREATE TABLE mytable(f1 int, f2 float, f3 text);
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE mytable(f1 int, f2 float, f3 text);
 
 CREATE FUNCTION getf1(mytable) RETURNS int AS 'SELECT $1.f1' LANGUAGE SQL;
 
@@ -494,70 +1242,200 @@ SELECT getf1(CAST(ROW(11,'this is a test',2.5) AS myrowtype));
  getf1
 -------
     11
-(1 row)</pre>
-<p>
-  </p>
-<p>   Row constructors can be used to build composite values to be stored
+(1 row)</PRE
+><P>
+  </P
+><P
+>   Row constructors can be used to build composite values to be stored
    in a composite-type table column, or to be passed to a function that
    accepts a composite parameter.  Also,
    it is possible to compare two row values or test a row with
-   <code class="literal">IS NULL</code> or <code class="literal">IS NOT NULL</code>, for example
-</p>
-<pre class="programlisting">SELECT ROW(1,2.5,'this is a test') = ROW(1, 3, 'not the same');
+   <TT
+CLASS="LITERAL"
+>IS NULL</TT
+> or <TT
+CLASS="LITERAL"
+>IS NOT NULL</TT
+>, for example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ROW(1,2.5,'this is a test') = ROW(1, 3, 'not the same');
 
-SELECT ROW(a, b, c) IS NOT NULL FROM table;</pre>
-<p>
-   For more detail see <a href="functions-comparisons.html" title="9.17. Row and Array Comparisons">Section 9.17, &#8220;Row and Array Comparisons&#8221;</a>.
+SELECT ROW(a, b, c) IS NOT NULL FROM table;</PRE
+><P>
+   For more detail see <A
+HREF="functions-comparisons.html"
+>Section 9.17</A
+>.
    Row constructors can also be used in connection with subqueries,
-   as discussed in <a href="functions-subquery.html" title="9.16. Subquery Expressions">Section 9.16, &#8220;Subquery Expressions&#8221;</a>.
-  </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="syntax-express-eval"></a>4.2.12. Expression Evaluation Rules</h3></div></div></div>
-<a name="id305566"></a><p>    The order of evaluation of subexpressions is not defined.  In
+   as discussed in <A
+HREF="functions-subquery.html"
+>Section 9.16</A
+>.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SYNTAX-EXPRESS-EVAL"
+>4.2.12. Expression Evaluation Rules</A
+></H2
+><A
+NAME="AEN1838"
+></A
+><P
+>    The order of evaluation of subexpressions is not defined.  In
     particular, the inputs of an operator or function are not necessarily
     evaluated left-to-right or in any other fixed order.
-   </p>
-<p>    Furthermore, if the result of an expression can be determined by
+   </P
+><P
+>    Furthermore, if the result of an expression can be determined by
     evaluating only some parts of it, then other subexpressions
     might not be evaluated at all.  For instance, if one wrote
-</p>
-<pre class="programlisting">SELECT true OR somefunc();</pre>
-<p>
-    then <code class="literal">somefunc()</code> would (probably) not be called
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT true OR somefunc();</PRE
+><P>
+    then <TT
+CLASS="LITERAL"
+>somefunc()</TT
+> would (probably) not be called
     at all. The same would be the case if one wrote
-</p>
-<pre class="programlisting">SELECT somefunc() OR true;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT somefunc() OR true;</PRE
+><P>
     Note that this is not the same as the left-to-right
-    &#8220;<span class="quote">short-circuiting</span>&#8221; of Boolean operators that is found
+    <SPAN
+CLASS="QUOTE"
+>"short-circuiting"</SPAN
+> of Boolean operators that is found
     in some programming languages.
-   </p>
-<p>    As a consequence, it is unwise to use functions with side effects
+   </P
+><P
+>    As a consequence, it is unwise to use functions with side effects
     as part of complex expressions.  It is particularly dangerous to
-    rely on side effects or evaluation order in <code class="literal">WHERE</code> and <code class="literal">HAVING</code> clauses,
+    rely on side effects or evaluation order in <TT
+CLASS="LITERAL"
+>WHERE</TT
+> and <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clauses,
     since those clauses are extensively reprocessed as part of
     developing an execution plan.  Boolean
-    expressions (<code class="literal">AND</code>/<code class="literal">OR</code>/<code class="literal">NOT</code> combinations) in those clauses may be reorganized
+    expressions (<TT
+CLASS="LITERAL"
+>AND</TT
+>/<TT
+CLASS="LITERAL"
+>OR</TT
+>/<TT
+CLASS="LITERAL"
+>NOT</TT
+> combinations) in those clauses may be reorganized
     in any manner allowed by the laws of Boolean algebra.
-   </p>
-<p>    When it is essential to force evaluation order, a <code class="literal">CASE</code>
-    construct (see <a href="functions-conditional.html" title="9.13. Conditional Expressions">Section 9.13, &#8220;Conditional Expressions&#8221;</a>) may be
+   </P
+><P
+>    When it is essential to force evaluation order, a <TT
+CLASS="LITERAL"
+>CASE</TT
+>
+    construct (see <A
+HREF="functions-conditional.html"
+>Section 9.13</A
+>) may be
     used.  For example, this is an untrustworthy way of trying to
-    avoid division by zero in a <code class="literal">WHERE</code> clause:
-</p>
-<pre class="programlisting">SELECT ... WHERE x &lt;&gt; 0 AND y/x &gt; 1.5;</pre>
-<p>
+    avoid division by zero in a <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ... WHERE x &lt;&gt; 0 AND y/x &gt; 1.5;</PRE
+><P>
     But this is safe:
-</p>
-<pre class="programlisting">SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</pre>
-<p>
-    A <code class="literal">CASE</code> construct used in this fashion will defeat optimization
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</PRE
+><P>
+    A <TT
+CLASS="LITERAL"
+>CASE</TT
+> construct used in this fashion will defeat optimization
     attempts, so it should only be done when necessary.  (In this particular
     example, it would doubtless be best to sidestep the problem by writing
-    <code class="literal">y &gt; 1.5*x</code> instead.)
-   </p>
-</div>
-</div></body>
-</html>
+    <TT
+CLASS="LITERAL"
+>y &gt; 1.5*x</TT
+> instead.)
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SQL Syntax</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Data Definition</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

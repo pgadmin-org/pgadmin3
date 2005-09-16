@@ -1,54 +1,245 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>33.5. Rules and Command Status</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="rules.html" title="Chapter 33. The Rule System">
-<link rel="prev" href="rules-privileges.html" title="33.4. Rules and Privileges">
-<link rel="next" href="rules-triggers.html" title="33.6. Rules versus Triggers">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="rules-status"></a>33.5. Rules and Command Status</h2></div></div></div>
-<p>    The <span class="productname">PostgreSQL</span> server returns a command
-    status string, such as <code class="literal">INSERT 149592 1</code>, for each
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Rules and Command Status</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="PREVIOUS"
+TITLE="Rules and Privileges"
+HREF="rules-privileges.html"><LINK
+REL="NEXT"
+TITLE="Rules versus Triggers"
+HREF="rules-triggers.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-privileges.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 34. The Rule System</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-triggers.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RULES-STATUS"
+>34.5. Rules and Command Status</A
+></H1
+><P
+>    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server returns a command
+    status string, such as <TT
+CLASS="LITERAL"
+>INSERT 149592 1</TT
+>, for each
     command it receives.  This is simple enough when there are no rules
-    involved, but what happens when the query is rewritten by rules?</p>
-<p>    Rules affect the command status as follows:
+    involved, but what happens when the query is rewritten by rules?</P
+><P
+>    Rules affect the command status as follows:
 
-    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       If there is no unconditional <code class="literal">INSTEAD</code> rule for the query, then
+    <P
+></P
+></P><UL
+><LI
+><P
+>       If there is no unconditional <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> rule for the query, then
        the originally given query will be executed, and its command
        status will be returned as usual.  (But note that if there were
-       any conditional <code class="literal">INSTEAD</code> rules, the negation of their qualifications
+       any conditional <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> rules, the negation of their qualifications
        will have been added to the original query.  This may reduce the
        number of rows it processes, and if so the reported status will
        be affected.)
-      </p></li>
-<li><p>       If there is any unconditional <code class="literal">INSTEAD</code> rule for the query, then
+      </P
+></LI
+><LI
+><P
+>       If there is any unconditional <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> rule for the query, then
        the original query will not be executed at all.  In this case,
        the server will return the command status for the last query
-       that was inserted by an <code class="literal">INSTEAD</code> rule (conditional or
+       that was inserted by an <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> rule (conditional or
        unconditional) and is of the same command type
-       (<code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
-       <code class="command">DELETE</code>) as the original query.  If no query
+       (<TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or
+       <TT
+CLASS="COMMAND"
+>DELETE</TT
+>) as the original query.  If no query
        meeting those requirements is added by any rule, then the
        returned command status shows the original query type and
        zeroes for the row-count and OID fields.
-      </p></li>
-</ul></div>
-<p>
+      </P
+></LI
+></UL
+><P>
 
-    (This system was established in <span class="productname">PostgreSQL</span> 7.3.
+    (This system was established in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3.
     In versions before that, the command status might show different
-    results when rules exist.)</p>
-<p>    The programmer can ensure that any desired <code class="literal">INSTEAD</code> rule is the one
+    results when rules exist.)</P
+><P
+>    The programmer can ensure that any desired <TT
+CLASS="LITERAL"
+>INSTEAD</TT
+> rule is the one
     that sets the command status in the second case, by giving it the
     alphabetically last rule name among the active rules, so that it
-    gets applied last.</p>
-</div></body>
-</html>
+    gets applied last.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-privileges.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-triggers.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Rules and Privileges</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Rules versus Triggers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

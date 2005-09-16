@@ -1,106 +1,358 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 11. Indexes</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="sql.html" title="Part II. The SQL Language">
-<link rel="prev" href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">
-<link rel="next" href="indexes-types.html" title="11.2. Index Types">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="indexes">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="indexes"></a>Chapter 11. Indexes</h2></div></div></div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="sect1"><a href="indexes.html#indexes-intro">11.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="indexes-types.html">11.2. Index Types</a></span></dt>
-<dt><span class="sect1"><a href="indexes-multicolumn.html">11.3. Multicolumn Indexes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-unique.html">11.4. Unique Indexes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-expressional.html">11.5. Indexes on Expressions</a></span></dt>
-<dt><span class="sect1"><a href="indexes-opclass.html">11.6. Operator Classes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-partial.html">11.7. Partial Indexes</a></span></dt>
-<dt><span class="sect1"><a href="indexes-examine.html">11.8. Examining Index Usage</a></span></dt>
-</dl>
-</div>
-<a name="id347735"></a><p>  Indexes are a common way to enhance database performance.  An index
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Indexes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
+REL="PREVIOUS"
+TITLE="UNION, CASE, and Related Constructs"
+HREF="typeconv-union-case.html"><LINK
+REL="NEXT"
+TITLE="Index Types"
+HREF="indexes-types.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv-union-case.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-types.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="INDEXES"
+></A
+>Chapter 11. Indexes</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>11.1. <A
+HREF="indexes.html#INDEXES-INTRO"
+>Introduction</A
+></DT
+><DT
+>11.2. <A
+HREF="indexes-types.html"
+>Index Types</A
+></DT
+><DT
+>11.3. <A
+HREF="indexes-multicolumn.html"
+>Multicolumn Indexes</A
+></DT
+><DT
+>11.4. <A
+HREF="indexes-bitmap-scans.html"
+>Combining Multiple Indexes</A
+></DT
+><DT
+>11.5. <A
+HREF="indexes-unique.html"
+>Unique Indexes</A
+></DT
+><DT
+>11.6. <A
+HREF="indexes-expressional.html"
+>Indexes on Expressions</A
+></DT
+><DT
+>11.7. <A
+HREF="indexes-partial.html"
+>Partial Indexes</A
+></DT
+><DT
+>11.8. <A
+HREF="indexes-opclass.html"
+>Operator Classes</A
+></DT
+><DT
+>11.9. <A
+HREF="indexes-examine.html"
+>Examining Index Usage</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN14654"
+></A
+><P
+>  Indexes are a common way to enhance database performance.  An index
   allows the database server to find and retrieve specific rows much
   faster than it could do without an index.  But indexes also add
   overhead to the database system as a whole, so they should be used
   sensibly.
- </p>
-<div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-intro"></a>11.1. Introduction</h2></div></div></div>
-<p>   Suppose we have a table similar to this:
-</p>
-<pre class="programlisting">CREATE TABLE test1 (
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-INTRO"
+>11.1. Introduction</A
+></H1
+><P
+>   Suppose we have a table similar to this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test1 (
     id integer,
     content varchar
-);</pre>
-<p>
+);</PRE
+><P>
    and the application requires a lot of queries of the form
-</p>
-<pre class="programlisting">SELECT content FROM test1 WHERE id = <em class="replaceable"><code>constant</code></em>;</pre>
-<p>
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT content FROM test1 WHERE id = <TT
+CLASS="REPLACEABLE"
+><I
+>constant</I
+></TT
+>;</PRE
+><P>
    With no advance preparation, the system would have to scan the entire
-   <code class="structname">test1</code> table, row by row, to find all
+   <TT
+CLASS="STRUCTNAME"
+>test1</TT
+> table, row by row, to find all
    matching entries.  If there are a lot of rows in
-   <code class="structname">test1</code> and only a few rows (perhaps only zero
+   <TT
+CLASS="STRUCTNAME"
+>test1</TT
+> and only a few rows (perhaps only zero
    or one) that would be returned by such a query, then this is clearly an
    inefficient method.  But if the system has been instructed to maintain an
-   index on the <code class="structfield">id</code> column, then it can use a more
+   index on the <TT
+CLASS="STRUCTFIELD"
+>id</TT
+> column, then it can use a more
    efficient method for locating matching rows.  For instance, it
    might only have to walk a few levels deep into a search tree.
-  </p>
-<p>   A similar approach is used in most books of non-fiction:  terms and
+  </P
+><P
+>   A similar approach is used in most books of non-fiction:  terms and
    concepts that are frequently looked up by readers are collected in
    an alphabetic index at the end of the book.  The interested reader
    can scan the index relatively quickly and flip to the appropriate
    page(s), rather than having to read the entire book to find the
    material of interest.  Just as it is the task of the author to
-   anticipate the items that the readers are most likely to look up,
+   anticipate the items that the readers are likely to look up,
    it is the task of the database programmer to foresee which indexes
-   would be of advantage.
-  </p>
-<p>   The following command would be used to create the index on the
-   <code class="structfield">id</code> column, as discussed:
-</p>
-<pre class="programlisting">CREATE INDEX test1_id_index ON test1 (id);</pre>
-<p>
-   The name <code class="structname">test1_id_index</code> can be chosen
+   will be of advantage.
+  </P
+><P
+>   The following command would be used to create the index on the
+   <TT
+CLASS="STRUCTFIELD"
+>id</TT
+> column, as discussed:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE INDEX test1_id_index ON test1 (id);</PRE
+><P>
+   The name <TT
+CLASS="STRUCTNAME"
+>test1_id_index</TT
+> can be chosen
    freely, but you should pick something that enables you to remember
    later what the index was for.
-  </p>
-<p>   To remove an index, use the <code class="command">DROP INDEX</code> command.
+  </P
+><P
+>   To remove an index, use the <TT
+CLASS="COMMAND"
+>DROP INDEX</TT
+> command.
    Indexes can be added to and removed from tables at any time.
-  </p>
-<p>   Once an index is created, no further intervention is required: the
+  </P
+><P
+>   Once an index is created, no further intervention is required: the
    system will update the index when the table is modified, and it will
    use the index in queries when it thinks this would be more efficient
    than a sequential table scan.  But you may have to run the
-   <code class="command">ANALYZE</code> command regularly to update
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> command regularly to update
    statistics to allow the query planner to make educated decisions.
-   See <a href="performance-tips.html" title="Chapter 13. Performance Tips">Chapter 13, <i>Performance Tips</i></a> for information about
+   See <A
+HREF="performance-tips.html"
+>Chapter 13</A
+> for information about
    how to find out whether an index is used and when and why the
-   planner may choose <span class="emphasis"><em>not</em></span> to use an index.
-  </p>
-<p>   Indexes can also benefit <code class="command">UPDATE</code> and
-   <code class="command">DELETE</code> commands with search conditions.  Indexes can moreover be
-   used in join queries.  Thus,
+   planner may choose <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> to use an index.
+  </P
+><P
+>   Indexes can also benefit <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> and
+   <TT
+CLASS="COMMAND"
+>DELETE</TT
+> commands with search conditions.
+   Indexes can moreover be used in join searches.  Thus,
    an index defined on a column that is part of a join condition can
    significantly speed up queries with joins.
-  </p>
-<p>   When an index is created, the system has to keep it synchronized with the
+  </P
+><P
+>   After an index is created, the system has to keep it synchronized with the
    table.  This adds overhead to data manipulation operations.
-   Therefore indexes that are non-essential or do not get used at all
-   should be removed.  Note that a
-   query or data manipulation command can use at most one index
-   per table.
-  </p>
-</div>
-</div></body>
-</html>
+   Therefore indexes that are seldom or never used in queries
+   should be removed.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv-union-case.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-types.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>UNION</TT
+>, <TT
+CLASS="LITERAL"
+>CASE</TT
+>, and Related Constructs</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Index Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

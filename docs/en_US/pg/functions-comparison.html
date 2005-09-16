@@ -1,168 +1,684 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.2. Comparison Operators</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
-<link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1devel Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="prev" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="next" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-comparison"></a>9.2. Comparison Operators</h2></div></div></div>
-<a name="id321152"></a><p>    The usual comparison operators are available, shown in <a href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
-   </p>
-<div class="table">
-<a name="functions-comparison-table"></a><p class="title"><b>Table 9.1. Comparison Operators</b></p>
-<table summary="Comparison Operators" border="1">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Operator</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr>
-<td> <code class="literal">&lt;</code> </td>
-<td>less than</td>
-</tr>
-<tr>
-<td> <code class="literal">&gt;</code> </td>
-<td>greater than</td>
-</tr>
-<tr>
-<td> <code class="literal">&lt;=</code> </td>
-<td>less than or equal to</td>
-</tr>
-<tr>
-<td> <code class="literal">&gt;=</code> </td>
-<td>greater than or equal to</td>
-</tr>
-<tr>
-<td> <code class="literal">=</code> </td>
-<td>equal</td>
-</tr>
-<tr>
-<td> <code class="literal">&lt;&gt;</code> or <code class="literal">!=</code> </td>
-<td>not equal</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     The <code class="literal">!=</code> operator is converted to
-     <code class="literal">&lt;&gt;</code> in the parser stage.  It is not
-     possible to implement <code class="literal">!=</code> and
-     <code class="literal">&lt;&gt;</code> operators that do different things.
-    </p>
-</div>
-<p>    Comparison operators are available for all data types where this
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Comparison Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.1beta2 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="NEXT"
+TITLE="Mathematical Functions and Operators"
+HREF="functions-math.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-09-16T17:25:30"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.1beta2 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-math.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-COMPARISON"
+>9.2. Comparison Operators</A
+></H1
+><A
+NAME="AEN5992"
+></A
+><P
+>    The usual comparison operators are available, shown in <A
+HREF="functions-comparison.html#FUNCTIONS-COMPARISON-TABLE"
+>Table 9-1</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-COMPARISON-TABLE"
+></A
+><P
+><B
+>Table 9-1. Comparison Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><THEAD
+><TR
+><TH
+>Operator</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;</TT
+> </TD
+><TD
+>less than</TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;</TT
+> </TD
+><TD
+>greater than</TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;=</TT
+> </TD
+><TD
+>less than or equal to</TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;=</TT
+> </TD
+><TD
+>greater than or equal to</TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>=</TT
+> </TD
+><TD
+>equal</TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> or <TT
+CLASS="LITERAL"
+>!=</TT
+> </TD
+><TD
+>not equal</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The <TT
+CLASS="LITERAL"
+>!=</TT
+> operator is converted to
+     <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> in the parser stage.  It is not
+     possible to implement <TT
+CLASS="LITERAL"
+>!=</TT
+> and
+     <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> operators that do different things.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Comparison operators are available for all data types where this
     makes sense.  All comparison operators are binary operators that
-    return values of type <code class="type">boolean</code>; expressions like
-    <code class="literal">1 &lt; 2 &lt; 3</code> are not valid (because there is
-    no <code class="literal">&lt;</code> operator to compare a Boolean value with
-    <code class="literal">3</code>).
-   </p>
-<p>    <a name="id321321"></a>
+    return values of type <TT
+CLASS="TYPE"
+>boolean</TT
+>; expressions like
+    <TT
+CLASS="LITERAL"
+>1 &lt; 2 &lt; 3</TT
+> are not valid (because there is
+    no <TT
+CLASS="LITERAL"
+>&lt;</TT
+> operator to compare a Boolean value with
+    <TT
+CLASS="LITERAL"
+>3</TT
+>).
+   </P
+><P
+>    <A
+NAME="AEN6042"
+></A
+>
     In addition to the comparison operators, the special
-    <code class="token">BETWEEN</code> construct is available.<a name="id321333"></a>
-</p>
-<pre class="synopsis"><em class="replaceable"><code>a</code></em> BETWEEN <em class="replaceable"><code>x</code></em> AND <em class="replaceable"><code>y</code></em></pre>
-<p>
+    <TT
+CLASS="TOKEN"
+>BETWEEN</TT
+> construct is available.
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> BETWEEN <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AND <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
     is equivalent to
-</p>
-<pre class="synopsis"><em class="replaceable"><code>a</code></em> &gt;= <em class="replaceable"><code>x</code></em> AND <em class="replaceable"><code>a</code></em> &lt;= <em class="replaceable"><code>y</code></em></pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &gt;= <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AND <TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &lt;= <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
     Similarly,
-</p>
-<pre class="synopsis"><em class="replaceable"><code>a</code></em> NOT BETWEEN <em class="replaceable"><code>x</code></em> AND <em class="replaceable"><code>y</code></em></pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> NOT BETWEEN <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AND <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
     is equivalent to
-</p>
-<pre class="synopsis"><em class="replaceable"><code>a</code></em> &lt; <em class="replaceable"><code>x</code></em> OR <em class="replaceable"><code>a</code></em> &gt; <em class="replaceable"><code>y</code></em></pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &lt; <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> OR <TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &gt; <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
     There is no difference between the two respective forms apart from
-    the <span class="acronym">CPU</span> cycles required to rewrite the first one
+    the <ACRONYM
+CLASS="ACRONYM"
+>CPU</ACRONYM
+> cycles required to rewrite the first one
     into the second one internally.
-   </p>
-<p>    <a name="id321408"></a>
-    <a name="id321415"></a>
-    <a name="id321422"></a>
-    <a name="id321428"></a>
+    <A
+NAME="AEN6064"
+></A
+>
+    <TT
+CLASS="TOKEN"
+>BETWEEN SYMMETRIC</TT
+> is the same as <TT
+CLASS="LITERAL"
+>BETWEEN</TT
+>
+    except there is no requirement that the argument to the left of <TT
+CLASS="LITERAL"
+>AND</TT
+> be less than
+    or equal to the argument on the right;  the proper range is automatically determined.
+   </P
+><P
+>    <A
+NAME="AEN6070"
+></A
+>
+    <A
+NAME="AEN6072"
+></A
+>
+    <A
+NAME="AEN6074"
+></A
+>
+    <A
+NAME="AEN6076"
+></A
+>
     To check whether a value is or is not null, use the constructs
-</p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS NULL
-<em class="replaceable"><code>expression</code></em> IS NOT NULL</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NULL
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT NULL</PRE
+><P>
     or the equivalent, but nonstandard, constructs
-</p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em> ISNULL
-<em class="replaceable"><code>expression</code></em> NOTNULL</pre>
-<p>
-    <a name="id321460"></a>
-   </p>
-<p>    Do <span class="emphasis"><em>not</em></span> write
-    <code class="literal"><em class="replaceable"><code>expression</code></em> = NULL</code>
-    because <code class="literal">NULL</code> is not &#8220;<span class="quote">equal to</span>&#8221;
-    <code class="literal">NULL</code>.  (The null value represents an unknown value,
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> ISNULL
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> NOTNULL</PRE
+><P>
+    <A
+NAME="AEN6084"
+></A
+>
+   </P
+><P
+>    Do <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> write
+    <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> = NULL</TT
+>
+    because <TT
+CLASS="LITERAL"
+>NULL</TT
+> is not <SPAN
+CLASS="QUOTE"
+>"equal to"</SPAN
+>
+    <TT
+CLASS="LITERAL"
+>NULL</TT
+>.  (The null value represents an unknown value,
     and it is not known whether two unknown values are equal.) This
     behavior conforms to the SQL standard.
-   </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
-<p>    Some applications may expect that
-    <code class="literal"><em class="replaceable"><code>expression</code></em> = NULL</code>
-    returns true if <em class="replaceable"><code>expression</code></em> evaluates to
+   </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    Some applications may expect that
+    <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> = NULL</TT
+>
+    returns true if <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> evaluates to
     the null value.  It is highly recommended that these applications
     be modified to comply with the SQL standard. However, if that
-    cannot be done the <a href="runtime-config.html#guc-transform-null-equals">transform_null_equals</a>
+    cannot be done the <A
+HREF="runtime-config-compatible.html#GUC-TRANSFORM-NULL-EQUALS"
+>transform_null_equals</A
+>
     configuration variable is available. If it is enabled,
-    <span class="productname">PostgreSQL</span> will convert <code class="literal">x =
-    NULL</code> clauses to <code class="literal">x IS NULL</code>.  This was
-    the default behavior in <span class="productname">PostgreSQL</span>
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will convert <TT
+CLASS="LITERAL"
+>x =
+    NULL</TT
+> clauses to <TT
+CLASS="LITERAL"
+>x IS NULL</TT
+>.  This was
+    the default behavior in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
     releases 6.5 through 7.1.
-   </p>
-</div>
-<p>    <a name="id321551"></a>
-    The ordinary comparison operators yield null (signifying &#8220;<span class="quote">unknown</span>&#8221;)
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>    <A
+NAME="AEN6105"
+></A
+>
+    The ordinary comparison operators yield null (signifying <SPAN
+CLASS="QUOTE"
+>"unknown"</SPAN
+>)
     when either input is null.  Another way to do comparisons is with the
-    <code class="literal">IS DISTINCT FROM</code> construct:
-</p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS DISTINCT FROM <em class="replaceable"><code>expression</code></em></pre>
-<p>
-    For non-null inputs this is the same as the <code class="literal">&lt;&gt;</code> operator.
+    <TT
+CLASS="LITERAL"
+>IS DISTINCT FROM</TT
+> construct:
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS DISTINCT FROM <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></PRE
+><P>
+    For non-null inputs this is the same as the <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> operator.
     However, when both inputs are null it will return false, and when just
     one input is null it will return true.  Thus it effectively acts as though
-    null were a normal data value, rather than &#8220;<span class="quote">unknown</span>&#8221;.
-   </p>
-<p>    <a name="id321594"></a>
-    <a name="id321600"></a>
-    <a name="id321607"></a>
-    <a name="id321614"></a>
-    <a name="id321621"></a>
-    <a name="id321628"></a>
+    null were a normal data value, rather than <SPAN
+CLASS="QUOTE"
+>"unknown"</SPAN
+>.
+   </P
+><P
+>    <A
+NAME="AEN6115"
+></A
+>
+    <A
+NAME="AEN6117"
+></A
+>
+    <A
+NAME="AEN6119"
+></A
+>
+    <A
+NAME="AEN6121"
+></A
+>
+    <A
+NAME="AEN6123"
+></A
+>
+    <A
+NAME="AEN6125"
+></A
+>
     Boolean values can also be tested using the constructs
-</p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS TRUE
-<em class="replaceable"><code>expression</code></em> IS NOT TRUE
-<em class="replaceable"><code>expression</code></em> IS FALSE
-<em class="replaceable"><code>expression</code></em> IS NOT FALSE
-<em class="replaceable"><code>expression</code></em> IS UNKNOWN
-<em class="replaceable"><code>expression</code></em> IS NOT UNKNOWN</pre>
-<p>
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS TRUE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT TRUE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS FALSE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT FALSE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS UNKNOWN
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT UNKNOWN</PRE
+><P>
     These will always return true or false, never a null value, even when the
     operand is null.
-    A null input is treated as the logical value &#8220;<span class="quote">unknown</span>&#8221;.
-    Notice that <code class="literal">IS UNKNOWN</code> and <code class="literal">IS NOT UNKNOWN</code> are
-    effectively the same as <code class="literal">IS NULL</code> and
-    <code class="literal">IS NOT NULL</code>, respectively, except that the input
+    A null input is treated as the logical value <SPAN
+CLASS="QUOTE"
+>"unknown"</SPAN
+>.
+    Notice that <TT
+CLASS="LITERAL"
+>IS UNKNOWN</TT
+> and <TT
+CLASS="LITERAL"
+>IS NOT UNKNOWN</TT
+> are
+    effectively the same as <TT
+CLASS="LITERAL"
+>IS NULL</TT
+> and
+    <TT
+CLASS="LITERAL"
+>IS NOT NULL</TT
+>, respectively, except that the input
     expression must be of Boolean type.
-   </p>
-</div></body>
-</html>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-math.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Mathematical Functions and Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
