@@ -216,7 +216,7 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 #include "images/steps.xpm"
 
 pgaStepFactory::pgaStepFactory() 
-: pgServerObjFactory(__("Step"), __("New Step"), __("Create a new Step."), step_xpm)
+: pgaJobObjFactory(__("Step"), __("New Step"), __("Create a new Step."), step_xpm)
 {
 }
 

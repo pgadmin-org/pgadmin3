@@ -248,6 +248,25 @@ pgaJobObject::pgaJobObject(pgaJob *_job, pgaFactory &factory, const wxString& ne
 }
 
 
+pgaJobObjCollection::pgaJobObjCollection(pgaFactory *factory, pgaJob *_job)
+: pgServerObjCollection(factory, _job->GetServer())
+{
+    job = _job;
+}
+
+
+bool pgaJobObjCollection::CanCreate()
+{
+    return job->CanCreate();
+}
+
+
+pgCollection *pgaJobObjFactory::CreateCollection(pgObject *obj)
+{
+    return new pgaJobObjCollection(GetCollectionFactory(), (pgaJob*)obj);
+}
+
+
 
 #include "images/job.xpm"
 #include "images/jobs.xpm"

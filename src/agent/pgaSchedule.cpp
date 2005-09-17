@@ -488,7 +488,7 @@ wxString pgaSchedule::GetExceptionsString()
 #include "images/schedules.xpm"
 
 pgaScheduleFactory::pgaScheduleFactory() 
-: pgServerObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_xpm)
+: pgaJobObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_xpm)
 {
 }
 

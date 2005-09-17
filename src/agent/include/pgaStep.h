@@ -16,7 +16,7 @@
 
 
 
-class pgaStepFactory : public pgServerObjFactory
+class pgaStepFactory : public pgaJobObjFactory
 {
 public:
     pgaStepFactory();
@@ -24,6 +24,7 @@ public:
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
 extern pgaStepFactory stepFactory;
+
 
 class pgaStep : public pgaJobObject
 {

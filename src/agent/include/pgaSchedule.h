@@ -15,7 +15,7 @@
 #include "pgaJob.h"
 
 
-class pgaScheduleFactory : public pgServerObjFactory
+class pgaScheduleFactory : public pgaJobObjFactory
 {
 public:
     pgaScheduleFactory();

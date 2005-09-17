@@ -93,4 +93,19 @@ protected:
     pgaJob *job;
 };
 
+
+class pgaJobObjCollection : public pgServerObjCollection
+{
+public:
+    pgaJobObjCollection(pgaFactory *factory, pgaJob *job);
+    bool CanCreate();
+};
+
+class pgaJobObjFactory : public pgServerObjFactory
+{
+public:
+    pgaJobObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **imgSm=0)
+        : pgServerObjFactory(tn, ns, nls, img, imgSm) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
+};
 #endif
