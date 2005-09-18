@@ -363,19 +363,7 @@ void frmRestore::OnOK(wxCommandEvent &ev)
     viewRunning = false;
     btnView->Disable();
 
-#if 1
     ExternProcessDialog::OnOK(ev);
-#else   // demo mode
-    if (!done)
-    {
-        done=true;
-        btnOK->SetLabel(_("Done"));
-    }
-    else
-    {
-        pgDialog::OnCancel(ev);
-    }
-#endif
 }
 
 

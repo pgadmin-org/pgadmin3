@@ -23,6 +23,7 @@
 
 #include "ctl/ctlSQLResult.h"
 #include "pgDatabase.h"
+#include "dlgSelectConnection.h"
 
 #include <wx/clipbrd.h>
 
@@ -46,7 +47,10 @@
 
 
 
+#define CTRLID_CONNECTION       4200
+
 BEGIN_EVENT_TABLE(frmQuery, pgFrame)
+    EVT_COMBOBOX(CTRLID_CONNECTION, frmQuery::OnChangeConnection)
     EVT_CLOSE(                      frmQuery::OnClose)
     EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
@@ -86,7 +90,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 : pgFrame(NULL, _title)
 {
     mainForm=form;
-    title = _title;
     conn=_conn;
 
     dlgName = wxT("frmQuery");
@@ -191,11 +194,18 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
+
+    cbConnection = new wxComboBox(toolBar, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY|wxCB_DROPDOWN);
+    cbConnection->Append(wxString::Format(
+        _("%s on %s:%d"), conn->GetDbname().c_str(), conn->GetHost().c_str(), conn->GetPort()), (void*)conn);
+    cbConnection->Append(_("<new connection>"), (void*)0);
+    toolBar->AddControl(cbConnection);
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), wxBitmap(query_execfile_xpm), _("Execute query, write result to file"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
     toolBar->AddSeparator();
+
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."), wxITEM_NORMAL);
     toolBar->Realize();
 
@@ -282,6 +292,10 @@ void frmQuery::OnExport(wxCommandEvent &ev)
 
 void frmQuery::Go()
 {
+    cbConnection->SetSelection(0L);
+    wxCommandEvent ev;
+    OnChangeConnection(ev);
+
     Show(TRUE);
     sqlQuery->SetFocus();
 }
@@ -360,10 +374,51 @@ SqlTokenHelp sqlTokenHelp[] =
 };
 
 
-
 void frmQuery::OnContents(wxCommandEvent& event)
 {
     DisplayHelp(this, wxT("query"), sql_xpm);
+}
+
+
+void frmQuery::OnChangeConnection(wxCommandEvent &ev)
+{
+    int sel=cbConnection->GetSelection();
+    if (sel == cbConnection->GetCount()-1)
+    {
+        // new Connection
+        dlgSelectConnection dlg(mainForm);
+        int rc=dlg.Go();
+        if (rc == wxID_OK)
+        {
+            conn = dlg.GetServer()->CreateConn(dlg.GetDatabase());
+            if (conn)
+            {
+                cbConnection->Insert(wxString::Format(_("%s on %s:%d"), conn->GetDbname().c_str(), 
+                    conn->GetHost().c_str(), conn->GetPort()), sel, (void*)conn);
+                cbConnection->SetSelection(sel);
+            }
+            else
+                rc = wxID_CANCEL;
+        }
+        if (rc != wxID_OK)
+        {
+            int i;
+            for (i=0 ; i < sel ; i++)
+            {
+                if (cbConnection->GetClientData(i) == conn)
+                {
+                    cbConnection->SetSelection(i);
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        conn = (pgConn*)cbConnection->GetClientData(sel);
+        title = wxT("pgAdmin III Query - ") + cbConnection->GetValue();
+        setExtendedTitle();
+    }
 }
 
 
@@ -1209,14 +1264,10 @@ wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
     pgConn *conn = db->CreateConn();
     if (conn)
     {
-        wxString txt = wxT("pgAdmin III Query - ") + server->GetDescription() + 
-            wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + 
-            wxT(") - ") + db->GetName();
-
         wxString qry;
         if (settings->GetStickySql()) 
             qry = form->GetSqlPane()->GetText();
-        frmQuery *fq= new frmQuery(form, txt, conn, qry);
+        frmQuery *fq= new frmQuery(form, wxEmptyString, conn, qry);
         fq->Go();
         return fq;
     }

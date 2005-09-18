@@ -81,6 +81,7 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
     conn=0;
     noticeArg=0;
     connStatus = PGCONN_BAD;
+    dbname = database;
     
 #ifdef __WXMSW__
     struct in_addr ipaddr;

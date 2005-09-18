@@ -74,6 +74,7 @@
 #include "dlgStep.h"
 
 #include "dlgConnect.h"
+#include "dlgSelectConnection.h"
 #include "dlgEditGridOptions.h"
 #include "dlgHbaConfig.h"
 #include "dlgMainConfig.h"

@@ -6641,8 +6641,72 @@ static unsigned char xml_res_file_33[] = {
 62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,
 114,99,101,62,10};
 
-static size_t xml_res_size_34 = 4097;
+static size_t xml_res_size_34 = 1301;
 static unsigned char xml_res_file_34[] = {
+60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
+110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
+10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
+32,99,108,97,115,115,61,34,119,120,68,105,97,108,111,103,34,32,110,97,109,
+101,61,34,100,108,103,83,101,108,101,99,116,67,111,110,110,101,99,116,105,
+111,110,34,62,10,32,32,32,32,60,116,105,116,108,101,62,67,111,110,110,101,
+99,116,32,116,111,32,83,101,114,118,101,114,60,47,116,105,116,108,101,62,
+10,32,32,32,32,60,115,105,122,101,62,50,48,53,44,56,51,100,60,47,115,105,
+122,101,62,10,32,32,32,32,60,115,116,121,108,101,62,119,120,68,69,70,65,
+85,76,84,95,68,73,65,76,79,71,95,83,84,89,76,69,124,119,120,68,73,65,76,
+79,71,95,77,79,68,65,76,124,119,120,67,65,80,84,73,79,78,124,119,120,83,
+89,83,84,69,77,95,77,69,78,85,60,47,115,116,121,108,101,62,10,32,32,32,
+32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,119,120,83,116,97,
+116,105,99,84,101,120,116,34,32,110,97,109,101,61,34,115,116,83,101,114,
+118,101,114,34,62,10,32,32,32,32,32,32,60,108,97,98,101,108,62,83,101,114,
+118,101,114,60,47,108,97,98,101,108,62,10,32,32,32,32,32,32,60,112,111,
+115,62,53,44,55,100,60,47,112,111,115,62,10,32,32,32,32,60,47,111,98,106,
+101,99,116,62,10,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,
+115,61,34,119,120,67,111,109,98,111,66,111,120,34,32,110,97,109,101,61,
+34,99,98,83,101,114,118,101,114,34,62,10,32,32,32,32,32,32,60,99,111,110,
+116,101,110,116,47,62,10,32,32,32,32,32,32,60,112,111,115,62,54,53,44,53,
+100,60,47,112,111,115,62,10,32,32,32,32,32,32,60,115,105,122,101,62,49,
+51,53,44,49,50,100,60,47,115,105,122,101,62,10,32,32,32,32,32,32,60,115,
+116,121,108,101,62,119,120,67,66,95,82,69,65,68,79,78,76,89,124,119,120,
+67,66,95,68,82,79,80,68,79,87,78,60,47,115,116,121,108,101,62,10,32,32,
+32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,60,111,98,106,101,99,
+116,32,99,108,97,115,115,61,34,119,120,83,116,97,116,105,99,84,101,120,
+116,34,32,110,97,109,101,61,34,115,116,68,97,116,97,98,97,115,101,34,62,
+10,32,32,32,32,32,32,60,108,97,98,101,108,62,68,97,116,97,98,97,115,101,
+60,47,108,97,98,101,108,62,10,32,32,32,32,32,32,60,112,111,115,62,53,44,
+50,50,100,60,47,112,111,115,62,10,32,32,32,32,60,47,111,98,106,101,99,116,
+62,10,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,119,
+120,67,111,109,98,111,66,111,120,34,32,110,97,109,101,61,34,99,98,68,97,
+116,97,98,97,115,101,34,62,10,32,32,32,32,32,32,60,99,111,110,116,101,110,
+116,47,62,10,32,32,32,32,32,32,60,112,111,115,62,54,53,44,50,48,100,60,
+47,112,111,115,62,10,32,32,32,32,32,32,60,115,105,122,101,62,49,51,53,44,
+49,50,100,60,47,115,105,122,101,62,10,32,32,32,32,32,32,60,115,116,121,
+108,101,62,119,120,67,66,95,82,69,65,68,79,78,76,89,124,119,120,67,66,95,
+68,82,79,80,68,79,87,78,60,47,115,116,121,108,101,62,10,32,32,32,32,60,
+47,111,98,106,101,99,116,62,10,32,32,32,32,60,111,98,106,101,99,116,32,
+99,108,97,115,115,61,34,119,120,66,117,116,116,111,110,34,32,110,97,109,
+101,61,34,119,120,73,68,95,72,69,76,80,34,62,10,32,32,32,32,32,32,60,108,
+97,98,101,108,62,38,97,109,112,59,72,101,108,112,60,47,108,97,98,101,108,
+62,10,32,32,32,32,32,32,60,112,111,115,62,50,44,54,53,100,60,47,112,111,
+115,62,10,32,32,32,32,32,32,60,115,116,121,108,101,47,62,10,32,32,32,32,
+60,47,111,98,106,101,99,116,62,10,32,32,32,32,60,111,98,106,101,99,116,
+32,99,108,97,115,115,61,34,119,120,66,117,116,116,111,110,34,32,110,97,
+109,101,61,34,119,120,73,68,95,79,75,34,62,10,32,32,32,32,32,32,60,108,
+97,98,101,108,62,38,97,109,112,59,79,75,60,47,108,97,98,101,108,62,10,32,
+32,32,32,32,32,60,100,101,102,97,117,108,116,62,49,60,47,100,101,102,97,
+117,108,116,62,10,32,32,32,32,32,32,60,112,111,115,62,57,55,44,54,53,100,
+60,47,112,111,115,62,10,32,32,32,32,32,32,60,115,116,121,108,101,47,62,
+10,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,60,111,98,
+106,101,99,116,32,99,108,97,115,115,61,34,119,120,66,117,116,116,111,110,
+34,32,110,97,109,101,61,34,119,120,73,68,95,67,65,78,67,69,76,34,62,10,
+32,32,32,32,32,32,60,108,97,98,101,108,62,38,97,109,112,59,67,97,110,99,
+101,108,60,47,108,97,98,101,108,62,10,32,32,32,32,32,32,60,100,101,102,
+97,117,108,116,62,48,60,47,100,101,102,97,117,108,116,62,10,32,32,32,32,
+32,32,60,112,111,115,62,49,53,48,44,54,53,100,60,47,112,111,115,62,10,32,
+32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,60,47,111,98,106,101,99,
+116,62,10,60,47,114,101,115,111,117,114,99,101,62,10};
+
+static size_t xml_res_size_35 = 4097;
+static unsigned char xml_res_file_35[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -6833,8 +6897,8 @@ static unsigned char xml_res_file_34[] = {
 32,60,115,116,121,108,101,47,62,10,32,32,60,47,111,98,106,101,99,116,62,
 10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_35 = 3953;
-static unsigned char xml_res_file_35[] = {
+static size_t xml_res_size_36 = 3953;
+static unsigned char xml_res_file_36[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -7019,8 +7083,8 @@ static unsigned char xml_res_file_35[] = {
 10,32,32,32,32,60,115,116,121,108,101,47,62,10,32,32,60,47,111,98,106,101,
 99,116,62,10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_36 = 5447;
-static unsigned char xml_res_file_36[] = {
+static size_t xml_res_size_37 = 5447;
+static unsigned char xml_res_file_37[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -7272,8 +7336,8 @@ static unsigned char xml_res_file_36[] = {
 101,99,116,62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,
 115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_37 = 10221;
-static unsigned char xml_res_file_37[] = {
+static size_t xml_res_size_38 = 10221;
+static unsigned char xml_res_file_38[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -7741,8 +7805,8 @@ static unsigned char xml_res_file_37[] = {
 60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,99,101,
 62,10};
 
-static size_t xml_res_size_38 = 2060;
-static unsigned char xml_res_file_38[] = {
+static size_t xml_res_size_39 = 2060;
+static unsigned char xml_res_file_39[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -7840,8 +7904,8 @@ static unsigned char xml_res_file_38[] = {
 121,108,101,47,62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,
 101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_39 = 4294;
-static unsigned char xml_res_file_39[] = {
+static size_t xml_res_size_40 = 4294;
+static unsigned char xml_res_file_40[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -8042,8 +8106,8 @@ static unsigned char xml_res_file_39[] = {
 60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,99,101,
 62,10};
 
-static size_t xml_res_size_40 = 9624;
-static unsigned char xml_res_file_40[] = {
+static size_t xml_res_size_41 = 9624;
+static unsigned char xml_res_file_41[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -8487,8 +8551,8 @@ static unsigned char xml_res_file_40[] = {
 10,32,32,32,32,60,115,116,121,108,101,47,62,10,32,32,60,47,111,98,106,101,
 99,116,62,10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_41 = 7554;
-static unsigned char xml_res_file_41[] = {
+static size_t xml_res_size_42 = 7554;
+static unsigned char xml_res_file_42[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -8837,8 +8901,8 @@ static unsigned char xml_res_file_41[] = {
 51,56,100,60,47,115,105,122,101,62,10,32,32,60,47,111,98,106,101,99,116,
 62,10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_42 = 4841;
-static unsigned char xml_res_file_42[] = {
+static size_t xml_res_size_43 = 4841;
+static unsigned char xml_res_file_43[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -9063,8 +9127,8 @@ static unsigned char xml_res_file_42[] = {
 32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,99,101,
 62,10};
 
-static size_t xml_res_size_43 = 1725;
-static unsigned char xml_res_file_43[] = {
+static size_t xml_res_size_44 = 1725;
+static unsigned char xml_res_file_44[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -9147,8 +9211,8 @@ static unsigned char xml_res_file_43[] = {
 47,111,98,106,101,99,116,62,10,32,32,60,47,111,98,106,101,99,116,62,10,
 60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_44 = 5546;
-static unsigned char xml_res_file_44[] = {
+static size_t xml_res_size_45 = 5546;
+static unsigned char xml_res_file_45[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -9405,8 +9469,8 @@ static unsigned char xml_res_file_44[] = {
 10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,
 99,101,62,10};
 
-static size_t xml_res_size_45 = 3589;
-static unsigned char xml_res_file_45[] = {
+static size_t xml_res_size_46 = 3589;
+static unsigned char xml_res_file_46[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -9577,8 +9641,8 @@ static unsigned char xml_res_file_45[] = {
 98,106,101,99,116,62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,
 101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_46 = 1443;
-static unsigned char xml_res_file_46[] = {
+static size_t xml_res_size_47 = 1443;
+static unsigned char xml_res_file_47[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -9648,8 +9712,8 @@ static unsigned char xml_res_file_46[] = {
 101,99,116,62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,
 115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_47 = 3184;
-static unsigned char xml_res_file_47[] = {
+static size_t xml_res_size_48 = 3184;
+static unsigned char xml_res_file_48[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -9798,8 +9862,8 @@ static unsigned char xml_res_file_47[] = {
 119,115,62,10,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,60,47,
 111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_48 = 1444;
-static unsigned char xml_res_file_48[] = {
+static size_t xml_res_size_49 = 1444;
+static unsigned char xml_res_file_49[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -9869,8 +9933,8 @@ static unsigned char xml_res_file_48[] = {
 62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,
 114,99,101,62,10};
 
-static size_t xml_res_size_49 = 4467;
-static unsigned char xml_res_file_49[] = {
+static size_t xml_res_size_50 = 4467;
+static unsigned char xml_res_file_50[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -10078,8 +10142,8 @@ static unsigned char xml_res_file_49[] = {
 10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,
 99,101,62,10};
 
-static size_t xml_res_size_50 = 8610;
-static unsigned char xml_res_file_50[] = {
+static size_t xml_res_size_51 = 8610;
+static unsigned char xml_res_file_51[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -10484,8 +10548,8 @@ static unsigned char xml_res_file_50[] = {
 101,99,116,62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,
 115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_51 = 1432;
-static unsigned char xml_res_file_51[] = {
+static size_t xml_res_size_52 = 1432;
+static unsigned char xml_res_file_52[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -10555,8 +10619,8 @@ static unsigned char xml_res_file_51[] = {
 62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,
 114,99,101,62,10};
 
-static size_t xml_res_size_52 = 2965;
-static unsigned char xml_res_file_52[] = {
+static size_t xml_res_size_53 = 2965;
+static unsigned char xml_res_file_53[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,85,84,70,45,56,34,63,62,10,60,114,101,
 115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,32,99,108,97,
@@ -10697,8 +10761,8 @@ static unsigned char xml_res_file_52[] = {
 122,101,62,10,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,60,47,
 111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_53 = 4722;
-static unsigned char xml_res_file_53[] = {
+static size_t xml_res_size_54 = 4722;
+static unsigned char xml_res_file_54[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -10918,8 +10982,8 @@ static unsigned char xml_res_file_53[] = {
 60,47,111,98,106,101,99,116,62,10,32,32,60,47,111,98,106,101,99,116,62,
 10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_54 = 9076;
-static unsigned char xml_res_file_54[] = {
+static size_t xml_res_size_55 = 9076;
+static unsigned char xml_res_file_55[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -11334,8 +11398,8 @@ static unsigned char xml_res_file_54[] = {
 116,62,10,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,60,47,111,
 98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,99,101,62,10};
 
-static size_t xml_res_size_55 = 1882;
-static unsigned char xml_res_file_55[] = {
+static size_t xml_res_size_56 = 1882;
+static unsigned char xml_res_file_56[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
 10,60,114,101,115,111,117,114,99,101,62,10,32,32,60,111,98,106,101,99,116,
@@ -11473,28 +11537,29 @@ void InitXmlResource()
     wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgRule.xrc"), xml_res_file_31, xml_res_size_31);
     wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgSchedule.xrc"), xml_res_file_32, xml_res_size_32);
     wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgSchema.xrc"), xml_res_file_33, xml_res_size_33);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgSequence.xrc"), xml_res_file_34, xml_res_size_34);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgServer.xrc"), xml_res_file_35, xml_res_size_35);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgStep.xrc"), xml_res_file_36, xml_res_size_36);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgTable.xrc"), xml_res_file_37, xml_res_size_37);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgTablespace.xrc"), xml_res_file_38, xml_res_size_38);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgTrigger.xrc"), xml_res_file_39, xml_res_size_39);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgType.xrc"), xml_res_file_40, xml_res_size_40);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgUser.xrc"), xml_res_file_41, xml_res_size_41);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgView.xrc"), xml_res_file_42, xml_res_size_42);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmAddTableView.xrc"), xml_res_file_43, xml_res_size_43);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmBackup.xrc"), xml_res_file_44, xml_res_size_44);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmExport.xrc"), xml_res_file_45, xml_res_size_45);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmGrantWizard.xrc"), xml_res_file_46, xml_res_size_46);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmHint.xrc"), xml_res_file_47, xml_res_size_47);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmIndexcheck.xrc"), xml_res_file_48, xml_res_size_48);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmMaintenance.xrc"), xml_res_file_49, xml_res_size_49);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmOptions.xrc"), xml_res_file_50, xml_res_size_50);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmPassword.xrc"), xml_res_file_51, xml_res_size_51);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmQBJoin.xrc"), xml_res_file_52, xml_res_size_52);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmRestore.xrc"), xml_res_file_53, xml_res_size_53);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmStatus.xrc"), xml_res_file_54, xml_res_size_54);
-    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmUpdate.xrc"), xml_res_file_55, xml_res_size_55);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgSelectConnection.xrc"), xml_res_file_34, xml_res_size_34);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgSequence.xrc"), xml_res_file_35, xml_res_size_35);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgServer.xrc"), xml_res_file_36, xml_res_size_36);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgStep.xrc"), xml_res_file_37, xml_res_size_37);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgTable.xrc"), xml_res_file_38, xml_res_size_38);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgTablespace.xrc"), xml_res_file_39, xml_res_size_39);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgTrigger.xrc"), xml_res_file_40, xml_res_size_40);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgType.xrc"), xml_res_file_41, xml_res_size_41);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgUser.xrc"), xml_res_file_42, xml_res_size_42);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._dlgView.xrc"), xml_res_file_43, xml_res_size_43);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmAddTableView.xrc"), xml_res_file_44, xml_res_size_44);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmBackup.xrc"), xml_res_file_45, xml_res_size_45);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmExport.xrc"), xml_res_file_46, xml_res_size_46);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmGrantWizard.xrc"), xml_res_file_47, xml_res_size_47);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmHint.xrc"), xml_res_file_48, xml_res_size_48);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmIndexcheck.xrc"), xml_res_file_49, xml_res_size_49);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmMaintenance.xrc"), xml_res_file_50, xml_res_size_50);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmOptions.xrc"), xml_res_file_51, xml_res_size_51);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmPassword.xrc"), xml_res_file_52, xml_res_size_52);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmQBJoin.xrc"), xml_res_file_53, xml_res_size_53);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmRestore.xrc"), xml_res_file_54, xml_res_size_54);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmStatus.xrc"), xml_res_file_55, xml_res_size_55);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$._frmUpdate.xrc"), xml_res_file_56, xml_res_size_56);
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgAggregate.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgCast.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgCheck.xrc"));
@@ -11529,6 +11594,7 @@ void InitXmlResource()
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRule.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSchedule.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSchema.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSelectConnection.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSequence.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgServer.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgStep.xrc"));

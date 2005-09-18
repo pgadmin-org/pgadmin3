@@ -69,6 +69,7 @@ public:
     wxString GetUser() const { return wxString(PQuser(conn), *conv); }
     wxString GetPassword() const { return wxString(PQpass(conn), *conv); }
     wxString GetHost() const { return dbHost; }
+    wxString GetDbname() const { return dbname; }
     int GetPort() const { return atoi(PQport(conn)); };
     wxString GetTTY() const { return wxString(PQtty(conn), *conv); }
     wxString GetOptions() const { return wxString(PQoptions(conn), *conv); }
@@ -96,7 +97,7 @@ protected:
     int connStatus;
     wxMBConv *conv;
     bool needColQuoting;
-    wxString dbHost;
+    wxString dbHost, dbname;
     OID lastSystemOID;
     OID dbOid;
 
