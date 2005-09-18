@@ -45,7 +45,7 @@ $(srcdir)/ctl/ctlSQLBox.cpp $(srcdir)/ctl/ctlSQLResult.cpp \
 $(srcdir)/ctl/explainCanvas.cpp $(srcdir)/ctl/explainShape.cpp \
 \
 $(srcdir)/dlg/dlgEditGridOptions.cpp $(srcdir)/dlg/dlgConnect.cpp \
-$(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp $(srcdir/dlg/dlgSelectConnection.cpp \
+$(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp $(srcdir)/dlg/dlgSelectConnection.cpp \
 \
 $(srcdir)/frm/frmExport.cpp $(srcdir)/frm/frmAbout.cpp \
 $(srcdir)/frm/frmIndexcheck.cpp  $(srcdir)/frm/frmMain.cpp \
