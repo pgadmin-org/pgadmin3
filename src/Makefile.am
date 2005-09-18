@@ -45,7 +45,7 @@ $(srcdir)/ctl/ctlSQLBox.cpp $(srcdir)/ctl/ctlSQLResult.cpp \
 $(srcdir)/ctl/explainCanvas.cpp $(srcdir)/ctl/explainShape.cpp \
 \
 $(srcdir)/dlg/dlgEditGridOptions.cpp $(srcdir)/dlg/dlgConnect.cpp \
-$(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp \
+$(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp $(srcdir/dlg/dlgSelectConnection.cpp \
 \
 $(srcdir)/frm/frmExport.cpp $(srcdir)/frm/frmAbout.cpp \
 $(srcdir)/frm/frmIndexcheck.cpp  $(srcdir)/frm/frmMain.cpp \
@@ -103,6 +103,7 @@ $(srcdir)/include/dlgOperator.h $(srcdir)/include/dlgView.h $(srcdir)/include/dl
 $(srcdir)/include/dlgTrigger.h $(srcdir)/include/dlgUser.h $(srcdir)/include/frmAbout.h \
 $(srcdir)/include/dlgConnect.h $(srcdir)/include/frmHelp.h \
 $(srcdir)/include/frmEditGrid.h $(srcdir)/include/dlgEditGridOptions.h $(srcdir)/include/frmMain.h \
+$(srcdir)/include/dlgSelectConnection.h \
 $(srcdir)/include/frmOptions.h $(srcdir)/include/frmPassword.h $(srcdir)/include/frmIndexcheck.h \
 $(srcdir)/include/frmQuery.h $(srcdir)/include/frmSplash.h \
 $(srcdir)/include/frmStatus.h $(srcdir)/include/frmMaintenance.h \
