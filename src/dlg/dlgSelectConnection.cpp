@@ -14,10 +14,9 @@
 // App headers
 #include "pgAdmin3.h"
 
+#include "frmMain.h"
 #include "dlgSelectConnection.h"
-#include "pgConn.h"
 #include "pgServer.h"
-#include "sysLogger.h"
 
 
 

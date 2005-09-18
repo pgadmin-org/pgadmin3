@@ -14,6 +14,7 @@
 
 #include "dlgClasses.h"
 
+class pgServer;
 // Class declarations
 class dlgSelectConnection : public DialogWithHelp
 {
