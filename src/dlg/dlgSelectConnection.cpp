@@ -78,21 +78,36 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
         }
         if (remoteServer->GetConnected())
         {
-            pgSet *set=remoteServer->ExecuteSet(
+            pgSetIterator set(remoteServer->GetConnection(), 
                 wxT("SELECT DISTINCT datname\n")
                 wxT("  FROM pg_database db\n")
                 wxT(" WHERE datallowconn ORDER BY datname"));
-            if (set)
-            {
-                while (!set->Eof())
-                {
-                    cbDatabase->Append(set->GetVal(wxT("datname")));
-                    set->MoveNext();
-                }
-                delete set;
 
-                cbDatabase->SetSelection(0);
+            while(set.RowsLeft())
+            {
+                wxString dbName=set.GetVal(wxT("datname"));
+
+                bool alreadyConnected=false;
+
+                if (cbConnection)
+                {
+                    int i;
+
+                    for (i=0 ; i < cbConnection->GetCount()-1 ; i++)
+                    {
+                        pgConn *conn=(pgConn*)cbConnection->GetClientData(i);
+                        if (conn->GetHost() == remoteServer->GetName() && conn->GetDbname() == dbName)
+                        {
+                            alreadyConnected=true;
+                            break;
+                        }
+                    }
+                }
+                if (!alreadyConnected)
+                    cbDatabase->Append(dbName);
             }
+            if (cbDatabase->GetCount())
+                cbDatabase->SetSelection(0);
         }
 
     }
@@ -124,8 +139,9 @@ void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
 }
 
 
-int dlgSelectConnection::Go(pgConn *conn)
+int dlgSelectConnection::Go(pgConn *conn, wxComboBox *cb)
 {
+    cbConnection=cb;
     treeObjectIterator servers(mainForm->GetBrowser(), mainForm->GetServerCollection());
     pgServer *s;
 

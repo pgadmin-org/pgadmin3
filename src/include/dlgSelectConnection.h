@@ -25,7 +25,7 @@ public:
     pgServer *GetServer() { return remoteServer; }
     wxString GetDatabase();
 
-    int Go(pgConn *conn);
+    int Go(pgConn *conn, wxComboBox *cb);
     
 private:
     void OnChangeServer(wxCommandEvent& ev);
@@ -34,6 +34,7 @@ private:
     void OnCancel(wxCommandEvent& ev);
 
     pgServer *remoteServer;
+    wxComboBox *cbConnection;
 
     DECLARE_EVENT_TABLE()
 };

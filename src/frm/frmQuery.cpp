@@ -390,7 +390,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
     {
         // new Connection
         dlgSelectConnection dlg(this, mainForm);
-        int rc=dlg.Go(conn);
+        int rc=dlg.Go(conn, cbConnection);
         if (rc == wxID_OK)
         {
             conn = dlg.GetServer()->CreateConn(dlg.GetDatabase());
