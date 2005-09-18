@@ -19,7 +19,7 @@ class pgServer;
 class dlgSelectConnection : public DialogWithHelp
 {
 public:
-    dlgSelectConnection(frmMain *form);
+    dlgSelectConnection(wxWindow *parent, frmMain *form);
     ~dlgSelectConnection();
     wxString GetHelpPage() const;
     pgServer *GetServer() { return remoteServer; }

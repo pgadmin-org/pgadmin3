@@ -34,6 +34,12 @@ ctlSQLResult::~ctlSQLResult()
 }
 
 
+void ctlSQLResult::SetConnection(pgConn *_conn)
+{
+    conn=_conn;
+}
+
+
 bool ctlSQLResult::Export()
 {
     if (rowsRetrieved>0 || (thread && thread->DataSet()->NumRows() > 0))

@@ -271,8 +271,12 @@ frmQuery::~frmQuery()
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
 
     sqlResult->Abort(); // to make sure conn is unused
-    if (conn)
-        delete conn;
+
+    while (cbConnection->GetCount() > 1)
+    {
+        delete (pgConn*)cbConnection->GetClientData(0);
+        cbConnection->Delete(0);
+    }
 }
 
 
@@ -386,7 +390,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
     if (sel == cbConnection->GetCount()-1)
     {
         // new Connection
-        dlgSelectConnection dlg(mainForm);
+        dlgSelectConnection dlg(this, mainForm);
         int rc=dlg.Go();
         if (rc == wxID_OK)
         {
@@ -416,6 +420,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
     else
     {
         conn = (pgConn*)cbConnection->GetClientData(sel);
+        sqlResult->SetConnection(conn);
         title = wxT("pgAdmin III Query - ") + cbConnection->GetValue();
         setExtendedTitle();
     }

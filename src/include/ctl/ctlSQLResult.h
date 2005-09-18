@@ -32,6 +32,7 @@ public:
 
 
     int Execute(const wxString &query, int resultToDisplay=0); // > 0: resultset to display, <=0: last result
+    void SetConnection(pgConn *conn);
     long NumRows() const;
     long InsertedCount() const;
     OID  InsertedOid() const;

@@ -33,13 +33,13 @@ END_EVENT_TABLE()
 
 
 
-dlgSelectConnection::dlgSelectConnection(frmMain *form) : 
+dlgSelectConnection::dlgSelectConnection(wxWindow *parent, frmMain *form) : 
 DialogWithHelp(form)
 {
     wxLogInfo(wxT("Creating a select connection dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource((wxWindow*)form, wxT("dlgSelectConnection"));
+    LoadResource(parent, wxT("dlgSelectConnection"));
 
     appearanceFactory->SetIcons(this);
     CenterOnParent();
