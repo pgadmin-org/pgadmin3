@@ -195,9 +195,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
 
-    cbConnection = new wxComboBox(toolBar, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY|wxCB_DROPDOWN);
-    cbConnection->Append(wxString::Format(
-        _("%s on %s:%d"), conn->GetDbname().c_str(), conn->GetHost().c_str(), conn->GetPort()), (void*)conn);
+    cbConnection = new wxComboBox(toolBar, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxSize(GetCharWidth()*30, -1), 0, 0, wxCB_READONLY|wxCB_DROPDOWN);
+    cbConnection->Append(conn->GetName(), (void*)conn);
     cbConnection->Append(_("<new connection>"), (void*)0);
     toolBar->AddControl(cbConnection);
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
@@ -391,14 +390,13 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
     {
         // new Connection
         dlgSelectConnection dlg(this, mainForm);
-        int rc=dlg.Go();
+        int rc=dlg.Go(conn);
         if (rc == wxID_OK)
         {
             conn = dlg.GetServer()->CreateConn(dlg.GetDatabase());
             if (conn)
             {
-                cbConnection->Insert(wxString::Format(_("%s on %s:%d"), conn->GetDbname().c_str(), 
-                    conn->GetHost().c_str(), conn->GetPort()), sel, (void*)conn);
+                cbConnection->Insert(conn->GetName(), sel, (void*)conn);
                 cbConnection->SetSelection(sel);
             }
             else

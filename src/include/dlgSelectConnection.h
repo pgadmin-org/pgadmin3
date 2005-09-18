@@ -25,7 +25,7 @@ public:
     pgServer *GetServer() { return remoteServer; }
     wxString GetDatabase();
 
-    int Go();
+    int Go(pgConn *conn);
     
 private:
     void OnChangeServer(wxCommandEvent& ev);

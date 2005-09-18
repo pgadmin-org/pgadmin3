@@ -124,14 +124,21 @@ void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
 }
 
 
-int dlgSelectConnection::Go()
+int dlgSelectConnection::Go(pgConn *conn)
 {
     treeObjectIterator servers(mainForm->GetBrowser(), mainForm->GetServerCollection());
     pgServer *s;
 
     while ((s=(pgServer*)servers.GetNextObject()) != 0)
+    {
         cbServer->Append(s->GetIdentifier(), (void*)s);
-    
+        if (s->GetConnected() && s->GetConnection()->GetHost() == conn->GetHost() && s->GetConnection()->GetPort() == conn->GetPort())
+        {
+             cbServer->SetSelection(cbServer->GetCount()-1);
+             wxCommandEvent ev;
+             OnChangeServer(ev);
+        }
+    }    
     cbServer->SetFocus();
     btnOK->Disable();
     return ShowModal();

@@ -70,6 +70,7 @@ public:
     wxString GetPassword() const { return wxString(PQpass(conn), *conv); }
     wxString GetHost() const { return dbHost; }
     wxString GetDbname() const { return dbname; }
+	wxString GetName() const;
     int GetPort() const { return atoi(PQport(conn)); };
     wxString GetTTY() const { return wxString(PQtty(conn), *conv); }
     wxString GetOptions() const { return wxString(PQoptions(conn), *conv); }
