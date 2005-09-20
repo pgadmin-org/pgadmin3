@@ -670,6 +670,10 @@ SOURCE=.\dlg\dlgHbaConfig.cpp
 
 SOURCE=.\dlg\dlgMainConfig.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\dlg\dlgSelectConnection.cpp
+# End Source File
 # End Group
 # Begin Group "Controls"
 
