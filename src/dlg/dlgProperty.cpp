@@ -310,7 +310,7 @@ void dlgProperty::AppendNameChange(wxString &sql, const wxString &objName)
 				+  wxT(" RENAME TO ") + qtIdent(GetName())
 				+  wxT(";\n");
 		} else {
-			sql += wxT("ALTER ") + GetObject()->GetTypeName()
+			sql += wxT("ALTER ") + GetObject()->GetTypeName().MakeUpper()
 	            +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
 				+  wxT(" RENAME TO ") + qtIdent(GetName())
 				+  wxT(";\n");

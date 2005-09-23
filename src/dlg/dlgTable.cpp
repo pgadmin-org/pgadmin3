@@ -312,9 +312,6 @@ wxString dlgTable::GetSql()
 
         wxString definition;
 
-        AppendNameChange(sql);
-        AppendOwnerChange(sql, wxT("TABLE ") + tabname);
-
         wxArrayString tmpDef=previousColumns;
         wxString tmpsql;
 
@@ -327,7 +324,7 @@ wxString dlgTable::GetSql()
                 definition=qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
                 index=tmpDef.Index(definition);
                 if (index < 0)
-                    tmpsql += wxT("ALTER TABLE ") + tabname
+                    tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                         +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
             }
             else
@@ -353,11 +350,14 @@ wxString dlgTable::GetSql()
                 definition = definition.Mid(1).BeforeFirst('"');
             else
                 definition = definition.BeforeFirst(' ');
-            sql += wxT("ALTER TABLE ") + tabname
+            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                 +  wxT(" DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
         }
         // Add the ADD COLUMNs...
         sql += tmpsql;
+
+        AppendNameChange(sql);
+        AppendOwnerChange(sql, wxT("TABLE ") + tabname);
 
         tmpDef=previousConstraints;
         tmpsql.Empty();
