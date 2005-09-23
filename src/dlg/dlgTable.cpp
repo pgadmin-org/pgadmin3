@@ -636,7 +636,7 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
     dlgColumn col(&columnFactory, mainForm, column, table);
     col.CenterOnParent();
     col.SetDatabase(database);
-    if (col.Go(true) >= 0)
+    if (col.Go(true) != wxID_CANCEL)
     {
         lstColumns->SetItem(pos, 0, col.GetName());
         lstColumns->SetItem(pos, 1, col.GetDefinition());
@@ -653,7 +653,7 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
     dlgColumn col(&columnFactory, mainForm, NULL, table);
     col.CenterOnParent();
     col.SetDatabase(database);
-    if (col.Go(true) >= 0)
+    if (col.Go(true) != wxID_CANCEL)
     {
         long pos = lstColumns->AppendItem(columnFactory.GetIconId(), col.GetName(), col.GetDefinition());
         if (table && !connection->BackendMinimumVersion(8, 0))
@@ -706,7 +706,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             dlgPrimaryKey pk(&primaryKeyFactory, mainForm, lstColumns);
             pk.CenterOnParent();
             pk.SetDatabase(database);
-            if (pk.Go(true) >= 0)
+            if (pk.Go(true) != wxID_CANCEL)
             {
                 lstConstraints->AppendItem(primaryKeyFactory.GetIconId(), pk.GetName(), pk.GetDefinition());
                 hasPK=true;
@@ -719,7 +719,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             dlgForeignKey fk(&foreignKeyFactory, mainForm, lstColumns);
             fk.CenterOnParent();
             fk.SetDatabase(database);
-            if (fk.Go(true) >= 0)
+            if (fk.Go(true) != wxID_CANCEL)
             {
                 wxString str=fk.GetDefinition();
                 str.Replace(wxT("\n"), wxT(" "));
@@ -732,7 +732,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             dlgUnique unq(&uniqueFactory, mainForm, lstColumns);
             unq.CenterOnParent();
             unq.SetDatabase(database);
-            if (unq.Go(true) >= 0)
+            if (unq.Go(true) != wxID_CANCEL)
                 lstConstraints->AppendItem(uniqueFactory.GetIconId(), unq.GetName(), unq.GetDefinition());
             break;
         }
@@ -741,7 +741,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             dlgCheck chk(&checkFactory, mainForm);
             chk.CenterOnParent();
             chk.SetDatabase(database);
-            if (chk.Go(true) >= 0)
+            if (chk.Go(true) != wxID_CANCEL)
                 lstConstraints->AppendItem(checkFactory.GetIconId(), chk.GetName(), chk.GetDefinition());
             break;
         }

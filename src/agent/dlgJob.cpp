@@ -240,7 +240,7 @@ void dlgJob::OnChangeStep(wxCommandEvent &ev)
     step.CenterOnParent();
     step.SetConnection(connection);
 
-    if (step.Go(true) >= 0)
+    if (step.Go(true) != wxID_CANCEL)
     {
         lstSteps->SetItem(pos, 0, step.GetName());
         lstSteps->SetItem(pos, 1, step.GetComment());
@@ -273,7 +273,7 @@ void dlgJob::OnAddStep(wxCommandEvent &ev)
     dlgStep step(&stepFactory, mainForm, NULL, job);
     step.CenterOnParent();
     step.SetConnection(connection);
-    if (step.Go(true) >= 0)
+    if (step.Go(true) != wxID_CANCEL)
     {
         int pos = lstSteps->AppendItem(stepFactory.GetIconId(), step.GetName(), step.GetComment());
 		wxString *stepSql = new wxString(step.GetInsertSql());
@@ -311,7 +311,7 @@ void dlgJob::OnChangeSchedule(wxCommandEvent &ev)
     schedule.CenterOnParent();
     schedule.SetConnection(connection);
 
-    if (schedule.Go(true) >= 0)
+    if (schedule.Go(true) != wxID_CANCEL)
     {
         lstSchedules->SetItem(pos, 0, schedule.GetName());
         lstSchedules->SetItem(pos, 1, schedule.GetComment());
@@ -337,7 +337,7 @@ void dlgJob::OnAddSchedule(wxCommandEvent &ev)
     dlgSchedule schedule(&scheduleFactory, mainForm, NULL, job);
     schedule.CenterOnParent();
     schedule.SetConnection(connection);
-    if (schedule.Go(true) >= 0)
+    if (schedule.Go(true) != wxID_CANCEL)
     {
         int pos = lstSchedules->AppendItem(scheduleFactory.GetIconId(), schedule.GetName(), schedule.GetComment());
         wxString *scheduleSql = new wxString(schedule.GetInsertSql());
