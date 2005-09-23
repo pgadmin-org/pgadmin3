@@ -276,6 +276,9 @@ then
         *-apple-darwin*)
             CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
             ;;
+        *-solaris*)
+            LIBS="$LIBS -lX11"
+            ;;
         *)
             ;;
     esac
