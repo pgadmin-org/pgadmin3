@@ -211,6 +211,7 @@ int dlgTable::Go(bool modal)
                         lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
+                        break;
                     }
                     case PGM_FOREIGNKEY:
                     {
@@ -310,8 +311,14 @@ wxString dlgTable::GetSql()
         int index=-1;
 
         wxString definition;
-        wxArrayString tmpDef=previousColumns;
 
+        AppendNameChange(sql);
+        AppendOwnerChange(sql, wxT("TABLE ") + tabname);
+
+        wxArrayString tmpDef=previousColumns;
+        wxString tmpsql;
+
+        // Build a tmeporary list of ADD COLUMNs, and fixup the list to remove
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
             definition = lstColumns->GetText(pos, 3);
@@ -320,12 +327,12 @@ wxString dlgTable::GetSql()
                 definition=qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
                 index=tmpDef.Index(definition);
                 if (index < 0)
-                    sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    tmpsql += wxT("ALTER TABLE ") + tabname
                         +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
             }
             else
             {
-                sql += definition;
+                tmpsql += definition;
 
                 pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 6));
                 if (column)
@@ -338,8 +345,6 @@ wxString dlgTable::GetSql()
                 tmpDef.RemoveAt(index);
         }
 
-        AppendNameChange(sql);
-        AppendOwnerChange(sql, wxT("TABLE ") + tabname);
 
         for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
         {
@@ -351,11 +356,13 @@ wxString dlgTable::GetSql()
             sql += wxT("ALTER TABLE ") + tabname
                 +  wxT(" DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
         }
-
-
+        // Add the ADD COLUMNs...
+        sql += tmpsql;
 
         tmpDef=previousConstraints;
+        tmpsql.Empty();
 
+        // Build a tmeporary list of ADD CONSTRAINTs, and fixup the list to remove
         for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
         {
             wxString conname= qtIdent(lstConstraints->GetItemText(pos));
@@ -367,12 +374,12 @@ wxString dlgTable::GetSql()
                 tmpDef.RemoveAt(index);
             else
             {
-                sql += wxT("ALTER TABLE ") + tabname
+                tmpsql += wxT("ALTER TABLE ") + tabname
                     +  wxT(" ADD");
                 if (!conname.IsEmpty())
                     sql += wxT(" CONSTRAINT ");
 
-                sql += definition + wxT(";\n");
+                tmpsql += definition + wxT(";\n");
             }
         }
 
@@ -386,6 +393,9 @@ wxString dlgTable::GetSql()
             sql += wxT("ALTER TABLE ") + tabname
                 +  wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n");
         }
+        // Add the ADD CONSTRAINTs...
+        sql += tmpsql;
+
         if (chkHasOids->GetValue() != table->GetHasOids())
         {
             sql += wxT("ALTER TABLE ") + tabname 
