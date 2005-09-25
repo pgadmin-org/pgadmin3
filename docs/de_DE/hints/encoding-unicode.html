@@ -1,0 +1,26 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru-Hinweise</title>
+</head>
+
+<body>
+
+<h3>Unicode-Kodierung auf eihem Win32 Server</h3>
+<p>
+Die Datenbank <INFO> ist mit der Unicode-Kodierung (UTF8) zur Speicherung der Daten erzeugt
+und wird mit einem PostgreSQL 8.0 Server auf einem Win32 Server betrieben.
+</p>
+<p>
+Die PostgreSQL 8.0 Win32 Implementierung kann mit Unicode Zeichenketten nicht anhand der korrekten
+Collation Sequence sortieren, da das Betriebssystem diese Funktion nicht bietet.
+</p>
+<p>
+Für diese Installation wird empfohlen, eine lokal spezifische Kodierung zu verwenden, den Cluster auf
+einem anderen Betriebssystem laufen zu lassen oder das Datenbanksystem auf PostgreSQL 8.1 oder folgende
+zu aktualisieren, da spätere Versionen zusätzlichen Code enthalten um die Schwäche von Win32 auszugleichen.
+</p>
+</body>
+</html>

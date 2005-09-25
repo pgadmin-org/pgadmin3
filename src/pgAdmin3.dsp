@@ -778,6 +778,10 @@ SOURCE=.\include\dlgMainConfig.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgSelectConnection.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmAbout.h
 # End Source File
 # Begin Source File
