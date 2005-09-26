@@ -146,7 +146,7 @@ void dlgStep::CheckChange()
     CheckValid(enable, sqlBox->GetLength() > 0, _("Please specify code to execute."));
 
     // Disable/enable the database combo
-    if ((wxT("sb")[rbxKind->GetSelection()]) == 'b')
+    if (rbxKind->GetSelection() == 1)
     {
         cbDatabase->SetSelection(0);
         cbDatabase->Enable(false);
