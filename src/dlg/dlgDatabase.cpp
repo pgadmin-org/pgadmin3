@@ -18,9 +18,6 @@
 #include "dlgDatabase.h"
 #include "pgDatabase.h"
 
-// Images
-#include "images/database.xpm"
-
 
 // pointer to controls
 #define cbEncoding      CTRL_COMBOBOX("cbEncoding")

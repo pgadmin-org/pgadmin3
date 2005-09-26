@@ -1263,7 +1263,6 @@ queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar
 wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     pgDatabase *db=obj->GetDatabase();
-    pgServer *server=db->GetServer();
     pgConn *conn = db->CreateConn();
     if (conn)
     {

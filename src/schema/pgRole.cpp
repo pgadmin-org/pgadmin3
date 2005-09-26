@@ -358,8 +358,6 @@ pgObject *pgGroupRoleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
 #include "images/user.xpm"
 #include "images/group.xpm"
-#include "images/users.xpm"
-#include "images/groups.xpm"
 #include "images/roles.xpm"
 #include "images/loginroles.xpm"
 
