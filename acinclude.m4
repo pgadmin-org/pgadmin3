@@ -132,7 +132,17 @@ if test -n "${LIBPQ_HOME}"
 then
     PGSQL_OLD_LDFLAGS="$LDFLAGS"
     PGSQL_OLD_CPPFLAGS="$CPPFLAGS"
-    LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
+
+    # Solaris needs -lssl for this test
+    case "${host}" in
+        *solaris*)
+            LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib -lssl"
+            ;;
+        *)
+            LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
+            ;;
+    esac
+
 
     AC_LANG_SAVE
     AC_LANG_C
@@ -276,8 +286,8 @@ then
         *-apple-darwin*)
             CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
             ;;
-        *-solaris*)
-            LIBS="$LIBS -lX11"
+        *solaris*)
+            LDFLAGS="$LDFLAGS -lnsl"
             ;;
         *)
             ;;

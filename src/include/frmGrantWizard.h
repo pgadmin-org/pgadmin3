@@ -12,6 +12,7 @@
 #ifndef FRMGRANTWIZARD_H
 #define FRMGRANTWIZARD_H
 
+#include <wx/notebook.h>
 #include "dlgClasses.h"
 #include "base/factory.h"
 

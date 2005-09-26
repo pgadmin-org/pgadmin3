@@ -17,6 +17,7 @@
 #include <wx/image.h>
 #include <wx/listctrl.h>
 #include <wx/spinctrl.h>
+#include <wx/notebook.h>
 
 #include "dlgClasses.h"
 #include "base/factory.h"
