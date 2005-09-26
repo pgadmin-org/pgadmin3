@@ -144,6 +144,16 @@ void dlgStep::CheckChange()
 
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     CheckValid(enable, sqlBox->GetLength() > 0, _("Please specify code to execute."));
+
+    // Disable/enable the database combo
+    if ((wxT("sb")[rbxKind->GetSelection()]) == 'b')
+    {
+        cbDatabase->SetSelection(0);
+        cbDatabase->Enable(false);
+    }
+    else
+        cbDatabase->Enable(true);
+
     EnableOK(enable);
 }
 
@@ -172,7 +182,7 @@ wxString dlgStep::GetInsertSql()
         else
             jstjobid = wxT("<JobId>");
 
-        db = qtString(cbDatabase->GetValue());
+        db = qtString(cbDatabase->GetValue().Trim());
 
         sql = wxT("INSERT INTO pgagent.pga_jobstep (jstid, jstjobid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdbname)\n")
               wxT("SELECT <StpId>, ") + jstjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
@@ -212,7 +222,7 @@ wxString dlgStep::GetUpdateSql()
                 vars.Append(wxT(", "));
             
             if (!cbDatabase->GetSelection())
-                vars.Append(wxT("jstdbname=NULL"));
+                vars.Append(wxT("jstdbname=''"));
             else
                 vars.Append(wxT("jstdbname=") + qtString(cbDatabase->GetValue()));
         }
