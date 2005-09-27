@@ -166,8 +166,8 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 
     pgSet *schemas = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
-        wxT("            WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
-                         wxT(" OR nspname like 'pg\\_%' THEN 0\n")
+        wxT("            WHEN (nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
+                         wxT(" OR nspname like 'pg\\_%') AND nspname != 'public' THEN 0\n")
         wxT("            ELSE 3 END AS nsptyp,\n")
         wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
         wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
@@ -182,24 +182,24 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
         {
             wxString name=schemas->GetVal(wxT("nspname"));
             long nsptyp=schemas->GetLong(wxT("nsptyp"));
-            if (nsptyp == SCHEMATYP_NORMAL)
+
+            wxStringTokenizer tokens(settings->GetSystemSchemas(), wxT(","));
+            while (tokens.HasMoreTokens())
             {
-                wxStringTokenizer tokens(settings->GetSystemSchemas(), wxT(","));
-                while (tokens.HasMoreTokens())
+                wxRegEx regex(tokens.GetNextToken());
+                if (regex.Matches(name))
                 {
-                    wxRegEx regex(tokens.GetNextToken());
-                    if (regex.Matches(name))
-                    {
-                        nsptyp = SCHEMATYP_USERSYS;
-                        break;
-                    }
-                }
-                if (nsptyp == SCHEMATYP_USERSYS && !settings->GetShowSystemObjects())
-                {
-                    schemas->MoveNext();
-                    continue;
+                    nsptyp = SCHEMATYP_USERSYS;
+                    break;
                 }
             }
+
+            if (nsptyp <= SCHEMATYP_USERSYS && !settings->GetShowSystemObjects())
+            {
+                schemas->MoveNext();
+                continue;
+            }
+
             schema = new pgSchema(name);
             schema->iSetSchemaTyp(nsptyp);
             schema->iSetDatabase(collection->GetDatabase());
