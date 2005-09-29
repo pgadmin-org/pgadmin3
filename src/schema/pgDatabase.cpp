@@ -141,16 +141,33 @@ bool pgDatabase::GetCanHint()
         if (ver.Find(wxT("mingw32")) > 0 && ver.Find(wxT("SQL 8.0.") > 0))
             return true;
     }
+
+    if (GetServer()->GetConnection() == GetConnection() && 
+        GetConnection()->BackendMinimumVersion(8,0) && 
+       !GetConnection()->HasFeature(FEATURE_FILEREAD))
+        return true;
+
     return false;
 }
 
 
 void pgDatabase::ShowHint(frmMain *form, bool force)
 {
+    wxArrayString hints;
+
     if (encoding == wxT("SQL_ASCII"))
-        frmHint::ShowHint(form, HINT_ENCODING_ASCII, GetName(), force);
+        hints.Add(HINT_ENCODING_ASCII);
     else if (encoding == wxT("UNICODE"))
-        frmHint::ShowHint(form, HINT_ENCODING_UNICODE, GetName(), force);
+        hints.Add(HINT_ENCODING_UNICODE);
+
+    if (GetServer()->GetConnection() == GetConnection() && 
+        GetConnection()->BackendMinimumVersion(8,0) && 
+       !GetConnection()->HasFeature(FEATURE_FILEREAD))
+        hints.Add(HINT_INSTRUMENTATION);
+    
+    if (force || !hintShown)
+        frmHint::ShowHint(form, hints, GetFullIdentifier());
+    hintShown=true;
 }
 
 

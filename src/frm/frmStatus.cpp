@@ -171,7 +171,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     }
     else
     {
-        if (!connection->HasFeature(FEATURE_FILEREAD))
+        if (connection->BackendMinimumVersion(8, 0))
             frmHint::ShowHint(this, HINT_INSTRUMENTATION);
 
         nbStatus->DeletePage(logPage);
