@@ -23,6 +23,7 @@
 #include "storage/fd.h"
 #include "catalog/pg_type.h"
 #include "funcapi.h"
+#include "utils/datetime.h"
 
 
 #ifdef WIN32
@@ -39,14 +40,17 @@
 
 extern DLLIMPORT char *DataDir;
 extern DLLIMPORT char *Log_directory;
+extern DLLIMPORT char *Log_filename;
 
 Datum pg_file_write(PG_FUNCTION_ARGS);
 Datum pg_file_rename(PG_FUNCTION_ARGS);
 Datum pg_file_unlink(PG_FUNCTION_ARGS);
+Datum pg_logdir_ls(PG_FUNCTION_ARGS);
 
 PG_FUNCTION_INFO_V1(pg_file_write);
 PG_FUNCTION_INFO_V1(pg_file_rename);
 PG_FUNCTION_INFO_V1(pg_file_unlink);
+PG_FUNCTION_INFO_V1(pg_logdir_ls);
 
 typedef struct 
 {
@@ -280,3 +284,107 @@ Datum pg_file_unlink(PG_FUNCTION_ARGS)
 	PG_RETURN_BOOL(true);
 }
 
+
+Datum pg_logdir_ls(PG_FUNCTION_ARGS)
+{
+	FuncCallContext *funcctx;
+	struct dirent *de;
+	directory_fctx *fctx;
+
+	if (!superuser()) 
+		ereport(ERROR,
+				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
+				 (errmsg("only superuser can list the log directory"))));
+	
+	if (memcmp(Log_filename, "postgresql-%Y-%m-%d_%H%M%S.log", 30) != 0)
+		ereport(ERROR,
+				(errcode(ERRCODE_INVALID_PARAMETER_VALUE),
+				 (errmsg("the log_filename parameter must equal 'postgresql-%%Y-%%m-%%d_%%H%%M%%S.log'"))));
+
+	if (SRF_IS_FIRSTCALL())
+	{
+		MemoryContext oldcontext;
+		TupleDesc tupdesc;
+
+		funcctx=SRF_FIRSTCALL_INIT();
+		oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+
+		fctx = palloc(sizeof(directory_fctx));
+		if (is_absolute_path(Log_directory))
+		    fctx->location = Log_directory;
+		else
+		{
+			fctx->location = palloc(strlen(DataDir) + strlen(Log_directory) +2);
+			sprintf(fctx->location, "%s/%s", DataDir, Log_directory);
+		}
+		tupdesc = CreateTemplateTupleDesc(2, false);
+		TupleDescInitEntry(tupdesc, (AttrNumber) 1, "starttime",
+						   TIMESTAMPOID, -1, 0);
+		TupleDescInitEntry(tupdesc, (AttrNumber) 2, "filename",
+						   TEXTOID, -1, 0);
+
+		funcctx->attinmeta = TupleDescGetAttInMetadata(tupdesc);
+		
+		fctx->dirdesc = AllocateDir(fctx->location);
+
+		if (!fctx->dirdesc)
+		    ereport(ERROR,
+					(errcode_for_file_access(),
+					 errmsg("%s is not browsable: %m", fctx->location)));
+
+		funcctx->user_fctx = fctx;
+		MemoryContextSwitchTo(oldcontext);
+	}
+
+	funcctx=SRF_PERCALL_SETUP();
+	fctx = (directory_fctx*) funcctx->user_fctx;
+
+	if (!fctx->dirdesc)  /* not a readable directory  */
+		SRF_RETURN_DONE(funcctx);
+
+	while ((de = readdir(fctx->dirdesc)) != NULL)
+	{
+		char *values[2];
+		HeapTuple tuple;
+            
+		char	   	*field[MAXDATEFIELDS];
+		char		lowstr[MAXDATELEN + 1];
+		int		dtype;
+		int		nf, ftype[MAXDATEFIELDS];
+		fsec_t		fsec;
+		int		tz = 0;
+		struct 		pg_tm date;
+
+		/*
+		 * Default format:
+		 *        postgresql-YYYY-MM-DD_HHMMSS.log
+		 */
+		if (strlen(de->d_name) != 32
+		    || memcmp(de->d_name, "postgresql-", 11)
+			|| de->d_name[21] != '_'
+			|| strcmp(de->d_name + 28, ".log"))
+		      continue;
+
+		values[1] = palloc(strlen(fctx->location) + strlen(de->d_name) + 2);
+		sprintf(values[1], "%s/%s", fctx->location, de->d_name);
+
+		values[0] = de->d_name + 11;       /* timestamp */
+		values[0][17] = 0;
+
+                    /* parse and decode expected timestamp */
+		if (ParseDateTime(values[0], lowstr, MAXDATELEN, field, ftype, MAXDATEFIELDS, &nf))
+		    continue;
+
+		if (DecodeDateTime(field, ftype, nf, &dtype, &date, &fsec, &tz))
+		    continue;
+
+		/* Seems the format fits the expected format; feed it into the tuple */
+
+		tuple = BuildTupleFromCStrings(funcctx->attinmeta, values);
+
+		SRF_RETURN_NEXT(funcctx, HeapTupleGetDatum(tuple));
+	}
+
+	FreeDir(fctx->dirdesc);
+	SRF_RETURN_DONE(funcctx);
+}
