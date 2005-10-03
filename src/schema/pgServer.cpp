@@ -18,6 +18,7 @@
 
 #include "misc.h"
 #include "frmMain.h"
+#include "frmHint.h"
 #include "dlgConnect.h"
 #include "pgDatabase.h"
 #include "pgTablespace.h"
@@ -27,7 +28,6 @@
 #include "pgaJob.h"
 #include "utffile.h"
 #include "pgfeatures.h"
-
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 

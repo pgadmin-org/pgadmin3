@@ -60,7 +60,7 @@ private:
     wxArrayString tableOids, inheritedTableOids;
     wxTreeItemId columnsItem, constraintsItem;
 
-    wxString GetNumString(wxTextCtrl *ctl, bool enabled, wxString &val);
+    wxString GetNumString(wxTextCtrl *ctl, bool enabled, const wxString &val);
     wxString AppendNum(bool &changed, wxTextCtrl *ctl, long val);
     wxString AppendNum(bool &changed, wxTextCtrl *ctl, double val);
 

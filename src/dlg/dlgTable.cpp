@@ -113,8 +113,8 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
     lstColumns->CreateColumns(0, _("Column name"), _("Definition"), 90);
     lstColumns->AddColumn(wxT("Inherited from table"), 0);
     lstColumns->AddColumn(wxT("Column definition"), 0);
-	lstColumns->AddColumn(wxT("Column comment"), 0);
-	lstColumns->AddColumn(wxT("Column statistics"), 0);
+    lstColumns->AddColumn(wxT("Column comment"), 0);
+    lstColumns->AddColumn(wxT("Column statistics"), 0);
     lstColumns->AddColumn(wxT("Column"), 0);
 
     lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
@@ -354,12 +354,35 @@ int dlgTable::Go(bool modal)
             tableVacFactor=set.GetDouble(wxT("vac_scale_factor"));
             tableAnlFactor=set.GetDouble(wxT("anl_scale_factor"));
 
-            txtBaseVac->SetValue(tableVacBaseThr >= 0 ? NumToStr(tableVacBaseThr) : wxEmptyString);
-            txtBaseAn->SetValue(tableAnlBaseThr >= 0 ? NumToStr(tableAnlBaseThr) : wxEmptyString);
-            txtFactorVac->SetValue(tableVacFactor >= 0 ? NumToStr(tableVacFactor) : wxEmptyString);
-            txtFactorAn->SetValue(tableAnlFactor >= 0 ? NumToStr(tableAnlFactor) : wxEmptyString);
-            txtVacDelay->SetValue(tableCostDelay >= 0 ? NumToStr(tableCostDelay) : wxEmptyString);
-            txtVacLimit->SetValue(tableCostLimit >= 0 ? NumToStr(tableCostLimit) : wxEmptyString);
+            if (tableVacBaseThr >= 0)
+                txtBaseVac->SetValue(NumToStr(tableVacBaseThr));
+            else
+                txtBaseVac->SetValue(wxEmptyString);
+
+            if (tableAnlBaseThr >= 0)
+                txtBaseAn->SetValue(NumToStr(tableAnlBaseThr));
+            else
+                txtBaseAn->SetValue(wxEmptyString);
+
+            if (tableVacFactor >= 0)
+                txtFactorVac->SetValue(NumToStr(tableVacFactor));
+            else
+                txtFactorVac->SetValue(wxEmptyString);
+
+            if (tableAnlFactor >= 0)
+                txtFactorAn->SetValue(NumToStr(tableAnlFactor));
+            else
+              txtFactorAn->SetValue(wxEmptyString);
+
+            if (tableCostDelay >= 0)
+                txtVacDelay->SetValue(NumToStr(tableCostDelay));
+            else
+                txtVacDelay->SetValue(wxEmptyString);
+
+            if (tableCostLimit >= 0)
+                txtVacLimit->SetValue(NumToStr(tableCostLimit));
+            else
+                txtVacLimit->SetValue(wxEmptyString);
         }
         else
         {
@@ -618,28 +641,28 @@ wxString dlgTable::GetSql()
         }
     }
 
-	// Extra column info
-	int pos;
+    // Extra column info
+    int pos;
 
-	// Statistics
+    // Statistics
     for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
     {
         if (!lstColumns->GetText(pos, 4).IsEmpty())
-			sql += wxT("ALTER TABLE ") + tabname
-				+ wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
-				+ wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
-				+ wxT(";\n");
-	}
+            sql += wxT("ALTER TABLE ") + tabname
+                + wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
+                + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
+                + wxT(";\n");
+    }
 
-	// Comments
+    // Comments
     for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
     {
         if (!lstColumns->GetText(pos, 5).IsEmpty())
-			sql += wxT("COMMENT ON COLUMN ") + tabname
-				+ wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-				+ wxT(" IS ") + qtString(lstColumns->GetText(pos, 5))
-				+ wxT(";\n");
-	}
+            sql += wxT("COMMENT ON COLUMN ") + tabname
+                + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+                + wxT(" IS ") + qtString(lstColumns->GetText(pos, 5))
+                + wxT(";\n");
+    }
 
 
     AppendComment(sql, wxT("TABLE"), schema, table);
@@ -675,7 +698,7 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 }
 
 
-wxString dlgTable::GetNumString(wxTextCtrl *ctl, bool enabled, wxString &val)
+wxString dlgTable::GetNumString(wxTextCtrl *ctl, bool enabled, const wxString &val)
 {
     if (!enabled)
         return val;
@@ -811,8 +834,8 @@ void dlgTable::OnRemoveTable(wxCommandEvent &ev)
 {
     if (settings->GetConfirmDelete())
     {
-    	if (wxMessageBox(_("Are you sure you wish to remove the selected table?"), _("Remove table?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-    		return;
+        if (wxMessageBox(_("Are you sure you wish to remove the selected table?"), _("Remove table?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+            return;
     }
 
     int sel=lbTables->GetSelection();
@@ -856,8 +879,8 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
         lstColumns->SetItem(pos, 0, col.GetName());
         lstColumns->SetItem(pos, 1, col.GetDefinition());
         lstColumns->SetItem(pos, 3, col.GetSql());
-		lstColumns->SetItem(pos, 4, col.GetStatistics());
-		lstColumns->SetItem(pos, 5, col.GetComment());
+        lstColumns->SetItem(pos, 4, col.GetStatistics());
+        lstColumns->SetItem(pos, 5, col.GetComment());
     }
     CheckChange();
 }
@@ -873,8 +896,8 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
         long pos = lstColumns->AppendItem(columnFactory.GetIconId(), col.GetName(), col.GetDefinition());
         if (table && !connection->BackendMinimumVersion(8, 0))
             lstColumns->SetItem(pos, 3, col.GetSql());
-		lstColumns->SetItem(pos, 4, col.GetStatistics());
-		lstColumns->SetItem(pos, 5, col.GetComment());
+        lstColumns->SetItem(pos, 4, col.GetStatistics());
+        lstColumns->SetItem(pos, 5, col.GetComment());
 
     }
 
@@ -886,8 +909,8 @@ void dlgTable::OnRemoveCol(wxCommandEvent &ev)
 {
     if (settings->GetConfirmDelete())
     {
-	    if (wxMessageBox(_("Are you sure you wish to remove the selected column?"), _("Remove column?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		    return;
+        if (wxMessageBox(_("Are you sure you wish to remove the selected column?"), _("Remove column?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+            return;
     }
 
     lstColumns->DeleteCurrentItem();
@@ -969,8 +992,8 @@ void dlgTable::OnRemoveConstr(wxCommandEvent &ev)
 {
     if (settings->GetConfirmDelete())
     {
-	    if (wxMessageBox(_("Are you sure you wish to remove the selected constraint?"), _("Remove constraint?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		    return;
+        if (wxMessageBox(_("Are you sure you wish to remove the selected constraint?"), _("Remove constraint?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+            return;
     }
 
     int pos=lstConstraints->GetSelection();
