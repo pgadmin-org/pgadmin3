@@ -53,20 +53,17 @@ wxMenu *slSet::GetNewMenu()
     {
         slSequenceFactory.AppendMenu(menu);
         slTableFactory.AppendMenu(menu);
+
+        if (GetCluster()->ClusterMinimumVersion(1,1))
+            subscriptionFactory.AppendMenu(menu);
     }
     else
     {
-        subscriptionFactory.AppendMenu(menu);
+        if (!GetCluster()->ClusterMinimumVersion(1,1))
+            subscriptionFactory.AppendMenu(menu);
     }
 
     return menu;
-}
-
-
-bool slSet::Lock()
-{
-    return GetConnection()->ExecuteVoid(wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
-        + wxT("lockSet(") + NumToStr(GetSlId()) + wxT(");"));
 }
 
 
@@ -141,6 +138,29 @@ void slSet::ShowDependsOn(frmMain *form, ctlListView *list, const wxString &wh)
 }
 
 
+wxString slSet::GetLockXXID()
+{
+    return GetConnection()->ExecuteScalar(
+                wxT("SELECT set_locked FROM ") 
+                + GetCluster()->GetSchemaPrefix() + wxT("sl_set\n")
+                wxT(" WHERE set_id=") + NumToStr(GetSlId()));
+}
+
+
+bool slSet::Lock()
+{
+    return GetConnection()->ExecuteVoid(wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
+        + wxT("lockSet(") + NumToStr(GetSlId()) + wxT(");"));
+}
+
+
+bool slSet::Unlock()
+{
+    return GetConnection()->ExecuteVoid(wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
+        + wxT("unlockSet(") + NumToStr(GetSlId()) + wxT(");"));
+}
+
+
 bool slSet::CanDrop()
 {
     return !GetSubscriptionCount() && GetOriginId() == GetCluster()->GetLocalNodeID();
@@ -182,6 +202,12 @@ void slSet::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *propert
         properties->AppendItem(_("Origin ID"), GetOriginId());
         properties->AppendItem(_("Origin Node"), GetOriginNode());
         properties->AppendItem(_("Subscriptions"), GetSubscriptionCount());
+
+        wxString lockXXID = GetLockXXID();
+
+        if (!lockXXID.IsEmpty())
+            properties->AppendItem(_("Lock XXID"), lockXXID);
+
         properties->AppendItem(_("Comment"), GetComment());
     }
 }
@@ -247,9 +273,9 @@ pgObject *slSetFactory::CreateObjects(pgCollection *coll, ctlTree *browser, cons
 #include "images/slsets.xpm"
 
 slSetFactory::slSetFactory() 
-: slObjFactory(__("Set"), __("New Replication Set"), __("Create a new Replication Set."), slset_xpm)
+: slObjFactory(__("Set"), __("New Replication Set"), __("Create a new Replication Set."), slset2_xpm)
 {
-    exportedIconId = addIcon(slset2_xpm);
+    exportedIconId = addIcon(slset_xpm);
     metaType = SLM_SET;
 }
 

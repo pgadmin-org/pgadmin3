@@ -48,7 +48,10 @@ public:
     void iSetOriginNode(const wxString s) { originNode = s; }
     long GetSubscriptionCount() { return subscriptionCount; }
     void iSetSubscriptionCount(long l) { subscriptionCount=l; }
+
+    wxString GetLockXXID();
     bool Lock();
+    bool Unlock();
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();

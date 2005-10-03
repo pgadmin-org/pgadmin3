@@ -17,6 +17,7 @@
 
 #include "dlgRepSet.h"
 #include "slCluster.h"
+#include "slNode.h"
 #include "slSet.h"
 
 
@@ -328,8 +329,80 @@ wxWindow *slonyMergeSetFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool slonyMergeSetFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->IsCreatedBy(setFactory);
+    if (!obj || !obj->IsCreatedBy(setFactory))
+        return false;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID();
 }
+
+
+/////////////////////////////
+
+slonyLockSetFactory::slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Lock set"), _("Lock a replication set against updates."));
+}
+
+
+wxWindow *slonyLockSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    slSet *set=(slSet*)obj;
+
+    if (set->GetCluster()->GetLocalNode(form->GetBrowser())->CheckAcksAndContinue(form))
+    {
+        if (set->Lock())
+            form->Refresh(set);
+    }    
+    return 0;
+}
+
+
+bool slonyLockSetFactory::CheckEnable(pgObject *obj)
+{
+    if (!obj || !obj->IsCreatedBy(setFactory))
+        return false;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID() && set->GetLockXXID().IsEmpty();
+}
+
+
+/////////////////////////////
+
+slonyUnlockSetFactory::slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Unlock set"), _("Unlock a replication set and re-allow updates."));
+}
+
+
+wxWindow *slonyUnlockSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    slSet *set=(slSet*)obj;
+
+    if (set->GetCluster()->GetLocalNode(form->GetBrowser())->CheckAcksAndContinue(form))
+    {
+        if (set->Unlock())
+            form->Refresh(set);
+    }
+    return 0;
+}
+
+
+bool slonyUnlockSetFactory::CheckEnable(pgObject *obj)
+{
+    if (!obj || !obj->IsCreatedBy(setFactory))
+        return false;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID() && !set->GetLockXXID().IsEmpty();
+}
+
+
+////////////////////////////////
 
 
 slonyMoveSetFactory::slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
@@ -353,6 +426,9 @@ bool slonyMoveSetFactory::CheckEnable(pgObject *obj)
 {
     if (!obj || ! obj->IsCreatedBy(setFactory))
         return false;
-    return ((slSet*)obj)->GetSubscriptionCount() > 0;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID()  && !set->GetLockXXID().IsEmpty();
 }
 

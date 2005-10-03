@@ -630,7 +630,7 @@ wxString dlgRole::GetSql()
         if (createDB)
             sql += wxT(" CREATEDB");
         if (createRole)
-            sql += wxT(" CREATERROLE");
+            sql += wxT(" CREATEROLE");
         if (datValidUntil->GetValue().IsValid())
             sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
         else
@@ -652,7 +652,7 @@ wxString dlgRole::GetSql()
         sql += wxT(";\n");
 
         if (chkUpdateCat->GetValue())
-            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE OID=") + role->GetOidStr() + wxT(";\n");
+            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE rolname=") + qtString(name) + wxT(";\n");
 
         cnt=lstVariables->GetItemCount();
         for (pos=0 ; pos < cnt ; pos++)

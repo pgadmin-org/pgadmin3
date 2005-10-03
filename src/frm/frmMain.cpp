@@ -160,6 +160,8 @@ frmMain::frmMain(const wxString& title)
     new slonyRestartFactory(menuFactories, slonyMenu, 0);
     new slonyUpgradeFactory(menuFactories, slonyMenu, 0);
     new slonyFailoverFactory(menuFactories, slonyMenu, 0);
+    new slonyLockSetFactory(menuFactories, slonyMenu, 0);
+    new slonyUnlockSetFactory(menuFactories, slonyMenu, 0);
     new slonyMergeSetFactory(menuFactories, slonyMenu, 0);
     new slonyMoveSetFactory(menuFactories, slonyMenu, 0);
     toolsMenu->Append(MNU_SLONY_SUBMENU, _("Replication"), slonyMenu);

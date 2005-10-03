@@ -42,6 +42,7 @@ slCluster::slCluster(const wxString& newName)
 : pgDatabaseObject(slClusterFactory, newName)
 {
     wxLogInfo(wxT("Creating a slCluster object"));
+    localNode=0;
 }
 
 slCluster::~slCluster()
@@ -78,6 +79,24 @@ wxString slCluster::GetSql(ctlTree *browser)
         sql = _("-- Use the installation wizard\n-- to generate the Slony-I replication cluster.\n");
     }
     return sql;
+}
+
+
+slNode *slCluster::GetLocalNode(ctlTree *browser)
+{
+    pgCollection *nodes=browser->FindCollection(nodeFactory, GetId());
+    if (nodes)
+    {
+        slNode *node;
+
+        treeObjectIterator ni(browser, nodes);
+        while ((node=(slNode*)ni.GetNextObject()) != 0)
+        {
+            if (node->GetSlId() == GetLocalNodeID())
+                return node;
+        }
+    }
+    return 0;
 }
 
 

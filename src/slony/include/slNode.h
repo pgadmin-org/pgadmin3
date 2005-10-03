@@ -22,6 +22,11 @@ public:
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
     virtual pgCollection *CreateCollection(pgObject *obj);
+    int GetLocalIconId() { return localIconId; }
+    int GetDisabledIconId() { return disabledIconId; }
+
+private:
+    int localIconId, disabledIconId;
 };
 extern slNodeFactory nodeFactory;
 
@@ -31,6 +36,7 @@ class slNode : public slObject
 public:
     slNode(slCluster *_cluster, const wxString& newName = wxT(""));
     ~slNode();
+    int GetIconId();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
@@ -38,6 +44,9 @@ public:
     bool CanDrop();
     bool RequireDropConfirm() { return true; }
     bool WantDummyChild() { return true; }
+
+    long GetOutstandingAcks();
+    bool CheckAcksAndContinue(wxFrame *frame);
 
     bool GetActive() const { return active; }
     void iSetActive(bool b) { active=b; }

@@ -16,6 +16,8 @@
 
 class frmMain;
 class RemoteConn;
+class slNode;
+
 
 WX_DECLARE_OBJARRAY(RemoteConn, RemoteConnArray);
 
@@ -55,6 +57,8 @@ public:
     wxString GetClusterVersion() const { return clusterVersion; }
     long GetSlonPid();
 
+    slNode *GetLocalNode(ctlTree *browser);
+
     bool RequireDropConfirm() { return true; }
     bool WantDummyChild() { return true; }
 
@@ -70,6 +74,7 @@ private:
     wxString localNodeName, adminNodeName;
     wxString clusterVersion;
     long localNodeID, adminNodeID;
+    slNode *localNode;
 
     RemoteConnArray remoteConns;
 };

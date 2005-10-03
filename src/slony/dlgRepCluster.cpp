@@ -930,6 +930,95 @@ wxString dlgRepClusterUpgrade::GetSql()
         wxString remoteCluster = wxT("_") + cbClusterName->GetValue();
         sql = wxT("SET SEARCH_PATH = ") + qtIdent(wxT("_") + cluster->GetName()) + wxT(", pg_catalog;\n\n");
 
+        bool upgradeSchemaAvailable=false;
+
+        {
+            // update functions
+            pgSetIterator func(remoteConn,
+                wxT("SELECT proname, proisagg, prosecdef, proisstrict, proretset, provolatile, pronargs, prosrc, probin,\n")
+                wxT("       lanname, tr.typname as rettype,\n")
+                wxT("       t0.typname AS arg0, t1.typname AS arg1, t2.typname AS arg2, t3.typname AS arg3, t4.typname AS arg4,\n")
+                wxT("       t5.typname AS arg5, t6.typname AS arg6, t7.typname AS arg7, t8.typname AS arg8, t9.typname AS arg9, \n")
+                wxT("       proargnames[0] AS an0, proargnames[1] AS an1, proargnames[2] AS an2, proargnames[3] AS an3, proargnames[4] AS an4,\n")
+                wxT("       proargnames[5] AS an5, proargnames[6] AS an6, proargnames[7] AS an7, proargnames[8] AS an8, proargnames[9] AS an9\n")
+                wxT("  FROM pg_proc\n")
+                wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
+                wxT("  JOIN pg_language l ON l.oid=prolang\n")
+                wxT("  JOIN pg_type tr ON tr.oid=prorettype\n")
+                wxT("  LEFT JOIN pg_type t0 ON t0.oid=proargtypes[0]\n")
+                wxT("  LEFT JOIN pg_type t1 ON t1.oid=proargtypes[1]\n")
+                wxT("  LEFT JOIN pg_type t2 ON t2.oid=proargtypes[2]\n")
+                wxT("  LEFT JOIN pg_type t3 ON t3.oid=proargtypes[3]\n")
+                wxT("  LEFT JOIN pg_type t4 ON t4.oid=proargtypes[4]\n")
+                wxT("  LEFT JOIN pg_type t5 ON t5.oid=proargtypes[5]\n")
+                wxT("  LEFT JOIN pg_type t6 ON t6.oid=proargtypes[6]\n")
+                wxT("  LEFT JOIN pg_type t7 ON t7.oid=proargtypes[7]\n")
+                wxT("  LEFT JOIN pg_type t8 ON t8.oid=proargtypes[8]\n")
+                wxT("  LEFT JOIN pg_type t9 ON t9.oid=proargtypes[9]\n")
+                wxT(" WHERE nspname = ") + qtString(remoteCluster)
+                );
+
+            while (func.RowsLeft())
+            {
+                wxString proname=func.GetVal(wxT("proname"));
+                if (proname == wxT("upgradeschema"))
+                    upgradeSchemaAvailable=true;
+
+                sql += wxT("CREATE OR REPLACE FUNCTION " + qtIdent(proname) + wxT("(");
+
+                wxString language = func.GetVal(wxT("lanname"));
+                wxString volat = func.GetVal(wxT("provolatile"));
+                long numArgs=func.GetLong(wxT("pronargs"));
+
+                long i;
+
+                for (i=0 ; i < numArgs ; i++)
+                {
+                    if (i)
+                        sql += wxT(", ");
+                    wxString argname=func.GetVal(wxT("an") + NumToStr(i));
+                    if (!argname.IsEmpty())
+                        sql += qtIdent(argname) + wxT(" ");
+
+                    sql += qtIdent(func.GetVal(wxT("arg") + NumToStr(i)));
+                }
+                sql += wxT(")\n")
+                       wxT("  RETURNS ");
+                if (func.GetBool(wxT("proretset")))
+                    sql += wxT("SETOF "));
+                sql += qtIdent(func.GetVal(wxT("rettype")));
+
+                if (language == wxT("c"))
+                    sql += wxT("\n")
+                           wxT("AS '" + func.GetVal(wxT("probin")) + wxT("', '") + 
+                                func.GetVal(wxT("prosrc")) + wxT("'");
+                else
+                    sql += wxT(" AS\n")
+                           wxT("$BODY$") + func.GetVal(wxT("prosrc")) + wxT("$BODY$");
+
+                sql += wxT(" LANGUAGE ") 
+                    +  language;
+
+                if (volat == wxT("v"))
+                    sql += wxT(" VOLATILE");
+                else if (volat == wxT("i"))
+                    sql += wxT(" IMMUTABLE"));
+                else
+                    sql += wxT(" STABLE");
+
+                if (func.GetBool(wxT("proisstrict")))
+                    sql += wxT(" STRICT");
+
+                if (func.GetBool(wxT("prosecdef")))
+                    sql += wxT(" SECURITY DEFINER");
+
+                sql += wxT(";\n\n");
+            }
+        }
+
+        if (upgradeSchemaAvailable)
+            sql += wxT("SELECT upgradeSchema(") + qtString(cluster->GetClusterVersion()) + wxT(");\n\n");
+
         {
             // Create missing tables and columns
             // we don't expect column names and types to change
@@ -1128,86 +1217,9 @@ wxString dlgRepClusterUpgrade::GetSql()
                 else
                     destConstraints.RowsLeft();
             }
-        }
 
-        {
-            // update functions
-            pgSetIterator func(remoteConn,
-                wxT("SELECT proname, proisagg, prosecdef, proisstrict, proretset, provolatile, pronargs, prosrc, probin,\n")
-                wxT("       lanname, tr.typname as rettype,\n")
-                wxT("       t0.typname AS arg0, t1.typname AS arg1, t2.typname AS arg2, t3.typname AS arg3, t4.typname AS arg4,\n")
-                wxT("       t5.typname AS arg5, t6.typname AS arg6, t7.typname AS arg7, t8.typname AS arg8, t9.typname AS arg9, \n")
-                wxT("       proargnames[0] AS an0, proargnames[1] AS an1, proargnames[2] AS an2, proargnames[3] AS an3, proargnames[4] AS an4,\n")
-                wxT("       proargnames[5] AS an5, proargnames[6] AS an6, proargnames[7] AS an7, proargnames[8] AS an8, proargnames[9] AS an9\n")
-                wxT("  FROM pg_proc\n")
-                wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
-                wxT("  JOIN pg_language l ON l.oid=prolang\n")
-                wxT("  JOIN pg_type tr ON tr.oid=prorettype\n")
-                wxT("  LEFT JOIN pg_type t0 ON t0.oid=proargtypes[0]\n")
-                wxT("  LEFT JOIN pg_type t1 ON t1.oid=proargtypes[1]\n")
-                wxT("  LEFT JOIN pg_type t2 ON t2.oid=proargtypes[2]\n")
-                wxT("  LEFT JOIN pg_type t3 ON t3.oid=proargtypes[3]\n")
-                wxT("  LEFT JOIN pg_type t4 ON t4.oid=proargtypes[4]\n")
-                wxT("  LEFT JOIN pg_type t5 ON t5.oid=proargtypes[5]\n")
-                wxT("  LEFT JOIN pg_type t6 ON t6.oid=proargtypes[6]\n")
-                wxT("  LEFT JOIN pg_type t7 ON t7.oid=proargtypes[7]\n")
-                wxT("  LEFT JOIN pg_type t8 ON t8.oid=proargtypes[8]\n")
-                wxT("  LEFT JOIN pg_type t9 ON t9.oid=proargtypes[9]\n")
-                wxT(" WHERE nspname = ") + qtString(remoteCluster)
-                );
-
-            while (func.RowsLeft())
-            {
-                sql += wxT("CREATE OR REPLACE FUNCTION " + qtIdent(func.GetVal(wxT("proname"))) + wxT("(");
-
-                wxString language = func.GetVal(wxT("lanname"));
-                wxString volat = func.GetVal(wxT("provolatile"));
-                long numArgs=func.GetLong(wxT("pronargs"));
-
-                long i;
-
-                for (i=0 ; i < numArgs ; i++)
-                {
-                    if (i)
-                        sql += wxT(", ");
-                    wxString argname=func.GetVal(wxT("an") + NumToStr(i));
-                    if (!argname.IsEmpty())
-                        sql += qtIdent(argname) + wxT(" ");
-
-                    sql += qtIdent(func.GetVal(wxT("arg") + NumToStr(i)));
-                }
-                sql += wxT(")\n")
-                       wxT("  RETURNS ");
-                if (func.GetBool(wxT("proretset")))
-                    sql += wxT("SETOF "));
-                sql += qtIdent(func.GetVal(wxT("rettype")));
-
-                if (language == wxT("c"))
-                    sql += wxT("\n")
-                           wxT("AS '" + func.GetVal(wxT("probin")) + wxT("', '") + 
-                                func.GetVal(wxT("prosrc")) + wxT("'");
-                else
-                    sql += wxT(" AS\n")
-                           wxT("$BODY$") + func.GetVal(wxT("prosrc")) + wxT("$BODY$");
-
-                sql += wxT(" LANGUAGE ") 
-                    +  language;
-
-                if (volat == wxT("v"))
-                    sql += wxT(" VOLATILE");
-                else if (volat == wxT("i"))
-                    sql += wxT(" IMMUTABLE"));
-                else
-                    sql += wxT(" STABLE");
-
-                if (func.GetBool(wxT("proisstrict")))
-                    sql += wxT(" STRICT");
-
-                if (func.GetBool(wxT("prosecdef")))
-                    sql += wxT(" SECURITY DEFINER");
-
-                sql += wxT(";\n\n");
-            }
+            sql += wxT("\nNOTIFY ") + qtIdent(wxT("_") + cluster->GetName() + wxT("_Restart")) 
+                +  wxT(";\n\n");
         }
     }
     return sql;
@@ -1312,4 +1324,10 @@ slonyFailoverFactory::slonyFailoverFactory(menuFactoryList *list, wxMenu *mnu, w
 wxWindow *slonyFailoverFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     return 0;
+}
+
+
+bool slonyFailoverFactory::CheckEnable(pgObject *obj)
+{
+    return false;
 }

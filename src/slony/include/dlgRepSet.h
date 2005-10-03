@@ -87,4 +87,23 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
+
+
+class slonyLockSetFactory : public contextActionFactory
+{
+public:
+    slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class slonyUnlockSetFactory : public contextActionFactory
+{
+public:
+    slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 #endif

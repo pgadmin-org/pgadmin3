@@ -24,8 +24,10 @@
 
 // pointer to controls
 #define txtOrigin       CTRL_TEXT("txtOrigin")
+#define stReceiver      CTRL_STATIC("stReceiver")
 #define txtReceiver     CTRL_TEXT("txtReceiver")
 #define cbProvider      CTRL_COMBOBOX("cbProvider")
+#define stProvider      CTRL_TEXT("stProvider")
 #define chkForward      CTRL_CHECKBOX("chkForward")
 
 
@@ -68,6 +70,14 @@ int dlgRepSubscription::Go(bool modal)
     {
         // create mode
         txtReceiver->SetValue(IdAndName(cluster->GetLocalNodeID(), cluster->GetLocalNodeName()));
+
+        if (cluster->ClusterMinimumVersion(1, 1))
+        {
+            // This is very ugly: starting with Slony-I 1.1, this must be called on the provider,
+            // not on the receiver.
+            stProvider->SetLabel(_("Receiver"));
+            stReceiver->SetLabel(_("Provider"));
+        }
     }
 
     if (set->GetOriginId() == cluster->GetLocalNodeID() && subscription)
@@ -143,9 +153,20 @@ wxString dlgRepSubscription::GetSql()
     wxString sql;
 
     sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("subscribeset(")
-        + NumToStr(set->GetSlId()) + wxT(", ")
-        + NumToStr((long)cbProvider->GetClientData(cbProvider->GetSelection())) + wxT(", ")
-        + NumToStr(cluster->GetLocalNodeID()) + wxT(", ")
+        + NumToStr(set->GetSlId()) + wxT(", ");
+
+    if (cluster && cluster->ClusterMinimumVersion(1, 1))
+    {
+        // Actually, provider and receiver are exchanged here.
+        sql +=NumToStr(cluster->GetLocalNodeID()) + wxT(", ")
+            + NumToStr((long)cbProvider->GetClientData(cbProvider->GetSelection()));
+    }
+    else
+    {
+        sql +=NumToStr((long)cbProvider->GetClientData(cbProvider->GetSelection())) + wxT(", ")
+            + NumToStr(cluster->GetLocalNodeID());
+    }
+    sql += wxT(", ")
         + BoolToStr(chkForward->GetValue()) + wxT(");");
 
     return sql;
