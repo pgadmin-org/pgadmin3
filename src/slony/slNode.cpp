@@ -61,6 +61,12 @@ bool slNode::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+bool slNode::WaitForEvent(long evNode)
+{
+    return true;
+}
+
+
 wxString slNode::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
@@ -200,13 +206,10 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 pgObject *slNode::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *node=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgCollection *coll=(pgCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            node = nodeFactory.CreateObjects(coll, 0, wxT(" WHERE no_id=") + NumToStr(GetSlId()) + wxT("\n"));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        node = nodeFactory.CreateObjects(coll, 0, wxT(" WHERE no_id=") + NumToStr(GetSlId()) + wxT("\n"));
+    
     return node;
 }
 

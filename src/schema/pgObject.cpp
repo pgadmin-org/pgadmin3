@@ -661,7 +661,7 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
     wxTreeItemId item=browser->GetFirstChild(GetServer()->GetId(), cookie);
     while (item)
     {
-        databases = (pgCollection*)browser->GetItemData(item);
+        databases = (pgCollection*)browser->GetObject(item);
         if (databases && databases->GetMetaType() == PGM_DATABASE)
             break;
         else
@@ -684,7 +684,7 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
             item=browser->GetFirstChild(databases->GetId(), cookie);
             while (item)
             {
-                pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
+                pgDatabase *db=(pgDatabase*)browser->GetObject(item);
                 if (db->GetMetaType() == PGM_DATABASE && db->GetName() == dbname)
                 {
                     if (db->GetConnected())

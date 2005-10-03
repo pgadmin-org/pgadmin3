@@ -81,13 +81,11 @@ void pgCast::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 pgObject *pgCast::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *cast=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            cast = castFactory.CreateObjects((pgCollection*)obj, 0, wxT(" WHERE ca.oid=") + GetOidStr());
-    }
+
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        cast = castFactory.CreateObjects(coll, 0, wxT(" WHERE ca.oid=") + GetOidStr());
+
     return cast;
 }
 

@@ -75,8 +75,8 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
 
 wxString pgDatatype::GetSchemaPrefix(pgDatabase *db) const
 {
-    if (schema.IsEmpty())
-        return schema;
+    if (schema.IsEmpty() || (!db && schema == wxT("pg_catalog")))
+        return wxEmptyString;
 
     if (needSchema)
         return schema + wxT(".");

@@ -148,13 +148,10 @@ void pgSchema::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 pgObject *pgSchema::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *schema=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            schema = schemaFactory.CreateObjects((pgCollection*)obj, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        schema = schemaFactory.CreateObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
+
     return schema;
 }
 

@@ -119,6 +119,13 @@ hintArray[]=
         wxT("pgadmin/editgrid"),
         HINT_CANSUPPRESS
     },
+    {
+        HINT_AUTOVACUUM,
+        _("Enabling autovacuum recommended"),
+        0,
+        wxT("maintenance#autovacuum"),
+        HINT_CANSUPPRESS
+    },
     { 0,0,0,0 }
 };
 
@@ -146,7 +153,7 @@ frmHint::frmHint(wxWindow *fr, bool _force) : DialogWithHelp(0)
     if (force)
         btnCancel->Disable();
 
-    appearanceFactory->SetIcons(this);
+    SetIcon(wxIcon(hint_xpm));
 }
 
 
@@ -360,7 +367,7 @@ int frmHint::ShowHint(wxWindow *fr, const wxArrayString &hints, const wxString &
     for (i=0 ; i < hints.GetCount() ; i++)
         hintnos.Add(GetHintNo(hints.Item(i)));
 
-    frmHint *frm=new frmHint(fr, true);
+    frmHint *frm=new frmHint(fr, hints.GetCount() > 1);
     frm->SetHint(hintnos, info);
 
     frm->CenterOnParent();

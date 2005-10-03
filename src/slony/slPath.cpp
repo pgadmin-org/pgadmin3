@@ -88,16 +88,13 @@ void slPath::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 pgObject *slPath::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *path=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        slNodeCollection *coll=(slNodeCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            path = pathFactory.CreateObjects(coll, 0, 
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        path = pathFactory.CreateObjects(coll, 0, 
             wxT(" WHERE pa_server=") + NumToStr(GetSlId()) + 
             wxT("   AND pa_client=") + NumToStr(GetNode()->GetSlId()) +
             wxT("\n"));
-    }
+
     return path;
 }
 

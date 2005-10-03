@@ -105,6 +105,7 @@ public:
     ~pgSetIterator();
 
     bool RowsLeft();
+    bool MovePrev();
 	bool IsValid() { return set != 0; }
     pgSetBase *Set() { return set; }
 

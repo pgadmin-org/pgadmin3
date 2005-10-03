@@ -67,7 +67,8 @@ bool StrToBool(const wxString& value)
         return true;
     } else if (value.StartsWith(wxT("y"))) {
         return true;
-    } 
+    } else if (value == wxT("on"))
+        return true;
 
     return false;
 }

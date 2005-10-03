@@ -128,13 +128,10 @@ void pgSequence::ShowStatistics(frmMain *form, ctlListView *statistics)
 pgObject *pgSequence::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *sequence=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            sequence = sequenceFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND cl.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        sequence = sequenceFactory.CreateObjects(coll, 0, wxT("\n   AND cl.oid=") + GetOidStr());
+
     return sequence;
 }
 

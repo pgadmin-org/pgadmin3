@@ -30,15 +30,17 @@ public:
 
 private:
     virtual void OnChangeCluster(wxCommandEvent &ev)=0;
-    bool AddScript(wxString &sql, const wxString &filename);
 
 protected:
     void OnChangeServer(wxCommandEvent &ev);
     void OnChangeDatabase(wxCommandEvent &ev);
+
+    bool AddScript(wxString &sql, const wxString &filename);
     slCluster *cluster;
     wxTreeItemId servers;
     pgServer *remoteServer;
     pgConn *remoteConn;
+    wxString remoteVersion;
     wxString createScript;
 
     DECLARE_EVENT_TABLE();

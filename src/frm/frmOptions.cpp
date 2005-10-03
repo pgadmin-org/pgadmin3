@@ -26,6 +26,7 @@
 #include "misc.h"
 #include "menu.h"
 
+#include "images/properties.xpm"
 
 extern wxLocale *locale;
 extern wxArrayInt existingLangs;
@@ -75,7 +76,7 @@ frmOptions::frmOptions(frmMain *parent)
     LoadResource(parent, wxT("frmOptions")); 
 
     // Icon
-    appearanceFactory->SetIcons(this);
+    SetIcon(wxIcon(properties_xpm));
     CenterOnParent();
 
     wxAcceleratorEntry entries[1];

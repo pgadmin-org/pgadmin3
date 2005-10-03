@@ -82,13 +82,10 @@ void pgRule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 pgObject *pgRule::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *rule=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            rule = ruleFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND rw.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        rule = ruleFactory.CreateObjects(coll, 0, wxT("\n   AND rw.oid=") + GetOidStr());
+
     return rule;
 }
 

@@ -80,13 +80,11 @@ void pgConversion::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 pgObject *pgConversion::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *conversion=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            conversion = conversionFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND co.oid=") + GetOidStr());
-    }
+
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        conversion = conversionFactory.CreateObjects(coll, 0, wxT("\n   AND co.oid=") + GetOidStr());
+
     return conversion;
 }
 

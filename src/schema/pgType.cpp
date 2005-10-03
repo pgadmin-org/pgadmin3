@@ -161,13 +161,10 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 pgObject *pgType::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *type=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            type = typeFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        type = typeFactory.CreateObjects(coll, 0, wxT("\n   AND t.oid=") + GetOidStr());
+
     return type;
 }
 

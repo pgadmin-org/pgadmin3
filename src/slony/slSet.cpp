@@ -63,6 +63,13 @@ wxMenu *slSet::GetNewMenu()
 }
 
 
+bool slSet::Lock()
+{
+    return GetConnection()->ExecuteVoid(wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
+        + wxT("lockSet(") + NumToStr(GetSlId()) + wxT(");"));
+}
+
+
 bool slSet::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
@@ -184,13 +191,10 @@ void slSet::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *propert
 pgObject *slSet::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *set=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        slObjCollection *coll=(slObjCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            set = setFactory.CreateObjects(coll, 0, wxT(" WHERE set_id=") + NumToStr(GetSlId()) + wxT("\n"));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        set = setFactory.CreateObjects(coll, 0, wxT(" WHERE set_id=") + NumToStr(GetSlId()) + wxT("\n"));
+
     return set;
 }
 

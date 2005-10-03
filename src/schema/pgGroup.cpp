@@ -101,13 +101,10 @@ void pgGroup::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 pgObject *pgGroup::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *group=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            group = groupFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n WHERE grosysid=") + NumToStr(GetGroupId()));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        group = groupFactory.CreateObjects(coll, 0, wxT("\n WHERE grosysid=") + NumToStr(GetGroupId()));
+
     return group;
 }
 

@@ -103,11 +103,13 @@ public:
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowHint(frmMain *form, bool force);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/managing-databases"); }
     wxMenu *GetNewMenu();
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded) { return true; }
+    bool GetCanHint();
     bool CanEdit() { return true; }
     bool CanDrop() { return true; }
 
@@ -117,7 +119,7 @@ private:
     wxString passwordFilename();
 
     pgConn *conn;
-    bool connected, passwordValid;
+    bool connected, passwordValid, autovacuumRunning;
     wxString database, username, password, ver, error;
     wxString lastDatabase, lastSchema, description, serviceId;
     wxDateTime upSince;

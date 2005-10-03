@@ -243,13 +243,10 @@ void pgColumn::ShowStatistics(frmMain *form, ctlListView *statistics)
 pgObject *pgColumn::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *column=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            column = columnFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND attnum=") + NumToStr(GetColNumber()));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        column = columnFactory.CreateObjects(coll, 0, wxT("\n   AND attnum=") + NumToStr(GetColNumber()));
+
     return column;
 }
 

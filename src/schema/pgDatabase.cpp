@@ -416,6 +416,10 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
             properties->AppendItem(_("Old style FKs"), GetMissingFKs());
         properties->AppendItem(_("Comment"), GetComment());
     }
+    if (form && GetCanHint() && !hintShown)
+    {
+        ShowHint(form, false);
+    }
 }
 
 
@@ -423,24 +427,20 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 pgObject *pgDatabase::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgDatabase *database=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
     {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
+        database = (pgDatabase*)databaseFactory.CreateObjects(coll, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
+        if (database)
         {
-            database = (pgDatabase*)databaseFactory.CreateObjects((pgCollection*)obj, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
-            if (database)
-            {
-                sql=wxT("");
-                iSetAcl(database->GetAcl());
-                size_t i;
-                for (i=0 ; i < database->GetVariables().GetCount() ; i++)
-                    variables.Add(database->GetVariables().Item(i));
+            sql=wxT("");
+            iSetAcl(database->GetAcl());
+            size_t i;
+            for (i=0 ; i < database->GetVariables().GetCount() ; i++)
+                variables.Add(database->GetVariables().Item(i));
 
-                iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
-                delete database;
-            }
+            iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+            delete database;
         }
     }
 

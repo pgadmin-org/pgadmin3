@@ -111,13 +111,10 @@ void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 pgObject *slTable::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *table=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        slSetObjCollection *coll=(slSetObjCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            table = slTableFactory.CreateObjects(coll, 0, wxT(" WHERE tab_id=") + NumToStr(GetSlId()) + wxT("\n"));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        table = slTableFactory.CreateObjects(coll, 0, wxT(" WHERE tab_id=") + NumToStr(GetSlId()) + wxT("\n"));
+
     return table;
 }
 

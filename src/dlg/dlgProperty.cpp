@@ -450,7 +450,7 @@ void dlgProperty::OnChangeOwner(wxCommandEvent &ev)
 bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 {
     ctlTree *browser=mainForm->GetBrowser();
-    pgCollection *collection = (pgCollection*)browser->GetItemData(collectionItem);
+    pgCollection *collection = (pgCollection*)browser->GetObject(collectionItem);
     if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
     {
         pgObject *data = CreateObject(collection);
@@ -653,7 +653,7 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
         wxTreeItemId collectionItem=frame->GetBrowser()->GetFirstChild(node->GetId(), cookie);
         while (collectionItem)
         {
-            pgCollection *collection=(pgCollection*)frame->GetBrowser()->GetItemData(collectionItem);
+            pgCollection *collection=(pgCollection*)frame->GetBrowser()->GetObject(collectionItem);
             if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
                 break;
 
@@ -684,14 +684,12 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
     if (type != node->GetType())
         parentNode = node;
     else
-        parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
-                                frame->GetBrowser()->GetItemParent(
-                                    node->GetId()));
+        parentNode = frame->GetBrowser()->GetObject(
+                     frame->GetBrowser()->GetItemParent(node->GetId()));
 
     if (parentNode && parentNode->IsCollection() && parentNode->GetMetaType() != PGM_SERVER)
-        parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
-                                frame->GetBrowser()->GetItemParent(
-                                    parentNode->GetId()));
+        parentNode = frame->GetBrowser()->GetObject(
+                     frame->GetBrowser()->GetItemParent(parentNode->GetId()));
 
     dlgProperty *dlg=0;
 
@@ -981,7 +979,7 @@ int dlgCollistProperty::Go(bool modal)
         wxTreeItemId columnsItem=mainForm->GetBrowser()->GetFirstChild(table->GetId(), cookie);
         while (columnsItem)
         {
-            data=(pgObject*)mainForm->GetBrowser()->GetItemData(columnsItem);
+            data=mainForm->GetBrowser()->GetObject(columnsItem);
             if (data->GetMetaType() == PGM_COLUMN && data->IsCollection())
                 break;
             columnsItem=mainForm->GetBrowser()->GetNextChild(table->GetId(), cookie);
@@ -996,7 +994,7 @@ int dlgCollistProperty::Go(bool modal)
             // check columns
             while (item)
             {
-                column=(pgColumn*)mainForm->GetBrowser()->GetItemData(item);
+                column=(pgColumn*)mainForm->GetBrowser()->GetObject(item);
                 if (column->IsCreatedBy(columnFactory))
                 {
                     if (column->GetColNumber() > 0)

@@ -53,6 +53,7 @@ public:
     wxString GetAdminNodeName() const { return adminNodeName; }
     void iSetClusterVersion(const wxString &s) { clusterVersion =s; }
     wxString GetClusterVersion() const { return clusterVersion; }
+    long GetSlonPid();
 
     bool RequireDropConfirm() { return true; }
     bool WantDummyChild() { return true; }

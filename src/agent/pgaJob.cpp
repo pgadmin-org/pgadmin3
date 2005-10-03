@@ -106,13 +106,11 @@ void pgaJob::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 pgObject *pgaJob::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *job=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            job = jobFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   WHERE j.jobid=") + NumToStr(GetRecId()));
-    }
+
+    pgObject *obj=browser->GetObject(browser->GetItemParent(item));
+    if (obj->IsCollection())
+        job = jobFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   WHERE j.jobid=") + NumToStr(GetRecId()));
+
     return job;
 }
 

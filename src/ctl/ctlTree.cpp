@@ -37,6 +37,23 @@ void ctlTree::RemoveDummyChild(pgObject *obj)
 }
 
 
+pgObject *ctlTree::GetObject(wxTreeItemId id)
+{
+    if (id)
+        return (pgObject*)GetItemData(id);
+    return 0;
+}
+
+
+pgCollection *ctlTree::GetParentCollection(wxTreeItemId id)
+{
+    pgCollection *coll=(pgCollection*)GetParentObject(id);
+    if (coll && coll->IsCollection())
+        return coll;
+    return 0;
+}
+
+
 wxTreeItemId ctlTree::AppendObject(pgObject *parent, pgObject *object)
 {
     wxString label;
@@ -92,6 +109,8 @@ pgCollection *ctlTree::FindCollection(pgaFactory &factory, wxTreeItemId parent)
     return collection;
 }
 
+
+//////////////////////7
 
 treeObjectIterator::treeObjectIterator(ctlTree *brow, pgObject *obj)
 {

@@ -142,13 +142,10 @@ void pgOperator::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 pgObject *pgOperator::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *oper=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            oper = operatorFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND op.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        oper = operatorFactory.CreateObjects(coll, 0, wxT("\n   AND op.oid=") + GetOidStr());
+
     return oper;
 }
 

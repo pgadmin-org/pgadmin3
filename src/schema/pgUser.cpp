@@ -234,13 +234,10 @@ void pgUser::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 pgObject *pgUser::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *user=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            user = userFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n WHERE usesysid=") + NumToStr(GetUserId()));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        user = userFactory.CreateObjects(coll, 0, wxT("\n WHERE usesysid=") + NumToStr(GetUserId()));
+
     return user;
 }
 

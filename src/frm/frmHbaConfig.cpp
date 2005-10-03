@@ -303,10 +303,12 @@ bool hbaConfigFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
-        pgConn *conn=obj->GetConnection();
         pgServer *server=obj->GetServer();
-
-        return server && conn && server->GetSuperUser() &&  conn->HasFeature(FEATURE_FILEREAD);
+        if (server)
+        {
+            pgConn *conn=server->GetConnection();
+            return conn && server->GetSuperUser() &&  conn->HasFeature(FEATURE_FILEREAD);
+        }
     }
     return false;
 }

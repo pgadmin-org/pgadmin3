@@ -77,13 +77,10 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 pgObject *pgLanguage::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *language=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            language = languageFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND lan.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        language = languageFactory.CreateObjects(coll, 0, wxT("\n   AND lan.oid=") + GetOidStr());
+
     return language;
 }
 

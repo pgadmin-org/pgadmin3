@@ -35,7 +35,7 @@
 #include "images/file_save.xpm"
 #include "images/edit_undo.xpm"
 #include "images/help.xpm"
-#include "images/hint.xpm"
+#include "images/hint2.xpm"
 #include "images/checked.xpm"
 #include "images/unchecked.xpm"
 #include "images/query_execute.xpm"
@@ -47,6 +47,7 @@ BEGIN_EVENT_TABLE(frmConfig, pgFrame)
     EVT_MENU(MNU_SAVE,                      frmConfig::OnSave)
     EVT_MENU(MNU_SAVEAS,                    frmConfig::OnSaveAs)
     EVT_MENU(MNU_EXECUTE,                   frmConfig::OnExecute)
+    EVT_MENU(MNU_HINT,                      frmConfig::OnHint)
 END_EVENT_TABLE()
 
 
@@ -135,7 +136,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
 
     helpMenu->Append(MNU_HINT, _("Hints"), _("Display helpful hints on current object."));
-    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint_xpm), _("Display helpful hints on current object."));
+    toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm),   _("Display helpful hints on current object."));
     helpMenu->Append(MNU_HELP, _("&Configuration Help\tF1"),      _("Display help on configuration options."));
     helpMenu->AppendSeparator();
 
@@ -198,7 +199,6 @@ void frmConfig::InitFrame(const wxChar *frameName)
 void frmConfig::Go()
 {
     Show();
-    DisplayHint(false);
 }
 
 

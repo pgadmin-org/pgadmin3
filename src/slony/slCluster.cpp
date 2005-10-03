@@ -110,7 +110,7 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
             {
                 servers = form->GetBrowser()->GetItemParent(servers);
                 if (servers)            
-                    obj = (pgObject*)form->GetBrowser()->GetItemData(servers);
+                    obj = form->GetBrowser()->GetObject(servers);
             }
             
             wxCookieType cookie;
@@ -161,7 +161,7 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
             wxTreeItemId serverItem=form->GetBrowser()->GetFirstChild(servers, cookie);        
             while (serverItem)
             {
-                pgServer *server = (pgServer*)form->GetBrowser()->GetItemData(serverItem);
+                pgServer *server = (pgServer*)form->GetBrowser()->GetObject(serverItem);
                 if (server && server->IsCreatedBy(serverFactory))
                 {
                     if (server->GetName() == host && server->GetPort() == port)
@@ -195,8 +195,17 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
 bool slCluster::ClusterMinimumVersion(int major, int minor)
 {
     long ma=StrToLong(clusterVersion);
-    long mi=StrToLong(clusterVersion.BeforeFirst('.'));
+    long mi=StrToLong(clusterVersion.AfterFirst('.'));
     return ma > major || (ma == major && mi >= minor);
+}
+
+
+long slCluster::GetSlonPid()
+{
+    long slonPid=StrToLong(GetConnection()->ExecuteScalar(
+        wxT("SELECT listenerpid FROM pg_listener WHERE relname = ")
+            + qtString(wxT("_") + GetName() + wxT("_Event"))));
+    return slonPid;
 }
 
 
@@ -265,8 +274,21 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("Local node ID"), GetLocalNodeID());
         properties->AppendItem(_("Local node"), GetLocalNodeName());
-        properties->AppendItem(_("Admin node ID"), GetAdminNodeID());
-        properties->AppendItem(_("Admin node"), GetAdminNodeName());
+        
+        if (GetAdminNodeID() == -1L)
+            properties->AppendItem(_("Admin node"), _("<none>"));
+        else
+        {
+            properties->AppendItem(_("Admin node ID"), GetAdminNodeID());
+            properties->AppendItem(_("Admin node"), GetAdminNodeName());
+        }
+
+        long slonPid=GetSlonPid();
+        if (slonPid)
+            properties->AppendItem(_("Slon PID"), slonPid);
+        else
+            properties->AppendItem(_("Slon PID"), _("not running"));
+
         properties->AppendItem(_("Version"), GetClusterVersion());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Comment"), GetComment());
@@ -278,13 +300,10 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 pgObject *slCluster::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *cluster=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgCollection *coll=(pgCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            cluster = slClusterFactory.CreateObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        cluster = slClusterFactory.CreateObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
+
     return cluster;
 }
 
@@ -295,7 +314,7 @@ pgObject *pgaSlClusterFactory::CreateObjects(pgCollection *coll, ctlTree *browse
     slCluster *cluster=0;
 
     pgSet *clusters = coll->GetDatabase()->ExecuteSet(
-        wxT("SELECT substr(nspname, 2) as clustername, nspname, pg_get_userbyid(nspowner) AS namespaceowner, description\n")
+        wxT("SELECT nsp.oid, substr(nspname, 2) as clustername, nspname, pg_get_userbyid(nspowner) AS namespaceowner, description\n")
         wxT("  FROM pg_namespace nsp\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
         wxT("  JOIN pg_proc pro ON pronamespace=nsp.oid AND proname = 'slonyversion'\n")
@@ -307,6 +326,7 @@ pgObject *pgaSlClusterFactory::CreateObjects(pgCollection *coll, ctlTree *browse
         while (!clusters->Eof())
         {
             cluster = new slCluster(clusters->GetVal(wxT("clustername")));
+            cluster->iSetOid(clusters->GetOid(wxT("oid")));
             cluster->iSetDatabase(coll->GetDatabase());
             cluster->iSetSchemaPrefix(qtIdent(clusters->GetVal(wxT("nspname"))) + wxT("."));
             cluster->iSetOwner(clusters->GetVal(wxT("namespaceowner")));

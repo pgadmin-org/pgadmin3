@@ -132,7 +132,7 @@ int dlgJob::Go(bool modal)
 		item=mainForm->GetBrowser()->GetFirstChild(job->GetId(), cookie);
 		while (item)
 		{
-			data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+			data=mainForm->GetBrowser()->GetObject(item);
             if (data->GetMetaType() == PGM_STEP) 
 				stepsItem = item;
             else if (data->GetMetaType() == PGM_SCHEDULE) 
@@ -152,7 +152,7 @@ int dlgJob::Go(bool modal)
             // add columns
             while (item)
             {
-				data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+				data=mainForm->GetBrowser()->GetObject(item);
 				if (data->IsCreatedBy(stepFactory))
 				{
 					pgaStep *step=(pgaStep*)data;
@@ -175,7 +175,7 @@ int dlgJob::Go(bool modal)
             // add columns
             while (item)
             {
-				data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+				data=mainForm->GetBrowser()->GetObject(item);
 				if (data->IsCollection())
 				{
 					pgaSchedule *schedule=(pgaSchedule*)data;

@@ -68,15 +68,13 @@ void pgaStep::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 
 pgObject *pgaStep::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
-    pgObject *Step=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            Step = stepFactory.CreateObjects(obj, 0, wxT("\n   AND jstid=") + NumToStr(GetRecId()));
-    }
-    return Step;
+    pgObject *step=0;
+
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        step = stepFactory.CreateObjects(coll, 0, wxT("\n   AND jstid=") + NumToStr(GetRecId()));
+
+    return step;
 }
 
 

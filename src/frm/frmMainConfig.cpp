@@ -188,6 +188,8 @@ void frmMainConfig::OnEditSetting(wxListEvent& event)
             editMenu->Enable(MNU_UNDO, true);
             toolBar->EnableTool(MNU_SAVE, true);
             toolBar->EnableTool(MNU_UNDO, true);
+
+            
         }
         UpdateLine(event.GetIndex());
     }
@@ -539,13 +541,15 @@ void frmMainConfig::FillList(wxArrayString *category)
 
 enum
 {
-    HINT_LISTEN_ADDRESSES
+    HINT_LISTEN_ADDRESSES,
+    HINT_AUTOVACUUM_CFG
 };
 
 
 const wxChar *hintString[]=
 {
-    _("The PostgreSQL server engine is currently configured to listen for local connections only.\nYou might want to check \"listen_addresses\" to enable accessing the server over the network too.")
+    _("The PostgreSQL server engine is currently configured to listen for local connections only.\nYou might want to check \"listen_addresses\" to enable accessing the server over the network too."),
+    _("The pg_autovacuum backend process is not running.\nIt is recommended to enable it by setting 'stats_start_collector', 'stats_row_level' and 'autovacuum' to 'on'.")
 };
 
 
@@ -553,6 +557,9 @@ wxString frmMainConfig::GetHintString()
 {
     wxArrayInt hints;
     size_t i;
+    int autovacuum=0;
+    bool autovacuumPresent=false;
+
     for (i=0 ; i < (size_t)cfgList->GetItemCount() ; i++)
     {
         pgSettingItem *item = options[cfgList->GetText(i)];
@@ -566,8 +573,22 @@ wxString frmMainConfig::GetHintString()
                 if (value.IsEmpty() || value == wxT("localhost"))
                     hints.Add(HINT_LISTEN_ADDRESSES);
             }
+            else if (name == wxT("autovacuum"))
+            {
+                autovacuumPresent = true;
+                if (StrToBool(value))
+                    autovacuum++;
+            }
+            else if (name == wxT("stats_start_collector") || name == wxT("stats_row_level"))
+            {
+                if (StrToBool(value))
+                    autovacuum++;
+            }
         }
     }
+
+    if (autovacuumPresent && autovacuum < 3)
+        hints.Add(HINT_AUTOVACUUM_CFG);
 
     wxString str;
     for (i=0 ; i < hints.GetCount() ; i++)
@@ -604,10 +625,12 @@ bool mainConfigFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
-        pgConn *conn=obj->GetConnection();
         pgServer *server=obj->GetServer();
-
-        return server && conn && server->GetSuperUser() &&  conn->HasFeature(FEATURE_FILEREAD);
+        if (server)
+        {
+            pgConn *conn=server->GetConnection();
+            return conn && server->GetSuperUser() &&  conn->HasFeature(FEATURE_FILEREAD);
+        }
     }
     return false;
 }

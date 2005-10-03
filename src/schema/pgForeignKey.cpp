@@ -135,7 +135,7 @@ void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         wxTreeItemId item=browser->GetItemParent(GetId());
         while (item)
         {
-            pgTable *table=(pgTable*)browser->GetItemData(item);
+            pgTable *table=(pgTable*)browser->GetObject(item);
             if (table->IsCreatedBy(tableFactory))
             {
                 coveringIndex = table->GetCoveringIndex(browser, fkColumns);
@@ -174,13 +174,11 @@ void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 pgObject *pgForeignKey::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *foreignKey=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            foreignKey = foreignKeyFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND ct.oid=") + GetOidStr());
-    }
+
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        foreignKey = foreignKeyFactory.CreateObjects(coll, 0, wxT("\n   AND ct.oid=") + GetOidStr());
+
     return foreignKey;
 }
 

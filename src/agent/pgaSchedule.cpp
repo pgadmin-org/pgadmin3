@@ -76,13 +76,11 @@ void pgaSchedule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 pgObject *pgaSchedule::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *schedule=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            schedule = scheduleFactory.CreateObjects(obj, 0, wxT("\n   AND jscid=") + NumToStr(GetRecId()));
-    }
+    
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        schedule = scheduleFactory.CreateObjects(coll, 0, wxT("\n   AND jscid=") + NumToStr(GetRecId()));
+
     return schedule;
 }
 

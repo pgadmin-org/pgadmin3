@@ -428,10 +428,7 @@ void frmMain::ShowObjStatistics(pgObject *data, int sel)
 
 void frmMain::OnPageChange(wxNotebookEvent& event)
 {
-    wxTreeItemId item=browser->GetSelection();
-	if (!item)
-		return;
-    pgObject *data = (pgObject*)browser->GetItemData(item);
+    pgObject *data = browser->GetObject(browser->GetSelection());
 
     if (!data)
         return;
@@ -473,7 +470,7 @@ bool frmMain::CheckAlive()
     wxTreeItemId serverItem=browser->GetFirstChild(serversObj->GetId(), cookie);
     while (serverItem)
     {
-        pgServer *server=(pgServer*)browser->GetItemData(serverItem);
+        pgServer *server=(pgServer*)browser->GetObject(serverItem);
 
         if (server && server->IsCreatedBy(serverFactory) && server->connection())
         {
@@ -483,14 +480,14 @@ bool frmMain::CheckAlive()
                 wxTreeItemId item = browser->GetFirstChild(serverItem, cookie2);
                 while (item)
                 {
-                    pgObject *obj=(pgObject*)browser->GetItemData(item);
+                    pgObject *obj=browser->GetObject(item);
                     if (obj && obj->IsCreatedBy(databaseFactory.GetCollectionFactory()))
                     {
                         wxCookieType cookie3;
                         item = browser->GetFirstChild(obj->GetId(), cookie3);
                         while (item)
                         {
-                            pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
+                            pgDatabase *db=(pgDatabase*)browser->GetObject(item);
                             if (db && db->IsCreatedBy(databaseFactory))
                             {
                                 pgConn *conn=db->GetConnection();
@@ -568,7 +565,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     item = browser->GetFirstChild(server->GetId(), cookie);
     while (item)
     {
-        data = (pgObject *)browser->GetItemData(item);
+        data = browser->GetObject(item);
         if (data->IsCreatedBy(databaseFactory.GetCollectionFactory()))
             break;
         // Get the next item
@@ -584,7 +581,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     item = browser->GetFirstChild(lastItem, cookie);
     while (item)
     {
-        data = (pgObject *)browser->GetItemData(item);
+        data = browser->GetObject(item);
         if (data->IsCreatedBy(databaseFactory) && data->GetName() == lastDatabase)
             break;
         // Get the next item
@@ -604,7 +601,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     item = browser->GetFirstChild(lastItem, cookie);
     while (item)
     {
-        data = (pgObject *)browser->GetItemData(item);
+        data = browser->GetObject(item);
         if (data->GetMetaType() == PGM_SCHEMA)
             break;
         // Get the next item
@@ -620,7 +617,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     item = browser->GetFirstChild(lastItem, cookie);
     while (item)
     {
-        data = (pgObject *)browser->GetItemData(item);
+        data = browser->GetObject(item);
         if (data->GetMetaType() == PGM_SCHEMA && data->GetName() == lastSchema)
             break;
         // Get the next item
@@ -752,7 +749,7 @@ void frmMain::StoreServers()
     wxTreeItemId item = browser->GetFirstChild(serversObj->GetId(), cookie);
     while (item)
     {
-        data = (pgObject *)browser->GetItemData(item);
+        data = browser->GetObject(item);
         if (data->IsCreatedBy(serverFactory))
         {
 			// Cast the object, and check if it was autodiscovered before saving.

@@ -53,7 +53,7 @@ dlgRepClusterBase::dlgRepClusterBase(pgaFactory *f, frmMain *frame, const wxStri
     {
         servers = frame->GetBrowser()->GetItemParent(servers);
         if (servers)            
-            obj = (pgObject*)frame->GetBrowser()->GetItemData(servers);
+            obj = frame->GetBrowser()->GetObject(servers);
     }
 }
 
@@ -101,36 +101,6 @@ bool dlgRepClusterBase::AddScript(wxString &sql, const wxString &fn)
 
 int dlgRepClusterBase::Go(bool modal)
 {
-    if (cluster)
-    {
-        cbServer->Append(cluster->GetServer()->GetName());
-        cbServer->SetSelection(0);
-        cbDatabase->Append(cluster->GetDatabase()->GetName());
-        cbDatabase->SetSelection(0);
-        cbClusterName->Append(cluster->GetName());
-        cbClusterName->SetSelection(0);
-    }
-    else
-    {
-        if (!AddScript(createScript, wxT("xxid.v74.sql")) || 
-            !AddScript(createScript, wxT("slony1_base.sql")) || 
-            !AddScript(createScript, wxT("slony1_funcs.sql")) || 
-            !AddScript(createScript, wxT("slony1_funcs.v74.sql")))
-            createScript = wxEmptyString;
-
-        wxCookieType cookie;
-        wxTreeItemId serverItem=mainForm->GetBrowser()->GetFirstChild(servers, cookie);        
-        while (serverItem)
-        {
-            pgServer *s = (pgServer*)mainForm->GetBrowser()->GetItemData(serverItem);
-            if (s && s->IsCreatedBy(serverFactory))
-                cbServer->Append(mainForm->GetBrowser()->GetItemText(serverItem), (void*)s);
-
-            serverItem = mainForm->GetBrowser()->GetNextChild(servers, cookie);
-        }
-        if (cbServer->GetCount())
-            cbServer->SetSelection(0);
-    }
     return dlgProperty::Go(modal);
 }
 
@@ -187,7 +157,7 @@ void dlgRepClusterBase::OnChangeDatabase(wxCommandEvent &ev)
     cbClusterName->Clear();
 
     int sel=cbDatabase->GetSelection();
-    if (sel >= 0)
+    if (remoteServer && sel >= 0)
     {
         if (remoteConn)
         {
@@ -306,6 +276,13 @@ int dlgRepCluster::Go(bool modal)
             cbAdminNode->Append(_("<none>"), (void*)-1);
             cbAdminNode->SetSelection(0);
         }
+
+        cbServer->Append(cluster->GetServer()->GetName());
+        cbServer->SetSelection(0);
+        cbDatabase->Append(cluster->GetDatabase()->GetName());
+        cbDatabase->SetSelection(0);
+        cbClusterName->Append(cluster->GetName());
+        cbClusterName->SetSelection(0);
     }
     else
     {
@@ -315,6 +292,22 @@ int dlgRepCluster::Go(bool modal)
         txtNodeID->SetValidator(numericValidator);
         txtAdminNodeID->SetValidator(numericValidator);
         txtClusterName->Hide();
+
+        if (!AddScript(createScript, wxT("xxid.v74.sql")) || 
+            !AddScript(createScript, wxT("slony1_base.sql")) || 
+            !AddScript(createScript, wxT("slony1_funcs.sql")) || 
+            !AddScript(createScript, wxT("slony1_funcs.v74.sql")))
+            createScript = wxEmptyString;
+
+        treeObjectIterator it(mainForm->GetBrowser(), mainForm->GetServerCollection());
+        pgServer *s;
+        while ((s=(pgServer*)it.GetNextObject()) != 0)
+        {
+            if (s->IsCreatedBy(serverFactory))
+                cbServer->Append(mainForm->GetBrowser()->GetItemText(s->GetId()), (void*)s);
+        }
+        if (cbServer->GetCount())
+            cbServer->SetSelection(0);
     }
 
     wxCommandEvent ev;
@@ -350,6 +343,7 @@ void dlgRepCluster::OnChangeJoin(wxCommandEvent &ev)
 void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
 {
     clusterBackup = wxEmptyString;
+    remoteVersion = wxEmptyString;
 
     cbAdminNode->Clear();
     cbAdminNode->Append(_("<none>"), (void*)-1);
@@ -361,7 +355,7 @@ void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
         long adminNodeID = settings->Read(wxT("Replication/") + cbClusterName->GetValue() + wxT("/AdminNode"), -1L);
 
         wxString sql=
-            wxT("SELECT no_id, no_comment\n")
+            wxT("SELECT no_id, no_comment, ") + schemaPrefix + wxT("slonyVersion() as version\n")
             wxT("  FROM ") + schemaPrefix + wxT("sl_node\n")
             wxT("  JOIN ") + schemaPrefix + wxT("sl_path ON no_id = pa_client\n")
             wxT(" WHERE pa_server = (SELECT last_value FROM ") + schemaPrefix + wxT("sl_local_node_id)")
@@ -371,17 +365,17 @@ void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
         if (remoteServer->GetPort() != 5432)
             sql += wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%port=") + NumToStr((long)remoteServer->GetPort()) + wxT("%"));
 
-        pgSet *set = remoteConn->ExecuteSet(sql);
+        pgSet *set=remoteConn->ExecuteSet(sql);
         if (set)
         {
             if (!set->Eof())
             {
+                remoteVersion = set->GetVal(wxT("version"));
                 long id = set->GetLong(wxT("no_id"));
                 cbAdminNode->Append(IdAndName(id, set->GetVal(wxT("no_comment"))), (void*)id);
                 if (adminNodeID == id)
                     cbAdminNode->SetSelection(cbAdminNode->GetCount()-1);
             }
-            delete set;
         }
 
 
@@ -564,7 +558,7 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
             }
         }
 
-        // create new node on existing cluster
+        // create new node on the existing cluster
         if (done)
         {
             wxString sql=
@@ -572,7 +566,7 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
                     + txtNodeID->GetValue() + wxT(", ")
                     + qtString(txtNodeName->GetValue());
 
-            // if version >= 1.1
+            if (StrToDouble(remoteVersion) >= 1.1)
                 sql += wxT(", false");
 
             sql += wxT(");\n")
@@ -849,8 +843,17 @@ wxString dlgRepCluster::GetSql()
                 wxT("SELECT ") + schemaPrefix + wxT("storeNode(") +
                     NumToStr(adminNode) + wxT(", ") +
                     qtString(txtAdminNodeName->GetValue());
-            // if ()()
-            sql += wxT(", false");
+
+            if (chkJoinCluster->GetValue())
+            {
+                if (StrToDouble(remoteVersion) >= 1.1)
+                    sql += wxT(", false");
+            }
+            else
+            {
+                if (createScript.Find(wxT("storeNode (int4, text)")) > 0)
+                    sql += wxT(", false");
+            }
             
             sql += wxT(");\n")
                 wxT("SELECT ") + schemaPrefix + wxT("storepath(") +
@@ -874,6 +877,7 @@ wxString dlgRepCluster::GetSql()
 #define txtVersion          CTRL_TEXT("txtVersion")
 
 BEGIN_EVENT_TABLE(dlgRepClusterUpgrade, dlgRepClusterBase)
+    EVT_COMBOBOX(XRCID("cbClusterName"),    dlgRepClusterUpgrade::OnChangeCluster)
 END_EVENT_TABLE();
 
 // no factory needed; called by slFunction
@@ -889,6 +893,20 @@ int dlgRepClusterUpgrade::Go(bool modal)
     txtCurrentVersion->SetValue(cluster->GetClusterVersion());
     txtCurrentVersion->Disable();
     txtVersion->Disable();
+
+    treeObjectIterator it(mainForm->GetBrowser(), mainForm->GetServerCollection());
+    pgServer *s;
+    while ((s=(pgServer*)it.GetNextObject()) != 0)
+    {
+        if (s->IsCreatedBy(serverFactory))
+            cbServer->Append(mainForm->GetBrowser()->GetItemText(s->GetId()), (void*)s);
+    }
+    if (cbServer->GetCount())
+        cbServer->SetSelection(0);
+
+    wxCommandEvent ev;
+    OnChangeServer(ev);
+
     return dlgRepClusterBase::Go(modal);
 }
 
@@ -896,6 +914,7 @@ int dlgRepClusterUpgrade::Go(bool modal)
 void dlgRepClusterUpgrade::CheckChange()
 {
     bool enable=true;
+    CheckValid(enable, cluster->GetSlonPid() == 0, _("Slon process running on node; stop it before upgrading."));
     CheckValid(enable, cbDatabase->GetCount() > 0, _("Select server with Slony-I cluster installed."));
     CheckValid(enable, cbClusterName->GetCount() > 0, _("Select database with Slony-I cluster installed."));
     CheckValid(enable, cbClusterName->GetSelection() >= 0, _("Select Slony-I cluster."));
@@ -908,41 +927,242 @@ wxString dlgRepClusterUpgrade::GetSql()
 {
     if (sql.IsEmpty() && !version.IsEmpty() && remoteConn)
     {
+        wxString remoteCluster = wxT("_") + cbClusterName->GetValue();
         sql = wxT("SET SEARCH_PATH = ") + qtIdent(wxT("_") + cluster->GetName()) + wxT(", pg_catalog;\n\n");
 
-        pgSet *set=remoteConn->ExecuteSet(
-            wxT("SELECT proname, proisagg, prosecdef, proisstrict, proretset, provolatile, pronargs, prosrc, probin,\n")
-            wxT("       lanname, tr.typname as rettype,\n")
-            wxT("       t0.typname AS arg0, t1.typname AS arg1, t2.typname AS arg2, t3.typname AS arg3, t4.typname AS arg4,\n")
-            wxT("       t5.typname AS arg5, t6.typname AS arg6, t7.typname AS arg7, t8.typname AS arg8, t9.typname AS arg9, \n")
-            wxT("       proargnames[0] AS an0, proargnames[1] AS an1, proargnames[2] AS an2, proargnames[3] AS an3, proargnames[4] AS an4,\n")
-            wxT("       proargnames[5] AS an5, proargnames[6] AS an6, proargnames[7] AS an7, proargnames[8] AS an8, proargnames[9] AS an9\n")
-            wxT("  FROM pg_proc\n")
-            wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
-            wxT("  JOIN pg_language l ON l.oid=prolang\n")
-            wxT("  JOIN pg_type tr ON tr.oid=prorettype\n")
-            wxT("  LEFT JOIN pg_type t0 ON t0.oid=proargtypes[0]\n")
-            wxT("  LEFT JOIN pg_type t1 ON t1.oid=proargtypes[1]\n")
-            wxT("  LEFT JOIN pg_type t2 ON t2.oid=proargtypes[2]\n")
-            wxT("  LEFT JOIN pg_type t3 ON t3.oid=proargtypes[3]\n")
-            wxT("  LEFT JOIN pg_type t4 ON t4.oid=proargtypes[4]\n")
-            wxT("  LEFT JOIN pg_type t5 ON t5.oid=proargtypes[5]\n")
-            wxT("  LEFT JOIN pg_type t6 ON t6.oid=proargtypes[6]\n")
-            wxT("  LEFT JOIN pg_type t7 ON t7.oid=proargtypes[7]\n")
-            wxT("  LEFT JOIN pg_type t8 ON t8.oid=proargtypes[8]\n")
-            wxT("  LEFT JOIN pg_type t9 ON t9.oid=proargtypes[9]\n")
-            wxT(" WHERE nspname = ") + qtString(wxT("_") + cluster->GetName())
-            );
-
-        if (set)
         {
-            while (!set->Eof())
-            {
-                sql += wxT("CREATE OR REPLACE FUNCTION " + qtIdent(set->GetVal(wxT("proname"))) + wxT("(");
+            // Create missing tables and columns
+            // we don't expect column names and types to change
 
-                wxString language = set->GetVal(wxT("lanname"));
-                wxString volat = set->GetVal(wxT("provolatile"));
-                long numArgs=set->GetLong(wxT("pronargs"));
+            pgSetIterator srcCols(remoteConn,
+                wxT("SELECT relname, attname, attndims, atttypmod, attnotnull, adsrc, ty.typname, tn.nspname as typnspname,\n")
+                wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup\n")
+                wxT("  FROM pg_attribute\n")
+                wxT("  JOIN pg_class c ON c.oid=attrelid\n")
+                wxT("  JOIN pg_namespace n ON n.oid=relnamespace")
+                wxT("  LEFT JOIN pg_attrdef d ON adrelid=attrelid and adnum=attnum\n")
+                wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
+                wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
+                wxT(" WHERE n.nspname = ") + qtString(remoteCluster) +
+                wxT("   AND attnum>0 and relkind='r'\n")
+                wxT(" ORDER BY (relname != 'sl_confirm'), relname, attname")
+                );
+
+            pgSetIterator destCols(connection,
+                wxT("SELECT relname, attname, adsrc\n")
+                wxT("  FROM pg_attribute\n")
+                wxT("  JOIN pg_class c ON c.oid=attrelid\n")
+                wxT("  JOIN pg_namespace n ON n.oid=relnamespace")
+                wxT("  LEFT JOIN pg_attrdef d ON adrelid=attrelid and adnum=attnum\n")
+                wxT(" WHERE n.nspname = ") + qtString(wxT("_") + cluster->GetName()) +
+                wxT("   AND attnum>0 and relkind='r'\n")
+                wxT(" ORDER BY (relname != 'sl_confirm'), relname, attname")
+                );
+
+            if (!destCols.RowsLeft())
+                return wxT("error");
+
+            wxString lastTable;
+            while (srcCols.RowsLeft())
+            {
+                wxString table=srcCols.GetVal(wxT("relname"));
+                wxString column=srcCols.GetVal(wxT("attname"));
+                wxString defVal=srcCols.GetVal(wxT("adsrc"));
+
+                if (table == wxT("sl_node"))
+                {
+                    table=wxT("sl_node");
+                }
+                pgDatatype dt(srcCols.GetVal(wxT("typnspname")), srcCols.GetVal(wxT("typname")), 
+                    srcCols.GetBool(wxT("isdup")), 
+                    srcCols.GetLong(wxT("attndims")), srcCols.GetLong(wxT("atttypmod")));
+
+
+                if (destCols.Set()->Eof() || 
+                    destCols.GetVal(wxT("relname")) != table || 
+                    destCols.GetVal(wxT("attname")) != column)
+                {
+                    if (table == lastTable || table == destCols.GetVal(wxT("relname")))
+                    {
+                        // just an additional column
+                        sql += wxT("ALTER TABLE ") + qtIdent(table)
+                            +  wxT(" ADD COLUMN ") + qtIdent(column)
+                            + wxT(" ") + dt.GetQuotedSchemaPrefix(0) + dt.QuotedFullName();
+                    
+                        if (!defVal.IsEmpty())
+                            sql += wxT(" DEFAULT ") + defVal;
+                        if (srcCols.GetBool(wxT("attnotnull")))
+                            sql += wxT(" NOT NULL");
+
+                        sql += wxT(";\n");
+                    }
+                    else
+                    {
+                        // new table
+                        // sl_confirm will always exist and be the first so no need for special 
+                        // precautions in case a new table is the very first in the set
+
+                        sql += wxT("CREATE TABLE ") + qtIdent(table)
+                            +  wxT(" (") + qtIdent(column)
+                            + wxT(" ") + dt.GetQuotedSchemaPrefix(0) + dt.QuotedFullName();
+                    
+                        if (!defVal.IsEmpty())
+                            sql += wxT(" DEFAULT ") + defVal;
+
+                        sql += wxT(");\n");
+                    }
+                }
+                else
+                {
+                    // column is found
+                    if (destCols.GetVal(wxT("adsrc")) != defVal)
+                    {
+                        sql += wxT("ALTER TABLE ") + qtIdent(table)
+                            +  wxT(" ALTER COLUMN ") + qtIdent(column);
+                        if (defVal.IsEmpty())
+                            sql += wxT(" DROP DEFAULT;\n");
+                        else
+                            sql += wxT(" SET DEFAULT ") + defVal + wxT(";\n");
+                    }
+                    destCols.RowsLeft();
+                }
+                lastTable = table;
+            }
+        }
+
+        {
+            // check missing indexes
+            pgSetIterator srcIndexes(remoteConn,
+                wxT("SELECT t.relname, indkey, ti.relname as indname, pg_get_indexdef(indexrelid) AS inddef\n")
+                wxT("  FROM pg_index i\n")
+                wxT("  JOIN pg_class ti ON indexrelid=ti.oid\n")
+                wxT("  JOIN pg_class t ON indrelid=t.oid\n")
+                wxT("  JOIN pg_namespace n ON n.oid=t.relnamespace\n")
+                wxT(" WHERE nspname = ") + qtString(remoteCluster) +
+                wxT(" ORDER BY t.relname, ti.relname, indkey"));
+
+            pgSetIterator destIndexes(remoteConn,
+                wxT("SELECT t.relname, indkey, ti.relname as indnamen")
+                wxT("  FROM pg_index i\n")
+                wxT("  JOIN pg_class ti ON indexrelid=ti.oid\n")
+                wxT("  JOIN pg_class t ON indrelid=t.oid\n")
+                wxT("  JOIN pg_namespace n ON n.oid=t.relnamespace\n")
+                wxT(" WHERE nspname = ") + qtString(wxT("_") + cluster->GetName()) +
+                wxT(" ORDER BY t.relname, ti.relname, indkey"));
+
+            if (!destIndexes.RowsLeft())
+                return wxT("error");
+
+            while (srcIndexes.RowsLeft())
+            {
+                wxString table=srcIndexes.GetVal(wxT("relname"));
+
+                bool needUpdate = destIndexes.Set()->Eof() ||
+                                  destIndexes.GetVal(wxT("relname")) != table;
+                                    
+                if (!needUpdate && destIndexes.GetVal(wxT("indkey")) != srcIndexes.GetVal(wxT("indkey")))
+                {
+                    // better ignore index name and check column names here 
+                    needUpdate = destIndexes.GetVal(wxT("indname")) != srcIndexes.GetVal(wxT("indname"));
+                }
+                if (needUpdate)
+                {
+                    wxString inddef=srcIndexes.GetVal(wxT("inddef"));
+                    inddef.Replace(qtIdent(remoteCluster)+wxT("."), qtIdent(wxT("_") +cluster->GetName())+wxT("."));
+                    sql += inddef + wxT(";\n");
+                }
+                else
+                    destIndexes.RowsLeft();
+            }
+        }
+
+        {
+            // check missing constraints
+            // we don't expect constraint definitions to change
+
+            pgSetIterator srcConstraints(remoteConn,
+                wxT("SELECT t.relname, contype, conkey, conname,\n")
+                wxT("       pg_get_constraintdef(c.oid) AS condef\n")
+                wxT("  FROM pg_constraint c\n")
+                wxT("  JOIN pg_class t ON c.conrelid=t.oid\n")
+                wxT("  JOIN pg_namespace n ON n.oid=relnamespace\n")
+                wxT(" WHERE nspname = ") + qtString(remoteCluster) + wxT("\n")
+                wxT(" ORDER BY (contype != 'p'), relname, contype, conname, conkey")
+                );
+
+            pgSetIterator destConstraints(connection,
+                wxT("SELECT t.relname, contype, conkey, conname\n")
+                wxT("  FROM pg_constraint c\n")
+                wxT("  JOIN pg_class t ON c.conrelid=t.oid\n")
+                wxT("  JOIN pg_namespace n ON n.oid=relnamespace\n")
+                wxT(" WHERE nspname = ") + qtString(wxT("_") + cluster->GetName()) + wxT("\n")
+                wxT(" ORDER BY (contype != 'p'), relname, contype, conname, conkey")
+                );
+
+            if (!destConstraints.RowsLeft())
+                return wxT("error");
+
+            while (srcConstraints.RowsLeft())
+            {
+                wxString table=srcConstraints.GetVal(wxT("relname"));
+                wxString contype=srcConstraints.GetVal(wxT("contype"));
+
+                bool needUpdate = destConstraints.Set()->Eof() || 
+                                  destConstraints.GetVal(wxT("relname")) != table ||
+                                  destConstraints.GetVal(wxT("contype")) != contype;
+                if (!needUpdate && destConstraints.GetVal(wxT("conkey"))  != srcConstraints.GetVal(wxT("conkey")))
+                {
+                    // better ignore constraint name and compare column names here
+                    needUpdate = destConstraints.GetVal(wxT("conname")) != srcConstraints.GetVal(wxT("conname"));
+                }
+                if (needUpdate)
+                {
+                    wxString condef=srcConstraints.GetVal(wxT("condef"));
+                    condef.Replace(qtIdent(remoteCluster)+wxT("."), qtIdent(wxT("_") +cluster->GetName())+wxT("."));
+
+                    sql += wxT("ALTER TABLE ") + qtIdent(table)
+                        +  wxT(" ADD CONSTRAINT ") + qtIdent(srcConstraints.GetVal(wxT("conname")))
+                        + wxT(" ") + condef
+                        + wxT(";\n");
+                }
+                else
+                    destConstraints.RowsLeft();
+            }
+        }
+
+        {
+            // update functions
+            pgSetIterator func(remoteConn,
+                wxT("SELECT proname, proisagg, prosecdef, proisstrict, proretset, provolatile, pronargs, prosrc, probin,\n")
+                wxT("       lanname, tr.typname as rettype,\n")
+                wxT("       t0.typname AS arg0, t1.typname AS arg1, t2.typname AS arg2, t3.typname AS arg3, t4.typname AS arg4,\n")
+                wxT("       t5.typname AS arg5, t6.typname AS arg6, t7.typname AS arg7, t8.typname AS arg8, t9.typname AS arg9, \n")
+                wxT("       proargnames[0] AS an0, proargnames[1] AS an1, proargnames[2] AS an2, proargnames[3] AS an3, proargnames[4] AS an4,\n")
+                wxT("       proargnames[5] AS an5, proargnames[6] AS an6, proargnames[7] AS an7, proargnames[8] AS an8, proargnames[9] AS an9\n")
+                wxT("  FROM pg_proc\n")
+                wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
+                wxT("  JOIN pg_language l ON l.oid=prolang\n")
+                wxT("  JOIN pg_type tr ON tr.oid=prorettype\n")
+                wxT("  LEFT JOIN pg_type t0 ON t0.oid=proargtypes[0]\n")
+                wxT("  LEFT JOIN pg_type t1 ON t1.oid=proargtypes[1]\n")
+                wxT("  LEFT JOIN pg_type t2 ON t2.oid=proargtypes[2]\n")
+                wxT("  LEFT JOIN pg_type t3 ON t3.oid=proargtypes[3]\n")
+                wxT("  LEFT JOIN pg_type t4 ON t4.oid=proargtypes[4]\n")
+                wxT("  LEFT JOIN pg_type t5 ON t5.oid=proargtypes[5]\n")
+                wxT("  LEFT JOIN pg_type t6 ON t6.oid=proargtypes[6]\n")
+                wxT("  LEFT JOIN pg_type t7 ON t7.oid=proargtypes[7]\n")
+                wxT("  LEFT JOIN pg_type t8 ON t8.oid=proargtypes[8]\n")
+                wxT("  LEFT JOIN pg_type t9 ON t9.oid=proargtypes[9]\n")
+                wxT(" WHERE nspname = ") + qtString(remoteCluster)
+                );
+
+            while (func.RowsLeft())
+            {
+                sql += wxT("CREATE OR REPLACE FUNCTION " + qtIdent(func.GetVal(wxT("proname"))) + wxT("(");
+
+                wxString language = func.GetVal(wxT("lanname"));
+                wxString volat = func.GetVal(wxT("provolatile"));
+                long numArgs=func.GetLong(wxT("pronargs"));
 
                 long i;
 
@@ -950,25 +1170,25 @@ wxString dlgRepClusterUpgrade::GetSql()
                 {
                     if (i)
                         sql += wxT(", ");
-                    wxString argname=set->GetVal(wxT("an") + NumToStr(i));
+                    wxString argname=func.GetVal(wxT("an") + NumToStr(i));
                     if (!argname.IsEmpty())
                         sql += qtIdent(argname) + wxT(" ");
 
-                    sql += qtIdent(set->GetVal(wxT("arg") + NumToStr(i)));
+                    sql += qtIdent(func.GetVal(wxT("arg") + NumToStr(i)));
                 }
                 sql += wxT(")\n")
                        wxT("  RETURNS ");
-                if (set->GetBool(wxT("proretset")))
+                if (func.GetBool(wxT("proretset")))
                     sql += wxT("SETOF "));
-                sql += qtIdent(set->GetVal(wxT("rettype")));
+                sql += qtIdent(func.GetVal(wxT("rettype")));
 
                 if (language == wxT("c"))
                     sql += wxT("\n")
-                           wxT("AS '" + set->GetVal(wxT("probin")) + wxT("', '") + 
-                                set->GetVal(wxT("prosrc")) + wxT("'");
+                           wxT("AS '" + func.GetVal(wxT("probin")) + wxT("', '") + 
+                                func.GetVal(wxT("prosrc")) + wxT("'");
                 else
                     sql += wxT(" AS\n")
-                           wxT("$BODY$") + set->GetVal(wxT("prosrc")) + wxT("$BODY$");
+                           wxT("$BODY$") + func.GetVal(wxT("prosrc")) + wxT("$BODY$");
 
                 sql += wxT(" LANGUAGE ") 
                     +  language;
@@ -980,17 +1200,14 @@ wxString dlgRepClusterUpgrade::GetSql()
                 else
                     sql += wxT(" STABLE");
 
-                if (set->GetBool(wxT("proisstrict")))
+                if (func.GetBool(wxT("proisstrict")))
                     sql += wxT(" STRICT");
 
-                if (set->GetBool(wxT("prosecdef")))
+                if (func.GetBool(wxT("prosecdef")))
                     sql += wxT(" SECURITY DEFINER");
 
                 sql += wxT(";\n\n");
-
-                set->MoveNext();
             }
-            delete set;
         }
     }
     return sql;
@@ -1071,7 +1288,7 @@ wxWindow *slonyRestartFactory::StartDialog(frmMain *form, pgObject *obj)
 
 slonyUpgradeFactory::slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
 {
-    mnu->Append(id, _("Upgrade node"), _("Upgrade node to newest function version."));
+    mnu->Append(id, _("Upgrade node"), _("Upgrade node to newest replication software version."));
 }
 
 
@@ -1082,7 +1299,7 @@ wxWindow *slonyUpgradeFactory::StartDialog(frmMain *form, pgObject *obj)
     dlg->CreateAdditionalPages();
     dlg->Go(false);
     dlg->CheckChange();
-    return dlg;
+    return 0;
 }
 
 

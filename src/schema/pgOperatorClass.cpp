@@ -179,13 +179,10 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
 pgObject *pgOperatorClass::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *operatorClass=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            operatorClass = operatorClassFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND op.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        operatorClass = operatorClassFactory.CreateObjects(coll, 0, wxT("\n   AND op.oid=") + GetOidStr());
+
     return operatorClass;
 }
 

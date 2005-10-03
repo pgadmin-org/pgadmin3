@@ -44,7 +44,7 @@ END_EVENT_TABLE();
 frmHelp::frmHelp(wxWindow *fr) 
 : pgFrame((wxFrame*)fr, wxEmptyString)
 {
-    appearanceFactory->SetIcons(this);
+    SetIcon(wxIcon(help_xpm));
     dlgName = wxT("frmHelp");
 
     wxWindowBase::SetFont(settings->GetSystemFont());

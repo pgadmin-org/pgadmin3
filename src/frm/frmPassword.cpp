@@ -19,6 +19,7 @@
 #include "frmPassword.h"
 #include "pgServer.h"
 
+#include "images/connect.xpm"
 
 #define txtCurrent      CTRL_TEXT("txtCurrent")
 #define txtNew          CTRL_TEXT("txtNew")
@@ -41,7 +42,7 @@ frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 
     server = obj->GetServer();
     // Icon
-    appearanceFactory->SetIcons(this);
+    SetIcon(wxIcon(connect_xpm));
     CenterOnParent();
 }
 

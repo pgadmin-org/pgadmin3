@@ -90,17 +90,14 @@ void slListen::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 pgObject *slListen::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *listen=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        slNodeObjCollection *coll=(slNodeObjCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            listen = listenFactory.CreateObjects(coll, 0, 
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        listen = listenFactory.CreateObjects(coll, 0, 
                 wxT(" WHERE li_origin =") + NumToStr(GetSlId()) +
                 wxT("   AND li_provider = ") + NumToStr(GetProviderId()) +
                 wxT("   AND li_receiver = ") + NumToStr(GetNode()->GetSlId()) +
                 wxT("\n"));
-    }
+
     return listen;
 }
 

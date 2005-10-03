@@ -299,8 +299,9 @@ void dlgRepSetMove::CheckChange()
 wxString dlgRepSetMove::GetSql()
 {
     wxString toId=NumToStr((long)cbTargetNode->GetClientData(cbTargetNode->GetSelection()));
+
     wxString sql =
-        wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("moveset(") +
+        wxT("!!! LockSet, waitEvent(1,2),move, wait SELECT ") + cluster->GetSchemaPrefix() + wxT("moveset(") +
             NumToStr(set->GetSlId()) + wxT(", ") + toId + wxT(");\n");
     return sql;
 }
@@ -321,7 +322,7 @@ wxWindow *slonyMergeSetFactory::StartDialog(frmMain *form, pgObject *obj)
     dlg->CreateAdditionalPages();
     dlg->Go(false);
     dlg->CheckChange();
-    return dlg;
+    return 0;
 }
 
 
@@ -344,7 +345,7 @@ wxWindow *slonyMoveSetFactory::StartDialog(frmMain *form, pgObject *obj)
     dlg->CreateAdditionalPages();
     dlg->Go(false);
     dlg->CheckChange();
-    return dlg;
+    return 0;
 }
 
 

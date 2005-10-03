@@ -130,7 +130,7 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
 
     while (item)
     {
-        pgObject *obj=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+        pgObject *obj=mainForm->GetBrowser()->GetObject(item);
         if (obj)
         {
             if (traverseKids)

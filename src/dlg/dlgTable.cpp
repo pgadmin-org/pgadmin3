@@ -50,6 +50,20 @@
 #define cbConstrType    CTRL_COMBOBOX("cbConstrType")
 #define btnRemoveConstr CTRL_BUTTON("btnRemoveConstr")
 
+#define chkCustomVac    CTRL_CHECKBOX("chkCustomVac")
+#define chkVacEnabled   CTRL_CHECKBOX("chkVacEnabled")
+#define txtBaseVac      CTRL_TEXT("txtBaseVac")
+#define stBaseVacCurr   CTRL_STATIC("stBaseVacCurr")
+#define txtBaseAn       CTRL_TEXT("txtBaseAn")
+#define stBaseAnCurr    CTRL_STATIC("stBaseAnCurr")
+#define txtFactorVac    CTRL_TEXT("txtFactorVac")
+#define stFactorVacCurr CTRL_STATIC("stFactorVacCurr")
+#define txtFactorAn     CTRL_TEXT("txtFactorAn")
+#define stFactorAnCurr  CTRL_STATIC("stFactorAnCurr")
+#define txtVacDelay     CTRL_TEXT("txtVacDelay")
+#define stVacDelayCurr  CTRL_STATIC("stVacDelayCurr")
+#define txtVacLimit     CTRL_TEXT("txtVacLimit")
+#define stVacLimitCurr  CTRL_STATIC("stVacLimitCurr")
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
@@ -69,6 +83,16 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_BUTTON(XRCID("btnAddConstr"),               dlgTable::OnAddConstr)
     EVT_BUTTON(XRCID("btnRemoveConstr"),            dlgTable::OnRemoveConstr)
     EVT_LIST_ITEM_SELECTED(XRCID("lstConstraints"), dlgTable::OnSelChangeConstr)
+
+    EVT_CHECKBOX(XRCID("chkCustomVac"),             dlgTable::OnChangeVacuum)
+    EVT_CHECKBOX(XRCID("chkVacEnabled"),            dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtBaseVac"),                   dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtBaseAn"),                    dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtFactorVac"),                 dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtFactorAn"),                  dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtVacDelay"),                  dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtVacLimit"),                  dlgTable::OnChangeVacuum)
+
     EVT_BUTTON(wxID_OK,                             dlgTable::OnOK)
 END_EVENT_TABLE();
 
@@ -137,7 +161,7 @@ int dlgTable::Go(bool modal)
         wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(table->GetId(), cookie);
         while (item)
         {
-            data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+            data=mainForm->GetBrowser()->GetObject(item);
             pgaFactory *factory=data->GetFactory();
             if (factory == columnFactory.GetCollectionFactory())
                 columnsItem = item;
@@ -165,7 +189,7 @@ int dlgTable::Go(bool modal)
             // add columns
             while (item)
             {
-                data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+                data=mainForm->GetBrowser()->GetObject(item);
                 if (data->IsCreatedBy(columnFactory))
                 {
                     pgColumn *column=(pgColumn*)data;
@@ -190,7 +214,7 @@ int dlgTable::Go(bool modal)
         }
         if (constraintsItem)
         {
-            pgCollection *coll=(pgCollection*)mainForm->GetBrowser()->GetItemData(constraintsItem);
+            pgCollection *coll=(pgCollection*)mainForm->GetBrowser()->GetObject(constraintsItem);
             // make sure all constraints are appended
             coll->ShowTreeDetail(mainForm->GetBrowser());
             // this is the constraints collection
@@ -199,7 +223,7 @@ int dlgTable::Go(bool modal)
             // add constraints
             while (item)
             {
-                data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+                data=mainForm->GetBrowser()->GetObject(item);
                 switch (data->GetMetaType())
                 {
                     case PGM_PRIMARYKEY:
@@ -274,6 +298,82 @@ int dlgTable::Go(bool modal)
     btnRemoveCol->Disable();
     btnRemoveConstr->Disable();
     btnOK->Disable();
+
+    if (connection->BackendMinimumVersion(8,1) && table)
+    {
+        txtBaseVac->SetValidator(numericValidator);
+        txtBaseAn->SetValidator(numericValidator);
+        txtFactorVac->SetValidator(numericValidator);
+        txtFactorAn->SetValidator(numericValidator);
+        txtVacDelay->SetValidator(numericValidator);
+        txtVacLimit->SetValidator(numericValidator);
+
+        pgSetIterator avSet(connection,
+            wxT("SELECT name, setting FROM pg_settings WHERE name like '%vacuum%' ORDER BY name"));
+        while (avSet.RowsLeft())
+        {
+            wxString name=avSet.GetVal(wxT("name"));
+            wxString setting=avSet.GetVal(wxT("setting"));
+
+            if (name == wxT("autovacuum_vacuum_cost_delay"))
+                settingCostDelay = StrToLong(setting);
+            else if (name == wxT("vacuum_cost_delay"))
+            {
+                if (settingCostDelay < 0)
+                    settingCostDelay = StrToLong(setting);
+            }
+            else if (name == wxT("autovacuum_vacuum_cost_limit"))
+                settingCostLimit = StrToLong(setting);
+            else if (name == wxT("vacuum_cost_limit"))
+            {
+                if (settingCostLimit < 0)
+                    settingCostLimit = StrToLong(setting);
+            }
+            else if (name == wxT("autovacuum_vacuum_scale_factor"))
+                settingVacFactor = StrToDouble(setting);
+            else if (name == wxT("autovacuum_analyze_scale_factor"))
+                settingAnlFactor = StrToDouble(setting);
+            else if (name == wxT("autovacuum_vacuum_threshold"))
+                settingVacBaseThr = StrToLong(setting);
+            else if (name == wxT("autovacuum_analyze_threshold"))
+                settingAnlBaseThr = StrToLong(setting);
+        }
+
+        pgSetIterator set(connection, wxT("SELECT * FROM pg_autovacuum WHERE vacrelid=") + table->GetOidStr());
+        if (set.RowsLeft())
+        {
+            hasVacuum=true;
+
+            tableVacEnabled = set.GetBool(wxT("enabled"));
+            chkVacEnabled->SetValue(tableVacEnabled);
+            
+            tableVacBaseThr=set.GetLong(wxT("vac_base_thresh"));
+            tableAnlBaseThr=set.GetLong(wxT("anl_base_thresh"));
+            tableCostDelay=set.GetLong(wxT("vac_cost_delay"));
+            tableCostLimit=set.GetLong(wxT("vac_cost_limit"));
+            tableVacFactor=set.GetDouble(wxT("vac_scale_factor"));
+            tableAnlFactor=set.GetDouble(wxT("anl_scale_factor"));
+
+            txtBaseVac->SetValue(tableVacBaseThr >= 0 ? NumToStr(tableVacBaseThr) : wxEmptyString);
+            txtBaseAn->SetValue(tableAnlBaseThr >= 0 ? NumToStr(tableAnlBaseThr) : wxEmptyString);
+            txtFactorVac->SetValue(tableVacFactor >= 0 ? NumToStr(tableVacFactor) : wxEmptyString);
+            txtFactorAn->SetValue(tableAnlFactor >= 0 ? NumToStr(tableAnlFactor) : wxEmptyString);
+            txtVacDelay->SetValue(tableCostDelay >= 0 ? NumToStr(tableCostDelay) : wxEmptyString);
+            txtVacLimit->SetValue(tableCostLimit >= 0 ? NumToStr(tableCostLimit) : wxEmptyString);
+        }
+        else
+        {
+            hasVacuum=false;
+            chkVacEnabled->SetValue(true);
+        }
+        chkCustomVac->SetValue(hasVacuum);
+        wxCommandEvent ev;
+        OnChangeVacuum(ev);
+    }
+    else
+    {
+        nbNotebook->DeletePage(3);
+    }
 
     return dlgSecurityProperty::Go();
 }
@@ -408,6 +508,45 @@ wxString dlgTable::GetSql()
                     +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
                     + wxT(";\n");
         }
+
+        if (!chkCustomVac->GetValue())
+        {
+            if (hasVacuum)
+                sql += wxT("DELETE FROM pg_autovacuum WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
+        }
+        else
+        {
+            wxString vacStr;
+            bool changed = (chkVacEnabled->GetValue() != tableVacEnabled);
+            if (!hasVacuum)
+            {
+                vacStr = wxT("INSERT INTO pg_autovacuum(vacrelid, enabled, vac_base_thresh, anl_base_thresh, vac_scale_factor, anl_scale_factor, vac_cost_delay, vac_cost_limit)")
+                         wxT("\n   VALUES(") 
+                       + table->GetOidStr() + wxT(", ")
+                       + BoolToStr(chkVacEnabled->GetValue()) + wxT(", ")
+                       + AppendNum(changed, txtBaseVac, tableVacBaseThr) + wxT(", ")
+                       + AppendNum(changed, txtBaseAn, tableAnlBaseThr) + wxT(", ")
+                       + AppendNum(changed, txtFactorVac, tableVacFactor) + wxT(", ")
+                       + AppendNum(changed, txtFactorAn, tableAnlFactor) + wxT(", ")
+                       + AppendNum(changed, txtVacDelay, tableCostDelay) + wxT(", ")
+                       + AppendNum(changed, txtVacLimit, tableCostLimit) + wxT(");\n");
+            }
+            else
+            {
+                vacStr = wxT("UPDATE pg_autovacuum\n")
+                         wxT("   SET enabled=")
+                       + BoolToStr(chkVacEnabled->GetValue())
+                       + wxT(", vac_base_thresh = ") + AppendNum(changed, txtBaseVac, tableVacBaseThr) 
+                       + wxT(", anl_base_thresh = ") + AppendNum(changed, txtBaseAn, tableAnlBaseThr) 
+                       + wxT(", base_scale_factor = ") + AppendNum(changed, txtFactorVac, tableVacFactor)
+                       + wxT(", anl_scale_factor = ") + AppendNum(changed, txtFactorAn, tableAnlFactor)
+                       + wxT(", vac_cost_delay = ") + AppendNum(changed, txtVacDelay, tableCostDelay)
+                       + wxT(", vac_cost_limit = ") + AppendNum(changed, txtVacLimit, tableCostLimit)
+                       + wxT("\n WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
+            }
+            if (changed)
+                sql += vacStr;
+        }
     }
     else
     {
@@ -472,6 +611,11 @@ wxString dlgTable::GetSql()
         sql += wxT(";\n");
 
         AppendOwnerNew(sql, wxT("TABLE ") + tabname);
+
+        if (connection->BackendMinimumVersion(8, 1))
+        {
+
+        }
     }
 
 	// Extra column info
@@ -528,6 +672,67 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
         "\n   AND rel.relnamespace=") + schema->GetOidStr());
 
     return obj;
+}
+
+
+wxString dlgTable::GetNumString(wxTextCtrl *ctl, bool enabled, wxString &val)
+{
+    if (!enabled)
+        return val;
+    wxString str=ctl->GetValue();
+    if (str.IsEmpty() || StrToLong(val) < 0)
+        return val;
+    else
+        return str;
+}
+
+
+wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, long val)
+{
+    wxString str=ctl->GetValue();
+    long v=StrToLong(str);
+    if (str.IsEmpty() || v < 0)
+        v=-1;
+    
+    changed |= (v != val);
+    return NumToStr(v);
+}
+
+
+wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, double val)
+{
+    wxString str=ctl->GetValue();
+    double v=StrToDouble(str);
+    if (str.IsEmpty() || v < 0)
+        v=-1.;
+
+    changed |= (v != val);
+    return NumToStr(v);
+}
+
+
+void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
+{
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+        bool vacEn=chkCustomVac->GetValue() && chkVacEnabled->GetValue();
+        chkVacEnabled->Enable(chkCustomVac->GetValue());
+
+        txtBaseVac->Enable(vacEn);
+        txtBaseAn->Enable(vacEn);
+        txtFactorVac->Enable(vacEn);
+        txtFactorAn->Enable(vacEn);
+        txtVacDelay->Enable(vacEn);
+        txtVacLimit->Enable(vacEn);
+
+        stBaseVacCurr->SetLabel(GetNumString(txtBaseVac, vacEn, NumToStr(settingVacBaseThr)));
+        stBaseAnCurr->SetLabel(GetNumString(txtBaseAn, vacEn, NumToStr(settingAnlBaseThr)));
+        stFactorVacCurr->SetLabel(GetNumString(txtFactorVac, vacEn, NumToStr(settingVacFactor)));
+        stFactorAnCurr->SetLabel(GetNumString(txtFactorAn, vacEn, NumToStr(settingAnlFactor)));
+        stVacDelayCurr->SetLabel(GetNumString(txtVacDelay, vacEn, NumToStr(settingCostDelay)));
+        stVacLimitCurr->SetLabel(GetNumString(txtVacLimit, vacEn, NumToStr(settingCostLimit)));
+    }
+    OnChange(ev);
 }
 
 
@@ -807,7 +1012,7 @@ wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
     ((pgTable*)obj)->UpdateRows();
     
     wxTreeItemId item=form->GetBrowser()->GetSelection();
-    if (obj == (pgObject*)form->GetBrowser()->GetItemData(item))
+    if (obj == form->GetBrowser()->GetObject(item))
         obj->ShowTreeDetail(0, 0, form->GetProperties());
 
     return 0;

@@ -197,7 +197,7 @@ bool pgSetBase::GetBool(const int col) const
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
     {
-        if (*c == 't' || *c == '1')
+        if (*c == 't' || *c == '1' || !strcmp(c, "on"))
             return true;
     }
     return false;
@@ -327,6 +327,7 @@ pgSetIterator::~pgSetIterator()
         delete set;
 }
 
+
 bool pgSetIterator::RowsLeft()
 {
     if (!set)
@@ -342,6 +343,16 @@ bool pgSetIterator::RowsLeft()
         set->MoveNext();
 
     return !set->Eof();
+}
+
+
+bool pgSetIterator::MovePrev()
+{
+    if (!set)
+        return false;
+
+    set->MovePrevious();
+    return true;
 }
 
 

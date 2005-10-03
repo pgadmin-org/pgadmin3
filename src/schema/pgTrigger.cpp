@@ -155,13 +155,10 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 pgObject *pgTrigger::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *trigger=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            trigger = triggerFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        trigger = triggerFactory.CreateObjects(coll, 0, wxT("\n   AND t.oid=") + GetOidStr());
+
     return trigger;
 }
 

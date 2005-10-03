@@ -78,7 +78,7 @@ void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView 
         long pos=0;
         while (item)
         {
-            data = (pgObject *)browser->GetItemData(item);
+            data = browser->GetObject(item);
             if (IsCollectionFor(data))
             {
                 properties->InsertItem(pos, data->GetFullName(), data->GetIconId());
@@ -119,7 +119,7 @@ pgObject *pgCollection::FindChild(ctlTree *browser, int index)
     long pos=0;
     while (item && index >= 0)
     {
-        data = (pgObject *)browser->GetItemData(item);
+        data = browser->GetObject(item);
         if (data && IsCollectionFor(data))
         {
             if (index == pos)

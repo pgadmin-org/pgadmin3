@@ -271,14 +271,14 @@ wxString pgTable::GetCoveringIndex(ctlTree *browser, const wxString &collist)
     wxTreeItemId collItem=browser->GetFirstChild(GetId(), cookie);
     while (collItem)
     {
-        pgObject *data=(pgObject*)browser->GetItemData(collItem);
+        pgObject *data=browser->GetObject(collItem);
         if (data && data->IsCollection() && (data->GetMetaType() == PGM_CONSTRAINT || data->GetMetaType() == PGM_INDEX))
         {
             wxCookieType cookie2;
             wxTreeItemId item=browser->GetFirstChild(collItem, cookie2);
             while (item)
             {
-                pgIndex *index=(pgIndex*)browser->GetItemData(item);
+                pgIndex *index=(pgIndex*)browser->GetObject(item);
                 if (index && (index->GetMetaType() == PGM_INDEX || index->GetMetaType() == PGM_PRIMARYKEY || index->GetMetaType() == PGM_UNIQUE))
                 {
                     index->ShowTreeDetail(browser);
@@ -448,10 +448,10 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         properties->AppendItem(_("System table?"), GetSystemObject());
         properties->AppendItem(_("Comment"), GetComment());
 
-        if (form && GetVacuumHint() && !hintShown)
-        {
-            ShowHint(form, false);
-        }
+    }
+    if (form && GetVacuumHint() && !hintShown)
+    {
+        ShowHint(form, false);
     }
 }
 
@@ -516,13 +516,10 @@ void pgTable::ShowHint(frmMain *form, bool force)
 pgObject *pgTable::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgTable *table=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            table = (pgTable*)tableFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        table = (pgTable*)tableFactory.CreateObjects(coll, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+
     return table;
 }
 

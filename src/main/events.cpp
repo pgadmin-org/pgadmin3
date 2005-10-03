@@ -201,16 +201,19 @@ void frmMain::OnPropSelChanged(wxListEvent& event)
     if (properties->GetSelectedItemCount() == 1)
     {
         wxTreeItemId item=browser->GetSelection();
-        pgObject *data=(pgObject*)browser->GetItemData(item);
-        if (data && data->IsCollection())
+        if (item)
         {
-            currentObject=((pgCollection*)data)->FindChild(browser, event.GetIndex());
-            if (currentObject)
+            pgObject *data=browser->GetObject(item);
+            if (data && data->IsCollection())
             {
-                setDisplay(currentObject);
-                sqlPane->SetReadOnly(false);
-                sqlPane->SetText(currentObject->GetSql(browser));
-                sqlPane->SetReadOnly(true);
+                currentObject=((pgCollection*)data)->FindChild(browser, event.GetIndex());
+                if (currentObject)
+                {
+                    setDisplay(currentObject);
+                    sqlPane->SetReadOnly(false);
+                    sqlPane->SetText(currentObject->GetSql(browser));
+                    sqlPane->SetReadOnly(true);
+                }
             }
         }
     }
@@ -255,7 +258,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    currentObject = (pgObject *)browser->GetItemData(item);
+    currentObject = browser->GetObject(item);
 
     // If we didn't get an object, then we may have a right click, or 
     // invalid click, so ignore.
@@ -395,7 +398,7 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
     // cast as required.
 
     wxTreeItemId item = event.GetItem();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = browser->GetObject(item);
     if (!data)
         return;
     pgServer *server;
@@ -512,7 +515,7 @@ void frmMain::OnContextMenu(wxCommandEvent& event)
 	    point.x += origin.x;
 	    point.y += origin.y;
 
-        doPopup(this, point, (pgObject*)browser->GetItemData(item));
+        doPopup(this, point, browser->GetObject(item));
     }
 
 }
@@ -527,7 +530,7 @@ void frmMain::OnSelRightClick(wxTreeEvent& event)
     if (item != browser->GetSelection())
     {
         browser->SelectItem(item);
-        currentObject = (pgObject*)browser->GetItemData(item);
+        currentObject = browser->GetObject(item);
     }
 
     if (currentObject)
@@ -544,7 +547,7 @@ void frmMain::OnDelete(wxCommandEvent &ev)
 void frmMain::ExecDrop(bool cascaded)
 {
     wxTreeItemId item=browser->GetSelection();
-    pgCollection *collection = (pgCollection*)browser->GetItemData(item);
+    pgCollection *collection = (pgCollection*)browser->GetObject(item);
 
     if (collection == currentObject)
         dropSingleObject(currentObject, true, cascaded);
@@ -675,7 +678,7 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 
             if (nextItem)
             {
-                pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);
+                pgObject *nextData=browser->GetObject(nextItem);
                 if (!nextData || nextData->GetType() != data->GetType())
                     nextItem=browser->GetPrevSibling(data->GetId());
             }
@@ -696,7 +699,7 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 
             while (parentItem)
             {
-                collection = (pgCollection*)browser->GetItemData(parentItem);
+                collection = (pgCollection*)browser->GetObject(parentItem);
                 if (collection && collection->IsCollection() && collection->IsCollectionForType(droppedType))
                 {
                     collection->UpdateChildCount(browser);

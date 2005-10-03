@@ -50,6 +50,8 @@ private:
     void OnRemoveConstr(wxCommandEvent &ev);
     void OnSelChangeConstr(wxListEvent &ev);
 
+    void OnChangeVacuum(wxCommandEvent &ev);
+
     void FillConstraint();
     wxString GetItemConstraintType(ctlListView *list, long pos);
     bool hasPK;
@@ -57,6 +59,16 @@ private:
     wxArrayString previousColumns, previousConstraints;
     wxArrayString tableOids, inheritedTableOids;
     wxTreeItemId columnsItem, constraintsItem;
+
+    wxString GetNumString(wxTextCtrl *ctl, bool enabled, wxString &val);
+    wxString AppendNum(bool &changed, wxTextCtrl *ctl, long val);
+    wxString AppendNum(bool &changed, wxTextCtrl *ctl, double val);
+
+    bool tableVacEnabled, hasVacuum;
+    long settingVacBaseThr, settingAnlBaseThr, settingCostDelay, settingCostLimit;
+    long tableVacBaseThr, tableAnlBaseThr, tableCostDelay, tableCostLimit;
+    double settingVacFactor, settingAnlFactor;
+    double tableVacFactor, tableAnlFactor;
 
     DECLARE_EVENT_TABLE();
 };

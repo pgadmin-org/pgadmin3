@@ -46,6 +46,7 @@ public:
     wxString GetConnInfo() const {return connInfo; }
     void iSetConnInfo(const wxString s) { connInfo = s; }
     long GetPid() { return pid; }
+    bool WaitForEvent(long evNode);
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();

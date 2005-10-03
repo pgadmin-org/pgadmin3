@@ -155,6 +155,25 @@ bool pgServer::Disconnect(frmMain *form)
 }
 
 
+bool pgServer::GetCanHint()
+{
+    return connected && conn->BackendMinimumVersion(8, 1) && !autovacuumRunning;
+}
+
+
+void pgServer::ShowHint(frmMain *form, bool force)
+{
+    wxArrayString hints;
+
+    if (!autovacuumRunning)
+        hints.Add(HINT_AUTOVACUUM);
+    
+    if (force || !hintShown)
+        frmHint::ShowHint(form, hints, GetFullIdentifier());
+    hintShown=true;
+}
+
+
 #define SERVICEBUFSIZE  10000
 #define QUERYBUFSIZE    256     
 
@@ -715,8 +734,8 @@ wxString pgServer::GetLastError() const
 void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     // Add child nodes if necessary
-    if (GetConnected()) {
-
+    if (GetConnected())
+    {
         // Reset password menu option
 //        form->fileMenu->Enable(MNU_PASSWORD, true);
 
@@ -752,6 +771,14 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                 browser->AppendCollection(this, userFactory);
             }
         }
+
+        autovacuumRunning=true;
+        pgSetIterator set(conn, 
+            wxT("SELECT setting FROM pg_settings\n")
+            wxT(" WHERE name IN ('autovacuum', 'stats_start_collector', 'stats_row_level')"));
+
+        while (autovacuumRunning && set.RowsLeft())
+            autovacuumRunning = set.GetBool(wxT("setting"));
     }
 
 
@@ -810,14 +837,23 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             properties->AppendItem(_("Last system OID"), GetLastSystemOID());
         }
         properties->AppendItem(_("Connected?"), GetConnected());
-        if (GetConnected() && GetUpSince().IsValid())
-            properties->AppendItem(_("Up since"), GetUpSince());
+        if (GetConnected())
+        {
+            if (GetUpSince().IsValid())
+                properties->AppendItem(_("Up since"), GetUpSince());
+            properties->AppendItem(wxT("pg_autovacuum"), (autovacuumRunning ? _("running") : _("not running")));
+        }
         if (GetServerControllable())
             properties->AppendItem(_("Running?"), GetServerRunning());
     }
 
     if(!GetConnected())
         return;
+
+    if (form && GetCanHint() && !hintShown)
+    {
+        ShowHint(form, false);
+    }
 }
 
 

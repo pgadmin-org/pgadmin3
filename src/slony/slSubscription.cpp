@@ -99,7 +99,7 @@ void slSubscription::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
             wxTreeItemId id=browser->GetItemParent(browser->GetItemParent(GetId()));
             if (id)
             {
-                slSet *set=(slSet*)browser->GetItemData(id);
+                slSet *set=(slSet*)browser->GetObject(id);
                 if (set && set->IsCreatedBy(setFactory))
                 {
                     wxLogInfo(wxT("Adding child object to subscription ") + GetIdentifier());
@@ -135,14 +135,10 @@ void slSubscription::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 pgObject *slSubscription::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *subscription=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        slSetObjCollection *coll=(slSetObjCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            subscription = subscriptionFactory.CreateObjects(coll, 0, wxT(" WHERE sub_set=") + NumToStr(GetSet()->GetSlId()) 
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        subscription = subscriptionFactory.CreateObjects(coll, 0, wxT(" WHERE sub_set=") + NumToStr(GetSet()->GetSlId()) 
                             + wxT(" AND sub_receiver = ") + NumToStr(GetReceiverId()) + wxT("\n"));
-    }
     return subscription;
 }
 

@@ -84,13 +84,10 @@ void slSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 pgObject *slSequence::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *sequence=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        slSetObjCollection *coll=(slSetObjCollection*)browser->GetItemData(parentItem);
-        if (coll->IsCollection())
-            sequence = slSequenceFactory.CreateObjects(coll, 0, wxT(" WHERE seq_id=") + NumToStr(GetSlId()) + wxT("\n"));
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        sequence = slSequenceFactory.CreateObjects(coll, 0, wxT(" WHERE seq_id=") + NumToStr(GetSlId()) + wxT("\n"));
+
     return sequence;
 }
 

@@ -100,13 +100,11 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 pgObject *pgAggregate::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *aggregate=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            aggregate = aggregateFactory.CreateObjects((pgCollection*)obj, 0, wxT("\n   AND aggfnoid::oid=") + GetOidStr());
-    }
+
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        aggregate = aggregateFactory.CreateObjects(coll, 0, wxT("\n   AND aggfnoid::oid=") + GetOidStr());
+
     return aggregate;
 }
 

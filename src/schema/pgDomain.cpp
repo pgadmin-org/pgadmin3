@@ -111,13 +111,11 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 pgObject *pgDomain::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *domain=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->IsCollection())
-            domain = domainFactory.CreateObjects((pgCollection*)obj, 0, wxT("   AND d.oid=") + GetOidStr() + wxT("\n"));
-    }
+
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        domain = domainFactory.CreateObjects(coll, 0, wxT("   AND d.oid=") + GetOidStr() + wxT("\n"));
+
     return domain;
 }
 

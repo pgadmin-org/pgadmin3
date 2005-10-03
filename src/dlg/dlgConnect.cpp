@@ -19,6 +19,8 @@
 #include "pgServer.h"
 #include "sysLogger.h"
 
+#include "images/connect.xpm"
+
 
 
 BEGIN_EVENT_TABLE(dlgConnect, DialogWithHelp)
@@ -41,7 +43,7 @@ DialogWithHelp(form)
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource((wxWindow*)form, wxT("dlgConnect"));
 
-    appearanceFactory->SetIcons(this);
+    SetIcon(wxIcon(connect_xpm));
     CenterOnParent();
 
     // Setup the default values

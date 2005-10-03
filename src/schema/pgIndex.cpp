@@ -224,13 +224,10 @@ void pgIndexBase::ShowStatistics(frmMain *form, ctlListView *statistics)
 pgObject *pgIndexBase::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *index=0;
-    wxTreeItemId parentItem=browser->GetItemParent(item);
-    if (parentItem)
-    {
-        pgCollection *collection=(pgCollection*)browser->GetItemData(parentItem);
-        if (collection->IsCollection())
-            index = indexFactory.CreateObjects(collection, 0, wxT("\n   AND cls.oid=") + GetOidStr());
-    }
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        index = indexFactory.CreateObjects(coll, 0, wxT("\n   AND cls.oid=") + GetOidStr());
+
     return index;
 }
 

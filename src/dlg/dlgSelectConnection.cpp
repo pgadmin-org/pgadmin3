@@ -17,7 +17,7 @@
 #include "frmMain.h"
 #include "dlgSelectConnection.h"
 #include "pgServer.h"
-
+#include "images/connect.xpm"
 
 
 BEGIN_EVENT_TABLE(dlgSelectConnection, DialogWithHelp)
@@ -41,7 +41,7 @@ DialogWithHelp(form)
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("dlgSelectConnection"));
 
-    appearanceFactory->SetIcons(this);
+    SetIcon(wxIcon(connect_xpm));
     CenterOnParent();
 }
 

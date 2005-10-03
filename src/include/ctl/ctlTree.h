@@ -30,7 +30,9 @@ public:
     wxTreeItemId AppendObject(pgObject *parent, pgObject *object);
     void RemoveDummyChild(pgObject *obj);
     pgCollection *AppendCollection(pgObject *parent, pgaFactory &factory);
-    pgObject *GetObject(wxTreeItemId id) { return (pgObject*)GetItemData(id); }
+    pgObject *GetObject(wxTreeItemId id);
+    pgObject *GetParentObject(wxTreeItemId id) { return GetObject(GetItemParent(id)); }
+    pgCollection *GetParentCollection(wxTreeItemId id);
     pgObject *FindObject(pgaFactory &factory, wxTreeItemId parent);
     pgCollection *FindCollection(pgaFactory &factory, wxTreeItemId parent);
 };
