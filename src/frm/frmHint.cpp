@@ -183,18 +183,27 @@ wxString frmHint::GetPage(const wxChar *hintPage)
 
 void frmHint::SetHint(int hintno, const wxString &info)
 {
-    wxArrayInt hintnos;
     hintnos.Add(hintno);
-    SetHint(hintnos, info);
+    SetHint(info);
 };
 
 
+void frmHint::SetHint(const wxArrayInt &_hintnos, const wxString &info)
+{
+    hintnos = _hintnos;
+    SetHint(info);
+}
 
-void frmHint::SetHint(const wxArrayInt &hintnos, const wxString &info)
+
+void frmHint::SetHint(const wxString &info)
 {
     currentHint = hintnos.Item(0);
+
+    bool canSuppress=false;
     if (hintnos.GetCount() == 1)
     {
+        if (hintArray[currentHint].flags & HINT_CANSUPPRESS)
+            canSuppress=true;
         SetTitle(_("pgAdmin III Guru Hint") + wxString(wxT(" - ")) + wxGetTranslation(hintArray[currentHint].hintCaption));
 
         wxString page=GetPage(hintArray[currentHint].hintPage);
@@ -229,6 +238,8 @@ void frmHint::SetHint(const wxArrayInt &hintnos, const wxString &info)
         for (i=0 ; i < hintnos.GetCount() ; i++)
         {
             int hintno=hintnos.Item(i);
+            if (hintArray[hintno].flags & HINT_CANSUPPRESS)
+                canSuppress=true;
             wxString page=GetPage(hintArray[hintno].hintPage);
             int a=page.Find(wxT("<body>"));
             int o=page.Find(wxT("</body>"));
@@ -261,14 +272,14 @@ void frmHint::SetHint(const wxArrayInt &hintnos, const wxString &info)
         }
 
         pages.Replace(wxT("<INFO>"), info);
+        pages.Replace(wxT("<INFO/>"), info);
 
         htmlHint->SetPage(header + wxT("</p>") + pages + wxT("</body></html>\n"));
     }
 
     chkSuppress->SetValue(false);
+    chkSuppress->Enable(!force && canSuppress);
 
-    if (force || !(hintArray[currentHint].flags & HINT_CANSUPPRESS))
-        chkSuppress->Disable();
     if (force || !(hintArray[currentHint].flags & HINT_CANABORT))
         btnCancel->Disable();
     if (!(hintArray[currentHint].flags & HINT_CANFIX))
@@ -292,7 +303,15 @@ void frmHint::SetHint(const wxArrayInt &hintnos, const wxString &info)
 frmHint::~frmHint()
 {
     if (!force && chkSuppress->GetValue())
-        settings->Write(wxString(wxT("Hints/")) + hintArray[currentHint].hintPage, wxT("Suppress"));
+    {
+        size_t i;
+        for (i=0 ; i < hintnos.GetCount() ; i++)
+        {
+            int hintno=hintnos.Item(i);
+            if (hintArray[hintno].flags & HINT_CANSUPPRESS)
+                settings->Write(wxString(wxT("Hints/")) + hintArray[hintno].hintPage, wxT("Suppress"));
+        }
+    }
 }
 
 
