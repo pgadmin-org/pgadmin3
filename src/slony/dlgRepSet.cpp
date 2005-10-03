@@ -19,6 +19,7 @@
 #include "slCluster.h"
 #include "slNode.h"
 #include "slSet.h"
+#include "frmMain.h"
 
 
 // pointer to controls
