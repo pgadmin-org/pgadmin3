@@ -47,6 +47,7 @@ private:
     frmHint(wxWindow *fr, bool force);
     ~frmHint();
 
+    void SetHint(const wxString &info);
     void OnFix(wxCommandEvent &ev);
     static int GetHintNo(const wxString &hint);
     static bool WantHint(int hintno);
@@ -55,6 +56,7 @@ private:
 
     DECLARE_EVENT_TABLE();
 
+    wxArrayInt hintnos;
     int currentHint;
     bool force;
 };
