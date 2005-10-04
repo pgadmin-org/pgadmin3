@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.3 Documentation"
+TITLE="PostgreSQL 8.0.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -26,7 +26,7 @@ HREF="stylesheet.css"><META
 HTTP-EQUIV="Content-Type"
 CONTENT="text/html; charset=ISO-8859-1"><META
 NAME="creation"
-CONTENT="2005-05-10T02:12:05"></HEAD
+CONTENT="2005-10-04T01:17:47"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -42,7 +42,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.3 Documentation</TH
+>PostgreSQL 8.0.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-1"
->E.37. Release 7.1</A
+>E.40. Release 7.1</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -116,10 +116,10 @@ CLASS="PRODUCTNAME"
    </P
 ><P
 >    Major changes in this release:
-
-    <P
+   </P
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
@@ -135,17 +135,17 @@ all data modifications to disk before each transaction commit.  With
 WAL, only one log file must be flushed to disk, greatly improving
 performance.  If you have been using -F in previous releases to
 disable disk flushes, you may want to consider discontinuing its use.
-       </P
+      </P
 ></DD
 ><DT
 >TOAST</DT
 ><DD
 ><P
->        TOAST - Previous releases had a compiled-in row length limit,
+>       TOAST - Previous releases had a compiled-in row length limit,
 typically 8k - 32k. This limit made storage of long text fields
 difficult.  With TOAST, long rows of any length can be stored with good
 performance.
-       </P
+      </P
 ></DD
 ><DT
 >Outer Joins</DT
@@ -154,7 +154,7 @@ performance.
 >We now support outer joins.  The UNION/NOT IN
 workaround for outer joins is no longer required.  We use the SQL92
 outer join syntax.
-       </P
+      </P
 ></DD
 ><DT
 >Function Manager</DT
@@ -168,7 +168,7 @@ CLASS="ACRONYM"
 function manager does.  You can continue using your old custom
 functions, but you may want to rewrite them in the future to use the new
 function manager call interface.
-       </P
+      </P
 ></DD
 ><DT
 >Complex Queries</DT
@@ -179,19 +179,17 @@ unsupported in previous releases now work.  Many combinations of views,
 aggregates, UNION, LIMIT, cursors, subqueries, and inherited tables
 now work properly. Inherited tables are now accessed by default. 
 Subqueries in FROM are now supported.
-       </P
+      </P
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN72685"
->E.37.1. Migration to version 7.1</A
+NAME="AEN72915"
+>E.40.1. Migration to version 7.1</A
 ></H2
 ><P
 >        A dump/restore using pg_dump is required for those wishing to migrate
@@ -203,8 +201,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN72688"
->E.37.2. Changes</A
+NAME="AEN72918"
+>E.40.2. Changes</A
 ></H2
 ><P
 >     </P><PRE

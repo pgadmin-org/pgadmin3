@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.3 Documentation"
+TITLE="PostgreSQL 8.0.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -18,15 +18,15 @@ REL="PREVIOUS"
 TITLE="Release 7.4.1"
 HREF="release-7-4-1.html"><LINK
 REL="NEXT"
-TITLE="Release 7.3.10"
-HREF="release-7-3-10.html"><LINK
+TITLE="Release 7.3.11"
+HREF="release-7-3-11.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 HTTP-EQUIV="Content-Type"
 CONTENT="text/html; charset=ISO-8859-1"><META
 NAME="creation"
-CONTENT="2005-05-10T02:12:05"></HEAD
+CONTENT="2005-10-04T01:17:47"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -42,7 +42,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.3 Documentation</TH
+>PostgreSQL 8.0.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,7 +80,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="release-7-3-10.html"
+HREF="release-7-3-11.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -95,7 +95,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-4"
->E.13. Release 7.4</A
+>E.15. Release 7.4</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -112,15 +112,15 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN69296"
->E.13.1. Overview</A
+NAME="AEN69488"
+>E.15.1. Overview</A
 ></H2
 ><P
 >    Major changes in this release:
-
-    <P
+   </P
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
@@ -131,31 +131,31 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >NOT IN</TT
 > subqueries are
-       now much more efficient</DT
+      now much more efficient</DT
 ><DD
 ><P
->        In previous releases, <TT
+>       In previous releases, <TT
 CLASS="LITERAL"
 >IN</TT
 >/<TT
 CLASS="LITERAL"
 >NOT
-        IN</TT
+       IN</TT
 > subqueries were joined to the upper query by
-        sequentially scanning the subquery looking for a match.  The
-        7.4 code uses the same sophisticated techniques used by
-        ordinary joins and so is much faster.  An
-        <TT
+       sequentially scanning the subquery looking for a match.  The
+       7.4 code uses the same sophisticated techniques used by
+       ordinary joins and so is much faster.  An
+       <TT
 CLASS="LITERAL"
 >IN</TT
 > will now usually be as fast as or faster
-        than an equivalent <TT
+       than an equivalent <TT
 CLASS="LITERAL"
 >EXISTS</TT
 > subquery; this
-        reverses the conventional wisdom that applied to previous
-        releases.
-       </P
+       reverses the conventional wisdom that applied to previous
+       releases.
+      </P
 ></DD
 ><DT
 >Improved <TT
@@ -164,197 +164,197 @@ CLASS="LITERAL"
 > processing by using hash buckets</DT
 ><DD
 ><P
->        In previous releases, rows to be grouped had to be sorted
-        first.  The 7.4 code can do <TT
+>       In previous releases, rows to be grouped had to be sorted
+       first.  The 7.4 code can do <TT
 CLASS="LITERAL"
 >GROUP BY</TT
 >
-        without sorting, by accumulating results into a hash table
-        with one entry per group.  It will still use the sort
-        technique, however, if the hash table is estimated to be too
-        large to fit in <TT
+       without sorting, by accumulating results into a hash table
+       with one entry per group.  It will still use the sort
+       technique, however, if the hash table is estimated to be too
+       large to fit in <TT
 CLASS="VARNAME"
 >sort_mem</TT
 >.
-       </P
+      </P
 ></DD
 ><DT
 >New multikey hash join capability</DT
 ><DD
 ><P
->        In previous releases, hash joins could only occur on single
-        keys.  This release allows multicolumn hash joins.
-       </P
+>       In previous releases, hash joins could only occur on single
+       keys.  This release allows multicolumn hash joins.
+      </P
 ></DD
 ><DT
 >Queries using the explicit <TT
 CLASS="LITERAL"
 >JOIN</TT
 > syntax are
-       now better optimized</DT
+      now better optimized</DT
 ><DD
 ><P
->        Prior releases evaluated queries using the explicit
-        <TT
+>       Prior releases evaluated queries using the explicit
+       <TT
 CLASS="LITERAL"
 >JOIN</TT
 > syntax only in the order implied by
-        the syntax. 7.4 allows full optimization of these queries,
-        meaning the optimizer considers all possible join orderings
-        and chooses the most efficient.  Outer joins, however, must
-        still follow the declared ordering.
-       </P
+       the syntax. 7.4 allows full optimization of these queries,
+       meaning the optimizer considers all possible join orderings
+       and chooses the most efficient.  Outer joins, however, must
+       still follow the declared ordering.
+      </P
 ></DD
 ><DT
 >Faster and more powerful regular expression code</DT
 ><DD
 ><P
->        The entire regular expression module has been replaced with a
-        new version by Henry Spencer, originally written for Tcl.  The
-        code greatly improves performance and supports several flavors
-        of regular expressions.
-       </P
+>       The entire regular expression module has been replaced with a
+       new version by Henry Spencer, originally written for Tcl.  The
+       code greatly improves performance and supports several flavors
+       of regular expressions.
+      </P
 ></DD
 ><DT
 >Function-inlining for simple SQL functions</DT
 ><DD
 ><P
->        Simple SQL functions can now be inlined by including their SQL
-        in the main query.  This improves performance by eliminating
-        per-call overhead.  That means simple SQL functions now
-        behave like macros.
-       </P
+>       Simple SQL functions can now be inlined by including their SQL
+       in the main query.  This improves performance by eliminating
+       per-call overhead.  That means simple SQL functions now
+       behave like macros.
+      </P
 ></DD
 ><DT
 >Full support for IPv6 connections and IPv6 address data types</DT
 ><DD
 ><P
->        Previous releases allowed only IPv4 connections, and the IP
-        data types only supported IPv4 addresses. This release adds
-        full IPv6 support in both of these areas.
-       </P
+>       Previous releases allowed only IPv4 connections, and the IP
+       data types only supported IPv4 addresses. This release adds
+       full IPv6 support in both of these areas.
+      </P
 ></DD
 ><DT
 >Major improvements in SSL performance and reliability</DT
 ><DD
 ><P
->        Several people very familiar with the SSL API have overhauled
-        our SSL code to improve SSL key negotiation and error
-        recovery.
-       </P
+>       Several people very familiar with the SSL API have overhauled
+       our SSL code to improve SSL key negotiation and error
+       recovery.
+      </P
 ></DD
 ><DT
 >Make free space map efficiently reuse empty index pages,
-       and other free space management improvements</DT
+      and other free space management improvements</DT
 ><DD
 ><P
->        In previous releases, B-tree index pages that were left empty
-        because of deleted rows could only be reused by rows with
-        index values similar to the rows originally indexed on that
-        page. In 7.4, <TT
+>       In previous releases, B-tree index pages that were left empty
+       because of deleted rows could only be reused by rows with
+       index values similar to the rows originally indexed on that
+       page. In 7.4, <TT
 CLASS="COMMAND"
 >VACUUM</TT
 > records empty index
-        pages and allows them to be reused for any future index rows.
-       </P
+       pages and allows them to be reused for any future index rows.
+      </P
 ></DD
 ><DT
 >SQL-standard information schema</DT
 ><DD
 ><P
->        The information schema provides a standardized and stable way
-        to access information about the schema objects defined in a
-        database.
-       </P
+>       The information schema provides a standardized and stable way
+       to access information about the schema objects defined in a
+       database.
+      </P
 ></DD
 ><DT
 >Cursors conform more closely to the SQL standard</DT
 ><DD
 ><P
->        The commands <TT
+>       The commands <TT
 CLASS="COMMAND"
 >FETCH</TT
 > and
-        <TT
+       <TT
 CLASS="COMMAND"
 >MOVE</TT
 > have been overhauled to conform more
-        closely to the SQL standard.
-       </P
+       closely to the SQL standard.
+      </P
 ></DD
 ><DT
 >Cursors can exist outside transactions</DT
 ><DD
 ><P
->        These cursors are also called holdable cursors.
-       </P
+>       These cursors are also called holdable cursors.
+      </P
 ></DD
 ><DT
 >New client-to-server protocol</DT
 ><DD
 ><P
->        The new protocol adds error codes, more status information,
-        faster startup, better support for binary data transmission,
-        parameter values separated from SQL commands, prepared
-        statements available at the protocol level, and cleaner
-        recovery from <TT
+>       The new protocol adds error codes, more status information,
+       faster startup, better support for binary data transmission,
+       parameter values separated from SQL commands, prepared
+       statements available at the protocol level, and cleaner
+       recovery from <TT
 CLASS="COMMAND"
 >COPY</TT
 > failures.  The older
-        protocol is still supported by both server and clients.
-       </P
+       protocol is still supported by both server and clients.
+      </P
 ></DD
 ><DT
 ><SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > and
-       <SPAN
+      <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
 > applications are now fully
-       thread-safe</DT
+      thread-safe</DT
 ><DD
 ><P
->        While previous <SPAN
+>       While previous <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > releases
-        already supported threads, this release improves thread safety
-        by fixing some non-thread-safe code that was used during
-        database connection startup.  The <TT
+       already supported threads, this release improves thread safety
+       by fixing some non-thread-safe code that was used during
+       database connection startup.  The <TT
 CLASS="COMMAND"
 >configure</TT
 >
-        option <TT
+       option <TT
 CLASS="OPTION"
 >--enable-thread-safety</TT
 > must be used to
-        enable this feature.
-       </P
+       enable this feature.
+      </P
 ></DD
 ><DT
 >New version of full-text indexing</DT
 ><DD
 ><P
->        A new full-text indexing suite is available in
-        <TT
+>       A new full-text indexing suite is available in
+       <TT
 CLASS="FILENAME"
 >contrib/tsearch2</TT
 >.
-       </P
+      </P
 ></DD
 ><DT
 >New autovacuum tool</DT
 ><DD
 ><P
->        The new autovacuum tool in
-        <TT
+>       The new autovacuum tool in
+       <TT
 CLASS="FILENAME"
 >contrib/autovacuum</TT
 > monitors the database
-        statistics tables for
-        <TT
+       statistics tables for
+       <TT
 CLASS="COMMAND"
 >INSERT</TT
 >/<TT
@@ -364,29 +364,27 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >DELETE</TT
 >
-        activity and automatically vacuums tables when needed.
-       </P
+       activity and automatically vacuums tables when needed.
+      </P
 ></DD
 ><DT
 >Array handling has been improved and moved into the server core</DT
 ><DD
 ><P
->        Many array limitations have been removed, and arrays behave
-        more like fully-supported data types.
-       </P
+>       Many array limitations have been removed, and arrays behave
+       more like fully-supported data types.
+      </P
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN69393"
->E.13.2. Migration to version 7.4</A
+NAME="AEN69585"
+>E.15.2. Migration to version 7.4</A
 ></H2
 ><P
 >    A dump/restore using <SPAN
@@ -398,103 +396,103 @@ CLASS="APPLICATION"
    </P
 ><P
 >    Observe the following incompatibilities:
-
-    <P
+   </P
+><P
 ></P
-></P><UL
+><UL
 ><LI
 ><P
->       The server-side autocommit setting was removed and
-       reimplemented in client applications and languages.
-       Server-side autocommit was causing too many problems with
-       languages and applications that wanted to control their own
-       autocommit behavior, so autocommit was removed from the server
-       and added to individual client APIs as appropriate.
-      </P
+>      The server-side autocommit setting was removed and
+      reimplemented in client applications and languages.
+      Server-side autocommit was causing too many problems with
+      languages and applications that wanted to control their own
+      autocommit behavior, so autocommit was removed from the server
+      and added to individual client APIs as appropriate.
+     </P
 ></LI
 ><LI
 ><P
->       Error message wording has changed substantially in this
-       release.  Significant effort was invested to make the messages
-       more consistent and user-oriented.  If your applications try to
-       detect different error conditions by parsing the error message,
-       you are strongly encouraged to use the new error code facility instead.
-      </P
+>      Error message wording has changed substantially in this
+      release.  Significant effort was invested to make the messages
+      more consistent and user-oriented.  If your applications try to
+      detect different error conditions by parsing the error message,
+      you are strongly encouraged to use the new error code facility instead.
+     </P
 ></LI
 ><LI
 ><P
->       Inner joins using the explicit <TT
+>      Inner joins using the explicit <TT
 CLASS="LITERAL"
 >JOIN</TT
 > syntax
-       may behave differently because they are now better
-       optimized.
-      </P
+      may behave differently because they are now better
+      optimized.
+     </P
 ></LI
 ><LI
 ><P
->       A number of server configuration parameters have been renamed
-       for clarity, primarily those related to
-       logging.
-      </P
+>      A number of server configuration parameters have been renamed
+      for clarity, primarily those related to
+      logging.
+     </P
 ></LI
 ><LI
 ><P
->       <TT
+>      <TT
 CLASS="LITERAL"
 >FETCH 0</TT
 > or <TT
 CLASS="LITERAL"
 >MOVE 0</TT
 > now
-       does nothing.  In prior releases, <TT
+      does nothing.  In prior releases, <TT
 CLASS="LITERAL"
 >FETCH 0</TT
 >
-       would fetch all remaining rows, and <TT
+      would fetch all remaining rows, and <TT
 CLASS="LITERAL"
 >MOVE 0</TT
 >
-       would move to the end of the cursor.
-      </P
+      would move to the end of the cursor.
+     </P
 ></LI
 ><LI
 ><P
->       <TT
+>      <TT
 CLASS="COMMAND"
 >FETCH</TT
 > and <TT
 CLASS="COMMAND"
 >MOVE</TT
 > now return
-       the actual number of rows fetched/moved, or zero if at the
-       beginning/end of the cursor.  Prior releases would return the
-       row count passed to the command, not the number of rows
-       actually fetched or moved.
-      </P
+      the actual number of rows fetched/moved, or zero if at the
+      beginning/end of the cursor.  Prior releases would return the
+      row count passed to the command, not the number of rows
+      actually fetched or moved.
+     </P
 ></LI
 ><LI
 ><P
->       <TT
+>      <TT
 CLASS="COMMAND"
 >COPY</TT
 > now can process files that use
-       carriage-return or carriage-return/line-feed end-of-line
-       sequences. Literal carriage-returns and line-feeds are no
-       longer accepted in data values; use <TT
+      carriage-return or carriage-return/line-feed end-of-line
+      sequences. Literal carriage-returns and line-feeds are no
+      longer accepted in data values; use <TT
 CLASS="LITERAL"
 >\r</TT
 > and
-       <TT
+      <TT
 CLASS="LITERAL"
 >\n</TT
 > instead.
-      </P
+     </P
 ></LI
 ><LI
 ><P
->       Trailing spaces are now trimmed when converting from type
-       <TT
+>      Trailing spaces are now trimmed when converting from type
+      <TT
 CLASS="TYPE"
 >char(<TT
 CLASS="REPLACEABLE"
@@ -503,7 +501,7 @@ CLASS="REPLACEABLE"
 ></TT
 >)</TT
 > to
-       <TT
+      <TT
 CLASS="TYPE"
 >varchar(<TT
 CLASS="REPLACEABLE"
@@ -515,12 +513,12 @@ CLASS="REPLACEABLE"
 CLASS="TYPE"
 >text</TT
 >.
-       This is what most people always expected to happen anyway.
-      </P
+      This is what most people always expected to happen anyway.
+     </P
 ></LI
 ><LI
 ><P
->       The data type <TT
+>      The data type <TT
 CLASS="TYPE"
 >float(<TT
 CLASS="REPLACEABLE"
@@ -529,112 +527,112 @@ CLASS="REPLACEABLE"
 ></TT
 >)</TT
 > now
-       measures <TT
+      measures <TT
 CLASS="REPLACEABLE"
 ><I
 >p</I
 ></TT
 > in binary digits, not decimal
-       digits.  The new behavior follows the SQL standard.
-      </P
+      digits.  The new behavior follows the SQL standard.
+     </P
 ></LI
 ><LI
 ><P
->       Ambiguous date values now must match the ordering specified by
-       the <TT
+>      Ambiguous date values now must match the ordering specified by
+      the <TT
 CLASS="VARNAME"
 >datestyle</TT
 > setting.  In prior releases, a
-       date specification of <TT
+      date specification of <TT
 CLASS="LITERAL"
 >10/20/03</TT
 > was interpreted as a
-       date in October even if <TT
+      date in October even if <TT
 CLASS="VARNAME"
 >datestyle</TT
 > specified that
-       the day should be first.  7.4 will throw an error if a date
-       specification is invalid for the current setting of
-       <TT
+      the day should be first.  7.4 will throw an error if a date
+      specification is invalid for the current setting of
+      <TT
 CLASS="VARNAME"
 >datestyle</TT
 >.
-      </P
+     </P
 ></LI
 ><LI
 ><P
->       The functions <CODE
+>      The functions <CODE
 CLASS="FUNCTION"
 >oidrand</CODE
 >,
-       <CODE
+      <CODE
 CLASS="FUNCTION"
 >oidsrand</CODE
 >, and
-       <CODE
+      <CODE
 CLASS="FUNCTION"
 >userfntest</CODE
 > have been removed.  These
-       functions were determined to be no longer useful.
-      </P
+      functions were determined to be no longer useful.
+     </P
 ></LI
 ><LI
 ><P
->       String literals specifying time-varying date/time values, such
-       as <TT
+>      String literals specifying time-varying date/time values, such
+      as <TT
 CLASS="LITERAL"
 >'now'</TT
 > or <TT
 CLASS="LITERAL"
 >'today'</TT
 > will
-       no longer work as expected in column default expressions; they
-       now cause the time of the table creation to be the default, not
-       the time of the insertion.  Functions such as
-       <CODE
+      no longer work as expected in column default expressions; they
+      now cause the time of the table creation to be the default, not
+      the time of the insertion.  Functions such as
+      <CODE
 CLASS="FUNCTION"
 >now()</CODE
 >, <CODE
 CLASS="FUNCTION"
 >current_timestamp</CODE
 >, or
-       <CODE
+      <CODE
 CLASS="FUNCTION"
 >current_date</CODE
 > should be used instead.
-      </P
+     </P
 ><P
->       In previous releases, there was special code so that strings
-       such as <TT
+>      In previous releases, there was special code so that strings
+      such as <TT
 CLASS="LITERAL"
 >'now'</TT
 > were interpreted at
-       <TT
+      <TT
 CLASS="COMMAND"
 >INSERT</TT
 > time and not at table creation time, but
-       this work around didn't cover all cases.  Release 7.4 now
-       requires that defaults be defined properly using functions such
-       as <CODE
+      this work around didn't cover all cases.  Release 7.4 now
+      requires that defaults be defined properly using functions such
+      as <CODE
 CLASS="FUNCTION"
 >now()</CODE
 > or <CODE
 CLASS="FUNCTION"
 >current_timestamp</CODE
 >. These
-       will work in all situations.
-      </P
+      will work in all situations.
+     </P
 ></LI
 ><LI
 ><P
->       The dollar sign (<TT
+>      The dollar sign (<TT
 CLASS="LITERAL"
 >$</TT
 >) is no longer allowed in
-       operator names.  It can instead be a non-first character in
-       identifiers.  This was done to improve compatibility with other
-       database systems, and to avoid syntax problems when parameter
-       placeholders (<TT
+      operator names.  It can instead be a non-first character in
+      identifiers.  This was done to improve compatibility with other
+      database systems, and to avoid syntax problems when parameter
+      placeholders (<TT
 CLASS="LITERAL"
 >$<TT
 CLASS="REPLACEABLE"
@@ -643,20 +641,18 @@ CLASS="REPLACEABLE"
 ></TT
 ></TT
 >) are written
-       adjacent to operators.
-      </P
+      adjacent to operators.
+     </P
 ></LI
 ></UL
-><P>
-   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN69463"
->E.13.3. Changes</A
+NAME="AEN69655"
+>E.15.3. Changes</A
 ></H2
 ><P
 >    Below you will find a detailed account of the changes between
@@ -667,8 +663,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN69466"
->E.13.3.1. Server Operation Changes</A
+NAME="AEN69658"
+>E.15.3.1. Server Operation Changes</A
 ></H3
 ><P
 ></P
@@ -808,8 +804,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN69517"
->E.13.3.2. Performance Improvements</A
+NAME="AEN69709"
+>E.15.3.2. Performance Improvements</A
 ></H3
 ><P
 ></P
@@ -1049,8 +1045,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN69601"
->E.13.3.3. Server Configuration Changes</A
+NAME="AEN69793"
+>E.15.3.3. Server Configuration Changes</A
 ></H3
 ><P
 ></P
@@ -1328,8 +1324,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN69694"
->E.13.3.4. Query Changes</A
+NAME="AEN69886"
+>E.15.3.4. Query Changes</A
 ></H3
 ><P
 ></P
@@ -1441,8 +1437,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN69732"
->E.13.3.5. Object Manipulation Changes</A
+NAME="AEN69924"
+>E.15.3.5. Object Manipulation Changes</A
 ></H3
 ><P
 ></P
@@ -1602,8 +1598,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN69787"
->E.13.3.6. Utility Command Changes</A
+NAME="AEN69979"
+>E.15.3.6. Utility Command Changes</A
 ></H3
 ><P
 ></P
@@ -1939,8 +1935,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN69898"
->E.13.3.7. Data Type and Function Changes</A
+NAME="AEN70090"
+>E.15.3.7. Data Type and Function Changes</A
 ></H3
 ><P
 ></P
@@ -2446,8 +2442,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70067"
->E.13.3.8. Server-Side Language Changes</A
+NAME="AEN70259"
+>E.15.3.8. Server-Side Language Changes</A
 ></H3
 ><P
 ></P
@@ -2542,8 +2538,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70100"
->E.13.3.9. psql Changes</A
+NAME="AEN70292"
+>E.15.3.9. psql Changes</A
 ></H3
 ><P
 ></P
@@ -2664,8 +2660,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70145"
->E.13.3.10. pg_dump Changes</A
+NAME="AEN70337"
+>E.15.3.10. pg_dump Changes</A
 ></H3
 ><P
 ></P
@@ -2770,8 +2766,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70182"
->E.13.3.11. libpq Changes</A
+NAME="AEN70374"
+>E.15.3.11. libpq Changes</A
 ></H3
 ><P
 ></P
@@ -2921,8 +2917,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70231"
->E.13.3.12. JDBC Changes</A
+NAME="AEN70423"
+>E.15.3.12. JDBC Changes</A
 ></H3
 ><P
 ></P
@@ -2960,8 +2956,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70246"
->E.13.3.13. Miscellaneous Interface Changes</A
+NAME="AEN70438"
+>E.15.3.13. Miscellaneous Interface Changes</A
 ></H3
 ><P
 ></P
@@ -3017,8 +3013,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70265"
->E.13.3.14. Source Code Changes</A
+NAME="AEN70457"
+>E.15.3.14. Source Code Changes</A
 ></H3
 ><P
 ></P
@@ -3142,8 +3138,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN70318"
->E.13.3.15. Contrib Changes</A
+NAME="AEN70510"
+>E.15.3.15. Contrib Changes</A
 ></H3
 ><P
 ></P
@@ -3295,7 +3291,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="release-7-3-10.html"
+HREF="release-7-3-11.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -3319,7 +3315,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Release 7.3.10</TD
+>Release 7.3.11</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.3 Documentation"
+TITLE="PostgreSQL 8.0.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -26,7 +26,7 @@ HREF="stylesheet.css"><META
 HTTP-EQUIV="Content-Type"
 CONTENT="text/html; charset=ISO-8859-1"><META
 NAME="creation"
-CONTENT="2005-05-10T02:12:05"></HEAD
+CONTENT="2005-10-04T01:17:47"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -42,7 +42,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.3 Documentation</TH
+>PostgreSQL 8.0.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-0"
->E.41. Release 7.0</A
+>E.44. Release 7.0</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -121,29 +121,29 @@ CLASS="PRODUCTNAME"
    </P
 ><P
 >    Major changes in this release:
-
-    <P
+   </P
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
 >Foreign Keys</DT
 ><DD
 ><P
->        Foreign keys are now implemented, with the exception of PARTIAL MATCH
-        foreign keys. Many users have been asking for this feature, and we are
-        pleased to offer it.
-       </P
+>       Foreign keys are now implemented, with the exception of PARTIAL MATCH
+       foreign keys. Many users have been asking for this feature, and we are
+       pleased to offer it.
+      </P
 ></DD
 ><DT
 >Optimizer Overhaul</DT
 ><DD
 ><P
->        Continuing on work started a year ago, the optimizer has been
-        improved, allowing better query plan selection and faster performance
-        with less memory usage.
-       </P
+>       Continuing on work started a year ago, the optimizer has been
+       improved, allowing better query plan selection and faster performance
+       with less memory usage.
+      </P
 ></DD
 ><DT
 >Updated <SPAN
@@ -152,29 +152,29 @@ CLASS="APPLICATION"
 ></DT
 ><DD
 ><P
->        <SPAN
+>       <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 >, our interactive terminal monitor, has been
-        updated with a variety of new features. See the <SPAN
+       updated with a variety of new features. See the <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 > manual page for details.
-       </P
+      </P
 ></DD
 ><DT
 >Join Syntax</DT
 ><DD
 ><P
->        SQL92 join syntax is now supported, though only as
-        <TT
+>       SQL92 join syntax is now supported, though only as
+       <TT
 CLASS="LITERAL"
 >INNER JOIN</TT
 > for this release. <TT
 CLASS="LITERAL"
 >JOIN</TT
 >,
-        <TT
+       <TT
 CLASS="LITERAL"
 >NATURAL JOIN</TT
 >, <TT
@@ -184,27 +184,25 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >USING</TT
 >,
-        and <TT
+       and <TT
 CLASS="LITERAL"
 >JOIN</TT
 >/<TT
 CLASS="LITERAL"
 >ON</TT
 > are available, as are
-        column correlation names.
-       </P
+       column correlation names.
+      </P
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN72769"
->E.41.1. Migration to version 7.0</A
+NAME="AEN72999"
+>E.44.1. Migration to version 7.0</A
 ></H2
 ><P
 >     A dump/restore using <SPAN
@@ -227,91 +225,89 @@ CLASS="APPLICATION"
 ><P
 >     Interface and compatibility issues to consider for the new
      release include:
-
-     <P
+    </P
+><P
 ></P
-></P><UL
+><UL
 ><LI
 ><P
->        The date/time types <TT
+>       The date/time types <TT
 CLASS="TYPE"
 >datetime</TT
 > and
-        <TT
+       <TT
 CLASS="TYPE"
 >timespan</TT
 > have been superseded by the
-        SQL92-defined types <TT
+       SQL92-defined types <TT
 CLASS="TYPE"
 >timestamp</TT
 > and
-        <TT
+       <TT
 CLASS="TYPE"
 >interval</TT
 >. Although there has been some effort to
-        ease the transition by allowing
-        <SPAN
+       ease the transition by allowing
+       <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > to recognize
-        the deprecated type names and translate them to the new type
-        names, this mechanism may not be completely transparent to
-        your existing application.
-       </P
+       the deprecated type names and translate them to the new type
+       names, this mechanism may not be completely transparent to
+       your existing application.
+      </P
 ></LI
 ><LI
 ><P
->        The optimizer has been substantially improved in the area of
-        query cost estimation. In some cases, this will result in
-        decreased query times as the optimizer makes a better choice
-        for the preferred plan. However, in a small number of cases,
-        usually involving pathological distributions of data, your
-        query times may go up. If you are dealing with large amounts
-        of data, you may want to check your queries to verify
-        performance.
-       </P
+>       The optimizer has been substantially improved in the area of
+       query cost estimation. In some cases, this will result in
+       decreased query times as the optimizer makes a better choice
+       for the preferred plan. However, in a small number of cases,
+       usually involving pathological distributions of data, your
+       query times may go up. If you are dealing with large amounts
+       of data, you may want to check your queries to verify
+       performance.
+      </P
 ></LI
 ><LI
 ><P
->        The <ACRONYM
+>       The <ACRONYM
 CLASS="ACRONYM"
 >JDBC</ACRONYM
 > and <ACRONYM
 CLASS="ACRONYM"
 >ODBC</ACRONYM
 >
-        interfaces have been upgraded and extended.
-       </P
+       interfaces have been upgraded and extended.
+      </P
 ></LI
 ><LI
 ><P
->        The string function <CODE
+>       The string function <CODE
 CLASS="FUNCTION"
 >CHAR_LENGTH</CODE
 > is now a
-        native function. Previous versions translated this into a call
-        to <CODE
+       native function. Previous versions translated this into a call
+       to <CODE
 CLASS="FUNCTION"
 >LENGTH</CODE
 >, which could result in
-        ambiguity with other types implementing
-        <CODE
+       ambiguity with other types implementing
+       <CODE
 CLASS="FUNCTION"
 >LENGTH</CODE
 > such as the geometric types.
-       </P
+      </P
 ></LI
 ></UL
-><P>
-    </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN72795"
->E.41.2. Changes</A
+NAME="AEN73025"
+>E.44.2. Changes</A
 ></H2
 ><P
 >     </P><PRE

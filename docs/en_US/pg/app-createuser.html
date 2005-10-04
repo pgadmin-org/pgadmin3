@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 8.0.3 Documentation"
+TITLE="PostgreSQL 8.0.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -26,7 +26,7 @@ HREF="stylesheet.css"><META
 HTTP-EQUIV="Content-Type"
 CONTENT="text/html; charset=ISO-8859-1"><META
 NAME="creation"
-CONTENT="2005-05-10T02:12:05"></HEAD
+CONTENT="2005-10-04T01:17:47"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -42,7 +42,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 8.0.3 Documentation</TH
+>PostgreSQL 8.0.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -100,7 +100,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46497"
+NAME="AEN46512"
 ></A
 ><H2
 >Name</H2
@@ -109,12 +109,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user account</DIV
 ><A
-NAME="AEN46501"
+NAME="AEN46516"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46503"
+NAME="AEN46518"
 ></A
 ><H2
 >Synopsis</H2
@@ -137,7 +137,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46510"
+NAME="AEN46525"
 ></A
 ><H2
 >Description</H2
@@ -197,7 +197,7 @@ HREF="sql-createuser.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46525"
+NAME="AEN46540"
 ></A
 ><H2
 >Options</H2
@@ -221,14 +221,16 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	Specifies the name of the <SPAN
+>        Specifies the name of the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> user to be created. 
-	This name must be unique among all <SPAN
+> user
+        to be created.
+        This name must be unique among all users of this
+        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> users.
+> installation.
        </P
 ></DD
 ><DT
@@ -510,7 +512,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46650"
+NAME="AEN46665"
 ></A
 ><H2
 >Environment</H2
@@ -541,7 +543,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46662"
+NAME="AEN46677"
 ></A
 ><H2
 >Diagnostics</H2
@@ -571,7 +573,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46668"
+NAME="AEN46683"
 ></A
 ><H2
 >Examples</H2
@@ -592,7 +594,7 @@ CLASS="USERINPUT"
 >
 <SAMP
 CLASS="COMPUTEROUTPUT"
->Is the new user allowed to create databases? (y/n) </SAMP
+>Shall the new user be allowed to create databases? (y/n) </SAMP
 ><KBD
 CLASS="USERINPUT"
 >n</KBD
@@ -627,11 +629,11 @@ CLASS="PROMPT"
 >$ </SAMP
 ><KBD
 CLASS="USERINPUT"
->createuser -p 5000 -h eden -D -A -e joe</KBD
+>createuser -h eden -p 5000 -D -A -e joe</KBD
 >
 <SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE USER "joe" NOCREATEDB NOCREATEUSER</SAMP
+>CREATE USER joe NOCREATEDB NOCREATEUSER;</SAMP
 >
 <SAMP
 CLASS="COMPUTEROUTPUT"
@@ -639,11 +641,64 @@ CLASS="COMPUTEROUTPUT"
 ></PRE
 ><P>
    </P
+><P
+>    To create the user <TT
+CLASS="LITERAL"
+>joe</TT
+> as a superuser,
+    and assign a password immediately:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>createuser -P -d -a -e joe</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>Enter password for new user: </SAMP
+><KBD
+CLASS="USERINPUT"
+>xyzzy</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>Enter it again: </SAMP
+><KBD
+CLASS="USERINPUT"
+>xyzzy</KBD
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE USER joe PASSWORD 'xyzzy' CREATEDB CREATEUSER;</SAMP
+>
+<SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE USER</SAMP
+></PRE
+><P>
+    In the above example, the new password isn't actually echoed when typed,
+    but we show what was typed for clarity.  However the password
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>will</I
+></SPAN
+> appear in the echoed command, as illustrated &mdash;
+    so you don't want to use <TT
+CLASS="LITERAL"
+>-e</TT
+> when assigning a password, if
+    anyone else can see your screen.
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46688"
+NAME="AEN46716"
 ></A
 ><H2
 >See Also</H2
