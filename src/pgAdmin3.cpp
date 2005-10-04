@@ -144,6 +144,12 @@ frmDlgTest::frmDlgTest() : wxFrame(0, -1, wxT("pgAdmin III Translation test mode
         dlgList->Append(filename.Left(filename.Length()-4));
         found = dir.GetNext(&filename);
     }
+    if (!dlgList->GetCount())
+    {
+        dlgList->Append(wxT("No xrc files in directory"));
+        dlgList->Append(uiPath);
+        dlgList->Disable();
+    }
 }
 
 
@@ -155,6 +161,7 @@ void frmDlgTest::OnSelect(wxCommandEvent &ev)
         pgDialog *dlg=new pgDialog;
         dlg->wxWindowBase::SetFont(settings->GetSystemFont());
         dlg->LoadResource(this, dlgName); 
+        dlg->SetTitle(dlgName);
         dlg->Show();
     }
 }
