@@ -111,7 +111,53 @@ public:
 
 #endif
 #endif
+#define CTL_LB  100
+class frmDlgTest : public wxFrame
+{
+public:
+    frmDlgTest();
+private:
+    void OnSelect(wxCommandEvent &ev);
+    wxListBox *dlgList;
+    DECLARE_EVENT_TABLE();
+};
 
+
+BEGIN_EVENT_TABLE(frmDlgTest, wxFrame)
+    EVT_LISTBOX_DCLICK(CTL_LB, frmDlgTest::OnSelect)
+END_EVENT_TABLE();
+
+
+frmDlgTest::frmDlgTest() : wxFrame(0, -1, wxT("pgAdmin III Translation test mode"))
+{
+    dlgList=new wxListBox(this, CTL_LB);
+
+    // unfortunately, the MemoryFS has no search functions implemented 
+    // so we can't extract the names in the EMBED_XRC case
+
+    wxDir dir(uiPath);
+    wxString filename;
+
+    bool found=dir.GetFirst(&filename, wxT("*.xrc"));
+    while (found)
+    {
+        dlgList->Append(filename.Left(filename.Length()-4));
+        found = dir.GetNext(&filename);
+    }
+}
+
+
+void frmDlgTest::OnSelect(wxCommandEvent &ev)
+{
+    wxString dlgName=dlgList->GetStringSelection();
+    if (!dlgName.IsEmpty())
+    {
+        pgDialog *dlg=new pgDialog;
+        dlg->wxWindowBase::SetFont(settings->GetSystemFont());
+        dlg->LoadResource(this, dlgName); 
+        dlg->Show();
+    }
+}
 
 
 // The Application!
@@ -330,17 +376,28 @@ bool pgAdmin3::OnInit()
 
     else
     {
+        if (dialogTestMode)
+        {
+//            wxXmlResource::Get()->Load(uiPath + wxT("/*.xrc"));
+            wxFrame *dtf=new frmDlgTest();
+            dtf->Show();
+            SetTopWindow(dtf);
+        }
+        else
+        {
+            // Create & show the main form
+            winMain = new frmMain(APPNAME_L);
 
-        // Create & show the main form
-        winMain = new frmMain(APPNAME_L);
+            if (!winMain) 
+                wxLogFatalError(__("Couldn't create the main window!"));
 
-        if (!winMain) 
-            wxLogFatalError(__("Couldn't create the main window!"));
+            // updateThread = BackgroundCheckUpdates(winMain);
 
-        // updateThread = BackgroundCheckUpdates(winMain);
+            winMain->Show();
+            SetTopWindow(winMain);
+        }
 
-        winMain->Show();
-        SetTopWindow(winMain);
+
         SetExitOnFrameDelete(true);
 
         if (winSplash)
@@ -352,7 +409,7 @@ bool pgAdmin3::OnInit()
         // Display a Tip if required.
         extern sysSettings *settings;
         wxCommandEvent evt = wxCommandEvent();
-        if (settings->GetShowTipOfTheDay())
+        if (winMain && settings->GetShowTipOfTheDay())
         {
             tipOfDayFactory tip(0, 0, 0);
             tip.StartDialog(winMain, 0);

@@ -401,7 +401,7 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 
 void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 {
-    if (settings->GetSqlHelpSite().length() != 0) 
+    if (helpTopic.Left(3) == wxT("pg/") && settings->GetSqlHelpSite().length() != 0) 
         frmHelp::LoadSqlDoc(wnd, helpTopic.Mid(3)  + wxT(".html"));
     else
         DisplayHelp(wnd, helpTopic, icon);

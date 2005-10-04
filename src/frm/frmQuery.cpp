@@ -341,19 +341,22 @@ SqlTokenHelp sqlTokenHelp[] =
     { wxT("MOVE"), 0, 0},
     { wxT("NOTIFY"), 0, 0},
     { wxT("END"), 0, 0},
-    { wxT("PREPARE"), 0, 0},
+//    { wxT("PREPARE"), 0, 0},  handled individually
     { wxT("REINDEX"), 0, 0},
+    { wxT("RELEASE"), wxT("pg/sql-release-savepoint"), 0},
     { wxT("RESET"), 0, 0},
     { wxT("REVOKE"), 0, 0},
-    { wxT("ROLLBACK"), 0, 0},
+//    { wxT("ROLLBACK"), 0, 0}, handled individually
+    { wxT("SAVEPOINT"), 0, 0},
     { wxT("SELECT"), 0, 0},
     { wxT("SET"), 0, 0},
     { wxT("SHOW"), 0, 0},
-    { wxT("START"), wxT("sql-start-transaction"), 0},
+    { wxT("START"), wxT("pg/sql-start-transaction"), 0},
     { wxT("TRUNCATE"), 0, 0},
     { wxT("UNLISTEN"), 0, 0},
     { wxT("UPDATE"), 0, 0},
     { wxT("VACUUM"), 0, 0},
+
     { wxT("AGGREGATE"), 0, 11},
     { wxT("CAST"), 0, 11},
     { wxT("CONSTRAINT"), 0, 11},
@@ -365,10 +368,12 @@ SqlTokenHelp sqlTokenHelp[] =
     { wxT("INDEX"), 0, 11},
     { wxT("LANGUAGE"), 0, 11},
     { wxT("OPERATOR"), 0, 11},
+    { wxT("ROLE"), 0, 11},
     { wxT("RULE"), 0, 11},
     { wxT("SCHEMA"), 0, 11},
     { wxT("SEQUENCE"), 0, 11},
     { wxT("TABLE"), 0, 12},
+    { wxT("TABLESPACE"), 0, 12},
     { wxT("TRIGGER"), 0, 12},
     { wxT("TYPE"), 0, 11},
     { wxT("USER"), 0, 12},
@@ -439,44 +444,61 @@ void frmQuery::OnHelp(wxCommandEvent& event)
 	    wxStringTokenizer tokens(query);
 	    query=tokens.GetNextToken();
 
-	    SqlTokenHelp *sth=sqlTokenHelp;
-	    while (sth->token)
-	    {
-	        if (sth->type < 10 && query.IsSameAs(sth->token, false))
+        if (query.IsSameAs(wxT("PREPARE"), false))
+        {
+            if (tokens.GetNextToken().IsSameAs(wxT("TRANSACTION"), false))
+                page = wxT("pg/sql-prepare-transaction");
+            else
+                page = wxT("pg/sql-prepare");
+        }
+        else if (query.IsSameAs(wxT("ROLLBACK"), false))
+        {
+            if (tokens.GetNextToken().IsSameAs(wxT("PREPARED"), false))
+                page = wxT("pg/sql-rollback-prepared");
+            else
+                page = wxT("pg/sql-rollback");
+        }
+        else
+        {
+	        SqlTokenHelp *sth=sqlTokenHelp;
+	        while (sth->token)
+	        {
+	            if (sth->type < 10 && query.IsSameAs(sth->token, false))
 	            {
-		        if (sth->page)
-		            page = sth->page;
-		        else
-		            page = wxT("sql-") + query.Lower();
-		        if (sth->type)
-		        {
-		            int type=sth->type+10;
+		            if (sth->page)
+		                page = sth->page;
+		            else
+		                page = wxT("pg/sql-") + query.Lower();
 
-		            query=tokens.GetNextToken();
-		            sth=sqlTokenHelp;
-		            while (sth->token)
+                    if (sth->type)
 		            {
-			        if (sth->type >= type && query.IsSameAs(sth->token, false))
-			        {
-			            if (sth->page)
-				        page += sth->page;
-			            else
-				        page += query.Lower();
-			            break;
-			        }
-			        sth++;
-		            }
-		            if (!sth->token)
-			        page=wxT("sql-commands");
-		        }
-		        break;
-	        }
-	        sth++;
-	    }
-    }
+		                int type=sth->type+10;
 
+		                query=tokens.GetNextToken();
+		                sth=sqlTokenHelp;
+		                while (sth->token)
+		                {
+			                if (sth->type >= type && query.IsSameAs(sth->token, false))
+			                {
+			                    if (sth->page)
+				                    page += sth->page;
+			                    else
+				                    page += query.Lower();
+			                    break;
+			                }
+			                sth++;
+		                }
+		                if (!sth->token)
+			                page=wxT("pg/sql-commands");
+		            }
+		            break;
+	            }
+	            sth++;
+	        }
+        }
+    }
     if (page.IsEmpty())
-    	page=wxT("sql-commands");
+    	page=wxT("pg/sql-commands");
 
     DisplaySqlHelp(this, page);
 }

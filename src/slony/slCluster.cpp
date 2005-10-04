@@ -304,9 +304,9 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 
         long slonPid=GetSlonPid();
         if (slonPid)
-            properties->AppendItem(_("Slon PID"), slonPid);
+            properties->AppendItem(wxT("Slon PID"), slonPid);
         else
-            properties->AppendItem(_("Slon PID"), _("not running"));
+            properties->AppendItem(wxT("Slon PID"), _("not running"));
 
         properties->AppendItem(_("Version"), GetClusterVersion());
         properties->AppendItem(_("Owner"), GetOwner());
