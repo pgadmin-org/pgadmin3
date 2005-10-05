@@ -23,7 +23,7 @@ character set is used. If *.usql is selected, the file will be
 written in UTF-8, which enables the storage of virtually all
 characters used throughout the world, according to the coding rules
 of the <A HREF="http://www.unicode.org/">Unicode Consortium</A>. If
-you select *.*, the setting from the <A HREF="options-tab1.html">read/write
+you select *.*, the setting from the <A HREF="options-tab2.html">read/write
 unicode option</A> is used.</P>
 <P>To execute the query, you select Execute from the Query menu, or
 you press the execute toolbar button, or you press the F5 function
@@ -33,8 +33,12 @@ execute just a part of the text, by selecting only the text that you
 want the server to execute.</P>
 <P>Explain from the Query menu, or F7 function key will execute the
 EXPLAIN command. The database server will analyze the query that's
-sent to it, and will return the results. This enables you to find out
-how the query is parsed, optimized and executed. You can modify the
+sent to it, and will return the results.
+</P><P>
+<center><img src="images/query-analyze.png"></center>
+</P><P>
+The result is displayed as text in the Data Output page, and graphically 
+visualized on the Explain page. This enables you to find out how the query is parsed, optimized and executed. You can modify the
 degree of inspection by changing the Explain options for this in the
 Query menu.</P>
 <P>In case the query you sent to the server using the Execute or
@@ -66,7 +70,15 @@ using the Save history option from the Query menu.</P>
 complete. If a dataset was returned, not only the elapsed time for
 server execution is displayed, but also the time to retrieve the data
 from the server to the Data Output page.</P>
-<P>In the <A HREF="options-tab2.html">options dialog</A>, you
+<P>
+In the toolbar combobox you can quickly change your database connection from
+one database to another, without launching another instance of the query tool. 
+Initially, only one database will be available, but by selecting &less;new connection&gt; from 
+the combobox, you can add another connection to it.
+</P><P>
+<center><img src="images/query-connect.png"></center>
+</P>
+<P>In the <A HREF="options-tab3.html">options dialog</A>, you
 can specify a default limit for the rowset size to retrieve. By
 default, this value will be 100. If the number of rows to retrieve
 from the server exceeds this value, a message box will appear asking
@@ -74,7 +86,6 @@ what to do to prevent retrieval of an unexpected high amount of data.
 You may decide to retrieve just the first rows, as configured with
 tha max rows setting, or retrieving the complete rowset regardless of
 the setting, or abort the query, effectively retrieving zero rows.</P>
-
 
 </BODY>
 </HTML>

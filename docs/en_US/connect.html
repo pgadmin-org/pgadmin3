@@ -47,9 +47,17 @@ executing service control functions, pgAdmin will append
 status/start/stop keywords to this. Example:<BR>
 sudo /usr/local/pgsql/bin/pg_ctl -D /data/pgsql
 </P>
-<P>If the password for that server is empty, you can unselect the "need password" option. When connecting
-to the database, the password won't be required from you any more. For
-security reasons, passwords are not stored by pgAdmin.</P>
+<P>
+You can unckeck the "Connect now" checkbox if you don't want the connection
+to the server being established immediately, but only registered for later use. In this
+case, the connection parameters won't be validated.
+</P>
+<P>
+If you select "store password", pgAdmin stores passwords you enter in the ~/.pgpass file under *nix or %APPDATA%\postgresql\pgpass.conf
+under Win32 for later reuse. For details, see <a href='pg/libpq-pgpass.html'>pgpass documentation</a>.
+It will be used for all libpq based tools. If you want the password removed, you can
+select the server's properties and uncheck the selection any time.
+</P>
 <P>
 This dialog can be launched at a later time to correct or add
 parameters by executing "properties" when the server is selected.
