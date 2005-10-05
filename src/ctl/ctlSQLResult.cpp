@@ -45,7 +45,7 @@ bool ctlSQLResult::Export()
     if (rowsRetrieved>0 || (thread && thread->DataSet()->NumRows() > 0))
     {
         frmExport dlg(this);
-        if (dlg.ShowModal() > 0)
+        if (dlg.ShowModal() == wxID_OK)
         {
             if (rowsRetrieved> 0)
                 return dlg.Export(this);

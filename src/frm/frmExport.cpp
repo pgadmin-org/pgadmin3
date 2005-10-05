@@ -128,7 +128,7 @@ void frmExport::OnOK(wxCommandEvent &ev)
 
 
     if (IsModal())
-        EndModal(1);
+        EndModal(wxID_OK);
     else
         Destroy();
 }
@@ -257,7 +257,7 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
 void frmExport::OnCancel(wxCommandEvent &ev)
 {
     if (IsModal())
-        EndModal(-1);
+        EndModal(wxID_CANCEL);
     else
         Destroy();
 }

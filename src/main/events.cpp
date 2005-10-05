@@ -372,9 +372,13 @@ void frmMain::enableSubmenu(int id)
     wxMenuItem *item=menuBar->FindItem(id);
     if (item)
     {
-        wxMenu *menu=item->GetMenu();
-        size_t position=0;
-        do
+        wxMenu *menu=item->GetSubMenu();
+        wxASSERT(menu);
+        if (!menu)
+            return;
+
+        size_t position;
+        for (position = 0 ; position < menu->GetMenuItemCount() ; position++)
         {
             item = menu->FindItemByPosition(position);
             if (item && item->IsEnabled())
@@ -382,9 +386,8 @@ void frmMain::enableSubmenu(int id)
                 menuBar->Enable(id, true);
                 return;
             }
-            position++;
         }
-        while (item);
+
         menuBar->Enable(id, false);
     }
 }
