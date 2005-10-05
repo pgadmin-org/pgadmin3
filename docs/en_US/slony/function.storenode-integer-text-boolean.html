@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.95.        storenode( integer, text, boolean )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.storelisten-int-integer-integer-integer.html" title="1.94.        storelisten_int( integer, integer, integer )
+      ">
+<link rel="next" href="function.storenode-int-integer-text-boolean.html" title="1.96.        storenode_int( integer, text, boolean )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.storenode-integer-text-boolean"></a>1.95.        storenode( integer, text, boolean )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       no_id - Node ID #
+no_comment - Human-oriented comment
+no_spool - Flag for virtual spool nodes
+
+Generate the STORE_NODE event for node no_id
+        </p>
+<pre class="programlisting">declare
+	p_no_id			alias for $1;
+	p_no_comment	alias for $2;
+	p_no_spool		alias for $3;
+	v_no_spool_txt	text;
+begin
+	if p_no_spool then
+		v_no_spool_txt = 't';
+	else
+		v_no_spool_txt = 'f';
+	end if;
+	perform storeNode_int (p_no_id, p_no_comment, p_no_spool);
+	return  createEvent('_schemadoc', 'STORE_NODE',
+									p_no_id, p_no_comment, v_no_spool_txt);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

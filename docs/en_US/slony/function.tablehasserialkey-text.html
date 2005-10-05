@@ -1,0 +1,58 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.107.        tablehasserialkey( text )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.tabledropkey-integer.html" title="1.106.        tabledropkey( integer )
+      ">
+<link rel="next" href="function.terminatenodeconnections-name.html" title="1.108.        terminatenodeconnections( name )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.tablehasserialkey-text"></a>1.107.        tablehasserialkey( text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>boolean</div>
+</div>
+</div>
+<p>
+ 
+       tableHasSerialKey (tab_fqname)
+
+Checks if a table has our special serial key column that is used if
+the table has no natural unique constraint.
+        </p>
+<pre class="programlisting">declare
+	p_tab_fqname	alias for $1;
+	v_tab_fqname_quoted	text default '';
+	v_attnum		int2;
+begin
+	v_tab_fqname_quoted := slon_quote_input(p_tab_fqname);
+	select PGA.attnum into v_attnum
+			from "pg_catalog".pg_class PGC,
+				"pg_catalog".pg_namespace PGN,
+				"pg_catalog".pg_attribute PGA
+			where slon_quote_brute(PGN.nspname) || '.' ||
+				slon_quote_brute(PGC.relname) = v_tab_fqname_quoted
+				and PGC.relnamespace = PGN.oid
+				and PGA.attrelid = PGC.oid
+				and PGA.attname = '_Slony-I_schemadoc_rowID'
+				and not PGA.attisdropped;
+	return found;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

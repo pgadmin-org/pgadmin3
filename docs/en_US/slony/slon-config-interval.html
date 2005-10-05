@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3. Event Tuning</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="runtime-config.html" title="Run-time Configuration">
+<link rel="prev" href="slon-config-connection.html" title="2. Connection settings">
+<link rel="next" href="slonik.html" title="slonik">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="slon-config-interval"></a>3. Event Tuning</h2></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="slon-config-sync-interval"></a><span class="term"><tt class="varname">sync_interval</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd><p>Check for updates at least this often in milliseconds. 
+          Range: [10-60000], default 100
+        </p></dd>
+<dt>
+<a name="slon-config-sync-interval-timeout"></a><span class="term"><tt class="varname">sync_interval_timeout</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd><p>          Maximum amount of time in milliseconds before issuing a
+          <tt class="command">SYNC</tt> event, This prevents a possible race
+          condition in which the action sequence is bumped by the
+          trigger while inserting the log row, which makes this bump
+          is immediately visible to the sync thread, but the resulting
+          log rows are not visible yet.  If the
+          <tt class="command">SYNC</tt> is picked up by the subscriber,
+          processed and finished before the transaction commits, this
+          transaction's changes will not be replicated until the next
+          <tt class="command">SYNC</tt>.  But if all application activity
+          suddenly stops, there will be no more sequence bumps, so the
+          high frequent <tt class="option">-s</tt> check won't detect that.
+          Thus, the need for
+          <tt class="envar">sync_interval_timeout</tt>. Range: [0-120000],
+          default 1000
+        </p></dd>
+<dt>
+<a name="slon-config-sync-group-maxsize"></a><span class="term"><tt class="varname">sync_group_maxsize</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd><p>          Maximum number of <tt class="command">SYNC</tt> events to group
+          together when/if a subscriber falls behind.
+          <tt class="command">SYNC</tt>s are batched only if there are that
+          many available and if they are contiguous. Every other event
+          type in between leads to a smaller batch.  And if there is
+          only one <tt class="command">SYNC</tt> available, even
+          <tt class="option">-g60</tt> will apply just that one. As soon as a
+          subscriber catches up, it will apply every single
+          <tt class="command">SYNC</tt> by itself.  Range: [0,10000], default:
+          6
+        </p></dd>
+<dt>
+<a name="slon-config-vac-frequency"></a><span class="term"><tt class="varname">vac_frequency</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd><p>          Sets how many cleanup cycles to run before a vacuum is done.
+          0 disables the builtin vacuum, intended to be used with the
+          <span class="application">pg_autovacuum</span> daemon.  Range:
+          [0,100], default: 3
+        </p></dd>
+<dt>
+<a name="slon-config-desired-sync-time"></a><span class="term"><tt class="varname">desired_sync_time</tt>  (<tt class="type">integer</tt>)</span>
+</dt>
+<dd>
+<p>Maximum time planned for grouped
+        <tt class="command">SYNC</tt>s. If replication is behind,
+        <span class="application">slon</span> will try to increase numbers
+        of syncs done targetting that they should take this quantity
+        of time to process.  This is in Range [10000,600000] ms,
+        default 60000. </p>
+<p>If the value is set to 0, this logic will be ignored.
+        </p>
+</dd>
+<dt>
+<a name="slon-config-quit-sync-provider"></a><span class="term"><tt class="varname">quit_sync_provider</tt>  (<tt class="type">integer</tt>)</span>
+</dt>
+<dd>
+<p> This must be used in conjunction with <a href="slon-config-interval.html#slon-config-quit-sync-finalsync">quit_sync_finalsync</a>, and indicates
+        which provider node's worker thread should be watched to see
+        if the slon should terminate due to reaching some desired
+        &#8220;<span class="quote">final</span>&#8221; event number.</p>
+<p>If the value is set to 0, this logic will be ignored.</p>
+</dd>
+<dt>
+<a name="slon-config-quit-sync-finalsync"></a><span class="term"><tt class="varname">quit_sync_finalsync</tt>  (<tt class="type">integer</tt>)</span>
+</dt>
+<dd>
+<p>Final event number to process.  This must be used in
+        conjunction with <a href="slon-config-interval.html#slon-config-quit-sync-finalsync">quit_sync_finalsync</a>, and
+        allows the <span class="application">slon</span> to terminate itself
+        once it reaches a certain event for the specified
+        provider. </p>
+<p>If the value is set to 0, this logic will be ignored.
+        </p>
+</dd>
+<dt>
+<a name="slon-config-lag-interval"></a><span class="term"><tt class="varname">lag_interval</tt>  (<tt class="type">string/interval</tt>)</span>
+</dt>
+<dd>
+<p>Indicates an interval by which this node should lag its
+        providers.  If set, this is used in the event processing loop
+        to modify what events are to be considered for queueing; those
+        events newer than <tt class="command"> now() - lag_interval::interval
+        </tt> are left out, to be processed later.  </p>
+<p>If the value is left empty, this logic will be ignored.
+        </p>
+</dd>
+</dl></div>
+</div></body>
+</html>

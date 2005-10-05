@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.62.        initializelocalnode( integer, text )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.getsessionrole-name.html" title="1.61.        getsessionrole( name )
+      ">
+<link rel="next" href="function.lockedset.html" title="1.63.        lockedset(  )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.initializelocalnode-integer-text"></a>1.62.        initializelocalnode( integer, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       no_id - Node ID #
+no_comment - Human-oriented comment
+
+Initializes the new node, no_id
+        </p>
+<pre class="programlisting">declare
+	p_local_node_id		alias for $1;
+	p_comment			alias for $2;
+	v_old_node_id		int4;
+	v_first_log_no		int4;
+	v_event_seq			int8;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Make sure this node is uninitialized or got reset
+	-- ----
+	select last_value::int4 into v_old_node_id from sl_local_node_id;
+	if v_old_node_id != -1 then
+		raise exception 'Slony-I: This node is already initialized';
+	end if;
+
+	-- ----
+	-- Set sl_local_node_id to the requested value and add our
+	-- own system to sl_node.
+	-- ----
+	perform setval('sl_local_node_id', p_local_node_id);
+	perform setval('sl_rowid_seq', 
+			p_local_node_id::int8 * '1000000000000000'::int8);
+	perform storeNode_int (p_local_node_id, p_comment, false);
+	
+	return p_local_node_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

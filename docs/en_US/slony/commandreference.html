@@ -1,0 +1,150 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Part I. Core Slony-I Programs</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="prev" href="faq.html" title="Slony-I FAQ">
+<link rel="next" href="slon.html" title="slon">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="commandreference">
+<div class="titlepage"><div><div><h1 class="title">
+<a name="commandreference"></a>Core <span class="productname">Slony-I<br></span> Programs</h1></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt>
+<a href="slon.html"><span class="application">slon</span></a> -    Slony-I daemon
+  </dt>
+<dt><span class="article"><a href="runtime-config.html">Run-time Configuration</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="runtime-config.html#slon-config-logging">1. Logging</a></span></dt>
+<dt><span class="sect1"><a href="slon-config-connection.html">2. Connection settings</a></span></dt>
+<dt><span class="sect1"><a href="slon-config-interval.html">3. Event Tuning</a></span></dt>
+</dl></dd>
+<dt>
+<a href="slonik.html"><span class="application">slonik</span></a> -       Slony-I command processor
+    </dt>
+<dt><span class="article"><a href="slonikref.html">Slonik Command Summary</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="slonikref.html#id2552599">1. Introduction</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="slonikref.html#outline">1.1. General outline</a></span></dt></dl></dd>
+</dl></dd>
+<dt><span class="reference"><a href="metacmds.html">I. Slonik Meta Commands</a></span></dt>
+<dd><dl>
+<dt>
+<a href="stmtinclude.html">INCLUDE</a> -  pulling in slonik code from another file </dt>
+<dt>
+<a href="stmtdefine.html">DEFINE</a> -  Defining a named symbol </dt>
+</dl></dd>
+<dt><span class="reference"><a href="hdrcmds.html">II. Slonik Preamble Commands</a></span></dt>
+<dd><dl>
+<dt>
+<a href="clustername.html">CLUSTER NAME</a> -  preamble - identifying Slony-I cluster </dt>
+<dt>
+<a href="admconninfo.html">ADMIN CONNINFO</a> -  preamble - identifying PostgreSQL database </dt>
+</dl></dd>
+<dt><span class="reference"><a href="cmds.html">III. Configuration and Action commmands</a></span></dt>
+<dd><dl>
+<dt>
+<a href="stmtecho.html">ECHO</a> -  Generic output tool </dt>
+<dt>
+<a href="stmtexit.html">EXIT</a> -  Terminate Slonik script with signal </dt>
+<dt>
+<a href="stmtinitcluster.html">INIT CLUSTER</a> - Initialize Slony-I cluster</dt>
+<dt>
+<a href="stmtstorenode.html">STORE NODE</a> -  Initialize Slony-I node </dt>
+<dt>
+<a href="stmtdropnode.html">DROP NODE</a> -  Decommission Slony-I node </dt>
+<dt>
+<a href="stmtuninstallnode.html">UNINSTALL NODE</a> -  Decommission Slony-I node </dt>
+<dt>
+<a href="stmtrestartnode.html">RESTART NODE</a> -  Restart Slony-I node </dt>
+<dt>
+<a href="stmtstorepath.html">STORE
+     PATH</a> -  Configure Slony-I node connection </dt>
+<dt>
+<a href="stmtdroppath.html">DROP PATH</a> -  Delete Slony-I connection information </dt>
+<dt>
+<a href="stmtstorelisten.html">STORE LISTEN</a> -  Configure Slony-I node to
+    indicate where to listen for events </dt>
+<dt>
+<a href="stmtdroplisten.html">DROP LISTEN</a> -  Eliminate configuration indicating how
+    Slony-I node listens for events
+    </dt>
+<dt>
+<a href="stmttableaddkey.html">TABLE ADD KEY</a> -  Add primary key for use by
+    Slony-I for a table with no suitable
+    key </dt>
+<dt>
+<a href="stmtcreateset.html">CREATE SET</a> -  Create Slony-I replication
+    set </dt>
+<dt>
+<a href="stmtdropset.html">DROP SET</a> -  Discard Slony-I
+    replication set </dt>
+<dt>
+<a href="stmtmergeset.html">MERGE
+     SET</a> -  Merge Slony-I replication
+    sets together </dt>
+<dt>
+<a href="stmtsetaddtable.html">SET ADD TABLE</a> -  Add a table to a Slony-I
+    replication set </dt>
+<dt>
+<a href="stmtsetaddsequence.html">SET ADD SEQUENCE</a> -  Add a sequence to a
+    Slony-I replication set
+    </dt>
+<dt>
+<a href="stmtsetdroptable.html">SET DROP TABLE</a> -  Remove a table from a
+    Slony-I replication set
+    </dt>
+<dt>
+<a href="stmtsetdropsequence.html">SET DROP SEQUENCE</a> -  Remove a sequence from a
+    Slony-I replication set
+    </dt>
+<dt>
+<a href="stmtsetmovetable.html">SET MOVE
+     TABLE</a> -  Move a table from one
+    Slony-I replication set to another
+    </dt>
+<dt>
+<a href="stmtsetmovesequence.html">SET MOVE SEQUENCE</a> -  Move a sequence from one
+    Slony-I replication set to another
+    </dt>
+<dt>
+<a href="stmtstoretrigger.html">STORE TRIGGER</a> -  Indicate that a trigger should not be disabled by
+    Slony-I on a subscriber node
+    </dt>
+<dt>
+<a href="stmtdroptrigger.html">DROP TRIGGER</a> -  Return a trigger to default behavior, where it will
+    not fire on subscriber nodes </dt>
+<dt>
+<a href="stmtsubscribeset.html">SUBSCRIBE SET</a> -  Start replication of Slony-I set </dt>
+<dt>
+<a href="stmtunsubscribeset.html">UNSUBSCRIBE SET</a> -  End replication of Slony-I set </dt>
+<dt>
+<a href="stmtlockset.html">LOCK SET</a> -  Guard Slony-I replication
+    set to prepare for MOVE SET
+    </dt>
+<dt>
+<a href="stmtunlockset.html">UNLOCK SET</a> -  Unlock a Slony-I set that was locked </dt>
+<dt>
+<a href="stmtmoveset.html">MOVE SET</a> -  Change origin of a Slony-I
+    replication set </dt>
+<dt>
+<a href="stmtfailover.html">FAILOVER</a> -  Fail a broken replication set over to a backup node
+    </dt>
+<dt>
+<a href="stmtddlscript.html">EXECUTE SCRIPT</a> -  Execute SQL/DDL script  </dt>
+<dt>
+<a href="stmtupdatefunctions.html">UPDATE FUNCTIONS</a> -  Reload stored functions </dt>
+<dt>
+<a href="stmtwaitevent.html">WAIT FOR EVENT</a> -  Have Slonik script wait for previous event to
+    complete </dt>
+</dl></dd>
+</dl>
+</div>
+</div></body>
+</html>

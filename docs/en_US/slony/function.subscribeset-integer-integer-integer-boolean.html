@@ -1,0 +1,109 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.103.        subscribeset( integer, integer, integer, boolean )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.storetrigger-int-integer-name.html" title="1.102.        storetrigger_int( integer, name )
+      ">
+<link rel="next" href="function.subscribeset-int-integer-integer-integer-boolean.html" title="1.104.        subscribeset_int( integer, integer, integer, boolean )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.subscribeset-integer-integer-integer-boolean"></a>1.103.        subscribeset( integer, integer, integer, boolean )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       subscribeSet (sub_set, sub_provider, sub_receiver, sub_forward)
+
+Makes sure that the receiver is not the provider, then stores the
+subscription, and publishes the SUBSCRIBE_SET event to other nodes.
+        </p>
+<pre class="programlisting">declare
+	p_sub_set			alias for $1;
+	p_sub_provider		alias for $2;
+	p_sub_receiver		alias for $3;
+	p_sub_forward		alias for $4;
+	v_set_origin		int4;
+	v_ev_seqno			int8;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Check that this is called on the receiver node
+	-- ----
+	if p_sub_provider != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: subscribeSet() must be called on provider';
+	end if;
+
+	-- ----
+	-- Check that the origin and provider of the set are remote
+	-- ----
+	select set_origin into v_set_origin
+			from sl_set
+			where set_id = p_sub_set;
+	if not found then
+		raise exception 'Slony-I: set % not found', p_sub_set;
+	end if;
+	if v_set_origin = p_sub_receiver then
+		raise exception 
+				'Slony-I: set origin and receiver cannot be identical';
+	end if;
+	if p_sub_receiver = p_sub_provider then
+		raise exception 
+				'Slony-I: set provider and receiver cannot be identical';
+	end if;
+
+
+	-- ---
+	-- Check to see if the set contains any tables - gripe if not - bug #1226
+	-- ---
+	if not exists (select true 
+		from sl_table
+		where tab_set = p_sub_set) then
+		raise notice 'subscribeSet:: set % has no tables - risk of problems - see bug 1226', p_sub_set;
+		raise notice 'http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226';
+	end if;
+
+	-- ----
+	-- Create the SUBSCRIBE_SET event
+	-- ----
+	v_ev_seqno :=  createEvent('_schemadoc', 'SUBSCRIBE_SET', 
+			p_sub_set, p_sub_provider, p_sub_receiver, 
+			case p_sub_forward when true then 't' else 'f' end);
+
+	-- ----
+	-- Call the internal procedure to store the subscription
+	-- ----
+	perform subscribeSet_int(p_sub_set, p_sub_provider,
+			p_sub_receiver, p_sub_forward);
+
+	-- ----
+	-- Submit listen management events
+	-- ----
+	perform RebuildListenEntries();
+
+	return v_ev_seqno;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

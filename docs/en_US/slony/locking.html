@@ -1,0 +1,151 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>10. Locking Issues</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="plainpaths.html" title="9.  Slony-I Path Communications">
+<link rel="next" href="addthings.html" title="11. Adding Things to Replication">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="locking"></a>10. Locking Issues</h2></div></div></div>
+<a name="id2541049"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+Multi-Version Concurrency Control (<span class="acronym">MVCC</span>) is that
+this eliminates a whole host of reasons to need to lock database
+objects.  On some other database systems, you need to acquire a table
+lock in order to insert data into the table; that can
+<span class="emphasis"><em>severely</em></span> hinder performance.  On other systems,
+read locks can impede writes; with <span class="acronym">MVCC</span>, <span class="productname">PostgreSQL</span>
+eliminates that whole class of locks in that &#8220;<span class="quote">old reads</span>&#8221;
+can access &#8220;<span class="quote">old tuples.</span>&#8221; Most of the time, this allows
+the gentle user of <span class="productname">PostgreSQL</span> to not need to worry very much about
+locks. </p>
+<p> Unfortunately, there are several sorts of <span class="productname">Slony-I</span> events that
+do require exclusive locks on <span class="productname">PostgreSQL</span> tables, with the result that
+modifying <span class="productname">Slony-I</span> configuration can bring back some of those
+&#8220;<span class="quote">locking irritations.</span>&#8221;  In particular:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p><a href="stmtsetaddtable.html" title="SET ADD TABLE"> <tt class="command">set add
+table</tt> </a></p>
+<p> A momentary table lock must be acquired on the
+&#8220;<span class="quote">origin</span>&#8221; node in order to add the trigger that collects
+updates for that table.  It only needs to be acquired long enough to
+establish the new trigger.</p>
+</li>
+<li>
+<p><a href="stmtmoveset.html" title="MOVE SET"> <tt class="command"> move
+set</tt> </a></p>
+<p> When a set origin is shifted from one node to another, locks
+must be acquired on each of the tables on both the old origin and the
+new origin in order to change the triggers on the tables.</p>
+</li>
+<li>
+<p><a href="stmtlockset.html" title="LOCK SET"> <tt class="command"> lock set</tt> </a> </p>
+<p> This operation expressly requests locks on each of the tables in a
+given replication set on the origin node.</p>
+</li>
+<li>
+<p><a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <tt class="command">execute
+script</tt> </a> </p>
+<p> This operation runs a set of SQL queries; in order for it to
+work, the <span class="productname">Slony-I</span> triggers must be removed, followed by the query
+(which potentially updates the data) running, followed by triggers
+being restored.  The operation therefore must acquire table locks on
+all replicated tables on each node. </p>
+</li>
+<li>
+<p> During the <tt class="command">COPY_SET</tt> event on a new
+subscriber </p>
+<p> In a sense, this is the least provocative scenario, since,
+before the replication set has been populated, it is pretty reasonable
+to say that the node is &#8220;<span class="quote">unusable</span>&#8221; and that <span class="productname">Slony-I</span>
+could reasonably demand exclusive access to the node. </p>
+</li>
+</ul></div>
+<p> Each of these actions requires, at some point, modifying each
+of the tables in the affected replication set, which requires
+acquiring an exclusive lock on the table.  Some users that have tried
+running these operations on <span class="productname">Slony-I</span> nodes that were actively
+servicing applications have experienced difficulties with deadlocks
+and/or with the operations hanging up. </p>
+<p> The obvious question: &#8220;<span class="quote">What to do about such
+deadlocks?</span>&#8221; </p>
+<p> Several possibilities admit themselves: </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Announce an application outage to avoid deadlocks</p>
+<p> If you can temporarily block applications from using the
+database, that will provide a window of time during which there is
+nothing running against the database other than administrative
+processes under your control. </p>
+</li>
+<li>
+<p> Try the operation, hoping for things to work </p>
+<p> Since nothing prevents applications from leaving access locks
+in your way, you may find yourself deadlocked.  But if the number of
+remaining locks are small, you may be able to negotiate with users to
+&#8220;<span class="quote">get in edgewise.</span>&#8221; </p>
+</li>
+<li>
+<p> Use pgpool </p>
+<p> If you can use this or some similar &#8220;<span class="quote">connection
+broker</span>&#8221;, you may be able to tell the connection manager to stop
+using the database for a little while, thereby letting it
+&#8220;<span class="quote">block</span>&#8221; the applications for you.  What would be ideal
+would be for the connection manager to hold up user queries for a
+little while so that the brief database outage looks, to them, like a
+period where things were running slowly.  </p>
+</li>
+<li>
+<p> Rapid Outage Management </p>
+<p> The following procedure may minimize the period of the outage:
+
+</p>
+<div class="itemizedlist"><ul type="circle">
+<li><p> Modify <tt class="filename">pg_hba.conf</tt> so that only
+the <a href="bestpractices.html#slonyuser"> <tt class="command">slony</tt> user </a>
+will have access to the database. </p></li>
+<li>
+<p> Issue a <tt class="command">kill -SIGHUP</tt> to the
+<span class="productname">PostgreSQL</span> postmaster.</p>
+<p> This will not kill off existing possibly-long-running queries,
+but will prevent new ones from coming in.  There is an application
+impact in that incoming queries will be rejected until the end of the
+process.</p>
+</li>
+<li><p> If &#8220;<span class="quote">all looks good,</span>&#8221; then it should be
+safe to proceed with the <span class="productname">Slony-I</span> operation. </p></li>
+<li>
+<p> If some old query is lingering around, you may need
+to <tt class="command">kill -SIGQUIT</tt> one of the <span class="productname">PostgreSQL</span> processes.
+This will restart the backend and kill off any lingering queries.  You
+probably need to restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes that
+attach to the node. </p>
+<p> At that point, it will be safe to proceed with the <span class="productname">Slony-I</span>
+operation; there will be no competing processes.</p>
+</li>
+<li><p> Reset <tt class="filename">pg_hba.conf</tt> to allow other
+users in, and <tt class="command">kill -SIGHUP</tt> the postmaster to make
+it reload the security configuration. </p></li>
+</ul></div>
+<p>
+</p>
+</li>
+<li><p> The section on <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)"> DDL
+Changes </a> suggests some additional techniques that may be
+useful, such as moving tables between replication sets in such a way
+that you minimize the set of tables that need to be
+locked. </p></li>
+</ul></div>
+<p> Regrettably, there is no perfect answer to this.  If it is
+<span class="emphasis"><em>necessary</em></span> to submit a <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> request, then it is presumably
+<span class="emphasis"><em>necessary</em></span> to accept the brief application outage.
+As <span class="productname">Slony-I</span>/<a href="help.html#pgpool"> pgpool </a> linkages improve,
+that may become a better way to handle this.</p>
+</div></body>
+</html>

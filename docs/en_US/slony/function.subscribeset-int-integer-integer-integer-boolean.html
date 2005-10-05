@@ -1,0 +1,121 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.104.        subscribeset_int( integer, integer, integer, boolean )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.subscribeset-integer-integer-integer-boolean.html" title="1.103.        subscribeset( integer, integer, integer, boolean )
+      ">
+<link rel="next" href="function.tableaddkey-text.html" title="1.105.        tableaddkey( text )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.subscribeset-int-integer-integer-integer-boolean"></a>1.104.        subscribeset_int( integer, integer, integer, boolean )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       subscribeSet_int (sub_set, sub_provider, sub_receiver, sub_forward)
+
+Internal actions for subscribing receiver sub_receiver to subscription
+set sub_set.
+        </p>
+<pre class="programlisting">declare
+	p_sub_set			alias for $1;
+	p_sub_provider		alias for $2;
+	p_sub_receiver		alias for $3;
+	p_sub_forward		alias for $4;
+	v_set_origin		int4;
+	v_sub_row			record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Provider change is only allowed for active sets
+	-- ----
+	if p_sub_receiver = getLocalNodeId('_schemadoc') then
+		select sub_active into v_sub_row from sl_subscribe
+				where sub_set = p_sub_set
+				and sub_receiver = p_sub_receiver;
+		if found then
+			if not v_sub_row.sub_active then
+				raise exception 'Slony-I: set % is not active, cannot change provider',
+						p_sub_set;
+			end if;
+		end if;
+	end if;
+
+	-- ----
+	-- Try to change provider and/or forward for an existing subscription
+	-- ----
+	update sl_subscribe
+			set sub_provider = p_sub_provider,
+				sub_forward = p_sub_forward
+			where sub_set = p_sub_set
+			and sub_receiver = p_sub_receiver;
+	if found then
+		return p_sub_set;
+	end if;
+
+	-- ----
+	-- Not found, insert a new one
+	-- ----
+	if not exists (select true from sl_path
+			where pa_server = p_sub_provider
+			and pa_client = p_sub_receiver)
+	then
+		insert into sl_path
+				(pa_server, pa_client, pa_conninfo, pa_connretry)
+				values 
+				(p_sub_provider, p_sub_receiver, 
+				'&lt;event pending&gt;', 10);
+	end if;
+	insert into sl_subscribe
+			(sub_set, sub_provider, sub_receiver, sub_forward, sub_active)
+			values (p_sub_set, p_sub_provider, p_sub_receiver,
+				p_sub_forward, false);
+
+	-- ----
+	-- If the set origin is here, then enable the subscription
+	-- ----
+	select set_origin into v_set_origin
+			from sl_set
+			where set_id = p_sub_set;
+	if not found then
+		raise exception 'Slony-I: set % not found', p_sub_set;
+	end if;
+
+	if v_set_origin = getLocalNodeId('_schemadoc') then
+		perform createEvent('_schemadoc', 'ENABLE_SUBSCRIPTION', 
+				p_sub_set, p_sub_provider, p_sub_receiver, 
+				case p_sub_forward when true then 't' else 'f' end);
+		perform enableSubscription(p_sub_set, 
+				p_sub_provider, p_sub_receiver);
+	end if;
+
+	-- Rewrite sl_listen table
+	perform RebuildListenEntries();
+
+	return p_sub_set;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

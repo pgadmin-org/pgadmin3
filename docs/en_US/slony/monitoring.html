@@ -1,0 +1,227 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>4. Monitoring</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="subscribenodes.html" title="3. Subscribing Nodes">
+<link rel="next" href="maintenance.html" title="5. Slony-I Maintenance">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="monitoring"></a>4. Monitoring</h2></div></div></div>
+<p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+and explanations of what they mean.</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2538377"></a>4.1. CONFIG notices</h3></div></div></div>
+<p>These entries are pretty straightforward. They are informative
+messages about your configuration.</p>
+<p>Here are some typical entries that you will probably run into in
+your logs:
+
+</p>
+<pre class="screen">CONFIG main: local node id = 1
+CONFIG main: loading current cluster configuration
+CONFIG storeNode: no_id=3 no_comment='Node 3'
+CONFIG storePath: pa_server=5 pa_client=1 pa_conninfo="host=127.0.0.1 dbname=foo user=postgres port=6132" pa_connretry=10
+CONFIG storeListen: li_origin=3 li_receiver=1 li_provider=3
+CONFIG storeSet: set_id=1 set_origin=1 set_comment='Set 1'
+CONFIG main: configuration complete - starting threads</pre>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2473157"></a>4.2. DEBUG Notices</h3></div></div></div>
+<p>Debug notices are always prefaced by the name of the thread that
+the notice originates from. You will see messages from the following
+threads:
+
+</p>
+<div class="variablelist"><dl>
+<dt><span class="term">localListenThread</span></dt>
+<dd><p> This is the local thread that listens for events on
+the local node.</p></dd>
+<dt><span class="term">remoteWorkerThread-X</span></dt>
+<dd><p> The thread processing remote events.  You can expect
+to see one of these for each node that this node communicates
+with.</p></dd>
+<dt><span class="term">remoteListenThread-X</span></dt>
+<dd><p>Listens for events on a remote node database.  You may
+expect to see one of these for each node in the
+cluster.</p></dd>
+<dt><span class="term">cleanupThread</span></dt>
+<dd><p> Takes care
+of things like vacuuming, cleaning out the confirm and event tables,
+and deleting old data.</p></dd>
+<dt><span class="term">syncThread</span></dt>
+<dd><p> Generates SYNC
+events.</p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2473209"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<p> Note that as far as slon is concerned, there is no "master" or
+"slave."  They are just nodes. </p>
+<p>What you can expect, initially, is to see, on both nodes, some
+events propagating back and forth.  Firstly, there should be some
+events published to indicate creation of the nodes and paths.  If you
+don't see those, then the nodes aren't likely to be able to
+communicate with one another, and nothing else will happen... </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Create the two nodes.</p>
+<p> No slons are running yet, so there are no logs to look at.</p>
+</li>
+<li>
+<p> Start the two slons</p>
+<p> The logs for each will start out very quiet, as neither node
+has much to say, and neither node knows how to talk to any other node.</p>
+</li>
+<li>
+<p> Do the <tt class="command">STORE PATH</tt> for the
+communications paths.  That will allow the nodes to start to become
+aware of one another.</p>
+<p> In version 1.0, <a href="table.sl-listen.html">sl_listen</a> is not set up
+automatically, so things still remain quiet until you explicitly
+submit <tt class="command">STORE LISTEN</tt> requests. In version 1.1, the
+&#8220;<span class="quote">listen paths</span>&#8221; are set up automatically, which will much
+more quickly get the communications network up and running.  </p>
+<p> If you look at the contents of the tables <a href="table.sl-node.html">sl_node</a> and <a href="table.sl-path.html">sl_path</a> and <a href="table.sl-listen.html">sl_listen</a>, on each node, that should give a good idea
+as to where things stand.  Until the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts,
+each node may only be partly configured.  If there are two nodes,
+there should be two entries in all three of these tables once the
+communications configuration is set up properly.  If there are fewer
+entries than that, well, that should give you some idea of what is
+missing.</p>
+</li>
+<li>
+<p> If needed (<span class="emphasis"><em>e.g.</em></span> - before version
+1.1), submit <tt class="command">STORE LISTEN</tt> requests to indicate how
+the nodes will use the communications paths. </p>
+<p> Once this has been done, the nodes' logs should show a greater
+level of activity, with events periodically being initiated on one
+node or the other, and propagating to the other. </p>
+</li>
+<li><p> You'll set up the set (<tt class="command">CREATE
+SET</tt>), add tables (<tt class="command">SET ADD TABLE</tt>), and
+sequences (<tt class="command">SET ADD SEQUENCE</tt>), and will see relevant
+events only on the origin node for the set. </p></li>
+<li>
+<p> Then, when you submit the <tt class="command">SUBSCRIBE SET</tt>
+request, the event should go to both nodes. </p>
+<p> The origin node has little more to do, after that...  The
+subscriber will then have a <tt class="command">COPY_SET</tt> event, which
+will lead to logging information about adding each table and copying
+its data.</p>
+</li>
+</ul></div>
+<p>After that, you'll mainly see two sorts of behaviour:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> On the origin, there won't be much logged, just
+indication that some <tt class="command">SYNC</tt> events are being
+generated and confirmed by other nodes.</p></li>
+<li><p> On the subscriber, there will be reports of
+<tt class="command">SYNC</tt> events, and that the subscriber pulls data
+from the provider for the relevant set(s).  This will happen
+infrequently if there are no updates going to the origin node; it will
+happen frequently when the origin sees heavy updates. </p></li>
+</ul></div>
+<p> WriteMe: I can't decide the format for the rest of this. I
+think maybe there should be a "how it works" page, explaining more
+about how the threads work, what to expect in the logs after you run a</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2538792"></a>4.4.  Nagios Replication Checks </h3></div></div></div>
+<p> The script in the <tt class="filename">tools</tt> directory called
+<tt class="command"> pgsql_replication_check.pl </tt> represents about best
+answers yet arrived at in several attempts to build replication tests
+to plug into the <a href="http://www.nagios.org/" target="_top"> Nagios </a>
+system monitoring tool.</p>
+<p> A former script, <tt class="filename">test_slony_replication.pl</tt>, took a &#8220;<span class="quote">clever</span>&#8221;
+approach where a &#8220;<span class="quote">test script</span>&#8221; is periodically run, which
+rummages through the <span class="productname">Slony-I</span> configuration to find origin and
+subscribers, injects a change, and watches for its propagation through
+the system.  It had two problems:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Connectivity problems to the
+<span class="emphasis"><em>single</em></span> host where the test ran would make it look
+as though replication was destroyed.  Overall, this monitoring
+approach has been fragile to numerous error conditions.</p></li>
+<li><p> Nagios has no ability to benefit from the
+&#8220;<span class="quote">cleverness</span>&#8221; of automatically exploring the set of nodes.</p></li>
+</ul></div>
+<p> The new script, <tt class="command">pgsql_replication_check.pl</tt>,
+takes the minimalist approach of assuming that the system is an online
+system that sees regular &#8220;<span class="quote">traffic,</span>&#8221; so that you can
+define a view specifically for the replication test called
+<tt class="envar">replication_status</tt> which is expected to see regular
+updates.  The view simply looks for the youngest
+&#8220;<span class="quote">transaction</span>&#8221; on the node, and lists its timestamp, age,
+and some bit of application information that might seem useful to see.</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> In an inventory system, that might be the order
+number for the most recently processed order. </p></li>
+<li><p> In a domain registry, that might be the name of the
+most recently created domain.</p></li>
+</ul></div>
+<p> An instance of the script will need to be run for each node
+that is to be monitored; that is the way
+<span class="application">Nagios</span> works. </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="testslonystate"></a>4.5.  test_slony_state</h3></div></div></div>
+<p> This script is in preliminary stages, and may be used to do
+some analysis of the state of a <span class="productname">Slony-I</span> cluster.</p>
+<p> You specify arguments including <tt class="option">database</tt>,
+<tt class="option">host</tt>, <tt class="option">user</tt>,
+<tt class="option">cluster</tt>, <tt class="option">password</tt>, and
+<tt class="option">port</tt> to connect to any of the nodes on a cluster.
+You also specify a <tt class="option">mailprog</tt> command (which should be
+a program equivalent to <span class="productname">Unix</span>
+<span class="application">mailx</span>) and a recipient of email. </p>
+<p> The script then rummages through <a href="table.sl-path.html">sl_path</a>
+to find all of the nodes in the cluster, and the DSNs to allow it to,
+in turn, connect to each of them.</p>
+<p> For each node, the script examines the state of things,
+including such things as:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Checking <a href="table.sl-listen.html">sl_listen</a> for some
+&#8220;<span class="quote">analytically determinable</span>&#8221; problems.  It lists paths
+that are not covered.</p></li>
+<li>
+<p> Providing a summary of events by origin node</p>
+<p> If a node hasn't submitted any events in a while, that likely
+suggests a problem.</p>
+</li>
+<li>
+<p> Summarizes the &#8220;<span class="quote">aging</span>&#8221; of table <a href="table.sl-confirm.html">sl_confirm</a> </p>
+<p> If one or another of the nodes in the cluster hasn't reported
+back recently, that tends to lead to cleanups of tables like <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-seqlog.html">sl_seqlog</a> not
+taking place.</p>
+</li>
+<li>
+<p> Summarizes what transactions have been running for a
+long time</p>
+<p> This only works properly if the statistics collector is
+configured to collect command strings, as controlled by the option
+<tt class="option"> stats_command_string = true </tt> in <tt class="filename">postgresql.conf </tt>.</p>
+<p> If you have broken applications that hold connections open,
+this will find them.</p>
+<p> If you have broken applications that hold connections open,
+that has several unsalutory effects as <a href="faq.html#longtxnsareevil"> described in the
+FAQ</a>.</p>
+</li>
+</ul></div>
+<p> The script does some diagnosis work based on parameters in the
+script; if you don't like the values, pick your favorites!</p>
+</div>
+</div></body>
+</html>

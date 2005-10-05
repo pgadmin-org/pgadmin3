@@ -1,0 +1,79 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>2. Slon daemons</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="next" href="subscribenodes.html" title="3. Subscribing Nodes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="slonstart"></a>2. Slon daemons</h2></div></div></div>
+<p>The programs that actually perform <span class="productname">Slony-I</span> replication are the
+<span class="application">slon</span> daemons.</p>
+<p>You need to run one <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> instance for each node
+in a <span class="productname">Slony-I</span> cluster, whether you consider that node a
+&#8220;<span class="quote">master</span>&#8221; or a &#8220;<span class="quote">slave</span>&#8221;. On Windows when 
+running as a service things are slightly different. One slon service
+is installed, and a seperate configuration file registered for each
+node to be serviced by that machine. The main service then manages 
+the individual slons itself. Since a <tt class="command">MOVE
+SET</tt> or <tt class="command">FAILOVER</tt> can switch the roles of
+nodes, slon needs to be able to function for both providers and
+subscribers.  It is not essential that these daemons run on any
+particular host, but there are some principles worth considering:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Each <span class="application">slon</span> needs to be able
+to communicate quickly with the database whose &#8220;<span class="quote">node
+controller</span>&#8221; it is.  Therefore, if a <span class="productname">Slony-I</span> cluster runs
+across some form of Wide Area Network, each slon process should run on
+or nearby the databases each is controlling.  If you break this rule,
+no particular disaster should ensue, but the added latency introduced
+to monitoring events on the slon's &#8220;<span class="quote">own node</span>&#8221; will cause
+it to replicate in a <span class="emphasis"><em>somewhat</em></span> less timely
+manner.</p></li>
+<li><p> The very fastest results would be achieved by having
+each <span class="application">slon</span> run on the database server that
+it is servicing.  If it runs somewhere within a fast local network,
+performance will not be noticeably degraded.</p></li>
+<li><p> It is an attractive idea to run many of the
+<span class="application">slon</span> processes for a cluster on one
+machine, as this makes it easy to monitor them both in terms of log
+files and process tables from one location.  This also eliminates the
+need to login to several hosts in order to look at log files or to
+restart <span class="application">slon</span> instances.</p></li>
+</ul></div>
+<p>There are two &#8220;<span class="quote">watchdog</span>&#8221; scripts currently available:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> <tt class="filename">tools/altperl/slon_watchdog</tt> -
+an &#8220;<span class="quote">early</span>&#8221; version that basically wraps a loop around the
+invocation of <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, restarting any time it falls
+over</p></li>
+<li><p> <tt class="filename">tools/altperl/slon_watchdog2</tt>
+- a somewhat more intelligent version that periodically polls the
+database, checking to see if a <tt class="command">SYNC</tt> has taken place
+recently.  We have had VPN connections that occasionally fall over
+without signalling the application, so that the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
+stops working, but doesn't actually die; this polling addresses that
+issue.</p></li>
+</ul></div>
+<p>The <tt class="filename">slon_watchdog2</tt> script is probably
+<span class="emphasis"><em>usually</em></span> the preferable thing to run.  It was at
+one point not preferable to run it whilst subscribing a very large
+replication set where it is expected to take many hours to do the
+initial <tt class="command">COPY SET</tt>.  The problem that came up in that
+case was that it figured that since it hasn't done a
+<tt class="command">SYNC</tt> in 2 hours, something was broken requiring
+restarting slon, thereby restarting the <tt class="command">COPY SET</tt>
+event.  More recently, the script has been changed to detect
+<tt class="command">COPY SET</tt> in progress.</p>
+</div></body>
+</html>

@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.  Not Using Slonik - Bare Metal Slony-I
+Functions </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="slonikshell.html" title="16.  Embedding Slonik in Shell Scripts ">
+<link rel="next" href="altperl.html" title="18. Slony-I Administration Scripts">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="noslonik"></a>17.  Not Using Slonik - Bare Metal <span class="productname">Slony-I</span>
+Functions </h2></div></div></div>
+<p> There are cases where it may make sense to directly use the
+stored functions that implement the various pieces of <span class="productname">Slony-I</span>.
+Slonik doesn't do terribly much &#8220;<span class="quote">magic;</span>&#8221; it is common for
+Slonik commands to simply involve deciding on a node at which to apply
+a command, and then submit a SQL query consisting of a call to one of
+the <span class="productname">Slony-I</span> stored functions.</p>
+<p> The developers of <span class="productname">Slony-I</span> anticipate that interested parties
+may wish to develop graphical tools as an alternative to Slonik; it
+would be entirely appropriate in such cases to submit configuration
+requests directly via the stored functions.  If you plan to do so, it
+is suggested that you examine how the stored procedures get used in
+<tt class="filename">slonik.c</tt>, as that should be the most
+representative way of seeing correct use of the functions.</p>
+<p> When debugging problems in &#8220;<span class="quote">troubled</span>&#8221; <span class="productname">Slony-I</span>
+clusters, it has also occasionally proven useful to use the stored
+functions.  This has been particularly useful for cases where <a href="table.sl-listen.html">sl_listen</a> configuration has been broken, and events
+have not been propagating properly.  The &#8220;<span class="quote">easiest</span>&#8221; fix
+was to:</p>
+<p> <tt class="command"> select
+_slonycluster.droplisten(li_origin,li_provider,li_receiver) from
+_slonycluster.sl_listen;</tt></p>
+<p> <tt class="command"> select _slonycluster.storelisten(pa_server,
+pa_server, pa_client) from _slonycluster.sl_path;</tt></p>
+<p> The result of this set of queries is to regenerate
+<span class="emphasis"><em>and propagate</em></span> the listen paths.  By running the main
+<tt class="function"> _slonycluster.storelisten()</tt> function,
+<tt class="command">STORE_LISTEN</tt> events are raised to cause the listen paths to
+propagate to the other nodes in the cluster.</p>
+<p> If there was a <span class="emphasis"><em>local</em></span> problem on one node, and you
+didn't want the updates to propagate (this would be an unusual
+situation; you almost certainly want to fix things
+<span class="emphasis"><em>everywhere</em></span>), the queries would instead be:</p>
+<p> <tt class="command"> select
+slonycluster.droplisten_int(li_origin,li_provider,li_receiver) from
+_slonycluster.sl_listen;</tt></p>
+<p> <tt class="command"> select _slonycluster.storelisten_int(pa_server,
+pa_server, pa_client) from _slonycluster.sl_path;</tt></p>
+<p> If you are planning to add <span class="productname">Slony-I</span> support to other tools
+(<span class="emphasis"><em>e.g.</em></span> - adding replication support to something
+like <a href="http://www.pgadmin.org/" target="_top"> <span class="productname">pgAdmin
+III</span> </a>), you need to be clear on where various
+functions need to be called.  The normal &#8220;<span class="quote">protocol</span>&#8221; is
+thus:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> The &#8220;<span class="quote">main</span>&#8221; function
+(<span class="emphasis"><em>e.g.</em></span> - without the <tt class="command">_int</tt>
+suffix) is called on a &#8220;<span class="quote">relevant</span>&#8221; node in the <span class="productname">Slony-I</span>
+cluster.</p>
+<p> In some cases, the function may be called on any node, and it
+can satisfactorily propagate to other nodes.  That is true for <a href="function.storelisten-integer-integer-integer.html">schemadocstorelisten( integer, integer, integer )</a>, for instance.
+In other cases, the function needs to be called on some particular
+node because that is the only place where data may be reasonably
+validated.  For instance, <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a> must
+be called on the receivernode.</p>
+</li>
+<li><p> If that &#8220;<span class="quote">main</span>&#8221; function succeeds, then
+the configuration change is performed on the local node, and an event
+is created using <a href="function.createevent-name-text.html">schemadoccreateevent( name, text )</a> to
+cause the configuration change to propagate to all of the other nodes
+in the <span class="productname">Slony-I</span> cluster.</p></li>
+<li>
+<p> Thirdly, the <tt class="command">_int</tt> version of the
+function must be run.</p>
+<p> In some cases, where functions are idempotent, the node where
+the &#8220;<span class="quote">main</span>&#8221; function runs can do this fairly early in
+processing.</p>
+<p> When the event propagates, the other nodes will run the
+<tt class="command">_int</tt> version, we rather hope with good
+success. </p>
+</li>
+</ul></div>
+</div></body>
+</html>

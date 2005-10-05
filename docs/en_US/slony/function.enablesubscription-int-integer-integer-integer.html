@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.53.        enablesubscription_int( integer, integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.enablesubscription-integer-integer-integer.html" title="1.52.        enablesubscription( integer, integer, integer )
+      ">
+<link rel="next" href="function.failednode-integer-integer.html" title="1.54.        failednode( integer, integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.enablesubscription-int-integer-integer-integer"></a>1.53.        enablesubscription_int( integer, integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       enableSubscription_int (sub_set, sub_provider, sub_receiver)
+
+Internal function to enable subscription of node sub_receiver to set
+sub_set via node sub_provider.
+
+slon does most of the work; all we need do here is to remember that it
+happened.  The function updates sl_subscribe, indicating that the
+subscription has become active.
+        </p>
+<pre class="programlisting">declare
+	p_sub_set			alias for $1;
+	p_sub_provider		alias for $2;
+	p_sub_receiver		alias for $3;
+	v_n					int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- The real work is done in the replication engine. All
+	-- we have to do here is remembering that it happened.
+	-- ----
+
+	-- ----
+	-- Well, not only ... we might be missing an important event here
+	-- ----
+	if not exists (select true from sl_path
+			where pa_server = p_sub_provider
+			and pa_client = p_sub_receiver)
+	then
+		insert into sl_path
+				(pa_server, pa_client, pa_conninfo, pa_connretry)
+				values 
+				(p_sub_provider, p_sub_receiver, 
+				'&lt;event pending&gt;', 10);
+	end if;
+
+	update sl_subscribe
+			set sub_active = 't'
+			where sub_set = p_sub_set
+			and sub_receiver = p_sub_receiver;
+	get diagnostics v_n = row_count;
+	if v_n = 0 then
+		insert into sl_subscribe
+				(sub_set, sub_provider, sub_receiver,
+				sub_forward, sub_active)
+				values
+				(p_sub_set, p_sub_provider, p_sub_receiver,
+				false, true);
+	end if;
+
+	-- Rewrite sl_listen table
+	perform RebuildListenEntries();
+
+	return p_sub_set;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

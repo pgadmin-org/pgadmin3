@@ -1,0 +1,108 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Run-time Configuration</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
+<link rel="prev" href="slon.html" title="slon">
+<link rel="next" href="slon-config-connection.html" title="2. Connection settings">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" lang="en" id="runtime-config">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="runtime-config"></a>Run-time Configuration</h2></div></div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="runtime-config.html#slon-config-logging">1. Logging</a></span></dt>
+<dt><span class="sect1"><a href="slon-config-connection.html">2. Connection settings</a></span></dt>
+<dt><span class="sect1"><a href="slon-config-interval.html">3. Event Tuning</a></span></dt>
+</dl>
+</div>
+<a name="id2551554"></a><p>    There are several configuration parameters that affect the
+    behavior of the replication system.  In this section, we describe
+    how to set the <span class="application">slon</span> daemon's
+    configuration parameters; the following subsections discuss each
+    parameter in detail.
+  </p>
+<p>    All parameter names are case-insensitive. Every parameter takes a value of 
+    one of four types: boolean, integer, floating point, or string.
+    Boolean values may be written as <tt class="literal">ON</tt>, <tt class="literal">OFF</tt>,
+    <tt class="literal">FALSE</tt>, <tt class="literal">YES</tt>, <tt class="literal">NO</tt>, 
+    <tt class="literal">1</tt>, <tt class="literal">0</tt> (all case-insensitive) or any 
+    unambiguous prefix of these.
+  </p>
+<p>    One parameter is specified per line. The equal sign between name and 
+    value is optional. Whitespace is insignificant and blank lines are
+    ignored. Hash marks (<tt class="literal">#</tt>) introduce comments
+    anywhere.  Parameter values that are not simple identifiers or
+    numbers must be single-quoted.
+  </p>
+<p>    Some options may be set through the Command-line, these options
+    override any conflicting settings in the configuration file.
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="slon-config-logging"></a>1. Logging</h2></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="slon-config-logging-syslog"></a><span class="term"><tt class="varname">syslog</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd><p>Sets up logging to syslog. If this parameter is 1, messages go both 
+          to syslog and the standard output. A value of 2 sends output only to syslog 
+          (some messages will still go to the standard output/error).  The default 
+          is 0, which means syslog is off.
+        </p></dd>
+<dt>
+<a name="slon-config-logging-syslog-facility"></a><span class="term"><tt class="varname">syslog_facility</tt> (<tt class="type">string</tt>)</span>
+</dt>
+<dd><p>Sets the syslog &#8220;<span class="quote">facility</span>&#8221; to be used when
+        syslog enabled.  Valid values are LOCAL0, LOCAL1, LOCAL2,
+        LOCAL3, LOCAL4, LOCAL5, LOCAL6, LOCAL7.  The default is
+        LOCAL0.
+        </p></dd>
+<dt>
+<a name="slon-config-logging-syslog-ident"></a><span class="term"><tt class="varname">syslog_ident</tt> (<tt class="type">string</tt>)</span>
+</dt>
+<dd><p>          Sets the program name used to identify slon messages in syslog. 
+          The default is slon.
+        </p></dd>
+<dt>
+<a name="slon-config-logging-log-level"></a><span class="term"><tt class="varname">log_level</tt> (<tt class="type">integer</tt>)</span>
+</dt>
+<dd><p>Debug log level (higher value ==&gt; more output).  Range: [0,4], default 4</p></dd>
+<dt>
+<a name="slon-config-logging-log-pid"></a><span class="term"><tt class="varname">log_pid</tt> (<tt class="type">boolean</tt>)</span>
+</dt>
+<dd><p>Determins, if you would like the pid of the (parent) slon process to
+          appear in each log line entry.
+        </p></dd>
+<dt>
+<a name="slon-config-logging-log-timestamp"></a><span class="term"><tt class="varname">log_timestamp</tt> (<tt class="type">boolean</tt>)</span>
+</dt>
+<dd><p>Determines if you would like the timestamp of the event being logged to 
+          appear in each log line entry.
+        </p></dd>
+<dt>
+<a name="slon-config-logging-log-timestamp-format"></a><span class="term"><tt class="varname">log_timestamp_format</tt> (<tt class="type">string</tt>)</span>
+</dt>
+<dd><p>A <tt class="function">strftime()</tt>-conformant format
+        string for use if <tt class="envar">log_timestamp</tt> is enabled. The
+        default is &#8220;<span class="quote">%Y-%m-%d %H:%M:%S %Z</span>&#8221;
+        </p></dd>
+<dt>
+<a name="slon-config-logging-pid-file"></a><span class="term"><tt class="varname">pid_file</tt> (<tt class="type">string</tt>)</span>
+</dt>
+<dd><p>Location and filename you would like for a file
+        containing the Process ID of the slon process. The default is
+        not defined in which case no file is written.
+        </p></dd>
+</dl></div>
+</div>
+</div></body>
+</html>

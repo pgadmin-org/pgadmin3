@@ -1,0 +1,127 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>19. Using Slony-I for PostgreSQL Upgrades</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="altperl.html" title="18. Slony-I Administration Scripts">
+<link rel="next" href="bestpractices.html" title="20.  Slony-I &#8220;Best Practices&#8221; ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="versionupgrade"></a>19. Using <span class="productname">Slony-I</span> for <span class="productname">PostgreSQL</span> Upgrades</h2></div></div></div>
+<a name="id2544596"></a><p> A number of people have found
+<span class="productname">Slony-I</span> useful for helping perform upgrades
+between major <span class="productname">PostgreSQL</span> releases
+(<span class="emphasis"><em> e.g.</em></span> which mandates running
+<span class="application">initdb</span> to create a new database instance)
+without requiring a substantial downtime.</p>
+<p> The &#8220;<span class="quote">simple</span>&#8221; way that one might imagine doing such
+an upgrade would involve running <span class="application">pg_dump</span> on
+the database running the older version, and then submit the results
+into a <span class="application">psql</span> session connected to a database
+instance running the newer version.  Unfortunately, the time consumed
+from start to end, for this approach, may be prohibitive.  For a
+database containing 40GB of data with numerous indices, the process
+required involves:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Stop all applications that might modify the data</p></li>
+<li><p> Start the <span class="application">pg_dump</span>, and load that into the new database</p></li>
+<li><p> Wait 40 hours for the dump/load to complete</p></li>
+<li><p> Point &#8220;<span class="quote">write</span>&#8221; applications to the new database</p></li>
+</ul></div>
+<p> And note that this led to a 40 hour outage.</p>
+<p> <span class="productname">Slony-I</span> offers an opportunity to replace that long outage with
+one a few minutes or even a few seconds long.  The approach taken is
+to create a <span class="productname">Slony-I</span> replica in the new version.  It is possible that
+it might take much longer than 40h to create that replica, but once
+it's there, it can be kept very nearly up to date.</p>
+<p> When it is time to switch over to the new database, the
+procedure is rather less time consuming:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Stop all applications that might modify the data</p></li>
+<li><p> Lock the set against client application updates using
+<a href="stmtlockset.html" title="LOCK SET"><span class="refentrytitle">LOCK SET</span></a></p></li>
+<li><p> Submit the Slonik command <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to shift the origin from the old database to
+the new one</p></li>
+<li><p> Point the applications at the new database</p></li>
+</ul></div>
+<p> This procedure should only need to take a very short time,
+likely bound more by how quickly you can reconfigure your applications
+than anything else.  If you can automate all the steps, it might take
+less than a second.  If not, somewhere between a few seconds and a few
+minutes is likely.</p>
+<p> Note that after the origin has been shifted, updates now flow
+into the <span class="emphasis"><em>old</em></span> database.  If you discover that due
+to some unforeseen, untested condition, your application is somehow
+unhappy connecting to the new database, you could easily use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> again to shift the origin back to the old
+database.</p>
+<p> If you consider it particularly vital to be able to shift back
+to the old database in its state at the time of the changeover, so as
+to be able to outright roll back the whole change, and would like as
+well the ability to shift back to the old version (with any updates
+since the changeover), the following steps would accomplish that:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Prepare <span class="emphasis"><em> two </em></span> <span class="productname">Slony-I</span> replicas
+of the database:
+
+</p>
+<div class="itemizedlist"><ul type="circle">
+<li><p> One running the new version of <span class="productname">PostgreSQL</span></p></li>
+<li><p> One running the old version of <span class="productname">PostgreSQL</span></p></li>
+</ul></div>
+<p> Thus, you have <span class="emphasis"><em>three</em></span> nodes, one running
+the new version of <span class="productname">PostgreSQL</span>, and the other two the old version.</p>
+</li>
+<li><p> Once they are roughly &#8220;<span class="quote">in sync</span>&#8221;, stop
+all applications that might modify the data</p></li>
+<li>
+<p> Allow them to get in sync, then
+<tt class="command">stop</tt> the <span class="application">slon</span> daemon
+that has been feeding the subscriber running the old version of
+<span class="productname">PostgreSQL</span></p>
+<p> You may want to use <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> to
+decommission this node, making it into a standalone database, or
+merely kill the <span class="application">slon</span>, depending on how
+permanent you want this all to be.</p>
+</li>
+<li><p> Then use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to shift the
+origin, as before.</p></li>
+</ul></div>
+<p> Supposing a &#8220;<span class="quote">small</span>&#8221; disaster strikes, you might
+recover back to the node running the old database that has been seeing
+updates come through; if you run into larger problems, you would have
+to abandon the two nodes and go to the one which had been shut off.</p>
+<p> This isn't to say that it is routine to have the sorts of
+problems that would mandate such a &#8220;<span class="quote">paranoid</span>&#8221; procedure;
+people worried about process risk assessments can be reassured if you
+have choices like this.
+
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p> <span class="productname">Slony-I</span> does not support versions of <span class="productname">PostgreSQL</span> older
+than 7.3.3 because it needs namespace support that did not solidify
+until that time.  Rod Taylor &#8220;<span class="quote">hacked up</span>&#8221; a version of
+<span class="productname">Slony-I</span> to work on 7.2 by allowing the <span class="productname">Slony-I</span> objects to live in
+the global schema.  He found it pretty fiddly, and that some queries
+weren't very efficient (the <span class="productname">PostgreSQL</span> query optimizer has improved
+<span class="emphasis"><em>considerably</em></span> since 7.2), but that this was more
+workable for him than other replication systems such as
+<span class="productname">eRServer</span>.  If you desperately need that,
+look for him on the <span class="productname">PostgreSQL</span> Hackers mailing list.  It is not
+anticipated that 7.2 will be supported by any official <span class="productname">Slony-I</span>
+release.</p>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>11. Adding Things to Replication</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="locking.html" title="10. Locking Issues">
+<link rel="next" href="dropthings.html" title="12. Dropping things from Slony-I Replication">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="addthings"></a>11. Adding Things to Replication</h2></div></div></div>
+<p>You may discover that you have missed replicating things that
+you wish you were replicating.</p>
+<p>This can be fairly easily remedied.</p>
+<p>You cannot directly use <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+<a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> or <a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>
+in order to add tables and sequences
+to a replication set that is presently replicating; you must instead
+create a new replication set.  Once it is identically subscribed
+(e.g. - the set of providers and subscribers is <span class="emphasis"><em>entirely
+identical</em></span> to that for the set it is to merge with), the
+sets may be merged together using <a href="stmtmergeset.html" title="MERGE
+     SET"><span class="refentrytitle">MERGE
+     SET</span></a>.</p>
+<p>Up to and including 1.0.2, there was a potential problem where
+if <a href="stmtmergeset.html" title="MERGE
+     SET"><span class="refentrytitle">MERGE
+     SET</span></a> is issued while other
+subscription-related events are pending, it is possible for things to
+get pretty confused on the nodes where other things were pending.
+This problem was resolved in 1.0.5.</p>
+<p> Note that if you add nodes, you will need to add both <a href="stmtstorepath.html" title="STORE
+     PATH"><span class="refentrytitle">STORE
+     PATH</span></a> statements to indicate how nodes communicate
+with one another, and <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> statements to
+configuration the &#8220;<span class="quote">communications network</span>&#8221; that results
+from that.  See <a href="listenpaths.html" title="8. Slony-I listen paths">Section 8, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a> for more details on the
+latter.</p>
+<p>It is suggested that you be very deliberate when adding such
+things.  For instance, submitting multiple subscription requests for a
+particular set in one <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script often turns out
+quite badly.  If it is <span class="emphasis"><em>truly</em></span> necessary to
+automate this, you'll probably want to submit <a href="stmtwaitevent.html" title="WAIT FOR EVENT"><span class="refentrytitle">WAIT FOR EVENT</span></a> requests in between subscription requests in
+order that the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script wait for one
+subscription to complete processing before requesting the next
+one.</p>
+<p>But in general, it is likely to be easier to cope with complex
+node reconfigurations by making sure that one change has been
+successfully processed before going on to the next.  It's way easier
+to fix one thing that has broken than to piece things together after
+the interaction of five things that have all broken.</p>
+</div></body>
+</html>

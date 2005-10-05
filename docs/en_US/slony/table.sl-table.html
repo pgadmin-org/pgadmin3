@@ -1,0 +1,208 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.15.          Table:
+         
+         sl_table
+        </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="table.sl-subscribe.html" title="1.14.          Table:
+         
+         sl_subscribe
+        ">
+<link rel="next" href="table.sl-trigger.html" title="1.16.          Table:
+         
+         sl_trigger
+        ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="table.sl-table"></a>1.15.          Table:
+         
+         <tt class="structname">sl_table</tt>
+        </h2></div></div></div>
+<p>          Holds information about the tables being replicated.
+        </p>
+<p>          </p>
+<div class="variablelist">
+<p class="title"><b>              Structure of <tt class="structname">sl_table</tt>
+            </b></p>
+<dl>
+<dt><span class="term"><tt class="structfield">tab_id</tt></span></dt>
+<dd>
+<p>                <tt class="type">integer</tt>
+
+
+                <tt class="literal">PRIMARY KEY</tt>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </p>
+<p>                Unique key for Slony-I to use to identify the table
+              </p>
+</dd>
+<dt><span class="term"><tt class="structfield">tab_reloid</tt></span></dt>
+<dd>
+<p>                <tt class="type">oid</tt>
+
+
+
+
+                      <tt class="literal">UNIQUE</tt>
+
+
+
+
+                <tt class="literal">NOT NULL</tt>
+
+
+
+
+
+
+
+              </p>
+<p>                The OID of the table in pg_catalog.pg_class.oid
+              </p>
+</dd>
+<dt><span class="term"><tt class="structfield">tab_relname</tt></span></dt>
+<dd>
+<p>                <tt class="type">name</tt>
+
+
+
+                <tt class="literal">NOT NULL</tt>
+
+
+
+
+
+              </p>
+<p>                The name of the table in pg_catalog.pg_class.relname used to recover from a dump/restore cycle
+              </p>
+</dd>
+<dt><span class="term"><tt class="structfield">tab_nspname</tt></span></dt>
+<dd>
+<p>                <tt class="type">name</tt>
+
+
+
+                <tt class="literal">NOT NULL</tt>
+
+
+
+
+
+              </p>
+<p>                The name of the schema in pg_catalog.pg_namespace.nspname used to recover from a dump/restore cycle
+              </p>
+</dd>
+<dt><span class="term"><tt class="structfield">tab_set</tt></span></dt>
+<dd>
+<p>                <tt class="type">integer</tt>
+
+
+
+
+
+
+
+
+
+
+
+
+                <tt class="literal">REFERENCES</tt> <a href="table.sl-set.html">sl_set</a>&gt;
+
+
+              </p>
+<p>                ID of the replication set the table is in
+              </p>
+</dd>
+<dt><span class="term"><tt class="structfield">tab_idxname</tt></span></dt>
+<dd>
+<p>                <tt class="type">name</tt>
+
+
+
+                <tt class="literal">NOT NULL</tt>
+
+
+
+
+
+              </p>
+<p>                The name of the primary index of the table
+              </p>
+</dd>
+<dt><span class="term"><tt class="structfield">tab_altered</tt></span></dt>
+<dd>
+<p>                <tt class="type">boolean</tt>
+
+
+
+                <tt class="literal">NOT NULL</tt>
+
+
+
+
+
+              </p>
+<p>                Has the table been modified for replication?
+              </p>
+</dd>
+<dt><span class="term"><tt class="structfield">tab_comment</tt></span></dt>
+<dd>
+<p>                <tt class="type">text</tt>
+
+
+
+
+
+
+
+              </p>
+<p>                Human-oriented description of the table
+              </p>
+</dd>
+</dl>
+</div>
+<p>
+
+
+
+
+
+
+
+        </p>
+<div class="itemizedlist">
+<p class="title"><b>            Tables referencing sl_trigger via Foreign Key Constraints
+          </b></p>
+<ul type="disc"><li><p>              <a href="table.sl-trigger.html">sl_trigger</a>&gt;
+            </p></li></ul>
+</div>
+<p>
+
+
+
+
+
+
+      </p>
+</div></body>
+</html>

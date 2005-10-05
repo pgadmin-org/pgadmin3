@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.20.        cleanupevent(  )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.altertablerestore-integer.html" title="1.19.        altertablerestore( integer )
+      ">
+<link rel="next" href="function.cleanuplistener.html" title="1.21.        cleanuplistener(  )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.cleanupevent"></a>1.20.        cleanupevent(  )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       cleaning old data out of sl_confirm, sl_event.  Removes all but the
+last sl_confirm row per (origin,receiver), and then removes all events
+that are confirmed by all nodes in the whole cluster up to the last
+SYNC.  
+        </p>
+<pre class="programlisting">declare
+	v_max_row	record;
+	v_min_row	record;
+	v_max_sync	int8;
+begin
+	-- ----
+	-- First remove all but the oldest confirm row per origin,receiver pair
+	-- ----
+	delete from sl_confirm
+				where con_origin not in (select no_id from sl_node);
+	delete from sl_confirm
+				where con_received not in (select no_id from sl_node);
+	-- ----
+	-- Next remove all but the oldest confirm row per origin,receiver pair.
+	-- Ignore confirmations that are younger than 10 minutes. We currently
+	-- have an not confirmed suspicion that a possibly lost transaction due
+	-- to a server crash might have been visible to another session, and
+	-- that this led to log data that is needed again got removed.
+	-- ----
+	for v_max_row in select con_origin, con_received, max(con_seqno) as con_seqno
+				from sl_confirm
+				where con_timestamp &lt; (CURRENT_TIMESTAMP - '10 min'::interval)
+				group by con_origin, con_received
+	loop
+		delete from sl_confirm
+				where con_origin = v_max_row.con_origin
+				and con_received = v_max_row.con_received
+				and con_seqno &lt; v_max_row.con_seqno;
+	end loop;
+
+	-- ----
+	-- Then remove all events that are confirmed by all nodes in the
+	-- whole cluster up to the last SYNC
+	-- ----
+	for v_min_row in select con_origin, min(con_seqno) as con_seqno
+				from sl_confirm
+				group by con_origin
+	loop
+		select coalesce(max(ev_seqno), 0) into v_max_sync
+				from sl_event
+				where ev_origin = v_min_row.con_origin
+				and ev_seqno &lt;= v_min_row.con_seqno
+				and ev_type = 'SYNC';
+		if v_max_sync &gt; 0 then
+			delete from sl_event
+					where ev_origin = v_min_row.con_origin
+					and ev_seqno &lt; v_max_sync;
+		end if;
+	end loop;
+
+	return 0;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

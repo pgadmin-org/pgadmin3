@@ -1,0 +1,162 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>5. Slony-I Maintenance</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="monitoring.html" title="4. Monitoring">
+<link rel="next" href="reshape.html" title="6. Reshaping a Cluster">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="maintenance"></a>5. <span class="productname">Slony-I</span> Maintenance</h2></div></div></div>
+<p><span class="productname">Slony-I</span> actually does a lot of its necessary maintenance
+itself, in a &#8220;<span class="quote">cleanup</span>&#8221; thread:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Deletes old data from various tables in the
+<span class="productname">Slony-I</span> cluster's namespace, notably
+entries in <a href="table.sl-log-1.html">sl_log_1</a>, <a href="table.sl-log-2.html">sl_log_2</a> (not yet used), and <a href="table.sl-seqlog.html">sl_seqlog</a>.</p></li>
+<li>
+<p> Vacuum certain tables used by <span class="productname">Slony-I</span>.  As of 1.0.5,
+this includes pg_listener; in earlier versions, you must vacuum that
+table heavily, otherwise you'll find replication slowing down because
+<span class="productname">Slony-I</span> raises plenty of events, which leads to that table having
+plenty of dead tuples.</p>
+<p> In some versions (1.1, for sure; possibly 1.0.5) there is the
+option of not bothering to vacuum any of these tables if you are using
+something like <span class="application">pg_autovacuum</span> to handle
+vacuuming of these tables.  Unfortunately, it has been quite possible
+for <span class="application">pg_autovacuum</span> to not vacuum quite
+frequently enough, so you probably want to use the internal vacuums.
+Vacuuming <tt class="envar">pg_listener</tt> &#8220;<span class="quote">too often</span>&#8221; isn't
+nearly as hazardous as not vacuuming it frequently enough.</p>
+<p>Unfortunately, if you have long-running transactions, vacuums
+cannot clear out dead tuples that are newer than the eldest
+transaction that is still running.  This will most notably lead to
+<tt class="envar">pg_listener</tt> growing large and will slow
+replication.</p>
+</li>
+<li>
+<p> The <a href="faq.html#dupkey"> Duplicate Key Violation</a> bug has helped track down some <span class="productname">PostgreSQL</span> race conditions.
+One remaining issue is that it appears that is a case where
+<tt class="command">VACUUM</tt> is not reclaiming space correctly, leading
+to corruption of B-trees. </p>
+<p> It may be helpful to run the command <tt class="command"> REINDEX TABLE
+sl_log_1;</tt> periodically to avoid the problem
+occurring. </p>
+</li>
+</ul></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2539218"></a>5.1.  Watchdogs: Keeping Slons Running</h3></div></div></div>
+<p>There are a couple of &#8220;<span class="quote">watchdog</span>&#8221; scripts available that
+monitor things, and restart the <span class="application">slon</span> processes should
+they happen to die for some reason, such as a network &#8220;<span class="quote">glitch</span>&#8221;
+that causes loss of connectivity.</p>
+<p>You might want to run them...</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2539243"></a>5.2. Parallel to Watchdog: generate_syncs.sh</h3></div></div></div>
+<p>A new script for <span class="productname">Slony-I</span> 1.1 is
+<span class="application">generate_syncs.sh</span>, which addresses the following kind of
+situation.</p>
+<p>Supposing you have some possibly-flakey server where the
+<span class="application">slon</span> daemon that might not run all the time, you might
+return from a weekend away only to discover the following situation.</p>
+<p>On Friday night, something went &#8220;<span class="quote">bump</span>&#8221; and while the
+database came back up, none of the <span class="application">slon</span> daemons
+survived.  Your online application then saw nearly three days worth of
+reasonably heavy transaction load.</p>
+<p>When you restart <span class="application">slon</span> on Monday, it
+hasn't done a SYNC on the master since Friday, so that the next
+&#8220;<span class="quote">SYNC set</span>&#8221; comprises all of the updates between Friday
+and Monday.  Yuck.</p>
+<p>If you run <span class="application">generate_syncs.sh</span> as a cron job every
+20 minutes, it will force in a periodic <tt class="command">SYNC</tt> on the origin, which
+means that between Friday and Monday, the numerous updates are split
+into more than 100 syncs, which can be applied incrementally, making
+the cleanup a lot less unpleasant.</p>
+<p>Note that if <tt class="command">SYNC</tt>s <span class="emphasis"><em>are</em></span> running
+regularly, this script won't bother doing anything.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2539335"></a>5.3. Replication Test Scripts </h3></div></div></div>
+<p> In the directory <tt class="filename">tools</tt> may be found four
+scripts that may be used to do monitoring of <span class="productname">Slony-I</span> instances:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> <tt class="command">test_slony_replication</tt> is a
+Perl script to which you can pass connection information to get to a
+<span class="productname">Slony-I</span> node.  It then queries <a href="table.sl-path.html">sl_path</a> and
+other information on that node in order to determine the shape of the
+requested replication set.</p>
+<p> It then injects some test queries to a test table called
+<tt class="envar">slony_test</tt> which is defined as follows, and which needs to be
+added to the set of tables being replicated:
+
+</p>
+<pre class="programlisting">CREATE TABLE slony_test (
+    description text,
+    mod_date timestamp with time zone,
+    "_Slony-I_testcluster_rowID" bigint DEFAULT nextval('"_testcluster".sl_rowid_seq'::text) NOT NULL
+);</pre>
+<p> The last column in that table was defined by <span class="productname">Slony-I</span> as one
+lacking a primary key...</p>
+<p> This script generates a line of output for each <span class="productname">Slony-I</span> node
+that is active for the requested replication set in a file called
+<tt class="filename">cluster.fact.log</tt>.</p>
+<p> There is an additional <tt class="option">finalquery</tt> option that allows
+you to pass in an application-specific SQL query that can determine
+something about the state of your application.</p>
+</li>
+<li><p><tt class="command">log.pm</tt> is a Perl module that manages logging
+for the Perl scripts.</p></li>
+<li>
+<p><tt class="command">run_rep_tests.sh</tt> is a &#8220;<span class="quote">wrapper</span>&#8221; script
+that runs <tt class="command">test_slony_replication</tt>.</p>
+<p> If you have several <span class="productname">Slony-I</span> clusters, you might set up
+configuration in this file to connect to all those
+clusters.</p>
+</li>
+<li>
+<p><tt class="command">nagios_slony_test</tt> is a script
+that was constructed to query the log files so that you might run the
+replication tests every so often (we run them every 6 minutes), and
+then a system monitoring tool such as <a href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span></a> can be set up to use this script to query the state indicated
+in those logs.</p>
+<p> It seemed rather more efficient to have a
+<span class="application">cron</span> job run the tests and have
+<span class="productname">Nagios</span> check the results rather than having
+<span class="productname">Nagios</span> run the tests directly.  The tests
+can exercise the whole <span class="productname">Slony-I</span> cluster at once rather than
+<span class="productname">Nagios</span> invoking updates over and over
+again.</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2539526"></a>5.4.  Log Files</h3></div></div></div>
+<p><a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons generate some more-or-less verbose
+log files, depending on what debugging level is turned on.  You might
+assortedly wish to:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Use a log rotator like <span class="productname">Apache</span> 
+<span class="application">rotatelogs</span> to have a sequence of log files so that no
+one of them gets too big;</p></li>
+<li><p> Purge out old log files, periodically.</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

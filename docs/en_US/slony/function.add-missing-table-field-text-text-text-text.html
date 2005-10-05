@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.17.        add_missing_table_field( text, text, text, text )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="table.sl-trigger.html" title="1.16.          Table:
+         
+         sl_trigger
+        ">
+<link rel="next" href="function.altertableforreplication-integer.html" title="1.18.        altertableforreplication( integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.add-missing-table-field-text-text-text-text"></a>1.17.        add_missing_table_field( text, text, text, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>boolean</div>
+</div>
+</div>
+<p>
+ 
+       Add a column of a given type to a table if it is missing
+        </p>
+<pre class="programlisting">DECLARE
+  p_namespace alias for $1;
+  p_table     alias for $2;
+  p_field     alias for $3;
+  p_type      alias for $4;
+  v_row       record;
+  v_query     text;
+BEGIN
+  select 1 into v_row from pg_namespace n, pg_class c, pg_attribute a
+     where slon_quote_brute(n.nspname) = p_namespace and 
+         c.relnamespace = n.oid and
+         slon_quote_brute(c.relname) = p_table and
+         a.attrelid = c.oid and
+         slon_quote_brute(a.attname) = p_field;
+  if not found then
+    raise notice 'Upgrade table %.% - add field %', p_namespace, p_table, p_field;
+    v_query := 'alter table ' || p_namespace || '.' || p_table || ' add column ';
+    v_query := v_query || p_field || ' ' || p_type || ';';
+    execute v_query;
+    return 't';
+  else
+    return 'f';
+  end if;
+END;</pre>
+<p>
+      </p>
+</div></body>
+</html>

@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.99.        storeset( integer, text )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.storepath-int-integer-integer-text-integer.html" title="1.98.        storepath_int( integer, integer, text, integer )
+      ">
+<link rel="next" href="function.storeset-int-integer-integer-text.html" title="1.100.        storeset_int( integer, integer, text )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.storeset-integer-text"></a>1.99.        storeset( integer, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       Generate STORE_SET event for set set_id with human readable comment set_comment
+        </p>
+<pre class="programlisting">declare
+	p_set_id			alias for $1;
+	p_set_comment		alias for $2;
+	v_local_node_id		int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	v_local_node_id := getLocalNodeId('_schemadoc');
+
+	insert into sl_set
+			(set_id, set_origin, set_comment) values
+			(p_set_id, v_local_node_id, p_set_comment);
+
+	return createEvent('_schemadoc', 'STORE_SET', 
+			p_set_id, v_local_node_id, p_set_comment);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

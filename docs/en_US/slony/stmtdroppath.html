@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP PATH</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtstorepath.html" title="STORE
+     PATH">
+<link rel="next" href="stmtstorelisten.html" title="STORE LISTEN">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtdroppath"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP PATH &#8212;  Delete <span class="productname">Slony-I</span> connection information </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">DROP PATH (options);</tt></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2554134"></a><h2>Description</h2>
+<p> 	Remove the connection information between &#8220;<span class="quote">server</span>&#8221; and
+     &#8220;<span class="quote">client</span>&#8221;.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal"> SERVER  = ival </tt></span></dt>
+<dd><p> Node ID of the database to connect to.</p></dd>
+<dt><span class="term"><tt class="literal"> CLIENT  = ival </tt></span></dt>
+<dd><p> Node ID of the replication daemon connecting.</p></dd>
+<dt><span class="term"><tt class="literal"> EVENT NODE = ival </tt></span></dt>
+<dd><p> The ID of the node used to create the configuration
+	 event that tells all existing nodes about dropping the path.
+	 Defaults to the &#8220;<span class="quote">client</span>&#8221;, if omitted.
+	</p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2554187"></a><h2>Example</h2>
+<pre class="programlisting">  DROP PATH ( SERVER = 1, CLIENT = 2 );
+    </pre>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,59 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE SET</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmttableaddkey.html" title="TABLE ADD KEY">
+<link rel="next" href="stmtdropset.html" title="DROP SET">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtcreateset"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE SET &#8212;  Create <span class="productname">Slony-I</span> replication
+    set </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">CREATE SET (options);</tt></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2554607"></a><h2>Description</h2>
+<p>     In the <span class="productname">Slony-I</span> replication system,
+     replicated tables are organized in sets. As a general rule of
+     thumb, a set should contain all the tables of one application,
+     that have relationships.  In a well designed application, this is
+     equal to all the tables in one schema.
+    </p>
+<p>     The smallest unit one node can subscribe for replication from
+     another node is a set. A set always has an origin. In
+     classical replication terms, that would be the &#8220;<span class="quote">master.</span>&#8221;
+     Since in <span class="productname">Slony-I</span> a node can be the &#8220;<span class="quote">master</span>&#8221; over one set,
+     while receiving replication data in the &#8220;<span class="quote">slave</span>&#8221; role for
+     another at the same time, this terminology may easily become
+     misleading and should therefore be replaced with &#8220;<span class="quote">set
+      origin</span>&#8221; and &#8220;<span class="quote">subscriber</span>&#8221;.
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal"> ID = ival </tt></span></dt>
+<dd><p> ID of the set to be created.</p></dd>
+<dt><span class="term"><tt class="literal"> ORIGIN = ival </tt></span></dt>
+<dd><p> Initial origin node of the set.</p></dd>
+<dt><span class="term"><tt class="literal"> COMMENT = 'string' </tt></span></dt>
+<dd><p> A descriptive text added to the set entry.</p></dd>
+</dl></div>
+<p> This uses <a href="function.storeset-integer-text.html">schemadocstoreset( integer, text )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2554700"></a><h2>Example</h2>
+<pre class="programlisting">     CREATE SET ( ID = 1, 
+               ORIGIN = 1,
+               COMMENT = 'Tables for ticketing system' );
+    </pre>
+</div>
+</div></body>
+</html>

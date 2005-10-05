@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.114.        updatereloid( integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.updaterelname-integer-integer.html" title="1.113.        updaterelname( integer, integer )
+      ">
+<link rel="next" href="function.upgradeschema-text.html" title="1.115.        upgradeschema( text )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.updatereloid-integer-integer"></a>1.114.        updatereloid( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       updateReloid(set_id, only_on_node)
+
+Updates the respective reloids in sl_table and sl_seqeunce based on
+their respective FQN
+        </p>
+<pre class="programlisting">declare
+        p_set_id                alias for $1;
+        p_only_on_node          alias for $2;
+        v_no_id                 int4;
+        v_set_origin            int4;
+begin
+        -- ----
+        -- Grab the central configuration lock
+        -- ----
+        lock table sl_config_lock;
+
+        -- ----
+        -- Check that we either are the set origin or a current
+        -- subscriber of the set.
+        -- ----
+        v_no_id := getLocalNodeId('_schemadoc');
+        select set_origin into v_set_origin
+                        from sl_set
+                        where set_id = p_set_id
+                        for update;
+        if not found then
+                raise exception 'Slony-I: set % not found', p_set_id;
+        end if;
+        if v_set_origin &lt;&gt; v_no_id
+                and not exists (select 1 from sl_subscribe
+                        where sub_set = p_set_id
+                        and sub_receiver = v_no_id)
+        then
+                return 0;
+        end if;
+
+        -- ----
+        -- If execution on only one node is requested, check that
+        -- we are that node.
+        -- ----
+        if p_only_on_node &gt; 0 and p_only_on_node &lt;&gt; v_no_id then
+                return 0;
+        end if;
+        update sl_table set
+                tab_reloid = PGC.oid
+                from pg_catalog.pg_class PGC, pg_catalog.pg_namespace PGN
+                where slon_quote_brute(sl_table.tab_relname) = slon_quote_brute(PGC.relname)
+                        and PGC.relnamespace = PGN.oid
+			and slon_quote_brute(PGN.nspname) = slon_quote_brute(sl_table.tab_nspname);
+
+        update sl_sequence set
+                seq_reloid = PGC.oid
+                from pg_catalog.pg_class PGC, pg_catalog.pg_namespace PGN
+                where slon_quote_brute(sl_sequence.seq_relname) = slon_quote_brute(PGC.relname)
+                	and PGC.relnamespace = PGN.oid
+			and slon_quote_brute(PGN.nspname) = slon_quote_brute(sl_sequence.seq_nspname);
+
+        return  createEvent('_schemadoc', 'RESET_CONFIG',
+                        p_set_id, p_only_on_node);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

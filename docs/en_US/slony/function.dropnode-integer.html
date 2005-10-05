@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.42.        dropnode( integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.droplisten-int-integer-integer-integer.html" title="1.41.        droplisten_int( integer, integer, integer )
+      ">
+<link rel="next" href="function.dropnode-int-integer.html" title="1.43.        dropnode_int( integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.dropnode-integer"></a>1.42.        dropnode( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       generate DROP_NODE event to drop node node_id from replication
+        </p>
+<pre class="programlisting">declare
+	p_no_id			alias for $1;
+	v_node_row		record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Check that this got called on a different node
+	-- ----
+	if p_no_id = getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: DROP_NODE cannot initiate on the dropped node';
+	end if;
+
+	select * into v_node_row from sl_node
+			where no_id = p_no_id
+			for update;
+	if not found then
+		raise exception 'Slony-I: unknown node ID %', p_no_id;
+	end if;
+
+	-- ----
+	-- Make sure we do not break other nodes subscriptions with this
+	-- ----
+	if exists (select true from sl_subscribe
+			where sub_provider = p_no_id)
+	then
+		raise exception 'Slony-I: Node % is still configured as data provider',
+				p_no_id;
+	end if;
+
+	-- ----
+	-- Make sure no set originates there any more
+	-- ----
+	if exists (select true from sl_set
+			where set_origin = p_no_id)
+	then
+		raise exception 'Slony-I: Node % is still origin of one or more sets',
+				p_no_id;
+	end if;
+
+	-- ----
+	-- Call the internal drop functionality and generate the event
+	-- ----
+	perform dropNode_int(p_no_id);
+	return  createEvent('_schemadoc', 'DROP_NODE',
+									p_no_id);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

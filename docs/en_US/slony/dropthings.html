@@ -1,0 +1,122 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>12. Dropping things from Slony-I Replication</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="addthings.html" title="11. Adding Things to Replication">
+<link rel="next" href="logshipping.html" title="13. Log Shipping - Slony-I with Files">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="dropthings"></a>12. Dropping things from <span class="productname">Slony-I</span> Replication</h2></div></div></div>
+<p>There are several things you might want to do involving dropping
+things from <span class="productname">Slony-I</span> replication.</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2541626"></a>12.1. Dropping A Whole Node</h3></div></div></div>
+<p>If you wish to drop an entire node from replication, the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> should do the
+trick.</p>
+<p>This will lead to <span class="productname">Slony-I</span> dropping the triggers (generally that
+deny the ability to update data), restoring the &#8220;<span class="quote">native</span>&#8221;
+triggers, dropping the schema used by <span class="productname">Slony-I</span>, and the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process for that node terminating itself.</p>
+<p>As a result, the database should be available for whatever use
+your application makes of the database.</p>
+<p>This is a pretty major operation, with considerable potential to
+cause substantial destruction; make sure you drop the right node!</p>
+<p>The operation will fail if there are any nodes subscribing to
+the node that you attempt to drop, so there is a bit of a failsafe to
+protect you from errors.</p>
+<p><a href="faq.html#faq17"> <tt class="envar">sl_log_1</tt> isn't getting
+purged</a> documents some extra maintenance that may need to be
+done on <a href="table.sl-confirm.html">sl_confirm</a> if you are running versions
+prior to 1.0.5.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2541704"></a>12.2. Dropping An Entire Set</h3></div></div></div>
+<p>If you wish to stop replicating a particular replication set,
+the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropset.html" title="DROP SET"><span class="refentrytitle">DROP SET</span></a> is
+what you need to use.</p>
+<p>Much as with <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>, this leads to
+<span class="productname">Slony-I</span> dropping the <span class="productname">Slony-I</span> triggers on the tables and restoring
+&#8220;<span class="quote">native</span>&#8221; triggers.  One difference is that this takes
+place on <span class="emphasis"><em>all</em></span> nodes in the cluster, rather than on
+just one node.  Another difference is that this does not clear out the
+<span class="productname">Slony-I</span> cluster's namespace, as there might be other sets being
+serviced.</p>
+<p>This operation is quite a bit more dangerous than <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>, as there <span class="emphasis"><em>isn't</em></span> the same
+sort of &#8220;<span class="quote">failsafe.</span>&#8221; If you tell <a href="stmtdropset.html" title="DROP SET"><span class="refentrytitle">DROP SET</span></a> to drop the <span class="emphasis"><em>wrong</em></span> set,
+there isn't anything to prevent potentially career-limiting
+&#8220;<span class="quote">unfortunate results.</span>&#8221; Handle with care...</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2541792"></a>12.3. Unsubscribing One Node From One Set</h3></div></div></div>
+<p>The <a href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET"><span class="refentrytitle">UNSUBSCRIBE SET</span></a> operation is a little
+less invasive than either <a href="stmtdropset.html" title="DROP SET"><span class="refentrytitle">DROP SET</span></a> or <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>; it involves dropping <span class="productname">Slony-I</span> triggers and
+restoring &#8220;<span class="quote">native</span>&#8221; triggers on one node, for one
+replication set.</p>
+<p>Much like with <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>, this operation
+will fail if there is a node subscribing to the set on this node.
+
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p>For all of the above operations, &#8220;<span class="quote">turning replication back
+on</span>&#8221; will require that the node copy in a
+<span class="emphasis"><em>full</em></span> fresh set of the data on a provider.  The
+fact that the data was recently being replicated isn't good enough;
+<span class="productname">Slony-I</span> will expect to refresh the data from scratch.</p>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2541859"></a>12.4.  Dropping A Table From A Set</h3></div></div></div>
+<p>In <span class="productname">Slony-I</span> 1.0.5 and above, there is a Slonik command <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a> that allows dropping a single table from
+replication without forcing the user to drop the entire replication
+set.</p>
+<p>If you are running an earlier version, there is a &#8220;<span class="quote">hack</span>&#8221;
+to do this:</p>
+<p>You can fiddle this by hand by finding the table ID for the
+table you want to get rid of, which you can find in <a href="table.sl-table.html">sl_table</a>, and then run the following three queries,
+on each host:
+</p>
+<pre class="programlisting">  select _slonyschema.alterTableRestore(40);
+  select _slonyschema.tableDropKey(40);
+  delete from _slonyschema.sl_table where tab_id = 40;</pre>
+<p>The schema will obviously depend on how you defined the <span class="productname">Slony-I</span>
+cluster.  The table ID, in this case, 40, will need to change to the
+ID of the table you want to have go away.</p>
+<p>You'll have to run these three queries on all of the nodes,
+preferably firstly on the origin node, so that the dropping of this
+propagates properly.  Implementing this via a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+statement with a new <span class="productname">Slony-I</span> event would do that.  Submitting the
+three queries using <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> could do that; see
+<a href="ddlchanges.html" title="14. Database Schema Changes (DDL)">Section 14, &#8220;Database Schema Changes (DDL)&#8221;</a> for more details.  Also possible would be
+to connect to each database and submit the queries by hand.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2541948"></a>12.5. Dropping A Sequence From A Set</h3></div></div></div>
+<p>Just as with <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>, version 1.0.5
+introduces the operation <a href="stmtsetdropsequence.html" title="SET DROP SEQUENCE"><span class="refentrytitle">SET DROP SEQUENCE</span></a>.</p>
+<p>If you are running an earlier version, here are instructions as
+to how to drop sequences:</p>
+<p>The data that needs to be deleted to stop <span class="productname">Slony-I</span> from
+continuing to replicate the two sequences identified with Sequence IDs
+93 and 59 are thus:
+
+</p>
+<pre class="programlisting">delete from _oxrsorg.sl_seqlog where seql_seqid in (93, 59);
+delete from _oxrsorg.sl_sequence where seq_id in (93,59);</pre>
+<p> Those two queries could be submitted to all of the nodes via
+<a href="function.ddlscript-integer-text-integer.html">schemadocddlscript( integer, text, integer )</a> / <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, thus eliminating the sequence everywhere
+&#8220;<span class="quote">at once.</span>&#8221; Or they may be applied by hand to each of the
+nodes.</p>
+</div>
+</div></body>
+</html>

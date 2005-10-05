@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>WAIT FOR EVENT</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS">
+<link rel="next" href="supportedplatforms.html" title="Slony-I Supported Platforms">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtwaitevent"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>WAIT FOR EVENT &#8212;  Have Slonik script wait for previous event to
+    complete </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">WAIT FOR EVENT (options);</tt></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2556873"></a><h2>Description</h2>
+<p> Waits for event Confirmation.</p>
+<p> <span class="application">Slonik</span> remembers the last event
+     generated on every node during script execution (events generated
+     by earlier calls are currently not checked). In certain situations
+     it is necessary that events generated on one node (such as
+     <tt class="command">CREATE SET</tt>) are processed on another node
+     before issuing more commands (for instance, <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>).  <tt class="command">WAIT FOR EVENT</tt> may be
+     used to cause the <span class="application">slonik</span> script to wait
+     until the subscriber node is ready for the next action.
+    </p>
+<p> <tt class="command">WAIT FOR EVENT</tt> must be called outside of
+    any <tt class="command">try</tt> block in order to work, since new
+    confirm messages don't become visible within a transaction.
+
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal"> ORIGIN = ival | ALL </tt></span></dt>
+<dd><p> The origin of the event(s) to wait for.</p></dd>
+<dt><span class="term"><tt class="literal"> CONFIRMED = ival | ALL </tt></span></dt>
+<dd><p> The node ID of the receiver that must confirm the event(s).</p></dd>
+<dt><span class="term"><tt class="literal"> WAIT ON = ival </tt></span></dt>
+<dd><p> The ID of the node where the <a href="table.sl-confirm.html">sl_confirm</a> table
+	 is to be checked.  The default value is 1.</p></dd>
+<dt><span class="term"><tt class="literal"> TIMEOUT = ival </tt></span></dt>
+<dd><p> The number of seconds to wait.  Default is 600
+       (10 minutes).  <tt class="command">TIMEOUT = 0</tt> causes the script
+	 to wait indefinitely.</p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2556993"></a><h2>Example</h2>
+<pre class="programlisting">WAIT FOR EVENT (
+  ORIGIN = ALL,
+  CONFIRMED = ALL,
+  WAIT ON = 1
+);
+    </pre>
+</div>
+</div></body>
+</html>

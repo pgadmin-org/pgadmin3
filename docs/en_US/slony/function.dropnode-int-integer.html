@@ -1,0 +1,84 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.43.        dropnode_int( integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.dropnode-integer.html" title="1.42.        dropnode( integer )
+      ">
+<link rel="next" href="function.droppath-integer-integer.html" title="1.44.        droppath( integer, integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.dropnode-int-integer"></a>1.43.        dropnode_int( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       internal function to process DROP_NODE event to drop node node_id from replication
+        </p>
+<pre class="programlisting">declare
+	p_no_id			alias for $1;
+	v_tab_row		record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- If the dropped node is a remote node, clean the configuration
+	-- from all traces for it.
+	-- ----
+	if p_no_id &lt;&gt; getLocalNodeId('_schemadoc') then
+		delete from sl_subscribe
+				where sub_receiver = p_no_id;
+		delete from sl_listen
+				where li_origin = p_no_id
+					or li_provider = p_no_id
+					or li_receiver = p_no_id;
+		delete from sl_path
+				where pa_server = p_no_id
+					or pa_client = p_no_id;
+		delete from sl_confirm
+				where con_origin = p_no_id
+					or con_received = p_no_id;
+		delete from sl_event
+				where ev_origin = p_no_id;
+		delete from sl_node
+				where no_id = p_no_id;
+
+		return p_no_id;
+	end if;
+
+	-- ----
+	-- This is us ... deactivate the node for now, the daemon
+	-- will call uninstallNode() in a separate transaction.
+	-- ----
+	update sl_node
+			set no_active = false
+			where no_id = p_no_id;
+
+	-- Rewrite sl_listen table
+	perform RebuildListenEntries();
+
+	return p_no_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

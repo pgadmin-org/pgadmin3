@@ -1,0 +1,197 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3. System Requirements</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="slonyintro.html" title="Slony-I Introduction">
+<link rel="prev" href="slonylistenercosts.html" title="2.  Slony-I Communications
+Costs">
+<link rel="next" href="installation.html" title="4. Slony-I Installation">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="requirements"></a>3. System Requirements</h2></div></div></div>
+<p>Any platform that can run
+<span class="productname">PostgreSQL</span> should be able to run
+<span class="productname">Slony-I</span>.</p>
+<p>The platforms that have received specific testing at the time of
+this release are FreeBSD-4X-i368, FreeBSD-5X-i386, FreeBSD-5X-alpha,
+OS-X-10.3, Linux-2.4X-i386 Linux-2.6X-i386 Linux-2.6X-amd64,
+<span class="trademark">Solaris</span>&#8482;-2.8-SPARC,
+<span class="trademark">Solaris</span>&#8482;-2.9-SPARC, AIX 5.1,
+OpenBSD-3.5-sparc64 and <span class="trademark">Windows</span>&#8482; 2000, XP and 
+2003 (32 bit).</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2535257"></a>3.1.  <span class="productname">Slony-I</span> Software Dependancies</h3></div></div></div>
+<p> At present, <span class="productname">Slony-I</span> <span class="emphasis"><em>as well as <span class="productname">PostgreSQL</span></em></span>
+need to be able to be compiled from source at your site.</p>
+<p> In order to compile <span class="productname">Slony-I</span>, you need to have the following
+tools:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> GNU make.  Other make programs will not work.  GNU
+make is often installed under the name <tt class="command">gmake</tt>; this
+document will therefore always refer to it by that name. (On
+Linux-based systems GNU make is typically the default make, and is
+called <tt class="command">make</tt>) To test to see if your make is GNU
+make enter <tt class="command">make version</tt>.  Version 3.76 or later
+will suffice; previous versions may not.</p></li>
+<li><p> You need an ISO/ANSI C compiler.  Recent versions of
+<span class="application">GCC</span> work.</p></li>
+<li>
+<p> You also need a recent version of <span class="productname">PostgreSQL</span>
+<span class="emphasis"><em>source</em></span>.  <span class="productname">Slony-I</span> depends on namespace support so
+you must have <span class="productname">PostgreSQL</span> version 7.3.3 or newer to be able to build
+and use <span class="productname">Slony-I</span>.  </p>
+<p> Earlier versions of <span class="productname">PostgreSQL</span> are <span class="emphasis"><em> not </em></span>
+supported, but note that one user has &#8220;<span class="quote">hacked</span>&#8221; <span class="productname">Slony-I</span>
+to do a 7.2-to-7.4 upgrade; see <a href="faq.html#v72upgrade"> <span class="productname">PostgreSQL</span>
+7.2 notes </a>. </p>
+<p> Versions of <span class="productname">PostgreSQL</span> prior to 7.4.8 may run into a
+longstanding race condition that leads to problems of <a href="faq.html#dupkey"> &#8220;<span class="quote">duplicate keys</span>&#8221;</a>, so you may
+want to consider upgrades if you are running earlier versions.</p>
+<p> If you are running a version of <span class="productname">PostgreSQL</span> earlier
+than 8.0, you need to make sure that server header files were
+installed.  If installing from sources, this is done via the command
+<tt class="command">make install-all-headers</tt>.  Otherwise, you will
+encounter the <a href="faq.html#missingheaders"> missing headers for
+libpqserver</a> problem described in the FAQ.</p>
+</li>
+<li><p> GNU packages may be included in the standard
+packaging for your operating system, or you may need to look for
+source code at your local GNU mirror (see <a href="http://www.gnu.org/order/ftp.html" target="_top">http://www.gnu.org/order/ftp.html </a> for a list) or at <a href="ftp://ftp.gnu.org/gnu" target="_top"> ftp://ftp.gnu.org/gnu </a>
+.)</p></li>
+<li><p> If you need to obtain <span class="productname">PostgreSQL</span> source, you can
+download it from your favorite <span class="productname">PostgreSQL</span> mirror.  See <a href="http://www.postgresql.org/mirrors-www.html" target="_top">http://www.postgresql.org/mirrors-www.html </a> for a
+list.</p></li>
+<li><p> This documentation is written in SGML using <a href="http://docbook.com/" target="_top"> DocBook </a>, and may be processed into
+numerous formats including HTML, RTF, and PDF using tools in the
+<a href="http://docbook.sourceforge.net/" target="_top"> DocBook Open Repository</a> along with <a href="http://openjade.sourceforge.net/" target="_top">OpenJade.</a> </p></li>
+<li><p> On <span class="trademark">Windows</span>&#8482; you will also need the
+same <a href="http://www.postgresql.org/docs/faqs.FAQ_MINGW.html" target="_top">MinGW/Msys 
+Toolset</a> used to build PostgreSQL 8.0 and above.
+In addition you will need to install <a href="http://sourceware.org/pthreads-win32/" target="_top">pthreads-win32 2.x</a>. </p></li>
+</ul></div>
+<p> </p>
+<p>Also check to make sure you have sufficient disk space.  You
+will need approximately 5MB for the source tree during build and
+installation.</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>In <span class="productname">Slony-I</span> version 1.1, it is possible to compile
+<span class="productname">Slony-I</span> separately from <span class="productname">PostgreSQL</span>, making it practical for the
+makers of distributions of <span class="productname">Linux</span> and
+<span class="productname">FreeBSD</span> to include precompiled binary
+packages for <span class="productname">Slony-I</span>.  If no suitable packages are available, you
+will need to be prepared to compile <span class="productname">Slony-I</span> yourself.  </p>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2535594"></a>3.2.  Getting <span class="productname">Slony-I</span> Source</h3></div></div></div>
+<p>You can get the <span class="productname">Slony-I</span> source from <a href="http://developer.postgresql.org/~wieck/slony1/download/" target="_top">http://developer.postgresql.org/~wieck/slony1/download/</a></p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="times"></a>3.3.  Time Synchronization</h3></div></div></div>
+<p> All the servers used within the replication cluster need to
+have their Real Time Clocks in sync. This is to ensure that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> doesn't generate errors with messages indicating that
+a subscriber is already ahead of its provider during replication.
+Interpreting logs when servers have a different idea of what time it
+is leads to confusion and frustration.  It is recommended that you
+have <span class="application">ntpd</span> running on all nodes, where
+subscriber nodes using the &#8220;<span class="quote">master</span>&#8221; provider host as
+their time server.</p>
+<p> It is possible for <span class="productname">Slony-I</span> itself to function even in the face
+of there being some time discrepancies, but having systems &#8220;<span class="quote">in
+sync</span>&#8221; is usually pretty important for distributed
+applications.</p>
+<p> See <a href="http://www.ntp.org/" target="_top"> www.ntp.org </a> for
+more details about NTP (Network Time Protocol).</p>
+<p> Some users have reported problems that have been traced to
+their locales indicating the use of some time zone that <span class="productname">PostgreSQL</span> did
+not recognize.
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> On <span class="productname">AIX</span>,
+<tt class="command"><tt class="envar">TZ</tt>=CUT0</tt> was unrecognized, leading to
+timestamps pulled from system calls causing it to
+break.</p>
+<p> <tt class="command">CUT0</tt> is a variant way of describing
+<tt class="command">UTC</tt></p>
+</li>
+<li><p> Some countries' timezones are not yet included in
+<span class="productname">PostgreSQL</span>.  </p></li>
+</ul></div>
+<p> In any case, what commonly seems to be the &#8220;<span class="quote">best
+practice</span>&#8221; with <span class="productname">Slony-I</span> (and, for that matter, <span class="productname">PostgreSQL</span>) is
+for the postmaster user and/or the user under which
+<span class="application">slon</span> runs to use
+<tt class="command"><tt class="envar">TZ</tt>=UTC</tt> or
+<tt class="command"><tt class="envar">TZ</tt>=GMT</tt>.  Those timezones are
+<span class="emphasis"><em>sure</em></span> to be supported on any platform, and have
+the merit over &#8220;<span class="quote">local</span>&#8221; timezones that times never wind up
+leaping around due to Daylight Savings Time.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2535781"></a>3.4.  Network Connectivity</h3></div></div></div>
+<p>It is necessary that the hosts that are to replicate between one
+another have <span class="emphasis"><em>bidirectional</em></span> network communications
+between the <span class="productname">PostgreSQL</span> instances.  That is, if node B is replicating
+data from node A, it is necessary that there be a path from A to B and
+from B to A.  It is recommended that, as much as possible, all nodes
+in a <span class="productname">Slony-I</span> cluster allow this sort of bidirection communications
+from any node in the cluster to any other node in the cluster.</p>
+<p>For ease of configuration, network addresses should ideally be
+consistent across all of the nodes.  <a href="stmtstorepath.html" title="STORE
+     PATH"><span class="refentrytitle">STORE
+     PATH</span></a>
+does allow them to vary, but down this road lies madness as you try to
+manage the multiplicity of paths pointing to the same server.</p>
+<p>A possible workaround for this, in environments where firewall
+rules are particularly difficult to implement, may be to establish
+<a name="tunnelling" href="http://www.brandonhutchinson.com/ssh_tunnelling.html" target="_top"> SSH Tunnels </a> that are created on each host
+that allow remote access through a local IP address such as 127.0.0.1,
+using a different port for each destination.</p>
+<p> Note that <span class="application">slonik</span> and the
+<span class="application">slon</span> instances need no special connections
+or protocols to communicate with one another; they merely need access
+to the <span class="productname">PostgreSQL</span> databases, connecting as a &#8220;<span class="quote">superuser</span>&#8221;
+<a href="faq.html#morethansuper">that has the ability to update system
+tables.</a></p>
+<p> An implication of this communications model is that the entire
+extended network in which a <span class="productname">Slony-I</span> cluster operates must be able to
+be treated as being secure.  If there is a remote location where you
+cannot trust one of the databases that is a <span class="productname">Slony-I</span> node to be
+considered &#8220;<span class="quote">secure,</span>&#8221; this represents a vulnerability that
+can adversely affect the security of the entire cluster.  As a
+&#8220;<span class="quote">peer-to-peer</span>&#8221; system, <span class="emphasis"><em>any</em></span> of the
+hosts is able to introduce replication events that will affect the
+entire cluster.  Therefore, the security policies throughout the
+cluster can only be considered as stringent as those applied at the
+<span class="emphasis"><em>weakest</em></span> link.  Running a <span class="productname">Slony-I</span> node at a
+branch location that can't be kept secure compromises security for the
+cluster as a whole.</p>
+<p>New in <span class="productname">Slony-I</span> version 1.1 is a feature whereby updates for a
+particular replication set may be serialized via a scheme called <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping. </a> The data stored in
+<tt class="envar">sl_log_1</tt> and <tt class="envar">sl_log_2</tt> is also written
+out to log files on disk.  These files may then be transmitted in any
+manner desired, whether via scp, FTP, burning them onto DVD-ROMs and
+mailing them, or, at the frivolous end of the spectrum, by recording
+them on a USB &#8220;<span class="quote">flash device</span>&#8221; and attaching them to birds,
+allowing some equivalent to <a href="http://www.faqs.org/rfcs/rfc1149.html" target="_top"> transmission of IP
+datagrams on avian carriers - RFC 1149.</a> But whatever the
+transmission mechanism, this allows one way communications such that
+subscribers that use log shipping have no need of access to other
+<span class="productname">Slony-I</span> nodes.</p>
+</div>
+</div></body>
+</html>

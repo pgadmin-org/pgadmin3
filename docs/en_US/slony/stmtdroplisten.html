@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP LISTEN</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtstorelisten.html" title="STORE LISTEN">
+<link rel="next" href="stmttableaddkey.html" title="TABLE ADD KEY">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtdroplisten"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP LISTEN &#8212;  Eliminate configuration indicating how
+    <span class="productname">Slony-I</span> node listens for events
+    </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">DROP LISTEN (options);</tt></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2554362"></a><h2>Description</h2>
+<p> Remove a &#8220;<span class="quote">listen</span>&#8221; configuration entry. </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal"> ORIGIN  = ival </tt></span></dt>
+<dd><p> Node ID of the event origin the receiver is listening for.</p></dd>
+<dt><span class="term"><tt class="literal"> PROVIDER = ival </tt></span></dt>
+<dd><p> Node ID of the node from which the receiver gets
+     events that come from the origin.  If not specified, default is
+     the origin.</p></dd>
+<dt><span class="term"><tt class="literal"> RECEIVER = ival </tt></span></dt>
+<dd><p> The ID of the node receiving the events.</p></dd>
+</dl></div>
+<p> This uses <a href="function.droplisten-integer-integer-integer.html">schemadocdroplisten( integer, integer, integer )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2554418"></a><h2>Example</h2>
+<pre class="programlisting">     DROP LISTEN ( ORIGIN = 1, RECEIVER = 2, PROVIDER = 3 );
+    </pre>
+</div>
+</div></body>
+</html>
