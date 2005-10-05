@@ -851,7 +851,7 @@ wxString dlgRepCluster::GetSql()
             }
             else
             {
-                if (createScript.Find(wxT("storeNode (int4, text)")) > 0)
+                if (createScript.Find(wxT("storeNode (int4, text)")) < 0)
                     sql += wxT(", false");
             }
             
