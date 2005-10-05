@@ -13,7 +13,7 @@ pkg-data=$(pkg)-data
 _PGA3_WXCONFIG ?= wx-config
 
 # A hack to get it compile without errors concerning MNU_NEW
-_pgsql_inc:="/usr/include/postgresql -I./include"
+_pgsql_inc:="$(shell pg_config --includedir) -I./include"
 
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
@@ -46,7 +46,11 @@ endif
 config.status: configure
 	dh_testdir
 	# Add here commands to configure the package.
-	CXXFLAGS="$(CXXFLAGS)" CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
+	CXXFLAGS="$(CXXFLAGS)" CFLAGS="$(CFLAGS)" ./configure \
+		--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
+		--prefix=/usr \
+		--mandir=\$${prefix}/share/man \
+		--infodir=\$${prefix}/share/info \
 		--with-wx=/usr \
 		--with-wx-config=$(_PGA3_WXCONFIG) \
 		--with-pgsql-include=$(_pgsql_inc) \
@@ -98,7 +102,7 @@ install: build
 	# move pgadmin3.mo files to locales directory
 	# this part was written by Andreas Tille <tille@debian.org>
 	for loc in `find debian/tmp -name $(pkg).mo` ; do \
-	   LOC=`echo $${loc} | sed "s?.*pgadmin3/ui/\(.*\)/$(pkg).mo?\1?"` ; \
+	   LOC=`echo $${loc} | sed "s?.*pgadmin3/i18n/\(.*\)/$(pkg).mo?\1?"` ; \
 	   mkdir -p debian/$(pkg)/usr/share/locale/$${LOC}/LC_MESSAGES ; \
 	   mv $${loc} debian/$(pkg)/usr/share/locale/$${LOC}/LC_MESSAGES/. ; \
 	done

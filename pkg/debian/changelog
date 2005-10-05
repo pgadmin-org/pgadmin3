@@ -1,3 +1,65 @@
+pgadmin3 (1.4.0-0.2.beta1) unstable; urgency=low
+
+  * Final merge between Tomasz Rybak work and official 1.2.2 packaging stuff
+    we should be ready to build 1.4.0 beta1...
+    - removed "hints" entry from menu file as done in 1.2.2-1
+    [debian/pgadmin3.menu]
+    - moved to policy version 3.6.2 instead of 3.6.1 as done 1.2.2-1.
+    [debian/control]
+    - kept ui to i18n relocation from Tomasz. [debian/rules]
+    [debian/pgadmin3.install]
+    - backed out CPPFLAGS hack from Tomasz and reverted to what was done in
+    1.2.2. That old "-I ./include" should definitely be rechecked.
+    [debian/rules]
+    - kept pgagent installation although there is currently no manpage for it.
+    [debian/pgadmin3.install]
+    - corrected package version number (used something lower than 1).
+    [debian/changelog]
+  * Thanks Tomasz for your help.
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Wed,  5 Oct 2005 18:21:03 +0200
+
+pgadmin3 (1.4.0-0.1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Tomasz Rybak <bogomips@post.pl>  Thu,  04 Oct 2005 21:07:20 +0100
+
+pgadmin3 (1.2.2-1) unstable; urgency=low
+
+  * New upstream release (closes: #288171, #278644, #278855, #250991).
+  * Backed out configure part of the NMU from Loic Minier as it has been
+    reworked upstream to support wxWidgets 2.6.x.
+  * Rechecked that Loic reffered to libwxgtk2.6-dev and not libwxgtk2.4-dev as
+    mentioned in NMU (it was ok...). [debian/control]
+    (closes: #327089, #327478)
+  * Kept libpq-dev and libssl-dev build-dep from NMU. Thanks Loic for your
+    work. [debian/control]
+  * Use pg_config to determine include path. Taken from the Ubuntu patch
+    (1.2.0-2ubuntu1 version) by Martin Pitt <martin.pitt@ubuntu.com>.
+  * Moved to policy version 3.6.2 instead of 3.6.1. [debian/control]
+  * Added full path to pgadmin3 in the menu file to take care of a linda
+    warning. [debian/pgadmin3.menu]
+  * Removed hints entry from menu file until a useful entry appears for it
+    into other PostgreSQL related packages. [debian/pgadmin3.menu]
+  * Passed --disable-dependency-tracking option to configure as suggested
+    during last release by Peter Eisentraut. [debian/rules]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Mon, 12 Sep 2005 19:33:35 +0200
+
+pgadmin3 (1.2.0-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Rebuild with a newer wxWidgets. (Closes: #310398, #311050)
+    - Build-depend on libwxgtk2.4-dev instead of libwxgtk2.5-dev.
+      [debian/control]
+    - Let the CHECK_WXWINDOWS macro check for wxWidgets 2.6 instead of 2.4 and
+      re-run autoconf. [aclocal.m4, configure]
+  * Build-depend on libpq-dev instead of postgresql-dev. [debian/control]
+  * Add missing libssl-dev build-dep. [debian/control]
+
+ -- Loic Minier <lool@dooz.org>  Thu,  8 Sep 2005 10:48:21 +0200
+
 pgadmin3 (1.2.0-2) unstable; urgency=low
 
   * Renamed debian/NEWS.Debian to debian/pgadmin3.NEWS so that it is correctly
