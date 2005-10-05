@@ -94,7 +94,7 @@ int dlgRepSubscription::Go(bool modal)
         pgSet *sets = connection->ExecuteSet(
             wxT("SELECT no_id, no_comment\n")
             wxT("  FROM ") + cluster->GetSchemaPrefix() + wxT("sl_node\n") 
-            wxT(" WHERE no_id <> ") + NumToStr(cluster->GetLocalNodeID()));
+            wxT(" WHERE no_active AND no_id <> ") + NumToStr(cluster->GetLocalNodeID()));
 
         if (sets)
         {

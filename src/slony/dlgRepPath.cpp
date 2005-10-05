@@ -77,7 +77,7 @@ int dlgRepPath::Go(bool modal)
             wxT("  FROM ") + cluster->GetSchemaPrefix() + wxT("sl_node\n")
             wxT("  LEFT JOIN ") + cluster->GetSchemaPrefix() + wxT("sl_path ON pa_client=\n") + NumToStr(node->GetSlId()) +
                         wxT(" AND pa_server=no_id\n")
-            wxT("  WHERE pa_client IS NULL\n")
+            wxT("  WHERE no_active AND pa_client IS NULL\n")
             wxT(" ORDER BY no_id")
             );
 
