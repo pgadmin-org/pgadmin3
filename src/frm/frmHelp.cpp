@@ -263,7 +263,7 @@ pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar
 
 wxWindow *pgsqlHelpFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    DisplaySqlHelp(form, wxT("index"));
+    DisplaySqlHelp(form, wxT("pg/index"));
     return 0;
 }
 
@@ -276,6 +276,6 @@ bugReportFactory::bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar
 
 wxWindow *bugReportFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    DisplaySqlHelp(form, wxT("index"));
+    DisplayHelp(form, wxT("bugreport"));
     return 0;
 }

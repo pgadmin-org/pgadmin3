@@ -208,9 +208,9 @@ frmMain::frmMain(const wxString& title)
 
     toolBar->AddSeparator();
 
-    new hintFactory(menuFactories, helpMenu, toolBar, true);
     actionFactory *helpFact = new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
     new contentsFactory(menuFactories, helpMenu, 0);
+    new hintFactory(menuFactories, helpMenu, toolBar, true);
     new faqFactory(menuFactories, helpMenu, 0);
 
     new tipOfDayFactory(menuFactories, helpMenu, 0);
