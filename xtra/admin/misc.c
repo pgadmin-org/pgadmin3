@@ -173,8 +173,19 @@ Datum pg_logdir_ls(PG_FUNCTION_ARGS)
 		values[0] = de->d_name + 11;       /* timestamp */
 		values[0][17] = 0;
 
-                    /* parse and decode expected timestamp */
-		if (ParseDateTime(values[0], lowstr, field, ftype, MAXDATEFIELDS, &nf))
+		/* parse and decode expected timestamp */
+
+		/* The ParseDateTime signature changed in PostgreSQL 8.0.4. Because
+		 * there is no way to check the PG version at build time at present
+		 * we'll have to keep a manual condition compile here :-(
+		 * Use the following line for < 8.0.4, otherwise, use the uncommented
+		 * version below.
+		 *
+		 * if (ParseDateTime(values[0], lowstr, field, ftype, MAXDATEFIELDS, &nf))
+		 *
+		 */
+
+		if (ParseDateTime(values[0], lowstr, sizeof(lowstr), field, ftype, MAXDATEFIELDS, &nf))
 		    continue;
 
 		if (DecodeDateTime(field, ftype, nf, &dtype, &date, &fsec, &tz))
