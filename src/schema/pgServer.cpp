@@ -169,7 +169,7 @@ void pgServer::ShowHint(frmMain *form, bool force)
         hints.Add(HINT_AUTOVACUUM);
     
     if (force || !hintShown)
-        frmHint::ShowHint(form, hints, GetFullIdentifier());
+        frmHint::ShowHint(form, hints, GetFullIdentifier(), force);
     hintShown=true;
 }
 

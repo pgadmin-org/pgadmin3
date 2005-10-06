@@ -375,18 +375,24 @@ bool frmHint::WantHint(int hintno)
 
 
 
-int frmHint::ShowHint(wxWindow *fr, const wxArrayString &hints, const wxString &info)
+int frmHint::ShowHint(wxWindow *fr, const wxArrayString &hints, const wxString &info, bool force)
 {
-    // force implied
     wxArrayInt hintnos;
     size_t i;
 
     if(!hints.GetCount())
         return wxID_OK;
     for (i=0 ; i < hints.GetCount() ; i++)
-        hintnos.Add(GetHintNo(hints.Item(i)));
+    {
+        int hintNo=GetHintNo(hints.Item(i));
+        if (hintNo >= 0 && (force || WantHint(hintNo)))
+            hintnos.Add(hintNo);
+    }
 
-    frmHint *frm=new frmHint(fr, hints.GetCount() > 1);
+    if (!hintnos.GetCount())
+        return wxID_OK;
+
+    frmHint *frm=new frmHint(fr, force);
     frm->SetHint(hintnos, info);
 
     frm->CenterOnParent();

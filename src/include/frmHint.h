@@ -36,7 +36,7 @@ class frmHint : public DialogWithHelp
 {
 public:
     static int ShowHint(wxWindow *fr,  const wxString &hint, const wxString &info=wxEmptyString, bool force=false);
-    static int ShowHint(wxWindow *fr,  const wxArrayString &hints, const wxString &info=wxEmptyString);
+    static int ShowHint(wxWindow *fr,  const wxArrayString &hints, const wxString &info=wxEmptyString, bool force=false);
     static bool WantHint(const wxString &hint);
     static void ResetHints();
 

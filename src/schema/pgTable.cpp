@@ -498,7 +498,7 @@ void pgTable::ShowHint(frmMain *form, bool force)
         if (primaryKey.IsEmpty())
             hints.Add(HINT_PRIMARYKEY);
 
-        rc=frmHint::ShowHint(form, hints, GetFullIdentifier());
+        rc=frmHint::ShowHint(form, hints, GetFullIdentifier(), force);
     }
     else
         rc=frmHint::ShowHint(form, HINT_VACUUM, GetFullIdentifier(), force);
