@@ -532,43 +532,46 @@ wxString dlgTable::GetSql()
                     + wxT(";\n");
         }
 
-        if (!chkCustomVac->GetValue())
+        if (connection->BackendMinimumVersion(8,1))
         {
-            if (hasVacuum)
-                sql += wxT("DELETE FROM pg_autovacuum WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
-        }
-        else
-        {
-            wxString vacStr;
-            bool changed = (chkVacEnabled->GetValue() != tableVacEnabled);
-            if (!hasVacuum)
+            if (!chkCustomVac->GetValue())
             {
-                vacStr = wxT("INSERT INTO pg_autovacuum(vacrelid, enabled, vac_base_thresh, anl_base_thresh, vac_scale_factor, anl_scale_factor, vac_cost_delay, vac_cost_limit)")
-                         wxT("\n   VALUES(") 
-                       + table->GetOidStr() + wxT(", ")
-                       + BoolToStr(chkVacEnabled->GetValue()) + wxT(", ")
-                       + AppendNum(changed, txtBaseVac, tableVacBaseThr) + wxT(", ")
-                       + AppendNum(changed, txtBaseAn, tableAnlBaseThr) + wxT(", ")
-                       + AppendNum(changed, txtFactorVac, tableVacFactor) + wxT(", ")
-                       + AppendNum(changed, txtFactorAn, tableAnlFactor) + wxT(", ")
-                       + AppendNum(changed, txtVacDelay, tableCostDelay) + wxT(", ")
-                       + AppendNum(changed, txtVacLimit, tableCostLimit) + wxT(");\n");
+                if (hasVacuum)
+                    sql += wxT("DELETE FROM pg_autovacuum WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
             }
             else
             {
-                vacStr = wxT("UPDATE pg_autovacuum\n")
-                         wxT("   SET enabled=")
-                       + BoolToStr(chkVacEnabled->GetValue())
-                       + wxT(", vac_base_thresh = ") + AppendNum(changed, txtBaseVac, tableVacBaseThr) 
-                       + wxT(", anl_base_thresh = ") + AppendNum(changed, txtBaseAn, tableAnlBaseThr) 
-                       + wxT(", base_scale_factor = ") + AppendNum(changed, txtFactorVac, tableVacFactor)
-                       + wxT(", anl_scale_factor = ") + AppendNum(changed, txtFactorAn, tableAnlFactor)
-                       + wxT(", vac_cost_delay = ") + AppendNum(changed, txtVacDelay, tableCostDelay)
-                       + wxT(", vac_cost_limit = ") + AppendNum(changed, txtVacLimit, tableCostLimit)
-                       + wxT("\n WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
+                wxString vacStr;
+                bool changed = (chkVacEnabled->GetValue() != tableVacEnabled);
+                if (!hasVacuum)
+                {
+                    vacStr = wxT("INSERT INTO pg_autovacuum(vacrelid, enabled, vac_base_thresh, anl_base_thresh, vac_scale_factor, anl_scale_factor, vac_cost_delay, vac_cost_limit)")
+                             wxT("\n   VALUES(") 
+                           + table->GetOidStr() + wxT(", ")
+                           + BoolToStr(chkVacEnabled->GetValue()) + wxT(", ")
+                           + AppendNum(changed, txtBaseVac, tableVacBaseThr) + wxT(", ")
+                           + AppendNum(changed, txtBaseAn, tableAnlBaseThr) + wxT(", ")
+                           + AppendNum(changed, txtFactorVac, tableVacFactor) + wxT(", ")
+                           + AppendNum(changed, txtFactorAn, tableAnlFactor) + wxT(", ")
+                           + AppendNum(changed, txtVacDelay, tableCostDelay) + wxT(", ")
+                           + AppendNum(changed, txtVacLimit, tableCostLimit) + wxT(");\n");
+                }
+                else
+                {
+                    vacStr = wxT("UPDATE pg_autovacuum\n")
+                             wxT("   SET enabled=")
+                           + BoolToStr(chkVacEnabled->GetValue())
+                           + wxT(", vac_base_thresh = ") + AppendNum(changed, txtBaseVac, tableVacBaseThr) 
+                           + wxT(", anl_base_thresh = ") + AppendNum(changed, txtBaseAn, tableAnlBaseThr) 
+                           + wxT(", base_scale_factor = ") + AppendNum(changed, txtFactorVac, tableVacFactor)
+                           + wxT(", anl_scale_factor = ") + AppendNum(changed, txtFactorAn, tableAnlFactor)
+                           + wxT(", vac_cost_delay = ") + AppendNum(changed, txtVacDelay, tableCostDelay)
+                           + wxT(", vac_cost_limit = ") + AppendNum(changed, txtVacLimit, tableCostLimit)
+                           + wxT("\n WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
+                }
+                if (changed)
+                    sql += vacStr;
             }
-            if (changed)
-                sql += vacStr;
         }
     }
     else
@@ -634,11 +637,6 @@ wxString dlgTable::GetSql()
         sql += wxT(";\n");
 
         AppendOwnerNew(sql, wxT("TABLE ") + tabname);
-
-        if (connection->BackendMinimumVersion(8, 1))
-        {
-
-        }
     }
 
     // Extra column info
