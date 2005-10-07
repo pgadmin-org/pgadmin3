@@ -11,9 +11,9 @@
 
 
 // Application Versions
-#define VERSION_STR     wxT("1.4.0 Beta 1")
+#define VERSION_STR     wxT("1.4.0 Beta 1 Dev 1")
 #define VERSION_NUM     1,4,0,0
-#define VERSION_PACKAGE 1.4.0-beta1
+#define VERSION_PACKAGE 1.4.0-beta1-dev1
 
 #define PRERELEASE 1
 // #define BUILD "..."
