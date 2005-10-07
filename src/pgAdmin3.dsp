@@ -526,10 +526,6 @@ SOURCE=.\ui\frmPassword.xrc
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui\frmQBJoin.xrc
-# End Source File
-# Begin Source File
-
 SOURCE=.\ui\frmServer.xrc
 # End Source File
 # Begin Source File
