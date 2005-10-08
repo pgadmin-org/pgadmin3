@@ -282,31 +282,50 @@ wxString dlgColumn::GetSql()
                 wxString sequence;
                 bool newSequence = (cbSequence->GetSelection() <= 0);
 
-                if (newSequence)
+                if (connection->BackendMinimumVersion(8, 0) && newSequence)
                 {
-                    sequence = qtIdent(table->GetSchema()->GetName()) + wxT(".") +
-                               qtIdent(table->GetName() + wxT("_") + name + wxT("_seq"));
-
-                    sql = wxT("CREATE SEQUENCE ") + sequence + wxT(";\n");
+                    sql +=wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                        + wxT("\n   ADD COLUMN ") + qtIdent(name)
+                        + wxT(" ") + cbDatatype->GetValue() + wxT(";\n");
                 }
                 else
-                    sequence=sequences.Item(cbSequence->GetSelection());
+                {
+                    if (newSequence)
+                    {
+                        sequence = qtIdent(table->GetSchema()->GetName()) + wxT(".") +
+                                   qtIdent(table->GetName() + wxT("_") + name + wxT("_seq"));
 
-                sql +=wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ADD COLUMN ") + qtIdent(name)
-                    + wxT(" ") + typname + wxT(";\n")
-                    + wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ALTER COLUMN ") + qtIdent(name)
-                    + wxT(" SET DEFAULT nextval('") + sequence + wxT("'::text);\n")
+                        sql = wxT("CREATE SEQUENCE ") + sequence + wxT(";\n");
+                    }
+                    else
+                        sequence=sequences.Item(cbSequence->GetSelection());
 
-                      wxT("INSERT INTO pg_depend(classid, objid, objsubid, refclassid, refobjid, refobjsubid, deptype)\n")
-                      wxT("SELECT cl.oid, seq.oid, 0, cl.oid, ") + table->GetOidStr() + wxT(", attnum, 'i'\n")
-                      wxT("  FROM pg_class cl, pg_attribute, pg_class seq\n")
-                      wxT("  JOIN pg_namespace sn ON sn.OID=seq.relnamespace\n")
-                      wxT(" WHERE cl.relname='pg_class'\n")
-                      wxT("  AND seq.relname=") + qtString(table->GetName() + wxT("_") + name + wxT("_seq")) + wxT("\n")
-                      wxT("  AND sn.nspname=") + qtString(table->GetSchema()->GetName()) + wxT("\n")
-                      wxT("  AND attrelid=") + table->GetOidStr() + wxT(" AND attname=") + qtString(name) + wxT(";\n");
+                    sql +=wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                        + wxT("\n   ADD COLUMN ") + qtIdent(name)
+                        + wxT(" ") + typname + wxT(";\n")
+                        + wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                        + wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                        + wxT(" SET DEFAULT nextval('") + sequence + wxT("'::text);\n");
+
+
+                    if (connection->HasPrivilege(wxT("Table"), wxT("pg_depend"), wxT("insert")))
+                    {
+                        sql += 
+                          wxT("INSERT INTO pg_depend(classid, objid, objsubid, refclassid, refobjid, refobjsubid, deptype)\n")
+                          wxT("SELECT cl.oid, seq.oid, 0, cl.oid, ") + table->GetOidStr() + wxT(", attnum, 'i'\n")
+                          wxT("  FROM pg_class cl, pg_attribute, pg_class seq\n")
+                          wxT("  JOIN pg_namespace sn ON sn.OID=seq.relnamespace\n")
+                          wxT(" WHERE cl.relname='pg_class'\n")
+                          wxT("  AND seq.relname=") + qtString(table->GetName() + wxT("_") + name + wxT("_seq")) + wxT("\n")
+                          wxT("  AND sn.nspname=") + qtString(table->GetSchema()->GetName()) + wxT("\n")
+                          wxT("  AND attrelid=") + table->GetOidStr() + wxT(" AND attname=") + qtString(name) + wxT(";\n");
+                    }
+                    else
+                    {
+                        sql += 
+                            wxT("-- Dependency information can't be added; no insert into pg_depend allowed.\n");
+                    }
+                }
             }
             else
             {

@@ -546,9 +546,14 @@ wxString dlgRole::GetSql()
         }
 
         if (chkUpdateCat->GetValue() != role->GetUpdateCatalog())
+        {
+            if (!connection->HasPrivilege(wxT("Table"), wxT("pg_authid"), wxT("update")))
+                sql += wxT(" -- Can't update 'UpdateCatalog privilege: can't write to pg_authid.\n")
+                       wxT("-- ");
+
             sql += wxT("UPDATE pg_authid SET rolcatupdate=") + BoolToStr(chkUpdateCat->GetValue())
-                + wxT(" WHERE OID=") + role->GetOidStr() + wxT(";\n");
-    
+                    + wxT(" WHERE OID=") + role->GetOidStr() + wxT(";\n");
+        }
         cnt=lbRolesIn->GetCount();
         wxArrayString tmpRoles=role->GetRolesIn();
 

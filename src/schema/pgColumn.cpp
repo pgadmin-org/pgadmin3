@@ -132,7 +132,7 @@ wxString pgColumn::GetDefinition()
                         + schema->GetName() + wxT(".") + GetTableName() 
                         + wxT("_") + GetName() + wxT("_seq'::text)"))
     {
-        if (sql == wxT("int8"))
+        if (sql.Right(4) == wxT("int8"))
             sql = wxT("bigserial");
         else
             sql = wxT("serial");
