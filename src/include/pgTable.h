@@ -31,6 +31,9 @@ public:
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
     virtual pgCollection *CreateCollection(pgObject *obj);
+    int GetReplicatedIconId() { return replicatedIconId; }
+private:
+    int replicatedIconId;
 };
 extern pgTableFactory tableFactory;
 
@@ -40,6 +43,7 @@ class pgTable : public pgSchemaObject
 public:
     pgTable(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTable();
+    int GetIconId();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowHint(frmMain *form, bool force);
@@ -70,6 +74,8 @@ public:
     wxString GetCoveringIndex(ctlTree *browser, const wxString &collist);
     bool GetHasSubclass() const { return hasSubclass; }
     void iSetHasSubclass(bool b) { hasSubclass = b; }
+    void iSetIsReplicated(bool b) { isReplicated = b; }
+    bool GetIsReplicated() const { return isReplicated; }
     void UpdateRows();
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool CanView() { return true; }
@@ -91,7 +97,7 @@ private:
     void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
     wxULongLong rows;
     double estimatedRows;
-    bool hasOids, hasSubclass, rowsCounted;
+    bool hasOids, hasSubclass, rowsCounted, isReplicated;
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
         primaryKeyName, primaryKeyColNumbers, tablespace;

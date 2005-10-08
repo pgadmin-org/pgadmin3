@@ -21,6 +21,9 @@ public:
     pgSequenceFactory();
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    int GetReplicatedIconId() { return replicatedIconId; }
+private:
+    int replicatedIconId;
 };
 extern pgSequenceFactory sequenceFactory;
 
@@ -29,6 +32,7 @@ class pgSequence : public pgSchemaObject
 public:
     pgSequence(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgSequence();
+    int GetIconId();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
@@ -48,7 +52,7 @@ public:
 
 private:
     wxULongLong lastValue, minValue, maxValue, cacheValue, increment;
-    bool cycled;
+    bool cycled, isReplicated;
 };
 
 #endif

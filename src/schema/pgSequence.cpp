@@ -21,10 +21,19 @@
 pgSequence::pgSequence(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, sequenceFactory, newName)
 {
+    isReplicated=false;
 }
 
 pgSequence::~pgSequence()
 {
+}
+
+int pgSequence::GetIconId()
+{
+    if (isReplicated)
+        return sequenceFactory.GetReplicatedIconId();
+    else
+        return sequenceFactory.GetIconId();
 }
 
 bool pgSequence::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)

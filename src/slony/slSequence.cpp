@@ -138,11 +138,11 @@ pgObject *slSlSequenceFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 
 ///////////////////////////////////////////////////
 
-#include "images/sequence.xpm"
+#include "images/sequence-repl.xpm"
 #include "images/sequences.xpm"
 
 slSlSequenceFactory::slSlSequenceFactory() 
-: slSetObjFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_xpm)
+: slSetObjFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_repl_xpm)
 {
     metaType = SLM_SEQUENCE;
 }

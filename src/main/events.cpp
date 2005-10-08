@@ -456,42 +456,43 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
     menuFactories->AppendEnabledMenus(menuBar, treeContextMenu);
 
     wxMenuItem *newItem=treeContextMenu->FindItem(newMenuFactory->GetId());
-    wxASSERT(newItem);
 
-    size_t newItemPos;
-
-    wxMenuItemList mil = treeContextMenu->GetMenuItems();
-    for (newItemPos=0 ; newItemPos < mil.GetCount() ; newItemPos++)
+    if (newItem)
     {
-        if (mil.Item(newItemPos)->GetData()->GetId() == newItem->GetId())
-            break;
-    }
+        size_t newItemPos;
 
-    if (object)
-    {
-        wxMenu *indivMenu=object->GetNewMenu();
-        if (indivMenu)
+        wxMenuItemList mil = treeContextMenu->GetMenuItems();
+        for (newItemPos=0 ; newItemPos < mil.GetCount() ; newItemPos++)
         {
-            if (indivMenu->GetMenuItemCount() > 1)
+            if (mil.Item(newItemPos)->GetData()->GetId() == newItem->GetId())
+                break;
+        }
+
+        if (object)
+        {
+            wxMenu *indivMenu=object->GetNewMenu();
+            if (indivMenu)
             {
-                wxMenuItem *menuItem = menuBar->FindItem(newMenuFactory->GetId());
-                treeContextMenu->Insert(newItemPos, newMenuFactory->GetId(), menuItem->GetLabel(), indivMenu, menuItem->GetHelp());
-            }
-            else
-            {
-                if (indivMenu->GetMenuItemCount() == 1)
+                if (indivMenu->GetMenuItemCount() > 1)
                 {
-                    wxMenuItem *menuItem=indivMenu->GetMenuItems().Item(0)->GetData();
-                    treeContextMenu->Insert(newItemPos, menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+                    wxMenuItem *menuItem = menuBar->FindItem(newMenuFactory->GetId());
+                    treeContextMenu->Insert(newItemPos, newMenuFactory->GetId(), menuItem->GetLabel(), indivMenu, menuItem->GetHelp());
                 }
-                delete indivMenu;
+                else
+                {
+                    if (indivMenu->GetMenuItemCount() == 1)
+                    {
+                        wxMenuItem *menuItem=indivMenu->GetMenuItems().Item(0)->GetData();
+                        treeContextMenu->Insert(newItemPos, menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+                    }
+                    delete indivMenu;
+                }
             }
         }
+
+        treeContextMenu->Remove(newItem);
+        delete newItem;
     }
-
-    treeContextMenu->Remove(newItem);
-    delete newItem;
-
 
     if (treeContextMenu->GetMenuItemCount())
         win->PopupMenu(treeContextMenu, point);
