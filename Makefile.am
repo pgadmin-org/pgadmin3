@@ -16,6 +16,8 @@ EXTRA_DIST = \
 
 TMP_docs = \
 	$(top_srcdir)/docs/en_US/pg/*.html \
+	$(top_srcdir)/docs/en_US/hints/*.html \
+	$(top_srcdir)/docs/de_DE/hints/*.html \
 	$(top_srcdir)/docs/en_US/pg/*.css \
 	$(top_srcdir)/docs/en_US/images/*.png \
 	$(top_srcdir)/docs/en_US/*.html \
