@@ -1,242 +1,60 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->BKI Backend Interface</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Database Page Layout"
-HREF="storage-page-layout.html"><LINK
-REL="NEXT"
-TITLE="BKI Commands"
-HREF="bki-commands.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="storage-page-layout.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="storage.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="planner-stats-details.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki-commands.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="BKI"
-></A
->Chapter 51. <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Backend Interface</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->51.1. <A
-HREF="bki.html#BKI-FORMAT"
-><ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> File Format</A
-></DT
-><DT
->51.2. <A
-HREF="bki-commands.html"
-><ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Commands</A
-></DT
-><DT
->51.3. <A
-HREF="bki-structure.html"
->Structure of the Bootstrap <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> File</A
-></DT
-><DT
->51.4. <A
-HREF="bki-example.html"
->Example</A
-></DT
-></DL
-></DIV
-><P
->  Backend Interface (<ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
->) files are scripts in a
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 51. BKI Backend Interface</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="storage-page-layout.html" title="50.3. Database Page Layout">
+<link rel="next" href="bki-commands.html" title="51.2. BKI Commands">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="bki">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="bki"></a>Chapter 51. <span class="acronym">BKI</span> Backend Interface</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="bki.html#bki-format">51.1. <span class="acronym">BKI</span> File Format</a></span></dt>
+<dt><span class="sect1"><a href="bki-commands.html">51.2. <span class="acronym">BKI</span> Commands</a></span></dt>
+<dt><span class="sect1"><a href="bki-structure.html">51.3. Structure of the Bootstrap <span class="acronym">BKI</span> File</a></span></dt>
+<dt><span class="sect1"><a href="bki-example.html">51.4. Example</a></span></dt>
+</dl>
+</div>
+<p>  Backend Interface (<span class="acronym">BKI</span>) files are scripts in a
   special language that is understood by the
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> backend when running in the
-  <SPAN
-CLASS="QUOTE"
->"bootstrap"</SPAN
-> mode.  The bootstrap mode allows system catalogs
+  <span class="productname">PostgreSQL</span> backend when running in the
+  &#8220;<span class="quote">bootstrap</span>&#8221; mode.  The bootstrap mode allows system catalogs
   to be created and filled from scratch, whereas ordinary SQL commands
   require the catalogs to exist already.
-  <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> files can therefore be used to create the
+  <span class="acronym">BKI</span> files can therefore be used to create the
   database system in the first place.  (And they are probably not
   useful for anything else.)
- </P
-><P
->  <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
-> uses a <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> file
+ </p>
+<p>  <span class="application">initdb</span> uses a <span class="acronym">BKI</span> file
   to do part of its job when creating a new database cluster.  The
-  input file used by <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
-> is created as
-  part of building and installing <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-  by a program named <TT
-CLASS="FILENAME"
->genbki.sh</TT
->, which reads some
-  specially formatted C header files in the <TT
-CLASS="FILENAME"
->src/include/catalog/</TT
->
+  input file used by <span class="application">initdb</span> is created as
+  part of building and installing <span class="productname">PostgreSQL</span>
+  by a program named <code class="filename">genbki.sh</code>, which reads some
+  specially formatted C header files in the <code class="filename">src/include/catalog/</code>
   directory of the source tree.  The created
-  <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> file is called <TT
-CLASS="FILENAME"
->postgres.bki</TT
-> and is
+  <span class="acronym">BKI</span> file is called <code class="filename">postgres.bki</code> and is
   normally installed in the
-  <TT
-CLASS="FILENAME"
->share</TT
-> subdirectory of the installation tree.
- </P
-><P
->  Related information may be found in the documentation for
-  <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
->.
- </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="BKI-FORMAT"
->51.1. <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> File Format</A
-></H1
-><P
->   This section describes how the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-   backend interprets <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> files.  This description
-   will be easier to understand if the <TT
-CLASS="FILENAME"
->postgres.bki</TT
->
+  <code class="filename">share</code> subdirectory of the installation tree.
+ </p>
+<p>  Related information may be found in the documentation for
+  <span class="application">initdb</span>.
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bki-format"></a>51.1. <span class="acronym">BKI</span> File Format</h2></div></div></div>
+<p>   This section describes how the <span class="productname">PostgreSQL</span>
+   backend interprets <span class="acronym">BKI</span> files.  This description
+   will be easier to understand if the <code class="filename">postgres.bki</code>
    file is at hand as an example.
-  </P
-><P
->   <ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> input consists of a sequence of commands.  Commands are made up
+  </p>
+<p>   <span class="acronym">BKI</span> input consists of a sequence of commands.  Commands are made up
    of a number of tokens, depending on the syntax of the command.
    Tokens are usually separated by whitespace, but need not be if
    there is no ambiguity.  There is no special command separator; the
@@ -245,80 +63,9 @@ CLASS="ACRONYM"
    a new line, for clarity.)  Tokens can be certain key words, special
    characters (parentheses, commas, etc.), numbers, or double-quoted
    strings.  Everything is case sensitive.
-  </P
-><P
->   Lines starting with <TT
-CLASS="LITERAL"
->#</TT
-> are ignored.
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="storage-page-layout.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki-commands.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Database Page Layout</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Commands</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+<p>   Lines starting with <code class="literal">#</code> are ignored.
+  </p>
+</div>
+</div></body>
+</html>

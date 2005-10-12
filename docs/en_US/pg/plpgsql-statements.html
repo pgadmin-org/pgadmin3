@@ -1,368 +1,123 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Basic Statements</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PL/pgSQL - SQL Procedural Language"
-HREF="plpgsql.html"><LINK
-REL="PREVIOUS"
-TITLE="Expressions"
-HREF="plpgsql-expressions.html"><LINK
-REL="NEXT"
-TITLE="Control Structures"
-HREF="plpgsql-control-structures.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql-expressions.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 36. <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> - <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Procedural Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-control-structures.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLPGSQL-STATEMENTS"
->36.6. Basic Statements</A
-></H1
-><P
->    In this section and the following ones, we describe all the statement
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>36.6. Basic Statements</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql-expressions.html" title="36.5. Expressions">
+<link rel="next" href="plpgsql-control-structures.html" title="36.7. Control Structures">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-statements"></a>36.6. Basic Statements</h2></div></div></div>
+<p>    In this section and the following ones, we describe all the statement
     types that are explicitly understood by
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->.
+    <span class="application">PL/pgSQL</span>.
     Anything not recognized as one of these statement types is presumed
     to be an SQL command and is sent to the main database engine to execute
-    (after substitution of any <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> variables
+    (after substitution of any <span class="application">PL/pgSQL</span> variables
     used in the statement).  Thus,
-    for example, the SQL commands <TT
-CLASS="COMMAND"
->INSERT</TT
->, <TT
-CLASS="COMMAND"
->UPDATE</TT
->, and
-    <TT
-CLASS="COMMAND"
->DELETE</TT
-> may be considered to be statements of
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->, but they are not specifically
+    for example, the SQL commands <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and
+    <code class="command">DELETE</code> may be considered to be statements of
+    <span class="application">PL/pgSQL</span>, but they are not specifically
     listed here.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-STATEMENTS-ASSIGNMENT"
->36.6.1. Assignment</A
-></H2
-><P
->     An assignment of a value to a variable or row/record field is
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-statements-assignment"></a>36.6.1. Assignment</h3></div></div></div>
+<p>     An assignment of a value to a variable or row/record field is
      written as:
-</P><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->identifier</I
-></TT
-> := <TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->;</PRE
-><P>
+</p>
+<pre class="synopsis"><em class="replaceable"><code>identifier</code></em> := <em class="replaceable"><code>expression</code></em>;</pre>
+<p>
      As explained above, the expression in such a statement is evaluated
-     by means of an SQL <TT
-CLASS="COMMAND"
->SELECT</TT
-> command sent to the main
+     by means of an SQL <code class="command">SELECT</code> command sent to the main
      database engine.  The expression must yield a single value.
-    </P
-><P
->     If the expression's result data type doesn't match the variable's
+    </p>
+<p>     If the expression's result data type doesn't match the variable's
      data type, or the variable has a specific size/precision
-     (like <TT
-CLASS="TYPE"
->char(20)</TT
->), the result value will be implicitly
-     converted by the <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> interpreter using
+     (like <code class="type">char(20)</code>), the result value will be implicitly
+     converted by the <span class="application">PL/pgSQL</span> interpreter using
      the result type's output-function and 
      the variable type's input-function. Note that this could potentially
      result in run-time errors generated by the input function, if the
      string form of the result value is not acceptable to the input function.
-    </P
-><P
->     Examples:
-</P><PRE
-CLASS="PROGRAMLISTING"
->user_id := 20;
-tax := subtotal * 0.06;</PRE
-><P>
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-SELECT-INTO"
->36.6.2. <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-></A
-></H2
-><A
-NAME="AEN34360"
-></A
-><P
->     The result of a <TT
-CLASS="COMMAND"
->SELECT</TT
-> command yielding multiple columns (but
+    </p>
+<p>     Examples:
+</p>
+<pre class="programlisting">user_id := 20;
+tax := subtotal * 0.06;</pre>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-select-into"></a>36.6.2. <code class="command">SELECT INTO</code></h3></div></div></div>
+<a name="id667528"></a><p>     The result of a <code class="command">SELECT</code> command yielding multiple columns (but
      only one row) can be assigned to a record variable, row-type
      variable, or list of scalar variables.  This is done by:
 
-</P><PRE
-CLASS="SYNOPSIS"
->SELECT INTO <TT
-CLASS="REPLACEABLE"
-><I
->target</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->select_expressions</I
-></TT
-> FROM ...;</PRE
-><P>
+</p>
+<pre class="synopsis">SELECT INTO <em class="replaceable"><code>target</code></em> <em class="replaceable"><code>select_expressions</code></em> FROM ...;</pre>
+<p>
 
-     where <TT
-CLASS="REPLACEABLE"
-><I
->target</I
-></TT
-> can be a record variable, a row
+     where <em class="replaceable"><code>target</code></em> can be a record variable, a row
      variable, or a comma-separated list of simple variables and
-     record/row fields.  The <TT
-CLASS="REPLACEABLE"
-><I
->select_expressions</I
-></TT
->
+     record/row fields.  The <em class="replaceable"><code>select_expressions</code></em>
      and the remainder of the command are the same as in regular SQL.
-    </P
-><P
->     Note that this is quite different from
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s normal interpretation of
-     <TT
-CLASS="COMMAND"
->SELECT INTO</TT
->, where the <TT
-CLASS="LITERAL"
->INTO</TT
-> target
+    </p>
+<p>     Note that this is quite different from
+     <span class="productname">PostgreSQL</span>'s normal interpretation of
+     <code class="command">SELECT INTO</code>, where the <code class="literal">INTO</code> target
      is a newly created table.  If you want to create a table from a
-     <TT
-CLASS="COMMAND"
->SELECT</TT
-> result inside a
-     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function, use the syntax
-     <TT
-CLASS="COMMAND"
->CREATE TABLE ... AS SELECT</TT
->.
-    </P
-><P
->     If a row or a variable list is used as target, the selected values
+     <code class="command">SELECT</code> result inside a
+     <span class="application">PL/pgSQL</span> function, use the syntax
+     <code class="command">CREATE TABLE ... AS SELECT</code>.
+    </p>
+<p>     If a row or a variable list is used as target, the selected values
      must exactly match the structure of the target, or a run-time error
      occurs.  When a record variable is the target, it automatically
      configures itself to the row type of the query result columns.
-    </P
-><P
->     Except for the <TT
-CLASS="LITERAL"
->INTO</TT
-> clause, the <TT
-CLASS="COMMAND"
->SELECT</TT
->
-     statement is the same as a normal SQL <TT
-CLASS="COMMAND"
->SELECT</TT
-> command
+    </p>
+<p>     Except for the <code class="literal">INTO</code> clause, the <code class="command">SELECT</code>
+     statement is the same as a normal SQL <code class="command">SELECT</code> command
      and can use its full power.
-    </P
-><P
->     The <TT
-CLASS="LITERAL"
->INTO</TT
-> clause can appear almost anywhere in the
-     <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement.  Customarily it is written
-     either just after <TT
-CLASS="LITERAL"
->SELECT</TT
-> as shown above, or
-     just before <TT
-CLASS="LITERAL"
->FROM</TT
-> &mdash; that is, either just before
-     or just after the list of <TT
-CLASS="REPLACEABLE"
-><I
->select_expressions</I
-></TT
->.
-    </P
-><P
->     If the query returns zero rows, null values are assigned to the
+    </p>
+<p>     The <code class="literal">INTO</code> clause can appear almost anywhere in the
+     <code class="command">SELECT</code> statement.  Customarily it is written
+     either just after <code class="literal">SELECT</code> as shown above, or
+     just before <code class="literal">FROM</code> [mdash ] that is, either just before
+     or just after the list of <em class="replaceable"><code>select_expressions</code></em>.
+    </p>
+<p>     If the query returns zero rows, null values are assigned to the
      target(s).  If the query returns multiple rows, the first
      row is assigned to the target(s) and the rest are discarded.
-     (Note that <SPAN
-CLASS="QUOTE"
->"the first row"</SPAN
-> is not well-defined unless you've
-     used <TT
-CLASS="LITERAL"
->ORDER BY</TT
->.)
-    </P
-><P
->     You can check the special <TT
-CLASS="LITERAL"
->FOUND</TT
-> variable (see
-     <A
-HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-DIAGNOSTICS"
->Section 36.6.6</A
->) after a
-     <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-> statement to determine whether the
+     (Note that &#8220;<span class="quote">the first row</span>&#8221; is not well-defined unless you've
+     used <code class="literal">ORDER BY</code>.)
+    </p>
+<p>     You can check the special <code class="literal">FOUND</code> variable (see
+     <a href="plpgsql-statements.html#plpgsql-statements-diagnostics" title="36.6.6. Obtaining the Result Status">Section 36.6.6, &#8220;Obtaining the Result Status&#8221;</a>) after a
+     <code class="command">SELECT INTO</code> statement to determine whether the
      assignment was successful, that is, at least one row was was returned by
      the query. For example:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT INTO myrec * FROM emp WHERE empname = myname;
+</p>
+<pre class="programlisting">SELECT INTO myrec * FROM emp WHERE empname = myname;
 IF NOT FOUND THEN
     RAISE EXCEPTION 'employee % not found', myname;
-END IF;</PRE
-><P>
-    </P
-><P
->     To test for whether a record/row result is null, you can use the
-     <TT
-CLASS="LITERAL"
->IS NULL</TT
-> conditional.  There is, however, no
+END IF;</pre>
+<p>
+    </p>
+<p>     To test for whether a record/row result is null, you can use the
+     <code class="literal">IS NULL</code> conditional.  There is, however, no
      way to tell whether any additional rows might have been
      discarded.  Here is an example that handles the case where no
      rows have been returned:
-</P><PRE
-CLASS="PROGRAMLISTING"
->DECLARE
+</p>
+<pre class="programlisting">DECLARE
     users_rec RECORD;
 BEGIN
     SELECT INTO users_rec * FROM users WHERE user_id=3;
@@ -371,686 +126,254 @@ BEGIN
         -- user entered no homepage, return "http://"
         RETURN 'http://';
     END IF;
-END;</PRE
-><P>
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-STATEMENTS-PERFORM"
->36.6.3. Executing an Expression or Query With No Result</A
-></H2
-><P
->     Sometimes one wishes to evaluate an expression or query but
+END;</pre>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-statements-perform"></a>36.6.3. Executing an Expression or Query With No Result</h3></div></div></div>
+<p>     Sometimes one wishes to evaluate an expression or query but
      discard the result (typically because one is calling a function
      that has useful side-effects but no useful result value).  To do
-     this in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->, use the
-     <TT
-CLASS="COMMAND"
->PERFORM</TT
-> statement:
+     this in <span class="application">PL/pgSQL</span>, use the
+     <code class="command">PERFORM</code> statement:
 
-</P><PRE
-CLASS="SYNOPSIS"
->PERFORM <TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
->;</PRE
-><P>
+</p>
+<pre class="synopsis">PERFORM <em class="replaceable"><code>query</code></em>;</pre>
+<p>
 
-     This executes <TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
-> and discards the
-     result.  Write the <TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
-> the same
-     way as you would in an SQL <TT
-CLASS="COMMAND"
->SELECT</TT
-> command, but replace the
-     initial keyword <TT
-CLASS="COMMAND"
->SELECT</TT
-> with <TT
-CLASS="COMMAND"
->PERFORM</TT
->.
-     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> variables will be
+     This executes <em class="replaceable"><code>query</code></em> and discards the
+     result.  Write the <em class="replaceable"><code>query</code></em> the same
+     way as you would in an SQL <code class="command">SELECT</code> command, but replace the
+     initial keyword <code class="command">SELECT</code> with <code class="command">PERFORM</code>.
+     <span class="application">PL/pgSQL</span> variables will be
      substituted into the query as usual.  Also, the special variable
-     <TT
-CLASS="LITERAL"
->FOUND</TT
-> is set to true if the query produced at
+     <code class="literal">FOUND</code> is set to true if the query produced at
      least one row or false if it produced no rows.
-    </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->      One might expect that <TT
-CLASS="COMMAND"
->SELECT</TT
-> with no
-      <TT
-CLASS="LITERAL"
->INTO</TT
-> clause would accomplish this result, but at
+    </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      One might expect that <code class="command">SELECT</code> with no
+      <code class="literal">INTO</code> clause would accomplish this result, but at
       present the only accepted way to do it is
-      <TT
-CLASS="COMMAND"
->PERFORM</TT
->.
-     </P
-></BLOCKQUOTE
-></DIV
-><P
->     An example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->PERFORM create_mv('cs_session_page_requests_mv', my_query);</PRE
-><P>
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-STATEMENTS-NULL"
->36.6.4. Doing Nothing At All</A
-></H2
-><P
->     Sometimes a placeholder statement that does nothing is useful.
+      <code class="command">PERFORM</code>.
+     </p>
+</div>
+<p>     An example:
+</p>
+<pre class="programlisting">PERFORM create_mv('cs_session_page_requests_mv', my_query);</pre>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-statements-null"></a>36.6.4. Doing Nothing At All</h3></div></div></div>
+<p>     Sometimes a placeholder statement that does nothing is useful.
      For example, it can indicate that one arm of an if/then/else
      chain is deliberately empty.  For this purpose, use the
-     <TT
-CLASS="COMMAND"
->NULL</TT
-> statement:
+     <code class="command">NULL</code> statement:
 
-</P><PRE
-CLASS="SYNOPSIS"
->NULL;</PRE
-><P>
-    </P
-><P
->     For example, the following two fragments of code are equivalent:
-</P><PRE
-CLASS="PROGRAMLISTING"
->    BEGIN
+</p>
+<pre class="synopsis">NULL;</pre>
+<p>
+    </p>
+<p>     For example, the following two fragments of code are equivalent:
+</p>
+<pre class="programlisting">    BEGIN
         y := x / 0;
     EXCEPTION
         WHEN division_by_zero THEN
             NULL;  -- ignore the error
-    END;</PRE
-><P>
+    END;</pre>
+<p>
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->    BEGIN
+</p>
+<pre class="programlisting">    BEGIN
         y := x / 0;
     EXCEPTION
         WHEN division_by_zero THEN  -- ignore the error
-    END;</PRE
-><P>
+    END;</pre>
+<p>
      Which is preferable is a matter of taste.
-    </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->      In Oracle's PL/SQL, empty statement lists are not allowed, and so
-      <TT
-CLASS="COMMAND"
->NULL</TT
-> statements are <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->required</I
-></SPAN
-> for situations
-      such as this.  <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> allows you to
+    </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      In Oracle's PL/SQL, empty statement lists are not allowed, and so
+      <code class="command">NULL</code> statements are <span class="emphasis"><em>required</em></span> for situations
+      such as this.  <span class="application">PL/pgSQL</span> allows you to
       just write nothing, instead.
-     </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-STATEMENTS-EXECUTING-DYN"
->36.6.5. Executing Dynamic Commands</A
-></H2
-><P
->     Oftentimes you will want to generate dynamic commands inside your
-     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> functions, that is, commands
+     </p>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-statements-executing-dyn"></a>36.6.5. Executing Dynamic Commands</h3></div></div></div>
+<p>     Oftentimes you will want to generate dynamic commands inside your
+     <span class="application">PL/pgSQL</span> functions, that is, commands
      that will involve different tables or different data types each
-     time they are executed.  <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->'s
+     time they are executed.  <span class="application">PL/pgSQL</span>'s
      normal attempts to cache plans for commands will not work in such
      scenarios.  To handle this sort of problem, the
-     <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement is provided:
+     <code class="command">EXECUTE</code> statement is provided:
 
-</P><PRE
-CLASS="SYNOPSIS"
->EXECUTE <TT
-CLASS="REPLACEABLE"
-><I
->command-string</I
-></TT
-> [ INTO <TT
-CLASS="REPLACEABLE"
-><I
->target</I
-></TT
-> ];</PRE
-><P>
+</p>
+<pre class="synopsis">EXECUTE <em class="replaceable"><code>command-string</code></em> [ INTO <em class="replaceable"><code>target</code></em> ];</pre>
+<p>
 
-     where <TT
-CLASS="REPLACEABLE"
-><I
->command-string</I
-></TT
-> is an expression
-     yielding a string (of type <TT
-CLASS="TYPE"
->text</TT
->) containing the
-     command to be executed and <TT
-CLASS="REPLACEABLE"
-><I
->target</I
-></TT
-> is a
+     where <em class="replaceable"><code>command-string</code></em> is an expression
+     yielding a string (of type <code class="type">text</code>) containing the
+     command to be executed and <em class="replaceable"><code>target</code></em> is a
      record variable, row variable, or a comma-separated list of
      simple variables and record/row fields.
-    </P
-><P
->     Note in particular that no substitution of <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->
+    </p>
+<p>     Note in particular that no substitution of <span class="application">PL/pgSQL</span>
      variables is done on the command string.  The values of variables must
      be inserted in the command string as it is constructed.
-    </P
-><P
->     Unlike all other commands in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->, a command
-     run by an <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement is not prepared
+    </p>
+<p>     Unlike all other commands in <span class="application">PL/pgSQL</span>, a command
+     run by an <code class="command">EXECUTE</code> statement is not prepared
      and saved just once during the life of the session.  Instead, the
      command is prepared each time the statement is run. The command
      string can be dynamically created within the function to perform
      actions on different tables and columns.
-    </P
-><P
->     The <TT
-CLASS="LITERAL"
->INTO</TT
-> clause specifies where the results of
-     a <TT
-CLASS="COMMAND"
->SELECT</TT
-> command should be assigned. If a row
+    </p>
+<p>     The <code class="literal">INTO</code> clause specifies where the results of
+     a <code class="command">SELECT</code> command should be assigned. If a row
      or variable list is provided, it must exactly match the structure
-     of the results produced by the <TT
-CLASS="COMMAND"
->SELECT</TT
-> (when a
+     of the results produced by the <code class="command">SELECT</code> (when a
      record variable is used, it will configure itself to match the
      result's structure automatically). If multiple rows are returned,
-     only the first will be assigned to the <TT
-CLASS="LITERAL"
->INTO</TT
->
+     only the first will be assigned to the <code class="literal">INTO</code>
      variable. If no rows are returned, NULL is assigned to the
-     <TT
-CLASS="LITERAL"
->INTO</TT
-> variable. If no <TT
-CLASS="LITERAL"
->INTO</TT
->
-     clause is specified, the results of a <TT
-CLASS="COMMAND"
->SELECT</TT
->
+     <code class="literal">INTO</code> variable. If no <code class="literal">INTO</code>
+     clause is specified, the results of a <code class="command">SELECT</code>
      command are discarded.
-    </P
-><P
->     <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-> is not currently supported within
-     <TT
-CLASS="COMMAND"
->EXECUTE</TT
->.
-    </P
-><P
->     When working with dynamic commands you will often have to handle escaping
+    </p>
+<p>     <code class="command">SELECT INTO</code> is not currently supported within
+     <code class="command">EXECUTE</code>.
+    </p>
+<p>     When working with dynamic commands you will often have to handle escaping
      of single quotes.  The recommended method for quoting fixed text in your
      function body is dollar quoting.  (If you have legacy code that does
      not use dollar quoting, please refer to the
-     overview in <A
-HREF="plpgsql-development-tips.html#PLPGSQL-QUOTE-TIPS"
->Section 36.2.1</A
->, which can save you
+     overview in <a href="plpgsql-development-tips.html#plpgsql-quote-tips" title="36.2.1. Handling of Quotation Marks">Section 36.2.1, &#8220;Handling of Quotation Marks&#8221;</a>, which can save you
      some effort when translating said code to a more reasonable scheme.)
-    </P
-><P
->     Dynamic values that are to be inserted into the constructed
+    </p>
+<p>     Dynamic values that are to be inserted into the constructed
      query require special handling since they might themselves contain
      quote characters.
      An example (this assumes that you are using dollar quoting for the
      function as a whole, so the quote marks need not be doubled):
-</P><PRE
-CLASS="PROGRAMLISTING"
->EXECUTE 'UPDATE tbl SET '
+</p>
+<pre class="programlisting">EXECUTE 'UPDATE tbl SET '
         || quote_ident(colname)
         || ' = '
         || quote_literal(newvalue)
         || ' WHERE key = '
-        || quote_literal(keyvalue);</PRE
-><P>
-    </P
-><A
-NAME="AEN34465"
-></A
-><A
-NAME="AEN34468"
-></A
-><P
->     This example demonstrates the use of the
-     <CODE
-CLASS="FUNCTION"
->quote_ident</CODE
-> and
-     <CODE
-CLASS="FUNCTION"
->quote_literal</CODE
-> functions.  For safety,
+        || quote_literal(keyvalue);</pre>
+<p>
+    </p>
+<a name="id668181"></a><a name="id668191"></a><p>     This example demonstrates the use of the
+     <code class="function">quote_ident</code> and
+     <code class="function">quote_literal</code> functions.  For safety,
      expressions containing column and table identifiers should be
-     passed to <CODE
-CLASS="FUNCTION"
->quote_ident</CODE
->.  Expressions containing
+     passed to <code class="function">quote_ident</code>.  Expressions containing
      values that should be literal strings in the constructed command
-     should be passed to <CODE
-CLASS="FUNCTION"
->quote_literal</CODE
->.  Both
+     should be passed to <code class="function">quote_literal</code>.  Both
      take the appropriate steps to return the input text enclosed in
      double or single quotes respectively, with any embedded special
      characters properly escaped.
-    </P
-><P
->     Note that dollar quoting is only useful for quoting fixed text.
+    </p>
+<p>     Note that dollar quoting is only useful for quoting fixed text.
      It would be a very bad idea to try to do the above example as
-</P><PRE
-CLASS="PROGRAMLISTING"
->EXECUTE 'UPDATE tbl SET '
+</p>
+<pre class="programlisting">EXECUTE 'UPDATE tbl SET '
         || quote_ident(colname)
         || ' = $$'
         || newvalue
         || '$$ WHERE key = '
-        || quote_literal(keyvalue);</PRE
-><P>
-     because it would break if the contents of <TT
-CLASS="LITERAL"
->newvalue</TT
->
-     happened to contain <TT
-CLASS="LITERAL"
->$$</TT
->.  The same objection would
+        || quote_literal(keyvalue);</pre>
+<p>
+     because it would break if the contents of <code class="literal">newvalue</code>
+     happened to contain <code class="literal">$$</code>.  The same objection would
      apply to any other dollar-quoting delimiter you might pick.
      So, to safely quote text that is not known in advance, you
-     <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->must</I
-></SPAN
-> use <CODE
-CLASS="FUNCTION"
->quote_literal</CODE
->.
-    </P
-><P
->     A much larger example of a dynamic command and
-     <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> can be seen in <A
-HREF="plpgsql-porting.html#PLPGSQL-PORTING-EX2"
->Example 36-6</A
->, which builds and executes a
-     <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command to define a new function.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-STATEMENTS-DIAGNOSTICS"
->36.6.6. Obtaining the Result Status</A
-></H2
-><P
->     There are several ways to determine the effect of a command. The
-     first method is to use the <TT
-CLASS="COMMAND"
->GET DIAGNOSTICS</TT
->
+     <span class="emphasis"><em>must</em></span> use <code class="function">quote_literal</code>.
+    </p>
+<p>     A much larger example of a dynamic command and
+     <code class="command">EXECUTE</code> can be seen in <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 36.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 36.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>, which builds and executes a
+     <code class="command">CREATE FUNCTION</code> command to define a new function.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-statements-diagnostics"></a>36.6.6. Obtaining the Result Status</h3></div></div></div>
+<p>     There are several ways to determine the effect of a command. The
+     first method is to use the <code class="command">GET DIAGNOSTICS</code>
      command, which has the form:
 
-</P><PRE
-CLASS="SYNOPSIS"
->GET DIAGNOSTICS <TT
-CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-> = <TT
-CLASS="REPLACEABLE"
-><I
->item</I
-></TT
-> [<SPAN
-CLASS="OPTIONAL"
-> , ... </SPAN
->];</PRE
-><P>
+</p>
+<pre class="synopsis">GET DIAGNOSTICS <em class="replaceable"><code>variable</code></em> = <em class="replaceable"><code>item</code></em> [<span class="optional"> , ... </span>];</pre>
+<p>
 
      This command allows retrieval of system status indicators.  Each
-     <TT
-CLASS="REPLACEABLE"
-><I
->item</I
-></TT
-> is a key word identifying a state
+     <em class="replaceable"><code>item</code></em> is a key word identifying a state
      value to be assigned to the specified variable (which should be
      of the right data type to receive it).  The currently available
-     status items are <TT
-CLASS="VARNAME"
->ROW_COUNT</TT
->, the number of rows
-     processed by the last <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command sent down to
-     the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> engine, and <TT
-CLASS="VARNAME"
->RESULT_OID</TT
->,
+     status items are <code class="varname">ROW_COUNT</code>, the number of rows
+     processed by the last <span class="acronym">SQL</span> command sent down to
+     the <span class="acronym">SQL</span> engine, and <code class="varname">RESULT_OID</code>,
      the OID of the last row inserted by the most recent
-     <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command.  Note that <TT
-CLASS="VARNAME"
->RESULT_OID</TT
->
-     is only useful after an <TT
-CLASS="COMMAND"
->INSERT</TT
-> command into a
+     <span class="acronym">SQL</span> command.  Note that <code class="varname">RESULT_OID</code>
+     is only useful after an <code class="command">INSERT</code> command into a
      table containing OIDs.
-    </P
-><P
->     An example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->GET DIAGNOSTICS integer_var = ROW_COUNT;</PRE
-><P>
-    </P
-><P
->     The second method to determine the effects of a command is to check the
-     special variable named <TT
-CLASS="LITERAL"
->FOUND</TT
->, which is of
-     type <TT
-CLASS="TYPE"
->boolean</TT
->.  <TT
-CLASS="LITERAL"
->FOUND</TT
-> starts out
-     false within each <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function call.
+    </p>
+<p>     An example:
+</p>
+<pre class="programlisting">GET DIAGNOSTICS integer_var = ROW_COUNT;</pre>
+<p>
+    </p>
+<p>     The second method to determine the effects of a command is to check the
+     special variable named <code class="literal">FOUND</code>, which is of
+     type <code class="type">boolean</code>.  <code class="literal">FOUND</code> starts out
+     false within each <span class="application">PL/pgSQL</span> function call.
      It is set by each of the following types of statements:
-         <P
-></P
-></P><UL
-><LI
-><P
->                A <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-> statement sets
-                <TT
-CLASS="LITERAL"
->FOUND</TT
-> true if it returns a row, false if no
+         </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>                A <code class="command">SELECT INTO</code> statement sets
+                <code class="literal">FOUND</code> true if it returns a row, false if no
                 row is returned.
-           </P
-></LI
-><LI
-><P
->                A <TT
-CLASS="COMMAND"
->PERFORM</TT
-> statement sets <TT
-CLASS="LITERAL"
->FOUND</TT
->
+           </p></li>
+<li><p>                A <code class="command">PERFORM</code> statement sets <code class="literal">FOUND</code>
                 true if it produces (and discards) a row, false if no row is
                 produced.
-           </P
-></LI
-><LI
-><P
->                <TT
-CLASS="COMMAND"
->UPDATE</TT
->, <TT
-CLASS="COMMAND"
->INSERT</TT
->, and <TT
-CLASS="COMMAND"
->DELETE</TT
->
-                statements set <TT
-CLASS="LITERAL"
->FOUND</TT
-> true if at least one
+           </p></li>
+<li><p>                <code class="command">UPDATE</code>, <code class="command">INSERT</code>, and <code class="command">DELETE</code>
+                statements set <code class="literal">FOUND</code> true if at least one
                 row is affected, false if no row is affected.
-           </P
-></LI
-><LI
-><P
->                A <TT
-CLASS="COMMAND"
->FETCH</TT
-> statement sets <TT
-CLASS="LITERAL"
->FOUND</TT
->
+           </p></li>
+<li><p>                A <code class="command">FETCH</code> statement sets <code class="literal">FOUND</code>
                 true if it returns a row, false if no row is returned.
-           </P
-></LI
-><LI
-><P
->                A <TT
-CLASS="COMMAND"
->FOR</TT
-> statement sets <TT
-CLASS="LITERAL"
->FOUND</TT
-> true
+           </p></li>
+<li><p>                A <code class="command">FOR</code> statement sets <code class="literal">FOUND</code> true
                 if it iterates one or more times, else false.  This applies to
-                all three variants of the <TT
-CLASS="COMMAND"
->FOR</TT
-> statement (integer
-                <TT
-CLASS="COMMAND"
->FOR</TT
-> loops, record-set <TT
-CLASS="COMMAND"
->FOR</TT
-> loops, and
-                dynamic record-set <TT
-CLASS="COMMAND"
->FOR</TT
->
-                loops). <TT
-CLASS="LITERAL"
->FOUND</TT
-> is set this way when the
-                <TT
-CLASS="COMMAND"
->FOR</TT
-> loop exits; inside the execution of the loop,
-                <TT
-CLASS="LITERAL"
->FOUND</TT
-> is not modified by the
-                <TT
-CLASS="COMMAND"
->FOR</TT
-> statement, although it may be changed by the
+                all three variants of the <code class="command">FOR</code> statement (integer
+                <code class="command">FOR</code> loops, record-set <code class="command">FOR</code> loops, and
+                dynamic record-set <code class="command">FOR</code>
+                loops). <code class="literal">FOUND</code> is set this way when the
+                <code class="command">FOR</code> loop exits; inside the execution of the loop,
+                <code class="literal">FOUND</code> is not modified by the
+                <code class="command">FOR</code> statement, although it may be changed by the
                 execution of other statements within the loop body.
-           </P
-></LI
-></UL
-><P>
+           </p></li>
+</ul></div>
+<p>
 
-     <TT
-CLASS="LITERAL"
->FOUND</TT
-> is a local variable within each
-     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function; so any changes
+     <code class="literal">FOUND</code> is a local variable within each
+     <span class="application">PL/pgSQL</span> function; so any changes
      to it affect only the current function.
-    </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql-expressions.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-control-structures.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Expressions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Control Structures</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    </p>
+</div>
+</div></body>
+</html>

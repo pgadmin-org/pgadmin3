@@ -1,661 +1,215 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Write Ahead Log</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Run-time Configuration"
-HREF="runtime-config.html"><LINK
-REL="PREVIOUS"
-TITLE="Resource Consumption"
-HREF="runtime-config-resource.html"><LINK
-REL="NEXT"
-TITLE="Query Planning"
-HREF="runtime-config-query.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-resource.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 17. Run-time Configuration</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-query.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RUNTIME-CONFIG-WAL"
->17.5. Write Ahead Log</A
-></H1
-><P
->    See also <A
-HREF="wal-configuration.html"
->Section 26.2</A
-> for details on WAL
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.5. Write Ahead Log</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Run-time Configuration">
+<link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
+<link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-wal"></a>17.5. Write Ahead Log</h2></div></div></div>
+<p>    See also <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a> for details on WAL
     tuning.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-WAL-SETTINGS"
->17.5.1. Settings</A
-></H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-FSYNC"
-></A
-><TT
-CLASS="VARNAME"
->fsync</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        If this option is on, the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server
-        will use the <CODE
-CLASS="FUNCTION"
->fsync()</CODE
-> system call in several places
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-wal-settings"></a>17.5.1. Settings</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-fsync"></a><span class="term"><code class="varname">fsync</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        If this option is on, the <span class="productname">PostgreSQL</span> server
+        will use the <code class="function">fsync()</code> system call in several places
         to make sure that updates are physically written to disk. This
         insures that a database cluster will recover to a
         consistent state after an operating system or hardware crash.
-       </P
-><P
->        However, using <CODE
-CLASS="FUNCTION"
->fsync()</CODE
-> results in a
+       </p>
+<p>        However, using <code class="function">fsync()</code> results in a
         performance penalty: when a transaction is committed,
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> must wait for the
+        <span class="productname">PostgreSQL</span> must wait for the
         operating system to flush the write-ahead log to disk.  When
-        <TT
-CLASS="VARNAME"
->fsync</TT
-> is disabled, the operating system is
+        <code class="varname">fsync</code> is disabled, the operating system is
         allowed to do its best in buffering, ordering, and delaying
         writes. This can result in significantly improved performance.
         However, if the system crashes, the results of the last few
         committed transactions may be lost in part or whole. In the
         worst case, unrecoverable data corruption may occur.
-        (Crashes of the database server itself are <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
->
+        (Crashes of the database server itself are <span class="emphasis"><em>not</em></span>
         a risk factor here.  Only an operating-system-level crash
         creates a risk of corruption.)
-       </P
-><P
->        Due to the risks involved, there is no universally correct
-        setting for <TT
-CLASS="VARNAME"
->fsync</TT
->. Some administrators
-        always disable <TT
-CLASS="VARNAME"
->fsync</TT
->, while others only
+       </p>
+<p>        Due to the risks involved, there is no universally correct
+        setting for <code class="varname">fsync</code>. Some administrators
+        always disable <code class="varname">fsync</code>, while others only
         turn it off for bulk loads, where there is a clear restart
         point if something goes wrong, whereas some administrators
-        always leave <TT
-CLASS="VARNAME"
->fsync</TT
-> enabled. The default is
-        to enable <TT
-CLASS="VARNAME"
->fsync</TT
->, for maximum reliability.
+        always leave <code class="varname">fsync</code> enabled. The default is
+        to enable <code class="varname">fsync</code>, for maximum reliability.
         If you trust your operating system, your hardware, and your
         utility company (or your battery backup), you can consider
-        disabling <TT
-CLASS="VARNAME"
->fsync</TT
->.
-       </P
-><P
->        This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.  If this option
-        is <TT
-CLASS="LITERAL"
->off</TT
->, consider also turning off 
-        <TT
-CLASS="VARNAME"
->guc-full-page-writes</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-WAL-SYNC-METHOD"
-></A
-><TT
-CLASS="VARNAME"
->wal_sync_method</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        Method used for forcing WAL updates out to disk.  Possible
+        disabling <code class="varname">fsync</code>.
+       </p>
+<p>        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.  If this option
+        is <code class="literal">off</code>, consider also turning off 
+        <code class="varname">guc-full-page-writes</code>.
+       </p>
+</dd>
+<dt>
+<a name="guc-wal-sync-method"></a><span class="term"><code class="varname">wal_sync_method</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        Method used for forcing WAL updates out to disk.  Possible
         values are:
-       </P
-><P
-></P
-><UL
-><LI
-><P
->         <TT
-CLASS="LITERAL"
->open_datasync</TT
-> (write WAL files with <CODE
-CLASS="FUNCTION"
->open()</CODE
-> option <TT
-CLASS="SYMBOL"
->O_DSYNC</TT
->)
-        </P
-></LI
-><LI
-><P
->         <TT
-CLASS="LITERAL"
->fdatasync</TT
-> (call <CODE
-CLASS="FUNCTION"
->fdatasync()</CODE
-> at each commit),
-        </P
-></LI
-><LI
-><P
->         <TT
-CLASS="LITERAL"
->fsync</TT
-> (call <CODE
-CLASS="FUNCTION"
->fsync()</CODE
-> at each commit)
-        </P
-></LI
-><LI
-><P
->         <TT
-CLASS="LITERAL"
->fsync_writethrough</TT
-> (force write-through of any disk write cache)
-        </P
-></LI
-><LI
-><P
->         <TT
-CLASS="LITERAL"
->open_sync</TT
-> (write WAL files with <CODE
-CLASS="FUNCTION"
->open()</CODE
-> option <TT
-CLASS="SYMBOL"
->O_SYNC</TT
->)
-        </P
-></LI
-></UL
-><P
->        Not all of these choices are available on all platforms.
+       </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>         <code class="literal">open_datasync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_DSYNC</code>)
+        </p></li>
+<li><p>         <code class="literal">fdatasync</code> (call <code class="function">fdatasync()</code> at each commit),
+        </p></li>
+<li><p>         <code class="literal">fsync</code> (call <code class="function">fsync()</code> at each commit)
+        </p></li>
+<li><p>         <code class="literal">fsync_writethrough</code> (force write-through of any disk write cache)
+        </p></li>
+<li><p>         <code class="literal">open_sync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_SYNC</code>)
+        </p></li>
+</ul></div>
+<p>        Not all of these choices are available on all platforms.
         The top-most supported option is used as the default.
-        If <TT
-CLASS="VARNAME"
->fsync</TT
-> is off then this setting is irrelevant.
+        If <code class="varname">fsync</code> is off then this setting is irrelevant.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-FULL-PAGE-WRITES"
-></A
-><TT
-CLASS="VARNAME"
->full_page_writes</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        A page write in process during an operating system crash might
+        <code class="filename">postgresql.conf</code> file.
+       </p>
+</dd>
+<dt>
+<a name="guc-full-page-writes"></a><span class="term"><code class="varname">full_page_writes</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        A page write in process during an operating system crash might
         be only partially written to disk, leading to an on-disk page
         that contains a mix of old and new data. During recovery, the
         row changes stored in WAL are not enough to completely restore
         the page.
-       </P
-><P
->        When this option is on, the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server
+       </p>
+<p>        When this option is on, the <span class="productname">PostgreSQL</span> server
         writes full pages to WAL when they are first modified after a
         checkpoint so full recovery is possible. Turning this option off
         might lead to a corrupt system after an operating system crash
         or power failure because uncorrected partial pages might contain
         inconsistent or corrupt data. The risks are less but similar to
-        <TT
-CLASS="VARNAME"
->fsync</TT
->.
-       </P
-><P
->        This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.  The default is
-        <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-WAL-BUFFERS"
-></A
-><TT
-CLASS="VARNAME"
->wal_buffers</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Number of disk-page buffers allocated in shared memory for WAL data.
+        <code class="varname">fsync</code>.
+       </p>
+<p>        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.  The default is
+        <code class="literal">on</code>.
+       </p>
+</dd>
+<dt>
+<a name="guc-wal-buffers"></a><span class="term"><code class="varname">wal_buffers</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd>
+<p>        Number of disk-page buffers allocated in shared memory for WAL data.
         The default is 8.  The setting need only be large enough to hold
         the amount of WAL data generated by one typical transaction, since
         the data is flushed to disk at every transaction commit.
         This option can only be set at server start.
-       </P
-><P
->        Increasing this parameter may cause <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-        to request more <SPAN
-CLASS="SYSTEMITEM"
->System V</SPAN
-> shared
+       </p>
+<p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
+        to request more <span class="systemitem">System V</span> shared
         memory than your operating system's default configuration
-        allows. See <A
-HREF="kernel-resources.html#SYSVIPC"
->Section 16.4.1</A
-> for information on how to
+        allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-COMMIT-DELAY"
-></A
-><TT
-CLASS="VARNAME"
->commit_delay</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Time delay between writing a commit record to the WAL buffer
+       </p>
+</dd>
+<dt>
+<a name="guc-commit-delay"></a><span class="term"><code class="varname">commit_delay</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Time delay between writing a commit record to the WAL buffer
         and flushing the buffer out to disk, in microseconds. A
         nonzero delay can allow multiple transactions to be committed
-        with only one <CODE
-CLASS="FUNCTION"
->fsync()</CODE
-> system call, if
+        with only one <code class="function">fsync()</code> system call, if
         system load is high enough that additional transactions become
         ready to commit within the given interval. But the delay is
         just wasted if no other transactions become ready to
         commit. Therefore, the delay is only performed if at least
-        <TT
-CLASS="VARNAME"
->commit_siblings</TT
-> other transactions are
+        <code class="varname">commit_siblings</code> other transactions are
         active at the instant that a server process has written its
         commit record. The default is zero (no delay).
-       </P
-></DD
-><DT
-><A
-NAME="GUC-COMMIT-SIBLINGS"
-></A
-><TT
-CLASS="VARNAME"
->commit_siblings</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Minimum number of concurrent open transactions to require
-        before performing the <TT
-CLASS="VARNAME"
->commit_delay</TT
-> delay. A larger
+       </p></dd>
+<dt>
+<a name="guc-commit-siblings"></a><span class="term"><code class="varname">commit_siblings</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Minimum number of concurrent open transactions to require
+        before performing the <code class="varname">commit_delay</code> delay. A larger
         value makes it more probable that at least one other
         transaction will become ready to commit during the delay
         interval. The default is five.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-WAL-CHECKPOINTS"
->17.5.2. Checkpoints</A
-></H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-CHECKPOINT-SEGMENTS"
-></A
-><TT
-CLASS="VARNAME"
->checkpoint_segments</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Maximum distance between automatic WAL checkpoints, in log
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-wal-checkpoints"></a>17.5.2. Checkpoints</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-checkpoint-segments"></a><span class="term"><code class="varname">checkpoint_segments</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Maximum distance between automatic WAL checkpoints, in log
         file segments (each segment is normally 16 megabytes). The
         default is three.  This option can only be set at server start
-        or in the <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-CHECKPOINT-TIMEOUT"
-></A
-><TT
-CLASS="VARNAME"
->checkpoint_timeout</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Maximum time between automatic WAL checkpoints, in
+        or in the <code class="filename">postgresql.conf</code> file.
+       </p></dd>
+<dt>
+<a name="guc-checkpoint-timeout"></a><span class="term"><code class="varname">checkpoint_timeout</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Maximum time between automatic WAL checkpoints, in
         seconds. The default is 300 seconds.  This option can only be
-        set at server start or in the <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->
+        set at server start or in the <code class="filename">postgresql.conf</code>
         file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-CHECKPOINT-WARNING"
-></A
-><TT
-CLASS="VARNAME"
->checkpoint_warning</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Write a message to the server log if checkpoints caused by
+       </p></dd>
+<dt>
+<a name="guc-checkpoint-warning"></a><span class="term"><code class="varname">checkpoint_warning</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Write a message to the server log if checkpoints caused by
         the filling of checkpoint segment files happen closer together
         than this many seconds.  The default is 30 seconds.
         Zero turns off the warning.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-WAL-ARCHIVING"
->17.5.3. Archiving</A
-></H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-ARCHIVE-COMMAND"
-></A
-><TT
-CLASS="VARNAME"
->archive_command</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        The shell command to execute to archive a completed segment of
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-wal-archiving"></a>17.5.3. Archiving</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-archive-command"></a><span class="term"><code class="varname">archive_command</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        The shell command to execute to archive a completed segment of
         the WAL file series. If this is an empty string (the default),
-        WAL archiving is disabled. Any <TT
-CLASS="LITERAL"
->%p</TT
-> in the string is
+        WAL archiving is disabled. Any <code class="literal">%p</code> in the string is
         replaced by the absolute path of the file to archive, and any
-        <TT
-CLASS="LITERAL"
->%f</TT
-> is replaced by the file name only. Use
-        <TT
-CLASS="LITERAL"
->%%</TT
-> to embed an actual <TT
-CLASS="LITERAL"
->%</TT
-> character in the
-        command. For more information see <A
-HREF="backup-online.html#BACKUP-ARCHIVING-WAL"
->Section 23.3.1</A
->. This option can only be set at
-        server start or in the <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->
+        <code class="literal">%f</code> is replaced by the file name only. Use
+        <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character in the
+        command. For more information see <a href="backup-online.html#backup-archiving-wal" title="23.3.1. Setting up WAL archiving">Section 23.3.1, &#8220;Setting up WAL archiving&#8221;</a>. This option can only be set at
+        server start or in the <code class="filename">postgresql.conf</code>
         file.
-       </P
-><P
->        It is important for the command to return a zero exit status if
+       </p>
+<p>        It is important for the command to return a zero exit status if
         and only if it succeeds.  Examples:
-</P><PRE
-CLASS="PROGRAMLISTING"
->archive_command = 'cp "%p" /mnt/server/archivedir/"%f"'
-archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</PRE
-><P>
-       </P
-></DD
-></DL
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-resource.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-query.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Resource Consumption</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Query Planning</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">archive_command = 'cp "%p" /mnt/server/archivedir/"%f"'
+archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
+<p>
+       </p>
+</dd>
+</dl></div>
+</div>
+</div></body>
+</html>

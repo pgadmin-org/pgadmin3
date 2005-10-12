@@ -1,906 +1,311 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->columns</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The Information Schema"
-HREF="information-schema.html"><LINK
-REL="PREVIOUS"
-TITLE="column_udt_usage"
-HREF="infoschema-column-udt-usage.html"><LINK
-REL="NEXT"
-TITLE="constraint_column_usage"
-HREF="infoschema-constraint-column-usage.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-column-udt-usage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 31. The Information Schema</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-constraint-column-usage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INFOSCHEMA-COLUMNS"
->31.9. <TT
-CLASS="LITERAL"
->columns</TT
-></A
-></H1
-><P
->   The view <TT
-CLASS="LITERAL"
->columns</TT
-> contains information about all
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.9. columns</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-column-udt-usage.html" title="31.8. column_udt_usage">
+<link rel="next" href="infoschema-constraint-column-usage.html" title="31.10. constraint_column_usage">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-columns"></a>31.9. <code class="literal">columns</code></h2></div></div></div>
+<p>   The view <code class="literal">columns</code> contains information about all
    table columns (or view columns) in the database.  System columns
-   (<TT
-CLASS="LITERAL"
->oid</TT
->, etc.) are not included.  Only those columns are
+   (<code class="literal">oid</code>, etc.) are not included.  Only those columns are
    shown that the current user has access to (by way of being the
    owner or having some privilege).
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN27785"
-></A
-><P
-><B
->Table 31-7. <TT
-CLASS="LITERAL"
->columns</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->table_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the database containing the table (always the current database)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->table_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the schema containing the table</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->table_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the table</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->column_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Name of the column</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->ordinal_position</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->Ordinal position of the column within the table (count starts at 1)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->column_default</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       Default expression of the column (null if the current user is
+  </p>
+<div class="table">
+<a name="id638463"></a><p class="title"><b>Table 31.7. <code class="literal">columns</code> Columns</b></p>
+<table summary="columns Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the table (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the table</td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the table</td>
+</tr>
+<tr>
+<td><code class="literal">column_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the column</td>
+</tr>
+<tr>
+<td><code class="literal">ordinal_position</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Ordinal position of the column within the table (count starts at 1)</td>
+</tr>
+<tr>
+<td><code class="literal">column_default</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Default expression of the column (null if the current user is
        not the owner of the table containing the column)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->is_nullable</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       <TT
-CLASS="LITERAL"
->YES</TT
-> if the column is possibly nullable,
-       <TT
-CLASS="LITERAL"
->NO</TT
-> if it is known not nullable.  A not-null
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_nullable</code></td>
+<td><code class="type">character_data</code></td>
+<td>       <code class="literal">YES</code> if the column is possibly nullable,
+       <code class="literal">NO</code> if it is known not nullable.  A not-null
        constraint is one way a column can be known not nullable, but
        there may be others.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->data_type</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       Data type of the column, if it is a built-in type, or
-       <TT
-CLASS="LITERAL"
->ARRAY</TT
-> if it is some array (in that case, see
-       the view <TT
-CLASS="LITERAL"
->element_types</TT
->), else
-       <TT
-CLASS="LITERAL"
->USER-DEFINED</TT
-> (in that case, the type is
-       identified in <TT
-CLASS="LITERAL"
->udt_name</TT
-> and associated
+      </td>
+</tr>
+<tr>
+<td><code class="literal">data_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Data type of the column, if it is a built-in type, or
+       <code class="literal">ARRAY</code> if it is some array (in that case, see
+       the view <code class="literal">element_types</code>), else
+       <code class="literal">USER-DEFINED</code> (in that case, the type is
+       identified in <code class="literal">udt_name</code> and associated
        columns).  If the column is based on a domain, this column
        refers to the type underlying the domain (and the domain is
-       identified in <TT
-CLASS="LITERAL"
->domain_name</TT
-> and associated
+       identified in <code class="literal">domain_name</code> and associated
        columns).
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->character_maximum_length</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->       If <TT
-CLASS="LITERAL"
->data_type</TT
-> identifies a character or bit
+      </td>
+</tr>
+<tr>
+<td><code class="literal">character_maximum_length</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a character or bit
        string type, the declared maximum length; null for all other
        data types or if no maximum length was declared.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->character_octet_length</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->       If <TT
-CLASS="LITERAL"
->data_type</TT
-> identifies a character type,
+      </td>
+</tr>
+<tr>
+<td><code class="literal">character_octet_length</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a character type,
        the maximum possible length in octets (bytes) of a datum (this
-       should not be of concern to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> users); null for all
+       should not be of concern to <span class="productname">PostgreSQL</span> users); null for all
        other data types.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->numeric_precision</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->       If <TT
-CLASS="LITERAL"
->data_type</TT
-> identifies a numeric type, this
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a numeric type, this
        column contains the (declared or implicit) precision of the
        type for this column.  The precision indicates the number of
        significant digits.  It may be expressed in decimal (base 10)
        or binary (base 2) terms, as specified in the column
-       <TT
-CLASS="LITERAL"
->numeric_precision_radix</TT
->.  For all other data
+       <code class="literal">numeric_precision_radix</code>.  For all other data
        types, this column is null.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->numeric_precision_radix</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->       If <TT
-CLASS="LITERAL"
->data_type</TT
-> identifies a numeric type, this
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision_radix</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a numeric type, this
        column indicates in which base the values in the columns
-       <TT
-CLASS="LITERAL"
->numeric_precision</TT
-> and
-       <TT
-CLASS="LITERAL"
->numeric_scale</TT
-> are expressed.  The value is
+       <code class="literal">numeric_precision</code> and
+       <code class="literal">numeric_scale</code> are expressed.  The value is
        either 2 or 10.  For all other data types, this column is null.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->numeric_scale</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->       If <TT
-CLASS="LITERAL"
->data_type</TT
-> identifies an exact numeric
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_scale</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies an exact numeric
        type, this column contains the (declared or implicit) scale of
        the type for this column.  The scale indicates the number of
        significant digits to the right of the decimal point.  It may
        be expressed in decimal (base 10) or binary (base 2) terms, as
        specified in the column
-       <TT
-CLASS="LITERAL"
->numeric_precision_radix</TT
->.  For all other data
+       <code class="literal">numeric_precision_radix</code>.  For all other data
        types, this column is null.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->datetime_precision</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->       If <TT
-CLASS="LITERAL"
->data_type</TT
-> identifies a date, time, or
+      </td>
+</tr>
+<tr>
+<td><code class="literal">datetime_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a date, time, or
        interval type, the declared precision; null for all other data
        types or if no precision was declared.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->interval_type</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Not yet implemented</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->interval_precision</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Not yet implemented</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->character_set_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->character_set_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->character_set_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->collation_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->collation_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->collation_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->domain_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       If the column has a domain type, the name of the database that
+      </td>
+</tr>
+<tr>
+<td><code class="literal">interval_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td><code class="literal">interval_precision</code></td>
+<td><code class="type">character_data</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td><code class="literal">character_set_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">character_set_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">character_set_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">collation_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">collation_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">collation_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">domain_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       If the column has a domain type, the name of the database that
        the domain is defined in (always the current database), else
        null.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->domain_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       If the column has a domain type, the name of the schema that
+      </td>
+</tr>
+<tr>
+<td><code class="literal">domain_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       If the column has a domain type, the name of the schema that
        the domain is defined in, else null.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->domain_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->If the column has a domain type, the name of the domain, else null.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->udt_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       Name of the database that the column data type (the underlying
+      </td>
+</tr>
+<tr>
+<td><code class="literal">domain_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>If the column has a domain type, the name of the domain, else null.</td>
+</tr>
+<tr>
+<td><code class="literal">udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the database that the column data type (the underlying
        type of the domain, if applicable) is defined in (always the
        current database)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->udt_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       Name of the schema that the column data type (the underlying
+      </td>
+</tr>
+<tr>
+<td><code class="literal">udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the schema that the column data type (the underlying
        type of the domain, if applicable) is defined in
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->udt_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       Name of the column data type (the underlying type of the
+      </td>
+</tr>
+<tr>
+<td><code class="literal">udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the column data type (the underlying type of the
        domain, if applicable)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->scope_catalog</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->scope_schema</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->scope_name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->maximum_cardinality</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->cardinal_number</TT
-></TD
-><TD
->Always null, because arrays always have unlimited maximum cardinality in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->dtd_identifier</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->sql_identifier</TT
-></TD
-><TD
->       An identifier of the data type descriptor of the column, unique
+      </td>
+</tr>
+<tr>
+<td><code class="literal">scope_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">scope_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">scope_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">maximum_cardinality</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, because arrays always have unlimited maximum cardinality in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">dtd_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       An identifier of the data type descriptor of the column, unique
        among the data type descriptors pertaining to the table.  This
        is mainly useful for joining with other instances of such
        identifiers.  (The specific format of the identifier is not
        defined and not guaranteed to remain the same in future
        versions.)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->is_self_referencing</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Applies to a feature not available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   Since data types can be defined in a variety of ways in SQL, and
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> contains additional ways to
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_self_referencing</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   Since data types can be defined in a variety of ways in SQL, and
+   <span class="productname">PostgreSQL</span> contains additional ways to
    define data types, their representation in the information schema
-   can be somewhat difficult.  The column <TT
-CLASS="LITERAL"
->data_type</TT
->
+   can be somewhat difficult.  The column <code class="literal">data_type</code>
    is supposed to identify the underlying built-in type of the column.
-   In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, this means that the type
+   In <span class="productname">PostgreSQL</span>, this means that the type
    is defined in the system catalog schema
-   <TT
-CLASS="LITERAL"
->pg_catalog</TT
->.  This column may be useful if the
+   <code class="literal">pg_catalog</code>.  This column may be useful if the
    application can handle the well-known built-in types specially (for
    example, format the numeric types differently or use the data in
-   the precision columns).  The columns <TT
-CLASS="LITERAL"
->udt_name</TT
->,
-   <TT
-CLASS="LITERAL"
->udt_schema</TT
->, and <TT
-CLASS="LITERAL"
->udt_catalog</TT
->
+   the precision columns).  The columns <code class="literal">udt_name</code>,
+   <code class="literal">udt_schema</code>, and <code class="literal">udt_catalog</code>
    always identify the underlying data type of the column, even if the
    column is based on a domain.  (Since
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> treats built-in types like
+   <span class="productname">PostgreSQL</span> treats built-in types like
    user-defined types, built-in types appear here as well.  This is an
    extension of the SQL standard.)  These columns should be used if an
    application wants to process data differently according to the
    type, because in that case it wouldn't matter if the column is
    really based on a domain.  If the column is based on a domain, the
    identity of the domain is stored in the columns
-   <TT
-CLASS="LITERAL"
->domain_name</TT
->, <TT
-CLASS="LITERAL"
->domain_schema</TT
->,
-   and <TT
-CLASS="LITERAL"
->domain_catalog</TT
->.  If you want to pair up
+   <code class="literal">domain_name</code>, <code class="literal">domain_schema</code>,
+   and <code class="literal">domain_catalog</code>.  If you want to pair up
    columns with their associated data types and treat domains as
-   separate types, you could write <TT
-CLASS="LITERAL"
->coalesce(domain_name,
-   udt_name)</TT
->, etc.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-column-udt-usage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-constraint-column-usage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->column_udt_usage</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="information-schema.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->constraint_column_usage</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   separate types, you could write <code class="literal">coalesce(domain_name,
+   udt_name)</code>, etc.
+  </p>
+</div></body>
+</html>

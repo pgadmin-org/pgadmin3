@@ -1,405 +1,95 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Queries</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The SQL Language"
-HREF="sql.html"><LINK
-REL="PREVIOUS"
-TITLE="Deleting Data"
-HREF="dml-delete.html"><LINK
-REL="NEXT"
-TITLE="Table Expressions"
-HREF="queries-table-expressions.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="dml-delete.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="dml.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="datatype.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries-table-expressions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="QUERIES"
-></A
->Chapter 7. Queries</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->7.1. <A
-HREF="queries.html#QUERIES-OVERVIEW"
->Overview</A
-></DT
-><DT
->7.2. <A
-HREF="queries-table-expressions.html"
->Table Expressions</A
-></DT
-><DD
-><DL
-><DT
->7.2.1. <A
-HREF="queries-table-expressions.html#QUERIES-FROM"
->The <TT
-CLASS="LITERAL"
->FROM</TT
-> Clause</A
-></DT
-><DT
->7.2.2. <A
-HREF="queries-table-expressions.html#QUERIES-WHERE"
->The <TT
-CLASS="LITERAL"
->WHERE</TT
-> Clause</A
-></DT
-><DT
->7.2.3. <A
-HREF="queries-table-expressions.html#QUERIES-GROUP"
->The <TT
-CLASS="LITERAL"
->GROUP BY</TT
-> and <TT
-CLASS="LITERAL"
->HAVING</TT
-> Clauses</A
-></DT
-></DL
-></DD
-><DT
->7.3. <A
-HREF="queries-select-lists.html"
->Select Lists</A
-></DT
-><DD
-><DL
-><DT
->7.3.1. <A
-HREF="queries-select-lists.html#QUERIES-SELECT-LIST-ITEMS"
->Select-List Items</A
-></DT
-><DT
->7.3.2. <A
-HREF="queries-select-lists.html#QUERIES-COLUMN-LABELS"
->Column Labels</A
-></DT
-><DT
->7.3.3. <A
-HREF="queries-select-lists.html#QUERIES-DISTINCT"
-><TT
-CLASS="LITERAL"
->DISTINCT</TT
-></A
-></DT
-></DL
-></DD
-><DT
->7.4. <A
-HREF="queries-union.html"
->Combining Queries</A
-></DT
-><DT
->7.5. <A
-HREF="queries-order.html"
->Sorting Rows</A
-></DT
-><DT
->7.6. <A
-HREF="queries-limit.html"
-><TT
-CLASS="LITERAL"
->LIMIT</TT
-> and <TT
-CLASS="LITERAL"
->OFFSET</TT
-></A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN2713"
-></A
-><A
-NAME="AEN2715"
-></A
-><P
->  The previous chapters explained how to create tables, how to fill
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 7. Queries</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql.html" title="Part II. The SQL Language">
+<link rel="prev" href="dml-delete.html" title="6.3. Deleting Data">
+<link rel="next" href="queries-table-expressions.html" title="7.2. Table Expressions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="queries">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="queries"></a>Chapter 7. Queries</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="queries.html#queries-overview">7.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="queries-table-expressions.html">7.2. Table Expressions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="queries-table-expressions.html#queries-from">7.2.1. The <code class="literal">FROM</code> Clause</a></span></dt>
+<dt><span class="sect2"><a href="queries-table-expressions.html#queries-where">7.2.2. The <code class="literal">WHERE</code> Clause</a></span></dt>
+<dt><span class="sect2"><a href="queries-table-expressions.html#queries-group">7.2.3. The <code class="literal">GROUP BY</code> and <code class="literal">HAVING</code> Clauses</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="queries-select-lists.html">7.3. Select Lists</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="queries-select-lists.html#queries-select-list-items">7.3.1. Select-List Items</a></span></dt>
+<dt><span class="sect2"><a href="queries-select-lists.html#queries-column-labels">7.3.2. Column Labels</a></span></dt>
+<dt><span class="sect2"><a href="queries-select-lists.html#queries-distinct">7.3.3. <code class="literal">DISTINCT</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="queries-union.html">7.4. Combining Queries</a></span></dt>
+<dt><span class="sect1"><a href="queries-order.html">7.5. Sorting Rows</a></span></dt>
+<dt><span class="sect1"><a href="queries-limit.html">7.6. <code class="literal">LIMIT</code> and <code class="literal">OFFSET</code></a></span></dt>
+</dl>
+</div>
+<a name="id526267"></a><a name="id526277"></a><p>  The previous chapters explained how to create tables, how to fill
   them with data, and how to manipulate that data.  Now we finally
   discuss how to retrieve the data out of the database.
- </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="QUERIES-OVERVIEW"
->7.1. Overview</A
-></H1
-><P
->   The process of retrieving or the command to retrieve data from a
-   database is called a <I
-CLASS="FIRSTTERM"
->query</I
->.  In SQL the
-   <TT
-CLASS="COMMAND"
->SELECT</TT
-> command is used to specify queries.  The
-   general syntax of the <TT
-CLASS="COMMAND"
->SELECT</TT
-> command is
-</P><PRE
-CLASS="SYNOPSIS"
->SELECT <TT
-CLASS="REPLACEABLE"
-><I
->select_list</I
-></TT
-> FROM <TT
-CLASS="REPLACEABLE"
-><I
->table_expression</I
-></TT
-> [<SPAN
-CLASS="OPTIONAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->sort_specification</I
-></TT
-></SPAN
->]</PRE
-><P>
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="queries-overview"></a>7.1. Overview</h2></div></div></div>
+<p>   The process of retrieving or the command to retrieve data from a
+   database is called a <em class="firstterm">query</em>.  In SQL the
+   <code class="command">SELECT</code> command is used to specify queries.  The
+   general syntax of the <code class="command">SELECT</code> command is
+</p>
+<pre class="synopsis">SELECT <em class="replaceable"><code>select_list</code></em> FROM <em class="replaceable"><code>table_expression</code></em> [<span class="optional"><em class="replaceable"><code>sort_specification</code></em></span>]</pre>
+<p>
    The following sections describe the details of the select list, the
    table expression, and the sort specification.
-  </P
-><P
->   A simple kind of query has the form
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM table1;</PRE
-><P>
-  Assuming that there is a table called <TT
-CLASS="LITERAL"
->table1</TT
->,
+  </p>
+<p>   A simple kind of query has the form
+</p>
+<pre class="programlisting">SELECT * FROM table1;</pre>
+<p>
+  Assuming that there is a table called <code class="literal">table1</code>,
   this command would retrieve all rows and all columns from
-  <TT
-CLASS="LITERAL"
->table1</TT
->.  (The method of retrieval depends on the
+  <code class="literal">table1</code>.  (The method of retrieval depends on the
   client application.  For example, the
-  <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> program will display an ASCII-art
+  <span class="application">psql</span> program will display an ASCII-art
   table on the screen, while client libraries will offer functions to
   extract individual values from the query result.)  The select list
-  specification <TT
-CLASS="LITERAL"
->*</TT
-> means all columns that the table
+  specification <code class="literal">*</code> means all columns that the table
   expression happens to provide.  A select list can also select a
   subset of the available columns or make calculations using the
   columns.  For example, if
-  <TT
-CLASS="LITERAL"
->table1</TT
-> has columns named <TT
-CLASS="LITERAL"
->a</TT
->,
-  <TT
-CLASS="LITERAL"
->b</TT
->, and <TT
-CLASS="LITERAL"
->c</TT
-> (and perhaps others) you can make
+  <code class="literal">table1</code> has columns named <code class="literal">a</code>,
+  <code class="literal">b</code>, and <code class="literal">c</code> (and perhaps others) you can make
   the following query:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT a, b + c FROM table1;</PRE
-><P>
-  (assuming that <TT
-CLASS="LITERAL"
->b</TT
-> and <TT
-CLASS="LITERAL"
->c</TT
-> are of a numerical
+</p>
+<pre class="programlisting">SELECT a, b + c FROM table1;</pre>
+<p>
+  (assuming that <code class="literal">b</code> and <code class="literal">c</code> are of a numerical
   data type).
-  See <A
-HREF="queries-select-lists.html"
->Section 7.3</A
-> for more details.
- </P
-><P
->  <TT
-CLASS="LITERAL"
->FROM table1</TT
-> is a particularly simple kind of
+  See <a href="queries-select-lists.html" title="7.3. Select Lists">Section 7.3, &#8220;Select Lists&#8221;</a> for more details.
+ </p>
+<p>  <code class="literal">FROM table1</code> is a particularly simple kind of
   table expression: it reads just one table.  In general, table
   expressions can be complex constructs of base tables, joins, and
   subqueries.  But you can also omit the table expression entirely and
-  use the <TT
-CLASS="COMMAND"
->SELECT</TT
-> command as a calculator:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT 3 * 4;</PRE
-><P>
+  use the <code class="command">SELECT</code> command as a calculator:
+</p>
+<pre class="programlisting">SELECT 3 * 4;</pre>
+<p>
   This is more useful if the expressions in the select list return
   varying results.  For example, you could call a function this way:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT random();</PRE
-><P>
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="dml-delete.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries-table-expressions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Deleting Data</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Table Expressions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">SELECT random();</pre>
+<p>
+  </p>
+</div>
+</div></body>
+</html>

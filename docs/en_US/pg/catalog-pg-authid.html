@@ -1,456 +1,131 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->pg_authid</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_attribute"
-HREF="catalog-pg-attribute.html"><LINK
-REL="NEXT"
-TITLE="pg_auth_members"
-HREF="catalog-pg-auth-members.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-attribute.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 42. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-auth-members.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-AUTHID"
->42.8. <TT
-CLASS="STRUCTNAME"
->pg_authid</TT
-></A
-></H1
-><A
-NAME="AEN55656"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_authid</TT
-> contains information about
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.8. pg_authid</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-attribute.html" title="42.7. pg_attribute">
+<link rel="next" href="catalog-pg-auth-members.html" title="42.9. pg_auth_members">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-authid"></a>42.8. <code class="structname">pg_authid</code></h2></div></div></div>
+<a name="id767306"></a><p>   The catalog <code class="structname">pg_authid</code> contains information about
    database authorization identifiers (roles).  A role subsumes the concepts
-   of <SPAN
-CLASS="QUOTE"
->"users"</SPAN
-> and <SPAN
-CLASS="QUOTE"
->"groups"</SPAN
->.  A user is essentially just a
-   role with the <TT
-CLASS="STRUCTFIELD"
->rolcanlogin</TT
-> flag set.  Any role (with or
-   without <TT
-CLASS="STRUCTFIELD"
->rolcanlogin</TT
->) may have other roles as members; see
-   <A
-HREF="catalog-pg-auth-members.html"
-><TT
-CLASS="STRUCTNAME"
->pg_auth_members</TT
-></A
->.
-  </P
-><P
->   Since this catalog contains passwords, it must not be publicly readable.
-   <A
-HREF="view-pg-roles.html"
-><TT
-CLASS="STRUCTNAME"
->pg_roles</TT
-></A
->
+   of &#8220;<span class="quote">users</span>&#8221; and &#8220;<span class="quote">groups</span>&#8221;.  A user is essentially just a
+   role with the <code class="structfield">rolcanlogin</code> flag set.  Any role (with or
+   without <code class="structfield">rolcanlogin</code>) may have other roles as members; see
+   <a href="catalog-pg-auth-members.html" title="42.9. pg_auth_members"><code class="structname">pg_auth_members</code></a>.
+  </p>
+<p>   Since this catalog contains passwords, it must not be publicly readable.
+   <a href="view-pg-roles.html" title="42.39. pg_roles"><code class="structname">pg_roles</code></a>
    is a publicly readable view on
-   <TT
-CLASS="STRUCTNAME"
->pg_authid</TT
-> that blanks out the password field.
-  </P
-><P
->   <A
-HREF="user-manag.html"
->Chapter 18</A
-> contains detailed information about user and
+   <code class="structname">pg_authid</code> that blanks out the password field.
+  </p>
+<p>   <a href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> contains detailed information about user and
    privilege management.
-  </P
-><P
->   Because user identities are cluster-wide,
-   <TT
-CLASS="STRUCTNAME"
->pg_authid</TT
->
+  </p>
+<p>   Because user identities are cluster-wide,
+   <code class="structname">pg_authid</code>
    is shared across all databases of a cluster: there is only one
-   copy of <TT
-CLASS="STRUCTNAME"
->pg_authid</TT
-> per cluster, not
+   copy of <code class="structname">pg_authid</code> per cluster, not
    one per database.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN55675"
-></A
-><P
-><B
->Table 42-8. <TT
-CLASS="STRUCTNAME"
->pg_authid</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolname</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Role name</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolsuper</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Role has superuser privileges</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolinherit</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Role automatically inherits privileges of roles it is a
-       member of</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolcreaterole</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Role may create more roles</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolcreatedb</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Role may create databases</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolcatupdate</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Role may update system catalogs directly.  (Even a superuser may not do
+  </p>
+<div class="table">
+<a name="id767398"></a><p class="title"><b>Table 42.8. <code class="structname">pg_authid</code> Columns</b></p>
+<table summary="pg_authid Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">rolname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Role name</td>
+</tr>
+<tr>
+<td><code class="structfield">rolsuper</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role has superuser privileges</td>
+</tr>
+<tr>
+<td><code class="structfield">rolinherit</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role automatically inherits privileges of roles it is a
+       member of</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcreaterole</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role may create more roles</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcreatedb</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role may create databases</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcatupdate</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       Role may update system catalogs directly.  (Even a superuser may not do
        this unless this column is true.)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolcanlogin</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Role may log in, that is, this role can be given as the initial
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolcanlogin</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       Role may log in, that is, this role can be given as the initial
        session authorization identifier.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolconnlimit</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       For roles that can log in, this sets maximum number of concurrent 
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolconnlimit</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       For roles that can log in, this sets maximum number of concurrent 
        connections this role can make.  -1 means no limit.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolpassword</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Password (possibly encrypted); NULL if none</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolvaliduntil</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->timestamptz</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Password expiry time (only used for password authentication);
-       NULL if no expiration</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->rolconfig</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text[]</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Session defaults for run-time configuration variables</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-attribute.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-auth-members.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_attribute</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_auth_members</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolpassword</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Password (possibly encrypted); NULL if none</td>
+</tr>
+<tr>
+<td><code class="structfield">rolvaliduntil</code></td>
+<td><code class="type">timestamptz</code></td>
+<td> </td>
+<td>Password expiry time (only used for password authentication);
+       NULL if no expiration</td>
+</tr>
+<tr>
+<td><code class="structfield">rolconfig</code></td>
+<td><code class="type">text[]</code></td>
+<td> </td>
+<td>Session defaults for run-time configuration variables</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

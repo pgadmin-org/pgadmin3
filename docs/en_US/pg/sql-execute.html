@@ -1,363 +1,81 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->EXECUTE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="END"
-HREF="sql-end.html"><LINK
-REL="NEXT"
-TITLE="EXPLAIN"
-HREF="sql-explain.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-end.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-end.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-explain.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-explain.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-EXECUTE"
-></A
->EXECUTE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN45360"
-></A
-><H2
->Name</H2
->EXECUTE&nbsp;--&nbsp;execute a prepared statement</DIV
-><A
-NAME="AEN45363"
-></A
-><A
-NAME="AEN45365"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN45368"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->EXECUTE <TT
-CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
-> [ (<TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-> [, ...] ) ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45372"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> is used to execute a previously prepared
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>EXECUTE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-end.html" title="END">
+<link rel="next" href="sql-explain.html" title="EXPLAIN">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-execute"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>EXECUTE &#8212; execute a prepared statement</p>
+</div>
+<a name="id717438"></a><a name="id717448"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">EXECUTE <em class="replaceable"><code>plan_name</code></em> [ (<em class="replaceable"><code>parameter</code></em> [, ...] ) ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id717481"></a><h2>Description</h2>
+<p>   <code class="command">EXECUTE</code> is used to execute a previously prepared
    statement. Since prepared statements only exist for the duration of a
    session, the prepared statement must have been created by a
-   <TT
-CLASS="COMMAND"
->PREPARE</TT
-> statement executed earlier in the
+   <code class="command">PREPARE</code> statement executed earlier in the
    current session.
-  </P
-><P
->   If the <TT
-CLASS="COMMAND"
->PREPARE</TT
-> statement that created the statement
+  </p>
+<p>   If the <code class="command">PREPARE</code> statement that created the statement
    specified some parameters, a compatible set of parameters must be
-   passed to the <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement, or else an
+   passed to the <code class="command">EXECUTE</code> statement, or else an
    error is raised. Note that (unlike functions) prepared statements are
    not overloaded based on the type or number of their parameters; the
    name of a prepared statement must be unique within a database session.
-  </P
-><P
->   For more information on the creation and usage of prepared statements,
-   see <A
-HREF="sql-prepare.html"
-><I
->PREPARE</I
-></A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45382"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
-></DT
-><DD
-><P
->      The name of the prepared statement to execute.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-></DT
-><DD
-><P
->      The actual value of a parameter to the prepared statement.  This
+  </p>
+<p>   For more information on the creation and usage of prepared statements,
+   see <a href="sql-prepare.html">PREPARE</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id717541"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>plan_name</code></em></span></dt>
+<dd><p>      The name of the prepared statement to execute.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>parameter</code></em></span></dt>
+<dd><p>      The actual value of a parameter to the prepared statement.  This
       must be an expression yielding a value of a type compatible with
       the data type specified for this parameter position in the
-      <TT
-CLASS="COMMAND"
->PREPARE</TT
-> command that created the prepared
+      <code class="command">PREPARE</code> command that created the prepared
       statement.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45396"
-></A
-><H2
->Outputs</H2
-><P
->   The command tag returned by <TT
-CLASS="COMMAND"
->EXECUTE</TT
->
-   is that of the prepared statement, and not <TT
-CLASS="LITERAL"
->EXECUTE</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45401"
-></A
-><H2
->Examples</H2
-><P
->    Examples are given in the <A
-HREF="sql-prepare.html#SQL-PREPARE-EXAMPLES"
-><I
->Examples</I
-></A
-> section of the <A
-HREF="sql-prepare.html"
-><I
->PREPARE</I
-></A
-> documentation.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45406"
-></A
-><H2
->Compatibility</H2
-><P
->   The SQL standard includes an <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement,
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id717581"></a><h2>Outputs</h2>
+<p>   The command tag returned by <code class="command">EXECUTE</code>
+   is that of the prepared statement, and not <code class="literal">EXECUTE</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id717601"></a><h2>Examples</h2>
+<p>    Examples are given in the <a href="sql-prepare.html#sql-prepare-examples">Examples</a> section of the <a href="sql-prepare.html">PREPARE</a> documentation.
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id717635"></a><h2>Compatibility</h2>
+<p>   The SQL standard includes an <code class="command">EXECUTE</code> statement,
    but it is only for use in embedded SQL.  This version of the
-   <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement also uses a somewhat different
+   <code class="command">EXECUTE</code> statement also uses a somewhat different
    syntax.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45411"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-deallocate.html"
-><I
->DEALLOCATE</I
-></A
->, <A
-HREF="sql-prepare.html"
-><I
->PREPARE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-end.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-explain.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->END</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->EXPLAIN</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id717657"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-deallocate.html">DEALLOCATE</a>, <a href="sql-prepare.html">PREPARE</a></span>
+</div>
+</div></body>
+</html>

@@ -1,238 +1,67 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Monitoring Database Activity</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Administration"
-HREF="admin.html"><LINK
-REL="PREVIOUS"
-TITLE="Migration Between Releases"
-HREF="migration.html"><LINK
-REL="NEXT"
-TITLE="The Statistics Collector"
-HREF="monitoring-stats.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="migration.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="backup.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="diskusage.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="monitoring-stats.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="MONITORING"
-></A
->Chapter 24. Monitoring Database Activity</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->24.1. <A
-HREF="monitoring.html#MONITORING-PS"
->Standard Unix Tools</A
-></DT
-><DT
->24.2. <A
-HREF="monitoring-stats.html"
->The Statistics Collector</A
-></DT
-><DD
-><DL
-><DT
->24.2.1. <A
-HREF="monitoring-stats.html#MONITORING-STATS-SETUP"
->Statistics Collection Configuration</A
-></DT
-><DT
->24.2.2. <A
-HREF="monitoring-stats.html#MONITORING-STATS-VIEWS"
->Viewing Collected Statistics</A
-></DT
-></DL
-></DD
-><DT
->24.3. <A
-HREF="monitoring-locks.html"
->Viewing Locks</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN23248"
-></A
-><A
-NAME="AEN23251"
-></A
-><P
->  A database administrator frequently wonders, <SPAN
-CLASS="QUOTE"
->"What is the system
-  doing right now?"</SPAN
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 24. Monitoring Database Activity</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="migration.html" title="23.4. Migration Between Releases">
+<link rel="next" href="monitoring-stats.html" title="24.2. The Statistics Collector">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="monitoring">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="monitoring"></a>Chapter 24. Monitoring Database Activity</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="monitoring.html#monitoring-ps">24.1. Standard Unix Tools</a></span></dt>
+<dt><span class="sect1"><a href="monitoring-stats.html">24.2. The Statistics Collector</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="monitoring-stats.html#monitoring-stats-setup">24.2.1. Statistics Collection Configuration</a></span></dt>
+<dt><span class="sect2"><a href="monitoring-stats.html#monitoring-stats-views">24.2.2. Viewing Collected Statistics</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="monitoring-locks.html">24.3. Viewing Locks</a></span></dt>
+</dl>
+</div>
+<a name="id616538"></a><a name="id616551"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
+  doing right now?</span>&#8221;
   This chapter discusses how to find that out.
- </P
-><P
->   Several tools are available for monitoring database activity and
+ </p>
+<p>   Several tools are available for monitoring database activity and
    analyzing performance.  Most of this chapter is devoted to describing
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s statistics collector,
+   <span class="productname">PostgreSQL</span>'s statistics collector,
    but one should not neglect regular Unix monitoring programs such as
-   <TT
-CLASS="COMMAND"
->ps</TT
->, <TT
-CLASS="COMMAND"
->top</TT
->, <TT
-CLASS="COMMAND"
->iostat</TT
->, and <TT
-CLASS="COMMAND"
->vmstat</TT
->.
+   <code class="command">ps</code>, <code class="command">top</code>, <code class="command">iostat</code>, and <code class="command">vmstat</code>.
    Also, once one has identified a
    poorly-performing query, further investigation may be needed using
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s <A
-HREF="sql-explain.html"
-><I
->EXPLAIN</I
-></A
-> command.
-   <A
-HREF="performance-tips.html#USING-EXPLAIN"
->Section 13.1</A
-> discusses <TT
-CLASS="COMMAND"
->EXPLAIN</TT
->
+   <span class="productname">PostgreSQL</span>'s <a href="sql-explain.html">EXPLAIN</a> command.
+   <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a> discusses <code class="command">EXPLAIN</code>
    and other methods for understanding the behavior of an individual
    query.
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="MONITORING-PS"
->24.1. Standard Unix Tools</A
-></H1
-><A
-NAME="AEN23268"
-></A
-><P
->   On most platforms, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> modifies its
-   command title as reported by <TT
-CLASS="COMMAND"
->ps</TT
->, so that individual server
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="monitoring-ps"></a>24.1. Standard Unix Tools</h2></div></div></div>
+<a name="id616654"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
+   command title as reported by <code class="command">ps</code>, so that individual server
    processes can readily be identified.  A sample display is
 
-</P><PRE
-CLASS="SCREEN"
->$ ps auxww | grep ^postgres
+</p>
+<pre class="screen">$ ps auxww | grep ^postgres
 postgres   960  0.0  1.1  6104 1480 pts/1    SN   13:17   0:00 postmaster -i
 postgres   963  0.0  1.1  7084 1472 pts/1    SN   13:17   0:00 postgres: stats buffer process   
 postgres   965  0.0  1.1  6152 1512 pts/1    SN   13:17   0:00 postgres: stats collector process   
 postgres   998  0.0  2.3  6532 2992 pts/1    SN   13:18   0:00 postgres: tgl runbug 127.0.0.1 idle
 postgres  1003  0.0  2.4  6532 3128 pts/1    SN   13:19   0:00 postgres: tgl regression [local] SELECT waiting
-postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl regression [local] idle in transaction</PRE
-><P>
+postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl regression [local] idle in transaction</pre>
+<p>
 
-   (The appropriate invocation of <TT
-CLASS="COMMAND"
->ps</TT
-> varies across different
+   (The appropriate invocation of <code class="command">ps</code> varies across different
    platforms, as do the details of what is shown.  This example is from a
    recent Linux system.)  The first process listed here is the
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
->, the master server process.  The command arguments
+   <span class="application">postmaster</span>, the master server process.  The command arguments
    shown for it are the same ones given when it was launched.  The next two
    processes implement the statistics collector, which will be described in
    detail in the next section.  (These will not be present if you have set
@@ -240,163 +69,33 @@ CLASS="APPLICATION"
    processes is a server process handling one client connection.  Each such
    process sets its command line display in the form
 
-</P><PRE
-CLASS="SCREEN"
->postgres: <TT
-CLASS="REPLACEABLE"
-><I
->user</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->database</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->activity</I
-></TT
-></PRE
-><P>
+</p>
+<pre class="screen">postgres: <em class="replaceable"><code>user</code></em> <em class="replaceable"><code>database</code></em> <em class="replaceable"><code>host</code></em> <em class="replaceable"><code>activity</code></em></pre>
+<p>
 
   The user, database, and connection source host items remain the same for
   the life of the client connection, but the activity indicator changes.
-  The activity may be <TT
-CLASS="LITERAL"
->idle</TT
-> (i.e., waiting for a client command),
-  <TT
-CLASS="LITERAL"
->idle in transaction</TT
-> (waiting for client inside a <TT
-CLASS="COMMAND"
->BEGIN</TT
-> block),
-  or a command type name such as <TT
-CLASS="LITERAL"
->SELECT</TT
->.  Also,
-  <TT
-CLASS="LITERAL"
->waiting</TT
-> is attached if the server process is presently waiting
+  The activity may be <code class="literal">idle</code> (i.e., waiting for a client command),
+  <code class="literal">idle in transaction</code> (waiting for client inside a <code class="command">BEGIN</code> block),
+  or a command type name such as <code class="literal">SELECT</code>.  Also,
+  <code class="literal">waiting</code> is attached if the server process is presently waiting
   on a lock held by another server process.  In the above example we can infer
   that process 1003 is waiting for process 1016 to complete its transaction and
   thereby release some lock or other.
-  </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->  <SPAN
-CLASS="PRODUCTNAME"
->Solaris</SPAN
-> requires special handling. You must
-  use <TT
-CLASS="COMMAND"
->/usr/ucb/ps</TT
->, rather than
-  <TT
-CLASS="COMMAND"
->/bin/ps</TT
->. You also must use two <TT
-CLASS="OPTION"
->w</TT
->
+  </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>  <span class="productname">Solaris</span> requires special handling. You must
+  use <code class="command">/usr/ucb/ps</code>, rather than
+  <code class="command">/bin/ps</code>. You also must use two <code class="option">w</code>
   flags, not just one. In addition, your original invocation of the
-  <TT
-CLASS="COMMAND"
->postmaster</TT
-> command must have a shorter
-  <TT
-CLASS="COMMAND"
->ps</TT
-> status display than that provided by each
-  server process.  If you fail to do all three things, the <TT
-CLASS="COMMAND"
->ps</TT
->
-  output for each server process will be the original <TT
-CLASS="COMMAND"
->postmaster</TT
->
+  <code class="command">postmaster</code> command must have a shorter
+  <code class="command">ps</code> status display than that provided by each
+  server process.  If you fail to do all three things, the <code class="command">ps</code>
+  output for each server process will be the original <code class="command">postmaster</code>
   command line.
-  </P
-></BLOCKQUOTE
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="migration.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="monitoring-stats.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Migration Between Releases</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->The Statistics Collector</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div>
+</div></body>
+</html>

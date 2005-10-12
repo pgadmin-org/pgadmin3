@@ -1,350 +1,113 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SHOW</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="SET TRANSACTION"
-HREF="sql-set-transaction.html"><LINK
-REL="NEXT"
-TITLE="START TRANSACTION"
-HREF="sql-start-transaction.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set-transaction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set-transaction.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-start-transaction.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-start-transaction.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-SHOW"
-></A
->SHOW</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN48238"
-></A
-><H2
->Name</H2
->SHOW&nbsp;--&nbsp;show the value of a run-time parameter</DIV
-><A
-NAME="AEN48241"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN48243"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->SHOW <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-SHOW ALL</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48246"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->SHOW</TT
-> will display the current setting of
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SHOW</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-set-transaction.html" title="SET TRANSACTION">
+<link rel="next" href="sql-start-transaction.html" title="START TRANSACTION">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-show"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SHOW &#8212; show the value of a run-time parameter</p>
+</div>
+<a name="id732851"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">SHOW <em class="replaceable"><code>name</code></em>
+SHOW ALL</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id732874"></a><h2>Description</h2>
+<p>   <code class="command">SHOW</code> will display the current setting of
    run-time parameters. These variables can be set using the
-   <TT
-CLASS="COMMAND"
->SET</TT
-> statement, by editing the
-   <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file, through
-   the <TT
-CLASS="ENVAR"
->PGOPTIONS</TT
-> environmental variable (when using
-   <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> or a <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->-based
+   <code class="command">SET</code> statement, by editing the
+   <code class="filename">postgresql.conf</code> configuration file, through
+   the <code class="envar">PGOPTIONS</code> environmental variable (when using
+   <span class="application">libpq</span> or a <span class="application">libpq</span>-based
    application), or through command-line flags when starting the
-   <TT
-CLASS="COMMAND"
->postmaster</TT
->.  See <A
-HREF="runtime-config.html"
->Chapter 17</A
-> for details.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48257"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->      The name of a run-time parameter.  Available parameters are
-      documented in <A
-HREF="runtime-config.html"
->Chapter 17</A
-> and on the <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-> reference page.  In
+   <code class="command">postmaster</code>.  See <a href="runtime-config.html" title="Chapter 17. Run-time Configuration">Chapter 17, <i>Run-time Configuration</i></a> for details.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id732935"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd>
+<p>      The name of a run-time parameter.  Available parameters are
+      documented in <a href="runtime-config.html" title="Chapter 17. Run-time Configuration">Chapter 17, <i>Run-time Configuration</i></a> and on the <a href="sql-set.html">SET</a> reference page.  In
       addition, there are a few parameters that can be shown but not
       set:
 
-      <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->SERVER_VERSION</TT
-></DT
-><DD
-><P
->          Shows the server's version number.
-         </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->SERVER_ENCODING</TT
-></DT
-><DD
-><P
->          Shows the server-side character set encoding.  At present,
+      </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">SERVER_VERSION</code></span></dt>
+<dd><p>          Shows the server's version number.
+         </p></dd>
+<dt><span class="term"><code class="literal">SERVER_ENCODING</code></span></dt>
+<dd><p>          Shows the server-side character set encoding.  At present,
           this parameter can be shown but not set, because the
           encoding is determined at database creation time.
-         </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->LC_COLLATE</TT
-></DT
-><DD
-><P
->          Shows the database's locale setting for collation (text
+         </p></dd>
+<dt><span class="term"><code class="literal">LC_COLLATE</code></span></dt>
+<dd><p>          Shows the database's locale setting for collation (text
           ordering).  At present, this parameter can be shown but not
           set, because the setting is determined at
-          <TT
-CLASS="COMMAND"
->initdb</TT
-> time.
-         </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->LC_CTYPE</TT
-></DT
-><DD
-><P
->          Shows the database's locale setting for character
+          <code class="command">initdb</code> time.
+         </p></dd>
+<dt><span class="term"><code class="literal">LC_CTYPE</code></span></dt>
+<dd><p>          Shows the database's locale setting for character
           classification.  At present, this parameter can be shown but
           not set, because the setting is determined at
-          <TT
-CLASS="COMMAND"
->initdb</TT
-> time.
-         </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->IS_SUPERUSER</TT
-></DT
-><DD
-><P
->          True if the current session authorization identifier has
+          <code class="command">initdb</code> time.
+         </p></dd>
+<dt><span class="term"><code class="literal">IS_SUPERUSER</code></span></dt>
+<dd><p>          True if the current session authorization identifier has
           superuser privileges.
-         </P
-></DD
-></DL
-></DIV
-><P>
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->ALL</TT
-></DT
-><DD
-><P
->      Show the values of all configuration parameters, with descriptions.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48300"
-></A
-><H2
->Notes</H2
-><P
->   The function <CODE
-CLASS="FUNCTION"
->current_setting</CODE
-> produces
-   equivalent output. See <A
-HREF="functions-admin.html"
->Section 9.20</A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48305"
-></A
-><H2
->Examples</H2
-><P
->   Show the current setting of the parameter <TT
-CLASS="VARNAME"
->DateStyle</TT
->:
+         </p></dd>
+</dl></div>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><code class="literal">ALL</code></span></dt>
+<dd><p>      Show the values of all configuration parameters, with descriptions.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id733069"></a><h2>Notes</h2>
+<p>   The function <code class="function">current_setting</code> produces
+   equivalent output. See <a href="functions-admin.html" title="9.20. System Administration Functions">Section 9.20, &#8220;System Administration Functions&#8221;</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id733090"></a><h2>Examples</h2>
+<p>   Show the current setting of the parameter <code class="varname">DateStyle</code>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SHOW DateStyle;
+</p>
+<pre class="programlisting">SHOW DateStyle;
  DateStyle
 -----------
  ISO, MDY
-(1 row)</PRE
-><P>
-  </P
-><P
->   Show the current setting of the parameter <TT
-CLASS="VARNAME"
->geqo</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SHOW geqo;
+(1 row)</pre>
+<p>
+  </p>
+<p>   Show the current setting of the parameter <code class="varname">geqo</code>:
+</p>
+<pre class="programlisting">SHOW geqo;
  geqo
 ------
  on
-(1 row)</PRE
-><P>
-  </P
-><P
->   Show all settings:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SHOW ALL;
+(1 row)</pre>
+<p>
+  </p>
+<p>   Show all settings:
+</p>
+<pre class="programlisting">SHOW ALL;
               name              |            setting             |                                         description                                          
 --------------------------------+--------------------------------+----------------------------------------------------------------------------------------------
  add_missing_from               | off                            | Automatically adds missing table references to FROM clauses.
@@ -355,108 +118,19 @@ CLASS="PROGRAMLISTING"
     .
  work_mem                       | 1024                           | Sets the maximum memory to be used for query workspaces.
  zero_damaged_pages             | off                            | Continues processing past damaged page headers.
-(146 rows)</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48315"
-></A
-><H2
->Compatibility</H2
-><P
->   The <TT
-CLASS="COMMAND"
->SHOW</TT
-> command is a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48320"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-set.html"
-><I
->SET</I
-></A
->, <A
-HREF="sql-reset.html"
-><I
->RESET</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set-transaction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-start-transaction.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SET TRANSACTION</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->START TRANSACTION</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+(146 rows)</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id733147"></a><h2>Compatibility</h2>
+<p>   The <code class="command">SHOW</code> command is a
+   <span class="productname">PostgreSQL</span> extension.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id733168"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-set.html">SET</a>, <a href="sql-reset.html">RESET</a></span>
+</div>
+</div></body>
+</html>

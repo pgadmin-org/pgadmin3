@@ -1,1562 +1,491 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Error Reporting and Logging</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Run-time Configuration"
-HREF="runtime-config.html"><LINK
-REL="PREVIOUS"
-TITLE="Query Planning"
-HREF="runtime-config-query.html"><LINK
-REL="NEXT"
-TITLE="Runtime Statistics"
-HREF="runtime-config-statistics.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-query.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 17. Run-time Configuration</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-statistics.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RUNTIME-CONFIG-LOGGING"
->17.7. Error Reporting and Logging</A
-></H1
-><A
-NAME="AEN19108"
-></A
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-LOGGING-WHERE"
->17.7.1. Where To Log</A
-></H2
-><A
-NAME="AEN19112"
-></A
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-LOG-DESTINATION"
-></A
-><TT
-CLASS="VARNAME"
->log_destination</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> supports several methods
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.7. Error Reporting and Logging</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Run-time Configuration">
+<link rel="prev" href="runtime-config-query.html" title="17.6. Query Planning">
+<link rel="next" href="runtime-config-statistics.html" title="17.8. Runtime Statistics">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-logging"></a>17.7. Error Reporting and Logging</h2></div></div></div>
+<a name="id595955"></a><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-logging-where"></a>17.7.1. Where To Log</h3></div></div></div>
+<a name="id595976"></a><div class="variablelist"><dl>
+<dt>
+<a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        <span class="productname">PostgreSQL</span> supports several methods
          for logging server messages, including
-         <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
-> and
-         <SPAN
-CLASS="SYSTEMITEM"
->syslog</SPAN
->. On Windows, 
-         <SPAN
-CLASS="SYSTEMITEM"
->eventlog</SPAN
-> is also supported. Set this
+         <span class="systemitem">stderr</span> and
+         <span class="systemitem">syslog</span>. On Windows, 
+         <span class="systemitem">eventlog</span> is also supported. Set this
          option to a list of desired log destinations separated by
-         commas. The default is to log to <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
-> 
+         commas. The default is to log to <span class="systemitem">stderr</span> 
          only.
          This option can only be set at server start or in the
-         <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-REDIRECT-STDERR"
-></A
-><TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->         This option allows messages sent to <SPAN
-CLASS="APPLICATION"
->stderr</SPAN
-> to be
+         <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+<dt>
+<a name="guc-redirect-stderr"></a><span class="term"><code class="varname">redirect_stderr</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>         This option allows messages sent to <span class="application">stderr</span> to be
          captured and redirected into log files.
-         This option, in combination with logging to <SPAN
-CLASS="APPLICATION"
->stderr</SPAN
->,
+         This option, in combination with logging to <span class="application">stderr</span>,
          is often more useful than
-         logging to <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
->, since some types of messages
-         may not appear in <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> output (a common example
+         logging to <span class="application">syslog</span>, since some types of messages
+         may not appear in <span class="application">syslog</span> output (a common example
          is dynamic-linker failure messages).
          This option can only be set at server start.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-DIRECTORY"
-></A
-><TT
-CLASS="VARNAME"
->log_directory</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        When <TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> is enabled, this option
+       </p></dd>
+<dt>
+<a name="guc-log-directory"></a><span class="term"><code class="varname">log_directory</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         determines the directory in which log files will be created.
         It may be specified as an absolute path, or relative to the
         cluster data directory.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-FILENAME"
-></A
-><TT
-CLASS="VARNAME"
->log_filename</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        When <TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> is enabled, this option
+        <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+<dt>
+<a name="guc-log-filename"></a><span class="term"><code class="varname">log_filename</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         sets the file names of the created log files.  The value
-        is treated as a <SPAN
-CLASS="SYSTEMITEM"
->strftime</SPAN
-> pattern,
-        so <TT
-CLASS="LITERAL"
->%</TT
->-escapes
+        is treated as a <span class="systemitem">strftime</span> pattern,
+        so <code class="literal">%</code>-escapes
         can be used to specify time-varying file names.
-        If no <TT
-CLASS="LITERAL"
->%</TT
->-escapes are present,
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> will
+        If no <code class="literal">%</code>-escapes are present,
+        <span class="productname">PostgreSQL</span> will
         append the epoch of the new log file's open time.  For example,
-        if <TT
-CLASS="VARNAME"
->log_filename</TT
-> were <TT
-CLASS="LITERAL"
->server_log</TT
->, then the
-        chosen file name would be <TT
-CLASS="LITERAL"
->server_log.1093827753</TT
->
+        if <code class="varname">log_filename</code> were <code class="literal">server_log</code>, then the
+        chosen file name would be <code class="literal">server_log.1093827753</code>
         for a log starting at Sun Aug 29 19:02:33 2004 MST.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-ROTATION-AGE"
-></A
-><TT
-CLASS="VARNAME"
->log_rotation_age</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        When <TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> is enabled, this option
+        <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+<dt>
+<a name="guc-log-rotation-age"></a><span class="term"><code class="varname">log_rotation_age</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         determines the maximum lifetime of an individual log file.
         After this many minutes have elapsed, a new log file will
         be created.  Set to zero to disable time-based creation of
         new log files.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-ROTATION-SIZE"
-></A
-><TT
-CLASS="VARNAME"
->log_rotation_size</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        When <TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> is enabled, this option
+        <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+<dt>
+<a name="guc-log-rotation-size"></a><span class="term"><code class="varname">log_rotation_size</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        When <code class="varname">redirect_stderr</code> is enabled, this option
         determines the maximum size of an individual log file.
         After this many kilobytes have been emitted into a log file,
         a new log file will be created.  Set to zero to disable size-based
         creation of new log files.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-TRUNCATE-ON-ROTATION"
-></A
-><TT
-CLASS="VARNAME"
->log_truncate_on_rotation</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        When <TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> is enabled, this option will cause
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to truncate (overwrite),
+        <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+<dt>
+<a name="guc-log-truncate-on-rotation"></a><span class="term"><code class="varname">log_truncate_on_rotation</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        When <code class="varname">redirect_stderr</code> is enabled, this option will cause
+        <span class="productname">PostgreSQL</span> to truncate (overwrite),
         rather than append to, any existing log file of the same name.
         However, truncation will occur only when a new file is being opened
         due to time-based rotation, not during server startup or size-based
         rotation.  When off, pre-existing files will be appended to in
         all cases.  For example, using this option in combination with
-        a <TT
-CLASS="VARNAME"
->log_filename</TT
-> like <TT
-CLASS="LITERAL"
->postgresql-%H.log</TT
->
+        a <code class="varname">log_filename</code> like <code class="literal">postgresql-%H.log</code>
         would result in generating twenty-four hourly log files and then
         cyclically overwriting them.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-><P
->        Example:  To keep 7 days of logs, one log file per day named
-        <TT
-CLASS="LITERAL"
->server_log.Mon</TT
->, <TT
-CLASS="LITERAL"
->server_log.Tue</TT
->, 
+        <code class="filename">postgresql.conf</code> configuration file.
+       </p>
+<p>        Example:  To keep 7 days of logs, one log file per day named
+        <code class="literal">server_log.Mon</code>, <code class="literal">server_log.Tue</code>, 
         etc, and automatically overwrite last week's log with this week's log,
-        set <TT
-CLASS="VARNAME"
->log_filename</TT
-> to <TT
-CLASS="LITERAL"
->server_log.%a</TT
->, 
-        <TT
-CLASS="VARNAME"
->log_truncate_on_rotation</TT
-> to <TT
-CLASS="LITERAL"
->on</TT
->, and 
-        <TT
-CLASS="VARNAME"
->log_rotation_age</TT
-> to <TT
-CLASS="LITERAL"
->1440</TT
->.
-       </P
-><P
->        Example: To keep 24 hours of logs, one log file per hour, but 
+        set <code class="varname">log_filename</code> to <code class="literal">server_log.%a</code>, 
+        <code class="varname">log_truncate_on_rotation</code> to <code class="literal">on</code>, and 
+        <code class="varname">log_rotation_age</code> to <code class="literal">1440</code>.
+       </p>
+<p>        Example: To keep 24 hours of logs, one log file per hour, but 
         also rotate sooner if the log file size exceeds 1GB, set 
-        <TT
-CLASS="VARNAME"
->log_filename</TT
-> to <TT
-CLASS="LITERAL"
->server_log.%H%M</TT
->, 
-        <TT
-CLASS="VARNAME"
->log_truncate_on_rotation</TT
-> to <TT
-CLASS="LITERAL"
->on</TT
->, 
-        <TT
-CLASS="VARNAME"
->log_rotation_age</TT
-> to <TT
-CLASS="LITERAL"
->60</TT
->, and 
-        <TT
-CLASS="VARNAME"
->log_rotation_size</TT
-> to <TT
-CLASS="LITERAL"
->1000000</TT
->.
-        Including <TT
-CLASS="LITERAL"
->%M</TT
-> in <TT
-CLASS="VARNAME"
->log_filename</TT
-> allows
+        <code class="varname">log_filename</code> to <code class="literal">server_log.%H%M</code>, 
+        <code class="varname">log_truncate_on_rotation</code> to <code class="literal">on</code>, 
+        <code class="varname">log_rotation_age</code> to <code class="literal">60</code>, and 
+        <code class="varname">log_rotation_size</code> to <code class="literal">1000000</code>.
+        Including <code class="literal">%M</code> in <code class="varname">log_filename</code> allows
         any size-driven rotations that may occur to select a filename
         different from the hour's initial filename.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-SYSLOG-FACILITY"
-></A
-><TT
-CLASS="VARNAME"
->syslog_facility</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        When logging to <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> is enabled, this option
-        determines the <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
->
-        <SPAN
-CLASS="QUOTE"
->"facility"</SPAN
-> to be used.  You may choose
-        from <TT
-CLASS="LITERAL"
->LOCAL0</TT
->, <TT
-CLASS="LITERAL"
->LOCAL1</TT
->,
-        <TT
-CLASS="LITERAL"
->LOCAL2</TT
->, <TT
-CLASS="LITERAL"
->LOCAL3</TT
->, <TT
-CLASS="LITERAL"
->LOCAL4</TT
->,
-        <TT
-CLASS="LITERAL"
->LOCAL5</TT
->, <TT
-CLASS="LITERAL"
->LOCAL6</TT
->, <TT
-CLASS="LITERAL"
->LOCAL7</TT
->;
-        the default is <TT
-CLASS="LITERAL"
->LOCAL0</TT
->. See also the
+       </p>
+</dd>
+<dt>
+<a name="guc-syslog-facility"></a><span class="term"><code class="varname">syslog_facility</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        When logging to <span class="application">syslog</span> is enabled, this option
+        determines the <span class="application">syslog</span>
+        &#8220;<span class="quote">facility</span>&#8221; to be used.  You may choose
+        from <code class="literal">LOCAL0</code>, <code class="literal">LOCAL1</code>,
+        <code class="literal">LOCAL2</code>, <code class="literal">LOCAL3</code>, <code class="literal">LOCAL4</code>,
+        <code class="literal">LOCAL5</code>, <code class="literal">LOCAL6</code>, <code class="literal">LOCAL7</code>;
+        the default is <code class="literal">LOCAL0</code>. See also the
         documentation of your system's
-        <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> daemon.
+        <span class="application">syslog</span> daemon.
         This option can only be set at server start.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-SYSLOG-IDENT"
-></A
-><TT
-CLASS="VARNAME"
->syslog_ident</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->         When logging to <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> is enabled, this option
+       </p></dd>
+<dt>
+<a name="guc-syslog-ident"></a><span class="term"><code class="varname">syslog_ident</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>         When logging to <span class="application">syslog</span> is enabled, this option
          determines the program name used to identify
-         <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> messages in
-         <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> logs. The default is
-         <TT
-CLASS="LITERAL"
->postgres</TT
->.
+         <span class="productname">PostgreSQL</span> messages in
+         <span class="application">syslog</span> logs. The default is
+         <code class="literal">postgres</code>.
           This option can only be set at server start.
-        </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-LOGGING-WHEN"
->17.7.2. When To Log</A
-></H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-CLIENT-MIN-MESSAGES"
-></A
-><TT
-CLASS="VARNAME"
->client_min_messages</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        Controls which message levels are sent to the client.
-        Valid values are <TT
-CLASS="LITERAL"
->DEBUG5</TT
->,
-        <TT
-CLASS="LITERAL"
->DEBUG4</TT
->, <TT
-CLASS="LITERAL"
->DEBUG3</TT
->, <TT
-CLASS="LITERAL"
->DEBUG2</TT
->,
-        <TT
-CLASS="LITERAL"
->DEBUG1</TT
->, <TT
-CLASS="LITERAL"
->LOG</TT
->, <TT
-CLASS="LITERAL"
->NOTICE</TT
->,
-        <TT
-CLASS="LITERAL"
->WARNING</TT
->, and <TT
-CLASS="LITERAL"
->ERROR</TT
->.  Each level
+        </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-logging-when"></a>17.7.2. When To Log</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-client-min-messages"></a><span class="term"><code class="varname">client_min_messages</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Controls which message levels are sent to the client.
+        Valid values are <code class="literal">DEBUG5</code>,
+        <code class="literal">DEBUG4</code>, <code class="literal">DEBUG3</code>, <code class="literal">DEBUG2</code>,
+        <code class="literal">DEBUG1</code>, <code class="literal">LOG</code>, <code class="literal">NOTICE</code>,
+        <code class="literal">WARNING</code>, and <code class="literal">ERROR</code>.  Each level
         includes all the levels that follow it.  The later the level,
         the fewer messages are sent.  The default is
-        <TT
-CLASS="LITERAL"
->NOTICE</TT
->.  Note that <TT
-CLASS="LITERAL"
->LOG</TT
-> has a different
-        rank here than in <TT
-CLASS="VARNAME"
->log_min_messages</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-MIN-MESSAGES"
-></A
-><TT
-CLASS="VARNAME"
->log_min_messages</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        Controls which message levels are written to the server log.
-        Valid values are <TT
-CLASS="LITERAL"
->DEBUG5</TT
->, <TT
-CLASS="LITERAL"
->DEBUG4</TT
->,
-        <TT
-CLASS="LITERAL"
->DEBUG3</TT
->, <TT
-CLASS="LITERAL"
->DEBUG2</TT
->, <TT
-CLASS="LITERAL"
->DEBUG1</TT
->,
-        <TT
-CLASS="LITERAL"
->INFO</TT
->, <TT
-CLASS="LITERAL"
->NOTICE</TT
->, <TT
-CLASS="LITERAL"
->WARNING</TT
->,
-        <TT
-CLASS="LITERAL"
->ERROR</TT
->, <TT
-CLASS="LITERAL"
->LOG</TT
->, <TT
-CLASS="LITERAL"
->FATAL</TT
->, and
-        <TT
-CLASS="LITERAL"
->PANIC</TT
->.  Each level includes all the levels that
+        <code class="literal">NOTICE</code>.  Note that <code class="literal">LOG</code> has a different
+        rank here than in <code class="varname">log_min_messages</code>.
+       </p></dd>
+<dt>
+<a name="guc-log-min-messages"></a><span class="term"><code class="varname">log_min_messages</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Controls which message levels are written to the server log.
+        Valid values are <code class="literal">DEBUG5</code>, <code class="literal">DEBUG4</code>,
+        <code class="literal">DEBUG3</code>, <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
+        <code class="literal">INFO</code>, <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>,
+        <code class="literal">ERROR</code>, <code class="literal">LOG</code>, <code class="literal">FATAL</code>, and
+        <code class="literal">PANIC</code>.  Each level includes all the levels that
         follow it.  The later the level, the fewer messages are sent
-        to the log.  The default is <TT
-CLASS="LITERAL"
->NOTICE</TT
->.  Note that
-        <TT
-CLASS="LITERAL"
->LOG</TT
-> has a different rank here than in
-        <TT
-CLASS="VARNAME"
->client_min_messages</TT
->.
+        to the log.  The default is <code class="literal">NOTICE</code>.  Note that
+        <code class="literal">LOG</code> has a different rank here than in
+        <code class="varname">client_min_messages</code>.
         Only superusers can change this setting.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-ERROR-VERBOSITY"
-></A
-><TT
-CLASS="VARNAME"
->log_error_verbosity</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        Controls the amount of detail written in the server log for each
-        message that is logged.  Valid values are <TT
-CLASS="LITERAL"
->TERSE</TT
->,
-        <TT
-CLASS="LITERAL"
->DEFAULT</TT
->, and <TT
-CLASS="LITERAL"
->VERBOSE</TT
->, each adding more
+       </p></dd>
+<dt>
+<a name="guc-log-error-verbosity"></a><span class="term"><code class="varname">log_error_verbosity</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Controls the amount of detail written in the server log for each
+        message that is logged.  Valid values are <code class="literal">TERSE</code>,
+        <code class="literal">DEFAULT</code>, and <code class="literal">VERBOSE</code>, each adding more
         fields to displayed messages.
         Only superusers can change this setting.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-MIN-ERROR-STATEMENT"
-></A
-><TT
-CLASS="VARNAME"
->log_min_error_statement</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        Controls whether or not the SQL statement that causes an error
+       </p></dd>
+<dt>
+<a name="guc-log-min-error-statement"></a><span class="term"><code class="varname">log_min_error_statement</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Controls whether or not the SQL statement that causes an error
         condition will also be recorded in the server log. All SQL
         statements that cause an error of the specified level or
         higher are logged.  The default is
-        <TT
-CLASS="LITERAL"
->PANIC</TT
-> (effectively turning this feature
-        off for normal use). Valid values are <TT
-CLASS="LITERAL"
->DEBUG5</TT
->,
-        <TT
-CLASS="LITERAL"
->DEBUG4</TT
->, <TT
-CLASS="LITERAL"
->DEBUG3</TT
->,
-        <TT
-CLASS="LITERAL"
->DEBUG2</TT
->, <TT
-CLASS="LITERAL"
->DEBUG1</TT
->,
-        <TT
-CLASS="LITERAL"
->INFO</TT
->, <TT
-CLASS="LITERAL"
->NOTICE</TT
->,
-        <TT
-CLASS="LITERAL"
->WARNING</TT
->, <TT
-CLASS="LITERAL"
->ERROR</TT
->,
-        <TT
-CLASS="LITERAL"
->FATAL</TT
->, and <TT
-CLASS="LITERAL"
->PANIC</TT
->.  For
-        example, if you set this to <TT
-CLASS="LITERAL"
->ERROR</TT
-> then all
+        <code class="literal">PANIC</code> (effectively turning this feature
+        off for normal use). Valid values are <code class="literal">DEBUG5</code>,
+        <code class="literal">DEBUG4</code>, <code class="literal">DEBUG3</code>,
+        <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
+        <code class="literal">INFO</code>, <code class="literal">NOTICE</code>,
+        <code class="literal">WARNING</code>, <code class="literal">ERROR</code>,
+        <code class="literal">FATAL</code>, and <code class="literal">PANIC</code>.  For
+        example, if you set this to <code class="literal">ERROR</code> then all
         SQL statements causing errors, fatal errors, or panics will be
         logged. Enabling this option can be helpful in tracking down
         the source of any errors that appear in the server log.
         Only superusers can change this setting.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-MIN-DURATION-STATEMENT"
-></A
-><TT
-CLASS="VARNAME"
->log_min_duration_statement</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->         Logs the statement and its duration on a single log line if its
+       </p></dd>
+<dt>
+<a name="guc-log-min-duration-statement"></a><span class="term"><code class="varname">log_min_duration_statement</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>         Logs the statement and its duration on a single log line if its
          duration is greater than or equal to the specified number of
          milliseconds. Setting this to zero will print all statements
          and their durations. Minus-one (the default) disables the
-         feature. For example, if you set it to <TT
-CLASS="LITERAL"
->250</TT
->
+         feature. For example, if you set it to <code class="literal">250</code>
          then all SQL statements that run 250ms or longer will be
          logged. Enabling this option can be useful in tracking down
          unoptimized queries in your applications. This setting is
-         independent of <TT
-CLASS="VARNAME"
->log_statement</TT
-> and
-         <TT
-CLASS="VARNAME"
->log_duration</TT
->. Only superusers can change
+         independent of <code class="varname">log_statement</code> and
+         <code class="varname">log_duration</code>. Only superusers can change
          this setting.
-        </P
-></DD
-><DT
-><A
-NAME="GUC-SILENT-MODE"
-></A
-><TT
-CLASS="VARNAME"
->silent_mode</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Runs the server silently. If this option is set, the server
+        </p></dd>
+<dt>
+<a name="guc-silent-mode"></a><span class="term"><code class="varname">silent_mode</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Runs the server silently. If this option is set, the server
         will automatically run in background and any controlling
         terminals are disassociated (same effect as
-        <TT
-CLASS="COMMAND"
->postmaster</TT
->'s <TT
-CLASS="OPTION"
->-S</TT
-> option).
+        <code class="command">postmaster</code>'s <code class="option">-S</code> option).
         The server's standard output and standard error are redirected
-        to <TT
-CLASS="LITERAL"
->/dev/null</TT
->, so any messages sent to them will be lost.
-        Unless <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> logging is selected or
-        <TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> is enabled, using this option
+        to <code class="literal">/dev/null</code>, so any messages sent to them will be lost.
+        Unless <span class="application">syslog</span> logging is selected or
+        <code class="varname">redirect_stderr</code> is enabled, using this option
         is discouraged because it makes it impossible to see error messages.
-       </P
-></DD
-></DL
-></DIV
-><P
->        Here is a list of the various message severity levels used in
+       </p></dd>
+</dl></div>
+<p>        Here is a list of the various message severity levels used in
         these settings:
-        <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->DEBUG[1-5]</TT
-></DT
-><DD
-><P
->            Provides information for use by developers.
-           </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->INFO</TT
-></DT
-><DD
-><P
->            Provides information implicitly requested by the user,
-            e.g., during <TT
-CLASS="COMMAND"
->VACUUM VERBOSE</TT
->.
-           </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->NOTICE</TT
-></DT
-><DD
-><P
->            Provides information that may be helpful to users, e.g.,
+        </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">DEBUG[1-5]</code></span></dt>
+<dd><p>            Provides information for use by developers.
+           </p></dd>
+<dt><span class="term"><code class="literal">INFO</code></span></dt>
+<dd><p>            Provides information implicitly requested by the user,
+            e.g., during <code class="command">VACUUM VERBOSE</code>.
+           </p></dd>
+<dt><span class="term"><code class="literal">NOTICE</code></span></dt>
+<dd><p>            Provides information that may be helpful to users, e.g.,
             truncation of long identifiers and the creation of indexes as part
             of primary keys.
-           </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->WARNING</TT
-></DT
-><DD
-><P
->            Provides warnings to the user, e.g., <TT
-CLASS="COMMAND"
->COMMIT</TT
->
+           </p></dd>
+<dt><span class="term"><code class="literal">WARNING</code></span></dt>
+<dd><p>            Provides warnings to the user, e.g., <code class="command">COMMIT</code>
             outside a transaction block.
-           </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->ERROR</TT
-></DT
-><DD
-><P
->            Reports an error that caused the current command to abort.
-           </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->LOG</TT
-></DT
-><DD
-><P
->            Reports information of interest to administrators, e.g.,
+           </p></dd>
+<dt><span class="term"><code class="literal">ERROR</code></span></dt>
+<dd><p>            Reports an error that caused the current command to abort.
+           </p></dd>
+<dt><span class="term"><code class="literal">LOG</code></span></dt>
+<dd><p>            Reports information of interest to administrators, e.g.,
             checkpoint activity.
-           </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->FATAL</TT
-></DT
-><DD
-><P
->            Reports an error that caused the current session to abort.
-           </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->PANIC</TT
-></DT
-><DD
-><P
->            Reports an error that caused all sessions to abort.
-           </P
-></DD
-></DL
-></DIV
-><P>
-       </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-LOGGING-WHAT"
->17.7.3. What To Log</A
-></H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="VARNAME"
->debug_print_parse</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)<BR><TT
-CLASS="VARNAME"
->debug_print_rewritten</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)<BR><TT
-CLASS="VARNAME"
->debug_print_plan</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)<BR><TT
-CLASS="VARNAME"
->debug_pretty_print</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        These options enable various debugging output to be emitted.
+           </p></dd>
+<dt><span class="term"><code class="literal">FATAL</code></span></dt>
+<dd><p>            Reports an error that caused the current session to abort.
+           </p></dd>
+<dt><span class="term"><code class="literal">PANIC</code></span></dt>
+<dd><p>            Reports an error that caused all sessions to abort.
+           </p></dd>
+</dl></div>
+<p>
+       </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-logging-what"></a>17.7.3. What To Log</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_parse</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_rewritten</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_plan</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="varname">debug_pretty_print</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        These options enable various debugging output to be emitted.
         For each executed query, they print
         the resulting parse tree, the query rewriter output, or the
-        execution plan.  <TT
-CLASS="VARNAME"
->debug_pretty_print</TT
-> indents
+        execution plan.  <code class="varname">debug_pretty_print</code> indents
         these displays to produce a more readable but much longer
-        output format.  <TT
-CLASS="VARNAME"
->client_min_messages</TT
-> or
-        <TT
-CLASS="VARNAME"
->log_min_messages</TT
-> must be
-        <TT
-CLASS="LITERAL"
->DEBUG1</TT
-> or lower to actually send this output
+        output format.  <code class="varname">client_min_messages</code> or
+        <code class="varname">log_min_messages</code> must be
+        <code class="literal">DEBUG1</code> or lower to actually send this output
         to the client or the server log, respectively.
         These options are off by default.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-CONNECTIONS"
-></A
-><TT
-CLASS="VARNAME"
->log_connections</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        This outputs a line to the server log detailing each successful
+       </p></dd>
+<dt>
+<a name="guc-log-connections"></a><span class="term"><code class="varname">log_connections</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        This outputs a line to the server log detailing each successful
         connection. This is off by default, although it is probably very
-        useful. This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-DISCONNECTIONS"
-></A
-><TT
-CLASS="VARNAME"
->log_disconnections</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        This outputs a line in the server log similar to
-        <TT
-CLASS="VARNAME"
->log_connections</TT
-> but at session termination,
+        useful.  Some client programs, like <span class="application">psql</span>, attempt 
+        to connect twice while determining if a password is required, so 
+        duplicate &#8220;<span class="quote">connection received</span>&#8221; messages do not
+        necessarily indicate a problem. This option can only be set at
+        server start or in the <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+<dt>
+<a name="guc-log-disconnections"></a><span class="term"><code class="varname">log_disconnections</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        This outputs a line in the server log similar to
+        <code class="varname">log_connections</code> but at session termination,
         and includes the duration of the session.  This is off by
         default. This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-DURATION"
-></A
-><TT
-CLASS="VARNAME"
->log_duration</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Causes the duration of every completed statement which satisfies
-        <TT
-CLASS="VARNAME"
->log_statement</TT
-> to be logged.  When using this option, 
-        if you are not using <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
->, it is recommended 
-        that you log the PID or session ID using <TT
-CLASS="VARNAME"
->log_line_prefix</TT
-> 
+        <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+<dt>
+<a name="guc-log-duration"></a><span class="term"><code class="varname">log_duration</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Causes the duration of every completed statement which satisfies
+        <code class="varname">log_statement</code> to be logged.  When using this option, 
+        if you are not using <span class="application">syslog</span>, it is recommended 
+        that you log the PID or session ID using <code class="varname">log_line_prefix</code> 
         so that you can link the statement to the 
         duration using the process ID or session ID. The default is
-        <TT
-CLASS="LITERAL"
->off</TT
->. Only superusers can change this setting.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-LINE-PREFIX"
-></A
-><TT
-CLASS="VARNAME"
->log_line_prefix</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->         This is a <CODE
-CLASS="FUNCTION"
->printf</CODE
->-style string that is output at the
+        <code class="literal">off</code>. Only superusers can change this setting.
+       </p></dd>
+<dt>
+<a name="guc-log-line-prefix"></a><span class="term"><code class="varname">log_line_prefix</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>         This is a <code class="function">printf</code>-style string that is output at the
          beginning of each log line. The default is an empty string.
          Each recognized escape is replaced as outlined 
          below - anything else that looks like an escape is ignored. Other
          characters are copied straight to the log line. Some escapes are
          only recognised by session processes, and do not apply to
-         background processes such as the postmaster. <SPAN
-CLASS="APPLICATION"
->Syslog</SPAN
->
+         background processes such as the postmaster. <span class="application">Syslog</span>
          produces its own 
          time stamp and process ID information, so you probably do not want to
-         use those escapes if you are using <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
->.
+         use those escapes if you are using <span class="application">syslog</span>.
          This option can only be set at server start or in the
-         <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> configuration file.
+         <code class="filename">postgresql.conf</code> configuration file.
 
-         <DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN19496"
-></A
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Escape</TH
-><TH
->Effect</TH
-><TH
->Session only</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%u</TT
-></TD
-><TD
->User name</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%d</TT
-></TD
-><TD
->Database name</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%r</TT
-></TD
-><TD
->Remote host name or IP address, and remote port</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%h</TT
-></TD
-><TD
->Remote Hostname or IP address</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%p</TT
-></TD
-><TD
->Process ID</TD
-><TD
->no</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%t</TT
-></TD
-><TD
->Time stamp (no milliseconds)</TD
-><TD
->no</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%m</TT
-></TD
-><TD
->Time stamp with milliseconds</TD
-><TD
->no</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%i</TT
-></TD
-><TD
->Command tag: This is the command that generated the log line.</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%c</TT
-></TD
-><TD
->Session ID: A unique identifier for each session.
+         </p>
+<div class="informaltable"><table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Escape</th>
+<th>Effect</th>
+<th>Session only</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">%u</code></td>
+<td>User name</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%d</code></td>
+<td>Database name</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%r</code></td>
+<td>Remote host name or IP address, and remote port</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%h</code></td>
+<td>Remote Hostname or IP address</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%p</code></td>
+<td>Process ID</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code class="literal">%t</code></td>
+<td>Time stamp (no milliseconds)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code class="literal">%m</code></td>
+<td>Time stamp with milliseconds</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code class="literal">%i</code></td>
+<td>Command tag: This is the command that generated the log line.</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%c</code></td>
+<td>Session ID: A unique identifier for each session.
              It is 2 4-byte hexadecimal numbers (without leading zeros) 
              separated by a dot. The numbers
              are the session start time and the process ID, so this can also
-             be used as a space saving way of printing these items.</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%l</TT
-></TD
-><TD
->Number of the log line for each process, starting at 1</TD
-><TD
->no</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%s</TT
-></TD
-><TD
->Session start time stamp</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%x</TT
-></TD
-><TD
->Transaction ID</TD
-><TD
->yes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%q</TT
-></TD
-><TD
->Does not produce any output, but tells non-session
+             be used as a space saving way of printing these items.</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%l</code></td>
+<td>Number of the log line for each process, starting at 1</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code class="literal">%s</code></td>
+<td>Session start time stamp</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%x</code></td>
+<td>Transaction ID</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code class="literal">%q</code></td>
+<td>Does not produce any output, but tells non-session
              processes to stop at this point in the string. Ignored by
-             session processes.</TD
-><TD
->no</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->%%</TT
-></TD
-><TD
->Literal <TT
-CLASS="LITERAL"
->%</TT
-></TD
-><TD
->no</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
->
-       </P
-></DD
-><DT
-><A
-NAME="GUC-LOG-STATEMENT"
-></A
-><TT
-CLASS="VARNAME"
->log_statement</TT
-> (<TT
-CLASS="TYPE"
->string</TT
->)</DT
-><DD
-><P
->        Controls which SQL statements are logged. Valid values are
-        <TT
-CLASS="LITERAL"
->none</TT
->, <TT
-CLASS="LITERAL"
->ddl</TT
->, <TT
-CLASS="LITERAL"
->mod</TT
->, and
-        <TT
-CLASS="LITERAL"
->all</TT
->. <TT
-CLASS="LITERAL"
->ddl</TT
-> logs all data definition
-        commands like <TT
-CLASS="LITERAL"
->CREATE</TT
->, <TT
-CLASS="LITERAL"
->ALTER</TT
->, and
-        <TT
-CLASS="LITERAL"
->DROP</TT
-> commands. <TT
-CLASS="LITERAL"
->mod</TT
-> logs all
-        <TT
-CLASS="LITERAL"
->ddl</TT
-> statements, plus <TT
-CLASS="LITERAL"
->INSERT</TT
->,
-        <TT
-CLASS="LITERAL"
->UPDATE</TT
->, <TT
-CLASS="LITERAL"
->DELETE</TT
->, <TT
-CLASS="LITERAL"
->TRUNCATE</TT
->,
-        and <TT
-CLASS="LITERAL"
->COPY FROM</TT
->. <TT
-CLASS="LITERAL"
->PREPARE</TT
-> and
-        <TT
-CLASS="LITERAL"
->EXPLAIN ANALYZE</TT
-> statements are also logged if their
+             session processes.</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code class="literal">%%</code></td>
+<td>Literal <code class="literal">%</code>
+</td>
+<td>no</td>
+</tr>
+</tbody>
+</table></div>
+<p>
+       </p>
+</dd>
+<dt>
+<a name="guc-log-statement"></a><span class="term"><code class="varname">log_statement</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        Controls which SQL statements are logged. Valid values are
+        <code class="literal">none</code>, <code class="literal">ddl</code>, <code class="literal">mod</code>, and
+        <code class="literal">all</code>. <code class="literal">ddl</code> logs all data definition
+        commands like <code class="literal">CREATE</code>, <code class="literal">ALTER</code>, and
+        <code class="literal">DROP</code> commands. <code class="literal">mod</code> logs all
+        <code class="literal">ddl</code> statements, plus <code class="literal">INSERT</code>,
+        <code class="literal">UPDATE</code>, <code class="literal">DELETE</code>, <code class="literal">TRUNCATE</code>,
+        and <code class="literal">COPY FROM</code>. <code class="literal">PREPARE</code> and
+        <code class="literal">EXPLAIN ANALYZE</code> statements are also logged if their
         contained command is of an appropriate type.
-       </P
-><P
->        The default is <TT
-CLASS="LITERAL"
->none</TT
->. Only superusers can change this
+       </p>
+<p>        The default is <code class="literal">none</code>. Only superusers can change this
         setting.
-       </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->         The <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement is not considered a
-         <TT
-CLASS="LITERAL"
->ddl</TT
-> or <TT
-CLASS="LITERAL"
->mod</TT
-> statement.  When it is logged, 
+       </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>         The <code class="command">EXECUTE</code> statement is not considered a
+         <code class="literal">ddl</code> or <code class="literal">mod</code> statement.  When it is logged, 
          only the name of the prepared statement is reported, not the
          actual prepared statement.
-        </P
-><P
->         When a function is defined in the
-         <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->server-side language, any queries
+        </p>
+<p>         When a function is defined in the
+         <span class="application">PL/pgSQL</span>server-side language, any queries
          executed by the function will only be logged the first time that the
          function is invoked in a particular session. This is because
-         <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> keeps a cache of the
+         <span class="application">PL/pgSQL</span> keeps a cache of the
          query plans produced for the SQL statements in the function.
-        </P
-></BLOCKQUOTE
-></DIV
-></DD
-><DT
-><A
-NAME="GUC-LOG-HOSTNAME"
-></A
-><TT
-CLASS="VARNAME"
->log_hostname</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        By default, connection log messages only show the IP address of the
+        </p>
+</div>
+</dd>
+<dt>
+<a name="guc-log-hostname"></a><span class="term"><code class="varname">log_hostname</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        By default, connection log messages only show the IP address of the
         connecting host. Turning on this option causes logging of the
         host name as well.  Note that depending on your host name resolution
         setup this might impose a non-negligible performance penalty. This
         option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-query.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-statistics.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Query Planning</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Runtime Statistics</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+        <code class="filename">postgresql.conf</code> file.
+       </p></dd>
+</dl></div>
+</div>
+</div></body>
+</html>

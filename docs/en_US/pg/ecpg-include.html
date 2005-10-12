@@ -1,236 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Including Files</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="ECPG - Embedded SQL in C"
-HREF="ecpg.html"><LINK
-REL="PREVIOUS"
-TITLE="Error Handling"
-HREF="ecpg-errors.html"><LINK
-REL="NEXT"
-TITLE="Processing Embedded SQL Programs"
-HREF="ecpg-process.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ecpg-errors.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ecpg.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 30. <SPAN
-CLASS="APPLICATION"
->ECPG</SPAN
-> - Embedded <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> in C</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ecpg.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ecpg-process.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="ECPG-INCLUDE"
->30.10. Including Files</A
-></H1
-><P
->   To include an external file into your embedded SQL program, use:
-</P><PRE
-CLASS="PROGRAMLISTING"
->EXEC SQL INCLUDE <TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->;</PRE
-><P>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>30.10. Including Files</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">
+<link rel="prev" href="ecpg-errors.html" title="30.9. Error Handling">
+<link rel="next" href="ecpg-process.html" title="30.11. Processing Embedded SQL Programs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-include"></a>30.10. Including Files</h2></div></div></div>
+<p>   To include an external file into your embedded SQL program, use:
+</p>
+<pre class="programlisting">EXEC SQL INCLUDE <em class="replaceable"><code>filename</code></em>;</pre>
+<p>
    The embedded SQL preprocessor will look for a file named
-   <TT
-CLASS="LITERAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->.h</TT
->,
+   <code class="literal"><em class="replaceable"><code>filename</code></em>.h</code>,
    preprocess it, and include it in the resulting C output.  Thus,
    embedded SQL statements in the included file are handled correctly.
-  </P
-><P
->   Note that this is <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> the same as
-</P><PRE
-CLASS="PROGRAMLISTING"
->#include &lt;<TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->.h&gt;</PRE
-><P>
+  </p>
+<p>   Note that this is <span class="emphasis"><em>not</em></span> the same as
+</p>
+<pre class="programlisting">#include &lt;<em class="replaceable"><code>filename</code></em>.h&gt;</pre>
+<p>
    because this file would not be subject to SQL command preprocessing.
    Naturally, you can continue to use the C
-   <TT
-CLASS="LITERAL"
->#include</TT
-> directive to include other header
+   <code class="literal">#include</code> directive to include other header
    files.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    The include file name is case-sensitive, even though the rest of
-    the <TT
-CLASS="LITERAL"
->EXEC SQL INCLUDE</TT
-> command follows the normal
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    The include file name is case-sensitive, even though the rest of
+    the <code class="literal">EXEC SQL INCLUDE</code> command follows the normal
     SQL case-sensitivity rules.
-   </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ecpg-errors.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ecpg-process.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Error Handling</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="ecpg.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Processing Embedded SQL Programs</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

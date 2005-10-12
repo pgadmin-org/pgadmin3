@@ -1,753 +1,194 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->initdb</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PostgreSQL Server Applications"
-HREF="reference-server.html"><LINK
-REL="PREVIOUS"
-TITLE="PostgreSQL Server Applications"
-HREF="reference-server.html"><LINK
-REL="NEXT"
-TITLE="ipcclean"
-HREF="app-ipcclean.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="reference-server.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="reference-server.html#AEN53241"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-ipcclean.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-ipcclean.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="APP-INITDB"
-></A
->initdb</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN53250"
-></A
-><H2
->Name</H2
->initdb&nbsp;--&nbsp;create a new <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database cluster</DIV
-><A
-NAME="AEN53254"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN53256"
-></A
-><H2
->Synopsis</H2
-><P
-><TT
-CLASS="COMMAND"
->initdb</TT
-> [<TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
->...]  --pgdata  | -D <TT
-CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-> </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-APP-INITDB-1"
-></A
-><H2
->   Description
-  </H2
-><P
->   <TT
-CLASS="COMMAND"
->initdb</TT
-> creates a new
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database cluster.  A database
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>initdb</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
+<link rel="prev" href="reference-server.html" title="PostgreSQL Server Applications">
+<link rel="next" href="app-ipcclean.html" title="ipcclean">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-initdb"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>initdb &#8212; create a new <span class="productname">PostgreSQL</span> database cluster</p>
+</div>
+<a name="id753343"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">initdb</code> [<em class="replaceable"><code>option</code></em>...]  [--pgdata ] |  [-D ]<em class="replaceable"><code>directory</code></em> </p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="r1-app-initdb-1"></a><h2>   Description
+  </h2>
+<p>   <code class="command">initdb</code> creates a new
+   <span class="productname">PostgreSQL</span> database cluster.  A database
    cluster is a collection of databases that are managed by a single
    server instance.
-  </P
-><P
->   Creating a database cluster consists of creating the directories in
+  </p>
+<p>   Creating a database cluster consists of creating the directories in
    which the database data will live, generating the shared catalog
    tables (tables that belong to the whole cluster rather than to any
-   particular database), and creating the <TT
-CLASS="LITERAL"
->template1</TT
->
-   and <TT
-CLASS="LITERAL"
->postgres</TT
-> databases. When you later create a 
-   new database, everything in the <TT
-CLASS="LITERAL"
->template1</TT
-> database is 
-   copied.  (Therefore, anything installed in <TT
-CLASS="LITERAL"
->template1</TT
->
+   particular database), and creating the <code class="literal">template1</code>
+   and <code class="literal">postgres</code> databases. When you later create a 
+   new database, everything in the <code class="literal">template1</code> database is 
+   copied.  (Therefore, anything installed in <code class="literal">template1</code>
    is automatically copied into each database created later.)
-   The <TT
-CLASS="LITERAL"
->postgres</TT
-> database is a default database meant
+   The <code class="literal">postgres</code> database is a default database meant
    for use by users, utilities and third party applications.
-  </P
-><P
->   Although <TT
-CLASS="COMMAND"
->initdb</TT
-> will attempt to create the
+  </p>
+<p>   Although <code class="command">initdb</code> will attempt to create the
    specified data directory, it might not have permission if the parent
    directory of the desired data directory is root-owned. To initialize
    in such a setup, create an empty data directory as root, then use
-   <TT
-CLASS="COMMAND"
->chown</TT
-> to assign ownership of that directory to the
-   database user account, then <TT
-CLASS="COMMAND"
->su</TT
-> to become the
-   database user to run <TT
-CLASS="COMMAND"
->initdb</TT
->.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->initdb</TT
-> must be run as the user that will own the
+   <code class="command">chown</code> to assign ownership of that directory to the
+   database user account, then <code class="command">su</code> to become the
+   database user to run <code class="command">initdb</code>.
+  </p>
+<p>   <code class="command">initdb</code> must be run as the user that will own the
    server process, because the server needs to have access to the
-   files and directories that <TT
-CLASS="COMMAND"
->initdb</TT
-> creates.
+   files and directories that <code class="command">initdb</code> creates.
    Since the server may not be run as root, you must not run
-   <TT
-CLASS="COMMAND"
->initdb</TT
-> as root either.  (It will in fact refuse
+   <code class="command">initdb</code> as root either.  (It will in fact refuse
    to do so.)
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->initdb</TT
-> initializes the database cluster's default
+  </p>
+<p>   <code class="command">initdb</code> initializes the database cluster's default
    locale and character set encoding. The collation order
-   (<TT
-CLASS="LITERAL"
->LC_COLLATE</TT
->) and character set classes
-   (<TT
-CLASS="LITERAL"
->LC_CTYPE</TT
->, e.g. upper, lower, digit) are fixed for all
+   (<code class="literal">LC_COLLATE</code>) and character set classes
+   (<code class="literal">LC_CTYPE</code>, e.g. upper, lower, digit) are fixed for all
    databases and can not be changed. Collation orders other than
-   <TT
-CLASS="LITERAL"
->C</TT
-> or <TT
-CLASS="LITERAL"
->POSIX</TT
-> also have a performance penalty.
+   <code class="literal">C</code> or <code class="literal">POSIX</code> also have a performance penalty.
    For these reasons it is important to choose the right locale when
-   running <TT
-CLASS="COMMAND"
->initdb</TT
->. The remaining locale categories
+   running <code class="command">initdb</code>. The remaining locale categories
    can be changed later when the server is started. All server locale
-   values (<TT
-CLASS="LITERAL"
->lc_*</TT
->) can be displayed via <TT
-CLASS="COMMAND"
->SHOW ALL</TT
->.
-   More details can be found in <A
-HREF="charset.html#LOCALE"
->Section 21.1</A
->.
-  </P
-><P
->   The character set encoding can be set separately for a database when
-   it is created. <TT
-CLASS="COMMAND"
->initdb</TT
-> determines the encoding for
-   the <TT
-CLASS="LITERAL"
->template1</TT
-> database, which will serve as the
+   values (<code class="literal">lc_*</code>) can be displayed via <code class="command">SHOW ALL</code>.
+   More details can be found in <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.
+  </p>
+<p>   The character set encoding can be set separately for a database when
+   it is created. <code class="command">initdb</code> determines the encoding for
+   the <code class="literal">template1</code> database, which will serve as the
    default for all other databases. To alter the default encoding use
-   the <TT
-CLASS="OPTION"
->--encoding</TT
-> option. More details can be found in
-   <A
-HREF="multibyte.html"
->Section 21.2</A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN53300"
-></A
-><H2
->Options</H2
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->-A <TT
-CLASS="REPLACEABLE"
-><I
->authmethod</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--auth=<TT
-CLASS="REPLACEABLE"
-><I
->authmethod</I
-></TT
-></TT
-></DT
-><DD
-><P
->        This option specifies the authentication method for local users
-        used in <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
->.  Do not use <TT
-CLASS="LITERAL"
->trust</TT
->
-        unless you trust all local users on your system.  <TT
-CLASS="LITERAL"
->Trust</TT
-> 
+   the <code class="option">--encoding</code> option. More details can be found in
+   <a href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id753628"></a><h2>Options</h2>
+<p>    </p>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-A <em class="replaceable"><code>authmethod</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--auth=<em class="replaceable"><code>authmethod</code></em></code></span>
+</dt>
+<dd><p>        This option specifies the authentication method for local users
+        used in <code class="filename">pg_hba.conf</code>.  Do not use <code class="literal">trust</code>
+        unless you trust all local users on your system.  <code class="literal">Trust</code> 
         is the default for ease of installation.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-D <TT
-CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--pgdata=<TT
-CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
-></DT
-><DD
-><P
->        This option specifies the directory where the database cluster
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-D <em class="replaceable"><code>directory</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--pgdata=<em class="replaceable"><code>directory</code></em></code></span>
+</dt>
+<dd><p>        This option specifies the directory where the database cluster
         should be stored. This is the only information required by
-        <TT
-CLASS="COMMAND"
->initdb</TT
->, but you can avoid writing it by
-        setting the <TT
-CLASS="ENVAR"
->PGDATA</TT
-> environment variable, which
+        <code class="command">initdb</code>, but you can avoid writing it by
+        setting the <code class="envar">PGDATA</code> environment variable, which
         can be convenient since the database server
-        (<TT
-CLASS="COMMAND"
->postmaster</TT
->) can find the database
+        (<code class="command">postmaster</code>) can find the database
         directory later by the same variable.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-E <TT
-CLASS="REPLACEABLE"
-><I
->encoding</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--encoding=<TT
-CLASS="REPLACEABLE"
-><I
->encoding</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Selects the encoding of the template database. This will also
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-E <em class="replaceable"><code>encoding</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--encoding=<em class="replaceable"><code>encoding</code></em></code></span>
+</dt>
+<dd><p>        Selects the encoding of the template database. This will also
         be the default encoding of any database you create later,
         unless you override it there.  The default is derived from the locale, or
-        <TT
-CLASS="LITERAL"
->SQL_ASCII</TT
-> if that does not work. The character sets supported by
-        the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server are described
-        in <A
-HREF="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED"
->Section 21.2.1</A
->.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--locale=<TT
-CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Sets the default locale for the database cluster.  If this
+        <code class="literal">SQL_ASCII</code> if that does not work. The character sets supported by
+        the <span class="productname">PostgreSQL</span> server are described
+        in <a href="multibyte.html#multibyte-charset-supported" title="21.2.1. Supported Character Sets">Section 21.2.1, &#8220;Supported Character Sets&#8221;</a>.
+       </p></dd>
+<dt><span class="term"><code class="option">--locale=<em class="replaceable"><code>locale</code></em></code></span></dt>
+<dd><p>        Sets the default locale for the database cluster.  If this
         option is not specified, the locale is inherited from the
-        environment that <TT
-CLASS="COMMAND"
->initdb</TT
-> runs in. Locale
-        support is described in <A
-HREF="charset.html#LOCALE"
->Section 21.1</A
->.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--lc-collate=<TT
-CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--lc-ctype=<TT
-CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--lc-messages=<TT
-CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--lc-monetary=<TT
-CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--lc-numeric=<TT
-CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--lc-time=<TT
-CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Like <TT
-CLASS="OPTION"
->--locale</TT
->, but only sets the locale in
+        environment that <code class="command">initdb</code> runs in. Locale
+        support is described in <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-collate=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-ctype=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-messages=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-monetary=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-numeric=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--lc-time=<em class="replaceable"><code>locale</code></em></code></span>
+</dt>
+<dd><p>        Like <code class="option">--locale</code>, but only sets the locale in
         the specified category.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-U <TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--username=<TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Selects the user name of the database superuser. This defaults
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-U <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--username=<em class="replaceable"><code>username</code></em></code></span>
+</dt>
+<dd><p>        Selects the user name of the database superuser. This defaults
         to the name of the effective user running
-        <TT
-CLASS="COMMAND"
->initdb</TT
->. It is really not important what the
+        <code class="command">initdb</code>. It is really not important what the
         superuser's name is, but one might choose to keep the
-        customary name <SPAN
-CLASS="SYSTEMITEM"
->postgres</SPAN
->, even if the operating
+        customary name <span class="systemitem">postgres</span>, even if the operating
         system user's name is different.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-W</TT
-><BR><TT
-CLASS="OPTION"
->--pwprompt</TT
-></DT
-><DD
-><P
->        Makes <TT
-CLASS="COMMAND"
->initdb</TT
-> prompt for a password
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-W</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--pwprompt</code></span>
+</dt>
+<dd><p>        Makes <code class="command">initdb</code> prompt for a password
         to give the database superuser. If you don't plan on using password
         authentication, this is not important.  Otherwise you won't be
         able to use password authentication until you have a password
         set up.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--pwfile=<TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Makes <TT
-CLASS="COMMAND"
->initdb</TT
-> read the database superuser's password
+       </p></dd>
+<dt><span class="term"><code class="option">--pwfile=<em class="replaceable"><code>filename</code></em></code></span></dt>
+<dd><p>        Makes <code class="command">initdb</code> read the database superuser's password
         from a file.  The first line of the file is taken as the password.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-><P
->    Other, less commonly used, parameters are also available:
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+<p>    Other, less commonly used, parameters are also available:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->-d</TT
-><BR><TT
-CLASS="OPTION"
->--debug</TT
-></DT
-><DD
-><P
->	Print debugging output from the bootstrap backend and a few other
+    </p>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-d</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--debug</code></span>
+</dt>
+<dd><p>	Print debugging output from the bootstrap backend and a few other
         messages of lesser interest for the general public.
-	The bootstrap backend is the program <TT
-CLASS="COMMAND"
->initdb</TT
->
+	The bootstrap backend is the program <code class="command">initdb</code>
 	uses to create the catalog tables.  This option generates a tremendous
 	amount of extremely boring output.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-L <TT
-CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Specifies where <TT
-CLASS="COMMAND"
->initdb</TT
-> should find
+       </p></dd>
+<dt><span class="term"><code class="option">-L <em class="replaceable"><code>directory</code></em></code></span></dt>
+<dd><p>        Specifies where <code class="command">initdb</code> should find
         its input files to initialize the database cluster.  This is
         normally not necessary.  You will be told if you need to
         specify their location explicitly.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-n</TT
-><BR><TT
-CLASS="OPTION"
->--noclean</TT
-></DT
-><DD
-><P
->	By default, when <TT
-CLASS="COMMAND"
->initdb</TT
->
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-n</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--noclean</code></span>
+</dt>
+<dd><p>	By default, when <code class="command">initdb</code>
 	determines that an error prevented it from completely creating the database
 	cluster, it removes any files it may have created before discovering
 	that it can't finish the job. This option inhibits tidying-up and is
 	thus useful for debugging.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN53421"
-></A
-><H2
->Environment</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="ENVAR"
->PGDATA</TT
-></DT
-><DD
-><P
->      Specifies the directory where the database cluster is to be
-      stored; may be overridden using the <TT
-CLASS="OPTION"
->-D</TT
-> option.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN53430"
-></A
-><H2
->See Also</H2
-><A
-HREF="app-postgres.html"
-><SPAN
-CLASS="APPLICATION"
->postgres</SPAN
-></A
->, <A
-HREF="app-postmaster.html"
-><SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="reference-server.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-ipcclean.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->PostgreSQL Server Applications</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="reference-server.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->ipcclean</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id754020"></a><h2>Environment</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="envar">PGDATA</code></span></dt>
+<dd><p>      Specifies the directory where the database cluster is to be
+      stored; may be overridden using the <code class="option">-D</code> option.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id754040"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a>, <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a></span>
+</div>
+</div></body>
+</html>

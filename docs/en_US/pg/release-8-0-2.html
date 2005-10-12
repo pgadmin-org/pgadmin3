@@ -1,579 +1,158 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 8.0.2</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 8.0.3"
-HREF="release-8-0-3.html"><LINK
-REL="NEXT"
-TITLE="Release 8.0.1"
-HREF="release-8-0-1.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-8-0-3.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-8-0-1.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-8-0-2"
->E.3. Release 8.0.2</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2005-04-07</P
-></BLOCKQUOTE
-></DIV
-><P
->    This release contains a variety of fixes from 8.0.1.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN72749"
->E.3.1. Migration to version 8.0.2</A
-></H2
-><P
->     A dump/restore is not required for those running 8.0.*.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.4. Release 8.0.2</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-3.html" title="E.3. Release 8.0.3">
+<link rel="next" href="release-8-0-1.html" title="E.5. Release 8.0.1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0-2"></a>E.4. Release 8.0.2</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-04-07</p>
+</div>
+<p>    This release contains a variety of fixes from 8.0.1.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id816750"></a>E.4.1. Migration to version 8.0.2</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.*.
      This release updates the major version number of the
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> libraries, so it might be
+     <span class="productname">PostgreSQL</span> libraries, so it might be
      necessary to re-link some user applications if they cannot
      find the properly-numbered shared library.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN72753"
->E.3.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Increment the major version number of all interface 
- libraries (Bruce)</P
-><P
-> This should have been done in 8.0.0.  It is required so 7.4.X versions 
- of PostgreSQL client applications, like <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->,
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id816768"></a>E.4.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Increment the major version number of all interface 
+ libraries (Bruce)</p>
+<p> This should have been done in 8.0.0.  It is required so 7.4.X versions 
+ of PostgreSQL client applications, like <span class="application">psql</span>,
  can be used on the same machine as 8.0.X applications.  This might require 
- re-linking user applications that use these libraries.</P
-></LI
-><LI
-><P
->Add Windows-only <TT
-CLASS="VARNAME"
->wal_sync_method</TT
-> setting of
- <TT
-CLASS="OPTION"
->fsync_writethrough</TT
-> (Magnus, Bruce)</P
-><P
-> This setting causes <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to write through
+ re-linking user applications that use these libraries.</p>
+</li>
+<li>
+<p>Add Windows-only <code class="varname">wal_sync_method</code> setting of
+ <code class="option">fsync_writethrough</code> (Magnus, Bruce)</p>
+<p> This setting causes <span class="productname">PostgreSQL</span> to write through
  any disk-drive write cache when writing to WAL.
- This behavior was formerly called <TT
-CLASS="OPTION"
->fsync</TT
->, but was
- renamed because it acts quite differently from <TT
-CLASS="OPTION"
->fsync</TT
-> on other
- platforms.</P
-></LI
-><LI
-><P
->Enable the <TT
-CLASS="VARNAME"
->wal_sync_method</TT
-> setting of
- <TT
-CLASS="OPTION"
->open_datasync</TT
-> on Windows, and make it the default for that 
-  platform (Magnus, Bruce)</P
-><P
-> Because the default is no longer <TT
-CLASS="OPTION"
->fsync_writethrough</TT
->,
+ This behavior was formerly called <code class="option">fsync</code>, but was
+ renamed because it acts quite differently from <code class="option">fsync</code> on other
+ platforms.</p>
+</li>
+<li>
+<p>Enable the <code class="varname">wal_sync_method</code> setting of
+ <code class="option">open_datasync</code> on Windows, and make it the default for that 
+  platform (Magnus, Bruce)</p>
+<p> Because the default is no longer <code class="option">fsync_writethrough</code>,
  data loss is possible during a power failure if the disk drive has
  write caching enabled. To turn off the write cache on Windows, 
- from the <SPAN
-CLASS="APPLICATION"
->Device Manager</SPAN
->, choose the drive properties, 
- then <TT
-CLASS="LITERAL"
->Policies</TT
->.</P
-></LI
-><LI
-><P
->New cache management algorithm <ACRONYM
-CLASS="ACRONYM"
->2Q</ACRONYM
-> replaces 
- <ACRONYM
-CLASS="ACRONYM"
->ARC</ACRONYM
-> (Tom)</P
-><P
-> This was done to avoid a pending US patent on <ACRONYM
-CLASS="ACRONYM"
->ARC</ACRONYM
->.  The 
- <ACRONYM
-CLASS="ACRONYM"
->2Q</ACRONYM
-> code might be a few percentage points slower than 
- <ACRONYM
-CLASS="ACRONYM"
->ARC</ACRONYM
-> for some work loads.  A better cache management algorithm
- will appear in 8.1.</P
-></LI
-><LI
-><P
->Planner adjustments to improve behavior on freshly-created
-tables (Tom)</P
-></LI
-><LI
-><P
->Allow plpgsql to assign to an element of an array that is
-initially <TT
-CLASS="LITERAL"
->NULL</TT
-> (Tom)</P
-><P
-> Formerly the array would remain <TT
-CLASS="LITERAL"
->NULL</TT
->, but now it becomes a
+ from the <span class="application">Device Manager</span>, choose the drive properties, 
+ then <code class="literal">Policies</code>.</p>
+</li>
+<li>
+<p>New cache management algorithm <span class="acronym">2Q</span> replaces 
+ <span class="acronym">ARC</span> (Tom)</p>
+<p> This was done to avoid a pending US patent on <span class="acronym">ARC</span>.  The 
+ <span class="acronym">2Q</span> code might be a few percentage points slower than 
+ <span class="acronym">ARC</span> for some work loads.  A better cache management algorithm
+ will appear in 8.1.</p>
+</li>
+<li><p>Planner adjustments to improve behavior on freshly-created
+tables (Tom)</p></li>
+<li>
+<p>Allow plpgsql to assign to an element of an array that is
+initially <code class="literal">NULL</code> (Tom)</p>
+<p> Formerly the array would remain <code class="literal">NULL</code>, but now it becomes a
  single-element array.  The main SQL engine was changed to handle
- <TT
-CLASS="COMMAND"
->UPDATE</TT
-> of a null array value this way in 8.0, but the similar
- case in plpgsql was overlooked.</P
-></LI
-><LI
-><P
->Convert <TT
-CLASS="LITERAL"
->\r\n</TT
-> and <TT
-CLASS="LITERAL"
->\r</TT
-> to <TT
-CLASS="LITERAL"
->\n</TT
->
-in plpython function bodies (Michael Fuhr)</P
-><P
->  This prevents syntax errors when plpython code is written on a Windows or
-  Mac client.</P
-></LI
-><LI
-><P
->Allow SPI cursors to handle utility commands that return rows,
-such as <TT
-CLASS="COMMAND"
->EXPLAIN</TT
-> (Tom)</P
-></LI
-><LI
-><P
->Fix <TT
-CLASS="COMMAND"
->CLUSTER</TT
-> failure after <TT
-CLASS="COMMAND"
->ALTER TABLE 
- SET WITHOUT OIDS</TT
-> (Tom)</P
-></LI
-><LI
-><P
->Reduce memory usage of <TT
-CLASS="COMMAND"
->ALTER TABLE ADD COLUMN</TT
-> 
- (Neil)</P
-></LI
-><LI
-><P
->Fix <TT
-CLASS="COMMAND"
->ALTER LANGUAGE RENAME</TT
-> (Tom)</P
-></LI
-><LI
-><P
->Document the Windows-only <TT
-CLASS="LITERAL"
->register</TT
-> and
-<TT
-CLASS="LITERAL"
->unregister</TT
-> options of <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
-> (Magnus)</P
-></LI
-><LI
-><P
->Ensure operations done during backend shutdown are counted by
-statistics collector</P
-><P
-> This is expected to resolve reports of <SPAN
-CLASS="APPLICATION"
->pg_autovacuum</SPAN
->
- not vacuuming the system catalogs often enough &mdash; it was not being
+ <code class="command">UPDATE</code> of a null array value this way in 8.0, but the similar
+ case in plpgsql was overlooked.</p>
+</li>
+<li>
+<p>Convert <code class="literal">\r\n</code> and <code class="literal">\r</code> to <code class="literal">\n</code>
+in plpython function bodies (Michael Fuhr)</p>
+<p>  This prevents syntax errors when plpython code is written on a Windows or
+  Mac client.</p>
+</li>
+<li><p>Allow SPI cursors to handle utility commands that return rows,
+such as <code class="command">EXPLAIN</code> (Tom)</p></li>
+<li><p>Fix <code class="command">CLUSTER</code> failure after <code class="command">ALTER TABLE 
+ SET WITHOUT OIDS</code> (Tom)</p></li>
+<li><p>Reduce memory usage of <code class="command">ALTER TABLE ADD COLUMN</code> 
+ (Neil)</p></li>
+<li><p>Fix <code class="command">ALTER LANGUAGE RENAME</code> (Tom)</p></li>
+<li><p>Document the Windows-only <code class="literal">register</code> and
+<code class="literal">unregister</code> options of <span class="application">pg_ctl</span> (Magnus)</p></li>
+<li>
+<p>Ensure operations done during backend shutdown are counted by
+statistics collector</p>
+<p> This is expected to resolve reports of <span class="application">pg_autovacuum</span>
+ not vacuuming the system catalogs often enough [mdash ] it was not being
  told about catalog deletions caused by temporary table removal during
- backend exit.</P
-></LI
-><LI
-><P
->Change the Windows default for configuration parameter
- <TT
-CLASS="VARNAME"
->log_destination</TT
-> to <TT
-CLASS="OPTION"
->eventlog</TT
-> (Magnus)</P
-><P
-> By default, a server running on Windows will now send log output to the
- Windows event logger rather than standard error.</P
-></LI
-><LI
-><P
->Make Kerberos authentication work on Windows (Magnus)</P
-></LI
-><LI
-><P
->Allow <TT
-CLASS="COMMAND"
->ALTER DATABASE RENAME</TT
-> by superusers 
- who aren't flagged as having CREATEDB privilege (Tom)</P
-></LI
-><LI
-><P
->Modify WAL log entries for <TT
-CLASS="COMMAND"
->CREATE</TT
-> and
-<TT
-CLASS="COMMAND"
->DROP DATABASE</TT
-> to not specify absolute paths (Tom)</P
-><P
->This allows point-in-time recovery on a different machine with possibly
- different database location.  Note that <TT
-CLASS="COMMAND"
->CREATE TABLESPACE</TT
-> still
- poses a hazard in such situations.</P
-></LI
-><LI
-><P
->Fix crash from a backend exiting with an open transaction 
- that created a table and opened a cursor on it (Tom)</P
-></LI
-><LI
-><P
->Fix <CODE
-CLASS="FUNCTION"
->array_map()</CODE
-> so it can call PL functions 
- (Tom)</P
-></LI
-><LI
-><P
->Several <TT
-CLASS="FILENAME"
->contrib/tsearch2</TT
-> and
-<TT
-CLASS="FILENAME"
->contrib/btree_gist</TT
-> fixes (Teodor)
- </P
-></LI
-><LI
-><P
->Fix crash of some <TT
-CLASS="FILENAME"
->contrib/pgcrypto</TT
-> 
- functions on some platforms (Marko Kreen)</P
-></LI
-><LI
-><P
->Fix <TT
-CLASS="FILENAME"
->contrib/intagg</TT
-> for 64-bit platforms 
- (Tom)</P
-></LI
-><LI
-><P
->Fix ecpg bugs in parsing of <TT
-CLASS="COMMAND"
->CREATE</TT
-> statement 
- (Michael)</P
-></LI
-><LI
-><P
->Work around gcc bug on powerpc and amd64 causing problems in 
- ecpg (Christof Petig)</P
-></LI
-><LI
-><P
->Do not use locale-aware versions of <CODE
-CLASS="FUNCTION"
->upper()</CODE
->, 
- <CODE
-CLASS="FUNCTION"
->lower()</CODE
->, and <CODE
-CLASS="FUNCTION"
->initcap()</CODE
-> when the locale is
- <TT
-CLASS="LITERAL"
->C</TT
-> (Bruce)</P
-><P
->  This allows these functions to work on platforms that generate errors
-  for non-7-bit data when the locale is <TT
-CLASS="LITERAL"
->C</TT
->.</P
-></LI
-><LI
-><P
->Fix <CODE
-CLASS="FUNCTION"
->quote_ident()</CODE
-> to quote names that match keywords (Tom)</P
-></LI
-><LI
-><P
->Fix <CODE
-CLASS="FUNCTION"
->to_date()</CODE
-> to behave reasonably when 
- <TT
-CLASS="LITERAL"
->CC</TT
-> and <TT
-CLASS="LITERAL"
->YY</TT
-> fields are both used (Karel)</P
-></LI
-><LI
-><P
->Prevent <CODE
-CLASS="FUNCTION"
->to_char(interval)</CODE
-> from failing 
- when given a zero-month interval (Tom)</P
-></LI
-><LI
-><P
->Fix wrong week returned by <CODE
-CLASS="FUNCTION"
->date_trunc('week')</CODE
->
-(Bruce)</P
-><P
-> <CODE
-CLASS="FUNCTION"
->date_trunc('week')</CODE
->
- returned the wrong year for the first few days of January in some years.</P
-></LI
-><LI
-><P
->Use the correct default mask length for class <TT
-CLASS="LITERAL"
->D</TT
->
- addresses in <TT
-CLASS="TYPE"
->INET</TT
-> data types (Tom)</P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-8-0-3.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-8-0-1.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 8.0.3</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 8.0.1</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+ backend exit.</p>
+</li>
+<li>
+<p>Change the Windows default for configuration parameter
+ <code class="varname">log_destination</code> to <code class="option">eventlog</code> (Magnus)</p>
+<p> By default, a server running on Windows will now send log output to the
+ Windows event logger rather than standard error.</p>
+</li>
+<li><p>Make Kerberos authentication work on Windows (Magnus)</p></li>
+<li><p>Allow <code class="command">ALTER DATABASE RENAME</code> by superusers 
+ who aren't flagged as having CREATEDB privilege (Tom)</p></li>
+<li>
+<p>Modify WAL log entries for <code class="command">CREATE</code> and
+<code class="command">DROP DATABASE</code> to not specify absolute paths (Tom)</p>
+<p>This allows point-in-time recovery on a different machine with possibly
+ different database location.  Note that <code class="command">CREATE TABLESPACE</code> still
+ poses a hazard in such situations.</p>
+</li>
+<li><p>Fix crash from a backend exiting with an open transaction 
+ that created a table and opened a cursor on it (Tom)</p></li>
+<li><p>Fix <code class="function">array_map()</code> so it can call PL functions 
+ (Tom)</p></li>
+<li><p>Several <code class="filename">contrib/tsearch2</code> and
+<code class="filename">contrib/btree_gist</code> fixes (Teodor)
+ </p></li>
+<li><p>Fix crash of some <code class="filename">contrib/pgcrypto</code> 
+ functions on some platforms (Marko Kreen)</p></li>
+<li><p>Fix <code class="filename">contrib/intagg</code> for 64-bit platforms 
+ (Tom)</p></li>
+<li><p>Fix ecpg bugs in parsing of <code class="command">CREATE</code> statement 
+ (Michael)</p></li>
+<li><p>Work around gcc bug on powerpc and amd64 causing problems in 
+ ecpg (Christof Petig)</p></li>
+<li>
+<p>Do not use locale-aware versions of <code class="function">upper()</code>, 
+ <code class="function">lower()</code>, and <code class="function">initcap()</code> when the locale is
+ <code class="literal">C</code> (Bruce)</p>
+<p>  This allows these functions to work on platforms that generate errors
+  for non-7-bit data when the locale is <code class="literal">C</code>.</p>
+</li>
+<li><p>Fix <code class="function">quote_ident()</code> to quote names that match keywords (Tom)</p></li>
+<li><p>Fix <code class="function">to_date()</code> to behave reasonably when 
+ <code class="literal">CC</code> and <code class="literal">YY</code> fields are both used (Karel)</p></li>
+<li><p>Prevent <code class="function">to_char(interval)</code> from failing 
+ when given a zero-month interval (Tom)</p></li>
+<li>
+<p>Fix wrong week returned by <code class="function">date_trunc('week')</code>
+(Bruce)</p>
+<p> <code class="function">date_trunc('week')</code>
+ returned the wrong year for the first few days of January in some years.</p>
+</li>
+<li><p>Use the correct default mask length for class <code class="literal">D</code>
+ addresses in <code class="type">INET</code> data types (Tom)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 26. Reliability</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="disk-full.html" title="25.2. Disk Full Failure">
+<link rel="next" href="wal-benefits.html" title="26.2. Benefits of Write-Ahead Logging">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="reliability">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="reliability"></a>Chapter 26. Reliability</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="reliability.html#wal">26.1. Write-Ahead Logging (<span class="acronym">WAL</span>)</a></span></dt>
+<dt><span class="sect1"><a href="wal-benefits.html">26.2. Benefits of Write-Ahead Logging</a></span></dt>
+<dt><span class="sect1"><a href="wal-configuration.html">26.3. <span class="acronym">WAL</span> Configuration</a></span></dt>
+<dt><span class="sect1"><a href="wal-internals.html">26.4. WAL Internals</a></span></dt>
+</dl>
+</div>
+<p>   Reliability is a major feature of any serious database system, and
+   <span class="productname">PostgreSQL</span> does everything possible to guarantee
+   reliable operation. One aspect of reliable operation is that all data
+   recorded by a transaction should be stored in a non-volatile area
+   that is safe from power loss, operating system failure, and hardware
+   failure (unrelated to the non-volatile area itself). To accomplish
+   this, <span class="productname">PostgreSQL</span> uses the magnetic platters of modern
+   disk drives for permanent storage that is immune to the failures
+   listed above. In fact, a computer can be completely destroyed, but if
+   the disk drives survive they can be moved to another computer with
+   similar hardware and all committed transactions will remain intact.
+  </p>
+<p>   While forcing data periodically to the disk platters might seem like
+   a simple operation, it is not. Because disk drives are dramatically
+   slower than main memory and CPUs, several layers of caching exist
+   between the computer's main memory and the disk drive platters.
+   First, there is the operating system kernel cache, which caches
+   frequently requested disk blocks and delays disk writes. Fortunately,
+   all operating systems give applications a way to force writes from
+   the kernel cache to disk, and <span class="productname">PostgreSQL</span> uses those
+   features. In fact, the <a href="runtime-config-wal.html#guc-wal-sync-method">wal_sync_method</a> parameter
+   controls how this is done.
+  </p>
+<p>   Secondly, there is an optional disk drive controller cache,
+   particularly popular on <span class="acronym">RAID</span> controller cards. Some of
+   these caches are <code class="literal">write-through</code>, meaning writes are passed
+   along to the drive as soon as they arrive. Others are
+   <code class="literal">write-back</code>, meaning data is passed on to the drive at
+   some later time. Such caches can be a reliability problem because the
+   disk controller card cache is volatile, unlike the disk driver
+   platters, unless the disk drive controller has a battery-backed
+   cache, meaning the card has a battery that maintains power to the
+   cache in case of server power loss. When the disk drives are later
+   accessible, the data is written to the drives.
+  </p>
+<p>   And finally, most disk drives have caches. Some are write-through
+   (typically SCSI), and some are write-back(typically IDE), and the
+   same concerns about data loss exist for write-back drive caches as
+   exist for disk controller caches. To have reliability, all
+   storage subsystems must be reliable in their storage characteristics.
+   When the operating system sends a write request to the drive platters,
+   there is little it can do to make sure the data has arrived at a
+   non-volatile store area on the system. Rather, it is the
+   administrator's responsibility to be sure that all storage components
+   have reliable characteristics.
+  </p>
+<p>   One other area of potential data loss are the disk platter writes
+   themselves. Disk platters are internally made up of 512-byte sectors.
+   When a write request arrives at the drive, it might be for 512 bytes,
+   1024 bytes, or 8192 bytes, and the process of writing could fail due
+   to power loss at any time, meaning some of the 512-byte sectors were
+   written, and others were not, or the first half of a 512-byte sector
+   has new data, and the remainder has the original data. Obviously, on
+   startup, <span class="productname">PostgreSQL</span> would not be able to deal with
+   these partially written cases. To guard against that,
+   <span class="productname">PostgreSQL</span> periodically writes full page images to
+   permanent storage <span class="emphasis"><em>before</em></span> modifying the actual page on
+   disk. By doing this, during recovery <span class="productname">PostgreSQL</span> can
+   restore partially-written pages. If you have a battery-backed disk
+   controller that prevents partial page writes, you can turn off this
+   page imaging by using the <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a>
+   parameter.
+  </p>
+<p>   The following sections explain how the Write-Ahead Log is used to 
+   obtain efficient, reliable operation.
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="wal"></a>26.1. Write-Ahead Logging (<span class="acronym">WAL</span>)</h2></div></div></div>
+<a name="id618712"></a><a name="id618722"></a><p>    <em class="firstterm">Write-Ahead Logging</em> (<span class="acronym">WAL</span>)
+    is a standard approach to transaction logging.  Its detailed
+    description may be found in most (if not all) books about
+    transaction processing. Briefly, <span class="acronym">WAL</span>'s central
+    concept is that changes to data files (where tables and indexes
+    reside) must be written only after those changes have been logged,
+    that is, when log records describing the changes have been flushed
+    to permanent storage. If we follow this procedure, we do not need
+    to flush data pages to disk on every transaction commit, because we
+    know that in the event of a crash we will be able to recover the
+    database using the log: any changes that have not been applied to
+    the data pages can be redone from the log records.  (This is
+    roll-forward recovery, also known as REDO.)
+   </p>
+</div>
+</div></body>
+</html>

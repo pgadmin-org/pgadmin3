@@ -1,1710 +1,420 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Mathematical Functions and Operators</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="PREVIOUS"
-TITLE="Comparison Operators"
-HREF="functions-comparison.html"><LINK
-REL="NEXT"
-TITLE="String Functions and Operators"
-HREF="functions-string.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-comparison.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 9. Functions and Operators</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-string.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="FUNCTIONS-MATH"
->9.3. Mathematical Functions and Operators</A
-></H1
-><P
->    Mathematical operators are provided for many
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> types. For types without
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.3. Mathematical Functions and Operators</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions-comparison.html" title="9.2. Comparison Operators">
+<link rel="next" href="functions-string.html" title="9.4. String Functions and Operators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-math"></a>9.3. Mathematical Functions and Operators</h2></div></div></div>
+<p>    Mathematical operators are provided for many
+    <span class="productname">PostgreSQL</span> types. For types without
     common mathematical conventions for all possible permutations 
     (e.g., date/time types) we
     describe the actual behavior in subsequent sections.
-   </P
-><P
->    <A
-HREF="functions-math.html#FUNCTIONS-MATH-OP-TABLE"
->Table 9-2</A
-> shows the available mathematical operators.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-MATH-OP-TABLE"
-></A
-><P
-><B
->Table 9-2. Mathematical Operators</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Operator</TH
-><TH
->Description</TH
-><TH
->Example</TH
-><TH
->Result</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->+</TT
-> </TD
-><TD
->addition</TD
-><TD
-><TT
-CLASS="LITERAL"
->2 + 3</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->5</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->-</TT
-> </TD
-><TD
->subtraction</TD
-><TD
-><TT
-CLASS="LITERAL"
->2 - 3</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->-1</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->*</TT
-> </TD
-><TD
->multiplication</TD
-><TD
-><TT
-CLASS="LITERAL"
->2 * 3</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->6</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->/</TT
-> </TD
-><TD
->division (integer division truncates results)</TD
-><TD
-><TT
-CLASS="LITERAL"
->4 / 2</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->2</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->%</TT
-> </TD
-><TD
->modulo (remainder)</TD
-><TD
-><TT
-CLASS="LITERAL"
->5 % 4</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->1</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->^</TT
-> </TD
-><TD
->exponentiation</TD
-><TD
-><TT
-CLASS="LITERAL"
->2.0 ^ 3.0</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->8</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->|/</TT
-> </TD
-><TD
->square root</TD
-><TD
-><TT
-CLASS="LITERAL"
->|/ 25.0</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->5</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->||/</TT
-> </TD
-><TD
->cube root</TD
-><TD
-><TT
-CLASS="LITERAL"
->||/ 27.0</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->3</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->!</TT
-> </TD
-><TD
->factorial</TD
-><TD
-><TT
-CLASS="LITERAL"
->5 !</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->120</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->!!</TT
-> </TD
-><TD
->factorial (prefix operator)</TD
-><TD
-><TT
-CLASS="LITERAL"
->!! 5</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->120</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->@</TT
-> </TD
-><TD
->absolute value</TD
-><TD
-><TT
-CLASS="LITERAL"
->@ -5.0</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->5</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&amp;</TT
-> </TD
-><TD
->bitwise AND</TD
-><TD
-><TT
-CLASS="LITERAL"
->91 &amp; 15</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->11</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->|</TT
-> </TD
-><TD
->bitwise OR</TD
-><TD
-><TT
-CLASS="LITERAL"
->32 | 3</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->35</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->#</TT
-> </TD
-><TD
->bitwise XOR</TD
-><TD
-><TT
-CLASS="LITERAL"
->17 # 5</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->20</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->~</TT
-> </TD
-><TD
->bitwise NOT</TD
-><TD
-><TT
-CLASS="LITERAL"
->~1</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->-2</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&lt;&lt;</TT
-> </TD
-><TD
->bitwise shift left</TD
-><TD
-><TT
-CLASS="LITERAL"
->1 &lt;&lt; 4</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->16</TT
-></TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&gt;&gt;</TT
-> </TD
-><TD
->bitwise shift right</TD
-><TD
-><TT
-CLASS="LITERAL"
->8 &gt;&gt; 2</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->2</TT
-></TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->    The bitwise operators work only on integral data types, whereas
+   </p>
+<p>    <a href="functions-math.html#functions-math-op-table" title="Table 9.2. Mathematical Operators">Table 9.2, &#8220;Mathematical Operators&#8221;</a> shows the available mathematical operators.
+   </p>
+<div class="table">
+<a name="functions-math-op-table"></a><p class="title"><b>Table 9.2. Mathematical Operators</b></p>
+<table summary="Mathematical Operators" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+<th>Result</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">+</code> </td>
+<td>addition</td>
+<td><code class="literal">2 + 3</code></td>
+<td><code class="literal">5</code></td>
+</tr>
+<tr>
+<td> <code class="literal">-</code> </td>
+<td>subtraction</td>
+<td><code class="literal">2 - 3</code></td>
+<td><code class="literal">-1</code></td>
+</tr>
+<tr>
+<td> <code class="literal">*</code> </td>
+<td>multiplication</td>
+<td><code class="literal">2 * 3</code></td>
+<td><code class="literal">6</code></td>
+</tr>
+<tr>
+<td> <code class="literal">/</code> </td>
+<td>division (integer division truncates results)</td>
+<td><code class="literal">4 / 2</code></td>
+<td><code class="literal">2</code></td>
+</tr>
+<tr>
+<td> <code class="literal">%</code> </td>
+<td>modulo (remainder)</td>
+<td><code class="literal">5 % 4</code></td>
+<td><code class="literal">1</code></td>
+</tr>
+<tr>
+<td> <code class="literal">^</code> </td>
+<td>exponentiation</td>
+<td><code class="literal">2.0 ^ 3.0</code></td>
+<td><code class="literal">8</code></td>
+</tr>
+<tr>
+<td> <code class="literal">|/</code> </td>
+<td>square root</td>
+<td><code class="literal">|/ 25.0</code></td>
+<td><code class="literal">5</code></td>
+</tr>
+<tr>
+<td> <code class="literal">||/</code> </td>
+<td>cube root</td>
+<td><code class="literal">||/ 27.0</code></td>
+<td><code class="literal">3</code></td>
+</tr>
+<tr>
+<td> <code class="literal">!</code> </td>
+<td>factorial</td>
+<td><code class="literal">5 !</code></td>
+<td><code class="literal">120</code></td>
+</tr>
+<tr>
+<td> <code class="literal">!!</code> </td>
+<td>factorial (prefix operator)</td>
+<td><code class="literal">!! 5</code></td>
+<td><code class="literal">120</code></td>
+</tr>
+<tr>
+<td> <code class="literal">@</code> </td>
+<td>absolute value</td>
+<td><code class="literal">@ -5.0</code></td>
+<td><code class="literal">5</code></td>
+</tr>
+<tr>
+<td> <code class="literal">&amp;</code> </td>
+<td>bitwise AND</td>
+<td><code class="literal">91 &amp; 15</code></td>
+<td><code class="literal">11</code></td>
+</tr>
+<tr>
+<td> <code class="literal">|</code> </td>
+<td>bitwise OR</td>
+<td><code class="literal">32 | 3</code></td>
+<td><code class="literal">35</code></td>
+</tr>
+<tr>
+<td> <code class="literal">#</code> </td>
+<td>bitwise XOR</td>
+<td><code class="literal">17 # 5</code></td>
+<td><code class="literal">20</code></td>
+</tr>
+<tr>
+<td> <code class="literal">~</code> </td>
+<td>bitwise NOT</td>
+<td><code class="literal">~1</code></td>
+<td><code class="literal">-2</code></td>
+</tr>
+<tr>
+<td> <code class="literal">&lt;&lt;</code> </td>
+<td>bitwise shift left</td>
+<td><code class="literal">1 &lt;&lt; 4</code></td>
+<td><code class="literal">16</code></td>
+</tr>
+<tr>
+<td> <code class="literal">&gt;&gt;</code> </td>
+<td>bitwise shift right</td>
+<td><code class="literal">8 &gt;&gt; 2</code></td>
+<td><code class="literal">2</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>    The bitwise operators work only on integral data types, whereas
     the others are available for all numeric data types.  The bitwise
     operators are also available for the bit
-    string types <TT
-CLASS="TYPE"
->bit</TT
-> and <TT
-CLASS="TYPE"
->bit varying</TT
->, as
-    shown in <A
-HREF="functions-bitstring.html#FUNCTIONS-BIT-STRING-OP-TABLE"
->Table 9-10</A
->.
-   </P
-><P
->   <A
-HREF="functions-math.html#FUNCTIONS-MATH-FUNC-TABLE"
->Table 9-3</A
-> shows the available
-   mathematical functions.  In the table, <TT
-CLASS="LITERAL"
->dp</TT
->
-   indicates <TT
-CLASS="TYPE"
->double precision</TT
->.  Many of these functions
+    string types <code class="type">bit</code> and <code class="type">bit varying</code>, as
+    shown in <a href="functions-bitstring.html#functions-bit-string-op-table" title="Table 9.10. Bit String Operators">Table 9.10, &#8220;Bit String Operators&#8221;</a>.
+   </p>
+<p>   <a href="functions-math.html#functions-math-func-table" title="Table 9.3. Mathematical Functions">Table 9.3, &#8220;Mathematical Functions&#8221;</a> shows the available
+   mathematical functions.  In the table, <code class="literal">dp</code>
+   indicates <code class="type">double precision</code>.  Many of these functions
    are provided in multiple forms with different argument types.
    Except where noted, any given form of a function returns the same
    data type as its argument.
-   The functions working with <TT
-CLASS="TYPE"
->double precision</TT
-> data are mostly
+   The functions working with <code class="type">double precision</code> data are mostly
    implemented on top of the host system's C library; accuracy and behavior in
    boundary cases may therefore vary depending on the host system.
-  </P
-><A
-NAME="AEN6300"
-></A
-><A
-NAME="AEN6302"
-></A
-><A
-NAME="AEN6304"
-></A
-><A
-NAME="AEN6306"
-></A
-><A
-NAME="AEN6308"
-></A
-><A
-NAME="AEN6310"
-></A
-><A
-NAME="AEN6312"
-></A
-><A
-NAME="AEN6314"
-></A
-><A
-NAME="AEN6316"
-></A
-><A
-NAME="AEN6318"
-></A
-><A
-NAME="AEN6320"
-></A
-><A
-NAME="AEN6322"
-></A
-><A
-NAME="AEN6324"
-></A
-><A
-NAME="AEN6326"
-></A
-><A
-NAME="AEN6328"
-></A
-><A
-NAME="AEN6330"
-></A
-><A
-NAME="AEN6332"
-></A
-><A
-NAME="AEN6334"
-></A
-><A
-NAME="AEN6336"
-></A
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-MATH-FUNC-TABLE"
-></A
-><P
-><B
->Table 9-3. Mathematical Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Function</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-><TH
->Example</TH
-><TH
->Result</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->abs</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->(same as <TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
-><TD
->absolute value</TD
-><TD
-><TT
-CLASS="LITERAL"
->abs(-17.4)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->17.4</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->cbrt</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->dp</TT
-></TD
-><TD
->cube root</TD
-><TD
-><TT
-CLASS="LITERAL"
->cbrt(27.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->3</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->ceil</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->smallest integer not less than argument</TD
-><TD
-><TT
-CLASS="LITERAL"
->ceil(-42.8)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->-42</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->ceiling</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->smallest integer not less than argument (alias for <CODE
-CLASS="FUNCTION"
->ceil</CODE
->)</TD
-><TD
-><TT
-CLASS="LITERAL"
->ceiling(-95.3)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->-95</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->degrees</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->dp</TT
-></TD
-><TD
->radians to degrees</TD
-><TD
-><TT
-CLASS="LITERAL"
->degrees(0.5)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->28.6478897565412</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->exp</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->exponential</TD
-><TD
-><TT
-CLASS="LITERAL"
->exp(1.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->2.71828182845905</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->floor</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->largest integer not greater than argument</TD
-><TD
-><TT
-CLASS="LITERAL"
->floor(-42.8)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->-43</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->ln</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->natural logarithm</TD
-><TD
-><TT
-CLASS="LITERAL"
->ln(2.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->0.693147180559945</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->log</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->base 10 logarithm</TD
-><TD
-><TT
-CLASS="LITERAL"
->log(100.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->2</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->log</CODE
->(<TT
-CLASS="PARAMETER"
->b</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->,
-        <TT
-CLASS="PARAMETER"
->x</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->numeric</TT
-></TD
-><TD
->logarithm to base <TT
-CLASS="PARAMETER"
->b</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->log(2.0, 64.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->6.0000000000</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->mod</CODE
->(<TT
-CLASS="PARAMETER"
->y</TT
->,
-        <TT
-CLASS="PARAMETER"
->x</TT
->)</TT
-></TD
-><TD
->(same as argument types)</TD
-><TD
->remainder of <TT
-CLASS="PARAMETER"
->y</TT
->/<TT
-CLASS="PARAMETER"
->x</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->mod(9,4)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->1</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pi</CODE
->()</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->dp</TT
-></TD
-><TD
-><SPAN
-CLASS="QUOTE"
->"&pi;"</SPAN
-> constant</TD
-><TD
-><TT
-CLASS="LITERAL"
->pi()</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->3.14159265358979</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->power</CODE
->(<TT
-CLASS="PARAMETER"
->a</TT
-> <TT
-CLASS="TYPE"
->dp</TT
->,
-        <TT
-CLASS="PARAMETER"
->b</TT
-> <TT
-CLASS="TYPE"
->dp</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->dp</TT
-></TD
-><TD
-><TT
-CLASS="PARAMETER"
->a</TT
-> raised to the power of <TT
-CLASS="PARAMETER"
->b</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->power(9.0, 3.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->729</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->power</CODE
->(<TT
-CLASS="PARAMETER"
->a</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->,
-        <TT
-CLASS="PARAMETER"
->b</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->numeric</TT
-></TD
-><TD
-><TT
-CLASS="PARAMETER"
->a</TT
-> raised to the power of <TT
-CLASS="PARAMETER"
->b</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->power(9.0, 3.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->729</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->radians</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->dp</TT
-></TD
-><TD
->degrees to radians</TD
-><TD
-><TT
-CLASS="LITERAL"
->radians(45.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->0.785398163397448</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->random</CODE
->()</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->dp</TT
-></TD
-><TD
->random value between 0.0 and 1.0</TD
-><TD
-><TT
-CLASS="LITERAL"
->random()</TT
-></TD
-><TD
->&nbsp;</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->round</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->round to nearest integer</TD
-><TD
-><TT
-CLASS="LITERAL"
->round(42.4)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->42</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->round</CODE
->(<TT
-CLASS="PARAMETER"
->v</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->, <TT
-CLASS="PARAMETER"
->s</TT
-> <TT
-CLASS="TYPE"
->int</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->numeric</TT
-></TD
-><TD
->round to <TT
-CLASS="PARAMETER"
->s</TT
-> decimal places</TD
-><TD
-><TT
-CLASS="LITERAL"
->round(42.4382, 2)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->42.44</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->setseed</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int</TT
-></TD
-><TD
->set seed for subsequent <TT
-CLASS="LITERAL"
->random()</TT
-> calls</TD
-><TD
-><TT
-CLASS="LITERAL"
->setseed(0.54823)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->1177314959</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->sign</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->sign of the argument (-1, 0, +1)</TD
-><TD
-><TT
-CLASS="LITERAL"
->sign(-8.4)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->-1</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->sqrt</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->square root</TD
-><TD
-><TT
-CLASS="LITERAL"
->sqrt(2.0)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->1.4142135623731</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->trunc</CODE
->(<TT
-CLASS="TYPE"
->dp</TT
-> or <TT
-CLASS="TYPE"
->numeric</TT
->)</TT
-></TD
-><TD
->(same as input)</TD
-><TD
->truncate toward zero</TD
-><TD
-><TT
-CLASS="LITERAL"
->trunc(42.8)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->42</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->trunc</CODE
->(<TT
-CLASS="PARAMETER"
->v</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->, <TT
-CLASS="PARAMETER"
->s</TT
-> <TT
-CLASS="TYPE"
->int</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->numeric</TT
-></TD
-><TD
->truncate to <TT
-CLASS="PARAMETER"
->s</TT
-> decimal places</TD
-><TD
-><TT
-CLASS="LITERAL"
->trunc(42.4382, 2)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->42.43</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->width_bucket</CODE
->(<TT
-CLASS="PARAMETER"
->op</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->, <TT
-CLASS="PARAMETER"
->b1</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->, <TT
-CLASS="PARAMETER"
->b2</TT
-> <TT
-CLASS="TYPE"
->numeric</TT
->, <TT
-CLASS="PARAMETER"
->count</TT
-> <TT
-CLASS="TYPE"
->int</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int</TT
-></TD
-><TD
->return the bucket to which <TT
-CLASS="PARAMETER"
->operand</TT
-> would
-       be assigned in an equidepth histogram with <TT
-CLASS="PARAMETER"
->count</TT
->
-       buckets, an upper bound of <TT
-CLASS="PARAMETER"
->b1</TT
->, and a lower bound
-       of <TT
-CLASS="PARAMETER"
->b2</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->width_bucket(5.35, 0.024, 10.06, 5)</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
->3</TT
-></TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   Finally, <A
-HREF="functions-math.html#FUNCTIONS-MATH-TRIG-TABLE"
->Table 9-4</A
-> shows the
+  </p>
+<a name="id541677"></a><a name="id541684"></a><a name="id541690"></a><a name="id541696"></a><a name="id541702"></a><a name="id541708"></a><a name="id541715"></a><a name="id541721"></a><a name="id541727"></a><a name="id541733"></a><a name="id541740"></a><a name="id541746"></a><a name="id541752"></a><a name="id541759"></a><a name="id541765"></a><a name="id541771"></a><a name="id541777"></a><a name="id541784"></a><a name="id541790"></a><div class="table">
+<a name="functions-math-func-table"></a><p class="title"><b>Table 9.3. Mathematical Functions</b></p>
+<table summary="Mathematical Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Return Type</th>
+<th>Description</th>
+<th>Example</th>
+<th>Result</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal"><code class="function">abs</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>(same as <em class="replaceable"><code>x</code></em>)</td>
+<td>absolute value</td>
+<td><code class="literal">abs(-17.4)</code></td>
+<td><code class="literal">17.4</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">cbrt</code>(<code class="type">dp</code>)</code></td>
+<td><code class="type">dp</code></td>
+<td>cube root</td>
+<td><code class="literal">cbrt(27.0)</code></td>
+<td><code class="literal">3</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">ceil</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>smallest integer not less than argument</td>
+<td><code class="literal">ceil(-42.8)</code></td>
+<td><code class="literal">-42</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">ceiling</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>smallest integer not less than argument (alias for <code class="function">ceil</code>)</td>
+<td><code class="literal">ceiling(-95.3)</code></td>
+<td><code class="literal">-95</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">degrees</code>(<code class="type">dp</code>)</code></td>
+<td><code class="type">dp</code></td>
+<td>radians to degrees</td>
+<td><code class="literal">degrees(0.5)</code></td>
+<td><code class="literal">28.6478897565412</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">exp</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>exponential</td>
+<td><code class="literal">exp(1.0)</code></td>
+<td><code class="literal">2.71828182845905</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">floor</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>largest integer not greater than argument</td>
+<td><code class="literal">floor(-42.8)</code></td>
+<td><code class="literal">-43</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">ln</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>natural logarithm</td>
+<td><code class="literal">ln(2.0)</code></td>
+<td><code class="literal">0.693147180559945</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">log</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>base 10 logarithm</td>
+<td><code class="literal">log(100.0)</code></td>
+<td><code class="literal">2</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">log</code>(<em class="parameter"><code>b</code></em> <code class="type">numeric</code>,
+        <em class="parameter"><code>x</code></em> <code class="type">numeric</code>)</code></td>
+<td><code class="type">numeric</code></td>
+<td>logarithm to base <em class="parameter"><code>b</code></em>
+</td>
+<td><code class="literal">log(2.0, 64.0)</code></td>
+<td><code class="literal">6.0000000000</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">mod</code>(<em class="parameter"><code>y</code></em>,
+        <em class="parameter"><code>x</code></em>)</code></td>
+<td>(same as argument types)</td>
+<td>remainder of <em class="parameter"><code>y</code></em>/<em class="parameter"><code>x</code></em>
+</td>
+<td><code class="literal">mod(9,4)</code></td>
+<td><code class="literal">1</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pi</code>()</code></td>
+<td><code class="type">dp</code></td>
+<td>&#8220;<span class="quote">[pi    ]</span>&#8221; constant</td>
+<td><code class="literal">pi()</code></td>
+<td><code class="literal">3.14159265358979</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">power</code>(<em class="parameter"><code>a</code></em> <code class="type">dp</code>,
+        <em class="parameter"><code>b</code></em> <code class="type">dp</code>)</code></td>
+<td><code class="type">dp</code></td>
+<td>
+<em class="parameter"><code>a</code></em> raised to the power of <em class="parameter"><code>b</code></em>
+</td>
+<td><code class="literal">power(9.0, 3.0)</code></td>
+<td><code class="literal">729</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">power</code>(<em class="parameter"><code>a</code></em> <code class="type">numeric</code>,
+        <em class="parameter"><code>b</code></em> <code class="type">numeric</code>)</code></td>
+<td><code class="type">numeric</code></td>
+<td>
+<em class="parameter"><code>a</code></em> raised to the power of <em class="parameter"><code>b</code></em>
+</td>
+<td><code class="literal">power(9.0, 3.0)</code></td>
+<td><code class="literal">729</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">radians</code>(<code class="type">dp</code>)</code></td>
+<td><code class="type">dp</code></td>
+<td>degrees to radians</td>
+<td><code class="literal">radians(45.0)</code></td>
+<td><code class="literal">0.785398163397448</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">random</code>()</code></td>
+<td><code class="type">dp</code></td>
+<td>random value between 0.0 and 1.0</td>
+<td><code class="literal">random()</code></td>
+<td> </td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">round</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>round to nearest integer</td>
+<td><code class="literal">round(42.4)</code></td>
+<td><code class="literal">42</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">round</code>(<em class="parameter"><code>v</code></em> <code class="type">numeric</code>, <em class="parameter"><code>s</code></em> <code class="type">int</code>)</code></td>
+<td><code class="type">numeric</code></td>
+<td>round to <em class="parameter"><code>s</code></em> decimal places</td>
+<td><code class="literal">round(42.4382, 2)</code></td>
+<td><code class="literal">42.44</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">setseed</code>(<code class="type">dp</code>)</code></td>
+<td><code class="type">int</code></td>
+<td>set seed for subsequent <code class="literal">random()</code> calls</td>
+<td><code class="literal">setseed(0.54823)</code></td>
+<td><code class="literal">1177314959</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">sign</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>sign of the argument (-1, 0, +1)</td>
+<td><code class="literal">sign(-8.4)</code></td>
+<td><code class="literal">-1</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">sqrt</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>square root</td>
+<td><code class="literal">sqrt(2.0)</code></td>
+<td><code class="literal">1.4142135623731</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">trunc</code>(<code class="type">dp</code> or <code class="type">numeric</code>)</code></td>
+<td>(same as input)</td>
+<td>truncate toward zero</td>
+<td><code class="literal">trunc(42.8)</code></td>
+<td><code class="literal">42</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">trunc</code>(<em class="parameter"><code>v</code></em> <code class="type">numeric</code>, <em class="parameter"><code>s</code></em> <code class="type">int</code>)</code></td>
+<td><code class="type">numeric</code></td>
+<td>truncate to <em class="parameter"><code>s</code></em> decimal places</td>
+<td><code class="literal">trunc(42.4382, 2)</code></td>
+<td><code class="literal">42.43</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">width_bucket</code>(<em class="parameter"><code>op</code></em> <code class="type">numeric</code>, <em class="parameter"><code>b1</code></em> <code class="type">numeric</code>, <em class="parameter"><code>b2</code></em> <code class="type">numeric</code>, <em class="parameter"><code>count</code></em> <code class="type">int</code>)</code></td>
+<td><code class="type">int</code></td>
+<td>return the bucket to which <em class="parameter"><code>operand</code></em> would
+       be assigned in an equidepth histogram with <em class="parameter"><code>count</code></em>
+       buckets, an upper bound of <em class="parameter"><code>b1</code></em>, and a lower bound
+       of <em class="parameter"><code>b2</code></em>
+</td>
+<td><code class="literal">width_bucket(5.35, 0.024, 10.06, 5)</code></td>
+<td><code class="literal">3</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   Finally, <a href="functions-math.html#functions-math-trig-table" title="Table 9.4. Trigonometric Functions">Table 9.4, &#8220;Trigonometric Functions&#8221;</a> shows the
    available trigonometric functions.  All trigonometric functions
-   take arguments and return values of type <TT
-CLASS="TYPE"
->double
-   precision</TT
->.
-  </P
-><A
-NAME="AEN6675"
-></A
-><A
-NAME="AEN6677"
-></A
-><A
-NAME="AEN6679"
-></A
-><A
-NAME="AEN6681"
-></A
-><A
-NAME="AEN6683"
-></A
-><A
-NAME="AEN6685"
-></A
-><A
-NAME="AEN6687"
-></A
-><A
-NAME="AEN6689"
-></A
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-MATH-TRIG-TABLE"
-></A
-><P
-><B
->Table 9-4. Trigonometric Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><THEAD
-><TR
-><TH
->Function</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->acos</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->inverse cosine</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->asin</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->inverse sine</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->atan</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->inverse tangent</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->atan2</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->,
-        <TT
-CLASS="REPLACEABLE"
-><I
->y</I
-></TT
->)</TT
-></TD
-><TD
->inverse tangent of
-        <TT
-CLASS="LITERAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->/<TT
-CLASS="REPLACEABLE"
-><I
->y</I
-></TT
-></TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->cos</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->cosine</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->cot</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->cotangent</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->sin</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->sine</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->tan</CODE
->(<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TT
-></TD
-><TD
->tangent</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-comparison.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-string.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Comparison Operators</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->String Functions and Operators</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   take arguments and return values of type <code class="type">double
+   precision</code>.
+  </p>
+<a name="id542923"></a><a name="id542929"></a><a name="id542935"></a><a name="id542942"></a><a name="id542948"></a><a name="id542954"></a><a name="id542960"></a><a name="id542966"></a><div class="table">
+<a name="functions-math-trig-table"></a><p class="title"><b>Table 9.4. Trigonometric Functions</b></p>
+<table summary="Trigonometric Functions" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal"><code class="function">acos</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>inverse cosine</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">asin</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>inverse sine</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">atan</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>inverse tangent</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">atan2</code>(<em class="replaceable"><code>x</code></em>,
+        <em class="replaceable"><code>y</code></em>)</code></td>
+<td>inverse tangent of
+        <code class="literal"><em class="replaceable"><code>x</code></em>/<em class="replaceable"><code>y</code></em></code>
+</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">cos</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>cosine</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">cot</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>cotangent</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">sin</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>sine</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">tan</code>(<em class="replaceable"><code>x</code></em>)</code></td>
+<td>tangent</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

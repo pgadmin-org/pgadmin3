@@ -1,1108 +1,357 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->System Administration Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="PREVIOUS"
-TITLE="System Information Functions"
-HREF="functions-info.html"><LINK
-REL="NEXT"
-TITLE="Type Conversion"
-HREF="typeconv.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-info.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 9. Functions and Operators</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="FUNCTIONS-ADMIN"
->9.20. System Administration Functions</A
-></H1
-><P
->   <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-SET-TABLE"
->Table 9-44</A
-> shows the functions
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.20. System Administration Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions-info.html" title="9.19. System Information Functions">
+<link rel="next" href="typeconv.html" title="Chapter 10. Type Conversion">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-admin"></a>9.20. System Administration Functions</h2></div></div></div>
+<p>   <a href="functions-admin.html#functions-admin-set-table" title="Table 9.44. Configuration Settings Functions">Table 9.44, &#8220;Configuration Settings Functions&#8221;</a> shows the functions
    available to query and alter run-time configuration parameters.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-SET-TABLE"
-></A
-><P
-><B
->Table 9-44. Configuration Settings Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->current_setting</CODE
->(<TT
-CLASS="PARAMETER"
->setting_name</TT
->)</TT
->
-       </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->current value of setting</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->set_config(<TT
-CLASS="PARAMETER"
->setting_name</TT
->,
-                             <TT
-CLASS="PARAMETER"
->new_value</TT
->,
-                             <TT
-CLASS="PARAMETER"
->is_local</TT
->)</CODE
-></TT
->
-       </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->set parameter and return new value</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><A
-NAME="AEN13997"
-></A
-><A
-NAME="AEN13999"
-></A
-><A
-NAME="AEN14001"
-></A
-><P
->    The function <CODE
-CLASS="FUNCTION"
->current_setting</CODE
-> yields the
-    current value of the setting <TT
-CLASS="PARAMETER"
->setting_name</TT
->.
-    It corresponds to the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command
-    <TT
-CLASS="COMMAND"
->SHOW</TT
->.  An example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT current_setting('datestyle');
+  </p>
+<div class="table">
+<a name="functions-admin-set-table"></a><p class="title"><b>Table 9.44. Configuration Settings Functions</b></p>
+<table summary="Configuration Settings Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>        <code class="literal"><code class="function">current_setting</code>(<em class="parameter"><code>setting_name</code></em>)</code>
+       </td>
+<td><code class="type">text</code></td>
+<td>current value of setting</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">set_config(<em class="parameter"><code>setting_name</code></em>, ,
+                             <em class="parameter"><code>new_value</code></em>, ,
+                             <em class="parameter"><code>is_local</code></em>)</code></code>
+       </td>
+<td><code class="type">text</code></td>
+<td>set parameter and return new value</td>
+</tr>
+</tbody>
+</table>
+</div>
+<a name="id570757"></a><a name="id570768"></a><a name="id570778"></a><p>    The function <code class="function">current_setting</code> yields the
+    current value of the setting <em class="parameter"><code>setting_name</code></em>.
+    It corresponds to the <span class="acronym">SQL</span> command
+    <code class="command">SHOW</code>.  An example:
+</p>
+<pre class="programlisting">SELECT current_setting('datestyle');
 
  current_setting
 -----------------
  ISO, MDY
-(1 row)</PRE
-><P>
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->set_config</CODE
-> sets the parameter
-    <TT
-CLASS="PARAMETER"
->setting_name</TT
-> to
-    <TT
-CLASS="PARAMETER"
->new_value</TT
->.  If
-    <TT
-CLASS="PARAMETER"
->is_local</TT
-> is <TT
-CLASS="LITERAL"
->true</TT
->, the
+(1 row)</pre>
+<p>
+   </p>
+<p>    <code class="function">set_config</code> sets the parameter
+    <em class="parameter"><code>setting_name</code></em> to
+    <em class="parameter"><code>new_value</code></em>.  If
+    <em class="parameter"><code>is_local</code></em> is <code class="literal">true</code>, the
     new value will only apply to the current transaction. If you want
     the new value to apply for the current session, use
-    <TT
-CLASS="LITERAL"
->false</TT
-> instead. The function corresponds to the
-    SQL command <TT
-CLASS="COMMAND"
->SET</TT
->. An example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT set_config('log_statement_stats', 'off', false);
+    <code class="literal">false</code> instead. The function corresponds to the
+    SQL command <code class="command">SET</code>. An example:
+</p>
+<pre class="programlisting">SELECT set_config('log_statement_stats', 'off', false);
 
  set_config
 ------------
  off
-(1 row)</PRE
-><P>
-   </P
-><A
-NAME="AEN14020"
-></A
-><A
-NAME="AEN14022"
-></A
-><A
-NAME="AEN14024"
-></A
-><A
-NAME="AEN14026"
-></A
-><P
->    The functions shown in <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-SIGNAL-TABLE"
->Table 9-45</A
-> send control signals to
+(1 row)</pre>
+<p>
+   </p>
+<a name="id570892"></a><a name="id570903"></a><a name="id570913"></a><a name="id570924"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Server Signalling Functions">Table 9.45, &#8220;Server Signalling Functions&#8221;</a> send control signals to
     other server processes.  Use of these functions is restricted
     to superusers.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-SIGNAL-TABLE"
-></A
-><P
-><B
->Table 9-45. Server Signalling Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_cancel_backend</CODE
->(<TT
-CLASS="PARAMETER"
->pid</TT
-> <TT
-CLASS="TYPE"
->int</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->boolean</TT
-></TD
-><TD
->Cancel a backend's current query</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_reload_conf</CODE
->()</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->boolean</TT
-></TD
-><TD
->Cause server processes to reload their configuration files</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_rotate_logfile</CODE
->()</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->boolean</TT
-></TD
-><TD
->Rotate server's logfile</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->    Each of these functions returns <TT
-CLASS="LITERAL"
->true</TT
-> if
-    successful and <TT
-CLASS="LITERAL"
->false</TT
-> otherwise.
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_cancel_backend</CODE
-> sends a query cancel
-    (<SPAN
-CLASS="SYSTEMITEM"
->SIGINT</SPAN
->) signal to a backend process identified by
+   </p>
+<div class="table">
+<a name="functions-admin-signal-table"></a><p class="title"><b>Table 9.45. Server Signalling Functions</b></p>
+<table summary="Server Signalling Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>        <code class="literal"><code class="function">pg_cancel_backend</code>(<em class="parameter"><code>pid</code></em> <code class="type">int</code>)</code>
+        </td>
+<td><code class="type">boolean</code></td>
+<td>Cancel a backend's current query</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_reload_conf</code>()</code>
+        </td>
+<td><code class="type">boolean</code></td>
+<td>Cause server processes to reload their configuration files</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_rotate_logfile</code>()</code>
+        </td>
+<td><code class="type">boolean</code></td>
+<td>Rotate server's logfile</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>    Each of these functions returns <code class="literal">true</code> if
+    successful and <code class="literal">false</code> otherwise.
+   </p>
+<p>    <code class="function">pg_cancel_backend</code> sends a query cancel
+    (<span class="systemitem">SIGINT</span>) signal to a backend process identified by
     process ID.  The process ID of an active backend can be found from
-    the <TT
-CLASS="STRUCTFIELD"
->procpid</TT
-> column in the
-    <TT
-CLASS="STRUCTNAME"
->pg_stat_activity</TT
-> view, or by listing the
-    <TT
-CLASS="COMMAND"
->postgres</TT
-> processes on the server with
-    <SPAN
-CLASS="APPLICATION"
->ps</SPAN
->.
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_reload_conf</CODE
-> sends a <SPAN
-CLASS="SYSTEMITEM"
->SIGHUP</SPAN
-> signal
-    to the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
->, causing the configuration files
+    the <code class="structfield">procpid</code> column in the
+    <code class="structname">pg_stat_activity</code> view, or by listing the
+    <code class="command">postgres</code> processes on the server with
+    <span class="application">ps</span>.
+   </p>
+<p>    <code class="function">pg_reload_conf</code> sends a <span class="systemitem">SIGHUP</span> signal
+    to the <span class="application">postmaster</span>, causing the configuration files
     to be reloaded by all server processes.
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_rotate_logfile</CODE
-> signals the logfile manager to switch
+   </p>
+<p>    <code class="function">pg_rotate_logfile</code> signals the logfile manager to switch
     to a new output file immediately.  This works only when
-    <TT
-CLASS="VARNAME"
->redirect_stderr</TT
-> is used for logging, since otherwise there
+    <code class="varname">redirect_stderr</code> is used for logging, since otherwise there
     is no logfile manager subprocess.
-   </P
-><A
-NAME="AEN14080"
-></A
-><A
-NAME="AEN14082"
-></A
-><A
-NAME="AEN14084"
-></A
-><P
->    The functions shown in <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-BACKUP-TABLE"
->Table 9-46</A
-> assist in making on-line backups.
+   </p>
+<a name="id571150"></a><a name="id571161"></a><a name="id571171"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
     Use of these functions is restricted to superusers.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-BACKUP-TABLE"
-></A
-><P
-><B
->Table 9-46. Backup Control Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
->(<TT
-CLASS="PARAMETER"
->label</TT
-> <TT
-CLASS="TYPE"
->text</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->Set up for performing on-line backup</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_stop_backup</CODE
->()</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->Finish performing on-line backup</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
-> accepts a single parameter which is an
+   </p>
+<div class="table">
+<a name="functions-admin-backup-table"></a><p class="title"><b>Table 9.46. Backup Control Functions</b></p>
+<table summary="Backup Control Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>        <code class="literal"><code class="function">pg_start_backup</code>(<em class="parameter"><code>label</code></em> <code class="type">text</code>)</code>
+        </td>
+<td><code class="type">text</code></td>
+<td>Set up for performing on-line backup</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_stop_backup</code>()</code>
+        </td>
+<td><code class="type">text</code></td>
+<td>Finish performing on-line backup</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>    <code class="function">pg_start_backup</code> accepts a single parameter which is an
     arbitrary user-defined label for the backup.  (Typically this would be
     the name under which the backup dump file will be stored.)  The function
     writes a backup label file into the database cluster's data directory,
     and then returns the backup's starting WAL offset as text.  (The user
     need not pay any attention to this result value, but it is provided in
     case it is of use.)
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_stop_backup</CODE
-> removes the label file created by
-    <CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
->, and instead creates a backup history file in
+   </p>
+<p>    <code class="function">pg_stop_backup</code> removes the label file created by
+    <code class="function">pg_start_backup</code>, and instead creates a backup history file in
     the WAL archive area.  The history file includes the label given to
-    <CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
->, the starting and ending WAL offsets for
+    <code class="function">pg_start_backup</code>, the starting and ending WAL offsets for
     the backup, and the starting and ending times of the backup.  The return
     value is the backup's ending WAL offset (which again may be of little
     interest).
-   </P
-><P
->    For details about proper usage of these functions, see
-    <A
-HREF="backup-online.html"
->Section 23.3</A
->.
-   </P
-><P
->    The functions shown in <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-DBSIZE"
->Table 9-47</A
-> calculate
+   </p>
+<p>    For details about proper usage of these functions, see
+    <a href="backup-online.html" title="23.3. On-line backup and point-in-time recovery (PITR)">Section 23.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>.
+   </p>
+<p>    The functions shown in <a href="functions-admin.html#functions-admin-dbsize" title="Table 9.47. Database Object Size Functions">Table 9.47, &#8220;Database Object Size Functions&#8221;</a> calculate
     the actual disk space usage of database objects.
-   </P
-><A
-NAME="AEN14123"
-></A
-><A
-NAME="AEN14125"
-></A
-><A
-NAME="AEN14127"
-></A
-><A
-NAME="AEN14129"
-></A
-><A
-NAME="AEN14131"
-></A
-><A
-NAME="AEN14133"
-></A
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-DBSIZE"
-></A
-><P
-><B
->Table 9-47. Database Object Size Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><CODE
-CLASS="FUNCTION"
->pg_column_size</CODE
->(<TT
-CLASS="TYPE"
->any</TT
->)</TD
-><TD
-><TT
-CLASS="TYPE"
->int</TT
-></TD
-><TD
->Number of bytes used to store a particular value (possibly compressed)</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_tablespace_size</CODE
->(<TT
-CLASS="TYPE"
->oid</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Disk space used by the tablespace with the specified OID</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_tablespace_size</CODE
->(<TT
-CLASS="TYPE"
->name</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Disk space used by the tablespace with the specified name</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_database_size</CODE
->(<TT
-CLASS="TYPE"
->oid</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Disk space used by the database with the specified OID</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_database_size</CODE
->(<TT
-CLASS="TYPE"
->name</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Disk space used by the database with the specified name</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_relation_size</CODE
->(<TT
-CLASS="TYPE"
->oid</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->Disk space used by the table or index with the specified OID</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_relation_size</CODE
->(<TT
-CLASS="TYPE"
->text</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->        Disk space used by the table or index with the specified name.
+   </p>
+<a name="id571342"></a><a name="id571351"></a><a name="id571362"></a><a name="id571372"></a><a name="id571383"></a><a name="id571393"></a><div class="table">
+<a name="functions-admin-dbsize"></a><p class="title"><b>Table 9.47. Database Object Size Functions</b></p>
+<table summary="Database Object Size Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+<code class="function">pg_column_size</code>(<code class="type">any</code>)</td>
+<td><code class="type">int</code></td>
+<td>Number of bytes used to store a particular value (possibly compressed)</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_tablespace_size</code>(<code class="type">oid</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>Disk space used by the tablespace with the specified OID</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_tablespace_size</code>(<code class="type">name</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>Disk space used by the tablespace with the specified name</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_database_size</code>(<code class="type">oid</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>Disk space used by the database with the specified OID</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_database_size</code>(<code class="type">name</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>Disk space used by the database with the specified name</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_relation_size</code>(<code class="type">oid</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>Disk space used by the table or index with the specified OID</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_relation_size</code>(<code class="type">text</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>        Disk space used by the table or index with the specified name.
         The table name may be qualified with a schema name
-       </TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_total_relation_size</CODE
->(<TT
-CLASS="TYPE"
->oid</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->        Total disk space used by the table with the specified OID,
+       </td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_total_relation_size</code>(<code class="type">oid</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>        Total disk space used by the table with the specified OID,
         including indexes and toasted data
-       </TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_total_relation_size</CODE
->(<TT
-CLASS="TYPE"
->text</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
->        Total disk space used by the table with the specified name,
+       </td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_total_relation_size</code>(<code class="type">text</code>)</code>
+        </td>
+<td><code class="type">bigint</code></td>
+<td>        Total disk space used by the table with the specified name,
         including indexes and toasted data.  The table name may be
         qualified with a schema name
-       </TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_size_pretty</CODE
->(<TT
-CLASS="TYPE"
->bigint</TT
->)</TT
->
-        </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->Converts a size in bytes into a human-readable format with size units</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_column_size</CODE
-> shows the space used to store any individual
+       </td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_size_pretty</code>(<code class="type">bigint</code>)</code>
+        </td>
+<td><code class="type">text</code></td>
+<td>Converts a size in bytes into a human-readable format with size units</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>    <code class="function">pg_column_size</code> shows the space used to store any individual
     data value.
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_tablespace_size</CODE
-> and <CODE
-CLASS="FUNCTION"
->pg_database_size</CODE
-> accept
+   </p>
+<p>    <code class="function">pg_tablespace_size</code> and <code class="function">pg_database_size</code> accept
     the OID or name of a tablespace or database, and return the total disk
     space used therein.
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_relation_size</CODE
-> accepts the OID or name of a table, index or
+   </p>
+<p>    <code class="function">pg_relation_size</code> accepts the OID or name of a table, index or
     toast table, and returns the size in bytes.
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_total_relation_size</CODE
-> accepts the OID or name of a
+   </p>
+<p>    <code class="function">pg_total_relation_size</code> accepts the OID or name of a
     table or toast table, and returns the size in bytes of the data
     and all associated indexes and toast tables.
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_size_pretty</CODE
-> can be used to format the result of one of
+   </p>
+<p>    <code class="function">pg_size_pretty</code> can be used to format the result of one of
     the other functions in a human-readable way, using kB, MB, GB or TB as
     appropriate.
-   </P
-><P
->    The functions shown in <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-GENFILE"
->Table 9-48</A
-> provide native file access to
+   </p>
+<p>    The functions shown in <a href="functions-admin.html#functions-admin-genfile" title="Table 9.48. Generic File Access Functions">Table 9.48, &#8220;Generic File Access Functions&#8221;</a> provide native file access to
     files on the machine hosting the server. Only files within the
-    database cluster directory and the <TT
-CLASS="VARNAME"
->log_directory</TT
-> may be
+    database cluster directory and the <code class="varname">log_directory</code> may be
     accessed.  Use a relative path for files within the cluster directory,
-    and a path matching the <TT
-CLASS="VARNAME"
->log_directory</TT
-> configuration setting
+    and a path matching the <code class="varname">log_directory</code> configuration setting
     for log files.  Use of these functions is restricted to superusers.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-GENFILE"
-></A
-><P
-><B
->Table 9-48. Generic File Access Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_ls_dir</CODE
->(<TT
-CLASS="PARAMETER"
->dirname</TT
-> <TT
-CLASS="TYPE"
->text</TT
->)</TT
->
-       </TD
-><TD
-><TT
-CLASS="TYPE"
->setof text</TT
-></TD
-><TD
->List the contents of a directory</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_read_file</CODE
->(<TT
-CLASS="PARAMETER"
->filename</TT
-> <TT
-CLASS="TYPE"
->text</TT
->, <TT
-CLASS="PARAMETER"
->offset</TT
-> <TT
-CLASS="TYPE"
->bigint</TT
->, <TT
-CLASS="PARAMETER"
->length</TT
-> <TT
-CLASS="TYPE"
->bigint</TT
->)</TT
->
-       </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->Return the contents of a text file</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_stat_file</CODE
->(<TT
-CLASS="PARAMETER"
->filename</TT
-> <TT
-CLASS="TYPE"
->text</TT
->)</TT
->
-       </TD
-><TD
-><TT
-CLASS="TYPE"
->record</TT
-></TD
-><TD
->Return information about a file</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><A
-NAME="AEN14278"
-></A
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_ls_dir</CODE
-> returns all the names in the specified
-    directory, except the special entries <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->.</TT
->"</SPAN
-> and
-    <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->..</TT
->"</SPAN
->.
-   </P
-><A
-NAME="AEN14286"
-></A
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_read_file</CODE
-> returns part of a text file, starting
-    at the given <TT
-CLASS="PARAMETER"
->offset</TT
->, returning at most <TT
-CLASS="PARAMETER"
->length</TT
->
-    bytes (less if the end of file is reached first).  If <TT
-CLASS="PARAMETER"
->offset</TT
->
+   </p>
+<div class="table">
+<a name="functions-admin-genfile"></a><p class="title"><b>Table 9.48. Generic File Access Functions</b></p>
+<table summary="Generic File Access Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>        <code class="literal"><code class="function">pg_ls_dir</code>(<em class="parameter"><code>dirname</code></em> <code class="type">text</code>)</code>
+       </td>
+<td><code class="type">setof text</code></td>
+<td>List the contents of a directory</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_read_file</code>(<em class="parameter"><code>filename</code></em> <code class="type">text</code>, <em class="parameter"><code>offset</code></em> <code class="type">bigint</code>, <em class="parameter"><code>length</code></em> <code class="type">bigint</code>)</code>
+       </td>
+<td><code class="type">text</code></td>
+<td>Return the contents of a text file</td>
+</tr>
+<tr>
+<td>        <code class="literal"><code class="function">pg_stat_file</code>(<em class="parameter"><code>filename</code></em> <code class="type">text</code>)</code>
+       </td>
+<td><code class="type">record</code></td>
+<td>Return information about a file</td>
+</tr>
+</tbody>
+</table>
+</div>
+<a name="id571913"></a><p>    <code class="function">pg_ls_dir</code> returns all the names in the specified
+    directory, except the special entries &#8220;<span class="quote"><code class="literal">.</code></span>&#8221; and
+    &#8220;<span class="quote"><code class="literal">..</code></span>&#8221;.
+   </p>
+<a name="id571948"></a><p>    <code class="function">pg_read_file</code> returns part of a text file, starting
+    at the given <em class="parameter"><code>offset</code></em>, returning at most <em class="parameter"><code>length</code></em>
+    bytes (less if the end of file is reached first).  If <em class="parameter"><code>offset</code></em>
     is negative, it is relative to the end of the file.
-   </P
-><A
-NAME="AEN14293"
-></A
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_stat_file</CODE
-> returns a record containing the file
+   </p>
+<a name="id571990"></a><p>    <code class="function">pg_stat_file</code> returns a record containing the file
     size, last accessed timestamp, last modified timestamp, 
     last file status change timestamp (Unix platforms only), 
     file creation timestamp (Win32 only), and a boolean indicating 
     if it is a directory.  Typical usages include:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM pg_stat_file('filename');
-SELECT (pg_stat_file('filename')).modification;</PRE
-><P>
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-info.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->System Information Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Type Conversion</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">SELECT * FROM pg_stat_file('filename');
+SELECT (pg_stat_file('filename')).modification;</pre>
+<p>
+   </p>
+</div></body>
+</html>

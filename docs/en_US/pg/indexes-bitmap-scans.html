@@ -1,306 +1,76 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Combining Multiple Indexes</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Indexes"
-HREF="indexes.html"><LINK
-REL="PREVIOUS"
-TITLE="Multicolumn Indexes"
-HREF="indexes-multicolumn.html"><LINK
-REL="NEXT"
-TITLE="Unique Indexes"
-HREF="indexes-unique.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-multicolumn.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 11. Indexes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes-unique.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INDEXES-BITMAP-SCANS"
->11.4. Combining Multiple Indexes</A
-></H1
-><A
-NAME="AEN14812"
-></A
-><A
-NAME="AEN14815"
-></A
-><P
->   A single index scan can only use query clauses that use the index's
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>11.4. Combining Multiple Indexes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="prev" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
+<link rel="next" href="indexes-unique.html" title="11.5. Unique Indexes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-bitmap-scans"></a>11.4. Combining Multiple Indexes</h2></div></div></div>
+<a name="id574575"></a><a name="id574588"></a><p>   A single index scan can only use query clauses that use the index's
    columns with operators of its operator class and are joined with
-   <TT
-CLASS="LITERAL"
->AND</TT
->.  For example, given an index on <TT
-CLASS="LITERAL"
->(a, b)</TT
->
-   a query condition like <TT
-CLASS="LITERAL"
->WHERE a = 5 AND b = 6</TT
-> could
-   use the index, but a query like <TT
-CLASS="LITERAL"
->WHERE a = 5 OR b = 6</TT
-> could not
+   <code class="literal">AND</code>.  For example, given an index on <code class="literal">(a, b)</code>
+   a query condition like <code class="literal">WHERE a = 5 AND b = 6</code> could
+   use the index, but a query like <code class="literal">WHERE a = 5 OR b = 6</code> could not
    directly use the index.
-  </P
-><P
->   Beginning in release 8.1,
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has the ability to combine multiple indexes
+  </p>
+<p>   Beginning in release 8.1,
+   <span class="productname">PostgreSQL</span> has the ability to combine multiple indexes
    (including multiple uses of the same index) to handle cases that cannot
-   be implemented by single index scans.  The system can form <TT
-CLASS="LITERAL"
->AND</TT
->
-   and <TT
-CLASS="LITERAL"
->OR</TT
-> conditions across several index scans.  For example,
-   a query like <TT
-CLASS="LITERAL"
->WHERE x = 42 OR x = 47 OR x = 53 OR x = 99</TT
->
-   could be broken down into four separate scans of an index on <TT
-CLASS="LITERAL"
->x</TT
->,
+   be implemented by single index scans.  The system can form <code class="literal">AND</code>
+   and <code class="literal">OR</code> conditions across several index scans.  For example,
+   a query like <code class="literal">WHERE x = 42 OR x = 47 OR x = 53 OR x = 99</code>
+   could be broken down into four separate scans of an index on <code class="literal">x</code>,
    each scan using one of the query clauses.  The results of these scans are
    then ORed together to produce the result.  Another example is that if we
-   have separate indexes on <TT
-CLASS="LITERAL"
->x</TT
-> and <TT
-CLASS="LITERAL"
->y</TT
->, one possible
-   implementation of a query like <TT
-CLASS="LITERAL"
->WHERE x = 5 AND y = 6</TT
-> is to
+   have separate indexes on <code class="literal">x</code> and <code class="literal">y</code>, one possible
+   implementation of a query like <code class="literal">WHERE x = 5 AND y = 6</code> is to
    use each index with the appropriate query clause and then AND together
    the index results to identify the result rows.
-  </P
-><P
->   To combine multiple indexes, the system scans each needed index and
-   prepares a <I
-CLASS="FIRSTTERM"
->bitmap</I
-> in memory giving the locations of
+  </p>
+<p>   To combine multiple indexes, the system scans each needed index and
+   prepares a <em class="firstterm">bitmap</em> in memory giving the locations of
    table rows that are reported as matching that index's conditions.
    The bitmaps are then ANDed and ORed together as needed by the query.
    Finally, the actual table rows are visited and returned.  The table rows
    are visited in physical order, because that is how the bitmap is laid
    out; this means that any ordering of the original indexes is lost, and
-   so a separate sort step will be needed if the query has an <TT
-CLASS="LITERAL"
->ORDER
-   BY</TT
-> clause.  For this reason, and because each additional index scan
+   so a separate sort step will be needed if the query has an <code class="literal">ORDER
+   BY</code> clause.  For this reason, and because each additional index scan
    adds extra time, the planner will sometimes choose to use a simple index
    scan even though additional indexes are available that could have been
    used as well.
-  </P
-><P
->   In all but the simplest applications, there are various combinations of
+  </p>
+<p>   In all but the simplest applications, there are various combinations of
    indexes that may be useful, and the database developer must make
    tradeoffs to decide which indexes to provide.  Sometimes multicolumn
    indexes are best, but sometimes it's better to create separate indexes
    and rely on the index-combination feature.  For example, if your
    workload includes a mix of queries that sometimes involve only column
-   <TT
-CLASS="LITERAL"
->x</TT
->, sometimes only column <TT
-CLASS="LITERAL"
->y</TT
->, and sometimes both
+   <code class="literal">x</code>, sometimes only column <code class="literal">y</code>, and sometimes both
    columns, you might choose to create two separate indexes on
-   <TT
-CLASS="LITERAL"
->x</TT
-> and <TT
-CLASS="LITERAL"
->y</TT
->, relying on index combination to
+   <code class="literal">x</code> and <code class="literal">y</code>, relying on index combination to
    process the queries that use both columns.  You could also create a
-   multicolumn index on <TT
-CLASS="LITERAL"
->(x, y)</TT
->.  This index would typically be
+   multicolumn index on <code class="literal">(x, y)</code>.  This index would typically be
    more efficient than index combination for queries involving both
-   columns, but as discussed in <A
-HREF="indexes-multicolumn.html"
->Section 11.3</A
->, it
-   would be almost useless for queries involving only <TT
-CLASS="LITERAL"
->y</TT
->, so it
+   columns, but as discussed in <a href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">Section 11.3, &#8220;Multicolumn Indexes&#8221;</a>, it
+   would be almost useless for queries involving only <code class="literal">y</code>, so it
    could not be the only index.  A combination of the multicolumn index
-   and a separate index on <TT
-CLASS="LITERAL"
->y</TT
-> would serve reasonably well.  For
-   queries involving only <TT
-CLASS="LITERAL"
->x</TT
->, the multicolumn index could be
+   and a separate index on <code class="literal">y</code> would serve reasonably well.  For
+   queries involving only <code class="literal">x</code>, the multicolumn index could be
    used, though it would be larger and hence slower than an index on
-   <TT
-CLASS="LITERAL"
->x</TT
-> alone.  The last alternative is to create all three
+   <code class="literal">x</code> alone.  The last alternative is to create all three
    indexes, but this is probably only reasonable if the table is searched
    much more often than it is updated and all three types of query are
    common.  If one of the types of query is much less common than the
    others, you'd probably settle for creating just the two indexes that
    best match the common types.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-multicolumn.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes-unique.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Multicolumn Indexes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="indexes.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Unique Indexes</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

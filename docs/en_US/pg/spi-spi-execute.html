@@ -1,724 +1,202 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SPI_execute</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_pop"
-HREF="spi-spi-pop.html"><LINK
-REL="NEXT"
-TITLE="SPI_exec"
-HREF="spi-spi-exec.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-pop.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-pop.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-exec.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-exec.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-EXECUTE"
-></A
->SPI_execute</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN36401"
-></A
-><H2
->Name</H2
->SPI_execute&nbsp;--&nbsp;execute a command</DIV
-><A
-NAME="AEN36404"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN36406"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->int SPI_execute(const char * <TT
-CLASS="PARAMETER"
->command</TT
->, bool <TT
-CLASS="PARAMETER"
->read_only</TT
->, long <TT
-CLASS="PARAMETER"
->count</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36411"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_execute</CODE
-> executes the specified SQL command
-   for <TT
-CLASS="PARAMETER"
->count</TT
-> rows.  If <TT
-CLASS="PARAMETER"
->read_only</TT
->
-   is <TT
-CLASS="LITERAL"
->true</TT
->, the command must be read-only, and execution overhead
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_execute</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="40.1. Interface Functions">
+<link rel="prev" href="spi-spi-pop.html" title="SPI_pop">
+<link rel="next" href="spi-spi-exec.html" title="SPI_exec">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-execute"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_execute &#8212; execute a command</p>
+</div>
+<a name="id678776"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">int SPI_execute(const char * <em class="parameter"><code>command</code></em>, bool <em class="parameter"><code>read_only</code></em>, long <em class="parameter"><code>count</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id678808"></a><h2>Description</h2>
+<p>   <code class="function">SPI_execute</code> executes the specified SQL command
+   for <em class="parameter"><code>count</code></em> rows.  If <em class="parameter"><code>read_only</code></em>
+   is <code class="literal">true</code>, the command must be read-only, and execution overhead
    is somewhat reduced.
-  </P
-><P
->   This function may only be called from a connected procedure.
-  </P
-><P
->   If <TT
-CLASS="PARAMETER"
->count</TT
-> is zero then the command is executed
-   for all rows that it applies to.  If <TT
-CLASS="PARAMETER"
->count</TT
->
+  </p>
+<p>   This function may only be called from a connected procedure.
+  </p>
+<p>   If <em class="parameter"><code>count</code></em> is zero then the command is executed
+   for all rows that it applies to.  If <em class="parameter"><code>count</code></em>
    is greater than 0, then the number of rows for which the command
    will be executed is restricted (much like a
-   <TT
-CLASS="LITERAL"
->LIMIT</TT
-> clause). For example,
-</P><PRE
-CLASS="PROGRAMLISTING"
->SPI_execute("INSERT INTO foo SELECT * FROM bar", false, 5);</PRE
-><P>
+   <code class="literal">LIMIT</code> clause). For example,
+</p>
+<pre class="programlisting">SPI_execute("INSERT INTO foo SELECT * FROM bar", false, 5);</pre>
+<p>
    will allow at most 5 rows to be inserted into the table.
-  </P
-><P
->   You may pass multiple commands in one string.
-   <CODE
-CLASS="FUNCTION"
->SPI_execute</CODE
-> returns the
-   result for the command executed last.  The <TT
-CLASS="PARAMETER"
->count</TT
->
+  </p>
+<p>   You may pass multiple commands in one string.
+   <code class="function">SPI_execute</code> returns the
+   result for the command executed last.  The <em class="parameter"><code>count</code></em>
    limit applies to each command separately, but it is not applied to
    hidden commands generated by rules.
-  </P
-><P
->   When <TT
-CLASS="PARAMETER"
->read_only</TT
-> is <TT
-CLASS="LITERAL"
->false</TT
->,
-   <CODE
-CLASS="FUNCTION"
->SPI_execute</CODE
-> increments the command
-   counter and computes a new <I
-CLASS="FIRSTTERM"
->snapshot</I
-> before executing each
+  </p>
+<p>   When <em class="parameter"><code>read_only</code></em> is <code class="literal">false</code>,
+   <code class="function">SPI_execute</code> increments the command
+   counter and computes a new <em class="firstterm">snapshot</em> before executing each
    command in the string.  The snapshot does not actually change if the
-   current transaction isolation level is <TT
-CLASS="LITERAL"
->SERIALIZABLE</TT
->, but in
-   <TT
-CLASS="LITERAL"
->READ COMMITTED</TT
-> mode the snapshot update allows each command to
+   current transaction isolation level is <code class="literal">SERIALIZABLE</code>, but in
+   <code class="literal">READ COMMITTED</code> mode the snapshot update allows each command to
    see the results of newly committed transactions from other sessions.
    This is essential for consistent behavior when the commands are modifying
    the database.
-  </P
-><P
->   When <TT
-CLASS="PARAMETER"
->read_only</TT
-> is <TT
-CLASS="LITERAL"
->true</TT
->,
-   <CODE
-CLASS="FUNCTION"
->SPI_execute</CODE
-> does not update either the snapshot
-   or the command counter, and it allows only plain <TT
-CLASS="COMMAND"
->SELECT</TT
->
+  </p>
+<p>   When <em class="parameter"><code>read_only</code></em> is <code class="literal">true</code>,
+   <code class="function">SPI_execute</code> does not update either the snapshot
+   or the command counter, and it allows only plain <code class="command">SELECT</code>
    commands to appear in the command string.  The commands are executed
    using the snapshot previously established for the surrounding query.
    This execution mode is somewhat faster than the read/write mode due
    to eliminating per-command overhead.  It also allows genuinely
-   <I
-CLASS="FIRSTTERM"
->stable</I
-> functions to be built: since successive executions
+   <em class="firstterm">stable</em> functions to be built: since successive executions
    will all use the same snapshot, there will be no change in the results.
-  </P
-><P
->   It is generally unwise to mix read-only and read-write commands within
+  </p>
+<p>   It is generally unwise to mix read-only and read-write commands within
    a single function using SPI; that could result in very confusing behavior,
    since the read-only queries would not see the results of any database
    updates done by the read-write queries.
-  </P
-><P
->   The actual number of rows for which the (last) command was executed
-   is returned in the global variable <TT
-CLASS="VARNAME"
->SPI_processed</TT
->
+  </p>
+<p>   The actual number of rows for which the (last) command was executed
+   is returned in the global variable <code class="varname">SPI_processed</code>
    (unless the return value of the function is
-   <TT
-CLASS="SYMBOL"
->SPI_OK_UTILITY</TT
->).  If the return value of the
-   function is <TT
-CLASS="SYMBOL"
->SPI_OK_SELECT</TT
-> then you may use the
-   global pointer <TT
-CLASS="LITERAL"
->SPITupleTable *SPI_tuptable</TT
-> to
+   <code class="symbol">SPI_OK_UTILITY</code>).  If the return value of the
+   function is <code class="symbol">SPI_OK_SELECT</code> then you may use the
+   global pointer <code class="literal">SPITupleTable *SPI_tuptable</code> to
    access the result rows.
-  </P
-><P
->   The structure <TT
-CLASS="STRUCTNAME"
->SPITupleTable</TT
-> is defined
+  </p>
+<p>   The structure <code class="structname">SPITupleTable</code> is defined
    thus:
-</P><PRE
-CLASS="PROGRAMLISTING"
->typedef struct
+</p>
+<pre class="programlisting">typedef struct
 {
     MemoryContext tuptabcxt;    /* memory context of result table */
     uint32      alloced;        /* number of alloced vals */
     uint32      free;           /* number of free vals */
     TupleDesc   tupdesc;        /* row descriptor */
     HeapTuple  *vals;           /* rows */
-} SPITupleTable;</PRE
-><P>
-   <TT
-CLASS="STRUCTFIELD"
->vals</TT
-> is an array of pointers to rows.  (The number
-   of valid entries is given by <TT
-CLASS="VARNAME"
->SPI_processed</TT
->.)
-   <TT
-CLASS="STRUCTFIELD"
->tupdesc</TT
-> is a row descriptor which you may pass to
-   SPI functions dealing with rows.  <TT
-CLASS="STRUCTFIELD"
->tuptabcxt</TT
->,
-   <TT
-CLASS="STRUCTFIELD"
->alloced</TT
->, and <TT
-CLASS="STRUCTFIELD"
->free</TT
-> are internal
+} SPITupleTable;</pre>
+<p>
+   <code class="structfield">vals</code> is an array of pointers to rows.  (The number
+   of valid entries is given by <code class="varname">SPI_processed</code>.)
+   <code class="structfield">tupdesc</code> is a row descriptor which you may pass to
+   SPI functions dealing with rows.  <code class="structfield">tuptabcxt</code>,
+   <code class="structfield">alloced</code>, and <code class="structfield">free</code> are internal
    fields not intended for use by SPI callers.
-  </P
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_finish</CODE
-> frees all
-   <TT
-CLASS="STRUCTNAME"
->SPITupleTable</TT
->s allocated during the current
+  </p>
+<p>   <code class="function">SPI_finish</code> frees all
+   <code class="structname">SPITupleTable</code>s allocated during the current
    procedure.  You can free a particular result table earlier, if you
-   are done with it, by calling <CODE
-CLASS="FUNCTION"
->SPI_freetuptable</CODE
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36459"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->const char * <TT
-CLASS="PARAMETER"
->command</TT
-></TT
-></DT
-><DD
-><P
->      string containing command to execute
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->bool <TT
-CLASS="PARAMETER"
->read_only</TT
-></TT
-></DT
-><DD
-><P
->      <TT
-CLASS="LITERAL"
->true</TT
-> for read-only execution
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->long <TT
-CLASS="PARAMETER"
->count</TT
-></TT
-></DT
-><DD
-><P
->      maximum number of rows to process or return
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36481"
-></A
-><H2
->Return Value</H2
-><P
->   If the execution of the command was successful then one of the
+   are done with it, by calling <code class="function">SPI_freetuptable</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id679093"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>command</code></em></code></span></dt>
+<dd><p>      string containing command to execute
+     </p></dd>
+<dt><span class="term"><code class="literal">bool <em class="parameter"><code>read_only</code></em></code></span></dt>
+<dd><p>      <code class="literal">true</code> for read-only execution
+     </p></dd>
+<dt><span class="term"><code class="literal">long <em class="parameter"><code>count</code></em></code></span></dt>
+<dd><p>      maximum number of rows to process or return
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id679156"></a><h2>Return Value</h2>
+<p>   If the execution of the command was successful then one of the
    following (nonnegative) values will be returned:
 
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_OK_SELECT</TT
-></DT
-><DD
-><P
->       if a <TT
-CLASS="COMMAND"
->SELECT</TT
-> (but not <TT
-CLASS="COMMAND"
->SELECT
-       INTO</TT
->) was executed
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_OK_SELINTO</TT
-></DT
-><DD
-><P
->       if a <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-> was executed
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_OK_DELETE</TT
-></DT
-><DD
-><P
->       if a <TT
-CLASS="COMMAND"
->DELETE</TT
-> was executed
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_OK_INSERT</TT
-></DT
-><DD
-><P
->       if an <TT
-CLASS="COMMAND"
->INSERT</TT
-> was executed
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_OK_UPDATE</TT
-></DT
-><DD
-><P
->       if an <TT
-CLASS="COMMAND"
->UPDATE</TT
-> was executed
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_OK_UTILITY</TT
-></DT
-><DD
-><P
->       if a utility command (e.g., <TT
-CLASS="COMMAND"
->CREATE TABLE</TT
->)
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="symbol">SPI_OK_SELECT</code></span></dt>
+<dd><p>       if a <code class="command">SELECT</code> (but not <code class="command">SELECT
+       INTO</code>) was executed
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_OK_SELINTO</code></span></dt>
+<dd><p>       if a <code class="command">SELECT INTO</code> was executed
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_OK_DELETE</code></span></dt>
+<dd><p>       if a <code class="command">DELETE</code> was executed
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_OK_INSERT</code></span></dt>
+<dd><p>       if an <code class="command">INSERT</code> was executed
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_OK_UPDATE</code></span></dt>
+<dd><p>       if an <code class="command">UPDATE</code> was executed
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_OK_UTILITY</code></span></dt>
+<dd><p>       if a utility command (e.g., <code class="command">CREATE TABLE</code>)
        was executed
-      </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-><P
->   On error, one of the following negative values is returned:
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   On error, one of the following negative values is returned:
 
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_ARGUMENT</TT
-></DT
-><DD
-><P
->       if <TT
-CLASS="PARAMETER"
->command</TT
-> is <TT
-CLASS="SYMBOL"
->NULL</TT
-> or
-       <TT
-CLASS="PARAMETER"
->count</TT
-> is less than 0
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_COPY</TT
-></DT
-><DD
-><P
->       if <TT
-CLASS="COMMAND"
->COPY TO stdout</TT
-> or <TT
-CLASS="COMMAND"
->COPY FROM stdin</TT
->
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="symbol">SPI_ERROR_ARGUMENT</code></span></dt>
+<dd><p>       if <em class="parameter"><code>command</code></em> is <code class="symbol">NULL</code> or
+       <em class="parameter"><code>count</code></em> is less than 0
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_ERROR_COPY</code></span></dt>
+<dd><p>       if <code class="command">COPY TO stdout</code> or <code class="command">COPY FROM stdin</code>
        was attempted
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_CURSOR</TT
-></DT
-><DD
-><P
->       if <TT
-CLASS="COMMAND"
->DECLARE</TT
->, <TT
-CLASS="COMMAND"
->CLOSE</TT
->, or <TT
-CLASS="COMMAND"
->FETCH</TT
->
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_ERROR_CURSOR</code></span></dt>
+<dd><p>       if <code class="command">DECLARE</code>, <code class="command">CLOSE</code>, or <code class="command">FETCH</code>
        was attempted
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_TRANSACTION</TT
-></DT
-><DD
-><P
->	   if any command involving transaction manipulation was attempted
-	   (<TT
-CLASS="COMMAND"
->BEGIN</TT
->,
-	   <TT
-CLASS="COMMAND"
->COMMIT</TT
->,
-	   <TT
-CLASS="COMMAND"
->ROLLBACK</TT
->,
-	   <TT
-CLASS="COMMAND"
->SAVEPOINT</TT
->,
-	   <TT
-CLASS="COMMAND"
->PREPARE TRANSACTION</TT
->,
-	   <TT
-CLASS="COMMAND"
->COMMIT PREPARED</TT
->,
-	   <TT
-CLASS="COMMAND"
->ROLLBACK PREPARED</TT
->,
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_ERROR_TRANSACTION</code></span></dt>
+<dd><p>	   if any command involving transaction manipulation was attempted
+	   (<code class="command">BEGIN</code>,
+	   <code class="command">COMMIT</code>,
+	   <code class="command">ROLLBACK</code>,
+	   <code class="command">SAVEPOINT</code>,
+	   <code class="command">PREPARE TRANSACTION</code>,
+	   <code class="command">COMMIT PREPARED</code>,
+	   <code class="command">ROLLBACK PREPARED</code>,
 	   or any variant thereof)
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_OPUNKNOWN</TT
-></DT
-><DD
-><P
->       if the command type is unknown (shouldn't happen)
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_UNCONNECTED</TT
-></DT
-><DD
-><P
->       if called from an unconnected procedure
-      </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36569"
-></A
-><H2
->Notes</H2
-><P
->   The functions <CODE
-CLASS="FUNCTION"
->SPI_execute</CODE
->,
-   <CODE
-CLASS="FUNCTION"
->SPI_exec</CODE
->,
-   <CODE
-CLASS="FUNCTION"
->SPI_execute_plan</CODE
->, and
-   <CODE
-CLASS="FUNCTION"
->SPI_execp</CODE
-> change both
-   <TT
-CLASS="VARNAME"
->SPI_processed</TT
-> and
-   <TT
-CLASS="VARNAME"
->SPI_tuptable</TT
-> (just the pointer, not the contents
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_ERROR_OPUNKNOWN</code></span></dt>
+<dd><p>       if the command type is unknown (shouldn't happen)
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_ERROR_UNCONNECTED</code></span></dt>
+<dd><p>       if called from an unconnected procedure
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id679434"></a><h2>Notes</h2>
+<p>   The functions <code class="function">SPI_execute</code>,
+   <code class="function">SPI_exec</code>,
+   <code class="function">SPI_execute_plan</code>, and
+   <code class="function">SPI_execp</code> change both
+   <code class="varname">SPI_processed</code> and
+   <code class="varname">SPI_tuptable</code> (just the pointer, not the contents
    of the structure).  Save these two global variables into local
    procedure variables if you need to access the result table of
-   <CODE
-CLASS="FUNCTION"
->SPI_execute</CODE
-> or a related function
+   <code class="function">SPI_execute</code> or a related function
    across later calls.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-pop.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-exec.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_pop</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_exec</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

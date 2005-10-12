@@ -1,112 +1,22 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Query Planning</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Run-time Configuration"
-HREF="runtime-config.html"><LINK
-REL="PREVIOUS"
-TITLE="Write Ahead Log"
-HREF="runtime-config-wal.html"><LINK
-REL="NEXT"
-TITLE="Error Reporting and Logging"
-HREF="runtime-config-logging.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-wal.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 17. Run-time Configuration</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-logging.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RUNTIME-CONFIG-QUERY"
->17.6. Query Planning</A
-></H1
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-QUERY-ENABLE"
->17.6.1. Planner Method Configuration</A
-></H2
-><P
->       These configuration parameters provide a crude method of
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.6. Query Planning</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Run-time Configuration">
+<link rel="prev" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
+<link rel="next" href="runtime-config-logging.html" title="17.7. Error Reporting and Logging">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-query"></a>17.6. Query Planning</h2></div></div></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-query-enable"></a>17.6.1. Planner Method Configuration</h3></div></div></div>
+<p>       These configuration parameters provide a crude method of
        influencing the query plans chosen by the query optimizer. If
        the default plan chosen by the optimizer for a particular query
        is not optimal, a temporary solution may be found by using one
@@ -114,849 +24,326 @@ NAME="RUNTIME-CONFIG-QUERY-ENABLE"
        choose a different plan.  Turning one of these settings off
        permanently is seldom a good idea, however.
        Better ways to improve the quality of the
-       plans chosen by the optimizer include adjusting the <A
-HREF="runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS"
-><I
->Planner Cost Constants</I
-></A
->, running <A
-HREF="sql-analyze.html"
-><I
->ANALYZE</I
-></A
-> more
-       frequently, increasing the value of the <A
-HREF="runtime-config-query.html#GUC-DEFAULT-STATISTICS-TARGET"
->default_statistics_target</A
-> configuration parameter,
+       plans chosen by the optimizer include adjusting the <a href="runtime-config-query.html#runtime-config-query-constants">      Planner Cost Constants
+     </a>, running <a href="sql-analyze.html">ANALYZE</a> more
+       frequently, increasing the value of the <a href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a> configuration parameter,
        and increasing the amount of statistics collected for
-       specific columns using <TT
-CLASS="COMMAND"
->ALTER TABLE SET
-       STATISTICS</TT
->.
-      </P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-ENABLE-BITMAPSCAN"
-></A
-><TT
-CLASS="VARNAME"
->enable_bitmapscan</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of bitmap-scan plan
-        types. The default is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-HASHAGG"
-></A
-><TT
-CLASS="VARNAME"
->enable_hashagg</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of hashed
-        aggregation plan types. The default is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-HASHJOIN"
-></A
-><TT
-CLASS="VARNAME"
->enable_hashjoin</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of hash-join plan
-        types. The default is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-INDEXSCAN"
-></A
-><TT
-CLASS="VARNAME"
->enable_indexscan</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of index-scan plan
-        types. The default is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-MERGEJOIN"
-></A
-><TT
-CLASS="VARNAME"
->enable_mergejoin</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of merge-join plan
-        types. The default is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-NESTLOOP"
-></A
-><TT
-CLASS="VARNAME"
->enable_nestloop</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of nested-loop join
+       specific columns using <code class="command">ALTER TABLE SET
+       STATISTICS</code>.
+      </p>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-enable-bitmapscan"></a><span class="term"><code class="varname">enable_bitmapscan</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of bitmap-scan plan
+        types. The default is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-hashagg"></a><span class="term"><code class="varname">enable_hashagg</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of hashed
+        aggregation plan types. The default is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-hashjoin"></a><span class="term"><code class="varname">enable_hashjoin</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of hash-join plan
+        types. The default is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-indexscan"></a><span class="term"><code class="varname">enable_indexscan</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of index-scan plan
+        types. The default is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-mergejoin"></a><span class="term"><code class="varname">enable_mergejoin</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of merge-join plan
+        types. The default is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-nestloop"></a><span class="term"><code class="varname">enable_nestloop</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of nested-loop join
         plans. It's not possible to suppress nested-loop joins entirely,
         but turning this variable off discourages the planner from using
         one if there are other methods available. The default is
-        <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-SEQSCAN"
-></A
-><TT
-CLASS="VARNAME"
->enable_seqscan</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of sequential scan
+        <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-seqscan"></a><span class="term"><code class="varname">enable_seqscan</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of sequential scan
         plan types. It's not possible to suppress sequential scans
         entirely, but turning this variable off discourages the planner
         from using one if there are other methods available. The
-        default is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-SORT"
-></A
-><TT
-CLASS="VARNAME"
->enable_sort</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of explicit sort
+        default is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-sort"></a><span class="term"><code class="varname">enable_sort</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of explicit sort
         steps. It's not possible to suppress explicit sorts entirely,
         but turning this variable off discourages the planner from
         using one if there are other methods available. The default
-        is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-ENABLE-TIDSCAN"
-></A
-><TT
-CLASS="VARNAME"
->enable_tidscan</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of <ACRONYM
-CLASS="ACRONYM"
->TID</ACRONYM
->
-        scan plan types. The default is <TT
-CLASS="LITERAL"
->on</TT
->.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-QUERY-CONSTANTS"
->17.6.2. Planner Cost Constants</A
-></H2
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     Unfortunately, there is no well-defined method for determining
-     ideal values for the family of <SPAN
-CLASS="QUOTE"
->"cost"</SPAN
-> variables that
+        is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-enable-tidscan"></a><span class="term"><code class="varname">enable_tidscan</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables the query planner's use of <span class="acronym">TID</span>
+        scan plan types. The default is <code class="literal">on</code>.
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-query-constants"></a>17.6.2.       Planner Cost Constants
+     </h3></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Unfortunately, there is no well-defined method for determining
+     ideal values for the family of &#8220;<span class="quote">cost</span>&#8221; variables that
      appear below. You are encouraged to experiment and share
      your findings.
-    </P
-></BLOCKQUOTE
-></DIV
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-EFFECTIVE-CACHE-SIZE"
-></A
-><TT
-CLASS="VARNAME"
->effective_cache_size</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Sets the planner's assumption about the effective size of the
+    </p>
+</div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-effective-cache-size"></a><span class="term"><code class="varname">effective_cache_size</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Sets the planner's assumption about the effective size of the
         disk cache that is available to a single index scan.  This is
         factored into estimates of the cost of using an index; a
         higher value makes it more likely index scans will be used, a
         lower value makes it more likely sequential scans will be
         used. When setting this parameter you should consider both
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s shared buffers and the
+        <span class="productname">PostgreSQL</span>'s shared buffers and the
         portion of the kernel's disk cache that will be used for
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> data files.  Also, take
+        <span class="productname">PostgreSQL</span> data files.  Also, take
         into account the expected number of concurrent queries using
         different indexes, since they will have to share the available
         space.  This parameter has no effect on the size of shared
-        memory allocated by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, nor
+        memory allocated by <span class="productname">PostgreSQL</span>, nor
         does it reserve kernel disk cache; it is used only for
         estimation purposes.  The value is measured in disk pages,
         which are normally 8192 bytes each. The default is 1000.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-RANDOM-PAGE-COST"
-></A
-><TT
-CLASS="VARNAME"
->random_page_cost</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Sets the planner's estimate of the cost of a
+       </p></dd>
+<dt>
+<a name="guc-random-page-cost"></a><span class="term"><code class="varname">random_page_cost</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Sets the planner's estimate of the cost of a
         nonsequentially fetched disk page. This is measured as a
         multiple of the cost of a sequential page fetch. A higher
         value makes it more likely a sequential scan will be used, a
         lower value makes it more likely an index scan will be
         used. The default is four.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-CPU-TUPLE-COST"
-></A
-><TT
-CLASS="VARNAME"
->cpu_tuple_cost</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Sets the planner's estimate of the cost of processing
+       </p></dd>
+<dt>
+<a name="guc-cpu-tuple-cost"></a><span class="term"><code class="varname">cpu_tuple_cost</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Sets the planner's estimate of the cost of processing
         each row during a query. This is measured as a fraction of
         the cost of a sequential page fetch. The default is 0.01.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-CPU-INDEX-TUPLE-COST"
-></A
-><TT
-CLASS="VARNAME"
->cpu_index_tuple_cost</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Sets the planner's estimate of the cost of processing
+       </p></dd>
+<dt>
+<a name="guc-cpu-index-tuple-cost"></a><span class="term"><code class="varname">cpu_index_tuple_cost</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Sets the planner's estimate of the cost of processing
         each index row during an index scan. This is measured as a
         fraction of the cost of a sequential page fetch. The default
         is 0.001.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-CPU-OPERATOR-COST"
-></A
-><TT
-CLASS="VARNAME"
->cpu_operator_cost</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Sets the planner's estimate of the cost of processing each
-        operator in a <TT
-CLASS="LITERAL"
->WHERE</TT
-> clause. This is measured as a fraction of
+       </p></dd>
+<dt>
+<a name="guc-cpu-operator-cost"></a><span class="term"><code class="varname">cpu_operator_cost</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Sets the planner's estimate of the cost of processing each
+        operator in a <code class="literal">WHERE</code> clause. This is measured as a fraction of
         the cost of a sequential page fetch. The default is 0.0025.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-QUERY-GEQO"
->17.6.3. Genetic Query Optimizer</A
-></H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-GEQO"
-></A
-><TT
-CLASS="VARNAME"
->geqo</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables genetic query optimization, which is an
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-query-geqo"></a>17.6.3. Genetic Query Optimizer</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-geqo"></a><span class="term"><code class="varname">geqo</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables or disables genetic query optimization, which is an
         algorithm that attempts to do query planning without
         exhaustive searching. This is on by default. The
-        <TT
-CLASS="VARNAME"
->geqo_threshold</TT
-> variable provides a more
+        <code class="varname">geqo_threshold</code> variable provides a more
         granular way to disable GEQO for certain classes of queries.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-GEQO-THRESHOLD"
-></A
-><TT
-CLASS="VARNAME"
->geqo_threshold</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Use genetic query optimization to plan queries with at least
-        this many <TT
-CLASS="LITERAL"
->FROM</TT
-> items involved. (Note that an outer
-        <TT
-CLASS="LITERAL"
->JOIN</TT
-> construct counts as only one <TT
-CLASS="LITERAL"
->FROM</TT
->
+       </p></dd>
+<dt>
+<a name="guc-geqo-threshold"></a><span class="term"><code class="varname">geqo_threshold</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Use genetic query optimization to plan queries with at least
+        this many <code class="literal">FROM</code> items involved. (Note that an outer
+        <code class="literal">JOIN</code> construct counts as only one <code class="literal">FROM</code>
         item.) The default is 12. For simpler queries it is usually best
         to use the deterministic, exhaustive planner, but for queries with
         many tables the deterministic planner takes too long.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-GEQO-EFFORT"
-></A
-><TT
-CLASS="VARNAME"
->geqo_effort</TT
->
-      (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Controls the trade off between planning time and query plan
+       </p></dd>
+<dt>
+<a name="guc-geqo-effort"></a><span class="term"><code class="varname">geqo_effort</code>
+      (<code class="type">integer</code>)</span>
+</dt>
+<dd>
+<p>        Controls the trade off between planning time and query plan
         efficiency in GEQO. This variable must be an integer in the
         range from 1 to 10. The default value is 5. Larger values
         increase the time spent doing query planning, but also
         increase the likelihood that an efficient query plan will be
         chosen.
-       </P
-><P
->        <TT
-CLASS="VARNAME"
->geqo_effort</TT
-> doesn't actually do anything
+       </p>
+<p>        <code class="varname">geqo_effort</code> doesn't actually do anything
         directly; it is only used to compute the default values for
         the other variables that influence GEQO behavior (described
         below). If you prefer, you can set the other parameters by
         hand instead.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-GEQO-POOL-SIZE"
-></A
-><TT
-CLASS="VARNAME"
->geqo_pool_size</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Controls the pool size used by GEQO. The pool size is the
+       </p>
+</dd>
+<dt>
+<a name="guc-geqo-pool-size"></a><span class="term"><code class="varname">geqo_pool_size</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Controls the pool size used by GEQO. The pool size is the
         number of individuals in the genetic population.  It must be
         at least two, and useful values are typically 100 to 1000.  If
         it is set to zero (the default setting) then a suitable
-        default is chosen based on <TT
-CLASS="VARNAME"
->geqo_effort</TT
-> and
+        default is chosen based on <code class="varname">geqo_effort</code> and
         the number of tables in the query.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-GEQO-GENERATIONS"
-></A
-><TT
-CLASS="VARNAME"
->geqo_generations</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Controls the number of generations used by GEQO.  Generations
+       </p></dd>
+<dt>
+<a name="guc-geqo-generations"></a><span class="term"><code class="varname">geqo_generations</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Controls the number of generations used by GEQO.  Generations
         specifies the number of iterations of the algorithm.  It must
         be at least one, and useful values are in the same range as
         the pool size.  If it is set to zero (the default setting)
         then a suitable default is chosen based on
-        <TT
-CLASS="VARNAME"
->geqo_pool_size</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-GEQO-SELECTION-BIAS"
-></A
-><TT
-CLASS="VARNAME"
->geqo_selection_bias</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Controls the selection bias used by GEQO. The selection bias
+        <code class="varname">geqo_pool_size</code>.
+       </p></dd>
+<dt>
+<a name="guc-geqo-selection-bias"></a><span class="term"><code class="varname">geqo_selection_bias</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Controls the selection bias used by GEQO. The selection bias
         is the selective pressure within the population. Values can be
         from 1.50 to 2.00; the latter is the default.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="RUNTIME-CONFIG-QUERY-OTHER"
->17.6.4. Other Planner Options</A
-></H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-DEFAULT-STATISTICS-TARGET"
-></A
-><TT
-CLASS="VARNAME"
->default_statistics_target</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Sets the default statistics target for table columns that have
-        not had a column-specific target set via <TT
-CLASS="COMMAND"
->ALTER TABLE
-        SET STATISTICS</TT
->.  Larger values increase the time needed to
-        do <TT
-CLASS="COMMAND"
->ANALYZE</TT
->, but may improve the quality of the
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-query-other"></a>17.6.4. Other Planner Options</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-default-statistics-target"></a><span class="term"><code class="varname">default_statistics_target</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Sets the default statistics target for table columns that have
+        not had a column-specific target set via <code class="command">ALTER TABLE
+        SET STATISTICS</code>.  Larger values increase the time needed to
+        do <code class="command">ANALYZE</code>, but may improve the quality of the
         planner's estimates. The default is 10. For more information
-        on the use of statistics by the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-        query planner, refer to <A
-HREF="planner-stats.html"
->Section 13.2</A
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-CONSTRAINT-EXCLUSION"
-></A
-><TT
-CLASS="VARNAME"
->constraint_exclusion</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Enables or disables the query planner's use of table constraints to
-        limit table access.  The default is <TT
-CLASS="LITERAL"
->off</TT
->.
-       </P
-><P
->        When this parameter is <TT
-CLASS="LITERAL"
->on</TT
->, the planner compares query
+        on the use of statistics by the <span class="productname">PostgreSQL</span>
+        query planner, refer to <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
+       </p></dd>
+<dt>
+<a name="guc-constraint-exclusion"></a><span class="term"><code class="varname">constraint_exclusion</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        Enables or disables the query planner's use of table constraints to
+        limit table access.  The default is <code class="literal">off</code>.
+       </p>
+<p>        When this parameter is <code class="literal">on</code>, the planner compares query
         conditions with table CHECK constraints, and omits scanning tables
         where the conditions contradict the constraints.  (Presently
         this is done only for child tables of inheritance scans.)  For
         example:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TABLE parent(key integer, ...);
+</p>
+<pre class="programlisting">CREATE TABLE parent(key integer, ...);
 CREATE TABLE child1000(check (key between 1000 and 1999)) INHERITS(parent);
 CREATE TABLE child2000(check (key between 2000 and 2999)) INHERITS(parent);
 ...
-SELECT * FROM parent WHERE key = 2400;</PRE
-><P>
+SELECT * FROM parent WHERE key = 2400;</pre>
+<p>
 
         With constraint exclusion enabled, this SELECT will not scan
-        <TT
-CLASS="STRUCTNAME"
->child1000</TT
-> at all.  This can improve performance when
+        <code class="structname">child1000</code> at all.  This can improve performance when
         inheritance is used to build partitioned tables.
-       </P
-><P
->        Currently, <TT
-CLASS="VARNAME"
->constraint_exclusion</TT
-> defaults to
-        <TT
-CLASS="LITERAL"
->off</TT
->, because it risks incorrect results if
+       </p>
+<p>        Currently, <code class="varname">constraint_exclusion</code> defaults to
+        <code class="literal">off</code>, because it risks incorrect results if
         query plans are cached --- if a table constraint is changed or dropped,
         the previously generated plan might now be wrong, and there is no
         built-in mechanism to force re-planning.  (This deficiency will
         probably be addressed in a future
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> release.)  Another reason
+        <span class="productname">PostgreSQL</span> release.)  Another reason
         for keeping it off is that the constraint checks are relatively
         expensive, and in many circumstances will yield no savings.
         It is recommended to turn this on only if you are actually using
         partitioned tables designed to take advantage of the feature.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-FROM-COLLAPSE-LIMIT"
-></A
-><TT
-CLASS="VARNAME"
->from_collapse_limit</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        The planner will merge sub-queries into upper queries if the
-        resulting <TT
-CLASS="LITERAL"
->FROM</TT
-> list would have no more than
+       </p>
+</dd>
+<dt>
+<a name="guc-from-collapse-limit"></a><span class="term"><code class="varname">from_collapse_limit</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        The planner will merge sub-queries into upper queries if the
+        resulting <code class="literal">FROM</code> list would have no more than
         this many items.  Smaller values reduce planning time but may
         yield inferior query plans.  The default is 8.  It is usually
-        wise to keep this less than <A
-HREF="runtime-config-query.html#GUC-GEQO-THRESHOLD"
->geqo_threshold</A
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-JOIN-COLLAPSE-LIMIT"
-></A
-><TT
-CLASS="VARNAME"
->join_collapse_limit</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        The planner will rewrite explicit inner <TT
-CLASS="LITERAL"
->JOIN</TT
->
-        constructs into lists of <TT
-CLASS="LITERAL"
->FROM</TT
-> items whenever a
+        wise to keep this less than <a href="runtime-config-query.html#guc-geqo-threshold">geqo_threshold</a>.
+       </p></dd>
+<dt>
+<a name="guc-join-collapse-limit"></a><span class="term"><code class="varname">join_collapse_limit</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd>
+<p>        The planner will rewrite explicit inner <code class="literal">JOIN</code>
+        constructs into lists of <code class="literal">FROM</code> items whenever a
         list of no more than this many items in total would
-        result. Prior to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.4, joins
-        specified via the <TT
-CLASS="LITERAL"
->JOIN</TT
-> construct would
+        result. Prior to <span class="productname">PostgreSQL</span> 7.4, joins
+        specified via the <code class="literal">JOIN</code> construct would
         never be reordered by the query planner. The query planner has
         subsequently been improved so that inner joins written in this
         form can be reordered; this configuration parameter controls
         the extent to which this reordering is performed.
-        </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->          At present, the order of outer joins specified via the
-          <TT
-CLASS="LITERAL"
->JOIN</TT
-> construct is never adjusted by the query
-          planner; therefore, <TT
-CLASS="VARNAME"
->join_collapse_limit</TT
-> has no
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>          At present, the order of outer joins specified via the
+          <code class="literal">JOIN</code> construct is never adjusted by the query
+          planner; therefore, <code class="varname">join_collapse_limit</code> has no
           effect on this behavior. The planner may be improved to
           reorder some classes of outer joins in a future release of
-          <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-         </P
-></BLOCKQUOTE
-></DIV
-><P>
-       </P
-><P
->        By default, this variable is set the same as
-        <TT
-CLASS="VARNAME"
->from_collapse_limit</TT
->, which is appropriate
+          <span class="productname">PostgreSQL</span>.
+         </p>
+</div>
+<p>
+       </p>
+<p>        By default, this variable is set the same as
+        <code class="varname">from_collapse_limit</code>, which is appropriate
         for most uses. Setting it to 1 prevents any reordering of
-        inner <TT
-CLASS="LITERAL"
->JOIN</TT
->s. Thus, the explicit join order
+        inner <code class="literal">JOIN</code>s. Thus, the explicit join order
         specified in the query will be the actual order in which the
         relations are joined. The query planner does not always choose
         the optimal join order; advanced users may elect to
         temporarily set this variable to 1, and then specify the join
         order they desire explicitly. Another consequence of setting
         this variable to 1 is that the query planner will behave more
-        like the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.3 query
+        like the <span class="productname">PostgreSQL</span> 7.3 query
         planner, which some users might find useful for backward
         compatibility reasons.
-       </P
-><P
->        Setting this variable to a value between 1 and
-        <TT
-CLASS="VARNAME"
->from_collapse_limit</TT
-> might be useful to
+       </p>
+<p>        Setting this variable to a value between 1 and
+        <code class="varname">from_collapse_limit</code> might be useful to
         trade off planning time against the quality of the chosen plan
         (higher values produce better plans).
-       </P
-></DD
-></DL
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-wal.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-logging.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Write Ahead Log</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Error Reporting and Logging</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+       </p>
+</dd>
+</dl></div>
+</div>
+</div></body>
+</html>

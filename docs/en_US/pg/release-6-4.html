@@ -1,251 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 6.4</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 6.4.1"
-HREF="release-6-4-1.html"><LINK
-REL="NEXT"
-TITLE="Release 6.3.2"
-HREF="release-6-3-2.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-6-4-1.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-6-3-2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-6-4"
->E.49. Release 6.4</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->1998-10-30</P
-></BLOCKQUOTE
-></DIV
-><P
->There are <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->many</I
-></SPAN
-> new features and improvements in this release.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.52. Release 6.4</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-6-4-1.html" title="E.51. Release 6.4.1">
+<link rel="next" href="release-6-3-2.html" title="E.53. Release 6.3.2">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-6-4"></a>E.52. Release 6.4</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>1998-10-30</p>
+</div>
+<p>There are <span class="emphasis"><em>many</em></span> new features and improvements in this release.
 Thanks to our developers and maintainers, nearly every aspect of the system
 has received some attention since the previous release.
 Here is a brief, incomplete summary:
 
-<P
-></P
-></P><UL
-><LI
-><P
->Views and rules are now functional thanks to extensive new code in the 
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Views and rules are now functional thanks to extensive new code in the 
 rewrite rules system from Jan Wieck. He also wrote a chapter on it
-for the <I
-CLASS="CITETITLE"
->Programmer's Guide</I
->.</P
-></LI
-><LI
-><P
->Jan also contributed a second procedural language, <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->, to go with the
-original <SPAN
-CLASS="APPLICATION"
->PL/pgTCL</SPAN
-> procedural language he contributed last release.</P
-></LI
-><LI
-><P
->We have optional multiple-byte character set support from Tatsuo Ishii
-to complement our existing locale support.</P
-></LI
-><LI
-><P
->Client/server communications has been cleaned up, with better support for
-asynchronous messages and interrupts thanks to Tom Lane.</P
-></LI
-><LI
-><P
->The parser will now perform automatic type coercion to match arguments
+for the <em class="citetitle">Programmer's Guide</em>.</p></li>
+<li><p>Jan also contributed a second procedural language, <span class="application">PL/pgSQL</span>, to go with the
+original <span class="application">PL/pgTCL</span> procedural language he contributed last release.</p></li>
+<li><p>We have optional multiple-byte character set support from Tatsuo Ishii
+to complement our existing locale support.</p></li>
+<li><p>Client/server communications has been cleaned up, with better support for
+asynchronous messages and interrupts thanks to Tom Lane.</p></li>
+<li><p>The parser will now perform automatic type coercion to match arguments
 to available operators and functions, and to match columns and expressions
 with target columns. This uses a generic mechanism which supports
-the type extensibility features of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-There is a new chapter in the <I
-CLASS="CITETITLE"
->User's Guide</I
->
-which covers this topic.</P
-></LI
-><LI
-><P
->Three new data types have been added. 
-Two types, <TT
-CLASS="TYPE"
->inet</TT
-> and <TT
-CLASS="TYPE"
->cidr</TT
->, support various forms
+the type extensibility features of <span class="productname">PostgreSQL</span>.
+There is a new chapter in the <em class="citetitle">User's Guide</em>
+which covers this topic.</p></li>
+<li><p>Three new data types have been added. 
+Two types, <code class="type">inet</code> and <code class="type">cidr</code>, support various forms
 of IP network, subnet, and machine addressing. There is now an 8-byte integer
 type available on some platforms. See the chapter on data types
-in the <I
-CLASS="CITETITLE"
->User's Guide</I
-> for details.
-A fourth type, <TT
-CLASS="TYPE"
->serial</TT
->, is now supported by the parser as an
-amalgam of the <TT
-CLASS="TYPE"
->int4</TT
-> type, a sequence, and a unique index.</P
-></LI
-><LI
-><P
->Several more <ACRONYM
-CLASS="ACRONYM"
->SQL92</ACRONYM
->-compatible syntax features have been
-added, including <TT
-CLASS="COMMAND"
->INSERT DEFAULT VALUES</TT
-></P
-></LI
-><LI
-><P
->The automatic configuration and installation system has received some
+in the <em class="citetitle">User's Guide</em> for details.
+A fourth type, <code class="type">serial</code>, is now supported by the parser as an
+amalgam of the <code class="type">int4</code> type, a sequence, and a unique index.</p></li>
+<li><p>Several more <span class="acronym">SQL92</span>-compatible syntax features have been
+added, including <code class="command">INSERT DEFAULT VALUES</code></p></li>
+<li><p>The automatic configuration and installation system has received some
 attention, and should be more robust for more platforms than it has ever
-been.</P
-></LI
-></UL
-><P></P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN78169"
->E.49.1. Migration to version 6.4</A
-></H2
-><P
->A dump/restore using <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> 
-or <SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
->
+been.</p></li>
+</ul></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id836590"></a>E.52.1. Migration to version 6.4</h3></div></div></div>
+<p>A dump/restore using <span class="application">pg_dump</span> 
+or <span class="application">pg_dumpall</span>
 is required for those wishing to migrate data from any
-previous release of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.</P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN78175"
->E.49.2. Changes</A
-></H2
-><P
->     </P><PRE
-CLASS="PROGRAMLISTING"
->Bug Fixes
+previous release of <span class="productname">PostgreSQL</span>.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id836618"></a>E.52.2. Changes</h3></div></div></div>
+<p>     </p>
+<pre class="programlisting">Bug Fixes
 ---------
 Fix for a tiny memory leak in PQsetdb/PQfinish(Bryan)
 Remove char2-16 data types, use char/varchar(Darren)
@@ -436,72 +255,7 @@ merged all OS-specific shared library defines into one file
 smarter TCL/TK configuration checking(Billy)
 smarter perl configuration(Brook)
 configure uses supplied install-sh if no install script found(Tom)
-new Makefile.shlib for shared library configuration(Tom)</PRE
-><P></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-6-4-1.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-6-3-2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 6.4.1</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 6.3.2</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+new Makefile.shlib for shared library configuration(Tom)</pre>
+</div>
+</div></body>
+</html>

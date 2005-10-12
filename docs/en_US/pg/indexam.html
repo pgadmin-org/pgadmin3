@@ -1,195 +1,51 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Index Access Method Interface Definition</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Further Reading"
-HREF="geqo-biblio.html"><LINK
-REL="NEXT"
-TITLE="Index Access Method Functions"
-HREF="index-functions.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="geqo-biblio.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="geqo.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="gist.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="index-functions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="INDEXAM"
-></A
->Chapter 48. Index Access Method Interface Definition</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->48.1. <A
-HREF="indexam.html#INDEX-CATALOG"
->Catalog Entries for Indexes</A
-></DT
-><DT
->48.2. <A
-HREF="index-functions.html"
->Index Access Method Functions</A
-></DT
-><DT
->48.3. <A
-HREF="index-scanning.html"
->Index Scanning</A
-></DT
-><DT
->48.4. <A
-HREF="index-locking.html"
->Index Locking Considerations</A
-></DT
-><DT
->48.5. <A
-HREF="index-unique-checks.html"
->Index Uniqueness Checks</A
-></DT
-><DT
->48.6. <A
-HREF="index-cost-estimation.html"
->Index Cost Estimation Functions</A
-></DT
-></DL
-></DIV
-><P
->   This chapter defines the interface between the core
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> system and <I
-CLASS="FIRSTTERM"
->index access
-   methods</I
->, which manage individual index types.  The core system
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 48. Index Access Method Interface Definition</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="geqo-biblio.html" title="47.4. Further Reading">
+<link rel="next" href="index-functions.html" title="48.2. Index Access Method Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="indexam">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="indexam"></a>Chapter 48. Index Access Method Interface Definition</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="indexam.html#index-catalog">48.1. Catalog Entries for Indexes</a></span></dt>
+<dt><span class="sect1"><a href="index-functions.html">48.2. Index Access Method Functions</a></span></dt>
+<dt><span class="sect1"><a href="index-scanning.html">48.3. Index Scanning</a></span></dt>
+<dt><span class="sect1"><a href="index-locking.html">48.4. Index Locking Considerations</a></span></dt>
+<dt><span class="sect1"><a href="index-unique-checks.html">48.5. Index Uniqueness Checks</a></span></dt>
+<dt><span class="sect1"><a href="index-cost-estimation.html">48.6. Index Cost Estimation Functions</a></span></dt>
+</dl>
+</div>
+<p>   This chapter defines the interface between the core
+   <span class="productname">PostgreSQL</span> system and <em class="firstterm">index access
+   methods</em>, which manage individual index types.  The core system
    knows nothing about indexes beyond what is specified here, so it is
    possible to develop entirely new index types by writing add-on code.
-  </P
-><P
->   All indexes in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> are what are known
-   technically as <I
-CLASS="FIRSTTERM"
->secondary indexes</I
->; that is, the index is
+  </p>
+<p>   All indexes in <span class="productname">PostgreSQL</span> are what are known
+   technically as <em class="firstterm">secondary indexes</em>; that is, the index is
    physically separate from the table file that it describes.  Each index
-   is stored as its own physical <I
-CLASS="FIRSTTERM"
->relation</I
-> and so is described
-   by an entry in the <TT
-CLASS="STRUCTNAME"
->pg_class</TT
-> catalog.  The contents of an
+   is stored as its own physical <em class="firstterm">relation</em> and so is described
+   by an entry in the <code class="structname">pg_class</code> catalog.  The contents of an
    index are entirely under the control of its index access method.  In
    practice, all index access methods divide indexes into standard-size
    pages so that they can use the regular storage manager and buffer manager
    to access the index contents.  (All the existing index access methods
-   furthermore use the standard page layout described in <A
-HREF="storage-page-layout.html"
->Section 50.3</A
->, and they all use the same format for index
+   furthermore use the standard page layout described in <a href="storage-page-layout.html" title="50.3. Database Page Layout">Section 50.3, &#8220;Database Page Layout&#8221;</a>, and they all use the same format for index
    tuple headers; but these decisions are not forced on an access method.)
-  </P
-><P
->   An index is effectively a mapping from some data key values to
-   <I
-CLASS="FIRSTTERM"
->tuple identifiers</I
->, or <ACRONYM
-CLASS="ACRONYM"
->TIDs</ACRONYM
->, of row versions
+  </p>
+<p>   An index is effectively a mapping from some data key values to
+   <em class="firstterm">tuple identifiers</em>, or <span class="acronym">TIDs</span>, of row versions
    (tuples) in the index's parent table.  A TID consists of a
-   block number and an item number within that block (see <A
-HREF="storage-page-layout.html"
->Section 50.3</A
->).  This is sufficient
+   block number and an item number within that block (see <a href="storage-page-layout.html" title="50.3. Database Page Layout">Section 50.3, &#8220;Database Page Layout&#8221;</a>).  This is sufficient
    information to fetch a particular row version from the table.
    Indexes are not directly aware that under MVCC, there may be multiple
    extant versions of the same logical row; to an index, each tuple is
@@ -197,286 +53,90 @@ HREF="storage-page-layout.html"
    update of a row always creates all-new index entries for the row, even if
    the key values did not change.  Index entries for dead tuples are
    reclaimed (by vacuuming) when the dead tuples themselves are reclaimed.
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INDEX-CATALOG"
->48.1. Catalog Entries for Indexes</A
-></H1
-><P
->   Each index access method is described by a row in the
-   <TT
-CLASS="STRUCTNAME"
->pg_am</TT
-> system catalog (see
-   <A
-HREF="catalog-pg-am.html"
->Section 42.3</A
->).  The principal contents of a
-   <TT
-CLASS="STRUCTNAME"
->pg_am</TT
-> row are references to
-   <A
-HREF="catalog-pg-proc.html"
-><TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-></A
->
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index-catalog"></a>48.1. Catalog Entries for Indexes</h2></div></div></div>
+<p>   Each index access method is described by a row in the
+   <code class="structname">pg_am</code> system catalog (see
+   <a href="catalog-pg-am.html" title="42.3. pg_am">Section 42.3, &#8220;<code class="structname">pg_am</code>&#8221;</a>).  The principal contents of a
+   <code class="structname">pg_am</code> row are references to
+   <a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>
    entries that identify the index access
    functions supplied by the access method.  The APIs for these functions
    are defined later in this chapter.  In addition, the
-   <TT
-CLASS="STRUCTNAME"
->pg_am</TT
-> row specifies a few fixed properties of
+   <code class="structname">pg_am</code> row specifies a few fixed properties of
    the access method, such as whether it can support multi-column indexes.
    There is not currently any special support
-   for creating or deleting <TT
-CLASS="STRUCTNAME"
->pg_am</TT
-> entries;
+   for creating or deleting <code class="structname">pg_am</code> entries;
    anyone able to write a new access method is expected to be competent
    to insert an appropriate row for themselves.
-  </P
-><P
->   To be useful, an index access method must also have one or more
-   <I
-CLASS="FIRSTTERM"
->operator classes</I
-> defined in
-   <A
-HREF="catalog-pg-opclass.html"
-><TT
-CLASS="STRUCTNAME"
->pg_opclass</TT
-></A
->,
-   <A
-HREF="catalog-pg-amop.html"
-><TT
-CLASS="STRUCTNAME"
->pg_amop</TT
-></A
->, and
-   <A
-HREF="catalog-pg-amproc.html"
-><TT
-CLASS="STRUCTNAME"
->pg_amproc</TT
-></A
->.
+  </p>
+<p>   To be useful, an index access method must also have one or more
+   <em class="firstterm">operator classes</em> defined in
+   <a href="catalog-pg-opclass.html" title="42.24. pg_opclass"><code class="structname">pg_opclass</code></a>,
+   <a href="catalog-pg-amop.html" title="42.4. pg_amop"><code class="structname">pg_amop</code></a>, and
+   <a href="catalog-pg-amproc.html" title="42.5. pg_amproc"><code class="structname">pg_amproc</code></a>.
    These entries allow the planner
    to determine what kinds of query qualifications can be used with
    indexes of this access method.  Operator classes are described
-   in <A
-HREF="xindex.html"
->Section 32.14</A
->, which is prerequisite material for reading
+   in <a href="xindex.html" title="32.14. Interfacing Extensions To Indexes">Section 32.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>, which is prerequisite material for reading
    this chapter.
-  </P
-><P
->   An individual index is defined by a 
-   <A
-HREF="catalog-pg-class.html"
-><TT
-CLASS="STRUCTNAME"
->pg_class</TT
-></A
->
+  </p>
+<p>   An individual index is defined by a 
+   <a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>
    entry that describes it as a physical relation, plus a
-   <A
-HREF="catalog-pg-index.html"
-><TT
-CLASS="STRUCTNAME"
->pg_index</TT
-></A
->
-   entry that shows the logical content of the index &mdash; that is, the set
+   <a href="catalog-pg-index.html" title="42.18. pg_index"><code class="structname">pg_index</code></a>
+   entry that shows the logical content of the index [mdash ] that is, the set
    of index columns it has and the semantics of those columns, as captured by
    the associated operator classes.  The index columns (key values) can be
    either simple columns of the underlying table or expressions over the table
    rows.  The index access method normally has no interest in where the index
    key values come from (it is always handed precomputed key values) but it
    will be very interested in the operator class information in
-   <TT
-CLASS="STRUCTNAME"
->pg_index</TT
->.  Both of these catalog entries can be
-   accessed as part of the <TT
-CLASS="STRUCTNAME"
->Relation</TT
-> data structure that is
+   <code class="structname">pg_index</code>.  Both of these catalog entries can be
+   accessed as part of the <code class="structname">Relation</code> data structure that is
    passed to all operations on the index.
-  </P
-><P
->   Some of the flag columns of <TT
-CLASS="STRUCTNAME"
->pg_am</TT
-> have nonobvious
-   implications.  The requirements of <TT
-CLASS="STRUCTFIELD"
->amcanunique</TT
->
-   are discussed in <A
-HREF="index-unique-checks.html"
->Section 48.5</A
->, and those of
-   <TT
-CLASS="STRUCTFIELD"
->amconcurrent</TT
-> in <A
-HREF="index-locking.html"
->Section 48.4</A
->.
-   The <TT
-CLASS="STRUCTFIELD"
->amcanmulticol</TT
-> flag asserts that the
+  </p>
+<p>   Some of the flag columns of <code class="structname">pg_am</code> have nonobvious
+   implications.  The requirements of <code class="structfield">amcanunique</code>
+   are discussed in <a href="index-unique-checks.html" title="48.5. Index Uniqueness Checks">Section 48.5, &#8220;Index Uniqueness Checks&#8221;</a>, and those of
+   <code class="structfield">amconcurrent</code> in <a href="index-locking.html" title="48.4. Index Locking Considerations">Section 48.4, &#8220;Index Locking Considerations&#8221;</a>.
+   The <code class="structfield">amcanmulticol</code> flag asserts that the
    access method supports multi-column indexes, while
-   <TT
-CLASS="STRUCTFIELD"
->amoptionalkey</TT
-> asserts that it allows scans
+   <code class="structfield">amoptionalkey</code> asserts that it allows scans
    where no indexable restriction clause is given for the first index column.
-   When <TT
-CLASS="STRUCTFIELD"
->amcanmulticol</TT
-> is false,
-   <TT
-CLASS="STRUCTFIELD"
->amoptionalkey</TT
-> essentially says whether the
+   When <code class="structfield">amcanmulticol</code> is false,
+   <code class="structfield">amoptionalkey</code> essentially says whether the
    access method allows full-index scans without any restriction clause.
-   Access methods that support multiple index columns <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->must</I
-></SPAN
->
+   Access methods that support multiple index columns <span class="emphasis"><em>must</em></span>
    support scans that omit restrictions on any or all of the columns after
    the first; however they are permitted to require some restriction to
    appear for the first index column, and this is signaled by setting
-   <TT
-CLASS="STRUCTFIELD"
->amoptionalkey</TT
-> false.
-   <TT
-CLASS="STRUCTFIELD"
->amindexnulls</TT
-> asserts that index entries are
+   <code class="structfield">amoptionalkey</code> false.
+   <code class="structfield">amindexnulls</code> asserts that index entries are
    created for NULL key values.  Since most indexable operators are
    strict and hence cannot return TRUE for NULL inputs,
    it is at first sight attractive to not store index entries for NULLs:
    they could never be returned by an index scan anyway.  However, this
    argument fails when an index scan has no restriction clause for a given
    index column.  In practice this means that
-   indexes that have <TT
-CLASS="STRUCTFIELD"
->amoptionalkey</TT
-> true must
+   indexes that have <code class="structfield">amoptionalkey</code> true must
    index nulls, since the planner might decide to use such an index
    with no scan keys at all.  A related restriction is that an index
-   access method that supports multiple index columns <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->must</I
-></SPAN
->
+   access method that supports multiple index columns <span class="emphasis"><em>must</em></span>
    support indexing null values in columns after the first, because the planner
    will assume the index can be used for queries that do not restrict
    these columns.  For example, consider an index on (a,b) and a query with
-   <TT
-CLASS="LITERAL"
->WHERE a = 4</TT
->.  The system will assume the index can be
-   used to scan for rows with <TT
-CLASS="LITERAL"
->a = 4</TT
->, which is wrong if the
-   index omits rows where <TT
-CLASS="LITERAL"
->b</TT
-> is null.
+   <code class="literal">WHERE a = 4</code>.  The system will assume the index can be
+   used to scan for rows with <code class="literal">a = 4</code>, which is wrong if the
+   index omits rows where <code class="literal">b</code> is null.
    It is, however, OK to omit rows where the first indexed column is null.
    (GiST currently does so.)  Thus,
-   <TT
-CLASS="STRUCTFIELD"
->amindexnulls</TT
-> should be set true only if the
+   <code class="structfield">amindexnulls</code> should be set true only if the
    index access method indexes all rows, including arbitrary combinations of
    null values.
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="geqo-biblio.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="index-functions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Further Reading</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Index Access Method Functions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

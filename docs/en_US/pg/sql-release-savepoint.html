@@ -1,346 +1,85 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->RELEASE SAVEPOINT</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="REINDEX"
-HREF="sql-reindex.html"><LINK
-REL="NEXT"
-TITLE="RESET"
-HREF="sql-reset.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-reindex.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-reindex.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-reset.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-reset.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-RELEASE-SAVEPOINT"
-></A
->RELEASE SAVEPOINT</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN46674"
-></A
-><H2
->Name</H2
->RELEASE SAVEPOINT&nbsp;--&nbsp;destroy a previously defined savepoint</DIV
-><A
-NAME="AEN46677"
-></A
-><A
-NAME="AEN46679"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN46682"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->RELEASE [ SAVEPOINT ] <TT
-CLASS="REPLACEABLE"
-><I
->savepoint_name</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46685"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->RELEASE SAVEPOINT</TT
-> destroys a savepoint previously defined
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>RELEASE SAVEPOINT</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-reindex.html" title="REINDEX">
+<link rel="next" href="sql-reset.html" title="RESET">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-release-savepoint"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>RELEASE SAVEPOINT &#8212; destroy a previously defined savepoint</p>
+</div>
+<a name="id724045"></a><a name="id724057"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">RELEASE [ SAVEPOINT ] <em class="replaceable"><code>savepoint_name</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724080"></a><h2>Description</h2>
+<p>   <code class="command">RELEASE SAVEPOINT</code> destroys a savepoint previously defined
    in the current transaction.
-  </P
-><P
->   Destroying a savepoint makes it unavailable as a rollback point,
+  </p>
+<p>   Destroying a savepoint makes it unavailable as a rollback point,
    but it has no other user visible behavior.  It does not undo the
    effects of commands executed after the savepoint was established.
-   (To do that, see <A
-HREF="sql-rollback-to.html"
-><I
->ROLLBACK TO SAVEPOINT</I
-></A
->.)  Destroying a savepoint when
+   (To do that, see <a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a>.)  Destroying a savepoint when
    it is no longer needed may allow the system to reclaim some resources
    earlier than transaction end.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->RELEASE SAVEPOINT</TT
-> also destroys all savepoints that were
+  </p>
+<p>   <code class="command">RELEASE SAVEPOINT</code> also destroys all savepoints that were
    established after the named savepoint was established.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46693"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->savepoint_name</I
-></TT
-></DT
-><DD
-><P
->      The name of the savepoint to destroy.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46701"
-></A
-><H2
->Notes</H2
-><P
->   Specifying a savepoint name that was not previously defined is an error.
-  </P
-><P
->   It is not possible to release a savepoint when the transaction is in
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724128"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
+<dd><p>      The name of the savepoint to destroy.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724143"></a><h2>Notes</h2>
+<p>   Specifying a savepoint name that was not previously defined is an error.
+  </p>
+<p>   It is not possible to release a savepoint when the transaction is in
    an aborted state.
-  </P
-><P
->   If multiple savepoints have the same name, only the one that was most
+  </p>
+<p>   If multiple savepoints have the same name, only the one that was most
    recently defined is released.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46706"
-></A
-><H2
->Examples</H2
-><P
->   To establish and later destroy a savepoint:
-</P><PRE
-CLASS="PROGRAMLISTING"
->BEGIN;
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724159"></a><h2>Examples</h2>
+<p>   To establish and later destroy a savepoint:
+</p>
+<pre class="programlisting">BEGIN;
     INSERT INTO table1 VALUES (3);
     SAVEPOINT my_savepoint;
     INSERT INTO table1 VALUES (4);
     RELEASE SAVEPOINT my_savepoint;
-COMMIT;</PRE
-><P>
+COMMIT;</pre>
+<p>
    The above transaction will insert both 3 and 4.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46710"
-></A
-><H2
->Compatibility</H2
-><P
->   This command conforms to the SQL:2003 standard.  The standard
-   specifies that the key word <TT
-CLASS="LITERAL"
->SAVEPOINT</TT
-> is
-   mandatory, but <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> allows it to
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724176"></a><h2>Compatibility</h2>
+<p>   This command conforms to the SQL:2003 standard.  The standard
+   specifies that the key word <code class="literal">SAVEPOINT</code> is
+   mandatory, but <span class="productname">PostgreSQL</span> allows it to
    be omitted.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46715"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-begin.html"
-><I
->BEGIN</I
-></A
->, <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
->, <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
->, <A
-HREF="sql-rollback-to.html"
-><I
->ROLLBACK TO SAVEPOINT</I
-></A
->, <A
-HREF="sql-savepoint.html"
-><I
->SAVEPOINT</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-reindex.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-reset.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->REINDEX</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->RESET</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724198"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a>, <a href="sql-savepoint.html">SAVEPOINT</a></span>
+</div>
+</div></body>
+</html>

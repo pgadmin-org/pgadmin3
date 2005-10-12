@@ -1,389 +1,89 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->ALTER GROUP</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER FUNCTION"
-HREF="sql-alterfunction.html"><LINK
-REL="NEXT"
-TITLE="ALTER INDEX"
-HREF="sql-alterindex.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterfunction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterfunction.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterindex.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterindex.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERGROUP"
-></A
->ALTER GROUP</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN38551"
-></A
-><H2
->Name</H2
->ALTER GROUP&nbsp;--&nbsp;change role name or membership</DIV
-><A
-NAME="AEN38554"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN38556"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER GROUP <TT
-CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> ADD USER <TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> [, ... ]
-ALTER GROUP <TT
-CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> DROP USER <TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> [, ... ]
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER GROUP</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-alterfunction.html" title="ALTER FUNCTION">
+<link rel="next" href="sql-alterindex.html" title="ALTER INDEX">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-altergroup"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER GROUP &#8212; change role name or membership</p>
+</div>
+<a name="id687008"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER GROUP <em class="replaceable"><code>groupname</code></em> ADD USER <em class="replaceable"><code>username</code></em> [, ... ]
+ALTER GROUP <em class="replaceable"><code>groupname</code></em> DROP USER <em class="replaceable"><code>username</code></em> [, ... ]
 
-ALTER GROUP <TT
-CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> RENAME TO <TT
-CLASS="REPLACEABLE"
-><I
->newname</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38564"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER GROUP</TT
-> changes the attributes of a user group.
+ALTER GROUP <em class="replaceable"><code>groupname</code></em> RENAME TO <em class="replaceable"><code>newname</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687064"></a><h2>Description</h2>
+<p>   <code class="command">ALTER GROUP</code> changes the attributes of a user group.
    This is an obsolete command, though still accepted for backwards
    compatibility, because groups (and users too) have been superseded by the
    more general concept of roles.
-  </P
-><P
->   The first two variants add users to a group or remove them from a group.
-   (Any role can play the part of either a <SPAN
-CLASS="QUOTE"
->"user"</SPAN
-> or a
-   <SPAN
-CLASS="QUOTE"
->"group"</SPAN
-> for this purpose.)  These variants are effectively
+  </p>
+<p>   The first two variants add users to a group or remove them from a group.
+   (Any role can play the part of either a &#8220;<span class="quote">user</span>&#8221; or a
+   &#8220;<span class="quote">group</span>&#8221; for this purpose.)  These variants are effectively
    equivalent to granting or revoking membership in the role named as the
-   <SPAN
-CLASS="QUOTE"
->"group"</SPAN
->; so the preferred way to do this is to use
-   <A
-HREF="sql-grant.html"
-><I
->GRANT</I
-></A
-> or
-   <A
-HREF="sql-revoke.html"
-><I
->REVOKE</I
-></A
->.
-  </P
-><P
->   The third variant changes the name of the group.  This is exactly
+   &#8220;<span class="quote">group</span>&#8221;; so the preferred way to do this is to use
+   <a href="sql-grant.html">GRANT</a> or
+   <a href="sql-revoke.html">REVOKE</a>.
+  </p>
+<p>   The third variant changes the name of the group.  This is exactly
    equivalent to renaming the role with 
-   <A
-HREF="sql-alterrole.html"
-><I
->ALTER ROLE</I
-></A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38576"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-></DT
-><DD
-><P
->      The name of the group (role) to modify.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></DT
-><DD
-><P
->      Users (roles) that are to be added to or removed from the group.
-      The users must already exist; <TT
-CLASS="COMMAND"
->ALTER GROUP</TT
-> does not
+   <a href="sql-alterrole.html">ALTER ROLE</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687137"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>groupname</code></em></span></dt>
+<dd><p>      The name of the group (role) to modify.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>username</code></em></span></dt>
+<dd><p>      Users (roles) that are to be added to or removed from the group.
+      The users must already exist; <code class="command">ALTER GROUP</code> does not
       create or drop users.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->newname</I
-></TT
-></DT
-><DD
-><P
->      The new name of the group.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38595"
-></A
-><H2
->Examples</H2
-><P
->   Add users to a group:
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
+<dd><p>      The new name of the group.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687184"></a><h2>Examples</h2>
+<p>   Add users to a group:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER GROUP staff ADD USER karl, john;</PRE
-><P>
+</p>
+<pre class="programlisting">ALTER GROUP staff ADD USER karl, john;</pre>
+<p>
 
    Remove a user from a group:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER GROUP workers DROP USER beth;</PRE
-><P>
+</p>
+<pre class="programlisting">ALTER GROUP workers DROP USER beth;</pre>
+<p>
 
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38600"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->ALTER GROUP</TT
-> statement in the SQL
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687206"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ALTER GROUP</code> statement in the SQL
    standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38604"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-grant.html"
-><I
->GRANT</I
-></A
->, <A
-HREF="sql-revoke.html"
-><I
->REVOKE</I
-></A
->, <A
-HREF="sql-alterrole.html"
-><I
->ALTER ROLE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterfunction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterindex.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER FUNCTION</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ALTER INDEX</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687220"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-grant.html">GRANT</a>, <a href="sql-revoke.html">REVOKE</a>, <a href="sql-alterrole.html">ALTER ROLE</a></span>
+</div>
+</div></body>
+</html>

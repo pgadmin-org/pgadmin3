@@ -1,314 +1,66 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->DROP RULE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="DROP ROLE"
-HREF="sql-droprole.html"><LINK
-REL="NEXT"
-TITLE="DROP SCHEMA"
-HREF="sql-dropschema.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-droprole.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-droprole.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-dropschema.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-dropschema.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-DROPRULE"
-></A
->DROP RULE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN44874"
-></A
-><H2
->Name</H2
->DROP RULE&nbsp;--&nbsp;remove a rewrite rule</DIV
-><A
-NAME="AEN44877"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN44879"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->DROP RULE <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ON <TT
-CLASS="REPLACEABLE"
-><I
->relation</I
-></TT
-> [ CASCADE | RESTRICT ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44883"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->DROP RULE</TT
-> drops a rewrite rule.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44887"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->      The name of the rule to drop.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->relation</I
-></TT
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of the table or view that
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP RULE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-droprole.html" title="DROP ROLE">
+<link rel="next" href="sql-dropschema.html" title="DROP SCHEMA">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-droprule"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP RULE &#8212; remove a rewrite rule</p>
+</div>
+<a name="id715682"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP RULE <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>relation</code></em> [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id715714"></a><h2>Description</h2>
+<p>   <code class="command">DROP RULE</code> drops a rewrite rule.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id715727"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name of the rule to drop.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>relation</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table or view that
       the rule applies to.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CASCADE</TT
-></DT
-><DD
-><P
->      Automatically drop objects that depend on the rule.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->RESTRICT</TT
-></DT
-><DD
-><P
->      Refuse to drop the rule if any objects depend on it.  This is
+     </p></dd>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
+<dd><p>      Automatically drop objects that depend on the rule.
+     </p></dd>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
+<dd><p>      Refuse to drop the rule if any objects depend on it.  This is
       the default.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44910"
-></A
-><H2
->Examples</H2
-><P
->   To drop the rewrite rule <TT
-CLASS="LITERAL"
->newrule</TT
->:
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id715783"></a><h2>Examples</h2>
+<p>   To drop the rewrite rule <code class="literal">newrule</code>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DROP RULE newrule ON mytable;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44915"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->DROP RULE</TT
-> statement in the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44919"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-createrule.html"
-><I
->CREATE RULE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-droprole.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-dropschema.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->DROP ROLE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->DROP SCHEMA</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">DROP RULE newrule ON mytable;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id715803"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">DROP RULE</code> statement in the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id715817"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createrule.html">CREATE RULE</a></span>
+</div>
+</div></body>
+</html>

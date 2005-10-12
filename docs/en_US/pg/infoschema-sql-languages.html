@@ -1,353 +1,87 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->sql_languages</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The Information Schema"
-HREF="information-schema.html"><LINK
-REL="PREVIOUS"
-TITLE="sql_implementation_info"
-HREF="infoschema-sql-implementation-info.html"><LINK
-REL="NEXT"
-TITLE="sql_packages"
-HREF="infoschema-sql-packages.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-sql-implementation-info.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 31. The Information Schema</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="information-schema.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-sql-packages.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INFOSCHEMA-SQL-LANGUAGES"
->31.30. <TT
-CLASS="LITERAL"
->sql_languages</TT
-></A
-></H1
-><P
->   The table <TT
-CLASS="LITERAL"
->sql_languages</TT
-> contains one row for
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.30. sql_languages</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-sql-implementation-info.html" title="31.29. sql_implementation_info">
+<link rel="next" href="infoschema-sql-packages.html" title="31.31. sql_packages">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-sql-languages"></a>31.30. <code class="literal">sql_languages</code></h2></div></div></div>
+<p>   The table <code class="literal">sql_languages</code> contains one row for
    each SQL language binding that is supported by
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> supports direct SQL and
+   <span class="productname">PostgreSQL</span>.
+   <span class="productname">PostgreSQL</span> supports direct SQL and
    embedded SQL in C; that is all you will learn from this table.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN30077"
-></A
-><P
-><B
->Table 31-28. <TT
-CLASS="LITERAL"
->sql_languages</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sql_language_source</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       The name of the source of the language definition; always
-       <TT
-CLASS="LITERAL"
->ISO 9075</TT
->, that is, the SQL standard
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sql_language_year</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       The year the standard referenced in
-       <TT
-CLASS="LITERAL"
->sql_language_source</TT
-> was approved; currently
-       <TT
-CLASS="LITERAL"
->2003</TT
->
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sql_language_comformance</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       The standard conformance level for the language binding.  For
-       ISO 9075:2003 this is always <TT
-CLASS="LITERAL"
->CORE</TT
->.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sql_language_integrity</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Always null (This value is relevant to an earlier version of the SQL standard.)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sql_language_implementation</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->Always null</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sql_language_binding_style</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       The language binding style, either <TT
-CLASS="LITERAL"
->DIRECT</TT
-> or
-       <TT
-CLASS="LITERAL"
->EMBEDDED</TT
->
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->sql_language_programming_language</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->character_data</TT
-></TD
-><TD
->       The programming language, if the binding style is
-       <TT
-CLASS="LITERAL"
->EMBEDDED</TT
->, else null.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> only
+  </p>
+<div class="table">
+<a name="id645546"></a><p class="title"><b>Table 31.28. <code class="literal">sql_languages</code> Columns</b></p>
+<table summary="sql_languages Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">sql_language_source</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The name of the source of the language definition; always
+       <code class="literal">ISO 9075</code>, that is, the SQL standard
+      </td>
+</tr>
+<tr>
+<td><code class="literal">sql_language_year</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The year the standard referenced in
+       <code class="literal">sql_language_source</code> was approved; currently
+       <code class="literal">2003</code>
+      </td>
+</tr>
+<tr>
+<td><code class="literal">sql_language_comformance</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The standard conformance level for the language binding.  For
+       ISO 9075:2003 this is always <code class="literal">CORE</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">sql_language_integrity</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always null (This value is relevant to an earlier version of the SQL standard.)</td>
+</tr>
+<tr>
+<td><code class="literal">sql_language_implementation</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always null</td>
+</tr>
+<tr>
+<td><code class="literal">sql_language_binding_style</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The language binding style, either <code class="literal">DIRECT</code> or
+       <code class="literal">EMBEDDED</code>
+      </td>
+</tr>
+<tr>
+<td><code class="literal">sql_language_programming_language</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The programming language, if the binding style is
+       <code class="literal">EMBEDDED</code>, else null.  <span class="productname">PostgreSQL</span> only
        supports the language C.
-      </TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="infoschema-sql-implementation-info.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="infoschema-sql-packages.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->sql_implementation_info</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="information-schema.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="LITERAL"
->sql_packages</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

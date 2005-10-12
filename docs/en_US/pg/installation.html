@@ -1,187 +1,47 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->  Installation Instructions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Administration"
-HREF="admin.html"><LINK
-REL="PREVIOUS"
-TITLE="Server Administration"
-HREF="admin.html"><LINK
-REL="NEXT"
-TITLE="Requirements"
-HREF="install-requirements.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="admin.html#AEN15719"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="install-win32.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="install-requirements.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="INSTALLATION"
-></A
->Chapter 14.   Installation Instructions</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->14.1. <A
-HREF="installation.html#INSTALL-SHORT"
->Short Version</A
-></DT
-><DT
->14.2. <A
-HREF="install-requirements.html"
->Requirements</A
-></DT
-><DT
->14.3. <A
-HREF="install-getsource.html"
->Getting The Source</A
-></DT
-><DT
->14.4. <A
-HREF="install-upgrading.html"
->If You Are Upgrading</A
-></DT
-><DT
->14.5. <A
-HREF="install-procedure.html"
->Installation Procedure</A
-></DT
-><DT
->14.6. <A
-HREF="install-post.html"
->Post-Installation Setup</A
-></DT
-><DD
-><DL
-><DT
->14.6.1. <A
-HREF="install-post.html#AEN16339"
->Shared Libraries</A
-></DT
-><DT
->14.6.2. <A
-HREF="install-post.html#AEN16396"
->Environment Variables</A
-></DT
-></DL
-></DD
-><DT
->14.7. <A
-HREF="supported-platforms.html"
->Supported Platforms</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN15731"
-></A
-><P
->  This 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 14.   Installation Instructions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="admin.html" title="Part III. Server Administration">
+<link rel="next" href="install-requirements.html" title="14.2. Requirements">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="installation">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="installation"></a>Chapter 14.   Installation Instructions</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="installation.html#install-short">14.1. Short Version</a></span></dt>
+<dt><span class="sect1"><a href="install-requirements.html">14.2. Requirements</a></span></dt>
+<dt><span class="sect1"><a href="install-getsource.html">14.3. Getting The Source</a></span></dt>
+<dt><span class="sect1"><a href="install-upgrading.html">14.4. If You Are Upgrading</a></span></dt>
+<dt><span class="sect1"><a href="install-procedure.html">14.5. Installation Procedure</a></span></dt>
+<dt><span class="sect1"><a href="install-post.html">14.6. Post-Installation Setup</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="install-post.html#id583196">14.6.1. Shared Libraries</a></span></dt>
+<dt><span class="sect2"><a href="install-post.html#id583570">14.6.2. Environment Variables</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="supported-platforms.html">14.7. Supported Platforms</a></span></dt>
+</dl>
+</div>
+<a name="id580298"></a><p>  This 
   chapter describes the installation of
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> from the source code
+  <span class="productname">PostgreSQL</span> from the source code
   distribution.  (If you are installing a pre-packaged distribution,
   such as an RPM or Debian package, ignore this
   
   chapter
   and read the packager's instructions instead.)
- </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INSTALL-SHORT"
->14.1. Short Version</A
-></H1
-><P
-></P><PRE
-CLASS="SYNOPSIS"
->./configure
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="install-short"></a>14.1. Short Version</h2></div></div></div>
+<pre class="synopsis">./configure
 gmake
 su
 gmake install
@@ -192,76 +52,12 @@ su - postgres
 /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
 /usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;
 /usr/local/pgsql/bin/createdb test
-/usr/local/pgsql/bin/psql test</PRE
-><P>
+/usr/local/pgsql/bin/psql test</pre>
+<p>
    The long version is the rest of this
    
    chapter.
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="install-requirements.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Server Administration</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Requirements</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

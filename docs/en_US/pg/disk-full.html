@@ -1,201 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Disk Full Failure</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Monitoring Disk Usage"
-HREF="diskusage.html"><LINK
-REL="PREVIOUS"
-TITLE="Monitoring Disk Usage"
-HREF="diskusage.html"><LINK
-REL="NEXT"
-TITLE="Write-Ahead Logging (WAL)"
-HREF="wal.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="diskusage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="diskusage.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 25. Monitoring Disk Usage</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="diskusage.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="wal.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DISK-FULL"
->25.2. Disk Full Failure</A
-></H1
-><P
->   The most important disk monitoring task of a database administrator
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>25.2. Disk Full Failure</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="diskusage.html" title="Chapter 25. Monitoring Disk Usage">
+<link rel="prev" href="diskusage.html" title="Chapter 25. Monitoring Disk Usage">
+<link rel="next" href="reliability.html" title="Chapter 26. Reliability">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="disk-full"></a>25.2. Disk Full Failure</h2></div></div></div>
+<p>   The most important disk monitoring task of a database administrator
    is to make sure the disk doesn't grow full.  A filled data disk will
    not result in data corruption, but it may well prevent useful activity
    from occurring. If the disk holding the WAL files grows full, database
    server panic and consequent shutdown may occur.
-  </P
-><P
->   If you cannot free up additional space on the disk by deleting
+  </p>
+<p>   If you cannot free up additional space on the disk by deleting
    other things, you can move some of the database files to other file
-   systems by making use of tablespaces. See <A
-HREF="manage-ag-tablespaces.html"
->Section 19.6</A
-> for more information about that.
-  </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->    Some file systems perform badly when they are almost full, so do
+   systems by making use of tablespaces. See <a href="manage-ag-tablespaces.html" title="19.6. Tablespaces">Section 19.6, &#8220;Tablespaces&#8221;</a> for more information about that.
+  </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>    Some file systems perform badly when they are almost full, so do
     not wait until the disk is completely full to take action.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   If your system supports per-user disk quotas, then the database
+   </p>
+</div>
+<p>   If your system supports per-user disk quotas, then the database
    will naturally be subject to whatever quota is placed on the user
    the server runs as.  Exceeding the quota will have the same bad
    effects as running out of space entirely.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="diskusage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="wal.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Monitoring Disk Usage</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="diskusage.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Write-Ahead Logging (<ACRONYM
-CLASS="ACRONYM"
->WAL</ACRONYM
->)</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

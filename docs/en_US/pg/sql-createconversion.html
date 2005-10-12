@@ -1,434 +1,111 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->CREATE CONVERSION</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="CREATE CONSTRAINT TRIGGER"
-HREF="sql-createconstraint.html"><LINK
-REL="NEXT"
-TITLE="CREATE DATABASE"
-HREF="sql-createdatabase.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createconstraint.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createconstraint.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createdatabase.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createdatabase.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-CREATECONVERSION"
-></A
->CREATE CONVERSION</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN41025"
-></A
-><H2
->Name</H2
->CREATE CONVERSION&nbsp;--&nbsp;define a new encoding conversion</DIV
-><A
-NAME="AEN41028"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN41030"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->CREATE [DEFAULT] CONVERSION <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-    FOR <TT
-CLASS="REPLACEABLE"
-><I
->source_encoding</I
-></TT
-> TO <TT
-CLASS="REPLACEABLE"
-><I
->dest_encoding</I
-></TT
-> FROM <TT
-CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATECONVERSION-DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->CREATE CONVERSION</TT
-> defines a new conversion between
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE CONVERSION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-createconstraint.html" title="CREATE CONSTRAINT TRIGGER">
+<link rel="next" href="sql-createdatabase.html" title="CREATE DATABASE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createconversion"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE CONVERSION &#8212; define a new encoding conversion</p>
+</div>
+<a name="id698112"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE [DEFAULT] CONVERSION <em class="replaceable"><code>name</code></em>
+    FOR <em class="replaceable"><code>source_encoding</code></em> TO <em class="replaceable"><code>dest_encoding</code></em> FROM <em class="replaceable"><code>funcname</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createconversion-description"></a><h2>Description</h2>
+<p>   <code class="command">CREATE CONVERSION</code> defines a new conversion between
    character set encodings.  Conversion names may be used in the
-   <CODE
-CLASS="FUNCTION"
->convert</CODE
-> function
+   <code class="function">convert</code> function
    to specify a particular encoding conversion.  Also, conversions that
-   are marked <TT
-CLASS="LITERAL"
->DEFAULT</TT
-> can be used for automatic encoding
+   are marked <code class="literal">DEFAULT</code> can be used for automatic encoding
    conversion between
    client and server. For this purpose, two conversions, from encoding A to
-   B <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->and</I
-></SPAN
-> from encoding B to A, must be defined.
- </P
-><P
->   To be able to create a conversion, you must have <TT
-CLASS="LITERAL"
->EXECUTE</TT
-> privilege
-   on the function and <TT
-CLASS="LITERAL"
->CREATE</TT
-> privilege on the destination schema.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41046"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->DEFAULT</TT
-></DT
-><DD
-><P
->       The <TT
-CLASS="LITERAL"
->DEFAULT</TT
-> clause indicates that this conversion
+   B <span class="emphasis"><em>and</em></span> from encoding B to A, must be defined.
+ </p>
+<p>   To be able to create a conversion, you must have <code class="literal">EXECUTE</code> privilege
+   on the function and <code class="literal">CREATE</code> privilege on the destination schema.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id698204"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">DEFAULT</code></span></dt>
+<dd><p>       The <code class="literal">DEFAULT</code> clause indicates that this conversion
        is the default for this particular source to destination
        encoding. There should be only one default encoding in a schema
        for the encoding pair.
-      </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->       The name of the conversion. The conversion name may be
+      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>       The name of the conversion. The conversion name may be
        schema-qualified. If it is not, the conversion is defined in the
        current schema. The conversion name must be unique within a
        schema.
-      </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->source_encoding</I
-></TT
-></DT
-><DD
-><P
->       The source encoding name.
-      </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->dest_encoding</I
-></TT
-></DT
-><DD
-><P
->       The destination encoding name.
-      </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
-></DT
-><DD
-><P
->       The function used to perform the conversion.  The function name may
+      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>source_encoding</code></em></span></dt>
+<dd><p>       The source encoding name.
+      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>dest_encoding</code></em></span></dt>
+<dd><p>       The destination encoding name.
+      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>funcname</code></em></span></dt>
+<dd>
+<p>       The function used to perform the conversion.  The function name may
        be schema-qualified.  If it is not, the function will be looked
        up in the path.
-      </P
-><P
->       The function must have the following signature:
+      </p>
+<p>       The function must have the following signature:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->conv_proc(
+</p>
+<pre class="programlisting">conv_proc(
     integer,  -- source encoding ID
     integer,  -- destination encoding ID
     cstring,  -- source string (null terminated C string)
     internal, -- destination (fill with a null terminated C string)
     integer   -- source string length
-) RETURNS void;</PRE
-><P>
-      </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATECONVERSION-NOTES"
-></A
-><H2
->Notes</H2
-><P
->   Use <TT
-CLASS="COMMAND"
->DROP CONVERSION</TT
-> to remove user-defined conversions.
-  </P
-><P
->   The privileges required to create a conversion may be changed in a future
+) RETURNS void;</pre>
+<p>
+      </p>
+</dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createconversion-notes"></a><h2>Notes</h2>
+<p>   Use <code class="command">DROP CONVERSION</code> to remove user-defined conversions.
+  </p>
+<p>   The privileges required to create a conversion may be changed in a future
    release.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATECONVERSION-EXAMPLES"
-></A
-><H2
->Examples</H2
-><P
->   To create a conversion from encoding <TT
-CLASS="LITERAL"
->UTF8</TT
-> to
-   <TT
-CLASS="LITERAL"
->LATIN1</TT
-> using <CODE
-CLASS="FUNCTION"
->myfunc</CODE
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE CONVERSION myconv FOR 'UTF8' TO 'LATIN1' FROM myfunc;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATECONVERSION-COMPAT"
-></A
-><H2
->Compatibility</H2
-><P
->    <TT
-CLASS="COMMAND"
->CREATE CONVERSION</TT
->
-    is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.
-    There is no <TT
-CLASS="COMMAND"
->CREATE CONVERSION</TT
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createconversion-examples"></a><h2>Examples</h2>
+<p>   To create a conversion from encoding <code class="literal">UTF8</code> to
+   <code class="literal">LATIN1</code> using <code class="function">myfunc</code>:
+</p>
+<pre class="programlisting">CREATE CONVERSION myconv FOR 'UTF8' TO 'LATIN1' FROM myfunc;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createconversion-compat"></a><h2>Compatibility</h2>
+<p>    <code class="command">CREATE CONVERSION</code>
+    is a <span class="productname">PostgreSQL</span> extension.
+    There is no <code class="command">CREATE CONVERSION</code>
     statement in the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATECONVERSION-SEEALSO"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-alterconversion.html"
-><I
->ALTER CONVERSION</I
-></A
->, <A
-HREF="sql-createfunction.html"
-><I
->CREATE FUNCTION</I
-></A
->, <A
-HREF="sql-dropconversion.html"
-><I
->DROP CONVERSION</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createconstraint.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createdatabase.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->CREATE CONSTRAINT TRIGGER</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->CREATE DATABASE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createconversion-seealso"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterconversion.html">ALTER CONVERSION</a>, <a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-dropconversion.html">DROP CONVERSION</a></span>
+</div>
+</div></body>
+</html>

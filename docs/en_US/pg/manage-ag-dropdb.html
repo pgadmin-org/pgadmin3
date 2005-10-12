@@ -1,235 +1,43 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Destroying a Database</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Managing Databases"
-HREF="managing-databases.html"><LINK
-REL="PREVIOUS"
-TITLE="Database Configuration"
-HREF="manage-ag-config.html"><LINK
-REL="NEXT"
-TITLE="Tablespaces"
-HREF="manage-ag-tablespaces.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="manage-ag-config.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="managing-databases.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 19. Managing Databases</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="managing-databases.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="manage-ag-tablespaces.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="MANAGE-AG-DROPDB"
->19.5. Destroying a Database</A
-></H1
-><P
->   Databases are destroyed with the command 
-   <A
-HREF="sql-dropdatabase.html"
-><I
->DROP DATABASE</I
-></A
->:<A
-NAME="AEN21031"
-></A
->
-</P><PRE
-CLASS="SYNOPSIS"
->DROP DATABASE <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->;</PRE
-><P>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>19.5. Destroying a Database</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="managing-databases.html" title="Chapter 19. Managing Databases">
+<link rel="prev" href="manage-ag-config.html" title="19.4. Database Configuration">
+<link rel="next" href="manage-ag-tablespaces.html" title="19.6. Tablespaces">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="manage-ag-dropdb"></a>19.5. Destroying a Database</h2></div></div></div>
+<p>   Databases are destroyed with the command 
+   <a href="sql-dropdatabase.html">DROP DATABASE</a>:<a name="id605092"></a>
+</p>
+<pre class="synopsis">DROP DATABASE <em class="replaceable"><code>name</code></em>;</pre>
+<p>
    Only the owner of the database, or
    a superuser, can drop a database. Dropping a database removes all objects
    that were 
    contained within the database. The destruction of a database cannot
    be undone.
-  </P
-><P
->   You cannot execute the <TT
-CLASS="COMMAND"
->DROP DATABASE</TT
-> command
+  </p>
+<p>   You cannot execute the <code class="command">DROP DATABASE</code> command
    while connected to the victim database. You can, however, be
-   connected to any other database, including the <TT
-CLASS="LITERAL"
->template1</TT
->
+   connected to any other database, including the <code class="literal">template1</code>
    database.
-   <TT
-CLASS="LITERAL"
->template1</TT
-> would be the only option for dropping the last user database of a
+   <code class="literal">template1</code> would be the only option for dropping the last user database of a
    given cluster.
-  </P
-><P
->   For convenience, there is also a shell program to drop
-   databases, <A
-HREF="app-dropdb.html"
-><SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-></A
->:<A
-NAME="AEN21041"
-></A
->
-</P><PRE
-CLASS="SYNOPSIS"
->dropdb <TT
-CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></PRE
-><P>
-   (Unlike <TT
-CLASS="COMMAND"
->createdb</TT
->, it is not the default action to drop
+  </p>
+<p>   For convenience, there is also a shell program to drop
+   databases, <a href="app-dropdb.html" title="dropdb"><span class="refentrytitle"><a name="app-dropdb-title"></a><span class="application">dropdb</span></span></a>:<a name="id605150"></a>
+</p>
+<pre class="synopsis">dropdb <em class="replaceable"><code>dbname</code></em></pre>
+<p>
+   (Unlike <code class="command">createdb</code>, it is not the default action to drop
    the database with the current user name.)
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="manage-ag-config.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="manage-ag-tablespaces.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Database Configuration</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="managing-databases.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Tablespaces</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

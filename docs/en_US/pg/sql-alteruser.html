@@ -1,137 +1,26 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->ALTER USER</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER TYPE"
-HREF="sql-altertype.html"><LINK
-REL="NEXT"
-TITLE="ANALYZE"
-HREF="sql-analyze.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-analyze.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-analyze.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERUSER"
-></A
->ALTER USER</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN39698"
-></A
-><H2
->Name</H2
->ALTER USER&nbsp;--&nbsp;change a database role</DIV
-><A
-NAME="AEN39701"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN39703"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ [ WITH ] <TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
-> [ ... ] ]
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER USER</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-altertype.html" title="ALTER TYPE">
+<link rel="next" href="sql-analyze.html" title="ANALYZE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-alteruser"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER USER &#8212; change a database role</p>
+</div>
+<a name="id691840"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER USER <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
-where <TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
-> can be:
+where <em class="replaceable"><code>option</code></em> can be:
     
       SUPERUSER | NOSUPERUSER
     | CREATEDB | NOCREATEDB
@@ -139,180 +28,32 @@ CLASS="REPLACEABLE"
     | CREATEUSER | NOCREATEUSER
     | INHERIT | NOINHERIT
     | LOGIN | NOLOGIN
-    | CONNECTION LIMIT <TT
-CLASS="REPLACEABLE"
-><I
->connlimit</I
-></TT
->
-    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
-CLASS="REPLACEABLE"
-><I
->password</I
-></TT
->'
-    | VALID UNTIL '<TT
-CLASS="REPLACEABLE"
-><I
->timestamp</I
-></TT
->' 
+    | CONNECTION LIMIT <em class="replaceable"><code>connlimit</code></em>
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<em class="replaceable"><code>password</code></em>'
+    | VALID UNTIL '<em class="replaceable"><code>timestamp</code></em>' 
 
-ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> RENAME TO <TT
-CLASS="REPLACEABLE"
-><I
->newname</I
-></TT
->
+ALTER USER <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>newname</code></em>
 
-ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> SET <TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-> { TO | = } { <TT
-CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-> | DEFAULT }
-ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> RESET <TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39718"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER USER</TT
-> is now an alias for
-   <A
-HREF="sql-alterrole.html"
-><I
->ALTER ROLE</I
-></A
->,
+ALTER USER <em class="replaceable"><code>name</code></em> SET <em class="replaceable"><code>parameter</code></em> { TO | = } { <em class="replaceable"><code>value</code></em> | DEFAULT }
+ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="replaceable"><code>parameter</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id691939"></a><h2>Description</h2>
+<p>   <code class="command">ALTER USER</code> is now an alias for
+   <a href="sql-alterrole.html">ALTER ROLE</a>,
    which see for more information.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39723"
-></A
-><H2
->Compatibility</H2
-><P
->   The <TT
-CLASS="COMMAND"
->ALTER USER</TT
-> statement is a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.  The SQL standard
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id691964"></a><h2>Compatibility</h2>
+<p>   The <code class="command">ALTER USER</code> statement is a
+   <span class="productname">PostgreSQL</span> extension.  The SQL standard
    leaves the definition of users to the implementation.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39728"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-alterrole.html"
-><I
->ALTER ROLE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-analyze.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER TYPE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ANALYZE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id691985"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterrole.html">ALTER ROLE</a></span>
+</div>
+</div></body>
+</html>

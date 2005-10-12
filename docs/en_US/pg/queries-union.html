@@ -1,376 +1,60 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Combining Queries</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Queries"
-HREF="queries.html"><LINK
-REL="PREVIOUS"
-TITLE="Select Lists"
-HREF="queries-select-lists.html"><LINK
-REL="NEXT"
-TITLE="Sorting Rows"
-HREF="queries-order.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="queries-select-lists.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="queries.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 7. Queries</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries-order.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="QUERIES-UNION"
->7.4. Combining Queries</A
-></H1
-><A
-NAME="AEN3215"
-></A
-><A
-NAME="AEN3217"
-></A
-><A
-NAME="AEN3219"
-></A
-><A
-NAME="AEN3221"
-></A
-><A
-NAME="AEN3223"
-></A
-><A
-NAME="AEN3225"
-></A
-><A
-NAME="AEN3227"
-></A
-><P
->   The results of two queries can be combined using the set operations
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>7.4. Combining Queries</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="queries.html" title="Chapter 7. Queries">
+<link rel="prev" href="queries-select-lists.html" title="7.3. Select Lists">
+<link rel="next" href="queries-order.html" title="7.5. Sorting Rows">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="queries-union"></a>7.4. Combining Queries</h2></div></div></div>
+<a name="id529099"></a><a name="id529110"></a><a name="id529120"></a><a name="id529130"></a><a name="id529140"></a><a name="id529151"></a><a name="id529161"></a><p>   The results of two queries can be combined using the set operations
    union, intersection, and difference.  The syntax is
-</P><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> UNION [<SPAN
-CLASS="OPTIONAL"
->ALL</SPAN
->] <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
->
-<TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> INTERSECT [<SPAN
-CLASS="OPTIONAL"
->ALL</SPAN
->] <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
->
-<TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> EXCEPT [<SPAN
-CLASS="OPTIONAL"
->ALL</SPAN
->] <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
-></PRE
-><P>
-   <TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> and
-   <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
-> are queries that can use any of
+</p>
+<pre class="synopsis"><em class="replaceable"><code>query1</code></em> UNION [<span class="optional">ALL</span>] <em class="replaceable"><code>query2</code></em>
+<em class="replaceable"><code>query1</code></em> INTERSECT [<span class="optional">ALL</span>] <em class="replaceable"><code>query2</code></em>
+<em class="replaceable"><code>query1</code></em> EXCEPT [<span class="optional">ALL</span>] <em class="replaceable"><code>query2</code></em></pre>
+<p>
+   <em class="replaceable"><code>query1</code></em> and
+   <em class="replaceable"><code>query2</code></em> are queries that can use any of
    the features discussed up to this point.  Set operations can also
    be nested and chained, for example
-</P><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> UNION <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
-> UNION <TT
-CLASS="REPLACEABLE"
-><I
->query3</I
-></TT
-></PRE
-><P>
+</p>
+<pre class="synopsis"><em class="replaceable"><code>query1</code></em> UNION <em class="replaceable"><code>query2</code></em> UNION <em class="replaceable"><code>query3</code></em></pre>
+<p>
    which really says
-</P><PRE
-CLASS="SYNOPSIS"
->(<TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> UNION <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
->) UNION <TT
-CLASS="REPLACEABLE"
-><I
->query3</I
-></TT
-></PRE
-><P>
-  </P
-><P
->   <TT
-CLASS="LITERAL"
->UNION</TT
-> effectively appends the result of
-   <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
-> to the result of
-   <TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> (although there is no guarantee
+</p>
+<pre class="synopsis">(<em class="replaceable"><code>query1</code></em> UNION <em class="replaceable"><code>query2</code></em>) UNION <em class="replaceable"><code>query3</code></em></pre>
+<p>
+  </p>
+<p>   <code class="literal">UNION</code> effectively appends the result of
+   <em class="replaceable"><code>query2</code></em> to the result of
+   <em class="replaceable"><code>query1</code></em> (although there is no guarantee
    that this is the order in which the rows are actually returned).
    Furthermore, it eliminates duplicate rows from its result, in the same
-   way as <TT
-CLASS="LITERAL"
->DISTINCT</TT
->, unless <TT
-CLASS="LITERAL"
->UNION ALL</TT
-> is used.
-  </P
-><P
->   <TT
-CLASS="LITERAL"
->INTERSECT</TT
-> returns all rows that are both in the result
-   of <TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> and in the result of
-   <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
->.  Duplicate rows are eliminated
-   unless <TT
-CLASS="LITERAL"
->INTERSECT ALL</TT
-> is used.
-  </P
-><P
->   <TT
-CLASS="LITERAL"
->EXCEPT</TT
-> returns all rows that are in the result of
-   <TT
-CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> but not in the result of
-   <TT
-CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
->.  (This is sometimes called the
-   <I
-CLASS="FIRSTTERM"
->difference</I
-> between two queries.)  Again, duplicates
-   are eliminated unless <TT
-CLASS="LITERAL"
->EXCEPT ALL</TT
-> is used.
-  </P
-><P
->   In order to calculate the union, intersection, or difference of two
-   queries, the two queries must be <SPAN
-CLASS="QUOTE"
->"union compatible"</SPAN
->,
+   way as <code class="literal">DISTINCT</code>, unless <code class="literal">UNION ALL</code> is used.
+  </p>
+<p>   <code class="literal">INTERSECT</code> returns all rows that are both in the result
+   of <em class="replaceable"><code>query1</code></em> and in the result of
+   <em class="replaceable"><code>query2</code></em>.  Duplicate rows are eliminated
+   unless <code class="literal">INTERSECT ALL</code> is used.
+  </p>
+<p>   <code class="literal">EXCEPT</code> returns all rows that are in the result of
+   <em class="replaceable"><code>query1</code></em> but not in the result of
+   <em class="replaceable"><code>query2</code></em>.  (This is sometimes called the
+   <em class="firstterm">difference</em> between two queries.)  Again, duplicates
+   are eliminated unless <code class="literal">EXCEPT ALL</code> is used.
+  </p>
+<p>   In order to calculate the union, intersection, or difference of two
+   queries, the two queries must be &#8220;<span class="quote">union compatible</span>&#8221;,
    which means that they return the same number of columns and
    the corresponding columns have compatible data types, as
-   described in <A
-HREF="typeconv-union-case.html"
->Section 10.5</A
->.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="queries-select-lists.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="queries-order.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Select Lists</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="queries.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Sorting Rows</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   described in <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and Related Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs&#8221;</a>.
+  </p>
+</div></body>
+</html>

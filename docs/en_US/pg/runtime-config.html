@@ -1,659 +1,185 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Run-time Configuration</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Administration"
-HREF="admin.html"><LINK
-REL="PREVIOUS"
-TITLE="Secure TCP/IP Connections with SSH Tunnels"
-HREF="ssh-tunnels.html"><LINK
-REL="NEXT"
-TITLE="File Locations"
-HREF="runtime-config-file-locations.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ssh-tunnels.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="user-manag.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-file-locations.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="RUNTIME-CONFIG"
-></A
->Chapter 17. Run-time Configuration</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->17.1. <A
-HREF="runtime-config.html#CONFIG-SETTING"
->Setting Parameters</A
-></DT
-><DT
->17.2. <A
-HREF="runtime-config-file-locations.html"
->File Locations</A
-></DT
-><DT
->17.3. <A
-HREF="runtime-config-connection.html"
->Connections and Authentication</A
-></DT
-><DD
-><DL
-><DT
->17.3.1. <A
-HREF="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SETTINGS"
->Connection Settings</A
-></DT
-><DT
->17.3.2. <A
-HREF="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SECURITY"
->Security and Authentication</A
-></DT
-></DL
-></DD
-><DT
->17.4. <A
-HREF="runtime-config-resource.html"
->Resource Consumption</A
-></DT
-><DD
-><DL
-><DT
->17.4.1. <A
-HREF="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-MEMORY"
->Memory</A
-></DT
-><DT
->17.4.2. <A
-HREF="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-FSM"
->Free Space Map</A
-></DT
-><DT
->17.4.3. <A
-HREF="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-KERNEL"
->Kernel Resource Usage</A
-></DT
-><DT
->17.4.4. <A
-HREF="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-VACUUM-COST"
->Cost-Based Vacuum Delay</A
-></DT
-><DT
->17.4.5. <A
-HREF="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-BACKGROUND-WRITER"
->Background Writer</A
-></DT
-></DL
-></DD
-><DT
->17.5. <A
-HREF="runtime-config-wal.html"
->Write Ahead Log</A
-></DT
-><DD
-><DL
-><DT
->17.5.1. <A
-HREF="runtime-config-wal.html#RUNTIME-CONFIG-WAL-SETTINGS"
->Settings</A
-></DT
-><DT
->17.5.2. <A
-HREF="runtime-config-wal.html#RUNTIME-CONFIG-WAL-CHECKPOINTS"
->Checkpoints</A
-></DT
-><DT
->17.5.3. <A
-HREF="runtime-config-wal.html#RUNTIME-CONFIG-WAL-ARCHIVING"
->Archiving</A
-></DT
-></DL
-></DD
-><DT
->17.6. <A
-HREF="runtime-config-query.html"
->Query Planning</A
-></DT
-><DD
-><DL
-><DT
->17.6.1. <A
-HREF="runtime-config-query.html#RUNTIME-CONFIG-QUERY-ENABLE"
->Planner Method Configuration</A
-></DT
-><DT
->17.6.2. <A
-HREF="runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS"
->Planner Cost Constants</A
-></DT
-><DT
->17.6.3. <A
-HREF="runtime-config-query.html#RUNTIME-CONFIG-QUERY-GEQO"
->Genetic Query Optimizer</A
-></DT
-><DT
->17.6.4. <A
-HREF="runtime-config-query.html#RUNTIME-CONFIG-QUERY-OTHER"
->Other Planner Options</A
-></DT
-></DL
-></DD
-><DT
->17.7. <A
-HREF="runtime-config-logging.html"
->Error Reporting and Logging</A
-></DT
-><DD
-><DL
-><DT
->17.7.1. <A
-HREF="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHERE"
->Where To Log</A
-></DT
-><DT
->17.7.2. <A
-HREF="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHEN"
->When To Log</A
-></DT
-><DT
->17.7.3. <A
-HREF="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT"
->What To Log</A
-></DT
-></DL
-></DD
-><DT
->17.8. <A
-HREF="runtime-config-statistics.html"
->Runtime Statistics</A
-></DT
-><DD
-><DL
-><DT
->17.8.1. <A
-HREF="runtime-config-statistics.html#RUNTIME-CONFIG-STATISTICS-MONITOR"
->Statistics Monitoring</A
-></DT
-><DT
->17.8.2. <A
-HREF="runtime-config-statistics.html#RUNTIME-CONFIG-STATISTICS-COLLECTOR"
->Query and Index Statistics Collector</A
-></DT
-></DL
-></DD
-><DT
->17.9. <A
-HREF="runtime-config-autovacuum.html"
->Automatic Vacuuming</A
-></DT
-><DT
->17.10. <A
-HREF="runtime-config-client.html"
->Client Connection Defaults</A
-></DT
-><DD
-><DL
-><DT
->17.10.1. <A
-HREF="runtime-config-client.html#RUNTIME-CONFIG-CLIENT-STATEMENT"
->Statement Behavior</A
-></DT
-><DT
->17.10.2. <A
-HREF="runtime-config-client.html#RUNTIME-CONFIG-CLIENT-FORMAT"
->Locale and Formatting</A
-></DT
-><DT
->17.10.3. <A
-HREF="runtime-config-client.html#RUNTIME-CONFIG-CLIENT-OTHER"
->Other Defaults</A
-></DT
-></DL
-></DD
-><DT
->17.11. <A
-HREF="runtime-config-locks.html"
->Lock Management</A
-></DT
-><DT
->17.12. <A
-HREF="runtime-config-compatible.html"
->Version and Platform Compatibility</A
-></DT
-><DD
-><DL
-><DT
->17.12.1. <A
-HREF="runtime-config-compatible.html#RUNTIME-CONFIG-COMPATIBLE-VERSION"
->Previous PostgreSQL Versions</A
-></DT
-><DT
->17.12.2. <A
-HREF="runtime-config-compatible.html#RUNTIME-CONFIG-COMPATIBLE-CLIENTS"
->Platform and Client Compatibility</A
-></DT
-></DL
-></DD
-><DT
->17.13. <A
-HREF="runtime-config-preset.html"
->Preset Options</A
-></DT
-><DT
->17.14. <A
-HREF="runtime-config-custom.html"
->Customized Options</A
-></DT
-><DT
->17.15. <A
-HREF="runtime-config-developer.html"
->Developer Options</A
-></DT
-><DT
->17.16. <A
-HREF="runtime-config-short.html"
->Short Options</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN17962"
-></A
-><P
->   There are many configuration parameters that affect the behavior of
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 17. Run-time Configuration</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
+<link rel="next" href="runtime-config-file-locations.html" title="17.2. File Locations">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime-config">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="runtime-config"></a>Chapter 17. Run-time Configuration</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="runtime-config.html#config-setting">17.1. Setting Parameters</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-file-locations.html">17.2. File Locations</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-connection.html">17.3. Connections and Authentication</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-connection.html#runtime-config-connection-settings">17.3.1. Connection Settings</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-connection.html#runtime-config-connection-security">17.3.2. Security and Authentication</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-resource.html">17.4. Resource Consumption</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-memory">17.4.1. Memory</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-fsm">17.4.2. Free Space Map</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-kernel">17.4.3. Kernel Resource Usage</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost">17.4.4.        Cost-Based Vacuum Delay
+     </a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-background-writer">17.4.5. Background Writer</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-wal.html">17.5. Write Ahead Log</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-wal.html#runtime-config-wal-settings">17.5.1. Settings</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-wal.html#runtime-config-wal-checkpoints">17.5.2. Checkpoints</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-wal.html#runtime-config-wal-archiving">17.5.3. Archiving</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-query.html">17.6. Query Planning</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-enable">17.6.1. Planner Method Configuration</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-constants">17.6.2.       Planner Cost Constants
+     </a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-geqo">17.6.3. Genetic Query Optimizer</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-other">17.6.4. Other Planner Options</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-logging.html">17.7. Error Reporting and Logging</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-where">17.7.1. Where To Log</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-when">17.7.2. When To Log</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-what">17.7.3. What To Log</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-statistics.html">17.8. Runtime Statistics</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-statistics.html#runtime-config-statistics-monitor">17.8.1. Statistics Monitoring</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-statistics.html#runtime-config-statistics-collector">17.8.2. Query and Index Statistics Collector</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-autovacuum.html">17.9. Automatic Vacuuming</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-client.html">17.10. Client Connection Defaults</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-client.html#runtime-config-client-statement">17.10.1. Statement Behavior</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-client.html#runtime-config-client-format">17.10.2. Locale and Formatting</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-client.html#runtime-config-client-other">17.10.3. Other Defaults</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-locks.html">17.11. Lock Management</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-compatible.html">17.12. Version and Platform Compatibility</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-compatible.html#runtime-config-compatible-version">17.12.1. Previous PostgreSQL Versions</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-compatible.html#runtime-config-compatible-clients">17.12.2. Platform and Client Compatibility</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-preset.html">17.13. Preset Options</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-custom.html">17.14. Customized Options</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-developer.html">17.15. Developer Options</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-short.html">17.16. Short Options</a></span></dt>
+</dl>
+</div>
+<a name="id590547"></a><p>   There are many configuration parameters that affect the behavior of
    the database system. In the first section of this chapter, we
    describe how to set configuration chapters. The subsequent sections
    discuss each parameter in detail.
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CONFIG-SETTING"
->17.1. Setting Parameters</A
-></H1
-><P
->    All parameter names are case-insensitive. Every parameter takes a
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="config-setting"></a>17.1. Setting Parameters</h2></div></div></div>
+<p>    All parameter names are case-insensitive. Every parameter takes a
     value of one of four types: boolean, integer, floating point,
-    or string. Boolean values may be written as <TT
-CLASS="LITERAL"
->ON</TT
->,
-    <TT
-CLASS="LITERAL"
->OFF</TT
->, <TT
-CLASS="LITERAL"
->TRUE</TT
->,
-    <TT
-CLASS="LITERAL"
->FALSE</TT
->, <TT
-CLASS="LITERAL"
->YES</TT
->,
-    <TT
-CLASS="LITERAL"
->NO</TT
->, <TT
-CLASS="LITERAL"
->1</TT
->, <TT
-CLASS="LITERAL"
->0</TT
->
+    or string. Boolean values may be written as <code class="literal">ON</code>,
+    <code class="literal">OFF</code>, <code class="literal">TRUE</code>,
+    <code class="literal">FALSE</code>, <code class="literal">YES</code>,
+    <code class="literal">NO</code>, <code class="literal">1</code>, <code class="literal">0</code>
     (all case-insensitive) or any unambiguous prefix of these.
-   </P
-><P
->    One way to set these parameters is to edit the file
-    <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-><A
-NAME="AEN17979"
-></A
->,
-    which is normally kept in the data directory. (<TT
-CLASS="COMMAND"
->initdb</TT
->
+   </p>
+<p>    One way to set these parameters is to edit the file
+    <code class="filename">postgresql.conf</code><a name="id590636"></a>,
+    which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
-</P><PRE
-CLASS="PROGRAMLISTING"
-># This is a comment
+</p>
+<pre class="programlisting"># This is a comment
 log_connections = yes
 log_destination = 'syslog'
-search_path = '$user, public'</PRE
-><P>
+search_path = '$user, public'</pre>
+<p>
     One parameter is specified per line. The equal sign between name and
     value is optional. Whitespace is insignificant and blank lines are
-    ignored. Hash marks (<TT
-CLASS="LITERAL"
->#</TT
->) introduce comments
+    ignored. Hash marks (<code class="literal">#</code>) introduce comments
     anywhere.  Parameter values that are not simple identifiers or
-    numbers must be single-quoted.
-  </P
-><P
->    <A
-NAME="AEN17985"
-></A
->
+    numbers must be single-quoted.  To embed a single quote in a parameter
+    value, write either two quotes (preferred) or backslash-quote.
+  </p>
+<p>    <a name="id590676"></a>
     The configuration file is reread whenever the
-    <TT
-CLASS="COMMAND"
->postmaster</TT
-> process receives a
-    <SPAN
-CLASS="SYSTEMITEM"
->SIGHUP</SPAN
-> signal (which is most easily sent by means
-    of <TT
-CLASS="LITERAL"
->pg_ctl reload</TT
->). The <TT
-CLASS="COMMAND"
->postmaster</TT
->
+    <code class="command">postmaster</code> process receives a
+    <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
+    of <code class="literal">pg_ctl reload</code>). The <code class="command">postmaster</code>
     also propagates this signal to all currently running server
     processes so that existing sessions also get the new
     value. Alternatively, you can send the signal to a single server
     process directly.  Some parameters can only be set at server start;
     any changes to their entries in the configuration file will be ignored
     until the server is restarted.
-   </P
-><P
->    A second way to set these configuration parameters is to give them
-    as a command line option to the <TT
-CLASS="COMMAND"
->postmaster</TT
->, such as:
-</P><PRE
-CLASS="PROGRAMLISTING"
->postmaster -c log_connections=yes -c log_destination='syslog'</PRE
-><P>
+   </p>
+<p>    A second way to set these configuration parameters is to give them
+    as a command line option to the <code class="command">postmaster</code>, such as:
+</p>
+<pre class="programlisting">postmaster -c log_connections=yes -c log_destination='syslog'</pre>
+<p>
     Command-line options override any conflicting settings in
-    <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->.  Note that this means you won't
+    <code class="filename">postgresql.conf</code>.  Note that this means you won't
     be able to change the value on-the-fly by editing
-    <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->, so while the command-line
+    <code class="filename">postgresql.conf</code>, so while the command-line
     method may be convenient, it can cost you flexibility later.
-   </P
-><P
->    Occasionally it is useful to give a command line option to
+   </p>
+<p>    Occasionally it is useful to give a command line option to
     one particular session only. The environment variable
-    <TT
-CLASS="ENVAR"
->PGOPTIONS</TT
-> can be used for this purpose on the
+    <code class="envar">PGOPTIONS</code> can be used for this purpose on the
     client side:
-</P><PRE
-CLASS="PROGRAMLISTING"
->env PGOPTIONS='-c geqo=off' psql</PRE
-><P>
-    (This works for any <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->-based client application, not
-    just <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->.) Note that this won't work for
+</p>
+<pre class="programlisting">env PGOPTIONS='-c geqo=off' psql</pre>
+<p>
+    (This works for any <span class="application">libpq</span>-based client application, not
+    just <span class="application">psql</span>.) Note that this won't work for
     parameters that are fixed when the server is started or that must be
-    specified in <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->.
-   </P
-><P
->    Furthermore, it is possible to assign a set of option settings to
+    specified in <code class="filename">postgresql.conf</code>.
+   </p>
+<p>    Furthermore, it is possible to assign a set of option settings to
     a user or a database.  Whenever a session is started, the default
     settings for the user and database involved are loaded.  The
-    commands <A
-HREF="sql-alteruser.html"
-><I
->ALTER USER</I
-></A
->
-    and <A
-HREF="sql-alterdatabase.html"
-><I
->ALTER DATABASE</I
-></A
->,
+    commands <a href="sql-alteruser.html">ALTER USER</a>
+    and <a href="sql-alterdatabase.html">ALTER DATABASE</a>,
     respectively, are used to configure these settings.  Per-database
     settings override anything received from the
-    <TT
-CLASS="COMMAND"
->postmaster</TT
-> command-line or the configuration
+    <code class="command">postmaster</code> command-line or the configuration
     file, and in turn are overridden by per-user settings; both are
     overridden by per-session options.
-   </P
-><P
->    Some parameters can be changed in individual <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->
-    sessions with the <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
->
+   </p>
+<p>    Some parameters can be changed in individual <span class="acronym">SQL</span>
+    sessions with the <a href="sql-set.html">SET</a>
     command, for example:
-</P><PRE
-CLASS="SCREEN"
->SET ENABLE_SEQSCAN TO OFF;</PRE
-><P>
-    If <TT
-CLASS="COMMAND"
->SET</TT
-> is allowed, it overrides all other sources of
+</p>
+<pre class="screen">SET ENABLE_SEQSCAN TO OFF;</pre>
+<p>
+    If <code class="command">SET</code> is allowed, it overrides all other sources of
     values for the parameter. Some parameters cannot be changed via
-    <TT
-CLASS="COMMAND"
->SET</TT
->: for example, if they control behavior that
+    <code class="command">SET</code>: for example, if they control behavior that
     cannot reasonably be changed without restarting
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  Also, some parameters can
-    be modified via <TT
-CLASS="COMMAND"
->SET</TT
-> or <TT
-CLASS="COMMAND"
->ALTER</TT
-> by superusers,
+    <span class="productname">PostgreSQL</span>.  Also, some parameters can
+    be modified via <code class="command">SET</code> or <code class="command">ALTER</code> by superusers,
     but not by ordinary users.
-   </P
-><P
->    The <A
-HREF="sql-show.html"
-><I
->SHOW</I
-></A
->
+   </p>
+<p>    The <a href="sql-show.html">SHOW</a>
     command allows inspection of the current values of all parameters.
-   </P
-><P
->    The virtual table <TT
-CLASS="STRUCTNAME"
->pg_settings</TT
->
-    (described in <A
-HREF="view-pg-settings.html"
->Section 42.41</A
->) also allows
+   </p>
+<p>    The virtual table <code class="structname">pg_settings</code>
+    (described in <a href="view-pg-settings.html" title="42.41. pg_settings">Section 42.41, &#8220;<code class="structname">pg_settings</code>&#8221;</a>) also allows
     displaying and updating session run-time parameters.  It is equivalent
-    to <TT
-CLASS="COMMAND"
->SHOW</TT
-> and <TT
-CLASS="COMMAND"
->SET</TT
->, but can be more convenient
+    to <code class="command">SHOW</code> and <code class="command">SET</code>, but can be more convenient
     to use because it can be joined with other tables, or selected from using
     any desired selection condition.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ssh-tunnels.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-file-locations.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Secure TCP/IP Connections with <SPAN
-CLASS="APPLICATION"
->SSH</SPAN
-> Tunnels</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->File Locations</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

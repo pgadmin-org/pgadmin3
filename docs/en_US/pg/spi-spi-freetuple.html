@@ -1,237 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SPI_freetuple</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Memory Management"
-HREF="spi-memory.html"><LINK
-REL="PREVIOUS"
-TITLE="SPI_modifytuple"
-HREF="spi-spi-modifytuple.html"><LINK
-REL="NEXT"
-TITLE="SPI_freetuptable"
-HREF="spi-spi-freetupletable.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-modifytuple.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-modifytuple.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-freetupletable.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-freetupletable.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-FREETUPLE"
-></A
->SPI_freetuple</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN37844"
-></A
-><H2
->Name</H2
->SPI_freetuple&nbsp;--&nbsp;free a row allocated in the upper executor context</DIV
-><A
-NAME="AEN37847"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN37849"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->void SPI_freetuple(HeapTuple <TT
-CLASS="PARAMETER"
->row</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37852"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_freetuple</CODE
-> frees a row previously allocated
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_freetuple</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="spi-memory.html" title="40.3. Memory Management">
+<link rel="prev" href="spi-spi-modifytuple.html" title="SPI_modifytuple">
+<link rel="next" href="spi-spi-freetupletable.html" title="SPI_freetuptable">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-freetuple"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_freetuple &#8212; free a row allocated in the upper executor context</p>
+</div>
+<a name="id684087"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">void SPI_freetuple(HeapTuple <em class="parameter"><code>row</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684106"></a><h2>Description</h2>
+<p>   <code class="function">SPI_freetuple</code> frees a row previously allocated
    in the upper executor context.
-  </P
-><P
->   This function is no longer different from plain
-   <CODE
-CLASS="FUNCTION"
->heap_freetuple</CODE
->.  It's kept just for backward
+  </p>
+<p>   This function is no longer different from plain
+   <code class="function">heap_freetuple</code>.  It's kept just for backward
    compatibility of existing code.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37858"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->HeapTuple <TT
-CLASS="PARAMETER"
->row</TT
-></TT
-></DT
-><DD
-><P
->      row to free
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-modifytuple.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-freetupletable.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_modifytuple</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi-memory.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_freetuptable</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684131"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
+<dd><p>      row to free
+     </p></dd>
+</dl></div>
+</div>
+</div></body>
+</html>

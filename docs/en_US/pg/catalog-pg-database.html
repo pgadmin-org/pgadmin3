@@ -1,503 +1,145 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->pg_database</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_conversion"
-HREF="catalog-pg-conversion.html"><LINK
-REL="NEXT"
-TITLE="pg_depend"
-HREF="catalog-pg-depend.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-conversion.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 42. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-depend.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-DATABASE"
->42.15. <TT
-CLASS="STRUCTNAME"
->pg_database</TT
-></A
-></H1
-><A
-NAME="AEN56476"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_database</TT
-> stores information
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.15. pg_database</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-conversion.html" title="42.14. pg_conversion">
+<link rel="next" href="catalog-pg-depend.html" title="42.16. pg_depend">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-database"></a>42.15. <code class="structname">pg_database</code></h2></div></div></div>
+<a name="id769602"></a><p>   The catalog <code class="structname">pg_database</code> stores information
    about the available databases.  Databases are created with the
-   <TT
-CLASS="COMMAND"
->CREATE DATABASE</TT
-> command.  Consult
-   <A
-HREF="managing-databases.html"
->Chapter 19</A
-> for details about the meaning of some of the
+   <code class="command">CREATE DATABASE</code> command.  Consult
+   <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for details about the meaning of some of the
    parameters.
-  </P
-><P
->   Unlike most system catalogs, <TT
-CLASS="STRUCTNAME"
->pg_database</TT
->
+  </p>
+<p>   Unlike most system catalogs, <code class="structname">pg_database</code>
    is shared across all databases of a cluster: there is only one
-   copy of <TT
-CLASS="STRUCTNAME"
->pg_database</TT
-> per cluster, not
+   copy of <code class="structname">pg_database</code> per cluster, not
    one per database.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN56485"
-></A
-><P
-><B
->Table 42-15. <TT
-CLASS="STRUCTNAME"
->pg_database</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datname</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Database name</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datdba</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-authid.html"
-><TT
-CLASS="STRUCTNAME"
->pg_authid</TT
-></A
->.oid</TT
-></TD
-><TD
->Owner of the database, usually the user who created it</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->encoding</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Character encoding for this database</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datistemplate</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       If true then this database can be used in the
-       <TT
-CLASS="LITERAL"
->TEMPLATE</TT
-> clause of <TT
-CLASS="COMMAND"
->CREATE
-       DATABASE</TT
-> to create a new database as a clone of
+  </p>
+<div class="table">
+<a name="id769649"></a><p class="title"><b>Table 42.15. <code class="structname">pg_database</code> Columns</b></p>
+<table summary="pg_database Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">datname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Database name</td>
+</tr>
+<tr>
+<td><code class="structfield">datdba</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>Owner of the database, usually the user who created it</td>
+</tr>
+<tr>
+<td><code class="structfield">encoding</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>Character encoding for this database</td>
+</tr>
+<tr>
+<td><code class="structfield">datistemplate</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       If true then this database can be used in the
+       <code class="literal">TEMPLATE</code> clause of <code class="command">CREATE
+       DATABASE</code> to create a new database as a clone of
        this one.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datallowconn</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       If false then no one can connect to this database.  This is
-       used to protect the <TT
-CLASS="LITERAL"
->template0</TT
-> database from being altered.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datconnlimit</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Sets maximum number of concurrent connections that can be made 
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datallowconn</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       If false then no one can connect to this database.  This is
+       used to protect the <code class="literal">template0</code> database from being altered.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datconnlimit</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       Sets maximum number of concurrent connections that can be made 
        to this database.  -1 means no limit.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datlastsysoid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Last system OID in the database; useful
-       particularly to <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datvacuumxid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->xid</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       All rows inserted or deleted by transaction IDs before this one
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datlastsysoid</code></td>
+<td><code class="type">oid</code></td>
+<td> </td>
+<td>       Last system OID in the database; useful
+       particularly to <span class="application">pg_dump</span>
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datvacuumxid</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       All rows inserted or deleted by transaction IDs before this one
        have been marked as known committed or known aborted in this database.
        This is used to determine when commit-log space can be recycled.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datfrozenxid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->xid</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       All rows inserted by transaction IDs before this one have been
-       relabeled with a permanent (<SPAN
-CLASS="QUOTE"
->"frozen"</SPAN
->) transaction ID in this
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datfrozenxid</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       All rows inserted by transaction IDs before this one have been
+       relabeled with a permanent (&#8220;<span class="quote">frozen</span>&#8221;) transaction ID in this
        database.  This is useful to check whether a database must be vacuumed
        soon to avoid transaction ID wrap-around problems.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->dattablespace</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-tablespace.html"
-><TT
-CLASS="STRUCTNAME"
->pg_tablespace</TT
-></A
->.oid</TT
-></TD
-><TD
->       The default tablespace for the database.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">dattablespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="42.31. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
+<td>       The default tablespace for the database.
        Within this database, all tables for which
-       <TT
-CLASS="STRUCTNAME"
->pg_class</TT
->.<TT
-CLASS="STRUCTFIELD"
->reltablespace</TT
-> is zero
+       <code class="structname">pg_class</code>.<code class="structfield">reltablespace</code> is zero
        will be stored in this tablespace; in particular, all the non-shared
        system catalogs will be there.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datconfig</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text[]</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Session defaults for run-time configuration variables</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->datacl</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->aclitem[]</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Access privileges; see
-       <A
-HREF="sql-grant.html"
-><I
->GRANT</I
-></A
-> and
-       <A
-HREF="sql-revoke.html"
-><I
->REVOKE</I
-></A
->
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datconfig</code></td>
+<td><code class="type">text[]</code></td>
+<td> </td>
+<td>Session defaults for run-time configuration variables</td>
+</tr>
+<tr>
+<td><code class="structfield">datacl</code></td>
+<td><code class="type">aclitem[]</code></td>
+<td> </td>
+<td>       Access privileges; see
+       <a href="sql-grant.html">GRANT</a> and
+       <a href="sql-revoke.html">REVOKE</a>
        for details.
-      </TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-conversion.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-depend.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_conversion</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_depend</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

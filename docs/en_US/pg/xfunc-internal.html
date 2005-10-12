@@ -1,241 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Internal Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Extending SQL"
-HREF="extend.html"><LINK
-REL="PREVIOUS"
-TITLE="Procedural Language Functions"
-HREF="xfunc-pl.html"><LINK
-REL="NEXT"
-TITLE="C-Language Functions"
-HREF="xfunc-c.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xfunc-pl.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="extend.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 32. Extending <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="extend.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xfunc-c.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XFUNC-INTERNAL"
->32.8. Internal Functions</A
-></H1
-><A
-NAME="AEN31314"
-></A
-><P
->    Internal functions are functions written in C that have been statically
-    linked into the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server.
-    The <SPAN
-CLASS="QUOTE"
->"body"</SPAN
-> of the function definition
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.8. Internal Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
+<link rel="prev" href="xfunc-pl.html" title="32.7. Procedural Language Functions">
+<link rel="next" href="xfunc-c.html" title="32.9. C-Language Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xfunc-internal"></a>32.8. Internal Functions</h2></div></div></div>
+<a name="id650648"></a><p>    Internal functions are functions written in C that have been statically
+    linked into the <span class="productname">PostgreSQL</span> server.
+    The &#8220;<span class="quote">body</span>&#8221; of the function definition
     specifies the C-language name of the function, which need not be the
     same as the name being declared for SQL use.
     (For reasons of backwards compatibility, an empty body
     is accepted as meaning that the C-language function name is the
     same as the SQL name.)
-   </P
-><P
->    Normally, all internal functions present in the
-    server are declared during the initialization of the database cluster (<TT
-CLASS="COMMAND"
->initdb</TT
->),
-    but a user could use <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->
+   </p>
+<p>    Normally, all internal functions present in the
+    server are declared during the initialization of the database cluster (<code class="command">initdb</code>),
+    but a user could use <code class="command">CREATE FUNCTION</code>
     to create additional alias names for an internal function.
-    Internal functions are declared in <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->
-    with language name <TT
-CLASS="LITERAL"
->internal</TT
->.  For instance, to
-    create an alias for the <CODE
-CLASS="FUNCTION"
->sqrt</CODE
-> function:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION square_root(double precision) RETURNS double precision
+    Internal functions are declared in <code class="command">CREATE FUNCTION</code>
+    with language name <code class="literal">internal</code>.  For instance, to
+    create an alias for the <code class="function">sqrt</code> function:
+</p>
+<pre class="programlisting">CREATE FUNCTION square_root(double precision) RETURNS double precision
     AS 'dsqrt'
     LANGUAGE internal
-    STRICT;</PRE
-><P>
-    (Most internal functions expect to be declared <SPAN
-CLASS="QUOTE"
->"strict"</SPAN
->.)
-   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     Not all <SPAN
-CLASS="QUOTE"
->"predefined"</SPAN
-> functions are
-     <SPAN
-CLASS="QUOTE"
->"internal"</SPAN
-> in the above sense.  Some predefined
+    STRICT;</pre>
+<p>
+    (Most internal functions expect to be declared &#8220;<span class="quote">strict</span>&#8221;.)
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Not all &#8220;<span class="quote">predefined</span>&#8221; functions are
+     &#8220;<span class="quote">internal</span>&#8221; in the above sense.  Some predefined
      functions are written in SQL.
-    </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xfunc-pl.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xfunc-c.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Procedural Language Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="extend.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->C-Language Functions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    </p>
+</div>
+</div></body>
+</html>

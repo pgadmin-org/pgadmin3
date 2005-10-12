@@ -1,238 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SSL Support</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="libpq - C Library"
-HREF="libpq.html"><LINK
-REL="PREVIOUS"
-TITLE="The Password File"
-HREF="libpq-pgpass.html"><LINK
-REL="NEXT"
-TITLE="Behavior in Threaded Programs"
-HREF="libpq-threading.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-pgpass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 28. <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> - C Library</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-threading.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LIBPQ-SSL"
->28.13. SSL Support</A
-></H1
-><A
-NAME="AEN26287"
-></A
-><P
->   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has native support for using
-   <ACRONYM
-CLASS="ACRONYM"
->SSL</ACRONYM
-> connections to encrypt client/server communications
-   for increased security. See <A
-HREF="ssl-tcp.html"
->Section 16.7</A
-> for details
-   about the server-side <ACRONYM
-CLASS="ACRONYM"
->SSL</ACRONYM
-> functionality.
-  </P
-><P
->   If the server demands a client certificate, 
-   <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>28.13. SSL Support</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 28. libpq - C Library">
+<link rel="prev" href="libpq-pgpass.html" title="28.12. The Password File">
+<link rel="next" href="libpq-threading.html" title="28.14. Behavior in Threaded Programs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-ssl"></a>28.13. SSL Support</h2></div></div></div>
+<a name="id631320"></a><p>   <span class="productname">PostgreSQL</span> has native support for using
+   <span class="acronym">SSL</span> connections to encrypt client/server communications
+   for increased security. See <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> for details
+   about the server-side <span class="acronym">SSL</span> functionality.
+  </p>
+<p>   If the server demands a client certificate, 
+   <span class="application">libpq</span>
    will send the certificate stored in file
-   <TT
-CLASS="FILENAME"
->~/.postgresql/postgresql.crt</TT
-> within the user's home directory.
-   A matching private key file <TT
-CLASS="FILENAME"
->~/.postgresql/postgresql.key</TT
->
+   <code class="filename">~/.postgresql/postgresql.crt</code> within the user's home directory.
+   A matching private key file <code class="filename">~/.postgresql/postgresql.key</code>
    must also be present, and must not be world-readable.
    (On Microsoft Windows these files are named
-   <TT
-CLASS="FILENAME"
->%APPDATA%\postgresql\postgresql.crt</TT
-> and
-   <TT
-CLASS="FILENAME"
->%APPDATA%\postgresql\postgresql.key</TT
->.)
-  </P
-><P
->   If the file <TT
-CLASS="FILENAME"
->~/.postgresql/root.crt</TT
-> is present in the user's
+   <code class="filename">%APPDATA%\postgresql\postgresql.crt</code> and
+   <code class="filename">%APPDATA%\postgresql\postgresql.key</code>.)
+  </p>
+<p>   If the file <code class="filename">~/.postgresql/root.crt</code> is present in the user's
    home directory,
-   <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> will use the certificate list stored
+   <span class="application">libpq</span> will use the certificate list stored
    therein to verify the server's certificate.
    (On Microsoft Windows the file is named
-   <TT
-CLASS="FILENAME"
->%APPDATA%\postgresql\root.crt</TT
->.)
+   <code class="filename">%APPDATA%\postgresql\root.crt</code>.)
    The SSL connection will
    fail if the server does not present a certificate; therefore, to
-   use this feature the server must also have a <TT
-CLASS="FILENAME"
->root.crt</TT
-> file.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-pgpass.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-threading.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->The Password File</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libpq.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Behavior in Threaded Programs</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   use this feature the server must also have a <code class="filename">root.crt</code> file.
+  </p>
+</div></body>
+</html>

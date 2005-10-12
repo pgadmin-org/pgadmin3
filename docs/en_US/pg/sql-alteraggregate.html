@@ -1,432 +1,90 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->ALTER AGGREGATE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ABORT"
-HREF="sql-abort.html"><LINK
-REL="NEXT"
-TITLE="ALTER CONVERSION"
-HREF="sql-alterconversion.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-abort.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-abort.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterconversion.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterconversion.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERAGGREGATE"
-></A
->ALTER AGGREGATE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN38029"
-></A
-><H2
->Name</H2
->ALTER AGGREGATE&nbsp;--&nbsp;change the definition of an aggregate function</DIV
-><A
-NAME="AEN38032"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN38034"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER AGGREGATE <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ( <TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> ) RENAME TO <TT
-CLASS="REPLACEABLE"
-><I
->new_name</I
-></TT
->
-ALTER AGGREGATE <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ( <TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> ) OWNER TO <TT
-CLASS="REPLACEABLE"
-><I
->new_owner</I
-></TT
->
-ALTER AGGREGATE <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ( <TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> ) SET SCHEMA <TT
-CLASS="REPLACEABLE"
-><I
->new_schema</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38045"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER AGGREGATE</TT
-> changes the definition of an
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER AGGREGATE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-abort.html" title="ABORT">
+<link rel="next" href="sql-alterconversion.html" title="ALTER CONVERSION">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-alteraggregate"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER AGGREGATE &#8212; change the definition of an aggregate function</p>
+</div>
+<a name="id684898"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) RENAME TO <em class="replaceable"><code>new_name</code></em>
+ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) OWNER TO <em class="replaceable"><code>new_owner</code></em>
+ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) SET SCHEMA <em class="replaceable"><code>new_schema</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684953"></a><h2>Description</h2>
+<p>   <code class="command">ALTER AGGREGATE</code> changes the definition of an
    aggregate function.
-  </P
-><P
->   You must own the aggregate function to use <TT
-CLASS="COMMAND"
->ALTER AGGREGATE</TT
->;
-   except for <TT
-CLASS="COMMAND"
->ALTER AGGREGATE OWNER</TT
->, which may only be executed by
+  </p>
+<p>   You must own the aggregate function to use <code class="command">ALTER AGGREGATE</code>;
+   except for <code class="command">ALTER AGGREGATE OWNER</code>, which may only be executed by
    a superuser.
    To change the schema of an aggregate function, you must also have
-   <TT
-CLASS="LITERAL"
->CREATE</TT
-> privilege on the new schema.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38053"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of an existing aggregate function.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-></DT
-><DD
-><P
->      The argument data type of the aggregate function, or
-      <TT
-CLASS="LITERAL"
->*</TT
-> if the function accepts any data type.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->new_name</I
-></TT
-></DT
-><DD
-><P
->      The new name of the aggregate function.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->new_owner</I
-></TT
-></DT
-><DD
-><P
->      The new owner of the aggregate function.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->new_schema</I
-></TT
-></DT
-><DD
-><P
->      The new schema for the aggregate function.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38082"
-></A
-><H2
->Examples</H2
-><P
->   To rename the aggregate function <TT
-CLASS="LITERAL"
->myavg</TT
-> for type
-   <TT
-CLASS="TYPE"
->integer</TT
-> to <TT
-CLASS="LITERAL"
->my_average</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER AGGREGATE myavg(integer) RENAME TO my_average;</PRE
-><P>
-  </P
-><P
->   To change the owner of the aggregate function <TT
-CLASS="LITERAL"
->myavg</TT
-> for type
-   <TT
-CLASS="TYPE"
->integer</TT
-> to <TT
-CLASS="LITERAL"
->joe</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER AGGREGATE myavg(integer) OWNER TO joe;</PRE
-><P>
-  </P
-><P
->   To move the aggregate function <TT
-CLASS="LITERAL"
->myavg</TT
-> for type
-   <TT
-CLASS="TYPE"
->integer</TT
-> into schema <TT
-CLASS="LITERAL"
->myschema</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER AGGREGATE myavg(integer) SET SCHEMA myschema;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38099"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->ALTER AGGREGATE</TT
-> statement in the SQL
+   <code class="literal">CREATE</code> privilege on the new schema.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684993"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of an existing aggregate function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>type</code></em></span></dt>
+<dd><p>      The argument data type of the aggregate function, or
+      <code class="literal">*</code> if the function accepts any data type.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_name</code></em></span></dt>
+<dd><p>      The new name of the aggregate function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_owner</code></em></span></dt>
+<dd><p>      The new owner of the aggregate function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_schema</code></em></span></dt>
+<dd><p>      The new schema for the aggregate function.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id685068"></a><h2>Examples</h2>
+<p>   To rename the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> to <code class="literal">my_average</code>:
+</p>
+<pre class="programlisting">ALTER AGGREGATE myavg(integer) RENAME TO my_average;</pre>
+<p>
+  </p>
+<p>   To change the owner of the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> to <code class="literal">joe</code>:
+</p>
+<pre class="programlisting">ALTER AGGREGATE myavg(integer) OWNER TO joe;</pre>
+<p>
+  </p>
+<p>   To move the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> into schema <code class="literal">myschema</code>:
+</p>
+<pre class="programlisting">ALTER AGGREGATE myavg(integer) SET SCHEMA myschema;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id685154"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ALTER AGGREGATE</code> statement in the SQL
    standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38103"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-createaggregate.html"
-><I
->CREATE AGGREGATE</I
-></A
->, <A
-HREF="sql-dropaggregate.html"
-><I
->DROP AGGREGATE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-abort.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterconversion.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ABORT</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ALTER CONVERSION</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id685168"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createaggregate.html">CREATE AGGREGATE</a>, <a href="sql-dropaggregate.html">DROP AGGREGATE</a></span>
+</div>
+</div></body>
+</html>

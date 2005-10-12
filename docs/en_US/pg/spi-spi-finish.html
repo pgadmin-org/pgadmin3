@@ -1,252 +1,50 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SPI_finish</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_connect"
-HREF="spi-spi-connect.html"><LINK
-REL="NEXT"
-TITLE="SPI_push"
-HREF="spi-spi-push.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-connect.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-connect.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-push.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-push.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-FINISH"
-></A
->SPI_finish</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN36331"
-></A
-><H2
->Name</H2
->SPI_finish&nbsp;--&nbsp;disconnect a procedure from the SPI manager</DIV
-><A
-NAME="AEN36334"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN36336"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->int SPI_finish(void)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36338"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_finish</CODE
-> closes an existing connection to
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_finish</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="40.1. Interface Functions">
+<link rel="prev" href="spi-spi-connect.html" title="SPI_connect">
+<link rel="next" href="spi-spi-push.html" title="SPI_push">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-finish"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_finish &#8212; disconnect a procedure from the SPI manager</p>
+</div>
+<a name="id678515"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">int SPI_finish(void)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id678528"></a><h2>Description</h2>
+<p>   <code class="function">SPI_finish</code> closes an existing connection to
    the SPI manager.  You must call this function after completing the
    SPI operations needed during your procedure's current invocation.
    You do not need to worry about making this happen, however, if you
-   abort the transaction via <TT
-CLASS="LITERAL"
->elog(ERROR)</TT
->.  In that
+   abort the transaction via <code class="literal">elog(ERROR)</code>.  In that
    case SPI will clean itself up automatically.
-  </P
-><P
->   If <CODE
-CLASS="FUNCTION"
->SPI_finish</CODE
-> is called without having a valid
-   connection, it will return <TT
-CLASS="SYMBOL"
->SPI_ERROR_UNCONNECTED</TT
->.
+  </p>
+<p>   If <code class="function">SPI_finish</code> is called without having a valid
+   connection, it will return <code class="symbol">SPI_ERROR_UNCONNECTED</code>.
    There is no fundamental problem with this; it means that the SPI
    manager has nothing to do.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36346"
-></A
-><H2
->Return Value</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_OK_FINISH</TT
-></DT
-><DD
-><P
->      if properly disconnected
-     </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_UNCONNECTED</TT
-></DT
-><DD
-><P
->      if called from an unconnected procedure
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-connect.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-push.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_connect</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_push</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id678569"></a><h2>Return Value</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="symbol">SPI_OK_FINISH</code></span></dt>
+<dd><p>      if properly disconnected
+     </p></dd>
+<dt><span class="term"><code class="symbol">SPI_ERROR_UNCONNECTED</code></span></dt>
+<dd><p>      if called from an unconnected procedure
+     </p></dd>
+</dl></div>
+</div>
+</div></body>
+</html>

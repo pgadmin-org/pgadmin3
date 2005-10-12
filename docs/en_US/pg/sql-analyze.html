@@ -1,448 +1,123 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->ANALYZE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER USER"
-HREF="sql-alteruser.html"><LINK
-REL="NEXT"
-TITLE="BEGIN"
-HREF="sql-begin.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alteruser.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alteruser.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-begin.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-begin.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ANALYZE"
-></A
->ANALYZE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN39737"
-></A
-><H2
->Name</H2
->ANALYZE&nbsp;--&nbsp;collect statistics about a database</DIV
-><A
-NAME="AEN39740"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN39742"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ANALYZE [ VERBOSE ] [ <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ (<TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [, ...] ) ] ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39746"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> collects statistics about the contents
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ANALYZE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-alteruser.html" title="ALTER USER">
+<link rel="next" href="sql-begin.html" title="BEGIN">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-analyze"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ANALYZE &#8212; collect statistics about a database</p>
+</div>
+<a name="id692028"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ANALYZE [ VERBOSE ] [ <em class="replaceable"><code>table</code></em> [ (<em class="replaceable"><code>column</code></em> [, ...] ) ] ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id692057"></a><h2>Description</h2>
+<p>   <code class="command">ANALYZE</code> collects statistics about the contents
    of tables in the database, and stores the results in the system
-   table <TT
-CLASS="LITERAL"
->pg_statistic</TT
->.  Subsequently, the query
+   table <code class="literal">pg_statistic</code>.  Subsequently, the query
    planner uses these statistics to help determine the most efficient
    execution plans for queries.
-  </P
-><P
->   With no parameter, <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> examines every table in the
-   current database.  With a parameter, <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> examines
+  </p>
+<p>   With no parameter, <code class="command">ANALYZE</code> examines every table in the
+   current database.  With a parameter, <code class="command">ANALYZE</code> examines
    only that table.  It is further possible to give a list of column names,
    in which case only the statistics for those columns are collected.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39754"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->VERBOSE</TT
-></DT
-><DD
-><P
->      Enables display of progress messages.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->      The name (possibly schema-qualified) of a specific table to
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id692100"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">VERBOSE</code></span></dt>
+<dd><p>      Enables display of progress messages.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
+<dd><p>      The name (possibly schema-qualified) of a specific table to
       analyze. Defaults to all tables in the current database.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-></DT
-><DD
-><P
->      The name of a specific column to analyze. Defaults to all columns.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39772"
-></A
-><H2
->Outputs</H2
-><P
->    When <TT
-CLASS="LITERAL"
->VERBOSE</TT
-> is specified, <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> emits
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>column</code></em></span></dt>
+<dd><p>      The name of a specific column to analyze. Defaults to all columns.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id692144"></a><h2>Outputs</h2>
+<p>    When <code class="literal">VERBOSE</code> is specified, <code class="command">ANALYZE</code> emits
     progress messages to indicate which table is currently being
     processed.  Various statistics about the tables are printed as well.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39777"
-></A
-><H2
->Notes</H2
-><P
->   It is a good idea to run <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> periodically, or
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id692166"></a><h2>Notes</h2>
+<p>   It is a good idea to run <code class="command">ANALYZE</code> periodically, or
    just after making major changes in the contents of a table.  Accurate
    statistics will help the planner to choose the most appropriate query
    plan, and thereby improve the speed of query processing.  A common
-   strategy is to run <A
-HREF="sql-vacuum.html"
-><I
->VACUUM</I
-></A
->
-   and <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> once a day during a low-usage time of day.
-  </P
-><P
->   Unlike <TT
-CLASS="COMMAND"
->VACUUM FULL</TT
->, <TT
-CLASS="COMMAND"
->ANALYZE</TT
->
+   strategy is to run <a href="sql-vacuum.html">VACUUM</a>
+   and <code class="command">ANALYZE</code> once a day during a low-usage time of day.
+  </p>
+<p>   Unlike <code class="command">VACUUM FULL</code>, <code class="command">ANALYZE</code>
    requires only a read lock on the target table, so it can run in
    parallel with other activity on the table.
-  </P
-><P
->   The statistics collected by <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> usually
+  </p>
+<p>   The statistics collected by <code class="command">ANALYZE</code> usually
    include a list of some of the most common values in each column and
    a histogram showing the approximate data distribution in each
    column.  One or both of these may be omitted if
-   <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> deems them uninteresting (for example,
+   <code class="command">ANALYZE</code> deems them uninteresting (for example,
    in a unique-key column, there are no common values) or if the
    column data type does not support the appropriate operators.  There
-   is more information about the statistics in <A
-HREF="maintenance.html"
->Chapter 22</A
->.
-  </P
-><P
->   For large tables, <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> takes a random sample
+   is more information about the statistics in <a href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">Chapter 22, <i>Routine Database Maintenance Tasks</i></a>.
+  </p>
+<p>   For large tables, <code class="command">ANALYZE</code> takes a random sample
    of the table contents, rather than examining every row.  This
    allows even very large tables to be analyzed in a small amount of
    time.  Note, however, that the statistics are only approximate, and
-   will change slightly each time <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> is run,
+   will change slightly each time <code class="command">ANALYZE</code> is run,
    even if the actual table contents did not change.  This may result
    in small changes in the planner's estimated costs shown by
-   <TT
-CLASS="COMMAND"
->EXPLAIN</TT
->. In rare situations, this
+   <code class="command">EXPLAIN</code>. In rare situations, this
    non-determinism will cause the query optimizer to choose a
-   different query plan between runs of <TT
-CLASS="COMMAND"
->ANALYZE</TT
->. To
+   different query plan between runs of <code class="command">ANALYZE</code>. To
    avoid this, raise the amount of statistics collected by
-   <TT
-CLASS="COMMAND"
->ANALYZE</TT
->, as described below.
-  </P
-><P
->   The extent of analysis can be controlled by adjusting the
-   <A
-HREF="runtime-config-query.html#GUC-DEFAULT-STATISTICS-TARGET"
->default_statistics_target</A
-> configuration variable, or
+   <code class="command">ANALYZE</code>, as described below.
+  </p>
+<p>   The extent of analysis can be controlled by adjusting the
+   <a href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a> configuration variable, or
    on a column-by-column basis by setting the per-column statistics
-   target with <TT
-CLASS="COMMAND"
->ALTER TABLE ... ALTER COLUMN ... SET
-   STATISTICS</TT
-> (see <A
-HREF="sql-altertable.html"
-><I
->ALTER TABLE</I
-></A
->).  The target value sets the
+   target with <code class="command">ALTER TABLE ... ALTER COLUMN ... SET
+   STATISTICS</code> (see <a href="sql-altertable.html">ALTER TABLE</a>).  The target value sets the
    maximum number of entries in the most-common-value list and the
    maximum number of bins in the histogram.  The default target value
    is 10, but this can be adjusted up or down to trade off accuracy of
    planner estimates against the time taken for
-   <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> and the amount of space occupied in
-   <TT
-CLASS="LITERAL"
->pg_statistic</TT
->.  In particular, setting the
+   <code class="command">ANALYZE</code> and the amount of space occupied in
+   <code class="literal">pg_statistic</code>.  In particular, setting the
    statistics target to zero disables collection of statistics for
    that column.  It may be useful to do that for columns that are
-   never used as part of the <TT
-CLASS="LITERAL"
->WHERE</TT
->, <TT
-CLASS="LITERAL"
->GROUP BY</TT
->,
-   or <TT
-CLASS="LITERAL"
->ORDER BY</TT
-> clauses of queries, since the planner will
+   never used as part of the <code class="literal">WHERE</code>, <code class="literal">GROUP BY</code>,
+   or <code class="literal">ORDER BY</code> clauses of queries, since the planner will
    have no use for statistics on such columns.
-  </P
-><P
->   The largest statistics target among the columns being analyzed determines
+  </p>
+<p>   The largest statistics target among the columns being analyzed determines
    the number of table rows sampled to prepare the statistics.  Increasing
    the target causes a proportional increase in the time and space needed
-   to do <TT
-CLASS="COMMAND"
->ANALYZE</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39807"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> statement in the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alteruser.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-begin.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER USER</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->BEGIN</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   to do <code class="command">ANALYZE</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id692382"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ANALYZE</code> statement in the SQL standard.
+  </p>
+</div>
+</div></body>
+</html>

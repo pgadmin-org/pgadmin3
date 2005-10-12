@@ -1,250 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->The PostgreSQL Rule System</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Overview of PostgreSQL Internals"
-HREF="overview.html"><LINK
-REL="PREVIOUS"
-TITLE="The Parser Stage"
-HREF="parser-stage.html"><LINK
-REL="NEXT"
-TITLE="Planner/Optimizer"
-HREF="planner-optimizer.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="parser-stage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="overview.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. Overview of PostgreSQL Internals</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="overview.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="planner-optimizer.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RULE-SYSTEM"
->41.4. The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> Rule System</A
-></H1
-><P
->    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> supports a powerful
-    <I
-CLASS="FIRSTTERM"
->rule system</I
-> for the specification
-    of <I
-CLASS="FIRSTTERM"
->views</I
-> and ambiguous <I
-CLASS="FIRSTTERM"
->view updates</I
->.
-    Originally the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.4. The PostgreSQL Rule System</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="overview.html" title="Chapter 41. Overview of PostgreSQL Internals">
+<link rel="prev" href="parser-stage.html" title="41.3. The Parser Stage">
+<link rel="next" href="planner-optimizer.html" title="41.5. Planner/Optimizer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="rule-system"></a>41.4. The <span class="productname">PostgreSQL</span> Rule System</h2></div></div></div>
+<p>    <span class="productname">PostgreSQL</span> supports a powerful
+    <em class="firstterm">rule system</em> for the specification
+    of <em class="firstterm">views</em> and ambiguous <em class="firstterm">view updates</em>.
+    Originally the <span class="productname">PostgreSQL</span>
     rule system consisted of two implementations:
 
-    <P
-></P
-></P><UL
-><LI
-><P
->       The first one worked using <I
-CLASS="FIRSTTERM"
->row level</I
-> processing and was
-       implemented deep in the <I
-CLASS="FIRSTTERM"
->executor</I
->. The rule system was
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       The first one worked using <em class="firstterm">row level</em> processing and was
+       implemented deep in the <em class="firstterm">executor</em>. The rule system was
        called whenever an individual row had been accessed. This
        implementation was removed in 1995 when the last official release
-       of the <SPAN
-CLASS="PRODUCTNAME"
->Berkeley Postgres</SPAN
-> project was
-       transformed into <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
->. 
-      </P
-></LI
-><LI
-><P
->       The second implementation of the rule system is a technique
-       called <I
-CLASS="FIRSTTERM"
->query rewriting</I
->.
-       The <I
-CLASS="FIRSTTERM"
->rewrite system</I
-> is a module
-       that exists between the <I
-CLASS="FIRSTTERM"
->parser stage</I
-> and the
-       <I
-CLASS="FIRSTTERM"
->planner/optimizer</I
->. This technique is still implemented.
-      </P
-></LI
-></UL
-><P>
-   </P
-><P
->    The query rewriter is discussed in some detail in
-    <A
-HREF="rules.html"
->Chapter 34</A
->, so there is no need to cover it here.
+       of the <span class="productname">Berkeley Postgres</span> project was
+       transformed into <span class="productname">Postgres95</span>. 
+      </p></li>
+<li><p>       The second implementation of the rule system is a technique
+       called <em class="firstterm">query rewriting</em>.
+       The <em class="firstterm">rewrite system</em> is a module
+       that exists between the <em class="firstterm">parser stage</em> and the
+       <em class="firstterm">planner/optimizer</em>. This technique is still implemented.
+      </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    The query rewriter is discussed in some detail in
+    <a href="rules.html" title="Chapter 34. The Rule System">Chapter 34, <i>The Rule System</i></a>, so there is no need to cover it here.
     We will only point out that both the input and the output of the
     rewriter are query trees, that is, there is no change in the
     representation or level of semantic detail in the trees.  Rewriting
     can be thought of as a form of macro expansion.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="parser-stage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="planner-optimizer.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->The Parser Stage</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="overview.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Planner/Optimizer</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div></body>
+</html>

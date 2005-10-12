@@ -1,574 +1,173 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->pg_config</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PostgreSQL Client Applications"
-HREF="reference-client.html"><LINK
-REL="PREVIOUS"
-TITLE="ecpg"
-HREF="app-ecpg.html"><LINK
-REL="NEXT"
-TITLE="pg_dump"
-HREF="app-pgdump.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-ecpg.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-ecpg.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-pgdump.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-pgdump.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="APP-PGCONFIG"
-></A
->pg_config</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN50057"
-></A
-><H2
->Name</H2
->pg_config&nbsp;--&nbsp;retrieve information about the installed version of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></DIV
-><A
-NAME="AEN50061"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN50063"
-></A
-><H2
->Synopsis</H2
-><P
-><TT
-CLASS="COMMAND"
->pg_config</TT
-> [<TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
->...]</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN50068"
-></A
-><H2
->Description</H2
-><P
->   The <SPAN
-CLASS="APPLICATION"
->pg_config</SPAN
-> utility prints configuration parameters
-   of the currently installed version of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->. It is
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>pg_config</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="prev" href="app-ecpg.html" title="ecpg">
+<link rel="next" href="app-pgdump.html" title="pg_dump">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-pgconfig"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>pg_config &#8212; retrieve information about the installed version of <span class="productname">PostgreSQL</span></p>
+</div>
+<a name="id739524"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">pg_config</code> [<em class="replaceable"><code>option</code></em>...]</p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id739552"></a><h2>Description</h2>
+<p>   The <span class="application">pg_config</span> utility prints configuration parameters
+   of the currently installed version of <span class="productname">PostgreSQL</span>. It is
    intended, for example, to be used by software packages that want to interface
-   to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to facilitate finding the required header files
+   to <span class="productname">PostgreSQL</span> to facilitate finding the required header files
    and libraries.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN50074"
-></A
-><H2
->Options</H2
-><P
->   To use <SPAN
-CLASS="APPLICATION"
->pg_config</SPAN
->, supply one or more of the following
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id739582"></a><h2>Options</h2>
+<p>   To use <span class="application">pg_config</span>, supply one or more of the following
    options:
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->--bindir</TT
-></DT
-><DD
-><P
->       Print the location of user executables. Use this, for example, to find
-       the <TT
-CLASS="COMMAND"
->psql</TT
-> program. This is normally also the location
-       where the <TT
-CLASS="FILENAME"
->pg_config</TT
-> program resides.       
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--includedir</TT
-></DT
-><DD
-><P
->       Print the location of C header files of the client interfaces.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--includedir-server</TT
-></DT
-><DD
-><P
->       Print the location of C header files for server
-       programming.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--libdir</TT
-></DT
-><DD
-><P
->       Print the location of object code libraries.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--pkglibdir</TT
-></DT
-><DD
-><P
->       Print the location of dynamically loadable modules, or where
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="option">--bindir</code></span></dt>
+<dd><p>       Print the location of user executables. Use this, for example, to find
+       the <code class="command">psql</code> program. This is normally also the location
+       where the <code class="filename">pg_config</code> program resides.       
+      </p></dd>
+<dt><span class="term"><code class="option">--docdir</code></span></dt>
+<dd><p>       Print the location of documentation files.  (This will be an empty
+       string if <code class="literal">--without-docdir</code> was specified when
+       <span class="productname">PostgreSQL</span> was built.)
+      </p></dd>
+<dt><span class="term"><code class="option">--includedir</code></span></dt>
+<dd><p>       Print the location of C header files of the client interfaces.
+      </p></dd>
+<dt><span class="term"><code class="option">--pkgincludedir</code></span></dt>
+<dd><p>       Print the location of other C header files.
+      </p></dd>
+<dt><span class="term"><code class="option">--includedir-server</code></span></dt>
+<dd><p>       Print the location of C header files for server programming.
+      </p></dd>
+<dt><span class="term"><code class="option">--libdir</code></span></dt>
+<dd><p>       Print the location of object code libraries.
+      </p></dd>
+<dt><span class="term"><code class="option">--pkglibdir</code></span></dt>
+<dd><p>       Print the location of dynamically loadable modules, or where
        the server would search for them.  (Other
        architecture-dependent data files may also be installed in this
        directory.)
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--pgxs</TT
-></DT
-><DD
-><P
->       Print the location of extension makefiles.
-     </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--configure</TT
-></DT
-><DD
-><P
->       Print the options that were given to the <TT
-CLASS="FILENAME"
->configure</TT
->
-       script when <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> was configured for building.
+      </p></dd>
+<dt><span class="term"><code class="option">--localedir</code></span></dt>
+<dd><p>       Print the location of locale support files.  (This will be an empty
+       string if locale support was not configured when
+       <span class="productname">PostgreSQL</span> was built.)
+      </p></dd>
+<dt><span class="term"><code class="option">--mandir</code></span></dt>
+<dd><p>       Print the location of manual pages.
+      </p></dd>
+<dt><span class="term"><code class="option">--sharedir</code></span></dt>
+<dd><p>       Print the location of architecture-independent support files.
+      </p></dd>
+<dt><span class="term"><code class="option">--sysconfdir</code></span></dt>
+<dd><p>       Print the location of system-wide configuration files.
+      </p></dd>
+<dt><span class="term"><code class="option">--pgxs</code></span></dt>
+<dd><p>       Print the location of extension makefiles.
+     </p></dd>
+<dt><span class="term"><code class="option">--configure</code></span></dt>
+<dd><p>       Print the options that were given to the <code class="filename">configure</code>
+       script when <span class="productname">PostgreSQL</span> was configured for building.
        This can be used to reproduce the identical configuration, or
        to find out with what options a binary package was built. (Note
        however that binary packages often contain vendor-specific custom
        patches.)  See also the examples below.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--cc</TT
-></DT
-><DD
-><P
->       Print the value of the CC macro that was used for building
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This shows the C compiler used.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--cppflags</TT
-></DT
-><DD
-><P
->       Print the value of the CPPFLAGS macro that was used for building
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This shows C compiler switches needed
-       at preprocessing time (typically, <TT
-CLASS="LITERAL"
->-I</TT
-> switches).
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--cflags</TT
-></DT
-><DD
-><P
->       Print the value of the CFLAGS macro that was used for building
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This shows C compiler switches.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--cflags_sl</TT
-></DT
-><DD
-><P
->       Print the value of the CFLAGS_SL macro that was used for building
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This shows extra C compiler switches
+      </p></dd>
+<dt><span class="term"><code class="option">--cc</code></span></dt>
+<dd><p>       Print the value of the CC macro that was used for building
+       <span class="productname">PostgreSQL</span>.  This shows the C compiler used.
+      </p></dd>
+<dt><span class="term"><code class="option">--cppflags</code></span></dt>
+<dd><p>       Print the value of the CPPFLAGS macro that was used for building
+       <span class="productname">PostgreSQL</span>.  This shows C compiler switches needed
+       at preprocessing time (typically, <code class="literal">-I</code> switches).
+      </p></dd>
+<dt><span class="term"><code class="option">--cflags</code></span></dt>
+<dd><p>       Print the value of the CFLAGS macro that was used for building
+       <span class="productname">PostgreSQL</span>.  This shows C compiler switches.
+      </p></dd>
+<dt><span class="term"><code class="option">--cflags_sl</code></span></dt>
+<dd><p>       Print the value of the CFLAGS_SL macro that was used for building
+       <span class="productname">PostgreSQL</span>.  This shows extra C compiler switches
        used for building shared libraries.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--ldflags</TT
-></DT
-><DD
-><P
->       Print the value of the LDFLAGS macro that was used for building
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This shows linker switches.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--ldflags_sl</TT
-></DT
-><DD
-><P
->       Print the value of the LDFLAGS_SL macro that was used for building
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This shows linker switches
+      </p></dd>
+<dt><span class="term"><code class="option">--ldflags</code></span></dt>
+<dd><p>       Print the value of the LDFLAGS macro that was used for building
+       <span class="productname">PostgreSQL</span>.  This shows linker switches.
+      </p></dd>
+<dt><span class="term"><code class="option">--ldflags_sl</code></span></dt>
+<dd><p>       Print the value of the LDFLAGS_SL macro that was used for building
+       <span class="productname">PostgreSQL</span>.  This shows linker switches
        used for building shared libraries.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--libs</TT
-></DT
-><DD
-><P
->       Print the value of the LIBS macro that was used for building
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  This normally contains <TT
-CLASS="LITERAL"
->-l</TT
->
-       switches for external libraries linked into <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-      </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->--version</TT
-></DT
-><DD
-><P
->       Print the version of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-      </P
-></DD
-></DL
-></DIV
-><P>
+      </p></dd>
+<dt><span class="term"><code class="option">--libs</code></span></dt>
+<dd><p>       Print the value of the LIBS macro that was used for building
+       <span class="productname">PostgreSQL</span>.  This normally contains <code class="literal">-l</code>
+       switches for external libraries linked into <span class="productname">PostgreSQL</span>.
+      </p></dd>
+<dt><span class="term"><code class="option">--version</code></span></dt>
+<dd><p>       Print the version of <span class="productname">PostgreSQL</span>.
+      </p></dd>
+</dl></div>
+<p>
 
    If more than one option is given, the information is printed in that order,
    one item per line.  If no options are given, all available information
    is printed, with labels.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN50169"
-></A
-><H2
->Notes</H2
-><P
->   The option <TT
-CLASS="OPTION"
->--includedir-server</TT
-> was new in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.2.  In prior releases, the server include files were
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id739953"></a><h2>Notes</h2>
+<p>   The option <code class="option">--includedir-server</code> was new in
+   <span class="productname">PostgreSQL</span> 7.2.  In prior releases, the server include files were
    installed in the same location as the client headers, which could
-   be queried with the option <TT
-CLASS="OPTION"
->--includedir</TT
->.  To make your
+   be queried with the option <code class="option">--includedir</code>.  To make your
    package handle both cases, try the newer option first and test the
    exit status to see whether it succeeded.
-  </P
-><P
->   The options <TT
-CLASS="OPTION"
->--cc</TT
->, <TT
-CLASS="OPTION"
->--cppflags</TT
->,
-   <TT
-CLASS="OPTION"
->--cflags</TT
->, <TT
-CLASS="OPTION"
->--cflags_sl</TT
->,
-   <TT
-CLASS="OPTION"
->--ldflags</TT
->, <TT
-CLASS="OPTION"
->--ldflags_sl</TT
->,
-   and <TT
-CLASS="OPTION"
->--libs</TT
-> are new in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 8.1.
-  </P
-><P
->   In releases prior to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.1, before
-   <TT
-CLASS="COMMAND"
->pg_config</TT
-> came to be, a method for finding the
+  </p>
+<p>   The options <code class="option">--cc</code>, <code class="option">--cppflags</code>,
+   <code class="option">--cflags</code>, <code class="option">--cflags_sl</code>,
+   <code class="option">--ldflags</code>, <code class="option">--ldflags_sl</code>,
+   and <code class="option">--libs</code> are new in <span class="productname">PostgreSQL</span> 8.1.
+  </p>
+<p>   In releases prior to <span class="productname">PostgreSQL</span> 7.1, before
+   <code class="command">pg_config</code> came to be, a method for finding the
    equivalent configuration information did not exist.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN50187"
-></A
-><H2
->Example</H2
-><P
->   To reproduce the build configuration of the current PostgreSQL
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id740037"></a><h2>Example</h2>
+<p>   To reproduce the build configuration of the current PostgreSQL
    installation, run the following command:
-</P><PRE
-CLASS="PROGRAMLISTING"
->eval ./configure `pg_config --configure`</PRE
-><P>
-   The output of <TT
-CLASS="LITERAL"
->pg_config --configure</TT
-> contains
+</p>
+<pre class="programlisting">eval ./configure `pg_config --configure`</pre>
+<p>
+   The output of <code class="literal">pg_config --configure</code> contains
    shell quotation marks so arguments with spaces are represented
-   correctly.  Therefore, using <TT
-CLASS="LITERAL"
->eval</TT
-> is required
+   correctly.  Therefore, using <code class="literal">eval</code> is required
    for proper results.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN50193"
-></A
-><H2
->History</H2
-><P
->   The <TT
-CLASS="COMMAND"
->pg_config</TT
-> utility first appeared in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.1.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-ecpg.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-pgdump.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->ecpg</SPAN
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->pg_dump</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id740069"></a><h2>History</h2>
+<p>   The <code class="command">pg_config</code> utility first appeared in
+   <span class="productname">PostgreSQL</span> 7.1.
+  </p>
+</div>
+</div></body>
+</html>

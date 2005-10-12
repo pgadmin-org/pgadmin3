@@ -1,431 +1,113 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Function Volatility Categories</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Extending SQL"
-HREF="extend.html"><LINK
-REL="PREVIOUS"
-TITLE="Function Overloading"
-HREF="xfunc-overload.html"><LINK
-REL="NEXT"
-TITLE="Procedural Language Functions"
-HREF="xfunc-pl.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xfunc-overload.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="extend.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 32. Extending <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="extend.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xfunc-pl.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XFUNC-VOLATILITY"
->32.6. Function Volatility Categories</A
-></H1
-><A
-NAME="AEN31236"
-></A
-><A
-NAME="AEN31239"
-></A
-><A
-NAME="AEN31241"
-></A
-><A
-NAME="AEN31243"
-></A
-><P
->    Every function has a <I
-CLASS="FIRSTTERM"
->volatility</I
-> classification, with
-    the possibilities being <TT
-CLASS="LITERAL"
->VOLATILE</TT
->, <TT
-CLASS="LITERAL"
->STABLE</TT
->, or
-    <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
->.  <TT
-CLASS="LITERAL"
->VOLATILE</TT
-> is the default if the
-    <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command does not specify a category.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.6. Function Volatility Categories</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
+<link rel="prev" href="xfunc-overload.html" title="32.5. Function Overloading">
+<link rel="next" href="xfunc-pl.html" title="32.7. Procedural Language Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xfunc-volatility"></a>32.6. Function Volatility Categories</h2></div></div></div>
+<a name="id650155"></a><a name="id650170"></a><a name="id650180"></a><a name="id650190"></a><p>    Every function has a <em class="firstterm">volatility</em> classification, with
+    the possibilities being <code class="literal">VOLATILE</code>, <code class="literal">STABLE</code>, or
+    <code class="literal">IMMUTABLE</code>.  <code class="literal">VOLATILE</code> is the default if the
+    <code class="command">CREATE FUNCTION</code> command does not specify a category.
     The volatility category is a promise to the optimizer about the behavior
     of the function:
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      A <TT
-CLASS="LITERAL"
->VOLATILE</TT
-> function can do anything, including modifying
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      A <code class="literal">VOLATILE</code> function can do anything, including modifying
       the database.  It can return different results on successive calls with
       the same arguments.  The optimizer makes no assumptions about the
       behavior of such functions.  A query using a volatile function will
       re-evaluate the function at every row where its value is needed.
-     </P
-></LI
-><LI
-><P
->      A <TT
-CLASS="LITERAL"
->STABLE</TT
-> function cannot modify the database and is
+     </p></li>
+<li><p>      A <code class="literal">STABLE</code> function cannot modify the database and is
       guaranteed to return the same results given the same arguments
       for all calls within a single surrounding query.  This category
       allows the optimizer to optimize away multiple calls of the function
       within a single query.  In particular, it is safe to use an expression
       containing such a function in an index scan condition.  (Since an
       index scan will evaluate the comparison value only once, not once at
-      each row, it is not valid to use a <TT
-CLASS="LITERAL"
->VOLATILE</TT
-> function in
+      each row, it is not valid to use a <code class="literal">VOLATILE</code> function in
       an index scan condition.)
-     </P
-></LI
-><LI
-><P
->      An <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> function cannot modify the database and is
+     </p></li>
+<li><p>      An <code class="literal">IMMUTABLE</code> function cannot modify the database and is
       guaranteed to return the same results given the same arguments forever.
       This category allows the optimizer to pre-evaluate the function when
       a query calls it with constant arguments.  For example, a query like
-      <TT
-CLASS="LITERAL"
->SELECT ... WHERE x = 2 + 2</TT
-> can be simplified on sight to
-      <TT
-CLASS="LITERAL"
->SELECT ... WHERE x = 4</TT
->, because the function underlying
-      the integer addition operator is marked <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
->.
-     </P
-></LI
-></UL
-><P>
-   </P
-><P
->    For best optimization results, you should label your functions with the
+      <code class="literal">SELECT ... WHERE x = 2 + 2</code> can be simplified on sight to
+      <code class="literal">SELECT ... WHERE x = 4</code>, because the function underlying
+      the integer addition operator is marked <code class="literal">IMMUTABLE</code>.
+     </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    For best optimization results, you should label your functions with the
     strictest volatility category that is valid for them.
-   </P
-><P
->    Any function with side-effects <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->must</I
-></SPAN
-> be labeled
-    <TT
-CLASS="LITERAL"
->VOLATILE</TT
->, so that calls to it cannot be optimized away.
+   </p>
+<p>    Any function with side-effects <span class="emphasis"><em>must</em></span> be labeled
+    <code class="literal">VOLATILE</code>, so that calls to it cannot be optimized away.
     Even a function with no side-effects needs to be labeled
-    <TT
-CLASS="LITERAL"
->VOLATILE</TT
-> if its value can change within a single query;
-    some examples are <TT
-CLASS="LITERAL"
->random()</TT
->, <TT
-CLASS="LITERAL"
->currval()</TT
->,
-    <TT
-CLASS="LITERAL"
->timeofday()</TT
->.
-   </P
-><P
->    There is relatively little difference between <TT
-CLASS="LITERAL"
->STABLE</TT
-> and
-    <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> categories when considering simple interactive
+    <code class="literal">VOLATILE</code> if its value can change within a single query;
+    some examples are <code class="literal">random()</code>, <code class="literal">currval()</code>,
+    <code class="literal">timeofday()</code>.
+   </p>
+<p>    There is relatively little difference between <code class="literal">STABLE</code> and
+    <code class="literal">IMMUTABLE</code> categories when considering simple interactive
     queries that are planned and immediately executed: it doesn't matter
     a lot whether a function is executed once during planning or once during
     query execution startup.  But there is a big difference if the plan is
-    saved and reused later.  Labeling a function <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> when
+    saved and reused later.  Labeling a function <code class="literal">IMMUTABLE</code> when
     it really isn't may allow it to be prematurely folded to a constant during
     planning, resulting in a stale value being re-used during subsequent uses
     of the plan.  This is a hazard when using prepared statements or when
     using function languages that cache plans (such as
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->).
-   </P
-><P
->    Because of the snapshotting behavior of MVCC (see <A
-HREF="mvcc.html"
->Chapter 12</A
->)
-    a function containing only <TT
-CLASS="COMMAND"
->SELECT</TT
-> commands can safely be
-    marked <TT
-CLASS="LITERAL"
->STABLE</TT
->, even if it selects from tables that might be
+    <span class="application">PL/pgSQL</span>).
+   </p>
+<p>    Because of the snapshotting behavior of MVCC (see <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a>)
+    a function containing only <code class="command">SELECT</code> commands can safely be
+    marked <code class="literal">STABLE</code>, even if it selects from tables that might be
     undergoing modifications by concurrent queries.
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> will execute a <TT
-CLASS="LITERAL"
->STABLE</TT
->
+    <span class="productname">PostgreSQL</span> will execute a <code class="literal">STABLE</code>
     function using the snapshot established for the calling query, and so it
     will see a fixed view of the database throughout that query.
     Also note
-    that the <CODE
-CLASS="FUNCTION"
->current_timestamp</CODE
-> family of functions qualify
+    that the <code class="function">current_timestamp</code> family of functions qualify
     as stable, since their values do not change within a transaction.
-   </P
-><P
->    The same snapshotting behavior is used for <TT
-CLASS="COMMAND"
->SELECT</TT
-> commands
-    within <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> functions.  It is generally unwise to select
-    from database tables within an <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> function at all,
+   </p>
+<p>    The same snapshotting behavior is used for <code class="command">SELECT</code> commands
+    within <code class="literal">IMMUTABLE</code> functions.  It is generally unwise to select
+    from database tables within an <code class="literal">IMMUTABLE</code> function at all,
     since the immutability will be broken if the table contents ever change.
-    However, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not enforce that you
+    However, <span class="productname">PostgreSQL</span> does not enforce that you
     do not do that.
-   </P
-><P
->    A common error is to label a function <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> when its
+   </p>
+<p>    A common error is to label a function <code class="literal">IMMUTABLE</code> when its
     results depend on a configuration parameter.  For example, a function
     that manipulates timestamps might well have results that depend on the
-    <A
-HREF="runtime-config-client.html#GUC-TIMEZONE"
->timezone</A
-> setting.  For safety, such functions should
-    be labeled <TT
-CLASS="LITERAL"
->STABLE</TT
-> instead.
-   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     Before <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> release 8.0, the requirement
-     that <TT
-CLASS="LITERAL"
->STABLE</TT
-> and <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> functions cannot modify
+    <a href="runtime-config-client.html#guc-timezone">timezone</a> setting.  For safety, such functions should
+    be labeled <code class="literal">STABLE</code> instead.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Before <span class="productname">PostgreSQL</span> release 8.0, the requirement
+     that <code class="literal">STABLE</code> and <code class="literal">IMMUTABLE</code> functions cannot modify
      the database was not enforced by the system.  Release 8.0 enforces it
      by requiring SQL functions and procedural language functions of these
-     categories to contain no SQL commands other than <TT
-CLASS="COMMAND"
->SELECT</TT
->.
+     categories to contain no SQL commands other than <code class="command">SELECT</code>.
      (This is not a completely bulletproof test, since such functions could
-     still call <TT
-CLASS="LITERAL"
->VOLATILE</TT
-> functions that modify the database.
-     If you do that, you will find that the <TT
-CLASS="LITERAL"
->STABLE</TT
-> or
-     <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> function does not notice the database changes
+     still call <code class="literal">VOLATILE</code> functions that modify the database.
+     If you do that, you will find that the <code class="literal">STABLE</code> or
+     <code class="literal">IMMUTABLE</code> function does not notice the database changes
      applied by the called function.)
-    </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xfunc-overload.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xfunc-pl.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Function Overloading</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="extend.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Procedural Language Functions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    </p>
+</div>
+</div></body>
+</html>

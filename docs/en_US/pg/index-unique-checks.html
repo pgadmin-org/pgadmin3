@@ -1,162 +1,53 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Index Uniqueness Checks</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Index Access Method Interface Definition"
-HREF="indexam.html"><LINK
-REL="PREVIOUS"
-TITLE="Index Locking Considerations"
-HREF="index-locking.html"><LINK
-REL="NEXT"
-TITLE="Index Cost Estimation Functions"
-HREF="index-cost-estimation.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="index-locking.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexam.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 48. Index Access Method Interface Definition</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexam.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="index-cost-estimation.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INDEX-UNIQUE-CHECKS"
->48.5. Index Uniqueness Checks</A
-></H1
-><P
->   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> enforces SQL uniqueness constraints
-   using <I
-CLASS="FIRSTTERM"
->unique indexes</I
->, which are indexes that disallow
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>48.5. Index Uniqueness Checks</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
+<link rel="prev" href="index-locking.html" title="48.4. Index Locking Considerations">
+<link rel="next" href="index-cost-estimation.html" title="48.6. Index Cost Estimation Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index-unique-checks"></a>48.5. Index Uniqueness Checks</h2></div></div></div>
+<p>   <span class="productname">PostgreSQL</span> enforces SQL uniqueness constraints
+   using <em class="firstterm">unique indexes</em>, which are indexes that disallow
    multiple entries with identical keys.  An access method that supports this
-   feature sets <TT
-CLASS="STRUCTNAME"
->pg_am</TT
->.<TT
-CLASS="STRUCTFIELD"
->amcanunique</TT
-> true.
+   feature sets <code class="structname">pg_am</code>.<code class="structfield">amcanunique</code> true.
    (At present, only b-tree supports it.)
-  </P
-><P
->   Because of MVCC, it is always necessary to allow duplicate entries to
+  </p>
+<p>   Because of MVCC, it is always necessary to allow duplicate entries to
    exist physically in an index: the entries might refer to successive
    versions of a single logical row.  The behavior we actually want to
    enforce is that no MVCC snapshot could include two rows with equal
    index keys.  This breaks down into the following cases that must be
    checked when inserting a new row into a unique index:
 
-    <P
-></P
-></P><UL
-><LI
-><P
->       If a conflicting valid row has been deleted by the current transaction,
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       If a conflicting valid row has been deleted by the current transaction,
        it's okay.  (In particular, since an UPDATE always deletes the old row
        version before inserting the new version, this will allow an UPDATE on
        a row without changing the key.)
-      </P
-></LI
-><LI
-><P
->       If a conflicting row has been inserted by an as-yet-uncommitted
+      </p></li>
+<li><p>       If a conflicting row has been inserted by an as-yet-uncommitted
        transaction, the would-be inserter must wait to see if that transaction
        commits.  If it rolls back then there is no conflict.  If it commits
        without deleting the conflicting row again, there is a uniqueness
        violation.  (In practice we just wait for the other transaction to
        end and then redo the visibility check in toto.)
-      </P
-></LI
-><LI
-><P
->       Similarly, if a conflicting valid row has been deleted by an
+      </p></li>
+<li><p>       Similarly, if a conflicting valid row has been deleted by an
        as-yet-uncommitted transaction, the would-be inserter must wait
        for that transaction to commit or abort, and then repeat the test.
-      </P
-></LI
-></UL
-><P>
-  </P
-><P
->   We require the index access method to apply these tests itself, which
+      </p></li>
+</ul></div>
+<p>
+  </p>
+<p>   We require the index access method to apply these tests itself, which
    means that it must reach into the heap to check the commit status of
    any row that is shown to have a duplicate key according to the index
    contents.  This is without a doubt ugly and non-modular, but it saves
@@ -165,74 +56,9 @@ CLASS="STRUCTFIELD"
    insert the new row's index entry.  What's more, there is no obvious way
    to avoid race conditions unless the conflict check is an integral part
    of insertion of the new index entry.
-  </P
-><P
->   The main limitation of this scheme is that it has no convenient way
+  </p>
+<p>   The main limitation of this scheme is that it has no convenient way
    to support deferred uniqueness checks.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="index-locking.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="index-cost-estimation.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Index Locking Considerations</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="indexam.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Index Cost Estimation Functions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

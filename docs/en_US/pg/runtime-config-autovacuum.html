@@ -1,431 +1,110 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Automatic Vacuuming</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Run-time Configuration"
-HREF="runtime-config.html"><LINK
-REL="PREVIOUS"
-TITLE="Runtime Statistics"
-HREF="runtime-config-statistics.html"><LINK
-REL="NEXT"
-TITLE="Client Connection Defaults"
-HREF="runtime-config-client.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-statistics.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 17. Run-time Configuration</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-client.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RUNTIME-CONFIG-AUTOVACUUM"
->17.9. Automatic Vacuuming</A
-></H1
-><A
-NAME="AEN19714"
-></A
-><P
->      These settings control the default behavior for the <I
-CLASS="FIRSTTERM"
->autovacuum
-      daemon</I
->. Please refer to <A
-HREF="maintenance.html#AUTOVACUUM"
->Section 22.1.4</A
-> for
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.9. Automatic Vacuuming</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Run-time Configuration">
+<link rel="prev" href="runtime-config-statistics.html" title="17.8. Runtime Statistics">
+<link rel="next" href="runtime-config-client.html" title="17.10. Client Connection Defaults">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-autovacuum"></a>17.9. Automatic Vacuuming</h2></div></div></div>
+<a name="id598563"></a><p>      These settings control the default behavior for the <em class="firstterm">autovacuum
+      daemon</em>. Please refer to <a href="maintenance.html#autovacuum" title="22.1.4. The auto-vacuum daemon">Section 22.1.4, &#8220;The auto-vacuum daemon&#8221;</a> for
       more information.
-     </P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><A
-NAME="GUC-AUTOVACUUM"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum</TT
-> (<TT
-CLASS="TYPE"
->boolean</TT
->)</DT
-><DD
-><P
->        Controls whether the server should start the
+     </p>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-autovacuum"></a><span class="term"><code class="varname">autovacuum</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Controls whether the server should start the
         autovacuum subprocess.  This is off by default.
+        <code class="varname">stats_start_collector</code> and <code class="varname">stats_row_level</code>
+        must also be on for this to start.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-AUTOVACUUM-NAPTIME"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum_naptime</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Specifies the delay between activity rounds for the autovacuum
+        <code class="filename">postgresql.conf</code> file.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-naptime"></a><span class="term"><code class="varname">autovacuum_naptime</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the delay between activity rounds for the autovacuum
         subprocess.  In each round the subprocess examines one database
-        and issues <TT
-CLASS="COMMAND"
->VACUUM</TT
-> and <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> commands
+        and issues <code class="command">VACUUM</code> and <code class="command">ANALYZE</code> commands
         as needed for tables in that database.  The delay is measured
         in seconds, and the default is 60.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-AUTOVACUUM-VACUUM-THRESHOLD"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum_vacuum_threshold</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Specifies the minimum number of updated or deleted tuples needed
-        to trigger a <TT
-CLASS="COMMAND"
->VACUUM</TT
-> in any one table.
+        <code class="filename">postgresql.conf</code> file.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-threshold"></a><span class="term"><code class="varname">autovacuum_vacuum_threshold</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the minimum number of updated or deleted tuples needed
+        to trigger a <code class="command">VACUUM</code> in any one table.
         The default is 1000.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
+        <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
-        <TT
-CLASS="STRUCTNAME"
->pg_autovacuum</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-AUTOVACUUM-ANALYZE-THRESHOLD"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum_analyze_threshold</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Specifies the minimum number of inserted, updated or deleted tuples
-        needed to trigger an <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> in any one table.
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-analyze-threshold"></a><span class="term"><code class="varname">autovacuum_analyze_threshold</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the minimum number of inserted, updated or deleted tuples
+        needed to trigger an <code class="command">ANALYZE</code> in any one table.
         The default is 500.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
+        <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
-        <TT
-CLASS="STRUCTNAME"
->pg_autovacuum</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-AUTOVACUUM-VACUUM-SCALE-FACTOR"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum_vacuum_scale_factor</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Specifies a fraction of the table size to add to
-        <TT
-CLASS="VARNAME"
->autovacuum_vacuum_threshold</TT
->
-        when deciding whether to trigger a <TT
-CLASS="COMMAND"
->VACUUM</TT
->.
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-scale-factor"></a><span class="term"><code class="varname">autovacuum_vacuum_scale_factor</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Specifies a fraction of the table size to add to
+        <code class="varname">autovacuum_vacuum_threshold</code>
+        when deciding whether to trigger a <code class="command">VACUUM</code>.
         The default is 0.4.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
+        <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
-        <TT
-CLASS="STRUCTNAME"
->pg_autovacuum</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-AUTOVACUUM-ANALYZE-SCALE-FACTOR"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum_analyze_scale_factor</TT
-> (<TT
-CLASS="TYPE"
->floating point</TT
->)</DT
-><DD
-><P
->        Specifies a fraction of the table size to add to
-        <TT
-CLASS="VARNAME"
->autovacuum_analyze_threshold</TT
->
-        when deciding whether to trigger an <TT
-CLASS="COMMAND"
->ANALYZE</TT
->.
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-analyze-scale-factor"></a><span class="term"><code class="varname">autovacuum_analyze_scale_factor</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Specifies a fraction of the table size to add to
+        <code class="varname">autovacuum_analyze_threshold</code>
+        when deciding whether to trigger an <code class="command">ANALYZE</code>.
         The default is 0.2.
         This option can only be set at server start or in the
-        <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> file.
+        <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
-        <TT
-CLASS="STRUCTNAME"
->pg_autovacuum</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-AUTOVACUUM-VACUUM-COST-DELAY"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum_vacuum_cost_delay</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Specifies the cost delay value that will be used in automatic
-        <TT
-CLASS="COMMAND"
->VACUUM</TT
-> operations.  If -1 is specified (which is the
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-cost-delay"></a><span class="term"><code class="varname">autovacuum_vacuum_cost_delay</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the cost delay value that will be used in automatic
+        <code class="command">VACUUM</code> operations.  If -1 is specified (which is the
         default), the regular
-        <A
-HREF="runtime-config-resource.html#GUC-VACUUM-COST-DELAY"
->vacuum_cost_delay</A
-> value will be used.
+        <a href="runtime-config-resource.html#guc-vacuum-cost-delay">vacuum_cost_delay</a> value will be used.
         This setting can be overridden for individual tables by entries in
-        <TT
-CLASS="STRUCTNAME"
->pg_autovacuum</TT
->.
-       </P
-></DD
-><DT
-><A
-NAME="GUC-AUTOVACUUM-VACUUM-COST-LIMIT"
-></A
-><TT
-CLASS="VARNAME"
->autovacuum_vacuum_cost_limit</TT
-> (<TT
-CLASS="TYPE"
->integer</TT
->)</DT
-><DD
-><P
->        Specifies the cost limit value that will be used in automatic
-        <TT
-CLASS="COMMAND"
->VACUUM</TT
-> operations.  If -1 is specified (which is the
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-cost-limit"></a><span class="term"><code class="varname">autovacuum_vacuum_cost_limit</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the cost limit value that will be used in automatic
+        <code class="command">VACUUM</code> operations.  If -1 is specified (which is the
         default), the regular
-        <A
-HREF="runtime-config-resource.html#GUC-VACUUM-COST-LIMIT"
->vacuum_cost_limit</A
-> value will be used.
+        <a href="runtime-config-resource.html#guc-vacuum-cost-limit">vacuum_cost_limit</a> value will be used.
         This setting can be overridden for individual tables by entries in
-        <TT
-CLASS="STRUCTNAME"
->pg_autovacuum</TT
->.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime-config-statistics.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime-config-client.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Runtime Statistics</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="runtime-config.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Client Connection Defaults</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+</dl></div>
+</div></body>
+</html>

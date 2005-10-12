@@ -1,872 +1,252 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->createuser</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PostgreSQL Client Applications"
-HREF="reference-client.html"><LINK
-REL="PREVIOUS"
-TITLE="createlang"
-HREF="app-createlang.html"><LINK
-REL="NEXT"
-TITLE="dropdb"
-HREF="app-dropdb.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createlang.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createlang.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-dropdb.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-dropdb.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="APP-CREATEUSER"
-></A
-><SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-></H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN49229"
-></A
-><H2
->Name</H2
->createuser&nbsp;--&nbsp;define a new <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user account</DIV
-><A
-NAME="AEN49233"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN49235"
-></A
-><H2
->Synopsis</H2
-><P
-><TT
-CLASS="COMMAND"
->createuser</TT
-> [<TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
->...] [<TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
->]</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN49242"
-></A
-><H2
->Description</H2
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> creates a 
-   new <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user (or more precisely, a role).
-   Only superusers and users with <TT
-CLASS="LITERAL"
->CREATEROLE</TT
-> privilege can create
-   new users, so <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> must be
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>createuser</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="prev" href="app-createlang.html" title="createlang">
+<link rel="next" href="app-dropdb.html" title="dropdb">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-createuser"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>createuser &#8212; define a new <span class="productname">PostgreSQL</span> user account</p>
+</div>
+<a name="id736724"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">createuser</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>username</code></em>]</p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id736761"></a><h2>Description</h2>
+<p>   <span class="application">createuser</span> creates a 
+   new <span class="productname">PostgreSQL</span> user (or more precisely, a role).
+   Only superusers and users with <code class="literal">CREATEROLE</code> privilege can create
+   new users, so <span class="application">createuser</span> must be
    invoked by someone who can connect as a superuser or a user with
-   <TT
-CLASS="LITERAL"
->CREATEROLE</TT
-> privilege.
-  </P
-><P
->   If you wish to create a new superuser, you must connect as a
-   superuser, not merely with <TT
-CLASS="LITERAL"
->CREATEROLE</TT
-> privilege.
+   <code class="literal">CREATEROLE</code> privilege.
+  </p>
+<p>   If you wish to create a new superuser, you must connect as a
+   superuser, not merely with <code class="literal">CREATEROLE</code> privilege.
    Being a superuser implies the ability to bypass all access permission
    checks within the database, so superuserdom should not be granted lightly.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> is a wrapper around the
-   <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command <A
-HREF="sql-createrole.html"
-><I
->CREATE ROLE</I
-></A
->.
+  </p>
+<p>   <span class="application">createuser</span> is a wrapper around the
+   <span class="acronym">SQL</span> command <a href="sql-createrole.html">CREATE ROLE</a>.
    There is no effective difference between creating users via
    this utility and via other methods for accessing the server.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN49256"
-></A
-><H2
->Options</H2
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> accepts the following command-line arguments:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id736843"></a><h2>Options</h2>
+<p>   <span class="application">createuser</span> accepts the following command-line arguments:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></DT
-><DD
-><P
->        Specifies the name of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>username</code></em></span></dt>
+<dd><p>        Specifies the name of the <span class="productname">PostgreSQL</span> user
         to be created.
         This name must be different from all existing roles in this
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> installation.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-s</TT
-><BR><TT
-CLASS="OPTION"
->--superuser</TT
-></DT
-><DD
-><P
->        The new user will be a superuser.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-S</TT
-><BR><TT
-CLASS="OPTION"
->--no-superuser</TT
-></DT
-><DD
-><P
->        The new user will not be a superuser.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-d</TT
-><BR><TT
-CLASS="OPTION"
->--createdb</TT
-></DT
-><DD
-><P
->        The new user will be allowed to create databases.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-D</TT
-><BR><TT
-CLASS="OPTION"
->--no-createdb</TT
-></DT
-><DD
-><P
->        The new user will not be allowed to create databases.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-r</TT
-><BR><TT
-CLASS="OPTION"
->--createrole</TT
-></DT
-><DD
-><P
->        The new user will be allowed to create new roles (that is,
-        this user will have <TT
-CLASS="LITERAL"
->CREATEROLE</TT
-> privilege).
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-R</TT
-><BR><TT
-CLASS="OPTION"
->--no-createrole</TT
-></DT
-><DD
-><P
->        The new user will not be allowed to create new roles.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-l</TT
-><BR><TT
-CLASS="OPTION"
->--login</TT
-></DT
-><DD
-><P
->        The new user will be allowed to log in (that is, the user name
+        <span class="productname">PostgreSQL</span> installation.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-s</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--superuser</code></span>
+</dt>
+<dd><p>        The new user will be a superuser.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-S</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--no-superuser</code></span>
+</dt>
+<dd><p>        The new user will not be a superuser.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-d</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--createdb</code></span>
+</dt>
+<dd><p>        The new user will be allowed to create databases.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-D</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--no-createdb</code></span>
+</dt>
+<dd><p>        The new user will not be allowed to create databases.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-r</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--createrole</code></span>
+</dt>
+<dd><p>        The new user will be allowed to create new roles (that is,
+        this user will have <code class="literal">CREATEROLE</code> privilege).
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-R</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--no-createrole</code></span>
+</dt>
+<dd><p>        The new user will not be allowed to create new roles.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-l</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--login</code></span>
+</dt>
+<dd><p>        The new user will be allowed to log in (that is, the user name
         can be used as the initial session user identifier).
         This is the default.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-L</TT
-><BR><TT
-CLASS="OPTION"
->--no-login</TT
-></DT
-><DD
-><P
->        The new user will not be allowed to log in.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-L</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--no-login</code></span>
+</dt>
+<dd><p>        The new user will not be allowed to log in.
         (A role without login privilege is still useful as a means of
         managing database permissions.)
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-i</TT
-><BR><TT
-CLASS="OPTION"
->--inherit</TT
-></DT
-><DD
-><P
->        The new role will automatically inherit privileges of roles
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-i</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--inherit</code></span>
+</dt>
+<dd><p>        The new role will automatically inherit privileges of roles
         it is a member of.
         This is the default.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-I</TT
-><BR><TT
-CLASS="OPTION"
->--no-inherit</TT
-></DT
-><DD
-><P
->        The new role will not automatically inherit privileges of roles
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-I</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--no-inherit</code></span>
+</dt>
+<dd><p>        The new role will not automatically inherit privileges of roles
         it is a member of.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-c <TT
-CLASS="REPLACEABLE"
-><I
->number</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--conn-limit <TT
-CLASS="REPLACEABLE"
-><I
->number</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Set a maximum number of connections for the new user.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-c <em class="replaceable"><code>number</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--connection-limit <em class="replaceable"><code>number</code></em></code></span>
+</dt>
+<dd><p>        Set a maximum number of connections for the new user.
         The default is to set no limit.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-P</TT
-><BR><TT
-CLASS="OPTION"
->--pwprompt</TT
-></DT
-><DD
-><P
->       If given, <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> will issue a prompt for
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-P</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--pwprompt</code></span>
+</dt>
+<dd><p>       If given, <span class="application">createuser</span> will issue a prompt for
        the password of the new user. This is not necessary if you do not plan
        on using password authentication.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-E</TT
-><BR><TT
-CLASS="OPTION"
->--encrypted</TT
-></DT
-><DD
-><P
->        Encrypts the user's password stored in the database. If not
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-E</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--encrypted</code></span>
+</dt>
+<dd><p>        Encrypts the user's password stored in the database. If not
         specified, the default password behavior is used.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-N</TT
-><BR><TT
-CLASS="OPTION"
->--unencrypted</TT
-></DT
-><DD
-><P
->        Does not encrypt the user's password stored in the database. If
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-N</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--unencrypted</code></span>
+</dt>
+<dd><p>        Does not encrypt the user's password stored in the database. If
         not specified, the default password behavior is used.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-e</TT
-><BR><TT
-CLASS="OPTION"
->--echo</TT
-></DT
-><DD
-><P
->        Echo the commands that <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> generates
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-e</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--echo</code></span>
+</dt>
+<dd><p>        Echo the commands that <span class="application">createuser</span> generates
         and sends to the server.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-q</TT
-><BR><TT
-CLASS="OPTION"
->--quiet</TT
-></DT
-><DD
-><P
->        Do not display a response.
-       </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-><P
->   You will be prompted for a name and other missing information if it
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-q</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--quiet</code></span>
+</dt>
+<dd><p>        Do not display a response.
+       </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   You will be prompted for a name and other missing information if it
    is not specified on the command line.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> also accepts the following
+  </p>
+<p>   <span class="application">createuser</span> also accepts the following
    command-line arguments for connection parameters:
     
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->-h <TT
-CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--host <TT
-CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Specifies the host name of the machine on which the 
+   </p>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-h <em class="replaceable"><code>host</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--host <em class="replaceable"><code>host</code></em></code></span>
+</dt>
+<dd><p>        Specifies the host name of the machine on which the 
         server
         is running.  If the value begins with a slash, it is used 
         as the directory for the Unix domain socket.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-p <TT
-CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--port <TT
-CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-></DT
-><DD
-><P
->        Specifies the TCP port or local Unix domain socket file 
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-p <em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--port <em class="replaceable"><code>port</code></em></code></span>
+</dt>
+<dd><p>        Specifies the TCP port or local Unix domain socket file 
         extension on which the server
         is listening for connections.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-U <TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
-CLASS="OPTION"
->--username <TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-></DT
-><DD
-><P
->        User name to connect as (not the user name to create).
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-W</TT
-><BR><TT
-CLASS="OPTION"
->--password</TT
-></DT
-><DD
-><P
->        Force password prompt (to connect to the server, not for the
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-U <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--username <em class="replaceable"><code>username</code></em></code></span>
+</dt>
+<dd><p>        User name to connect as (not the user name to create).
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-W</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--password</code></span>
+</dt>
+<dd><p>        Force password prompt (to connect to the server, not for the
         password of the new user).
-       </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN49423"
-></A
-><H2
->Environment</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="ENVAR"
->PGHOST</TT
-><BR><TT
-CLASS="ENVAR"
->PGPORT</TT
-><BR><TT
-CLASS="ENVAR"
->PGUSER</TT
-></DT
-><DD
-><P
->      Default connection parameters
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN49435"
-></A
-><H2
->Diagnostics</H2
-><P
->   In case of difficulty, see <A
-HREF="sql-createrole.html"
-><I
->CREATE ROLE</I
-></A
-> and <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> for
+       </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id737255"></a><h2>Environment</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="envar">PGUSER</code></span>
+</dt>
+<dd><p>      Default connection parameters
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id737277"></a><h2>Diagnostics</h2>
+<p>   In case of difficulty, see <a href="sql-createrole.html">CREATE ROLE</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
-   variables used by the <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> front-end
+   variables used by the <span class="application">libpq</span> front-end
    library will apply.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN49441"
-></A
-><H2
->Examples</H2
-><P
->    To create a user <TT
-CLASS="LITERAL"
->joe</TT
-> on the default database
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id737312"></a><h2>Examples</h2>
+<p>    To create a user <code class="literal">joe</code> on the default database
     server:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$ </SAMP
-><KBD
-CLASS="USERINPUT"
->createuser joe</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Shall the new role be a superuser? (y/n) </SAMP
-><KBD
-CLASS="USERINPUT"
->n</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Shall the new role be allowed to create databases? (y/n) </SAMP
-><KBD
-CLASS="USERINPUT"
->n</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Shall the new role be allowed to create more new roles? (y/n) </SAMP
-><KBD
-CLASS="USERINPUT"
->n</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE USER</SAMP
-></PRE
-><P>
-   </P
-><P
->    To create the same user <TT
-CLASS="LITERAL"
->joe</TT
-> using the
-    server on host <TT
-CLASS="LITERAL"
->eden</TT
->, port 5000, avoiding the prompts and
+</p>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>createuser joe</code></strong>
+<code class="computeroutput">Shall the new role be a superuser? (y/n) </code><strong class="userinput"><code>n</code></strong>
+<code class="computeroutput">Shall the new role be allowed to create databases? (y/n) </code><strong class="userinput"><code>n</code></strong>
+<code class="computeroutput">Shall the new role be allowed to create more new roles? (y/n) </code><strong class="userinput"><code>n</code></strong>
+<code class="computeroutput">CREATE USER</code></pre>
+<p>
+   </p>
+<p>    To create the same user <code class="literal">joe</code> using the
+    server on host <code class="literal">eden</code>, port 5000, avoiding the prompts and
     taking a look at the underlying command:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$ </SAMP
-><KBD
-CLASS="USERINPUT"
->createuser -h eden -p 5000 -S -D -R -e joe</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE ROLE joe NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;</SAMP
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE ROLE</SAMP
-></PRE
-><P>
-   </P
-><P
->    To create the user <TT
-CLASS="LITERAL"
->joe</TT
-> as a superuser,
+</p>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>createuser -h eden -p 5000 -S -D -R -e joe</code></strong>
+<code class="computeroutput">CREATE ROLE joe NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;</code>
+<code class="computeroutput">CREATE ROLE</code></pre>
+<p>
+   </p>
+<p>    To create the user <code class="literal">joe</code> as a superuser,
     and assign a password immediately:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$ </SAMP
-><KBD
-CLASS="USERINPUT"
->createuser -P -s -e joe</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Enter password for new role: </SAMP
-><KBD
-CLASS="USERINPUT"
->xyzzy</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Enter it again: </SAMP
-><KBD
-CLASS="USERINPUT"
->xyzzy</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE ROLE joe PASSWORD 'xyzzy' SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;</SAMP
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->CREATE ROLE</SAMP
-></PRE
-><P>
+</p>
+<pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>createuser -P -s -e joe</code></strong>
+<code class="computeroutput">Enter password for new role: </code><strong class="userinput"><code>xyzzy</code></strong>
+<code class="computeroutput">Enter it again: </code><strong class="userinput"><code>xyzzy</code></strong>
+<code class="computeroutput">CREATE ROLE joe PASSWORD 'xyzzy' SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;</code>
+<code class="computeroutput">CREATE ROLE</code></pre>
+<p>
     In the above example, the new password isn't actually echoed when typed,
     but we show what was typed for clarity.  However the password
-    <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->will</I
-></SPAN
-> appear in the echoed command, as illustrated &mdash;
-    so you don't want to use <TT
-CLASS="LITERAL"
->-e</TT
-> when assigning a password, if
+    <span class="emphasis"><em>will</em></span> appear in the echoed command, as illustrated [mdash ]
+    so you don't want to use <code class="literal">-e</code> when assigning a password, if
     anyone else can see your screen.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN49476"
-></A
-><H2
->See Also</H2
-><A
-HREF="app-dropuser.html"
-><SPAN
-CLASS="APPLICATION"
->dropuser</SPAN
-></A
->, <A
-HREF="sql-createrole.html"
-><I
->CREATE ROLE</I
-></A
->, Environment Variables (<A
-HREF="libpq-envars.html"
->Section 28.11</A
->)</DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createlang.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-dropdb.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->createlang</SPAN
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id737508"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a>, <a href="sql-createrole.html">CREATE ROLE</a>, Environment Variables (<a href="libpq-envars.html" title="28.11. Environment Variables">Section 28.11, &#8220;Environment Variables&#8221;</a>)</span>
+</div>
+</div></body>
+</html>

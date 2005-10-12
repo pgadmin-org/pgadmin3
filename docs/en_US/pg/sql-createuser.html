@@ -1,137 +1,26 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->CREATE USER</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="CREATE TYPE"
-HREF="sql-createtype.html"><LINK
-REL="NEXT"
-TITLE="CREATE VIEW"
-HREF="sql-createview.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createtype.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createtype.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createview.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createview.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-CREATEUSER"
-></A
->CREATE USER</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN43806"
-></A
-><H2
->Name</H2
->CREATE USER&nbsp;--&nbsp;define a new database role</DIV
-><A
-NAME="AEN43809"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN43811"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->CREATE USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ [ WITH ] <TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
-> [ ... ] ]
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE USER</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-createtype.html" title="CREATE TYPE">
+<link rel="next" href="sql-createview.html" title="CREATE VIEW">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createuser"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE USER &#8212; define a new database role</p>
+</div>
+<a name="id711335"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE USER <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
-where <TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
-> can be:
+where <em class="replaceable"><code>option</code></em> can be:
     
       SUPERUSER | NOSUPERUSER
     | CREATEDB | NOCREATEDB
@@ -139,193 +28,38 @@ CLASS="REPLACEABLE"
     | CREATEUSER | NOCREATEUSER
     | INHERIT | NOINHERIT
     | LOGIN | NOLOGIN
-    | CONNECTION LIMIT <TT
-CLASS="REPLACEABLE"
-><I
->connlimit</I
-></TT
->
-    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
-CLASS="REPLACEABLE"
-><I
->password</I
-></TT
->'
-    | VALID UNTIL '<TT
-CLASS="REPLACEABLE"
-><I
->timestamp</I
-></TT
->' 
-    | IN ROLE <TT
-CLASS="REPLACEABLE"
-><I
->rolename</I
-></TT
-> [, ...]
-    | IN GROUP <TT
-CLASS="REPLACEABLE"
-><I
->rolename</I
-></TT
-> [, ...]
-    | ROLE <TT
-CLASS="REPLACEABLE"
-><I
->rolename</I
-></TT
-> [, ...]
-    | ADMIN <TT
-CLASS="REPLACEABLE"
-><I
->rolename</I
-></TT
-> [, ...]
-    | USER <TT
-CLASS="REPLACEABLE"
-><I
->rolename</I
-></TT
-> [, ...]
-    | SYSID <TT
-CLASS="REPLACEABLE"
-><I
->uid</I
-></TT
-> </PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43825"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->CREATE USER</TT
-> is now an alias for
-   <A
-HREF="sql-createrole.html"
-><I
->CREATE ROLE</I
-></A
->,
+    | CONNECTION LIMIT <em class="replaceable"><code>connlimit</code></em>
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<em class="replaceable"><code>password</code></em>'
+    | VALID UNTIL '<em class="replaceable"><code>timestamp</code></em>' 
+    | IN ROLE <em class="replaceable"><code>rolename</code></em> [, ...]
+    | IN GROUP <em class="replaceable"><code>rolename</code></em> [, ...]
+    | ROLE <em class="replaceable"><code>rolename</code></em> [, ...]
+    | ADMIN <em class="replaceable"><code>rolename</code></em> [, ...]
+    | USER <em class="replaceable"><code>rolename</code></em> [, ...]
+    | SYSID <em class="replaceable"><code>uid</code></em> </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id711438"></a><h2>Description</h2>
+<p>   <code class="command">CREATE USER</code> is now an alias for
+   <a href="sql-createrole.html">CREATE ROLE</a>,
    which see for more information.
    The only difference is that when the command is spelled
-   <TT
-CLASS="COMMAND"
->CREATE USER</TT
->, <TT
-CLASS="LITERAL"
->LOGIN</TT
-> is assumed
-   by default, whereas <TT
-CLASS="LITERAL"
->NOLOGIN</TT
-> is assumed when
+   <code class="command">CREATE USER</code>, <code class="literal">LOGIN</code> is assumed
+   by default, whereas <code class="literal">NOLOGIN</code> is assumed when
    the command is spelled
-   <TT
-CLASS="COMMAND"
->CREATE ROLE</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43834"
-></A
-><H2
->Compatibility</H2
-><P
->   The <TT
-CLASS="COMMAND"
->CREATE USER</TT
-> statement is a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.  The SQL standard
+   <code class="command">CREATE ROLE</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id711491"></a><h2>Compatibility</h2>
+<p>   The <code class="command">CREATE USER</code> statement is a
+   <span class="productname">PostgreSQL</span> extension.  The SQL standard
    leaves the definition of users to the implementation.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43839"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-createrole.html"
-><I
->CREATE ROLE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createtype.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createview.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->CREATE TYPE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->CREATE VIEW</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id711513"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createrole.html">CREATE ROLE</a></span>
+</div>
+</div></body>
+</html>

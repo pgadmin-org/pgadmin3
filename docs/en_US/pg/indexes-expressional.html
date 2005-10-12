@@ -1,252 +1,64 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Indexes on Expressions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Indexes"
-HREF="indexes.html"><LINK
-REL="PREVIOUS"
-TITLE="Unique Indexes"
-HREF="indexes-unique.html"><LINK
-REL="NEXT"
-TITLE="Partial Indexes"
-HREF="indexes-partial.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-unique.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 11. Indexes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes-partial.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INDEXES-EXPRESSIONAL"
->11.6. Indexes on Expressions</A
-></H1
-><A
-NAME="AEN14864"
-></A
-><P
->   An index column need not be just a column of the underlying table,
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>11.6. Indexes on Expressions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="prev" href="indexes-unique.html" title="11.5. Unique Indexes">
+<link rel="next" href="indexes-partial.html" title="11.7. Partial Indexes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-expressional"></a>11.6. Indexes on Expressions</h2></div></div></div>
+<a name="id574905"></a><p>   An index column need not be just a column of the underlying table,
    but can be a function or scalar expression computed from one or
    more columns of the table.  This feature is useful to obtain fast
    access to tables based on the results of computations.
-  </P
-><P
->   For example, a common way to do case-insensitive comparisons is to
-   use the <CODE
-CLASS="FUNCTION"
->lower</CODE
-> function:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM test1 WHERE lower(col1) = 'value';</PRE
-><P>
+  </p>
+<p>   For example, a common way to do case-insensitive comparisons is to
+   use the <code class="function">lower</code> function:
+</p>
+<pre class="programlisting">SELECT * FROM test1 WHERE lower(col1) = 'value';</pre>
+<p>
    This query can use an index, if one has been
-   defined on the result of the <TT
-CLASS="LITERAL"
->lower(col1)</TT
->
+   defined on the result of the <code class="literal">lower(col1)</code>
    operation:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE INDEX test1_lower_col1_idx ON test1 (lower(col1));</PRE
-><P>
-  </P
-><P
->   If we were to declare this index <TT
-CLASS="LITERAL"
->UNIQUE</TT
->, it would prevent
-   creation of rows whose <TT
-CLASS="LITERAL"
->col1</TT
-> values differ only in case,
-   as well as rows whose <TT
-CLASS="LITERAL"
->col1</TT
-> values are actually identical.
+</p>
+<pre class="programlisting">CREATE INDEX test1_lower_col1_idx ON test1 (lower(col1));</pre>
+<p>
+  </p>
+<p>   If we were to declare this index <code class="literal">UNIQUE</code>, it would prevent
+   creation of rows whose <code class="literal">col1</code> values differ only in case,
+   as well as rows whose <code class="literal">col1</code> values are actually identical.
    Thus, indexes on expressions can be used to enforce constraints that
    are not definable as simple unique constraints.
-  </P
-><P
->   As another example, if one often does queries like this:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM people WHERE (first_name || ' ' || last_name) = 'John Smith';</PRE
-><P>
+  </p>
+<p>   As another example, if one often does queries like this:
+</p>
+<pre class="programlisting">SELECT * FROM people WHERE (first_name || ' ' || last_name) = 'John Smith';</pre>
+<p>
    then it might be worth creating an index like this:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE INDEX people_names ON people ((first_name || ' ' || last_name));</PRE
-><P>
-  </P
-><P
->   The syntax of the <TT
-CLASS="COMMAND"
->CREATE INDEX</TT
-> command normally requires
+</p>
+<pre class="programlisting">CREATE INDEX people_names ON people ((first_name || ' ' || last_name));</pre>
+<p>
+  </p>
+<p>   The syntax of the <code class="command">CREATE INDEX</code> command normally requires
    writing parentheses around index expressions, as shown in the second
    example.  The parentheses may be omitted when the expression is just
    a function call, as in the first example.
-  </P
-><P
->   Index expressions are relatively expensive to maintain, because the
+  </p>
+<p>   Index expressions are relatively expensive to maintain, because the
    derived expression(s) must be computed for each row upon insertion
    and whenever it is updated.  However, the index expressions are
-   <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> recomputed during an indexed search, since they are
+   <span class="emphasis"><em>not</em></span> recomputed during an indexed search, since they are
    already stored in the index.  In both examples above, the system
-   sees the query as just <TT
-CLASS="LITERAL"
->WHERE indexedcolumn = 'constant'</TT
->
+   sees the query as just <code class="literal">WHERE indexedcolumn = 'constant'</code>
    and so the speed of the search is equivalent to any other simple index
    query.  Thus, indexes on expressions are useful when retrieval speed
    is more important than insertion and update speed.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-unique.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes-partial.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Unique Indexes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="indexes.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Partial Indexes</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

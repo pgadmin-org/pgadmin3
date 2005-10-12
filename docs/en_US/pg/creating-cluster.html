@@ -1,437 +1,111 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Creating a Database Cluster</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Run-time Environment"
-HREF="runtime.html"><LINK
-REL="PREVIOUS"
-TITLE="Server Run-time Environment"
-HREF="runtime.html"><LINK
-REL="NEXT"
-TITLE="Starting the Database Server"
-HREF="postmaster-start.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 16. Server Run-time Environment</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="postmaster-start.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CREATING-CLUSTER"
->16.2. Creating a Database Cluster</A
-></H1
-><A
-NAME="AEN17140"
-></A
-><A
-NAME="AEN17142"
-></A
-><P
->   Before you can do anything, you must initialize a database storage
-   area on disk. We call this a <I
-CLASS="FIRSTTERM"
->database cluster</I
->.
-   (<ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> uses the term catalog cluster.) A
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>16.2. Creating a Database Cluster</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
+<link rel="prev" href="runtime.html" title="Chapter 16. Server Run-time Environment">
+<link rel="next" href="postmaster-start.html" title="16.3. Starting the Database Server">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="creating-cluster"></a>16.2. Creating a Database Cluster</h2></div></div></div>
+<a name="id586297"></a><a name="id586303"></a><p>   Before you can do anything, you must initialize a database storage
+   area on disk. We call this a <em class="firstterm">database cluster</em>.
+   (<span class="acronym">SQL</span> uses the term catalog cluster.) A
    database cluster is a collection of databases that is managed by a
    single instance of a running database server. After initialization, a
-   database cluster will contain a database named <TT
-CLASS="LITERAL"
->postgres</TT
->,
+   database cluster will contain a database named <code class="literal">postgres</code>,
    which is meant as a default database for use by utilities, users and third
    party applications.  The database server itself does not require the
-   <TT
-CLASS="LITERAL"
->postgres</TT
-> database to exist, but many external utility
+   <code class="literal">postgres</code> database to exist, but many external utility
    programs assume it exists.  Another database created within each cluster
    during initialization is called
-   <TT
-CLASS="LITERAL"
->template1</TT
->.  As the name suggests, this will be used
+   <code class="literal">template1</code>.  As the name suggests, this will be used
    as a template for subsequently created databases; it should not be
-   used for actual work.  (See <A
-HREF="managing-databases.html"
->Chapter 19</A
-> for
+   used for actual work.  (See <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for
    information about creating new databases within a cluster.)
-  </P
-><P
->   In file system terms, a database cluster will be a single directory
-   under which all data will be stored. We call this the <I
-CLASS="FIRSTTERM"
->data
-   directory</I
-> or <I
-CLASS="FIRSTTERM"
->data area</I
->. It is
+  </p>
+<p>   In file system terms, a database cluster will be a single directory
+   under which all data will be stored. We call this the <em class="firstterm">data
+   directory</em> or <em class="firstterm">data area</em>. It is
    completely up to you where you choose to store your data.  There is no
    default, although locations such as
-   <TT
-CLASS="FILENAME"
->/usr/local/pgsql/data</TT
-> or
-   <TT
-CLASS="FILENAME"
->/var/lib/pgsql/data</TT
-> are popular. To initialize a
-   database cluster, use the command <A
-HREF="app-initdb.html"
->initdb</A
->,<A
-NAME="AEN17158"
-></A
-> which is
-   installed with <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->. The desired
+   <code class="filename">/usr/local/pgsql/data</code> or
+   <code class="filename">/var/lib/pgsql/data</code> are popular. To initialize a
+   database cluster, use the command <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,<a name="id586402"></a> which is
+   installed with <span class="productname">PostgreSQL</span>. The desired
    file system location of your database cluster is indicated by the
-   <TT
-CLASS="OPTION"
->-D</TT
-> option, for example
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->initdb -D /usr/local/pgsql/data</KBD
-></PRE
-><P>
+   <code class="option">-D</code> option, for example
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>initdb -D /usr/local/pgsql/data</code></strong></pre>
+<p>
    Note that you must execute this command while logged into the
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user account, which is
+   <span class="productname">PostgreSQL</span> user account, which is
    described in the previous section.
-  </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->    As an alternative to the <TT
-CLASS="OPTION"
->-D</TT
-> option, you can set
-    the environment variable <TT
-CLASS="ENVAR"
->PGDATA</TT
->.
-    <A
-NAME="AEN17170"
-></A
->
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   <TT
-CLASS="COMMAND"
->initdb</TT
-> will attempt to create the directory you
+  </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>    As an alternative to the <code class="option">-D</code> option, you can set
+    the environment variable <code class="envar">PGDATA</code>.
+    <a name="id586460"></a>
+   </p>
+</div>
+<p>   <code class="command">initdb</code> will attempt to create the directory you
    specify if it does not already exist. It is likely that it will not
    have the permission to do so (if you followed our advice and created
    an unprivileged account). In that case you should create the
    directory yourself (as root) and change the owner to be the
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user. Here is how this might
+   <span class="productname">PostgreSQL</span> user. Here is how this might
    be done:
-</P><PRE
-CLASS="SCREEN"
->root# <KBD
-CLASS="USERINPUT"
->mkdir /usr/local/pgsql/data</KBD
->
-root# <KBD
-CLASS="USERINPUT"
->chown postgres /usr/local/pgsql/data</KBD
->
-root# <KBD
-CLASS="USERINPUT"
->su postgres</KBD
->
-postgres$ <KBD
-CLASS="USERINPUT"
->initdb -D /usr/local/pgsql/data</KBD
-></PRE
-><P>
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->initdb</TT
-> will refuse to run if the data directory
-   looks like it has already been initialized.</P
-><P
->   Because the data directory contains all the data stored in the
+</p>
+<pre class="screen">root# <strong class="userinput"><code>mkdir /usr/local/pgsql/data</code></strong>
+root# <strong class="userinput"><code>chown postgres /usr/local/pgsql/data</code></strong>
+root# <strong class="userinput"><code>su postgres</code></strong>
+postgres$ <strong class="userinput"><code>initdb -D /usr/local/pgsql/data</code></strong></pre>
+<p>
+  </p>
+<p>   <code class="command">initdb</code> will refuse to run if the data directory
+   looks like it has already been initialized.</p>
+<p>   Because the data directory contains all the data stored in the
    database, it is essential that it be secured from unauthorized
-   access. <TT
-CLASS="COMMAND"
->initdb</TT
-> therefore revokes access
+   access. <code class="command">initdb</code> therefore revokes access
    permissions from everyone but the
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user.
-  </P
-><P
->   However, while the directory contents are secure, the default
+   <span class="productname">PostgreSQL</span> user.
+  </p>
+<p>   However, while the directory contents are secure, the default
    client authentication setup allows any local user to connect to the
    database and even become the database superuser. If you do not
    trust other local users, we recommend you use one of
-   <TT
-CLASS="COMMAND"
->initdb</TT
->'s <TT
-CLASS="OPTION"
->-W</TT
->, <TT
-CLASS="OPTION"
->--pwprompt</TT
->
-   or <TT
-CLASS="OPTION"
->--pwfile</TT
-> options to assign a password to the
-   database superuser.<A
-NAME="AEN17191"
-></A
->  Also, specify <TT
-CLASS="OPTION"
->-A md5</TT
-> or
-   <TT
-CLASS="OPTION"
->-A password</TT
-> so that the default <TT
-CLASS="LITERAL"
->trust</TT
-> authentication
-   mode is not used; or modify the generated <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
->
-   file after running <TT
-CLASS="COMMAND"
->initdb</TT
->,
-   <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->before</I
-></SPAN
-> you start the server for the first time. (Other
-   reasonable approaches include using <TT
-CLASS="LITERAL"
->ident</TT
-> authentication
-   or file system permissions to restrict connections. See <A
-HREF="client-authentication.html"
->Chapter 20</A
-> for more information.)
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->initdb</TT
-> also initializes the default
-   locale<A
-NAME="AEN17204"
-></A
-> for the database cluster.
+   <code class="command">initdb</code>'s <code class="option">-W</code>, <code class="option">--pwprompt</code>
+   or <code class="option">--pwfile</code> options to assign a password to the
+   database superuser.<a name="id586579"></a>  Also, specify <code class="option">-A md5</code> or
+   <code class="option">-A password</code> so that the default <code class="literal">trust</code> authentication
+   mode is not used; or modify the generated <code class="filename">pg_hba.conf</code>
+   file after running <code class="command">initdb</code>,
+   <span class="emphasis"><em>before</em></span> you start the server for the first time. (Other
+   reasonable approaches include using <code class="literal">ident</code> authentication
+   or file system permissions to restrict connections. See <a href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> for more information.)
+  </p>
+<p>   <code class="command">initdb</code> also initializes the default
+   locale<a name="id586652"></a> for the database cluster.
    Normally, it will just take the locale settings in the environment
    and apply them to the initialized database.  It is possible to
    specify a different locale for the database; more information about
-   that can be found in <A
-HREF="charset.html#LOCALE"
->Section 21.1</A
->.  The sort order used
+   that can be found in <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.  The sort order used
    within a particular database cluster is set by
-   <TT
-CLASS="COMMAND"
->initdb</TT
-> and cannot be changed later, short of
-   dumping all data, rerunning <TT
-CLASS="COMMAND"
->initdb</TT
->, and reloading
+   <code class="command">initdb</code> and cannot be changed later, short of
+   dumping all data, rerunning <code class="command">initdb</code>, and reloading
    the data. There is also a performance impact for using locales
-   other than <TT
-CLASS="LITERAL"
->C</TT
-> or <TT
-CLASS="LITERAL"
->POSIX</TT
->. Therefore, it is
+   other than <code class="literal">C</code> or <code class="literal">POSIX</code>. Therefore, it is
    important to make this choice correctly the first time.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->initdb</TT
-> also sets the default character set encoding
+  </p>
+<p>   <code class="command">initdb</code> also sets the default character set encoding
    for the database cluster.  Normally this should be chosen to match the
-   locale setting.  For details see <A
-HREF="multibyte.html"
->Section 21.2</A
->.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="runtime.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="postmaster-start.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Server Run-time Environment</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="runtime.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Starting the Database Server</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   locale setting.  For details see <a href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
+  </p>
+</div></body>
+</html>

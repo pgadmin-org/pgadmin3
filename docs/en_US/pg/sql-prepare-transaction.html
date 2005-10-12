@@ -1,409 +1,113 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->PREPARE TRANSACTION</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="PREPARE"
-HREF="sql-prepare.html"><LINK
-REL="NEXT"
-TITLE="REINDEX"
-HREF="sql-reindex.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-prepare.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-prepare.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-reindex.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-reindex.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-PREPARE-TRANSACTION"
-></A
->PREPARE TRANSACTION</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN46481"
-></A
-><H2
->Name</H2
->PREPARE TRANSACTION&nbsp;--&nbsp;prepare the current transaction for two-phase commit</DIV
-><A
-NAME="AEN46484"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN46486"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->PREPARE TRANSACTION <TT
-CLASS="REPLACEABLE"
-><I
->transaction_id</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46489"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->PREPARE TRANSACTION</TT
-> prepares the current transaction
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PREPARE TRANSACTION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-prepare.html" title="PREPARE">
+<link rel="next" href="sql-reindex.html" title="REINDEX">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-prepare-transaction"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>PREPARE TRANSACTION &#8212; prepare the current transaction for two-phase commit</p>
+</div>
+<a name="id723101"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">PREPARE TRANSACTION <em class="replaceable"><code>transaction_id</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id723124"></a><h2>Description</h2>
+<p>   <code class="command">PREPARE TRANSACTION</code> prepares the current transaction
    for two-phase commit. After this command, the transaction is no longer 
    associated with the current session; instead, its state is fully stored on
    disk, and there is a very high probability that it can be committed
    successfully, even if a database crash occurs before the commit is
    requested.
-  </P
-><P
->   Once prepared, a transaction can later be committed or rolled
-   back with <TT
-CLASS="COMMAND"
->COMMIT PREPARED</TT
-> or 
-   <TT
-CLASS="COMMAND"
->ROLLBACK PREPARED</TT
->, respectively.  Those commands
+  </p>
+<p>   Once prepared, a transaction can later be committed or rolled
+   back with <code class="command">COMMIT PREPARED</code> or 
+   <code class="command">ROLLBACK PREPARED</code>, respectively.  Those commands
    can be issued from any session, not only the one that executed the
    original transaction.
-  </P
-><P
->   From the point of view of the issuing session, <TT
-CLASS="COMMAND"
->PREPARE
-   TRANSACTION</TT
-> is not unlike a <TT
-CLASS="COMMAND"
->ROLLBACK</TT
-> command:
+  </p>
+<p>   From the point of view of the issuing session, <code class="command">PREPARE
+   TRANSACTION</code> is not unlike a <code class="command">ROLLBACK</code> command:
    after executing it, there is no active current transaction, and the
    effects of the prepared transaction are no longer visible.  (The effects
    will become visible again if the transaction is committed.)
-  </P
-><P
->   If the <TT
-CLASS="COMMAND"
->PREPARE TRANSACTION</TT
-> command fails for any
-   reason, it becomes a <TT
-CLASS="COMMAND"
->ROLLBACK</TT
->: the current transaction
+  </p>
+<p>   If the <code class="command">PREPARE TRANSACTION</code> command fails for any
+   reason, it becomes a <code class="command">ROLLBACK</code>: the current transaction
    is canceled.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46502"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->transaction_id</I
-></TT
-></DT
-><DD
-><P
->      An arbitrary identifier that later identifies this transaction for
-      <TT
-CLASS="COMMAND"
->COMMIT PREPARED</TT
-> or <TT
-CLASS="COMMAND"
->ROLLBACK PREPARED</TT
->.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id723200"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>transaction_id</code></em></span></dt>
+<dd><p>      An arbitrary identifier that later identifies this transaction for
+      <code class="command">COMMIT PREPARED</code> or <code class="command">ROLLBACK PREPARED</code>.
       The identifier must be written as a string literal, and must be
       less than 200 bytes long.  It must not be the same as the identifier
       used for any currently prepared transaction.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46512"
-></A
-><H2
->Notes</H2
-><P
->   This command must be used inside a transaction block. Use
-   <TT
-CLASS="COMMAND"
->BEGIN</TT
-> to start one.
-  </P
-><P
->   It is not currently allowed to <TT
-CLASS="COMMAND"
->PREPARE</TT
-> a transaction that
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id723235"></a><h2>Notes</h2>
+<p>   This command must be used inside a transaction block. Use
+   <code class="command">BEGIN</code> to start one.
+  </p>
+<p>   It is not currently allowed to <code class="command">PREPARE</code> a transaction that
    has executed any operations involving temporary tables or
-   created any cursors <TT
-CLASS="LITERAL"
->WITH HOLD</TT
->.  Those features are too tightly
+   created any cursors <code class="literal">WITH HOLD</code>.  Those features are too tightly
    tied to the current session to be useful in a transaction to be prepared.
-  </P
-><P
->   If the transaction modified any run-time parameters with <TT
-CLASS="COMMAND"
->SET</TT
->,
-   those effects persist after <TT
-CLASS="COMMAND"
->PREPARE TRANSACTION</TT
->, and will not
-   be affected by any later <TT
-CLASS="COMMAND"
->COMMIT PREPARED</TT
-> or 
-   <TT
-CLASS="COMMAND"
->ROLLBACK PREPARED</TT
->.  Thus, in this one respect
-   <TT
-CLASS="COMMAND"
->PREPARE TRANSACTION</TT
-> acts more like <TT
-CLASS="COMMAND"
->COMMIT</TT
-> than
-   <TT
-CLASS="COMMAND"
->ROLLBACK</TT
->.
-  </P
-><P
->   All currently available prepared transactions are listed in the
-   <TT
-CLASS="STRUCTNAME"
->pg_prepared_xacts</TT
-> system view.
-  </P
-><P
->   From a performance standpoint, it is unwise to leave transactions in
+  </p>
+<p>   If the transaction modified any run-time parameters with <code class="command">SET</code>,
+   those effects persist after <code class="command">PREPARE TRANSACTION</code>, and will not
+   be affected by any later <code class="command">COMMIT PREPARED</code> or 
+   <code class="command">ROLLBACK PREPARED</code>.  Thus, in this one respect
+   <code class="command">PREPARE TRANSACTION</code> acts more like <code class="command">COMMIT</code> than
+   <code class="command">ROLLBACK</code>.
+  </p>
+<p>   All currently available prepared transactions are listed in the
+   <code class="structname">pg_prepared_xacts</code> system view.
+  </p>
+<p>   From a performance standpoint, it is unwise to leave transactions in
    the prepared state for a long time: this will for instance interfere with
-   the ability of <TT
-CLASS="COMMAND"
->VACUUM</TT
-> to reclaim storage.  Keep in mind also
+   the ability of <code class="command">VACUUM</code> to reclaim storage.  Keep in mind also
    that the transaction continues to hold whatever locks it held.
    The intended
    usage of the feature is that a prepared transaction will normally be
    committed or rolled back as soon as an external transaction manager
    has verified that other databases are also prepared to commit.
-  </P
-><P
->   If you make any serious use of prepared transactions, you will probably
-   want to increase the value of <A
-HREF="runtime-config-resource.html#GUC-MAX-PREPARED-TRANSACTIONS"
->max_prepared_transactions</A
->, as the default setting is
+  </p>
+<p>   If you make any serious use of prepared transactions, you will probably
+   want to increase the value of <a href="runtime-config-resource.html#guc-max-prepared-transactions">max_prepared_transactions</a>, as the default setting is
    quite small (to avoid wasting resources for those who don't use it).
    It is recommendable to make it at least equal to
-   <A
-HREF="runtime-config-connection.html#GUC-MAX-CONNECTIONS"
->max_connections</A
->, so that every session can have
+   <a href="runtime-config-connection.html#guc-max-connections">max_connections</a>, so that every session can have
    a prepared transaction pending.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-PREPARE-TRANSACTION-EXAMPLES"
-></A
-><H2
->Examples</H2
-><P
->   Prepare the current transaction for two-phase commit, using
-   <TT
-CLASS="LITERAL"
->foobar</TT
-> as the transaction identifier:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-prepare-transaction-examples"></a><h2>Examples</h2>
+<p>   Prepare the current transaction for two-phase commit, using
+   <code class="literal">foobar</code> as the transaction identifier:
    
-</P><PRE
-CLASS="PROGRAMLISTING"
->PREPARE TRANSACTION 'foobar';</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN46539"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-commit-prepared.html"
-><I
->COMMIT PREPARED</I
-></A
->, <A
-HREF="sql-rollback-prepared.html"
-><I
->ROLLBACK PREPARED</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-prepare.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-reindex.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->PREPARE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->REINDEX</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">PREPARE TRANSACTION 'foobar';</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id723402"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-commit-prepared.html">COMMIT PREPARED</a>, <a href="sql-rollback-prepared.html">ROLLBACK PREPARED</a></span>
+</div>
+</div></body>
+</html>

@@ -1,461 +1,189 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->C-Language Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Extending SQL"
-HREF="extend.html"><LINK
-REL="PREVIOUS"
-TITLE="Internal Functions"
-HREF="xfunc-internal.html"><LINK
-REL="NEXT"
-TITLE="User-Defined Aggregates"
-HREF="xaggr.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xfunc-internal.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="extend.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 32. Extending <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="extend.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xaggr.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XFUNC-C"
->32.9. C-Language Functions</A
-></H1
-><A
-NAME="AEN31334"
-></A
-><P
->    User-defined functions can be written in C (or a language that can
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.9. C-Language Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
+<link rel="prev" href="xfunc-internal.html" title="32.8. Internal Functions">
+<link rel="next" href="xaggr.html" title="32.10. User-Defined Aggregates">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xfunc-c"></a>32.9. C-Language Functions</h2></div></div></div>
+<a name="id650758"></a><p>    User-defined functions can be written in C (or a language that can
     be made compatible with C, such as C++).  Such functions are
     compiled into dynamically loadable objects (also called shared
     libraries) and are loaded by the server on demand.  The dynamic
-    loading feature is what distinguishes <SPAN
-CLASS="QUOTE"
->"C language"</SPAN
-> functions
-    from <SPAN
-CLASS="QUOTE"
->"internal"</SPAN
-> functions &mdash; the actual coding conventions
+    loading feature is what distinguishes &#8220;<span class="quote">C language</span>&#8221; functions
+    from &#8220;<span class="quote">internal</span>&#8221; functions [mdash ] the actual coding conventions
     are essentially the same for both.  (Hence, the standard internal
     function library is a rich source of coding examples for user-defined
     C functions.)
-   </P
-><P
->    Two different calling conventions are currently used for C functions.
-    The newer <SPAN
-CLASS="QUOTE"
->"version 1"</SPAN
-> calling convention is indicated by writing
-    a <TT
-CLASS="LITERAL"
->PG_FUNCTION_INFO_V1()</TT
-> macro call for the function,
+   </p>
+<p>    Two different calling conventions are currently used for C functions.
+    The newer &#8220;<span class="quote">version 1</span>&#8221; calling convention is indicated by writing
+    a <code class="literal">PG_FUNCTION_INFO_V1()</code> macro call for the function,
     as illustrated below.  Lack of such a macro indicates an old-style
-    (<SPAN
-CLASS="QUOTE"
->"version 0"</SPAN
->) function.  The language name specified in <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->
-    is <TT
-CLASS="LITERAL"
->C</TT
-> in either case.  Old-style functions are now deprecated
+    (&#8220;<span class="quote">version 0</span>&#8221;) function.  The language name specified in <code class="command">CREATE FUNCTION</code>
+    is <code class="literal">C</code> in either case.  Old-style functions are now deprecated
     because of portability problems and lack of functionality, but they
     are still supported for compatibility reasons.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XFUNC-C-DYNLOAD"
->32.9.1. Dynamic Loading</A
-></H2
-><A
-NAME="AEN31349"
-></A
-><P
->    The first time a user-defined function in a particular
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xfunc-c-dynload"></a>32.9.1. Dynamic Loading</h3></div></div></div>
+<a name="id650850"></a><p>    The first time a user-defined function in a particular
     loadable object file is called in a session,
     the dynamic loader loads that object file into memory so that the
-    function can be called.  The <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->
+    function can be called.  The <code class="command">CREATE FUNCTION</code>
     for a user-defined C function must therefore specify two pieces of
     information for the function: the name of the loadable
     object file, and the C name (link symbol) of the specific function to call
     within that object file.  If the C name is not explicitly specified then
     it is assumed to be the same as the SQL function name.
-   </P
-><P
->    The following algorithm is used to locate the shared object file
-    based on the name given in the <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->
+   </p>
+<p>    The following algorithm is used to locate the shared object file
+    based on the name given in the <code class="command">CREATE FUNCTION</code>
     command:
 
-    <P
-></P
-></P><OL
-TYPE="1"
-><LI
-><P
->       If the name is an absolute path, the given file is loaded.
-      </P
-></LI
-><LI
-><P
->       If the name starts with the string <TT
-CLASS="LITERAL"
->$libdir</TT
->,
-       that part is replaced by the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> package
+    </p>
+<div class="orderedlist"><ol type="1">
+<li><p>       If the name is an absolute path, the given file is loaded.
+      </p></li>
+<li><p>       If the name starts with the string <code class="literal">$libdir</code>,
+       that part is replaced by the <span class="productname">PostgreSQL</span> package
         library directory
-       name, which is determined at build time.<A
-NAME="AEN31362"
-></A
->
-      </P
-></LI
-><LI
-><P
->       If the name does not contain a directory part, the file is
+       name, which is determined at build time.<a name="id650922"></a>
+      </p></li>
+<li><p>       If the name does not contain a directory part, the file is
        searched for in the path specified by the configuration variable
-       <A
-HREF="runtime-config-client.html#GUC-DYNAMIC-LIBRARY-PATH"
->dynamic_library_path</A
->.<A
-NAME="AEN31367"
-></A
->
-      </P
-></LI
-><LI
-><P
->       Otherwise (the file was not found in the path, or it contains a
+       <a href="runtime-config-client.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id650945"></a>
+      </p></li>
+<li><p>       Otherwise (the file was not found in the path, or it contains a
        non-absolute directory part), the dynamic loader will try to
        take the name as given, which will most likely fail.  (It is
        unreliable to depend on the current working directory.)
-      </P
-></LI
-></OL
-><P>
+      </p></li>
+</ol></div>
+<p>
 
     If this sequence does not work, the platform-specific shared
-    library file name extension (often <TT
-CLASS="FILENAME"
->.so</TT
->) is
+    library file name extension (often <code class="filename">.so</code>) is
     appended to the given name and this sequence is tried again.  If
     that fails as well, the load will fail.
-   </P
-><P
->    The user ID the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server runs
+   </p>
+<p>    The user ID the <span class="productname">PostgreSQL</span> server runs
     as must be able to traverse the path to the file you intend to
     load.  Making the file or a higher-level directory not readable
-    and/or not executable by the <SPAN
-CLASS="SYSTEMITEM"
->postgres</SPAN
->
+    and/or not executable by the <span class="systemitem">postgres</span>
     user is a common mistake.
-   </P
-><P
->    In any case, the file name that is given in the
-    <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command is recorded literally
+   </p>
+<p>    In any case, the file name that is given in the
+    <code class="command">CREATE FUNCTION</code> command is recorded literally
     in the system catalogs, so if the file needs to be loaded again
     the same procedure is applied.
-   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> will not compile a C function
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     <span class="productname">PostgreSQL</span> will not compile a C function
      automatically.  The object file must be compiled before it is referenced
-     in a <TT
-CLASS="COMMAND"
->CREATE
-     FUNCTION</TT
-> command.  See <A
-HREF="xfunc-c.html#DFUNC"
->Section 32.9.6</A
-> for additional
+     in a <code class="command">CREATE
+     FUNCTION</code> command.  See <a href="xfunc-c.html#dfunc" title="32.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 32.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for additional
      information.
-    </P
-></BLOCKQUOTE
-></DIV
-><P
->    After it is used for the first time, a dynamically loaded object
+    </p>
+</div>
+<p>    After it is used for the first time, a dynamically loaded object
     file is retained in memory.  Future calls in the same session to
     the function(s) in that file will only incur the small overhead of
     a symbol table lookup.  If you need to force a reload of an object
-    file, for example after recompiling it, use the <TT
-CLASS="COMMAND"
->LOAD</TT
->
+    file, for example after recompiling it, use the <code class="command">LOAD</code>
     command or begin a fresh session.
-   </P
-><P
->    It is recommended to locate shared libraries either relative to
-    <TT
-CLASS="LITERAL"
->$libdir</TT
-> or through the dynamic library path.
+   </p>
+<p>    It is recommended to locate shared libraries either relative to
+    <code class="literal">$libdir</code> or through the dynamic library path.
     This simplifies version upgrades if the new installation is at a
     different location.  The actual directory that
-    <TT
-CLASS="LITERAL"
->$libdir</TT
-> stands for can be found out with the
-    command <TT
-CLASS="LITERAL"
->pg_config --pkglibdir</TT
->.
-   </P
-><P
->    Before <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> release 7.2, only
+    <code class="literal">$libdir</code> stands for can be found out with the
+    command <code class="literal">pg_config --pkglibdir</code>.
+   </p>
+<p>    Before <span class="productname">PostgreSQL</span> release 7.2, only
     exact absolute paths to object files could be specified in
-    <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->.  This approach is now deprecated
+    <code class="command">CREATE FUNCTION</code>.  This approach is now deprecated
     since it makes the function definition unnecessarily unportable.
     It's best to specify just the shared library name with no path nor
     extension, and let the search mechanism provide that information
     instead.
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XFUNC-C-BASETYPE"
->32.9.2. Base Types in C-Language Functions</A
-></H2
-><A
-NAME="AEN31393"
-></A
-><P
->     To know how to write C-language functions, you need to know how
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> internally represents base
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xfunc-c-basetype"></a>32.9.2. Base Types in C-Language Functions</h3></div></div></div>
+<a name="id651106"></a><p>     To know how to write C-language functions, you need to know how
+     <span class="productname">PostgreSQL</span> internally represents base
      data types and how they can be passed to and from functions.
-     Internally, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> regards a base
-     type as a <SPAN
-CLASS="QUOTE"
->"blob of memory"</SPAN
->.  The user-defined
+     Internally, <span class="productname">PostgreSQL</span> regards a base
+     type as a &#8220;<span class="quote">blob of memory</span>&#8221;.  The user-defined
      functions that you define over a type in turn define the way that
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> can operate on it.  That
-     is, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> will only store and
+     <span class="productname">PostgreSQL</span> can operate on it.  That
+     is, <span class="productname">PostgreSQL</span> will only store and
      retrieve the data from disk and use your user-defined functions
      to input, process, and output the data.
-    </P
-><P
->     Base types can have one of three internal formats:
+    </p>
+<p>     Base types can have one of three internal formats:
 
-     <P
-></P
-></P><UL
-><LI
-><P
->        pass by value, fixed-length
-       </P
-></LI
-><LI
-><P
->        pass by reference, fixed-length
-       </P
-></LI
-><LI
-><P
->        pass by reference, variable-length
-       </P
-></LI
-></UL
-><P>
-    </P
-><P
->     By-value  types  can  only be 1, 2, or 4 bytes in length
-     (also 8 bytes, if <TT
-CLASS="LITERAL"
->sizeof(Datum)</TT
-> is 8 on your machine).
+     </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        pass by value, fixed-length
+       </p></li>
+<li><p>        pass by reference, fixed-length
+       </p></li>
+<li><p>        pass by reference, variable-length
+       </p></li>
+</ul></div>
+<p>
+    </p>
+<p>     By-value  types  can  only be 1, 2, or 4 bytes in length
+     (also 8 bytes, if <code class="literal">sizeof(Datum)</code> is 8 on your machine).
      You should be careful 
      to define your types such that  they  will  be  the  same  
      size (in bytes) on all architectures.  For example, the 
-     <TT
-CLASS="LITERAL"
->long</TT
-> type is dangerous because  it  
+     <code class="literal">long</code> type is dangerous because  it  
      is 4 bytes on some machines and 8 bytes on others, whereas 
-     <TT
-CLASS="TYPE"
->int</TT
->  type  is  4  bytes  on  most  
+     <code class="type">int</code>  type  is  4  bytes  on  most  
      Unix machines.  A reasonable implementation of  
-     the  <TT
-CLASS="TYPE"
->int4</TT
->  type  on  Unix
+     the  <code class="type">int4</code>  type  on  Unix
      machines might be:
      
-</P><PRE
-CLASS="PROGRAMLISTING"
->/* 4-byte integer, passed by value */
-typedef int int4;</PRE
-><P>
-    </P
-><P
->     On  the  other hand, fixed-length types of any size may
+</p>
+<pre class="programlisting">/* 4-byte integer, passed by value */
+typedef int int4;</pre>
+<p>
+    </p>
+<p>     On  the  other hand, fixed-length types of any size may
      be passed by-reference.  For example, here is a  sample
-     implementation of a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> type:
+     implementation of a <span class="productname">PostgreSQL</span> type:
      
-</P><PRE
-CLASS="PROGRAMLISTING"
->/* 16-byte structure, passed by reference */
+</p>
+<pre class="programlisting">/* 16-byte structure, passed by reference */
 typedef struct
 {
     double  x, y;
-} Point;</PRE
-><P>
+} Point;</pre>
+<p>
 
      Only  pointers  to  such types can be used when passing
-     them in and out of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> functions.
+     them in and out of <span class="productname">PostgreSQL</span> functions.
      To return a value of such a type, allocate the right amount of
-     memory with <TT
-CLASS="LITERAL"
->palloc</TT
->, fill in the allocated memory,
+     memory with <code class="literal">palloc</code>, fill in the allocated memory,
      and return a pointer to it.  (Also, if you just want to return the
      same value as one of your input arguments that's of the same data type,
-     you can skip the extra <TT
-CLASS="LITERAL"
->palloc</TT
-> and just return the
+     you can skip the extra <code class="literal">palloc</code> and just return the
      pointer to the input value.)
-    </P
-><P
->     Finally, all variable-length types must also be  passed
+    </p>
+<p>     Finally, all variable-length types must also be  passed
      by  reference.   All  variable-length  types must begin
      with a length field of exactly 4 bytes, and all data to
      be  stored within that type must be located in the memory 
@@ -463,717 +191,263 @@ CLASS="LITERAL"
      length field contains the total length of the structure,
      that is,  it  includes  the  size  of  the  length  field
      itself.
-    </P
-><DIV
-CLASS="WARNING"
-><P
-></P
-><TABLE
-CLASS="WARNING"
-BORDER="1"
-WIDTH="100%"
-><TR
-><TD
-ALIGN="CENTER"
-><B
->Warning</B
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-><P
->      <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Never</I
-></SPAN
-> modify the contents of a pass-by-reference input
+    </p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p>      <span class="emphasis"><em>Never</em></span> modify the contents of a pass-by-reference input
       value.  If you do so you are likely to corrupt on-disk data, since
       the pointer you are given may well point directly into a disk buffer.
       The sole exception to this rule is explained in
-      <A
-HREF="xaggr.html"
->Section 32.10</A
->.
-     </P
-></TD
-></TR
-></TABLE
-></DIV
-><P
->     As an example, we can define the type <TT
-CLASS="TYPE"
->text</TT
-> as
+      <a href="xaggr.html" title="32.10. User-Defined Aggregates">Section 32.10, &#8220;User-Defined Aggregates&#8221;</a>.
+     </p>
+</div>
+<p>     As an example, we can define the type <code class="type">text</code> as
      follows:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->typedef struct {
+</p>
+<pre class="programlisting">typedef struct {
     int4 length;
     char data[1];
-} text;</PRE
-><P>
+} text;</pre>
+<p>
 
      Obviously,  the  data  field declared here is not long enough to hold
      all possible strings.  Since it's impossible to declare a variable-size
-     structure in <ACRONYM
-CLASS="ACRONYM"
->C</ACRONYM
->, we rely on the knowledge that the
-     <ACRONYM
-CLASS="ACRONYM"
->C</ACRONYM
-> compiler won't range-check array subscripts.  We
+     structure in <span class="acronym">C</span>, we rely on the knowledge that the
+     <span class="acronym">C</span> compiler won't range-check array subscripts.  We
      just allocate the necessary amount of space and then access the array as
      if it were declared the right length.  (This is a common trick, which
      you can read about in many textbooks about C.)
-    </P
-><P
->     When manipulating 
+    </p>
+<p>     When manipulating 
      variable-length types, we must  be  careful  to  allocate  
      the  correct amount  of memory and set the length field correctly.
-     For example, if we wanted to  store  40  bytes  in  a <TT
-CLASS="STRUCTNAME"
->text</TT
->
+     For example, if we wanted to  store  40  bytes  in  a <code class="structname">text</code>
      structure, we might use a code fragment like this:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->#include "postgres.h"
+</p>
+<pre class="programlisting">#include "postgres.h"
 ...
 char buffer[40]; /* our source data */
 ...
 text *destination = (text *) palloc(VARHDRSZ + 40);
 destination-&gt;length = VARHDRSZ + 40;
 memcpy(destination-&gt;data, buffer, 40);
-...</PRE
-><P>
+...</pre>
+<p>
 
-     <TT
-CLASS="LITERAL"
->VARHDRSZ</TT
-> is the same as <TT
-CLASS="LITERAL"
->sizeof(int4)</TT
->, but
-     it's considered good style to use the macro <TT
-CLASS="LITERAL"
->VARHDRSZ</TT
->
+     <code class="literal">VARHDRSZ</code> is the same as <code class="literal">sizeof(int4)</code>, but
+     it's considered good style to use the macro <code class="literal">VARHDRSZ</code>
      to refer to the size of the overhead for a variable-length type.
-    </P
-><P
->     <A
-HREF="xfunc-c.html#XFUNC-C-TYPE-TABLE"
->Table 32-1</A
-> specifies which C type
+    </p>
+<p>     <a href="xfunc-c.html#xfunc-c-type-table" title="Table 32.1. Equivalent C Types for Built-In SQL Types">Table 32.1, &#8220;Equivalent C Types for Built-In SQL Types&#8221;</a> specifies which C type
      corresponds to which SQL type when writing a C-language function
-     that uses a built-in type of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-     The <SPAN
-CLASS="QUOTE"
->"Defined In"</SPAN
-> column gives the header file that
+     that uses a built-in type of <span class="productname">PostgreSQL</span>.
+     The &#8220;<span class="quote">Defined In</span>&#8221; column gives the header file that
      needs to be included to get the type definition.  (The actual
      definition may be in a different file that is included by the
      listed file.  It is recommended that users stick to the defined
      interface.)  Note that you should always include
-     <TT
-CLASS="FILENAME"
->postgres.h</TT
-> first in any source file, because
+     <code class="filename">postgres.h</code> first in any source file, because
      it declares a number of things that you will need anyway.
-    </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="XFUNC-C-TYPE-TABLE"
-></A
-><P
-><B
->Table 32-1. Equivalent C Types for Built-In SQL Types</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->          SQL Type
-         </TH
-><TH
->          C Type
-         </TH
-><TH
->          Defined In
-         </TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="TYPE"
->abstime</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->AbsoluteTime</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/nabstime.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->boolean</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-> (maybe compiler built-in)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->box</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->BOX*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/geo_decls.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->bytea</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bytea*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->"char"</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->char</TT
-></TD
-><TD
->(compiler built-in)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->character</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->BpChar*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->cid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->CommandId</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->date</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->DateADT</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/date.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->smallint</TT
-> (<TT
-CLASS="TYPE"
->int2</TT
->)</TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-> or <TT
-CLASS="TYPE"
->int16</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->int2vector</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2vector*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->integer</TT
-> (<TT
-CLASS="TYPE"
->int4</TT
->)</TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-> or <TT
-CLASS="TYPE"
->int32</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->real</TT
-> (<TT
-CLASS="TYPE"
->float4</TT
->)</TD
-><TD
-><TT
-CLASS="TYPE"
->float4*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->double precision</TT
-> (<TT
-CLASS="TYPE"
->float8</TT
->)</TD
-><TD
-><TT
-CLASS="TYPE"
->float8*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->interval</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->Interval*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/timestamp.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->lseg</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->LSEG*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/geo_decls.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->Name</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->Oid</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->oidvector</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oidvector*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->path</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->PATH*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/geo_decls.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->point</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->POINT*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/geo_decls.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->regproc</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->regproc</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->reltime</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->RelativeTime</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/nabstime.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->tid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->ItemPointer</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->storage/itemptr.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->time</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->TimeADT</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/date.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->time with time zone</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->TimeTzADT</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/date.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->timestamp</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->Timestamp*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/timestamp.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->tinterval</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->TimeInterval</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->utils/nabstime.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->varchar</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->VarChar*</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="TYPE"
->xid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->TransactionId</TT
-></TD
-><TD
-><TT
-CLASS="FILENAME"
->postgres.h</TT
-></TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->     Now that we've gone over all of the possible structures
+    </p>
+<div class="table">
+<a name="xfunc-c-type-table"></a><p class="title"><b>Table 32.1. Equivalent C Types for Built-In SQL Types</b></p>
+<table summary="Equivalent C Types for Built-In SQL Types" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>          SQL Type
+         </th>
+<th>          C Type
+         </th>
+<th>          Defined In
+         </th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="type">abstime</code></td>
+<td><code class="type">AbsoluteTime</code></td>
+<td><code class="filename">utils/nabstime.h</code></td>
+</tr>
+<tr>
+<td><code class="type">boolean</code></td>
+<td><code class="type">bool</code></td>
+<td>
+<code class="filename">postgres.h</code> (maybe compiler built-in)</td>
+</tr>
+<tr>
+<td><code class="type">box</code></td>
+<td><code class="type">BOX*</code></td>
+<td><code class="filename">utils/geo_decls.h</code></td>
+</tr>
+<tr>
+<td><code class="type">bytea</code></td>
+<td><code class="type">bytea*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">"char"</code></td>
+<td><code class="type">char</code></td>
+<td>(compiler built-in)</td>
+</tr>
+<tr>
+<td><code class="type">character</code></td>
+<td><code class="type">BpChar*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">cid</code></td>
+<td><code class="type">CommandId</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">date</code></td>
+<td><code class="type">DateADT</code></td>
+<td><code class="filename">utils/date.h</code></td>
+</tr>
+<tr>
+<td>
+<code class="type">smallint</code> (<code class="type">int2</code>)</td>
+<td>
+<code class="type">int2</code> or <code class="type">int16</code>
+</td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">int2vector</code></td>
+<td><code class="type">int2vector*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td>
+<code class="type">integer</code> (<code class="type">int4</code>)</td>
+<td>
+<code class="type">int4</code> or <code class="type">int32</code>
+</td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td>
+<code class="type">real</code> (<code class="type">float4</code>)</td>
+<td><code class="type">float4*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td>
+<code class="type">double precision</code> (<code class="type">float8</code>)</td>
+<td><code class="type">float8*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">interval</code></td>
+<td><code class="type">Interval*</code></td>
+<td><code class="filename">utils/timestamp.h</code></td>
+</tr>
+<tr>
+<td><code class="type">lseg</code></td>
+<td><code class="type">LSEG*</code></td>
+<td><code class="filename">utils/geo_decls.h</code></td>
+</tr>
+<tr>
+<td><code class="type">name</code></td>
+<td><code class="type">Name</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">oid</code></td>
+<td><code class="type">Oid</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">oidvector</code></td>
+<td><code class="type">oidvector*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">path</code></td>
+<td><code class="type">PATH*</code></td>
+<td><code class="filename">utils/geo_decls.h</code></td>
+</tr>
+<tr>
+<td><code class="type">point</code></td>
+<td><code class="type">POINT*</code></td>
+<td><code class="filename">utils/geo_decls.h</code></td>
+</tr>
+<tr>
+<td><code class="type">regproc</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">reltime</code></td>
+<td><code class="type">RelativeTime</code></td>
+<td><code class="filename">utils/nabstime.h</code></td>
+</tr>
+<tr>
+<td><code class="type">text</code></td>
+<td><code class="type">text*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">tid</code></td>
+<td><code class="type">ItemPointer</code></td>
+<td><code class="filename">storage/itemptr.h</code></td>
+</tr>
+<tr>
+<td><code class="type">time</code></td>
+<td><code class="type">TimeADT</code></td>
+<td><code class="filename">utils/date.h</code></td>
+</tr>
+<tr>
+<td><code class="type">time with time zone</code></td>
+<td><code class="type">TimeTzADT</code></td>
+<td><code class="filename">utils/date.h</code></td>
+</tr>
+<tr>
+<td><code class="type">timestamp</code></td>
+<td><code class="type">Timestamp*</code></td>
+<td><code class="filename">utils/timestamp.h</code></td>
+</tr>
+<tr>
+<td><code class="type">tinterval</code></td>
+<td><code class="type">TimeInterval</code></td>
+<td><code class="filename">utils/nabstime.h</code></td>
+</tr>
+<tr>
+<td><code class="type">varchar</code></td>
+<td><code class="type">VarChar*</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+<tr>
+<td><code class="type">xid</code></td>
+<td><code class="type">TransactionId</code></td>
+<td><code class="filename">postgres.h</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>     Now that we've gone over all of the possible structures
      for base types, we can show some examples of real functions.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN31668"
->32.9.3. Calling Conventions Version 0 for C-Language Functions</A
-></H2
-><P
->     We present the <SPAN
-CLASS="QUOTE"
->"old style"</SPAN
-> calling convention first &mdash; although
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id651930"></a>32.9.3. Calling Conventions Version 0 for C-Language Functions</h3></div></div></div>
+<p>     We present the &#8220;<span class="quote">old style</span>&#8221; calling convention first [mdash ] although
      this approach is now deprecated, it's easier to get a handle on
      initially.  In the version-0 method, the arguments and result
      of the C function are just declared in normal C style, but being
      careful to use the C representation of each SQL data type as shown
      above.
-    </P
-><P
->     Here are some examples:
+    </p>
+<p>     Here are some examples:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->#include "postgres.h"
+</p>
+<pre class="programlisting">#include "postgres.h"
 #include &lt;string.h&gt;
 
 /* by value */
@@ -1237,112 +511,49 @@ concat_text(text *arg1, text *arg2)
     memcpy(VARDATA(new_text) + (VARSIZE(arg1)-VARHDRSZ),
            VARDATA(arg2), VARSIZE(arg2)-VARHDRSZ);
     return new_text;
-}</PRE
-><P>
-    </P
-><P
->     Supposing that the above code has been prepared in file
-     <TT
-CLASS="FILENAME"
->funcs.c</TT
-> and compiled into a shared object,
-     we could define the functions to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+}</pre>
+<p>
+    </p>
+<p>     Supposing that the above code has been prepared in file
+     <code class="filename">funcs.c</code> and compiled into a shared object,
+     we could define the functions to <span class="productname">PostgreSQL</span>
      with commands like this:
      
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION add_one(integer) RETURNS integer
-     AS '<TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
->/funcs', 'add_one'
+</p>
+<pre class="programlisting">CREATE FUNCTION add_one(integer) RETURNS integer
+     AS '<em class="replaceable"><code>DIRECTORY</code></em>/funcs', 'add_one'
      LANGUAGE C STRICT;
 
 -- note overloading of SQL function name "add_one"
 CREATE FUNCTION add_one(double precision) RETURNS double precision
-     AS '<TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
->/funcs', 'add_one_float8'
+     AS '<em class="replaceable"><code>DIRECTORY</code></em>/funcs', 'add_one_float8'
      LANGUAGE C STRICT;
 
 CREATE FUNCTION makepoint(point, point) RETURNS point
-     AS '<TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
->/funcs', 'makepoint'
+     AS '<em class="replaceable"><code>DIRECTORY</code></em>/funcs', 'makepoint'
      LANGUAGE C STRICT;
                          
 CREATE FUNCTION copytext(text) RETURNS text
-     AS '<TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
->/funcs', 'copytext'
+     AS '<em class="replaceable"><code>DIRECTORY</code></em>/funcs', 'copytext'
      LANGUAGE C STRICT;
 
 CREATE FUNCTION concat_text(text, text) RETURNS text
-     AS '<TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
->/funcs', 'concat_text',
-     LANGUAGE C STRICT;</PRE
-><P>
-    </P
-><P
->     Here, <TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-> stands for the
+     AS '<em class="replaceable"><code>DIRECTORY</code></em>/funcs', 'concat_text',
+     LANGUAGE C STRICT;</pre>
+<p>
+    </p>
+<p>     Here, <em class="replaceable"><code>DIRECTORY</code></em> stands for the
      directory of the shared library file (for instance the
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> tutorial directory, which
+     <span class="productname">PostgreSQL</span> tutorial directory, which
      contains the code for the examples used in this section).
-     (Better style would be to use just <TT
-CLASS="LITERAL"
->'funcs'</TT
-> in the
-     <TT
-CLASS="LITERAL"
->AS</TT
-> clause, after having added
-     <TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-> to the search path.  In any
+     (Better style would be to use just <code class="literal">'funcs'</code> in the
+     <code class="literal">AS</code> clause, after having added
+     <em class="replaceable"><code>DIRECTORY</code></em> to the search path.  In any
      case, we may omit the system-specific extension for a shared
-     library, commonly <TT
-CLASS="LITERAL"
->.so</TT
-> or
-     <TT
-CLASS="LITERAL"
->.sl</TT
->.)
-    </P
-><P
->     Notice that we have specified the functions as <SPAN
-CLASS="QUOTE"
->"strict"</SPAN
->,
+     library, commonly <code class="literal">.so</code> or
+     <code class="literal">.sl</code>.)
+    </p>
+<p>     Notice that we have specified the functions as &#8220;<span class="quote">strict</span>&#8221;,
      meaning that
      the system should automatically assume a null result if any input
      value is null.  By doing this, we avoid having to check for null inputs
@@ -1350,104 +561,51 @@ CLASS="QUOTE"
      explicitly, by checking for a null pointer for each
      pass-by-reference argument.  (For pass-by-value arguments, we don't
      even have a way to check!)
-    </P
-><P
->     Although this calling convention is simple to use,
+    </p>
+<p>     Although this calling convention is simple to use,
      it is not very portable; on some architectures there are problems
-     with passing data types that are smaller than <TT
-CLASS="TYPE"
->int</TT
-> this way.  Also, there is
+     with passing data types that are smaller than <code class="type">int</code> this way.  Also, there is
      no simple way to return a null result, nor to cope with null arguments
      in any way other than making the function strict.  The version-1
      convention, presented next, overcomes these objections.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN31695"
->32.9.4. Calling Conventions Version 1 for C-Language Functions</A
-></H2
-><P
->     The version-1 calling convention relies on macros to suppress most
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id652167"></a>32.9.4. Calling Conventions Version 1 for C-Language Functions</h3></div></div></div>
+<p>     The version-1 calling convention relies on macros to suppress most
      of the complexity of passing arguments and results.  The C declaration
      of a version-1 function is always
-</P><PRE
-CLASS="PROGRAMLISTING"
->Datum funcname(PG_FUNCTION_ARGS)</PRE
-><P>
+</p>
+<pre class="programlisting">Datum funcname(PG_FUNCTION_ARGS)</pre>
+<p>
      In addition, the macro call
-</P><PRE
-CLASS="PROGRAMLISTING"
->PG_FUNCTION_INFO_V1(funcname);</PRE
-><P>
+</p>
+<pre class="programlisting">PG_FUNCTION_INFO_V1(funcname);</pre>
+<p>
      must appear in the same source file.  (Conventionally. it's
      written just before the function itself.)  This macro call is not
-     needed for <TT
-CLASS="LITERAL"
->internal</TT
->-language functions, since
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> assumes that all internal functions
+     needed for <code class="literal">internal</code>-language functions, since
+     <span class="productname">PostgreSQL</span> assumes that all internal functions
      use the version-1 convention.  It is, however, required for
      dynamically-loaded functions.
-    </P
-><P
->     In a version-1 function, each actual argument is fetched using a
-     <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->()</CODE
->
+    </p>
+<p>     In a version-1 function, each actual argument is fetched using a
+     <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>()</code>
      macro that corresponds to the argument's data type, and the
      result is returned using a
-     <CODE
-CLASS="FUNCTION"
->PG_RETURN_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->()</CODE
->
+     <code class="function">PG_RETURN_<em class="replaceable"><code>xxx</code></em>()</code>
      macro for the return type.
-     <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->()</CODE
->
+     <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>()</code>
      takes as its argument the number of the function argument to
      fetch, where the count starts at 0.
-     <CODE
-CLASS="FUNCTION"
->PG_RETURN_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->()</CODE
->
+     <code class="function">PG_RETURN_<em class="replaceable"><code>xxx</code></em>()</code>
      takes as its argument the actual value to return.
-    </P
-><P
->     Here we show the same functions as above, coded in version-1 style:
+    </p>
+<p>     Here we show the same functions as above, coded in version-1 style:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->#include "postgres.h"
+</p>
+<pre class="programlisting">#include "postgres.h"
 #include &lt;string.h&gt;
 #include "fmgr.h"
 
@@ -1529,1275 +687,502 @@ concat_text(PG_FUNCTION_ARGS)
     memcpy(VARDATA(new_text) + (VARSIZE(arg1)-VARHDRSZ),
            VARDATA(arg2), VARSIZE(arg2)-VARHDRSZ);
     PG_RETURN_TEXT_P(new_text);
-}</PRE
-><P>
-    </P
-><P
->     The <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> commands are the same as
+}</pre>
+<p>
+    </p>
+<p>     The <code class="command">CREATE FUNCTION</code> commands are the same as
      for the version-0 equivalents.
-    </P
-><P
->     At first glance, the version-1 coding conventions may appear to
+    </p>
+<p>     At first glance, the version-1 coding conventions may appear to
      be just pointless obscurantism.  They do, however, offer a number
      of improvements, because the macros can hide unnecessary detail.
-     An example is that in coding <CODE
-CLASS="FUNCTION"
->add_one_float8</CODE
->, we no longer need to
-     be aware that <TT
-CLASS="TYPE"
->float8</TT
-> is a pass-by-reference type.  Another
-     example is that the <TT
-CLASS="LITERAL"
->GETARG</TT
-> macros for variable-length types allow
-     for more efficient fetching of <SPAN
-CLASS="QUOTE"
->"toasted"</SPAN
-> (compressed or
+     An example is that in coding <code class="function">add_one_float8</code>, we no longer need to
+     be aware that <code class="type">float8</code> is a pass-by-reference type.  Another
+     example is that the <code class="literal">GETARG</code> macros for variable-length types allow
+     for more efficient fetching of &#8220;<span class="quote">toasted</span>&#8221; (compressed or
      out-of-line) values.
-    </P
-><P
->     One big improvement in version-1 functions is better handling of null
-     inputs and results.  The macro <CODE
-CLASS="FUNCTION"
->PG_ARGISNULL(<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->)</CODE
->
+    </p>
+<p>     One big improvement in version-1 functions is better handling of null
+     inputs and results.  The macro <code class="function">PG_ARGISNULL(<em class="replaceable"><code>n</code></em>)</code>
      allows a function to test whether each input is null.  (Of course, doing
-     this is only necessary in functions not declared <SPAN
-CLASS="QUOTE"
->"strict"</SPAN
->.)
+     this is only necessary in functions not declared &#8220;<span class="quote">strict</span>&#8221;.)
      As with the
-     <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->()</CODE
-> macros,
+     <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>()</code> macros,
      the input arguments are counted beginning at zero.  Note that one
      should refrain from executing
-     <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->()</CODE
-> until
+     <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>()</code> until
      one has verified that the argument isn't null.
-     To return a null result, execute <CODE
-CLASS="FUNCTION"
->PG_RETURN_NULL()</CODE
->;
+     To return a null result, execute <code class="function">PG_RETURN_NULL()</code>;
      this works in both strict and nonstrict functions.
-    </P
-><P
->     Other options provided in the new-style interface are two
+    </p>
+<p>     Other options provided in the new-style interface are two
      variants of the
-     <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->()</CODE
->
+     <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>()</code>
      macros. The first of these,
-     <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->_COPY()</CODE
->,
+     <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>_COPY()</code>,
      guarantees to return a copy of the specified argument that is
      safe for writing into. (The normal macros will sometimes return a
      pointer to a value that is physically stored in a table, which
      must not be written to. Using the
-     <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->_COPY()</CODE
->
+     <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>_COPY()</code>
      macros guarantees a writable result.)
     The second variant consists of the
-    <CODE
-CLASS="FUNCTION"
->PG_GETARG_<TT
-CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
->_SLICE()</CODE
->
+    <code class="function">PG_GETARG_<em class="replaceable"><code>xxx</code></em>_SLICE()</code>
     macros which take three arguments. The first is the number of the
     function argument (as above). The second and third are the offset and
     length of the segment to be returned. Offsets are counted from
     zero, and a negative length requests that the remainder of the
     value be returned. These macros provide more efficient access to
     parts of large values in the case where they have storage type
-    <SPAN
-CLASS="QUOTE"
->"external"</SPAN
->. (The storage type of a column can be specified using
-    <TT
-CLASS="LITERAL"
->ALTER TABLE <TT
-CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
-> ALTER
-    COLUMN <TT
-CLASS="REPLACEABLE"
-><I
->colname</I
-></TT
-> SET STORAGE
-    <TT
-CLASS="REPLACEABLE"
-><I
->storagetype</I
-></TT
-></TT
->. <TT
-CLASS="REPLACEABLE"
-><I
->storagetype</I
-></TT
-> is one of
-    <TT
-CLASS="LITERAL"
->plain</TT
->, <TT
-CLASS="LITERAL"
->external</TT
->, <TT
-CLASS="LITERAL"
->extended</TT
->,
-     or <TT
-CLASS="LITERAL"
->main</TT
->.)
-    </P
-><P
->     Finally, the version-1 function call conventions make it possible
-     to return set results (<A
-HREF="xfunc-c.html#XFUNC-C-RETURN-SET"
->Section 32.9.10</A
->) and
-     implement trigger functions (<A
-HREF="triggers.html"
->Chapter 33</A
->) and
-     procedural-language call handlers (<A
-HREF="plhandler.html"
->Chapter 46</A
->).  Version-1 code is also more
+    &#8220;<span class="quote">external</span>&#8221;. (The storage type of a column can be specified using
+    <code class="literal">ALTER TABLE <em class="replaceable"><code>tablename</code></em> ALTER
+    COLUMN <em class="replaceable"><code>colname</code></em> SET STORAGE
+    <em class="replaceable"><code>storagetype</code></em></code>. <em class="replaceable"><code>storagetype</code></em> is one of
+    <code class="literal">plain</code>, <code class="literal">external</code>, <code class="literal">extended</code>,
+     or <code class="literal">main</code>.)
+    </p>
+<p>     Finally, the version-1 function call conventions make it possible
+     to return set results (<a href="xfunc-c.html#xfunc-c-return-set" title="32.9.10. Returning Sets from C-Language Functions">Section 32.9.10, &#8220;Returning Sets from C-Language Functions&#8221;</a>) and
+     implement trigger functions (<a href="triggers.html" title="Chapter 33. Triggers">Chapter 33, <i>Triggers</i></a>) and
+     procedural-language call handlers (<a href="plhandler.html" title="Chapter 46. Writing A Procedural Language Handler">Chapter 46, <i>Writing A Procedural Language Handler</i></a>).  Version-1 code is also more
      portable than version-0, because it does not break restrictions
      on function call protocol in the C standard.  For more details
-     see <TT
-CLASS="FILENAME"
->src/backend/utils/fmgr/README</TT
-> in the
+     see <code class="filename">src/backend/utils/fmgr/README</code> in the
      source distribution.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN31753"
->32.9.5. Writing Code</A
-></H2
-><P
->     Before we turn to the more advanced topics, we should discuss
-     some coding rules for <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id652568"></a>32.9.5. Writing Code</h3></div></div></div>
+<p>     Before we turn to the more advanced topics, we should discuss
+     some coding rules for <span class="productname">PostgreSQL</span>
      C-language functions.  While it may be possible to load functions
      written in languages other than C into
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, this is usually difficult
+     <span class="productname">PostgreSQL</span>, this is usually difficult
      (when it is possible at all) because other languages, such as
      C++, FORTRAN, or Pascal often do not follow the same calling
      convention as C.  That is, other languages do not pass argument
      and return values between functions in the same way.  For this
      reason, we will assume that your C-language functions are
      actually written in C.
-    </P
-><P
->     The basic rules for writing and building C functions are as follows:
+    </p>
+<p>     The basic rules for writing and building C functions are as follows:
 
-     <P
-></P
-></P><UL
-><LI
-><P
->        Use <TT
-CLASS="LITERAL"
->pg_config
-        --includedir-server</TT
-><A
-NAME="AEN31763"
-></A
->
-        to find out where the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server header
+     </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Use <code class="literal">pg_config
+        --includedir-server</code><a name="id652613"></a>
+        to find out where the <span class="productname">PostgreSQL</span> server header
         files are installed on your system (or the system that your
         users will be running on).  This option is new with
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.2.  For
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.1 you should use the option
-        <TT
-CLASS="OPTION"
->--includedir</TT
->.  (<TT
-CLASS="COMMAND"
->pg_config</TT
->
+        <span class="productname">PostgreSQL</span> 7.2.  For
+        <span class="productname">PostgreSQL</span> 7.1 you should use the option
+        <code class="option">--includedir</code>.  (<code class="command">pg_config</code>
         will exit with a non-zero status if it encounters an unknown
         option.)  For releases prior to 7.1 you will have to guess,
         but since that was before the current calling conventions were
         introduced, it is unlikely that you want to support those
         releases.
-       </P
-></LI
-><LI
-><P
->        When allocating memory, use the
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> functions
-        <CODE
-CLASS="FUNCTION"
->palloc</CODE
-><A
-NAME="AEN31775"
-></A
-> and <CODE
-CLASS="FUNCTION"
->pfree</CODE
-><A
-NAME="AEN31778"
-></A
->
+       </p></li>
+<li><p>        When allocating memory, use the
+        <span class="productname">PostgreSQL</span> functions
+        <code class="function">palloc</code><a name="id652680"></a> and <code class="function">pfree</code><a name="id652692"></a>
         instead of the corresponding C library functions
-        <CODE
-CLASS="FUNCTION"
->malloc</CODE
-> and <CODE
-CLASS="FUNCTION"
->free</CODE
->.
-        The memory allocated by <CODE
-CLASS="FUNCTION"
->palloc</CODE
-> will be
+        <code class="function">malloc</code> and <code class="function">free</code>.
+        The memory allocated by <code class="function">palloc</code> will be
         freed automatically at the end of each transaction, preventing
         memory leaks.
-       </P
-></LI
-><LI
-><P
->        Always zero the bytes of your structures using
-        <CODE
-CLASS="FUNCTION"
->memset</CODE
->.  Without this, it's difficult to
+       </p></li>
+<li><p>        Always zero the bytes of your structures using
+        <code class="function">memset</code>.  Without this, it's difficult to
         support hash indexes or hash joins, as you must pick out only
         the significant bits of your data structure to compute a hash.
         Even if you initialize all fields of your structure, there may be
         alignment padding (holes in the structure) that may contain
         garbage values.
-       </P
-></LI
-><LI
-><P
->        Most of the internal <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-        types are declared in <TT
-CLASS="FILENAME"
->postgres.h</TT
->, while
+       </p></li>
+<li><p>        Most of the internal <span class="productname">PostgreSQL</span>
+        types are declared in <code class="filename">postgres.h</code>, while
         the function manager interfaces
-        (<TT
-CLASS="SYMBOL"
->PG_FUNCTION_ARGS</TT
->, etc.)  are in
-        <TT
-CLASS="FILENAME"
->fmgr.h</TT
->, so you will need to include at
+        (<code class="symbol">PG_FUNCTION_ARGS</code>, etc.)  are in
+        <code class="filename">fmgr.h</code>, so you will need to include at
         least these two files.  For portability reasons it's best to
-        include <TT
-CLASS="FILENAME"
->postgres.h</TT
-> <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->first</I
-></SPAN
->,
+        include <code class="filename">postgres.h</code> <span class="emphasis"><em>first</em></span>,
         before any other system or user header files.  Including
-        <TT
-CLASS="FILENAME"
->postgres.h</TT
-> will also include
-        <TT
-CLASS="FILENAME"
->elog.h</TT
-> and <TT
-CLASS="FILENAME"
->palloc.h</TT
->
+        <code class="filename">postgres.h</code> will also include
+        <code class="filename">elog.h</code> and <code class="filename">palloc.h</code>
         for you.
-       </P
-></LI
-><LI
-><P
->        Symbol names defined within object files must not conflict
+       </p></li>
+<li><p>        Symbol names defined within object files must not conflict
         with each other or with symbols defined in the
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server executable.  You
+        <span class="productname">PostgreSQL</span> server executable.  You
         will have to rename your functions or variables if you get
         error messages to this effect.
-       </P
-></LI
-><LI
-><P
->        Compiling and linking your code so that it can be dynamically
-        loaded into <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> always
-        requires special flags.  See <A
-HREF="xfunc-c.html#DFUNC"
->Section 32.9.6</A
-> for a
+       </p></li>
+<li><p>        Compiling and linking your code so that it can be dynamically
+        loaded into <span class="productname">PostgreSQL</span> always
+        requires special flags.  See <a href="xfunc-c.html#dfunc" title="32.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 32.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for a
         detailed explanation of how to do it for your particular
         operating system.
-       </P
-></LI
-></UL
-><P>
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="DFUNC"
->32.9.6. Compiling and Linking Dynamically-Loaded Functions</A
-></H2
-><P
->  Before you are able to use your
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension functions written in
+       </p></li>
+</ul></div>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="dfunc"></a>32.9.6. Compiling and Linking Dynamically-Loaded Functions</h3></div></div></div>
+<p>  Before you are able to use your
+  <span class="productname">PostgreSQL</span> extension functions written in
   C, they must be compiled and linked in a special way to produce a
   file that can be dynamically loaded by the server.  To be precise, a
-  <I
-CLASS="FIRSTTERM"
->shared library</I
-> needs to be
-  created.<A
-NAME="AEN31809"
-></A
->
+  <em class="firstterm">shared library</em> needs to be
+  created.<a name="id652872"></a>
 
- </P
-><P
->  For information beyond what is contained in this section
+ </p>
+<p>  For information beyond what is contained in this section
   you should read the documentation of your
   operating system, in particular the manual pages for the C compiler,
-  <TT
-CLASS="COMMAND"
->cc</TT
->, and the link editor, <TT
-CLASS="COMMAND"
->ld</TT
->.
-  In addition, the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> source code
+  <code class="command">cc</code>, and the link editor, <code class="command">ld</code>.
+  In addition, the <span class="productname">PostgreSQL</span> source code
   contains several working examples in the
-  <TT
-CLASS="FILENAME"
->contrib</TT
-> directory.  If you rely on these
+  <code class="filename">contrib</code> directory.  If you rely on these
   examples you will make your modules dependent on the availability
-  of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> source code, however.
- </P
-><P
->  Creating shared libraries is generally analogous to linking
+  of the <span class="productname">PostgreSQL</span> source code, however.
+ </p>
+<p>  Creating shared libraries is generally analogous to linking
   executables: first the source files are compiled into object files,
   then the object files are linked together.  The object files need to
-  be created as <I
-CLASS="FIRSTTERM"
->position-independent code</I
->
-  (<ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
->),<A
-NAME="AEN31820"
-></A
-> which
+  be created as <em class="firstterm">position-independent code</em>
+  (<span class="acronym">PIC</span>),<a name="id652936"></a> which
   conceptually means that they can be placed at an arbitrary location
   in memory when they are loaded by the executable.  (Object files
   intended for executables are usually not compiled that way.)  The
   command to link a shared library contains special flags to
   distinguish it from linking an executable (at least in theory
-  &mdash; on some systems the practice is much uglier).
- </P
-><P
->  In the following examples we assume that your source code is in a
-  file <TT
-CLASS="FILENAME"
->foo.c</TT
-> and we will create a shared library
-  <TT
-CLASS="FILENAME"
->foo.so</TT
->.  The intermediate object file will be
-  called <TT
-CLASS="FILENAME"
->foo.o</TT
-> unless otherwise noted.  A shared
+  [mdash ] on some systems the practice is much uglier).
+ </p>
+<p>  In the following examples we assume that your source code is in a
+  file <code class="filename">foo.c</code> and we will create a shared library
+  <code class="filename">foo.so</code>.  The intermediate object file will be
+  called <code class="filename">foo.o</code> unless otherwise noted.  A shared
   library can contain more than one object file, but we only use one
   here.
- </P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->BSD/OS</SPAN
-></DT
-><DD
-><P
->      The compiler flag to create <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is
-      <TT
-CLASS="OPTION"
->-fpic</TT
->.  The linker flag to create shared
-      libraries is <TT
-CLASS="OPTION"
->-shared</TT
->.
-</P><PRE
-CLASS="PROGRAMLISTING"
->gcc -fpic -c foo.c
-ld -shared -o foo.so foo.o</PRE
-><P>
+ </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span class="systemitem">BSD/OS</span></span></dt>
+<dd>
+<p>      The compiler flag to create <span class="acronym">PIC</span> is
+      <code class="option">-fpic</code>.  The linker flag to create shared
+      libraries is <code class="option">-shared</code>.
+</p>
+<pre class="programlisting">gcc -fpic -c foo.c
+ld -shared -o foo.so foo.o</pre>
+<p>
       This is applicable as of version 4.0 of
-      <SPAN
-CLASS="SYSTEMITEM"
->BSD/OS</SPAN
->.
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->FreeBSD</SPAN
-></DT
-><DD
-><P
->      The compiler flag to create <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is
-      <TT
-CLASS="OPTION"
->-fpic</TT
->.  To create shared libraries the compiler
-      flag is <TT
-CLASS="OPTION"
->-shared</TT
->.
-</P><PRE
-CLASS="PROGRAMLISTING"
->gcc -fpic -c foo.c
-gcc -shared -o foo.so foo.o</PRE
-><P>
+      <span class="systemitem">BSD/OS</span>.
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">FreeBSD</span></span></dt>
+<dd>
+<p>      The compiler flag to create <span class="acronym">PIC</span> is
+      <code class="option">-fpic</code>.  To create shared libraries the compiler
+      flag is <code class="option">-shared</code>.
+</p>
+<pre class="programlisting">gcc -fpic -c foo.c
+gcc -shared -o foo.so foo.o</pre>
+<p>
       This is applicable as of version 3.0 of
-      <SPAN
-CLASS="SYSTEMITEM"
->FreeBSD</SPAN
->.
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->HP-UX</SPAN
-></DT
-><DD
-><P
->      The compiler flag of the system compiler to create
-      <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is <TT
-CLASS="OPTION"
->+z</TT
->.  When using
-      <SPAN
-CLASS="APPLICATION"
->GCC</SPAN
-> it's <TT
-CLASS="OPTION"
->-fpic</TT
->. The
-      linker flag for shared libraries is <TT
-CLASS="OPTION"
->-b</TT
->.  So
-</P><PRE
-CLASS="PROGRAMLISTING"
->cc +z -c foo.c</PRE
-><P>
+      <span class="systemitem">FreeBSD</span>.
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">HP-UX</span></span></dt>
+<dd>
+<p>      The compiler flag of the system compiler to create
+      <span class="acronym">PIC</span> is <code class="option">+z</code>.  When using
+      <span class="application">GCC</span> it's <code class="option">-fpic</code>. The
+      linker flag for shared libraries is <code class="option">-b</code>.  So
+</p>
+<pre class="programlisting">cc +z -c foo.c</pre>
+<p>
       or
-</P><PRE
-CLASS="PROGRAMLISTING"
->gcc -fpic -c foo.c</PRE
-><P>
+</p>
+<pre class="programlisting">gcc -fpic -c foo.c</pre>
+<p>
       and then
-</P><PRE
-CLASS="PROGRAMLISTING"
->ld -b -o foo.sl foo.o</PRE
-><P>
-      <SPAN
-CLASS="SYSTEMITEM"
->HP-UX</SPAN
-> uses the extension
-      <TT
-CLASS="FILENAME"
->.sl</TT
-> for shared libraries, unlike most other
+</p>
+<pre class="programlisting">ld -b -o foo.sl foo.o</pre>
+<p>
+      <span class="systemitem">HP-UX</span> uses the extension
+      <code class="filename">.sl</code> for shared libraries, unlike most other
       systems.
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->IRIX</SPAN
-></DT
-><DD
-><P
->      <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is the default, no special compiler
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">IRIX</span></span></dt>
+<dd>
+<p>      <span class="acronym">PIC</span> is the default, no special compiler
       options are necessary.  The linker option to produce shared
-      libraries is <TT
-CLASS="OPTION"
->-shared</TT
->.
-</P><PRE
-CLASS="PROGRAMLISTING"
->cc -c foo.c
-ld -shared -o foo.so foo.o</PRE
-><P>
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->Linux</SPAN
-></DT
-><DD
-><P
->      The compiler flag to create <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is
-      <TT
-CLASS="OPTION"
->-fpic</TT
->.  On some platforms in some situations
-      <TT
-CLASS="OPTION"
->-fPIC</TT
-> must be used if <TT
-CLASS="OPTION"
->-fpic</TT
->
+      libraries is <code class="option">-shared</code>.
+</p>
+<pre class="programlisting">cc -c foo.c
+ld -shared -o foo.so foo.o</pre>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">Linux</span></span></dt>
+<dd>
+<p>      The compiler flag to create <span class="acronym">PIC</span> is
+      <code class="option">-fpic</code>.  On some platforms in some situations
+      <code class="option">-fPIC</code> must be used if <code class="option">-fpic</code>
       does not work.  Refer to the GCC manual for more information.
       The compiler flag to create a shared library is
-      <TT
-CLASS="OPTION"
->-shared</TT
->.  A complete example looks like this:
-</P><PRE
-CLASS="PROGRAMLISTING"
->cc -fpic -c foo.c
-cc -shared -o foo.so foo.o</PRE
-><P>
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->MacOS X</SPAN
-></DT
-><DD
-><P
->      Here is an example.  It assumes the developer tools are installed.
-</P><PRE
-CLASS="PROGRAMLISTING"
->cc -c foo.c 
-cc -bundle -flat_namespace -undefined suppress -o foo.so foo.o</PRE
-><P>
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->NetBSD</SPAN
-></DT
-><DD
-><P
->      The compiler flag to create <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is
-      <TT
-CLASS="OPTION"
->-fpic</TT
->.  For <ACRONYM
-CLASS="ACRONYM"
->ELF</ACRONYM
-> systems, the
-      compiler with the flag <TT
-CLASS="OPTION"
->-shared</TT
-> is used to link
-      shared libraries.  On the older non-ELF systems, <TT
-CLASS="LITERAL"
->ld
-      -Bshareable</TT
-> is used.
-</P><PRE
-CLASS="PROGRAMLISTING"
->gcc -fpic -c foo.c
-gcc -shared -o foo.so foo.o</PRE
-><P>
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->OpenBSD</SPAN
-></DT
-><DD
-><P
->      The compiler flag to create <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is
-      <TT
-CLASS="OPTION"
->-fpic</TT
->.  <TT
-CLASS="LITERAL"
->ld -Bshareable</TT
-> is
+      <code class="option">-shared</code>.  A complete example looks like this:
+</p>
+<pre class="programlisting">cc -fpic -c foo.c
+cc -shared -o foo.so foo.o</pre>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">MacOS X</span></span></dt>
+<dd>
+<p>      Here is an example.  It assumes the developer tools are installed.
+</p>
+<pre class="programlisting">cc -c foo.c 
+cc -bundle -flat_namespace -undefined suppress -o foo.so foo.o</pre>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">NetBSD</span></span></dt>
+<dd>
+<p>      The compiler flag to create <span class="acronym">PIC</span> is
+      <code class="option">-fpic</code>.  For <span class="acronym">ELF</span> systems, the
+      compiler with the flag <code class="option">-shared</code> is used to link
+      shared libraries.  On the older non-ELF systems, <code class="literal">ld
+      -Bshareable</code> is used.
+</p>
+<pre class="programlisting">gcc -fpic -c foo.c
+gcc -shared -o foo.so foo.o</pre>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">OpenBSD</span></span></dt>
+<dd>
+<p>      The compiler flag to create <span class="acronym">PIC</span> is
+      <code class="option">-fpic</code>.  <code class="literal">ld -Bshareable</code> is
       used to link shared libraries.
-</P><PRE
-CLASS="PROGRAMLISTING"
->gcc -fpic -c foo.c
-ld -Bshareable -o foo.so foo.o</PRE
-><P>
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->Solaris</SPAN
-></DT
-><DD
-><P
->      The compiler flag to create <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is
-      <TT
-CLASS="OPTION"
->-KPIC</TT
-> with the Sun compiler and
-      <TT
-CLASS="OPTION"
->-fpic</TT
-> with <SPAN
-CLASS="APPLICATION"
->GCC</SPAN
->.  To
+</p>
+<pre class="programlisting">gcc -fpic -c foo.c
+ld -Bshareable -o foo.so foo.o</pre>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">Solaris</span></span></dt>
+<dd>
+<p>      The compiler flag to create <span class="acronym">PIC</span> is
+      <code class="option">-KPIC</code> with the Sun compiler and
+      <code class="option">-fpic</code> with <span class="application">GCC</span>.  To
       link shared libraries, the compiler option is
-      <TT
-CLASS="OPTION"
->-G</TT
-> with either compiler or alternatively
-      <TT
-CLASS="OPTION"
->-shared</TT
-> with <SPAN
-CLASS="APPLICATION"
->GCC</SPAN
->.
-</P><PRE
-CLASS="PROGRAMLISTING"
->cc -KPIC -c foo.c
-cc -G -o foo.so foo.o</PRE
-><P>
+      <code class="option">-G</code> with either compiler or alternatively
+      <code class="option">-shared</code> with <span class="application">GCC</span>.
+</p>
+<pre class="programlisting">cc -KPIC -c foo.c
+cc -G -o foo.so foo.o</pre>
+<p>
       or
-</P><PRE
-CLASS="PROGRAMLISTING"
->gcc -fpic -c foo.c
-gcc -G -o foo.so foo.o</PRE
-><P>
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->Tru64 UNIX</SPAN
-></DT
-><DD
-><P
->      <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is the default, so the compilation command
-      is the usual one.  <TT
-CLASS="COMMAND"
->ld</TT
-> with special options is
+</p>
+<pre class="programlisting">gcc -fpic -c foo.c
+gcc -G -o foo.so foo.o</pre>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">Tru64 UNIX</span></span></dt>
+<dd>
+<p>      <span class="acronym">PIC</span> is the default, so the compilation command
+      is the usual one.  <code class="command">ld</code> with special options is
       used to do the linking:
-</P><PRE
-CLASS="PROGRAMLISTING"
->cc -c foo.c
-ld -shared -expect_unresolved '*' -o foo.so foo.o</PRE
-><P>
+</p>
+<pre class="programlisting">cc -c foo.c
+ld -shared -expect_unresolved '*' -o foo.so foo.o</pre>
+<p>
       The same procedure is used with GCC instead of the system
       compiler; no special options are required.
-     </P
-></DD
-><DT
-><SPAN
-CLASS="SYSTEMITEM"
->UnixWare</SPAN
-></DT
-><DD
-><P
->      The compiler flag to create <ACRONYM
-CLASS="ACRONYM"
->PIC</ACRONYM
-> is <TT
-CLASS="OPTION"
->-K
-      PIC</TT
-> with the SCO compiler and <TT
-CLASS="OPTION"
->-fpic</TT
->
-      with <SPAN
-CLASS="PRODUCTNAME"
->GCC</SPAN
->.  To link shared libraries,
-      the compiler option is <TT
-CLASS="OPTION"
->-G</TT
-> with the SCO compiler
-      and <TT
-CLASS="OPTION"
->-shared</TT
-> with
-      <SPAN
-CLASS="PRODUCTNAME"
->GCC</SPAN
->.
-</P><PRE
-CLASS="PROGRAMLISTING"
->cc -K PIC -c foo.c
-cc -G -o foo.so foo.o</PRE
-><P>
+     </p>
+</dd>
+<dt><span class="term"><span class="systemitem">UnixWare</span></span></dt>
+<dd>
+<p>      The compiler flag to create <span class="acronym">PIC</span> is <code class="option">-K
+      PIC</code> with the SCO compiler and <code class="option">-fpic</code>
+      with <span class="productname">GCC</span>.  To link shared libraries,
+      the compiler option is <code class="option">-G</code> with the SCO compiler
+      and <code class="option">-shared</code> with
+      <span class="productname">GCC</span>.
+</p>
+<pre class="programlisting">cc -K PIC -c foo.c
+cc -G -o foo.so foo.o</pre>
+<p>
       or
-</P><PRE
-CLASS="PROGRAMLISTING"
->gcc -fpic -c foo.c
-gcc -shared -o foo.so foo.o</PRE
-><P>
-     </P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->   If this is too complicated for you, you should consider using   
-   <A
-HREF="http://www.gnu.org/software/libtool/"
-TARGET="_top"
->   <SPAN
-CLASS="PRODUCTNAME"
->GNU Libtool</SPAN
-></A
->,
+</p>
+<pre class="programlisting">gcc -fpic -c foo.c
+gcc -shared -o foo.so foo.o</pre>
+<p>
+     </p>
+</dd>
+</dl></div>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>   If this is too complicated for you, you should consider using   
+   <a href="http://www.gnu.org/software/libtool/" target="_top">   <span class="productname">GNU Libtool</span></a>,
    which hides the platform differences behind a uniform interface.
-  </P
-></BLOCKQUOTE
-></DIV
-><P
->  The resulting shared library file can then be loaded into
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  When specifying the file name
-  to the <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command, one must give it
+  </p>
+</div>
+<p>  The resulting shared library file can then be loaded into
+  <span class="productname">PostgreSQL</span>.  When specifying the file name
+  to the <code class="command">CREATE FUNCTION</code> command, one must give it
   the name of the shared library file, not the intermediate object file.
   Note that the system's standard shared-library extension (usually
-  <TT
-CLASS="LITERAL"
->.so</TT
-> or <TT
-CLASS="LITERAL"
->.sl</TT
->) can be omitted from
-  the <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command, and normally should
+  <code class="literal">.so</code> or <code class="literal">.sl</code>) can be omitted from
+  the <code class="command">CREATE FUNCTION</code> command, and normally should
   be omitted for best portability.
- </P
-><P
->  Refer back to <A
-HREF="xfunc-c.html#XFUNC-C-DYNLOAD"
->Section 32.9.1</A
-> about where the
+ </p>
+<p>  Refer back to <a href="xfunc-c.html#xfunc-c-dynload" title="32.9.1. Dynamic Loading">Section 32.9.1, &#8220;Dynamic Loading&#8221;</a> about where the
   server expects to find the shared library files.
- </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XFUNC-C-PGXS"
->32.9.7. Extension Building Infrastructure</A
-></H2
-><A
-NAME="AEN31993"
-></A
-><P
->    If you are thinking about distributing your
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension modules, setting up a
+ </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xfunc-c-pgxs"></a>32.9.7. Extension Building Infrastructure</h3></div></div></div>
+<a name="id653673"></a><p>    If you are thinking about distributing your
+    <span class="productname">PostgreSQL</span> extension modules, setting up a
     portable build system for them can be fairly difficult.  Therefore
-    the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> installation provides a build
-    infrastructure for extensions, called <ACRONYM
-CLASS="ACRONYM"
->PGXS</ACRONYM
->, so
+    the <span class="productname">PostgreSQL</span> installation provides a build
+    infrastructure for extensions, called <span class="acronym">PGXS</span>, so
     that simple extension modules can be built simply against an
     already installed server.  Note that this infrastructure is not
     intended to be a universal build system framework that can be used
-    to build all software interfacing to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->;
+    to build all software interfacing to <span class="productname">PostgreSQL</span>;
     it simply automates common build rules for simple server extension
     modules.  For more complicated packages, you need to write your
     own build system.
-   </P
-><P
->    To use the infrastructure for your extension, you must write a
+   </p>
+<p>    To use the infrastructure for your extension, you must write a
     simple makefile.  In that makefile, you need to set some variables
-    and finally include the global <ACRONYM
-CLASS="ACRONYM"
->PGXS</ACRONYM
-> makefile.
+    and finally include the global <span class="acronym">PGXS</span> makefile.
     Here is an example that builds an extension module named
-    <TT
-CLASS="LITERAL"
->isbn_issn</TT
-> consisting of a shared library, an
+    <code class="literal">isbn_issn</code> consisting of a shared library, an
     SQL script, and a documentation text file:
-</P><PRE
-CLASS="PROGRAMLISTING"
->MODULES = isbn_issn
+</p>
+<pre class="programlisting">MODULES = isbn_issn
 DATA_built = isbn_issn.sql
 DOCS = README.isbn_issn
 
 PGXS := $(shell pg_config --pgxs)
-include $(PGXS)</PRE
-><P>
+include $(PGXS)</pre>
+<p>
     The last two lines should always be the same.  Earlier in the
     file, you assign variables or add custom
-    <SPAN
-CLASS="APPLICATION"
->make</SPAN
-> rules.
-   </P
-><P
->    The following variables can be set:
+    <span class="application">make</span> rules.
+   </p>
+<p>    The following variables can be set:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="VARNAME"
->MODULES</TT
-></DT
-><DD
-><P
->        list of shared objects to be built from source file with same
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="varname">MODULES</code></span></dt>
+<dd><p>        list of shared objects to be built from source file with same
         stem (do not include suffix in this list)
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->DATA</TT
-></DT
-><DD
-><P
->        random files to install into <TT
-CLASS="LITERAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->prefix</I
-></TT
->/share/contrib</TT
->
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->DATA_built</TT
-></DT
-><DD
-><P
->        random files to install into
-        <TT
-CLASS="LITERAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->prefix</I
-></TT
->/share/contrib</TT
->,
+       </p></dd>
+<dt><span class="term"><code class="varname">DATA</code></span></dt>
+<dd><p>        random files to install into <code class="literal"><em class="replaceable"><code>prefix</code></em>/share/contrib</code>
+       </p></dd>
+<dt><span class="term"><code class="varname">DATA_built</code></span></dt>
+<dd><p>        random files to install into
+        <code class="literal"><em class="replaceable"><code>prefix</code></em>/share/contrib</code>,
         which need to be built first
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->DOCS</TT
-></DT
-><DD
-><P
->        random files to install under
-        <TT
-CLASS="LITERAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->prefix</I
-></TT
->/doc/contrib</TT
->
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->SCRIPTS</TT
-></DT
-><DD
-><P
->        script files (not binaries) to install into
-        <TT
-CLASS="LITERAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->prefix</I
-></TT
->/bin</TT
->
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->SCRIPTS_built</TT
-></DT
-><DD
-><P
->        script files (not binaries) to install into
-        <TT
-CLASS="LITERAL"
-><TT
-CLASS="REPLACEABLE"
-><I
->prefix</I
-></TT
->/bin</TT
->,
+       </p></dd>
+<dt><span class="term"><code class="varname">DOCS</code></span></dt>
+<dd><p>        random files to install under
+        <code class="literal"><em class="replaceable"><code>prefix</code></em>/doc/contrib</code>
+       </p></dd>
+<dt><span class="term"><code class="varname">SCRIPTS</code></span></dt>
+<dd><p>        script files (not binaries) to install into
+        <code class="literal"><em class="replaceable"><code>prefix</code></em>/bin</code>
+       </p></dd>
+<dt><span class="term"><code class="varname">SCRIPTS_built</code></span></dt>
+<dd><p>        script files (not binaries) to install into
+        <code class="literal"><em class="replaceable"><code>prefix</code></em>/bin</code>,
         which need to be built first
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->REGRESS</TT
-></DT
-><DD
-><P
->        list of regression test cases (without suffix)
-       </P
-></DD
-></DL
-></DIV
-><P>
+       </p></dd>
+<dt><span class="term"><code class="varname">REGRESS</code></span></dt>
+<dd><p>        list of regression test cases (without suffix)
+       </p></dd>
+</dl></div>
+<p>
 
     or at most one of these two:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="VARNAME"
->PROGRAM</TT
-></DT
-><DD
-><P
->        a binary program to build (list objects files in <TT
-CLASS="VARNAME"
->OBJS</TT
->)
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->MODULE_big</TT
-></DT
-><DD
-><P
->        a shared object to build (list object files in <TT
-CLASS="VARNAME"
->OBJS</TT
->)
-       </P
-></DD
-></DL
-></DIV
-><P>
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="varname">PROGRAM</code></span></dt>
+<dd><p>        a binary program to build (list objects files in <code class="varname">OBJS</code>)
+       </p></dd>
+<dt><span class="term"><code class="varname">MODULE_big</code></span></dt>
+<dd><p>        a shared object to build (list object files in <code class="varname">OBJS</code>)
+       </p></dd>
+</dl></div>
+<p>
 
     The following can also be set:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="VARNAME"
->EXTRA_CLEAN</TT
-></DT
-><DD
-><P
->        extra files to remove in <TT
-CLASS="LITERAL"
->make clean</TT
->
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->PG_CPPFLAGS</TT
-></DT
-><DD
-><P
->        will be added to <TT
-CLASS="VARNAME"
->CPPFLAGS</TT
->
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->PG_LIBS</TT
-></DT
-><DD
-><P
->        will be added to <TT
-CLASS="VARNAME"
->PROGRAM</TT
-> link line
-       </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->SHLIB_LINK</TT
-></DT
-><DD
-><P
->        will be added to <TT
-CLASS="VARNAME"
->MODULE_big</TT
-> link line
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-><P
->    Put this makefile as <TT
-CLASS="LITERAL"
->Makefile</TT
-> in the directory
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="varname">EXTRA_CLEAN</code></span></dt>
+<dd><p>        extra files to remove in <code class="literal">make clean</code>
+       </p></dd>
+<dt><span class="term"><code class="varname">PG_CPPFLAGS</code></span></dt>
+<dd><p>        will be added to <code class="varname">CPPFLAGS</code>
+       </p></dd>
+<dt><span class="term"><code class="varname">PG_LIBS</code></span></dt>
+<dd><p>        will be added to <code class="varname">PROGRAM</code> link line
+       </p></dd>
+<dt><span class="term"><code class="varname">SHLIB_LINK</code></span></dt>
+<dd><p>        will be added to <code class="varname">MODULE_big</code> link line
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+<p>    Put this makefile as <code class="literal">Makefile</code> in the directory
     which holds your extension. Then you can do
-    <TT
-CLASS="LITERAL"
->make</TT
-> to compile, and later <TT
-CLASS="LITERAL"
->make
-    install</TT
-> to install your module.  The extension is
+    <code class="literal">make</code> to compile, and later <code class="literal">make
+    install</code> to install your module.  The extension is
     compiled and installed for the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> installation that
-    corresponds to the first <TT
-CLASS="COMMAND"
->pg_config</TT
-> command
+    <span class="productname">PostgreSQL</span> installation that
+    corresponds to the first <code class="command">pg_config</code> command
     found in your path.
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN32096"
->32.9.8. Composite-Type Arguments in C-Language Functions</A
-></H2
-><P
->     Composite types do not have a fixed layout like C structures.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id654012"></a>32.9.8. Composite-Type Arguments in C-Language Functions</h3></div></div></div>
+<p>     Composite types do not have a fixed layout like C structures.
      Instances of a composite type may contain null fields.  In
      addition, composite types that are part of an inheritance
      hierarchy may have different fields than other members of the
      same inheritance hierarchy.  Therefore,
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> provides a function
+     <span class="productname">PostgreSQL</span> provides a function
      interface for accessing fields of composite types from C.
-    </P
-><P
->     Suppose we want to write a function to answer the query
+    </p>
+<p>     Suppose we want to write a function to answer the query
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT name, c_overpaid(emp, 1500) AS overpaid
+</p>
+<pre class="programlisting">SELECT name, c_overpaid(emp, 1500) AS overpaid
     FROM emp
-    WHERE name = 'Bill' OR name = 'Sam';</PRE
-><P>
+    WHERE name = 'Bill' OR name = 'Sam';</pre>
+<p>
 
      Using call conventions version 0, we can define
-     <CODE
-CLASS="FUNCTION"
->c_overpaid</CODE
-> as:
+     <code class="function">c_overpaid</code> as:
      
-</P><PRE
-CLASS="PROGRAMLISTING"
->#include "postgres.h"
+</p>
+<pre class="programlisting">#include "postgres.h"
 #include "executor/executor.h"  /* for GetAttributeByName() */
 
 bool
@@ -2811,14 +1196,13 @@ c_overpaid(HeapTupleHeader t, /* the current row of emp */
     if (isnull)
         return false;
     return salary &gt; limit;
-}</PRE
-><P>
+}</pre>
+<p>
 
      In version-1 coding, the above would look like this:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->#include "postgres.h"
+</p>
+<pre class="programlisting">#include "postgres.h"
 #include "executor/executor.h"  /* for GetAttributeByName() */
 
 PG_FUNCTION_INFO_V1(c_overpaid);
@@ -2837,419 +1221,188 @@ c_overpaid(PG_FUNCTION_ARGS)
     /* Alternatively, we might prefer to do PG_RETURN_NULL() for null salary. */
 
     PG_RETURN_BOOL(DatumGetInt32(salary) &gt; limit);
-}</PRE
-><P>
-    </P
-><P
->     <CODE
-CLASS="FUNCTION"
->GetAttributeByName</CODE
-> is the 
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> system function that
+}</pre>
+<p>
+    </p>
+<p>     <code class="function">GetAttributeByName</code> is the 
+     <span class="productname">PostgreSQL</span> system function that
      returns attributes out of the specified row.  It has
-     three arguments: the argument of type <TT
-CLASS="TYPE"
->HeapTupleHeader</TT
-> passed
+     three arguments: the argument of type <code class="type">HeapTupleHeader</code> passed
      into 
      the  function, the name of the desired attribute, and a
      return parameter that tells whether  the  attribute
-     is  null.   <CODE
-CLASS="FUNCTION"
->GetAttributeByName</CODE
-> returns a <TT
-CLASS="TYPE"
->Datum</TT
->
+     is  null.   <code class="function">GetAttributeByName</code> returns a <code class="type">Datum</code>
      value that you can convert to the proper data type by using the
-     appropriate <CODE
-CLASS="FUNCTION"
->DatumGet<TT
-CLASS="REPLACEABLE"
-><I
->XXX</I
-></TT
->()</CODE
->
+     appropriate <code class="function">DatumGet<em class="replaceable"><code>XXX</code></em>()</code>
      macro.  Note that the return value is meaningless if the null flag is
      set; always check the null flag before trying to do anything with the
      result.
-    </P
-><P
->     There is also <CODE
-CLASS="FUNCTION"
->GetAttributeByNum</CODE
->, which selects
+    </p>
+<p>     There is also <code class="function">GetAttributeByNum</code>, which selects
      the target attribute by column number instead of name.
-    </P
-><P
->     The following command declares the function
-     <CODE
-CLASS="FUNCTION"
->c_overpaid</CODE
-> in SQL:
+    </p>
+<p>     The following command declares the function
+     <code class="function">c_overpaid</code> in SQL:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION c_overpaid(emp, integer) RETURNS boolean
-    AS '<TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
->/funcs', 'c_overpaid'
-    LANGUAGE C STRICT;</PRE
-><P>
+</p>
+<pre class="programlisting">CREATE FUNCTION c_overpaid(emp, integer) RETURNS boolean
+    AS '<em class="replaceable"><code>DIRECTORY</code></em>/funcs', 'c_overpaid'
+    LANGUAGE C STRICT;</pre>
+<p>
 
-     Notice we have used <TT
-CLASS="LITERAL"
->STRICT</TT
-> so that we did not have to
+     Notice we have used <code class="literal">STRICT</code> so that we did not have to
      check whether the input arguments were NULL.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN32120"
->32.9.9. Returning Rows (Composite Types) from C-Language Functions</A
-></H2
-><P
->     To return a row or composite-type value from a C-language
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id654179"></a>32.9.9. Returning Rows (Composite Types) from C-Language Functions</h3></div></div></div>
+<p>     To return a row or composite-type value from a C-language
      function, you can use a special API that provides macros and
      functions to hide most of the complexity of building composite
      data types.  To use this API, the source file must include:
-</P><PRE
-CLASS="PROGRAMLISTING"
->#include "funcapi.h"</PRE
-><P>
-    </P
-><P
->     There are two ways you can build a composite data value (henceforth
-     a <SPAN
-CLASS="QUOTE"
->"tuple"</SPAN
->): you can build it from an array of Datum values,
+</p>
+<pre class="programlisting">#include "funcapi.h"</pre>
+<p>
+    </p>
+<p>     There are two ways you can build a composite data value (henceforth
+     a &#8220;<span class="quote">tuple</span>&#8221;): you can build it from an array of Datum values,
      or from an array of C strings that can be passed to the input
      conversion functions of the tuple's column data types.  In either
-     case, you first need to obtain or construct a <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
->
+     case, you first need to obtain or construct a <code class="structname">TupleDesc</code>
      descriptor for the tuple structure.  When working with Datums, you
-     pass the <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
-> to <CODE
-CLASS="FUNCTION"
->BlessTupleDesc</CODE
->,
-     and then call <CODE
-CLASS="FUNCTION"
->heap_form_tuple</CODE
-> for each row.  When working
-     with C strings, you pass the <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
-> to
-     <CODE
-CLASS="FUNCTION"
->TupleDescGetAttInMetadata</CODE
->, and then call
-     <CODE
-CLASS="FUNCTION"
->BuildTupleFromCStrings</CODE
-> for each row.  In the case of a
+     pass the <code class="structname">TupleDesc</code> to <code class="function">BlessTupleDesc</code>,
+     and then call <code class="function">heap_form_tuple</code> for each row.  When working
+     with C strings, you pass the <code class="structname">TupleDesc</code> to
+     <code class="function">TupleDescGetAttInMetadata</code>, and then call
+     <code class="function">BuildTupleFromCStrings</code> for each row.  In the case of a
      function returning a set of tuples, the setup steps can all be done
      once during the first call of the function.
-    </P
-><P
->     Several helper functions are available for setting up the needed
-     <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
->.  The recommended way to do this in most
+    </p>
+<p>     Several helper functions are available for setting up the needed
+     <code class="structname">TupleDesc</code>.  The recommended way to do this in most
      functions returning composite values is to call
-</P><PRE
-CLASS="PROGRAMLISTING"
->TypeFuncClass get_call_result_type(FunctionCallInfo fcinfo,
+</p>
+<pre class="programlisting">TypeFuncClass get_call_result_type(FunctionCallInfo fcinfo,
                                    Oid *resultTypeId,
-                                   TupleDesc *resultTupleDesc)</PRE
-><P>
-     passing the same <TT
-CLASS="LITERAL"
->fcinfo</TT
-> struct passed to the calling function
+                                   TupleDesc *resultTupleDesc)</pre>
+<p>
+     passing the same <code class="literal">fcinfo</code> struct passed to the calling function
      itself.  (This of course requires that you use the version-1
-     calling conventions.)  <TT
-CLASS="VARNAME"
->resultTypeId</TT
-> can be specified
-     as <TT
-CLASS="LITERAL"
->NULL</TT
-> or as the address of a local variable to receive the
-     function's result type OID.  <TT
-CLASS="VARNAME"
->resultTupleDesc</TT
-> should be the
-     address of a local <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
-> variable.  Check that the
-     result is <TT
-CLASS="LITERAL"
->TYPEFUNC_COMPOSITE</TT
->; if so,
-     <TT
-CLASS="VARNAME"
->resultTupleDesc</TT
-> has been filled with the needed
-     <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
->.  (If it is not, you can report an error along
-     the lines of <SPAN
-CLASS="QUOTE"
->"function returning record called in context that
-     cannot accept type record"</SPAN
->.)
-    </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->      <CODE
-CLASS="FUNCTION"
->get_call_result_type</CODE
-> can resolve the actual type of a
+     calling conventions.)  <code class="varname">resultTypeId</code> can be specified
+     as <code class="literal">NULL</code> or as the address of a local variable to receive the
+     function's result type OID.  <code class="varname">resultTupleDesc</code> should be the
+     address of a local <code class="structname">TupleDesc</code> variable.  Check that the
+     result is <code class="literal">TYPEFUNC_COMPOSITE</code>; if so,
+     <code class="varname">resultTupleDesc</code> has been filled with the needed
+     <code class="structname">TupleDesc</code>.  (If it is not, you can report an error along
+     the lines of &#8220;<span class="quote">function returning record called in context that
+     cannot accept type record</span>&#8221;.)
+    </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>      <code class="function">get_call_result_type</code> can resolve the actual type of a
       polymorphic function result; so it is useful in functions that return
       scalar polymorphic results, not only functions that return composites.
-      The <TT
-CLASS="VARNAME"
->resultTypeId</TT
-> output is primarily useful for functions
+      The <code class="varname">resultTypeId</code> output is primarily useful for functions
       returning polymorphic scalars.
-     </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->      <CODE
-CLASS="FUNCTION"
->get_call_result_type</CODE
-> has a sibling
-      <CODE
-CLASS="FUNCTION"
->get_expr_result_type</CODE
->, which can be used to resolve the
+     </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      <code class="function">get_call_result_type</code> has a sibling
+      <code class="function">get_expr_result_type</code>, which can be used to resolve the
       expected output type for a function call represented by an expression
       tree.  This can be used when trying to determine the result type from
       outside the function itself.  There is also
-      <CODE
-CLASS="FUNCTION"
->get_func_result_type</CODE
->, which can be used when only the
+      <code class="function">get_func_result_type</code>, which can be used when only the
       function's OID is available.  However these functions are not able
-      to deal with functions declared to return <TT
-CLASS="STRUCTNAME"
->record</TT
->, and
-      <CODE
-CLASS="FUNCTION"
->get_func_result_type</CODE
-> cannot resolve polymorphic types,
-      so you should preferentially use <CODE
-CLASS="FUNCTION"
->get_call_result_type</CODE
->.
-     </P
-></BLOCKQUOTE
-></DIV
-><P
->     Older, now-deprecated functions for obtaining
-     <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
->s are
-</P><PRE
-CLASS="PROGRAMLISTING"
->TupleDesc RelationNameGetTupleDesc(const char *relname)</PRE
-><P>
-     to get a <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
-> for the row type of a named relation,
+      to deal with functions declared to return <code class="structname">record</code>, and
+      <code class="function">get_func_result_type</code> cannot resolve polymorphic types,
+      so you should preferentially use <code class="function">get_call_result_type</code>.
+     </p>
+</div>
+<p>     Older, now-deprecated functions for obtaining
+     <code class="structname">TupleDesc</code>s are
+</p>
+<pre class="programlisting">TupleDesc RelationNameGetTupleDesc(const char *relname)</pre>
+<p>
+     to get a <code class="structname">TupleDesc</code> for the row type of a named relation,
      and
-</P><PRE
-CLASS="PROGRAMLISTING"
->TupleDesc TypeGetTupleDesc(Oid typeoid, List *colaliases)</PRE
-><P>
-     to get a <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
-> based on a type OID. This can
-     be used to get a <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
-> for a base or
+</p>
+<pre class="programlisting">TupleDesc TypeGetTupleDesc(Oid typeoid, List *colaliases)</pre>
+<p>
+     to get a <code class="structname">TupleDesc</code> based on a type OID. This can
+     be used to get a <code class="structname">TupleDesc</code> for a base or
      composite type.  It will not work for a function that returns
-     <TT
-CLASS="STRUCTNAME"
->record</TT
->, however, and it cannot resolve polymorphic
+     <code class="structname">record</code>, however, and it cannot resolve polymorphic
      types.
-    </P
-><P
->     Once you have a <TT
-CLASS="STRUCTNAME"
->TupleDesc</TT
->, call
-</P><PRE
-CLASS="PROGRAMLISTING"
->TupleDesc BlessTupleDesc(TupleDesc tupdesc)</PRE
-><P>
+    </p>
+<p>     Once you have a <code class="structname">TupleDesc</code>, call
+</p>
+<pre class="programlisting">TupleDesc BlessTupleDesc(TupleDesc tupdesc)</pre>
+<p>
      if you plan to work with Datums, or
-</P><PRE
-CLASS="PROGRAMLISTING"
->AttInMetadata *TupleDescGetAttInMetadata(TupleDesc tupdesc)</PRE
-><P>
+</p>
+<pre class="programlisting">AttInMetadata *TupleDescGetAttInMetadata(TupleDesc tupdesc)</pre>
+<p>
      if you plan to work with C strings.  If you are writing a function
      returning set, you can save the results of these functions in the
-     <TT
-CLASS="STRUCTNAME"
->FuncCallContext</TT
-> structure &mdash; use the
-     <TT
-CLASS="STRUCTFIELD"
->tuple_desc</TT
-> or <TT
-CLASS="STRUCTFIELD"
->attinmeta</TT
-> field
+     <code class="structname">FuncCallContext</code> structure [mdash ] use the
+     <code class="structfield">tuple_desc</code> or <code class="structfield">attinmeta</code> field
      respectively.
-    </P
-><P
->     When working with Datums, use
-</P><PRE
-CLASS="PROGRAMLISTING"
->HeapTuple heap_form_tuple(TupleDesc tupdesc, Datum *values, bool *isnull)</PRE
-><P>
-     to build a <TT
-CLASS="STRUCTNAME"
->HeapTuple</TT
-> given user data in Datum form.
-    </P
-><P
->     When working with C strings, use
-</P><PRE
-CLASS="PROGRAMLISTING"
->HeapTuple BuildTupleFromCStrings(AttInMetadata *attinmeta, char **values)</PRE
-><P>
-     to build a <TT
-CLASS="STRUCTNAME"
->HeapTuple</TT
-> given user data
-     in C string form.  <TT
-CLASS="LITERAL"
->values</TT
-> is an array of C strings,
+    </p>
+<p>     When working with Datums, use
+</p>
+<pre class="programlisting">HeapTuple heap_form_tuple(TupleDesc tupdesc, Datum *values, bool *isnull)</pre>
+<p>
+     to build a <code class="structname">HeapTuple</code> given user data in Datum form.
+    </p>
+<p>     When working with C strings, use
+</p>
+<pre class="programlisting">HeapTuple BuildTupleFromCStrings(AttInMetadata *attinmeta, char **values)</pre>
+<p>
+     to build a <code class="structname">HeapTuple</code> given user data
+     in C string form.  <code class="literal">values</code> is an array of C strings,
      one for each attribute of the return row. Each C string should be in
      the form expected by the input function of the attribute data
      type. In order to return a null value for one of the attributes,
-     the corresponding pointer in the <TT
-CLASS="PARAMETER"
->values</TT
-> array
-     should be set to <TT
-CLASS="SYMBOL"
->NULL</TT
->.  This function will need to
+     the corresponding pointer in the <em class="parameter"><code>values</code></em> array
+     should be set to <code class="symbol">NULL</code>.  This function will need to
      be called again for each row you return.
-    </P
-><P
->     Once you have built a tuple to return from your function, it
-     must be converted into a <TT
-CLASS="TYPE"
->Datum</TT
->. Use
-</P><PRE
-CLASS="PROGRAMLISTING"
->HeapTupleGetDatum(HeapTuple tuple)</PRE
-><P>
-     to convert a <TT
-CLASS="STRUCTNAME"
->HeapTuple</TT
-> into a valid Datum.  This
-     <TT
-CLASS="TYPE"
->Datum</TT
-> can be returned directly if you intend to return
+    </p>
+<p>     Once you have built a tuple to return from your function, it
+     must be converted into a <code class="type">Datum</code>. Use
+</p>
+<pre class="programlisting">HeapTupleGetDatum(HeapTuple tuple)</pre>
+<p>
+     to convert a <code class="structname">HeapTuple</code> into a valid Datum.  This
+     <code class="type">Datum</code> can be returned directly if you intend to return
      just a single row, or it can be used as the current return value
      in a set-returning function.
-    </P
-><P
->     An example appears in the next section.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="XFUNC-C-RETURN-SET"
->32.9.10. Returning Sets from C-Language Functions</A
-></H2
-><P
->     There is also a special API that provides support for returning
+    </p>
+<p>     An example appears in the next section.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xfunc-c-return-set"></a>32.9.10. Returning Sets from C-Language Functions</h3></div></div></div>
+<p>     There is also a special API that provides support for returning
      sets (multiple rows) from a C-language function.  A set-returning
      function must follow the version-1 calling conventions.  Also,
-     source files must include <TT
-CLASS="FILENAME"
->funcapi.h</TT
->, as
+     source files must include <code class="filename">funcapi.h</code>, as
      above.
-    </P
-><P
->     A set-returning function (<ACRONYM
-CLASS="ACRONYM"
->SRF</ACRONYM
->) is called
-     once for each item it returns.  The <ACRONYM
-CLASS="ACRONYM"
->SRF</ACRONYM
-> must
+    </p>
+<p>     A set-returning function (<span class="acronym">SRF</span>) is called
+     once for each item it returns.  The <span class="acronym">SRF</span> must
      therefore save enough state to remember what it was doing and
      return the next item on each call.
-     The structure <TT
-CLASS="STRUCTNAME"
->FuncCallContext</TT
-> is provided to help
-     control this process.  Within a function, <TT
-CLASS="LITERAL"
->fcinfo-&gt;flinfo-&gt;fn_extra</TT
->
-     is used to hold a pointer to <TT
-CLASS="STRUCTNAME"
->FuncCallContext</TT
->
+     The structure <code class="structname">FuncCallContext</code> is provided to help
+     control this process.  Within a function, <code class="literal">fcinfo-&gt;flinfo-&gt;fn_extra</code>
+     is used to hold a pointer to <code class="structname">FuncCallContext</code>
      across calls.
-</P><PRE
-CLASS="PROGRAMLISTING"
->typedef struct
+</p>
+<pre class="programlisting">typedef struct
 {
     /*
      * Number of times we've been called before
@@ -3315,214 +1468,102 @@ CLASS="PROGRAMLISTING"
      */
     TupleDesc tuple_desc;
 
-} FuncCallContext;</PRE
-><P>
-    </P
-><P
->     An <ACRONYM
-CLASS="ACRONYM"
->SRF</ACRONYM
-> uses several functions and macros that
-     automatically manipulate the <TT
-CLASS="STRUCTNAME"
->FuncCallContext</TT
->
-     structure (and expect to find it via <TT
-CLASS="LITERAL"
->fn_extra</TT
->).  Use
-</P><PRE
-CLASS="PROGRAMLISTING"
->SRF_IS_FIRSTCALL()</PRE
-><P>
+} FuncCallContext;</pre>
+<p>
+    </p>
+<p>     An <span class="acronym">SRF</span> uses several functions and macros that
+     automatically manipulate the <code class="structname">FuncCallContext</code>
+     structure (and expect to find it via <code class="literal">fn_extra</code>).  Use
+</p>
+<pre class="programlisting">SRF_IS_FIRSTCALL()</pre>
+<p>
      to determine if your function is being called for the first or a
      subsequent time. On the first call (only) use
-</P><PRE
-CLASS="PROGRAMLISTING"
->SRF_FIRSTCALL_INIT()</PRE
-><P>
-     to initialize the <TT
-CLASS="STRUCTNAME"
->FuncCallContext</TT
->. On every function call,
+</p>
+<pre class="programlisting">SRF_FIRSTCALL_INIT()</pre>
+<p>
+     to initialize the <code class="structname">FuncCallContext</code>. On every function call,
      including the first, use
-</P><PRE
-CLASS="PROGRAMLISTING"
->SRF_PERCALL_SETUP()</PRE
-><P>
-     to properly set up for using the <TT
-CLASS="STRUCTNAME"
->FuncCallContext</TT
->
+</p>
+<pre class="programlisting">SRF_PERCALL_SETUP()</pre>
+<p>
+     to properly set up for using the <code class="structname">FuncCallContext</code>
      and clearing any previously returned data left over from the
      previous pass.
-    </P
-><P
->     If your function has data to return, use
-</P><PRE
-CLASS="PROGRAMLISTING"
->SRF_RETURN_NEXT(funcctx, result)</PRE
-><P>
-     to return it to the caller.  (<TT
-CLASS="LITERAL"
->result</TT
-> must be of type
-     <TT
-CLASS="TYPE"
->Datum</TT
->, either a single value or a tuple prepared as
+    </p>
+<p>     If your function has data to return, use
+</p>
+<pre class="programlisting">SRF_RETURN_NEXT(funcctx, result)</pre>
+<p>
+     to return it to the caller.  (<code class="literal">result</code> must be of type
+     <code class="type">Datum</code>, either a single value or a tuple prepared as
      described above.)  Finally, when your function is finished
      returning data, use
-</P><PRE
-CLASS="PROGRAMLISTING"
->SRF_RETURN_DONE(funcctx)</PRE
-><P>
-     to clean up and end the <ACRONYM
-CLASS="ACRONYM"
->SRF</ACRONYM
->.
-    </P
-><P
->     The memory context that is current when the <ACRONYM
-CLASS="ACRONYM"
->SRF</ACRONYM
-> is called is
+</p>
+<pre class="programlisting">SRF_RETURN_DONE(funcctx)</pre>
+<p>
+     to clean up and end the <span class="acronym">SRF</span>.
+    </p>
+<p>     The memory context that is current when the <span class="acronym">SRF</span> is called is
      a transient context that will be cleared between calls.  This means
-     that you do not need to call <CODE
-CLASS="FUNCTION"
->pfree</CODE
-> on everything
-     you allocated using <CODE
-CLASS="FUNCTION"
->palloc</CODE
->; it will go away anyway.  However, if you want to allocate
+     that you do not need to call <code class="function">pfree</code> on everything
+     you allocated using <code class="function">palloc</code>; it will go away anyway.  However, if you want to allocate
      any data structures to live across calls, you need to put them somewhere
      else.  The memory context referenced by
-     <TT
-CLASS="STRUCTFIELD"
->multi_call_memory_ctx</TT
-> is a suitable location for any
-     data that needs to survive until the <ACRONYM
-CLASS="ACRONYM"
->SRF</ACRONYM
-> is finished running.  In most
+     <code class="structfield">multi_call_memory_ctx</code> is a suitable location for any
+     data that needs to survive until the <span class="acronym">SRF</span> is finished running.  In most
      cases, this means that you should switch into
-     <TT
-CLASS="STRUCTFIELD"
->multi_call_memory_ctx</TT
-> while doing the first-call setup.
-    </P
-><P
->     A complete pseudo-code example looks like the following:
-</P><PRE
-CLASS="PROGRAMLISTING"
->Datum
+     <code class="structfield">multi_call_memory_ctx</code> while doing the first-call setup.
+    </p>
+<p>     A complete pseudo-code example looks like the following:
+</p>
+<pre class="programlisting">Datum
 my_set_returning_function(PG_FUNCTION_ARGS)
 {
     FuncCallContext  *funcctx;
     Datum             result;
     MemoryContext     oldcontext;
-    <TT
-CLASS="REPLACEABLE"
-><I
->further declarations as needed</I
-></TT
->
+    <em class="replaceable"><code>further declarations as needed</code></em>
 
     if (SRF_IS_FIRSTCALL())
     {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx-&gt;multi_call_memory_ctx);
         /* One-time setup code appears here: */
-        <TT
-CLASS="REPLACEABLE"
-><I
->user code</I
-></TT
->
-        <TT
-CLASS="REPLACEABLE"
-><I
->if returning composite</I
-></TT
->
-            <TT
-CLASS="REPLACEABLE"
-><I
->build TupleDesc, and perhaps AttInMetadata</I
-></TT
->
-        <TT
-CLASS="REPLACEABLE"
-><I
->endif returning composite</I
-></TT
->
-        <TT
-CLASS="REPLACEABLE"
-><I
->user code</I
-></TT
->
+        <em class="replaceable"><code>user code</code></em>
+        <em class="replaceable"><code>if returning composite</code></em>
+            <em class="replaceable"><code>build TupleDesc, and perhaps AttInMetadata</code></em>
+        <em class="replaceable"><code>endif returning composite</code></em>
+        <em class="replaceable"><code>user code</code></em>
         MemoryContextSwitchTo(oldcontext);
     }
 
     /* Each-time setup code appears here: */
-    <TT
-CLASS="REPLACEABLE"
-><I
->user code</I
-></TT
->
+    <em class="replaceable"><code>user code</code></em>
     funcctx = SRF_PERCALL_SETUP();
-    <TT
-CLASS="REPLACEABLE"
-><I
->user code</I
-></TT
->
+    <em class="replaceable"><code>user code</code></em>
 
     /* this is just one way we might test whether we are done: */
     if (funcctx-&gt;call_cntr &lt; funcctx-&gt;max_calls)
     {
         /* Here we want to return another item: */
-        <TT
-CLASS="REPLACEABLE"
-><I
->user code</I
-></TT
->
-        <TT
-CLASS="REPLACEABLE"
-><I
->obtain result Datum</I
-></TT
->
+        <em class="replaceable"><code>user code</code></em>
+        <em class="replaceable"><code>obtain result Datum</code></em>
         SRF_RETURN_NEXT(funcctx, result);
     }
     else
     {
         /* Here we are done returning items and just need to clean up: */
-        <TT
-CLASS="REPLACEABLE"
-><I
->user code</I
-></TT
->
+        <em class="replaceable"><code>user code</code></em>
         SRF_RETURN_DONE(funcctx);
     }
-}</PRE
-><P>
-    </P
-><P
->     A complete example of a simple <ACRONYM
-CLASS="ACRONYM"
->SRF</ACRONYM
-> returning a composite type
+}</pre>
+<p>
+    </p>
+<p>     A complete example of a simple <span class="acronym">SRF</span> returning a composite type
      looks like:
-</P><PRE
-CLASS="PROGRAMLISTING"
->PG_FUNCTION_INFO_V1(retcomposite);
+</p>
+<pre class="programlisting">PG_FUNCTION_INFO_V1(retcomposite);
 
 Datum
 retcomposite(PG_FUNCTION_ARGS)
@@ -3609,123 +1650,60 @@ retcomposite(PG_FUNCTION_ARGS)
     {
         SRF_RETURN_DONE(funcctx);
     }
-}</PRE
-><P>
+}</pre>
+<p>
 
      One way to declare this function in SQL is:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TYPE __retcomposite AS (f1 integer, f2 integer, f3 integer);
+</p>
+<pre class="programlisting">CREATE TYPE __retcomposite AS (f1 integer, f2 integer, f3 integer);
 
 CREATE OR REPLACE FUNCTION retcomposite(integer, integer)
     RETURNS SETOF __retcomposite
-    AS '<TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->', 'retcomposite'
-    LANGUAGE C IMMUTABLE STRICT;</PRE
-><P>
+    AS '<em class="replaceable"><code>filename</code></em>', 'retcomposite'
+    LANGUAGE C IMMUTABLE STRICT;</pre>
+<p>
      A different way is to use OUT parameters:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE OR REPLACE FUNCTION retcomposite(IN integer, IN integer,
+</p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION retcomposite(IN integer, IN integer,
     OUT f1 integer, OUT f2 integer, OUT f3 integer)
     RETURNS SETOF record
-    AS '<TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->', 'retcomposite'
-    LANGUAGE C IMMUTABLE STRICT;</PRE
-><P>
+    AS '<em class="replaceable"><code>filename</code></em>', 'retcomposite'
+    LANGUAGE C IMMUTABLE STRICT;</pre>
+<p>
      Notice that in this method the output type of the function is formally
-     an anonymous <TT
-CLASS="STRUCTNAME"
->record</TT
-> type.
-    </P
-><P
->     The directory <TT
-CLASS="FILENAME"
->contrib/tablefunc</TT
-> in the source
+     an anonymous <code class="structname">record</code> type.
+    </p>
+<p>     The directory <code class="filename">contrib/tablefunc</code> in the source
      distribution contains more examples of set-returning functions.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN32243"
->32.9.11. Polymorphic Arguments and Return Types</A
-></H2
-><P
->     C-language functions may be declared to accept and
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id655028"></a>32.9.11. Polymorphic Arguments and Return Types</h3></div></div></div>
+<p>     C-language functions may be declared to accept and
      return the polymorphic types
-     <TT
-CLASS="TYPE"
->anyelement</TT
-> and <TT
-CLASS="TYPE"
->anyarray</TT
->.
-     See <A
-HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 32.2.5</A
-> for a more detailed explanation
+     <code class="type">anyelement</code> and <code class="type">anyarray</code>.
+     See <a href="extend-type-system.html#extend-types-polymorphic" title="32.2.5. Polymorphic Types">Section 32.2.5, &#8220;Polymorphic Types&#8221;</a> for a more detailed explanation
      of polymorphic functions. When function arguments or return types
      are defined as polymorphic types, the function author cannot know
      in advance what data type it will be called with, or
-     need to return. There are two routines provided in <TT
-CLASS="FILENAME"
->fmgr.h</TT
->
+     need to return. There are two routines provided in <code class="filename">fmgr.h</code>
      to allow a version-1 C function to discover the actual data types
      of its arguments and the type it is expected to return. The routines are
-     called <TT
-CLASS="LITERAL"
->get_fn_expr_rettype(FmgrInfo *flinfo)</TT
-> and
-     <TT
-CLASS="LITERAL"
->get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)</TT
->.
-     They return the result or argument type OID, or <TT
-CLASS="SYMBOL"
->InvalidOid</TT
-> if the
+     called <code class="literal">get_fn_expr_rettype(FmgrInfo *flinfo)</code> and
+     <code class="literal">get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)</code>.
+     They return the result or argument type OID, or <code class="symbol">InvalidOid</code> if the
      information is not available.
-     The structure <TT
-CLASS="LITERAL"
->flinfo</TT
-> is normally accessed as
-     <TT
-CLASS="LITERAL"
->fcinfo-&gt;flinfo</TT
->. The parameter <TT
-CLASS="LITERAL"
->argnum</TT
->
-     is zero based.  <CODE
-CLASS="FUNCTION"
->get_call_result_type</CODE
-> can also be used
-     as an alternative to <CODE
-CLASS="FUNCTION"
->get_fn_expr_rettype</CODE
->.
-    </P
-><P
->     For example, suppose we want to write a function to accept a single
+     The structure <code class="literal">flinfo</code> is normally accessed as
+     <code class="literal">fcinfo-&gt;flinfo</code>. The parameter <code class="literal">argnum</code>
+     is zero based.  <code class="function">get_call_result_type</code> can also be used
+     as an alternative to <code class="function">get_fn_expr_rettype</code>.
+    </p>
+<p>     For example, suppose we want to write a function to accept a single
      element of any type, and return a one-dimensional array of that type:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->PG_FUNCTION_INFO_V1(make_array);
+</p>
+<pre class="programlisting">PG_FUNCTION_INFO_V1(make_array);
 Datum
 make_array(PG_FUNCTION_ARGS)
 {
@@ -3760,98 +1738,21 @@ make_array(PG_FUNCTION_ARGS)
                                 element_type, typlen, typbyval, typalign);
 
     PG_RETURN_ARRAYTYPE_P(result);
-}</PRE
-><P>
-    </P
-><P
->     The following command declares the function
-     <CODE
-CLASS="FUNCTION"
->make_array</CODE
-> in SQL:
+}</pre>
+<p>
+    </p>
+<p>     The following command declares the function
+     <code class="function">make_array</code> in SQL:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION make_array(anyelement) RETURNS anyarray
-    AS '<TT
-CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
->/funcs', 'make_array'
-    LANGUAGE C STRICT;</PRE
-><P>
+</p>
+<pre class="programlisting">CREATE FUNCTION make_array(anyelement) RETURNS anyarray
+    AS '<em class="replaceable"><code>DIRECTORY</code></em>/funcs', 'make_array'
+    LANGUAGE C STRICT;</pre>
+<p>
 
-     Note the use of <TT
-CLASS="LITERAL"
->STRICT</TT
->; this is essential
+     Note the use of <code class="literal">STRICT</code>; this is essential
      since the code is not bothering to test for a null input.
-    </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xfunc-internal.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xaggr.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Internal Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="extend.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->User-Defined Aggregates</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    </p>
+</div>
+</div></body>
+</html>

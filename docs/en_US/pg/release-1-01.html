@@ -1,273 +1,75 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 1.01</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 1.02"
-HREF="release-1-02.html"><LINK
-REL="NEXT"
-TITLE="Release 1.0"
-HREF="release-1-0.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-1-02.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-1-0.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-1-01"
->E.60. Release 1.01</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->1996-02-23</P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN78450"
->E.60.1. Migration from version 1.0 to version 1.01</A
-></H2
-><P
->The following notes are for the benefit of users who want to migrate
-databases from <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> 1.0 to <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> 1.01.  </P
-><P
->If you are starting afresh with <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> 1.01 and do not need
-to migrate old databases, you do not need to read any further.</P
-><P
->In order to <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> version 1.01 with databases created with
-<SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> version 1.0, the following steps are required:  </P
-><DIV
-CLASS="PROCEDURE"
-><OL
-TYPE="1"
-><LI
-CLASS="STEP"
-><P
->Set the definition of <TT
-CLASS="SYMBOL"
->NAMEDATALEN</TT
-> in <TT
-CLASS="FILENAME"
->src/Makefile.global</TT
-> to 16
-   and <TT
-CLASS="SYMBOL"
->OIDNAMELEN</TT
-> to 20.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Decide whether you want to use Host based authentication.  </P
-><OL
-CLASS="SUBSTEPS"
-TYPE="a"
-><LI
-CLASS="STEP"
-><P
->If you do, you must create a file name <TT
-CLASS="LITERAL"
->pg_hba</TT
-> in your top-level data
-   directory (typically the value of your <TT
-CLASS="ENVAR"
->$PGDATA</TT
->).  <TT
-CLASS="FILENAME"
->src/libpq/pg_hba</TT
->
-   shows an example syntax.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->If you do not want host-based authentication, you can comment out
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.63. Release 1.01</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-1-02.html" title="E.62. Release 1.02">
+<link rel="next" href="release-1-0.html" title="E.64. Release 1.0">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-1-01"></a>E.63. Release 1.01</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>1996-02-23</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id838826"></a>E.63.1. Migration from version 1.0 to version 1.01</h3></div></div></div>
+<p>The following notes are for the benefit of users who want to migrate
+databases from <span class="productname">Postgres95</span> 1.0 to <span class="productname">Postgres95</span> 1.01.  </p>
+<p>If you are starting afresh with <span class="productname">Postgres95</span> 1.01 and do not need
+to migrate old databases, you do not need to read any further.</p>
+<p>In order to <span class="productname">Postgres95</span> version 1.01 with databases created with
+<span class="productname">Postgres95</span> version 1.0, the following steps are required:  </p>
+<div class="procedure"><ol type="1">
+<li><p>Set the definition of <code class="symbol">NAMEDATALEN</code> in <code class="filename">src/Makefile.global</code> to 16
+   and <code class="symbol">OIDNAMELEN</code> to 20.</p></li>
+<li>
+<p>Decide whether you want to use Host based authentication.  </p>
+<ol type="a">
+<li><p>If you do, you must create a file name <code class="literal">pg_hba</code> in your top-level data
+   directory (typically the value of your <code class="envar">$PGDATA</code>).  <code class="filename">src/libpq/pg_hba</code>
+   shows an example syntax.</p></li>
+<li>
+<p>If you do not want host-based authentication, you can comment out
    the line
-</P><PRE
-CLASS="PROGRAMLISTING"
->        HBA = 1</PRE
-><P>
-   in <TT
-CLASS="FILENAME"
->src/Makefile.global</TT
-></P
-><P
->   Note that host-based authentication is turned on by default, and if
+</p>
+<pre class="programlisting">        HBA = 1</pre>
+<p>
+   in <code class="filename">src/Makefile.global</code></p>
+<p>   Note that host-based authentication is turned on by default, and if
    you do not take steps A or B above, the out-of-the-box 1.01 will
-   not allow you to connect to 1.0 databases.</P
-></LI
-></OL
-></LI
-><LI
-CLASS="STEP"
-><P
->Compile and install 1.01, but DO NOT do the <TT
-CLASS="COMMAND"
->initdb</TT
-> step.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Before doing anything else, terminate your 1.0 postmaster, and
-   backup your existing <TT
-CLASS="ENVAR"
->$PGDATA</TT
-> directory.   </P
-></LI
-><LI
-CLASS="STEP"
-><P
->Set your <TT
-CLASS="ENVAR"
->PGDATA</TT
-> environment variable to your 1.0 databases, but set up
-   path up so that 1.01 binaries are being used.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Modify the file <TT
-CLASS="FILENAME"
-><TT
-CLASS="ENVAR"
->$PGDATA</TT
->/PG_VERSION</TT
-> from 5.0 to 5.1</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Start up a new 1.01 postmaster</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Add the new built-in functions and operators of 1.01 to 1.0
+   not allow you to connect to 1.0 databases.</p>
+</li>
+</ol>
+</li>
+<li><p>Compile and install 1.01, but DO NOT do the <code class="command">initdb</code> step.</p></li>
+<li><p>Before doing anything else, terminate your 1.0 postmaster, and
+   backup your existing <code class="envar">$PGDATA</code> directory.   </p></li>
+<li><p>Set your <code class="envar">PGDATA</code> environment variable to your 1.0 databases, but set up
+   path up so that 1.01 binaries are being used.</p></li>
+<li><p>Modify the file <code class="filename"><code class="envar">$PGDATA</code>/PG_VERSION</code> from 5.0 to 5.1</p></li>
+<li><p>Start up a new 1.01 postmaster</p></li>
+<li>
+<p>Add the new built-in functions and operators of 1.01 to 1.0
    databases.  This is done by running the new 1.01 server against
    your own 1.0 database and applying the queries attached and saving 
-   in the file 1.0_to_1.01.sql.   This can be done easily through <TT
-CLASS="COMMAND"
->psql</TT
->.
-   If your 1.0 database is name <TT
-CLASS="LITERAL"
->testdb</TT
->:
+   in the file 1.0_to_1.01.sql.   This can be done easily through <code class="command">psql</code>.
+   If your 1.0 database is name <code class="literal">testdb</code>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->        % psql testdb -f 1.0_to_1.01.sql</PRE
-><P>
+</p>
+<pre class="programlisting">        % psql testdb -f 1.0_to_1.01.sql</pre>
+<p>
 
 and then execute the following commands (cut and paste from here):
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->-- add builtin functions that are new to 1.01
+</p>
+<pre class="programlisting">-- add builtin functions that are new to 1.01
 
 create function int4eqoid (int4, oid) returns bool as 'foo'
 language 'internal';
@@ -307,24 +109,14 @@ create operator !~* (leftarg = char8, rightarg = text, procedure = char8icregexn
 create operator ~* (leftarg = char16, rightarg = text, procedure = char16icregexeq);
 create operator !~* (leftarg = char16, rightarg = text, procedure = char16icregexne);
 create operator ~* (leftarg = text, rightarg = text, procedure = texticregexeq);
-create operator !~* (leftarg = text, rightarg = text, procedure = texticregexne);</PRE
-><P></P
-></LI
-></OL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN78500"
->E.60.2. Changes</A
-></H2
-><P
-></P><PRE
-CLASS="PROGRAMLISTING"
->Incompatibilities:
+create operator !~* (leftarg = text, rightarg = text, procedure = texticregexne);</pre>
+</li>
+</ol></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id839132"></a>E.63.2. Changes</h3></div></div></div>
+<pre class="programlisting">Incompatibilities:
  * 1.01 is backwards compatible with 1.0 database provided the user
    follow the steps outlined in the MIGRATION_from_1.0_to_1.01 file.
    If those steps are not taken, 1.01 is not compatible with 1.0 database.
@@ -355,72 +147,7 @@ Bug fixes:
    functions calls were used in comparisons in the WHERE clause
  * changed all uses of getuid to geteuid so that effective uids are used
  * psql now returns non-zero status on errors when using -c
- * applied public patches 1-14</PRE
-><P></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-1-02.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-1-0.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 1.02</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 1.0</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+ * applied public patches 1-14</pre>
+</div>
+</div></body>
+</html>

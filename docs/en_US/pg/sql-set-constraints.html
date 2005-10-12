@@ -1,346 +1,87 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SET CONSTRAINTS</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="SET"
-HREF="sql-set.html"><LINK
-REL="NEXT"
-TITLE="SET ROLE"
-HREF="sql-set-role.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-set-role.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-set-role.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-SET-CONSTRAINTS"
-></A
->SET CONSTRAINTS</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN47985"
-></A
-><H2
->Name</H2
->SET CONSTRAINTS&nbsp;--&nbsp;set constraint checking modes for the current transaction</DIV
-><A
-NAME="AEN47988"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN47990"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->SET CONSTRAINTS { ALL | <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [, ...] } { DEFERRED | IMMEDIATE }</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN47993"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
-> sets the behavior of constraint
-   checking within the current transaction. <TT
-CLASS="LITERAL"
->IMMEDIATE</TT
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SET CONSTRAINTS</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-set.html" title="SET">
+<link rel="next" href="sql-set-role.html" title="SET ROLE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-set-constraints"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SET CONSTRAINTS &#8212; set constraint checking modes for the current transaction</p>
+</div>
+<a name="id731471"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">SET CONSTRAINTS { ALL | <em class="replaceable"><code>name</code></em> [, ...] } { DEFERRED | IMMEDIATE }</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id731496"></a><h2>Description</h2>
+<p>   <code class="command">SET CONSTRAINTS</code> sets the behavior of constraint
+   checking within the current transaction. <code class="literal">IMMEDIATE</code>
    constraints are checked at the end of each
-   statement. <TT
-CLASS="LITERAL"
->DEFERRED</TT
-> constraints are not checked until
+   statement. <code class="literal">DEFERRED</code> constraints are not checked until
    transaction commit.  Each constraint has its own
-   <TT
-CLASS="LITERAL"
->IMMEDIATE</TT
-> or <TT
-CLASS="LITERAL"
->DEFERRED</TT
-> mode.
-  </P
-><P
->   Upon creation, a constraint is given one of three
-   characteristics: <TT
-CLASS="LITERAL"
->DEFERRABLE INITIALLY DEFERRED</TT
->,
-   <TT
-CLASS="LITERAL"
->DEFERRABLE INITIALLY IMMEDIATE</TT
->, or
-   <TT
-CLASS="LITERAL"
->NOT DEFERRABLE</TT
->. The third
-   class is always <TT
-CLASS="LITERAL"
->IMMEDIATE</TT
-> and is not affected by the
-   <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
-> command.  The first two classes start
+   <code class="literal">IMMEDIATE</code> or <code class="literal">DEFERRED</code> mode.
+  </p>
+<p>   Upon creation, a constraint is given one of three
+   characteristics: <code class="literal">DEFERRABLE INITIALLY DEFERRED</code>,
+   <code class="literal">DEFERRABLE INITIALLY IMMEDIATE</code>, or
+   <code class="literal">NOT DEFERRABLE</code>. The third
+   class is always <code class="literal">IMMEDIATE</code> and is not affected by the
+   <code class="command">SET CONSTRAINTS</code> command.  The first two classes start
    every transaction in the indicated mode, but their behavior can be changed
-   within a transaction by <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
->.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
-> with a list of constraint names changes
+   within a transaction by <code class="command">SET CONSTRAINTS</code>.
+  </p>
+<p>   <code class="command">SET CONSTRAINTS</code> with a list of constraint names changes
    the mode of just those constraints (which must all be deferrable).  If
    there are multiple constraints matching any given name, all are affected.
-   <TT
-CLASS="COMMAND"
->SET CONSTRAINTS ALL</TT
-> changes the mode of all deferrable
+   <code class="command">SET CONSTRAINTS ALL</code> changes the mode of all deferrable
    constraints.
-  </P
-><P
->   When <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
-> changes the mode of a constraint
-   from <TT
-CLASS="LITERAL"
->DEFERRED</TT
->
-   to <TT
-CLASS="LITERAL"
->IMMEDIATE</TT
->, the new mode takes effect
+  </p>
+<p>   When <code class="command">SET CONSTRAINTS</code> changes the mode of a constraint
+   from <code class="literal">DEFERRED</code>
+   to <code class="literal">IMMEDIATE</code>, the new mode takes effect
    retroactively: any outstanding data modifications that would have
    been checked at the end of the transaction are instead checked during the
-   execution of the <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
-> command.
-   If any such constraint is violated, the <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
->
-   fails (and does not change the constraint mode).  Thus, <TT
-CLASS="COMMAND"
->SET
-   CONSTRAINTS</TT
-> can be used to force checking of constraints to
+   execution of the <code class="command">SET CONSTRAINTS</code> command.
+   If any such constraint is violated, the <code class="command">SET CONSTRAINTS</code>
+   fails (and does not change the constraint mode).  Thus, <code class="command">SET
+   CONSTRAINTS</code> can be used to force checking of constraints to
    occur at a specific point in a transaction.
-  </P
-><P
->   Currently, only foreign key constraints are affected by this
+  </p>
+<p>   Currently, only foreign key constraints are affected by this
    setting. Check and unique constraints are always effectively
    not deferrable.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48019"
-></A
-><H2
->Notes</H2
-><P
->   This command only alters the behavior of constraints within the
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id731662"></a><h2>Notes</h2>
+<p>   This command only alters the behavior of constraints within the
    current transaction. Thus, if you execute this command outside of a
    transaction block
-   (<TT
-CLASS="COMMAND"
->BEGIN</TT
->/<TT
-CLASS="COMMAND"
->COMMIT</TT
-> pair), it will
+   (<code class="command">BEGIN</code>/<code class="command">COMMIT</code> pair), it will
    not appear to have any effect.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN48024"
-></A
-><H2
->Compatibility</H2
-><P
->   This command complies with the behavior defined in the SQL
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id731684"></a><h2>Compatibility</h2>
+<p>   This command complies with the behavior defined in the SQL
    standard, except for the limitation that, in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, it only applies to
+   <span class="productname">PostgreSQL</span>, it only applies to
    foreign-key constraints.
-  </P
-><P
->   The SQL standard says that constraint names appearing in <TT
-CLASS="COMMAND"
->SET
-   CONSTRAINTS</TT
-> can be schema-qualified.  This is not yet
-   supported by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->: the names must
+  </p>
+<p>   The SQL standard says that constraint names appearing in <code class="command">SET
+   CONSTRAINTS</code> can be schema-qualified.  This is not yet
+   supported by <span class="productname">PostgreSQL</span>: the names must
    be unqualified, and all constraints matching the command will be
    affected no matter which schema they are in.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-set.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-set-role.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SET</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SET ROLE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

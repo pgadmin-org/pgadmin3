@@ -1,750 +1,219 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Requirements</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="  Installation Instructions"
-HREF="installation.html"><LINK
-REL="PREVIOUS"
-TITLE="  Installation Instructions"
-HREF="installation.html"><LINK
-REL="NEXT"
-TITLE="Getting The Source"
-HREF="install-getsource.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="installation.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="installation.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 14. Installation Instructions</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="installation.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="install-getsource.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INSTALL-REQUIREMENTS"
->14.2. Requirements</A
-></H1
-><P
->   In general, a modern Unix-compatible platform should be able to run
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>14.2. Requirements</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
+<link rel="prev" href="installation.html" title="Chapter 14.   Installation Instructions">
+<link rel="next" href="install-getsource.html" title="14.3. Getting The Source">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="install-requirements"></a>14.2. Requirements</h2></div></div></div>
+<p>   In general, a modern Unix-compatible platform should be able to run
+   <span class="productname">PostgreSQL</span>.
     The platforms that had received specific testing at the
-   time of release are listed in <A
-HREF="supported-platforms.html"
->Section 14.7</A
->
-   below. In the <TT
-CLASS="FILENAME"
->doc</TT
-> subdirectory of the distribution
-   there are several platform-specific <ACRONYM
-CLASS="ACRONYM"
->FAQ</ACRONYM
-> documents you
+   time of release are listed in <a href="supported-platforms.html" title="14.7. Supported Platforms">Section 14.7, &#8220;Supported Platforms&#8221;</a>
+   below. In the <code class="filename">doc</code> subdirectory of the distribution
+   there are several platform-specific <span class="acronym">FAQ</span> documents you
    might wish to consult if you are having trouble.
-  </P
-><P
->   The following software packages are required for building
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->:
+  </p>
+<p>   The following software packages are required for building
+   <span class="productname">PostgreSQL</span>:
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      <A
-NAME="AEN15751"
-></A
->
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      <a name="id580404"></a>
 
-      <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
-> <SPAN
-CLASS="APPLICATION"
->make</SPAN
-> is required; other
-      <SPAN
-CLASS="APPLICATION"
->make</SPAN
-> programs will <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> work.
-      <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
-> <SPAN
-CLASS="APPLICATION"
->make</SPAN
-> is often installed under
-      the name <TT
-CLASS="FILENAME"
->gmake</TT
->; this document will always
+      <span class="acronym">GNU</span> <span class="application">make</span> is required; other
+      <span class="application">make</span> programs will <span class="emphasis"><em>not</em></span> work.
+      <span class="acronym">GNU</span> <span class="application">make</span> is often installed under
+      the name <code class="filename">gmake</code>; this document will always
       refer to it by that name. (On some systems
-      <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
-> <SPAN
-CLASS="APPLICATION"
->make</SPAN
-> is the default tool with the name
-      <TT
-CLASS="FILENAME"
->make</TT
->.) To test for <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
->
-      <SPAN
-CLASS="APPLICATION"
->make</SPAN
-> enter
-</P><PRE
-CLASS="SCREEN"
-><KBD
-CLASS="USERINPUT"
->gmake --version</KBD
-></PRE
-><P>
+      <span class="acronym">GNU</span> <span class="application">make</span> is the default tool with the name
+      <code class="filename">make</code>.) To test for <span class="acronym">GNU</span>
+      <span class="application">make</span> enter
+</p>
+<pre class="screen"><strong class="userinput"><code>gmake --version</code></strong></pre>
+<p>
       It is recommended to use version 3.76.1 or later.
-     </P
-></LI
-><LI
-><P
->      You need an <ACRONYM
-CLASS="ACRONYM"
->ISO</ACRONYM
->/<ACRONYM
-CLASS="ACRONYM"
->ANSI</ACRONYM
-> C compiler. Recent
-      versions of <SPAN
-CLASS="PRODUCTNAME"
->GCC</SPAN
-> are recommendable, but
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is known to build with a wide variety
+     </p>
+</li>
+<li><p>      You need an <span class="acronym">ISO</span>/<span class="acronym">ANSI</span> C compiler. Recent
+      versions of <span class="productname">GCC</span> are recommendable, but
+      <span class="productname">PostgreSQL</span> is known to build with a wide variety
       of compilers from different vendors.
-     </P
-></LI
-><LI
-><P
->      <SPAN
-CLASS="APPLICATION"
->gzip</SPAN
-> is needed to unpack the distribution in the
+     </p></li>
+<li><p>      <span class="application">gzip</span> is needed to unpack the distribution in the
       first place.
-     </P
-></LI
-><LI
-><P
->      <A
-NAME="AEN15778"
-></A
->
+     </p></li>
+<li><p>      <a name="id580532"></a>
 
-      The <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
-> <SPAN
-CLASS="PRODUCTNAME"
->Readline</SPAN
-> library (for
+      The <span class="acronym">GNU</span> <span class="productname">Readline</span> library (for
       comfortable line editing and command history retrieval) will be
       used by default.  If you don't want to use it then you must
-      specify the <TT
-CLASS="OPTION"
->--without-readline</TT
-> option for
-      <TT
-CLASS="FILENAME"
->configure</TT
->.  (On <SPAN
-CLASS="PRODUCTNAME"
->NetBSD</SPAN
->,
-      the <TT
-CLASS="FILENAME"
->libedit</TT
-> library is
-      <SPAN
-CLASS="PRODUCTNAME"
->Readline</SPAN
->-compatible and is used if
-      <TT
-CLASS="FILENAME"
->libreadline</TT
-> is not found.)  If you are using
+      specify the <code class="option">--without-readline</code> option for
+      <code class="filename">configure</code>.  (On <span class="productname">NetBSD</span>,
+      the <code class="filename">libedit</code> library is
+      <span class="productname">Readline</span>-compatible and is used if
+      <code class="filename">libreadline</code> is not found.)  If you are using
       a package-based Linux distribution, be aware that you need both
-      the <TT
-CLASS="LITERAL"
->readline</TT
-> and <TT
-CLASS="LITERAL"
->readline-devel</TT
-> packages,
+      the <code class="literal">readline</code> and <code class="literal">readline-devel</code> packages,
       if those are separate in your distribution.
-     </P
-></LI
-><LI
-><P
->      <A
-NAME="AEN15792"
-></A
->
+     </p></li>
+<li><p>      <a name="id580612"></a>
 
       Additional software is needed to build
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> on <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
->.
-      You can build <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> for
-      <SPAN
-CLASS="PRODUCTNAME"
->NT</SPAN
->-based versions of <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
->
-      (like Windows XP and 2003) using <SPAN
-CLASS="PRODUCTNAME"
->MinGW</SPAN
->;
-      see <TT
-CLASS="FILENAME"
->doc/FAQ_MINGW</TT
-> for details.  You can also build
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> using
-      <SPAN
-CLASS="PRODUCTNAME"
->Cygwin</SPAN
->; see <TT
-CLASS="FILENAME"
->doc/FAQ_CYGWIN</TT
->.
-      A <SPAN
-CLASS="PRODUCTNAME"
->Cygwin</SPAN
->-based build will work on older
-      versions of <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
->, but if you have a choice,
-      we recommend the <SPAN
-CLASS="PRODUCTNAME"
->MinGW</SPAN
-> approach.
+      <span class="productname">PostgreSQL</span> on <span class="productname">Windows</span>.
+      You can build <span class="productname">PostgreSQL</span> for
+      <span class="productname">NT</span>-based versions of <span class="productname">Windows</span>
+      (like Windows XP and 2003) using <span class="productname">MinGW</span>;
+      see <code class="filename">doc/FAQ_MINGW</code> for details.  You can also build
+      <span class="productname">PostgreSQL</span> using
+      <span class="productname">Cygwin</span>; see <code class="filename">doc/FAQ_CYGWIN</code>.
+      A <span class="productname">Cygwin</span>-based build will work on older
+      versions of <span class="productname">Windows</span>, but if you have a choice,
+      we recommend the <span class="productname">MinGW</span> approach.
       While these are the only tool sets recommended for a complete build,
       it is possible to build just the C client library
-      (<SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->) and the interactive terminal
-      (<SPAN
-CLASS="APPLICATION"
->psql</SPAN
->) using other <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
->
+      (<span class="application">libpq</span>) and the interactive terminal
+      (<span class="application">psql</span>) using other <span class="productname">Windows</span>
       tool sets.  For details of that see
-       <A
-HREF="install-win32.html"
->Chapter 15</A
->.
-     </P
-></LI
-></UL
-><P>
-  </P
-><P
->   The following packages are optional.  They are not required in the
+       <a href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">Chapter 15, <i>Client-Only Installation on <span class="productname">Windows</span></i></a>.
+     </p></li>
+</ul></div>
+<p>
+  </p>
+<p>   The following packages are optional.  They are not required in the
    default configuration, but they are needed when certain build
    options are enabled, as explained below.
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      To build the server programming language
-      <SPAN
-CLASS="APPLICATION"
->PL/Perl</SPAN
-> you need a full
-      <SPAN
-CLASS="PRODUCTNAME"
->Perl</SPAN
-> installation, including the
-      <TT
-CLASS="FILENAME"
->libperl</TT
-> library and the header files.
-      Since <SPAN
-CLASS="APPLICATION"
->PL/Perl</SPAN
-> will be a shared
-      library, the <A
-NAME="AEN15820"
-></A
->
-      <TT
-CLASS="FILENAME"
->libperl</TT
-> library must be a shared library
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      To build the server programming language
+      <span class="application">PL/Perl</span> you need a full
+      <span class="productname">Perl</span> installation, including the
+      <code class="filename">libperl</code> library and the header files.
+      Since <span class="application">PL/Perl</span> will be a shared
+      library, the <a name="id580786"></a>
+      <code class="filename">libperl</code> library must be a shared library
       also on most platforms.  This appears to be the default in
-      recent <SPAN
-CLASS="PRODUCTNAME"
->Perl</SPAN
-> versions, but it was not
+      recent <span class="productname">Perl</span> versions, but it was not
       in earlier versions, and in any case it is the choice of whomever
       installed Perl at your site.
-     </P
-><P
->      If you don't have the shared library but you need one, a message
+     </p>
+<p>      If you don't have the shared library but you need one, a message
       like this will appear during the build to point out this fact:
-</P><PRE
-CLASS="SCREEN"
->*** Cannot build PL/Perl because libperl is not a shared library.
+</p>
+<pre class="screen">*** Cannot build PL/Perl because libperl is not a shared library.
 *** You might have to rebuild your Perl installation.  Refer to
-*** the documentation for details.</PRE
-><P>
+*** the documentation for details.</pre>
+<p>
       (If you don't follow the on-screen output you will merely notice
-      that the <SPAN
-CLASS="APPLICATION"
->PL/Perl</SPAN
-> library object,
-      <TT
-CLASS="FILENAME"
->plperl.so</TT
-> or similar, will not be
+      that the <span class="application">PL/Perl</span> library object,
+      <code class="filename">plperl.so</code> or similar, will not be
       installed.)  If you see this, you will have to rebuild and
-      install <SPAN
-CLASS="PRODUCTNAME"
->Perl</SPAN
-> manually to be able to
-      build <SPAN
-CLASS="APPLICATION"
->PL/Perl</SPAN
->.  During the
-      configuration process for <SPAN
-CLASS="PRODUCTNAME"
->Perl</SPAN
->,
+      install <span class="productname">Perl</span> manually to be able to
+      build <span class="application">PL/Perl</span>.  During the
+      configuration process for <span class="productname">Perl</span>,
       request a shared library.
-     </P
-></LI
-><LI
-><P
->      To build the <SPAN
-CLASS="APPLICATION"
->PL/Python</SPAN
-> server programming
-      language, you need a <SPAN
-CLASS="PRODUCTNAME"
->Python</SPAN
->
-      installation with the header files and the <SPAN
-CLASS="APPLICATION"
->distutils</SPAN
-> module.
-      The <SPAN
-CLASS="APPLICATION"
->distutils</SPAN
-> module is included by default with
-      <SPAN
-CLASS="PRODUCTNAME"
->Python</SPAN
-> 1.6 and later; users of
-      earlier versions of <SPAN
-CLASS="PRODUCTNAME"
->Python</SPAN
-> will need
+     </p>
+</li>
+<li>
+<p>      To build the <span class="application">PL/Python</span> server programming
+      language, you need a <span class="productname">Python</span>
+      installation with the header files and the <span class="application">distutils</span> module.
+      The <span class="application">distutils</span> module is included by default with
+      <span class="productname">Python</span> 1.6 and later; users of
+      earlier versions of <span class="productname">Python</span> will need
       to install it.
-     </P
-><P
->      Since <SPAN
-CLASS="APPLICATION"
->PL/Python</SPAN
-> will be a shared
-      library, the <A
-NAME="AEN15841"
-></A
->
-      <TT
-CLASS="FILENAME"
->libpython</TT
-> library must be a shared library
+     </p>
+<p>      Since <span class="application">PL/Python</span> will be a shared
+      library, the <a name="id580919"></a>
+      <code class="filename">libpython</code> library must be a shared library
       also on most platforms.  This is not the case in a default
-      <SPAN
-CLASS="PRODUCTNAME"
->Python</SPAN
-> installation.  If after
+      <span class="productname">Python</span> installation.  If after
       building and installing you have a file called
-      <TT
-CLASS="FILENAME"
->plpython.so</TT
-> (possibly a different
+      <code class="filename">plpython.so</code> (possibly a different
       extension), then everything went well.  Otherwise you should
       have seen a notice like this flying by:
-</P><PRE
-CLASS="SCREEN"
->*** Cannot build PL/Python because libpython is not a shared library.
+</p>
+<pre class="screen">*** Cannot build PL/Python because libpython is not a shared library.
 *** You might have to rebuild your Python installation.  Refer to
-*** the documentation for details.</PRE
-><P>
+*** the documentation for details.</pre>
+<p>
       That means you have to rebuild (part of) your
-      <SPAN
-CLASS="PRODUCTNAME"
->Python</SPAN
-> installation to supply this
+      <span class="productname">Python</span> installation to supply this
       shared library.
-     </P
-><P
->      If you have problems, run <SPAN
-CLASS="PRODUCTNAME"
->Python</SPAN
-> 2.3 or later's
-      configure using the <TT
-CLASS="LITERAL"
->--enable-shared</TT
-> flag.  On some
+     </p>
+<p>      If you have problems, run <span class="productname">Python</span> 2.3 or later's
+      configure using the <code class="literal">--enable-shared</code> flag.  On some
       operating systems you don't have to build a shared library, but
-      you will have to convince the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> build
-      system of this.  Consult the <TT
-CLASS="FILENAME"
->Makefile</TT
-> in
-      the <TT
-CLASS="FILENAME"
->src/pl/plpython</TT
-> directory for details.
-     </P
-></LI
-><LI
-><P
->      If you want to build the <SPAN
-CLASS="APPLICATION"
->PL/Tcl</SPAN
->
+      you will have to convince the <span class="productname">PostgreSQL</span> build
+      system of this.  Consult the <code class="filename">Makefile</code> in
+      the <code class="filename">src/pl/plpython</code> directory for details.
+     </p>
+</li>
+<li><p>      If you want to build the <span class="application">PL/Tcl</span>
       procedural language, you of course need a Tcl installation.
-     </P
-></LI
-><LI
-><P
->      To enable Native Language Support (<ACRONYM
-CLASS="ACRONYM"
->NLS</ACRONYM
->), that
+     </p></li>
+<li><p>      To enable Native Language Support (<span class="acronym">NLS</span>), that
       is, the ability to display a program's messages in a language
       other than English, you need an implementation of the
-      <SPAN
-CLASS="APPLICATION"
->Gettext</SPAN
-> <ACRONYM
-CLASS="ACRONYM"
->API</ACRONYM
->.  Some operating
-      systems have this built-in (e.g., <SPAN
-CLASS="SYSTEMITEM"
->Linux</SPAN
->, <SPAN
-CLASS="SYSTEMITEM"
->NetBSD</SPAN
->,
-      <SPAN
-CLASS="SYSTEMITEM"
->Solaris</SPAN
->), for other systems you
-      can download an add-on package from <A
-HREF="http://developer.postgresql.org/~petere/bsd-gettext/"
-TARGET="_top"
->http://developer.postgresql.org/~petere/bsd-gettext/</A
->.
-      If you are using the <SPAN
-CLASS="APPLICATION"
->Gettext</SPAN
-> implementation in
-      the <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
-> C library then you will additionally
-      need the <SPAN
-CLASS="PRODUCTNAME"
->GNU Gettext</SPAN
-> package for some
+      <span class="application">Gettext</span> <span class="acronym">API</span>.  Some operating
+      systems have this built-in (e.g., <span class="systemitem">Linux</span>, <span class="systemitem">NetBSD</span>,
+      <span class="systemitem">Solaris</span>), for other systems you
+      can download an add-on package from <a href="http://developer.postgresql.org/~petere/bsd-gettext/" target="_top">http://developer.postgresql.org/~petere/bsd-gettext/</a>.
+      If you are using the <span class="application">Gettext</span> implementation in
+      the <span class="acronym">GNU</span> C library then you will additionally
+      need the <span class="productname">GNU Gettext</span> package for some
       utility programs.  For any of the other implementations you will
       not need it.
-     </P
-></LI
-><LI
-><P
->      <SPAN
-CLASS="APPLICATION"
->Kerberos</SPAN
->, <SPAN
-CLASS="PRODUCTNAME"
->OpenSSL</SPAN
->, and/or
-      <SPAN
-CLASS="APPLICATION"
->PAM</SPAN
->, if you want to support authentication or
+     </p></li>
+<li><p>      <span class="application">Kerberos</span>, <span class="productname">OpenSSL</span>, and/or
+      <span class="application">PAM</span>, if you want to support authentication or
       encryption using these services.
-     </P
-></LI
-></UL
-><P>
-  </P
-><P
->   If you are building from a <ACRONYM
-CLASS="ACRONYM"
->CVS</ACRONYM
-> tree instead of
+     </p></li>
+</ul></div>
+<p>
+  </p>
+<p>   If you are building from a <span class="acronym">CVS</span> tree instead of
    using a released source package, or if you want to do development,
    you also need the following packages:
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      <A
-NAME="AEN15879"
-></A
->
-      <A
-NAME="AEN15881"
-></A
->
-      <A
-NAME="AEN15883"
-></A
->
+   </p>
+<div class="itemizedlist"><ul type="disc"><li><p>      <a name="id581138"></a>
+      <a name="id581145"></a>
+      <a name="id581153"></a>
 
-      GNU <SPAN
-CLASS="APPLICATION"
->Flex</SPAN
-> and <SPAN
-CLASS="APPLICATION"
->Bison</SPAN
->
+      GNU <span class="application">Flex</span> and <span class="application">Bison</span>
       are needed to build a CVS checkout or if you changed the actual
       scanner and parser definition files. If you need them, be sure
-      to get <SPAN
-CLASS="APPLICATION"
->Flex</SPAN
-> 2.5.4 or later and
-      <SPAN
-CLASS="APPLICATION"
->Bison</SPAN
-> 1.875 or later. Other <SPAN
-CLASS="APPLICATION"
->yacc</SPAN
->
+      to get <span class="application">Flex</span> 2.5.4 or later and
+      <span class="application">Bison</span> 1.875 or later. Other <span class="application">yacc</span>
       programs can sometimes be used, but doing so requires extra
-      effort and is not recommended. Other <SPAN
-CLASS="APPLICATION"
->lex</SPAN
->
+      effort and is not recommended. Other <span class="application">lex</span>
       programs will definitely not work.
-     </P
-></LI
-></UL
-><P>
-  </P
-><P
->   If you need to get a <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
-> package, you can find
-   it at your local <ACRONYM
-CLASS="ACRONYM"
->GNU</ACRONYM
-> mirror site (see <A
-HREF="http://www.gnu.org/order/ftp.html"
-TARGET="_top"
->http://www.gnu.org/order/ftp.html</A
->
-   for a list) or at <A
-HREF="ftp://ftp.gnu.org/gnu/"
-TARGET="_top"
->ftp://ftp.gnu.org/gnu/</A
->.
-  </P
-><P
->   Also check that you have sufficient disk space. You will need about
+     </p></li></ul></div>
+<p>
+  </p>
+<p>   If you need to get a <span class="acronym">GNU</span> package, you can find
+   it at your local <span class="acronym">GNU</span> mirror site (see <a href="http://www.gnu.org/order/ftp.html" target="_top">http://www.gnu.org/order/ftp.html</a>
+   for a list) or at <a href="ftp://ftp.gnu.org/gnu/" target="_top">ftp://ftp.gnu.org/gnu/</a>.
+  </p>
+<p>   Also check that you have sufficient disk space. You will need about
    65 MB for the source tree during compilation and about 15 MB for
    the installation directory. An empty database cluster takes about
    25 MB, databases take about five times the amount of space that a
    flat text file with the same data would take. If you are going to
    run the regression tests you will temporarily need up to an extra
-   90 MB. Use the <TT
-CLASS="COMMAND"
->df</TT
-> command to check free disk
+   90 MB. Use the <code class="command">df</code> command to check free disk
    space.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="installation.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="install-getsource.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Installation Instructions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="installation.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Getting The Source</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

@@ -1,758 +1,217 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->CREATE SEQUENCE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="CREATE SCHEMA"
-HREF="sql-createschema.html"><LINK
-REL="NEXT"
-TITLE="CREATE TABLE"
-HREF="sql-createtable.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createschema.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createschema.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createtable.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createtable.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-CREATESEQUENCE"
-></A
->CREATE SEQUENCE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN42625"
-></A
-><H2
->Name</H2
->CREATE SEQUENCE&nbsp;--&nbsp;define a new sequence generator</DIV
-><A
-NAME="AEN42628"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN42630"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->CREATE [ TEMPORARY | TEMP ] SEQUENCE <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ INCREMENT [ BY ] <TT
-CLASS="REPLACEABLE"
-><I
->increment</I
-></TT
-> ]
-    [ MINVALUE <TT
-CLASS="REPLACEABLE"
-><I
->minvalue</I
-></TT
-> | NO MINVALUE ] [ MAXVALUE <TT
-CLASS="REPLACEABLE"
-><I
->maxvalue</I
-></TT
-> | NO MAXVALUE ]
-    [ START [ WITH ] <TT
-CLASS="REPLACEABLE"
-><I
->start</I
-></TT
-> ] [ CACHE <TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
-> ] [ [ NO ] CYCLE ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN42638"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->CREATE SEQUENCE</TT
-> creates a new sequence number
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE SEQUENCE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-createschema.html" title="CREATE SCHEMA">
+<link rel="next" href="sql-createtable.html" title="CREATE TABLE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createsequence"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE SEQUENCE &#8212; define a new sequence generator</p>
+</div>
+<a name="id705549"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE [ TEMPORARY | TEMP ] SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
+    [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
+    [ START [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id705609"></a><h2>Description</h2>
+<p>   <code class="command">CREATE SEQUENCE</code> creates a new sequence number
    generator.  This involves creating and initializing a new special
-   single-row table with the name <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->.  The generator will be
+   single-row table with the name <em class="replaceable"><code>name</code></em>.  The generator will be
    owned by the user issuing the command.
-  </P
-><P
->   If a schema name is given then the sequence is created in the
+  </p>
+<p>   If a schema name is given then the sequence is created in the
    specified schema.  Otherwise it is created in the current schema.
    Temporary sequences exist in a special schema, so a schema name may not be
    given when creating a temporary sequence.
    The sequence name must be distinct from the name of any other sequence,
    table, index, or view in the same schema.
-  </P
-><P
->   After a sequence is created, you use the functions
-   <CODE
-CLASS="FUNCTION"
->nextval</CODE
->,
-   <CODE
-CLASS="FUNCTION"
->currval</CODE
->, and
-   <CODE
-CLASS="FUNCTION"
->setval</CODE
->
+  </p>
+<p>   After a sequence is created, you use the functions
+   <code class="function">nextval</code>,
+   <code class="function">currval</code>, and
+   <code class="function">setval</code>
    to operate on the sequence.  These functions are documented in
-   <A
-HREF="functions-sequence.html"
->Section 9.12</A
->.
-  </P
-><P
->   Although you cannot update a sequence directly, you can use a query like
+   <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>.
+  </p>
+<p>   Although you cannot update a sequence directly, you can use a query like
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * FROM <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->;</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT * FROM <em class="replaceable"><code>name</code></em>;</pre>
+<p>
 
    to examine the parameters and current state of a sequence.  In particular,
-   the <TT
-CLASS="LITERAL"
->last_value</TT
-> field of the sequence shows the last value
+   the <code class="literal">last_value</code> field of the sequence shows the last value
    allocated by any session.  (Of course, this value may be obsolete
    by the time it's printed, if other sessions are actively doing
-   <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> calls.)
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN42654"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->TEMPORARY</TT
-> or <TT
-CLASS="LITERAL"
->TEMP</TT
-></DT
-><DD
-><P
->      If specified, the sequence object is created only for this
+   <code class="function">nextval</code> calls.)
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id705705"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
+<dd><p>      If specified, the sequence object is created only for this
       session, and is automatically dropped on session exit.  Existing
       permanent sequences with the same name are not visible (in this
       session) while the temporary sequence exists, unless they are
       referenced with schema-qualified names.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of the sequence to be created.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->increment</I
-></TT
-></DT
-><DD
-><P
->      The optional clause <TT
-CLASS="LITERAL"
->INCREMENT BY <TT
-CLASS="REPLACEABLE"
-><I
->increment</I
-></TT
-></TT
-> specifies
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the sequence to be created.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>increment</code></em></span></dt>
+<dd><p>      The optional clause <code class="literal">INCREMENT BY <em class="replaceable"><code>increment</code></em></code> specifies
       which value is added to the current sequence value to create a
       new value.  A positive value will make an ascending sequence, a
       negative one a descending sequence.  The default value is 1.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->minvalue</I
-></TT
-><BR><TT
-CLASS="LITERAL"
->NO MINVALUE</TT
-></DT
-><DD
-><P
->      The optional clause <TT
-CLASS="LITERAL"
->MINVALUE <TT
-CLASS="REPLACEABLE"
-><I
->minvalue</I
-></TT
-></TT
-> determines
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>minvalue</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">NO MINVALUE</code></span>
+</dt>
+<dd><p>      The optional clause <code class="literal">MINVALUE <em class="replaceable"><code>minvalue</code></em></code> determines
       the minimum value a sequence can generate. If this clause is not
-      supplied or <TT
-CLASS="OPTION"
->NO MINVALUE</TT
-> is specified, then
+      supplied or <code class="option">NO MINVALUE</code> is specified, then
       defaults will be used.  The defaults are 1 and
-      -2<SUP
->63</SUP
->-1 for ascending and descending sequences,
+      -2<sup>63</sup>-1 for ascending and descending sequences,
       respectively.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->maxvalue</I
-></TT
-><BR><TT
-CLASS="LITERAL"
->NO MAXVALUE</TT
-></DT
-><DD
-><P
->      The optional clause <TT
-CLASS="LITERAL"
->MAXVALUE <TT
-CLASS="REPLACEABLE"
-><I
->maxvalue</I
-></TT
-></TT
-> determines
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>maxvalue</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">NO MAXVALUE</code></span>
+</dt>
+<dd><p>      The optional clause <code class="literal">MAXVALUE <em class="replaceable"><code>maxvalue</code></em></code> determines
       the maximum value for the sequence. If this clause is not
-      supplied or <TT
-CLASS="OPTION"
->NO MAXVALUE</TT
-> is specified, then
+      supplied or <code class="option">NO MAXVALUE</code> is specified, then
       default values will be used.  The defaults are
-      2<SUP
->63</SUP
->-1 and -1 for ascending and descending
+      2<sup>63</sup>-1 and -1 for ascending and descending
       sequences, respectively.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->start</I
-></TT
-></DT
-><DD
-><P
->      The optional clause <TT
-CLASS="LITERAL"
->START WITH <TT
-CLASS="REPLACEABLE"
-><I
->start</I
-></TT
-> </TT
-> allows the
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>start</code></em></span></dt>
+<dd><p>      The optional clause <code class="literal">START WITH <em class="replaceable"><code>start</code></em> </code> allows the
       sequence to begin anywhere.  The default starting value is
-      <TT
-CLASS="REPLACEABLE"
-><I
->minvalue</I
-></TT
-> for
-      ascending sequences and <TT
-CLASS="REPLACEABLE"
-><I
->maxvalue</I
-></TT
-> for descending ones.
-     </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
-></DT
-><DD
-><P
->      The optional clause <TT
-CLASS="LITERAL"
->CACHE <TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
-></TT
-> specifies how
+      <em class="replaceable"><code>minvalue</code></em> for
+      ascending sequences and <em class="replaceable"><code>maxvalue</code></em> for descending ones.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>cache</code></em></span></dt>
+<dd><p>      The optional clause <code class="literal">CACHE <em class="replaceable"><code>cache</code></em></code> specifies how
       many sequence numbers are to be preallocated and stored in
       memory for faster access. The minimum value is 1 (only one value
       can be generated at a time, i.e., no cache), and this is also the
       default.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CYCLE</TT
-><BR><TT
-CLASS="LITERAL"
->NO CYCLE</TT
-></DT
-><DD
-><P
->      The <TT
-CLASS="LITERAL"
->CYCLE</TT
-> option allows the sequence to wrap
-      around when the <TT
-CLASS="REPLACEABLE"
-><I
->maxvalue</I
-></TT
-> or <TT
-CLASS="REPLACEABLE"
-><I
->minvalue</I
-></TT
-> has been reached by an
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CYCLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">NO CYCLE</code></span>
+</dt>
+<dd>
+<p>      The <code class="literal">CYCLE</code> option allows the sequence to wrap
+      around when the <em class="replaceable"><code>maxvalue</code></em> or <em class="replaceable"><code>minvalue</code></em> has been reached by an
       ascending or descending sequence respectively. If the limit is
-      reached, the next number generated will be the <TT
-CLASS="REPLACEABLE"
-><I
->minvalue</I
-></TT
-> or <TT
-CLASS="REPLACEABLE"
-><I
->maxvalue</I
-></TT
->, respectively.
-     </P
-><P
->      If <TT
-CLASS="LITERAL"
->NO CYCLE</TT
-> is specified, any calls to
-      <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> after the sequence has reached its
+      reached, the next number generated will be the <em class="replaceable"><code>minvalue</code></em> or <em class="replaceable"><code>maxvalue</code></em>, respectively.
+     </p>
+<p>      If <code class="literal">NO CYCLE</code> is specified, any calls to
+      <code class="function">nextval</code> after the sequence has reached its
       maximum value will return an error.  If neither
-      <TT
-CLASS="LITERAL"
->CYCLE</TT
-> or <TT
-CLASS="LITERAL"
->NO CYCLE</TT
-> are
-      specified, <TT
-CLASS="LITERAL"
->NO CYCLE</TT
-> is the default.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN42731"
-></A
-><H2
->Notes</H2
-><P
->   Use <TT
-CLASS="COMMAND"
->DROP SEQUENCE</TT
-> to remove a sequence.
-  </P
-><P
->   Sequences are based on <TT
-CLASS="TYPE"
->bigint</TT
-> arithmetic, so the range
+      <code class="literal">CYCLE</code> or <code class="literal">NO CYCLE</code> are
+      specified, <code class="literal">NO CYCLE</code> is the default.
+     </p>
+</dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id706020"></a><h2>Notes</h2>
+<p>   Use <code class="command">DROP SEQUENCE</code> to remove a sequence.
+  </p>
+<p>   Sequences are based on <code class="type">bigint</code> arithmetic, so the range
    cannot exceed the range of an eight-byte integer
    (-9223372036854775808 to 9223372036854775807).  On some older
    platforms, there may be no compiler support for eight-byte
-   integers, in which case sequences use regular <TT
-CLASS="TYPE"
->integer</TT
->
+   integers, in which case sequences use regular <code class="type">integer</code>
    arithmetic (range -2147483648 to +2147483647).
-  </P
-><P
->   Unexpected results may be obtained if a <TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
-> setting greater than one is
+  </p>
+<p>   Unexpected results may be obtained if a <em class="replaceable"><code>cache</code></em> setting greater than one is
    used for a sequence object that will be used concurrently by
    multiple sessions.  Each session will allocate and cache successive
    sequence values during one access to the sequence object and
-   increase the sequence object's <TT
-CLASS="LITERAL"
->last_value</TT
-> accordingly.
-   Then, the next <TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
->-1
-   uses of <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> within that session simply return the
+   increase the sequence object's <code class="literal">last_value</code> accordingly.
+   Then, the next <em class="replaceable"><code>cache</code></em>-1
+   uses of <code class="function">nextval</code> within that session simply return the
    preallocated values without touching the sequence object.  So, any
    numbers allocated but not used within a session will be lost when
-   that session ends, resulting in <SPAN
-CLASS="QUOTE"
->"holes"</SPAN
-> in the
+   that session ends, resulting in &#8220;<span class="quote">holes</span>&#8221; in the
    sequence.
-  </P
-><P
->   Furthermore, although multiple sessions are guaranteed to allocate
+  </p>
+<p>   Furthermore, although multiple sessions are guaranteed to allocate
    distinct sequence values, the values may be generated out of
    sequence when all the sessions are considered.  For example, with
-   a <TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
-> setting of 10,
+   a <em class="replaceable"><code>cache</code></em> setting of 10,
    session A might reserve values 1..10 and return
-   <CODE
-CLASS="FUNCTION"
->nextval</CODE
->=1, then session B might reserve values
-   11..20 and return <CODE
-CLASS="FUNCTION"
->nextval</CODE
->=11 before session A
-   has generated <TT
-CLASS="LITERAL"
->nextval</TT
->=2.  Thus, with a
-   <TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
-> setting of one
-   it is safe to assume that <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> values are generated
-   sequentially; with a <TT
-CLASS="REPLACEABLE"
-><I
->cache</I
-></TT
-> setting greater than one you
-   should only assume that the <CODE
-CLASS="FUNCTION"
->nextval</CODE
-> values are all
+   <code class="function">nextval</code>=1, then session B might reserve values
+   11..20 and return <code class="function">nextval</code>=11 before session A
+   has generated <code class="literal">nextval</code>=2.  Thus, with a
+   <em class="replaceable"><code>cache</code></em> setting of one
+   it is safe to assume that <code class="function">nextval</code> values are generated
+   sequentially; with a <em class="replaceable"><code>cache</code></em> setting greater than one you
+   should only assume that the <code class="function">nextval</code> values are all
    distinct, not that they are generated purely sequentially.  Also,
-   <TT
-CLASS="LITERAL"
->last_value</TT
-> will reflect the latest value reserved by
+   <code class="literal">last_value</code> will reflect the latest value reserved by
    any session, whether or not it has yet been returned by
-   <CODE
-CLASS="FUNCTION"
->nextval</CODE
->.
-  </P
-><P
->   Another consideration is that a <CODE
-CLASS="FUNCTION"
->setval</CODE
-> executed on
+   <code class="function">nextval</code>.
+  </p>
+<p>   Another consideration is that a <code class="function">setval</code> executed on
    such a sequence will not be noticed by other sessions until they
    have used up any preallocated values they have cached.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN42757"
-></A
-><H2
->Examples</H2
-><P
->   Create an ascending sequence called <TT
-CLASS="LITERAL"
->serial</TT
->, starting at 101:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE SEQUENCE serial START 101;</PRE
-><P>
-  </P
-><P
->   Select the next number from this sequence:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT nextval('serial');
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id706185"></a><h2>Examples</h2>
+<p>   Create an ascending sequence called <code class="literal">serial</code>, starting at 101:
+</p>
+<pre class="programlisting">CREATE SEQUENCE serial START 101;</pre>
+<p>
+  </p>
+<p>   Select the next number from this sequence:
+</p>
+<pre class="programlisting">SELECT nextval('serial');
 
  nextval
 ---------
-     114</PRE
-><P>
-  </P
-><P
->   Use this sequence in an <TT
-CLASS="COMMAND"
->INSERT</TT
-> command:
-</P><PRE
-CLASS="PROGRAMLISTING"
->INSERT INTO distributors VALUES (nextval('serial'), 'nothing');</PRE
-><P>
-  </P
-><P
->   Update the sequence value after a <TT
-CLASS="COMMAND"
->COPY FROM</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->BEGIN;
+     114</pre>
+<p>
+  </p>
+<p>   Use this sequence in an <code class="command">INSERT</code> command:
+</p>
+<pre class="programlisting">INSERT INTO distributors VALUES (nextval('serial'), 'nothing');</pre>
+<p>
+  </p>
+<p>   Update the sequence value after a <code class="command">COPY FROM</code>:
+</p>
+<pre class="programlisting">BEGIN;
 COPY distributors FROM 'input_file';
 SELECT setval('serial', max(id)) FROM distributors;
-END;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN42770"
-></A
-><H2
->Compatibility</H2
-><P
->   <TT
-CLASS="COMMAND"
->CREATE SEQUENCE</TT
-> is is specified in <ACRONYM
-CLASS="ACRONYM"
->SQL:2003</ACRONYM
->.
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> conforms with the standard, with the following exceptions:
-   <P
-></P
-></P><UL
-><LI
-><P
->The standard's <TT
-CLASS="LITERAL"
->AS &lt;data type&gt;</TT
-> expression is not supported.</P
-></LI
-><LI
-><P
->Obtaining the next value is done using the <CODE
-CLASS="FUNCTION"
->nextval()</CODE
-> function instead of the standard's <TT
-CLASS="COMMAND"
->NEXT VALUE FOR</TT
-> expression.</P
-></LI
-></UL
-><P>
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createschema.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createtable.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->CREATE SCHEMA</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->CREATE TABLE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+END;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id706251"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE SEQUENCE</code> is is specified in <span class="acronym">SQL:2003</span>.
+   <span class="productname">PostgreSQL</span> conforms with the standard, with the following exceptions:
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>The standard's <code class="literal">AS &lt;data type&gt;</code> expression is not supported.</p></li>
+<li><p>Obtaining the next value is done using the <code class="function">nextval()</code> function instead of the standard's <code class="command">NEXT VALUE FOR</code> expression.</p></li>
+</ul></div>
+<p>
+  </p>
+</div>
+</div></body>
+</html>

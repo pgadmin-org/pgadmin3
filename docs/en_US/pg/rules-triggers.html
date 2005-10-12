@@ -1,144 +1,36 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Rules versus Triggers</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The Rule System"
-HREF="rules.html"><LINK
-REL="PREVIOUS"
-TITLE="Rules and Command Status"
-HREF="rules-status.html"><LINK
-REL="NEXT"
-TITLE="Procedural Languages"
-HREF="xplang.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="rules-status.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="rules.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 34. The Rule System</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="rules.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xplang.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RULES-TRIGGERS"
->34.6. Rules versus Triggers</A
-></H1
-><A
-NAME="AEN33774"
-></A
-><A
-NAME="AEN33777"
-></A
-><P
->    Many things that can be done using triggers can also be
-    implemented using the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>34.6. Rules versus Triggers</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="rules.html" title="Chapter 34. The Rule System">
+<link rel="prev" href="rules-status.html" title="34.5. Rules and Command Status">
+<link rel="next" href="xplang.html" title="Chapter 35. Procedural Languages">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="rules-triggers"></a>34.6. Rules versus Triggers</h2></div></div></div>
+<a name="id663968"></a><a name="id663985"></a><p>    Many things that can be done using triggers can also be
+    implemented using the <span class="productname">PostgreSQL</span>
     rule system.  One of the things that cannot be implemented by
     rules are some kinds of constraints, especially foreign keys. It is possible
-    to place a qualified rule that rewrites a command to <TT
-CLASS="LITERAL"
->NOTHING</TT
->
+    to place a qualified rule that rewrites a command to <code class="literal">NOTHING</code>
     if the value of a column does not appear in another table.
     But then the data is silently thrown away and that's
     not a good idea. If checks for valid values are required,
     and in the case of an invalid value an error message should
-    be generated, it must be done by a trigger.</P
-><P
->    On the other hand, a trigger that is fired on
-    <TT
-CLASS="COMMAND"
->INSERT</TT
-> on a view can do the same as a rule: put
+    be generated, it must be done by a trigger.</p>
+<p>    On the other hand, a trigger that is fired on
+    <code class="command">INSERT</code> on a view can do the same as a rule: put
     the data somewhere else and suppress the insert in the view. But
-    it cannot do the same thing on <TT
-CLASS="COMMAND"
->UPDATE</TT
-> or
-    <TT
-CLASS="COMMAND"
->DELETE</TT
->, because there is no real data in the
+    it cannot do the same thing on <code class="command">UPDATE</code> or
+    <code class="command">DELETE</code>, because there is no real data in the
     view relation that could be scanned, and thus the trigger would
-    never get called. Only a rule will help.</P
-><P
->    For the things that can be implemented by both, which is best
+    never get called. Only a rule will help.</p>
+<p>    For the things that can be implemented by both, which is best
     depends on the usage of the database.
     A trigger is fired for any affected row once. A rule manipulates
     the query or generates an additional query. So if many
@@ -146,14 +38,12 @@ CLASS="COMMAND"
     command is likely to be faster than a trigger that is
     called for every single row and must execute its operations
     many times.  However, the trigger approach is conceptually far
-    simpler than the rule approach, and is easier for novices to get right.</P
-><P
->    Here we show an example of how the choice of rules versus triggers
+    simpler than the rule approach, and is easier for novices to get right.</p>
+<p>    Here we show an example of how the choice of rules versus triggers
     plays out in one situation.  There are two tables:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TABLE computer (
+</p>
+<pre class="programlisting">CREATE TABLE computer (
     hostname        text,    -- indexed
     manufacturer    text     -- indexed
 );
@@ -161,268 +51,139 @@ CLASS="PROGRAMLISTING"
 CREATE TABLE software (
     software        text,    -- indexed
     hostname        text     -- indexed
-);</PRE
-><P>
+);</pre>
+<p>
 
     Both tables have many thousands of rows and the indexes on
-    <TT
-CLASS="STRUCTFIELD"
->hostname</TT
-> are unique.  The rule or trigger should
-    implement a constraint that deletes rows from <TT
-CLASS="LITERAL"
->software</TT
->
+    <code class="structfield">hostname</code> are unique.  The rule or trigger should
+    implement a constraint that deletes rows from <code class="literal">software</code>
     that reference a deleted computer.  The trigger would use this command:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM software WHERE hostname = $1;</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM software WHERE hostname = $1;</pre>
+<p>
 
     Since the trigger is called for each individual row deleted from
-    <TT
-CLASS="LITERAL"
->computer</TT
->, it can prepare and save the plan for this
-    command and pass the <TT
-CLASS="STRUCTFIELD"
->hostname</TT
-> value in the
+    <code class="literal">computer</code>, it can prepare and save the plan for this
+    command and pass the <code class="structfield">hostname</code> value in the
     parameter.  The rule would be written as
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE RULE computer_del AS ON DELETE TO computer
-    DO DELETE FROM software WHERE hostname = OLD.hostname;</PRE
-><P>
-   </P
-><P
->    Now we look at different types of deletes. In the case of a 
+</p>
+<pre class="programlisting">CREATE RULE computer_del AS ON DELETE TO computer
+    DO DELETE FROM software WHERE hostname = OLD.hostname;</pre>
+<p>
+   </p>
+<p>    Now we look at different types of deletes. In the case of a 
     
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM computer WHERE hostname = 'mypc.local.net';</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM computer WHERE hostname = 'mypc.local.net';</pre>
+<p>
 
-    the table <TT
-CLASS="LITERAL"
->computer</TT
-> is scanned by index (fast), and the
+    the table <code class="literal">computer</code> is scanned by index (fast), and the
     command issued by the trigger would also use an index scan (also fast).
     The extra command from the rule would be
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM software WHERE computer.hostname = 'mypc.local.net'
-                       AND software.hostname = computer.hostname;</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM software WHERE computer.hostname = 'mypc.local.net'
+                       AND software.hostname = computer.hostname;</pre>
+<p>
 
     Since there are appropriate indexes setup, the planner
     will create a plan of
 
-</P><PRE
-CLASS="LITERALLAYOUT"
->Nestloop
+</p>
+<pre class="literallayout">Nestloop
   -&gt;  Index Scan using comp_hostidx on computer
-  -&gt;  Index Scan using soft_hostidx on software</PRE
-><P>
+  -&gt;  Index Scan using soft_hostidx on software</pre>
+<p>
 
     So there would be not that much difference in speed between
     the trigger and the rule implementation.
-   </P
-><P
->    With the next delete we want to get rid of all the 2000 computers
-    where the <TT
-CLASS="STRUCTFIELD"
->hostname</TT
-> starts with
-    <TT
-CLASS="LITERAL"
->old</TT
->. There are two possible commands to do that. One
+   </p>
+<p>    With the next delete we want to get rid of all the 2000 computers
+    where the <code class="structfield">hostname</code> starts with
+    <code class="literal">old</code>. There are two possible commands to do that. One
     is
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM computer WHERE hostname &gt;= 'old'
-                       AND hostname &lt;  'ole'</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM computer WHERE hostname &gt;= 'old'
+                       AND hostname &lt;  'ole'</pre>
+<p>
 
     The command added by the rule will be
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM software WHERE computer.hostname &gt;= 'old' AND computer.hostname &lt; 'ole'
-                       AND software.hostname = computer.hostname;</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM software WHERE computer.hostname &gt;= 'old' AND computer.hostname &lt; 'ole'
+                       AND software.hostname = computer.hostname;</pre>
+<p>
 
     with the plan
 
-</P><PRE
-CLASS="LITERALLAYOUT"
->Hash Join
+</p>
+<pre class="literallayout">Hash Join
   -&gt;  Seq Scan on software
   -&gt;  Hash
-    -&gt;  Index Scan using comp_hostidx on computer</PRE
-><P>
+    -&gt;  Index Scan using comp_hostidx on computer</pre>
+<p>
 
     The other possible command is
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM computer WHERE hostname ~ '^old';</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM computer WHERE hostname ~ '^old';</pre>
+<p>
 
     which results in the following executing plan for the command
     added by the rule:
 
-</P><PRE
-CLASS="LITERALLAYOUT"
->Nestloop
+</p>
+<pre class="literallayout">Nestloop
   -&gt;  Index Scan using comp_hostidx on computer
-  -&gt;  Index Scan using soft_hostidx on software</PRE
-><P>
+  -&gt;  Index Scan using soft_hostidx on software</pre>
+<p>
 
     This shows, that the planner does not realize that the
-    qualification for <TT
-CLASS="STRUCTFIELD"
->hostname</TT
-> in
-    <TT
-CLASS="LITERAL"
->computer</TT
-> could also be used for an index scan on
-    <TT
-CLASS="LITERAL"
->software</TT
-> when there are multiple qualification
-    expressions combined with <TT
-CLASS="LITERAL"
->AND</TT
->, which is what it does
+    qualification for <code class="structfield">hostname</code> in
+    <code class="literal">computer</code> could also be used for an index scan on
+    <code class="literal">software</code> when there are multiple qualification
+    expressions combined with <code class="literal">AND</code>, which is what it does
     in the regular-expression version of the command. The trigger will
     get invoked once for each of the 2000 old computers that have to be
     deleted, and that will result in one index scan over
-    <TT
-CLASS="LITERAL"
->computer</TT
-> and 2000 index scans over
-    <TT
-CLASS="LITERAL"
->software</TT
->. The rule implementation will do it with two
+    <code class="literal">computer</code> and 2000 index scans over
+    <code class="literal">software</code>. The rule implementation will do it with two
     commands that use indexes.  And it depends on the overall size of
-    the table <TT
-CLASS="LITERAL"
->software</TT
-> whether the rule will still be faster in the
+    the table <code class="literal">software</code> whether the rule will still be faster in the
     sequential scan situation. 2000 command executions from the trigger over the SPI
-    manager take some time, even if all the index blocks will soon be in the cache.</P
-><P
->    The last command we look at is
+    manager take some time, even if all the index blocks will soon be in the cache.</p>
+<p>    The last command we look at is
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM computer WHERE manufacurer = 'bim';</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM computer WHERE manufacurer = 'bim';</pre>
+<p>
 
     Again this could result in many rows to be deleted from
-    <TT
-CLASS="LITERAL"
->computer</TT
->. So the trigger will again run many commands
+    <code class="literal">computer</code>. So the trigger will again run many commands
     through the executor.  The command generated by the rule will be
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DELETE FROM software WHERE computer.manufacurer = 'bim'
-                       AND software.hostname = computer.hostname;</PRE
-><P>
+</p>
+<pre class="programlisting">DELETE FROM software WHERE computer.manufacurer = 'bim'
+                       AND software.hostname = computer.hostname;</pre>
+<p>
 
     The plan for that command will again be the nested loop over two
-    index scans, only using a different index on <TT
-CLASS="LITERAL"
->computer</TT
->:
+    index scans, only using a different index on <code class="literal">computer</code>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->Nestloop
+</p>
+<pre class="programlisting">Nestloop
   -&gt;  Index Scan using comp_manufidx on computer
-  -&gt;  Index Scan using soft_hostidx on software</PRE
-><P>
+  -&gt;  Index Scan using soft_hostidx on software</pre>
+<p>
 
     In any of these cases, the extra commands from the rule system
     will be more or less independent from the number of affected rows
-    in a command.</P
-><P
->    The summary is, rules will only be significantly slower than
+    in a command.</p>
+<p>    The summary is, rules will only be significantly slower than
     triggers if their actions result in large and badly qualified
-    joins, a situation where the planner fails.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="rules-status.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="xplang.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Rules and Command Status</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="rules.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Procedural Languages</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    joins, a situation where the planner fails.</p>
+</div></body>
+</html>

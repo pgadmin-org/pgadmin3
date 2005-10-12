@@ -1,841 +1,243 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->pg_class</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_cast"
-HREF="catalog-pg-cast.html"><LINK
-REL="NEXT"
-TITLE="pg_constraint"
-HREF="catalog-pg-constraint.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-cast.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 42. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-constraint.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-CLASS"
->42.12. <TT
-CLASS="STRUCTNAME"
->pg_class</TT
-></A
-></H1
-><A
-NAME="AEN55998"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_class</TT
-> catalogs tables and most
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.12. pg_class</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-cast.html" title="42.11. pg_cast">
+<link rel="next" href="catalog-pg-constraint.html" title="42.13. pg_constraint">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-class"></a>42.12. <code class="structname">pg_class</code></h2></div></div></div>
+<a name="id768308"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
    everything else that has columns or is otherwise similar to a
    table.  This includes indexes (but see also
-   <TT
-CLASS="STRUCTNAME"
->pg_index</TT
->), sequences, views, composite types,
-   and some kinds of special relation; see <TT
-CLASS="STRUCTFIELD"
->relkind</TT
->.
+   <code class="structname">pg_index</code>), sequences, views, composite types,
+   and some kinds of special relation; see <code class="structfield">relkind</code>.
    Below, when we mean all of these
-   kinds of objects we speak of <SPAN
-CLASS="QUOTE"
->"relations"</SPAN
->.  Not all
+   kinds of objects we speak of &#8220;<span class="quote">relations</span>&#8221;.  Not all
    columns are meaningful for all relation types.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN56005"
-></A
-><P
-><B
->Table 42-12. <TT
-CLASS="STRUCTNAME"
->pg_class</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relname</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Name of the table, index, view, etc.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relnamespace</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-namespace.html"
-><TT
-CLASS="STRUCTNAME"
->pg_namespace</TT
-></A
->.oid</TT
-></TD
-><TD
->       The OID of the namespace that contains this relation
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->reltype</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->       The OID of the data type that corresponds to this table's row type,
-       if any (zero for indexes, which have no <TT
-CLASS="STRUCTNAME"
->pg_type</TT
-> entry)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relowner</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-authid.html"
-><TT
-CLASS="STRUCTNAME"
->pg_authid</TT
-></A
->.oid</TT
-></TD
-><TD
->Owner of the relation</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relam</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-am.html"
-><TT
-CLASS="STRUCTNAME"
->pg_am</TT
-></A
->.oid</TT
-></TD
-><TD
->If this is an index, the access method used (B-tree, hash, etc.)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relfilenode</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Name of the on-disk file of this relation; 0 if none</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->reltablespace</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-tablespace.html"
-><TT
-CLASS="STRUCTNAME"
->pg_tablespace</TT
-></A
->.oid</TT
-></TD
-><TD
->       The tablespace in which this relation is stored.  If zero,
+  </p>
+<div class="table">
+<a name="id768343"></a><p class="title"><b>Table 42.12. <code class="structname">pg_class</code> Columns</b></p>
+<table summary="pg_class Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">relname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Name of the table, index, view, etc.</td>
+</tr>
+<tr>
+<td><code class="structfield">relnamespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="42.23. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
+<td>       The OID of the namespace that contains this relation
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">reltype</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td>       The OID of the data type that corresponds to this table's row type,
+       if any (zero for indexes, which have no <code class="structname">pg_type</code> entry)
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relowner</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>Owner of the relation</td>
+</tr>
+<tr>
+<td><code class="structfield">relam</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-am.html" title="42.3. pg_am"><code class="structname">pg_am</code></a>.oid</code></td>
+<td>If this is an index, the access method used (B-tree, hash, etc.)</td>
+</tr>
+<tr>
+<td><code class="structfield">relfilenode</code></td>
+<td><code class="type">oid</code></td>
+<td> </td>
+<td>Name of the on-disk file of this relation; 0 if none</td>
+</tr>
+<tr>
+<td><code class="structfield">reltablespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="42.31. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
+<td>       The tablespace in which this relation is stored.  If zero,
        the database's default tablespace is implied.  (Not meaningful
        if the relation has no on-disk file.)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relpages</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Size of the on-disk representation of this table in pages (of size
-       <TT
-CLASS="SYMBOL"
->BLCKSZ</TT
->).
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relpages</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       Size of the on-disk representation of this table in pages (of size
+       <code class="symbol">BLCKSZ</code>).
        This is only an estimate used by the planner.
-       It is updated by <TT
-CLASS="COMMAND"
->VACUUM</TT
->,
-       <TT
-CLASS="COMMAND"
->ANALYZE</TT
->, and a few DDL commands
-       such as <TT
-CLASS="COMMAND"
->CREATE INDEX</TT
->.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->reltuples</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->float4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Number of rows in the table.
+       It is updated by <code class="command">VACUUM</code>,
+       <code class="command">ANALYZE</code>, and a few DDL commands
+       such as <code class="command">CREATE INDEX</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">reltuples</code></td>
+<td><code class="type">float4</code></td>
+<td> </td>
+<td>       Number of rows in the table.
        This is only an estimate used by the planner.
-       It is updated by <TT
-CLASS="COMMAND"
->VACUUM</TT
->,
-       <TT
-CLASS="COMMAND"
->ANALYZE</TT
->, and a few DDL commands
-       such as <TT
-CLASS="COMMAND"
->CREATE INDEX</TT
->.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->reltoastrelid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-class.html"
-><TT
-CLASS="STRUCTNAME"
->pg_class</TT
-></A
->.oid</TT
-></TD
-><TD
->       OID of the TOAST table associated with this table, 0 if none.
-       The TOAST table stores large attributes <SPAN
-CLASS="QUOTE"
->"out of
-       line"</SPAN
-> in a secondary table.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->reltoastidxid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-class.html"
-><TT
-CLASS="STRUCTNAME"
->pg_class</TT
-></A
->.oid</TT
-></TD
-><TD
->       For a TOAST table, the OID of its index.  0 if not a TOAST table.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relhasindex</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       True if this is a table and it has (or recently had) any
-       indexes. This is set by <TT
-CLASS="COMMAND"
->CREATE INDEX</TT
->, but
-       not cleared immediately by <TT
-CLASS="COMMAND"
->DROP INDEX</TT
->.
-       <TT
-CLASS="COMMAND"
->VACUUM</TT
-> clears <TT
-CLASS="STRUCTFIELD"
->relhasindex</TT
-> if it finds the
+       It is updated by <code class="command">VACUUM</code>,
+       <code class="command">ANALYZE</code>, and a few DDL commands
+       such as <code class="command">CREATE INDEX</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">reltoastrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>       OID of the TOAST table associated with this table, 0 if none.
+       The TOAST table stores large attributes &#8220;<span class="quote">out of
+       line</span>&#8221; in a secondary table.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">reltoastidxid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>       For a TOAST table, the OID of its index.  0 if not a TOAST table.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relhasindex</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       True if this is a table and it has (or recently had) any
+       indexes. This is set by <code class="command">CREATE INDEX</code>, but
+       not cleared immediately by <code class="command">DROP INDEX</code>.
+       <code class="command">VACUUM</code> clears <code class="structfield">relhasindex</code> if it finds the
        table has no indexes.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relisshared</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->True if this table is shared across all databases in the
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relisshared</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>True if this table is shared across all databases in the
       cluster.  Only certain system catalogs (such as
-      <TT
-CLASS="STRUCTNAME"
->pg_database</TT
->) are shared.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relkind</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->char</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       <TT
-CLASS="LITERAL"
->r</TT
-> = ordinary table, <TT
-CLASS="LITERAL"
->i</TT
-> = index,
-       <TT
-CLASS="LITERAL"
->S</TT
-> = sequence, <TT
-CLASS="LITERAL"
->v</TT
-> = view, <TT
-CLASS="LITERAL"
->c</TT
-> =
-       composite type, <TT
-CLASS="LITERAL"
->s</TT
-> = special, <TT
-CLASS="LITERAL"
->t</TT
-> = TOAST
+      <code class="structname">pg_database</code>) are shared.</td>
+</tr>
+<tr>
+<td><code class="structfield">relkind</code></td>
+<td><code class="type">char</code></td>
+<td> </td>
+<td>       <code class="literal">r</code> = ordinary table, <code class="literal">i</code> = index,
+       <code class="literal">S</code> = sequence, <code class="literal">v</code> = view, <code class="literal">c</code> =
+       composite type, <code class="literal">s</code> = special, <code class="literal">t</code> = TOAST
        table
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relnatts</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Number of user columns in the relation (system columns not
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relnatts</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>       Number of user columns in the relation (system columns not
        counted).  There must be this many corresponding entries in
-       <TT
-CLASS="STRUCTNAME"
->pg_attribute</TT
->.  See also
-       <TT
-CLASS="LITERAL"
->pg_attribute.attnum</TT
->.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relchecks</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Number of check constraints on the table; see
-       <TT
-CLASS="STRUCTNAME"
->pg_constraint</TT
-> catalog
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->reltriggers</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Number of triggers on the table; see
-       <TT
-CLASS="STRUCTNAME"
->pg_trigger</TT
-> catalog
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relukeys</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->unused  (<SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> the number of unique keys)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relfkeys</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->unused  (<SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> the number of foreign keys on the table)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relrefs</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->unused</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relhasoids</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       True if we generate an OID for each row of the relation.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relhaspkey</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       True if the table has (or once had) a primary key.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relhasrules</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->True if table has rules; see
-       <TT
-CLASS="STRUCTNAME"
->pg_rewrite</TT
-> catalog.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relhassubclass</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->True if table has (or once had) any inheritance children.</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->relacl</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->aclitem[]</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Access privileges; see
-       <A
-HREF="sql-grant.html"
-><I
->GRANT</I
-></A
-> and
-       <A
-HREF="sql-revoke.html"
-><I
->REVOKE</I
-></A
->
+       <code class="structname">pg_attribute</code>.  See also
+       <code class="literal">pg_attribute.attnum</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relchecks</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>       Number of check constraints on the table; see
+       <code class="structname">pg_constraint</code> catalog
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">reltriggers</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>       Number of triggers on the table; see
+       <code class="structname">pg_trigger</code> catalog
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relukeys</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>unused  (<span class="emphasis"><em>not</em></span> the number of unique keys)</td>
+</tr>
+<tr>
+<td><code class="structfield">relfkeys</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>unused  (<span class="emphasis"><em>not</em></span> the number of foreign keys on the table)</td>
+</tr>
+<tr>
+<td><code class="structfield">relrefs</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>unused</td>
+</tr>
+<tr>
+<td><code class="structfield">relhasoids</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       True if we generate an OID for each row of the relation.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relhaspkey</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       True if the table has (or once had) a primary key.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relhasrules</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>True if table has rules; see
+       <code class="structname">pg_rewrite</code> catalog.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relhassubclass</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>True if table has (or once had) any inheritance children.</td>
+</tr>
+<tr>
+<td><code class="structfield">relacl</code></td>
+<td><code class="type">aclitem[]</code></td>
+<td> </td>
+<td>       Access privileges; see
+       <a href="sql-grant.html">GRANT</a> and
+       <a href="sql-revoke.html">REVOKE</a>
        for details.
-      </TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-cast.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-constraint.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_cast</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_constraint</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

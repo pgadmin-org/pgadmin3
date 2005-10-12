@@ -1,293 +1,74 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Summary of Changes since Protocol 2.0</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Frontend/Backend Protocol"
-HREF="protocol.html"><LINK
-REL="PREVIOUS"
-TITLE="Error and Notice Message Fields"
-HREF="protocol-error-fields.html"><LINK
-REL="NEXT"
-TITLE="PostgreSQL Coding Conventions"
-HREF="source.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="protocol-error-fields.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="protocol.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 43. Frontend/Backend Protocol</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="protocol.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="source.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PROTOCOL-CHANGES"
->43.6. Summary of Changes since Protocol 2.0</A
-></H1
-><P
->This section provides a quick checklist of changes, for the benefit of
-developers trying to update existing client libraries to protocol 3.0.</P
-><P
->The initial startup packet uses a flexible list-of-strings format
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>43.6. Summary of Changes since Protocol 2.0</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="protocol.html" title="Chapter 43. Frontend/Backend Protocol">
+<link rel="prev" href="protocol-error-fields.html" title="43.5. Error and Notice Message Fields">
+<link rel="next" href="source.html" title="Chapter 44. PostgreSQL Coding Conventions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="protocol-changes"></a>43.6. Summary of Changes since Protocol 2.0</h2></div></div></div>
+<p>This section provides a quick checklist of changes, for the benefit of
+developers trying to update existing client libraries to protocol 3.0.</p>
+<p>The initial startup packet uses a flexible list-of-strings format
 instead of a fixed format.  Notice that session default values for run-time
 parameters can now be specified directly in the startup packet.  (Actually,
-you could do that before using the <TT
-CLASS="LITERAL"
->options</TT
-> field, but given the
-limited width of <TT
-CLASS="LITERAL"
->options</TT
-> and the lack of any way to quote
-whitespace in the values, it wasn't a very safe technique.)</P
-><P
->All messages now have a length count immediately following the message type
+you could do that before using the <code class="literal">options</code> field, but given the
+limited width of <code class="literal">options</code> and the lack of any way to quote
+whitespace in the values, it wasn't a very safe technique.)</p>
+<p>All messages now have a length count immediately following the message type
 byte (except for startup packets, which have no type byte).  Also note that
-PasswordMessage now has a type byte.</P
-><P
->ErrorResponse and NoticeResponse ('<TT
-CLASS="LITERAL"
->E</TT
->' and '<TT
-CLASS="LITERAL"
->N</TT
->')
+PasswordMessage now has a type byte.</p>
+<p>ErrorResponse and NoticeResponse ('<code class="literal">E</code>' and '<code class="literal">N</code>')
 messages now contain multiple fields, from which the client code may
 assemble an error message of the desired level of verbosity.  Note that
 individual fields will typically not end with a newline, whereas the single
-string sent in the older protocol always did.</P
-><P
->The ReadyForQuery ('<TT
-CLASS="LITERAL"
->Z</TT
->') message includes a transaction status
-indicator.</P
-><P
->The distinction between BinaryRow and DataRow message types is gone; the
+string sent in the older protocol always did.</p>
+<p>The ReadyForQuery ('<code class="literal">Z</code>') message includes a transaction status
+indicator.</p>
+<p>The distinction between BinaryRow and DataRow message types is gone; the
 single DataRow message type serves for returning data in all formats.
 Note that the layout of DataRow has changed to make it easier to parse.
 Also, the representation of binary values has changed: it is no longer
-directly tied to the server's internal representation.</P
-><P
->There is a new <SPAN
-CLASS="QUOTE"
->"extended query"</SPAN
-> sub-protocol, which adds the frontend
+directly tied to the server's internal representation.</p>
+<p>There is a new &#8220;<span class="quote">extended query</span>&#8221; sub-protocol, which adds the frontend
 message types Parse, Bind, Execute, Describe, Close, Flush, and Sync, and the
 backend message types ParseComplete, BindComplete, PortalSuspended,
 ParameterDescription, NoData, and CloseComplete.  Existing clients do not
 have to concern themselves with this sub-protocol, but making use of it
-may allow improvements in performance or functionality.</P
-><P
-><TT
-CLASS="COMMAND"
->COPY</TT
-> data is now encapsulated into CopyData and CopyDone messages.  There
-is a well-defined way to recover from errors during <TT
-CLASS="COMMAND"
->COPY</TT
->.  The special
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->\.</TT
->"</SPAN
-> last line is not needed anymore, and is not sent
-during <TT
-CLASS="COMMAND"
->COPY OUT</TT
->.
-(It is still recognized as a terminator during <TT
-CLASS="COMMAND"
->COPY IN</TT
->, but its use is
-deprecated and will eventually be removed.)  Binary <TT
-CLASS="COMMAND"
->COPY</TT
-> is supported.
+may allow improvements in performance or functionality.</p>
+<p><code class="command">COPY</code> data is now encapsulated into CopyData and CopyDone messages.  There
+is a well-defined way to recover from errors during <code class="command">COPY</code>.  The special
+&#8220;<span class="quote"><code class="literal">\.</code></span>&#8221; last line is not needed anymore, and is not sent
+during <code class="command">COPY OUT</code>.
+(It is still recognized as a terminator during <code class="command">COPY IN</code>, but its use is
+deprecated and will eventually be removed.)  Binary <code class="command">COPY</code> is supported.
 The CopyInResponse and CopyOutResponse messages include fields indicating
-the number of columns and the format of each column.</P
-><P
->The layout of FunctionCall and FunctionCallResponse messages has changed.
+the number of columns and the format of each column.</p>
+<p>The layout of FunctionCall and FunctionCallResponse messages has changed.
 FunctionCall can now support passing NULL arguments to functions.  It also
 can handle passing parameters and retrieving results in either text or
 binary format.  There is no longer any reason to consider FunctionCall a
 potential security hole, since it does not offer direct access to internal
-server data representations.</P
-><P
->The backend sends ParameterStatus ('<TT
-CLASS="LITERAL"
->S</TT
->') messages during connection
+server data representations.</p>
+<p>The backend sends ParameterStatus ('<code class="literal">S</code>') messages during connection
 startup for all parameters it considers interesting to the client library.
 Subsequently, a ParameterStatus message is sent whenever the active value
-changes for any of these parameters.</P
-><P
->The RowDescription ('<TT
-CLASS="LITERAL"
->T</TT
->') message carries new table OID and column
+changes for any of these parameters.</p>
+<p>The RowDescription ('<code class="literal">T</code>') message carries new table OID and column
 number fields for each column of the described row.  It also shows the format
-code for each column.</P
-><P
->The CursorResponse ('<TT
-CLASS="LITERAL"
->P</TT
->') message is no longer generated by
-the backend.</P
-><P
->The NotificationResponse ('<TT
-CLASS="LITERAL"
->A</TT
->') message has an additional string
+code for each column.</p>
+<p>The CursorResponse ('<code class="literal">P</code>') message is no longer generated by
+the backend.</p>
+<p>The NotificationResponse ('<code class="literal">A</code>') message has an additional string
 field, which is presently empty but may someday carry additional data passed
-from the <TT
-CLASS="COMMAND"
->NOTIFY</TT
-> event sender.</P
-><P
->The EmptyQueryResponse ('<TT
-CLASS="LITERAL"
->I</TT
->') message used to include an empty
-string parameter; this has been removed.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="protocol-error-fields.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="source.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Error and Notice Message Fields</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="protocol.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->PostgreSQL Coding Conventions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+from the <code class="command">NOTIFY</code> event sender.</p>
+<p>The EmptyQueryResponse ('<code class="literal">I</code>') message used to include an empty
+string parameter; this has been removed.</p>
+</div></body>
+</html>

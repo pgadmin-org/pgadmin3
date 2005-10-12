@@ -1,249 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SPI_getnspname</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.1beta2 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Support Functions"
-HREF="spi-interface-support.html"><LINK
-REL="PREVIOUS"
-TITLE="SPI_getrelname"
-HREF="spi-spi-getrelname.html"><LINK
-REL="NEXT"
-TITLE="Memory Management"
-HREF="spi-memory.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-09-16T17:25:30"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.1beta2 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getrelname.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getrelname.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-memory.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-GETNSPNAME"
-></A
->SPI_getnspname</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN37520"
-></A
-><H2
->Name</H2
->SPI_getnspname&nbsp;--&nbsp;return the namespace of the specified relation</DIV
-><A
-NAME="AEN37523"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN37525"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->char * SPI_getnspname(Relation <TT
-CLASS="PARAMETER"
->rel</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37528"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_getnspname</CODE
-> returns a copy of the name of
-   the namespace that the specified <TT
-CLASS="STRUCTNAME"
->Relation</TT
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_getnspname</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="up" href="spi-interface-support.html" title="40.2. Interface Support Functions">
+<link rel="prev" href="spi-spi-getrelname.html" title="SPI_getrelname">
+<link rel="next" href="spi-memory.html" title="40.3. Memory Management">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-getnspname"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_getnspname &#8212; return the namespace of the specified relation</p>
+</div>
+<a name="id682872"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">char * SPI_getnspname(Relation <em class="parameter"><code>rel</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id682892"></a><h2>Description</h2>
+<p>   <code class="function">SPI_getnspname</code> returns a copy of the name of
+   the namespace that the specified <code class="structname">Relation</code>
    belongs to. This is equivalent to the relation's schema. You should
-   <CODE
-CLASS="FUNCTION"
->pfree</CODE
-> the return value of this function when
+   <code class="function">pfree</code> the return value of this function when
    you are finished with it.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37534"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->Relation <TT
-CLASS="PARAMETER"
->rel</TT
-></TT
-></DT
-><DD
-><P
->      input relation
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37543"
-></A
-><H2
->Return Value</H2
-><P
->   The name of the specified relation's namespace.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getrelname.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-memory.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_getrelname</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi-interface-support.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Memory Management</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id682919"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">Relation <em class="parameter"><code>rel</code></em></code></span></dt>
+<dd><p>      input relation
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id682941"></a><h2>Return Value</h2>
+<p>   The name of the specified relation's namespace.
+  </p>
+</div>
+</div></body>
+</html>
