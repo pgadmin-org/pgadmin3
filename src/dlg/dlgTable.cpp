@@ -1034,7 +1034,7 @@ wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
     
     wxTreeItemId item=form->GetBrowser()->GetSelection();
     if (obj == form->GetBrowser()->GetObject(item))
-        obj->ShowTreeDetail(0, 0, form->GetProperties());
+        obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
 
     return 0;
 }

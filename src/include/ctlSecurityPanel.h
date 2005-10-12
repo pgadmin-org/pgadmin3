@@ -44,7 +44,7 @@ public:
     ctlListView *lbPrivileges;
     ctlComboBox *cbGroups;
     wxStaticText *stGroup;
-    void SetConnection(pgConn *conn) { connection=conn; }
+    void SetConnection(pgConn *conn);
     wxString GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl=0);
 protected:
     wxNotebook *nbNotebook;

@@ -187,6 +187,8 @@ int dlgRole::Go(bool modal)
     else
     {
         chkCanLogin->Disable();
+        wxDateTime empty;
+        datValidUntil->SetValue(empty);
         timValidUntil->Disable();
     }
 

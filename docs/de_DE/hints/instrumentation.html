@@ -12,5 +12,20 @@
 <p>
 Der Server hat die Instrumentierungsfunktionen nicht geladen.
 </p>
+<p>
+pgAdmin III benutzt einige Unterstützungsfunktionen die nicht in allen PostgreSQL Versionen per Default zur Verfügung
+stehen. Sie ermöglichen einige Aufgaben im Umgang mit Logdateien und Konfigurationsdateien.
+</p>
+<p>
+Wenn PostgreSQL 8.0 oder neuer mit dem Windows Installer installiert wird, reicht es die "Admin Option" auszuwählen.
+</p>
+<p>
+Wenn PostgreSQL aus der Source kompiliert wird, können die benötigten Dateien im xtra Unterverzeichnis des
+pgAdmin Sourcetrees gefunden werden. Für PostgreSQL 8.0 ist das Verzeichnis admin unter das postgresql contrib 
+Sourceverzeichnis zu kopieren, make und make install führt dann die Installation durch. Für PostgreSQL 8.1 ist 
+das admin81 Verzeichnis zu benutzen. Nach der Installation des Modules müssen die Instrumentierungsfunktionen
+in der Wartungsdatenbank erzeugt werden; hierzu dient das admin.sql Script (admin81.sql für PostgreSQL 8.1) 
+welches üblicherweise im pgsql share Verzeichnis zu finden ist (z.B. /usr/local/pgsql/share) 
+</p>
 </body>
 </html>

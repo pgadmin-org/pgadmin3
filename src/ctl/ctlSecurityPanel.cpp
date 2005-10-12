@@ -158,6 +158,12 @@ ctlSecurityPanel::~ctlSecurityPanel()
 }
 
 
+void ctlSecurityPanel::SetConnection(pgConn *conn)
+{
+    connection=conn;
+    if (connection && stGroup && connection->BackendMinimumVersion(8, 1))
+        stGroup->SetLabel(_("Role"));
+}
 
 
 wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl)
@@ -372,7 +378,11 @@ bool ctlSecurityPanel::GrantAllowed() const
         return false;
 
     wxString user=cbGroups->GetValue();
-    if (user.Left(6).IsSameAs(wxT("group "), false) || user.IsSameAs(wxT("public"), false))
+    if (user.IsSameAs(wxT("public"), false))
+        return false;
+
+    if (!connection->BackendMinimumVersion(8, 1) &&
+        user.Left(6).IsSameAs(wxT("group "), false))
         return false;
 
     return true;
