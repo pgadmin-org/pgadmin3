@@ -15,6 +15,8 @@ todo=$(find ./ | \
 	xargs file | \
 	sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' \
 )
+todo=../src/pgadmin3
+
 echo "Found executables: $todo"
 while test "$todo" != ""; do
 	todo_old=$todo ;

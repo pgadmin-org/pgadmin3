@@ -36,8 +36,26 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, true); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
-    // Log
-    Read(wxT("LogFile"), &logFile, wxT("pgadmin.log")); 
+    // Log. Try to get a vaguely usable default path.
+    char *homedir;
+    wxString deflog;
+    
+    if ((homedir = getenv("HOME")) == NULL)
+        homedir = getenv("HOMEPATH");
+
+    if (!homedir)
+        deflog = wxT("pgadmin.log");
+    else 
+    {
+        deflog = wxString::FromAscii(homedir);
+#ifdef __WXMSW__
+        deflog += wxT("\\pgadmin.log");
+#else
+        deflog += wxT("/pgadmin.log");
+#endif
+    }
+
+    Read(wxT("LogFile"), &logFile, deflog); 
     Read(wxT("LogLevel"), &logLevel, LOG_ERRORS);
     sysLogger::logFile = logFile;
     sysLogger::logLevel = logLevel;
