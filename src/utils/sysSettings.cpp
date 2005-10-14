@@ -38,19 +38,30 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 
     // Log. Try to get a vaguely usable default path.
     char *homedir;
+#ifdef __WXMSW__
+    char *homedrive;
+#endif
+
     wxString deflog;
     
-    if ((homedir = getenv("HOME")) == NULL)
-        homedir = getenv("HOMEPATH");
+#ifdef __WXMSW__
+    homedrive = getenv("HOMEDRIVE");
+    homedir = getenv("HOMEPATH");
+#else
+    homedir = getenv("HOME");
+#endif
 
     if (!homedir)
         deflog = wxT("pgadmin.log");
     else 
     {
-        deflog = wxString::FromAscii(homedir);
+        
 #ifdef __WXMSW__
+        deflog = wxString::FromAscii(homedrive);
+        deflog += wxString::FromAscii(homedir);
         deflog += wxT("\\pgadmin.log");
 #else
+        deflog = wxString::FromAscii(homedir);
         deflog += wxT("/pgadmin.log");
 #endif
     }
