@@ -181,6 +181,9 @@ void sysLogger::WriteLog(const wxString& msg)
 {
     wxString pid, logfile;
 
+    // Disable logging to prevent recursion in the event of a problem
+    wxLogNull foo;
+
     pid.Printf(wxT("%ld"), wxGetProcessId());
     logfile.Printf(wxT("%s"), logFile.c_str());
     logfile.Replace(wxT("%ID"), pid);
