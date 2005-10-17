@@ -48,12 +48,8 @@ AC_ARG_WITH(pgsql-include,
 ###########################
 AC_DEFUN([ENABLE_DEBUG],
 [AC_ARG_ENABLE(debug,
-[ --enable-debug       build a debug version of pgAdmin3],
-[pg_debug_build=yes
-CLFAGS=`${WX_CONFIG} --cflags --debug`
-CFLAGS="$CFLAGS -Wall -g -O0"
-CPPFLAGS=`${WX_CONFIG} --cppflags --debug`
-CPPFLAGS="$CPPFLAGS -Wall -g -O0"],
+[  --enable-debug       build a debug version of pgAdmin3],
+[pg_debug_build=yes],
 [pg_debug_build=no])
 ])
 AC_SUBST(pg_debug_build)
@@ -63,11 +59,11 @@ AC_SUBST(pg_debug_build)
 ############################
 AC_DEFUN([ENABLE_STATIC],
 [AC_ARG_ENABLE(static,
-[ --enable-static      build a static version of pgAdmin3],
+[  --enable-static      build a statically linked version of pgAdmin3],
 [pg_static_build=yes
-WX_STATIC="--static"],
+WX_STATIC="--static=yes"],
 [pg_static_build=no
-WX_STATIC=""])
+WX_STATIC="--static=no"])
 ])
 
 ############################
@@ -75,7 +71,7 @@ WX_STATIC=""])
 ############################
 AC_DEFUN([ENABLE_APPBUNDLE],
 [AC_ARG_ENABLE(appbundle,
-[ --enable-appbundle   Build pgAdmin3.app],
+[  --enable-appbundle   Build Mac OS X appbundle],
 [pg_appbundle=yes
 prefix=$(pwd)/tmp
 bundledir="$(pwd)/pgAdmin3.app"
@@ -217,14 +213,14 @@ fi
 ])
 
 #####################################################################
-# WxWindows linking checks                                          #
+# wxWidgets linking checks                                          #
 # This check should be specified last in configure.ac, since all of #
 # the above checks affect this test in some way or another.         #
 #####################################################################
-AC_DEFUN([CHECK_WXWINDOWS],
-[AC_MSG_CHECKING(for wxWindows)
+AC_DEFUN([CHECK_WXWIDGETS],
+[AC_MSG_CHECKING(for wxWidgets)
 AC_ARG_WITH(wx,
-[  --with-wx=DIR       root directory for wxWindows installation],
+[  --with-wx=DIR       root directory for wxWidgets installation],
 [if test "$withval" != no
 then
     AC_MSG_RESULT(yes)
@@ -277,11 +273,24 @@ then
     LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
     WX_OLD_LDFLAGS="$LDFLAGS"
     WX_OLD_CPPFLAGS="$CPPFLAGS"
-    WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs`
-    WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl`
-    LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
-    WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags`
-    CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS"
+	
+	if test "$pg_debug_build" == yes
+	then
+	    WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --debug=yes`
+        CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
+			
+        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --debug=yes`
+        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --debug=yes`
+        LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+	else
+	    WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --debug=no`
+        CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
+		
+        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --debug=no`
+        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --debug=no`
+        LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+	fi
+
     case "${host}" in
         *-apple-darwin*)
             CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
@@ -293,5 +302,32 @@ then
             ;;
     esac
 fi
+
+# Print a configuration summary
+echo
+if test "$pg_debug_build" == yes
+then
+	echo "Building a debug version of pgAdmin: Yes"
+else
+	echo "Building a debug version of pgAdmin: No"
+fi
+if test "$pg_static_build" == yes
+then
+	echo "Statically linking pgAdmin:          Yes"
+else
+	echo "Statically linking pgAdmin:          No"
+fi
+if test "$pg_appbundle" == yes
+then
+	echo "Building a Mac OS X appbundle:       Yes"
+else
+	echo "Building a Mac OS X appbundle:       No"
+fi
+echo
+
+# CFLAGS/CXXFLAGS may well contain unwanted settings, so clear them.
+CFLAGS=""
+CXXFLAGS=""
+
 ])
 AC_SUBST(WX_CONFIG)

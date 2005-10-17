@@ -33,9 +33,9 @@ noinst_HEADERS = \
 
 if !APPBUNDLE
 
-AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(srcdir)/include
-AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(srcdir)/include
-AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I$(srcdir)/include
+AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
+AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
+AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
 
 # Automake trys to execute install-exec-hook if it appears anywhere in the file, so we need a dummy
 # for non-APPBUNDLE cases.
@@ -43,9 +43,9 @@ install-exec-hook:
 
 else
 
-AM_CXXFLAGS = -Wall -g -I$(srcdir)/include
-AM_CPPFLAGS = -Wall -g -I$(srcdir)/include
-AM_CFLAGS = -Wall -g -I$(srcdir)/include
+AM_CXXFLAGS = -Wall -I$(srcdir)/include
+AM_CPPFLAGS = -Wall -I$(srcdir)/include
+AM_CFLAGS = -Wall -I$(srcdir)/include
 install-exec-hook:
 		cd $(bindir) ;\
 		mv pgagent tmp ;\

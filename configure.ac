@@ -37,11 +37,11 @@ CHECK_PGSQL_INCLUDE
 ENABLE_DEBUG
 ENABLE_STATIC
 CHECK_PGSQL
-CHECK_WXWINDOWS
+CHECK_WXWIDGETS
 
 AC_CONFIG_FILES([Makefile
 		 i18n/Makefile
-         src/Makefile
+		 src/Makefile
 		 pkg/Makefile
 		 pkg/debian/Makefile
 		 pkg/fc1/Makefile
@@ -50,7 +50,7 @@ AC_CONFIG_FILES([Makefile
 		 pkg/redhat/Makefile
 		 pkg/slackware/Makefile
 		 pkg/src/Makefile
-         pkg/suse/Makefile
+		 pkg/suse/Makefile
 		 pkg/win32/Makefile
 		 xtra/Makefile
 		 xtra/pgagent/Makefile
