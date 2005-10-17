@@ -49,7 +49,14 @@ AC_ARG_WITH(pgsql-include,
 AC_DEFUN([ENABLE_DEBUG],
 [AC_ARG_ENABLE(debug,
 [  --enable-debug       build a debug version of pgAdmin3],
-[pg_debug_build=yes],
+[
+if test "$enableval" = yes
+then
+	pg_debug_build=yes
+else
+	pg_debug_build=no
+fi
+],
 [pg_debug_build=no])
 ])
 AC_SUBST(pg_debug_build)
@@ -60,8 +67,16 @@ AC_SUBST(pg_debug_build)
 AC_DEFUN([ENABLE_STATIC],
 [AC_ARG_ENABLE(static,
 [  --enable-static      build a statically linked version of pgAdmin3],
-[pg_static_build=yes
-WX_STATIC="--static=yes"],
+[
+if test "$enableval" = yes
+then
+    pg_static_build=yes
+    WX_STATIC="--static=yes"
+else
+    pg_static_build=no
+    WX_STATIC="--static=no"
+fi
+],
 [pg_static_build=no
 WX_STATIC="--static=no"])
 ])
@@ -72,12 +87,18 @@ WX_STATIC="--static=no"])
 AC_DEFUN([ENABLE_APPBUNDLE],
 [AC_ARG_ENABLE(appbundle,
 [  --enable-appbundle   Build Mac OS X appbundle],
-[pg_appbundle=yes
-prefix=$(pwd)/tmp
-bundledir="$(pwd)/pgAdmin3.app"
-bindir="$bundledir/Contents/MacOS"
-datadir="$bundledir/Contents/SharedSupport"
-AC_SUBST(bundledir)
+[
+if test "$enableval" = yes
+then
+    pg_appbundle=yes
+    prefix=$(pwd)/tmp
+    bundledir="$(pwd)/pgAdmin3.app"
+    bindir="$bundledir/Contents/MacOS"
+    datadir="$bundledir/Contents/SharedSupport"
+    AC_SUBST(bundledir)
+else
+    pg_appbundle=no
+fi
 ],
 [pg_appbundle=no])
 ])
@@ -289,6 +310,11 @@ then
         WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --debug=no`
         WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --debug=no`
         LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+	fi
+	
+	if test "$WX_NEW_CPPFLAGS" = "" -o "$WX_NEW_LIBS" = "" -o "$WX_NEW_CONTRIB_LIBS" = ""
+	then
+	    AC_MSG_ERROR([the combination of static/shared and debug/non-debug options selected can not be supported by your wxWidgets installation.])
 	fi
 
     case "${host}" in
