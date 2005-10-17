@@ -106,6 +106,7 @@ pgObject *pgaScheduleFactory::CreateObjects(pgCollection *collection, ctlTree *b
             schedule->iSetRecId(schedules->GetLong(wxT("jscid")));
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
+            schedule->iSetEnabled(schedules->GetBool(wxT("jscenabled")));
 
 			tmp = schedules->GetVal(wxT("jscminutes"));
 			tmp.Replace(wxT("{"), wxT(""));
