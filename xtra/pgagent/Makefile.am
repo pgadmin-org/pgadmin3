@@ -33,8 +33,8 @@ noinst_HEADERS = \
 
 if !APPBUNDLE
 
-AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
-AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
+AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
+AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
 AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
 
 # Automake trys to execute install-exec-hook if it appears anywhere in the file, so we need a dummy
@@ -43,8 +43,8 @@ install-exec-hook:
 
 else
 
-AM_CXXFLAGS = -Wall -I$(srcdir)/include
-AM_CPPFLAGS = -Wall -I$(srcdir)/include
+AM_CXXFLAGS = -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
+AM_CPPFLAGS = -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
 AM_CFLAGS = -Wall -I$(srcdir)/include
 install-exec-hook:
 		cd $(bindir) ;\
