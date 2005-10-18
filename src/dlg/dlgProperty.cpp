@@ -1418,5 +1418,7 @@ wxWindow *refreshFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool refreshFactory::CheckEnable(pgObject *obj)
 {
-    return obj != 0;
+    // This isn't really clean... But we don't have a pgObject::CanRefresh() so far,
+    // so it's Good Enough (tm) for now.
+    return obj != 0 && !obj->IsCreatedBy(serverFactory.GetCollectionFactory());
 }
