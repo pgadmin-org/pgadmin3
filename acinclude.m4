@@ -86,7 +86,7 @@ WX_STATIC="--static=no"])
 ############################
 AC_DEFUN([ENABLE_APPBUNDLE],
 [AC_ARG_ENABLE(appbundle,
-[  --enable-appbundle   Build Mac OS X appbundle],
+[  --enable-appbundle   Build a Mac OS X appbundle],
 [
 if test "$enableval" = yes
 then
@@ -295,27 +295,27 @@ then
     WX_OLD_LDFLAGS="$LDFLAGS"
     WX_OLD_CPPFLAGS="$CPPFLAGS"
 	
-	if test "$pg_debug_build" == yes
-	then
-	    WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --debug=yes`
+    if test "$pg_debug_build" == yes
+    then
+        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
 			
-        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --debug=yes`
-        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --debug=yes`
+        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=yes`
+        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=yes`
         LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
-	else
-	    WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --debug=no`
+    else
+        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
 		
-        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --debug=no`
-        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --debug=no`
+        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=no`
+        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=no`
         LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
-	fi
-	
-	if test "$WX_NEW_CPPFLAGS" = "" -o "$WX_NEW_LIBS" = "" -o "$WX_NEW_CONTRIB_LIBS" = ""
-	then
-	    AC_MSG_ERROR([the combination of static/shared and debug/non-debug options selected can not be supported by your wxWidgets installation.])
-	fi
+    fi
+
+    if test "$WX_NEW_CPPFLAGS" = "" -o "$WX_NEW_LIBS" = "" -o "$WX_NEW_CONTRIB_LIBS" = ""
+    then
+        AC_MSG_ERROR([Your wxWidgets installation cannot support pgAdmin in the selected configuration. This may be because it was configured without the --enable-unicode option, or the combination of dynamic/static linking and debug/non-debug libraries selected did not match any installed wxWidgets libraries.])
+    fi
 
     case "${host}" in
         *-apple-darwin*)
