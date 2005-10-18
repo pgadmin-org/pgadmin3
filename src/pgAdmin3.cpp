@@ -485,10 +485,14 @@ char **pgAppearanceFactory::GetSplashImage()
 #ifdef __WIN32__
 #define SPLASH_FONTSIZE 8
 #else
+#ifdef __WXMAC__
+#define SPLASH_FONTSIZE 11
+#else
 #if wxCHECK_VERSION(2,5,0)
 #define SPLASH_FONTSIZE 9
 #else
 #define SPLASH_FONTSIZE 11
+#endif
 #endif
 #endif
 
