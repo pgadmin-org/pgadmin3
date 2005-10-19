@@ -26,6 +26,29 @@ AC_ARG_WITH(wx-config,
  AC_MSG_RESULT(yes)
 ])
 
+#############################
+# Override wxWidgets version #
+#############################
+AC_DEFUN([CHECK_WX_VERSION],
+[AC_MSG_CHECKING(the wxWidgets version)
+AC_ARG_WITH(wx-version,
+[  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.6)],
+[if test "$withval" == yes; then
+    AC_MSG_RESULT(unspecified)
+    AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
+ else
+    if test -z "$withval"; then
+        AC_MSG_RESULT(unspecified)
+        AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
+	else
+	    wx_version="$withval"
+		AC_MSG_RESULT($wx_version)
+	fi
+ fi],
+[wx_version="2.6"
+AC_MSG_RESULT($wx_version)])
+])
+
 #########################################
 # Override PostgreSQL include directory #
 #########################################
@@ -251,12 +274,16 @@ else
 fi], [
     AC_MSG_RESULT(yes)
     WX_HOME=/usr/local/wx2
-    if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h" -a ! -f "${WX_HOME}/include/wx-2.6/wx/wx.h"
+    if test ! -f "${WX_HOME}/include/wx-${wx_version}/wx/wx.h"
     then
         WX_HOME=/usr/local
-        if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h" -a ! -f "${WX_HOME}/include/wx-2.6/wx/wx.h"
+        if test ! -f "${WX_HOME}/include/wx-${wx_version}/wx/wx.h"
         then
             WX_HOME=/usr
+            if test ! -f "${WX_HOME}/include/wx-${wx_version}/wx/wx.h"
+            then
+                AC_MSG_ERROR([Could not find your wxWidgets ${wx_version} installation. You might need to use the --with-wx=DIR configure option])
+            fi
         fi
     fi
 ])
@@ -297,18 +324,18 @@ then
 	
     if test "$pg_debug_build" == yes
     then
-        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes`
+        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${wx_version}`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
 			
-        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=yes`
-        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=yes`
+        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=yes --version=${wx_version}`
+        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=yes --version=${wx_version}`
         LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
     else
-        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no`
+        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${wx_version}`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
 		
-        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=no`
-        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=no`
+        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=no --version=${wx_version}`
+        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=no --version=${wx_version}`
         LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
     fi
 
@@ -331,6 +358,7 @@ fi
 
 # Print a configuration summary
 echo
+echo "Using wxWidgets version:             $wx_version"
 if test "$pg_debug_build" == yes
 then
 	echo "Building a debug version of pgAdmin: Yes"
