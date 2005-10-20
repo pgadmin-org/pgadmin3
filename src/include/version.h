@@ -14,7 +14,7 @@
 #define VERSION_STR     wxT("1.4 post-Beta3")
 #define VERSION_NUM     1,4,0,99
 #define VERSION_PACKAGE 1.4-postbeta3
-#define VERSION_SVN     wxT("$Version: ")
+#define VERSION_SVN     wxT("$Version: $")
 
 #define PRERELEASE 1
 // #define BUILD "..."
