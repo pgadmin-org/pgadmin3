@@ -138,7 +138,7 @@ bool pgDatabase::GetCanHint()
     if (encoding == wxT("UNICODE"))
     {
         wxString ver=GetServer()->GetVersionString();
-        if (ver.Find(wxT("mingw32")) > 0 && ver.Find(wxT("SQL 8.0.") > 0))
+        if (ver.Find(wxT("mingw32")) > 0 && ver.Find(wxT("SQL 8.0.")) > 0)
             return true;
     }
 
@@ -158,7 +158,11 @@ void pgDatabase::ShowHint(frmMain *form, bool force)
     if (encoding == wxT("SQL_ASCII"))
         hints.Add(HINT_ENCODING_ASCII);
     else if (encoding == wxT("UNICODE"))
-        hints.Add(HINT_ENCODING_UNICODE);
+    {
+        wxString ver=GetServer()->GetVersionString();
+        if (ver.Find(wxT("mingw32")) > 0 && ver.Find(wxT("SQL 8.0.")) > 0)
+            hints.Add(HINT_ENCODING_UNICODE);
+    }
 
     if (GetServer()->GetConnection() == GetConnection() && 
         GetConnection()->BackendMinimumVersion(8,0) && 
