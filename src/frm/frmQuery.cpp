@@ -1301,5 +1301,5 @@ wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool queryToolFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->GetDatabase() != 0;
+    return obj && obj->GetDatabase() && obj->GetDatabase()->GetConnected();
 }

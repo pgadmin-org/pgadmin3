@@ -73,7 +73,7 @@ public:
     wxArrayString GetSlonyClusters(ctlTree *browser);
     
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
-    bool CanMaintenance() { return true; }
+    bool CanMaintenance() { return GetConnected(); }
     bool CanBackup() { return connected; }
     bool CanRestore() { return connected; }
     bool GetCanHint();
