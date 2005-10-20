@@ -258,6 +258,7 @@ void frmConfig::OnOpen(wxCommandEvent& event)
         lastDir = dlg.GetDirectory();
         lastPath = dlg.GetPath();
         OpenLastFile();
+        UpdateRecentFiles();
     }
 }
 
