@@ -86,35 +86,35 @@ hintArray[]=
     },
     {
         HINT_QUERYRUNTIME,
-        __(""),
+        __("Query took a long time to complete"),
         0,
         wxT("pgadmin/query"),
         HINT_CANSUPPRESS|HINT_CANABORT|HINT_YESNO
     },
     {
         HINT_INSTRUMENTATION,
-        __(""),
+        __("Server instrumentation not installed"),
         0,
         wxT("pgadmin/instrumentation"),
         HINT_CANSUPPRESS
     },
     {
         HINT_ENCODING_UNICODE,
-        __(""),
+        __("Database encoding is Unicode"),
         0,
         wxT("multibyte"),
         HINT_CANSUPPRESS
     },
     {
         HINT_ENCODING_ASCII,
-        __(""),
+        __("Database encoding is SQL_ASCII"),
         0,
         wxT("multibyte"),
         HINT_CANSUPPRESS
     },
     {
         HINT_READONLY_NOPK,
-        __(""),
+        __("Can't edit tables without primary key"),
         0,
         wxT("pgadmin/editgrid"),
         HINT_CANSUPPRESS

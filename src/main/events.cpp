@@ -142,7 +142,7 @@ void frmMain::OnAction(wxCommandEvent &ev)
 
 void frmMain::OnOnlineUpdateNewData(wxCommandEvent &event)
 {
-    wxLogError(__("Could not contact pgAdmin web site to check for updates.\nMaybe your proxy option setting need adjustment."));
+    wxLogError(__("Could not contact pgAdmin web site to check for updates.\nMaybe your proxy option setting needs adjustment."));
 }
 
 
