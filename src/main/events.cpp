@@ -692,7 +692,7 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
             if (nextItem)
                 browser->SelectItem(nextItem);
         }
-        int droppedType = data->GetType();
+        pgaFactory *droppedCollFactory = data->GetFactory()->GetCollectionFactory();
         browser->Delete(data->GetId());
         // data is invalid now
 
@@ -704,7 +704,7 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
             while (parentItem)
             {
                 collection = (pgCollection*)browser->GetObject(parentItem);
-                if (collection && collection->IsCollection() && collection->IsCollectionForType(droppedType))
+                if (collection && collection->IsCollection() && collection->GetFactory() == droppedCollFactory)
                 {
                     collection->UpdateChildCount(browser);
                     break;
@@ -733,7 +733,7 @@ void frmMain::OnNew(wxCommandEvent &ev)
 
     if (currentObject)
     {
-        if (!dlgProperty::CreateObjectDialog(this, currentObject, type))
+        if (!dlgProperty::CreateObjectDialog(this, currentObject, 0))
             CheckAlive();
     }
 }

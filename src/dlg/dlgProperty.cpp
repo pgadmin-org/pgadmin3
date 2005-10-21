@@ -86,7 +86,6 @@ END_EVENT_TABLE();
 dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName) : DialogWithHelp(frame)
 {
     readOnly=false;
-    objectType=-1;
     sqlPane=0;
     processing=false;
     mainForm=frame;
@@ -106,7 +105,6 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
         wxMessageBox(wxString::Format(_("Problem with resource %s: Notebook not found.\nPrepare to crash!"), resName.c_str()));
         return;
     }
-    objectType = factory->GetId();
     SetIcon(wxIcon(factory->GetImage()));
 
     txtName = CTRL_TEXT("txtName");
@@ -272,7 +270,7 @@ int dlgProperty::Go(bool modal)
         wxButton *btn=btnApply;
         if (btn)
             btn->Hide();
-        if (objectType >= 0)
+        if (factory)
             SetTitle(wxGetTranslation(factory->GetNewString()));
     }
     if (statusBar)
@@ -451,7 +449,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 {
     ctlTree *browser=mainForm->GetBrowser();
     pgCollection *collection = (pgCollection*)browser->GetObject(collectionItem);
-    if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
+    if (collection && collection->IsCollection() && factory->GetCollectionFactory() == collection->GetFactory())
     {
         pgObject *data = CreateObject(collection);
         if (data)
@@ -647,14 +645,14 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
         connection=node->GetConnection();
     database=node->GetDatabase();
 
-    if (objectType != node->GetType() && !node->IsCollection())
+    if (factory != node->GetFactory() && !node->IsCollection())
     {
         wxCookieType cookie;
         wxTreeItemId collectionItem=frame->GetBrowser()->GetFirstChild(node->GetId(), cookie);
         while (collectionItem)
         {
             pgCollection *collection=(pgCollection*)frame->GetBrowser()->GetObject(collectionItem);
-            if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
+            if (collection && collection->IsCollection() && collection->IsCollectionFor(node))
                 break;
 
             collectionItem=frame->GetBrowser()->GetNextChild(node->GetId(), cookie);
@@ -666,13 +664,13 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
 }
 
 
-dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type)
+dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, pgaFactory *factory)
 {
-    if (type < 0)
+    if (!factory)
     {
-        type=node->GetType();
+        factory=node->GetFactory();
         if (node->IsCollection())
-            type++;
+            factory = ((pgaCollectionFactory*)factory)->GetItemFactory();
     }
 
     pgObject *currentNode, *parentNode;
@@ -681,7 +679,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
     else
         currentNode=node;
 
-    if (type != node->GetType())
+    if (factory != node->GetFactory())
         parentNode = node;
     else
         parentNode = frame->GetBrowser()->GetObject(
@@ -692,8 +690,6 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
                      frame->GetBrowser()->GetItemParent(parentNode->GetId()));
 
     dlgProperty *dlg=0;
-
-    pgaFactory *factory=pgaFactory::GetFactory(type);
 
     if (factory)
     {
@@ -711,7 +707,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 }
 
 
-bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
+bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, pgaFactory *factory)
 {
     if (node->GetMetaType() != PGM_SERVER)
     {
@@ -719,7 +715,7 @@ bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
         if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
             return false;
     }
-    dlgProperty *dlg=CreateDlg(frame, node, true, type);
+    dlgProperty *dlg=CreateDlg(frame, node, true, factory);
 
     if (dlg)
     {
@@ -1344,7 +1340,7 @@ createFactory::createFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *tool
 
 wxWindow *createFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    if (!dlgProperty::CreateObjectDialog(form, obj, -1))
+    if (!dlgProperty::CreateObjectDialog(form, obj, 0))
         form->CheckAlive();
 
     return 0;

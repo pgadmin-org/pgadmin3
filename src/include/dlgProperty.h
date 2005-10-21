@@ -31,7 +31,7 @@ class pgaFactory;
 class dlgProperty : public DialogWithHelp
 {
 public:
-    static bool CreateObjectDialog(frmMain *frame, pgObject *node, int type);
+    static bool CreateObjectDialog(frmMain *frame, pgObject *node, pgaFactory *factory=0);
     static bool EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node);
     void InitDialog(frmMain *frame, pgObject *node);
 
@@ -57,7 +57,7 @@ protected:
     void ShowObject();
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
-    static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
+    static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, pgaFactory *factory=0);
     void AppendNameChange(wxString &sql, const wxString &objname=wxEmptyString);
     void AppendOwnerChange(wxString &sql, const wxString &objName=wxEmptyString);
     void AppendOwnerNew(wxString &sql, const wxString &objname);
@@ -101,7 +101,6 @@ protected:
 
     int width, height;
     wxTreeItemId item;
-    int objectType;
     bool readOnly;
     bool processing;
     pgaFactory *factory;

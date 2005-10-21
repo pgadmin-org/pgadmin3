@@ -119,8 +119,8 @@ wxString dlgIndexConstraint::GetSql()
         sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
             + wxT(" ADD");
         AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
-        pgaFactory *f=pgaFactory::GetFactory(objectType);
-        sql +=wxT(" ") + wxString(f->GetTypeName()).Upper() + wxT(" ") + GetDefinition()
+
+        sql +=wxT(" ") + wxString(factory->GetTypeName()).Upper() + wxT(" ") + GetDefinition()
             + wxT(";\n");
     }
 

@@ -388,8 +388,6 @@ pgObject *pgTriggerFunctionFactory::CreateObjects(pgCollection *collection, ctlT
     return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
 }
 
-//            if (parentNode->GetType() == PG_TRIGGER)
-//                parentNode = ((pgTrigger*)parentNode)->GetSchema();
 
 pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restr)
 {
