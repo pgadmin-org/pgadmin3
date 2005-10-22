@@ -719,8 +719,9 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 
 void frmMain::OnNew(wxCommandEvent &ev)
 {
-    int type=ev.GetId() - MNU_NEW;
-    if (pgaFactory::GetFactory(type) == &serverFactory)
+    pgaFactory *factory=pgaFactory::GetFactory(ev.GetId() - MNU_NEW);
+    
+    if (factory == &serverFactory)
     {
         if (currentObject && currentObject->IsCreatedBy(serverFactory))
         {
@@ -733,7 +734,7 @@ void frmMain::OnNew(wxCommandEvent &ev)
 
     if (currentObject)
     {
-        if (!dlgProperty::CreateObjectDialog(this, currentObject, 0))
+        if (!dlgProperty::CreateObjectDialog(this, currentObject, factory))
             CheckAlive();
     }
 }
