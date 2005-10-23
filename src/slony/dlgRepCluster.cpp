@@ -354,13 +354,15 @@ void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
         wxString schemaPrefix = qtIdent(wxT("_") + cbClusterName->GetValue()) + wxT(".");
         long adminNodeID = settings->Read(wxT("Replication/") + cbClusterName->GetValue() + wxT("/AdminNode"), -1L);
 
+        remoteVersion = remoteConn->ExecuteScalar(wxT("SELECT ") + schemaPrefix + wxT("slonyVersion();"));
+
         wxString sql=
-            wxT("SELECT no_id, no_comment, ") + schemaPrefix + wxT("slonyVersion() as version\n")
+            wxT("SELECT no_id, no_comment\n")
             wxT("  FROM ") + schemaPrefix + wxT("sl_node\n")
             wxT("  JOIN ") + schemaPrefix + wxT("sl_path ON no_id = pa_client\n")
-            wxT(" WHERE pa_server = (SELECT last_value FROM ") + schemaPrefix + wxT("sl_local_node_id)")
-            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + remoteServer->GetName() + wxT("%")) +
-            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cbDatabase->GetValue() + wxT("%"));
+            wxT(" WHERE pa_server = (SELECT last_value FROM ") + schemaPrefix + wxT("sl_local_node_id)\n")
+            wxT("   AND pa_conninfo ILIKE ") + qtString(wxT("%host=") + remoteServer->GetName() + wxT("%")) + wxT("\n")
+            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cbDatabase->GetValue() + wxT("%")) + wxT("\n");
 
         if (remoteServer->GetPort() != 5432)
             sql += wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%port=") + NumToStr((long)remoteServer->GetPort()) + wxT("%"));
@@ -370,7 +372,6 @@ void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
         {
             if (!set->Eof())
             {
-                remoteVersion = set->GetVal(wxT("version"));
                 long id = set->GetLong(wxT("no_id"));
                 cbAdminNode->Append(IdAndName(id, set->GetVal(wxT("no_comment"))), (void*)id);
                 if (adminNodeID == id)
@@ -758,7 +759,8 @@ wxString dlgRepCluster::GetSql()
             while (process)
             {
                 wxSafeYield();
-                clusterBackup += process->ReadInputStream();
+                if (process)
+                    clusterBackup += process->ReadInputStream();
                 wxSafeYield();
                 wxMilliSleep(10);
             }
