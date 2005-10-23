@@ -23,6 +23,7 @@ class dlgRepPath : public dlgRepProperty
 public:
     dlgRepPath(pgaFactory *factory, frmMain *frame, slPath *p, slNode *n);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-path"); }
 
     void CheckChange();
     wxString GetSql();

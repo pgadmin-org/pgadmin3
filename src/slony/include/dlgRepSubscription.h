@@ -23,6 +23,7 @@ class dlgRepSubscription : public dlgRepProperty
 public:
     dlgRepSubscription(pgaFactory *factory, frmMain *frame, slSubscription *sub, slSet *s);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-set#subscription"); }
 
     void CheckChange();
     wxString GetSql();

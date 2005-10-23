@@ -23,6 +23,7 @@ class dlgRepSet : public dlgRepProperty
 public:
     dlgRepSet(pgaFactory *factory, frmMain *frame, slSet *set, slCluster *c);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-set"); }
 
     void CheckChange();
     wxString GetSql();
@@ -41,6 +42,7 @@ class dlgRepSetMerge : public dlgRepProperty
 public:
     dlgRepSetMerge(pgaFactory *factory, frmMain *frame, slSet *set);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-functions"); }
 
     void CheckChange();
     wxString GetSql();
@@ -58,6 +60,7 @@ class dlgRepSetMove : public dlgRepProperty
 public:
     dlgRepSetMove(pgaFactory *f, frmMain *frame, slSet *set);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-functions"); }
 
     void CheckChange();
     wxString GetSql();

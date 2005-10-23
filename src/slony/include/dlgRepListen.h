@@ -23,6 +23,7 @@ class dlgRepListen : public dlgRepProperty
 public:
     dlgRepListen(pgaFactory *factory, frmMain *frame, slListen *l, slNode *n);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-path#listen"); }
 
     void CheckChange();
     wxString GetSql();

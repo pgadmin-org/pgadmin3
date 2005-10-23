@@ -52,6 +52,7 @@ class dlgRepCluster : public dlgRepClusterBase
 public:
     dlgRepCluster(pgaFactory *factory, frmMain *frame, slCluster *cl, pgDatabase *obj);
     int Go(bool modal);
+    wxString GetHelpPage() const;
 
     void CheckChange();
     wxString GetSql();
@@ -80,6 +81,8 @@ class dlgRepClusterUpgrade : public dlgRepClusterBase
 public:
     dlgRepClusterUpgrade(pgaFactory *factory, frmMain *frame, slCluster *cl);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-install#upgrade"); }
+
 
     void CheckChange();
     wxString GetSql();

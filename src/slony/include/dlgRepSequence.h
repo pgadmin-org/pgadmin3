@@ -23,6 +23,7 @@ class dlgRepSequence : public dlgRepProperty
 public:
     dlgRepSequence(pgaFactory *factory, frmMain *frame, slSequence *tab, slSet *s);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-set#sequence"); }
 
     void CheckChange();
     wxString GetSql();

@@ -226,6 +226,16 @@ dlgRepCluster::dlgRepCluster(pgaFactory *f, frmMain *frame, slCluster *node, pgD
 
 
 
+wxString dlgRepCluster::GetHelpPage() const
+{
+    wxString page=wxT("slony-install");
+    if (chkJoinCluster->GetValue())
+        page += wxT("#join");
+
+    return page;
+}
+
+
 int dlgRepCluster::Go(bool modal)
 {
     chkJoinCluster->SetValue(false);

@@ -138,7 +138,7 @@ wxString dlgProperty::GetHelpPage() const
 {
     wxString page;
 
-    pgObject *obj=0; //GetObject();
+    pgObject *obj=((dlgProperty*)this)->GetObject();
     if (obj)
         page=obj->GetHelpPage(false);
     else

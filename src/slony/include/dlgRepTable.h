@@ -23,6 +23,7 @@ class dlgRepTable : public dlgRepProperty
 public:
     dlgRepTable(pgaFactory *factory, frmMain *frame, slTable *tab, slSet *s);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-set#table"); }
 
     void CheckChange();
     wxString GetSql();

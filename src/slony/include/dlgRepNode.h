@@ -24,6 +24,7 @@ class dlgRepNode : public dlgRepProperty
 public:
     dlgRepNode(pgaFactory *factory, frmMain *frame, slNode *node, slCluster *c);
     int Go(bool modal);
+    wxString GetHelpPage() const { return wxT("slony-install#node"); }
 
     void CheckChange();
     wxString GetSql();
