@@ -581,20 +581,26 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
         if (conn->BackendMinimumVersion(7, 3))
         {
             connected = true;
+            bool hasUptime=false;
 
             wxString sql = wxT("SELECT usecreatedb, usesuper");
-            if (conn->HasFeature(FEATURE_POSTMASTER_START_TIME))
+            if (conn->BackendMinimumVersion(8, 1))
+            {
+                hasUptime=true;
                 sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_start_time() ELSE NULL END as upsince");
+            }
             else if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
+            {
+                hasUptime=true;
                 sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_starttime() ELSE NULL END as upsince");
+            }
 
             pgSet *set=ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
             if (set)
             {
                 iSetCreatePrivilege(set->GetBool(wxT("usecreatedb")));
                 iSetSuperUser(set->GetBool(wxT("usesuper")));
-                if (conn->HasFeature(FEATURE_POSTMASTER_START_TIME) || 
-                    conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
+                if (hasUptime)
                     iSetUpSince(set->GetDateTime(wxT("upsince")));
                 delete set;
             }

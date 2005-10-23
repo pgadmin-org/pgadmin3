@@ -171,6 +171,8 @@ int dlgUser::Go(bool modal)
     }
     else
     {
+        wxDateTime empty;
+        datValidUntil->SetValue(empty);
         txtID->SetValidator(numericValidator);
         timValidUntil->Disable();
     }

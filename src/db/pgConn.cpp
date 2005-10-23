@@ -129,11 +129,19 @@ bool pgConn::HasFeature(int featureNo)
     {
         features[FEATURE_INITIALIZED] = true;
 
-        pgSet *set=ExecuteSet(
+        wxString sql=
             wxT("SELECT proname, pronargs, proargtypes[0] AS arg0, proargtypes[1] AS arg1, proargtypes[2] AS arg2\n")
             wxT("  FROM pg_proc\n")
+            wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
             wxT(" WHERE proname IN ('pg_tablespace_size', 'pg_file_read', 'pg_logfile_rotate',")
-            wxT(                  " 'pg_postmaster_starttime', 'pg_postmaster_start_time', 'pg_terminate_backend', 'pg_reload_conf')"));
+            wxT(                  " 'pg_postmaster_starttime', 'pg_terminate_backend', 'pg_reload_conf')\n");
+
+        if (BackendMinimumVersion(8, 1))
+            sql += wxT("   AND nspname = 'pg_catalog'");
+        else
+            sql += wxT("   AND nspname IN ('pg_catalog', 'public')");
+
+        pgSet *set=ExecuteSet(sql);
 
         if (set)
         {
@@ -151,8 +159,6 @@ bool pgConn::HasFeature(int featureNo)
                     features[FEATURE_ROTATELOG] = true;
                 else if (proname == wxT("pg_postmaster_starttime") && pronargs == 0)
                     features[FEATURE_POSTMASTER_STARTTIME] = true;
-                else if (proname == wxT("pg_postmaster_start_time") && pronargs == 0)
-                    features[FEATURE_POSTMASTER_START_TIME] = true;
                 else if (proname == wxT("pg_terminate_backend") && pronargs == 1 && set->GetLong(wxT("arg0")) == 23)
                     features[FEATURE_TERMINATE_BACKEND] = true;
                 else if (proname == wxT("pg_reload_conf") && pronargs == 0)

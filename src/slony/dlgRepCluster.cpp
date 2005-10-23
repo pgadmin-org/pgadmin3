@@ -301,13 +301,18 @@ int dlgRepCluster::Go(bool modal)
 
         treeObjectIterator it(mainForm->GetBrowser(), mainForm->GetServerCollection());
         pgServer *s;
+        int sel=-1;
         while ((s=(pgServer*)it.GetNextObject()) != 0)
         {
             if (s->IsCreatedBy(serverFactory))
+            {
+                if (s == database->GetServer())
+                    sel = cbServer->GetCount();
                 cbServer->Append(mainForm->GetBrowser()->GetItemText(s->GetId()), (void*)s);
+            }
         }
-        if (cbServer->GetCount())
-            cbServer->SetSelection(0);
+        if (sel >= 0)
+            cbServer->SetSelection(sel);
     }
 
     wxCommandEvent ev;

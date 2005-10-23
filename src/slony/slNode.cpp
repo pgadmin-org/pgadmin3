@@ -53,6 +53,8 @@ wxMenu *slNode::GetNewMenu()
     wxMenu *menu=pgObject::GetNewMenu();
 
 //    if (GetCreatePrivilege())
+    pathFactory.AppendMenu(menu);
+    listenFactory.AppendMenu(menu);
 
     return menu;
 }
