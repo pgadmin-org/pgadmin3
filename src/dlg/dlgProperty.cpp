@@ -276,12 +276,19 @@ int dlgProperty::Go(bool modal)
     if (statusBar)
         statusBar->SetStatusText(wxEmptyString);
 
+    if (nbNotebook)
+    {
+        wxNotebookPage *pg=nbNotebook->GetPage(0);
+        if (pg)
+            pg->SetFocus();
+    }
     if (modal)
         return ShowModal();
     else
         Show(true);
     return 0;
 }
+
 
 void dlgProperty::CreateAdditionalPages()
 {
@@ -301,19 +308,19 @@ wxString dlgProperty::GetName()
 void dlgProperty::AppendNameChange(wxString &sql, const wxString &objName)
 {
     if (GetObject()->GetName() != GetName())
-	{
-		if (objName.Length() > 0)
-		{
-			sql += wxT("ALTER ") + objName
-				+  wxT(" RENAME TO ") + qtIdent(GetName())
-				+  wxT(";\n");
-		} else {
-			sql += wxT("ALTER ") + GetObject()->GetTypeName().MakeUpper()
-	            +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
-				+  wxT(" RENAME TO ") + qtIdent(GetName())
-				+  wxT(";\n");
-		}
-	}
+    {
+        if (objName.Length() > 0)
+        {
+            sql += wxT("ALTER ") + objName
+                +  wxT(" RENAME TO ") + qtIdent(GetName())
+                +  wxT(";\n");
+        } else {
+            sql += wxT("ALTER ") + GetObject()->GetTypeName().MakeUpper()
+                +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
+                +  wxT(" RENAME TO ") + qtIdent(GetName())
+                +  wxT(";\n");
+        }
+    }
 }
 
 
@@ -833,25 +840,25 @@ void dlgTypeProperty::AddType(const wxString &typ, const OID oid, const wxString
             case PGOID_TYPE_BIT:
             case PGOID_TYPE_BIT_ARRAY:
             case PGOID_TYPE_CHAR:
-			case PGOID_TYPE_CHAR_ARRAY:
+            case PGOID_TYPE_CHAR_ARRAY:
             case PGOID_TYPE_VARCHAR:
-			case PGOID_TYPE_VARCHAR_ARRAY:
+            case PGOID_TYPE_VARCHAR_ARRAY:
                 vartyp=wxT("L");
                 break;
             case PGOID_TYPE_TIME:
-			case PGOID_TYPE_TIME_ARRAY:
+            case PGOID_TYPE_TIME_ARRAY:
             case PGOID_TYPE_TIMETZ:
-			case PGOID_TYPE_TIMETZ_ARRAY:
+            case PGOID_TYPE_TIMETZ_ARRAY:
             case PGOID_TYPE_TIMESTAMP:
-			case PGOID_TYPE_TIMESTAMP_ARRAY:
+            case PGOID_TYPE_TIMESTAMP_ARRAY:
             case PGOID_TYPE_TIMESTAMPTZ:
-			case PGOID_TYPE_TIMESTAMPTZ_ARRAY:
+            case PGOID_TYPE_TIMESTAMPTZ_ARRAY:
             case PGOID_TYPE_INTERVAL:
-			case PGOID_TYPE_INTERVAL_ARRAY:
+            case PGOID_TYPE_INTERVAL_ARRAY:
                 vartyp=wxT("D");
                 break;
             case PGOID_TYPE_NUMERIC:
-			case PGOID_TYPE_NUMERIC_ARRAY:
+            case PGOID_TYPE_NUMERIC_ARRAY:
                 vartyp=wxT("P");
                 break;
             default:
@@ -889,15 +896,15 @@ wxString dlgTypeProperty::GetTypeOid(int sel)
 wxString dlgTypeProperty::GetQuotedTypename(int sel)
 {
     wxString sql;
-	bool isArray = false;
+    bool isArray = false;
 
     if (sel >= 0)
     {
         sql = types.Item(sel).AfterFirst(':');
-		if (sql.Contains(wxT("[]"))) {
-			sql = sql.BeforeFirst('[');
-			isArray = true;
-		}
+        if (sql.Contains(wxT("[]"))) {
+            sql = sql.BeforeFirst('[');
+            isArray = true;
+        }
 
         if (isVarLen && txtLength)
         {
@@ -916,7 +923,7 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
         }
     }
 
-	if (isArray) sql += wxT("[]");
+    if (isArray) sql += wxT("[]");
     return sql;
 }
 
@@ -1044,7 +1051,7 @@ dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject
                     wxString name=str.BeforeLast('=');
                     wxString value;
 
-					connection = obj->GetConnection();
+                    connection = obj->GetConnection();
                     if (connection->BackendMinimumVersion(7, 4))
                         value=str.Mid(name.Length()+1).BeforeLast('/');
                     else
@@ -1071,7 +1078,7 @@ dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject
             }
         }
     }else
-	securityPage = NULL;
+    securityPage = NULL;
 }
 
 
@@ -1171,7 +1178,7 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
     if (securityPage)
         return securityPage->GetGrant(allPattern, grantObject, &currentAcl);
     else
-	return wxString();
+    return wxString();
 }
 
 
@@ -1209,28 +1216,28 @@ bool dlgAgentProperty::executeSql()
     sql=GetInsertSql();
     if (!sql.IsEmpty())
     {
-		int pos;
-		long jobId=0, schId=0, stpId=0;
-		if (sql.Contains(wxT("<JobId>")))
-		{
-			recId = jobId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
+        int pos;
+        long jobId=0, schId=0, stpId=0;
+        if (sql.Contains(wxT("<JobId>")))
+        {
+            recId = jobId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
             while ((pos=sql.Find(wxT("<JobId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(jobId) + sql.Mid(pos+7);
-		}
-		
-		if (sql.Contains(wxT("<SchId>")))
-		{
-			recId = schId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
-			while ((pos=sql.Find(wxT("<SchId>"))) >= 0)
+        }
+        
+        if (sql.Contains(wxT("<SchId>")))
+        {
+            recId = schId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
+            while ((pos=sql.Find(wxT("<SchId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(schId) + sql.Mid(pos+7);
-		}
+        }
 
-		if (sql.Contains(wxT("<StpId>")))
-		{
-			recId = stpId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
-			while ((pos=sql.Find(wxT("<StpId>"))) >= 0)
+        if (sql.Contains(wxT("<StpId>")))
+        {
+            recId = stpId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
+            while ((pos=sql.Find(wxT("<StpId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(stpId) + sql.Mid(pos+7);
-		}
+        }
 
         pgSet *set=connection->ExecuteSet(sql);
         if (set)
@@ -1251,20 +1258,20 @@ bool dlgAgentProperty::executeSql()
         while ((pos=sql.Find(wxT("<JobId>"))) >= 0)
             sql = sql.Left(pos) + NumToStr(recId) + sql.Mid(pos+7);
 
-		long newId;
-		if (sql.Contains(wxT("<SchId>")))
-		{
-			newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
-			while ((pos=sql.Find(wxT("<SchId>"))) >= 0)
+        long newId;
+        if (sql.Contains(wxT("<SchId>")))
+        {
+            newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
+            while ((pos=sql.Find(wxT("<SchId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(newId) + sql.Mid(pos+7);
-		}
+        }
 
-		if (sql.Contains(wxT("<StpId>")))
-		{
-			newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
-			while ((pos=sql.Find(wxT("<StpId>"))) >= 0)
+        if (sql.Contains(wxT("<StpId>")))
+        {
+            newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
+            while ((pos=sql.Find(wxT("<StpId>"))) >= 0)
                 sql = sql.Left(pos) + NumToStr(newId) + sql.Mid(pos+7);
-		}
+        }
 
         if (!connection->ExecuteVoid(sql))
         {
