@@ -192,7 +192,7 @@ wxString dlgRepSetMerge::GetSql()
 
     if (set->GetSubscriptionCount() > 0)
     {
-        sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("sl_merge(") + toId  + wxT(", ") + addId + wxT(");\n");
+        sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("mergeset(") + toId  + wxT(", ") + addId + wxT(");\n");
     }
     else
     {
@@ -303,7 +303,7 @@ wxString dlgRepSetMove::GetSql()
     wxString toId=NumToStr((long)cbTargetNode->GetClientData(cbTargetNode->GetSelection()));
 
     wxString sql =
-        wxT("!!! LockSet, waitEvent(1,2),move, wait SELECT ") + cluster->GetSchemaPrefix() + wxT("moveset(") +
+        wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("moveset(") +
             NumToStr(set->GetSlId()) + wxT(", ") + toId + wxT(");\n");
     return sql;
 }
