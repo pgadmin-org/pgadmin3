@@ -463,5 +463,7 @@ wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool restoreFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->CanRestore();
+    extern wxString restoreExecutable;
+
+    return obj && obj->CanRestore() && !restoreExecutable.IsEmpty();
 }

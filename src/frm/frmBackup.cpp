@@ -286,5 +286,7 @@ wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->CanBackup();
+    extern wxString backupExecutable;
+
+    return obj && obj->CanBackup() && !backupExecutable.IsEmpty();
 }
