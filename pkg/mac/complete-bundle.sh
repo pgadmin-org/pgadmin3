@@ -12,10 +12,10 @@ echo "Completing bundle: $bundle"
 cd "$bundle"
 fw_basepath=$(dirname $(pwd))
 todo=$(find ./ | \
-	xargs file | \
-	sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' \
+        xargs --replace=line file 'line' | \
+        sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' | \
+        xargs echo -n \
 )
-todo=../src/pgadmin3
 
 echo "Found executables: $todo"
 while test "$todo" != ""; do
