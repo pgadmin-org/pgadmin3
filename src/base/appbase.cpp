@@ -46,6 +46,9 @@ void pgAppBase::InitPaths()
 	if (loadPath.IsEmpty())
 		loadPath = wxT(".");
 
+    // Look in the app directory for things first
+    path.Add(loadPath);
+
 #if defined(__WXMSW__)
 
     // Search for the right paths. We check the following locations:
