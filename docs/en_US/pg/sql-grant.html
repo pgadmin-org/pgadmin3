@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-fetch.html" title="FETCH">
 <link rel="next" href="sql-insert.html" title="INSERT">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>GRANT &#8212; define access privileges</p>
 </div>
-<a name="id719316"></a><div class="refsynopsisdiv">
+<a name="id720548"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">GRANT { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
@@ -199,8 +199,12 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
    members.
   </p>
 <p>   If <code class="literal">WITH ADMIN OPTION</code> is specified, the member may
-   in turn grant membership in the role to others.  Without the admin
-   option, the recipient cannot do that.
+   in turn grant membership in the role to others, and revoke membership
+   in the role as well.  Without the admin option, ordinary users cannot do
+   that.  However,
+   database superusers can grant or revoke membership in any role to anyone.
+   Roles having <code class="literal">CREATEROLE</code> privilege can grant or revoke
+   membership in any role that is not a superuser.
   </p>
 </div>
 </div>
@@ -233,6 +237,25 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
     such a command will appear to have been granted by the object owner.
     (For role membership, the membership appears to have been granted
     by the containing role itself.)
+   </p>
+<p>    <code class="command">GRANT</code> and <code class="command">REVOKE</code> can also be done by a role
+    that is not the owner of the affected object, but is a member of the role
+    that owns the object, or is a member of a role that holds privileges
+    <code class="literal">WITH GRANT OPTION</code> on the object.  In this case the
+    privileges will be recorded as having been granted by the role that
+    actually owns the object or holds the privileges
+    <code class="literal">WITH GRANT OPTION</code>.  For example, if table
+    <code class="literal">t1</code> is owned by role <code class="literal">g1</code>, of which role
+    <code class="literal">u1</code> is a member, then <code class="literal">u1</code> can grant privileges
+    on <code class="literal">t1</code> to <code class="literal">u2</code>, but those privileges will appear
+    to have been granted directly by <code class="literal">g1</code>.  Any other member
+    of role <code class="literal">g1</code> could revoke them later.
+   </p>
+<p>    If the role executing <code class="command">GRANT</code> holds the required privileges
+    indirectly via more than one role membership path, it is unspecified
+    which containing role will be recorded as having done the grant.  In such
+    cases it is best practice to use <code class="command">SET ROLE</code> to become the
+    specific role you want to do the <code class="command">GRANT</code> as.
    </p>
 <p>    Currently, <span class="productname">PostgreSQL</span> does not support
     granting or revoking privileges for individual columns of a table.
@@ -359,7 +382,7 @@ specified request.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720454"></a><h2>See Also</h2>
+<a name="id721814"></a><h2>See Also</h2>
 <p>   <a href="sql-revoke.html">REVOKE</a>
   </p>
 </div>

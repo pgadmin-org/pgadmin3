@@ -4,8 +4,8 @@
 <title>EXECUTE SCRIPT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtfailover.html" title="FAILOVER">
 <link rel="next" href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS">
@@ -18,25 +18,25 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">EXECUTE SCRIPT (options);</tt></p></div>
+<div class="cmdsynopsis"><p><code class="command">EXECUTE SCRIPT (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556601"></a><h2>Description</h2>
+<a name="id536112"></a><h2>Description</h2>
 <p> Executes a script containing arbitrary SQL statements on
      all nodes that are subscribed to a set at a common controlled
      point within the replication transaction stream.</p>
 <p> The specified event origin must be the origin of the set.
-     The script file must not contain any <tt class="command">START</tt> or
-     <tt class="command">COMMIT TRANSACTION</tt> calls.  (This may change in
+     The script file must not contain any <code class="command">START</code> or
+     <code class="command">COMMIT TRANSACTION</code> calls.  (This may change in
      PostgreSQL 8.0 once nested transactions, aka savepoints, are
      supported) In addition, non-deterministic DML statements (like
-     updating a field with <tt class="function">CURRENT_TIMESTAMP</tt>) must
+     updating a field with <code class="function">CURRENT_TIMESTAMP</code>) must
      be avoided, since the data changes done by the script are
      explicitly not replicated. </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal"> SET ID = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> SET ID = ival </code></span></dt>
 <dd><p> The unique numeric ID number of the set affected by the script</p></dd>
-<dt><span class="term"><tt class="literal"> FILENAME = '/path/to/file' </tt></span></dt>
+<dt><span class="term"><code class="literal"> FILENAME = '/path/to/file' </code></span></dt>
 <dd>
 <p> The name of the file containing the SQL script to
 	execute.  This might be a relative path, relative to the location of
@@ -46,10 +46,10 @@
 	the event, so the file does not need to be accessible on any of the
 	nodes.</p>
 </dd>
-<dt><span class="term"><tt class="literal"> EVENT NODE = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> EVENT NODE = ival </code></span></dt>
 <dd><p> (Optional) The ID of the current origin of the set.  Default value is 1.</p></dd>
-<dt><span class="term"><tt class="literal"> EXECUTE ONLY ON = ival
-       </tt></span></dt>
+<dt><span class="term"><code class="literal"> EXECUTE ONLY ON = ival
+       </code></span></dt>
 <dd><p> (Optional) The ID of the only
 	node to actually execute the script.  This option causes the
 	script to be propagated by all nodes but executed only by one.
@@ -62,10 +62,10 @@
     database activity.</p>
 <p> At the start of this event, all tables in the specified set
     are unlocked via the function
-    <tt class="function">alterTableRestore(tab_id)</tt>.  After the SQL
+    <code class="function">alterTableRestore(tab_id)</code>.  After the SQL
     script has run, they are returned to &#8220;<span class="quote">replicating
     state</span>&#8221; using
-    <tt class="function">alterTableForReplication(tab_id)</tt>.  This means
+    <code class="function">alterTableForReplication(tab_id)</code>.  This means
     that all of these tables are locked by this <span class="application"> slon
     </span> process for the duration of the SQL script
     execution.</p>
@@ -75,7 +75,7 @@
 <p> This uses <a href="function.ddlscript-integer-text-integer.html">schemadocddlscript( integer, text, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556771"></a><h2>Example</h2>
+<a name="id536299"></a><h2>Example</h2>
 <pre class="programlisting">EXECUTE SCRIPT (
    SET ID = 1,
    FILENAME = '/tmp/changes_2004-05-01.sql',

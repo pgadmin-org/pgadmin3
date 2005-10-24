@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>26.4. WAL Internals</title>
+<title>26.3. WAL Internals</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="reliability.html" title="Chapter 26. Reliability">
-<link rel="prev" href="wal-configuration.html" title="26.3. WAL Configuration">
+<link rel="prev" href="wal-configuration.html" title="26.2. WAL Configuration">
 <link rel="next" href="regress.html" title="Chapter 27. Regression Tests">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="wal-internals"></a>26.4. WAL Internals</h2></div></div></div>
+<a name="wal-internals"></a>26.3. WAL Internals</h2></div></div></div>
 <p>   <span class="acronym">WAL</span> is automatically enabled; no action is
    required from the administrator except ensuring that the
    disk-space requirements for the <span class="acronym">WAL</span> logs are met,
-   and that any necessary tuning is done (see <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a>).
+   and that any necessary tuning is done (see <a href="wal-configuration.html" title="26.2. WAL Configuration">Section 26.2, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a>).
   </p>
 <p>   <span class="acronym">WAL</span> logs are stored in the directory
    <code class="filename">pg_xlog</code> under the data directory, as a set of
@@ -29,13 +29,6 @@
    present, but it should take a very very long time to exhaust the
    available stock of numbers.
   </p>
-<p>   The <span class="acronym">WAL</span> buffers and control structure are in
-   shared memory and are handled by the server child processes; they
-   are protected by lightweight locks.  The demand on shared memory is
-   dependent on the number of buffers.  The default size of the
-   <span class="acronym">WAL</span> buffers is 8 buffers of 8 kB each, or 64 kB
-   total.
-  </p>
 <p>   It is of advantage if the log is located on another disk than the
    main database files.  This may be achieved by moving the directory
    <code class="filename">pg_xlog</code> to another location (while the server
@@ -44,7 +37,7 @@
   </p>
 <p>   The aim of <span class="acronym">WAL</span>, to ensure that the log is
    written before database records are altered, may be subverted by
-   disk drives<a name="id619387"></a> that falsely report a
+   disk drives<a name="id620124"></a> that falsely report a
    successful write to the kernel, 
    when in fact they have only cached the data and not yet stored it
    on the disk.  A power failure in such a situation may still lead to

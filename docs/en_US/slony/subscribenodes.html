@@ -4,8 +4,8 @@
 <title>3. Subscribing Nodes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="slonstart.html" title="2. Slon daemons">
 <link rel="next" href="monitoring.html" title="4. Monitoring">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="subscribenodes"></a>3. Subscribing Nodes</h2></div></div></div>
-<a name="id2538139"></a><p>Before you subscribe a node to a set, be sure that you have
+<a name="id515929"></a><p>Before you subscribe a node to a set, be sure that you have
 <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes running for both the provider and the
 new subscribing node. If you don't have slons running, nothing will
 happen, and you'll beat your head against a wall trying to figure out
@@ -65,7 +65,7 @@ provider node:
 provider node to the new subscriber. If you check the pg_stat_activity
 table on the provider node, you should see a query that is copying the
 table to stdout.</p>
-<p>The table <tt class="envar">sl_subscribe</tt> on both the provider, and the new
+<p>The table <code class="envar">sl_subscribe</code> on both the provider, and the new
 subscriber should contain entries for the new subscription:
 
 </p>
@@ -81,7 +81,7 @@ new subscriber.</p>
 contain any tables, that can lead to a problem that will stop
 replication from proceeding. </p>
 <p> If a particular subscriber is only being fed sequences by one
-of its providers, the query that collects <tt class="command">SYNC</tt>
+of its providers, the query that collects <code class="command">SYNC</code>
 event data will not be constructed correctly, and you will see error
 messages similar to the following:</p>
 <pre class="screen">2005-04-13 07:11:28 PDT ERROR remoteWorkerThread_11: "declare LOG

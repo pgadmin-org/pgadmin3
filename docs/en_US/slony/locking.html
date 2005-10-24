@@ -4,8 +4,8 @@
 <title>10. Locking Issues</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="plainpaths.html" title="9.  Slony-I Path Communications">
 <link rel="next" href="addthings.html" title="11. Adding Things to Replication">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="locking"></a>10. Locking Issues</h2></div></div></div>
-<a name="id2541049"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+<a name="id519093"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
 Multi-Version Concurrency Control (<span class="acronym">MVCC</span>) is that
 this eliminates a whole host of reasons to need to lock database
 objects.  On some other database systems, you need to acquire a table
@@ -30,28 +30,28 @@ modifying <span class="productname">Slony-I</span> configuration can bring back 
 &#8220;<span class="quote">locking irritations.</span>&#8221;  In particular:</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p><a href="stmtsetaddtable.html" title="SET ADD TABLE"> <tt class="command">set add
-table</tt> </a></p>
+<p><a href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add
+table</code> </a></p>
 <p> A momentary table lock must be acquired on the
 &#8220;<span class="quote">origin</span>&#8221; node in order to add the trigger that collects
 updates for that table.  It only needs to be acquired long enough to
 establish the new trigger.</p>
 </li>
 <li>
-<p><a href="stmtmoveset.html" title="MOVE SET"> <tt class="command"> move
-set</tt> </a></p>
+<p><a href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move
+set</code> </a></p>
 <p> When a set origin is shifted from one node to another, locks
 must be acquired on each of the tables on both the old origin and the
 new origin in order to change the triggers on the tables.</p>
 </li>
 <li>
-<p><a href="stmtlockset.html" title="LOCK SET"> <tt class="command"> lock set</tt> </a> </p>
+<p><a href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set</code> </a> </p>
 <p> This operation expressly requests locks on each of the tables in a
 given replication set on the origin node.</p>
 </li>
 <li>
-<p><a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <tt class="command">execute
-script</tt> </a> </p>
+<p><a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute
+script</code> </a> </p>
 <p> This operation runs a set of SQL queries; in order for it to
 work, the <span class="productname">Slony-I</span> triggers must be removed, followed by the query
 (which potentially updates the data) running, followed by triggers
@@ -59,7 +59,7 @@ being restored.  The operation therefore must acquire table locks on
 all replicated tables on each node. </p>
 </li>
 <li>
-<p> During the <tt class="command">COPY_SET</tt> event on a new
+<p> During the <code class="command">COPY_SET</code> event on a new
 subscriber </p>
 <p> In a sense, this is the least provocative scenario, since,
 before the replication set has been populated, it is pretty reasonable
@@ -107,11 +107,11 @@ period where things were running slowly.  </p>
 
 </p>
 <div class="itemizedlist"><ul type="circle">
-<li><p> Modify <tt class="filename">pg_hba.conf</tt> so that only
-the <a href="bestpractices.html#slonyuser"> <tt class="command">slony</tt> user </a>
+<li><p> Modify <code class="filename">pg_hba.conf</code> so that only
+the <a href="bestpractices.html#slonyuser"> <code class="command">slony</code> user </a>
 will have access to the database. </p></li>
 <li>
-<p> Issue a <tt class="command">kill -SIGHUP</tt> to the
+<p> Issue a <code class="command">kill -SIGHUP</code> to the
 <span class="productname">PostgreSQL</span> postmaster.</p>
 <p> This will not kill off existing possibly-long-running queries,
 but will prevent new ones from coming in.  There is an application
@@ -122,15 +122,15 @@ process.</p>
 safe to proceed with the <span class="productname">Slony-I</span> operation. </p></li>
 <li>
 <p> If some old query is lingering around, you may need
-to <tt class="command">kill -SIGQUIT</tt> one of the <span class="productname">PostgreSQL</span> processes.
+to <code class="command">kill -SIGQUIT</code> one of the <span class="productname">PostgreSQL</span> processes.
 This will restart the backend and kill off any lingering queries.  You
 probably need to restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes that
 attach to the node. </p>
 <p> At that point, it will be safe to proceed with the <span class="productname">Slony-I</span>
 operation; there will be no competing processes.</p>
 </li>
-<li><p> Reset <tt class="filename">pg_hba.conf</tt> to allow other
-users in, and <tt class="command">kill -SIGHUP</tt> the postmaster to make
+<li><p> Reset <code class="filename">pg_hba.conf</code> to allow other
+users in, and <code class="command">kill -SIGHUP</code> the postmaster to make
 it reload the security configuration. </p></li>
 </ul></div>
 <p>

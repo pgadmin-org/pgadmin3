@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
@@ -19,8 +19,8 @@
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id573941"></a>
-   <a name="id573951"></a>
+<p>   <a name="id573972"></a>
+   <a name="id573983"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -53,8 +53,8 @@
    special operator class to support indexing of pattern-matching queries.
    See <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below.
   </p>
-<p>   <a name="id574107"></a>
-   <a name="id574117"></a>
+<p>   <a name="id574138"></a>
+   <a name="id574148"></a>
    R-tree indexes are suited for queries on two-dimensional spatial data.
    To create an R-tree index, use a command of the form
 </p>
@@ -84,8 +84,8 @@
    (See <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
    these operators.)
   </p>
-<p>   <a name="id574248"></a>
-   <a name="id574258"></a>
+<p>   <a name="id574279"></a>
+   <a name="id574289"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
@@ -94,16 +94,6 @@
 </p>
 <pre class="synopsis">CREATE INDEX <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> USING hash (<em class="replaceable"><code>column</code></em>);</pre>
 <p>
-   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>     Testing has shown <span class="productname">PostgreSQL</span>'s hash
-     indexes to perform no better than B-tree indexes, and the
-     index size and build time for hash indexes is much worse. For
-     these reasons, hash index use is presently discouraged.
-    </p>
-</div>
-<p>  
   </p>
 <p>   GiST indexes are not a single kind of index, but rather an infrastructure
    within which many different indexing strategies can be implemented.
@@ -114,16 +104,27 @@
    equivalent to the R-tree operator classes, and many other GiST operator
    classes are available in the <code class="literal">contrib</code> collection or as separate
    projects.  For more information see <a href="gist.html" title="Chapter 49. GiST Indexes">Chapter 49, <i>GiST Indexes</i></a>.
-   </p>
+  </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>     It is likely that the R-tree index type will be retired in a future
-     release, as GiST indexes appear to do everything R-trees can do with
-     similar or better performance.  Users are encouraged to migrate
-     applications that use R-tree indexes to GiST indexes.
-    </p>
+<p>    Testing has shown <span class="productname">PostgreSQL</span>'s hash
+    indexes to perform no better than B-tree indexes, and the
+    index size and build time for hash indexes is much worse.
+    Furthermore, hash index operations are not presently WAL-logged,
+    so hash indexes may need to be rebuilt with <code class="command">REINDEX</code>
+    after a database crash.
+    For these reasons, hash index use is presently discouraged.
+   </p>
+<p>    Similarly, R-tree indexes do not seem to have any performance
+    advantages compared to the equivalent operations of GiST indexes.
+    Like hash indexes, they are not WAL-logged and may need
+    <code class="command">REINDEX</code>ing after a database crash.
+   </p>
+<p>    While the problems with hash indexes may be fixed eventually,
+    it is likely that the R-tree index type will be retired in a future
+    release.  Users are encouraged to migrate applications that use R-tree
+    indexes to GiST indexes.
+   </p>
 </div>
-<p>  
-  </p>
 </div></body>
 </html>

@@ -7,8 +7,8 @@
         </title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
 <link rel="prev" href="table.sl-setsync.html" title="1.13.          Table:
          
@@ -23,24 +23,21 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="table.sl-subscribe"></a>1.14.          Table:
          
-         <tt class="structname">sl_subscribe</tt>
+         <code class="structname">sl_subscribe</code>
         </h2></div></div></div>
 <p>          Holds a list of subscriptions on sets
         </p>
 <p>          </p>
 <div class="variablelist">
-<p class="title"><b>              Structure of <tt class="structname">sl_subscribe</tt>
+<p class="title"><b>              Structure of <code class="structname">sl_subscribe</code>
             </b></p>
 <dl>
-<dt><span class="term"><tt class="structfield">sub_set</tt></span></dt>
+<dt><span class="term"><code class="structfield">sub_set</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
-                <tt class="literal">PRIMARY KEY</tt>
-
-
-
+                <code class="literal">PRIMARY KEY</code>
 
 
 
@@ -56,16 +53,19 @@
 
 
 
-                <tt class="literal">REFERENCES</tt> <a href="table.sl-set.html">sl_set</a>&gt;
+
+
+
+                <code class="literal">REFERENCES</code> <a href="table.sl-set.html">sl_set</a>&gt;
 
 
               </p>
 <p>                ID # (from sl_set) of the set being subscribed to
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">sub_provider</tt></span></dt>
+<dt><span class="term"><code class="structfield">sub_provider</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
 
@@ -78,22 +78,19 @@
 
 
 
-                <tt class="literal">REFERENCES</tt> <a href="table.sl-path.html">sl_path</a>&gt;
+                <code class="literal">REFERENCES</code> <a href="table.sl-path.html">sl_path</a>&gt;
 
 
               </p>
 <p>                ID# (from sl_node) of the node providing data
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">sub_receiver</tt></span></dt>
+<dt><span class="term"><code class="structfield">sub_receiver</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
-                <tt class="literal">PRIMARY KEY</tt>
-
-
-
+                <code class="literal">PRIMARY KEY</code>
 
 
 
@@ -109,16 +106,19 @@
 
 
 
-                <tt class="literal">REFERENCES</tt> <a href="table.sl-path.html">sl_path</a>&gt;
+
+
+
+                <code class="literal">REFERENCES</code> <a href="table.sl-path.html">sl_path</a>&gt;
 
 
               </p>
 <p>                ID# (from sl_node) of the node receiving data from the provider
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">sub_forward</tt></span></dt>
+<dt><span class="term"><code class="structfield">sub_forward</code></span></dt>
 <dd>
-<p>                <tt class="type">boolean</tt>
+<p>                <code class="type">boolean</code>
 
 
 
@@ -130,9 +130,9 @@
 <p>                Does this provider keep data in sl_log_1/sl_log_2 to allow it to be a provider for other nodes?
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">sub_active</tt></span></dt>
+<dt><span class="term"><code class="structfield">sub_active</code></span></dt>
 <dd>
-<p>                <tt class="type">boolean</tt>
+<p>                <code class="type">boolean</code>
 
 
 

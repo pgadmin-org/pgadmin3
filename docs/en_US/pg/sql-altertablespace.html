@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-altertable.html" title="ALTER TABLE">
 <link rel="next" href="sql-altertrigger.html" title="ALTER TRIGGER">
@@ -16,19 +16,24 @@
 <h2>Name</h2>
 <p>ALTER TABLESPACE &#8212; change the definition of a tablespace</p>
 </div>
-<a name="id691208"></a><div class="refsynopsisdiv">
+<a name="id692406"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER TABLESPACE <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>newname</code></em>
 ALTER TABLESPACE <em class="replaceable"><code>name</code></em> OWNER TO <em class="replaceable"><code>newowner</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691242"></a><h2>Description</h2>
+<a name="id692440"></a><h2>Description</h2>
 <p>   <code class="command">ALTER TABLESPACE</code> changes the definition of
    a tablespace.
   </p>
+<p>   You must own the tablespace to use <code class="command">ALTER TABLESPACE</code>.
+   To alter the owner, you must also be a direct or indirect member of the new
+   owning role.
+   (Note that superusers have these privileges automatically.)
+  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691256"></a><h2>Parameters</h2>
+<a name="id692467"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of an existing tablespace.
@@ -40,12 +45,11 @@ ALTER TABLESPACE <em class="replaceable"><code>name</code></em> OWNER TO <em cla
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>newowner</code></em></span></dt>
 <dd><p>      The new owner of the tablespace.
-      You must be a superuser to change the owner of a tablespace.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691306"></a><h2>Examples</h2>
+<a name="id692516"></a><h2>Examples</h2>
 <p>   Rename tablespace <code class="literal">index_space</code> to <code class="literal">fast_raid</code>:
 </p>
 <pre class="programlisting">ALTER TABLESPACE index_space RENAME TO fast_raid;</pre>
@@ -58,13 +62,13 @@ ALTER TABLESPACE <em class="replaceable"><code>name</code></em> OWNER TO <em cla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691350"></a><h2>Compatibility</h2>
+<a name="id692560"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">ALTER TABLESPACE</code> statement in
    the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691365"></a><h2>See Also</h2>
+<a name="id692574"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createtablespace.html">CREATE TABLESPACE</a>, <a href="sql-droptablespace.html">DROP TABLESPACE</a></span>
 </div>
 </div></body>

@@ -4,8 +4,8 @@
 <title>SET ADD TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtmergeset.html" title="MERGE
      SET">
@@ -20,10 +20,10 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">SET ADD TABLE (options);</tt></p></div>
+<div class="cmdsynopsis"><p><code class="command">SET ADD TABLE (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2554927"></a><h2>Description</h2>
+<a name="id534288"></a><h2>Description</h2>
 <p> Add an existing user table to a replication set. The set
     cannot currently be subscribed by any other node - that
     functionality is supported by the <a href="stmtmergeset.html" title="MERGE
@@ -33,12 +33,12 @@
      
      </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal"> SET ID = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> SET ID = ival </code></span></dt>
 <dd><p> ID of the set to which the table is to be added.  </p></dd>
-<dt><span class="term"><tt class="literal"> ORIGIN = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
 <dd><p> Origin node for the set.  A future version of <span class="application">slonik</span>
 	 might figure out this information by itself.</p></dd>
-<dt><span class="term"><tt class="literal"> ID = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
 <dd><p> Unique ID of the table. These ID's are not
 	 only used to uniquely identify the individual table within the
 	 replication system. The numeric value of this ID also
@@ -47,18 +47,18 @@
 	 to make sure the <span class="application">slonik</span> command
 	 scripts do not deadlock at any critical
 	 moment.</p></dd>
-<dt><span class="term"><tt class="literal"> FULLY QUALIFIED NAME = 'string' </tt></span></dt>
+<dt><span class="term"><code class="literal"> FULLY QUALIFIED NAME = 'string' </code></span></dt>
 <dd><p> The full table name as described in
 	 <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>.</p></dd>
-<dt><span class="term"><tt class="literal"> KEY = { 'string' | SERIAL }
-	</tt></span></dt>
+<dt><span class="term"><code class="literal"> KEY = { 'string' | SERIAL }
+	</code></span></dt>
 <dd><p>	 <span class="emphasis"><em>(Optional)</em></span> The index name that covers the
 	 unique and not null column set to be used as the row identifier
 	 for replication purposes. Or the keyword SERIAL to use the
 	 special column added with a previous <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> command. Default
 	 is to use the table's primary key.  The index name is <span class="emphasis"><em>	  not </em></span> fully qualified; you must omit the
 	 namespace.</p></dd>
-<dt><span class="term"><tt class="literal"> COMMENT = 'string' </tt></span></dt>
+<dt><span class="term"><code class="literal"> COMMENT = 'string' </code></span></dt>
 <dd><p> A descriptive text added to the table entry.  </p></dd>
 </dl></div>
 <p>
@@ -66,7 +66,7 @@
 <p> This uses <a href="function.setaddtable-integer-integer-text-name-text.html">schemadocsetaddtable( integer, integer, text, name, text )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2555069"></a><h2>Example</h2>
+<a name="id534444"></a><h2>Example</h2>
 <pre class="programlisting">SET ADD TABLE (
     SET ID = 1,
     ORIGIN = 1,

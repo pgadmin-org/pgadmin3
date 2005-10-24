@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-declarations.html" title="36.4. Declarations">
 <link rel="next" href="plpgsql-statements.html" title="36.6. Basic Statements">
@@ -55,16 +55,17 @@ $$ LANGUAGE plpgsql;</pre>
 $$ LANGUAGE plpgsql;</pre>
 <p>
     </p>
-<p>     In the case of <code class="function">logfunc1</code>, the 
-     <span class="productname">PostgreSQL</span> main parser knows when 
-     preparing the plan for the <code class="command">INSERT</code>, that the string 
-     <code class="literal">'now'</code> should be interpreted as 
-     <code class="type">timestamp</code> because the target column of <code class="classname">logtable</code>
-     is of that type. Thus, it will make a constant from it at this
-     time and this constant value is then used in all invocations of 
-     <code class="function">logfunc1</code> during the lifetime of the
-     session. Needless to say that this isn't what the
-     programmer wanted.
+<p>     In the case of <code class="function">logfunc1</code>, the
+     <span class="productname">PostgreSQL</span> main parser knows when
+     preparing the plan for the <code class="command">INSERT</code> that the
+     string <code class="literal">'now'</code> should be interpreted as
+     <code class="type">timestamp</code> because the target column of
+     <code class="classname">logtable</code> is of that type. Thus,
+     <code class="literal">'now'</code> will be converted to a constant when the
+     <code class="command">INSERT</code> is planned, and then used in all
+     invocations of <code class="function">logfunc1</code> during the lifetime
+     of the session. Needless to say, this isn't what the programmer
+     wanted.
     </p>
 <p>     In the case of <code class="function">logfunc2</code>, the 
      <span class="productname">PostgreSQL</span> main parser does not know
@@ -75,7 +76,7 @@ $$ LANGUAGE plpgsql;</pre>
      <span class="application">PL/pgSQL</span> interpreter casts this
      string to the <code class="type">timestamp</code> type by calling the
      <code class="function">text_out</code> and <code class="function">timestamp_in</code>
-     functions for the conversion.  So, the computed time stamp is updated
+     functions for the conversion.  So, the computed timestamp is updated
      on each execution as the programmer expects.
     </p>
 <p>     The mutable nature of record variables presents a problem in this

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterdatabase.html" title="ALTER DATABASE">
 <link rel="next" href="sql-alterfunction.html" title="ALTER FUNCTION">
@@ -18,7 +18,7 @@
    &#8212;    change the definition of a domain
   </p>
 </div>
-<a name="id685846"></a><div class="refsynopsisdiv">
+<a name="id686979"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER DOMAIN <em class="replaceable"><code>name</code></em>
     { SET DEFAULT <em class="replaceable"><code>expression</code></em> | DROP DEFAULT }
@@ -35,7 +35,7 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
   </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id685941"></a><h2>Description</h2>
+<a name="id687073"></a><h2>Description</h2>
 <p>   <code class="command">ALTER DOMAIN</code> changes the definition of an existing domain.
    There are several sub-forms:
   </p>
@@ -67,14 +67,18 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
       associated with the domain are moved into the new schema as well.
      </p></dd>
 </dl></div>
-<p>   You must own the domain to use <code class="command">ALTER DOMAIN</code>; except for
-   <code class="command">ALTER DOMAIN OWNER</code>, which may only be executed by a superuser.
-   To change a domain's schema, you must also have <code class="literal">CREATE</code>
-   privilege on the new schema.
+<p>   You must own the domain to use <code class="command">ALTER DOMAIN</code>.
+   To change the schema of a domain, you must also have
+   <code class="literal">CREATE</code> privilege on the new schema.
+   To alter the owner, you must also be a direct or indirect member of the new
+   owning role, and that role must have <code class="literal">CREATE</code> privilege on
+   the domain's schema.  (These restrictions enforce that altering the owner
+   doesn't do anything you couldn't do by dropping and recreating the domain.
+   However, a superuser can alter ownership of any domain anyway.)
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686072"></a><h2>Parameters</h2>
+<a name="id687210"></a><h2>Parameters</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
@@ -105,7 +109,7 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686170"></a><h2>Examples</h2>
+<a name="id687307"></a><h2>Examples</h2>
 <p>   To add a <code class="literal">NOT NULL</code> constraint to a domain:
    </p>
 <pre class="programlisting">ALTER DOMAIN zipcode SET NOT NULL;

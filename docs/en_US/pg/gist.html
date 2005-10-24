@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="index-cost-estimation.html" title="48.6. Index Cost Estimation Functions">
-<link rel="next" href="extensibility.html" title="49.2. Extensibility">
+<link rel="next" href="gist-extensibility.html" title="49.2. Extensibility">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="gist">
 <div class="titlepage"><div><div><h2 class="title">
@@ -16,17 +16,18 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="gist.html#intro">49.1. Introduction</a></span></dt>
-<dt><span class="sect1"><a href="extensibility.html">49.2. Extensibility</a></span></dt>
-<dt><span class="sect1"><a href="implementation.html">49.3. Implementation</a></span></dt>
-<dt><span class="sect1"><a href="examples.html">49.4. Examples</a></span></dt>
+<dt><span class="sect1"><a href="gist.html#gist-intro">49.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="gist-extensibility.html">49.2. Extensibility</a></span></dt>
+<dt><span class="sect1"><a href="gist-implementation.html">49.3. Implementation</a></span></dt>
+<dt><span class="sect1"><a href="gist-examples.html">49.4. Examples</a></span></dt>
+<dt><span class="sect1"><a href="gist-recovery.html">49.5. Crash Recovery</a></span></dt>
 </dl>
 </div>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="intro"></a>49.1. Introduction</h2></div></div></div>
-<p>   <a name="id788616"></a>
-   <a name="id788626"></a>
+<a name="gist-intro"></a>49.1. Introduction</h2></div></div></div>
+<p>   <a name="id790070"></a>
+   <a name="id790080"></a>
    <span class="acronym">GiST</span> stands for Generalized Search Tree.  It is a
    balanced, tree-structured access method, that acts as a base template in
    which to implement arbitrary indexing schemes. B+-trees, R-trees and many
@@ -39,7 +40,7 @@
 <p>    Some of the information here is derived from the University of California at
     Berkeley's GiST Indexing Project
     <a href="http://gist.cs.berkeley.edu/" target="_top">web site</a> and 
-    <a href="http://citeseer.nj.nec.com/448594.html" target="_top">    Marcel Kornacker's thesis, Access Methods for Next-Generation Database Systems</a>.
+    <a href="http://www.sai.msu.su/~megera/postgres/gist/papers/concurrency/access-methods-for-next-generation.pdf.gz" target="_top">    Marcel Kornacker's thesis, Access Methods for Next-Generation Database Systems</a>.
     The <span class="acronym">GiST</span>
     implementation in <span class="productname">PostgreSQL</span> is primarily
     maintained by Teodor Sigaev and Oleg Bartunov, and there is more

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="charset.html" title="Chapter 21. Localization">
 <link rel="prev" href="charset.html" title="Chapter 21. Localization">
 <link rel="next" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="multibyte"></a>21.2. Character Set Support</h2></div></div></div>
-<a name="id608963"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
+<a name="id609617"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
    allows you to store text in a variety of character sets, including
    single-byte character sets such as the ISO 8859 series and
    multiple-byte character sets such as <span class="acronym">EUC</span> (Extended Unix
@@ -232,8 +232,8 @@
 </tr>
 <tr>
 <td><code class="literal">SQL_ASCII</code></td>
-<td><span class="acronym">ASCII</span></td>
-<td>English</td>
+<td>unspecified (see text)</td>
+<td><span class="emphasis"><em>any</em></span></td>
 <td>1</td>
 <td> </td>
 </tr>
@@ -250,7 +250,7 @@
 <td><code class="literal">UTF8</code></td>
 <td>Unicode, 8-bit</td>
 <td><span class="emphasis"><em>all</em></span></td>
-<td>1-3</td>
+<td>1-4</td>
 <td><code class="literal">Unicode</code></td>
 </tr>
 <tr>
@@ -312,10 +312,23 @@
       JDBC driver does not support <code class="literal">MULE_INTERNAL</code>, <code class="literal">LATIN6</code>,
       <code class="literal">LATIN8</code>, and <code class="literal">LATIN10</code>.
      </p>
+<p>      The <code class="literal">SQL_ASCII</code> setting behaves considerably differently
+      from the other settings.  When the server character set is
+      <code class="literal">SQL_ASCII</code>, the server interprets byte values 0-127
+      according to the ASCII standard, while byte values 128-255 are taken
+      as uninterpreted characters.  No encoding conversion will be done when
+      the setting is <code class="literal">SQL_ASCII</code>.  Thus, this setting is not so
+      much a declaration that a specific encoding is in use, as a declaration
+      of ignorance about the encoding.  In most cases, if you are
+      working with any non-ASCII data, it is unwise to use the
+      <code class="literal">SQL_ASCII</code> setting, because
+      <span class="productname">PostgreSQL</span> will be unable to help you by
+      converting or validating non-ASCII characters.
+     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id609900"></a>21.2.2. Setting the Character Set</h3></div></div></div>
+<a name="id610601"></a>21.2.2. Setting the Character Set</h3></div></div></div>
 <p>     <code class="command">initdb</code> defines the default character set
      for a <span class="productname">PostgreSQL</span> cluster. For example,
 
@@ -391,7 +404,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id610109"></a>21.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
+<a name="id610810"></a>21.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
 <p>     <span class="productname">PostgreSQL</span> supports automatic
      character set conversion between server and client for certain
      character sets. The conversion information is stored in the
@@ -616,9 +629,7 @@
 <tr>
 <td><code class="literal">SQL_ASCII</code></td>
 <td>
-<span class="emphasis"><em>SQL_ASCII</em></span>,
-          <code class="literal">MULE_INTERNAL</code>,
-          <code class="literal">UTF8</code>
+<span class="emphasis"><em>any (no conversion will be performed)</em></span>
          </td>
 </tr>
 <tr>
@@ -695,7 +706,7 @@
 </tbody>
 </table>
 </div>
-<p>     To enable the automatic character set conversion, you have to
+<p>     To enable automatic character set conversion, you have to
      tell <span class="productname">PostgreSQL</span> the character set
      (encoding) you would like to use in the client. There are several
      ways to accomplish this:
@@ -794,10 +805,15 @@
      hexadecimal byte values in parentheses, e.g.,
      <code class="literal">(826C)</code>.
     </p>
+<p>     If the client character set is defined as <code class="literal">SQL_ASCII</code>,
+     encoding conversion is disabled, regardless of the server's character
+     set.  Just as for the server, use of <code class="literal">SQL_ASCII</code> is unwise
+     unless you are working with all-ASCII data.
+    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id611360"></a>21.2.4. Further Reading</h3></div></div></div>
+<a name="id612069"></a>21.2.4. Further Reading</h3></div></div></div>
 <p>     These are good sources to start learning about various kinds of encoding
      systems.
 

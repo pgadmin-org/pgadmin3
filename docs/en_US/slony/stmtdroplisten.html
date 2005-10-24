@@ -4,8 +4,8 @@
 <title>DROP LISTEN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtstorelisten.html" title="STORE LISTEN">
 <link rel="next" href="stmttableaddkey.html" title="TABLE ADD KEY">
@@ -20,25 +20,25 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">DROP LISTEN (options);</tt></p></div>
+<div class="cmdsynopsis"><p><code class="command">DROP LISTEN (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2554362"></a><h2>Description</h2>
+<a name="id533664"></a><h2>Description</h2>
 <p> Remove a &#8220;<span class="quote">listen</span>&#8221; configuration entry. </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal"> ORIGIN  = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> ORIGIN  = ival </code></span></dt>
 <dd><p> Node ID of the event origin the receiver is listening for.</p></dd>
-<dt><span class="term"><tt class="literal"> PROVIDER = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> PROVIDER = ival </code></span></dt>
 <dd><p> Node ID of the node from which the receiver gets
      events that come from the origin.  If not specified, default is
      the origin.</p></dd>
-<dt><span class="term"><tt class="literal"> RECEIVER = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> RECEIVER = ival </code></span></dt>
 <dd><p> The ID of the node receiving the events.</p></dd>
 </dl></div>
 <p> This uses <a href="function.droplisten-integer-integer-integer.html">schemadocdroplisten( integer, integer, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2554418"></a><h2>Example</h2>
+<a name="id533728"></a><h2>Example</h2>
 <pre class="programlisting">     DROP LISTEN ( ORIGIN = 1, RECEIVER = 2, PROVIDER = 3 );
     </pre>
 </div>

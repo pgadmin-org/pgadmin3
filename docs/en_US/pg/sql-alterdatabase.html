@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterconversion.html" title="ALTER CONVERSION">
 <link rel="next" href="sql-alterdomain.html" title="ALTER DOMAIN">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>ALTER DATABASE &#8212; change a database</p>
 </div>
-<a name="id685443"></a><div class="refsynopsisdiv">
+<a name="id686566"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER DATABASE <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
@@ -32,7 +32,7 @@ ALTER DATABASE <em class="replaceable"><code>name</code></em> RENAME TO <em clas
 ALTER DATABASE <em class="replaceable"><code>name</code></em> OWNER TO <em class="replaceable"><code>new_owner</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id685535"></a><h2>Description</h2>
+<a name="id686658"></a><h2>Description</h2>
 <p>   <code class="command">ALTER DATABASE</code> changes the attributes
    of a database.
   </p>
@@ -57,12 +57,15 @@ ALTER DATABASE <em class="replaceable"><code>name</code></em> OWNER TO <em class
    be renamed.  (Connect to a different database if you need to do
    that.)
   </p>
-<p>   The fifth form changes the owner of the database.  Only a superuser
-   can change the database's owner.
+<p>   The fifth form changes the owner of the database.
+   To alter the owner, you must own the database and also be a direct or
+   indirect member of the new owning role, and you must have the
+   <code class="literal">CREATEDB</code> privilege.
+   (Note that superusers have all these privileges automatically.)
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id685604"></a><h2>Parameters</h2>
+<a name="id686736"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the database whose attributes are to be altered.
@@ -97,7 +100,7 @@ ALTER DATABASE <em class="replaceable"><code>name</code></em> OWNER TO <em class
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id685720"></a><h2>Notes</h2>
+<a name="id686853"></a><h2>Notes</h2>
 <p>   It is also possible to tie a session default to a specific user
    rather than to a database; see
    <a href="sql-alteruser.html">ALTER USER</a>.
@@ -106,7 +109,7 @@ ALTER DATABASE <em class="replaceable"><code>name</code></em> OWNER TO <em class
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id685741"></a><h2>Examples</h2>
+<a name="id686874"></a><h2>Examples</h2>
 <p>   To disable index scans by default in the database
    <code class="literal">test</code>:
 
@@ -116,13 +119,13 @@ ALTER DATABASE <em class="replaceable"><code>name</code></em> OWNER TO <em class
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id685762"></a><h2>Compatibility</h2>
+<a name="id686894"></a><h2>Compatibility</h2>
 <p>   The <code class="command">ALTER DATABASE</code> statement is a
    <span class="productname">PostgreSQL</span> extension.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id685782"></a><h2>See Also</h2>
+<a name="id686915"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createdatabase.html">CREATE DATABASE</a>, <a href="sql-dropdatabase.html">DROP DATABASE</a>, <a href="sql-set.html">SET</a></span>
 </div>
 </div></body>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-altertrigger.html" title="ALTER TRIGGER">
 <link rel="next" href="sql-alteruser.html" title="ALTER USER">
@@ -18,21 +18,30 @@
    &#8212;    change the definition of a type
   </p>
 </div>
-<a name="id691636"></a><div class="refsynopsisdiv">
+<a name="id692846"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER TYPE <em class="replaceable"><code>name</code></em> OWNER TO <em class="replaceable"><code>new_owner</code></em> 
 ALTER TYPE <em class="replaceable"><code>name</code></em> SET SCHEMA <em class="replaceable"><code>new_schema</code></em>
   </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691681"></a><h2>Description</h2>
+<a name="id692891"></a><h2>Description</h2>
 <p>   <code class="command">ALTER TYPE</code> changes the definition of an existing type.
    The only currently available capabilities are changing the owner and schema
    of a type.
   </p>
+<p>   You must own the type to use <code class="command">ALTER TYPE</code>.
+   To change the schema of a type, you must also have
+   <code class="literal">CREATE</code> privilege on the new schema.
+   To alter the owner, you must also be a direct or indirect member of the new
+   owning role, and that role must have <code class="literal">CREATE</code> privilege on
+   the type's schema.  (These restrictions enforce that altering the owner
+   doesn't do anything you couldn't do by dropping and recreating the type.
+   However, a superuser can alter ownership of any type anyway.)
+  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691696"></a><h2>Parameters</h2>
+<a name="id692936"></a><h2>Parameters</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
@@ -41,19 +50,16 @@ ALTER TYPE <em class="replaceable"><code>name</code></em> SET SCHEMA <em class="
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>new_owner</code></em></span></dt>
 <dd><p>        The user name of the new owner of the type.
-        You must be a superuser to change a type's owner.
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>new_schema</code></em></span></dt>
-<dd><p>        The new schema for the type.  To move a
-        type to a new schema, you must be the owner of the
-        type and have <code class="literal">CREATE</code> privilege on the new schema.
+<dd><p>        The new schema for the type.
        </p></dd>
 </dl></div>
 <p>
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691752"></a><h2>Examples</h2>
+<a name="id692983"></a><h2>Examples</h2>
 <p> 
    To change the owner of the user-defined type <code class="literal">email</code>
    to <code class="literal">joe</code>:
@@ -71,7 +77,7 @@ ALTER TYPE <em class="replaceable"><code>name</code></em> SET SCHEMA <em class="
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691803"></a><h2>Compatibility</h2>
+<a name="id693034"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">ALTER TYPE</code> statement in the SQL
    standard.
   </p>

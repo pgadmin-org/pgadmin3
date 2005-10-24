@@ -4,8 +4,8 @@
 <title>FAILOVER</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtmoveset.html" title="MOVE SET">
 <link rel="next" href="stmtddlscript.html" title="EXECUTE SCRIPT">
@@ -19,11 +19,11 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">FAILOVER (options);</tt></p></div>
+<div class="cmdsynopsis"><p><code class="command">FAILOVER (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556480"></a><h2>Description</h2>
-<p>     The <tt class="command">FAILOVER</tt> command causes the backup node to take over all sets
+<a name="id535986"></a><h2>Description</h2>
+<p>     The <code class="command">FAILOVER</code> command causes the backup node to take over all sets
      that currently originate on the failed
      node. <span class="application">slonik</span> will contact all other
      direct subscribers of the failed node to determine which node has
@@ -48,16 +48,16 @@
     </p>
 </div>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal"> ID = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
 <dd><p> ID of the failed node</p></dd>
-<dt><span class="term"><tt class="literal"> BACKUP NODE = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> BACKUP NODE = ival </code></span></dt>
 <dd><p> Node ID of the node that will take over all
       sets originating on the failed node</p></dd>
 </dl></div>
 <p> This uses <a href="function.failednode-integer-integer.html">schemadocfailednode( integer, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2556568"></a><h2>Example</h2>
+<a name="id536077"></a><h2>Example</h2>
 <pre class="programlisting">FAILOVER (
    ID = 1,
    BACKUP NODE = 2

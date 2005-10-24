@@ -7,8 +7,8 @@
         </title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
 <link rel="prev" href="table.sl-node.html" title="1.7.          Table:
          
@@ -23,25 +23,25 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="table.sl-path"></a>1.8.          Table:
          
-         <tt class="structname">sl_path</tt>
+         <code class="structname">sl_path</code>
         </h2></div></div></div>
 <p>          Holds connection information for the paths between nodes, and the synchronisation delay
         </p>
 <p>          </p>
 <div class="variablelist">
-<p class="title"><b>              Structure of <tt class="structname">sl_path</tt>
+<p class="title"><b>              Structure of <code class="structname">sl_path</code>
             </b></p>
 <dl>
-<dt><span class="term"><tt class="structfield">pa_server</tt></span></dt>
+<dt><span class="term"><code class="structfield">pa_server</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
 
 
 
 
-                <tt class="literal">PRIMARY KEY</tt>
+                <code class="literal">PRIMARY KEY</code>
 
 
 
@@ -54,7 +54,7 @@
 
 
 
-                <tt class="literal">REFERENCES</tt> <a href="table.sl-node.html">sl_node</a>&gt;
+                <code class="literal">REFERENCES</code> <a href="table.sl-node.html">sl_node</a>&gt;
 
 
 
@@ -63,16 +63,16 @@
 <p>                The Node ID # (from sl_node.no_id) of the data source
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">pa_client</tt></span></dt>
+<dt><span class="term"><code class="structfield">pa_client</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
 
 
 
 
-                <tt class="literal">PRIMARY KEY</tt>
+                <code class="literal">PRIMARY KEY</code>
 
 
 
@@ -85,7 +85,7 @@
 
 
 
-                <tt class="literal">REFERENCES</tt> <a href="table.sl-node.html">sl_node</a>&gt;
+                <code class="literal">REFERENCES</code> <a href="table.sl-node.html">sl_node</a>&gt;
 
 
 
@@ -94,13 +94,13 @@
 <p>                The Node ID # (from sl_node.no_id) of the data target
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">pa_conninfo</tt></span></dt>
+<dt><span class="term"><code class="structfield">pa_conninfo</code></span></dt>
 <dd>
-<p>                <tt class="type">text</tt>
+<p>                <code class="type">text</code>
 
 
 
-                <tt class="literal">NOT NULL</tt>
+                <code class="literal">NOT NULL</code>
 
 
 
@@ -110,9 +110,9 @@
 <p>                The PostgreSQL connection string used to connect to the source node.
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">pa_connretry</tt></span></dt>
+<dt><span class="term"><code class="structfield">pa_connretry</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
 

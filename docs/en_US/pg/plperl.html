@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="pltcl-procnames.html" title="37.8. Tcl Procedure Names">
 <link rel="next" href="plperl-database.html" title="38.2. Database Access from PL/Perl">
@@ -25,7 +25,7 @@
 <dt><span class="sect1"><a href="plperl-missing.html">38.7. Limitations and Missing Features</a></span></dt>
 </dl>
 </div>
-<a name="id675691"></a><a name="id675700"></a><p>   PL/Perl is a loadable procedural language that enables you to write
+<a name="id676760"></a><a name="id676770"></a><p>   PL/Perl is a loadable procedural language that enables you to write
    <span class="productname">PostgreSQL</span> functions in the 
    <a href="http://www.perl.com" target="_top">Perl programming language</a>.
   </p>
@@ -57,19 +57,30 @@
     # PL/Perl function body
 $$ LANGUAGE plperl;</pre>
 <p>
-   The body of the function is ordinary Perl code. A PL/Perl function must
+   The body of the function is ordinary Perl code. In fact, the PL/Perl
+   glue code wraps it inside a Perl subroutine. A PL/Perl function must
    always return a scalar value.  You can return more complex structures
    (arrays, records, and sets) by returning a reference, as discussed below.
    Never return a list.
   </p>
-<p>    The syntax of the <code class="command">CREATE FUNCTION</code> command requires
-    the function body to be written as a string constant.  It is usually
-    most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) for the string constant.
-    If you choose to use regular single-quoted string constant syntax,
-    you must escape single quote marks (<code class="literal">'</code>) and backslashes
-    (<code class="literal">\</code>) used in the body of the function, typically by
-    doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    The use of named nested subroutines is dangerous in Perl, especially if
+    they refer to lexical variables in the enclosing scope. Because a PL/Perl
+    function is wrapped in a subroutine, any named subroutine you create will
+    be nested. In general, it is far safer to create anonymous subroutines
+    which you call via a coderef. See the <code class="literal">perldiag</code>
+    man page for more details.
    </p>
+</div>
+<p>   The syntax of the <code class="command">CREATE FUNCTION</code> command requires
+   the function body to be written as a string constant.  It is usually
+   most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) for the string constant.
+   If you choose to use regular single-quoted string constant syntax,
+   you must escape single quote marks (<code class="literal">'</code>) and backslashes
+   (<code class="literal">\</code>) used in the body of the function, typically by
+   doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
+  </p>
 <p>   Arguments and results are handled as in any other Perl subroutine:
    arguments are passed in <code class="varname">@_</code>, and a result value
    is returned with <code class="literal">return</code> or as the last expression
@@ -85,7 +96,7 @@ $$ LANGUAGE plperl;</pre>
 $$ LANGUAGE plperl;</pre>
 <p>
   </p>
-<p>   If an SQL null value<a name="id675893"></a> is passed to a function,
+<p>   If an SQL null value<a name="id676980"></a> is passed to a function,
    the argument value will appear as &#8220;<span class="quote">undefined</span>&#8221; in Perl.  The
    above function definition will not behave very nicely with null
    inputs (in fact, it will act as though they are zeroes).  We could
@@ -100,14 +111,14 @@ $$ LANGUAGE plperl;</pre>
 
 </p>
 <pre class="programlisting">CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS $$
-    my ($a,$b) = @_;
-    if (! defined $a) {
-        if (! defined $b) { return undef; }
-        return $b;
+    my ($x,$y) = @_;
+    if (! defined $x) {
+        if (! defined $y) { return undef; }
+        return $y;
     }
-    if (! defined $b) { return $a; }
-    if ($a &gt; $b) { return $a; }
-    return $b;
+    if (! defined $y) { return $x; }
+    if ($x &gt; $y) { return $x; }
+    return $y;
 $$ LANGUAGE plperl;</pre>
 <p>
    As shown above, to return an SQL null value from a PL/Perl

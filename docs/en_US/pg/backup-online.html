@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File system level backup">
 <link rel="next" href="migration.html" title="23.4. Migration Between Releases">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="backup-online"></a>23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
-<a name="id614606"></a><a name="id614616"></a><a name="id614626"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id615382"></a><a name="id615392"></a><a name="id615402"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -250,6 +250,13 @@
 </ol></div>
 <p>
    </p>
+<p>    Some versions of GNU <span class="application">tar</span> consider it an error if a file
+    is changed while <span class="application">tar</span> is copying it.  This case is normal,
+    and not an error, when taking a base backup of an active database.
+    Since ignoring all errors from <span class="application">tar</span> would be unwise,
+    you should either manually inspect <span class="application">tar</span>'s messages or
+    else use a different backup tool that does not complain about this case.
+   </p>
 <p>    It is not necessary to be very concerned about the amount of time elapsed
     between <code class="function">pg_start_backup</code> and the start of the actual backup,
     nor between the end of the backup and <code class="function">pg_stop_backup</code>; a
@@ -289,7 +296,7 @@
     segments with names numerically less are no longer needed to recover
     the file system backup and may be deleted. However, you should
     consider keeping several backup sets to be absolutely certain that
-    you are can recover your data. Keep in mind that only completed WAL
+    you can recover your data. Keep in mind that only completed WAL
     segment files are archived, so there will be delay between running
     <code class="function">pg_stop_backup</code> and the archiving of all WAL segment
     files needed to make the file system backup consistent.
@@ -533,7 +540,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id616107"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id616926"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -619,13 +626,21 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 </ul></div>
 <p>
    </p>
-<p>    It should also be noted that the present <span class="acronym">WAL</span>
-    format is extremely bulky since it includes many disk page
-    snapshots.  This is appropriate for crash recovery purposes,
-    since we may need to fix partially-written disk pages.  It is not
-    necessary to store so many page copies for PITR operations, however.
+<p>    It should also be noted that the default <span class="acronym">WAL</span>
+    format is fairly bulky since it includes many disk page snapshots.
+    These page snapshots are designed to support crash recovery,
+    since we may need to fix partially-written disk pages.  Depending
+    on your system hardware and software, the risk of partial writes may
+    be small enough to ignore, in which case you can significantly reduce
+    the total volume of archived logs by turning off page snapshots 
+    using the <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> parameter.
+    (Read the notes and warnings in 
+    <a href="reliability.html" title="Chapter 26. Reliability">Chapter 26, <i>Reliability</i></a> before you do so.)
+    Turning off page snapshots does not prevent use of the logs for PITR
+    operations.
     An area for future development is to compress archived WAL data by
-    removing unnecessary page copies.  In the meantime, administrators
+    removing unnecessary page copies even when <code class="varname">full_page_writes</code>
+    is on.  In the meantime, administrators
     may wish to reduce the number of page snapshots included in WAL by
     increasing the checkpoint interval parameters as much as feasible.
    </p>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-reset.html" title="RESET">
 <link rel="next" href="sql-rollback.html" title="ROLLBACK">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>REVOKE &#8212; remove access privileges</p>
 </div>
-<a name="id724491"></a><div class="refsynopsisdiv">
+<a name="id725836"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">REVOKE [ GRANT OPTION FOR ]
     { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
@@ -132,6 +132,27 @@ REVOKE [ ADMIN OPTION FOR ]
     it is possible for a superuser to revoke all privileges, but this may
     require use of <code class="literal">CASCADE</code> as stated above.
    </p>
+<p>    <code class="command">REVOKE</code> can also be done by a role
+    that is not the owner of the affected object, but is a member of the role
+    that owns the object, or is a member of a role that holds privileges
+    <code class="literal">WITH GRANT OPTION</code> on the object.  In this case the
+    command is performed as though it were issued by the containing role that
+    actually owns the object or holds the privileges
+    <code class="literal">WITH GRANT OPTION</code>.  For example, if table
+    <code class="literal">t1</code> is owned by role <code class="literal">g1</code>, of which role
+    <code class="literal">u1</code> is a member, then <code class="literal">u1</code> can revoke privileges
+    on <code class="literal">t1</code> that are recorded as being granted by <code class="literal">g1</code>.
+    This would include grants made by <code class="literal">u1</code> as well as by other
+    members of role <code class="literal">g1</code>.
+   </p>
+<p>    If the role executing <code class="command">REVOKE</code> holds privileges
+    indirectly via more than one role membership path, it is unspecified
+    which containing role will be used to perform the command.  In such cases
+    it is best practice to use <code class="command">SET ROLE</code> to become the specific
+    role you want to do the <code class="command">REVOKE</code> as.  Failure to do so may
+    lead to revoking privileges other than the ones you intended, or not
+    revoking anything at all.
+   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-revoke-examples"></a><h2>Examples</h2>
@@ -176,7 +197,7 @@ REVOKE [ ADMIN OPTION FOR ]
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id725088"></a><h2>See Also</h2>
+<a name="id726544"></a><h2>See Also</h2>
 <p>   <a href="sql-grant.html">GRANT</a>
   </p>
 </div>

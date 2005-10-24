@@ -5,8 +5,8 @@
      SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtdropset.html" title="DROP SET">
 <link rel="next" href="stmtsetaddtable.html" title="SET ADD TABLE">
@@ -20,10 +20,10 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">MERGE SET (options);</tt></p></div>
+<div class="cmdsynopsis"><p><code class="command">MERGE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2554824"></a><h2>Description</h2>
+<a name="id534174"></a><h2>Description</h2>
 <p> Merge a set of tables and sequences into another one. This
      function is a workaround for the problem that it is not possible
      to add tables/sequences to already-subscribed sets. One may create
@@ -34,17 +34,17 @@
 <p>     This request will fail if the two sets do not have
      <span class="emphasis"><em>exactly</em></span> the same set of subscribers.  </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal"> ID = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
 <dd><p> Unique ID of the set to contain the union of the two separate sets.</p></dd>
-<dt><span class="term"><tt class="literal"> ADD ID = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> ADD ID = ival </code></span></dt>
 <dd><p> Unique ID of the set whose objects should be transferred.  </p></dd>
-<dt><span class="term"><tt class="literal"> ORIGIN = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
 <dd><p> Current origin node for both sets.  </p></dd>
 </dl></div>
 <p> This uses <a href="function.mergeset-integer-integer.html">schemadocmergeset( integer, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2554888"></a><h2>Example</h2>
+<a name="id534245"></a><h2>Example</h2>
 <pre class="programlisting">     MERGE SET ( ID = 2, 
      ADD ID = 9999,
      ORIGIN = 1 );

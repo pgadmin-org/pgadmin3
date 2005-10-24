@@ -4,8 +4,8 @@
 <title>2. Slon daemons</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="next" href="subscribenodes.html" title="3. Subscribing Nodes">
@@ -21,8 +21,8 @@ in a <span class="productname">Slony-I</span> cluster, whether you consider that
 running as a service things are slightly different. One slon service
 is installed, and a seperate configuration file registered for each
 node to be serviced by that machine. The main service then manages 
-the individual slons itself. Since a <tt class="command">MOVE
-SET</tt> or <tt class="command">FAILOVER</tt> can switch the roles of
+the individual slons itself. Since a <code class="command">MOVE
+SET</code> or <code class="command">FAILOVER</code> can switch the roles of
 nodes, slon needs to be able to function for both providers and
 subscribers.  It is not essential that these daemons run on any
 particular host, but there are some principles worth considering:
@@ -53,27 +53,27 @@ restart <span class="application">slon</span> instances.</p></li>
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> <tt class="filename">tools/altperl/slon_watchdog</tt> -
+<li><p> <code class="filename">tools/altperl/slon_watchdog</code> -
 an &#8220;<span class="quote">early</span>&#8221; version that basically wraps a loop around the
 invocation of <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, restarting any time it falls
 over</p></li>
-<li><p> <tt class="filename">tools/altperl/slon_watchdog2</tt>
+<li><p> <code class="filename">tools/altperl/slon_watchdog2</code>
 - a somewhat more intelligent version that periodically polls the
-database, checking to see if a <tt class="command">SYNC</tt> has taken place
+database, checking to see if a <code class="command">SYNC</code> has taken place
 recently.  We have had VPN connections that occasionally fall over
 without signalling the application, so that the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
 stops working, but doesn't actually die; this polling addresses that
 issue.</p></li>
 </ul></div>
-<p>The <tt class="filename">slon_watchdog2</tt> script is probably
+<p>The <code class="filename">slon_watchdog2</code> script is probably
 <span class="emphasis"><em>usually</em></span> the preferable thing to run.  It was at
 one point not preferable to run it whilst subscribing a very large
 replication set where it is expected to take many hours to do the
-initial <tt class="command">COPY SET</tt>.  The problem that came up in that
+initial <code class="command">COPY SET</code>.  The problem that came up in that
 case was that it figured that since it hasn't done a
-<tt class="command">SYNC</tt> in 2 hours, something was broken requiring
-restarting slon, thereby restarting the <tt class="command">COPY SET</tt>
+<code class="command">SYNC</code> in 2 hours, something was broken requiring
+restarting slon, thereby restarting the <code class="command">COPY SET</code>
 event.  More recently, the script has been changed to detect
-<tt class="command">COPY SET</tt> in progress.</p>
+<code class="command">COPY SET</code> in progress.</p>
 </div></body>
 </html>

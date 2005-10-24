@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg-process.html" title="30.11. Processing Embedded SQL Programs">
 <link rel="next" href="ecpg-develop.html" title="30.13. Internals">
@@ -36,7 +36,10 @@
 <p>    On Win32, if the <span class="application">ecpg</span> libraries and an application are
     compiled with different flags, this function call will crash the 
     application because the internal representation of the 
-    <code class="literal">FILE</code> pointers differ.
+    <code class="literal">FILE</code> pointers differ.  Specifically,
+    multi-threaded/single-threaded, release/debug, and static/dynamic 
+    flags should be the same for the library and all applications using
+    that library.
     </p>
 </div>
 </li>

@@ -4,8 +4,8 @@
 <title>slon</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="prev" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="next" href="runtime-config.html" title="Run-time Configuration">
@@ -17,12 +17,12 @@
 <p><span class="application">slon</span> &#8212;    <span class="productname">Slony-I</span> daemon
   </p>
 </div>
-<a name="id2550624"></a><div class="refsynopsisdiv">
+<a name="id529569"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">slon</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>clustername</tt></i>] [<i class="replaceable"><tt>conninfo</tt></i>]</p></div>
+<div class="cmdsynopsis"><p><code class="command">slon</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>clustername</code></em>] [<em class="replaceable"><code>conninfo</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2550672"></a><h2>Description</h2>
+<a name="id529622"></a><h2>Description</h2>
 <p>   <span class="application">slon</span> is the daemon application that
    &#8220;<span class="quote">runs</span>&#8221; <span class="productname">Slony-I</span> replication.  A
    <span class="application">slon</span> instance must be run for each node
@@ -32,9 +32,9 @@
 <div class="refsect1" lang="en">
 <a name="r1-app-slon-3"></a><h2>Options</h2>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="option">-d</tt><i class="replaceable"><tt>debuglevel</tt></i></span></dt>
+<dt><span class="term"><code class="option">-d</code><em class="replaceable"><code>debuglevel</code></em></span></dt>
 <dd>
-<p>      The <tt class="envar">log_level</tt> specifies the level of verbosity
+<p>      The <code class="envar">log_level</code> specifies the level of verbosity
       that <span class="application">slon</span> should use when logging its
       activity.
      </p>
@@ -53,14 +53,14 @@
 <p>
      </p>
 </dd>
-<dt><span class="term"><tt class="option">-s</tt><i class="replaceable"><tt>SYNC check interval</tt></i></span></dt>
+<dt><span class="term"><code class="option">-s</code><em class="replaceable"><code>SYNC check interval</code></em></span></dt>
 <dd>
-<p>      The <tt class="envar">sync_interval</tt>, measured in milliseconds,
+<p>      The <code class="envar">sync_interval</code>, measured in milliseconds,
       indicates how often <span class="application">slon</span> should check
-      to see if a <tt class="command">SYNC</tt> should be introduced.
+      to see if a <code class="command">SYNC</code> should be introduced.
       Default is 10000 ms.  The main loop in
-      <tt class="function">sync_Thread_main()</tt> sleeps for intervals of
-      <tt class="envar">sync_interval</tt> milliseconds between iterations.
+      <code class="function">sync_Thread_main()</code> sleeps for intervals of
+      <code class="envar">sync_interval</code> milliseconds between iterations.
      </p>
 <p>      Short sync check intervals keep the origin on a &#8220;<span class="quote">short
       leash</span>&#8221;, updating its subscribers more frequently.  If you
@@ -72,37 +72,37 @@
      </p>
 <p>      If the node is not an origin for any replication set, so no
       updates are coming in, it is somewhat wasteful for this value to
-      be much less the <tt class="envar">sync_interval_timeout</tt> value.
+      be much less the <code class="envar">sync_interval_timeout</code> value.
      </p>
 </dd>
-<dt><span class="term"><tt class="option">-t</tt><i class="replaceable"><tt>SYNC
-    interval timeout</tt></i></span></dt>
+<dt><span class="term"><code class="option">-t</code><em class="replaceable"><code>SYNC
+    interval timeout</code></em></span></dt>
 <dd>
-<p>      At the end of each <tt class="envar">sync_interval_timeout</tt> timeout
-      period, a <tt class="command">SYNC</tt> will be generated on the
+<p>      At the end of each <code class="envar">sync_interval_timeout</code> timeout
+      period, a <code class="command">SYNC</code> will be generated on the
       &#8220;<span class="quote">local</span>&#8221; node even if there has been no replicatable
       data updated that would have pushed out a
-      <tt class="command">SYNC</tt>.
+      <code class="command">SYNC</code>.
      </p>
 <p>      Default, and maximum, is 60000 ms, so that you can expect each
-      node to &#8220;<span class="quote">report in</span>&#8221; with a <tt class="command">SYNC</tt>
+      node to &#8220;<span class="quote">report in</span>&#8221; with a <code class="command">SYNC</code>
       once each minute.
      </p>
-<p>      Note that <tt class="command">SYNC</tt> events are also generated on
+<p>      Note that <code class="command">SYNC</code> events are also generated on
       subscriber nodes.  Since they are not actually generating any
-      data to replicate to other nodes, these <tt class="command">SYNC</tt>
+      data to replicate to other nodes, these <code class="command">SYNC</code>
       events are of not terribly much value.
      </p>
 </dd>
-<dt><span class="term"><tt class="option">-g</tt><i class="replaceable"><tt>group size</tt></i></span></dt>
+<dt><span class="term"><code class="option">-g</code><em class="replaceable"><code>group size</code></em></span></dt>
 <dd>
-<p>      This controls the maximum <tt class="command">SYNC</tt> group size,
-      <tt class="envar">sync_group_maxsize</tt>; defaults to 6.  Thus, if a
-      particular node is behind by 200 <tt class="command">SYNC</tt>s, it
+<p>      This controls the maximum <code class="command">SYNC</code> group size,
+      <code class="envar">sync_group_maxsize</code>; defaults to 6.  Thus, if a
+      particular node is behind by 200 <code class="command">SYNC</code>s, it
       will try to group them together into groups of a maximum size of
-      <tt class="envar">sync_group_maxsize</tt>.  This can be expected to
+      <code class="envar">sync_group_maxsize</code>.  This can be expected to
       reduce transaction overhead due to having fewer transactions to
-      <tt class="command">COMMIT</tt>.
+      <code class="command">COMMIT</code>.
      </p>
 <p>      The default of 6 is probably suitable for small systems that can
       devote only very limited bits of memory to
@@ -117,76 +117,76 @@
      </p>
 <p>      The big advantage in increasing this parameter comes from
       cutting down on the number of transaction
-      <tt class="command">COMMIT</tt>s; moving from 1 to 2 will provide
+      <code class="command">COMMIT</code>s; moving from 1 to 2 will provide
       considerable benefit, but the benefits will progressively fall
       off once the transactions being processed get to be reasonably
       large.  There isn't likely to be a material difference in
       performance between 80 and 90; at that point, whether
       &#8220;<span class="quote">bigger is better</span>&#8221; will depend on whether the
-      bigger set of <tt class="command">SYNC</tt>s makes the
-      <tt class="envar">LOG</tt> cursor behave badly due to consuming more
+      bigger set of <code class="command">SYNC</code>s makes the
+      <code class="envar">LOG</code> cursor behave badly due to consuming more
       memory and requiring more time to sortt.
      </p>
 <p>      In <span class="productname">Slony-I</span> version 1.0, <span class="application">slon</span> will
-      always attempt to group <tt class="command">SYNC</tt>s together to
+      always attempt to group <code class="command">SYNC</code>s together to
       this maximum, which <span class="emphasis"><em>won't</em></span> be ideal if
       replication has been somewhat destabilized by there being very
       large updates (<span class="emphasis"><em>e.g.</em></span> - a single transaction
       that updates hundreds of thousands of rows) or by
-      <tt class="command">SYNC</tt>s being disrupted on an origin node with
-      the result that there are a few <tt class="command">SYNC</tt>s that
+      <code class="command">SYNC</code>s being disrupted on an origin node with
+      the result that there are a few <code class="command">SYNC</code>s that
       are very large.  You might run into the problem that grouping
-      together some very large <tt class="command">SYNC</tt>s knocks over a
+      together some very large <code class="command">SYNC</code>s knocks over a
       <span class="application">slon</span> process.  When it picks up
       again, it will try to process the same large grouped set of
-      <tt class="command">SYNC</tt>s, and run into the same problem over and
+      <code class="command">SYNC</code>s, and run into the same problem over and
       over until an administrator interrupts this and changes the
-      <tt class="option">-g</tt> value to break this &#8220;<span class="quote">deadlock.</span>&#8221;
+      <code class="option">-g</code> value to break this &#8220;<span class="quote">deadlock.</span>&#8221;
      </p>
 <p>      In <span class="productname">Slony-I</span> version 1.0, the <span class="application">slon</span>
       instead adaptively &#8220;<span class="quote">ramps up</span>&#8221; from doing 1
-      <tt class="command">SYNC</tt> at a time towards the maximum group
+      <code class="command">SYNC</code> at a time towards the maximum group
       size.  As a result, if there are a couple of
-      <tt class="command">SYNC</tt>s that cause problems, the
+      <code class="command">SYNC</code>s that cause problems, the
       <span class="application">slon</span> will (with any relevant watchdog
       assistance) always be able to get to the point where it
-      processes the troublesome <tt class="command">SYNC</tt>s one by one,
+      processes the troublesome <code class="command">SYNC</code>s one by one,
       hopefully making operator assistance unnecessary.
      </p>
 </dd>
-<dt><span class="term"><tt class="option">-o</tt><i class="replaceable"><tt>desired sync time</tt></i></span></dt>
+<dt><span class="term"><code class="option">-o</code><em class="replaceable"><code>desired sync time</code></em></span></dt>
 <dd>
-<p> A &#8220;<span class="quote">maximum</span>&#8221; time planned for grouped <tt class="command">SYNC</tt>s.</p>
+<p> A &#8220;<span class="quote">maximum</span>&#8221; time planned for grouped <code class="command">SYNC</code>s.</p>
 <p> If replication is running behind, slon will gradually
-     increase the numbers of <tt class="command">SYNC</tt>s grouped
+     increase the numbers of <code class="command">SYNC</code>s grouped
      together, targetting that (based on the time taken for the
-     <span class="emphasis"><em>last</em></span> group of <tt class="command">SYNC</tt>s) they
+     <span class="emphasis"><em>last</em></span> group of <code class="command">SYNC</code>s) they
      shouldn't take more than the specified
-     <tt class="envar">desired_sync_time</tt> value.</p>
-<p> The default value for <tt class="envar">desired_sync_time</tt> is
+     <code class="envar">desired_sync_time</code> value.</p>
+<p> The default value for <code class="envar">desired_sync_time</code> is
      60000ms, equal to one minute. </p>
 <p> That way, you can expect (or at least hope!) that you'll
-      get a <tt class="command">COMMIT</tt> roughly once per minute. </p>
+      get a <code class="command">COMMIT</code> roughly once per minute. </p>
 <p> It isn't <span class="emphasis"><em>totally</em></span> predictable, as it
      is entirely possible for someone to request a <span class="emphasis"><em>very
      large update,</em></span> all as one transaction, that can
      &#8220;<span class="quote">blow up</span>&#8221; the length of the resulting
-     <tt class="command">SYNC</tt> to be nearly arbitrarily long.  In such a
+     <code class="command">SYNC</code> to be nearly arbitrarily long.  In such a
      case, the heuristic will back off for the
      <span class="emphasis"><em>next</em></span> group.</p>
 <p> The overall effect is to improve
       <span class="productname">Slony-I</span>'s ability to cope with
-      variations in traffic.  By starting with 1 <tt class="command">SYNC</tt>, and gradually
+      variations in traffic.  By starting with 1 <code class="command">SYNC</code>, and gradually
       moving to more, even if there turn out to be variations large
       enough to cause <span class="productname">PostgreSQL</span> backends to
       crash, <span class="productname">Slony-I</span> will back off down to
       start with one sync at a time, if need be, so that if it is at
       all possible for replication to progress, it will.</p>
 </dd>
-<dt><span class="term"><tt class="option">-c</tt><i class="replaceable"><tt>cleanup cycles</tt></i></span></dt>
+<dt><span class="term"><code class="option">-c</code><em class="replaceable"><code>cleanup cycles</code></em></span></dt>
 <dd>
-<p>      The value <tt class="envar">vac_frequency</tt> indicates how often to
-      <tt class="command">VACUUM</tt> in cleanup cycles.
+<p>      The value <code class="envar">vac_frequency</code> indicates how often to
+      <code class="command">VACUUM</code> in cleanup cycles.
      </p>
 <p>      Set this to zero to disable
       <span class="application">slon</span>-initiated vacuuming. If you are
@@ -195,21 +195,21 @@
       itself.  If you are not, there are some tables
       <span class="productname">Slony-I</span> uses that collect a
       <span class="emphasis"><em>lot</em></span> of dead tuples that should be vacuumed
-      frequently, notably <tt class="envar">pg_listener</tt>.
+      frequently, notably <code class="envar">pg_listener</code>.
      </p>
 <p> In <span class="productname">Slony-I</span> version 1.1, this changes a little; the
      cleanup thread tracks, from iteration to iteration, the earliest
      transaction ID still active in the system.  If this doesn't
      change, from one iteration to the next, then an old transaction
-     is still active, and therefore a <tt class="command">VACUUM</tt> will
+     is still active, and therefore a <code class="command">VACUUM</code> will
      do no good.  The cleanup thread instead merely does an
-     <tt class="command">ANALYZE</tt> on these tables to update the
-     statistics in <tt class="envar">pg_statistics</tt>.
+     <code class="command">ANALYZE</code> on these tables to update the
+     statistics in <code class="envar">pg_statistics</code>.
      </p>
 </dd>
-<dt><span class="term"><tt class="option">-p</tt><i class="replaceable"><tt>PID filename</tt></i></span></dt>
+<dt><span class="term"><code class="option">-p</code><em class="replaceable"><code>PID filename</code></em></span></dt>
 <dd>
-<p>      <tt class="envar">pid_file</tt> contains the filename in which the PID
+<p>      <code class="envar">pid_file</code> contains the filename in which the PID
       (process ID) of the <span class="application">slon</span> is stored.
      </p>
 <p>      This may make it easier to construct scripts to monitor multiple
@@ -217,7 +217,7 @@
       host.
      </p>
 </dd>
-<dt><span class="term"><tt class="option">-f</tt><i class="replaceable"><tt>config file</tt></i></span></dt>
+<dt><span class="term"><code class="option">-f</code><em class="replaceable"><code>config file</code></em></span></dt>
 <dd>
 <p>      File from which to read <span class="application">slon</span> configuration.
      </p>
@@ -231,31 +231,31 @@
      other than the connection info.  Alternatively, you might create
      a configuration file for each node.</p>
 </dd>
-<dt><span class="term"><tt class="option">-a</tt><i class="replaceable"><tt>archive directory</tt></i></span></dt>
-<dd><p>      <tt class="envar">archive_dir</tt> indicates a directory in which to
-      place a sequence of <tt class="command">SYNC</tt> archive files for
+<dt><span class="term"><code class="option">-a</code><em class="replaceable"><code>archive directory</code></em></span></dt>
+<dd><p>      <code class="envar">archive_dir</code> indicates a directory in which to
+      place a sequence of <code class="command">SYNC</code> archive files for
       use in <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files"> log shipping</a> mode.
      </p></dd>
-<dt><span class="term"><tt class="option">-q</tt><i class="replaceable"><tt> quit based on SYNC provider </tt></i></span></dt>
+<dt><span class="term"><code class="option">-q</code><em class="replaceable"><code> quit based on SYNC provider </code></em></span></dt>
 <dd>
-<p>      <tt class="envar">quit_sync_provider</tt> indicates which provider's
+<p>      <code class="envar">quit_sync_provider</code> indicates which provider's
       worker thread should be watched in order to terminate after a
       certain event.  This must be used in conjunction with the
-      <tt class="option">-r</tt> option below...
+      <code class="option">-r</code> option below...
      </p>
 <p> This allows you to have a <span class="application">slon</span>
      stop replicating after a certain point. </p>
 </dd>
-<dt><span class="term"><tt class="option">-r</tt><i class="replaceable"><tt> quit at event number </tt></i></span></dt>
-<dd><p>      <tt class="envar">quit_sync_finalsync</tt> indicates the event number
+<dt><span class="term"><code class="option">-r</code><em class="replaceable"><code> quit at event number </code></em></span></dt>
+<dd><p>      <code class="envar">quit_sync_finalsync</code> indicates the event number
       after which the remote worker thread for the provider above
       should terminate.  This must be used in conjunction with the
-      <tt class="option">-q</tt> option above...
+      <code class="option">-q</code> option above...
      </p></dd>
-<dt><span class="term"><tt class="option">-l</tt><i class="replaceable"><tt> lag interval </tt></i></span></dt>
-<dd><p>      <tt class="envar">lag_interval</tt> indicates an interval value such as
-      <tt class="command"> 3 minutes </tt> or <tt class="command"> 4 hours </tt>
-      or <tt class="command"> 2 days </tt> that indicates that this node is
+<dt><span class="term"><code class="option">-l</code><em class="replaceable"><code> lag interval </code></em></span></dt>
+<dd><p>      <code class="envar">lag_interval</code> indicates an interval value such as
+      <code class="command"> 3 minutes </code> or <code class="command"> 4 hours </code>
+      or <code class="command"> 2 days </code> that indicates that this node is
       to lag its providers by the specified interval of time.  This
       causes events to be ignored until they reach the age
       corresponding to the interval.
@@ -263,7 +263,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2551533"></a><h2>Exit Status</h2>
+<a name="id530571"></a><h2>Exit Status</h2>
 <p>   <span class="application">slon</span> returns 0 to the shell if it
    finished normally.  It returns -1 if it encounters any fatal error.
   </p>

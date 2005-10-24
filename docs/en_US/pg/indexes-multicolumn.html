@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes-types.html" title="11.2. Index Types">
 <link rel="next" href="indexes-bitmap-scans.html" title="11.4. Combining Multiple Indexes">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="indexes-multicolumn"></a>11.3. Multicolumn Indexes</h2></div></div></div>
-<a name="id574367"></a><p>   An index can be defined on more than one column of a table.  For example, if
+<a name="id574416"></a><p>   An index can be defined on more than one column of a table.  For example, if
    you have a table of this form:
 </p>
 <pre class="programlisting">CREATE TABLE test2 (
@@ -60,9 +60,12 @@
    the planner would prefer a sequential table scan over using the index.
   </p>
 <p>   A multicolumn GiST index can only be used when there is a query condition
-   on its leading column.  As with B-trees, conditions on additional columns
-   restrict the entries returned by the index, but do not in themselves aid
-   the index search.
+   on its leading column.  Conditions on additional columns restrict the
+   entries returned by the index, but the condition on the first column is the
+   most important one for determining how much of the index needs to be
+   scanned.  A GiST index will be relatively ineffective if its first column
+   has only a few distinct values, even if there are many distinct values in
+   additional columns.
   </p>
 <p>   Of course, each column must be used with operators appropriate to the index
    type; clauses that involve other operators will not be considered.

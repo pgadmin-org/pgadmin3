@@ -4,8 +4,8 @@
 <title>8. Slony-I listen paths</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="failover.html" title="7. Doing switchover and failover with Slony-I">
 <link rel="next" href="plainpaths.html" title="9.  Slony-I Path Communications">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="listenpaths"></a>8. <span class="productname">Slony-I</span> listen paths</h2></div></div></div>
-<a name="id2540227"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<a name="id518182"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> If you are running version
 <span class="productname">Slony-I</span> 1.1 or later it should be
@@ -33,14 +33,14 @@ other nodes.  You might think that nodes only need to listen to the
 &#8220;<span class="quote">parent</span>&#8221; from whom they are getting updates, but in
 reality, they need to be able to receive messages from
 <span class="emphasis"><em>all</em></span> nodes in order to be able to conclude that
-<tt class="command">sync</tt>s have been received everywhere, and that,
+<code class="command">sync</code>s have been received everywhere, and that,
 therefore, entries in <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a> have been applied everywhere, and can
 therefore be purged.  this extra communication is needful so
 <span class="productname">Slony-I</span> is able to shift origins to other
 locations.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2540326"></a>8.1. How listening can break</h3></div></div></div>
+<a name="id518291"></a>8.1. How listening can break</h3></div></div></div>
 <p>On one occasion, I had a need to drop a subscriber node (#2) and
 recreate it.  That node was the data provider for another subscriber
 (#3) that was, in effect, a &#8220;<span class="quote">cascaded slave.</span>&#8221; Dropping
@@ -50,22 +50,22 @@ dependant node to the &#8220;<span class="quote">master</span>&#8221; node for t
 set, which, for a while, replicated without difficulties.</p>
 <p>I then dropped the subscription on &#8220;<span class="quote">node 2</span>&#8221;, and
 started resubscribing it.  that raised the <span class="productname">Slony-I</span>
-<tt class="command">set_subscription</tt> event, which started copying
+<code class="command">set_subscription</code> event, which started copying
 tables.  at that point in time, events stopped propagating to
 &#8220;<span class="quote">node 3</span>&#8221;, and while it was in perfectly ok shape, no
 events were making it to it.</p>
 <p>The problem was that node #3 was expecting to receive events
-from node #2, which was busy processing the <tt class="command">set_subscription</tt>
+from node #2, which was busy processing the <code class="command">set_subscription</code>
 event, and was not passing anything else on.</p>
 <p>We dropped the listener rules that caused node #3 to listen to
 node 2, replacing them with rules where it expected its events to come
 from node #1 (the origin node for the replication set).  At that
 moment, &#8220;<span class="quote">as if by magic</span>&#8221;, node #3 started replicating again, as
-it discovered a place to get <tt class="command">sync</tt> events.</p>
+it discovered a place to get <code class="command">sync</code> events.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2540404"></a>8.2. How the listen configuration should look</h3></div></div></div>
+<a name="id518376"></a>8.2. How the listen configuration should look</h3></div></div></div>
 <p>The simple cases tend to be simple to cope with.  We need to
 instead look at a more complex node configuration.</p>
 <p>Consider a set of nodes, 1 thru 6, where 1 is the origin, 
@@ -88,7 +88,7 @@ events for nodes 1, 3, and 4 throw node 1, and gets events for nodes 5
 and 6 from node 5.</p>
 <p>The row of 5's at the bottom, for node 6, indicate that node 6
 listens to node 5 to get events from nodes 1-5.</p>
-<p>The set of slonik <tt class="command">set listen</tt> statements to express
+<p>The set of slonik <code class="command">set listen</code> statements to express
 this &#8220;<span class="quote">listener network</span>&#8221; are as follows:
 
 </p>
@@ -125,8 +125,8 @@ store listen (origin = 6, receiver = 5, provider = 6);</pre>
 <p>How we read these listen statements is thus...</p>
 <p>When on the &#8220;<span class="quote">receiver</span>&#8221; node, look to the &#8220;<span class="quote">provider</span>&#8221;
 node to provide events coming from the &#8220;<span class="quote">origin</span>&#8221; node.</p>
-<p>The tool <tt class="filename">init_cluster</tt> in the
-<tt class="filename">altperl</tt> scripts produces optimized listener
+<p>The tool <code class="filename">init_cluster</code> in the
+<code class="filename">altperl</code> scripts produces optimized listener
 networks in both the tabular form shown above as well as in the form
 of <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> statements.</p>
 <p>There are three &#8220;<span class="quote">thorns</span>&#8221; in this set of roses:
@@ -162,7 +162,7 @@ communicating.</p></li>
 <div class="titlepage"><div><div><h3 class="title">
 <a name="autolisten"></a>8.3. Automated Listen Path Generation</h3></div></div></div>
 <p> In <span class="productname">Slony-I</span> version 1.1, a heuristic scheme is introduced to
-automatically generate <tt class="envar">sl_listen</tt> entries.  This
+automatically generate <code class="envar">sl_listen</code> entries.  This
 happens, in order, based on three data sources:
 
 </p>
@@ -181,7 +181,7 @@ node that is either a provider for the receiver, or that is using the
 receiver as a provider.</p></li>
 </ul></div>
 <p> Any time <a href="table.sl-subscribe.html">sl_subscribe</a> or <a href="table.sl-path.html">sl_path</a> are modified,
-<tt class="function">RebuildListenEntries()</tt> will be called to revise
+<code class="function">RebuildListenEntries()</code> will be called to revise
 the listener paths.</p>
 <p> If you are running an earlier version of <span class="productname">Slony-I</span>, you may want
 to take a look at <a href="altperl.html#regenlisten" title="18.25. regenerate-listens">Section 18.25, &#8220;regenerate-listens&#8221;</a>, a Perl script which

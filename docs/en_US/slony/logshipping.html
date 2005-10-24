@@ -4,8 +4,8 @@
 <title>13. Log Shipping - Slony-I with Files</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="dropthings.html" title="12. Dropping things from Slony-I Replication">
 <link rel="next" href="ddlchanges.html" title="14. Database Schema Changes (DDL)">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="logshipping"></a>13. Log Shipping - <span class="productname">Slony-I</span> with Files</h2></div></div></div>
-<a name="id2542023"></a><p> One of the new features for 1.1 is the ability to serialize the
+<a name="id520175"></a><p> One of the new features for 1.1 is the ability to serialize the
 updates to go out into log files that can be kept in a spool
 directory.</p>
 <p> The spool files could then be transferred via whatever means
@@ -55,18 +55,18 @@ in this form, including:
 </ul></div>
 <div class="qandaset">
 <dl>
-<dt>13.1. <a href="logshipping.html#id2542132"> Where are the spool files for a
+<dt>13.1. <a href="logshipping.html#id520294"> Where are the spool files for a
 subscription set generated?</a>
 </dt>
-<dt>13.2. <a href="logshipping.html#id2542160"> What takes place when a /  takes
+<dt>13.2. <a href="logshipping.html#id520326"> What takes place when a /  takes
 place?</a>
 </dt>
-<dt>13.3. <a href="logshipping.html#id2542182"> What if we run out of spool
+<dt>13.3. <a href="logshipping.html#id520350"> What if we run out of spool
 space?  </a>
 </dt>
-<dt>13.4. <a href="logshipping.html#id2542201"> How do we set up a subscription?  </a>
+<dt>13.4. <a href="logshipping.html#id520372"> How do we set up a subscription?  </a>
 </dt>
-<dt>13.5. <a href="logshipping.html#id2542269"> What are the limitations of log
+<dt>13.5. <a href="logshipping.html#id520446"> What are the limitations of log
 shipping? </a>
 </dt>
 </dl>
@@ -75,7 +75,7 @@ shipping? </a>
 <tbody>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2542132"></a><a name="id2542133"></a><b>13.1.</b>
+<a name="id520294"></a><a name="id520295"></a><b>13.1.</b>
 </td>
 <td align="left" valign="top"><p> Where are the &#8220;<span class="quote">spool files</span>&#8221; for a
 subscription set generated?</p></td>
@@ -84,7 +84,7 @@ subscription set generated?</p></td>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
 <p> Any <a href="slon.html" title="slon"> slon </a> subscriber node
-can generate them by adding the <tt class="option">-a</tt> option.</p>
+can generate them by adding the <code class="option">-a</code> option.</p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> Notice that this implies that in order to use log
@@ -94,7 +94,7 @@ shipping, you must have at least one subscriber node. </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2542160"></a><a name="id2542161"></a><b>13.2.</b>
+<a name="id520326"></a><a name="id520327"></a><b>13.2.</b>
 </td>
 <td align="left" valign="top"><p> What takes place when a <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a>/ <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> takes
 place?</p></td>
@@ -106,41 +106,41 @@ a subscriber, it will continue to generate logs.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2542182"></a><a name="id2542183"></a><b>13.3.</b>
+<a name="id520350"></a><a name="id520351"></a><b>13.3.</b>
 </td>
 <td align="left" valign="top"><p> What if we run out of &#8220;<span class="quote">spool
 space</span>&#8221;?  </p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
-<td align="left" valign="top"><p> The node will stop accepting <tt class="command">SYNC</tt>s
+<td align="left" valign="top"><p> The node will stop accepting <code class="command">SYNC</code>s
 until this problem is alleviated.  The database being subscribed to
 will also fall behind.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2542201"></a><a name="id2542202"></a><b>13.4.</b>
+<a name="id520372"></a><a name="id520373"></a><b>13.4.</b>
 </td>
 <td align="left" valign="top"><p> How do we set up a subscription?  </p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
-<p> The script in <tt class="filename">tools</tt> called
+<p> The script in <code class="filename">tools</code> called
 <span class="application">slony1_dump.sh</span> is a shell script that dumps
 the &#8220;<span class="quote">present</span>&#8221; state of the subscriber node.</p>
 <p> You need to start the <span class="application"><a href="slon.html" title="slon"> slon</a></span> for the subscriber node with logging turned on.
 At any point after that, you can run
 <span class="application">slony1_dump.sh</span>, which will pull the state
-of that subscriber as of some <tt class="command">SYNC</tt> event.  Once the dump completes,
-all the <tt class="command">SYNC</tt> logs generated from the time that dump
+of that subscriber as of some <code class="command">SYNC</code> event.  Once the dump completes,
+all the <code class="command">SYNC</code> logs generated from the time that dump
 <span class="emphasis"><em>started</em></span> may be added to the dump in order to get
 a &#8220;<span class="quote">log shipping subscriber.</span>&#8221; </p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2542269"></a><a name="id2542270"></a><b>13.5.</b>
+<a name="id520446"></a><a name="id520448"></a><b>13.5.</b>
 </td>
 <td align="left" valign="top"><p> What are the limitations of log
 shipping? </p></td>
@@ -169,7 +169,7 @@ things out if there are multiple replication sets.  </p></td>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
 <p> The &#8220;<span class="quote">log shipping node</span>&#8221; presently only
-fully tracks <tt class="command">SYNC</tt> events.  This should be
+fully tracks <code class="command">SYNC</code> events.  This should be
 sufficient to cope with <span class="emphasis"><em>some</em></span> changes in cluster
 configuration, but not others.  </p>
 <p> A number of event types <span class="emphasis"><em> are </em></span> handled in
@@ -177,41 +177,41 @@ such a way that log shipping copes with them:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p><tt class="command">SYNC </tt> events are, of course,
+<li><p><code class="command">SYNC </code> events are, of course,
 handled.</p></li>
-<li><p><tt class="command">DDL_SCRIPT</tt> is handled.</p></li>
+<li><p><code class="command">DDL_SCRIPT</code> is handled.</p></li>
 <li>
-<p><tt class="command"> UNSUBSCRIBE_SET </tt></p>
-<p> This event, much like <tt class="command">SUBSCRIBE_SET</tt> is not
+<p><code class="command"> UNSUBSCRIBE_SET </code></p>
+<p> This event, much like <code class="command">SUBSCRIBE_SET</code> is not
 handled by the log shipping code.  But its effect is, namely that
-<tt class="command">SYNC</tt> events on the subscriber node will no longer
+<code class="command">SYNC</code> events on the subscriber node will no longer
 contain updates to the set.</p>
-<p> Similarly, <tt class="command">SET_DROP_TABLE</tt>,
-<tt class="command">SET_DROP_SEQUENCE</tt>,
-<tt class="command">SET_MOVE_TABLE</tt>,
-<tt class="command">SET_MOVE_SEQUENCE</tt> <tt class="command">DROP_SET</tt>,
-<tt class="command">MERGE_SET</tt>, will be handled
+<p> Similarly, <code class="command">SET_DROP_TABLE</code>,
+<code class="command">SET_DROP_SEQUENCE</code>,
+<code class="command">SET_MOVE_TABLE</code>,
+<code class="command">SET_MOVE_SEQUENCE</code> <code class="command">DROP_SET</code>,
+<code class="command">MERGE_SET</code>, will be handled
 &#8220;<span class="quote">appropriately</span>&#8221;.</p>
 </li>
-<li><p><tt class="command"> SUBSCRIBE_SET </tt></p></li>
+<li><p><code class="command"> SUBSCRIBE_SET </code></p></li>
 <li><p> The various events involved in node configuration are
 irrelevant to log shipping:
 
-<tt class="command">STORE_NODE</tt>,
-<tt class="command">ENABLE_NODE</tt>,
-<tt class="command">DROP_NODE</tt>,
-<tt class="command">STORE_PATH</tt>,
-<tt class="command">DROP_PATH</tt>,
-<tt class="command">STORE_LISTEN</tt>,
-<tt class="command">DROP_LISTEN</tt></p></li>
+<code class="command">STORE_NODE</code>,
+<code class="command">ENABLE_NODE</code>,
+<code class="command">DROP_NODE</code>,
+<code class="command">STORE_PATH</code>,
+<code class="command">DROP_PATH</code>,
+<code class="command">STORE_LISTEN</code>,
+<code class="command">DROP_LISTEN</code></p></li>
 <li><p> Events involved in describing how particular sets are
 to be initially configured are similarly irrelevant:
 
-<tt class="command">STORE_SET</tt>,
-<tt class="command">SET_ADD_TABLE</tt>,
-<tt class="command">SET_ADD_SEQUENCE</tt>,
-<tt class="command">STORE_TRIGGER</tt>,
-<tt class="command">DROP_TRIGGER</tt>,</p></li>
+<code class="command">STORE_SET</code>,
+<code class="command">SET_ADD_TABLE</code>,
+<code class="command">SET_ADD_SEQUENCE</code>,
+<code class="command">STORE_TRIGGER</code>,
+<code class="command">DROP_TRIGGER</code>,</p></li>
 </ul></div>
 </td>
 </tr>
@@ -235,7 +235,7 @@ necessarily be all that simple)... </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2542531"></a>13.1.  Usage Hints </h3></div></div></div>
+<a name="id520736"></a>13.1.  Usage Hints </h3></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> Here are some more-or-less disorganized notes about how
@@ -244,13 +244,13 @@ you might want to use log shipping...</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> You <span class="emphasis"><em>don't</em></span> want to blindly apply
-<tt class="command">SYNC</tt> files because any given
-<tt class="command">SYNC</tt> file may <span class="emphasis"><em>not</em></span> be the right
+<code class="command">SYNC</code> files because any given
+<code class="command">SYNC</code> file may <span class="emphasis"><em>not</em></span> be the right
 one.  If it's wrong, then the result will be that the call to
-<tt class="function"> setsyncTracking_offline() </tt> will fail, and your
-<span class="application"> psql</span> session will <tt class="command"> ABORT</tt>, and then run through the remainder of that
-<tt class="command">SYNC</tt> file looking for a <tt class="command">COMMIT</tt>
-or <tt class="command">ROLLBACK</tt> so that it can try to move on to the
+<code class="function"> setsyncTracking_offline() </code> will fail, and your
+<span class="application"> psql</span> session will <code class="command"> ABORT</code>, and then run through the remainder of that
+<code class="command">SYNC</code> file looking for a <code class="command">COMMIT</code>
+or <code class="command">ROLLBACK</code> so that it can try to move on to the
 next transaction.</p>
 <p> But we <span class="emphasis"><em> know </em></span> that the entire remainder of
 the file will fail!  It is futile to go through the parsing effort of
@@ -260,15 +260,15 @@ reading the remainder of the file.</p>
 </p>
 <div class="itemizedlist"><ul type="circle">
 <li><p> Read the first few lines of the file, up to and
-including the <tt class="function"> setsyncTracking_offline() </tt>
+including the <code class="function"> setsyncTracking_offline() </code>
 call.</p></li>
 <li><p> Try to apply it that far.</p></li>
 <li><p> If that failed, then it is futile to continue;
-<tt class="command">ROLLBACK</tt> the transaction, and perhaps consider
+<code class="command">ROLLBACK</code> the transaction, and perhaps consider
 trying the next file.</p></li>
-<li><p> If the <tt class="function"> setsyncTracking_offline()</tt> call succeeds, then you have the right next
-<tt class="command">SYNC</tt> file, and should apply it.  You should
-probably <tt class="command">ROLLBACK</tt> the transaction, and then use
+<li><p> If the <code class="function"> setsyncTracking_offline()</code> call succeeds, then you have the right next
+<code class="command">SYNC</code> file, and should apply it.  You should
+probably <code class="command">ROLLBACK</code> the transaction, and then use
 <span class="application">psql</span> to apply the entire file full of
 updates.</p></li>
 </ul></div>
@@ -295,7 +295,7 @@ start transaction;
 select "_T1".setsyncTracking_offline(1, '96', '109', '2005-09-23 19:01:31.267403');
 -- end of log archiving header</pre>
 <p> This timestamp represents the time at which the
-<tt class="command">SYNC</tt> was issued on the origin node.</p>
+<code class="command">SYNC</code> was issued on the origin node.</p>
 <p> The value is stored in the log shipping configuration table
 sl_setsync_offline.</p>
 <p> If you are constructing a temporal database, this is likely to

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="xindex.html" title="32.14. Interfacing Extensions To Indexes">
 <link rel="next" href="trigger-datachanges.html" title="33.2. Visibility of Data Changes">
@@ -22,15 +22,28 @@
 <dt><span class="sect1"><a href="trigger-example.html">33.4. A Complete Example</a></span></dt>
 </dl>
 </div>
-<a name="id658911"></a><p>   This chapter describes how to write trigger functions.  Trigger
-   functions can be written in C or in some of the available procedural
-   languages.  It is not currently possible to write a SQL-language
-   trigger function.
+<a name="id659829"></a><p>   This chapter provides general information about writing trigger functions.
+   Trigger functions can be written in most of the available procedural
+   languages, including
+   <span class="application">PL/pgSQL</span> (<a href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">Chapter 36, <i><span class="application">PL/pgSQL</span> - <span class="acronym">SQL</span> Procedural Language</i></a>),
+   <span class="application">PL/Tcl</span> (<a href="pltcl.html" title="Chapter 37. PL/Tcl - Tcl Procedural Language">Chapter 37, <i>PL/Tcl - Tcl Procedural Language</i></a>),
+   <span class="application">PL/Perl</span> (<a href="plperl.html" title="Chapter 38. PL/Perl - Perl Procedural Language">Chapter 38, <i>PL/Perl - Perl Procedural Language</i></a>), and
+   <span class="application">PL/Python</span> (<a href="plpython.html" title="Chapter 39. PL/Python - Python Procedural Language">Chapter 39, <i>PL/Python - Python Procedural Language</i></a>).
+   After reading this chapter, you should consult the chapter for
+   your favorite procedural language to find out the language-specific
+   details of writing a trigger in it.
+  </p>
+<p>   It is also possible to write a trigger function in C, although
+   most people find it easier to use one of the procedural languages.
+   It is not currently possible to write a trigger function in the
+   plain SQL function language.
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="trigger-definition"></a>33.1. Overview of Trigger Behavior</h2></div></div></div>
-<p>    A trigger can be defined to execute before or after an
+<p>    A trigger is a specification that the database should automatically
+    execute a particular function whenever a certain type of operation is
+    performed.  Triggers can be defined to execute either before or after any
     <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
     <code class="command">DELETE</code> operation, either once per modified row,
     or once per <span class="acronym">SQL</span> statement.
@@ -49,24 +62,27 @@
     <a href="sql-createtrigger.html">CREATE TRIGGER</a>.
     The same trigger function can be used for multiple triggers.
    </p>
-<p>    There are two types of triggers: per-row triggers and
-    per-statement triggers. In a per-row trigger, the trigger function
-    is invoked once for every row that is affected by the statement
+<p>    <span class="productname">PostgreSQL</span> offers both <em class="firstterm">per-row</em>
+    triggers and <em class="firstterm">per-statement</em> triggers.  With a per-row
+    trigger, the trigger function
+    is invoked once for each row that is affected by the statement
     that fired the trigger. In contrast, a per-statement trigger is
     invoked only once when an appropriate statement is executed,
     regardless of the number of rows affected by that statement. In
     particular, a statement that affects zero rows will still result
     in the execution of any applicable per-statement triggers. These
-    two types of triggers are sometimes called &#8220;<span class="quote">row-level
-    triggers</span>&#8221; and &#8220;<span class="quote">statement-level triggers</span>&#8221;,
+    two types of triggers are sometimes called <em class="firstterm">row-level</em>
+    triggers and <em class="firstterm">statement-level</em> triggers,
     respectively.
    </p>
-<p>    Statement-level &#8220;<span class="quote">before</span>&#8221; triggers naturally fire before the
-    statement starts to do anything, while statement-level &#8220;<span class="quote">after</span>&#8221;
-    triggers fire at the very end of the statement.  Row-level &#8220;<span class="quote">before</span>&#8221;
+<p>    Triggers are also classified as <em class="firstterm">before</em> triggers and
+    <em class="firstterm">after</em> triggers.
+    Statement-level before triggers naturally fire before the
+    statement starts to do anything, while statement-level after
+    triggers fire at the very end of the statement.  Row-level before
     triggers fire immediately before a particular row is operated on,
-    while row-level &#8220;<span class="quote">after</span>&#8221; triggers fire at the end of the statement
-    (but before any statement-level &#8220;<span class="quote">after</span>&#8221; triggers).
+    while row-level after triggers fire at the end of the statement
+    (but before any statement-level after triggers).
    </p>
 <p>    Trigger functions invoked by per-statement triggers should always
     return <code class="symbol">NULL</code>. Trigger functions invoked by per-row
@@ -106,7 +122,7 @@
     trigger name.  In the case of before triggers, the
     possibly-modified row returned by each trigger becomes the input
     to the next trigger.  If any before trigger returns
-    <code class="symbol">NULL</code>, the operation is abandoned and subsequent
+    <code class="symbol">NULL</code>, the operation is abandoned for that row and subsequent
     triggers are not fired.
    </p>
 <p>    Typically, row before triggers are used for checking or
@@ -133,7 +149,7 @@
     to avoid infinite recursion in such scenarios.
    </p>
 <p>    When a trigger is being defined, arguments can be specified for
-    it.<a name="id659205"></a> The purpose of including arguments in the
+    it.<a name="id660192"></a> The purpose of including arguments in the
     trigger definition is to allow different triggers with similar
     requirements to call the same function.  As an example, there
     could be a generalized trigger function that takes as its

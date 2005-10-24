@@ -4,8 +4,8 @@
 <title>20.  Slony-I &#8220;Best Practices&#8221; </title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="versionupgrade.html" title="19. Using Slony-I for PostgreSQL Upgrades">
 <link rel="next" href="help.html" title="21. More Slony-I Help">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bestpractices"></a>20.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </h2></div></div></div>
-<a name="id2544981"></a><p> It is common for managers to have a desire to operate systems
+<a name="id523411"></a><p> It is common for managers to have a desire to operate systems
 using some available, documented set of &#8220;<span class="quote">best practices.</span>&#8221;
 Documenting that sort of thing is essential to ISO 9000, ISO 9001, and
 other sorts of organizational certifications. </p>
@@ -52,14 +52,14 @@ correctly.</p>
 <p> It is furthermore preferable to use a time zone where times do
 not shift around due to Daylight Savings Time. </p>
 <p> The &#8220;<span class="quote">geographically unbiased</span>&#8221; choice seems to be
-<tt class="command"><tt class="envar">TZ</tt>=UTC</tt> or
-<tt class="command"><tt class="envar">TZ</tt>=GMT</tt>. </p>
+<code class="command"><code class="envar">TZ</code>=UTC</code> or
+<code class="command"><code class="envar">TZ</code>=GMT</code>. </p>
 <p> See also <a href="requirements.html#times" title="3.3.  Time Synchronization">Section 3.3, &#8220; Time Synchronization&#8221;</a>.</p>
 </li>
 <li>
 <p> Principle: Long running transactions are Evil </p>
 <p> The FAQ has an entry on <a href="faq.html#pglistenerfull"> growth
-of <tt class="envar">pg_listener</tt> </a> which discusses this in a fair
+of <code class="envar">pg_listener</code> </a> which discusses this in a fair
 bit of detail; the long and short is that long running transactions
 have numerous ill effects.  They are particularly troublesome on an
 &#8220;<span class="quote">origin</span>&#8221; node, holding onto locks, preventing vacuums
@@ -82,11 +82,11 @@ you would need to generate your own such documents.</p>
 preventative maintenance to prevent problems from becoming serious
 enough to require <a href="failover.html" title="7. Doing switchover and failover with Slony-I"> failover </a>. </p></li>
 <li>
-<p> <tt class="command">VACUUM</tt> policy needs to be
+<p> <code class="command">VACUUM</code> policy needs to be
 carefully defined.</p>
 <p> As mentioned above, &#8220;<span class="quote">long running transactions are
-Evil.</span>&#8221; <tt class="command">VACUUM</tt>s are no exception in this.  A
-<tt class="command">VACUUM</tt> on a huge table will open a long-running
+Evil.</span>&#8221; <code class="command">VACUUM</code>s are no exception in this.  A
+<code class="command">VACUUM</code> on a huge table will open a long-running
 transaction with all the known ill effects.</p>
 </li>
 <li>
@@ -133,10 +133,10 @@ discusses the different sorts of &#8220;<span class="quote">deletion</span>&#822
 supports.  </p></li>
 <li>
 <p> <a href="locking.html" title="10. Locking Issues"> Locking issues </a></p>
-<p> Certain <span class="productname">Slony-I</span> operations, notably <a href="stmtsetaddtable.html" title="SET ADD TABLE"> <tt class="command">set add table</tt> </a>,
-<a href="stmtmoveset.html" title="MOVE SET"> <tt class="command"> move set</tt> </a>,
-<a href="stmtlockset.html" title="LOCK SET"> <tt class="command"> lock set </tt> </a>,
-and <a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <tt class="command">execute script</tt></a> require acquiring <span class="emphasis"><em>exclusive locks</em></span> on the
+<p> Certain <span class="productname">Slony-I</span> operations, notably <a href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add table</code> </a>,
+<a href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move set</code> </a>,
+<a href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set </code> </a>,
+and <a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute script</code></a> require acquiring <span class="emphasis"><em>exclusive locks</em></span> on the
 tables being replicated. </p>
 <p> Depending on the kind of activity on the databases, this may or
 may not have the effect of requiring a (hopefully brief) database
@@ -144,24 +144,24 @@ outage. </p>
 </li>
 <li>
 <p><a name="slonyuser"></a> <span class="productname">Slony-I</span>-specific user names. </p>
-<p> It has proven useful to define a <tt class="command">slony</tt> user
+<p> It has proven useful to define a <code class="command">slony</code> user
 for use by <span class="productname">Slony-I</span>, as distinct from a generic
-<tt class="command">postgres</tt> or <tt class="command">pgsql</tt> user.  </p>
+<code class="command">postgres</code> or <code class="command">pgsql</code> user.  </p>
 <p> If all sorts of automatic &#8220;<span class="quote">maintenance</span>&#8221;
-activities, such as <tt class="command">vacuum</tt>ing and performing
+activities, such as <code class="command">vacuum</code>ing and performing
 backups, are performed under the &#8220;<span class="quote">ownership</span>&#8221; of a single
 <span class="productname">PostgreSQL</span> user, it turns out to be pretty easy to run into deadlock
 problems. </p>
-<p> For instance, a series of <tt class="command">vacuums</tt> that
+<p> For instance, a series of <code class="command">vacuums</code> that
 unexpectedly run against a database that has a large
-<tt class="command">SUBSCRIBE_SET</tt> event under way may run into a
+<code class="command">SUBSCRIBE_SET</code> event under way may run into a
 deadlock which would roll back several hours worth of data copying
 work.</p>
 <p> If, instead, different maintenance roles are performed by
 different users, you may, during vital operations such as
-<tt class="command">SUBSCRIBE_SET</tt>, lock out other users at the
-<tt class="filename">pg_hba.conf</tt> level, only allowing the
-<tt class="command">slony</tt> user in, which substantially reduces the risk
+<code class="command">SUBSCRIBE_SET</code>, lock out other users at the
+<code class="filename">pg_hba.conf</code> level, only allowing the
+<code class="command">slony</code> user in, which substantially reduces the risk
 of problems while the subscription is in progress.</p>
 </li>
 <li>
@@ -211,10 +211,10 @@ shipping. </a> </p>
 </ul></div>
 <div class="itemizedlist"><ul type="disc"><li>
 <p> Things to do when subscribing nodes </p>
-<p> When a new node is running the <tt class="command">COPY_SET</tt>
+<p> When a new node is running the <code class="command">COPY_SET</code>
 event for a large replication set (<span class="emphasis"><em>e.g.</em></span> - one
 which takes several hours to subscribe) it has been found to be
-desirable to lock all users other than the <tt class="command">slony</tt>
+desirable to lock all users other than the <code class="command">slony</code>
 user out of the new subscriber because:</p>
 </li></ul></div>
 <div class="itemizedlist"><ul type="disc">
@@ -223,13 +223,13 @@ half-baked data that is not totally consistent. </p></li>
 <li><p> It is possible for applications (and maintenance
 scripts) to submit combinations of queries that will get the system
 into a deadlock situation, thereby terminating the
-<tt class="command">COPY_SET</tt> event, and requiring the subscription to
+<code class="command">COPY_SET</code> event, and requiring the subscription to
 start over again.  </p></li>
 </ul></div>
 <p> It <span class="emphasis"><em>may</em></span> be worth considering turning the
-<span class="productname">PostgreSQL</span> <tt class="function">fsync</tt> functionality off during the
+<span class="productname">PostgreSQL</span> <code class="function">fsync</code> functionality off during the
 copying of data, as this will improve performance, and if the database
-&#8220;<span class="quote">falls over</span>&#8221; during the <tt class="command">COPY_SET</tt>
+&#8220;<span class="quote">falls over</span>&#8221; during the <code class="command">COPY_SET</code>
 event, you will be restarting the copy of the whole replication
 set.</p>
 <div class="itemizedlist"><ul type="disc">
@@ -244,7 +244,7 @@ describe some of the lessons learned from managing large numbers of
 <p> Some users have set up replication on replication sets that are
 tens to hundreds of gigabytes in size, which puts some added
 &#8220;<span class="quote">strain</span>&#8221; on the system, in particular where it may take
-several days for the <tt class="command">COPY_SET</tt> event to complete.
+several days for the <code class="command">COPY_SET</code> event to complete.
 Here are some principles that have been observed for dealing with
 these sorts of situtations.</p>
 </li>
@@ -252,7 +252,7 @@ these sorts of situtations.</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> Drop all indices other than the primary key index
-while the <tt class="command">COPY_SET</tt> event is run. </p>
+while the <code class="command">COPY_SET</code> event is run. </p>
 <p> When data is copied into a table that has indices on it,
 <span class="productname">PostgreSQL</span> builds the indices incrementally, on the fly.  This is much
 slower than simply copying the data into the table, and then
@@ -264,18 +264,18 @@ and recreated automatically, which would eliminate this.</p>
 <li>
 <p> If there are large numbers of updates taking place as
 the large set is being copied, this can lead to the subscriber being
-behind by some enormous number of <tt class="command">SYNC</tt> events.</p>
-<p> If a <tt class="command"> SYNC </tt> is generated about once per
+behind by some enormous number of <code class="command">SYNC</code> events.</p>
+<p> If a <code class="command"> SYNC </code> is generated about once per
 second, that leads to the subscriber &#8220;<span class="quote">falling behind</span>&#8221; by
-around 90,000 <tt class="command">SYNC</tt>s per day, possibly for several
+around 90,000 <code class="command">SYNC</code>s per day, possibly for several
 days.  </p>
 <p> There will correspondingly be an <span class="emphasis"><em>enormous</em></span>
 growth of <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-seqlog.html">sl_seqlog</a>.  Unfortunately, once the
-<tt class="command">COPY_SET</tt> completes, users have found that the
-queries against these tables wind up reverting to <tt class="command">Seq
-Scans</tt> so that even though a particular
-<tt class="command">SYNC</tt> processing event is only processing a small
-number of those 90,000 <tt class="command">SYNC</tt> events, it still reads
+<code class="command">COPY_SET</code> completes, users have found that the
+queries against these tables wind up reverting to <code class="command">Seq
+Scans</code> so that even though a particular
+<code class="command">SYNC</code> processing event is only processing a small
+number of those 90,000 <code class="command">SYNC</code> events, it still reads
 through the entire table.  In such a case, you may never see
 replication catch up.</p>
 <p> Several things can be done that will help, involving
@@ -284,21 +284,21 @@ careful selection of <a href="slon.html" title="slon"><span class="refentrytitle
 </ul></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p> Ensure that there exists, on the
-&#8220;<span class="quote">master</span>&#8221; node, an index on <tt class="function"> sl_log_1(log_xid)</tt>.  If it doesn't exist, as the <span class="productname">Slony-I</span> instance was set up
-before version 1.1.1, see <tt class="filename"> slony1_base.sql </tt> for
+&#8220;<span class="quote">master</span>&#8221; node, an index on <code class="function"> sl_log_1(log_xid)</code>.  If it doesn't exist, as the <span class="productname">Slony-I</span> instance was set up
+before version 1.1.1, see <code class="filename"> slony1_base.sql </code> for
 the exact form that the index setup should take. </p></li>
 <li><p> On the subscriber's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, increase
-the number of <tt class="command">SYNC</tt> events processed together, with
+the number of <code class="command">SYNC</code> events processed together, with
 the <a href="slon-config-interval.html#slon-config-sync-group-maxsize">slon_conf_sync_group_maxsize</a> parameter to some
 value that allows it to process a significant portion of the
-outstanding <tt class="command">SYNC</tt> events. </p></li>
+outstanding <code class="command">SYNC</code> events. </p></li>
 <li><p> On the subscriber's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, set the
 <a href="slon-config-interval.html#slon-config-desired-sync-time">desired_sync_time</a> to 0, as the adaptive
-<tt class="command">SYNC</tt> grouping system will start with small
+<code class="command">SYNC</code> grouping system will start with small
 groupings that will, under these circumstances, perform
 poorly. </p></li>
-<li><p> Increase the <a href="slon-config-interval.html#slon-config-sync-interval">slon_conf_sync_interval</a> on the origin's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> so that <tt class="command">SYNC</tt> events are generated
-less frequently.  If a <tt class="command">SYNC</tt> is only generated once
+<li><p> Increase the <a href="slon-config-interval.html#slon-config-sync-interval">slon_conf_sync_interval</a> on the origin's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> so that <code class="command">SYNC</code> events are generated
+less frequently.  If a <code class="command">SYNC</code> is only generated once
 per minute instead of once per second, that will cut down the number
 of events by a factor of 60. </p></li>
 </ul></div>

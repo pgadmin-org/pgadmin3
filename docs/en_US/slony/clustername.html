@@ -4,8 +4,8 @@
 <title>CLUSTER NAME</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="hdrcmds.html" title="Slonik Preamble Commands">
 <link rel="prev" href="hdrcmds.html" title="Slonik Preamble Commands">
 <link rel="next" href="admconninfo.html" title="ADMIN CONNINFO">
@@ -18,10 +18,10 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">CLUSTER NAME = </tt> [<i class="replaceable"><tt> 'clustername';</tt></i>]</p></div>
+<div class="cmdsynopsis"><p><code class="command">CLUSTER NAME = </code> [<em class="replaceable"><code> 'clustername';</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2553011"></a><h2>Description</h2>
+<a name="id532178"></a><h2>Description</h2>
 <p>     Must be the very first statement in every
      <span class="application">slonik</span> script. It defines the
      namespace in which all <span class="productname">Slony-I</span>
@@ -34,14 +34,14 @@
 <p>     No user objects are supposed to live in this namespace, and the
      namespace is not allowed to exist prior to adding a database to
      the replication system.  Thus, if you add a new node using
-     <tt class="command"> pg_dump -s </tt> on a database that is already in
+     <code class="command"> pg_dump -s </code> on a database that is already in
      the cluster of replicated databases, you will need to drop the
-     namespace via the SQL command <tt class="command"> DROP SCHEMA _testcluster
-     CASCADE; </tt>.
+     namespace via the SQL command <code class="command"> DROP SCHEMA _testcluster
+     CASCADE; </code>.
     </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2553055"></a><h2>Example</h2>
+<a name="id532226"></a><h2>Example</h2>
 <pre class="programlisting">     CLUSTER NAME = 'testcluster';
     </pre>
 </div>

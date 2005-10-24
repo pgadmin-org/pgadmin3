@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterdomain.html" title="ALTER DOMAIN">
 <link rel="next" href="sql-altergroup.html" title="ALTER GROUP">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>ALTER FUNCTION &#8212; change the definition of a function</p>
 </div>
-<a name="id686343"></a><div class="refsynopsisdiv">
+<a name="id687480"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER FUNCTION <em class="replaceable"><code>name</code></em> ( [ [ <em class="replaceable"><code>argmode</code></em> ] [ <em class="replaceable"><code>argname</code></em> ] <em class="replaceable"><code>argtype</code></em> [, ...] ] )
     <em class="replaceable"><code>action</code></em> [, ... ] [ RESTRICT ]
@@ -34,18 +34,22 @@ where <em class="replaceable"><code>action</code></em> is one of:
     [ EXTERNAL ] SECURITY INVOKER | [ EXTERNAL ] SECURITY DEFINER</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686488"></a><h2>Description</h2>
+<a name="id687625"></a><h2>Description</h2>
 <p>   <code class="command">ALTER FUNCTION</code> changes the definition of a
    function.
   </p>
-<p>   You must own the function to use <code class="command">ALTER FUNCTION</code>; except for
-   <code class="command">ALTER FUNCTION OWNER</code>, which may only be executed by a superuser.
+<p>   You must own the function to use <code class="command">ALTER FUNCTION</code>.
    To change a function's schema, you must also have <code class="literal">CREATE</code>
    privilege on the new schema.
+   To alter the owner, you must also be a direct or indirect member of the new
+   owning role, and that role must have <code class="literal">CREATE</code> privilege on
+   the function's schema.  (These restrictions enforce that altering the owner
+   doesn't do anything you couldn't do by dropping and recreating the function.
+   However, a superuser can alter ownership of any function anyway.)
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686527"></a><h2>Parameters</h2>
+<a name="id687669"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing function.
@@ -110,7 +114,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686833"></a><h2>Examples</h2>
+<a name="id687974"></a><h2>Examples</h2>
 <p>   To rename the function <code class="literal">sqrt</code> for type
    <code class="type">integer</code> to <code class="literal">square_root</code>:
 </p>
@@ -131,7 +135,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686919"></a><h2>Compatibility</h2>
+<a name="id688060"></a><h2>Compatibility</h2>
 <p>   This statement is partially compatible with the <code class="command">ALTER
    FUNCTION</code> statement in the SQL standard. The standard allows more
    properties of a function to be modified, but does not provide the
@@ -142,7 +146,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686951"></a><h2>See Also</h2>
+<a name="id688093"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-dropfunction.html">DROP FUNCTION</a></span>
 </div>
 </div></body>

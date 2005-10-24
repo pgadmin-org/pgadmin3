@@ -5,8 +5,8 @@
      PATH</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtrestartnode.html" title="RESTART NODE">
 <link rel="next" href="stmtdroppath.html" title="DROP PATH">
@@ -19,10 +19,10 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><tt class="command">STORE PATH (options);</tt></p></div>
+<div class="cmdsynopsis"><p><code class="command">STORE PATH (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2553981"></a><h2>Description</h2>
+<a name="id533246"></a><h2>Description</h2>
 <p> Configures how the replication daemon of one node connects
      to the database of another node. If the replication system is
      supposed to use a special backbone network segment, this is the
@@ -46,13 +46,13 @@
      
      </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><tt class="literal"> SERVER  = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> SERVER  = ival </code></span></dt>
 <dd><p> Node ID of the database to connect to.</p></dd>
-<dt><span class="term"><tt class="literal"> CLIENT  = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> CLIENT  = ival </code></span></dt>
 <dd><p> Node ID of the replication daemon connecting.</p></dd>
-<dt><span class="term"><tt class="literal"> CONNINFO  = string </tt></span></dt>
-<dd><p> <tt class="function">PQconnectdb()</tt> argument to establish the connection.</p></dd>
-<dt><span class="term"><tt class="literal"> CONNRETRY  = ival </tt></span></dt>
+<dt><span class="term"><code class="literal"> CONNINFO  = string </code></span></dt>
+<dd><p> <code class="function">PQconnectdb()</code> argument to establish the connection.</p></dd>
+<dt><span class="term"><code class="literal"> CONNRETRY  = ival </code></span></dt>
 <dd><p> Number of seconds to wait before another attempt to
 	 connect is made in case the server is unavailable. Default is 10.
 	</p></dd>
@@ -62,7 +62,7 @@
 <p> This uses <a href="function.storepath-integer-integer-text-integer.html">schemadocstorepath( integer, integer, text, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2554095"></a><h2>Example</h2>
+<a name="id533371"></a><h2>Example</h2>
 <pre class="programlisting">STORE PATH ( SERVER = 1, CLIENT = 2, 
              CONNINFO = 'dbname=testdb host=server1 user=slony'
            );

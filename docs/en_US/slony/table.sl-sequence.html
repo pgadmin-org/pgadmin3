@@ -7,8 +7,8 @@
         </title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
 <link rel="prev" href="table.sl-seqlog.html" title="1.10.          Table:
          
@@ -23,21 +23,21 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="table.sl-sequence"></a>1.11.          Table:
          
-         <tt class="structname">sl_sequence</tt>
+         <code class="structname">sl_sequence</code>
         </h2></div></div></div>
 <p>          Similar to sl_table, each entry identifies a sequence being replicated.
         </p>
 <p>          </p>
 <div class="variablelist">
-<p class="title"><b>              Structure of <tt class="structname">sl_sequence</tt>
+<p class="title"><b>              Structure of <code class="structname">sl_sequence</code>
             </b></p>
 <dl>
-<dt><span class="term"><tt class="structfield">seq_id</tt></span></dt>
+<dt><span class="term"><code class="structfield">seq_id</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
-                <tt class="literal">PRIMARY KEY</tt>
+                <code class="literal">PRIMARY KEY</code>
 
 
 
@@ -55,19 +55,19 @@
 <p>                An internally-used ID for Slony-I to use in its sequencing of updates
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">seq_reloid</tt></span></dt>
+<dt><span class="term"><code class="structfield">seq_reloid</code></span></dt>
 <dd>
-<p>                <tt class="type">oid</tt>
+<p>                <code class="type">oid</code>
 
 
 
 
-                      <tt class="literal">UNIQUE</tt>
+                      <code class="literal">UNIQUE</code>
 
 
 
 
-                <tt class="literal">NOT NULL</tt>
+                <code class="literal">NOT NULL</code>
 
 
 
@@ -79,13 +79,13 @@
 <p>                The OID of the sequence object
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">seq_relname</tt></span></dt>
+<dt><span class="term"><code class="structfield">seq_relname</code></span></dt>
 <dd>
-<p>                <tt class="type">name</tt>
+<p>                <code class="type">name</code>
 
 
 
-                <tt class="literal">NOT NULL</tt>
+                <code class="literal">NOT NULL</code>
 
 
 
@@ -95,13 +95,13 @@
 <p>                The name of the sdequence in pg_catalog.pg_class.relname used to recover from a dump/restore cycle
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">seq_nspname</tt></span></dt>
+<dt><span class="term"><code class="structfield">seq_nspname</code></span></dt>
 <dd>
-<p>                <tt class="type">name</tt>
+<p>                <code class="type">name</code>
 
 
 
-                <tt class="literal">NOT NULL</tt>
+                <code class="literal">NOT NULL</code>
 
 
 
@@ -111,9 +111,9 @@
 <p>                The name of the schema in pg_catalog.pg_namespace.nspname used to recover from a dump/restore cycle
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">seq_set</tt></span></dt>
+<dt><span class="term"><code class="structfield">seq_set</code></span></dt>
 <dd>
-<p>                <tt class="type">integer</tt>
+<p>                <code class="type">integer</code>
 
 
 
@@ -126,16 +126,16 @@
 
 
 
-                <tt class="literal">REFERENCES</tt> <a href="table.sl-set.html">sl_set</a>&gt;
+                <code class="literal">REFERENCES</code> <a href="table.sl-set.html">sl_set</a>&gt;
 
 
               </p>
 <p>                Indicates which replication set the object is in
               </p>
 </dd>
-<dt><span class="term"><tt class="structfield">seq_comment</tt></span></dt>
+<dt><span class="term"><code class="structfield">seq_comment</code></span></dt>
 <dd>
-<p>                <tt class="type">text</tt>
+<p>                <code class="type">text</code>
 
 
 

@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>18.3. Role Membership</title>
+<title>18.4. Role Membership</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
-<link rel="prev" href="role-attributes.html" title="18.2. Role Attributes">
-<link rel="next" href="privileges.html" title="18.4. Privileges">
+<link rel="prev" href="privileges.html" title="18.3. Privileges">
+<link rel="next" href="perm-functions.html" title="18.5. Functions and Triggers">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="role-membership"></a>18.3. Role Membership</h2></div></div></div>
-<a name="id603351"></a><p>   It is frequently convenient to group users together to ease
+<a name="role-membership"></a>18.4. Role Membership</h2></div></div></div>
+<a name="id604130"></a><p>   It is frequently convenient to group users together to ease
    management of privileges: that way, privileges can be granted to, or
    revoked from, a group as a whole.  In <span class="productname">PostgreSQL</span>
    this is done by creating a role that represents the group, and then
@@ -102,6 +102,18 @@ RESET ROLE;</pre>
     they were members of.
    </p>
 </div>
+<p>   The role attributes <code class="literal">LOGIN</code>, <code class="literal">SUPERUSER</code>,
+   <code class="literal">CREATEDB</code>, and <code class="literal">CREATEROLE</code> can be thought of as
+   special privileges, but they are never inherited as ordinary privileges
+   on database objects are.  You must actually <code class="command">SET ROLE</code> to a
+   specific role having one of these attributes in order to make use of
+   the attribute.  Continuing the above example, we might well choose to
+   grant <code class="literal">CREATEDB</code> and <code class="literal">CREATEROLE</code> to the
+   <code class="literal">admin</code> role.  Then a session connecting as role <code class="literal">joe</code>
+   would not have these privileges immediately, only after doing
+   <code class="command">SET ROLE admin</code>.
+  </p>
+<p>  </p>
 <p>   To destroy a group role, use <a href="sql-droprole.html">DROP ROLE</a>:
 </p>
 <pre class="synopsis">DROP ROLE <em class="replaceable"><code>name</code></em>;</pre>

@@ -4,8 +4,8 @@
 <title>7. Doing switchover and failover with Slony-I</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="reshape.html" title="6. Reshaping a Cluster">
 <link rel="next" href="listenpaths.html" title="8. Slony-I listen paths">
@@ -15,7 +15,7 @@
 <a name="failover"></a>7. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2539716"></a>7.1. Foreword</h3></div></div></div>
+<a name="id517638"></a>7.1. Foreword</h3></div></div></div>
 <p><span class="productname">Slony-I</span> is an asynchronous replication system.  Because of
 that, it is almost certain that at the moment the current origin of a
 set fails, the final transactions committed at the origin will have
@@ -38,8 +38,8 @@ simple 2 node replication system with <span class="productname">Slony-I</span>.<
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2539775"></a>7.2.  Controlled Switchover</h3></div></div></div>
-<a name="id2539779"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
+<a name="id517697"></a>7.2.  Controlled Switchover</h3></div></div></div>
+<a name="id517701"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
 &#8220;<span class="quote">subscriber</span>&#8221; as node2 (<span class="emphasis"><em>e.g.</em></span> -
 slave).  A web application on a third server is accessing the database
 on node1.  Both databases are up and running and replication is more
@@ -89,8 +89,8 @@ be any loss of data.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2539892"></a>7.3.  Failover</h3></div></div></div>
-<a name="id2539895"></a><p> If some more serious problem occurs on the
+<a name="id517825"></a>7.3.  Failover</h3></div></div></div>
+<a name="id517829"></a><p> If some more serious problem occurs on the
 &#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
 undesirable circumstance, as transactions &#8220;<span class="quote">committed</span>&#8221; on
 the origin, but not applied to the subscribers, will be lost.  You may
@@ -142,8 +142,8 @@ command:
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2540036"></a>7.4.  Automating <tt class="command"> FAIL OVER </tt> </h3></div></div></div>
-<p> If you do choose to automate <tt class="command">FAIL OVER </tt>, it
+<a name="id517979"></a>7.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
+<p> If you do choose to automate <code class="command">FAIL OVER </code>, it
 is important to do so <span class="emphasis"><em>carefully.</em></span> You need to have
 good assurance that the failed node is well and truly failed, and you
 need to be able to assure that the failed node will not accidentally
@@ -173,7 +173,7 @@ would remain accessible to system administrators.  </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2540100"></a>7.5. After Failover, Reconfiguring node1</h3></div></div></div>
+<a name="id518048"></a>7.5. After Failover, Reconfiguring node1</h3></div></div></div>
 <p> After the above failover, the data stored on node1 will rapidly
 become increasingly out of sync with the rest of the nodes, and must
 be treated as corrupt.  Therefore, the only way to get node1 back and
@@ -183,7 +183,7 @@ procedure.</p>
 <p> A good reason <span class="emphasis"><em>not</em></span> to do this automatically
 is the fact that important updates (from a
 <span class="emphasis"><em>business</em></span> perspective) may have been
-<tt class="command">commit</tt>ted on the failing system.  You probably want
+<code class="command">commit</code>ted on the failing system.  You probably want
 to analyze the last few transactions that made it into the failed node
 to see if some of them need to be reapplied on the &#8220;<span class="quote">live</span>&#8221;
 cluster.  For instance, if someone was entering bank deposits

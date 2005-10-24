@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
 <link rel="next" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-matching"></a>9.7. Pattern Matching</h2></div></div></div>
-<a name="id549709"></a><p>    There are three separate approaches to pattern matching provided
+<a name="id549559"></a><p>    There are three separate approaches to pattern matching provided
     by <span class="productname">PostgreSQL</span>: the traditional
     <span class="acronym">SQL</span> <code class="function">LIKE</code> operator, the
     more recent <code class="function">SIMILAR TO</code> operator (part of 
@@ -32,7 +32,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-like"></a>9.7.1. <code class="function">LIKE</code></h3></div></div></div>
-<a name="id549787"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<a name="id549636"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
 <em class="replaceable"><code>string</code></em> NOT LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
 <p>     Every <em class="replaceable"><code>pattern</code></em> defines a set of strings.
      The <code class="function">LIKE</code> expression returns true if the
@@ -103,7 +103,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-similarto-regexp"></a>9.7.2. <code class="function">SIMILAR TO</code> Regular Expressions</h3></div></div></div>
-<a name="id550110"></a><a name="id550116"></a><a name="id550123"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<a name="id549966"></a><a name="id549973"></a><a name="id549979"></a><a name="id549985"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
 <em class="replaceable"><code>string</code></em> NOT SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
 <p>     The <code class="function">SIMILAR TO</code> operator returns true or
      false depending on whether its pattern matches the given string.
@@ -186,7 +186,7 @@ substring('foobar' from '#"o_b#"%' for '#')    <em class="lineannotation"><span 
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-posix-regexp"></a>9.7.3. <span class="acronym">POSIX</span> Regular Expressions</h3></div></div></div>
-<a name="id550471"></a><p>    <a href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
+<a name="id550334"></a><p>    <a href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
     operators for pattern matching using POSIX regular expressions.
    </p>
 <div class="table">
@@ -236,7 +236,7 @@ substring('foobar' from '#"o_b#"%' for '#')    <em class="lineannotation"><span 
     </p>
 <p>     A regular expression is a character sequence that is an
      abbreviated definition of a set of strings (a <em class="firstterm">regular
-      set</em>).  A string is said to match a regular expression
+     set</em>).  A string is said to match a regular expression
      if it is a member of the regular set described by the regular
      expression.  As with <code class="function">LIKE</code>, pattern characters
      match string characters exactly unless they are special characters
@@ -257,7 +257,8 @@ substring('foobar' from '#"o_b#"%' for '#')    <em class="lineannotation"><span 
    </p>
 <p>     The <code class="function">substring</code> function with two parameters,
      <code class="function">substring(<em class="replaceable"><code>string</code></em>,  from
-     <em class="replaceable"><code>pattern</code></em>)</code>, provides extraction of a substring
+     <em class="replaceable"><code>pattern</code></em>)</code>, provides extraction of a
+     substring
      that matches a POSIX regular expression pattern.  It returns null if
      there is no match, otherwise the portion of the text that matched the
      pattern.  But if the pattern contains any parentheses, the portion
@@ -273,6 +274,41 @@ substring('foobar' from '#"o_b#"%' for '#')    <em class="lineannotation"><span 
 </p>
 <pre class="programlisting">substring('foobar' from 'o.b')     <em class="lineannotation"><span class="lineannotation">oob</span></em>
 substring('foobar' from 'o(.)b')   <em class="lineannotation"><span class="lineannotation">o</span></em></pre>
+<p>
+   </p>
+<p>     The <code class="function">regexp_replace</code> function provides substitution of
+     new text for substrings that match POSIX regular expression patterns.
+     It has the syntax
+     <code class="function">regexp_replace</code>(<em class="replaceable"><code>source</code></em>,
+     <em class="replaceable"><code>pattern</code></em>, <em class="replaceable"><code>replacement</code></em>
+     [<span class="optional">, <em class="replaceable"><code>flags</code></em> </span>]).
+     The <em class="replaceable"><code>source</code></em> string is returned unchanged if
+     there is no match to the <em class="replaceable"><code>pattern</code></em>.  If there is a
+     match, the <em class="replaceable"><code>source</code></em> string is returned with the
+     <em class="replaceable"><code>replacement</code></em> string substituted for the matching
+     substring.  The <em class="replaceable"><code>replacement</code></em> string can contain
+     <code class="literal">\</code><em class="replaceable"><code>n</code></em>, where <em class="replaceable"><code>n</code></em> is <code class="literal">1</code>
+     through <code class="literal">9</code>, to indicate that the source substring matching the
+     <em class="replaceable"><code>n</code></em>'th parenthesized subexpression of the pattern should be
+     inserted, and it can contain <code class="literal">\&amp;</code> to indicate that the
+     substring matching the entire pattern should be inserted.  Write
+     <code class="literal">\\</code> if you need to put a literal backslash in the replacement
+     text.  (As always, remember to double backslashes written in literal
+     constant strings.)
+     The <em class="replaceable"><code>flags</code></em> parameter is an optional text
+     string containing zero or more single-letter flags that change the
+     function's behavior.  Flag <code class="literal">i</code> specifies case-insensitive
+     matching, while flag <code class="literal">g</code> specifies replacement of each matching
+     substring rather than only the first one.
+    </p>
+<p>    Some examples:
+</p>
+<pre class="programlisting">regexp_replace('foobarbaz', 'b..', 'X')
+                                   <em class="lineannotation"><span class="lineannotation">fooXbaz</span></em>
+regexp_replace('foobarbaz', 'b..', 'X', 'g')
+                                   <em class="lineannotation"><span class="lineannotation">fooXX</span></em>
+regexp_replace('foobarbaz', 'b(..)', 'X\\1Y', 'g')
+                                   <em class="lineannotation"><span class="lineannotation">fooXarYXazY</span></em></pre>
 <p>
    </p>
 <p>    <span class="productname">PostgreSQL</span>'s regular expressions are implemented

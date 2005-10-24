@@ -4,8 +4,8 @@
 <title>4. Monitoring</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="subscribenodes.html" title="3. Subscribing Nodes">
 <link rel="next" href="maintenance.html" title="5. Slony-I Maintenance">
@@ -17,7 +17,7 @@
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2538377"></a>4.1. CONFIG notices</h3></div></div></div>
+<a name="id516180"></a>4.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -34,7 +34,7 @@ CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2473157"></a>4.2. DEBUG Notices</h3></div></div></div>
+<a name="id516478"></a>4.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -63,7 +63,7 @@ events.</p></dd>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2473209"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id516534"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
 <p> Note that as far as slon is concerned, there is no "master" or
 "slave."  They are just nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -82,12 +82,12 @@ communicate with one another, and nothing else will happen... </p>
 has much to say, and neither node knows how to talk to any other node.</p>
 </li>
 <li>
-<p> Do the <tt class="command">STORE PATH</tt> for the
+<p> Do the <code class="command">STORE PATH</code> for the
 communications paths.  That will allow the nodes to start to become
 aware of one another.</p>
 <p> In version 1.0, <a href="table.sl-listen.html">sl_listen</a> is not set up
 automatically, so things still remain quiet until you explicitly
-submit <tt class="command">STORE LISTEN</tt> requests. In version 1.1, the
+submit <code class="command">STORE LISTEN</code> requests. In version 1.1, the
 &#8220;<span class="quote">listen paths</span>&#8221; are set up automatically, which will much
 more quickly get the communications network up and running.  </p>
 <p> If you look at the contents of the tables <a href="table.sl-node.html">sl_node</a> and <a href="table.sl-path.html">sl_path</a> and <a href="table.sl-listen.html">sl_listen</a>, on each node, that should give a good idea
@@ -100,21 +100,21 @@ missing.</p>
 </li>
 <li>
 <p> If needed (<span class="emphasis"><em>e.g.</em></span> - before version
-1.1), submit <tt class="command">STORE LISTEN</tt> requests to indicate how
+1.1), submit <code class="command">STORE LISTEN</code> requests to indicate how
 the nodes will use the communications paths. </p>
 <p> Once this has been done, the nodes' logs should show a greater
 level of activity, with events periodically being initiated on one
 node or the other, and propagating to the other. </p>
 </li>
-<li><p> You'll set up the set (<tt class="command">CREATE
-SET</tt>), add tables (<tt class="command">SET ADD TABLE</tt>), and
-sequences (<tt class="command">SET ADD SEQUENCE</tt>), and will see relevant
+<li><p> You'll set up the set (<code class="command">CREATE
+SET</code>), add tables (<code class="command">SET ADD TABLE</code>), and
+sequences (<code class="command">SET ADD SEQUENCE</code>), and will see relevant
 events only on the origin node for the set. </p></li>
 <li>
-<p> Then, when you submit the <tt class="command">SUBSCRIBE SET</tt>
+<p> Then, when you submit the <code class="command">SUBSCRIBE SET</code>
 request, the event should go to both nodes. </p>
 <p> The origin node has little more to do, after that...  The
-subscriber will then have a <tt class="command">COPY_SET</tt> event, which
+subscriber will then have a <code class="command">COPY_SET</code> event, which
 will lead to logging information about adding each table and copying
 its data.</p>
 </li>
@@ -122,10 +122,10 @@ its data.</p>
 <p>After that, you'll mainly see two sorts of behaviour:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> On the origin, there won't be much logged, just
-indication that some <tt class="command">SYNC</tt> events are being
+indication that some <code class="command">SYNC</code> events are being
 generated and confirmed by other nodes.</p></li>
 <li><p> On the subscriber, there will be reports of
-<tt class="command">SYNC</tt> events, and that the subscriber pulls data
+<code class="command">SYNC</code> events, and that the subscriber pulls data
 from the provider for the relevant set(s).  This will happen
 infrequently if there are no updates going to the origin node; it will
 happen frequently when the origin sees heavy updates. </p></li>
@@ -136,13 +136,13 @@ about how the threads work, what to expect in the logs after you run a</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2538792"></a>4.4.  Nagios Replication Checks </h3></div></div></div>
-<p> The script in the <tt class="filename">tools</tt> directory called
-<tt class="command"> pgsql_replication_check.pl </tt> represents about best
+<a name="id516615"></a>4.4.  Nagios Replication Checks </h3></div></div></div>
+<p> The script in the <code class="filename">tools</code> directory called
+<code class="command"> pgsql_replication_check.pl </code> represents about best
 answers yet arrived at in several attempts to build replication tests
 to plug into the <a href="http://www.nagios.org/" target="_top"> Nagios </a>
 system monitoring tool.</p>
-<p> A former script, <tt class="filename">test_slony_replication.pl</tt>, took a &#8220;<span class="quote">clever</span>&#8221;
+<p> A former script, <code class="filename">test_slony_replication.pl</code>, took a &#8220;<span class="quote">clever</span>&#8221;
 approach where a &#8220;<span class="quote">test script</span>&#8221; is periodically run, which
 rummages through the <span class="productname">Slony-I</span> configuration to find origin and
 subscribers, injects a change, and watches for its propagation through
@@ -155,11 +155,11 @@ approach has been fragile to numerous error conditions.</p></li>
 <li><p> Nagios has no ability to benefit from the
 &#8220;<span class="quote">cleverness</span>&#8221; of automatically exploring the set of nodes.</p></li>
 </ul></div>
-<p> The new script, <tt class="command">pgsql_replication_check.pl</tt>,
+<p> The new script, <code class="command">pgsql_replication_check.pl</code>,
 takes the minimalist approach of assuming that the system is an online
 system that sees regular &#8220;<span class="quote">traffic,</span>&#8221; so that you can
 define a view specifically for the replication test called
-<tt class="envar">replication_status</tt> which is expected to see regular
+<code class="envar">replication_status</code> which is expected to see regular
 updates.  The view simply looks for the youngest
 &#8220;<span class="quote">transaction</span>&#8221; on the node, and lists its timestamp, age,
 and some bit of application information that might seem useful to see.</p>
@@ -178,11 +178,11 @@ that is to be monitored; that is the way
 <a name="testslonystate"></a>4.5.  test_slony_state</h3></div></div></div>
 <p> This script is in preliminary stages, and may be used to do
 some analysis of the state of a <span class="productname">Slony-I</span> cluster.</p>
-<p> You specify arguments including <tt class="option">database</tt>,
-<tt class="option">host</tt>, <tt class="option">user</tt>,
-<tt class="option">cluster</tt>, <tt class="option">password</tt>, and
-<tt class="option">port</tt> to connect to any of the nodes on a cluster.
-You also specify a <tt class="option">mailprog</tt> command (which should be
+<p> You specify arguments including <code class="option">database</code>,
+<code class="option">host</code>, <code class="option">user</code>,
+<code class="option">cluster</code>, <code class="option">password</code>, and
+<code class="option">port</code> to connect to any of the nodes on a cluster.
+You also specify a <code class="option">mailprog</code> command (which should be
 a program equivalent to <span class="productname">Unix</span>
 <span class="application">mailx</span>) and a recipient of email. </p>
 <p> The script then rummages through <a href="table.sl-path.html">sl_path</a>
@@ -212,7 +212,7 @@ taking place.</p>
 long time</p>
 <p> This only works properly if the statistics collector is
 configured to collect command strings, as controlled by the option
-<tt class="option"> stats_command_string = true </tt> in <tt class="filename">postgresql.conf </tt>.</p>
+<code class="option"> stats_command_string = true </code> in <code class="filename">postgresql.conf </code>.</p>
 <p> If you have broken applications that hold connections open,
 this will find them.</p>
 <p> If you have broken applications that hold connections open,

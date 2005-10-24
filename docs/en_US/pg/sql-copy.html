@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-commit-prepared.html" title="COMMIT PREPARED">
 <link rel="next" href="sql-createaggregate.html" title="CREATE AGGREGATE">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>COPY &#8212; copy data between a file and a table</p>
 </div>
-<a name="id694690"></a><div class="refsynopsisdiv">
+<a name="id695887"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replaceable"><code>column</code></em> [, ...] ) ]
     FROM { '<em class="replaceable"><code>filename</code></em>' | STDIN }
@@ -44,7 +44,7 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
                 [ FORCE QUOTE <em class="replaceable"><code>column</code></em> [, ...] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id694824"></a><h2>Description</h2>
+<a name="id696021"></a><h2>Description</h2>
 <p>   <code class="command">COPY</code> moves data between
    <span class="productname">PostgreSQL</span> tables and standard file-system
    files. <code class="command">COPY TO</code> copies the contents of a table
@@ -68,7 +68,7 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id694921"></a><h2>Parameters</h2>
+<a name="id696118"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>tablename</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing table.
@@ -150,7 +150,7 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id695276"></a><h2>Notes</h2>
+<a name="id696474"></a><h2>Notes</h2>
 <p>    <code class="command">COPY</code> can only be used with plain tables, not
     with views.
    </p>
@@ -212,9 +212,9 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id695537"></a><h2>File Formats</h2>
+<a name="id696734"></a><h2>File Formats</h2>
 <div class="refsect2" lang="en">
-<a name="id695541"></a><h3>Text Format</h3>
+<a name="id696738"></a><h3>Text Format</h3>
 <p>    When <code class="command">COPY</code> is used without the <code class="literal">BINARY</code>
     or <code class="literal">CSV</code> options,
     the data read or written is a text file with one line per table row.
@@ -339,12 +339,12 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id695925"></a><h3>CSV Format</h3>
+<a name="id697122"></a><h3>CSV Format</h3>
 <p>    This format is used for importing and exporting the Comma
     Separated Value (<code class="literal">CSV</code>) file format used by many other
     programs, such as spreadsheets. Instead of the escaping used by
     <span class="productname">PostgreSQL</span>'s standard text mode, it
-    produces and recognises the common CSV escaping mechanism.
+    produces and recognizes the common CSV escaping mechanism.
    </p>
 <p>    The values in each record are separated by the <code class="literal">DELIMITER</code>
     character. If the value contains the delimiter character, the
@@ -400,14 +400,14 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
 </div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id696159"></a><h3>Binary Format</h3>
+<a name="id697357"></a><h3>Binary Format</h3>
 <p>    The file format used for <code class="command">COPY BINARY</code> changed in
     <span class="productname">PostgreSQL</span> 7.4. The new format consists
     of a file header, zero or more tuples containing the row data, and
     a file trailer. Headers and data are now in network byte order.
    </p>
 <div class="refsect3" lang="en">
-<a name="id696183"></a><h4>File Header</h4>
+<a name="id697380"></a><h4>File Header</h4>
 <p>     The file header consists of 15 bytes of fixed fields, followed
      by a variable-length header extension area.  The fixed fields are:
 
@@ -462,7 +462,7 @@ is left for a later release.
     </p>
 </div>
 <div class="refsect3" lang="en">
-<a name="id696279"></a><h4>Tuples</h4>
+<a name="id697477"></a><h4>Tuples</h4>
 <p>Each tuple begins with a 16-bit integer count of the number of fields in the
 tuple.  (Presently, all tuples in a table will have the same count, but that
 might not always be true.)  Then, repeated for each field in the tuple, there
@@ -492,7 +492,7 @@ OIDs to be shown as null if that ever proves desirable.
     </p>
 </div>
 <div class="refsect3" lang="en">
-<a name="id696352"></a><h4>File Trailer</h4>
+<a name="id697549"></a><h4>File Trailer</h4>
 <p>     The file trailer consists of a 16-bit integer word containing -1.  This
      is easily distinguished from a tuple's field-count word.
     </p>
@@ -504,7 +504,7 @@ OIDs to be shown as null if that ever proves desirable.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id696367"></a><h2>Examples</h2>
+<a name="id697564"></a><h2>Examples</h2>
 <p>   The following example copies a table to the client
    using the vertical bar (<code class="literal">|</code>) as the field delimiter:
 </p>
@@ -514,6 +514,16 @@ OIDs to be shown as null if that ever proves desirable.
 <p>   To copy data from a file into the <code class="literal">country</code> table:
 </p>
 <pre class="programlisting">COPY country FROM '/usr1/proj/bray/sql/country_data';</pre>
+<p>
+  </p>
+<p>   To copy into a file just the countries whose names start with 'A'
+   using a temporary table which is automatically deleted:
+</p>
+<pre class="programlisting">BEGIN;
+CREATE TEMP TABLE a_list_countries AS
+    SELECT * FROM country WHERE country_name LIKE 'A%';
+COPY a_list_countries TO '/usr1/proj/bray/sql/a_list_countries.copy';
+ROLLBACK;</pre>
 <p>
   </p>
 <p>   Here is a sample of data suitable for copying into a table from
@@ -547,7 +557,7 @@ ZW      ZIMBABWE</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id696467"></a><h2>Compatibility</h2>
+<a name="id697679"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">COPY</code> statement in the SQL standard.
   </p>
 <p>   The following syntax was used before <span class="productname">PostgreSQL</span>

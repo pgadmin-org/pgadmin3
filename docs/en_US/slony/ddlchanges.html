@@ -4,8 +4,8 @@
 <title>14. Database Schema Changes (DDL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="logshipping.html" title="13. Log Shipping - Slony-I with Files">
 <link rel="next" href="usingslonik.html" title="15. Using Slonik">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddlchanges"></a>14. Database Schema Changes (DDL)</h2></div></div></div>
-<a name="id2542726"></a><p>When changes are made to the database schema,
+<a name="id520949"></a><p>When changes are made to the database schema,
 <span class="emphasis"><em>e.g.</em></span> - adding fields to a table, it is necessary
 for this to be handled rather carefully, otherwise different nodes may
 get rather deranged because they disagree on how particular tables are
@@ -25,7 +25,7 @@ so important if you can take something of an outage to do schema
 changes, but if you want to do upgrades that take place while
 transactions are still winding their way through your systems, this is
 necessary.  </p>
-<p>It is also necessary to use <tt class="command">EXECUTE SCRIPT</tt> if
+<p>It is also necessary to use <code class="command">EXECUTE SCRIPT</code> if
 you alter tables so as to change their schemas.  If you do not, then
 you may run into the problems <a href="faq.html#neededexecddl"> described
 here </a> where triggers on modified tables do not take account of
@@ -35,7 +35,7 @@ subscriber nodes.  </p>
 things</span>&#8221; about <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>The script <span class="emphasis"><em>must not</em></span> contain
-transaction <tt class="command">BEGIN</tt> or <tt class="command">END</tt>
+transaction <code class="command">BEGIN</code> or <code class="command">END</code>
 statements, as the script is already executed inside a transaction.
 In <span class="productname">PostgreSQL</span> version 8, the introduction of nested transactions
 changes this somewhat, but you must still remain aware that the
@@ -120,10 +120,10 @@ more discussion of related issues.</p>
 here: <a href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2543030"></a>14.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
-process using <tt class="command">EXECUTE SCRIPT</tt></h3></div></div></div>
+<a name="id521276"></a>14.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+process using <code class="command">EXECUTE SCRIPT</code></h3></div></div></div>
 <p> While it is <span class="emphasis"><em> vitally necessary </em></span> to use
-<tt class="command">EXECUTE SCRIPT</tt> to propagate DDL modifications to
+<code class="command">EXECUTE SCRIPT</code> to propagate DDL modifications to
 tables that are being replicated, there are several sorts of changes
 that you might wish to handle some other way:
 
@@ -134,7 +134,7 @@ that you might wish to handle some other way:
 triggers that <span class="productname">Slony-I</span> <span class="emphasis"><em>doesn't</em></span> replicate, such as
 stored functions, and it is quite likely to cause you grief if you
 propagate updates to them associated with a replication set where
-<tt class="command">EXECUTE SCRIPT</tt> will lock a whole lot of tables that
+<code class="command">EXECUTE SCRIPT</code> will lock a whole lot of tables that
 didn't really need to be locked.</p>
 <p> If you are propagating a stored procedure that
 <span class="emphasis"><em>isn't</em></span> used all the time (such that you'd care if
@@ -145,8 +145,8 @@ no special use of <span class="productname">Slony-I</span>.</p>
 propagated at the same location in the transaction stream on all the
 nodes, then you but no tables need to be locked, then you might create
 a replication set that contains <span class="emphasis"><em>no</em></span> tables,
-subscribe all the appropriate nodes to it, and use <tt class="command">EXECUTE
-SCRIPT</tt>, specifying that &#8220;<span class="quote">empty set.</span>&#8221;</p>
+subscribe all the appropriate nodes to it, and use <code class="command">EXECUTE
+SCRIPT</code>, specifying that &#8220;<span class="quote">empty set.</span>&#8221;</p>
 </li>
 <li>
 <p> You may want an extra index on some replicated
@@ -164,7 +164,7 @@ subscriber(s) will be unable to apply changes coming from the origin
 that violate the constraints.</p>
 <p> But it's no big deal to add some performance-enhancing indices.
 You should almost certainly <span class="emphasis"><em> not</em></span> use
-<tt class="command">EXECUTE SCRIPT</tt> to add them; that leads to some
+<code class="command">EXECUTE SCRIPT</code> to add them; that leads to some
 replication set locking and unlocking tables, and possibly failing to
 apply the event due to some locks outstanding on objects and having to
 retry a few times before it gets the change in.  If you instead apply
@@ -182,7 +182,7 @@ created.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2543187"></a>14.2.  Testing DDL Changes </h3></div></div></div>
+<a name="id521440"></a>14.2.  Testing DDL Changes </h3></div></div></div>
 <p> A method for testing DDL changes has been pointed out as a
 likely &#8220;<span class="quote">best practice.</span>&#8221;</p>
 <p> You <span class="emphasis"><em>need</em></span> to test DDL scripts in a
@@ -192,7 +192,7 @@ out of sync, replication is likely to fall over, and this takes place
 at what is quite likely one of the most inconvenient times, namely the
 moment when you wanted it to <span class="emphasis"><em> work. </em></span></p>
 <p> You may indeed check to see if schema scripts work well or
-badly, by running them by hand, against each node, adding <tt class="command">BEGIN; </tt> at the beginning, and <tt class="command"> ROLLBACK; </tt>
+badly, by running them by hand, against each node, adding <code class="command">BEGIN; </code> at the beginning, and <code class="command"> ROLLBACK; </code>
 at the end, so that the would-be changes roll back.</p>
 <p> If this script works OK on all of the nodes, that suggests that
 it should work fine everywhere if executed via Slonik.  If problems
@@ -203,7 +203,7 @@ the state of affairs on those nodes so that the script
 </p>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p> If the SQL script contains a <tt class="command"> COMMIT;</tt> somewhere before the <tt class="command"> ROLLBACK; </tt>, that
+<p> If the SQL script contains a <code class="command"> COMMIT;</code> somewhere before the <code class="command"> ROLLBACK; </code>, that
 may allow changes to go in unexpectedly.  </p>
 </div>
 </div>

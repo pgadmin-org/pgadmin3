@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="prev" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="postmaster-shutdown.html" title="16.5. Shutting Down the Server">
@@ -22,7 +22,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sysvipc"></a>16.4.1. Shared Memory and Semaphores</h3></div></div></div>
-<a name="id587573"></a><a name="id587583"></a><p>    Shared memory and semaphores are collectively referred to as
+<a name="id588046"></a><a name="id588056"></a><p>    Shared memory and semaphores are collectively referred to as
     &#8220;<span class="quote"><span class="systemitem">System V</span>
     <span class="acronym">IPC</span></span>&#8221; (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
@@ -117,7 +117,7 @@
 </tbody>
 </table>
 </div>
-<p>    <a name="id587889"></a> The most important
+<p>    <a name="id588361"></a> The most important
     shared memory parameter is <code class="varname">SHMMAX</code>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <code class="function">shmget</code> like <span class="errorname">Invalid argument</span>, it is
@@ -243,7 +243,7 @@ options "SEMMNS=240"</pre>
         To have these settings persist over reboots, modify
         <code class="filename">/etc/sysctl.conf</code>.
        </p>
-<p>        The remaining sempahore settings are read-only as far as
+<p>        The remaining semaphore settings are read-only as far as
         <code class="command">sysctl</code> is concerned, but can be changed
         before boot using the <code class="command">loader</code> prompt:
 </p>
@@ -342,13 +342,17 @@ sysctl -w kern.sysv.shmmni
 sysctl -w kern.sysv.shmseg
 sysctl -w kern.sysv.shmall</pre>
 <p>
-        In OS X 10.3, these commands have been moved to <code class="filename">/etc/rc</code>
-        and must be edited there.  You'll need to reboot to make changes
-        take effect.  Note that <code class="filename">/etc/rc</code> is usually
-        overwritten by OS X updates (such as 10.3.6 to 10.3.7) so you
-        should expect to have to redo your editing after each update.
+        In OS X 10.3 and later, these commands have been moved to
+        <code class="filename">/etc/rc</code> and must be edited there.  Note that
+        <code class="filename">/etc/rc</code> is usually overwritten by OS X updates (such as
+        10.3.6 to 10.3.7) so you should expect to have to redo your editing
+        after each update.  In all versions, you'll need to reboot to make
+        changes take effect.  
        </p>
 <p>        <code class="varname">SHMALL</code> is measured in 4KB pages on this platform.
+        Also note that some releases of OS X will reject attempts to
+        set <code class="varname">SHMMAX</code> to a value that isn't an exact multiple
+        of 4096.
        </p>
 </dd>
 <dt><span class="term"><span class="systemitem">SCO OpenServer</span></span></dt>
@@ -481,7 +485,7 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id589264"></a>16.4.2. Resource Limits</h3></div></div></div>
+<a name="id589743"></a>16.4.2. Resource Limits</h3></div></div></div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
     <span class="productname">PostgreSQL</span> server. Of particular
@@ -549,7 +553,7 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id589460"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
+<a name="id589939"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
     optimal for <span class="productname">PostgreSQL</span>. Because of the
     way that the kernel implements memory overcommit, the kernel may

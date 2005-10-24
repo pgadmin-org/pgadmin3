@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="prev" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
 <link rel="next" href="performance-tips.html" title="Chapter 13. Performance Tips">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="locking-indexes"></a>12.5. Locking and Indexes</h2></div></div></div>
-<a name="id577933"></a><p>    Though <span class="productname">PostgreSQL</span>
+<a name="id577999"></a><p>    Though <span class="productname">PostgreSQL</span>
     provides nonblocking read/write access to table
     data, nonblocking read/write access is not currently offered for every
     index access method implemented
@@ -22,37 +22,36 @@
 
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term">       B-tree indexes
+<dt><span class="term">       B-tree and <span class="acronym">GiST</span> indexes
       </span></dt>
-<dd><p>	Short-term share/exclusive page-level locks are used for
-	read/write access. Locks are released immediately after each
-	index row is fetched or inserted.  B-tree indexes provide
-	the highest concurrency without deadlock conditions.
-       </p></dd>
-<dt><span class="term">       <span class="acronym">GiST</span> and R-tree indexes
-      </span></dt>
-<dd><p>	Share/exclusive index-level locks are used for read/write access.
-	Locks are released after the command is done.
+<dd><p>        Short-term share/exclusive page-level locks are used for
+        read/write access. Locks are released immediately after each
+        index row is fetched or inserted.  These index types provide
+        the highest concurrency without deadlock conditions.
        </p></dd>
 <dt><span class="term">       Hash indexes
       </span></dt>
-<dd><p>	Share/exclusive hash-bucket-level locks are used for read/write
-	access.  Locks are released after the whole bucket is processed.
-	Bucket-level locks provide better concurrency than index-level
-	ones, but deadlock is possible since the locks are held longer
-	than one index operation.
+<dd><p>        Share/exclusive hash-bucket-level locks are used for read/write
+        access.  Locks are released after the whole bucket is processed.
+        Bucket-level locks provide better concurrency than index-level
+        ones, but deadlock is possible since the locks are held longer
+        than one index operation.
+       </p></dd>
+<dt><span class="term">       R-tree indexes
+      </span></dt>
+<dd><p>        Share/exclusive index-level locks are used for read/write access.
+        Locks are released after the entire command is done.
        </p></dd>
 </dl></div>
 <p>
    </p>
-<p>    In short, B-tree indexes offer the best performance for concurrent
+<p>    Currently, B-tree indexes offer the best performance for concurrent
     applications; since they also have more features than hash
     indexes, they are the recommended index type for concurrent
     applications that need to index scalar data. When dealing with
-    non-scalar data, B-trees obviously cannot be used; in that
-    situation, application developers should be aware of the
-    relatively poor concurrent performance of GiST and R-tree
-    indexes.
+    non-scalar data, B-trees are not useful, and GiST indexes should
+    be used instead.  R-tree indexes are deprecated and are likely
+    to disappear entirely in a future release.
    </p>
 </div></body>
 </html>

@@ -4,9 +4,9 @@
 <title>Slony-I FAQ</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
-<link rel="up" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
+<link rel="up" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="prev" href="help.html" title="21. More Slony-I Help">
 <link rel="next" href="commandreference.html" title="Part I. Core Slony-I Programs">
 </head>
@@ -33,32 +33,32 @@ configure: error: Headers for libpqserver are not found in the includeserverdir.
    This is the path to postgres.h. Please specify the includeserverdir with
    --with-pgincludeserverdir=&lt;dir&gt;</a>
 </dt>
-<dt>2. <a href="faq.html#id2546437">I looked for the _clustername namespace, and
+<dt>2. <a href="faq.html#id525019">I looked for the _clustername namespace, and
 it wasn't there.</a>
 </dt>
 <dt>3. <a href="faq.html#threadsafety"> Some events are moving around, but no replication is
 taking place.</a>
 </dt>
-<dt>4. <a href="faq.html#id2546646">I tried creating a CLUSTER NAME with a "-" in it.
+<dt>4. <a href="faq.html#id525248">I tried creating a CLUSTER NAME with a "-" in it.
 That didn't work.</a>
 </dt>
-<dt>5. <a href="faq.html#id2546677">  does not restart after
+<dt>5. <a href="faq.html#id525283">  does not restart after
 crash</a>
 </dt>
-<dt>6. <a href="faq.html#id2546783">ps finds passwords on command line</a>
+<dt>6. <a href="faq.html#id525404">ps finds passwords on command line</a>
 </dt>
-<dt>7. <a href="faq.html#id2546806">Slonik fails - cannot load
+<dt>7. <a href="faq.html#id525430">Slonik fails - cannot load
 PostgreSQL library -
 PGRES_FATAL_ERROR load '$libdir/xxid';</a>
 </dt>
-<dt>8. <a href="faq.html#id2546974">Table indexes with FQ namespace names
+<dt>8. <a href="faq.html#id525616">Table indexes with FQ namespace names
 
 set add table (set id = 1, origin = 1, id = 27, 
                full qualified name = 'nspace.some_table', 
                key = 'key_on_whatever', 
                comment = 'Table some_table in namespace nspace with a candidate primary key');</a>
 </dt>
-<dt>9. <a href="faq.html#id2547001"> I'm trying to get a slave subscribed, and get the
+<dt>9. <a href="faq.html#id525646"> I'm trying to get a slave subscribed, and get the
 following messages in the logs:
 
 DEBUG1 copy_set 1
@@ -66,25 +66,25 @@ DEBUG1 remoteWorkerThread_1: connected to provider DB
 WARN	remoteWorkerThread_1: transactions earlier than XID 127314958 are still in progress
 WARN	remoteWorkerThread_1: data copy for set 1 failed - sleep 60 seconds</a>
 </dt>
-<dt>10. <a href="faq.html#id2547125">ERROR: duplicate key violates unique constraint "sl_table-pkey"</a>
+<dt>10. <a href="faq.html#id525780">ERROR: duplicate key violates unique constraint "sl_table-pkey"</a>
 </dt>
-<dt>11. <a href="faq.html#id2547162">I need to drop a table from a replication set</a>
+<dt>11. <a href="faq.html#id525813">I need to drop a table from a replication set</a>
 </dt>
-<dt>12. <a href="faq.html#id2547257">I need to drop a sequence from a replication set</a>
+<dt>12. <a href="faq.html#id525917">I need to drop a sequence from a replication set</a>
 </dt>
-<dt>13. <a href="faq.html#id2547360">Slony-I: cannot add table to currently subscribed set 1</a>
+<dt>13. <a href="faq.html#id526033">Slony-I: cannot add table to currently subscribed set 1</a>
 </dt>
 <dt>14. <a href="faq.html#pglistenerfull">Some nodes start consistently falling behind</a>
 </dt>
-<dt>15. <a href="faq.html#id2547486">I started doing a backup using
+<dt>15. <a href="faq.html#id526171">I started doing a backup using
 pg_dump, and suddenly Slony
 stops</a>
 </dt>
-<dt>16. <a href="faq.html#id2547662">The slon spent the weekend out of
+<dt>16. <a href="faq.html#id526365">The slon spent the weekend out of
 commission [for some reason], and it's taking a long time to get a
 sync through.</a>
 </dt>
-<dt>17. <a href="faq.html#id2547760">I pointed a subscribing node to a different provider
+<dt>17. <a href="faq.html#id526474">I pointed a subscribing node to a different provider
 and it stopped replicating</a>
 </dt>
 <dt>18. <a href="faq.html#faq17">After dropping a node, 
@@ -92,23 +92,23 @@ isn't getting purged out anymore.</a>
 </dt>
 <dt>19. <a href="faq.html#dupkey">Replication Fails - Unique Constraint Violation</a>
 </dt>
-<dt>20. <a href="faq.html#id2548394"> If you have a  script
+<dt>20. <a href="faq.html#id527151"> If you have a  script
 something like this, it will hang on you and never complete, because
 you can't have wait for event inside a
 try block. A try block is
 executed as one transaction, and the event that you are waiting for
 can never arrive inside the scope of the transaction.</a>
 </dt>
-<dt>21. <a href="faq.html#id2548452"> Is the ordering of tables in a set significant?</a>
+<dt>21. <a href="faq.html#id527206"> Is the ordering of tables in a set significant?</a>
 </dt>
-<dt>22. <a href="faq.html#id2548523"> What happens with rules and triggers on
+<dt>22. <a href="faq.html#id527284"> What happens with rules and triggers on
 Slony-I-replicated tables?</a>
 </dt>
-<dt>23. <a href="faq.html#id2548700"> After notification of a subscription on
+<dt>23. <a href="faq.html#id527482"> After notification of a subscription on
 another node, replication falls over, starting
 with the following error message:</a>
 </dt>
-<dt>24. <a href="faq.html#id2548800">I just used  to move the
+<dt>24. <a href="faq.html#id527579">I just used  to move the
 origin to a new node.  Unfortunately, some subscribers are still
 pointing to the former origin node, so I can't take it out of service
 for maintenance without stopping them from getting updates.  What do I
@@ -124,15 +124,15 @@ behind the origin, and all the logs on the subscriber nodes have the
 following error message repeating in them (when I encountered it,
 there was a nice long SQL statement above each entry):</a>
 </dt>
-<dt>27. <a href="faq.html#id2549133"> After notification of a subscription on
+<dt>27. <a href="faq.html#id527945"> After notification of a subscription on
 another node, replication falls over on one of
 the subscribers, with the following error message:</a>
 </dt>
-<dt>28. <a href="faq.html#id2549232"> I can do a pg_dump
+<dt>28. <a href="faq.html#id528051"> I can do a pg_dump
 and load the data back in much faster than the SUBSCRIBE
 SET runs.  Why is that?  </a>
 </dt>
-<dt>29. <a href="faq.html#id2549350"> I had a network glitch that led to my
+<dt>29. <a href="faq.html#id528182"> I had a network glitch that led to my
 using  to fail over to an alternate node.
 The failure wasn't a disk problem that would corrupt databases; why do
 I need to rebuild the failed node from scratch? </a>
@@ -149,10 +149,10 @@ backups).</a>
 something we didn't foresee when completely uninstalling a slony
 replication cluster from the master and slave...</a>
 </dt>
-<dt>32. <a href="faq.html#id2549601"> Node #1 was dropped via , and the  one of the
+<dt>32. <a href="faq.html#id528448"> Node #1 was dropped via , and the  one of the
 other nodes is repeatedly failing with the error message:</a>
 </dt>
-<dt>33. <a href="faq.html#id2549736"> I am using  Frotznik Freenix
+<dt>33. <a href="faq.html#id528595"> I am using  Frotznik Freenix
 4.5, with its FFPM (Frotznik Freenix
 Package Manager) package management system.  It comes with
 FFPM packages for PostgreSQL 7.4.7, which are what
@@ -162,32 +162,32 @@ packaging.  How do I add Slony-I to this?  </a>
 <dt>34. <a href="faq.html#sequenceset"> Bug #1226  indicates an error condition that can come up if
 you have a replication set that consists solely of sequences. </a>
 </dt>
-<dt>35. <a href="faq.html#id2550114"> I tried the following query which did not work:</a>
+<dt>35. <a href="faq.html#id529013"> I tried the following query which did not work:</a>
 </dt>
 <dt>36. <a href="faq.html#v72upgrade"> I have a PostgreSQL 7.2-based system that I
 really, really want to use Slony-I to help me
 upgrade it to 8.0.  What is involved in getting Slony-I to work for
 that?</a>
 </dt>
-<dt>37. <a href="faq.html#id2550392"> I am finding some multibyte columns (Unicode, Big5)
+<dt>37. <a href="faq.html#id529314"> I am finding some multibyte columns (Unicode, Big5)
 are being truncated.  Why?  </a>
 </dt>
-<dt>38. <a href="faq.html#id2550424"> I need to rename a column that is in the
+<dt>38. <a href="faq.html#id529349"> I need to rename a column that is in the
 primary key for one of my replicated tables.  That seems pretty
 dangerous, doesn't it?  I have to drop the table out of replication
 and recreate it, right?</a>
 </dt>
-<dt>39. <a href="faq.html#id2550522"> Replication has fallen behind, and it appears that the
+<dt>39. <a href="faq.html#id529456"> Replication has fallen behind, and it appears that the
 queries to draw data from / are taking a long time to pull just a few
 SYNCs. </a>
 </dt>
 </dl>
-<a name="id2546362"></a><table border="0" summary="Q and A Set">
+<a name="id524938"></a><table border="0" summary="Q and A Set">
 <col align="left" width="1%">
 <tbody>
 <tr class="question">
 <td align="left" valign="top">
-<a name="missingheaders"></a><a name="id2546378"></a><b>1.</b>
+<a name="missingheaders"></a><a name="id524954"></a><b>1.</b>
 </td>
 <td align="left" valign="top">
 <p> I tried building <span class="productname">Slony-I</span> 1.1 and got the following
@@ -203,17 +203,17 @@ error message:
 <td align="left" valign="top">
 <p> You are almost certainly running version <span class="productname">PostgreSQL</span> 7.4
 or earlier, where server headers are not installed by default if you
-just do a <tt class="command">make install</tt> of <span class="productname">PostgreSQL</span>.</p>
+just do a <code class="command">make install</code> of <span class="productname">PostgreSQL</span>.</p>
 <p> You need to install server headers when you install <span class="productname">PostgreSQL</span>
-via the command <tt class="command">make install-all-headers</tt>.
+via the command <code class="command">make install-all-headers</code>.
 </p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2546437"></a><a name="id2546438"></a><b>2.</b>
+<a name="id525019"></a><a name="id525021"></a><b>2.</b>
 </td>
-<td align="left" valign="top"><p>I looked for the <tt class="envar">_clustername</tt> namespace, and
+<td align="left" valign="top"><p>I looked for the <code class="envar">_clustername</code> namespace, and
 it wasn't there.</p></td>
 </tr>
 <tr class="answer">
@@ -223,13 +223,13 @@ it wasn't there.</p></td>
 instances can't connect to the nodes.</p>
 <p>This will generally lead to nodes remaining entirely untouched.</p>
 <p>Recheck the connection configuration.  By the way, since <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> links to libpq, you could have password information
-stored in <tt class="filename"> $HOME/.pgpass</tt>, partially filling in
+stored in <code class="filename"> $HOME/.pgpass</code>, partially filling in
 right/wrong authentication information there.</p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="threadsafety"></a><a name="id2546481"></a><b>3.</b>
+<a name="threadsafety"></a><a name="id525068"></a><b>3.</b>
 </td>
 <td align="left" valign="top">
 <p> Some events are moving around, but no replication is
@@ -263,7 +263,7 @@ server: Error 0</pre>
 <td align="left" valign="top">
 <p>On AIX and Solaris (and possibly elsewhere), both
 <span class="productname">Slony-I</span> <span class="emphasis"><em>and <span class="productname">PostgreSQL</span></em></span> must be compiled with the
-<tt class="option">--enable-thread-safety</tt> option.  The above results
+<code class="option">--enable-thread-safety</code> option.  The above results
 when <span class="productname">PostgreSQL</span> isn't so compiled.</p>
 <p>What breaks here is that the libc (threadsafe) and libpq
 (non-threadsafe) use different memory locations for errno, thereby
@@ -271,16 +271,16 @@ leading to the request failing.</p>
 <p>Problems like this crop up with disadmirable regularity on AIX
 and Solaris; it may take something of an &#8220;<span class="quote">object code audit</span>&#8221; to
 make sure that <span class="emphasis"><em>ALL</em></span> of the necessary components have been
-compiled and linked with <tt class="option">--enable-thread-safety</tt>.</p>
+compiled and linked with <code class="option">--enable-thread-safety</code>.</p>
 <p>For instance, I ran into the problem one that
-<tt class="envar">LD_LIBRARY_PATH</tt> had been set, on Solaris, to point to
+<code class="envar">LD_LIBRARY_PATH</code> had been set, on Solaris, to point to
 libraries from an old <span class="productname">PostgreSQL</span> compile.  That meant that even though
 the database <span class="emphasis"><em>had</em></span> been compiled with
-<tt class="option">--enable-thread-safety</tt>, and
+<code class="option">--enable-thread-safety</code>, and
 <span class="application">slon</span> had been compiled against that,
 <span class="application">slon</span> was being dynamically linked to the
 &#8220;<span class="quote">bad old thread-unsafe version,</span>&#8221; so slon didn't work.  It
-wasn't clear that this was the case until I ran <tt class="command">ldd</tt>
+wasn't clear that this was the case until I ran <code class="command">ldd</code>
 against <span class="application">slon</span>.</p>
 </td>
 </tr>
@@ -292,7 +292,7 @@ required; similar is also required for <span class="productname">PostgreSQL</spa
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2546646"></a><a name="id2546647"></a><b>4.</b>
+<a name="id525248"></a><a name="id525249"></a><b>4.</b>
 </td>
 <td align="left" valign="top"><p>I tried creating a CLUSTER NAME with a "-" in it.
 That didn't work.</p></td>
@@ -310,7 +310,7 @@ something that is probably not worth working around.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2546677"></a><a name="id2546678"></a><b>5.</b>
+<a name="id525283"></a><a name="id525284"></a><b>5.</b>
 </td>
 <td align="left" valign="top">
 <p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> does not restart after
@@ -329,7 +329,7 @@ serving this node already</p></blockquote></div>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
 <p> The problem is that the system table
-<tt class="envar">pg_catalog.pg_listener</tt>, used by
+<code class="envar">pg_catalog.pg_listener</code>, used by
 <span class="productname">PostgreSQL</span> to manage event notifications,
 contains some entries that are pointing to backends that no longer
 exist.  The new <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> instance connects to the
@@ -359,39 +359,39 @@ condition, and automatically cleans it up.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2546783"></a><a name="id2546784"></a><b>6.</b>
+<a name="id525404"></a><a name="id525405"></a><b>6.</b>
 </td>
 <td align="left" valign="top">
 <p>ps finds passwords on command line</p>
-<p> If I run a <tt class="command">ps</tt> command, I, and everyone else,
+<p> If I run a <code class="command">ps</code> command, I, and everyone else,
 can see passwords on the command line.</p>
 </td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p>Take the passwords out of the Slony configuration, and
-put them into <tt class="filename">$(HOME)/.pgpass.</tt></p></td>
+put them into <code class="filename">$(HOME)/.pgpass.</code></p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2546806"></a><a name="id2546807"></a><b>7.</b>
+<a name="id525430"></a><a name="id525431"></a><b>7.</b>
 </td>
 <td align="left" valign="top">
 <p>Slonik fails - cannot load
 <span class="productname">PostgreSQL</span> library -
-<tt class="command">PGRES_FATAL_ERROR load '$libdir/xxid';</tt></p>
+<code class="command">PGRES_FATAL_ERROR load '$libdir/xxid';</code></p>
 <p> When I run the sample setup script I get an error message similar
 to:
 
-<tt class="command">stdin:64: PGRES_FATAL_ERROR load '$libdir/xxid';  - ERROR:  LOAD:
-could not open file '$libdir/xxid': No such file or directory</tt></p>
+<code class="command">stdin:64: PGRES_FATAL_ERROR load '$libdir/xxid';  - ERROR:  LOAD:
+could not open file '$libdir/xxid': No such file or directory</code></p>
 </td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
 <p> Evidently, you haven't got the
-<tt class="filename">xxid.so</tt> library in the <tt class="envar">$libdir</tt>
+<code class="filename">xxid.so</code> library in the <code class="envar">$libdir</code>
 directory that the <span class="productname">PostgreSQL</span> instance is
 using.  Note that the <span class="productname">Slony-I</span> components
 need to be installed in the <span class="productname">PostgreSQL</span>
@@ -419,7 +419,7 @@ right versions of <span class="productname">Slony-I</span> components are associ
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2546974"></a><a name="id2546975"></a><b>8.</b>
+<a name="id525616"></a><a name="id525617"></a><b>8.</b>
 </td>
 <td align="left" valign="top">
 <p>Table indexes with FQ namespace names
@@ -433,13 +433,13 @@ right versions of <span class="productname">Slony-I</span> components are associ
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
-<td align="left" valign="top"><p> If you have <tt class="command"> key =
-'nspace.key_on_whatever'</tt> the request will
+<td align="left" valign="top"><p> If you have <code class="command"> key =
+'nspace.key_on_whatever'</code> the request will
 <span class="emphasis"><em>FAIL</em></span>.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547001"></a><a name="id2547002"></a><b>9.</b>
+<a name="id525646"></a><a name="id525647"></a><b>9.</b>
 </td>
 <td align="left" valign="top">
 <p> I'm trying to get a slave subscribed, and get the
@@ -458,9 +458,9 @@ to add <span class="emphasis"><em>TWO</em></span> subscribers, concurrently.</p>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
 <p> That doesn't work out: <span class="productname">Slony-I</span> won't work on the
-<tt class="command">COPY</tt> commands concurrently.  See
-<tt class="filename">src/slon/remote_worker.c</tt>, function
-<tt class="function">copy_set()</tt></p>
+<code class="command">COPY</code> commands concurrently.  See
+<code class="filename">src/slon/remote_worker.c</code>, function
+<code class="function">copy_set()</code></p>
 <p>This has the (perhaps unfortunate) implication that you cannot
 populate two slaves concurrently from a single provider.  You have to
 subscribe one to the set, and only once it has completed setting up
@@ -482,7 +482,7 @@ want to take a look at pg_locks to see what's up:
 </p>
 <pre class="screen">$ ps -aef | egrep '[2]605100'
 postgres 2605100  205018	0 18:53:43  pts/3  3:13 postgres: postgres sampledb localhost COPY </pre>
-<p>This happens to be a <tt class="command">COPY</tt> transaction involved in setting up the
+<p>This happens to be a <code class="command">COPY</code> transaction involved in setting up the
 subscription for one of the nodes.  All is well; the system is busy
 setting up the first subscriber; it won't start on the second one
 until the first one has completed subscribing.</p>
@@ -496,7 +496,7 @@ wait until those old transactions terminate.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547125"></a><a name="id2547126"></a><b>10.</b>
+<a name="id525780"></a><a name="id525781"></a><b>10.</b>
 </td>
 <td align="left" valign="top">
 <p>ERROR: duplicate key violates unique constraint "sl_table-pkey"</p>
@@ -518,7 +518,7 @@ after where the previous set(s) left off.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547162"></a><a name="id2547163"></a><b>11.</b>
+<a name="id525813"></a><a name="id525814"></a><b>11.</b>
 </td>
 <td align="left" valign="top"><p>I need to drop a table from a replication set</p></td>
 </tr>
@@ -538,7 +538,7 @@ command SET DROP TABLE, which will "do the trick."</p></li>
 <li>
 <p> If you are still using 1.0.1 or 1.0.2, the
 <span class="emphasis"><em>essential functionality of <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>
-involves the functionality in <tt class="function">droptable_int()</tt>.
+involves the functionality in <code class="function">droptable_int()</code>.
 You can fiddle this by hand by finding the table ID for the table you
 want to get rid of, which you can find in <a href="table.sl-table.html">sl_table</a>, and then run the
 following three queries, on each host:</em></span>
@@ -563,7 +563,7 @@ queries by hand.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547257"></a><a name="id2547258"></a><b>12.</b>
+<a name="id525917"></a><a name="id525918"></a><b>12.</b>
 </td>
 <td align="left" valign="top"><p>I need to drop a sequence from a replication set</p></td>
 </tr>
@@ -576,9 +576,9 @@ a <a href="stmtsetdropsequence.html" title="SET DROP SEQUENCE"><span class="refe
 to do this, parallelling <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>.</p>
 <p>If you are running 1.0.2 or earlier, the process is a bit more manual.</p>
 <p>Supposing I want to get rid of the two sequences listed below,
-<tt class="envar">whois_cachemgmt_seq</tt> and
-<tt class="envar">epp_whoi_cach_seq_</tt>, we start by needing the
-<tt class="envar">seq_id</tt> values.
+<code class="envar">whois_cachemgmt_seq</code> and
+<code class="envar">epp_whoi_cach_seq_</code>, we start by needing the
+<code class="envar">seq_id</code> values.
 
 </p>
 <pre class="screen">oxrsorg=# select * from _oxrsorg.sl_sequence  where seq_id in (93,59);
@@ -603,7 +603,7 @@ implemented <span class="productname">Slony-I</span> version 1.0.5 as <a href="s
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547360"></a><a name="id2547361"></a><b>13.</b>
+<a name="id526033"></a><a name="id526034"></a><b>13.</b>
 </td>
 <td align="left" valign="top">
 <p>Slony-I: cannot add table to currently subscribed set 1</p>
@@ -626,7 +626,7 @@ together.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="pglistenerfull"></a><a name="id2547392"></a><b>14.</b>
+<a name="pglistenerfull"></a><a name="id526067"></a><b>14.</b>
 </td>
 <td align="left" valign="top">
 <p>Some nodes start consistently falling behind</p>
@@ -641,18 +641,18 @@ seeing system performance suffering.</p>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
 <p> This can be characteristic of pg_listener (which is the
-table containing <tt class="command">NOTIFY</tt> data) having plenty of dead
-tuples in it.  That makes <tt class="command">NOTIFY</tt> events take a long
+table containing <code class="command">NOTIFY</code> data) having plenty of dead
+tuples in it.  That makes <code class="command">NOTIFY</code> events take a long
 time, and causes the affected node to gradually fall further and
 further behind.</p>
-<p>You quite likely need to do a <tt class="command">VACUUM FULL</tt> on
-<tt class="envar">pg_listener</tt>, to vigorously clean it out, and need to
-vacuum <tt class="envar">pg_listener</tt> really frequently.  Once every five
+<p>You quite likely need to do a <code class="command">VACUUM FULL</code> on
+<code class="envar">pg_listener</code>, to vigorously clean it out, and need to
+vacuum <code class="envar">pg_listener</code> really frequently.  Once every five
 minutes would likely be AOK.</p>
 <p> Slon daemons already vacuum a bunch of tables, and
-<tt class="filename">cleanup_thread.c</tt> contains a list of tables that
+<code class="filename">cleanup_thread.c</code> contains a list of tables that
 are frequently vacuumed automatically.  In <span class="productname">Slony-I</span> 1.0.2,
-<tt class="envar">pg_listener</tt> is not included.  In 1.0.5 and later, it is
+<code class="envar">pg_listener</code> is not included.  In 1.0.5 and later, it is
 regularly vacuumed, so this should cease to be a direct issue.</p>
 <p>There is, however, still a scenario where this will still
 &#8220;<span class="quote">bite.</span>&#8221; Under MVCC, vacuums cannot delete tuples that
@@ -664,7 +664,7 @@ nodes.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547486"></a><a name="id2547488"></a><b>15.</b>
+<a name="id526171"></a><a name="id526172"></a><b>15.</b>
 </td>
 <td align="left" valign="top"><p>I started doing a backup using
 <span class="application">pg_dump</span>, and suddenly Slony
@@ -677,41 +677,41 @@ stops</p></td>
 </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> <span class="application">pg_dump</span>, which has taken
-out an <tt class="command">AccessShareLock</tt> on all of the tables in the
+out an <code class="command">AccessShareLock</code> on all of the tables in the
 database, including the <span class="productname">Slony-I</span> ones, and</p></li>
 <li><p> A <span class="productname">Slony-I</span> sync event, which wants to grab a
-<tt class="command">AccessExclusiveLock</tt> on the table <a href="table.sl-event.html">sl_event</a>.</p></li>
+<code class="command">AccessExclusiveLock</code> on the table <a href="table.sl-event.html">sl_event</a>.</p></li>
 </ul></div>
 <p>The initial query that will be blocked is thus:
 
 </p>
 <pre class="screen">select "_slonyschema".createEvent('_slonyschema, 'SYNC', NULL);	  </pre>
-<p>(You can see this in <tt class="envar">pg_stat_activity</tt>, if you
+<p>(You can see this in <code class="envar">pg_stat_activity</code>, if you
 have query display turned on in
-<tt class="filename">postgresql.conf</tt>)</p>
+<code class="filename">postgresql.conf</code>)</p>
 <p>The actual query combination that is causing the lock is from
-the function <tt class="function">Slony_I_ClusterStatus()</tt>, found in
-<tt class="filename">slony1_funcs.c</tt>, and is localized in the code that
+the function <code class="function">Slony_I_ClusterStatus()</code>, found in
+<code class="filename">slony1_funcs.c</code>, and is localized in the code that
 does:
 
 </p>
 <pre class="programlisting">  LOCK TABLE %s.sl_event;
   INSERT INTO %s.sl_event (...stuff...)
   SELECT currval('%s.sl_event_seq');</pre>
-<p>The <tt class="command">LOCK</tt> statement will sit there and wait
-until <tt class="command">pg_dump</tt> (or whatever else has pretty much any
+<p>The <code class="command">LOCK</code> statement will sit there and wait
+until <code class="command">pg_dump</code> (or whatever else has pretty much any
 kind of access lock on <a href="table.sl-event.html">sl_event</a>)
 completes.</p>
 <p>Every subsequent query submitted that touches
 <a href="table.sl-event.html">sl_event</a> will block behind the
-<tt class="function">createEvent</tt> call.</p>
+<code class="function">createEvent</code> call.</p>
 <p>There are a number of possible answers to this:
 </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> Have <span class="application">pg_dump</span> specify the
-schema dumped using <tt class="option">--schema=whatever</tt>, and don't try
+schema dumped using <code class="option">--schema=whatever</code>, and don't try
 dumping the cluster's schema.</p></li>
-<li><p> It would be nice to add an <tt class="option">--exclude-schema</tt>
+<li><p> It would be nice to add an <code class="option">--exclude-schema</code>
 option to pg_dump to exclude the Slony cluster schema.  Maybe in 8.1...</p></li>
 <li><p>Note that 1.0.5 uses a more precise lock that is less
 exclusive that alleviates this problem.</p></li>
@@ -720,7 +720,7 @@ exclusive that alleviates this problem.</p></li>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547662"></a><a name="id2547663"></a><b>16.</b>
+<a name="id526365"></a><a name="id526366"></a><b>16.</b>
 </td>
 <td align="left" valign="top"><p>The <span class="application">slon</span> spent the weekend out of
 commission [for some reason], and it's taking a long time to get a
@@ -733,7 +733,7 @@ sync through.</p></td>
 do a summary to see if there are any really enormous <span class="productname">Slony-I</span>
 transactions in there.  Up until at least 1.0.2, there needs to be a
 <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> connected to the origin in order for
-<tt class="command">SYNC</tt> events to be generated.</p>
+<code class="command">SYNC</code> events to be generated.</p>
 <p>If none are being generated, then all of the updates until the
 next one is generated will collect into one rather enormous <span class="productname">Slony-I</span>
 transaction.</p>
@@ -742,13 +742,13 @@ around, you <span class="emphasis"><em>really</em></span> want to have a
 <span class="application">slon</span> running to service the origin
 node.</p>
 <p><span class="productname">Slony-I</span> 1.1 provides a stored procedure that allows
-<tt class="command">SYNC</tt> counts to be updated on the origin based on a
+<code class="command">SYNC</code> counts to be updated on the origin based on a
 <span class="application">cron</span> job even if there is no <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon running.</p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2547760"></a><a name="id2547762"></a><b>17.</b>
+<a name="id526474"></a><a name="id526475"></a><b>17.</b>
 </td>
 <td align="left" valign="top"><p>I pointed a subscribing node to a different provider
 and it stopped replicating</p></td>
@@ -789,7 +789,7 @@ try {
   drop listen (origin = 1, receiver = 3, provider = 2);
   drop listen (origin = 3, receiver = 1, provider = 2);
 }</pre>
-<p>Immediately after this script was run, <tt class="command">SYNC</tt>
+<p>Immediately after this script was run, <code class="command">SYNC</code>
 events started propagating again to node 3.
 
 This points out two principles:
@@ -816,7 +816,7 @@ further at <a href="listenpaths.html" title="8. Slony-I listen paths">Section 8,
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="faq17"></a><a name="id2547921"></a><b>18.</b>
+<a name="faq17"></a><a name="id526640"></a><b>18.</b>
 </td>
 <td align="left" valign="top"><p>After dropping a node, <a href="table.sl-log-1.html">sl_log_1</a>
 isn't getting purged out anymore.</p></td>
@@ -860,10 +860,10 @@ Supposing the node number is 3, then the query would be:
 <pre class="screen">oxrsbar=# delete from _oxrsbar.sl_confirm where con_origin not in (select no_id from _oxrsbar.sl_node) or con_received not in (select no_id from _oxrsbar.sl_node);
 DELETE 6</pre>
 <p>General &#8220;<span class="quote">due diligence</span>&#8221; dictates starting with a
-<tt class="command">BEGIN</tt>, looking at the contents of
+<code class="command">BEGIN</code>, looking at the contents of
 <a href="table.sl-confirm.html">sl_confirm</a> before, ensuring that only the expected
 records are purged, and then, only after that, confirming the change
-with a <tt class="command">COMMIT</tt>.  If you delete confirm entries for
+with a <code class="command">COMMIT</code>.  If you delete confirm entries for
 the wrong node, that could ruin your whole day.</p>
 <p>You'll need to run this on each node that remains...</p>
 <p>Note that as of 1.0.5, this is no longer an issue at all, as it
@@ -874,14 +874,14 @@ places:
 <div class="itemizedlist"><ul type="disc">
 <li><p> At the time a node is dropped</p></li>
 <li><p> At the start of each
-<tt class="function">cleanupEvent</tt> run, which is the event in which old
+<code class="function">cleanupEvent</code> run, which is the event in which old
 data is purged from <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-seqlog.html">sl_seqlog</a></p></li>
 </ul></div>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="dupkey"></a><a name="id2548104"></a><b>19.</b>
+<a name="dupkey"></a><a name="id526842"></a><b>19.</b>
 </td>
 <td align="left" valign="top">
 <p>Replication Fails - Unique Constraint Violation</p>
@@ -912,7 +912,7 @@ ERROR  remoteWorkerThread_1: SYNC aborted</pre>
 <p>The transaction rolls back, and
 <span class="productname">Slony-I</span> tries again, and again, and again.
 The problem is with one of the <span class="emphasis"><em>last</em></span> SQL
-statements, the one with <tt class="command">log_cmdtype = 'I'</tt>.  That
+statements, the one with <code class="command">log_cmdtype = 'I'</code>.  That
 isn't quite obvious; what takes place is that
 <span class="productname">Slony-I</span> groups 10 update queries together
 to diminish the number of network round trips.</p>
@@ -962,13 +962,13 @@ you should consider upgrading to resolve this.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2548394"></a><a name="id2548396"></a><b>20.</b>
+<a name="id527151"></a><a name="id527152"></a><b>20.</b>
 </td>
 <td align="left" valign="top">
 <p> If you have a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script
 something like this, it will hang on you and never complete, because
-you can't have <tt class="command">wait for event</tt> inside a
-<tt class="command">try</tt> block. A <tt class="command">try</tt> block is
+you can't have <code class="command">wait for event</code> inside a
+<code class="command">try</code> block. A <code class="command">try</code> block is
 executed as one transaction, and the event that you are waiting for
 can never arrive inside the scope of the transaction.</p>
 <pre class="programlisting">try {
@@ -995,7 +995,7 @@ inside a &#8220;<span class="quote">try</span>&#8221; block.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2548452"></a><a name="id2548454"></a><b>21.</b>
+<a name="id527206"></a><a name="id527207"></a><b>21.</b>
 </td>
 <td align="left" valign="top"><p> Is the ordering of tables in a set significant?</p></td>
 </tr>
@@ -1022,13 +1022,13 @@ ordering of tables in the set was significant: in the presence of
 inherited tables. If a child table appears before its parent in a set,
 then the initial subscription will end up deleting that child table
 after it has possibly already received data, because the
-<tt class="command">copy_set</tt> logic does a <tt class="command">delete</tt>,
-not a <tt class="command">delete only</tt>, so the delete of the parent will
+<code class="command">copy_set</code> logic does a <code class="command">delete</code>,
+not a <code class="command">delete only</code>, so the delete of the parent will
 delete the new rows in the child as well.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2548523"></a><a name="id2548524"></a><b>22.</b>
+<a name="id527284"></a><a name="id527285"></a><b>22.</b>
 </td>
 <td align="left" valign="top"><p> What happens with rules and triggers on
 <span class="productname">Slony-I</span>-replicated tables?</p></td>
@@ -1052,12 +1052,12 @@ tables.</p>
 <li>
 <p> On a subscriber node, this involves disabling
 triggers and rules, then adding in the trigger that denies write
-access using the <tt class="function">denyAccess()</tt> function to
+access using the <code class="function">denyAccess()</code> function to
 replicated tables.</p>
 <p> Up until 1.1 (and perhaps onwards), the
 &#8220;<span class="quote">disabling</span>&#8221; is done by modifying the
-<tt class="envar">pg_trigger</tt> or <tt class="envar">pg_rewrite</tt>
-<tt class="envar">tgrelid</tt> to point to the OID of the &#8220;<span class="quote">primary
+<code class="envar">pg_trigger</code> or <code class="envar">pg_rewrite</code>
+<code class="envar">tgrelid</code> to point to the OID of the &#8220;<span class="quote">primary
 key</span>&#8221; index on the table rather than to the table
 itself.</p>
 </li>
@@ -1065,7 +1065,7 @@ itself.</p>
 <p> A somewhat unfortunate side-effect is that this handling of the
 rules and triggers somewhat &#8220;<span class="quote">tramples</span>&#8221; on them.  The
 rules and triggers are still there, but are no longer properly tied to
-their tables.  If you do a <tt class="command">pg_dump</tt> on the
+their tables.  If you do a <code class="command">pg_dump</code> on the
 &#8220;<span class="quote">subscriber</span>&#8221; node, it won't find the rules and triggers
 because it does not expect them to be associated with an index.</p>
 </td>
@@ -1077,9 +1077,9 @@ because it does not expect them to be associated with an index.</p>
 enters into things.</p>
 <p> Simply put, this command causes
 <span class="productname">Slony-I</span> to restore the trigger using
-<tt class="function">alterTableRestore(table id)</tt>, which restores the
-table's OID into the <tt class="envar">pg_trigger</tt> or
-<tt class="envar">pg_rewrite</tt> <tt class="envar">tgrelid</tt> column on the
+<code class="function">alterTableRestore(table id)</code>, which restores the
+table's OID into the <code class="envar">pg_trigger</code> or
+<code class="envar">pg_rewrite</code> <code class="envar">tgrelid</code> column on the
 affected node.</p>
 </td>
 </tr>
@@ -1095,7 +1095,7 @@ node.  It is straightforward to do this: </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2548700"></a><a name="id2548701"></a><b>23.</b>
+<a name="id527482"></a><a name="id527483"></a><b>23.</b>
 </td>
 <td align="left" valign="top">
 <p> After notification of a subscription on
@@ -1144,7 +1144,7 @@ terribly quickly; you need to be sure things are working right
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2548800"></a><a name="id2548801"></a><b>24.</b>
+<a name="id527579"></a><a name="id527580"></a><b>24.</b>
 </td>
 <td align="left" valign="top"><p>I just used <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to move the
 origin to a new node.  Unfortunately, some subscribers are still
@@ -1169,10 +1169,10 @@ for the nodes from scratch later.
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="longtxnsareevil"></a><a name="id2548848"></a><b>25.</b>
+<a name="longtxnsareevil"></a><a name="id527633"></a><b>25.</b>
 </td>
 <td align="left" valign="top"><p> Replication has been slowing down, I'm seeing
-<tt class="command"> FETCH 100 FROM LOG </tt> queries running for a long
+<code class="command"> FETCH 100 FROM LOG </code> queries running for a long
 time, <a href="table.sl-log-1.html">sl_log_1</a> is growing, and performance is,
 well, generally getting steadily worse. </p></td>
 </tr>
@@ -1181,13 +1181,13 @@ well, generally getting steadily worse. </p></td>
 <td align="left" valign="top">
 <p> There are actually a number of possible causes for
 this sort of thing.  There is a question involving similar pathology
-where the problem is that <a href="faq.html#pglistenerfull"> <tt class="envar">pg_listener </tt> grows because it is not vacuumed. </a></p>
+where the problem is that <a href="faq.html#pglistenerfull"> <code class="envar">pg_listener </code> grows because it is not vacuumed. </a></p>
 <p> Another &#8220;<span class="quote"> proximate cause </span>&#8221; for this growth is for
-there to be a connection connected to the node that sits <tt class="command">IDLE IN TRANSACTION </tt> for a very long time. </p>
+there to be a connection connected to the node that sits <code class="command">IDLE IN TRANSACTION </code> for a very long time. </p>
 <p> That open transaction will have multiple negative effects, all
 of which will adversely affect performance:</p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> Vacuums on all tables, including <tt class="envar"> pg_listener</tt>, will not clear out dead tuples from before the start of the
+<li><p> Vacuums on all tables, including <code class="envar"> pg_listener</code>, will not clear out dead tuples from before the start of the
 idle transaction. </p></li>
 <li><p> The cleanup thread will be unable to clean out
 entries in <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-seqlog.html">sl_seqlog</a>, with the result that these tables will
@@ -1198,10 +1198,10 @@ grow, ceaselessly, until the transaction is closed. </p></li>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> You can monitor for this condition inside the database
-only if the <span class="productname"> PostgreSQL </span> <tt class="filename">postgresql.conf </tt> parameter
-<tt class="envar">stats_command_string</tt> is set to true.  If that is set,
-then you may submit the query <tt class="command"> select * from pg_stat_activity
-where current_query like '%IDLE% in transaction'; </tt> which
+only if the <span class="productname"> PostgreSQL </span> <code class="filename">postgresql.conf </code> parameter
+<code class="envar">stats_command_string</code> is set to true.  If that is set,
+then you may submit the query <code class="command"> select * from pg_stat_activity
+where current_query like '%IDLE% in transaction'; </code> which
 will find relevant activity.</p></td>
 </tr>
 <tr class="answer">
@@ -1214,12 +1214,12 @@ thus holding on to an ancient transaction.  </p></td>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> It is also possible (though rarer) for the problem to
 be a transaction that is, for some other reason, being held open for a
-very long time.  The <tt class="envar"> query_start </tt> time in <tt class="envar">pg_stat_activity </tt> may show you some query that has been
+very long time.  The <code class="envar"> query_start </code> time in <code class="envar">pg_stat_activity </code> may show you some query that has been
 running way too long.  </p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
-<td align="left" valign="top"><p> There are plans for <span class="productname"> PostgreSQL</span> to have a timeout parameter, <tt class="envar">open_idle_transaction_timeout </tt>, which would cause old
+<td align="left" valign="top"><p> There are plans for <span class="productname"> PostgreSQL</span> to have a timeout parameter, <code class="envar">open_idle_transaction_timeout </code>, which would cause old
 transactions to time out after some period of disuse.  Buggy
 connection pool logic is a common culprit for this sort of thing.
 There are plans for <span class="productname"> <a href="help.html#pgpool"> pgpool</a> </span> to provide a better alternative, eventually,
@@ -1232,7 +1232,7 @@ numerous of them are left idle in transaction for hours at a time.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="neededexecddl"></a><a name="id2549029"></a><b>26.</b>
+<a name="neededexecddl"></a><a name="id527833"></a><b>26.</b>
 </td>
 <td align="left" valign="top">
 <p> Behaviour - all the subscriber nodes start to fall
@@ -1246,8 +1246,8 @@ ERROR remoteWorkerThread_1: SYNC aborted</pre>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top">
-<p> Cause: you have likely issued <tt class="command">alter
-table</tt> statements directly on the databases instead of using
+<p> Cause: you have likely issued <code class="command">alter
+table</code> statements directly on the databases instead of using
 the slonik <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> command.</p>
 <p>The solution is to rebuild the trigger on the affected table and
 fix the entries in <a href="table.sl-log-1.html">sl_log_1</a> by hand.</p>
@@ -1305,7 +1305,7 @@ update _app1.sl_log_1 SET log_cmddata = 'balance=''125192.00'' where pkey=''60''
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2549133"></a><a name="id2549134"></a><b>27.</b>
+<a name="id527945"></a><a name="id527946"></a><b>27.</b>
 </td>
 <td align="left" valign="top">
 <p> After notification of a subscription on
@@ -1350,11 +1350,11 @@ things in a rush; you need to be sure things are working right
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2549232"></a><a name="id2549233"></a><b>28.</b>
+<a name="id528051"></a><a name="id528052"></a><b>28.</b>
 </td>
-<td align="left" valign="top"><p> I can do a <tt class="command">pg_dump</tt>
-and load the data back in much faster than the <tt class="command">SUBSCRIBE
-SET</tt> runs.  Why is that?  </p></td>
+<td align="left" valign="top"><p> I can do a <code class="command">pg_dump</code>
+and load the data back in much faster than the <code class="command">SUBSCRIBE
+SET</code> runs.  Why is that?  </p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
@@ -1362,10 +1362,10 @@ SET</tt> runs.  Why is that?  </p></td>
 <p> <span class="productname">Slony-I</span> depends on there
 being an already existant index on the primary key, and leaves all
 indexes alone whilst using the <span class="productname">PostgreSQL</span>
-<tt class="command">COPY</tt> command to load the data.  Further hurting
-performane, the <tt class="command">COPY SET</tt> event starts by deleting
+<code class="command">COPY</code> command to load the data.  Further hurting
+performane, the <code class="command">COPY SET</code> event starts by deleting
 the contents of tables, which potentially leaves a lot of dead tuples</p>
-<p> When you use <tt class="command">pg_dump</tt> to dump the contents of
+<p> When you use <code class="command">pg_dump</code> to dump the contents of
 a database, and then load that, creation of indexes is deferred until
 the very end.  It is <span class="emphasis"><em>much</em></span> more efficient to
 create indexes against the entire table, at the end, than it is to
@@ -1379,8 +1379,8 @@ hasn't been implemented.  </p>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> If you can drop unnecessary indices while the
-<tt class="command">COPY</tt> takes place, that will improve performance
-quite a bit.  If you can <tt class="command">TRUNCATE</tt> tables that
+<code class="command">COPY</code> takes place, that will improve performance
+quite a bit.  If you can <code class="command">TRUNCATE</code> tables that
 contain data that is about to be eliminated, that will improve
 performance <span class="emphasis"><em>a lot.</em></span> </p></td>
 </tr>
@@ -1388,14 +1388,14 @@ performance <span class="emphasis"><em>a lot.</em></span> </p></td>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> There is a TODO item for implementation in
 <span class="productname">PostgreSQL</span> that adds a new option,
-something like <tt class="option">BULKLOAD</tt>, which would defer revising
+something like <code class="option">BULKLOAD</code>, which would defer revising
 indexes until the end, and regenerating indexes in bulk.  That will
 likely not be available until <span class="productname">PostgreSQL</span>
 8.1, but it should substantially improve performance once available.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2549350"></a><a name="id2549352"></a><b>29.</b>
+<a name="id528182"></a><a name="id528183"></a><b>29.</b>
 </td>
 <td align="left" valign="top"><p> I had a network &#8220;<span class="quote">glitch</span>&#8221; that led to my
 using <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to fail over to an alternate node.
@@ -1426,14 +1426,14 @@ node as being corrupted.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="morethansuper"></a><a name="id2549433"></a><b>30.</b>
+<a name="morethansuper"></a><a name="id528273"></a><b>30.</b>
 </td>
 <td align="left" valign="top">
 <p> I created a &#8220;<span class="quote">superuser</span>&#8221; account,
-<tt class="command">slony</tt>, to run replication activities.  As
+<code class="command">slony</code>, to run replication activities.  As
 suggested, I set it up as a superuser, via the following query: 
-<tt class="command">update pg_shadow set usesuper = 't' where usename in ('slony',
-'molly', 'dumpy');</tt>
+<code class="command">update pg_shadow set usesuper = 't' where usename in ('slony',
+'molly', 'dumpy');</code>
 (that command also deals with other users I set up to run vacuums and
 backups).</p>
 <p> Unfortunately, I ran into a problem the next time I subscribed
@@ -1448,13 +1448,13 @@ PL/pgSQL function "setaddtable_int" line 76 at perform
 WARN   remoteWorkerThread_1: data copy for set 28661 failed - sleep 60 seconds</pre>
 <p> This continues to fail, over and over, until I restarted the
 <span class="application">slon</span> to connect as
-<tt class="command">postgres</tt> instead.</p>
+<code class="command">postgres</code> instead.</p>
 </td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> The problem is fairly self-evident; permission is being
-denied on the system table, <tt class="envar">pg_class</tt>.</p></td>
+denied on the system table, <code class="envar">pg_class</code>.</p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
@@ -1465,7 +1465,7 @@ denied on the system table, <tt class="envar">pg_class</tt>.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="missingoids"></a><a name="id2549517"></a><b>31.</b>
+<a name="missingoids"></a><a name="id528365"></a><b>31.</b>
 </td>
 <td align="left" valign="top">
 <p> We got bitten by
@@ -1521,7 +1521,7 @@ could also announce an admin to take a look...  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2549601"></a><a name="id2549602"></a><b>32.</b>
+<a name="id528448"></a><a name="id528449"></a><b>32.</b>
 </td>
 <td align="left" valign="top">
 <p> Node #1 was dropped via <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>, and the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> one of the
@@ -1549,7 +1549,7 @@ propagated yet before node 1 was dropped.  </p>
 <td align="left" valign="top">
 <p> This points to a case where you'll
 need to do &#8220;<span class="quote">event surgery</span>&#8221; on one or more of the nodes.
-A <tt class="command">STORE_LISTEN</tt> event remains outstanding that wants
+A <code class="command">STORE_LISTEN</code> event remains outstanding that wants
 to add a listen path that <span class="emphasis"><em>cannot</em></span> be created
 because node 1 and all paths pointing to node 1 have gone away.</p>
 <p> Let's assume, for exposition purposes, that the remaining nodes
@@ -1560,9 +1560,9 @@ wouldn't be on node #3 if it had not already been processed
 successfully.  The easiest way to cope with this situation is to
 delete the offending <a href="table.sl-event.html">sl_event</a> entry on node #2.
 You'll connect to node #2's database, and search for the
-<tt class="command">STORE_LISTEN</tt> event:</p>
-<p> <tt class="command"> select * from sl_event where ev_type =
-'STORE_LISTEN';</tt></p>
+<code class="command">STORE_LISTEN</code> event:</p>
+<p> <code class="command"> select * from sl_event where ev_type =
+'STORE_LISTEN';</code></p>
 <p> There may be several entries, only some of which need to be
 purged. </p>
 <pre class="screen"> 
@@ -1576,14 +1576,14 @@ DELETE 3
 COMMIT</pre>
 <p> The next time the <span class="application">slon</span> for node 3
 starts up, it will no longer find the &#8220;<span class="quote">offensive</span>&#8221;
-<tt class="command">STORE_LISTEN</tt> events, and replication can continue.
+<code class="command">STORE_LISTEN</code> events, and replication can continue.
 (You may then run into some other problem where an old stored event is
 referring to no-longer-existant configuration...) </p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2549736"></a><a name="id2549737"></a><b>33.</b>
+<a name="id528595"></a><a name="id528596"></a><b>33.</b>
 </td>
 <td align="left" valign="top"><p> I am using <span class="productname"> Frotznik Freenix
 4.5</span>, with its <span class="acronym">FFPM</span> (Frotznik Freenix
@@ -1614,22 +1614,22 @@ fully configured copy of <span class="productname">PostgreSQL</span> sources ava
 <p> <span class="emphasis"><em>Hopefully</em></span> you can make the configuration
 this closely match against the configuration in use by the packaged
 version of <span class="productname">PostgreSQL</span> by checking the configuration using the command
-<tt class="command"> pg_config --configure</tt>. </p>
+<code class="command"> pg_config --configure</code>. </p>
 </li>
 <li><p> <span class="productname">Slony-I</span> version 1.1 simplifies this considerably;
 it does not require the full copy of <span class="productname">PostgreSQL</span> sources, but can,
 instead, refer to the various locations where <span class="productname">PostgreSQL</span> libraries,
-binaries, configuration, and <tt class="command"> #include </tt> files are
+binaries, configuration, and <code class="command"> #include </code> files are
 located.  </p></li>
 <li>
 <p> <span class="productname">PostgreSQL</span> 8.0 and higher is generally easier to deal
 with in that a &#8220;<span class="quote">default</span>&#8221; installation includes all of the
-<tt class="command"> #include </tt> files.  </p>
+<code class="command"> #include </code> files.  </p>
 <p> If you are using an earlier version of <span class="productname">PostgreSQL</span>, you may find
 it necessary to resort to a source installation if the packaged
 version did not install the &#8220;<span class="quote">server
-<tt class="command">#include</tt></span>&#8221; files, which are installed by the
-command <tt class="command"> make install-all-headers </tt>.</p>
+<code class="command">#include</code></span>&#8221; files, which are installed by the
+command <code class="command"> make install-all-headers </code>.</p>
 </li>
 </ul></div>
 <p> In effect, the &#8220;<span class="quote">worst case</span>&#8221; scenario takes place
@@ -1651,7 +1651,7 @@ hope to avoid compiling <span class="productname">Slony-I</span>.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="sequenceset"></a><a name="id2550052"></a><b>34.</b>
+<a name="sequenceset"></a><a name="id528945"></a><b>34.</b>
 </td>
 <td align="left" valign="top"><p> <a href="http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226" target="_top">Bug #1226 </a> indicates an error condition that can come up if
 you have a replication set that consists solely of sequences. </p></td>
@@ -1678,7 +1678,7 @@ just <span class="emphasis"><em>seems</em></span> scary.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2550114"></a><a name="id2550115"></a><b>35.</b>
+<a name="id529013"></a><a name="id529014"></a><b>35.</b>
 </td>
 <td align="left" valign="top">
 <p> I tried the following query which did not work:</p>
@@ -1687,7 +1687,7 @@ pg_stat_activity on pid = procpid where granted = true and transaction
 in (select transaction from pg_locks where granted = false); 
 
 ERROR: could not find hash function for hash operator 716373</pre>
-<p> It appears the <span class="productname">Slony-I</span> <tt class="function">xxid</tt> functions are
+<p> It appears the <span class="productname">Slony-I</span> <code class="function">xxid</code> functions are
 claiming to be capable of hashing, but cannot actually do so.</p>
 <p> What's up? </p>
 </td>
@@ -1701,7 +1701,7 @@ used to group together updates that are associated with the same
 transaction.</p>
 <p> Operators were not available for <span class="productname">PostgreSQL</span> 7.3 and earlier
 versions; in order to support version 7.3, custom functions had to be
-added.  The <tt class="function">=</tt> operator was marked as supporting
+added.  The <code class="function">=</code> operator was marked as supporting
 hashing, but for that to work properly, the join operator must appear
 in a hash index operator class.  That was not defined, and as a
 result, queries (like the one above) that decide to use hash joins
@@ -1718,7 +1718,7 @@ injure <span class="productname">Slony-I</span>'s ability to continue replicatin
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> Future releases of <span class="productname">Slony-I</span> (<span class="emphasis"><em>e.g.</em></span>
-1.0.6, 1.1) will omit the <tt class="command">HASHES</tt> indicator, so that</p></td>
+1.0.6, 1.1) will omit the <code class="command">HASHES</code> indicator, so that</p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
@@ -1756,7 +1756,7 @@ UPDATE 1</pre>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="v72upgrade"></a><a name="id2550263"></a><b>36.</b>
+<a name="v72upgrade"></a><a name="id529174"></a><b>36.</b>
 </td>
 <td align="left" valign="top"><p> I have a <span class="productname">PostgreSQL</span> 7.2-based system that I
 <span class="emphasis"><em>really, really</em></span> want to use <span class="productname">Slony-I</span> to help me
@@ -1816,7 +1816,7 @@ pretty heavily with the code.  </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2550392"></a><a name="id2550393"></a><b>37.</b>
+<a name="id529314"></a><a name="id529315"></a><b>37.</b>
 </td>
 <td align="left" valign="top"><p> I am finding some multibyte columns (Unicode, Big5)
 are being truncated.  Why?  </p></td>
@@ -1825,15 +1825,15 @@ are being truncated.  Why?  </p></td>
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> This was a bug present until a little after <span class="productname">Slony-I</span>
 version 1.1.0; the way in which columns were being captured by the
-<tt class="function">logtrigger()</tt> function could clip off the last
+<code class="function">logtrigger()</code> function could clip off the last
 byte of a column represented in a multibyte format.  Check to see that
-your version of <tt class="filename">src/backend/slony1_funcs.c</tt> is
+your version of <code class="filename">src/backend/slony1_funcs.c</code> is
 1.34 or better; the patch was introduced in CVS version 1.34 of that
 file.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2550424"></a><a name="id2550425"></a><b>38.</b>
+<a name="id529349"></a><a name="id529351"></a><b>38.</b>
 </td>
 <td align="left" valign="top"><p> I need to rename a column that is in the
 primary key for one of my replicated tables.  That seems pretty
@@ -1847,7 +1847,7 @@ and recreate it, right?</p></td>
 cleanly.  <span class="productname">Slony-I</span> does indeed make intense use of the primary key
 columns, but actually does so in a manner that allows this sort of
 change to be made very nearly transparently.</p>
-<p> Suppose you revise a column name, as with the SQL DDL <tt class="command">alter table accounts alter column aid rename to cid; </tt> This
+<p> Suppose you revise a column name, as with the SQL DDL <code class="command">alter table accounts alter column aid rename to cid; </code> This
 revises the names of the columns in the table; it
 <span class="emphasis"><em>simultaneously</em></span> renames the names of the columns
 in the primary key index.  The result is that the normal course of
@@ -1860,33 +1860,33 @@ in the transaction stream on each node.</p>
 <p> Interestingly, that isn't forcibly necessary.  As long as the
 alteration is applied on the replication set's origin before
 application on subscribers, things won't break irrepairably.  Some
-<tt class="command">SYNC</tt> events that do not include changes to the
+<code class="command">SYNC</code> events that do not include changes to the
 altered table can make it through without any difficulty...  At the
 point that the first update to the table is drawn in by a subscriber,
 <span class="emphasis"><em>that</em></span> is the point at which
-<tt class="command">SYNC</tt> events will start to fail, as the provider
+<code class="command">SYNC</code> events will start to fail, as the provider
 will indicate the &#8220;<span class="quote">new</span>&#8221; set of columns whilst the
 subscriber still has the &#8220;<span class="quote">old</span>&#8221; ones.  If you then apply
 the alteration to the subscriber, it can retry the
-<tt class="command">SYNC</tt>, at which point it will, finding the
+<code class="command">SYNC</code>, at which point it will, finding the
 &#8220;<span class="quote">new</span>&#8221; column names, work just fine.</p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2550522"></a><a name="id2550523"></a><b>39.</b>
+<a name="id529456"></a><a name="id529457"></a><b>39.</b>
 </td>
 <td align="left" valign="top"><p> Replication has fallen behind, and it appears that the
 queries to draw data from <a href="table.sl-log-1.html">sl_log_1</a>/<a href="table.sl-log-2.html">sl_log_2</a> are taking a long time to pull just a few
-<tt class="command">SYNC</tt>s. </p></td>
+<code class="command">SYNC</code>s. </p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"><b></b></td>
 <td align="left" valign="top"><p> Until version 1.1.1, there was only one index on <a href="table.sl-log-1.html">sl_log_1</a>/<a href="table.sl-log-2.html">sl_log_2</a>, and if
 there were multiple replication sets, some of the columns on the index
 would not provide meaningful selectivity.  If there is no index on
-column <tt class="function"> log_xid</tt>, consider adding it.  See
-<tt class="filename">slony1_base.sql</tt> for an example of how to create
+column <code class="function"> log_xid</code>, consider adding it.  See
+<code class="filename">slony1_base.sql</code> for an example of how to create
 the index.</p></td>
 </tr>
 </tbody>

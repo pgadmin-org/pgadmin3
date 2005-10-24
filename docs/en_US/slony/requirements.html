@@ -4,8 +4,8 @@
 <title>3. System Requirements</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="slonylistenercosts.html" title="2.  Slony-I Communications
 Costs">
@@ -26,7 +26,7 @@ OpenBSD-3.5-sparc64 and <span class="trademark">Windows</span>&#8482; 2000, XP a
 2003 (32 bit).</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2535257"></a>3.1.  <span class="productname">Slony-I</span> Software Dependancies</h3></div></div></div>
+<a name="id460219"></a>3.1.  <span class="productname">Slony-I</span> Software Dependancies</h3></div></div></div>
 <p> At present, <span class="productname">Slony-I</span> <span class="emphasis"><em>as well as <span class="productname">PostgreSQL</span></em></span>
 need to be able to be compiled from source at your site.</p>
 <p> In order to compile <span class="productname">Slony-I</span>, you need to have the following
@@ -35,11 +35,11 @@ tools:
 </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> GNU make.  Other make programs will not work.  GNU
-make is often installed under the name <tt class="command">gmake</tt>; this
+make is often installed under the name <code class="command">gmake</code>; this
 document will therefore always refer to it by that name. (On
 Linux-based systems GNU make is typically the default make, and is
-called <tt class="command">make</tt>) To test to see if your make is GNU
-make enter <tt class="command">make version</tt>.  Version 3.76 or later
+called <code class="command">make</code>) To test to see if your make is GNU
+make enter <code class="command">make version</code>.  Version 3.76 or later
 will suffice; previous versions may not.</p></li>
 <li><p> You need an ISO/ANSI C compiler.  Recent versions of
 <span class="application">GCC</span> work.</p></li>
@@ -58,7 +58,7 @@ want to consider upgrades if you are running earlier versions.</p>
 <p> If you are running a version of <span class="productname">PostgreSQL</span> earlier
 than 8.0, you need to make sure that server header files were
 installed.  If installing from sources, this is done via the command
-<tt class="command">make install-all-headers</tt>.  Otherwise, you will
+<code class="command">make install-all-headers</code>.  Otherwise, you will
 encounter the <a href="faq.html#missingheaders"> missing headers for
 libpqserver</a> problem described in the FAQ.</p>
 </li>
@@ -93,7 +93,7 @@ will need to be prepared to compile <span class="productname">Slony-I</span> you
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2535594"></a>3.2.  Getting <span class="productname">Slony-I</span> Source</h3></div></div></div>
+<a name="id503396"></a>3.2.  Getting <span class="productname">Slony-I</span> Source</h3></div></div></div>
 <p>You can get the <span class="productname">Slony-I</span> source from <a href="http://developer.postgresql.org/~wieck/slony1/download/" target="_top">http://developer.postgresql.org/~wieck/slony1/download/</a></p>
 </div>
 <div class="sect2" lang="en">
@@ -121,11 +121,11 @@ not recognize.
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> On <span class="productname">AIX</span>,
-<tt class="command"><tt class="envar">TZ</tt>=CUT0</tt> was unrecognized, leading to
+<code class="command"><code class="envar">TZ</code>=CUT0</code> was unrecognized, leading to
 timestamps pulled from system calls causing it to
 break.</p>
-<p> <tt class="command">CUT0</tt> is a variant way of describing
-<tt class="command">UTC</tt></p>
+<p> <code class="command">CUT0</code> is a variant way of describing
+<code class="command">UTC</code></p>
 </li>
 <li><p> Some countries' timezones are not yet included in
 <span class="productname">PostgreSQL</span>.  </p></li>
@@ -134,15 +134,15 @@ break.</p>
 practice</span>&#8221; with <span class="productname">Slony-I</span> (and, for that matter, <span class="productname">PostgreSQL</span>) is
 for the postmaster user and/or the user under which
 <span class="application">slon</span> runs to use
-<tt class="command"><tt class="envar">TZ</tt>=UTC</tt> or
-<tt class="command"><tt class="envar">TZ</tt>=GMT</tt>.  Those timezones are
+<code class="command"><code class="envar">TZ</code>=UTC</code> or
+<code class="command"><code class="envar">TZ</code>=GMT</code>.  Those timezones are
 <span class="emphasis"><em>sure</em></span> to be supported on any platform, and have
 the merit over &#8220;<span class="quote">local</span>&#8221; timezones that times never wind up
 leaping around due to Daylight Savings Time.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2535781"></a>3.4.  Network Connectivity</h3></div></div></div>
+<a name="id503601"></a>3.4.  Network Connectivity</h3></div></div></div>
 <p>It is necessary that the hosts that are to replicate between one
 another have <span class="emphasis"><em>bidirectional</em></span> network communications
 between the <span class="productname">PostgreSQL</span> instances.  That is, if node B is replicating
@@ -182,7 +182,7 @@ branch location that can't be kept secure compromises security for the
 cluster as a whole.</p>
 <p>New in <span class="productname">Slony-I</span> version 1.1 is a feature whereby updates for a
 particular replication set may be serialized via a scheme called <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping. </a> The data stored in
-<tt class="envar">sl_log_1</tt> and <tt class="envar">sl_log_2</tt> is also written
+<code class="envar">sl_log_1</code> and <code class="envar">sl_log_2</code> is also written
 out to log files on disk.  These files may then be transmitted in any
 manner desired, whether via scp, FTP, burning them onto DVD-ROMs and
 mailing them, or, at the frivolous end of the spectrum, by recording

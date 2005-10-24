@@ -4,8 +4,8 @@
 <title>7. Defining Slony-I Replication Sets</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20050707 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051024 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="cluster.html" title="6. Defining Slony-I Clusters">
 <link rel="next" href="slonyadmin.html" title=" Slony-I Administration ">
@@ -26,7 +26,7 @@ suitable primary key</p></li>
 </ul></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2536928"></a>7.1. Primary Keys</h3></div></div></div>
+<a name="id514550"></a>7.1. Primary Keys</h3></div></div></div>
 <p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
 candidate thereof on each table that is replicated.  PK values are
 used as the primary identifier for each tuple that is modified in the
@@ -54,7 +54,7 @@ key, as it infers the namespace from the table.</p>
 you can ask <span class="productname">Slony-I</span> to provide one.  This is done by first using
 <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> to add a column populated using a
 <span class="productname">Slony-I</span> sequence, and then having the <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> include the directive
-<tt class="option">key=serial</tt>, to indicate that <span class="productname">Slony-I</span>'s own column
+<code class="option">key=serial</code>, to indicate that <span class="productname">Slony-I</span>'s own column
 should be used.</p></li>
 </ul></div>
 <p> It is not terribly important whether you pick a
@@ -84,7 +84,7 @@ replication set:
 </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p> The initial <tt class="command">COPY_SET</tt> event for a
+<p> The initial <code class="command">COPY_SET</code> event for a
 large set leads to a <a href="faq.html#longtxnsareevil"> long running
 transaction </a> on the provider node.  The <a href="faq.html">FAQ </a> outlines a number of problems that result from long
 running transactions that will injure system performance.</p>
@@ -116,7 +116,7 @@ should ease the ability to get the DDL change into place.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2537195"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
+<a name="id514840"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
 <p> Each time a SYNC is processed, values are recorded for
 <span class="emphasis"><em>all</em></span> of the sequences in the set.  If there are a
 lot of sequences, this can cause <a href="table.sl-seqlog.html">sl_seqlog</a> to
@@ -136,7 +136,7 @@ introduce much work to the system.</p>
 <p> If it is not updated, the trigger on the table on the origin
 never fires, and no entries are added to <a href="table.sl-log-1.html">sl_log_1</a>.  The table never appears in any of the
 further replication queries (<span class="emphasis"><em>e.g.</em></span> in the
-<tt class="command">FETCH 100 FROM LOG</tt> queries used to find
+<code class="command">FETCH 100 FROM LOG</code> queries used to find
 replicatable data) as they only look for tables for which there are
 entries in <a href="table.sl-log-1.html">sl_log_1</a>.</p>
 </li>
