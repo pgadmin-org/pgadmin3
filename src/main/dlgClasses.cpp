@@ -99,6 +99,26 @@ void pgDialog::PostCreation()
         right -= size.GetWidth() - ConvertDialogToPixels(wxSize(3,0)).x;
         btnApply->Move(right, pos.y);
     }
+	
+// On OS X, reverse the buttons for UI consistency
+#ifdef __WXMAC__
+	wxPoint pos2;
+	pos = btnCancel->GetPosition();
+	
+	if (btnOK)
+	{
+		pos2 = btnOK->GetPosition();
+		btnOK->Move(pos.x, pos.y);
+	}
+	
+	if (btnApply)
+	{
+		pos2 = btnApply->GetPosition();
+		btnApply->Move(pos.x, pos.y);
+	}
+	
+	btnCancel->Move(pos2.x, pos2.y);
+#endif
 
     int w, h;
     size=GetSize();

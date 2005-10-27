@@ -841,9 +841,17 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
         {
             case 0: 
                 lastFileFormat = false;
+#ifdef __WXMAC__
+		if (!lastPath.Contains(wxT(".")))
+			lastPath += wxT(".sql");
+#endif
                 break;
             case 1:
                 lastFileFormat = true;
+#ifdef __WXMAC__
+                if (!lastPath.Contains(wxT(".")))
+                        lastPath += wxT(".sql");
+#endif
                 break;
             default:
                 lastFileFormat = settings->GetUnicodeFile();
