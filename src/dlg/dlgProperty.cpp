@@ -1156,7 +1156,9 @@ wxString dlgSecurityProperty::GetHelpPage() const
 
 void dlgSecurityProperty::EnableOK(bool enable)
 {
-    if (securityChanged)
+	// Don't enable the OK button if the object isn't yet created,
+	// leave that to the object dialog.
+    if (securityChanged && GetObject())
     {
         wxString sql=GetSql();
         if (sql.IsEmpty())
