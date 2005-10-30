@@ -212,7 +212,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     horizontal->SetMinimumPaneSize(50);
 
     sqlQuery = new ctlSQLBox(horizontal, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
-    sqlQuery->SetMarginWidth(1, 16);
+    sqlQuery->SetMarginWidth(1, 50);
+	sqlQuery->SetMarginType(1, 1);
 
     output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
