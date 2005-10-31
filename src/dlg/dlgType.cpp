@@ -219,6 +219,7 @@ void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
     {
         CheckLenEnable();
         txtLength->Enable(isVarLen);
+        txtPrecision->Enable(isVarPrec);
         CheckChange();
         OnChangeMember(ev);
     }
@@ -386,7 +387,7 @@ wxString dlgType::GetSql()
             {
                 if (i)
                     sql += wxT(", ");
-                sql += lstMembers->GetItemText(i) + wxT(" ")
+                sql += qtIdent(lstMembers->GetItemText(i)) + wxT(" ")
                     + memberTypes.Item(i).AfterFirst(':');
             }
         }
