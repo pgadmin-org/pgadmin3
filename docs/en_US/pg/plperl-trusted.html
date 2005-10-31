@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
 <link rel="up" href="plperl.html" title="Chapter 38. PL/Perl - Perl Procedural Language">
 <link rel="prev" href="plperl-global.html" title="38.4. Global Values in PL/Perl">
 <link rel="next" href="plperl-triggers.html" title="38.6. PL/Perl Triggers">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plperl-trusted"></a>38.5. Trusted and Untrusted PL/Perl</h2></div></div></div>
-<a name="id677879"></a><p>   Normally, PL/Perl is installed as a &#8220;<span class="quote">trusted</span>&#8221; programming
+<a name="id677936"></a><p>   Normally, PL/Perl is installed as a &#8220;<span class="quote">trusted</span>&#8221; programming
    language named <code class="literal">plperl</code>.  In this setup, certain Perl
    operations are disabled to preserve security.  In general, the
    operations that are restricted are those that interact with the
@@ -29,18 +29,22 @@
    system operations are not allowed for security reasons:
 </p>
 <pre class="programlisting">CREATE FUNCTION badfunc() RETURNS integer AS $$
-    open(TEMP, "&gt;/tmp/badfile");
-    print TEMP "Gotcha!\n";
+    my $tmpfile = "/tmp/badfile";
+    open my $fh, '&gt;', $tmpfile
+        or elog(ERROR, qq{Could not open the file "$tmpfile": $!});
+    print $fh "Testing writing to a file\n";
+    close $fh or elog(ERROR, qq{Could not close the file "$tmpfile": $!});
     return 1;
 $$ LANGUAGE plperl;</pre>
 <p>
-   The creation of the function will succeed, but executing it will not.
+	The creation of this function will fail as its use of a forbidden
+	operation will be be caught by the validator.
   </p>
 <p>   Sometimes it is desirable to write Perl functions that are not
    restricted.  For example, one might want a Perl function that sends
    mail.  To handle these cases, PL/Perl can also be installed as an
    &#8220;<span class="quote">untrusted</span>&#8221; language (usually called
-   <span class="application">PL/PerlU</span><a name="id677964"></a>).
+   <span class="application">PL/PerlU</span><a name="id678029"></a>).
    In this case the full Perl language is available.  If the
    <code class="command">createlang</code> program is used to install the
    language, the language name <code class="literal">plperlu</code> will select

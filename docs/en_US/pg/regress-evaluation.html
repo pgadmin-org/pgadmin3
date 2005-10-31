@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
 <link rel="up" href="regress.html" title="Chapter 27. Regression Tests">
 <link rel="prev" href="regress.html" title="Chapter 27. Regression Tests">
 <link rel="next" href="regress-variant.html" title="27.3. Variant Comparison Files">
@@ -44,7 +44,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id620748"></a>27.2.1. Error message differences</h3></div></div></div>
+<a name="id620788"></a>27.2.1. Error message differences</h3></div></div></div>
 <p>     Some of the regression tests involve intentional invalid input
      values.  Error messages can come from either the
      <span class="productname">PostgreSQL</span> code or from the host
@@ -57,7 +57,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id620772"></a>27.2.2. Locale differences</h3></div></div></div>
+<a name="id620812"></a>27.2.2. Locale differences</h3></div></div></div>
 <p>     If you run the tests against an already-installed server that was
      initialized with a collation-order locale other than C, then
      there may be differences due to sort order and follow-up
@@ -68,7 +68,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id620785"></a>27.2.3. Date and time differences</h3></div></div></div>
+<a name="id620825"></a>27.2.3. Date and time differences</h3></div></div></div>
 <p>     Most of the date and time results are dependent on the time zone
      environment.  The reference files are generated for time zone
      <code class="literal">PST8PDT</code> (Berkeley, California), and there will be
@@ -80,7 +80,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id620815"></a>27.2.4. Floating-point differences</h3></div></div></div>
+<a name="id620855"></a>27.2.4. Floating-point differences</h3></div></div></div>
 <p>     Some of the tests involve computing 64-bit floating-point numbers (<code class="type">double
      precision</code>) from table columns. Differences in
      results involving mathematical functions of <code class="type">double
@@ -102,7 +102,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id620898"></a>27.2.5. Row ordering differences</h3></div></div></div>
+<a name="id620932"></a>27.2.5. Row ordering differences</h3></div></div></div>
 <p>You might see differences in which the same rows are output in a
 different order than what appears in the expected file.  In most cases
 this is not, strictly speaking, a bug.  Most of the regression test
@@ -132,7 +132,7 @@ exclusion of those that don't.
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id620975"></a>27.2.6. Insufficient stack depth</h3></div></div></div>
+<a name="id621010"></a>27.2.6. Insufficient stack depth</h3></div></div></div>
 <p>     If the <code class="literal">errors</code> test results in a server crash
      at the <code class="literal">select infinite_recurse()</code> command, it means that
      the platform's limit on process stack size is smaller than the
@@ -145,7 +145,7 @@ exclusion of those that don't.
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id621019"></a>27.2.7. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div></div>
+<a name="id621054"></a>27.2.7. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div></div>
 <p>     The <code class="literal">random</code> test script is intended to produce 
      random results.   In rare cases, this causes the random regression
      test to fail.  Typing

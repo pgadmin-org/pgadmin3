@@ -1,18 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 17. Run-time Configuration</title>
+<title>Chapter 17. Server Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
 <link rel="next" href="runtime-config-file-locations.html" title="17.2. File Locations">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime-config">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="runtime-config"></a>Chapter 17. Run-time Configuration</h2></div></div></div>
+<a name="runtime-config"></a>Chapter 17. Server Configuration</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -76,7 +76,7 @@
 <dt><span class="sect1"><a href="runtime-config-short.html">17.16. Short Options</a></span></dt>
 </dl>
 </div>
-<a name="id591001"></a><p>   There are many configuration parameters that affect the behavior of
+<a name="id590985"></a><p>   There are many configuration parameters that affect the behavior of
    the database system. In the first section of this chapter, we
    describe how to set configuration chapters. The subsequent sections
    discuss each parameter in detail.
@@ -93,7 +93,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id591089"></a>,
+    <code class="filename">postgresql.conf</code><a name="id591074"></a>,
     which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -110,7 +110,7 @@ search_path = '$user, public'</pre>
     numbers must be single-quoted.  To embed a single quote in a parameter
     value, write either two quotes (preferred) or backslash-quote.
   </p>
-<p>    <a name="id591130"></a>
+<p>    <a name="id591114"></a>
     The configuration file is reread whenever the
     <code class="command">postmaster</code> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means

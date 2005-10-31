@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File system level backup">
 <link rel="next" href="migration.html" title="23.4. Migration Between Releases">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="backup-online"></a>23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
-<a name="id615382"></a><a name="id615392"></a><a name="id615402"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id615371"></a><a name="id615381"></a><a name="id615391"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -250,12 +250,20 @@
 </ol></div>
 <p>
    </p>
-<p>    Some versions of GNU <span class="application">tar</span> consider it an error if a file
-    is changed while <span class="application">tar</span> is copying it.  This case is normal,
-    and not an error, when taking a base backup of an active database.
-    Since ignoring all errors from <span class="application">tar</span> would be unwise,
-    you should either manually inspect <span class="application">tar</span>'s messages or
-    else use a different backup tool that does not complain about this case.
+<p>    Some backup tools that you might wish to use emit warnings or errors
+    if the files they are trying to copy change while the copy proceeds.
+    This situation is normal, and not an error, when taking a base backup of
+    an active database; so you need to ensure that you can distinguish
+    complaints of this sort from real errors.  For example, some versions
+    of <span class="application">rsync</span> return a separate exit code for &#8220;<span class="quote">vanished
+    source files</span>&#8221;, and you can write a driver script to accept this exit
+    code as a non-error case.  Also,
+    some versions of GNU <span class="application">tar</span> consider it an error if a file
+    is changed while <span class="application">tar</span> is copying it.  There does not seem
+    to be any very convenient way to distinguish this error from other types
+    of errors, other than manual inspection of <span class="application">tar</span>'s messages.
+    GNU <span class="application">tar</span> is therefore not the best tool for making base
+    backups.
    </p>
 <p>    It is not necessary to be very concerned about the amount of time elapsed
     between <code class="function">pg_start_backup</code> and the start of the actual backup,
@@ -540,7 +548,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id616926"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id616940"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.

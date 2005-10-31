@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1beta4 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
 <link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
 <link rel="prev" href="typeconv-query.html" title="10.4. Value Storage">
 <link rel="next" href="indexes.html" title="Chapter 11. Indexes">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="typeconv-union-case"></a>10.5. <code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs</h2></div></div></div>
-<a name="id573466"></a><a name="id573480"></a><a name="id573493"></a><a name="id573507"></a><a name="id573520"></a><p>SQL <code class="literal">UNION</code> constructs must match up possibly dissimilar
+<a name="id573438"></a><a name="id573452"></a><a name="id573465"></a><a name="id573479"></a><a name="id573492"></a><p>SQL <code class="literal">UNION</code> constructs must match up possibly dissimilar
 types to become a single result set.  The resolution algorithm is
 applied separately to each output column of a union query.  The
 <code class="literal">INTERSECT</code> and <code class="literal">EXCEPT</code> constructs resolve
@@ -23,7 +23,7 @@ dissimilar types in the same way as <code class="literal">UNION</code>.  The
 algorithm to match up their component expressions and select a result
 data type.</p>
 <div class="procedure">
-<a name="id573594"></a><p class="title"><b>Type Resolution for <code class="literal">UNION</code>, <code class="literal">CASE</code>,
+<a name="id573566"></a><p class="title"><b>Type Resolution for <code class="literal">UNION</code>, <code class="literal">CASE</code>,
 and Related Constructs</b></p>
 <ol type="1">
 <li><p>If all inputs are of type <code class="type">unknown</code>, resolve as type
@@ -38,7 +38,7 @@ converted to it.</p></li>
 </div>
 <p>Some examples follow.</p>
 <div class="example">
-<a name="id573658"></a><p class="title"><b>Example 10.7. Type Resolution with Underspecified Types in a Union</b></p>
+<a name="id573631"></a><p class="title"><b>Example 10.7. Type Resolution with Underspecified Types in a Union</b></p>
 <pre class="screen">SELECT text 'a' AS "text" UNION SELECT 'b';
 
  text
@@ -50,7 +50,7 @@ converted to it.</p></li>
 Here, the unknown-type literal <code class="literal">'b'</code> will be resolved as type <code class="type">text</code>.</p>
 </div>
 <div class="example">
-<a name="id573683"></a><p class="title"><b>Example 10.8. Type Resolution in a Simple Union</b></p>
+<a name="id573655"></a><p class="title"><b>Example 10.8. Type Resolution in a Simple Union</b></p>
 <pre class="screen">SELECT 1.2 AS "numeric" UNION SELECT 1;
 
  numeric
@@ -64,7 +64,7 @@ and the <code class="type">integer</code> value <code class="literal">1</code> c
 <code class="type">numeric</code>, so that type is used.</p>
 </div>
 <div class="example">
-<a name="id573723"></a><p class="title"><b>Example 10.9. Type Resolution in a Transposed Union</b></p>
+<a name="id573695"></a><p class="title"><b>Example 10.9. Type Resolution in a Transposed Union</b></p>
 <pre class="screen">SELECT 1 AS "real" UNION SELECT CAST('2.2' AS REAL);
 
  real
