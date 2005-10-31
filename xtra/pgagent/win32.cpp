@@ -56,20 +56,20 @@ void LogMessage(wxString msg, int level)
     {
         char *tmp;
         tmp = (char *)malloc(msg.length()+1);
-        sprintf(tmp, msg.mb_str(wxConvUTF8));
+        sprintf(tmp, msg.ToAscii());
 
         switch (level)
         {
             case LOG_DEBUG:
                 if (minLogLevel >= LOG_DEBUG)
-                    ReportEvent(eventHandle, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, (const unsigned short **)&tmp, NULL);
+                    ReportEventA(eventHandle, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
                 break;
             case LOG_WARNING:
                 if (minLogLevel >= LOG_WARNING)
-                    ReportEvent(eventHandle, EVENTLOG_WARNING_TYPE, 0, 0, NULL, 1, 0, (const unsigned short **)&tmp, NULL);
+                    ReportEventA(eventHandle, EVENTLOG_WARNING_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
                 break;
             case LOG_ERROR:
-                ReportEvent(eventHandle, EVENTLOG_ERROR_TYPE, 0, 0, NULL, 1, 0, (const unsigned short **)&tmp, NULL);
+                ReportEventA(eventHandle, EVENTLOG_ERROR_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
                 exit(1);
                 break;
         }
