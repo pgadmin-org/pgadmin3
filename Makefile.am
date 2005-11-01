@@ -24,6 +24,7 @@ TMP_docs = \
 	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
 	$(top_srcdir)/docs/en_US/tips.txt \
 	$(top_srcdir)/docs/de_DE/hints/*.html \
+	$(top_srcdir)/docs/es_ES/tips.txt \
 	$(top_srcdir)/docs/es_ES/hints/*.html \
 	$(top_srcdir)/docs/sl_SI/tips.txt
 
