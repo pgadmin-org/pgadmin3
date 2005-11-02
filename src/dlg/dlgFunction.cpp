@@ -243,13 +243,13 @@ int dlgFunction::Go(bool modal)
     }
     else
     {
-		wxString restrict;
+        wxString restrict;
         // create mode
-    	restrict = wxT("(typtype IN ('b', 'c', 'd', 'p') AND typname NOT IN ('any', 'trigger', 'language_handler'))");
-		if (!settings->GetShowSystemObjects()) 
-			restrict += wxT(" AND nspname NOT LIKE 'pg_toast%' AND nspname NOT LIKE 'pg_temp%'");
+        restrict = wxT("(typtype IN ('b', 'c', 'd', 'p') AND typname NOT IN ('any', 'trigger', 'language_handler'))");
+        if (!settings->GetShowSystemObjects()) 
+            restrict += wxT(" AND nspname NOT LIKE 'pg_toast%' AND nspname NOT LIKE 'pg_temp%'");
 
-		DatatypeReader tr(database, restrict);
+        DatatypeReader tr(database, restrict);
         while (tr.HasMore())
         {
             pgDatatype dt=tr.GetDatatype();
@@ -644,7 +644,14 @@ wxString dlgFunction::GetSql()
             if (chkSetof->GetValue())
                 sql += wxT("SETOF ");
 
-            AppendQuoted(sql, cbReturntype->GetValue());
+            wxString rt=cbReturntype->GetValue();
+            if (rt.Right(2) == wxT("[]"))
+            {
+                AppendQuoted(sql, rt.Left(rt.Length()-2));
+                sql += wxT("[]");
+            }
+            else
+                AppendQuoted(sql, rt);
         }
 
         sql += wxT(" AS\n");
