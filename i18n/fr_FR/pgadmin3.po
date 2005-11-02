@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: pgAdmin3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-10-13 11:12+0200\n"
-"PO-Revision-Date: 2005-10-29 14:21+0100\n"
+"PO-Revision-Date: 2005-10-29 16:17+0100\n"
 "Last-Translator: Raphaël Enrici <blacknoz@club-internet.fr>\n"
 "Language-Team: pgAdmin <jm.poure@freesurf.fr>\n"
 "MIME-Version: 1.0\n"
@@ -107,18 +107,16 @@ msgid " REMOVE <serviceName>\n"
 msgstr " REMOVE <nom-du-service>\n"
 
 #: src/schema/pgRole.cpp:134
-#, fuzzy
 msgid " Retrieving Role owned objects"
-msgstr "Interrogation en cours de la configuration du serveur."
+msgstr "Récupération des objets attribués au Role"
 
 #: src/schema/pgTablespace.cpp:39
 msgid " Retrieving tablespace usage"
 msgstr "Rappatriement du taux d'utilisation des tablespace"
 
 #: src/schema/pgUser.cpp:89
-#, fuzzy
 msgid " Retrieving user owned objects"
-msgstr "Interrogation en cours de la configuration du serveur."
+msgstr "Récupération des objets attribués à l'utilisateur"
 
 #: xtra/pgagent/unix.cpp:26
 msgid " [options] <connect-string>\n"
@@ -193,9 +191,9 @@ msgid "%s on %s:%d"
 msgstr "%s sur %s:%d"
 
 #: src/base/pgConnBase.cpp:257
-#, fuzzy, c-format
+#, c-format
 msgid "%s on <localpipe>"
-msgstr "Local"
+msgstr "%s sur <localpipe>"
 
 #: src/frm/frmAbout.cpp:69
 msgid "&About..."
@@ -352,9 +350,8 @@ msgstr "&Exporter"
 # standard
 # standard
 #: src/frm/frmIndexcheck.cpp:177
-#, fuzzy
 msgid "&FK Index check"
-msgstr "Nome de l'index de clé étrangère (FK)"
+msgstr "Vérifier l'index de clé étrangère (&FK)"
 
 #: src/frm/frmConfig.cpp:147
 #: src/frm/frmMain.cpp:233
@@ -367,9 +364,8 @@ msgid "&Find\tCtrl-F"
 msgstr "Chercher\tCtrl-F (&F)"
 
 #: standard input:758
-#, fuzzy
 msgid "&Fix it!"
-msgstr "Fermer"
+msgstr "Le &Fixer (corriger)!"
 
 #: src/frm/frmGrantWizard.cpp:260
 msgid "&Grant Wizard"
@@ -566,10 +562,11 @@ msgstr "(compatibilité binaire)"
 msgid ","
 msgstr ","
 
+# reste "set %ld" à traduire ou pas...
 #: src/dlg/dlgProperty.cpp:626
-#, c-format
+#, fuzzy, c-format
 msgid "-- Execute replicated using cluster \"%s\", set %ld\n"
-msgstr ""
+msgstr "-- Execution répliquée en utilisant le cluster \"%s\", set %ld\n"
 
 #: src/frm/frmQuery.cpp:1009
 msgid "-- Executing query:\n"
@@ -1119,16 +1116,16 @@ msgstr "Adresse"
 
 #: standard input:303
 msgid "Admin Node"
-msgstr ""
+msgstr "Noeud Admin"
 
 #: src/slony/slCluster.cpp:298
 #: src/slony/slCluster.cpp:302
 msgid "Admin node"
-msgstr ""
+msgstr "Noeud Admin"
 
 #: src/slony/slCluster.cpp:301
 msgid "Admin node ID"
-msgstr ""
+msgstr "ID du noeud Admin"
 
 # standard
 # standard
@@ -1772,14 +1769,12 @@ msgid "Clear window"
 msgstr "Effacer le contenu de la fenêtre"
 
 #: xtra/pgagent/connection.cpp:164
-#, fuzzy
 msgid "Clearing all connections"
-msgstr "Autoriser les connexions ?"
+msgstr "Suppression de toutes les connexions"
 
 #: xtra/pgagent/connection.cpp:166
-#, fuzzy
 msgid "Clearing inactive connections"
-msgstr "Créer connexion au serveur."
+msgstr "Suppression des connexions inactives"
 
 #: xtra/pgagent/pgAgent.cpp:35
 msgid "Clearing zombies"
@@ -1790,13 +1785,12 @@ msgstr "Nettoyage des 'zombies'"
 # standard
 #: src/frm/frmStatus.cpp:113
 #: src/schema/pgServer.cpp:874
-#, fuzzy
 msgid "Client"
-msgstr "Alignement"
+msgstr "Client"
 
 #: standard input:195
 msgid "Client Access Configuration"
-msgstr ""
+msgstr "Configuration de l'accès client"
 
 # standard input:454
 # standard input:4
@@ -1833,15 +1827,13 @@ msgstr "Appartient à un cluster ?"
 
 # standard
 #: standard input:301
-#, fuzzy
 msgid "Cluster name"
-msgstr "Appartient à un cluster ?"
+msgstr "Nom du cluster"
 
 # standard
 #: standard input:211
-#, fuzzy
 msgid "Clustered"
-msgstr "Appartient à un cluster ?"
+msgstr "Clusterisé"
 
 #: src/schema/pgIndex.cpp:207
 #: src/schema/pgIndexConstraint.cpp:104
@@ -1904,9 +1896,8 @@ msgstr "Colonnes"
 # standard
 #: src/slony/slNode.cpp:198
 #: src/slony/slNode.cpp:324
-#, fuzzy
 msgid "Command"
-msgstr "Commentaires"
+msgstr "Command"
 
 # standard
 # standard
@@ -1981,9 +1972,8 @@ msgstr "Commentaires"
 # standard
 # standard
 #: standard input:865
-#, fuzzy
 msgid "Commit"
-msgstr "Commentaires"
+msgstr "Commit"
 
 #: src/frm/frmStatus.cpp:921
 msgid "Commit transaction?"
@@ -2221,14 +2211,18 @@ msgid ""
 "Could not contact pgAdmin web site to check for updates.\n"
 "Maybe your proxy option setting need adjustment."
 msgstr ""
+"Impossible de joindre le site web de pgAdmin.\n"
+"Cela peut être dû à un mauvais paramétrage de votre serveur mandataire (proxy)."
 
 #: xtra/pgagent/pgAgent.cpp:146
 msgid "Could not find the table 'pgagent.pga_job'. Have you run pgagent.sql on this database?"
-msgstr ""
+msgstr "Impossible de trouver la table 'pgagent.pga_job'. Avez-vous exécuté pgagent.sql sur cette base de données ?"
 
+# comprends pas... 'message source' = message d'origine ?
 #: xtra/pgagent/win32.cpp:280
+#, fuzzy
 msgid "Could not open the message source registry key."
-msgstr ""
+msgstr "Impossible de récupérer la clé de registre du 'message source'"
 
 #: src/base/pgConnBase.cpp:103
 #, c-format
@@ -2311,7 +2305,7 @@ msgstr "Impossible d'afficher la fenêtre principale."
 
 #: xtra/pgagent/job.cpp:262
 msgid "Couldn't remove temporary directory: "
-msgstr ""
+msgstr "La suppression du répertoire temporaire a été impossible :"
 
 #: xtra/pgagent/job.cpp:166
 #, fuzzy, c-format
@@ -2555,7 +2549,7 @@ msgstr "Créer une nouvelle planification."
 
 #: src/slony/slCluster.cpp:382
 msgid "Create new Slony-I Replication Cluster"
-msgstr ""
+msgstr "Créer un noveau cluster de réplication Slony-I"
 
 msgid "Create new Step"
 msgstr ""
@@ -2658,7 +2652,7 @@ msgstr "Cycled"
 #: xtra/pgagent/win32.cpp:83
 #, c-format
 msgid "DEBUG: %s\n"
-msgstr ""
+msgstr "DEBUG: %s\n"
 
 # standard input:209 standard input:262
 # standard input:8
@@ -2755,7 +2749,7 @@ msgstr "Données"
 
 #: standard input:434
 msgid "Days"
-msgstr ""
+msgstr "Jours"
 
 #: src/agent/pgaSchedule.cpp:404
 #: standard input:488
@@ -2951,7 +2945,7 @@ msgstr "Afficher l'aide concernant les cdes. SQL."
 #: src/frm/frmHint.cpp:439
 #: src/frm/frmHint.cpp:443
 msgid "Display helpful hints on current object."
-msgstr ""
+msgstr "Afficher les trucs et astuces sur l'objet courant."
 
 #: src/dlg/dlgProperty.cpp:1314
 #: src/dlg/dlgProperty.cpp:1318
@@ -2989,11 +2983,11 @@ msgstr "Ne pas signaler les fich. non-vauvegardés en quittant"
 
 #: standard input:805
 msgid "Do not show guru hints; I'm one myself"
-msgstr ""
+msgstr "Ne pas afficher les trucs et astuces des guru; j'en suis un"
 
 #: standard input:756
 msgid "Do not show this hint again"
-msgstr ""
+msgstr "Ne plus affichier cette astuce"
 
 msgid "Do you want to save changes?"
 msgstr "Souhaitez-vous sauvegarder les modifications ?"
@@ -3096,7 +3090,7 @@ msgstr "E&xplain\tF7"
 #: xtra/pgagent/win32.cpp:90
 #, c-format
 msgid "ERROR: %s\n"
-msgstr ""
+msgstr "ERROR: %s\n"
 
 #: src/dlg/dlgEditGridOptions.cpp:307
 #, c-format
@@ -3123,11 +3117,11 @@ msgstr "EXTERNAL"
 
 #: src/frm/frmMainConfig.cpp:607
 msgid "Edit general server configuration file."
-msgstr ""
+msgstr "Editer le fichier de configuration générale du serveur."
 
 #: src/frm/frmHbaConfig.cpp:285
 msgid "Edit server access configuration file."
-msgstr ""
+msgstr "Editer le fichier de configuration des accès au serveur."
 
 # standard
 # standard
@@ -3189,7 +3183,7 @@ msgstr "On Update"
 #: src/agent/pgaJob.cpp:201
 #: src/agent/pgaStep.cpp:169
 msgid "End time"
-msgstr ""
+msgstr "Horaire de fin"
 
 # standard input:337
 # standard input:3
@@ -3261,7 +3255,7 @@ msgstr "Erreur de connexion au serveur : %s"
 
 #: src/slony/dlgRepCluster.cpp:492
 msgid "Error while joining replication cluster"
-msgstr ""
+msgstr "Erreur lors de la tentative de connexion au cluster de réplication"
 
 msgid "Error!"
 msgstr "Erreur!"
@@ -3319,11 +3313,11 @@ msgstr "Descendant"
 
 #: src/agent/pgaSchedule.cpp:333
 msgid "Every day"
-msgstr ""
+msgstr "Chaque jour"
 
 #: src/agent/pgaSchedule.cpp:228
 msgid "Every hour"
-msgstr ""
+msgstr "Chaque heure"
 
 # standard input:72
 # standard input:21
@@ -3393,7 +3387,7 @@ msgstr "Exécuter vers un fichier"
 
 #: src/frm/frmConfig.cpp:128
 msgid "Exit configuration tool"
-msgstr ""
+msgstr "Sortir de l'utilitaire de configuration"
 
 #: src/frm/frmQuery.cpp:113
 msgid "Exit query window"
@@ -3517,7 +3511,7 @@ msgstr "Impossible d'ouvrir le fichier %s."
 
 #: xtra/pgagent/pgAgent.cpp:117
 msgid "Failed to query jobs table!"
-msgstr ""
+msgstr "Echec de la requête sur la table des travaux!"
 
 #: src/schema/pgServer.cpp:230
 #, c-format
@@ -3550,12 +3544,12 @@ msgstr "Filtre"
 
 #: src/slony/dlgRepCluster.cpp:1320
 msgid "Failover to backup node."
-msgstr ""
+msgstr "Echec de la sauvegarde du noeud."
 
 #: src/agent/pgaSchedule.cpp:364
 #: standard input:478
 msgid "February"
-msgstr ""
+msgstr "Février"
 
 msgid ""
 "File cannot be opened with this format.\n"
@@ -3703,7 +3697,7 @@ msgstr "Général"
 
 #: src/frm/frmStatus.cpp:135
 msgid "Global ID"
-msgstr ""
+msgstr "Global ID"
 
 # standard
 #: standard input:748
@@ -3899,7 +3893,7 @@ msgstr "Nom d'hôte / Adresse IP"
 #: src/agent/pgaSchedule.cpp:64
 #: standard input:490
 msgid "Hours"
-msgstr ""
+msgstr "Heures"
 
 #: src/frm/frmHelp.cpp:273
 msgid "How to send a bugreport to the pgAdmin Development Team."
@@ -3959,7 +3953,7 @@ msgstr "INNER JOIN"
 
 #: standard input:175
 msgid "INOUT"
-msgstr ""
+msgstr "INOUT"
 
 # standard input:207 standard input:260
 # standard input:6
@@ -4004,13 +3998,15 @@ msgstr "Adresse"
 
 #: src/frm/frmHint.cpp:64
 msgid "Ident authentication failed"
-msgstr ""
+msgstr "L'authentification ident a échoué"
 
 #: src/frm/frmConfig.cpp:273
 msgid ""
 "If a malformed configuration is written to the server, it might show problems when restarting or reloading.\n"
 "Are you sure the configuration is correct?"
 msgstr ""
+"Si une configuration est erronée cela peut engendre des problèmes de redémarrage ou de rechargement.\n"
+"Etes vous certain que la configuration est correcte ?"
 
 # standard
 #: src/agent/pgaStep.cpp:119
@@ -4219,7 +4215,7 @@ msgstr "Suivant"
 #: src/agent/pgaSchedule.cpp:360
 #: standard input:477
 msgid "January"
-msgstr ""
+msgstr "Janvier"
 
 msgid "Job"
 msgstr "Tâche"
@@ -4251,7 +4247,7 @@ msgstr "Type de jointure"
 
 #: standard input:298
 msgid "Join existing cluster"
-msgstr ""
+msgstr "Se raccrocher à un cluster existant"
 
 # standard
 # standard
@@ -4263,12 +4259,12 @@ msgstr "Fonction de jointure"
 #: src/agent/pgaSchedule.cpp:384
 #: standard input:483
 msgid "July"
-msgstr ""
+msgstr "Juillet"
 
 #: src/agent/pgaSchedule.cpp:380
 #: standard input:482
 msgid "June"
-msgstr ""
+msgstr "Juin"
 
 # standard
 #: src/agent/pgaStep.cpp:58
@@ -4419,9 +4415,10 @@ msgstr "Dépassement des limites"
 msgid "Link symbol"
 msgstr "Symbole de lien"
 
+# Ecoute ou ecouter ?
 #: src/slony/slListen.cpp:158
 msgid "Listen"
-msgstr ""
+msgstr "Ecouter"
 
 # standard
 #: standard input:105
@@ -4478,7 +4475,7 @@ msgstr ""
 
 #: src/slony/dlgRepSet.cpp:346
 msgid "Lock a replication set against updates."
-msgstr ""
+msgstr "Vérouiller un ensemble de réplication contre les mises à jour"
 
 # standard
 #: src/slony/dlgRepSet.cpp:346
@@ -4502,7 +4499,7 @@ msgstr "Niveau de log"
 
 #: src/frm/frmStatus.cpp:167
 msgid "Log entry"
-msgstr ""
+msgstr "Entrée du journal"
 
 #: src/frm/frmOptions.cpp:312
 #: src/frm/frmQuery.cpp:510
@@ -4627,7 +4624,7 @@ msgstr "Type de données"
 
 #: src/slony/slNode.cpp:150
 msgid "Max response time"
-msgstr ""
+msgstr "Temps max de réponse"
 
 # standard input:388
 # standard input:14
@@ -4665,7 +4662,7 @@ msgstr "Nombre max. de lignes à afficher dans la fenêtre de sortie; 0 = sans l
 #: src/agent/pgaSchedule.cpp:376
 #: standard input:481
 msgid "May"
-msgstr ""
+msgstr "Mai"
 
 #: src/slony/slSubscription.cpp:127
 #, fuzzy
@@ -4751,11 +4748,11 @@ msgstr "Minimum"
 #: src/agent/pgaSchedule.cpp:63
 #: standard input:491
 msgid "Minutes"
-msgstr ""
+msgstr "Minutes"
 
 #: src/schema/pgObject.cpp:850
 msgid "Missing information"
-msgstr ""
+msgstr "Information manquante"
 
 #: src/frm/frmStatus.cpp:125
 msgid "Mode"
@@ -4769,7 +4766,7 @@ msgstr "Mode"
 
 #: standard input:443
 msgid "Month Days"
-msgstr ""
+msgstr "Jours du mois"
 
 # standard
 #: src/agent/pgaSchedule.cpp:66
@@ -4795,7 +4792,7 @@ msgstr "Valeurs les plus courantes"
 
 #: src/slony/dlgRepSet.cpp:411
 msgid "Move replication set to different node"
-msgstr ""
+msgstr "Déplacer l'ensemble de réplication vers un autre noeud"
 
 #: src/slony/dlgRepSet.cpp:411
 #, fuzzy
@@ -4804,7 +4801,7 @@ msgstr "Déplacé"
 
 #: standard input:359
 msgid "Move set to other node"
-msgstr ""
+msgstr "Déplacer l'ensemble vers un autre noeud"
 
 msgid "Moved"
 msgstr "Déplacé"
@@ -5040,7 +5037,7 @@ msgstr "Procédure"
 
 #: src/slony/slSet.cpp:276
 msgid "New Replication Set"
-msgstr ""
+msgstr "Nouvelle ensemble de réplication"
 
 #: src/schema/pgRule.cpp:155
 msgid "New Rule"
@@ -5069,7 +5066,7 @@ msgstr "Créer serveur"
 
 #: src/slony/slCluster.cpp:382
 msgid "New Slony-I Cluster"
-msgstr ""
+msgstr "Nouveau Cluster Slony-I"
 
 #: src/agent/pgaStep.cpp:217
 msgid "New Step"
@@ -5149,7 +5146,7 @@ msgstr ""
 
 #: src/frm/frmConfig.cpp:402
 msgid "No configuration setting detected that appears doubtful."
-msgstr ""
+msgstr "Aucun paramètre de configuration ne semble suspect."
 
 #: src/base/pgConnBase.cpp:438
 msgid "No connection to database."
@@ -5166,7 +5163,7 @@ msgstr "Aucune données à exporter."
 
 #: src/slony/dlgRepSet.cpp:295
 msgid "No node available to move this set to."
-msgstr ""
+msgstr "Aucun noeud disponible pour déplacer cet ensemble."
 
 # standard
 #: standard input:716
@@ -5176,7 +5173,7 @@ msgstr "Pas de propriétaire"
 
 #: src/slony/dlgRepListen.cpp:130
 msgid "No path to any provider node; add proper path."
-msgstr ""
+msgstr "Pas de chemin vers un noeud fournisseur; ajoutez un chemin adéquat."
 
 #: src/frm/frmMain.cpp:308
 #: src/main/events.cpp:254
@@ -5381,7 +5378,7 @@ msgstr "OR"
 
 #: standard input:174
 msgid "OUT"
-msgstr ""
+msgstr "OUT"
 
 # standard
 # standard
@@ -5394,7 +5391,7 @@ msgstr "Fichier objet"
 #: src/agent/pgaSchedule.cpp:396
 #: standard input:486
 msgid "October"
-msgstr ""
+msgstr "Octobre"
 
 #: src/schema/pgDatabase.cpp:416
 #, fuzzy
@@ -5483,7 +5480,7 @@ msgstr ""
 
 #: src/frm/frmMainConfig.cpp:641
 msgid "Open configuration editor with postgresql.conf."
-msgstr ""
+msgstr "Ouvrir postgresql.conf dans l'éditeur de configuration."
 
 #: src/frm/frmConfig.cpp:253
 #, fuzzy
@@ -5497,11 +5494,11 @@ msgstr "Ouvrir"
 
 #: src/frm/frmHbaConfig.cpp:319
 msgid "Open pg_hba.conf"
-msgstr ""
+msgstr "Ouvrir pg_hba.conf"
 
 #: src/frm/frmMainConfig.cpp:641
 msgid "Open postgresql.conf"
-msgstr ""
+msgstr "Ouvrir postgresql.conf"
 
 #: src/frm/frmQuery.cpp:803
 msgid "Open query file"
@@ -5817,7 +5814,7 @@ msgstr "Veuillez sélect. un type de données gauche ou droit."
 
 #: src/slony/dlgRepSet.cpp:296
 msgid "Please select node to move this replication set to."
-msgstr ""
+msgstr "Merci de sélectionenr le noeud surlequel l'ensemble de réplication doit être déplacé."
 
 #: src/slony/dlgRepListen.cpp:131
 #, fuzzy
@@ -6030,7 +6027,7 @@ msgstr "Présentation de PostgreSQL"
 
 #: xtra/pgagent/win32.cpp:395
 msgid "PostgreSQL Scheduling Agent - "
-msgstr ""
+msgstr "Agent de planification PostgreSQL"
 
 # standard
 # standard
@@ -6189,7 +6186,7 @@ msgstr "Propriétés"
 #: src/slony/slListen.cpp:84
 #: src/slony/slSubscription.cpp:121
 msgid "Provider ID"
-msgstr ""
+msgstr "ID Fournisseur"
 
 # standard
 # standard
@@ -6201,7 +6198,7 @@ msgstr "Nom de variable"
 
 #: src/schema/pgTable.cpp:437
 msgid "Published"
-msgstr ""
+msgstr "Publié"
 
 # standard
 # standard
@@ -6359,15 +6356,15 @@ msgstr "Fonction arrivée"
 #: standard input:320
 #: input:368
 msgid "Receiver"
-msgstr ""
+msgstr "Récepteur"
 
 #: src/slony/slSubscription.cpp:123
 msgid "Receiver ID"
-msgstr ""
+msgstr "ID Récepteur"
 
 #: src/slony/slSubscription.cpp:124
 msgid "Receiver Name"
-msgstr ""
+msgstr "Nom du récepteur"
 
 #: src/frm/frmQuery.cpp:193
 msgid "Redo"
@@ -6456,7 +6453,7 @@ msgstr "Recharger"
 #: src/frm/frmConfig.cpp:121
 #: src/frm/frmConfig.cpp:122
 msgid "Reload Server to apply configuration changes."
-msgstr ""
+msgstr "Recharger le serveur pour appliquer les changements de configuration."
 
 #: src/frm/frmHelp.cpp:56
 msgid "Reload current page."
@@ -6473,7 +6470,7 @@ msgstr "Ajouter serveur"
 
 #: src/frm/frmConfig.cpp:238
 msgid "Reload server configuration"
-msgstr ""
+msgstr "Recharger la configuration du serveur"
 
 # standard
 # standard
@@ -6554,7 +6551,7 @@ msgstr "Restaurer"
 #: src/slony/dlgRepCluster.cpp:1287
 #, c-format
 msgid "Restart node \"%s\"?"
-msgstr ""
+msgstr "Redémarrer le noeud \"%s\"?"
 
 # standard
 # standard
@@ -6703,11 +6700,11 @@ msgstr "Nom de fichier"
 
 #: standard input:866
 msgid "Rollback"
-msgstr ""
+msgstr "Rollback"
 
 #: src/frm/frmStatus.cpp:943
 msgid "Rollback transaction?"
-msgstr ""
+msgstr "Rollback transaction?"
 
 # standard
 #: standard input:868
@@ -6774,7 +6771,7 @@ msgstr "Fonctionne ?"
 
 #: src/frm/frmHint.cpp:82
 msgid "Running VACUUM recommended"
-msgstr ""
+msgstr "Un VACUUM est recommandé"
 
 #: src/agent/pgaJob.cpp:96
 #: src/agent/pgaJob.cpp:98
@@ -6817,7 +6814,7 @@ msgstr "SET NULL"
 
 #: src/dlg/dlgMainConfig.cpp:49
 msgid "SIGHUP - reloaded on SIGHUP signal"
-msgstr ""
+msgstr "SIGHUP - rechargé à réception d'un signal SIGHUP"
 
 # standard
 #: standard input:550
@@ -6865,7 +6862,7 @@ msgstr "STABLE"
 #: src/agent/pgaSchedule.cpp:279
 #: standard input:442
 msgid "Saturday"
-msgstr ""
+msgstr "Samedi"
 
 #: src/frm/frmConfig.cpp:112
 #: src/frm/frmEditGrid.cpp:99
@@ -7017,7 +7014,7 @@ msgstr "Colonnes sélectionnées"
 
 #: src/slony/dlgRepCluster.cpp:921
 msgid "Selected cluster doesn't contain newer software."
-msgstr ""
+msgstr "Le cluster sélectionné ne contient aucun logiciel plus récent"
 
 # standard
 # standard
@@ -7089,11 +7086,11 @@ msgstr "Serveur"
 
 #: src/frm/frmMain.cpp:201
 msgid "Server configuration"
-msgstr ""
+msgstr "Configuration du serveur"
 
 #: src/frm/frmHint.cpp:58
 msgid "Server denies access"
-msgstr ""
+msgstr "Le serveur refuses l'accès"
 
 # standard
 # standard
@@ -7105,7 +7102,7 @@ msgstr "Nom membre"
 
 #: src/frm/frmHint.cpp:52
 msgid "Server not listening"
-msgstr ""
+msgstr "Le serveur n'est pas en écoute"
 
 #: src/schema/pgServer.cpp:1081
 msgid "Servers"
@@ -7127,7 +7124,7 @@ msgstr "Service"
 
 #: src/schema/pgServer.cpp:266
 msgid "Service start problem"
-msgstr ""
+msgstr "Problème de démarrage du service"
 
 #: src/slony/slSet.cpp:276
 msgid "Set"
@@ -7236,7 +7233,7 @@ msgstr "Taille"
 
 #: xtra/pgagent/pgAgent.cpp:112
 msgid "Sleeping..."
-msgstr ""
+msgstr "En attente..."
 
 #: src/slony/dlgRepCluster.cpp:917
 msgid "Slon process running on node; stop it before upgrading."
@@ -7244,15 +7241,15 @@ msgstr ""
 
 #: src/slony/slCluster.cpp:382
 msgid "Slony-I Cluster"
-msgstr ""
+msgstr "Slony-I Cluster"
 
 #: src/slony/dlgRepCluster.cpp:635
 msgid "Slony-I creation scripts not available; only joining possible."
-msgstr ""
+msgstr "Les scripts de création de Slony-I ne sont pas disponibles; seul le rattachement au cluster est possible."
 
 #: standard input:795
 msgid "Slony-I path"
-msgstr ""
+msgstr "chemin Slony-I"
 
 #: standard input:9
 #, fuzzy
@@ -7473,12 +7470,12 @@ msgstr "Réussi"
 #: src/agent/pgaJob.cpp:216
 #: src/agent/pgaStep.cpp:185
 msgid "Successful"
-msgstr ""
+msgstr "Succès"
 
 #: src/agent/pgaSchedule.cpp:255
 #: standard input:436
 msgid "Sunday"
-msgstr ""
+msgstr "Dimanche"
 
 #: standard input:392
 #, fuzzy
@@ -7766,6 +7763,8 @@ msgid ""
 "The PostgreSQL server engine is currently configured to listen for local connections only.\n"
 "You might want to check \"listen_addresses\" to enable accessing the server over the network too."
 msgstr ""
+"Le serveur PostgreSQL est actuellement configuré pour n'accepter que les connexions locales.\n"
+"Vous pourriez peut-être regarder le paramètre \"listen_addresses\" afin d'autoriser les connexions depuis le réseau également..."
 
 #: src/schema/pgServer.cpp:619
 #, c-format
@@ -7833,6 +7832,8 @@ msgid ""
 "The newly created cluster version (%s)\n"
 " doesn't match the existing cluster's version (%s)"
 msgstr ""
+"La version (%s) du cluster récemment créé\n"
+" ne correspond pas à la version (%s) du cluster existant"
 
 #: src/frm/frmPassword.cpp:79
 msgid "The password could not be changed!"
@@ -7859,7 +7860,7 @@ msgstr "Numéro de port écouté par le serveur."
 
 #: src/schema/pgObject.cpp:849
 msgid "The schema oid can't be located, please refresh all schemas!"
-msgstr ""
+msgstr "L'oid du schéma ne peut pas être déterminée, merci de rafraîchir tous les schémas!"
 
 #: src/agent/dlgSchedule.cpp:281
 #: src/agent/dlgSchedule.cpp:334
@@ -7896,12 +7897,16 @@ msgid ""
 "There are dependent services configured:\n"
 "\n"
 msgstr ""
+"Il y a des services dépendants configurés :\n"
+"\n"
 
 #: src/schema/pgServer.cpp:309
 msgid ""
 "There are dependent services running:\n"
 "\n"
 msgstr ""
+"Il y a des services dépendants en fonctionnement :\n"
+"\n"
 
 #: src/main/events.cpp:748
 msgid "There is nothing in the SQL pane to save!"
@@ -7917,7 +7922,7 @@ msgstr ""
 
 #: src/frm/frmMainConfig.cpp:393
 msgid "This option is present in the configuration file, but not known to the configuration tool."
-msgstr ""
+msgstr "Cette option est présente dans le fichier de configuration, mais inconnue de l'utilitaire de configuration."
 
 #, c-format
 msgid ""
@@ -7934,7 +7939,7 @@ msgstr "Ce logiciel est protégé par la licence \"Artistic Licence\"."
 #: src/agent/pgaSchedule.cpp:271
 #: standard input:440
 msgid "Thursday"
-msgstr ""
+msgstr "Jeudi"
 
 #: src/agent/dlgSchedule.cpp:74
 #: src/frm/frmStatus.cpp:136
@@ -8057,7 +8062,7 @@ msgstr "Suppression de l'objet système en cours"
 #: src/agent/pgaSchedule.cpp:263
 #: standard input:438
 msgid "Tuesday"
-msgstr ""
+msgstr "Mardi"
 
 # standard
 # standard
@@ -8192,11 +8197,11 @@ msgstr "Inconnu"
 
 #: src/slony/dlgRepSet.cpp:378
 msgid "Unlock a replication set and re-allow updates."
-msgstr ""
+msgstr "Dévérouiller un ensemble de réplication et autoriser à nouveua les mises à jour."
 
 #: src/slony/dlgRepSet.cpp:378
 msgid "Unlock set"
-msgstr ""
+msgstr "Déverrouiller l'ensemble"
 
 #: src/frm/frmEditGrid.cpp:438
 msgid "Unsaved data"
@@ -8213,20 +8218,20 @@ msgstr "Mettre à jour catalogues ?"
 
 #: standard input:308
 msgid "Upgrade cluster software"
-msgstr ""
+msgstr "Mettre à jour le logiciel de clustering"
 
 #: src/slony/dlgRepCluster.cpp:1303
 msgid "Upgrade node"
-msgstr ""
+msgstr "Mettre à jour le noeud"
 
 #: src/slony/dlgRepCluster.cpp:1303
 msgid "Upgrade node to newest replication software version."
-msgstr ""
+msgstr "Mettre à jour le noeud au dernier niveau de version du logiciel de réplication."
 
 #: xtra/pgagent/unix.cpp:25
 #: xtra/pgagent/win32.cpp:342
 msgid "Usage:\n"
-msgstr ""
+msgstr "Usage:\n"
 
 #: standard input:12
 #: input:24
@@ -8333,7 +8338,7 @@ msgstr "VACUUM"
 
 #: standard input:584
 msgid "VACUUM base threshold"
-msgstr ""
+msgstr "seuil de base du VACUUM"
 
 #: standard input:588
 msgid "VACUUM cost delay"
@@ -8358,7 +8363,7 @@ msgstr "Options de VACUUM"
 
 #: standard input:586
 msgid "VACUUM scale factor"
-msgstr ""
+msgstr "facteur d'échelle du VACUUM"
 
 # standard input:125
 # standard input:8
@@ -8371,7 +8376,7 @@ msgstr "VOLATILE"
 
 #: standard input:580
 msgid "Vacuum settings"
-msgstr ""
+msgstr "Paramètres de Vacuum"
 
 # standard
 # standard
@@ -8520,6 +8525,8 @@ msgid ""
 "Visit\n"
 "download site"
 msgstr ""
+"Visitez\n"
+"le site de téléchargement"
 
 # standard
 # standard
@@ -8533,11 +8540,11 @@ msgstr "Volatilité"
 #: xtra/pgagent/win32.cpp:87
 #, c-format
 msgid "WARNING: %s\n"
-msgstr ""
+msgstr "ATTENTION : %s\n"
 
 #: standard input:402
 msgid "WITH ADMIN OPTION"
-msgstr ""
+msgstr "WITH ADMIN OPTION"
 
 #: src/base/sysLogger.cpp:89
 msgid ""
@@ -8550,15 +8557,15 @@ msgstr ""
 #: src/agent/pgaSchedule.cpp:267
 #: standard input:439
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercredi"
 
 #: standard input:435
 msgid "Week Days"
-msgstr ""
+msgstr "Jours de la semaine"
 
 #: src/agent/pgaSchedule.cpp:65
 msgid "Weekdays"
-msgstr ""
+msgstr "Jours de la semaine"
 
 # standard
 #: standard input:709
@@ -8567,7 +8574,7 @@ msgstr "Avec OIDs"
 
 #: src/frm/frmConfig.cpp:274
 msgid "Writing configuration file to server"
-msgstr ""
+msgstr "Enregistrement du fichier de configuration sur le serveur"
 
 #: src/frm/frmQuery.cpp:1117
 msgid "Writing data."
@@ -8604,7 +8611,7 @@ msgstr "Il est nécessaire de sélectionner au moins une colonne."
 #: src/agent/dlgSchedule.cpp:259
 #: src/agent/dlgSchedule.cpp:309
 msgid "You must enter a valid date and/or time!"
-msgstr ""
+msgstr "Vous devez spécifier une date ou un horaire valide!"
 
 #, c-format
 msgid ""
@@ -8629,7 +8636,7 @@ msgstr "Arrêt."
 
 #: src/slony/slNode.cpp:257
 msgid "administrative node"
-msgstr ""
+msgstr "Noeud d'administration"
 
 # standard input:101
 # standard input:8
@@ -8803,7 +8810,7 @@ msgstr "Préférences"
 
 #: standard input:755
 msgid "pgAdmin Guru Hint"
-msgstr ""
+msgstr "Astuce pgAdmin Guru"
 
 #: src/frm/frmHelp.cpp:233
 msgid "pgAdmin III &FAQ"
@@ -8811,7 +8818,7 @@ msgstr "&FAQ pgAdmin III"
 
 #: src/frm/frmConfig.cpp:405
 msgid "pgAdmin III - Backend Configuration Hints"
-msgstr ""
+msgstr "pgAdmin III - Conseils de configuration du backend"
 
 #: src/frm/frmHint.cpp:207
 #, fuzzy
