@@ -404,6 +404,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
             {
                 cbConnection->Insert(conn->GetName(), sel, (void*)conn);
                 cbConnection->SetSelection(sel);
+				OnChangeConnection(ev);
             }
             else
                 rc = wxID_CANCEL;

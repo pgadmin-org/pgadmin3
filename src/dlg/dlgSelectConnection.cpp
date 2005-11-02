@@ -151,12 +151,13 @@ int dlgSelectConnection::Go(pgConn *conn, wxComboBox *cb)
         if (s->GetConnected() && s->GetConnection()->GetHost() == conn->GetHost() && s->GetConnection()->GetPort() == conn->GetPort())
         {
              cbServer->SetSelection(cbServer->GetCount()-1);
-             wxCommandEvent ev;
-             OnChangeServer(ev);
         }
     }    
     cbServer->SetFocus();
-    btnOK->Disable();
+
+    wxCommandEvent ev;
+    OnChangeServer(ev);
+
     return ShowModal();
 }
 
