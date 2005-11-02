@@ -23,7 +23,7 @@
 
 
 pgTrigger::pgTrigger(pgTable *newTable, const wxString& newName)
-: pgTableObject(newTable, tableFactory, newName)
+: pgTableObject(newTable, triggerFactory, newName)
 {
     triggerFunction=0;
 }

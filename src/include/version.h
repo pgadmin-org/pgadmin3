@@ -11,7 +11,7 @@
 
 
 // Application Versions
-#define VERSION_STR     wxT("1.4 Release Candidate 1")
+#define VERSION_STR     wxT("1.4 post-RC1")
 #define VERSION_NUM     1,4,0,99
 #define VERSION_PACKAGE 1.4-RC1
 #define VERSION_SVN     wxT("$Rev$")
