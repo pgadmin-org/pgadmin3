@@ -343,7 +343,7 @@ void usage(const wxString &executable)
     wxPrintf(fn->GetName() + _(" REMOVE <serviceName>\n"));
     wxPrintf(fn->GetName() + _(" INSTALL <serviceName> [options] <connect-string>\n"));
     wxPrintf(_("options:\n"));
-    wxPrintf(_("-u <user>\n"));
+    wxPrintf(_("-u <user or DOMAIN\\user>\n"));
     wxPrintf(_("-p <password>\n"));
     wxPrintf(_("-d <displayname>\n"));
     wxPrintf(_("-t <poll time interval in seconds (default 10)>\n"));

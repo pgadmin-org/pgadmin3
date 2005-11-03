@@ -76,7 +76,7 @@ Usage:
   "C:\Program Files\pgAdmin III\pgAgent" INSTALL &lt;serviceName> [options] &lt;connect-string&gt;
   
   options:
-    -u &lt;user&gt;
+    -u &lt;user or DOMAIN\user&gt;
     -p &lt;password&gt;
     -d &lt;displayname&gt;
     -t &lt;poll time interval in seconds (default 10)&gt;
@@ -87,7 +87,7 @@ Usage:
 <P>The service may be quite simply installed from the command line as follows:</P>
 
 <PRE>
-"C:\Program Files\pgAdmin III\pgAgent" INSTALL pgAgent hostaddr=127.0.0.1 dbname=pgadmin user=postgres
+"C:\Program Files\pgAdmin III\pgAgent" INSTALL pgAgent -u postgres -p secret hostaddr=127.0.0.1 dbname=pgadmin user=postgres
 </PRE>
 
 <P>The service may then be started from the command line using <I>net start pgAgent</I>, 
