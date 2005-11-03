@@ -13,7 +13,7 @@
 # at  http://www.pgadmin.org/translation.php. These are the only ones
 # that will be installed, but all will be shipped in the source tarball.
 
-PUB_TX = af_ZA ar_SA ca_ES de_DE es_ES fi_FI ja_JP nl_NL sl_SI
+PUB_TX = af_ZA ar_SA ca_ES de_DE es_ES fi_FI fr_FR ja_JP nl_NL sl_SI
 
 
 EXTRA_DIST = \
