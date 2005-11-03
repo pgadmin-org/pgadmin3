@@ -26,7 +26,8 @@ TMP_docs = \
 	$(top_srcdir)/docs/de_DE/hints/*.html \
 	$(top_srcdir)/docs/es_ES/tips.txt \
 	$(top_srcdir)/docs/es_ES/hints/*.html \
-	$(top_srcdir)/docs/sl_SI/tips.txt
+	$(top_srcdir)/docs/sl_SI/tips.txt \
+	$(top_srcdir)/docs/sl_SI/hints/*.html
 
 if !APPBUNDLE
 nobase_dist_pkgdata_DATA = $(TMP_docs)

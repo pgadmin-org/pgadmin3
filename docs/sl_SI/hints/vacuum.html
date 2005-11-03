@@ -1,0 +1,33 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru nasveti</title>
+</head>
+
+<body>
+
+<h3>Priporo&#269;eno je pognati VACUUM</h3>
+<p>
+Ocenjeno &#353;tevilo vrstic v tabeli &quot;<INFO>&quot; precej odstopa od dejanskega &#353;tevila. Na tej tabeli 
+je priporo&#269;ljivo pognati VACUUM ANALYZE.
+</p><p>
+Namesto ro&#269;nega zagona VACUUM ANALYZE ukaza na tej tabeli (uporabite lahko pgAdminov III menu za vzdr&#382;evanje) 
+lahko razmislite o rednem ali samodejnem zagonu VACUUM ANALYZE. To lahko dose&#382;ete z uporabo aplikacij za na&#269;rtovano 
+izvajanje opravil. PostgreSQL tudi vsebuje pg_autovacuum demona, ki sledi opravljenim spremembam na podatkovni zbirki 
+ter po potrebi izvr&#353;i VACUUM ukaze. V ve&#269;ini primerov je pg_autovacuum najbolj&#353;a izbira.
+</p><p><br><br></p>
+<b>&#268;emu je VACUUM sploh namenjen, za kaj je dober?</b>
+<p>
+PostgreSQLov na&#269;rtovalnik (planner) stavkov se odlo&#269;a glede na predpostavke, ki jih dobi iz ocen, kot je tudi 
+&#353;tevilo vrstic. &#268;e je dejansko &#353;tevilo vrstic zelo razli&#269;no od ocenjenega, se na&#269;rtovalnik lahko narobe odlo&#269;i, 
+kar se lahko odra&#382;a v neoptimalnem na&#269;rtu izvedbe stavka. To se, posledi&#269;no, lahko odrazi v po&#269;asnej&#353;em 
+delovanju.
+</p><p>
+PostgreSQLovo shranjevanje potrebuje VACUUM za fiksne IDje transakcij na tabelah. Poleg tega se 
+nerabljene vrstice iz posodobitev ali odstranitev ne po&#269;istijo, dokler se na tabeli ne izvede VACUUM ukaz. 
+Podrobnej&#353;e informacije lahko najdete v dokumentaciji, le kliknite na gumb za pomo&#269;.
+</p>
+</body>
+</html>
