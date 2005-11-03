@@ -23,7 +23,7 @@ wxString getArg(int &argc, char** &argv)
         s = wxString::FromAscii(argv[0] +2);
     else
     {
-        if (argc > 1)
+        if (argc >= 1)
         {
             argc--;
             argv++;
