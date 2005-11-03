@@ -42,7 +42,7 @@ private:
 
     void showDefinition(bool isComposite);
 
-    wxArrayString memberTypes;
+    wxArrayString memberTypes, memberSizes;
 
     DECLARE_EVENT_TABLE();
 };

@@ -274,7 +274,13 @@ void dlgType::OnVarSelChange(wxListEvent &ev)
 void dlgType::OnVarAdd(wxCommandEvent &ev)
 {
     wxString name=txtMembername->GetValue().Strip(wxString::both);
+
     wxString type=cbDatatype->GetValue();
+
+    if ((txtLength->GetValue() != wxT("") && txtLength->IsEnabled()) && (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled()))
+        type += wxT("(") + txtLength->GetValue() + wxT(", ") + txtPrecision->GetValue() + wxT(")");
+    else if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
+        type += wxT("(") + txtLength->GetValue() + wxT(")");
 
     if (!name.IsEmpty())
     {
@@ -284,11 +290,26 @@ void dlgType::OnVarAdd(wxCommandEvent &ev)
             pos = lstMembers->GetItemCount();
             lstMembers->InsertItem(pos, name, 0);
             memberTypes.Add(GetTypeInfo(cbDatatype->GetGuessedSelection()));
+
+            if ((txtLength->GetValue() != wxT("") && txtLength->IsEnabled()) && (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled()))
+                memberSizes.Add(wxT("(") + txtLength->GetValue() + wxT(", ") + txtPrecision->GetValue() + wxT(")"));
+            else if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
+                memberSizes.Add(wxT("(") + txtLength->GetValue() + wxT(")"));
+            else
+                memberSizes.Add(wxT(""));
         }
         else
         {
             memberTypes.Insert(GetTypeInfo(cbDatatype->GetGuessedSelection()), pos);
             memberTypes.RemoveAt(pos+1);
+
+            if ((txtLength->GetValue() != wxT("")  && txtLength->IsEnabled()) && (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled()))
+                memberSizes.Insert(wxT("(") + txtLength->GetValue() + wxT(", ") + txtPrecision->GetValue() + wxT(")"), pos);
+            else if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
+                memberSizes.Insert(wxT("(") + txtLength->GetValue() + wxT(")"), pos);
+            else
+                memberSizes.Insert(wxT(""), pos);
+            memberSizes.RemoveAt(pos+1);
         }
         lstMembers->SetItem(pos, 1, type);
     }
@@ -305,6 +326,7 @@ void dlgType::OnVarRemove(wxCommandEvent &ev)
     {
         lstMembers->DeleteItem(pos);
         memberTypes.RemoveAt(pos);
+        memberSizes.RemoveAt(pos);
     }
     CheckChange();
 }
@@ -388,7 +410,8 @@ wxString dlgType::GetSql()
                 if (i)
                     sql += wxT(", ");
                 sql += qtIdent(lstMembers->GetItemText(i)) + wxT(" ")
-                    + memberTypes.Item(i).AfterFirst(':');
+                    + memberTypes.Item(i).AfterFirst(':')
+                    + memberSizes.Item(i);
             }
         }
         sql += wxT(");\n");
