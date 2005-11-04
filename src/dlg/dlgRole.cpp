@@ -628,12 +628,12 @@ wxString dlgRole::GetSql()
                 sql += wxT(" PASSWORD ") + qtString(passwd);
         }
 
-        if (createDB || createRole ||inherits || superuser)
+        if (createDB || createRole ||!inherits || superuser)
             sql += wxT("\n ");
         if (superuser)
             sql += wxT(" SUPERUSER");
-        if (inherits)
-            sql += wxT(" INHERIT");
+        if (!inherits)
+            sql += wxT(" NOINHERIT");
         if (createDB)
             sql += wxT(" CREATEDB");
         if (createRole)
