@@ -1,0 +1,54 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+<h3>Foreign key covering indexes</h3>
+<p>
+Une clé étrangère est utilisée pour coupler deux tables d'une façon logique et
+restreint les modifications qui peuvent les affecter.
+</p>
+<p>
+Tout commence avec une table maître qui sera la table référencée. Elle doit avoir
+une clé primaire (en fait, les colonnes référencées doivent seulement être non
+NULL et doivent avoir un index unique mais un conseil vraiment bon est d'avoir une
+clé primaire). La table esclave dépend de la table maître, dans le sens où les
+colonnes sur lesquelles est ajoutée la clé étrangère créée doivent correspondre 
+à la table maître pour toute clé insérée ou mise à jour. La table esclave est la
+table référante de la clé étrangère.
+</p>
+<p>
+La clé étrangère ne restreint pas seulement la table référante mais aussi la
+table de référence&nbsp;; cette restriction peut être RESTRICT, CASCADE ou SET
+NULL. Cela signifie que, si une ligne est modifiée dans la table
+maître/référencée (mise à jour ou supprimée), toutes les tables référantes sont
+vérifiées si l'opération est valide et s'il reste des actions supplémentaires à
+réaliser&nbsp;; voir la documentation de PostgreSQL sur les clés étrangères pour
+plus de détails.
+</p>
+<p>
+Ceci signifie que suite à un accès en modification sur une ligne spécifique dans
+la table référencée, une lecture correspondante est réalisée sur toutes les
+tables référantes en utilisant les colonnes de la clé étrangère comme clé d'accès.
+En conséquence, toutes les règles de conception qui auraient dû être pris
+en considération pour une lecture avec de bonnes performances devraient aussi
+s'appliquer aux colonnes dans une table référante. Pour de bonnes performances,
+un index est préférable dans la plupart des cas. PostgreSQL ne contraint pas
+ceci de cette façon mais c'est au concepteur de la base de données de fournir un
+index.
+</p>
+<p>
+Pour plus de confort, pgAdmin III fournit une simple case à cocher lors de la
+création d'une clé étrangère, qui vérifiera automatiquement la présence d'un
+index utilisable et en créera un pour vous s'il n'existe pas. Comme avec tous les
+index, il existe quelques rares cas où l'index fait décroître les performances
+mais, en général, avoir un index de moins occasionne plus de dégradations au
+niveau des performances que d'avoir un index de trop.
+</p>
+</body>
+
+</html>
