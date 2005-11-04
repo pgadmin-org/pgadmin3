@@ -164,6 +164,9 @@ int dlgRole::Go(bool modal)
         }
         else
         {
+            varInfo.Add(wxT("role"));
+            cbVarname->Append(wxT("role"));
+
             pgSet *set;
             set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
                     wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
@@ -214,7 +217,8 @@ wxString dlgRole::GetHelpPage() const
 {
     if (nbNotebook->GetSelection() == 2)
         return wxT("pg/runtime-config");
-    return dlgProperty::GetHelpPage();
+    else
+        return wxT("pg/sql-createrole");
 }
 
 
