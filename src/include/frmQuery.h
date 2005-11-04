@@ -39,6 +39,7 @@ private:
     wxLongLong elapsedQuery, elapsedRetrieve;
 
     void OnChangeStc(wxStyledTextEvent& event);
+    void OnPositionStc(wxStyledTextEvent& event);
     void OnClose(wxCloseEvent& event);
     void OnSetFocus(wxFocusEvent& event);
     void OnContents(wxCommandEvent& event);
@@ -88,6 +89,7 @@ private:
 enum
 {
     STATUSPOS_MSGS = 1,
+    STATUSPOS_POS,
     STATUSPOS_ROWS,
     STATUSPOS_SECS
 };

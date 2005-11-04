@@ -74,6 +74,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
+    EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
 END_EVENT_TABLE()
 
 
@@ -171,10 +172,10 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     queryMenu->Enable(MNU_CANCEL, false);
 
-    int iWidths[4] = {0, -1, 110, 110};
-    statusBar=CreateStatusBar(4);
+    int iWidths[5] = {0, -1, 110, 110, 110};
+    statusBar=CreateStatusBar(5);
     SetStatusBarPane(-1);
-    SetStatusWidths(4, iWidths);
+    SetStatusWidths(5, iWidths);
     SetStatusText(_("ready"), STATUSPOS_MSGS);
 
     toolBar = CreateToolBar();
@@ -212,8 +213,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     horizontal->SetMinimumPaneSize(50);
 
     sqlQuery = new ctlSQLBox(horizontal, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
-    sqlQuery->SetMarginWidth(1, 50);
-	sqlQuery->SetMarginType(1, 1);
+    sqlQuery->SetMarginWidth(1, 16);
 
     output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
@@ -780,6 +780,13 @@ void frmQuery::OnChangeStc(wxStyledTextEvent& event)
         setExtendedTitle();
         updateMenu();
     }
+}
+
+void frmQuery::OnPositionStc(wxStyledTextEvent& event)
+{
+    wxString pos;
+    pos.Printf(_("Ln %d Col %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1);
+    SetStatusText(pos, STATUSPOS_POS);
 }
 
 
