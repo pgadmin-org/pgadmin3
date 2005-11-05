@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterdomain.html" title="ALTER DOMAIN">
 <link rel="next" href="sql-altergroup.html" title="ALTER GROUP">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>ALTER FUNCTION &#8212; change the definition of a function</p>
 </div>
-<a name="id687521"></a><div class="refsynopsisdiv">
+<a name="id688626"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER FUNCTION <em class="replaceable"><code>name</code></em> ( [ [ <em class="replaceable"><code>argmode</code></em> ] [ <em class="replaceable"><code>argname</code></em> ] <em class="replaceable"><code>argtype</code></em> [, ...] ] )
     <em class="replaceable"><code>action</code></em> [, ... ] [ RESTRICT ]
@@ -34,7 +34,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
     [ EXTERNAL ] SECURITY INVOKER | [ EXTERNAL ] SECURITY DEFINER</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id687666"></a><h2>Description</h2>
+<a name="id688771"></a><h2>Description</h2>
 <p>   <code class="command">ALTER FUNCTION</code> changes the definition of a
    function.
   </p>
@@ -49,7 +49,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id687710"></a><h2>Parameters</h2>
+<a name="id688815"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing function.
@@ -90,15 +90,15 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <dd><p>       <code class="literal">CALLED ON NULL INPUT</code> changes the function so
        that it will be invoked when some or all of its arguments are
        null. <code class="literal">RETURNS NULL ON NULL INPUT</code> or
-       <code class="literal">STRICT</code> changes the function so that it
-       always returns null if any of its arguments are null. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more information.
+       <code class="literal">STRICT</code> changes the function so that it is not
+       invoked if any of its arguments are null; instead, a null result
+       is assumed automatically.  See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more information.
       </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">IMMUTABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">STABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">VOLATILE</code></span>
 </dt>
 <dd><p>       Change the volatility of the function to the specified
-       type. See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for more
-       information about function volatility.
+       setting.  See <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> for details.
       </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">[<span class="optional"> EXTERNAL </span>] SECURITY INVOKER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">[<span class="optional"> EXTERNAL </span>] SECURITY DEFINER</code></span>
@@ -114,7 +114,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id688016"></a><h2>Examples</h2>
+<a name="id689121"></a><h2>Examples</h2>
 <p>   To rename the function <code class="literal">sqrt</code> for type
    <code class="type">integer</code> to <code class="literal">square_root</code>:
 </p>
@@ -135,18 +135,18 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id688102"></a><h2>Compatibility</h2>
+<a name="id689207"></a><h2>Compatibility</h2>
 <p>   This statement is partially compatible with the <code class="command">ALTER
    FUNCTION</code> statement in the SQL standard. The standard allows more
    properties of a function to be modified, but does not provide the
    ability to rename a function, make a function a security definer,
    or change the owner, schema, or volatility of a function. The standard also
-   requires the <code class="literal">RESTRICT</code> key word; it is optional in
+   requires the <code class="literal">RESTRICT</code> key word, which is optional in
    <span class="productname">PostgreSQL</span>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id688134"></a><h2>See Also</h2>
+<a name="id689240"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-dropfunction.html">DROP FUNCTION</a></span>
 </div>
 </div></body>

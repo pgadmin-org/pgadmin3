@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="prev" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="next" href="index-scanning.html" title="48.3. Index Scanning">
@@ -98,7 +98,7 @@ ambeginscan (Relation indexRelation,
    <span class="emphasis"><em>must</em></span> create this struct by calling
    <code class="function">RelationGetIndexScan()</code>.  In most cases
    <code class="function">ambeginscan</code> itself does little beyond making that call;
-   the interesting parts of indexscan startup are in <code class="function">amrescan</code>.
+   the interesting parts of index-scan startup are in <code class="function">amrescan</code>.
   </p>
 <pre class="programlisting">boolean
 amgettuple (IndexScanDesc scan,
@@ -138,11 +138,11 @@ amrescan (IndexScanDesc scan,
    Restart the given scan, possibly with new scan keys (to continue using
    the old keys, NULL is passed for <code class="literal">key</code>).  Note that it is not
    possible for the number of keys to be changed.  In practice the restart
-   feature is used when a new outer tuple is selected by a nestloop join
+   feature is used when a new outer tuple is selected by a nested-loop join
    and so a new key comparison value is needed, but the scan key structure
    remains the same.  This function is also called by
    <code class="function">RelationGetIndexScan()</code>, so it is used for initial setup
-   of an indexscan as well as rescanning.
+   of an index scan as well as rescanning.
   </p>
 <pre class="programlisting">void
 amendscan (IndexScanDesc scan);</pre>

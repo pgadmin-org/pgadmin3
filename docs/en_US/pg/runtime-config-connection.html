@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-file-locations.html" title="17.2. File Locations">
 <link rel="next" href="runtime-config-resource.html" title="17.4. Resource Consumption">
@@ -134,27 +134,27 @@
 <dt>
 <a name="guc-tcp-keepalives-idle"></a><span class="term"><code class="varname">tcp_keepalives_idle</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        On systems that support the TCP_KEEPIDLE socket option, specifies the
+<dd><p>        On systems that support the <code class="symbol">TCP_KEEPIDLE</code> socket option, specifies the
         number of seconds between sending keepalives on an otherwise idle
-        connection. A value of 0 uses the system default. If TCP_KEEPIDLE is
+        connection. A value of 0 uses the system default. If <code class="symbol">TCP_KEEPIDLE</code> is
         not supported, this parameter must be 0. This option is ignored for
         connections made via a Unix-domain socket.
        </p></dd>
 <dt>
 <a name="guc-tcp-keepalives-interval"></a><span class="term"><code class="varname">tcp_keepalives_interval</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        On systems that support the TCP_KEEPINTVL socket option, specifies how
+<dd><p>        On systems that support the <code class="symbol">TCP_KEEPINTVL</code> socket option, specifies how
         long, in seconds, to wait for a response to a keepalive before
-        retransmitting. A value of 0 uses the system default. If TCP_KEEPINTVL
+        retransmitting. A value of 0 uses the system default. If <code class="symbol">TCP_KEEPINTVL</code>
         is not supported, this parameter must be 0. This option is ignored
         for connections made via a Unix-domain socket.
        </p></dd>
 <dt>
 <a name="guc-tcp-keepalives-count"></a><span class="term"><code class="varname">tcp_keepalives_count</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        On systems that support the TCP_KEEPCNT socket option, specifies how
+<dd><p>        On systems that support the <code class="symbol">TCP_KEEPCNT</code> socket option, specifies how
         many keepalives may be lost before the connection is considered dead. 
-        A value of 0 uses the system default. If TCP_KEEPCNT is not
+        A value of 0 uses the system default. If <code class="symbol">TCP_KEEPCNT</code> is not
         supported, this parameter must be 0. This option is ignored
         for connections made via a Unix-domain socket.
        </p></dd>
@@ -209,19 +209,19 @@
 <a name="guc-krb-server-hostname"></a><span class="term"><code class="varname">krb_server_hostname</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
-<p>        Sets the hostname part of the service principal.
+<p>        Sets the host name part of the service principal.
         This, combined with <code class="varname">krb_srvname</code>, is used to generate
         the complete service principal, that is
         <code class="varname">krb_srvname</code><code class="literal">/</code><code class="varname">krb_server_hostname</code><code class="literal">@</code>REALM.
        </p>
-<p>        If not set, the default is the server hostname.  See <a href="auth-methods.html#kerberos-auth" title="20.2.3. Kerberos authentication">Section 20.2.3, &#8220;Kerberos authentication&#8221;</a>
+<p>        If not set, the default is the server host name.  See <a href="auth-methods.html#kerberos-auth" title="20.2.3. Kerberos authentication">Section 20.2.3, &#8220;Kerberos authentication&#8221;</a>
         for details.  This parameter can only be set at server start.
        </p>
 </dd>
 <dt>
 <a name="guc-krb-caseins-users"></a><span class="term"><code class="varname">krb_caseins_users</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        Sets whether Kerberos usernames should be treated case-insensitively.
+<dd><p>        Sets whether Kerberos user names should be treated case-insensitively.
         The default is <code class="literal">off</code> (case sensitive). This parameter
         can only be set at server start.
        </p></dd>

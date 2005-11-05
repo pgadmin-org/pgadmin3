@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="app-pg-ctl.html" title="pg_ctl">
 <link rel="next" href="app-postgres.html" title="postgres">
@@ -45,7 +45,7 @@
    by specifying the <code class="literal">-f</code> (force) switch.  In this case plausible
    values will be substituted for the missing data.  Most of the fields can be
    expected to match, but manual assistance may be needed for the next OID,
-   next transaction ID, next multi-transaction ID and offset,
+   next transaction ID, next multitransaction ID and offset,
    WAL starting address, and database locale fields.
    The first five of these can be set using the switches discussed below.
    <code class="command">pg_resetxlog</code>'s own environment is the source for its
@@ -60,8 +60,8 @@
   </p>
 <p>   The <code class="literal">-o</code>, <code class="literal">-x</code>, <code class="literal">-m</code>, <code class="literal">-O</code>,
    and <code class="literal">-l</code>
-   switches allow the next OID, next transaction ID, next multi-transaction
-   ID, next multi-transaction offset, and WAL starting address values to
+   switches allow the next OID, next transaction ID, next multitransaction
+   ID, next multitransaction offset, and WAL starting address values to
    be set manually.  These are only needed when
    <code class="command">pg_resetxlog</code> is unable to determine appropriate values
    by reading <code class="filename">pg_control</code>.  Safe values may be determined as
@@ -79,14 +79,14 @@
       in <code class="filename">pg_clog</code>, <code class="literal">-x 0x1200000</code> will work (five
       trailing zeroes provide the proper multiplier).
      </p></li>
-<li><p>      A safe value for the next multi-transaction ID (<code class="literal">-m</code>)
+<li><p>      A safe value for the next multitransaction ID (<code class="literal">-m</code>)
       may be determined by looking for the numerically largest
       file name in the directory <code class="filename">pg_multixact/offsets</code> under the
       data directory, adding one, and then multiplying by 65536.  As above,
       the file names are in hexadecimal, so the easiest way to do this is to
       specify the switch value in hexadecimal and add four zeroes.
      </p></li>
-<li><p>      A safe value for the next multi-transaction offset (<code class="literal">-O</code>)
+<li><p>      A safe value for the next multitransaction offset (<code class="literal">-O</code>)
       may be determined by looking for the numerically largest
       file name in the directory <code class="filename">pg_multixact/members</code> under the
       data directory, adding one, and then multiplying by 65536.  As above,
@@ -121,7 +121,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id757800"></a><h2>Notes</h2>
+<a name="id759164"></a><h2>Notes</h2>
 <p>   This command must not be used when the server is 
    running.  <code class="command">pg_resetxlog</code> will refuse to start up if
    it finds a server lock file in the data directory.  If the

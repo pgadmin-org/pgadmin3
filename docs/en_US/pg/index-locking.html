@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="prev" href="index-scanning.html" title="48.3. Index Scanning">
 <link rel="next" href="index-unique-checks.html" title="48.5. Index Uniqueness Checks">
@@ -61,7 +61,7 @@
 <li><p>       When a heap entry is to be deleted (by <code class="command">VACUUM</code>), all its
        index entries must be removed first.
       </p></li>
-<li><p>       For concurrent index types, an indexscan must maintain a pin
+<li><p>       For concurrent index types, an index scan must maintain a pin
        on the index page holding the item last returned by
        <code class="function">amgettuple</code>, and <code class="function">ambulkdelete</code> cannot delete
        entries from pages that are pinned by other backends.  The need
@@ -90,7 +90,7 @@
    may still be &#8220;<span class="quote">in flight</span>&#8221; from the index entry to the matching
    heap entry.  Making <code class="function">ambulkdelete</code> block on such a pin ensures
    that <code class="command">VACUUM</code> cannot delete the heap entry before the reader
-   is done with it.  This solution costs little in runtime, and adds blocking
+   is done with it.  This solution costs little in run time, and adds blocking
    overhead only in the rare cases where there actually is a conflict.
   </p>
 <p>   This solution requires that index scans be &#8220;<span class="quote">synchronous</span>&#8221;: we have

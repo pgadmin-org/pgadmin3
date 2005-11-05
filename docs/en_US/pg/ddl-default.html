@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="next" href="ddl-constraints.html" title="5.3. Constraints">
@@ -13,14 +13,14 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddl-default"></a>5.2. Default Values</h2></div></div></div>
-<a name="id522054"></a><p>   A column can be assigned a default value.  When a new row is
+<a name="id522056"></a><p>   A column can be assigned a default value.  When a new row is
    created and no values are specified for some of the columns, the
    columns will be filled with their respective default values.  A
    data manipulation command can also request explicitly that a column
    be set to its default value, without having to know what that value is.
    (Details about data manipulation commands are in <a href="dml.html" title="Chapter 6. Data Manipulation">Chapter 6, <i>Data Manipulation</i></a>.)
   </p>
-<p>   <a name="id522083"></a>
+<p>   <a name="id522085"></a>
    If no default value is declared explicitly, the default value is the
    null value.  This usually makes sense because a null value can
    be considered to represent unknown data.
@@ -38,7 +38,7 @@
 <p>   The default value may be an expression, which will be
    evaluated whenever the default value is inserted
    (<span class="emphasis"><em>not</em></span> when the table is created).  A common example
-   is that a timestamp column may have a default of <code class="literal">now()</code>,
+   is that a <code class="type">timestamp</code> column may have a default of <code class="literal">now()</code>,
    so that it gets set to the time of row insertion.  Another common
    example is generating a &#8220;<span class="quote">serial number</span>&#8221; for each row.
    In <span class="productname">PostgreSQL</span> this is typically done by

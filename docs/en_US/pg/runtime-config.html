@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
 <link rel="next" href="runtime-config-file-locations.html" title="17.2. File Locations">
@@ -52,7 +52,7 @@
 <dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-when">17.7.2. When To Log</a></span></dt>
 <dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-what">17.7.3. What To Log</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="runtime-config-statistics.html">17.8. Runtime Statistics</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-statistics.html">17.8. Run-Time Statistics</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="runtime-config-statistics.html#runtime-config-statistics-monitor">17.8.1. Statistics Monitoring</a></span></dt>
 <dt><span class="sect2"><a href="runtime-config-statistics.html#runtime-config-statistics-collector">17.8.2. Query and Index Statistics Collector</a></span></dt>
@@ -76,7 +76,7 @@
 <dt><span class="sect1"><a href="runtime-config-short.html">17.16. Short Options</a></span></dt>
 </dl>
 </div>
-<a name="id590985"></a><p>   There are many configuration parameters that affect the behavior of
+<a name="id592126"></a><p>   There are many configuration parameters that affect the behavior of
    the database system. In the first section of this chapter, we
    describe how to set configuration chapters. The subsequent sections
    discuss each parameter in detail.
@@ -85,7 +85,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="config-setting"></a>17.1. Setting Parameters</h2></div></div></div>
 <p>    All parameter names are case-insensitive. Every parameter takes a
-    value of one of four types: boolean, integer, floating point,
+    value of one of four types: Boolean, integer, floating point,
     or string. Boolean values may be written as <code class="literal">ON</code>,
     <code class="literal">OFF</code>, <code class="literal">TRUE</code>,
     <code class="literal">FALSE</code>, <code class="literal">YES</code>,
@@ -93,7 +93,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id591074"></a>,
+    <code class="filename">postgresql.conf</code><a name="id592215"></a>,
     which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -110,7 +110,7 @@ search_path = '$user, public'</pre>
     numbers must be single-quoted.  To embed a single quote in a parameter
     value, write either two quotes (preferred) or backslash-quote.
   </p>
-<p>    <a name="id591114"></a>
+<p>    <a name="id592255"></a>
     The configuration file is reread whenever the
     <code class="command">postmaster</code> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means

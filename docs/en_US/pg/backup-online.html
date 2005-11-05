@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File system level backup">
 <link rel="next" href="migration.html" title="23.4. Migration Between Releases">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="backup-online"></a>23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
-<a name="id615371"></a><a name="id615381"></a><a name="id615391"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id616553"></a><a name="id616563"></a><a name="id616573"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -188,7 +188,7 @@
     invoked on completed WAL segments. Except in the case of retrying a
     failure, it will be called only once for any given file name.
    </p>
-<p>    In writing your archive command, you should assume that the filenames to
+<p>    In writing your archive command, you should assume that the file names to
     be archived may be up to 64 characters long and may contain any
     combination of ASCII letters, digits, and dots.  It is not necessary to
     remember the original full path (<code class="literal">%p</code>) but it is necessary to
@@ -548,7 +548,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id616940"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id618116"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -643,7 +643,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     the total volume of archived logs by turning off page snapshots 
     using the <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> parameter.
     (Read the notes and warnings in 
-    <a href="reliability.html" title="Chapter 26. Reliability">Chapter 26, <i>Reliability</i></a> before you do so.)
+    <a href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">Chapter 26, <i>Reliability and the Write-Ahead Log</i></a> before you do so.)
     Turning off page snapshots does not prevent use of the logs for PITR
     operations.
     An area for future development is to compress archived WAL data by

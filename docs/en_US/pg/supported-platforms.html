@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="prev" href="install-post.html" title="14.6. Post-Installation Setup">
 <link rel="next" href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">
@@ -55,8 +55,8 @@
 <td>Build farm
          <span class="systemitem">kookaburra</span> (5.2, cc 6.0); 
          <span class="systemitem">asp</span> (5.2, gcc 3.3.2)</td>
-<td>see <code class="filename">doc/FAQ_AIX</code>
-</td>
+<td>see <code class="filename">doc/FAQ_AIX</code>,
+         particularly if using AIX 5.3 ML3</td>
 </tr>
 <tr>
 <td><span class="systemitem">AIX</span></td>
@@ -240,25 +240,25 @@
 <tr>
 <td><span class="systemitem">HP-UX</span></td>
 <td><span class="systemitem">IA64</span></td>
-<td>8.0.0</td>
-<td>Tom Lane (<code class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</code>), 2005-01-06</td>
-<td>11.23, <code class="command">gcc</code> and <code class="command">cc</code>; see also <code class="filename">doc/FAQ_HPUX</code>
+<td>8.1.0</td>
+<td>Tom Lane (<code class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</code>), 2005-10-15</td>
+<td>11.23, <code class="command">gcc</code> and <code class="command">cc</code>; see <code class="filename">doc/FAQ_HPUX</code>
 </td>
 </tr>
 <tr>
 <td><span class="systemitem">HP-UX</span></td>
 <td><span class="systemitem">PA-RISC</span></td>
-<td>8.0.0</td>
-<td>Tom Lane (<code class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</code>), 2005-01-06</td>
-<td>10.20 and 11.11, <code class="command">gcc</code> and <code class="command">cc</code>; see also <code class="filename">doc/FAQ_HPUX</code>
+<td>8.1.0</td>
+<td>Tom Lane (<code class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</code>), 2005-10-15</td>
+<td>10.20 and 11.23, <code class="command">gcc</code> and <code class="command">cc</code>; see <code class="filename">doc/FAQ_HPUX</code>
 </td>
 </tr>
 <tr>
 <td><span class="systemitem">IRIX</span></td>
 <td><span class="systemitem">MIPS</span></td>
-<td>7.4</td>
-<td>Robert E. Bruccoleri (<code class="email">&lt;<a href="mailto:bruc@stone.congenomics.com">bruc@stone.congenomics.com</a>&gt;</code>), 2003-11-12</td>
-<td>6.5.20, <code class="command">cc</code> only</td>
+<td>8.1.0</td>
+<td>Kenneth Marshall (<code class="email">&lt;<a href="mailto:ktm@is.rice.edu">ktm@is.rice.edu</a>&gt;</code>), 2005-11-04</td>
+<td>6.5, <code class="command">cc</code> only</td>
 </tr>
 <tr>
 <td><span class="systemitem">Mac OS X</span></td>
@@ -315,9 +315,10 @@
 <tr>
 <td><span class="systemitem">OpenBSD</span></td>
 <td><span class="systemitem">Sparc64</span></td>
-<td>8.0.0</td>
-<td>Build farm <span class="systemitem">spoonbill</span>, snapshot 2005-01-06 00:50:05</td>
-<td>3.6</td>
+<td>8.1.0</td>
+<td>Build farm <span class="systemitem">spoonbill</span> (3.6, gcc 3.3.2)</td>
+<td>compiler bug affects <code class="filename">contrib/seg</code>
+</td>
 </tr>
 <tr>
 <td><span class="systemitem">OpenBSD</span></td>
@@ -385,25 +386,22 @@
 <tr>
 <td><span class="systemitem">Solaris</span></td>
 <td><span class="systemitem">Sparc</span></td>
-<td>8.0.0</td>
-<td>Kenneth Marshall (<code class="email">&lt;<a href="mailto:ktm@is.rice.edu">ktm@is.rice.edu</a>&gt;</code>), 2004-12-07</td>
-<td>Solaris 8; see also <code class="filename">doc/FAQ_Solaris</code>
+<td>8.1.0</td>
+<td>Build farm <span class="systemitem">buzzard</span>
+        (Solaris 10, gcc 3.3.2);
+        Robert Lor (<code class="email">&lt;<a href="mailto:Robert.Lor@sun.com">Robert.Lor@sun.com</a>&gt;</code>), 2005-11-04
+        (Solaris 9);
+        Kenneth Marshall (<code class="email">&lt;<a href="mailto:ktm@is.rice.edu">ktm@is.rice.edu</a>&gt;</code>), 2005-10-28
+        (Solaris 8, gcc 3.4.3)</td>
+<td>see <code class="filename">doc/FAQ_Solaris</code>
 </td>
 </tr>
 <tr>
 <td><span class="systemitem">Solaris</span></td>
 <td><span class="systemitem">x86</span></td>
-<td>8.0.0</td>
-<td>Build farm <span class="systemitem">kudu</span>, snapshot 2004-12-10 02:30:04 (<code class="command">cc</code>);
-          <span class="systemitem">dragonfly</span>, snapshot 2004-12-09 04:30:00 (<code class="command">gcc</code>)</td>
-<td>Solaris 9; see also <code class="filename">doc/FAQ_Solaris</code>
-</td>
-</tr>
-<tr>
-<td><span class="systemitem">Solaris</span></td>
-<td><span class="systemitem">Sparc</span></td>
 <td>8.1.0</td>
-<td>Build farm <span class="systemitem">buzzard</span> (Solaris 10, gcc 3.3.2)</td>
+<td>Robert Lor (<code class="email">&lt;<a href="mailto:Robert.Lor@sun.com">Robert.Lor@sun.com</a>&gt;</code>), 2005-11-04
+        (Solaris 10)</td>
 <td>see <code class="filename">doc/FAQ_Solaris</code>
 </td>
 </tr>
@@ -459,9 +457,9 @@
 <tr>
 <td><span class="systemitem">Tru64 UNIX</span></td>
 <td><span class="systemitem">Alpha</span></td>
-<td>8.0.0</td>
-<td>Honda Shigehiro (<code class="email">&lt;<a href="mailto:fwif0083@mb.infoweb.ne.jp">fwif0083@mb.infoweb.ne.jp</a>&gt;</code>), 2005-01-07</td>
-<td>5.0</td>
+<td>8.1.0</td>
+<td>Honda Shigehiro (<code class="email">&lt;<a href="mailto:fwif0083@mb.infoweb.ne.jp">fwif0083@mb.infoweb.ne.jp</a>&gt;</code>), 2005-11-01</td>
+<td>5.0, <code class="command">cc</code> 6.1-011</td>
 </tr>
 <tr>
 <td><span class="systemitem">UnixWare</span></td>

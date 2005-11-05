@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-load.html" title="LOAD">
 <link rel="next" href="sql-move.html" title="MOVE">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>LOCK &#8212; lock a table</p>
 </div>
-<a name="id722788"></a><div class="refsynopsisdiv">
+<a name="id724089"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">LOCK [ TABLE ] <em class="replaceable"><code>name</code></em> [, ...] [ IN <em class="replaceable"><code>lockmode</code></em> MODE ] [ NOWAIT ]
 
@@ -26,7 +26,7 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
     | SHARE | SHARE ROW EXCLUSIVE | EXCLUSIVE | ACCESS EXCLUSIVE</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id722828"></a><h2>Description</h2>
+<a name="id724129"></a><h2>Description</h2>
 <p>   <code class="command">LOCK TABLE</code> obtains a table-level lock, waiting
    if necessary for any conflicting locks to be released.  If
    <code class="literal">NOWAIT</code> is specified, <code class="command">LOCK
@@ -84,7 +84,7 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id723050"></a><h2>Parameters</h2>
+<a name="id724351"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd>
@@ -115,7 +115,7 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id723144"></a><h2>Notes</h2>
+<a name="id724445"></a><h2>Notes</h2>
 <p>    <code class="literal">LOCK TABLE ... IN ACCESS SHARE MODE</code> requires <code class="literal">SELECT</code>
     privileges on the target table.  All other forms of <code class="command">LOCK</code>
     require <code class="literal">UPDATE</code> and/or <code class="literal">DELETE</code> privileges.
@@ -141,7 +141,7 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id723285"></a><h2>Examples</h2>
+<a name="id724586"></a><h2>Examples</h2>
 <p>   Obtain a <code class="literal">SHARE</code> lock on a primary key table when going to perform
    inserts into a foreign key table:
 
@@ -170,7 +170,7 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id723332"></a><h2>Compatibility</h2>
+<a name="id724633"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">LOCK TABLE</code> in the SQL standard,
    which instead uses <code class="command">SET TRANSACTION</code> to specify
    concurrency levels on transactions.  <span class="productname">PostgreSQL</span> supports that too;

@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>5.10. Dependency Tracking</title>
+<title>5.11. Dependency Tracking</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="prev" href="ddl-others.html" title="5.9. Other Database Objects">
+<link rel="prev" href="ddl-others.html" title="5.10. Other Database Objects">
 <link rel="next" href="dml.html" title="Chapter 6. Data Manipulation">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-depend"></a>5.10. Dependency Tracking</h2></div></div></div>
-<a name="id525607"></a><a name="id525622"></a><p>   When you create complex database structures involving many tables
+<a name="ddl-depend"></a>5.11. Dependency Tracking</h2></div></div></div>
+<a name="id526746"></a><a name="id526761"></a><p>   When you create complex database structures involving many tables
    with foreign key constraints, views, triggers, functions, etc. you
    will implicitly create a net of dependencies between the objects.
    For instance, a table with a foreign key constraint depends on the
@@ -38,7 +38,7 @@ HINT:  Use DROP ... CASCADE to drop the dependent objects too.</pre>
 <p>
    and all the dependent objects will be removed.  In this case, it
    doesn't remove the orders table, it only removes the foreign key
-   constraint.  (If you want to check what <code class="literal">DROP ... CASCADE</code> will do,
+   constraint.  (If you want to check what <code class="command">DROP ... CASCADE</code> will do,
    run <code class="command">DROP</code> without <code class="literal">CASCADE</code> and read the <code class="literal">NOTICE</code> messages.)
   </p>
 <p>   All drop commands in <span class="productname">PostgreSQL</span> support

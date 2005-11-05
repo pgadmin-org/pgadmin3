@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="cvs.html" title="Appendix F. The CVS Repository">
 <link rel="prev" href="cvs.html" title="Appendix F. The CVS Repository">
 <link rel="next" href="cvsup.html" title="F.3. Getting The Source Via CVSup">
@@ -28,9 +28,8 @@
    sources that make up release 6_4 of the module `tc' at any time in the
    future:
 
-   </p>
-<pre class="programlisting">$ cvs checkout -r REL6_4 tc
-   </pre>
+</p>
+<pre class="programlisting">cvs checkout -r REL6_4 tc</pre>
 <p>
 
    This is useful, for instance, if someone claims that there is a bug in
@@ -75,10 +74,9 @@
 <p>   So, to create the 6.4 release
    I did the following:
 
-   </p>
-<pre class="programlisting">$ cd pgsql
-$ cvs tag -b REL6_4
-   </pre>
+</p>
+<pre class="programlisting">cd pgsql
+cvs tag -b REL6_4</pre>
 <p>
 
    which will create the tag and the branch for the RELEASE tree.
@@ -88,12 +86,11 @@ $ cvs tag -b REL6_4
    First, create two subdirectories, RELEASE and CURRENT, so that you don't
    mix up the two.  Then do:
 
-   </p>
+</p>
 <pre class="programlisting">cd RELEASE
 cvs checkout -P -r REL6_4 pgsql
 cd ../CURRENT
-cvs checkout -P pgsql
-   </pre>
+cvs checkout -P pgsql</pre>
 <p>
 
    which results in two directory trees, <code class="filename">RELEASE/pgsql</code> and
@@ -108,17 +105,15 @@ cvs checkout -P pgsql
   </p>
 <p>   After you've done the initial checkout on a branch
 
-   </p>
-<pre class="programlisting">$ cvs checkout -r REL6_4
-   </pre>
+</p>
+<pre class="programlisting">cvs checkout -r REL6_4</pre>
 <p>
 
    anything you do within that directory structure is restricted to that
    branch.  If you apply a patch to that directory structure and do a
 
-   </p>
-<pre class="programlisting">cvs commit
-   </pre>
+</p>
+<pre class="programlisting">cvs commit</pre>
 <p>
 
    while inside of it, the patch is applied to the branch and

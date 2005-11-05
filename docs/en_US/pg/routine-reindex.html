@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
 <link rel="prev" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
 <link rel="next" href="logfile-maintenance.html" title="22.3. Log File Maintenance">
@@ -13,12 +13,13 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="routine-reindex"></a>22.2. Routine Reindexing</h2></div></div></div>
-<a name="id613864"></a><p>   In some situations it is worthwhile to rebuild indexes periodically
-   with the <code class="command">REINDEX</code> command.
+<a name="id615034"></a><p>   In some situations it is worthwhile to rebuild indexes periodically
+   with the <a href="sql-reindex.html">REINDEX</a>
+   command.
   </p>
 <p>   In <span class="productname">PostgreSQL</span> releases before 7.4, periodic reindexing
    was frequently necessary to avoid &#8220;<span class="quote">index bloat</span>&#8221;, due to lack of
-   internal space reclamation in btree indexes.  Any situation in which the
+   internal space reclamation in B-tree indexes.  Any situation in which the
    range of index keys changed over time [mdash ] for example, an index on
    timestamps in a table where old entries are eventually deleted [mdash ]
    would result in bloat, because index pages for no-longer-needed portions
@@ -34,14 +35,14 @@
    will be one key per page [mdash ] but it may still be worthwhile to schedule
    periodic reindexing for indexes that have such usage patterns.
   </p>
-<p>   The potential for bloat in non-btree indexes has not been well
+<p>   The potential for bloat in non-B-tree indexes has not been well
    characterized.  It is a good idea to keep an eye on the index's physical
-   size when using any non-btree index type.
+   size when using any non-B-tree index type.
   </p>
-<p>   Also, for btree indexes a freshly-constructed index is somewhat faster to
+<p>   Also, for B-tree indexes a freshly-constructed index is somewhat faster to
    access than one that has been updated many times, because logically
    adjacent pages are usually also physically adjacent in a newly built index.
-   (This consideration does not currently apply to non-btree indexes.)  It
+   (This consideration does not currently apply to non-B-tree indexes.)  It
    might be worthwhile to reindex periodically just to improve access speed.
   </p>
 </div></body>

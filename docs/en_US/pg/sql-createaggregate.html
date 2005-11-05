@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-copy.html" title="COPY">
 <link rel="next" href="sql-createcast.html" title="CREATE CAST">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>CREATE AGGREGATE &#8212; define a new aggregate function</p>
 </div>
-<a name="id697833"></a><div class="refsynopsisdiv">
+<a name="id698979"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE AGGREGATE <em class="replaceable"><code>name</code></em> (
     BASETYPE = <em class="replaceable"><code>input_data_type</code></em>,
@@ -28,7 +28,7 @@
 )</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id697899"></a><h2>Description</h2>
+<a name="id699045"></a><h2>Description</h2>
 <p>   <code class="command">CREATE AGGREGATE</code> defines a new aggregate
    function. Some basic and commonly-used aggregate functions are
    included with the distribution; they are documented in <a href="functions-aggregate.html" title="9.15. Aggregate Functions">Section 9.15, &#8220;Aggregate Functions&#8221;</a>. If one defines new types or needs
@@ -118,15 +118,15 @@
 <p>
    Further assumptions are that the aggregate ignores null inputs, and that
    it delivers a null result if and only if there were no non-null inputs.
-   Ordinarily, a datatype's <code class="literal">&lt;</code> operator is the proper sort
+   Ordinarily, a data type's <code class="literal">&lt;</code> operator is the proper sort
    operator for <code class="function">MIN</code>, and <code class="literal">&gt;</code> is the proper sort
    operator for <code class="function">MAX</code>.  Note that the optimization will never
-   actually take effect unless the specified operator is the LessThan or
-   GreaterThan strategy member of a btree index opclass.
+   actually take effect unless the specified operator is the &#8220;<span class="quote">less than</span>&#8221; or
+   &#8220;<span class="quote">greater than</span>&#8221; strategy member of a B-tree index operator class.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id698163"></a><h2>Parameters</h2>
+<a name="id699318"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the aggregate function
@@ -170,7 +170,7 @@
 <dd><p>      The associated sort operator for a <code class="function">MIN</code>- or
       <code class="function">MAX</code>-like aggregate.
       This is just an operator name (possibly schema-qualified).
-      The operator is assumed to have the same input datatypes as
+      The operator is assumed to have the same input data types as
       the aggregate.
      </p></dd>
 </dl></div>
@@ -179,19 +179,19 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id698368"></a><h2>Examples</h2>
+<a name="id699522"></a><h2>Examples</h2>
 <p>   See <a href="xaggr.html" title="32.10. User-Defined Aggregates">Section 32.10, &#8220;User-Defined Aggregates&#8221;</a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id698381"></a><h2>Compatibility</h2>
+<a name="id699535"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE AGGREGATE</code> is a
    <span class="productname">PostgreSQL</span> language extension.  The SQL
    standard does not provide for user-defined aggregate functions.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id698402"></a><h2>See Also</h2>
+<a name="id699557"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-alteraggregate.html">ALTER AGGREGATE</a>, <a href="sql-dropaggregate.html">DROP AGGREGATE</a></span>
 </div>
 </div></body>

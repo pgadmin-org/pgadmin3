@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>26.2. Write-Ahead Logging (WAL)</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">
+<link rel="prev" href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">
+<link rel="next" href="wal-configuration.html" title="26.3. WAL Configuration">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="wal-intro"></a>26.2. Write-Ahead Logging (<span class="acronym">WAL</span>)</h2></div></div></div>
+<a name="id620748"></a><a name="id620757"></a><p>    <em class="firstterm">Write-Ahead Logging</em> (<span class="acronym">WAL</span>)
+    is a standard approach to transaction logging.  Its detailed
+    description may be found in most (if not all) books about
+    transaction processing. Briefly, <span class="acronym">WAL</span>'s central
+    concept is that changes to data files (where tables and indexes
+    reside) must be written only after those changes have been logged,
+    that is, when log records describing the changes have been flushed
+    to permanent storage. If we follow this procedure, we do not need
+    to flush data pages to disk on every transaction commit, because we
+    know that in the event of a crash we will be able to recover the
+    database using the log: any changes that have not been applied to
+    the data pages can be redone from the log records.  (This is
+    roll-forward recovery, also known as REDO.)
+   </p>
+<p>    A major benefit of using <span class="acronym">WAL</span> is a
+    significantly reduced number of disk writes, because only the log
+    file needs to be flushed to disk at the time of transaction
+    commit, rather than every data file changed by the transaction.
+    In multiuser environments, commits of many transactions
+    may be accomplished with a single <code class="function">fsync</code> of
+    the log file. Furthermore, the log file is written sequentially,
+    and so the cost of syncing the log is much less than the cost of
+    flushing the data pages.   This is especially true for servers
+    handling many small transactions touching different parts of the data
+    store.
+   </p>
+<p>    <span class="acronym">WAL</span> also makes it possible to support on-line
+    backup and point-in-time recovery, as described in <a href="backup-online.html" title="23.3. On-line backup and point-in-time recovery (PITR)">Section 23.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>.  By archiving the WAL data we can support
+    reverting to any time instant covered by the available WAL data:
+    we simply install a prior physical backup of the database, and
+    replay the WAL log just as far as the desired time.  What's more,
+    the physical backup doesn't have to be an instantaneous snapshot
+    of the database state [mdash ] if it is made over some period of time,
+    then replaying the WAL log for that period will fix any internal
+    inconsistencies.
+   </p>
+</div></body>
+</html>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
 <link rel="prev" href="release-8-0-1.html" title="E.5. Release 8.0.1">
 <link rel="next" href="release-7-4-9.html" title="E.7. Release 7.4.9">
@@ -19,7 +19,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id819270"></a>E.6.1. Overview</h3></div></div></div>
+<a name="id820650"></a>E.6.1. Overview</h3></div></div></div>
 <p>     Major changes in this release:
     </p>
 <div class="variablelist"><dl>
@@ -100,13 +100,13 @@
       </span></dt>
 <dd><p>        <code class="command">COPY</code> can now read and write
         comma-separated-value files. It has the flexibility to
-        interpret non-standard quoting and separation characters too.
+        interpret nonstandard quoting and separation characters too.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id819538"></a>E.6.2. Migration to version 8.0</h3></div></div></div>
+<a name="id820918"></a>E.6.2. Migration to version 8.0</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span> is
      required for those wishing to migrate data from any previous
      release.
@@ -126,7 +126,7 @@
        read-only, too, meaning that it cannot use any SQL commands other than
        <code class="command">SELECT</code>.
       </p></li>
-<li><p>       Non-deferred <code class="option">AFTER</code> triggers are now fired immediately
+<li><p>       Nondeferred <code class="option">AFTER</code> triggers are now fired immediately
        after completion of the triggering query, rather than upon
        finishing the current interactive command. This makes a
        difference when the triggering query occurred within a function:
@@ -172,7 +172,7 @@
       integer, not the leftmost N bits as before.
      </p></li>
 <li><p>      Updating an element or slice of a NULL array value now produces
-      a non-NULL array result, namely an array containing
+      a nonnull array result, namely an array containing
       just the assigned-to positions.
      </p></li>
 <li><p>       Syntax checking of array input values has been tightened up
@@ -195,7 +195,7 @@
        function now also returns the proper values for millennium and
        century.
       </p></li>
-<li><p>      <code class="type">CIDR</code> values now must have their non-masked bits be zero.
+<li><p>      <code class="type">CIDR</code> values now must have their nonmasked bits be zero.
       For example, we no longer allow
       <code class="literal">204.248.199.1/31</code> as a <code class="type">CIDR</code> value. Such
       values should never have been accepted by
@@ -240,7 +240,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id820016"></a>E.6.3. Deprecated Features</h3></div></div></div>
+<a name="id821396"></a>E.6.3. Deprecated Features</h3></div></div></div>
 <p>     Some aspects of <span class="productname">PostgreSQL</span>'s behavior
      have been determined to be suboptimal. For the sake of backward
      compatibility these have not been removed in 8.0, but they are
@@ -271,13 +271,13 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id820114"></a>E.6.4. Changes</h3></div></div></div>
+<a name="id821494"></a>E.6.4. Changes</h3></div></div></div>
 <p>     Below you will find a detailed account of the changes between
      release 8.0 and the previous major release.
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id820122"></a>E.6.4.1. Performance Improvements</h4></div></div></div>
+<a name="id821502"></a>E.6.4.1. Performance Improvements</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Support cross-data-type index usage (Tom)
@@ -393,7 +393,7 @@
         capability (Mark Cave-Ayland)
        </p>
 <p>        This feature allows more flexibility in generating statistics
-        for non-standard data types.
+        for nonstandard data types.
        </p>
 </li>
 <li>
@@ -427,7 +427,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id820420"></a>E.6.4.2. Server Changes</h4></div></div></div>
+<a name="id821795"></a>E.6.4.2. Server Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add WAL file archiving and point-in-time recovery (Simon Riggs)
        </p></li>
@@ -570,7 +570,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id820864"></a>E.6.4.3. Query Changes</h4></div></div></div>
+<a name="id822240"></a>E.6.4.3. Query Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add savepoints (nested transactions) (Alvaro)
        </p></li>
@@ -677,7 +677,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id821104"></a>E.6.4.4. Object Manipulation Changes</h4></div></div></div>
+<a name="id822479"></a>E.6.4.4. Object Manipulation Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add <code class="command">COMMENT ON</code> for casts, conversions, languages,
         operator classes, and large objects (Christopher)
@@ -785,7 +785,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id821431"></a>E.6.4.5. Utility Command Changes</h4></div></div></div>
+<a name="id822806"></a>E.6.4.5. Utility Command Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow <code class="command">CREATE SCHEMA</code> to create triggers,
         indexes, and sequences (Neil)
@@ -878,7 +878,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id821724"></a>E.6.4.6. Data Type and Function Changes</h4></div></div></div>
+<a name="id823099"></a>E.6.4.6. Data Type and Function Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        More complete support for composite types (row types)  (Tom)
@@ -888,7 +888,7 @@
        </p>
 </li>
 <li>
-<p>        Reject non-rectangular array values as erroneous (Joe)
+<p>        Reject nonrectangular array values as erroneous (Joe)
        </p>
 <p>        Formerly, <code class="function">array_in</code> would silently build a
         surprising result.
@@ -1041,14 +1041,14 @@
         to int.
        </p>
 </li>
-<li><p>        Require <code class="type">CIDR</code> values to have all non-masked bits be zero
+<li><p>        Require <code class="type">CIDR</code> values to have all nonmasked bits be zero
         (Kevin Brintnall)
        </p></li>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id822271"></a>E.6.4.7. Server-Side Language Changes</h4></div></div></div>
+<a name="id823646"></a>E.6.4.7. Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        In <code class="literal">READ COMMITTED</code> serialization mode, volatile functions
         now see the results of concurrent transactions committed up to the
@@ -1064,13 +1064,13 @@
         declaring a function <code class="literal">STABLE</code> or <code class="literal">IMMUTABLE</code>
         rather than <code class="literal">VOLATILE</code>.
        </p></li>
-<li><p>        Non-deferred <code class="option">AFTER</code> triggers are now fired immediately
+<li><p>        Nondeferred <code class="option">AFTER</code> triggers are now fired immediately
         after completion of the triggering query, rather than upon
         finishing the current interactive command. This makes a difference
         when the triggering query occurred within a function: the trigger
         is invoked before the function proceeds to its next operation. For
         example, if a function inserts a new row into a table, any
-        non-deferred foreign key checks occur before proceeding with the
+        nondeferred foreign key checks occur before proceeding with the
         function.
        </p></li>
 <li>
@@ -1130,7 +1130,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id822474"></a>E.6.4.8. <span class="application">psql</span> Changes</h4></div></div></div>
+<a name="id823857"></a>E.6.4.8. <span class="application">psql</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Improve <span class="application">psql</span> information display about database
         objects (Christopher)
@@ -1188,7 +1188,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id822756"></a>E.6.4.9. <span class="application">pg_dump</span> Changes</h4></div></div></div>
+<a name="id824139"></a>E.6.4.9. <span class="application">pg_dump</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Use dependency information to improve the reliability of
@@ -1235,7 +1235,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id822924"></a>E.6.4.10. libpq Changes</h4></div></div></div>
+<a name="id824307"></a>E.6.4.10. libpq Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Make libpq's <code class="option">SIGPIPE</code> handling thread-safe (Bruce)
        </p></li>
@@ -1262,7 +1262,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id823036"></a>E.6.4.11. Source Code Changes</h4></div></div></div>
+<a name="id824419"></a>E.6.4.11. Source Code Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow the database server to run natively on Windows (Claudio, Magnus, Andrew)
        </p></li>
@@ -1344,7 +1344,7 @@
 <p>        With threading enabled, use thread flags on Unixware for 
         backend executables too (Bruce)
        </p>
-<p>        Unixware cannot mix threaded and non-threaded object files in the
+<p>        Unixware cannot mix threaded and nonthreaded object files in the
         same executable, so everything must be compiled as threaded.
        </p>
 </li>
@@ -1374,7 +1374,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id823348"></a>E.6.4.12. Contrib Changes</h4></div></div></div>
+<a name="id824732"></a>E.6.4.12. Contrib Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Overhaul of <code class="filename">contrib/dblink</code> (Joe)
        </p></li>

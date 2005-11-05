@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createtable.html" title="CREATE TABLE">
 <link rel="next" href="sql-createtablespace.html" title="CREATE TABLESPACE">
@@ -16,13 +16,14 @@
 <h2>Name</h2>
 <p>CREATE TABLE AS &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id709752"></a><div class="refsynopsisdiv">
+<a name="id710956"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> [ (<em class="replaceable"><code>column_name</code></em> [, ...] ) ] [ [ WITH | WITHOUT ] OIDS ]
+<pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em>
+    [ (<em class="replaceable"><code>column_name</code></em> [, ...] ) ] [ [ WITH | WITHOUT ] OIDS ]
     AS <em class="replaceable"><code>query</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id709783"></a><h2>Description</h2>
+<a name="id710987"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TABLE AS</code> creates a table and fills it
    with data computed by a <code class="command">SELECT</code> command or an
    <code class="command">EXECUTE</code> that runs a prepared
@@ -41,7 +42,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id709848"></a><h2>Parameters</h2>
+<a name="id711052"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">GLOBAL</code> or <code class="literal">LOCAL</code></span></dt>
 <dd><p>      Ignored for compatibility. Refer to <a href="sql-createtable.html">CREATE TABLE</a> for
@@ -81,7 +82,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id710035"></a><h2>Notes</h2>
+<a name="id711240"></a><h2>Notes</h2>
 <p>   This command is functionally similar to <a href="sql-selectinto.html">SELECT INTO</a>, but it is
    preferred since it is less likely to be confused with other uses of
    the <code class="command">SELECT INTO</code> syntax. Furthermore, <code class="command">CREATE
@@ -90,21 +91,21 @@
   </p>
 <p>   Prior to <span class="productname">PostgreSQL</span> 8.0, <code class="command">CREATE
    TABLE AS</code> always included OIDs in the table it
-   produced.  As of <span class="productname">PostgreSQL</span> 8.0,
+   created.  As of <span class="productname">PostgreSQL</span> 8.0,
    the <code class="command">CREATE TABLE AS</code> command allows the user to
    explicitly specify whether OIDs should be included. If the
    presence of OIDs is not explicitly specified,
    the <a href="runtime-config-compatible.html#guc-default-with-oids">default_with_oids</a> configuration variable is
-   used. While this variable currently defaults to true, the default
-   value may be changed in the future. Therefore, applications that
+   used.  As of <span class="productname">PostgreSQL</span> 8.1,
+   this variable is false by default, so the default behavior is not
+   identical to pre-8.0 releases.  Applications that
    require OIDs in the table created by <code class="command">CREATE TABLE
-   AS</code> should explicitly specify <code class="literal">WITH
-   OIDS</code> to ensure compatibility with future versions
-   of <span class="productname">PostgreSQL</span>.
+   AS</code> should explicitly specify <code class="literal">WITH OIDS</code>
+   to ensure proper behavior.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id710143"></a><h2>Examples</h2>
+<a name="id711348"></a><h2>Examples</h2>
 <p>   Create a new table <code class="literal">films_recent</code> consisting of only
    recent entries from the table <code class="literal">films</code>:
 
@@ -115,11 +116,9 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id710172"></a><h2>Compatibility</h2>
-<p>   <code class="command">CREATE TABLE AS</code> is specified by the SQL:2003
-   standard. There are some small differences between the definition
-   of the command in SQL:2003 and its implementation in
-   <span class="productname">PostgreSQL</span>:
+<a name="id711377"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE TABLE AS</code> conforms to the <span class="acronym">SQL</span>
+   standard, with the following exceptions:
 
    </p>
 <div class="itemizedlist"><ul type="disc" compact>
@@ -130,15 +129,25 @@
 <li><p>      The standard defines an <code class="literal">ON COMMIT</code> clause;
       this is not currently implemented by <span class="productname">PostgreSQL</span>.
      </p></li>
-<li><p>      The standard defines a <code class="literal">WITH DATA</code> clause;
+<li><p>      The standard defines a <code class="literal">WITH [ NO ] DATA</code> clause;
       this is not currently implemented by <span class="productname">PostgreSQL</span>.
+      The behavior provided by <span class="productname">PostgreSQL</span> is equivalent
+      to the standard's <code class="literal">WITH DATA</code> case.
+     </p></li>
+<li><p>      <code class="literal">WITH/WITHOUT OIDS</code> is a <span class="productname">PostgreSQL</span>
+      extension.
+     </p></li>
+<li><p>      <span class="productname">PostgreSQL</span> handles temporary tables in a way
+      rather different from the standard; see
+      <a href="sql-createtable.html">CREATE TABLE</a>
+      for details.
      </p></li>
 </ul></div>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id710249"></a><h2>See Also</h2>
+<a name="id711504"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createtable.html">CREATE TABLE</a>, <a href="sql-execute.html">EXECUTE</a>, <a href="sql-select.html">SELECT</a>, <a href="sql-selectinto.html">SELECT INTO</a></span>
 </div>
 </div></body>

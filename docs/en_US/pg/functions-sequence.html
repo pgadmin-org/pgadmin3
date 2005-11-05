@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-net.html" title="9.11. Network Address Functions and Operators">
 <link rel="next" href="functions-conditional.html" title="9.13. Conditional Expressions">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div></div>
-<a name="id563092"></a><a name="id563099"></a><a name="id563105"></a><a name="id563111"></a><a name="id563117"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
+<a name="id564279"></a><a name="id564285"></a><a name="id564292"></a><a name="id564298"></a><a name="id564304"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
    for operating on <em class="firstterm">sequence objects</em>.
    Sequence objects (also called sequence generators or
    just sequences) are special single-row tables created with
@@ -70,7 +70,7 @@
 <p>   The sequence to be operated on by a sequence-function call is specified by
    a <code class="type">regclass</code> argument, which is just the OID of the sequence in the
    <code class="structname">pg_class</code> system catalog.  You do not have to look up the
-   OID by hand, however, since the <code class="type">regclass</code> datatype's input
+   OID by hand, however, since the <code class="type">regclass</code> data type's input
    converter will do the work for you.  Just write the sequence name enclosed
    in single quotes, so that it looks like a literal constant.  To
    achieve some compatibility with the handling of ordinary
@@ -95,7 +95,7 @@ nextval('foo')              <em class="lineannotation"><span class="lineannotati
 <p>    Before <span class="productname">PostgreSQL</span> 8.1, the arguments of the
     sequence functions were of type <code class="type">text</code>, not <code class="type">regclass</code>, and
     the above-described conversion from a text string to an OID value would
-    happen at runtime during each call.  For backwards compatibility, this
+    happen at run time during each call.  For backwards compatibility, this
     facility still exists, but internally it is now handled as an implicit
     coercion from <code class="type">text</code> to <code class="type">regclass</code> before the function is
     invoked.
@@ -107,7 +107,7 @@ nextval('foo')              <em class="lineannotation"><span class="lineannotati
     etc.  This &#8220;<span class="quote">early binding</span>&#8221; behavior is usually desirable for
     sequence references in column defaults and views.  But sometimes you will
     want &#8220;<span class="quote">late binding</span>&#8221; where the sequence reference is resolved
-    at runtime.  To get late-binding behavior, force the constant to be
+    at run time.  To get late-binding behavior, force the constant to be
     stored as a <code class="type">text</code> constant instead of <code class="type">regclass</code>:
 </p>
 <pre class="programlisting">nextval('foo'::text)      <em class="lineannotation"><span class="lineannotation"><code class="literal">foo</code> is looked up at runtime</span></em></pre>

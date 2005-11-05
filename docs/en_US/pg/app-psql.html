@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="prev" href="app-pgrestore.html" title="pg_restore">
 <link rel="next" href="app-reindexdb.html" title="reindexdb">
@@ -17,13 +17,13 @@
 <p><span class="application">psql</span> &#8212;       <span class="productname">PostgreSQL</span> interactive terminal
     </p>
 </div>
-<a name="id746307"></a><div class="refsynopsisdiv">
+<a name="id747672"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">psql</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>
     [<em class="replaceable"><code>username</code></em>]]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id746362"></a><h2>Description</h2>
+<a name="id747726"></a><h2>Description</h2>
 <p>     <span class="application">psql</span> is a terminal-based front-end to
      <span class="productname">PostgreSQL</span>. It enables you to type in
      queries interactively, issue them to
@@ -154,7 +154,8 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-L <em class="replaceable"><code>filename</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--log-file <em class="replaceable"><code>filename</code></em></code></span>
 </dt>
-<dd><p>      Write all query output into file <em class="replaceable"><code>filename</code></em> in addition to the regular output source.
+<dd><p>       Write all query output into file <em class="replaceable"><code>filename</code></em>, in addition to the
+       normal output destination.
       </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-o <em class="replaceable"><code>filename</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--output <em class="replaceable"><code>filename</code></em></code></span>
@@ -308,7 +309,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id747420"></a><h2>Exit Status</h2>
+<a name="id748784"></a><h2>Exit Status</h2>
 <p>   <span class="application">psql</span> returns 0 to the shell if it
    finished normally, 1 if a fatal error of its own (out of memory,
    file not found) occurs, 2 if the connection to the server went bad
@@ -317,7 +318,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id747442"></a><h2>Usage</h2>
+<a name="id748806"></a><h2>Usage</h2>
 <div class="refsect2" lang="en">
 <a name="r2-app-psql-connecting"></a><h3>Connecting To A Database</h3>
 <p>    <span class="application">psql</span> is a regular
@@ -362,7 +363,7 @@
     the string <code class="literal">=&gt;</code>. For example,
 </p>
 <pre class="programlisting">$ <strong class="userinput"><code>psql testdb</code></strong>
-Welcome to psql 8.1RC1, the PostgreSQL interactive terminal.
+Welcome to psql 8.1.0, the PostgreSQL interactive terminal.
 
 Type:  \copyright for distribution terms
        \h for help with SQL commands
@@ -387,7 +388,7 @@ testdb=&gt;</pre>
     </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id747680"></a><h3>Meta-Commands</h3>
+<a name="id749044"></a><h3>Meta-Commands</h3>
 <p>    Anything you enter in <span class="application">psql</span> that begins
     with an unquoted backslash is a <span class="application">psql</span>
     meta-command that is processed by <span class="application">psql</span>
@@ -406,7 +407,7 @@ testdb=&gt;</pre>
     precede it by a backslash. Anything contained in single quotes is
     furthermore subject to C-like substitutions for
     <code class="literal">\n</code> (new line), <code class="literal">\t</code> (tab),
-    <code class="literal">\</code><em class="replaceable"><code>digits</code></em> (octal),
+    <code class="literal">\</code><em class="replaceable"><code>digits</code></em> (octal), and
     <code class="literal">\x</code><em class="replaceable"><code>digits</code></em> (hexadecimal).
     </p>
 <p>    If an unquoted argument begins with a colon (<code class="literal">:</code>),
@@ -1149,7 +1150,7 @@ lo_import 152801</pre>
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id750942"></a><h3>Advanced features</h3>
+<a name="id752306"></a><h3>Advanced features</h3>
 <div class="refsect3" lang="en">
 <a name="app-psql-variables"></a><h4>Variables</h4>
 <p>    <span class="application">psql</span> provides variable substitution
@@ -1281,13 +1282,14 @@ bar</pre>
 </dd>
 <dt><span class="term"><code class="varname">HISTFILE</code></span></dt>
 <dd>
-<p>        The filename that will be used to store the history list. The default
-        value is <code class="filename">~/.psql_history</code>.  For example, using:
+<p>        The file name that will be used to store the history list. The default
+        value is <code class="filename">~/.psql_history</code>.  For example, putting
 </p>
 <pre class="programlisting">\set HISTFILE ~/.psql_history- :DBNAME</pre>
 <p>
-        in <code class="filename">~/.psqlrc</code> will get <span class="application">psql</span> to
-        maintain a separate history for each database.
+        in <code class="filename">~/.psqlrc</code> will cause
+        <span class="application">psql</span> to maintain a separate history for
+        each database.
         </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -1400,7 +1402,7 @@ bar</pre>
 </dl></div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id751815"></a><h4>
+<a name="id753180"></a><h4>
 <span class="acronym">SQL</span> Interpolation</h4>
 <p>    An additional useful feature of <span class="application">psql</span>
     variables is that you can substitute (&#8220;<span class="quote">interpolate</span>&#8221;)
@@ -1580,7 +1582,7 @@ testdb=&gt; <strong class="userinput"><code>INSERT INTO my_table VALUES (:conten
 </div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id752567"></a><h4>Command-Line Editing</h4>
+<a name="id753932"></a><h4>Command-Line Editing</h4>
 <p>    <span class="application">psql</span> supports the <span class="application">Readline</span>
     library for convenient line editing and retrieval. The command
     history is automatically saved when <span class="application">psql</span>
@@ -1603,7 +1605,7 @@ $endif</pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id752638"></a><h2>Environment</h2>
+<a name="id754004"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PAGER</code></span></dt>
 <dd><p>      If the query results do not fit on the screen, they are piped
@@ -1636,7 +1638,7 @@ $endif</pre>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id752761"></a><h2>Files</h2>
+<a name="id754126"></a><h2>Files</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><p>     Before starting up, <span class="application">psql</span> attempts to
      read and execute commands from the system-wide
@@ -1652,7 +1654,7 @@ $endif</pre>
 <li><p>     Both the system-wide <code class="filename">psqlrc</code> file and the user's
      <code class="filename">~/.psqlrc</code> file can be made version-specific
      by appending a dash and the <span class="productname">PostgreSQL</span>
-     release number, for example <code class="filename">~/.psqlrc-8.1RC1</code>.
+     release number, for example <code class="filename">~/.psqlrc-8.1.0</code>.
      A matching version-specific file will be read in preference to a
      non-version-specific file.
     </p></li>
@@ -1663,7 +1665,7 @@ $endif</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id752878"></a><h2>Notes</h2>
+<a name="id754243"></a><h2>Notes</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>      In an earlier life <span class="application">psql</span> allowed the
@@ -1689,7 +1691,7 @@ Field separator is "oo".</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id752930"></a><h2>Notes for Windows users</h2>
+<a name="id754295"></a><h2>Notes for Windows users</h2>
 <p>  <span class="application">psql</span> is built as a &#8220;<span class="quote">console
   application</span>&#8221;.  Since the Windows console windows use a different
   encoding than the rest of the system, you must take special care
@@ -1815,7 +1817,7 @@ second | four</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id753218"></a><h2>See Also</h2>
+<a name="id754583"></a><h2>See Also</h2>
 <span class="simplelist">Environment Variables (<a href="libpq-envars.html" title="28.11. Environment Variables">Section 28.11, &#8220;Environment Variables&#8221;</a>)</span>
 </div>
 </div></body>

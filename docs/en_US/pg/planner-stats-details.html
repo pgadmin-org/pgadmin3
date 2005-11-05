@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="bki-example.html" title="51.4. Example">
 <link rel="next" href="appendixes.html" title="Part VIII. Appendixes">
@@ -35,7 +35,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="row-estimation-examples"></a>52.1. Row Estimation Examples</h2></div></div></div>
-<a name="id793195"></a><p>   Using examples drawn from the regression test database, let's start with a 
+<a name="id794555"></a><p>   Using examples drawn from the regression test database, let's start with a 
    very simple query:
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1;
@@ -317,7 +317,7 @@ tablename  | null_frac | n_distinct | most_common_vals
    This is, subtract the null fraction from one for each of the relations, 
    and divide by the maximum  of the two distinct values. The number of rows 
    that the join is likely to emit is calculated as the cardinality of 
-   cartesian product of the two nodes in the nested-loop, multiplied by the 
+   Cartesian product of the two nodes in the nested-loop, multiplied by the 
    selectivity:
 
 </p>

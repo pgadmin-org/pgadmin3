@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1RC1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="prev" href="index-functions.html" title="48.2. Index Access Method Functions">
 <link rel="next" href="index-locking.html" title="48.4. Index Locking Considerations">
@@ -31,7 +31,7 @@
 <p>   The operator class may indicate that the index is <em class="firstterm">lossy</em> for a
    particular operator; this implies that the index scan will return all the
    entries that pass the scan key, plus possibly additional entries that do
-   not.  The core system's indexscan machinery will then apply that operator
+   not.  The core system's index-scan machinery will then apply that operator
    again to the heap tuple to verify whether or not it really should be
    selected.  For non-lossy operators, the index scan must return exactly the
    set of matching entries, as there is no recheck.
