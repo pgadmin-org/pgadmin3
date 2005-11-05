@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>END</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-dropview.html" title="DROP VIEW">
+<link rel="next" href="sql-execute.html" title="EXECUTE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-end"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>END &#8212; commit the current transaction</p>
+</div>
+<a name="id719779"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">END [ WORK | TRANSACTION ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719797"></a><h2>Description</h2>
+<p>   <code class="command">END</code> commits the current transaction. All changes
+   made by the transaction become visible to others and are guaranteed
+   to be durable if a crash occurs.  This command is a
+   <span class="productname">PostgreSQL</span> extension
+   that is equivalent to <a href="sql-commit.html">COMMIT</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719830"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WORK</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">TRANSACTION</code></span>
+</dt>
+<dd><p>      Optional key words. They have no effect.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719853"></a><h2>Notes</h2>
+<p>   Use <a href="sql-rollback.html">ROLLBACK</a> to
+   abort a transaction.
+  </p>
+<p>   Issuing <code class="command">END</code> when not inside a transaction does
+   no harm, but it will provoke a warning message.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719882"></a><h2>Examples</h2>
+<p>   To commit the current transaction and make all changes permanent:
+</p>
+<pre class="programlisting">END;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719896"></a><h2>Compatibility</h2>
+<p>   <code class="command">END</code> is a <span class="productname">PostgreSQL</span>
+   extension that provides functionality equivalent to <a href="sql-commit.html">COMMIT</a>, which is
+   specified in the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719928"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a></span>
+</div>
+</div></body>
+</html>

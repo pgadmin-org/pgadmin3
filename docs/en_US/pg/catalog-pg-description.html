@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.17. pg_description</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-depend.html" title="42.16. pg_depend">
+<link rel="next" href="catalog-pg-index.html" title="42.18. pg_index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-description"></a>42.17. <code class="structname">pg_description</code></h2></div></div></div>
+<a name="id773184"></a><p>   The catalog <code class="structname">pg_description</code> stores optional descriptions
+   (comments) for each database object.  Descriptions can be manipulated
+   with the <code class="command">COMMENT</code> command and viewed with
+   <span class="application">psql</span>'s <code class="literal">\d</code> commands.
+   Descriptions of many built-in system objects are provided in the initial
+   contents of <code class="structname">pg_description</code>.
+  </p>
+<div class="table">
+<a name="id773229"></a><p class="title"><b>Table 42.17. <code class="structname">pg_description</code> Columns</b></p>
+<table summary="pg_description Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">objoid</code></td>
+<td><code class="type">oid</code></td>
+<td>any OID column</td>
+<td>The OID of the object this description pertains to</td>
+</tr>
+<tr>
+<td><code class="structfield">classoid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>The OID of the system catalog this object appears in</td>
+</tr>
+<tr>
+<td><code class="structfield">objsubid</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       For a comment on a table column, this is the column number (the
+       <code class="structfield">objoid</code> and <code class="structfield">classoid</code> refer to
+       the table itself).  For all other object types, this column is
+       zero.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">description</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Arbitrary text that serves as the description of this object.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

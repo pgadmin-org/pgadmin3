@@ -1,0 +1,225 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.69.        moveset_int( integer, integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.moveset-integer-integer.html" title="1.68.        moveset( integer, integer )
+      ">
+<link rel="next" href="function.rebuildlistenentries.html" title="1.70.        rebuildlistenentries(  )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.moveset-int-integer-integer-integer"></a>1.69.        moveset_int( integer, integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       moveSet(set_id, old_origin, new_origin)
+
+Process MOVE_SET event to request that the origin for set set_id be
+moved from old_origin to node new_origin
+        </p>
+<pre class="programlisting">declare
+	p_set_id			alias for $1;
+	p_old_origin		alias for $2;
+	p_new_origin		alias for $3;
+	v_local_node_id		int4;
+	v_tab_row			record;
+	v_sub_row			record;
+	v_sub_node			int4;
+	v_sub_last			int4;
+	v_sub_next			int4;
+	v_last_sync			int8;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Get our local node ID
+	-- ----
+	v_local_node_id := getLocalNodeId('_schemadoc');
+
+	-- ----
+	-- If we are the old or new origin of the set, we need to
+	-- remove the log trigger from all tables first.
+	-- ----
+	if v_local_node_id = p_old_origin or v_local_node_id = p_new_origin then
+		for v_tab_row in select tab_id from sl_table
+				where tab_set = p_set_id
+				order by tab_id
+		loop
+			perform alterTableRestore(v_tab_row.tab_id);
+		end loop;
+	end if;
+
+	-- On the new origin, raise an event - ACCEPT_SET
+	if v_local_node_id = p_new_origin then
+		-- Find the event number from the origin
+		select max(ev_seqno) as seqno into v_sub_row 
+			from sl_event
+			where ev_type = 'MOVE_SET' and
+			  ev_data1 = p_set_id and
+			  ev_data2 = p_old_origin and
+			  ev_data3 = p_new_origin and
+			  ev_origin = p_old_origin;
+		
+		perform createEvent('_schemadoc', 'ACCEPT_SET', 
+			p_set_id, p_old_origin, p_new_origin, v_sub_row.seqno);
+	end if;
+
+	-- ----
+	-- Next we have to reverse the subscription path
+	-- ----
+	v_sub_last = p_new_origin;
+	select sub_provider into v_sub_node
+			from sl_subscribe
+			where sub_set = p_set_id
+			and sub_receiver = p_new_origin;
+	if not found then
+		raise exception 'Slony-I: subscription path broken in moveSet_int';
+	end if;
+	while v_sub_node &lt;&gt; p_old_origin loop
+		-- ----
+		-- Tracing node by node, the old receiver is now in
+		-- v_sub_last and the old provider is in v_sub_node.
+		-- ----
+
+		-- ----
+		-- Get the current provider of this node as next
+		-- and change the provider to the previous one in
+		-- the reverse chain.
+		-- ----
+		select sub_provider into v_sub_next
+				from sl_subscribe
+				where sub_set = p_set_id
+					and sub_receiver = v_sub_node
+				for update;
+		if not found then
+			raise exception 'Slony-I: subscription path broken in moveSet_int';
+		end if;
+		update sl_subscribe
+				set sub_provider = v_sub_last
+				where sub_set = p_set_id
+					and sub_receiver = v_sub_node;
+
+		v_sub_last = v_sub_node;
+		v_sub_node = v_sub_next;
+	end loop;
+
+	-- ----
+	-- This includes creating a subscription for the old origin
+	-- ----
+	insert into sl_subscribe
+			(sub_set, sub_provider, sub_receiver,
+			sub_forward, sub_active)
+			values (p_set_id, v_sub_last, p_old_origin, true, true);
+	if v_local_node_id = p_old_origin then
+		select coalesce(max(ev_seqno), 0) into v_last_sync 
+				from sl_event
+				where ev_origin = p_new_origin
+					and ev_type = 'SYNC';
+		if v_last_sync &gt; 0 then
+			insert into sl_setsync
+					(ssy_setid, ssy_origin, ssy_seqno,
+					ssy_minxid, ssy_maxxid, ssy_xip, ssy_action_list)
+					select p_set_id, p_new_origin, v_last_sync,
+					ev_minxid, ev_maxxid, ev_xip, NULL
+					from sl_event
+					where ev_origin = p_new_origin
+						and ev_seqno = v_last_sync;
+		else
+			insert into sl_setsync
+					(ssy_setid, ssy_origin, ssy_seqno,
+					ssy_minxid, ssy_maxxid, ssy_xip, ssy_action_list)
+					values (p_set_id, p_new_origin, '0',
+					'0', '0', '', NULL);
+		end if;
+	end if;
+
+	-- ----
+	-- Now change the ownership of the set.
+	-- ----
+	update sl_set
+			set set_origin = p_new_origin
+			where set_id = p_set_id;
+
+	-- ----
+	-- On the new origin, delete the obsolete setsync information
+	-- and the subscription.
+	-- ----
+	if v_local_node_id = p_new_origin then
+		delete from sl_setsync
+				where ssy_setid = p_set_id;
+	else
+		if v_local_node_id &lt;&gt; p_old_origin then
+			--
+			-- On every other node, change the setsync so that it will
+			-- pick up from the new origins last known sync.
+			--
+			delete from sl_setsync
+					where ssy_setid = p_set_id;
+			select coalesce(max(ev_seqno), 0) into v_last_sync
+					from sl_event
+					where ev_origin = p_new_origin
+						and ev_type = 'SYNC';
+			if v_last_sync &gt; 0 then
+				insert into sl_setsync
+						(ssy_setid, ssy_origin, ssy_seqno,
+						ssy_minxid, ssy_maxxid, ssy_xip, ssy_action_list)
+						select p_set_id, p_new_origin, v_last_sync,
+						ev_minxid, ev_maxxid, ev_xip, NULL
+						from sl_event
+						where ev_origin = p_new_origin
+							and ev_seqno = v_last_sync;
+			else
+				insert into sl_setsync
+						(ssy_setid, ssy_origin, ssy_seqno,
+						ssy_minxid, ssy_maxxid, ssy_xip, ssy_action_list)
+						values (p_set_id, p_new_origin, '0',
+						'0', '0', '', NULL);
+			end if;
+		end if;
+	end if;
+	delete from sl_subscribe
+			where sub_set = p_set_id
+			and sub_receiver = p_new_origin;
+
+	-- Regenerate sl_listen since we revised the subscriptions
+	perform RebuildListenEntries();
+
+	-- ----
+	-- If we are the new or old origin, we have to
+	-- put all the tables into altered state again.
+	-- ----
+	if v_local_node_id = p_old_origin or v_local_node_id = p_new_origin then
+		for v_tab_row in select tab_id from sl_table
+				where tab_set = p_set_id
+				order by tab_id
+		loop
+			perform alterTableForReplication(v_tab_row.tab_id);
+		end loop;
+	end if;
+
+	return p_set_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

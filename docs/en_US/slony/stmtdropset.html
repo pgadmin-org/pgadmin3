@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP SET</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtcreateset.html" title="CREATE SET">
+<link rel="next" href="stmtmergeset.html" title="MERGE
+     SET">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtdropset"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP SET &#8212;  Discard <span class="productname">Slony-I</span>
+    replication set </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">DROP SET (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id534269"></a><h2>Description</h2>
+<p>     Drop a set of tables from the <span class="productname">Slony-I</span>
+     configuration. This automatically unsubscribes all nodes from the
+     set and restores the original triggers and rules on all
+     subscribers.
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
+<dd><p> ID of the set to be dropped.</p></dd>
+<dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
+<dd><p> Current origin node of the set.</p></dd>
+</dl></div>
+<p> This uses <a href="function.dropset-integer.html">schemadocdropset( integer )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id534321"></a><h2>Example</h2>
+<pre class="programlisting">  DROP SET ( ID = 5, 
+             ORIGIN = 2 );
+    </pre>
+</div>
+</div></body>
+</html>

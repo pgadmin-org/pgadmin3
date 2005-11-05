@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER CONVERSION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-alteraggregate.html" title="ALTER AGGREGATE">
+<link rel="next" href="sql-alterdatabase.html" title="ALTER DATABASE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-alterconversion"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER CONVERSION &#8212; change the definition of a conversion</p>
+</div>
+<a name="id687474"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER CONVERSION <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>newname</code></em>
+ALTER CONVERSION <em class="replaceable"><code>name</code></em> OWNER TO <em class="replaceable"><code>newowner</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687508"></a><h2>Description</h2>
+<p>   <code class="command">ALTER CONVERSION</code> changes the definition of a
+   conversion.
+  </p>
+<p>   You must own the conversion to use <code class="command">ALTER CONVERSION</code>.
+   To alter the owner, you must also be a direct or indirect member of the new
+   owning role, and that role must have <code class="literal">CREATE</code> privilege on
+   the conversion's schema.  (These restrictions enforce that altering the
+   owner doesn't do anything you couldn't do by dropping and recreating the
+   conversion. However, a superuser can alter ownership of any conversion
+   anyway.)
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687545"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of an existing conversion.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
+<dd><p>      The new name of the conversion.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>newowner</code></em></span></dt>
+<dd><p>      The new owner of the conversion.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687587"></a><h2>Examples</h2>
+<p>   To rename the conversion <code class="literal">iso_8859_1_to_utf8</code> to
+   <code class="literal">latin1_to_unicode</code>:
+</p>
+<pre class="programlisting">ALTER CONVERSION iso_8859_1_to_utf8 RENAME TO latin1_to_unicode;</pre>
+<p>
+  </p>
+<p>   To change the owner of the conversion <code class="literal">iso_8859_1_to_utf8</code> to
+   <code class="literal">joe</code>:
+</p>
+<pre class="programlisting">ALTER CONVERSION iso_8859_1_to_utf8 OWNER TO joe;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687638"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ALTER CONVERSION</code> statement in the SQL
+   standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687653"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createconversion.html">CREATE CONVERSION</a>, <a href="sql-dropconversion.html">DROP CONVERSION</a></span>
+</div>
+</div></body>
+</html>

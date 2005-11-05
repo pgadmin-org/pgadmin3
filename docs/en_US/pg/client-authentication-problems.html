@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>20.3. Authentication problems</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="client-authentication.html" title="Chapter 20. Client Authentication">
+<link rel="prev" href="auth-methods.html" title="20.2. Authentication methods">
+<link rel="next" href="charset.html" title="Chapter 21. Localization">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="client-authentication-problems"></a>20.3. Authentication problems</h2></div></div></div>
+<p>    Genuine authentication failures and related problems generally
+    manifest themselves through error messages like the following.
+   </p>
+<pre class="programlisting">FATAL:  no pg_hba.conf entry for host "123.123.123.123", user "andym", database "testdb"</pre>
+<p>
+    This is what you are most likely to get if you succeed in contacting
+    the server, but it does not want to talk to you. As the message
+    suggests, the server refused the connection request because it found
+    no matching entry in its <code class="filename">pg_hba.conf</code>
+    configuration file.
+   </p>
+<pre class="programlisting">FATAL:  Password authentication failed for user "andym"</pre>
+<p>
+    Messages like this indicate that you contacted the server, and it is
+    willing to talk to you, but not until you pass the authorization
+    method specified in the <code class="filename">pg_hba.conf</code> file. Check
+    the password you are providing, or check your Kerberos or ident
+    software if the complaint mentions one of those authentication
+    types.
+   </p>
+<pre class="programlisting">FATAL:  user "andym" does not exist</pre>
+<p>
+    The indicated user name was not found.
+   </p>
+<pre class="programlisting">FATAL:  database "testdb" does not exist</pre>
+<p>
+    The database you are trying to connect to does not exist. Note that
+    if you do not specify a database name, it defaults to the database
+    user name, which may or may not be the right thing.
+   </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>    The server log may contain more information about an
+    authentication failure than is reported to the client. If you are
+    confused about the reason for a failure, check the log.
+   </p>
+</div>
+</div></body>
+</html>

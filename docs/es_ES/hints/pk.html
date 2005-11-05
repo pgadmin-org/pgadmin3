@@ -1,0 +1,36 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Sugerencias de Gurú</title>
+</head>
+
+<body>
+
+<h3>Claves primarias</h3>
+<p>
+Al diseñar una tabla, debería siempre tener en mente cómo va a ser accedida dicha tabla
+después. En la mayoría de los casos, necesitará un identificador para poder direccionar unívocamente una fila 
+específica; este identificador debería ser creado como su clave primaria. Una clave primaria no necesariamente
+consiste en una sola columna; puede contener tantas columnas como sea necesario para identificar
+unívocamente una fila. Si necesita varias columnas (regla "a dedo": más de 3), puede ser una buena 
+idea inventar una columna adicional con un tipo de datos conveniente, p.e. serial o bigserial, que contenga la clave primaria.
+</p>
+<p>
+Sólo en casos raros no tiene sentido usar una clave primaria. Esto siginifica, la falta de clave primaria es un fuerte indicador 
+de una tabla no diseñada completamente; por eso es que una Sugerencia de Gurú aparecerá si usted crea una tabla
+sin clave primaria
+</p>
+<p>
+Si usted mira las tablas de sistema de  PostgreSQL, encontrará que ninguna de ellas tiene clave primaria, así qué es esto?
+Realmente, todas estas tablas tienen una o dos columnas (usualmente solo OID) que identifican unívocamente cada fila, obedeciendo la
+segunda regla para una clave primaria, no permitiendo cero, y siendo cubierta por un índice para más rápido acceso. El uso de los OID tiene 
+razones históricas, y realmente no es la primera opción al diseñar tablas de usuarios. PostgreSQL aún usa esto para mantener la compatibilidad hacia atrás, 
+y mientras una nueva aproximación podría usar claves primarias explícitas esto no será cambiado más.
+</p>
+<p>
+Como muestra el caso de las tablas de sistema, el objetivo de unicidad y rápido acceso puede ser logrado con otros medios que una clave primaria. De todos modos, por la claridad del modelo de datos, le recomendamos enfáticamente que use claves primaria para este propósito.
+</p>
+</body>
+</html>

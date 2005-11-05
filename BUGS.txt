@@ -1,0 +1,61 @@
+<b>Known issues</b>
+<ul>
+	<li>[Property] Working with property dialog after the corresponding node is refreshed crashes
+	<li>[Edit grid] Editing very large columns freezes (might be restricted to bytea)
+	<li>[Edit grid] bool editing doesn't know NULL; major redesign needed
+	<li>[Edit grid] sqlGridTextEditor is broken on Mac. We're currently using wxGridCellAutoWrapStringEditor which works but isn't overly user friendly
+	<li>[Unix build] --enable-debug tries to use wx-config which hasn't been found yet
+</ul><br>
+<b>Known wxWindows issues</b>
+<ul>
+	<li>[Scintilla] ASSERT when typing a multibyte char [wx patch 1072408]
+	<li>[Object Tree] Scrollbar doesn't scroll page by page under gtk
+	<li>[Scintilla lexer] doesn't know about escaping quotes
+	<li>[Main listview] Background behind the tabs doesn't redraw on Win XP and 2003.
+	<li>[gtk] FindFocus reports bogus controls. Symptom: select a menu or toolbar, but nothing happens.
+	<li>[gtk] combobox positioning when height is not specified; current workaround: fixed 12d height
+	<li>[Edit Grid] several platform-dependent misbehaviours when
+	                starting editing a cell (F2 or any key): waiting for new wxGrid implementation
+	<li>[gtk] Crash with some themes; probably gtk issue.
+</ul><br>
+<b>Known issues, but might stay unfixed</b>
+<ul>
+	<li>[non-unicode build] Reading unicode files won't convert (wx not capable, use unicode build instead)
+	<li>[Object Tree] M$ Context menu key doesn't work in Windows (wxWindows bug?).
+</ul><br>
+<b>Fixed issues</b>
+<ul>
+	<li>DP 2005-10-17 [Unix build] --enable-debug tries to use wx-config which hasn't been found yet
+	<li>AP 2004-07-27 [all] suppressed public. prefix leads to modified objects in wrong schema if found in search_path
+	<li>DP 2004-09-18 [Object Tree] Dropped servers reappear when changing "display system objects" due to the disconnect/tree refresh.
+	<li>AP 2004-09-18 [Database property] db creation with owner fails
+	<li>AP 2004-09-18 [Server property] some changes not handled correctly
+	<li>AP 2004-09-17 [new Database] Name/Owner not editable for 7.3/7.4 servers
+	<li>DP 2004-09-16 [Server property] password visible when connecting to server [Ivan Nejgebauer]
+	<li>AP 2004-09-10 [all] internal types like varchar are quoted when used as type
+	<li>AP 2004-08-15 [Windows] Alt+Tab Icon is system default.
+	<li>AP 2004-08-15 [Object Tree] Adding an unnamed constraint isn't reflected immediately in the tree.
+	<li>AP 2004-08-15 [Object Tree] missing schema for function return type if table type
+	<li>?? 2004-08-15 [ctlSQLBox] STC hangs when searching (ctrl-F) for (non-existing?) strings
+	<li>AP 2004-07-11 [gtk] Segfault when refreshing a schema in the treeview that has been dropped through SQL. seems fixed by wx
+	<li>AP 2004-07-11 [gtk] retrieving current focus in QueryWindow failes (needed for toolbar enabling)
+	<li>AP 2004-07-11 [gtk] cursor problem with wxSTC (disappears every second focus change)
+	<li>AP 2004-06-04 [all] Multi-value variables (db and user) handled incorrectly (e.g. search_path)
+	<li>AP 2004-06-04 [Object Tree/Columns]check for dependencies on column type change
+	<li>A= 2004-01-01 [all Controls with gtk] Paste from other apps will fail for non-unicode apps (fixed in pgadmin3-wx snapshot, submitted to wx as 776217).
+	<li>AP 2003-11-30 [Help-gtk] When selecting text in the	help window, pgadmin crashes (wxWin issue)
+	<li>DP 2003-10-02 [Connect Dlg] When connecting to a new server, if logon fails all info is remembered except Description.
+	<li>DP 2003-10-02 [Query Builder] frmAddTableView: you have to double click buttons!
+	<li>DP 2003-10-02 Query Builder active in debug builds only.
+	<li>AP 2003-08-28 [Edit Grid] wxGridCellFloatEditor appears to round floats - 1.5151515151515151515151515152 will become 1.515152
+	<li>AP 2003-08-28 [Data Viewer] In-place edit control doesn't have autoscroll if text initially fits into control. Also will not accept more input than can be isplayed at once, even if pasting data in.
+	<li>DP/AP 2003-07-23 [Help System]	Inconsistent error reporting, doesn't currently work on Win32 at all.
+	<li>AP 2003-04-29 [Schema Browser]	Segfault under unix if server connection fails for non password reasons.
+	<li>AP 2003-04-29 [Query Tool]	Barfs unde unix when explaining query plan - not reproduceable.
+	<li>AP 2003-04-29 [Schema Browser]	Aggregate types are not schema qualified. - looks ok to me (fixed by DP?).
+	<li>AP 2003-05-03 [Schema Browser]	Comments do not work.
+	<li>AP 2003-05-04 [Schema Browser]	Fix Icons.
+	<li>AP 2003-05-04 [Schema Browser]	OPERATOR CLASSES need work. Secondary (onclick) discovery SQL has an error.
+	<li>AP 2003-06-17 [Edit/Results Grids]    Scrollbars often do not appear until the window is resized following data load.
+	<li>AP 2003-08-11 [Table Editor] Generates invalid SQL when table includes Foreign Key.
+</ul><br>

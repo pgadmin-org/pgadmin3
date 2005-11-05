@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>16.  Embedding Slonik in Shell Scripts </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="usingslonik.html" title="15. Using Slonik">
+<link rel="next" href="noslonik.html" title="17.  Not Using Slonik - Bare Metal Slony-I
+Functions ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="slonikshell"></a>16.  Embedding Slonik in Shell Scripts </h2></div></div></div>
+<p> As mentioned earlier, there are numerous <span class="productname">Slony-I</span> test scripts
+in <code class="filename">src/ducttape</code> that embed the generation of
+Slonik inside the shell script.</p>
+<p> They mostly <span class="emphasis"><em> don't </em></span> do this in a terribly
+sophisticated way.  Typically, they use the following sort of
+structure:
+
+</p>
+<pre class="programlisting">DB1=slony_test1
+DB2=slony_test2
+slonik &lt;&lt;_EOF_
+	cluster name = T1;
+	node 1 admin conninfo = 'dbname=$DB1';
+	node 2 admin conninfo = 'dbname=$DB2';
+
+	try {
+		table add key (node id = 1, fully qualified name = 
+                               'public.history');
+	}
+	on error {
+		exit 1;
+	}
+
+	try {
+		create set (id = 1, origin = 1, comment = 
+                            'Set 1 - pgbench tables');
+		set add table (set id = 1, origin = 1,
+			id = 1, fully qualified name = 'public.accounts',
+			comment = 'Table accounts');
+		set add table (set id = 1, origin = 1,
+			id = 2, fully qualified name = 'public.branches',
+			comment = 'Table branches');
+		set add table (set id = 1, origin = 1,
+			id = 3, fully qualified name = 'public.tellers',
+			comment = 'Table tellers');
+		set add table (set id = 1, origin = 1,
+			id = 4, fully qualified name = 'public.history',
+			key = serial, comment = 'Table accounts');
+	}
+	on error {
+		exit 1;
+	}
+_EOF_</pre>
+<p> A more sophisticated approach might involve defining some
+common components, notably the &#8220;<span class="quote">preamble</span>&#8221; that consists
+of the <a href="clustername.html" title="CLUSTER NAME"><span class="refentrytitle">CLUSTER NAME</span></a> <a href="admconninfo.html" title="ADMIN CONNINFO"><span class="refentrytitle">ADMIN CONNINFO</span></a>
+commands that are common to every Slonik script, thus:
+
+</p>
+<pre class="programlisting">CLUSTER=T1
+DB1=slony_test1
+DB2=slony_test2
+PREAMBLE="cluster name = $CLUSTER
+node 1 admin conninfo = 'dbname=$DB1';
+node 2 admin conninfo = 'dbname=$DB2';
+"</pre>
+<p> The <code class="envar">PREAMBLE</code> value could then be reused over and
+over again if the shell script invokes <code class="command">slonik</code>
+multiple times.  You might also consider using <a href="stmtinclude.html" title="INCLUDE"><span class="refentrytitle">INCLUDE</span></a> and place the preamble in a file that is
+<code class="command">include</code>d.
+ </p>
+<p> Shell variables provide a simple way to assign names to sets
+and nodes:
+
+</p>
+<pre class="programlisting">origin=1
+subscriber=2
+mainset=1
+slonik &lt;&lt;_EOF_
+$PREAMBLE
+try {
+    table add key (node id = $origin, fully qualified name = 
+                   'public.history');
+} on error {
+    exit 1;
+}
+try {
+	create set (id = $mainset, origin = $origin, 
+                    comment = 'Set $mainset - pgbench tables');
+	set add table (set id = $mainset, origin = $origin,
+		id = 1, fully qualified name = 'public.accounts',
+		comment = 'Table accounts');
+	set add table (set id = $mainset, origin = $origin,
+		id = 2, fully qualified name = 'public.branches',
+		comment = 'Table branches');
+	set add table (set id = $mainset, origin = $origin,
+		id = 3, fully qualified name = 'public.tellers',
+		comment = 'Table tellers');
+	set add table (set id = $mainset, origin = $origin,
+		id = 4, fully qualified name = 'public.history',
+		key = serial, comment = 'Table accounts');
+} on error {
+	exit 1;
+}
+_EOF_</pre>
+<p> The script might be further enhanced to loop through the list
+of tables as follows:
+
+</p>
+<pre class="programlisting"># Basic configuration
+origin=1
+subscriber=2
+mainset=1
+# List of tables to replicate
+TABLES="accounts branches tellers history"
+ADDTABLES=""
+tnum=1
+for table in `echo $TABLES`; do
+  ADDTABLES="$ADDTABLES
+   set add table ($set id = $mainset, origin = $origin,
+   id = $tnum, fully qualified name = 'public.$table',
+   comment = 'Table $tname');
+"
+  let "tnum=tnum+1"
+done
+slonik &lt;&lt;_EOF_
+$PREAMBLE
+try {
+    table add key (node id = $origin, fully qualified name = 
+                   'public.history');
+} on error {
+    exit 1;
+}
+try {
+	create set (id = $mainset, origin = $origin, 
+                    comment = 'Set $mainset - pgbench tables');
+$ADDTABLES
+} on error {
+	exit 1;
+}
+_EOF_</pre>
+<p> That is of somewhat dubious value if you only have 4 tables,
+but eliminating errors resulting from enumerating large lists of
+configuration by hand will make this pretty valuable for the larger
+examples you'll find in &#8220;<span class="quote">real life.</span>&#8221;</p>
+<p> You can do even more sophisticated things than this if your
+scripting language supports things like:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> &#8220;<span class="quote">Record</span>&#8221; data structures that allow
+assigning things in parallel</p></li>
+<li><p> Functions, procedures, or subroutines, allowing you
+to implement useful functionality once, and then refer to it multiple
+times within a script</p></li>
+<li><p> Some sort of &#8220;<span class="quote">module import</span>&#8221; system so
+that common functionality can be shared across many
+scripts</p></li>
+</ul></div>
+<p> If you can depend on having <a href="http://www.gnu.org/software/bash/bash.html" target="_top"> Bash</a>, <a href="http://www.zsh.org/" target="_top"> zsh</a>, or <a href="http://www.kornshell.com/" target="_top"> Korn shell</a> available, well,
+those are all shells with extensions supporting reasonably
+sophisticated data structures and module systems.  On Linux, Bash is
+fairly ubiquitous; on commercial <span class="trademark">UNIX</span>&#8482;, Korn
+shell is fairly ubiquitous; on BSD, &#8220;<span class="quote">sophisticated</span>&#8221;
+shells are an option rather than a default.</p>
+<p> At that point, it makes sense to start looking at other
+scripting languages, of which Perl is the most ubiquitous, being
+widely available on Linux, <span class="trademark">UNIX</span>&#8482;, and BSD.</p>
+</div></body>
+</html>

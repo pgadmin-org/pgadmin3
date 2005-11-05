@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 40. Server Programming Interface</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="plpython-database.html" title="39.3. Database Access">
+<link rel="next" href="spi-spi-connect.html" title="SPI_connect">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="spi">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="spi"></a>Chapter 40. Server Programming Interface</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="spi.html#spi-interface">40.1. Interface Functions</a></span></dt>
+<dt><span class="sect1"><a href="spi-interface-support.html">40.2. Interface Support Functions</a></span></dt>
+<dt><span class="sect1"><a href="spi-memory.html">40.3. Memory Management</a></span></dt>
+<dt><span class="sect1"><a href="spi-visibility.html">40.4. Visibility of Data Changes</a></span></dt>
+<dt><span class="sect1"><a href="spi-examples.html">40.5. Examples</a></span></dt>
+</dl>
+</div>
+<a name="id680473"></a><p>  The <em class="firstterm">Server Programming Interface</em>
+  (<span class="acronym">SPI</span>) gives writers of user-defined
+  <span class="acronym">C</span> functions the ability to run
+  <span class="acronym">SQL</span> commands inside their functions.
+  <span class="acronym">SPI</span> is a set of
+  interface functions to simplify access to the parser, planner,
+  optimizer, and executor. <span class="acronym">SPI</span> also does some
+  memory management.
+ </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>   The available procedural languages provide various means to
+   execute SQL commands from procedures.  Most of these facilities are
+   based on SPI, so this documentation might be of use for users
+   of those languages as well.
+  </p>
+</div>
+<p>  To avoid misunderstanding we'll use the term &#8220;<span class="quote">function</span>&#8221;
+  when we speak of <span class="acronym">SPI</span> interface functions and
+  &#8220;<span class="quote">procedure</span>&#8221; for a user-defined C-function that is
+  using <span class="acronym">SPI</span>.
+ </p>
+<p>  Note that if a command invoked via SPI fails, then control will not be
+  returned to your procedure.  Rather, the
+  transaction or subtransaction in which your procedure executes will be
+  rolled back.  (This may seem surprising given that the SPI functions mostly
+  have documented error-return conventions.  Those conventions only apply
+  for errors detected within the SPI functions themselves, however.)
+  It is possible to recover control after an error by establishing your own
+  subtransaction surrounding SPI calls that might fail.  This is not currently
+  documented because the mechanisms required are still in flux.
+ </p>
+<p>  <span class="acronym">SPI</span> functions return a nonnegative result on
+  success (either via a returned integer value or in the global
+  variable <code class="varname">SPI_result</code>, as described below).  On
+  error, a negative result or <code class="symbol">NULL</code> will be returned.
+ </p>
+<p>  Source code files that use SPI must include the header file
+  <code class="filename">executor/spi.h</code>.
+ </p>
+<div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spi-interface"></a>40.1. Interface Functions</h2></div></div></div></div>
+</div></body>
+</html>

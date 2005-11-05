@@ -1,0 +1,313 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>G.3. Building The Documentation</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="docguide.html" title="Appendix G. Documentation">
+<link rel="prev" href="docguide-toolsets.html" title="G.2. Tool Sets">
+<link rel="next" href="docguide-authoring.html" title="G.4. Documentation Authoring">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="docguide-build"></a>G.3. Building The Documentation</h2></div></div></div>
+<p>   Once you have everything set up, change to the directory
+   <code class="filename">doc/src/sgml</code> and run one of the commands
+   described in the following subsections to build the
+   documentation. (Remember to use GNU make.)
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id845400"></a>G.3.1. HTML</h3></div></div></div>
+<p>    To build the <span class="acronym">HTML</span> version of the documentation:
+</p>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake html</code></strong></pre>
+<p>
+    This is also the default target.
+   </p>
+<p>    When the HTML documentation is built, the process also generates
+    the linking information for the index entries.  Thus, if you want
+    your documentation to have a concept index at the end, you need to
+    build the HTML documentation once, and then build the
+    documentation again in whatever format you like.
+   </p>
+<p>    To allow for easier handling in the final distribution, the files
+    comprising the HTML documentation are stored in a tar archive that
+    is unpacked at installation time.  To create the
+    <span class="acronym">HTML</span> documentation package, use the commands
+</p>
+<pre class="programlisting">cd doc/src
+gmake postgres.tar.gz</pre>
+<p>
+    In the distribution, these archives live in the
+    <code class="filename">doc</code> directory and are installed by default
+    with <code class="command">gmake install</code>.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id845468"></a>G.3.2. Manpages</h3></div></div></div>
+<p>   We use the <span class="application">docbook2man</span> utility to
+   convert <span class="productname">DocBook</span>
+   <code class="sgmltag-element">refentry</code> pages to *roff output suitable for man
+   pages.  The man pages are also distributed as a tar archive,
+   similar to the <span class="acronym">HTML</span> version.  To create the man
+   page package, use the commands
+</p>
+<pre class="programlisting">cd doc/src
+gmake man.tar.gz</pre>
+<p>
+   which will result in a tar file being generated in the
+   <code class="filename">doc/src</code> directory.
+  </p>
+<p>   To generate quality man pages, it might be necessary to use a
+   hacked version of the conversion utility or do some manual
+   postprocessing.  All man pages should be manually inspected before
+   distribution.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id845520"></a>G.3.3. Print Output via <span class="application">JadeTex</span></h3></div></div></div>
+<p>    If you want to use <span class="application">JadeTex</span> to produce a
+    printable rendition of the documentation, you can use one of the
+    following commands:
+
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>       To make a <span class="acronym">DVI</span> version:
+</p>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.dvi</code></strong></pre>
+<p>
+      </p>
+</li>
+<li>
+<p>       To generate Postscript from the <span class="acronym">DVI</span>:
+</p>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.ps</code></strong></pre>
+<p>
+      </p>
+</li>
+<li>
+<p>       To make a <span class="acronym">PDF</span>:
+</p>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.pdf</code></strong></pre>
+<p>
+       (Of course you can also make a <span class="acronym">PDF</span> version
+       from the Postscript, but if you generate <span class="acronym">PDF</span>
+       directly, it will have hyperlinks and other enhanced features.)
+      </p>
+</li>
+</ul></div>
+<p>
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id845624"></a>G.3.4. Print Output via <span class="acronym">RTF</span></h3></div></div></div>
+<p>    You can also create a printable version of the <span class="productname">PostgreSQL</span>
+    documentation by converting it to <span class="acronym">RTF</span> and
+    applying minor formatting corrections using an office suite.
+    Depending on the capabilities of the particular office suite, you
+    can then convert the documentation to Postscript of
+    <span class="acronym">PDF</span>.  The procedure below illustrates this
+    process using <span class="productname">Applixware</span>.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     It appears that current versions of the <span class="productname">PostgreSQL</span> documentation
+     trigger some bug in or exceed the size limit of OpenJade.  If the
+     build process of the <span class="acronym">RTF</span> version hangs for a
+     long time and the output file still has size 0, then you may have
+     hit that problem.  (But keep in mind that a normal build takes 5
+     to 10 minutes, so don't abort too soon.)
+    </p>
+</div>
+<div class="procedure">
+<a name="id845680"></a><p class="title"><b><span class="productname">Applixware</span> <span class="acronym">RTF</span> Cleanup</b></p>
+<p>     <span class="application">OpenJade</span> omits specifying a default
+     style for body text. In the past, this undiagnosed problem led to
+     a long process of table of contents generation. However, with
+     great help from the <span class="productname">Applixware</span> folks
+     the symptom was diagnosed and a workaround is available.
+    </p>
+<ol type="1">
+<li>
+<p>      Generate the <span class="acronym">RTF</span> version by typing:
+</p>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake postgres.rtf</code></strong></pre>
+<p>
+     </p>
+</li>
+<li>
+<p>      Repair the RTF file to correctly specify all styles, in
+      particular the default style. If the document contains
+      <code class="sgmltag-element">refentry</code> sections, one must also replace
+      formatting hints which tie a preceding paragraph to the current
+      paragraph, and instead tie the current paragraph to the
+      following one. A utility, <code class="command">fixrtf</code>, is
+      available in <code class="filename">doc/src/sgml</code> to accomplish
+      these repairs:
+
+</p>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>./fixrtf --refentry postgres.rtf</code></strong></pre>
+<p>
+     </p>
+<p>      The script adds <code class="literal">{\s0 Normal;}</code> as the zeroth
+      style in the document. According to
+      <span class="productname">Applixware</span>, the RTF standard would
+      prohibit adding an implicit zeroth style, though Microsoft Word
+      happens to handle this case. For repairing
+      <code class="sgmltag-element">refentry</code> sections, the script replaces
+      <code class="literal">\keepn</code> tags with <code class="literal">\keep</code>.
+     </p>
+</li>
+<li><p>      Open a new document in <span class="productname">Applixware Words</span> and
+      then import the <span class="acronym">RTF</span> file.
+     </p></li>
+<li>
+<p>      Generate a new table of contents (ToC) using
+      <span class="productname">Applixware</span>.
+     </p>
+<ol type="a">
+<li><p>        Select the existing ToC lines, from the beginning of the first
+        character on the first line to the last character of the last
+        line.
+       </p></li>
+<li><p>        Build a new ToC using
+        <span class="guimenu">Tools</span> &#8594; <span class="guisubmenu">Book
+        Building</span> &#8594; <span class="guimenuitem">Create Table of
+        Contents</span>. Select the first three
+        levels of headers for inclusion in the ToC. This will replace
+        the existing lines imported in the RTF with a native
+        <span class="productname">Applixware</span> ToC.
+       </p></li>
+<li>
+<p>        Adjust the ToC formatting by using
+        <span class="guimenu">Format</span> &#8594; <span class="guimenuitem">Style</span>,
+        selecting each of the three ToC styles, and adjusting the
+        indents for <code class="literal">First</code> and
+        <code class="literal">Left</code>. Use the following values:
+
+        </p>
+<div class="informaltable"><table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Style</th>
+<th>First Indent (inches)</th>
+<th>Left Indent (inches)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">TOC-Heading 1</code></td>
+<td><code class="literal">0.4</code></td>
+<td><code class="literal">0.4</code></td>
+</tr>
+<tr>
+<td><code class="literal">TOC-Heading 2</code></td>
+<td><code class="literal">0.8</code></td>
+<td><code class="literal">0.8</code></td>
+</tr>
+<tr>
+<td><code class="literal">TOC-Heading 3</code></td>
+<td><code class="literal">1.2</code></td>
+<td><code class="literal">1.2</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+       </p>
+</li>
+</ol>
+</li>
+<li>
+<p>      Work through the document to:
+
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>         Adjust page breaks.
+        </p></li>
+<li><p>         Adjust table column widths.
+        </p></li>
+</ul></div>
+<p>
+     </p>
+</li>
+<li><p>      Replace the right-justified page numbers in the Examples and
+      Figures portions of the ToC with correct values. This only takes
+      a few minutes.
+     </p></li>
+<li><p>       Delete the index section from the document if it is empty.
+     </p></li>
+<li>
+<p>       Regenerate and adjust the table of contents.
+     </p>
+<ol type="a">
+<li><p>         Select the ToC field.
+        </p></li>
+<li><p>         Select <span class="guimenu">Tools</span> &#8594; <span class="guisubmenu">Book
+         Building</span> &#8594; <span class="guimenuitem">Create Table of
+         Contents</span>.
+        </p></li>
+<li><p>         Unbind the ToC by selecting
+         <span class="guimenu">Tools</span> &#8594; <span class="guisubmenu">Field
+         Editing</span> &#8594; <span class="guimenuitem">Unprotect</span>.
+        </p></li>
+<li><p>         Delete the first line in the ToC, which is an entry for the
+         ToC itself.
+        </p></li>
+</ol>
+</li>
+<li><p>      Save the document as native <span class="productname">Applixware
+      Words</span> format to allow easier last minute editing
+      later.
+     </p></li>
+<li><p>      &#8220;<span class="quote">Print</span>&#8221; the document
+      to a file in Postscript format.
+     </p></li>
+</ol>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id846162"></a>G.3.5. Plain Text Files</h3></div></div></div>
+<p>    Several files are distributed as plain text, for reading during
+    the installation process. The <code class="filename">INSTALL</code> file
+    corresponds to <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>, with some minor
+    changes to account for the different context.  To recreate the
+    file, change to the directory <code class="filename">doc/src/sgml</code>
+    and enter <strong class="userinput"><code>gmake INSTALL</code></strong>.  This will create
+    a file <code class="filename">INSTALL.html</code> that can be saved as text
+    with <span class="productname">Netscape Navigator</span> and put into
+    the place of the existing file.
+    <span class="productname">Netscape</span> seems to offer the best
+    quality for <span class="acronym">HTML</span> to text conversions (over
+    <span class="application">lynx</span> and
+    <span class="application">w3m</span>).
+   </p>
+<p>    The file <code class="filename">HISTORY</code> can be created similarly,
+    using the command <strong class="userinput"><code>gmake HISTORY</code></strong>.  For the
+    file <code class="filename">src/test/regress/README</code> the command is
+    <strong class="userinput"><code>gmake regress_README</code></strong>.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id846271"></a>G.3.6. Syntax Check</h3></div></div></div>
+<p>    Building the documentation can take very long.  But there is a
+    method to just check the correct syntax of the documentation
+    files, which only takes a few seconds:
+</p>
+<pre class="screen"><code class="prompt">doc/src/sgml$ </code><strong class="userinput"><code>gmake check</code></strong></pre>
+<p>
+   </p>
+</div>
+</div></body>
+</html>

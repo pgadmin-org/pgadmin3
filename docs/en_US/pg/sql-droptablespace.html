@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP TABLESPACE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-droptable.html" title="DROP TABLE">
+<link rel="next" href="sql-droptrigger.html" title="DROP TRIGGER">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-droptablespace"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP TABLESPACE &#8212; remove a tablespace</p>
+</div>
+<a name="id718956"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP TABLESPACE <em class="replaceable"><code>tablespacename</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id718978"></a><h2>Description</h2>
+<p>   <code class="command">DROP TABLESPACE</code> removes a tablespace from the system.
+  </p>
+<p>   A tablespace can only be dropped by its owner or a superuser.
+   The tablespace must be empty of all database objects before it can be
+   dropped. It is possible that objects in other databases may still reside
+   in the tablespace even if no objects in the current database are using
+   the tablespace.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719000"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>tablespacename</code></em></span></dt>
+<dd><p>      The name of a tablespace.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719017"></a><h2>Examples</h2>
+<p>   To remove tablespace <code class="literal">mystuff</code> from the system:
+</p>
+<pre class="programlisting">DROP TABLESPACE mystuff;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719038"></a><h2>Compatibility</h2>
+<p>   <code class="command">DROP TABLESPACE</code> is a <span class="productname">PostgreSQL</span>
+   extension.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id719058"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtablespace.html">CREATE TABLESPACE</a>, <a href="sql-altertablespace.html">ALTER TABLESPACE</a></span>
+</div>
+</div></body>
+</html>

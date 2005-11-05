@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.14. Customized Options</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
+<link rel="prev" href="runtime-config-preset.html" title="17.13. Preset Options">
+<link rel="next" href="runtime-config-developer.html" title="17.15. Developer Options">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-custom"></a>17.14. Customized Options</h2></div></div></div>
+<p>     This feature was designed to allow options not normally known to
+     <span class="productname">PostgreSQL</span> to be added by add-on modules
+     (such as procedural languages).  This allows add-on modules to be
+     configured in the standard ways.
+    </p>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-custom-variable-classes"></a><span class="term"><code class="varname">custom_variable_classes</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        This variable specifies one or several class names to be used for
+        custom variables, in the form of a comma-separated list. A custom
+        variable is a variable not normally known
+        to <span class="productname">PostgreSQL</span> proper but used by some
+        add-on module.  Such variables must have names consisting of a class
+        name, a dot, and a variable name.  <code class="varname">custom_variable_classes</code>
+        specifies all the class names in use in a particular installation.
+        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> configuration file.
+       </p></dd>
+</dl></div>
+<p>     The difficulty with setting custom variables in
+     <code class="filename">postgresql.conf</code> is that the file must be read before add-on
+     modules have been loaded, and so custom variables would ordinarily be
+     rejected as unknown.  When <code class="varname">custom_variable_classes</code> is set,
+     the server will accept definitions of arbitrary variables within each
+     specified class.  These variables will be treated as placeholders and
+     will have no function until the module that defines them is loaded. When a
+     module for a specific class is loaded, it will add the proper variable
+     definitions for its class name, convert any placeholder
+     values according to those definitions, and issue warnings for any
+     placeholders of its class that remain (which presumably would be
+     misspelled configuration variables).
+    </p>
+<p>     Here is an example of what <code class="filename">postgresql.conf</code> might contain
+     when using custom variables:
+
+</p>
+<pre class="programlisting">custom_variable_classes = 'plr,plperl'
+plr.path = '/usr/lib/R'
+plperl.use_strict = true
+plruby.use_strict = true        # generates error: unknown class name</pre>
+<p>
+    </p>
+</div></body>
+</html>

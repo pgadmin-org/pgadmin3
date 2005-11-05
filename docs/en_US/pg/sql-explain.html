@@ -1,0 +1,194 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>EXPLAIN</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-execute.html" title="EXECUTE">
+<link rel="next" href="sql-fetch.html" title="FETCH">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-explain"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>EXPLAIN &#8212; show the execution plan of a statement</p>
+</div>
+<a name="id720262"></a><a name="id720271"></a><a name="id720285"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">EXPLAIN [ ANALYZE ] [ VERBOSE ] <em class="replaceable"><code>statement</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720310"></a><h2>Description</h2>
+<p>   This command displays the execution plan that the
+   <span class="productname">PostgreSQL</span> planner generates for the
+   supplied statement.  The execution plan shows how the table(s)
+   referenced by the statement will be scanned [mdash ] by plain sequential scan,
+   index scan, etc. [mdash ] and if multiple tables are referenced, what join
+   algorithms will be used to bring together the required rows from
+   each input table.
+  </p>
+<p>   The most critical part of the display is the estimated statement execution
+   cost, which is the planner's guess at how long it will take to run the
+   statement (measured in units of disk page fetches).  Actually two numbers
+   are shown: the start-up time before the first row can be returned, and
+   the total time to return all the rows.  For most queries the total time
+   is what matters, but in contexts such as a subquery in <code class="literal">EXISTS</code>, the planner
+   will choose the smallest start-up time instead of the smallest total time
+   (since the executor will stop after getting one row, anyway).
+   Also, if you limit the number of rows to return with a <code class="literal">LIMIT</code> clause,
+   the planner makes an appropriate interpolation between the endpoint
+   costs to estimate which plan is really the cheapest.
+  </p>
+<p>   The <code class="literal">ANALYZE</code> option causes the statement to be actually executed, not only
+   planned.  The total elapsed time expended within each plan node (in
+   milliseconds) and total number of rows it actually returned are added to
+   the display.  This is useful for seeing whether the planner's estimates
+   are close to reality.
+  </p>
+<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Important</h3>
+<p>    Keep in mind that the statement is actually executed when
+    <code class="literal">ANALYZE</code> is used.  Although
+    <code class="command">EXPLAIN</code> will discard any output that a
+    <code class="command">SELECT</code> would return, other side effects of the
+    statement will happen as usual.  If you wish to use
+    <code class="command">EXPLAIN ANALYZE</code> on an
+    <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+    <code class="command">DELETE</code>, or <code class="command">EXECUTE</code> statement
+    without letting the command affect your data, use this approach:
+</p>
+<pre class="programlisting">BEGIN;
+EXPLAIN ANALYZE ...;
+ROLLBACK;</pre>
+<p>
+   </p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720441"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">ANALYZE</code></span></dt>
+<dd><p>      Carry out the command and show the actual run times.
+     </p></dd>
+<dt><span class="term"><code class="literal">VERBOSE</code></span></dt>
+<dd><p>      Show the full internal representation of the plan tree, rather
+      than just a summary.  Usually this option is only useful for
+      specialized debugging purposes.  The
+      <code class="literal">VERBOSE</code> output is either pretty-printed or
+      not, depending on the setting of the <a href="runtime-config-client.html#guc-explain-pretty-print">explain_pretty_print</a> configuration parameter.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>statement</code></em></span></dt>
+<dd><p>      Any <code class="command">SELECT</code>, <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+      <code class="command">DELETE</code>, <code class="command">EXECUTE</code>, or <code class="command">DECLARE</code>
+      statement, whose execution plan you wish to see.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720541"></a><h2>Notes</h2>
+<p>   There is only sparse documentation on the optimizer's use of cost
+   information in <span class="productname">PostgreSQL</span>.  Refer to
+   <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a> for more information.
+  </p>
+<p>   In order to allow the <span class="productname">PostgreSQL</span> query
+   planner to make reasonably informed decisions when optimizing
+   queries, the <code class="command">ANALYZE</code> statement should be run to
+   record statistics about the distribution of data within the
+   table. If you have not done this (or if the statistical
+   distribution of the data in the table has changed significantly
+   since the last time <code class="command">ANALYZE</code> was run), the
+   estimated costs are unlikely to conform to the real properties of
+   the query, and consequently an inferior query plan may be chosen.
+  </p>
+<p>   Prior to <span class="productname">PostgreSQL</span> 7.3, the plan was
+   emitted in the form of a <code class="literal">NOTICE</code> message.  Now it
+   appears as a query result (formatted like a table with a single
+   text column).
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720611"></a><h2>Examples</h2>
+<p>   To show the plan for a simple query on a table with a single
+   <code class="type">integer</code> column and 10000 rows:
+
+</p>
+<pre class="programlisting">EXPLAIN SELECT * FROM foo;
+
+                       QUERY PLAN
+---------------------------------------------------------
+ Seq Scan on foo  (cost=0.00..155.00 rows=10000 width=4)
+(1 row)</pre>
+<p>
+  </p>
+<p>   If there is an index and we use a query with an indexable
+   <code class="literal">WHERE</code> condition, <code class="command">EXPLAIN</code>
+   might show a different plan:
+
+</p>
+<pre class="programlisting">EXPLAIN SELECT * FROM foo WHERE i = 4;
+
+                         QUERY PLAN
+--------------------------------------------------------------
+ Index Scan using fi on foo  (cost=0.00..5.98 rows=1 width=4)
+   Index Cond: (i = 4)
+(2 rows)</pre>
+<p>
+  </p>
+<p>   And here is an example of a query plan for a query
+   using an aggregate function:
+
+</p>
+<pre class="programlisting">EXPLAIN SELECT sum(i) FROM foo WHERE i &lt; 10;
+
+                             QUERY PLAN
+---------------------------------------------------------------------
+ Aggregate  (cost=23.93..23.93 rows=1 width=4)
+   -&gt;  Index Scan using fi on foo  (cost=0.00..23.92 rows=6 width=4)
+         Index Cond: (i &lt; 10)
+(3 rows)</pre>
+<p>
+  </p>
+<p>   Here is an example of using <code class="command">EXPLAIN EXECUTE</code> to
+   display the execution plan for a prepared query:
+
+</p>
+<pre class="programlisting">PREPARE query(int, int) AS SELECT sum(bar) FROM test
+    WHERE id &gt; $1 AND id &lt; $2
+    GROUP BY foo;
+
+EXPLAIN ANALYZE EXECUTE query(100, 200);
+
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=39.53..39.53 rows=1 width=8) (actual time=0.661..0.672 rows=7 loops=1)
+   -&gt;  Index Scan using test_pkey on test  (cost=0.00..32.97 rows=1311 width=8) (actual time=0.050..0.395 rows=99 loops=1)
+         Index Cond: ((id &gt; $1) AND (id &lt; $2))
+ Total runtime: 0.851 ms
+(4 rows)</pre>
+<p>
+  </p>
+<p>   Of course, the specific numbers shown here depend on the actual
+   contents of the tables involved.  Also note that the numbers, and
+   even the selected query strategy, may vary between
+   <span class="productname">PostgreSQL</span> releases due to planner
+   improvements. In addition, the <code class="command">ANALYZE</code> command
+   uses random sampling to estimate data statistics; therefore, it is
+   possible for cost estimates to change after a fresh run of
+   <code class="command">ANALYZE</code>, even if the actual distribution of data
+   in the table has not changed.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720745"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">EXPLAIN</code> statement defined in the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720759"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-analyze.html">ANALYZE</a></span>
+</div>
+</div></body>
+</html>

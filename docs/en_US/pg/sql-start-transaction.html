@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>START TRANSACTION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-show.html" title="SHOW">
+<link rel="next" href="sql-truncate.html" title="TRUNCATE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-start-transaction"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>START TRANSACTION &#8212; start a transaction block</p>
+</div>
+<a name="id735984"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">START TRANSACTION [ <em class="replaceable"><code>transaction_mode</code></em> [, ...] ]
+
+where <em class="replaceable"><code>transaction_mode</code></em> is one of:
+
+    ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
+    READ WRITE | READ ONLY</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id736017"></a><h2>Description</h2>
+<p>   This command begins a new transaction block. If the isolation level or
+   read/write mode is specified, the new transaction has those
+   characteristics, as if <a href="sql-set-transaction.html">SET TRANSACTION</a> was executed. This is the same
+   as the <a href="sql-begin.html">BEGIN</a> command.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id736050"></a><h2>Parameters</h2>
+<p>   Refer to <a href="sql-set-transaction.html">SET TRANSACTION</a> for information on the meaning
+   of the parameters to this statement.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id736070"></a><h2>Compatibility</h2>
+<p>   In the standard, it is not necessary to issue <code class="command">START TRANSACTION</code>
+   to start a transaction block: any SQL command implicitly begins a block.
+   <span class="productname">PostgreSQL</span>'s behavior can be seen as implicitly
+   issuing a <code class="command">COMMIT</code> after each command that does not
+   follow <code class="command">START TRANSACTION</code> (or <code class="command">BEGIN</code>),
+   and it is therefore often called &#8220;<span class="quote">autocommit</span>&#8221;.
+   Other relational database systems may offer an autocommit feature
+   as a convenience.
+  </p>
+<p>   The SQL standard requires commas between successive <em class="replaceable"><code>transaction_modes</code></em>, but for historical
+   reasons <span class="productname">PostgreSQL</span> allows the commas to be
+   omitted.
+  </p>
+<p>   See also the compatibility section of <a href="sql-set-transaction.html">SET TRANSACTION</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id736152"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a>, <a href="sql-set-transaction.html">SET TRANSACTION</a></span>
+</div>
+</div></body>
+</html>

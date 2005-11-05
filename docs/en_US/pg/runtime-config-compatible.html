@@ -1,0 +1,146 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.12. Version and Platform Compatibility</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
+<link rel="prev" href="runtime-config-locks.html" title="17.11. Lock Management">
+<link rel="next" href="runtime-config-preset.html" title="17.13. Preset Options">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-compatible"></a>17.12. Version and Platform Compatibility</h2></div></div></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-compatible-version"></a>17.12.1. Previous PostgreSQL Versions</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-add-missing-from"></a><span class="term"><code class="varname">add_missing_from</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        When on, tables that are referenced by a query will be
+        automatically added to the <code class="literal">FROM</code> clause if not
+        already present. This behavior does not comply with the SQL
+        standard and many people dislike it because it can mask mistakes
+        (such as referencing a table where you should have referenced
+        its alias). The default is <code class="literal">off</code>. This variable can be
+        enabled for compatibility with releases of
+        <span class="productname">PostgreSQL</span> prior to 8.1, where this behavior was
+        allowed by default.
+       </p>
+<p>        Note that even when this variable is enabled, a warning
+        message will be emitted for each implicit <code class="literal">FROM</code>
+        entry referenced by a query. Users are encouraged to update
+        their applications to not rely on this behavior, by adding all
+        tables referenced by a query to the query's <code class="literal">FROM</code>
+        clause (or its <code class="literal">USING</code> clause in the case of
+        <code class="command">DELETE</code>).
+       </p>
+</dd>
+<dt>
+<a name="guc-regex-flavor"></a><span class="term"><code class="varname">regex_flavor</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        The regular expression &#8220;<span class="quote">flavor</span>&#8221; can be set to
+        <code class="literal">advanced</code>, <code class="literal">extended</code>, or <code class="literal">basic</code>.
+        The default is <code class="literal">advanced</code>.  The <code class="literal">extended</code>
+        setting may be useful for exact backwards compatibility with
+        pre-7.4 releases of <span class="productname">PostgreSQL</span>.  See
+        <a href="functions-matching.html#posix-syntax-details" title="9.7.3.1. Regular Expression Details">Section 9.7.3.1, &#8220;Regular Expression Details&#8221;</a> for details.
+       </p></dd>
+<dt>
+<a name="guc-sql-inheritance"></a><span class="term"><code class="varname">sql_inheritance</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        This controls the inheritance semantics, in particular whether
+        subtables are included by various commands by default. They were
+        not included in versions prior to 7.1. If you need the old
+        behavior you can set this variable to <code class="literal">off</code>, but in
+        the long run you are encouraged to change your applications to
+        use the <code class="literal">ONLY</code> key word to exclude subtables.
+        See <a href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a> for more information about
+        inheritance.
+       </p></dd>
+<dt>
+<a name="guc-default-with-oids"></a><span class="term"><code class="varname">default_with_oids</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        This controls whether <code class="command">CREATE TABLE</code> and
+        <code class="command">CREATE TABLE AS</code> include an OID column in
+        newly-created tables, if neither <code class="literal">WITH OIDS</code>
+        nor <code class="literal">WITHOUT OIDS</code> is specified. It also
+        determines whether OIDs will be included in tables created by
+        <code class="command">SELECT INTO</code>. In <span class="productname">PostgreSQL</span>
+        8.1 <code class="varname">default_with_oids</code> is disabled by default; in
+        prior versions of <span class="productname">PostgreSQL</span>, it
+        was on by default.
+       </p>
+<p>        The use of OIDs in user tables is considered deprecated, so
+        most installations should leave this variable disabled.
+        Applications that require OIDs for a particular table should
+        specify <code class="literal">WITH OIDS</code> when creating the
+        table. This variable can be enabled for compatibility with old
+        applications that do not follow this behavior.
+       </p>
+</dd>
+<dt>
+<a name="guc-escape-string-warning"></a><span class="term"><code class="varname">escape_string_warning</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        When on, a warning is issued if a backslash (<code class="literal">\</code>)
+        appears in an ordinary string literal (<code class="literal">'...'</code>
+        syntax). The default is <code class="literal">off</code>.
+       </p>
+<p>        Escape string syntax (<code class="literal">E'...'</code>) should be used for
+        escapes, because in future versions of
+        <span class="productname">PostgreSQL</span> ordinary strings will have
+        the standard-conforming behavior of treating backslashes
+        literally.
+       </p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-compatible-clients"></a>17.12.2. Platform and Client Compatibility</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-transform-null-equals"></a><span class="term"><code class="varname">transform_null_equals</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        When on, expressions of the form <code class="literal"><em class="replaceable"><code>expr</code></em> =
+        NULL</code> (or <code class="literal">NULL =
+        <em class="replaceable"><code>expr</code></em></code>) are treated as
+        <code class="literal"><em class="replaceable"><code>expr</code></em> IS NULL</code>, that is, they
+        return true if <em class="replaceable"><code>expr</code></em> evaluates to the null value,
+        and false otherwise. The correct SQL-spec-compliant behavior of
+        <code class="literal"><em class="replaceable"><code>expr</code></em> = NULL</code> is to always
+        return null (unknown). Therefore this option defaults to
+        <code class="literal">off</code>.
+       </p>
+<p>        However, filtered forms in <span class="productname">Microsoft
+        Access</span> generate queries that appear to use
+        <code class="literal"><em class="replaceable"><code>expr</code></em> = NULL</code> to test for
+        null values, so if you use that interface to access the database you
+        might want to turn this option on.  Since expressions of the
+        form <code class="literal"><em class="replaceable"><code>expr</code></em> = NULL</code> always
+        return the null value (using the correct interpretation) they are not
+        very useful and do not appear often in normal applications, so
+        this option does little harm in practice.  But new users are
+        frequently confused about the semantics of expressions
+        involving null values, so this option is not on by default.
+       </p>
+<p>        Note that this option only affects the exact form <code class="literal">= NULL</code>,
+        not other comparison operators or other expressions
+        that are computationally equivalent to some expression
+        involving the equals operator (such as <code class="literal">IN</code>).
+        Thus, this option is not a general fix for bad programming.
+       </p>
+<p>        Refer to <a href="functions-comparison.html" title="9.2. Comparison Operators">Section 9.2, &#8220;Comparison Operators&#8221;</a> for related information.
+       </p>
+</dd>
+</dl></div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ROLLBACK PREPARED</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-rollback.html" title="ROLLBACK">
+<link rel="next" href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-rollback-prepared"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ROLLBACK PREPARED &#8212; cancel a transaction that was earlier prepared for two-phase commit</p>
+</div>
+<a name="id728082"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ROLLBACK PREPARED <em class="replaceable"><code>transaction_id</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id728104"></a><h2>Description</h2>
+<p>   <code class="command">ROLLBACK PREPARED</code> rolls back a transaction that is in 
+   prepared state.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id728118"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>transaction_id</code></em></span></dt>
+<dd><p>      The transaction identifier of the transaction that is to be
+      rolled back.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id728136"></a><h2>Notes</h2>
+<p>   To roll back a prepared transaction, you must be either the same user that
+   executed the transaction originally, or a superuser.  But you do not
+   have to be in the same session that executed the transaction.
+  </p>
+<p>   This command cannot be executed inside a transaction block. The prepared
+   transaction is rolled back immediately.
+  </p>
+<p>   All currently available prepared transactions are listed in the
+   <code class="structname">pg_prepared_xacts</code> system view.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-rollback-prepared-examples"></a><h2>Examples</h2>
+<p>   Roll back the transaction identified by the transaction
+   identifier <code class="literal">foobar</code>:
+   
+</p>
+<pre class="programlisting">ROLLBACK PREPARED 'foobar';</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id728192"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a>, <a href="sql-commit-prepared.html">COMMIT PREPARED</a></span>
+</div>
+</div></body>
+</html>

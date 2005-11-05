@@ -1,0 +1,197 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.12. Sequence Manipulation Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions-net.html" title="9.11. Network Address Functions and Operators">
+<link rel="next" href="functions-conditional.html" title="9.13. Conditional Expressions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div></div>
+<a name="id564279"></a><a name="id564285"></a><a name="id564292"></a><a name="id564298"></a><a name="id564304"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
+   for operating on <em class="firstterm">sequence objects</em>.
+   Sequence objects (also called sequence generators or
+   just sequences) are special single-row tables created with
+   <code class="command">CREATE SEQUENCE</code>.  A sequence object is usually used to
+   generate unique identifiers for rows of a table.  The sequence functions,
+   listed in <a href="functions-sequence.html#functions-sequence-table" title="Table 9.34. Sequence Functions">Table 9.34, &#8220;Sequence Functions&#8221;</a>,
+   provide simple, multiuser-safe methods for obtaining successive
+   sequence values from sequence objects.
+  </p>
+<div class="table">
+<a name="functions-sequence-table"></a><p class="title"><b>Table 9.34. Sequence Functions</b></p>
+<table summary="Sequence Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal"><code class="function">nextval</code>(<code class="type">regclass</code>)</code></td>
+<td><code class="type">bigint</code></td>
+<td>Advance sequence and return new value</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">currval</code>(<code class="type">regclass</code>)</code></td>
+<td><code class="type">bigint</code></td>
+<td>Return value most recently obtained with
+        <code class="function">nextval</code> for specified sequence</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">lastval</code>()</code></td>
+<td><code class="type">bigint</code></td>
+<td>Return value most recently obtained with <code class="function">nextval</code>
+</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">setval</code>(<code class="type">regclass</code>, <code class="type">bigint</code>)</code></td>
+<td><code class="type">bigint</code></td>
+<td>Set sequence's current value</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">setval</code>(<code class="type">regclass</code>, <code class="type">bigint</code>, <code class="type">boolean</code>)</code></td>
+<td><code class="type">bigint</code></td>
+<td>Set sequence's current value and <code class="literal">is_called</code> flag</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   The sequence to be operated on by a sequence-function call is specified by
+   a <code class="type">regclass</code> argument, which is just the OID of the sequence in the
+   <code class="structname">pg_class</code> system catalog.  You do not have to look up the
+   OID by hand, however, since the <code class="type">regclass</code> data type's input
+   converter will do the work for you.  Just write the sequence name enclosed
+   in single quotes, so that it looks like a literal constant.  To
+   achieve some compatibility with the handling of ordinary
+   <span class="acronym">SQL</span> names, the string will be converted to lowercase
+   unless it contains double quotes around the sequence name.  Thus
+</p>
+<pre class="programlisting">nextval('foo')      <em class="lineannotation"><span class="lineannotation">operates on sequence <code class="literal">foo</code></span></em>
+nextval('FOO')      <em class="lineannotation"><span class="lineannotation">operates on sequence <code class="literal">foo</code></span></em>
+nextval('"Foo"')    <em class="lineannotation"><span class="lineannotation">operates on sequence <code class="literal">Foo</code></span></em></pre>
+<p>
+   The sequence name can be schema-qualified if necessary:
+</p>
+<pre class="programlisting">nextval('myschema.foo')     <em class="lineannotation"><span class="lineannotation">operates on <code class="literal">myschema.foo</code></span></em>
+nextval('"myschema".foo')   <em class="lineannotation"><span class="lineannotation">same as above</span></em>
+nextval('foo')              <em class="lineannotation"><span class="lineannotation">searches search path for <code class="literal">foo</code></span></em></pre>
+<p>
+   See <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about
+   <code class="type">regclass</code>.
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    Before <span class="productname">PostgreSQL</span> 8.1, the arguments of the
+    sequence functions were of type <code class="type">text</code>, not <code class="type">regclass</code>, and
+    the above-described conversion from a text string to an OID value would
+    happen at run time during each call.  For backwards compatibility, this
+    facility still exists, but internally it is now handled as an implicit
+    coercion from <code class="type">text</code> to <code class="type">regclass</code> before the function is
+    invoked.
+   </p>
+<p>    When you write the argument of a sequence function as an unadorned
+    literal string, it becomes a constant of type <code class="type">regclass</code>.
+    Since this is really just an OID, it will track the originally
+    identified sequence despite later renaming, schema reassignment,
+    etc.  This &#8220;<span class="quote">early binding</span>&#8221; behavior is usually desirable for
+    sequence references in column defaults and views.  But sometimes you will
+    want &#8220;<span class="quote">late binding</span>&#8221; where the sequence reference is resolved
+    at run time.  To get late-binding behavior, force the constant to be
+    stored as a <code class="type">text</code> constant instead of <code class="type">regclass</code>:
+</p>
+<pre class="programlisting">nextval('foo'::text)      <em class="lineannotation"><span class="lineannotation"><code class="literal">foo</code> is looked up at runtime</span></em></pre>
+<p>
+    Note that late binding was the only behavior supported in
+    <span class="productname">PostgreSQL</span> releases before 8.1, so you
+    may need to do this to preserve the semantics of old applications.
+   </p>
+<p>    Of course, the argument of a sequence function can be an expression
+    as well as a constant.  If it is a text expression then the implicit
+    coercion will result in a run-time lookup.
+   </p>
+</div>
+<p>   The available sequence functions are:
+
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="function">nextval</code></span></dt>
+<dd><p>        Advance the sequence object to its next value and return that
+        value.  This is done atomically: even if multiple sessions
+        execute <code class="function">nextval</code> concurrently, each will safely receive
+        a distinct sequence value.
+       </p></dd>
+<dt><span class="term"><code class="function">currval</code></span></dt>
+<dd><p>        Return the value most recently obtained by <code class="function">nextval</code>
+        for this sequence in the current session.  (An error is
+        reported if <code class="function">nextval</code> has never been called for this
+        sequence in this session.)  Notice that because this is returning
+        a session-local value, it gives a predictable answer whether or not
+        other sessions have executed <code class="function">nextval</code> since the
+        current session did.
+       </p></dd>
+<dt><span class="term"><code class="function">lastval</code></span></dt>
+<dd><p>        Return the value most recently returned by
+        <code class="function">nextval</code> in the current session. This function is
+        identical to <code class="function">currval</code>, except that instead
+        of taking the sequence name as an argument it fetches the
+        value of the last sequence that <code class="function">nextval</code>
+        was used on in the current session. It is an error to call
+        <code class="function">lastval</code> if <code class="function">nextval</code>
+        has not yet been called in the current session.
+       </p></dd>
+<dt><span class="term"><code class="function">setval</code></span></dt>
+<dd>
+<p>        Reset the sequence object's counter value.  The two-parameter
+        form sets the sequence's <code class="literal">last_value</code> field to the specified
+        value and sets its <code class="literal">is_called</code> field to <code class="literal">true</code>,
+        meaning that the next <code class="function">nextval</code> will advance the sequence
+        before returning a value.  In the three-parameter form,
+        <code class="literal">is_called</code> may be set either <code class="literal">true</code> or
+        <code class="literal">false</code>.  If it's set to <code class="literal">false</code>,
+        the next <code class="function">nextval</code> will return exactly the specified
+        value, and sequence advancement commences with the following
+        <code class="function">nextval</code>.  For example,
+
+</p>
+<pre class="screen">SELECT setval('foo', 42);           <em class="lineannotation"><span class="lineannotation">Next <code class="function">nextval</code> will return 43</span></em>
+SELECT setval('foo', 42, true);     <em class="lineannotation"><span class="lineannotation">Same as above</span></em>
+SELECT setval('foo', 42, false);    <em class="lineannotation"><span class="lineannotation">Next <code class="function">nextval</code> will return 42</span></em></pre>
+<p>
+
+        The result returned by <code class="function">setval</code> is just the value of its
+        second argument.
+       </p>
+</dd>
+</dl></div>
+<p>
+  </p>
+<p>   If a sequence object has been created with default parameters,
+   <code class="function">nextval</code> calls on it will return successive values
+   beginning with 1.  Other behaviors can be obtained by using
+   special parameters in the <a href="sql-createsequence.html">CREATE SEQUENCE</a> command;
+   see its command reference page for more information.
+  </p>
+<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Important</h3>
+<p>    To avoid blocking of concurrent transactions that obtain numbers from the
+    same sequence, a <code class="function">nextval</code> operation is never rolled back;
+    that is, once a value has been fetched it is considered used, even if the
+    transaction that did the <code class="function">nextval</code> later aborts.  This means
+    that aborted transactions may leave unused &#8220;<span class="quote">holes</span>&#8221; in the
+    sequence of assigned values.  <code class="function">setval</code> operations are never
+    rolled back, either.
+   </p>
+</div>
+</div></body>
+</html>

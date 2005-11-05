@@ -1,0 +1,62 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>UNINSTALL NODE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtdropnode.html" title="DROP NODE">
+<link rel="next" href="stmtrestartnode.html" title="RESTART NODE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtuninstallnode"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>UNINSTALL NODE &#8212;  Decommission <span class="productname">Slony-I</span> node </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">UNINSTALL NODE (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id533218"></a><h2>Description</h2>
+<p> Restores all tables to the unlocked state, with all
+     original user triggers, constraints and rules, eventually added
+     <span class="productname">Slony-I</span> specific serial key columns
+     dropped and the <span class="productname">Slony-I</span> schema
+     dropped. The node becomes a standalone database. The data is left
+     untouched.
+     
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> ID  = ival </code></span></dt>
+<dd><p> Node ID of the node to uninstall.</p></dd>
+</dl></div>
+<p>
+    </p>
+<p> This uses <a href="function.uninstallnode.html">schemadocuninstallnode(  )</a>. </p>
+<p> The difference between <code class="command">UNINSTALL NODE</code>
+    and <code class="command">DROP NODE</code> is that all <code class="command">UNINSTALL
+    NODE</code> does is to remove the <span class="productname">Slony-I</span> configuration; it
+    doesn't drop the node's configuration from replication.</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p> If you are using connections that cache query plans
+   (this is particularly common for Java application frameworks with
+   connection pools), the connections may cache query plans that
+   include the pre-<code class="command">UNINSTALL NODE</code> state of things,
+   and you will get <a href="faq.html#missingoids"> error messages
+   indicating missing OIDs</a>.</p>
+<p>After dropping a node, you may also need to recycle
+   connections in your application.</p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id533325"></a><h2>Example</h2>
+<pre class="programlisting">  UNINSTALL NODE ( ID = 2 );
+    </pre>
+</div>
+</div></body>
+</html>

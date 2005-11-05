@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.36. tables</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-table-privileges.html" title="31.35. table_privileges">
+<link rel="next" href="infoschema-triggers.html" title="31.37. triggers">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-tables"></a>31.36. <code class="literal">tables</code></h2></div></div></div>
+<p>   The view <code class="literal">tables</code> contains all tables and views
+   defined in the current database.  Only those tables and views are
+   shown that the current user has access to (by way of being the
+   owner or having some privilege).
+  </p>
+<div class="table">
+<a name="id648784"></a><p class="title"><b>Table 31.34. <code class="literal">tables</code> Columns</b></p>
+<table summary="tables Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database that contains the table (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema that contains the table</td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the table</td>
+</tr>
+<tr>
+<td><code class="literal">table_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Type of the table: <code class="literal">BASE TABLE</code> for a
+       persistent base table (the normal table type),
+       <code class="literal">VIEW</code> for a view, or <code class="literal">LOCAL
+       TEMPORARY</code> for a temporary table
+      </td>
+</tr>
+<tr>
+<td><code class="literal">self_referencing_column_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">reference_generation</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">user_defined_type_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">user_defined_type_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">user_defined_type_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

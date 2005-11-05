@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 16. Operating System Environment</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">
+<link rel="next" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="runtime"></a>Chapter 16. Operating System Environment</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="runtime.html#postgres-user">16.1. The <span class="productname">PostgreSQL</span> User Account</a></span></dt>
+<dt><span class="sect1"><a href="creating-cluster.html">16.2. Creating a Database Cluster</a></span></dt>
+<dt><span class="sect1"><a href="postmaster-start.html">16.3. Starting the Database Server</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="postmaster-start.html#postmaster-start-failures">16.3.1. Server Start-up Failures</a></span></dt>
+<dt><span class="sect2"><a href="postmaster-start.html#client-connection-problems">16.3.2. Client Connection Problems</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="kernel-resources.html">16.4. Managing Kernel Resources</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="kernel-resources.html#sysvipc">16.4.1. Shared Memory and Semaphores</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id590862">16.4.2. Resource Limits</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id591059">16.4.3. Linux Memory Overcommit</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="postmaster-shutdown.html">16.5. Shutting Down the Server</a></span></dt>
+<dt><span class="sect1"><a href="encryption-options.html">16.6. Encryption Options</a></span></dt>
+<dt><span class="sect1"><a href="ssl-tcp.html">16.7. Secure TCP/IP Connections with SSL</a></span></dt>
+<dt><span class="sect1"><a href="ssh-tunnels.html">16.8. Secure TCP/IP Connections with <span class="application">SSH</span> Tunnels</a></span></dt>
+</dl>
+</div>
+<p>  This chapter discusses how to set up and run the database server
+  and its interactions with the operating system.
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="postgres-user"></a>16.1. The <span class="productname">PostgreSQL</span> User Account</h2></div></div></div>
+<a name="id587825"></a><p>   As with any other server daemon that is accessible to the outside world,
+   it is advisable to run <span class="productname">PostgreSQL</span> under a
+   separate user account. This user account should only own the data
+   that is managed by the server, and should not be shared with other
+   daemons. (For example, using the user <code class="literal">nobody</code> is a bad
+   idea.) It is not advisable to install executables owned by this 
+   user because compromised systems could then modify their own 
+   binaries.
+  </p>
+<p>   To add a Unix user account to your system, look for a command
+   <code class="command">useradd</code> or <code class="command">adduser</code>. The user
+   name <span class="systemitem">postgres</span> is often used, and is assumed
+   throughout this book, but you can use another name if you like.
+  </p>
+</div>
+</div></body>
+</html>

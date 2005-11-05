@@ -1,0 +1,43 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>2.  Slony-I Communications
+Costs</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="slonyintro.html" title="Slony-I Introduction">
+<link rel="prev" href="slonyintro.html" title="Slony-I Introduction">
+<link rel="next" href="requirements.html" title="3. System Requirements">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="slonylistenercosts"></a>2.  <span class="productname">Slony-I</span> Communications
+Costs</h2></div></div></div>
+<p>The cost of communications grows in a quadratic fashion in
+several directions as the number of replication nodes in a cluster
+increases.  Note the following relationships:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> It is necessary to have <a href="table.sl-listen.html">sl_listen</a> entries allowing connection from each node
+to every other node.  Most will normally not need to be very heavily,
+but it still means that there needs to be n(n-1) paths.</p></li>
+<li><p> Each SYNC applied needs to be reported back to all of
+the other nodes participating in the set so that the nodes all know
+that it is safe to purge <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a> data, as any &#8220;<span class="quote">forwarding</span>&#8221; node
+could potentially take over as &#8220;<span class="quote">master</span>&#8221; at any time.  One
+might expect SYNC messages to need to travel through n/2 nodes to get
+propagated to their destinations; this means that each SYNC is
+expected to get transmitted n(n/2) times.  Again, this points to a
+quadratic growth in communications costs as the number of nodes
+increases.</p></li>
+</ul></div>
+<p>This points to it being a bad idea to have the large
+communications network resulting from the number of nodes being large.
+Up to a half dozen nodes seems pretty reasonable; every time the
+number of nodes doubles, this can be expected to quadruple
+communications overheads.</p>
+</div></body>
+</html>

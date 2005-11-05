@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.72.        sequencelastvalue( text )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.rebuildlistenentriesone-integer-integer.html" title="1.71.        rebuildlistenentriesone( integer, integer )
+      ">
+<link rel="next" href="function.sequencesetvalue-integer-integer-bigint-bigint.html" title="1.73.        sequencesetvalue( integer, integer, bigint, bigint )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.sequencelastvalue-text"></a>1.72.        sequencelastvalue( text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       
+        </p>
+<pre class="programlisting">declare
+	p_seqname	alias for $1;
+	v_seq_row	record;
+begin
+	for v_seq_row in execute 'select last_value from ' || p_seqname
+	loop
+		return v_seq_row.last_value;
+	end loop;
+
+	-- not reached
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

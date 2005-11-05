@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.28. pg_rewrite</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-proc.html" title="42.27. pg_proc">
+<link rel="next" href="catalog-pg-shdepend.html" title="42.29. pg_shdepend">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-rewrite"></a>42.28. <code class="structname">pg_rewrite</code></h2></div></div></div>
+<a name="id775976"></a><p>   The catalog <code class="structname">pg_rewrite</code> stores rewrite rules for tables and views.
+  </p>
+<div class="table">
+<a name="id775995"></a><p class="title"><b>Table 42.28. <code class="structname">pg_rewrite</code> Columns</b></p>
+<table summary="pg_rewrite Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">rulename</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Rule name</td>
+</tr>
+<tr>
+<td><code class="structfield">ev_class</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>The table this rule is for</td>
+</tr>
+<tr>
+<td><code class="structfield">ev_attr</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>The column this rule is for (currently, always zero to
+      indicate the whole table)</td>
+</tr>
+<tr>
+<td><code class="structfield">ev_type</code></td>
+<td><code class="type">char</code></td>
+<td> </td>
+<td>       Event type that the rule is for: 1 = <code class="command">SELECT</code>, 2 =
+       <code class="command">UPDATE</code>, 3 = <code class="command">INSERT</code>, 4 =
+       <code class="command">DELETE</code>
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">is_instead</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>True if the rule is an <code class="literal">INSTEAD</code> rule</td>
+</tr>
+<tr>
+<td><code class="structfield">ev_qual</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>       Expression tree (in the form of a
+       <code class="function">nodeToString()</code> representation) for the
+       rule's qualifying condition
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">ev_action</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>       Query tree (in the form of a
+       <code class="function">nodeToString()</code> representation) for the
+       rule's action
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    <code class="literal">pg_class.relhasrules</code>
+    must be true if a table has any rules in this catalog.
+   </p>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,266 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.41. Release 7.1</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-1-1.html" title="E.40. Release 7.1.1">
+<link rel="next" href="release-7-0-3.html" title="E.42. Release 7.0.3">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-1"></a>E.41. Release 7.1</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2001-04-13</p>
+</div>
+<p>        This release focuses on removing limitations that have existed in the
+        <span class="productname">PostgreSQL</span> code for many years.
+   </p>
+<p>    Major changes in this release:
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">       Write-ahead Log (WAL)
+     </span></dt>
+<dd><p>To maintain database consistency in case of an operating system crash,
+previous releases of <span class="productname">PostgreSQL</span> have forced
+all data modifications to disk before each transaction commit.  With
+WAL, only one log file must be flushed to disk, greatly improving
+performance.  If you have been using -F in previous releases to
+disable disk flushes, you may want to consider discontinuing its use.
+      </p></dd>
+<dt><span class="term">       TOAST
+     </span></dt>
+<dd><p>       TOAST - Previous releases had a compiled-in row length limit,
+typically 8k - 32k. This limit made storage of long text fields
+difficult.  With TOAST, long rows of any length can be stored with good
+performance.
+      </p></dd>
+<dt><span class="term">       Outer Joins
+     </span></dt>
+<dd><p>We now support outer joins.  The UNION/NOT IN
+workaround for outer joins is no longer required.  We use the SQL92
+outer join syntax.
+      </p></dd>
+<dt><span class="term">       Function Manager
+     </span></dt>
+<dd><p>The previous C function manager did not
+handle null values properly, nor did it support 64-bit <span class="acronym">CPU</span>'s (Alpha).  The new
+function manager does.  You can continue using your old custom
+functions, but you may want to rewrite them in the future to use the new
+function manager call interface.
+      </p></dd>
+<dt><span class="term">       Complex Queries
+     </span></dt>
+<dd><p>A large number of complex queries that were
+unsupported in previous releases now work.  Many combinations of views,
+aggregates, UNION, LIMIT, cursors, subqueries, and inherited tables
+now work properly. Inherited tables are now accessed by default. 
+Subqueries in FROM are now supported.
+      </p></dd>
+</dl></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id837366"></a>E.41.1. Migration to version 7.1</h3></div></div></div>
+<p>        A dump/restore using pg_dump is required for those wishing to migrate
+        data from any previous release.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id837375"></a>E.41.2. Changes</h3></div></div></div>
+<p>     </p>
+<pre class="programlisting">Bug Fixes
+---------
+Many multibyte/Unicode/locale fixes (Tatsuo and others)
+More reliable ALTER TABLE RENAME (Tom)
+Kerberos V fixes (David Wragg)
+Fix for INSERT INTO...SELECT where targetlist has subqueries (Tom)
+Prompt username/password on standard error (Bruce)
+Large objects inv_read/inv_write fixes (Tom)
+Fixes for to_char(), to_date(), to_ascii(), and to_timestamp() (Karel, 
+    Daniel Baldoni)
+Prevent query expressions from leaking memory (Tom)
+Allow UPDATE of arrays elements (Tom)
+Wake up lock waiters during cancel (Hiroshi)
+Fix rare cursor crash when using hash join (Tom)
+Fix for DROP TABLE/INDEX in rolled-back transaction (Hiroshi)
+Fix psql crash from \l+ if MULTIBYTE enabled (Peter E)
+Fix truncation of rule names during CREATE VIEW (Ross Reedstrom)
+Fix PL/perl (Alex Kapranoff)
+Disallow LOCK on views (Mark Hollomon)
+Disallow INSERT/UPDATE/DELETE on views (Mark Hollomon)
+Disallow DROP RULE, CREATE INDEX, TRUNCATE on views (Mark Hollomon)
+Allow PL/pgSQL accept non-ASCII identifiers (Tatsuo)
+Allow views to proper handle GROUP BY, aggregates, DISTINCT (Tom)
+Fix rare failure with TRUNCATE command (Tom)
+Allow UNION/INTERSECT/EXCEPT to be used with ALL, subqueries, views, 
+    DISTINCT, ORDER BY, SELECT...INTO (Tom)
+Fix parser failures during aborted transactions (Tom)
+Allow temporary relations to properly clean up indexes (Bruce)
+Fix VACUUM problem with moving rows in same page (Tom)
+Modify pg_dump to better handle user-defined items in template1 (Philip)
+Allow LIMIT in VIEW (Tom)
+Require cursor FETCH to honor LIMIT (Tom)
+Allow PRIMARY/FOREIGN Key definitions on inherited columns (Stephan)
+Allow ORDER BY, LIMIT in subqueries (Tom)
+Allow UNION in CREATE RULE (Tom)
+Make ALTER/DROP TABLE rollback-able (Vadim, Tom)
+Store initdb collation in pg_control so collation cannot be changed (Tom)
+Fix INSERT...SELECT with rules (Tom)
+Fix FOR UPDATE inside views and subselects (Tom)
+Fix OVERLAPS operators conform to SQL92 spec regarding NULLs (Tom)
+Fix lpad() and rpad() to handle length less than input string (Tom)
+Fix use of NOTIFY in some rules (Tom)
+Overhaul btree code (Tom)
+Fix NOT NULL use in Pl/pgSQL variables (Tom)
+Overhaul GIST code (Oleg)
+Fix CLUSTER to preserve constraints and column default (Tom)
+Improved deadlock detection handling (Tom)
+Allow multiple SERIAL columns in a table (Tom)
+Prevent occasional index corruption (Vadim)
+
+Enhancements
+------------
+Add OUTER JOINs (Tom)
+Function manager overhaul (Tom)
+Allow ALTER TABLE RENAME on indexes (Tom)
+Improve CLUSTER (Tom)
+Improve ps status display for more platforms (Peter E, Marc)
+Improve CREATE FUNCTION failure message (Ross)
+JDBC improvements (Peter, Travis Bauer, Christopher Cain, William Webber,
+    Gunnar)
+Grand Unified Configuration scheme/GUC.  Many options can now be set in 
+    data/postgresql.conf, postmaster/postgres flags, or SET commands (Peter E)
+Improved handling of file descriptor cache (Tom)
+New warning code about auto-created table alias entries (Bruce)
+Overhaul initdb process (Tom, Peter E)
+Overhaul of inherited tables; inherited tables now accessed by default;
+   new ONLY key word prevents it (Chris Bitmead, Tom)
+ODBC cleanups/improvements (Nick Gorham, Stephan Szabo, Zoltan Kovacs, 
+    Michael Fork)
+Allow renaming of temp tables (Tom)
+Overhaul memory manager contexts (Tom)
+pg_dumpall uses CREATE USER or CREATE GROUP rather using COPY (Peter E)
+Overhaul pg_dump (Philip Warner)
+Allow pg_hba.conf secondary password file to specify only username (Peter E)
+Allow TEMPORARY or TEMP key word when creating temporary tables (Bruce)
+New memory leak checker (Karel)
+New SET SESSION CHARACTERISTICS (Thomas)
+Allow nested block comments (Thomas)
+Add WITHOUT TIME ZONE type qualifier (Thomas)
+New ALTER TABLE ADD CONSTRAINT (Stephan)
+Use NUMERIC accumulators for INTEGER aggregates (Tom)
+Overhaul aggregate code (Tom)
+New VARIANCE and STDDEV() aggregates
+Improve dependency ordering of pg_dump (Philip)
+New pg_restore command (Philip)
+New pg_dump tar output option (Philip)
+New pg_dump of large objects  (Philip)
+New ESCAPE option to LIKE (Thomas)
+New case-insensitive LIKE - ILIKE (Thomas)
+Allow functional indexes to use binary-compatible type (Tom)
+Allow SQL functions to be used in more contexts (Tom)
+New pg_config utility (Peter E)
+New PL/pgSQL EXECUTE command which allows dynamic SQL and utility statements
+    (Jan)
+New PL/pgSQL GET DIAGNOSTICS statement for SPI value access (Jan)
+New quote_identifiers() and quote_literal() functions (Jan)
+New ALTER TABLE table OWNER TO user command (Mark Hollomon)
+Allow subselects in FROM, i.e. FROM (SELECT ...) [AS] alias (Tom)
+Update PyGreSQL to version 3.1 (D'Arcy)
+Store tables as files named by OID (Vadim)
+New SQL function setval(seq,val,bool) for use in pg_dump (Philip)
+Require DROP VIEW to remove views, no DROP TABLE (Mark)
+Allow DROP VIEW view1, view2 (Mark)
+Allow multiple objects in DROP INDEX, DROP RULE, and DROP TYPE (Tom)
+Allow automatic conversion to/from Unicode (Tatsuo, Eiji)
+New /contrib/pgcrypto hashing functions (Marko Kreen)
+New pg_dumpall --globals-only option (Peter E)
+New CHECKPOINT command for WAL which creates new WAL log file (Vadim)
+New AT TIME ZONE syntax (Thomas)
+Allow location of Unix domain socket to be configurable (David J. MacKenzie)
+Allow postmaster to listen on a specific IP address (David J. MacKenzie)
+Allow socket path name to be specified in hostname by using leading slash
+    (David J. MacKenzie)
+Allow CREATE DATABASE to specify template database (Tom)
+New utility to convert MySQL schema dumps to SQL92 and PostgreSQL (Thomas)
+New /contrib/rserv replication toolkit (Vadim)
+New file format for COPY BINARY (Tom)
+New /contrib/oid2name to map numeric files to table names (B Palmer)
+New "idle in transaction" ps status message (Marc)
+Update to pgaccess 0.98.7 (Constantin Teodorescu)
+pg_ctl now defaults to -w (wait) on shutdown, new -l (log) option
+Add rudimentary dependency checking to pg_dump (Philip)
+
+Types
+-----
+Fix INET/CIDR type ordering and add new functions (Tom)
+Make OID behave as an unsigned type (Tom)
+Allow BIGINT as synonym for INT8 (Peter E)
+New int2 and int8 comparison operators (Tom)
+New BIT and BIT VARYING types (Adriaan Joubert, Tom, Peter E)
+CHAR() no longer faster than VARCHAR() because of TOAST (Tom)
+New GIST seg/cube examples (Gene Selkov)
+Improved round(numeric) handling (Tom)
+Fix CIDR output formatting (Tom)
+New CIDR abbrev() function (Tom)
+
+Performance
+-----------
+Write-Ahead Log (WAL) to provide crash recovery with less performance 
+    overhead (Vadim)
+ANALYZE stage of VACUUM no longer exclusively locks table (Bruce)
+Reduced file seeks (Denis Perchine)
+Improve BTREE code for duplicate keys (Tom)
+Store all large objects in a single table (Denis Perchine, Tom)
+Improve memory allocation performance (Karel, Tom)
+
+Source Code
+-----------
+New function manager call conventions (Tom)
+SGI portability fixes (David Kaelbling)
+New configure --enable-syslog option (Peter E)
+New BSDI README (Bruce)
+configure script moved to top level, not /src (Peter E)
+Makefile/configuration/compilation overhaul (Peter E)
+New configure --with-python option (Peter E)
+Solaris cleanups (Peter E)
+Overhaul /contrib Makefiles (Karel)
+New OpenSSL configuration option (Magnus, Peter E)
+AIX fixes (Andreas)
+QNX fixes (Maurizio)
+New heap_open(), heap_openr() API (Tom)
+Remove colon and semi-colon operators (Thomas)
+New pg_class.relkind value for views (Mark Hollomon)
+Rename ichar() to chr() (Karel)
+New documentation for btrim(), ascii(), chr(), repeat() (Karel)
+Fixes for NT/Cygwin (Pete Forman)
+AIX port fixes (Andreas)
+New BeOS port (David Reid, Cyril Velter)
+Add proofreader's changes to docs (Addison-Wesley, Bruce)
+New Alpha spinlock code (Adriaan Joubert, Compaq)
+UnixWare port overhaul (Peter E)
+New Darwin/MacOS X port (Peter Bierman, Bruce Hartzler)
+New FreeBSD Alpha port (Alfred)
+Overhaul shared memory segments (Tom)
+Add IBM S/390 support (Neale Ferguson)
+Moved macmanuf to /contrib (Larry Rosenman)
+Syslog improvements (Larry Rosenman)
+New template0 database that contains no user additions (Tom)
+New /contrib/cube and /contrib/seg GIST sample code (Gene Selkov)
+Allow NetBSD's libedit instead of readline (Peter)
+Improved assembly language source code format (Bruce)
+New contrib/pg_logger
+New --template option to createdb
+New contrib/pg_control utility (Oliver)
+New FreeBSD tools ipc_check, start-scripts/freebsd
+     </pre>
+<p>
+    </p>
+</div>
+</div></body>
+</html>

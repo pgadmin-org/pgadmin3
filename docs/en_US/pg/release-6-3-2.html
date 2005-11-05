@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.53. Release 6.3.2</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-6-4.html" title="E.52. Release 6.4">
+<link rel="next" href="release-6-3-1.html" title="E.54. Release 6.3.1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-6-3-2"></a>E.53. Release 6.3.2</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>1998-04-07</p>
+</div>
+<p>This is a bug-fix release for 6.3.x.
+Refer to the release notes for version 6.3 for a more complete summary of new features.</p>
+<p>Summary:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Repairs automatic configuration support for some platforms, including Linux,
+from breakage inadvertently introduced in version 6.3.1.</p></li>
+<li><p>Correctly handles function calls on the left side of BETWEEN and LIKE clauses.</p></li>
+</ul></div>
+<p>A dump/restore is NOT required for those running 6.3 or 6.3.1.  A 
+<code class="literal">make distclean</code>, <code class="literal">make</code>, and <code class="literal">make install</code> is all that is required.
+This last step should be performed while the postmaster is not running.
+You should re-link any custom applications that use <span class="productname">PostgreSQL</span> libraries.</p>
+<p>For upgrades from pre-6.3 installations,
+refer to the installation and migration instructions for version 6.3.</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id840116"></a>E.53.1. Changes</h3></div></div></div>
+<p>     </p>
+<pre class="programlisting">Configure detection improvements for tcl/tk(Brook Milligan, Alvin)
+Manual page improvements(Bruce)
+BETWEEN and LIKE fix(Thomas)
+fix for psql \connect used by pg_dump(Oliver Elphick)
+New odbc driver
+pgaccess, version 0.86
+qsort removed, now uses libc version, cleanups(Jeroen)
+fix for buffer over-runs detected(Maurice Gittens)
+fix for buffer overrun in libpgtcl(Randy Kunkee)
+fix for UNION with DISTINCT or ORDER BY(Bruce)
+gettimeofday configure check(Doug Winterburn)
+Fix "indexes not used" bug(Vadim)
+docs additions(Thomas)
+Fix for backend memory leak(Bruce)
+libreadline cleanup(Erwan MAS)
+Remove DISTDIR(Bruce)
+Makefile dependency cleanup(Jeroen van Vianen)
+ASSERT fixes(Bruce)
+     </pre>
+<p>
+    </p>
+</div>
+</div></body>
+</html>

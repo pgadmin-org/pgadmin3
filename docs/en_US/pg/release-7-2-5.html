@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.32. Release 7.2.5</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-2-6.html" title="E.31. Release 7.2.6">
+<link rel="next" href="release-7-2-4.html" title="E.33. Release 7.2.4">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-2-5"></a>E.32. Release 7.2.5</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2004-08-16</p>
+</div>
+<p>    This release contains a variety of fixes from 7.2.4.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id835091"></a>E.32.1. Migration to version 7.2.5</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.2.X.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id835099"></a>E.32.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Prevent possible loss of committed transactions during crash</p>
+<p>Due to insufficient interlocking between transaction commit and checkpointing,
+it was possible for transactions committed just before the most recent
+checkpoint to be lost, in whole or in part, following a database crash and
+restart.  This is a serious bug that has existed
+since <span class="productname">PostgreSQL</span> 7.1.</p>
+</li>
+<li><p>Fix corner case for btree search in parallel with first root page split</p></li>
+<li><p>Fix buffer overrun in <code class="function">to_ascii</code> (Guido Notari)</p></li>
+<li><p>Fix core dump in deadlock detection on machines where char is unsigned</p></li>
+<li><p>Fix failure to respond to <code class="command">pg_ctl stop -m fast</code> after Async_NotifyHandler runs</p></li>
+<li><p>Repair memory leaks in pg_dump</p></li>
+<li><p>Avoid conflict with system definition of <code class="function">isblank()</code> function or macro</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

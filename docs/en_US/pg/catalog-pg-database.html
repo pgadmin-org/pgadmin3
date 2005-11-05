@@ -1,0 +1,145 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.15. pg_database</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-conversion.html" title="42.14. pg_conversion">
+<link rel="next" href="catalog-pg-depend.html" title="42.16. pg_depend">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-database"></a>42.15. <code class="structname">pg_database</code></h2></div></div></div>
+<a name="id772441"></a><p>   The catalog <code class="structname">pg_database</code> stores information
+   about the available databases.  Databases are created with the
+   <code class="command">CREATE DATABASE</code> command.  Consult
+   <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for details about the meaning of some of the
+   parameters.
+  </p>
+<p>   Unlike most system catalogs, <code class="structname">pg_database</code>
+   is shared across all databases of a cluster: there is only one
+   copy of <code class="structname">pg_database</code> per cluster, not
+   one per database.
+  </p>
+<div class="table">
+<a name="id772488"></a><p class="title"><b>Table 42.15. <code class="structname">pg_database</code> Columns</b></p>
+<table summary="pg_database Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">datname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Database name</td>
+</tr>
+<tr>
+<td><code class="structfield">datdba</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>Owner of the database, usually the user who created it</td>
+</tr>
+<tr>
+<td><code class="structfield">encoding</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>Character encoding for this database</td>
+</tr>
+<tr>
+<td><code class="structfield">datistemplate</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       If true then this database can be used in the
+       <code class="literal">TEMPLATE</code> clause of <code class="command">CREATE
+       DATABASE</code> to create a new database as a clone of
+       this one.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datallowconn</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       If false then no one can connect to this database.  This is
+       used to protect the <code class="literal">template0</code> database from being altered.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datconnlimit</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       Sets maximum number of concurrent connections that can be made 
+       to this database.  -1 means no limit.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datlastsysoid</code></td>
+<td><code class="type">oid</code></td>
+<td> </td>
+<td>       Last system OID in the database; useful
+       particularly to <span class="application">pg_dump</span>
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datvacuumxid</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       All rows inserted or deleted by transaction IDs before this one
+       have been marked as known committed or known aborted in this database.
+       This is used to determine when commit-log space can be recycled.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datfrozenxid</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       All rows inserted by transaction IDs before this one have been
+       relabeled with a permanent (&#8220;<span class="quote">frozen</span>&#8221;) transaction ID in this
+       database.  This is useful to check whether a database must be vacuumed
+       soon to avoid transaction ID wrap-around problems.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">dattablespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="42.31. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
+<td>       The default tablespace for the database.
+       Within this database, all tables for which
+       <code class="structname">pg_class</code>.<code class="structfield">reltablespace</code> is zero
+       will be stored in this tablespace; in particular, all the non-shared
+       system catalogs will be there.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">datconfig</code></td>
+<td><code class="type">text[]</code></td>
+<td> </td>
+<td>Session defaults for run-time configuration variables</td>
+</tr>
+<tr>
+<td><code class="structfield">datacl</code></td>
+<td><code class="type">aclitem[]</code></td>
+<td> </td>
+<td>       Access privileges; see
+       <a href="sql-grant.html">GRANT</a> and
+       <a href="sql-revoke.html">REVOKE</a>
+       for details.
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

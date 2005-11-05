@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>37.7. Modules and the unknown command</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="pltcl.html" title="Chapter 37. PL/Tcl - Tcl Procedural Language">
+<link rel="prev" href="pltcl-trigger.html" title="37.6. Trigger Procedures in PL/Tcl">
+<link rel="next" href="pltcl-procnames.html" title="37.8. Tcl Procedure Names">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="pltcl-unknown"></a>37.7. Modules and the <code class="function">unknown</code> command</h2></div></div></div>
+<p>        PL/Tcl has support for autoloading Tcl code when used.
+        It recognizes a special table, <code class="literal">pltcl_modules</code>, which
+        is presumed to contain modules of Tcl code.  If this table
+        exists, the module <code class="literal">unknown</code> is fetched from the table
+        and loaded into the Tcl interpreter immediately after creating
+        the interpreter.
+       </p>
+<p>        While the <code class="literal">unknown</code> module could actually contain any
+        initialization script you need, it normally defines a Tcl
+        <code class="function">unknown</code> procedure that is invoked whenever Tcl does
+        not recognize an invoked procedure name.  <span class="application">PL/Tcl</span>'s standard version
+        of this procedure tries to find a module in <code class="literal">pltcl_modules</code>
+        that will define the required procedure.  If one is found, it is
+        loaded into the interpreter, and then execution is allowed to
+        proceed with the originally attempted procedure call.  A
+        secondary table <code class="literal">pltcl_modfuncs</code> provides an index of
+        which functions are defined by which modules, so that the lookup
+        is reasonably quick.
+       </p>
+<p>        The <span class="productname">PostgreSQL</span> distribution includes
+        support scripts to maintain these tables:
+        <code class="command">pltcl_loadmod</code>, <code class="command">pltcl_listmod</code>,
+        <code class="command">pltcl_delmod</code>, as well as source for the standard
+        <code class="literal">unknown</code> module in <code class="filename">share/unknown.pltcl</code>.  This module
+        must be loaded
+        into each database initially to support the autoloading mechanism.
+       </p>
+<p>        The tables <code class="literal">pltcl_modules</code> and <code class="literal">pltcl_modfuncs</code>
+        must be readable by all, but it is wise to make them owned and
+        writable only by the database administrator.
+       </p>
+</div></body>
+</html>

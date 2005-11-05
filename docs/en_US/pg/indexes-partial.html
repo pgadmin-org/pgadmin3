@@ -1,0 +1,188 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>11.7. Partial Indexes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="prev" href="indexes-expressional.html" title="11.6. Indexes on Expressions">
+<link rel="next" href="indexes-opclass.html" title="11.8. Operator Classes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-partial"></a>11.7. Partial Indexes</h2></div></div></div>
+<a name="id576264"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
+   subset of a table; the subset is defined by a conditional
+   expression (called the <em class="firstterm">predicate</em> of the
+   partial index).  The index contains entries for only those table
+   rows that satisfy the predicate.  Partial indexes are a specialized
+   feature, but there are several situations in which they are useful.
+  </p>
+<p>   One major reason for using a partial index is to avoid indexing common
+   values.  Since a query searching for a common value (one that
+   accounts for more than a few percent of all the table rows) will not
+   use the index anyway, there is no point in keeping those rows in the
+   index at all.  This reduces the size of the index, which will speed
+   up queries that do use the index.  It will also speed up many table
+   update operations because the index does not need to be
+   updated in all cases.  <a href="indexes-partial.html#indexes-partial-ex1" title="Example 11.1. Setting up a Partial Index to Exclude Common Values">Example 11.1, &#8220;Setting up a Partial Index to Exclude Common Values&#8221;</a> shows a
+   possible application of this idea.
+  </p>
+<div class="example">
+<a name="indexes-partial-ex1"></a><p class="title"><b>Example 11.1. Setting up a Partial Index to Exclude Common Values</b></p>
+<p>    Suppose you are storing web server access logs in a database.
+    Most accesses originate from the IP address range of your organization but
+    some are from elsewhere (say, employees on dial-up connections).
+    If your searches by IP are primarily for outside accesses,
+    you probably do not need to index the IP range that corresponds to your
+    organization's subnet.
+   </p>
+<p>    Assume a table like this:
+</p>
+<pre class="programlisting">CREATE TABLE access_log (
+    url varchar,
+    client_ip inet,
+    ...
+);</pre>
+<p>
+   </p>
+<p>    To create a partial index that suits our example, use a command
+    such as this:
+</p>
+<pre class="programlisting">CREATE INDEX access_log_client_ip_ix ON access_log (client_ip)
+    WHERE NOT (client_ip &gt; inet '192.168.100.0' AND client_ip &lt; inet '192.168.100.255');</pre>
+<p>
+   </p>
+<p>    A typical query that can use this index would be:
+</p>
+<pre class="programlisting">SELECT * FROM access_log WHERE url = '/index.html' AND client_ip = inet '212.78.10.32';</pre>
+<p>
+    A query that cannot use this index is:
+</p>
+<pre class="programlisting">SELECT * FROM access_log WHERE client_ip = inet '192.168.100.23';</pre>
+<p>
+   </p>
+<p>    Observe that this kind of partial index requires that the common
+    values be predetermined.  If the distribution of values is
+    inherent (due to the nature of the application) and static (not
+    changing over time), this is not difficult, but if the common values are
+    merely due to the coincidental data load this can require a lot of
+    maintenance work to change the index definition from time to time.
+   </p>
+</div>
+<p>   Another possible use for a partial index is to exclude values from the
+   index that the
+   typical query workload is not interested in; this is shown in <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a>.  This results in the same
+   advantages as listed above, but it prevents the
+   &#8220;<span class="quote">uninteresting</span>&#8221; values from being accessed via that
+   index at all, even if an index scan might be profitable in that
+   case.  Obviously, setting up partial indexes for this kind of
+   scenario will require a lot of care and experimentation.
+  </p>
+<div class="example">
+<a name="indexes-partial-ex2"></a><p class="title"><b>Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values</b></p>
+<p>    If you have a table that contains both billed and unbilled orders,
+    where the unbilled orders take up a small fraction of the total
+    table and yet those are the most-accessed rows, you can improve
+    performance by creating an index on just the unbilled rows.  The
+    command to create the index would look like this:
+</p>
+<pre class="programlisting">CREATE INDEX orders_unbilled_index ON orders (order_nr)
+    WHERE billed is not true;</pre>
+<p>
+   </p>
+<p>    A possible query to use this index would be
+</p>
+<pre class="programlisting">SELECT * FROM orders WHERE billed is not true AND order_nr &lt; 10000;</pre>
+<p>
+    However, the index can also be used in queries that do not involve
+    <code class="structfield">order_nr</code> at all, e.g.,
+</p>
+<pre class="programlisting">SELECT * FROM orders WHERE billed is not true AND amount &gt; 5000.00;</pre>
+<p>
+    This is not as efficient as a partial index on the
+    <code class="structfield">amount</code> column would be, since the system has to
+    scan the entire index.  Yet, if there are relatively few unbilled
+    orders, using this partial index just to find the unbilled orders
+    could be a win.
+   </p>
+<p>    Note that this query cannot use this index:
+</p>
+<pre class="programlisting">SELECT * FROM orders WHERE order_nr = 3501;</pre>
+<p>
+    The order 3501 may be among the billed or among the unbilled
+    orders.
+   </p>
+</div>
+<p>   <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a> also illustrates that the
+   indexed column and the column used in the predicate do not need to
+   match.  <span class="productname">PostgreSQL</span> supports partial
+   indexes with arbitrary predicates, so long as only columns of the
+   table being indexed are involved.  However, keep in mind that the
+   predicate must match the conditions used in the queries that
+   are supposed to benefit from the index.  To be precise, a partial
+   index can be used in a query only if the system can recognize that
+   the <code class="literal">WHERE</code> condition of the query mathematically implies
+   the predicate of the index.
+   <span class="productname">PostgreSQL</span> does not have a sophisticated
+   theorem prover that can recognize mathematically equivalent
+   expressions that are written in different forms.  (Not
+   only is such a general theorem prover extremely difficult to
+   create, it would probably be too slow to be of any real use.)
+   The system can recognize simple inequality implications, for example
+   &#8220;<span class="quote">x &lt; 1</span>&#8221; implies &#8220;<span class="quote">x &lt; 2</span>&#8221;; otherwise
+   the predicate condition must exactly match part of the query's
+   <code class="literal">WHERE</code> condition
+   or the index will not be recognized to be usable.
+  </p>
+<p>   A third possible use for partial indexes does not require the
+   index to be used in queries at all.  The idea here is to create
+   a unique index over a subset of a table, as in <a href="indexes-partial.html#indexes-partial-ex3" title="Example 11.3. Setting up a Partial Unique Index">Example 11.3, &#8220;Setting up a Partial Unique Index&#8221;</a>.  This enforces uniqueness
+   among the rows that satisfy the index predicate, without constraining
+   those that do not.
+  </p>
+<div class="example">
+<a name="indexes-partial-ex3"></a><p class="title"><b>Example 11.3. Setting up a Partial Unique Index</b></p>
+<p>    Suppose that we have a table describing test outcomes.  We wish
+    to ensure that there is only one &#8220;<span class="quote">successful</span>&#8221; entry for
+    a given subject and target combination, but there might be any number of
+    &#8220;<span class="quote">unsuccessful</span>&#8221; entries.  Here is one way to do it:
+</p>
+<pre class="programlisting">CREATE TABLE tests (
+    subject text,
+    target text,
+    success boolean,
+    ...
+);
+
+CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
+    WHERE success;</pre>
+<p>
+    This is a particularly efficient way of doing it when there are few
+    successful tests and many unsuccessful ones.
+   </p>
+</div>
+<p>   Finally, a partial index can also be used to override the system's
+   query plan choices.  It may occur that data sets with peculiar
+   distributions will cause the system to use an index when it really
+   should not.  In that case the index can be set up so that it is not
+   available for the offending query.  Normally,
+   <span class="productname">PostgreSQL</span> makes reasonable choices about index
+   usage (e.g., it avoids them when retrieving common values, so the
+   earlier example really only saves index size, it is not required to
+   avoid index usage), and grossly incorrect plan choices are cause
+   for a bug report.
+  </p>
+<p>   Keep in mind that setting up a partial index indicates that you
+   know at least as much as the query planner knows, in particular you
+   know when an index might be profitable.  Forming this knowledge
+   requires experience and understanding of how indexes in
+   <span class="productname">PostgreSQL</span> work.  In most cases, the advantage of a
+   partial index over a regular index will not be much.
+  </p>
+<p>   More information about partial indexes can be found in [<a href="biblio.html#ston89b" title="[ston89b]">ston89b</a>], [<a href="biblio.html#olson93" title="[olson93]">olson93</a>], and [<a href="biblio.html#seshadri95" title="[seshadri95]">seshadri95</a>].
+  </p>
+</div></body>
+</html>

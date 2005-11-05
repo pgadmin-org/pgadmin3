@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>30.12. Library Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">
+<link rel="prev" href="ecpg-process.html" title="30.11. Processing Embedded SQL Programs">
+<link rel="next" href="ecpg-develop.html" title="30.13. Internals">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-library"></a>30.12. Library Functions</h2></div></div></div>
+<p>   The <code class="filename">libecpg</code> library primarily contains
+   &#8220;<span class="quote">hidden</span>&#8221; functions that are used to implement the
+   functionality expressed by the embedded SQL commands.  But there
+   are some functions that can usefully be called directly.  Note that
+   this makes your code unportable.
+  </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>     <code class="function">ECPGdebug(int <em class="replaceable"><code>on</code></em>, , FILE
+     *<em class="replaceable"><code>stream</code></em>)</code> turns on debug
+     logging if called with the first argument non-zero. Debug logging
+     is done on <em class="replaceable"><code>stream</code></em>.  The log contains
+     all <span class="acronym">SQL</span> statements with all the input
+     variables inserted, and the results from the
+     <span class="productname">PostgreSQL</span> server. This can be very
+     useful when searching for errors in your <span class="acronym">SQL</span>
+     statements.
+    </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    On Windows, if the <span class="application">ecpg</span> libraries and an application are
+    compiled with different flags, this function call will crash the 
+    application because the internal representation of the 
+    <code class="literal">FILE</code> pointers differ.  Specifically,
+    multithreaded/single-threaded, release/debug, and static/dynamic 
+    flags should be the same for the library and all applications using
+    that library.
+    </p>
+</div>
+</li>
+<li><p>     <code class="function">ECPGstatus(int <em class="replaceable"><code>lineno</code></em>, ,
+     const char* <em class="replaceable"><code>connection_name</code></em>)</code>
+     returns true if you are connected to a database and false if not.
+     <em class="replaceable"><code>connection_name</code></em> can be <code class="literal">NULL</code> 
+     if a single connection is being used.
+    </p></li>
+</ul></div>
+</div></body>
+</html>

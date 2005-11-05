@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP AGGREGATE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-delete.html" title="DELETE">
+<link rel="next" href="sql-dropcast.html" title="DROP CAST">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-dropaggregate"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP AGGREGATE &#8212; remove an aggregate function</p>
+</div>
+<a name="id715912"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id715942"></a><h2>Description</h2>
+<p>   <code class="command">DROP AGGREGATE</code> will delete an existing
+   aggregate function. To execute this command the current
+   user must be the owner of the aggregate function.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id715958"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of an existing aggregate function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>type</code></em></span></dt>
+<dd><p>      The argument data type of the aggregate function, or
+      <code class="literal">*</code> if the function accepts any data type.
+     </p></dd>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
+<dd><p>      Automatically drop objects that depend on the aggregate function.
+     </p></dd>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
+<dd><p>      Refuse to drop the aggregate function if any objects depend on
+      it.  This is the default.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id716021"></a><h2>Examples</h2>
+<p>   To remove the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code>:
+</p>
+<pre class="programlisting">DROP AGGREGATE myavg(integer);</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id716046"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">DROP AGGREGATE</code> statement in the SQL
+   standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id716060"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alteraggregate.html">ALTER AGGREGATE</a>, <a href="sql-createaggregate.html">CREATE AGGREGATE</a></span>
+</div>
+</div></body>
+</html>

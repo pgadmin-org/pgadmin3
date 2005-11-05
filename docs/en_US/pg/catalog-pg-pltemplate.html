@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.26. pg_pltemplate</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-operator.html" title="42.25. pg_operator">
+<link rel="next" href="catalog-pg-proc.html" title="42.27. pg_proc">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-pltemplate"></a>42.26. <code class="structname">pg_pltemplate</code></h2></div></div></div>
+<a name="id775223"></a><p>   The catalog <code class="structname">pg_pltemplate</code> stores
+   &#8220;<span class="quote">template</span>&#8221; information for procedural languages.
+   A template for a language allows the language to be created in a
+   particular database by a simple <code class="command">CREATE LANGUAGE</code> command,
+   with no need to specify implementation details.
+  </p>
+<p>   Unlike most system catalogs, <code class="structname">pg_pltemplate</code>
+   is shared across all databases of a cluster: there is only one
+   copy of <code class="structname">pg_pltemplate</code> per cluster, not
+   one per database.  This allows the information to be accessible in
+   each database as it is needed.
+  </p>
+<div class="table">
+<a name="id775270"></a><p class="title"><b>Table 42.26. <code class="structname">pg_pltemplate</code> Columns</b></p>
+<table summary="pg_pltemplate Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">tmplname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Name of the language this template is for</td>
+</tr>
+<tr>
+<td><code class="structfield">tmpltrusted</code></td>
+<td><code class="type">boolean</code></td>
+<td> </td>
+<td>True if language is considered trusted</td>
+</tr>
+<tr>
+<td><code class="structfield">tmplhandler</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Name of call handler function</td>
+</tr>
+<tr>
+<td><code class="structfield">tmplvalidator</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Name of validator function, or NULL if none</td>
+</tr>
+<tr>
+<td><code class="structfield">tmpllibrary</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Path of shared library that implements language</td>
+</tr>
+<tr>
+<td><code class="structfield">tmplacl</code></td>
+<td><code class="type">aclitem[]</code></td>
+<td> </td>
+<td>Access privileges for template (not yet used)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   There are not currently any commands that manipulate procedural language
+   templates; to change the built-in information, a superuser must modify
+   the table using ordinary INSERT, DELETE, or UPDATE commands.  It is
+   likely that a future release of <span class="productname">PostgreSQL</span>
+   will offer commands to change the entries in a cleaner fashion.
+  </p>
+<p>   When implemented, the <code class="structfield">tmplacl</code> field will provide
+   access control for the template itself (i.e., the right to create a
+   language using it), not for the languages created from the template.
+  </p>
+</div></body>
+</html>

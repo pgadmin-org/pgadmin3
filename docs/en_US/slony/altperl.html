@@ -1,0 +1,256 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>18. Slony-I Administration Scripts</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="noslonik.html" title="17.  Not Using Slonik - Bare Metal Slony-I
+Functions ">
+<link rel="next" href="versionupgrade.html" title="19. Using Slony-I for PostgreSQL Upgrades">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="altperl"></a>18. <span class="productname">Slony-I</span> Administration Scripts</h2></div></div></div>
+<p>In the <code class="filename">altperl</code> directory in the
+<span class="application">CVS</span> tree, there is a sizable set of
+<span class="application">Perl</span> scripts that may be used to administer
+a set of <span class="productname">Slony-I</span> instances, which support having arbitrary numbers of
+nodes.</p>
+<p>Most of them generate Slonik scripts that are then to be passed
+on to the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> utility to be submitted to all of
+the <span class="productname">Slony-I</span> nodes in a particular cluster.  At one time, this
+embedded running <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> on the slonik scripts.
+Unfortunately, this turned out to be a pretty large calibre
+&#8220;<span class="quote">foot gun</span>&#8221;, as minor typos on the command line led, on a
+couple of occasions, to pretty calamitous actions, so the behavior has
+been changed so that the scripts simply submit output to standard
+output.  The savvy administrator should review the script
+<span class="emphasis"><em>before</em></span> submitting it to <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>.</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522344"></a>18.1. Node/Cluster Configuration - cluster.nodes</h3></div></div></div>
+<p>The UNIX environment variable <code class="envar">SLONYNODES</code> is used
+to determine what Perl configuration file will be used to control the
+shape of the nodes in a <span class="productname">Slony-I</span> cluster.</p>
+<p>What variables are set up.
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p><code class="envar">$CLUSTER_NAME</code>=orglogs;	# What is the name of the replication cluster?</p></li>
+<li><p><code class="envar">$LOGDIR</code>='/opt/OXRS/log/LOGDBS';	# What is the base directory for logs?</p></li>
+<li><p><code class="envar">$APACHE_ROTATOR</code>="/opt/twcsds004/OXRS/apache/rotatelogs";  # If set, where to find Apache log rotator</p></li>
+</ul></div>
+<p> You then define the set of nodes that are to be replicated
+using a set of calls to <code class="function">add_node()</code>.</p>
+<p><code class="command">  add_node (host =&gt; '10.20.30.40', dbname =&gt; 'orglogs', port =&gt; 5437,
+			  user =&gt; 'postgres', node =&gt; 4, parent =&gt; 1);</code></p>
+<p>The set of parameters for <code class="function">add_node()</code> are thus:</p>
+<pre class="programlisting">my %PARAMS =   (host=&gt; undef,		# Host name
+	   	dbname =&gt; 'template1',	# database name
+		port =&gt; 5432,		# Port number
+		user =&gt; 'postgres',	# user to connect as
+		node =&gt; undef,		# node number
+		password =&gt; undef,	# password for user
+		parent =&gt; 1,		# which node is parent to this node
+		noforward =&gt; undef	# shall this node be set up to forward results?
+                sslmode =&gt; undef        # SSL mode argument - determine 
+                                        # priority of SSL usage
+                                        # = disable,allow,prefer,require
+);</pre>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522444"></a>18.2. Set configuration - cluster.set1, cluster.set2</h3></div></div></div>
+<p>The UNIX environment variable <code class="envar">SLONYSET</code> is used to
+determine what Perl configuration file will be used to determine what
+objects will be contained in a particular replication set.</p>
+<p>Unlike <code class="envar">SLONYNODES</code>, which is essential for
+<span class="emphasis"><em>all</em></span> of the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>-generating
+scripts, this only needs to be set when running
+<code class="filename">create_set</code>, as that is the only script used to
+control what tables will be in a particular replication set.</p>
+<p>What variables are set up.</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>$TABLE_ID = 44;</p>
+<p> Each table must be identified by a unique number; this variable controls where numbering starts</p>
+</li>
+<li>
+<p>$SEQUENCE_ID = 17;</p>
+<p> Each sequence must be identified by a unique number; this variable controls where numbering starts</p>
+</li>
+<li>
+<p>@PKEYEDTABLES</p>
+<p> An array of names of tables to be replicated that have a
+defined primary key so that <span class="productname">Slony-I</span> can automatically select its key</p>
+</li>
+<li>
+<p>%KEYEDTABLES</p>
+<p> A hash table of tables to be replicated, where the hash index
+is the table name, and the hash value is the name of a unique not null
+index suitable as a "candidate primary key."</p>
+</li>
+<li>
+<p>@SERIALTABLES</p>
+<p> An array of names of tables to be replicated that have no
+candidate for primary key.  <span class="productname">Slony-I</span> will add a key field based on a
+sequence that <span class="productname">Slony-I</span> generates</p>
+</li>
+<li>
+<p>@SEQUENCES</p>
+<p> An array of names of sequences that are to be replicated</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522560"></a>18.3. slonik_build_env</h3></div></div></div>
+<p>Queries a database, generating output hopefully suitable for
+<code class="filename">slon_tools.conf</code> consisting of:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> a set of <code class="function">add_node()</code> calls to configure the cluster</p></li>
+<li><p> The arrays <code class="envar">@KEYEDTABLES</code>,
+<code class="envar">nvar&gt;@SERIALT</code>nvar&gt;, and <code class="envar">@SEQUENCES</code></p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522602"></a>18.4. slonik_create_set</h3></div></div></div>
+<p>This requires <code class="envar">SLONYSET</code> to be set as well as
+<code class="envar">SLONYNODES</code>; it is used to generate the <code class="command">slonik</code> script to set up
+a replication set consisting of a set of tables and sequences that are
+to be replicated.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522627"></a>18.5. slonik_drop_node</h3></div></div></div>
+<p>Generates Slonik script to drop a node from a <span class="productname">Slony-I</span> cluster.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522641"></a>18.6. slonik_drop_set</h3></div></div></div>
+<p>Generates Slonik script to drop a replication set
+(<span class="emphasis"><em>e.g.</em></span> - set of tables and sequences) from a
+<span class="productname">Slony-I</span> cluster.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522660"></a>18.7. slonik_execute_script</h3></div></div></div>
+<p>Generates Slonik script to push DDL changes to a replication set.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522667"></a>18.8. slonik_failover</h3></div></div></div>
+<p>Generates Slonik script to request failover from a dead node to some new origin</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522675"></a>18.9. slonik_init_cluster</h3></div></div></div>
+<p>Generates Slonik script to initialize a whole <span class="productname">Slony-I</span> cluster,
+including setting up the nodes, communications paths, and the listener
+routing.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522691"></a>18.10. slonik_merge_sets</h3></div></div></div>
+<p>Generates Slonik script to merge two replication sets together.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522698"></a>18.11. slonik_move_set</h3></div></div></div>
+<p>Generates Slonik script to move the origin of a particular set to a different node.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522706"></a>18.12. replication_test</h3></div></div></div>
+<p>Script to test whether <span class="productname">Slony-I</span> is successfully replicating
+data.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522721"></a>18.13. slonik_restart_node</h3></div></div></div>
+<p>Generates Slonik script to request the restart of a node.  This was
+particularly useful pre-1.0.5 when nodes could get snarled up when
+slon daemons died.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522730"></a>18.14. slonik_restart_nodes</h3></div></div></div>
+<p>Generates Slonik script to restart all nodes in the cluster.  Not
+particularly useful.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522738"></a>18.15. slony_show_configuration</h3></div></div></div>
+<p>Displays an overview of how the environment (e.g. - <code class="envar">SLONYNODES</code>) is set
+to configure things.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522750"></a>18.16. slon_kill</h3></div></div></div>
+<p>Kills slony watchdog and all slon daemons for the specified set.  It
+only works if those processes are running on the local host, of
+course!</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522759"></a>18.17. slon_start</h3></div></div></div>
+<p>This starts a slon daemon for the specified cluster and node, and uses
+slon_watchdog to keep it running.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522768"></a>18.18. slon_watchdog</h3></div></div></div>
+<p>Used by <code class="command">slon_start</code>.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522781"></a>18.19. slon_watchdog2</h3></div></div></div>
+<p>This is a somewhat smarter watchdog; it monitors a particular
+<span class="productname">Slony-I</span> node, and restarts the slon process if it hasn't seen updates
+go in in 20 minutes or more.</p>
+<p>This is helpful if there is an unreliable network connection such that
+the slon sometimes stops working without becoming aware of it.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522801"></a>18.20. slonik_store_node</h3></div></div></div>
+<p>Adds a node to an existing cluster.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522809"></a>18.21. slonik_subscribe_set</h3></div></div></div>
+<p>Generates Slonik script to subscribe a particular node to a particular replication set.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522817"></a>18.22. slonik_uninstall_nodes</h3></div></div></div>
+<p>This goes through and drops the <span class="productname">Slony-I</span> schema from each node;
+use this if you want to destroy replication throughout a cluster.
+This is a <span class="emphasis"><em>VERY</em></span> unsafe script!</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522837"></a>18.23. slonik_unsubscribe_set</h3></div></div></div>
+<p>Generates Slonik script to unsubscribe a node from a replication set.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id522844"></a>18.24. slonik_update_nodes</h3></div></div></div>
+<p>Generates Slonik script to tell all the nodes to update the
+<span class="productname">Slony-I</span> functions.  This will typically be needed when you upgrade
+from one version of <span class="productname">Slony-I</span> to another.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="regenlisten"></a>18.25. regenerate-listens</h3></div></div></div>
+<p>This script connects to a <span class="productname">Slony-I</span> node, and queries various
+tables (sl_set, sl_node, sl_subscribe, sl_path) to compute what <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> requests should be submitted to the
+cluster.</p>
+<p> See the documentation in <a href="listenpaths.html#autolisten" title="8.3. Automated Listen Path Generation">Section 8.3, &#8220;Automated Listen Path Generation&#8221;</a> for more
+details on how this works.</p>
+</div>
+</div></body>
+</html>

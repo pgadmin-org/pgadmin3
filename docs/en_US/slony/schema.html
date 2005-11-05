@@ -1,0 +1,327 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 1. Schema schemadoc</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="prev" href="supportedplatforms.html" title="Slony-I Supported Platforms">
+<link rel="next" href="table.sl-confirm.html" title="1.2.          Table:
+         
+         sl_confirm
+        ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="schema">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="schema"></a>Chapter 1. Schema schemadoc</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="schema.html#table.sl-config-lock">1.1.          Table:
+         
+         <code class="structname">sl_config_lock</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-confirm.html">1.2.          Table:
+         
+         <code class="structname">sl_confirm</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-event.html">1.3.          Table:
+         
+         <code class="structname">sl_event</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-listen.html">1.4.          Table:
+         
+         <code class="structname">sl_listen</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-log-1.html">1.5.          Table:
+         
+         <code class="structname">sl_log_1</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-log-2.html">1.6.          Table:
+         
+         <code class="structname">sl_log_2</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-node.html">1.7.          Table:
+         
+         <code class="structname">sl_node</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-path.html">1.8.          Table:
+         
+         <code class="structname">sl_path</code>
+        </a></span></dt>
+<dt><span class="section"><a href="view.sl-seqlastvalue.html">1.9.          View:
+         
+         <code class="structname">sl_seqlastvalue</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-seqlog.html">1.10.          Table:
+         
+         <code class="structname">sl_seqlog</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-sequence.html">1.11.          Table:
+         
+         <code class="structname">sl_sequence</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-set.html">1.12.          Table:
+         
+         <code class="structname">sl_set</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-setsync.html">1.13.          Table:
+         
+         <code class="structname">sl_setsync</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-subscribe.html">1.14.          Table:
+         
+         <code class="structname">sl_subscribe</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-table.html">1.15.          Table:
+         
+         <code class="structname">sl_table</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-trigger.html">1.16.          Table:
+         
+         <code class="structname">sl_trigger</code>
+        </a></span></dt>
+<dt><span class="section"><a href="function.add-missing-table-field-text-text-text-text.html">1.17.        add_missing_table_field( text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.altertableforreplication-integer.html">1.18.        altertableforreplication( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.altertablerestore-integer.html">1.19.        altertablerestore( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.cleanupevent.html">1.20.        cleanupevent(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.cleanuplistener.html">1.21.        cleanuplistener(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text.html">1.22.        createevent( name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text.html">1.23.        createevent( name, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text.html">1.24.        createevent( name, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text.html">1.25.        createevent( name, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text.html">1.26.        createevent( name, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text.html">1.27.        createevent( name, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text-text.html">1.28.        createevent( name, text, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text-text-text.html">1.29.        createevent( name, text, text, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text-text-text-text.html">1.30.        createevent( name, text, text, text, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.ddlscript-integer-text-integer.html">1.31.        ddlscript( integer, text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.ddlscript-int-integer-text-integer.html">1.32.        ddlscript_int( integer, text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.denyaccess.html">1.33.        denyaccess(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineattkindserial-text.html">1.34.        determineattkindserial( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineattkindunique-text-name.html">1.35.        determineattkindunique( text, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineidxnameserial-text.html">1.36.        determineidxnameserial( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineidxnameunique-text-name.html">1.37.        determineidxnameunique( text, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.disablenode-integer.html">1.38.        disablenode( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.disablenode-int-integer.html">1.39.        disablenode_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droplisten-integer-integer-integer.html">1.40.        droplisten( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droplisten-int-integer-integer-integer.html">1.41.        droplisten_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropnode-integer.html">1.42.        dropnode( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropnode-int-integer.html">1.43.        dropnode_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droppath-integer-integer.html">1.44.        droppath( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droppath-int-integer-integer.html">1.45.        droppath_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropset-integer.html">1.46.        dropset( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropset-int-integer.html">1.47.        dropset_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droptrigger-integer-name.html">1.48.        droptrigger( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droptrigger-int-integer-name.html">1.49.        droptrigger_int( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablenode-integer.html">1.50.        enablenode( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablenode-int-integer.html">1.51.        enablenode_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablesubscription-integer-integer-integer.html">1.52.        enablesubscription( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablesubscription-int-integer-integer-integer.html">1.53.        enablesubscription_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.failednode-integer-integer.html">1.54.        failednode( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.failednode2-integer-integer-integer-bigint-bigint.html">1.55.        failednode2( integer, integer, integer, bigint, bigint )
+      </a></span></dt>
+<dt><span class="section"><a href="function.failoverset-int-integer-integer-integer.html">1.56.        failoverset_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html">1.57.        forwardconfirm( integer, integer, bigint, timestamp without time zone )
+      </a></span></dt>
+<dt><span class="section"><a href="function.generate-sync-event-interval.html">1.58.        generate_sync_event( interval )
+      </a></span></dt>
+<dt><span class="section"><a href="function.getlocalnodeid-name.html">1.59.        getlocalnodeid( name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.getmoduleversion.html">1.60.        getmoduleversion(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.getsessionrole-name.html">1.61.        getsessionrole( name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.initializelocalnode-integer-text.html">1.62.        initializelocalnode( integer, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.lockedset.html">1.63.        lockedset(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.lockset-integer.html">1.64.        lockset( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.logtrigger.html">1.65.        logtrigger(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.mergeset-integer-integer.html">1.66.        mergeset( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.mergeset-int-integer-integer.html">1.67.        mergeset_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.moveset-integer-integer.html">1.68.        moveset( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.moveset-int-integer-integer-integer.html">1.69.        moveset_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.rebuildlistenentries.html">1.70.        rebuildlistenentries(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.rebuildlistenentriesone-integer-integer.html">1.71.        rebuildlistenentriesone( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.sequencelastvalue-text.html">1.72.        sequencelastvalue( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.sequencesetvalue-integer-integer-bigint-bigint.html">1.73.        sequencesetvalue( integer, integer, bigint, bigint )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddsequence-integer-integer-text-text.html">1.74.        setaddsequence( integer, integer, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddsequence-int-integer-integer-text-text.html">1.75.        setaddsequence_int( integer, integer, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddtable-integer-integer-text-name-text.html">1.76.        setaddtable( integer, integer, text, name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddtable-int-integer-integer-text-name-text.html">1.77.        setaddtable_int( integer, integer, text, name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdropsequence-integer.html">1.78.        setdropsequence( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdropsequence-int-integer.html">1.79.        setdropsequence_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdroptable-integer.html">1.80.        setdroptable( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdroptable-int-integer.html">1.81.        setdroptable_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovesequence-integer-integer.html">1.82.        setmovesequence( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovesequence-int-integer-integer.html">1.83.        setmovesequence_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovetable-integer-integer.html">1.84.        setmovetable( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovetable-int-integer-integer.html">1.85.        setmovetable_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setsessionrole-name-text.html">1.86.        setsessionrole( name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slon-quote-brute-text.html">1.87.        slon_quote_brute( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slon-quote-input-text.html">1.88.        slon_quote_input( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversion.html">1.89.        slonyversion(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversionmajor.html">1.90.        slonyversionmajor(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversionminor.html">1.91.        slonyversionminor(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversionpatchlevel.html">1.92.        slonyversionpatchlevel(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storelisten-integer-integer-integer.html">1.93.        storelisten( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storelisten-int-integer-integer-integer.html">1.94.        storelisten_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storenode-integer-text-boolean.html">1.95.        storenode( integer, text, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storenode-int-integer-text-boolean.html">1.96.        storenode_int( integer, text, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storepath-integer-integer-text-integer.html">1.97.        storepath( integer, integer, text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storepath-int-integer-integer-text-integer.html">1.98.        storepath_int( integer, integer, text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storeset-integer-text.html">1.99.        storeset( integer, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storeset-int-integer-integer-text.html">1.100.        storeset_int( integer, integer, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storetrigger-integer-name.html">1.101.        storetrigger( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storetrigger-int-integer-name.html">1.102.        storetrigger_int( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.subscribeset-integer-integer-integer-boolean.html">1.103.        subscribeset( integer, integer, integer, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.subscribeset-int-integer-integer-integer-boolean.html">1.104.        subscribeset_int( integer, integer, integer, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.tableaddkey-text.html">1.105.        tableaddkey( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.tabledropkey-integer.html">1.106.        tabledropkey( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.tablehasserialkey-text.html">1.107.        tablehasserialkey( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.terminatenodeconnections-name.html">1.108.        terminatenodeconnections( name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.uninstallnode.html">1.109.        uninstallnode(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.unlockset-integer.html">1.110.        unlockset( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.unsubscribeset-integer-integer.html">1.111.        unsubscribeset( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.unsubscribeset-int-integer-integer.html">1.112.        unsubscribeset_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.updaterelname-integer-integer.html">1.113.        updaterelname( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.updatereloid-integer-integer.html">1.114.        updatereloid( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.upgradeschema-text.html">1.115.        upgradeschema( text )
+      </a></span></dt>
+</dl>
+</div>
+<p></p>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="table.sl-config-lock"></a>1.1.          Table:
+         
+         <code class="structname">sl_config_lock</code>
+        </h2></div></div></div>
+<p>          This table exists solely to prevent overlapping execution of configuration change procedures and the resulting possible deadlocks.
+
+        </p>
+<p>          </p>
+<div class="variablelist">
+<p class="title"><b>              Structure of <code class="structname">sl_config_lock</code>
+            </b></p>
+<dl>
+<dt><span class="term"><code class="structfield">dummy</code></span></dt>
+<dd><p>                <code class="type">integer</code>
+
+
+
+
+
+
+
+              </p></dd>
+</dl>
+</div>
+<p>
+
+
+
+
+
+
+
+
+
+
+      </p>
+</div>
+</div></body>
+</html>

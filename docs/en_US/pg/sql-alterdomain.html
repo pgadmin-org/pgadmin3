@@ -1,0 +1,158 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER DOMAIN</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-alterdatabase.html" title="ALTER DATABASE">
+<link rel="next" href="sql-alterfunction.html" title="ALTER FUNCTION">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-alterdomain"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>   ALTER DOMAIN
+   &#8212;    change the definition of a domain
+  </p>
+</div>
+<a name="id688125"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER DOMAIN <em class="replaceable"><code>name</code></em>
+    { SET DEFAULT <em class="replaceable"><code>expression</code></em> | DROP DEFAULT }
+ALTER DOMAIN <em class="replaceable"><code>name</code></em>
+    { SET | DROP } NOT NULL
+ALTER DOMAIN <em class="replaceable"><code>name</code></em>
+    ADD <em class="replaceable"><code>domain_constraint</code></em>
+ALTER DOMAIN <em class="replaceable"><code>name</code></em>
+    DROP CONSTRAINT <em class="replaceable"><code>constraint_name</code></em> [ RESTRICT | CASCADE ]
+ALTER DOMAIN <em class="replaceable"><code>name</code></em>
+    OWNER TO <em class="replaceable"><code>new_owner</code></em> 
+ALTER DOMAIN <em class="replaceable"><code>name</code></em>
+    SET SCHEMA <em class="replaceable"><code>new_schema</code></em> 
+  </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id688220"></a><h2>Description</h2>
+<p>   <code class="command">ALTER DOMAIN</code> changes the definition of an existing domain.
+   There are several sub-forms:
+  </p>
+<div class="variablelist"><dl>
+<dt><span class="term">SET/DROP DEFAULT</span></dt>
+<dd><p>      These forms set or remove the default value for a domain. Note
+      that defaults only apply to subsequent <code class="command">INSERT</code>
+      commands; they do not affect rows already in a table using the domain.
+     </p></dd>
+<dt><span class="term">SET/DROP NOT NULL</span></dt>
+<dd><p>      These forms change whether a domain is marked to allow NULL
+      values or to reject NULL values.  You may only <code class="literal">SET NOT NULL</code>
+      when the columns using the domain contain no null values.
+     </p></dd>
+<dt><span class="term">ADD <em class="replaceable"><code>domain_constraint</code></em></span></dt>
+<dd><p>      This form adds a new constraint to a domain using the same syntax as
+      <a href="sql-createdomain.html">CREATE DOMAIN</a>.
+      This will only succeed if all columns using the domain satisfy the
+      new constraint.
+     </p></dd>
+<dt><span class="term">DROP CONSTRAINT</span></dt>
+<dd><p>      This form drops constraints on a domain.
+     </p></dd>
+<dt><span class="term">OWNER</span></dt>
+<dd><p>      This form changes the owner of the domain to the specified user.
+     </p></dd>
+<dt><span class="term">SET SCHEMA</span></dt>
+<dd><p>      This form changes the schema of the domain.  Any constraints
+      associated with the domain are moved into the new schema as well.
+     </p></dd>
+</dl></div>
+<p>   You must own the domain to use <code class="command">ALTER DOMAIN</code>.
+   To change the schema of a domain, you must also have
+   <code class="literal">CREATE</code> privilege on the new schema.
+   To alter the owner, you must also be a direct or indirect member of the new
+   owning role, and that role must have <code class="literal">CREATE</code> privilege on
+   the domain's schema.  (These restrictions enforce that altering the owner
+   doesn't do anything you couldn't do by dropping and recreating the domain.
+   However, a superuser can alter ownership of any domain anyway.)
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id688356"></a><h2>Parameters</h2>
+<p>    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>        The name (possibly schema-qualified) of an existing domain to
+        alter.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>domain_constraint</code></em></span></dt>
+<dd><p>        New domain constraint for the domain.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>constraint_name</code></em></span></dt>
+<dd><p>        Name of an existing constraint to drop.
+       </p></dd>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
+<dd><p>        Automatically drop objects that depend on the constraint.
+       </p></dd>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
+<dd><p>        Refuse to drop the constraint if there are any dependent
+        objects. This is the default behavior.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_owner</code></em></span></dt>
+<dd><p>        The user name of the new owner of the domain.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_schema</code></em></span></dt>
+<dd><p>        The new schema for the domain.
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id688453"></a><h2>Examples</h2>
+<p>   To add a <code class="literal">NOT NULL</code> constraint to a domain:
+   </p>
+<pre class="programlisting">ALTER DOMAIN zipcode SET NOT NULL;
+   </pre>
+<p>
+   To remove a <code class="literal">NOT NULL</code> constraint from a domain:
+   </p>
+<pre class="programlisting">ALTER DOMAIN zipcode DROP NOT NULL;
+   </pre>
+<p>
+  </p>
+<p> 
+   To add a check constraint to a domain:
+   </p>
+<pre class="programlisting">ALTER DOMAIN zipcode ADD CONSTRAINT zipchk CHECK (char_length(VALUE) = 5);
+   </pre>
+<p>
+  </p>
+<p> 
+   To remove a check constraint from a domain:
+   </p>
+<pre class="programlisting">ALTER DOMAIN zipcode DROP CONSTRAINT zipchk;
+   </pre>
+<p>
+  </p>
+<p>   To move the domain into a different schema:
+   </p>
+<pre class="programlisting">ALTER DOMAIN zipcode SET SCHEMA customers;
+   </pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-alterdomain-compatibility"></a><h2>Compatibility</h2>
+<p>   <code class="command">ALTER DOMAIN</code> conforms to the <span class="acronym">SQL</span>
+   standard,
+   except for the <code class="literal">OWNER</code> and <code class="literal">SET SCHEMA</code> variants,
+   which are <span class="productname">PostgreSQL</span> extensions.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-alterdomain-see-also"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createdomain.html">CREATE DOMAIN</a>, <a href="sql-dropdomain.html">DROP DOMAIN</a></span>
+</div>
+</div></body>
+</html>

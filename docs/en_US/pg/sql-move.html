@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>MOVE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-lock.html" title="LOCK">
+<link rel="next" href="sql-notify.html" title="NOTIFY">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-move"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>MOVE &#8212; position a cursor</p>
+</div>
+<a name="id724741"></a><a name="id724751"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">MOVE [ <em class="replaceable"><code>direction</code></em> { FROM | IN } ] <em class="replaceable"><code>cursorname</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724782"></a><h2>Description</h2>
+<p>   <code class="command">MOVE</code> repositions a cursor without retrieving any data.
+   <code class="command">MOVE</code> works exactly like the <code class="command">FETCH</code>
+   command, except it only positions the cursor and does not return rows.
+  </p>
+<p>   Refer to 
+   <a href="sql-fetch.html">FETCH</a>
+   for details on syntax and usage.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724825"></a><h2>Outputs</h2>
+<p>   On successful completion, a <code class="command">MOVE</code> command returns a command
+   tag of the form
+</p>
+<pre class="screen">MOVE <em class="replaceable"><code>count</code></em></pre>
+<p>
+   The <em class="replaceable"><code>count</code></em> is the number
+   of rows that a <code class="command">FETCH</code> command with the same parameters
+   would have returned (possibly zero).
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724866"></a><h2>Examples</h2>
+<pre class="programlisting">BEGIN WORK;
+DECLARE liahona CURSOR FOR SELECT * FROM films;
+
+-- Skip the first 5 rows:
+MOVE FORWARD 5 IN liahona;
+MOVE 5
+
+-- Fetch the 6th row from the cursor liahona:
+FETCH 1 FROM liahona;
+ code  | title  | did | date_prod  |  kind  |  len
+-------+--------+-----+------------+--------+-------
+ P_303 | 48 Hrs | 103 | 1982-10-22 | Action | 01:37
+(1 row)
+
+-- Close the cursor liahona and end the transaction:
+CLOSE liahona;
+COMMIT WORK;</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724882"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">MOVE</code> statement in the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724896"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-fetch.html">FETCH</a></span>
+</div>
+</div></body>
+</html>

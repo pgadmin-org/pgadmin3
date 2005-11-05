@@ -1,0 +1,151 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Configuration and Action commmands</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
+<link rel="prev" href="admconninfo.html" title="ADMIN CONNINFO">
+<link rel="next" href="stmtecho.html" title="ECHO">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="reference" lang="en" id="cmds">
+<div class="titlepage">
+<div><div><h1 class="title">
+<a name="cmds"></a>Configuration and Action commmands</h1></div></div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt>
+<span class="refentrytitle"><a href="stmtecho.html">ECHO</a></span><span class="refpurpose"> -  Generic output tool </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtexit.html">EXIT</a></span><span class="refpurpose"> -  Terminate Slonik script with signal </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtinitcluster.html">INIT CLUSTER</a></span><span class="refpurpose"> - Initialize Slony-I cluster</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstorenode.html">STORE NODE</a></span><span class="refpurpose"> -  Initialize Slony-I node </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdropnode.html">DROP NODE</a></span><span class="refpurpose"> -  Decommission Slony-I node </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtuninstallnode.html">UNINSTALL NODE</a></span><span class="refpurpose"> -  Decommission Slony-I node </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtrestartnode.html">RESTART NODE</a></span><span class="refpurpose"> -  Restart Slony-I node </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstorepath.html">STORE
+     PATH</a></span><span class="refpurpose"> -  Configure Slony-I node connection </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdroppath.html">DROP PATH</a></span><span class="refpurpose"> -  Delete Slony-I connection information </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstorelisten.html">STORE LISTEN</a></span><span class="refpurpose"> -  Configure Slony-I node to
+    indicate where to listen for events </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdroplisten.html">DROP LISTEN</a></span><span class="refpurpose"> -  Eliminate configuration indicating how
+    Slony-I node listens for events
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmttableaddkey.html">TABLE ADD KEY</a></span><span class="refpurpose"> -  Add primary key for use by
+    Slony-I for a table with no suitable
+    key </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtcreateset.html">CREATE SET</a></span><span class="refpurpose"> -  Create Slony-I replication
+    set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdropset.html">DROP SET</a></span><span class="refpurpose"> -  Discard Slony-I
+    replication set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtmergeset.html">MERGE
+     SET</a></span><span class="refpurpose"> -  Merge Slony-I replication
+    sets together </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetaddtable.html">SET ADD TABLE</a></span><span class="refpurpose"> -  Add a table to a Slony-I
+    replication set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetaddsequence.html">SET ADD SEQUENCE</a></span><span class="refpurpose"> -  Add a sequence to a
+    Slony-I replication set
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetdroptable.html">SET DROP TABLE</a></span><span class="refpurpose"> -  Remove a table from a
+    Slony-I replication set
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetdropsequence.html">SET DROP SEQUENCE</a></span><span class="refpurpose"> -  Remove a sequence from a
+    Slony-I replication set
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetmovetable.html">SET MOVE
+     TABLE</a></span><span class="refpurpose"> -  Move a table from one
+    Slony-I replication set to another
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetmovesequence.html">SET MOVE SEQUENCE</a></span><span class="refpurpose"> -  Move a sequence from one
+    Slony-I replication set to another
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstoretrigger.html">STORE TRIGGER</a></span><span class="refpurpose"> -  Indicate that a trigger should not be disabled by
+    Slony-I on a subscriber node
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdroptrigger.html">DROP TRIGGER</a></span><span class="refpurpose"> -  Return a trigger to default behavior, where it will
+    not fire on subscriber nodes </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsubscribeset.html">SUBSCRIBE SET</a></span><span class="refpurpose"> -  Start replication of Slony-I set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtunsubscribeset.html">UNSUBSCRIBE SET</a></span><span class="refpurpose"> -  End replication of Slony-I set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtlockset.html">LOCK SET</a></span><span class="refpurpose"> -  Guard Slony-I replication
+    set to prepare for MOVE SET
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtunlockset.html">UNLOCK SET</a></span><span class="refpurpose"> -  Unlock a Slony-I set that was locked </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtmoveset.html">MOVE SET</a></span><span class="refpurpose"> -  Change origin of a Slony-I
+    replication set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtfailover.html">FAILOVER</a></span><span class="refpurpose"> -  Fail a broken replication set over to a backup node
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtddlscript.html">EXECUTE SCRIPT</a></span><span class="refpurpose"> -  Execute SQL/DDL script  </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtupdatefunctions.html">UPDATE FUNCTIONS</a></span><span class="refpurpose"> -  Reload stored functions </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtwaitevent.html">WAIT FOR EVENT</a></span><span class="refpurpose"> -  Have Slonik script wait for previous event to
+    complete </span>
+</dt>
+</dl>
+</div>
+</div></body>
+</html>

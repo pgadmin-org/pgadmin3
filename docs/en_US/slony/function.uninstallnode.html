@@ -1,0 +1,58 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.109.        uninstallnode(  )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.terminatenodeconnections-name.html" title="1.108.        terminatenodeconnections( name )
+      ">
+<link rel="next" href="function.unlockset-integer.html" title="1.110.        unlockset( integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.uninstallnode"></a>1.109.        uninstallnode(  )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       Reset the whole database to standalone by removing the whole
+replication system.
+        </p>
+<pre class="programlisting">declare
+	v_tab_row		record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- This is us ... time for suicide! Restore all tables to
+	-- their original status.
+	-- ----
+	for v_tab_row in select * from sl_table loop
+		perform alterTableRestore(v_tab_row.tab_id);
+		perform tableDropKey(v_tab_row.tab_id);
+	end loop;
+
+	raise notice 'Slony-I: Please drop schema "_schemadoc"';
+	return 0;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

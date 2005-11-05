@@ -1,0 +1,137 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.35.        determineattkindunique( text, name )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.determineattkindserial-text.html" title="1.34.        determineattkindserial( text )
+      ">
+<link rel="next" href="function.determineidxnameserial-text.html" title="1.36.        determineidxnameserial( text )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.determineattkindunique-text-name"></a>1.35.        determineattkindunique( text, name )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>text</div>
+</div>
+</div>
+<p>
+ 
+       determineAttKindUnique (tab_fqname, indexname)
+
+Given a tablename, return the Slony-I specific attkind (used for the
+log trigger) of the table. Use the specified unique index or the
+primary key (if indexname is NULL).
+        </p>
+<pre class="programlisting">declare
+	p_tab_fqname	alias for $1;
+	v_tab_fqname_quoted	text default '';
+	p_idx_name		alias for $2;
+	v_idx_name_quoted	text;
+	v_idxrow		record;
+	v_attrow		record;
+	v_i				integer;
+	v_attno			int2;
+	v_attkind		text default '';
+	v_attfound		bool;
+begin
+	v_tab_fqname_quoted := slon_quote_input(p_tab_fqname);
+	v_idx_name_quoted := slon_quote_brute(p_idx_name);
+	--
+	-- Ensure that the table exists
+	--
+	if (select PGC.relname
+				from "pg_catalog".pg_class PGC,
+					"pg_catalog".pg_namespace PGN
+				where slon_quote_brute(PGN.nspname) || '.' ||
+					slon_quote_brute(PGC.relname) = v_tab_fqname_quoted
+					and PGN.oid = PGC.relnamespace) is null then
+		raise exception 'Slony-I: table % not found', v_tab_fqname_quoted;
+	end if;
+
+	--
+	-- Lookup the tables primary key or the specified unique index
+	--
+	if p_idx_name isnull then
+		raise exception 'Slony-I: index name must be specified';
+	else
+		select PGXC.relname, PGX.indexrelid, PGX.indkey
+				into v_idxrow
+				from "pg_catalog".pg_class PGC,
+					"pg_catalog".pg_namespace PGN,
+					"pg_catalog".pg_index PGX,
+					"pg_catalog".pg_class PGXC
+				where slon_quote_brute(PGN.nspname) || '.' ||
+					slon_quote_brute(PGC.relname) = v_tab_fqname_quoted
+					and PGN.oid = PGC.relnamespace
+					and PGX.indrelid = PGC.oid
+					and PGX.indexrelid = PGXC.oid
+					and PGX.indisunique
+					and slon_quote_brute(PGXC.relname) = v_idx_name_quoted;
+		if not found then
+			raise exception 'Slony-I: table % has no unique index %',
+					v_tab_fqname_quoted, v_idx_name_quoted;
+		end if;
+	end if;
+
+	--
+	-- Loop over the tables attributes and check if they are
+	-- index attributes. If so, add a "k" to the return value,
+	-- otherwise add a "v".
+	--
+	for v_attrow in select PGA.attnum, PGA.attname
+			from "pg_catalog".pg_class PGC,
+			    "pg_catalog".pg_namespace PGN,
+				"pg_catalog".pg_attribute PGA
+			where slon_quote_brute(PGN.nspname) || '.' ||
+			    slon_quote_brute(PGC.relname) = v_tab_fqname_quoted
+				and PGN.oid = PGC.relnamespace
+				and PGA.attrelid = PGC.oid
+				and not PGA.attisdropped
+				and PGA.attnum &gt; 0
+			order by attnum
+	loop
+		v_attfound = 'f';
+
+		v_i := 0;
+		loop
+			select indkey[v_i] into v_attno from "pg_catalog".pg_index
+					where indexrelid = v_idxrow.indexrelid;
+			if v_attno isnull or v_attno = 0 then
+				exit;
+			end if;
+			if v_attrow.attnum = v_attno then
+				v_attfound = 't';
+				exit;
+			end if;
+			v_i := v_i + 1;
+		end loop;
+
+		if v_attfound then
+			v_attkind := v_attkind || 'k';
+		else
+			v_attkind := v_attkind || 'v';
+		end if;
+	end loop;
+
+	--
+	-- Return the resulting attkind
+	--
+	return v_attkind;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

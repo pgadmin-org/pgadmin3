@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_getbinval</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="spi-interface-support.html" title="40.2. Interface Support Functions">
+<link rel="prev" href="spi-spi-getvalue.html" title="SPI_getvalue">
+<link rel="next" href="spi-spi-gettype.html" title="SPI_gettype">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-getbinval"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_getbinval &#8212; return the binary value of the specified column</p>
+</div>
+<a name="id684580"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">Datum SPI_getbinval(HeapTuple <em class="parameter"><code>row</code></em>, TupleDesc <em class="parameter"><code>rowdesc</code></em>, int <em class="parameter"><code>colnumber</code></em>, bool * <em class="parameter"><code>isnull</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684620"></a><h2>Description</h2>
+<p>   <code class="function">SPI_getbinval</code> returns the value of the
+   specified column in the internal form (as type <code class="type">Datum</code>).
+  </p>
+<p>   This function does not allocate new space for the datum.  In the
+   case of a pass-by-reference data type, the return value will be a
+   pointer into the passed row.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684644"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
+<dd><p>      input row to be examined
+     </p></dd>
+<dt><span class="term"><code class="literal">TupleDesc <em class="parameter"><code>rowdesc</code></em></code></span></dt>
+<dd><p>      input row description
+     </p></dd>
+<dt><span class="term"><code class="literal">int <em class="parameter"><code>colnumber</code></em></code></span></dt>
+<dd><p>      column number (count starts at 1)
+     </p></dd>
+<dt><span class="term"><code class="literal">bool * <em class="parameter"><code>isnull</code></em></code></span></dt>
+<dd><p>      flag for a null value in the column
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684717"></a><h2>Return Value</h2>
+<p>   The binary value of the column is returned.  The variable pointed
+   to by <em class="parameter"><code>isnull</code></em> is set to true if the column is
+   null, else to false.
+  </p>
+<p>   <code class="varname">SPI_result</code> is set to
+   <code class="symbol">SPI_ERROR_NOATTRIBUTE</code> on error.
+  </p>
+</div>
+</div></body>
+</html>

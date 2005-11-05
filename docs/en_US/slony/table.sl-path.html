@@ -1,0 +1,157 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.8.          Table:
+         
+         sl_path
+        </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="table.sl-node.html" title="1.7.          Table:
+         
+         sl_node
+        ">
+<link rel="next" href="view.sl-seqlastvalue.html" title="1.9.          View:
+         
+         sl_seqlastvalue
+        ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="table.sl-path"></a>1.8.          Table:
+         
+         <code class="structname">sl_path</code>
+        </h2></div></div></div>
+<p>          Holds connection information for the paths between nodes, and the synchronisation delay
+        </p>
+<p>          </p>
+<div class="variablelist">
+<p class="title"><b>              Structure of <code class="structname">sl_path</code>
+            </b></p>
+<dl>
+<dt><span class="term"><code class="structfield">pa_server</code></span></dt>
+<dd>
+<p>                <code class="type">integer</code>
+
+
+
+
+
+
+                <code class="literal">PRIMARY KEY</code>
+
+
+
+
+
+
+
+
+
+
+
+
+                <code class="literal">REFERENCES</code> <a href="table.sl-node.html">sl_node</a>&gt;
+
+
+
+
+              </p>
+<p>                The Node ID # (from sl_node.no_id) of the data source
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">pa_client</code></span></dt>
+<dd>
+<p>                <code class="type">integer</code>
+
+
+
+
+
+
+                <code class="literal">PRIMARY KEY</code>
+
+
+
+
+
+
+
+
+
+
+
+
+                <code class="literal">REFERENCES</code> <a href="table.sl-node.html">sl_node</a>&gt;
+
+
+
+
+              </p>
+<p>                The Node ID # (from sl_node.no_id) of the data target
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">pa_conninfo</code></span></dt>
+<dd>
+<p>                <code class="type">text</code>
+
+
+
+                <code class="literal">NOT NULL</code>
+
+
+
+
+
+              </p>
+<p>                The PostgreSQL connection string used to connect to the source node.
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">pa_connretry</code></span></dt>
+<dd>
+<p>                <code class="type">integer</code>
+
+
+
+
+
+
+
+              </p>
+<p>                The synchronisation delay, in seconds
+              </p>
+</dd>
+</dl>
+</div>
+<p>
+
+
+
+
+
+
+
+        </p>
+<div class="itemizedlist">
+<p class="title"><b>            Tables referencing sl_listen via Foreign Key Constraints
+          </b></p>
+<ul type="disc">
+<li><p>              <a href="table.sl-listen.html">sl_listen</a>&gt;
+            </p></li>
+<li><p>              <a href="table.sl-subscribe.html">sl_subscribe</a>&gt;
+            </p></li>
+</ul>
+</div>
+<p>
+
+
+
+
+
+
+      </p>
+</div></body>
+</html>

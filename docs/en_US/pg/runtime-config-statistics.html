@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.8. Run-Time Statistics</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
+<link rel="prev" href="runtime-config-logging.html" title="17.7. Error Reporting and Logging">
+<link rel="next" href="runtime-config-autovacuum.html" title="17.9. Automatic Vacuuming">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-statistics"></a>17.8. Run-Time Statistics</h2></div></div></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-statistics-monitor"></a>17.8.1. Statistics Monitoring</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_statement_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_parser_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_planner_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="varname">log_executor_stats</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        For each query, write performance statistics of the respective
+        module to the server log. This is a crude profiling
+        instrument.  <code class="varname">log_statement_stats</code> reports total
+        statement statistics, while the others report per-module statistics.
+        <code class="varname">log_statement_stats</code> cannot be enabled together with
+        any of the per-module options.  All of these options are disabled by
+        default.   Only superusers can change these settings.
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-statistics-collector"></a>17.8.2. Query and Index Statistics Collector</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-stats-start-collector"></a><span class="term"><code class="varname">stats_start_collector</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Controls whether the server should start the
+        statistics-collection subprocess.  This is on by default, but
+        may be turned off if you know you have no interest in
+        collecting statistics.  This option can only be set at server
+        start.
+       </p></dd>
+<dt>
+<a name="guc-stats-command-string"></a><span class="term"><code class="varname">stats_command_string</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables the collection of statistics on the currently
+        executing command of each session, along with the time at
+        which that command began execution. This option is off by
+        default. Note that even when enabled, this information is not
+        visible to all users, only to superusers and the user owning
+        the session being reported on; so it should not represent a
+        security risk. This data can be accessed via the
+        <code class="structname">pg_stat_activity</code> system view; refer
+        to <a href="monitoring.html" title="Chapter 24. Monitoring Database Activity">Chapter 24, <i>Monitoring Database Activity</i></a> for more information.
+       </p></dd>
+<dt>
+<a name="guc-stats-block-level"></a><span class="term"><code class="varname">stats_block_level</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables the collection of block-level statistics on database
+        activity. This option is disabled by default. If this option
+        is enabled, the data that is produced can be accessed via the
+        <code class="structname">pg_stat</code> and
+        <code class="structname">pg_statio</code> family of system views;
+        refer to <a href="monitoring.html" title="Chapter 24. Monitoring Database Activity">Chapter 24, <i>Monitoring Database Activity</i></a> for more information.
+       </p></dd>
+<dt>
+<a name="guc-stats-row-level"></a><span class="term"><code class="varname">stats_row_level</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Enables the collection of row-level statistics on database
+        activity. This option is disabled by default. If this option
+        is enabled, the data that is produced can be accessed via the
+        <code class="structname">pg_stat</code> and
+        <code class="structname">pg_statio</code> family of system views;
+        refer to <a href="monitoring.html" title="Chapter 24. Monitoring Database Activity">Chapter 24, <i>Monitoring Database Activity</i></a> for more information.
+       </p></dd>
+<dt>
+<a name="guc-stats-reset-on-server-start"></a><span class="term"><code class="varname">stats_reset_on_server_start</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        If on, collected statistics are zeroed out whenever the server
+        is restarted. If off, statistics are accumulated across server
+        restarts. The default is <code class="literal">off</code>. This option can only 
+        be set at server start.
+       </p></dd>
+</dl></div>
+</div>
+</div></body>
+</html>

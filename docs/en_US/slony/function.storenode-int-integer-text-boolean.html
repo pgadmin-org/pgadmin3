@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.96.        storenode_int( integer, text, boolean )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.storenode-integer-text-boolean.html" title="1.95.        storenode( integer, text, boolean )
+      ">
+<link rel="next" href="function.storepath-integer-integer-text-integer.html" title="1.97.        storepath( integer, integer, text, integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.storenode-int-integer-text-boolean"></a>1.96.        storenode_int( integer, text, boolean )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       no_id - Node ID #
+no_comment - Human-oriented comment
+no_spool - Flag for virtual spool nodes
+
+Internal function to process the STORE_NODE event for node no_id
+        </p>
+<pre class="programlisting">declare
+	p_no_id			alias for $1;
+	p_no_comment	alias for $2;
+	p_no_spool		alias for $3;
+	v_old_row		record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Check if the node exists
+	-- ----
+	select * into v_old_row
+			from sl_node
+			where no_id = p_no_id
+			for update;
+	if found then 
+		-- ----
+		-- Node exists, update the existing row.
+		-- ----
+		update sl_node
+				set no_comment = p_no_comment,
+				no_spool = p_no_spool
+				where no_id = p_no_id;
+	else
+		-- ----
+		-- New node, insert the sl_node row
+		-- ----
+		insert into sl_node
+				(no_id, no_active, no_comment, no_spool) values
+				(p_no_id, 'f', p_no_comment, p_no_spool);
+	end if;
+
+	return p_no_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

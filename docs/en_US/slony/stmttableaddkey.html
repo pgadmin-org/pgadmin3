@@ -1,0 +1,67 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TABLE ADD KEY</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtdroplisten.html" title="DROP LISTEN">
+<link rel="next" href="stmtcreateset.html" title="CREATE SET">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmttableaddkey"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>TABLE ADD KEY &#8212;  Add primary key for use by
+    <span class="productname">Slony-I</span> for a table with no suitable
+    key </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">TABLE ADD KEY (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id533959"></a><h2>Description</h2>
+<p>     In the <span class="productname">Slony-I</span> replication system,
+     every replicated table is required to have at least one
+     <code class="command">UNIQUE</code> constraint whose columns are
+     declared <code class="command">NOT NULL.</code> Any primary key
+     satisfies this requirement.
+    </p>
+<p>     As a last resort, this command can be used to add such an
+     attribute to a table that does not have a primary key. Since
+     this modification can have unwanted side effects, <span class="emphasis"><em>it is
+      strongly recommended that users add a unique and not null
+      attribute by other means.</em></span>
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> NODE ID = ival </code></span></dt>
+<dd><p> Node ID of the set origin where the table will be
+	added as a set member. (See <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>.)</p></dd>
+<dt><span class="term"><code class="literal"> FULLY QUALIFIED NAME  = 'string' </code></span></dt>
+<dd><p> The full name of the table consisting of the schema
+	and table name as the SQL expression <code class="command">quote_ident(nspname)
+	 || '.' || quote_ident(relname)</code>
+	would return it.</p></dd>
+</dl></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p> There is a limitation at present; you can create a
+    <span class="productname">PostgreSQL</span> table with no columns, as with <code class="command"> create table
+    real_short (); </code>.  <span class="productname">Slony-I</span> will refuse to handle such a
+    table.  This isn't presently regarded as a serious limitation, as
+    we can't see there being terribly much interest in replicating
+    tables that contain no application data.</p>
+</div>
+<p> This uses <a href="function.tableaddkey-text.html">schemadoctableaddkey( text )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id534081"></a><h2>Example</h2>
+<pre class="programlisting">     TABLE ADD KEY ( NODE ID = 1, 
+     FULLY QUALIFIED NAME = 'public.history' );
+    </pre>
+</div>
+</div></body>
+</html>

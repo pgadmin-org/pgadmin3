@@ -1,0 +1,97 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 30. ECPG - Embedded SQL in C</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
+<link rel="prev" href="lo-examplesect.html" title="29.5. Example Program">
+<link rel="next" href="ecpg-connect.html" title="30.2. Connecting to the Database Server">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="ecpg">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ecpg"></a>Chapter 30. <span class="application">ECPG</span> - Embedded <span class="acronym">SQL</span> in C</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="ecpg.html#ecpg-concept">30.1. The Concept</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-connect.html">30.2. Connecting to the Database Server</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-disconnect.html">30.3. Closing a Connection</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-commands.html">30.4. Running SQL Commands</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-set-connection.html">30.5. Choosing a Connection</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-variables.html">30.6. Using Host Variables</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ecpg-variables.html#id636705">30.6.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id636748">30.6.2. Declare Sections</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id636838">30.6.3. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id636946">30.6.4. Indicators</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ecpg-dynamic.html">30.7. Dynamic SQL</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-descriptors.html">30.8. Using SQL Descriptor Areas</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-errors.html">30.9. Error Handling</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ecpg-errors.html#id637499">30.9.1. Setting Callbacks</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id637798">30.9.2. sqlca</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id638068">30.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ecpg-include.html">30.10. Including Files</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-process.html">30.11. Processing Embedded SQL Programs</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-library.html">30.12. Library Functions</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-develop.html">30.13. Internals</a></span></dt>
+</dl>
+</div>
+<a name="id636017"></a><a name="id636031"></a><a name="id635798"></a><p>  This chapter describes the embedded <span class="acronym">SQL</span> package
+  for <span class="productname">PostgreSQL</span>. It was written by
+  Linus Tolke (<code class="email">&lt;<a href="mailto:linus@epact.se">linus@epact.se</a>&gt;</code>) and Michael Meskes
+  (<code class="email">&lt;<a href="mailto:meskes@postgresql.org">meskes@postgresql.org</a>&gt;</code>). Originally it was written to work with
+  <span class="acronym">C</span>. It also works with <span class="acronym">C++</span>, but
+  it does not recognize all <span class="acronym">C++</span> constructs yet. 
+ </p>
+<p>  This documentation is quite incomplete.  But since this
+  interface is standardized, additional information can be found in
+  many resources about SQL.
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-concept"></a>30.1. The Concept</h2></div></div></div>
+<p>   An embedded SQL program consists of code written in an ordinary
+   programming language, in this case C, mixed with SQL commands in
+   specially marked sections.  To build the program, the source code
+   is first passed through the embedded SQL preprocessor, which converts it
+   to an ordinary C program, and afterwards it can be processed by a C
+   compiler.
+  </p>
+<p>   Embedded <span class="acronym">SQL</span> has advantages over other methods
+   for handling <span class="acronym">SQL</span> commands from C code. First, it
+   takes care of the tedious passing of information to and from
+   variables in your <span class="acronym">C</span> program.  Second, the SQL
+   code in the program is checked at build time for syntactical
+   correctness.  Third, embedded <span class="acronym">SQL</span> in C is
+   specified in the <span class="acronym">SQL</span> standard and supported by
+   many other <span class="acronym">SQL</span> database systems.  The
+   <span class="productname">PostgreSQL</span> implementation is designed to match this
+   standard as much as possible, and it is usually possible to port
+   embedded <span class="acronym">SQL</span> programs written for other SQL
+   databases to <span class="productname">PostgreSQL</span> with relative
+   ease.
+  </p>
+<p>   As already stated, programs written for the embedded
+   <span class="acronym">SQL</span> interface are normal C programs with special
+   code inserted to perform database-related actions.  This special
+   code always has the form
+</p>
+<pre class="programlisting">EXEC SQL ...;</pre>
+<p>
+   These statements syntactically take the place of a C statement.
+   Depending on the particular statement, they may appear at the
+   global level or within a function.  Embedded
+   <span class="acronym">SQL</span> statements follow the case-sensitivity rules
+   of normal <span class="acronym">SQL</span> code, and not those of C.
+  </p>
+<p>   The following sections explain all the embedded SQL statements.
+  </p>
+</div>
+</div></body>
+</html>

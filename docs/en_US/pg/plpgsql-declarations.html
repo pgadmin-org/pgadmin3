@@ -1,0 +1,328 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>36.4. Declarations</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql-structure.html" title="36.3. Structure of PL/pgSQL">
+<link rel="next" href="plpgsql-expressions.html" title="36.5. Expressions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-declarations"></a>36.4. Declarations</h2></div></div></div>
+<p>     All variables used in a block must be declared in the
+     declarations section of the block. 
+     (The only exception is that the loop variable of a <code class="literal">FOR</code> loop
+     iterating over a range of integer values is automatically declared as an
+     integer variable.)
+    </p>
+<p>     <span class="application">PL/pgSQL</span> variables can have any SQL data type, such as
+     <code class="type">integer</code>, <code class="type">varchar</code>, and
+     <code class="type">char</code>.
+    </p>
+<p>     Here are some examples of variable declarations:
+</p>
+<pre class="programlisting">user_id integer;
+quantity numeric(5);
+url varchar;
+myrow tablename%ROWTYPE;
+myfield tablename.columnname%TYPE;
+arow RECORD;</pre>
+<p>
+    </p>
+<p>     The general syntax of a variable declaration is:
+</p>
+<pre class="synopsis"><em class="replaceable"><code>name</code></em> [<span class="optional"> CONSTANT </span>] <em class="replaceable"><code>type</code></em> [<span class="optional"> NOT NULL </span>] [<span class="optional"> { DEFAULT | := } <em class="replaceable"><code>expression</code></em> </span>];</pre>
+<p>
+      The <code class="literal">DEFAULT</code> clause, if given, specifies the initial value assigned
+      to the variable when the block is entered.  If the <code class="literal">DEFAULT</code> clause
+      is not given then the variable is initialized to the
+      <span class="acronym">SQL</span> null value. 
+      The <code class="literal">CONSTANT</code> option prevents the variable from being assigned to,
+      so that its value remains constant for the duration of the block.
+      If <code class="literal">NOT NULL</code>
+      is specified, an assignment of a null value results in a run-time
+      error. All variables declared as <code class="literal">NOT NULL</code>
+      must have a nonnull default value specified.
+     </p>
+<p>      The default value is evaluated every time the block is entered. So,
+      for example, assigning <code class="literal">now()</code> to a variable of type
+      <code class="type">timestamp</code> causes the variable to have the
+      time of the current function call, not the time when the function was
+      precompiled.
+     </p>
+<p>      Examples:
+</p>
+<pre class="programlisting">quantity integer DEFAULT 32;
+url varchar := 'http://mysite.com';
+user_id CONSTANT integer := 10;</pre>
+<p>
+     </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-declaration-aliases"></a>36.4.1. Aliases for Function Parameters</h3></div></div></div>
+<p>      Parameters passed to functions are named with the identifiers
+      <code class="literal">$1</code>, <code class="literal">$2</code>,
+      etc.  Optionally, aliases can be declared for
+      <code class="literal">$<em class="replaceable"><code>n</code></em></code>
+      parameter names for increased readability.  Either the alias or the
+      numeric identifier can then be used to refer to the parameter value.
+     </p>
+<p>      There are two ways to create an alias.  The preferred way is to give a
+      name to the parameter in the <code class="command">CREATE FUNCTION</code> command,
+      for example:
+</p>
+<pre class="programlisting">CREATE FUNCTION sales_tax(subtotal real) RETURNS real AS $$
+BEGIN
+    RETURN subtotal * 0.06;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+      The other way, which was the only way available before
+      <span class="productname">PostgreSQL</span> 8.0, is to explicitly
+      declare an alias, using the declaration syntax
+
+</p>
+<pre class="synopsis"><em class="replaceable"><code>name</code></em> ALIAS FOR $<em class="replaceable"><code>n</code></em>;</pre>
+<p>
+
+      The same example in this style looks like
+</p>
+<pre class="programlisting">CREATE FUNCTION sales_tax(real) RETURNS real AS $$
+DECLARE
+    subtotal ALIAS FOR $1;
+BEGIN
+    RETURN subtotal * 0.06;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+      Some more examples:
+</p>
+<pre class="programlisting">CREATE FUNCTION instr(varchar, integer) RETURNS integer AS $$
+DECLARE
+    v_string ALIAS FOR $1;
+    index ALIAS FOR $2;
+BEGIN
+    -- some computations using v_string and index here
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE FUNCTION concat_selected_fields(in_t sometablename) RETURNS text AS $$
+BEGIN
+    RETURN in_t.f1 || in_t.f3 || in_t.f5 || in_t.f7;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+     </p>
+<p>      When a <span class="application">PL/pgSQL</span> function is declared
+      with output parameters, the output parameters are given
+      <code class="literal">$<em class="replaceable"><code>n</code></em></code> names and optional
+      aliases in just the same way as the normal input parameters.  An
+      output parameter is effectively a variable that starts out NULL;
+      it should be assigned to during the execution of the function.
+      The final value of the parameter is what is returned.  For instance,
+      the sales-tax example could also be done this way:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION sales_tax(subtotal real, OUT tax real) AS $$
+BEGIN
+    tax := subtotal * 0.06;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+
+      Notice that we omitted <code class="literal">RETURNS real</code> [mdash ] we could have
+      included it, but it would be redundant.
+     </p>
+<p>      Output parameters are most useful when returning multiple values.
+      A trivial example is:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION sum_n_product(x int, y int, OUT sum int, OUT prod int) AS $$
+BEGIN
+    sum := x + y;
+    prod := x * y;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+
+      As discussed in <a href="xfunc-sql.html#xfunc-output-parameters" title="32.4.3. Functions with Output Parameters">Section 32.4.3, &#8220;Functions with Output Parameters&#8221;</a>, this
+      effectively creates an anonymous record type for the function's
+      results.  If a <code class="literal">RETURNS</code> clause is given, it must say
+      <code class="literal">RETURNS record</code>.
+     </p>
+<p>      When the return type of a <span class="application">PL/pgSQL</span>
+      function is declared as a polymorphic type (<code class="type">anyelement</code>
+      or <code class="type">anyarray</code>), a special parameter <code class="literal">$0</code>
+      is created.  Its data type is the actual return type of the function,
+      as deduced from the actual input types (see <a href="extend-type-system.html#extend-types-polymorphic" title="32.2.5. Polymorphic Types">Section 32.2.5, &#8220;Polymorphic Types&#8221;</a>).
+      This allows the function to access its actual return type
+      as shown in <a href="plpgsql-declarations.html#plpgsql-declaration-type" title="36.4.2. Copying Types">Section 36.4.2, &#8220;Copying Types&#8221;</a>.
+      <code class="literal">$0</code> is initialized to null and can be modified by
+      the function, so it can be used to hold the return value if desired,
+      though that is not required.  <code class="literal">$0</code> can also be
+      given an alias.  For example, this function works on any data type
+      that has a <code class="literal">+</code> operator:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement)
+RETURNS anyelement AS $$
+DECLARE
+    result ALIAS FOR $0;
+BEGIN
+    result := v1 + v2 + v3;
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+     </p>
+<p>      The same effect can be had by declaring one or more output parameters as
+      <code class="type">anyelement</code> or <code class="type">anyarray</code>.  In this case the
+      special <code class="literal">$0</code> parameter is not used; the output
+      parameters themselves serve the same purpose.  For example:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement,
+                                 OUT sum anyelement)
+AS $$
+BEGIN
+    sum := v1 + v2 + v3;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+     </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-declaration-type"></a>36.4.2. Copying Types</h3></div></div></div>
+<pre class="synopsis"><em class="replaceable"><code>variable</code></em>%TYPE</pre>
+<p>    <code class="literal">%TYPE</code> provides the data type of a variable or
+    table column. You can use this to declare variables that will hold
+    database values. For example, let's say you have a column named
+    <code class="literal">user_id</code> in your <code class="literal">users</code>
+    table. To declare a variable with the same data type as
+    <code class="literal">users.user_id</code> you write:
+</p>
+<pre class="programlisting">user_id users.user_id%TYPE;</pre>
+<p>
+   </p>
+<p>    By using <code class="literal">%TYPE</code> you don't need to know the data
+    type of the structure you are referencing, and most importantly,
+    if the data type of the referenced item changes in the future (for
+    instance: you change the type of <code class="literal">user_id</code>
+    from <code class="type">integer</code> to <code class="type">real</code>), you may not need
+    to change your function definition.
+   </p>
+<p>    <code class="literal">%TYPE</code> is particularly valuable in polymorphic
+    functions, since the data types needed for internal variables may
+    change from one call to the next.  Appropriate variables can be
+    created by applying <code class="literal">%TYPE</code> to the function's
+    arguments or result placeholders.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-declaration-rowtypes"></a>36.4.3. Row Types</h3></div></div></div>
+<pre class="synopsis"><em class="replaceable"><code>name</code></em> <em class="replaceable"><code>table_name</code></em><code class="literal">%ROWTYPE</code>;
+<em class="replaceable"><code>name</code></em> <em class="replaceable"><code>composite_type_name</code></em>;</pre>
+<p>    A variable of a composite type is called a <em class="firstterm">row</em>
+    variable (or <em class="firstterm">row-type</em> variable).  Such a variable
+    can hold a whole row of a <code class="command">SELECT</code> or <code class="command">FOR</code>
+    query result, so long as that query's column set matches the
+    declared type of the variable.
+    The individual fields of the row value
+    are accessed using the usual dot notation, for example
+    <code class="literal">rowvar.field</code>.
+   </p>
+<p>    A row variable can be declared to have the same type as the rows of
+    an existing table or view, by using the
+    <em class="replaceable"><code>table_name</code></em><code class="literal">%ROWTYPE</code>
+    notation; or it can be declared by giving a composite type's name.
+    (Since every table has an associated composite type of the same name,
+    it actually does not matter in <span class="productname">PostgreSQL</span> whether you
+    write <code class="literal">%ROWTYPE</code> or not.  But the form with
+    <code class="literal">%ROWTYPE</code> is more portable.)
+   </p>
+<p>    Parameters to a function can be
+    composite types (complete table rows). In that case, the
+    corresponding identifier <code class="literal">$<em class="replaceable"><code>n</code></em></code> will be a row variable, and fields can
+    be selected from it, for example <code class="literal">$1.user_id</code>.
+   </p>
+<p>    Only the user-defined columns of a table row are accessible in a
+    row-type variable, not the OID or other system columns (because the
+    row could be from a view).  The fields of the row type inherit the
+    table's field size or precision for data types such as
+    <code class="type">char(<em class="replaceable"><code>n</code></em>)</code>.
+   </p>
+<p>    Here is an example of using composite types.  <code class="structname">table1</code>
+    and <code class="structname">table2</code> are existing tables having at least the
+    mentioned fields:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION merge_fields(t_row table1) RETURNS text AS $$
+DECLARE
+    t2_row table2%ROWTYPE;
+BEGIN
+    SELECT * INTO t2_row FROM table2 WHERE ... ;
+    RETURN t_row.f1 || t2_row.f3 || t_row.f5 || t2_row.f7;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT merge_fields(t.*) FROM table1 t WHERE ... ;</pre>
+<p>
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-declaration-records"></a>36.4.4. Record Types</h3></div></div></div>
+<pre class="synopsis"><em class="replaceable"><code>name</code></em> RECORD;</pre>
+<p>    Record variables are similar to row-type variables, but they have no
+    predefined structure.  They take on the actual row structure of the
+    row they are assigned during a <code class="command">SELECT</code> or <code class="command">FOR</code> command.  The substructure
+    of a record variable can change each time it is assigned to.
+    A consequence of this is that until a record variable is first assigned
+    to, it has no substructure, and any attempt to access a
+    field in it will draw a run-time error.
+   </p>
+<p>    Note that <code class="literal">RECORD</code> is not a true data type, only a placeholder.
+    One should also realize that when a <span class="application">PL/pgSQL</span>
+    function is declared to return type <code class="type">record</code>, this is not quite the
+    same concept as a record variable, even though such a function may well
+    use a record variable to hold its result.  In both cases the actual row
+    structure is unknown when the function is written, but for a function
+    returning <code class="type">record</code> the actual structure is determined when the
+    calling query is parsed, whereas a record variable can change its row
+    structure on-the-fly.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-declaration-renaming-vars"></a>36.4.5. <code class="literal">RENAME</code></h3></div></div></div>
+<pre class="synopsis">RENAME <em class="replaceable"><code>oldname</code></em> TO <em class="replaceable"><code>newname</code></em>;</pre>
+<p>    Using the <code class="literal">RENAME</code> declaration you can change the
+    name of a variable, record or row. This is primarily useful if
+    <code class="varname">NEW</code> or <code class="varname">OLD</code> should be
+    referenced by another name inside a trigger procedure.  See also
+    <code class="literal">ALIAS</code>.
+   </p>
+<p>    Examples:
+</p>
+<pre class="programlisting">RENAME id TO user_id;
+RENAME this_var TO that_var;</pre>
+<p>
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      <code class="literal">RENAME</code> appears to be broken as of
+      <span class="productname">PostgreSQL</span> 7.3.  Fixing this is of low priority,
+      since <code class="literal">ALIAS</code> covers most of the practical uses
+      of <code class="literal">RENAME</code>.
+     </p>
+</div>
+</div>
+</div></body>
+</html>

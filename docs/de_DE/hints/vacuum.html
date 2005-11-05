@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru-Hinweise</title>
+</head>
+
+<body>
+
+<h3>VACUUM-Lauf empfohlen</h3>
+<p>
+Die geschätzte Anzahl Zeilen in der Tabelle &quot;<INFO>&quot; weicht erheblich von der tatsächlich ermittelten ab.
+VACUUM ANALYZE sollte auf dieser Tabelle ausgeführt werden.
+</p><p>
+Anstatt das Kommando VACUUM ANALYZE auf dieser Tabelle manuell auszuführen (dies kann über das 
+Wartungs-Menü von pgAdmin III ausgelöst werden), empfiehlt es sich VACUUM ANALYZE regelmäßig
+automatisiert durchzuführen. Dies kann durch einen Scheduler erreicht werden. PostgreSQL bietet auch den
+pg_autovacuum Daemon, der Änderung an der Datenbank verfolgt und bei Bedarf VACUUM automatisch auslöst.
+In der Regel bietet pg_autovacuum die optimale Lösung.
+</p><p><br><br></p>
+<b>Wozu ist VACUUM überhaupt gut?</b>
+<p>
+Der PostgreSQL Queryplaner fällt seine Entscheidung anhand von Annahmen, die er aus der geschätzten Anzahl Reihen
+ableitet. Wenn die tatsächliche Anzahl zu sehr von der geschätzten Anzahl abweicht,  kann der Planer eine falsche
+Entscheidung treffen, wodurch ein nicht-optimaler Queryplan zur Anwendung gelangt. Daraus kann eine schlechte 
+Performance resultieren.
+</p><p>
+Die PostgreSQL Datenspeicherung benötigt VACUUM um Transaktion-IDs in Tabellen zu fixieren.
+Weiterhin werden Zeilen, die nach Updates und Deletes nicht mehr benötigt werden, erst durch ein VACUUM
+tatsächlich wieder freigegeben.
+Weitergehende Informationen sind in der Online-Hilfe zu finden: einfach den Hilfe-Button drücken.
+</p>
+</body>
+</html>

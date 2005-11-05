@@ -1,0 +1,98 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.79.        setdropsequence_int( integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.setdropsequence-integer.html" title="1.78.        setdropsequence( integer )
+      ">
+<link rel="next" href="function.setdroptable-integer.html" title="1.80.        setdroptable( integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.setdropsequence-int-integer"></a>1.79.        setdropsequence_int( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       setDropSequence_int (seq_id)
+
+This processes the SET_DROP_SEQUENCE event.  On remote nodes that
+subscribe to the set containing sequence seq_id, drop the sequence
+from the replication set.
+        </p>
+<pre class="programlisting">declare
+	p_seq_id		alias for $1;
+	v_set_id		int4;
+	v_local_node_id		int4;
+	v_set_origin		int4;
+	v_sub_provider		int4;
+	v_relkind			char;
+	v_sync_row			record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Determine set id for this sequence
+	-- ----
+	select seq_set into v_set_id from sl_sequence where seq_id = p_seq_id;
+
+	-- ----
+	-- Ensure sequence exists
+	-- ----
+	if not found then
+		return 0;
+	end if;
+
+	-- ----
+	-- For sets with a remote origin, check that we are subscribed 
+	-- to that set. Otherwise we ignore the sequence because it might 
+	-- not even exist in our database.
+	-- ----
+	v_local_node_id := getLocalNodeId('_schemadoc');
+	select set_origin into v_set_origin
+			from sl_set
+			where set_id = v_set_id;
+	if not found then
+		raise exception 'Slony-I: setDropSequence_int(): set % not found',
+				v_set_id;
+	end if;
+	if v_set_origin != v_local_node_id then
+		select sub_provider into v_sub_provider
+				from sl_subscribe
+				where sub_set = v_set_id
+				and sub_receiver = getLocalNodeId('_schemadoc');
+		if not found then
+			return 0;
+		end if;
+	end if;
+
+	-- ----
+	-- drop the sequence from sl_sequence, sl_seqlog
+	-- ----
+	delete from sl_seqlog where seql_seqid = p_seq_id;
+	delete from sl_sequence where seq_id = p_seq_id;
+
+	return p_seq_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

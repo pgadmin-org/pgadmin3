@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.4. pg_amop</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-am.html" title="42.3. pg_am">
+<link rel="next" href="catalog-pg-amproc.html" title="42.5. pg_amproc">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-amop"></a>42.4. <code class="structname">pg_amop</code></h2></div></div></div>
+<a name="id769216"></a><p>   The catalog <code class="structname">pg_amop</code> stores information about operators
+   associated with index access method operator classes.  There is one
+   row for each operator that is a member of an operator class.
+  </p>
+<div class="table">
+<a name="id769236"></a><p class="title"><b>Table 42.4. <code class="structname">pg_amop</code> Columns</b></p>
+<table summary="pg_amop Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">amopclaid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-opclass.html" title="42.24. pg_opclass"><code class="structname">pg_opclass</code></a>.oid</code></td>
+<td>The index operator class this entry is for</td>
+</tr>
+<tr>
+<td><code class="structfield">amopsubtype</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td>Subtype to distinguish multiple entries for one strategy;
+             zero for default</td>
+</tr>
+<tr>
+<td><code class="structfield">amopstrategy</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>Operator strategy number</td>
+</tr>
+<tr>
+<td><code class="structfield">amopreqcheck</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Index hit must be rechecked</td>
+</tr>
+<tr>
+<td><code class="structfield">amopopr</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-operator.html" title="42.25. pg_operator"><code class="structname">pg_operator</code></a>.oid</code></td>
+<td>OID of the operator</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

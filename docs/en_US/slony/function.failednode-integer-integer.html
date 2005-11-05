@@ -1,0 +1,245 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.54.        failednode( integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.enablesubscription-int-integer-integer-integer.html" title="1.53.        enablesubscription_int( integer, integer, integer )
+      ">
+<link rel="next" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.55.        failednode2( integer, integer, integer, bigint, bigint )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.failednode-integer-integer"></a>1.54.        failednode( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       Initiate failover from failed_node to backup_node.  This function must be called on all nodes, 
+and then waited for the restart of all node daemons.
+        </p>
+<pre class="programlisting">declare
+	p_failed_node		alias for $1;
+	p_backup_node		alias for $2;
+	v_row				record;
+	v_row2				record;
+	v_n					int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- All consistency checks first
+	-- Check that every system that has a path to the failed node
+	-- also has a path to the backup node.
+	-- ----
+	for v_row in select P.pa_client
+			from sl_path P
+			where P.pa_server = p_failed_node
+				and P.pa_client &lt;&gt; p_backup_node
+				and not exists (select true from sl_path PP
+							where PP.pa_server = p_backup_node
+								and PP.pa_client = P.pa_client)
+	loop
+		raise exception 'Slony-I: cannot failover - node % has no path to the backup node',
+				v_row.pa_client;
+	end loop;
+
+	-- ----
+	-- Check all sets originating on the failed node
+	-- ----
+	for v_row in select set_id
+			from sl_set
+			where set_origin = p_failed_node
+	loop
+		-- ----
+		-- Check that the backup node is subscribed to all sets
+		-- that origin on the failed node
+		-- ----
+		select into v_row2 sub_forward, sub_active
+				from sl_subscribe
+				where sub_set = v_row.set_id
+					and sub_receiver = p_backup_node;
+		if not found then
+			raise exception 'Slony-I: cannot failover - node % is not subscribed to set %',
+					p_backup_node, v_row.set_id;
+		end if;
+
+		-- ----
+		-- Check that the subscription is active
+		-- ----
+		if not v_row2.sub_active then
+			raise exception 'Slony-I: cannot failover - subscription for set % is not active',
+					v_row.set_id;
+		end if;
+
+		-- ----
+		-- If there are other subscribers, the backup node needs to
+		-- be a forwarder too.
+		-- ----
+		select into v_n count(*)
+				from sl_subscribe
+				where sub_set = v_row.set_id
+					and sub_receiver &lt;&gt; p_backup_node;
+		if v_n &gt; 0 and not v_row2.sub_forward then
+			raise exception 'Slony-I: cannot failover - node % is not a forwarder of set %',
+					p_backup_node, v_row.set_id;
+		end if;
+	end loop;
+
+	-- ----
+	-- Terminate all connections of the failed node the hard way
+	-- ----
+	perform terminateNodeConnections(
+			'_schemadoc_Node_' || p_failed_node);
+
+-- Note that the following code should all become obsolete in the wake
+-- of the availability of RebuildListenEntries()...
+
+if false then
+	-- ----
+	-- Let every node that listens for something on the failed node
+	-- listen for that on the backup node instead.
+	-- ----
+	for v_row in select * from sl_listen
+			where li_provider = p_failed_node
+				and li_receiver &lt;&gt; p_backup_node
+	loop
+		perform storeListen_int(v_row.li_origin,
+				p_backup_node, v_row.li_receiver);
+	end loop;
+
+	-- ----
+	-- Let the backup node listen for all events where the
+	-- failed node did listen for it.
+	-- ----
+	for v_row in select li_origin, li_provider
+			from sl_listen
+			where li_receiver = p_failed_node
+				and li_provider &lt;&gt; p_backup_node
+	loop
+		perform storeListen_int(v_row.li_origin,
+				v_row.li_provider, p_backup_node);
+	end loop;
+
+	-- ----
+	-- Remove all sl_listen entries that receive anything from the
+	-- failed node.
+	-- ----
+	delete from sl_listen
+			where li_provider = p_failed_node
+				or li_receiver = p_failed_node;
+end if;
+
+	-- ----
+	-- Move the sets
+	-- ----
+	for v_row in select S.set_id, (select count(*)
+					from sl_subscribe SUB
+					where S.set_id = SUB.sub_set
+						and SUB.sub_receiver &lt;&gt; p_backup_node
+						and SUB.sub_provider = p_failed_node)
+					as num_direct_receivers 
+			from sl_set S
+			where S.set_origin = p_failed_node
+			for update
+	loop
+		-- ----
+		-- If the backup node is the only direct subscriber ...
+		-- ----
+		if v_row.num_direct_receivers = 0 then
+raise notice 'failedNode: set % has no other direct receivers - move now', v_row.set_id;
+			-- ----
+			-- backup_node is the only direct subscriber, move the set
+			-- right now. On the backup node itself that includes restoring
+			-- all user mode triggers, removing the protection trigger,
+			-- adding the log trigger, removing the subscription and the
+			-- obsolete setsync status.
+			-- ----
+			if p_backup_node = getLocalNodeId('_schemadoc') then
+				for v_row2 in select * from sl_table
+						where tab_set = v_row.set_id
+				loop
+					perform alterTableRestore(v_row2.tab_id);
+				end loop;
+			end if;
+
+			update sl_set set set_origin = p_backup_node
+					where set_id = v_row.set_id;
+
+			if p_backup_node = getLocalNodeId('_schemadoc') then
+				delete from sl_setsync
+						where ssy_setid = v_row.set_id;
+
+				for v_row2 in select * from sl_table
+						where tab_set = v_row.set_id
+				loop
+					perform alterTableForReplication(v_row2.tab_id);
+				end loop;
+			end if;
+
+			delete from sl_subscribe
+					where sub_set = v_row.set_id
+						and sub_receiver = p_backup_node;
+		else
+raise notice 'failedNode: set % has other direct receivers - change providers only', v_row.set_id;
+			-- ----
+			-- Backup node is not the only direct subscriber. This
+			-- means that at this moment, we redirect all direct
+			-- subscribers to receive from the backup node, and the
+			-- backup node itself to receive from another one.
+			-- The admin utility will wait for the slon engine to
+			-- restart and then call failedNode2() on the node with
+			-- the highest SYNC and redirect this to it on
+			-- backup node later.
+			-- ----
+			update sl_subscribe
+					set sub_provider = (select min(SS.sub_receiver)
+							from sl_subscribe SS
+							where SS.sub_set = v_row.set_id
+								and SS.sub_provider = p_failed_node
+								and SS.sub_receiver &lt;&gt; p_backup_node
+								and SS.sub_forward)
+					where sub_set = v_row.set_id
+						and sub_receiver = p_backup_node;
+			update sl_subscribe
+					set sub_provider = p_backup_node
+					where sub_set = v_row.set_id
+						and sub_provider = p_failed_node
+						and sub_receiver &lt;&gt; p_backup_node;
+		end if;
+	end loop;
+
+	-- Rewrite sl_listen table
+	perform RebuildListenEntries();
+
+	-- ----
+	-- Make sure the node daemon will restart
+	-- ----
+	notify "_schemadoc_Restart";
+
+	-- ----
+	-- That is it - so far.
+	-- ----
+	return p_failed_node;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

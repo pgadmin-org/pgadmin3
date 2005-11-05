@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>RELEASE SAVEPOINT</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-reindex.html" title="REINDEX">
+<link rel="next" href="sql-reset.html" title="RESET">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-release-savepoint"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>RELEASE SAVEPOINT &#8212; destroy a previously defined savepoint</p>
+</div>
+<a name="id726701"></a><a name="id726713"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">RELEASE [ SAVEPOINT ] <em class="replaceable"><code>savepoint_name</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id726736"></a><h2>Description</h2>
+<p>   <code class="command">RELEASE SAVEPOINT</code> destroys a savepoint previously defined
+   in the current transaction.
+  </p>
+<p>   Destroying a savepoint makes it unavailable as a rollback point,
+   but it has no other user visible behavior.  It does not undo the
+   effects of commands executed after the savepoint was established.
+   (To do that, see <a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a>.)  Destroying a savepoint when
+   it is no longer needed may allow the system to reclaim some resources
+   earlier than transaction end.
+  </p>
+<p>   <code class="command">RELEASE SAVEPOINT</code> also destroys all savepoints that were
+   established after the named savepoint was established.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id726784"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
+<dd><p>      The name of the savepoint to destroy.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id726798"></a><h2>Notes</h2>
+<p>   Specifying a savepoint name that was not previously defined is an error.
+  </p>
+<p>   It is not possible to release a savepoint when the transaction is in
+   an aborted state.
+  </p>
+<p>   If multiple savepoints have the same name, only the one that was most
+   recently defined is released.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id726814"></a><h2>Examples</h2>
+<p>   To establish and later destroy a savepoint:
+</p>
+<pre class="programlisting">BEGIN;
+    INSERT INTO table1 VALUES (3);
+    SAVEPOINT my_savepoint;
+    INSERT INTO table1 VALUES (4);
+    RELEASE SAVEPOINT my_savepoint;
+COMMIT;</pre>
+<p>
+   The above transaction will insert both 3 and 4.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id726832"></a><h2>Compatibility</h2>
+<p>   This command conforms to the <span class="acronym">SQL</span> standard.  The standard
+   specifies that the key word <code class="literal">SAVEPOINT</code> is
+   mandatory, but <span class="productname">PostgreSQL</span> allows it to
+   be omitted.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id726858"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a>, <a href="sql-savepoint.html">SAVEPOINT</a></span>
+</div>
+</div></body>
+</html>

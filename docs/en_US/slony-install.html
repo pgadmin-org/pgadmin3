@@ -1,0 +1,74 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Slony-I administration with pgAdmin III: installation</title>
+</head>
+
+<body>
+<A name='node'/>
+<h3>Slony-I administration with pgAdmin III: installation</h3>
+<BR>
+<H4>Prerequisites</H4>
+<p>
+As a prerequisite to running Slony-I on PostgreSQL, the slony modules 
+xxid and slony1_funcs must be present on all servers that have are to run a
+Slony-I replication node. This is usually done by the Slony-I installation routine. In case you're installing 
+a PostgreSQL 8.1 server on Win32, the windows installer routine can do this 
+for you if you select the "Slony-I" installation option.
+</p>
+<BR><BR><BR>
+<A name='create'/>
+<H4>Create cluster and first node</H4>
+<BR>
+<center><img src="images/slony-create.png"></center>
+
+<p>
+To install a Slony-I cluster on the first database, the "New Slony-I Cluster" dialog is 
+used. It executes the official Slony-I cluster creation scripts, which are located in the 
+directory configured in the <A HREF="options-tab1.html">options</A> dialog. 
+</p>
+<p>
+pgAdmin III needs to store information how to contact each individual node in the cluster.
+To achieve this, pgAdmin III uses the concept of "Administrative nodes".
+
+</p>
+<BR><BR><BR>
+<A name='join'/>
+<H4>Join additional nodes to cluster</H4>
+<BR>
+<center><img src="images/slony-join.png"></center>
+<p>
+After the first node in the Slony-I replication cluster has been successfully created,
+all subsequent nodes take their configuration and procedures from the first nodes.
+This process is called "Joining a cluster" in pgAdmin III. Usually, you should also select
+an existing node as admin node, to insure later accessibility from pgAdmin III.
+<p>
+</p>
+After you added a new node to the Slony-I cluster, you need to set up 
+<A href='"slony-path.html'>replication paths</A> between the nodes, to enable communication
+between the nodes.
+</p>
+<BR><BR><BR>
+<A name='upgrade'/>
+<H4>Upgrade node to new cluster software</H4>
+<BR>
+<center><img src="images/slony-upgrade.png"></center>
+<p>
+When a cluster is to be upgraded to a new version of the Slony-I clustering software, 
+the upgrade process has to be run on all nodes of the cluster. For each node, the slon 
+daemon needs to be stopped, then the upgrade dialog is started and a node with 
+the new software is selected (pgAdmin III will extract all software from that node),
+and finally the slon daemon is started again.
+</p>
+<p>
+Currently, pgAdmin III does <B>not</B> support upgrading from slony creation scripts.
+Instead, create an intermediate cluster from the creation scripts, use it as a source
+for the upgrade dialog, and drop the cluster after usage. You may also use the slonik
+tool to upgrade the first node, and then use it as source for subsequent node upgrades.
+</p>
+<p>
+</p>
+</body>
+</html>

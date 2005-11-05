@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.82.        setmovesequence( integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.setdroptable-int-integer.html" title="1.81.        setdroptable_int( integer )
+      ">
+<link rel="next" href="function.setmovesequence-int-integer-integer.html" title="1.83.        setmovesequence_int( integer, integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.setmovesequence-integer-integer"></a>1.82.        setmovesequence( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       
+        </p>
+<pre class="programlisting">declare
+	p_seq_id			alias for $1;
+	p_new_set_id		alias for $2;
+	v_old_set_id		int4;
+	v_origin			int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Get the sequences current set
+	-- ----
+	select seq_set into v_old_set_id from sl_sequence
+			where seq_id = p_seq_id;
+	if not found then
+		raise exception 'Slony-I: sequence %d not found', p_seq_id;
+	end if;
+	
+	-- ----
+	-- Check that both sets exist and originate here
+	-- ----
+	if p_new_set_id = v_old_set_id then
+		raise exception 'Slony-I: set ids cannot be identical';
+	end if;
+	select set_origin into v_origin from sl_set
+			where set_id = p_new_set_id;
+	if not found then
+		raise exception 'Slony-I: set % not found', p_new_set_id;
+	end if;
+	if v_origin != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: set % does not originate on local node',
+				p_new_set_id;
+	end if;
+
+	select set_origin into v_origin from sl_set
+			where set_id = v_old_set_id;
+	if not found then
+		raise exception 'Slony-I: set % not found', v_old_set_id;
+	end if;
+	if v_origin != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: set % does not originate on local node',
+				v_old_set_id;
+	end if;
+
+	-- ----
+	-- Check that both sets are subscribed by the same set of nodes
+	-- ----
+	if exists (select true from sl_subscribe SUB1
+				where SUB1.sub_set = p_new_set_id
+				and SUB1.sub_receiver not in (select SUB2.sub_receiver
+						from sl_subscribe SUB2
+						where SUB2.sub_set = v_old_set_id))
+	then
+		raise exception 'Slony-I: subscriber lists of set % and % are different',
+				p_new_set_id, v_old_set_id;
+	end if;
+
+	if exists (select true from sl_subscribe SUB1
+				where SUB1.sub_set = v_old_set_id
+				and SUB1.sub_receiver not in (select SUB2.sub_receiver
+						from sl_subscribe SUB2
+						where SUB2.sub_set = p_new_set_id))
+	then
+		raise exception 'Slony-I: subscriber lists of set % and % are different',
+				v_old_set_id, p_new_set_id;
+	end if;
+
+	-- ----
+	-- Change the set the sequence belongs to
+	-- ----
+	perform setMoveSequence_int(p_seq_id, p_new_set_id);
+	return  createEvent('_schemadoc', 'SET_MOVE_SEQUENCE', 
+			p_seq_id, p_new_set_id);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

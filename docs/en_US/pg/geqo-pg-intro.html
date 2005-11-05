@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>47.3. Genetic Query Optimization (GEQO) in PostgreSQL</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="geqo.html" title="Chapter 47. Genetic Query Optimizer">
+<link rel="prev" href="geqo-intro2.html" title="47.2. Genetic Algorithms">
+<link rel="next" href="geqo-biblio.html" title="47.4. Further Reading">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="geqo-pg-intro"></a>47.3. Genetic Query Optimization (<span class="acronym">GEQO</span>) in PostgreSQL</h2></div></div></div>
+<p>    The <span class="acronym">GEQO</span> module approaches the query
+    optimization problem as though it were the well-known traveling salesman
+    problem (<span class="acronym">TSP</span>).
+    Possible query plans are encoded as integer strings. Each string
+    represents the join order from one relation of the query to the next.
+    For example, the join tree
+</p>
+<pre class="literallayout">   /\
+  /\ 2
+ /\ 3
+4  1</pre>
+<p>
+    is encoded by the integer string '4-1-3-2',
+    which means, first join relation '4' and '1', then '3', and
+    then '2', where 1, 2, 3, 4 are relation IDs within the
+    <span class="productname">PostgreSQL</span> optimizer.
+   </p>
+<p>    Parts of the <span class="acronym">GEQO</span> module are adapted from D. Whitley's Genitor
+    algorithm.
+   </p>
+<p>    Specific characteristics of the <span class="acronym">GEQO</span>
+    implementation in <span class="productname">PostgreSQL</span>
+    are:
+
+    </p>
+<div class="itemizedlist"><ul type="bullet" compact>
+<li style="list-style-type: disc"><p>       Usage of a <em class="firstterm">steady state</em> <span class="acronym">GA</span> (replacement of the least fit
+       individuals in a population, not whole-generational replacement)
+       allows fast convergence towards improved query plans. This is
+       essential for query handling with reasonable time;
+      </p></li>
+<li style="list-style-type: disc"><p>       Usage of <em class="firstterm">edge recombination crossover</em>
+       which is especially suited to keep edge losses low for the
+       solution of the <span class="acronym">TSP</span> by means of a
+       <span class="acronym">GA</span>;
+      </p></li>
+<li style="list-style-type: disc"><p>       Mutation as genetic operator is deprecated so that no repair
+       mechanisms are needed to generate legal <span class="acronym">TSP</span> tours.
+      </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    The <span class="acronym">GEQO</span> module allows
+    the <span class="productname">PostgreSQL</span> query optimizer to
+    support large join queries effectively through
+    non-exhaustive search.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="geqo-future"></a>47.3.1. Future Implementation Tasks for
+    <span class="productname">PostgreSQL</span> <span class="acronym">GEQO</span></h3></div></div></div>
+<p>      Work is still needed to improve the genetic algorithm parameter
+      settings.
+      In file <code class="filename">src/backend/optimizer/geqo/geqo_main.c</code>,
+      routines
+      <code class="function">gimme_pool_size</code> and <code class="function">gimme_number_generations</code>,
+      we have to find a compromise for the parameter settings
+      to satisfy two competing demands:
+      </p>
+<div class="itemizedlist"><ul type="disc" compact>
+<li><p>         Optimality of the query plan
+        </p></li>
+<li><p>         Computing time
+        </p></li>
+</ul></div>
+<p>
+     </p>
+<p>      At a more basic level, it is not clear that solving query optimization
+      with a GA algorithm designed for TSP is appropriate.  In the TSP case,
+      the cost associated with any substring (partial tour) is independent
+      of the rest of the tour, but this is certainly not true for query
+      optimization.  Thus it is questionable whether edge recombination
+      crossover is the most effective mutation procedure.
+     </p>
+</div>
+</div></body>
+</html>

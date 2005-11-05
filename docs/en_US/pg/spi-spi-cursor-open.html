@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_cursor_open</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="40.1. Interface Functions">
+<link rel="prev" href="spi-spi-execp.html" title="SPI_execp">
+<link rel="next" href="spi-spi-cursor-find.html" title="SPI_cursor_find">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-cursor-open"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_cursor_open &#8212; set up a cursor using a plan created with <code class="function">SPI_prepare</code></p>
+</div>
+<a name="id683232"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">Portal SPI_cursor_open(const char * <em class="parameter"><code>name</code></em>, void * <em class="parameter"><code>plan</code></em>,
+                       Datum * <em class="parameter"><code>values</code></em>, const char * <em class="parameter"><code>nulls</code></em>,
+                       bool <em class="parameter"><code>read_only</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id683279"></a><h2>Description</h2>
+<p>   <code class="function">SPI_cursor_open</code> sets up a cursor (internally,
+   a portal) that will execute a plan prepared by
+   <code class="function">SPI_prepare</code>.  The parameters have the same
+   meanings as the corresponding parameters to
+   <code class="function">SPI_execute_plan</code>.
+  </p>
+<p>   Using a cursor instead of executing the plan directly has two
+   benefits.  First, the result rows can be retrieved a few at a time,
+   avoiding memory overrun for queries that return many rows.  Second,
+   a portal can outlive the current procedure (it can, in fact, live
+   to the end of the current transaction).  Returning the portal name
+   to the procedure's caller provides a way of returning a row set as
+   result.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id683318"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>name</code></em></code></span></dt>
+<dd><p>      name for portal, or <code class="symbol">NULL</code> to let the system
+      select a name
+     </p></dd>
+<dt><span class="term"><code class="literal">void * <em class="parameter"><code>plan</code></em></code></span></dt>
+<dd><p>      execution plan (returned by <code class="function">SPI_prepare</code>)
+     </p></dd>
+<dt><span class="term"><code class="literal">Datum * <em class="parameter"><code>values</code></em></code></span></dt>
+<dd><p>      An array of actual parameter values.  Must have same length as the
+      plan's number of arguments.
+     </p></dd>
+<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>nulls</code></em></code></span></dt>
+<dd>
+<p>      An array describing which parameters are null.  Must have same length as
+      the plan's number of arguments.
+      <code class="literal">n</code> indicates a null value (entry in
+      <em class="parameter"><code>values</code></em> will be ignored); a space indicates a
+      nonnull value (entry in <em class="parameter"><code>values</code></em> is valid).
+     </p>
+<p>      If <em class="parameter"><code>nulls</code></em> is <code class="symbol">NULL</code> then
+      <code class="function">SPI_cursor_open</code> assumes that no parameters are
+      null.
+     </p>
+</dd>
+<dt><span class="term"><code class="literal">bool <em class="parameter"><code>read_only</code></em></code></span></dt>
+<dd><p>      <code class="literal">true</code> for read-only execution
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id683471"></a><h2>Return Value</h2>
+<p>   pointer to portal containing the cursor, or <code class="symbol">NULL</code>
+   on error
+  </p>
+</div>
+</div></body>
+</html>

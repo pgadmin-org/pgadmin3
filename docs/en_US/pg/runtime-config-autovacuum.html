@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.9. Automatic Vacuuming</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
+<link rel="prev" href="runtime-config-statistics.html" title="17.8. Run-Time Statistics">
+<link rel="next" href="runtime-config-client.html" title="17.10. Client Connection Defaults">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-autovacuum"></a>17.9. Automatic Vacuuming</h2></div></div></div>
+<a name="id600243"></a><p>      These settings control the default behavior for the <em class="firstterm">autovacuum
+      daemon</em>. Please refer to <a href="maintenance.html#autovacuum" title="22.1.4. The auto-vacuum daemon">Section 22.1.4, &#8220;The auto-vacuum daemon&#8221;</a> for
+      more information.
+     </p>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-autovacuum"></a><span class="term"><code class="varname">autovacuum</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Controls whether the server should start the
+        autovacuum subprocess.  This is off by default.
+        <code class="varname">stats_start_collector</code> and <code class="varname">stats_row_level</code>
+        must also be on for this to start.
+        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-naptime"></a><span class="term"><code class="varname">autovacuum_naptime</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the delay between activity rounds for the autovacuum
+        subprocess.  In each round the subprocess examines one database
+        and issues <code class="command">VACUUM</code> and <code class="command">ANALYZE</code> commands
+        as needed for tables in that database.  The delay is measured
+        in seconds, and the default is 60.
+        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-threshold"></a><span class="term"><code class="varname">autovacuum_vacuum_threshold</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the minimum number of updated or deleted tuples needed
+        to trigger a <code class="command">VACUUM</code> in any one table.
+        The default is 1000.
+        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.
+        This setting can be overridden for individual tables by entries in
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-analyze-threshold"></a><span class="term"><code class="varname">autovacuum_analyze_threshold</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the minimum number of inserted, updated or deleted tuples
+        needed to trigger an <code class="command">ANALYZE</code> in any one table.
+        The default is 500.
+        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.
+        This setting can be overridden for individual tables by entries in
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-scale-factor"></a><span class="term"><code class="varname">autovacuum_vacuum_scale_factor</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Specifies a fraction of the table size to add to
+        <code class="varname">autovacuum_vacuum_threshold</code>
+        when deciding whether to trigger a <code class="command">VACUUM</code>.
+        The default is 0.4.
+        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.
+        This setting can be overridden for individual tables by entries in
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-analyze-scale-factor"></a><span class="term"><code class="varname">autovacuum_analyze_scale_factor</code> (<code class="type">floating point</code>)</span>
+</dt>
+<dd><p>        Specifies a fraction of the table size to add to
+        <code class="varname">autovacuum_analyze_threshold</code>
+        when deciding whether to trigger an <code class="command">ANALYZE</code>.
+        The default is 0.2.
+        This option can only be set at server start or in the
+        <code class="filename">postgresql.conf</code> file.
+        This setting can be overridden for individual tables by entries in
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-cost-delay"></a><span class="term"><code class="varname">autovacuum_vacuum_cost_delay</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the cost delay value that will be used in automatic
+        <code class="command">VACUUM</code> operations.  If -1 is specified (which is the
+        default), the regular
+        <a href="runtime-config-resource.html#guc-vacuum-cost-delay">vacuum_cost_delay</a> value will be used.
+        This setting can be overridden for individual tables by entries in
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+<dt>
+<a name="guc-autovacuum-vacuum-cost-limit"></a><span class="term"><code class="varname">autovacuum_vacuum_cost_limit</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the cost limit value that will be used in automatic
+        <code class="command">VACUUM</code> operations.  If -1 is specified (which is the
+        default), the regular
+        <a href="runtime-config-resource.html#guc-vacuum-cost-limit">vacuum_cost_limit</a> value will be used.
+        This setting can be overridden for individual tables by entries in
+        <code class="structname">pg_autovacuum</code>.
+       </p></dd>
+</dl></div>
+</div></body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.23. pg_namespace</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-listener.html" title="42.22. pg_listener">
+<link rel="next" href="catalog-pg-opclass.html" title="42.24. pg_opclass">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-namespace"></a>42.23. <code class="structname">pg_namespace</code></h2></div></div></div>
+<a name="id774286"></a><p>   The catalog <code class="structname">pg_namespace</code> stores namespaces.
+   A namespace is the structure underlying SQL schemas: each namespace
+   can have a separate collection of relations, types, etc. without name
+   conflicts.
+  </p>
+<div class="table">
+<a name="id774306"></a><p class="title"><b>Table 42.23. <code class="structname">pg_namespace</code> Columns</b></p>
+<table summary="pg_namespace Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">nspname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Name of the namespace</td>
+</tr>
+<tr>
+<td><code class="structfield">nspowner</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>Owner of the namespace</td>
+</tr>
+<tr>
+<td><code class="structfield">nspacl</code></td>
+<td><code class="type">aclitem[]</code></td>
+<td> </td>
+<td>       Access privileges; see
+       <a href="sql-grant.html">GRANT</a> and
+       <a href="sql-revoke.html">REVOKE</a>
+       for details.
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

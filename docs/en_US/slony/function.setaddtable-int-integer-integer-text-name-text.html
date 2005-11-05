@@ -1,0 +1,124 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.77.        setaddtable_int( integer, integer, text, name, text )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.setaddtable-integer-integer-text-name-text.html" title="1.76.        setaddtable( integer, integer, text, name, text )
+      ">
+<link rel="next" href="function.setdropsequence-integer.html" title="1.78.        setdropsequence( integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.setaddtable-int-integer-integer-text-name-text"></a>1.77.        setaddtable_int( integer, integer, text, name, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       setAddTable_int (set_id, tab_id, tab_fqname, tab_idxname, tab_comment)
+
+This function processes the SET_ADD_TABLE event on remote nodes,
+adding a table to replication if the remote node is subscribing to its
+replication set.
+        </p>
+<pre class="programlisting">declare
+
+	p_set_id		alias for $1;
+	p_tab_id		alias for $2;
+	p_fqname		alias for $3;
+	p_tab_idxname		alias for $4;
+	p_tab_comment		alias for $5;
+	v_tab_relname		name;
+	v_tab_nspname		name;
+	v_local_node_id		int4;
+	v_set_origin		int4;
+	v_sub_provider		int4;
+	v_relkind		char;
+	v_tab_reloid		oid;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- For sets with a remote origin, check that we are subscribed 
+	-- to that set. Otherwise we ignore the table because it might 
+	-- not even exist in our database.
+	-- ----
+	v_local_node_id := getLocalNodeId('_schemadoc');
+	select set_origin into v_set_origin
+			from sl_set
+			where set_id = p_set_id;
+	if not found then
+		raise exception 'Slony-I: setAddTable_int(): set % not found',
+				p_set_id;
+	end if;
+	if v_set_origin != v_local_node_id then
+		select sub_provider into v_sub_provider
+				from sl_subscribe
+				where sub_set = p_set_id
+				and sub_receiver = getLocalNodeId('_schemadoc');
+		if not found then
+			return 0;
+		end if;
+	end if;
+	
+	-- ----
+	-- Get the tables OID and check that it is a real table
+	-- ----
+	select PGC.oid, PGC.relkind, PGC.relname, PGN.nspname into v_tab_reloid, v_relkind, v_tab_relname, v_tab_nspname
+			from "pg_catalog".pg_class PGC, "pg_catalog".pg_namespace PGN
+			where PGC.relnamespace = PGN.oid
+			and slon_quote_input(p_fqname) = slon_quote_brute(PGN.nspname) ||
+					'.' || slon_quote_brute(PGC.relname);
+	if not found then
+		raise exception 'Slony-I: setAddTable(): table % not found', 
+				p_fqname;
+	end if;
+	if v_relkind != 'r' then
+		raise exception 'Slony-I: setAddTable(): % is not a regular table',
+				p_fqname;
+	end if;
+
+	if not exists (select indexrelid
+			from "pg_catalog".pg_index PGX, "pg_catalog".pg_class PGC
+			where PGX.indrelid = v_tab_reloid
+				and PGX.indexrelid = PGC.oid
+				and PGC.relname = p_tab_idxname)
+	then
+		raise exception 'Slony-I: setAddTable(): table % has no index %',
+				p_fqname, p_tab_idxname;
+	end if;
+
+	-- ----
+	-- Add the table to sl_table and create the trigger on it.
+	-- ----
+	insert into sl_table
+			(tab_id, tab_reloid, tab_relname, tab_nspname, 
+			tab_set, tab_idxname, tab_altered, tab_comment) 
+			values
+			(p_tab_id, v_tab_reloid, v_tab_relname, v_tab_nspname,
+			p_set_id, p_tab_idxname, false, p_tab_comment);
+	perform alterTableForReplication(p_tab_id);
+
+	return p_tab_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

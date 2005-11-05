@@ -1,0 +1,222 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>7. Doing switchover and failover with Slony-I</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="reshape.html" title="6. Reshaping a Cluster">
+<link rel="next" href="listenpaths.html" title="8. Slony-I listen paths">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="failover"></a>7. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id517604"></a>7.1. Foreword</h3></div></div></div>
+<p><span class="productname">Slony-I</span> is an asynchronous replication system.  Because of
+that, it is almost certain that at the moment the current origin of a
+set fails, the final transactions committed at the origin will have
+not yet propagated to the subscribers.  Systems are particularly
+likely to fail under heavy load; that is one of the corollaries of
+Murphy's Law.  Therefore the principal goal is to
+<span class="emphasis"><em>prevent</em></span> the main server from failing.  The best
+way to do that is frequent maintenance.</p>
+<p> Opening the case of a running server is not exactly what we
+should consider a &#8220;<span class="quote">professional</span>&#8221; way to do system
+maintenance.  And interestingly, those users who found it valuable to
+use replication for backup and failover purposes are the very ones
+that have the lowest tolerance for terms like &#8220;<span class="quote">system
+downtime.</span>&#8221; To help support these requirements, <span class="productname">Slony-I</span> not
+only offers failover capabilities, but also the notion of controlled
+origin transfer.</p>
+<p> It is assumed in this document that the reader is familiar with
+the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> utility and knows at least how to set up a
+simple 2 node replication system with <span class="productname">Slony-I</span>.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id517663"></a>7.2.  Controlled Switchover</h3></div></div></div>
+<a name="id517667"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
+&#8220;<span class="quote">subscriber</span>&#8221; as node2 (<span class="emphasis"><em>e.g.</em></span> -
+slave).  A web application on a third server is accessing the database
+on node1.  Both databases are up and running and replication is more
+or less in sync.  We do controlled switchover using <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>.
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> At the time of this writing switchover to another
+server requires the application to reconnect to the database.  So in
+order to avoid any complications, we simply shut down the web server.
+Users who use <span class="application">pg_pool</span> for the applications database
+connections merely have to shut down the pool.</p></li>
+<li>
+<p> A small <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script executes the
+following commands:
+
+</p>
+<pre class="programlisting">lock set (id = 1, origin = 1);
+wait for event (origin = 1, confirmed = 2);
+move set (id = 1, old origin = 1, new origin = 2);
+wait for event (origin = 1, confirmed = 2);</pre>
+<p> After these commands, the origin (master role) of data set 1
+has been transferred to node2.  And it is not simply transferred; it
+is done in a fashion such that node1 becomes a fully synchronized
+subscriber, actively replicating the set.  So the two nodes have
+switched roles completely.</p>
+</li>
+<li>
+<p> After reconfiguring the web application (or
+<span class="application"><a href="help.html#pgpool"> pgpool </a></span>) to
+connect to the database on node2, the web server is restarted and
+resumes normal operation.</p>
+<p> Done in one shell script, that does the application shutdown,
+<span class="application">slonik</span>, move config files and startup all
+together, this entire procedure is likely to take less than 10
+seconds.</p>
+</li>
+</ul></div>
+<p> You may now simply shutdown the server hosting node1 and do
+whatever is required to maintain the server.  When <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> node1 is restarted later, it will start replicating
+again, and soon catch up.  At this point the procedure to switch
+origins is executed again to restore the original
+configuration.</p>
+<p> This is the preferred way to handle things; it runs quickly,
+under control of the administrators, and there is no need for there to
+be any loss of data.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id517791"></a>7.3.  Failover</h3></div></div></div>
+<a name="id517795"></a><p> If some more serious problem occurs on the
+&#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
+undesirable circumstance, as transactions &#8220;<span class="quote">committed</span>&#8221; on
+the origin, but not applied to the subscribers, will be lost.  You may
+have reported these transactions as &#8220;<span class="quote">successful</span>&#8221; to
+outside users.  As a result, failover should be considered a
+<span class="emphasis"><em>last resort</em></span>.  If the &#8220;<span class="quote">injured</span>&#8221;
+origin server can be brought up to the point where it can limp along
+long enough to do a controlled switchover, that is
+<span class="emphasis"><em>greatly</em></span> preferable.</p>
+<p> <span class="productname">Slony-I</span> does not provide any automatic detection for failed
+systems.  Abandoning committed transactions is a business decision
+that cannot be made by a database system.  If someone wants to put the
+commands below into a script executed automatically from the network
+monitoring system, well ... it's <span class="emphasis"><em>your</em></span> data, and
+it's <span class="emphasis"><em>your</em></span> failover policy. </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>The <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command
+</p>
+<pre class="programlisting">failover (id = 1, backup node = 2);</pre>
+<p> causes node2 to assume the ownership (origin) of all sets that
+have node1 as their current origin.  If there should happen to be
+additional nodes in the <span class="productname">Slony-I</span> cluster, all direct subscribers of
+node1 are instructed that this is happening.
+<span class="application">Slonik</span> will also query all direct
+subscribers in order to determine out which node has the highest
+replication status (<span class="emphasis"><em>e.g.</em></span> - the latest committed
+transaction) for each set, and the configuration will be changed in a
+way that node2 first applies those final before actually allowing
+write access to the tables.</p>
+<p> In addition, all nodes that subscribed directly to node1 will
+now use node2 as data provider for the set.  This means that after the
+failover command succeeded, no node in the entire replication setup
+will receive anything from node1 any more.</p>
+</li>
+<li><p> Reconfigure and restart the application (or
+<span class="application">pgpool</span>) to cause it to reconnect to
+node2.</p></li>
+<li>
+<p> After the failover is complete and node2 accepts
+write operations against the tables, remove all remnants of node1's
+configuration information with the <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>
+command:
+
+</p>
+<pre class="programlisting">drop node (id = 1, event node = 2);</pre>
+</li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id517945"></a>7.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
+<p> If you do choose to automate <code class="command">FAIL OVER </code>, it
+is important to do so <span class="emphasis"><em>carefully.</em></span> You need to have
+good assurance that the failed node is well and truly failed, and you
+need to be able to assure that the failed node will not accidentally
+return into service, thereby allowing there to be two nodes out there
+able to respond in a &#8220;<span class="quote">master</span>&#8221; role. </p>
+<p> When failover occurs, there needs to be a mechanism to forcibly
+knock the failed node off the network.  This could take place via
+having an SNMP interface that does some combination of the following:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Turns off power on the failed server. </p>
+<p> If care is not taken, the server may reappear when system
+administrators power it up. </p>
+</li>
+<li>
+<p> Modify firewall rules or other network configuration
+to drop the failed server's IP address from the network. </p>
+<p> If the server has multiple network interfaces, and therefore
+multiple IP addresses, this approach allows the
+&#8220;<span class="quote">application</span>&#8221; addresses to be dropped/deactivated, but
+leave &#8220;<span class="quote">administrative</span>&#8221; addresses open so that the server
+would remain accessible to system administrators.  </p>
+</li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id518015"></a>7.5. After Failover, Reconfiguring node1</h3></div></div></div>
+<p> After the above failover, the data stored on node1 will rapidly
+become increasingly out of sync with the rest of the nodes, and must
+be treated as corrupt.  Therefore, the only way to get node1 back and
+transfer the origin role back to it is to rebuild it from scratch as a
+subscriber, let it catch up, and then follow the switchover
+procedure.</p>
+<p> A good reason <span class="emphasis"><em>not</em></span> to do this automatically
+is the fact that important updates (from a
+<span class="emphasis"><em>business</em></span> perspective) may have been
+<code class="command">commit</code>ted on the failing system.  You probably want
+to analyze the last few transactions that made it into the failed node
+to see if some of them need to be reapplied on the &#8220;<span class="quote">live</span>&#8221;
+cluster.  For instance, if someone was entering bank deposits
+affecting customer accounts at the time of failure, you wouldn't want
+to lose that information.</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p> It has been observed that there can be some very
+confusing results if a node is &#8220;<span class="quote">failed</span>&#8221; due to a
+persistent network outage as opposed to failure of data storage.  In
+such a scenario, the &#8220;<span class="quote">failed</span>&#8221; node has a database in
+perfectly fine form; it is just that since it was cut off, it
+&#8220;<span class="quote">screams in silence.</span>&#8221; </p>
+<p> If the network connection is repaired, that node could
+reappear, and as far as <span class="emphasis"><em>its</em></span> configuration is
+concerned, all is well, and it should communicate with the rest of its
+<span class="productname">Slony-I</span> cluster. </p>
+<p> In <span class="emphasis"><em>fact</em></span>, the only confusion taking place
+is on that node.  The other nodes in the cluster are not confused at
+all; they know that this node is &#8220;<span class="quote">dead,</span>&#8221; and that they
+should ignore it.  But there is not a way to know this by looking at
+the &#8220;<span class="quote">failed</span>&#8221; node.</p>
+<p> This points back to the design point that <span class="productname">Slony-I</span> is not a
+network monitoring tool.  You need to have clear methods of
+communicating to applications and users what database hosts are to be
+used.  If those methods are lacking, adding replication to the mix
+will worsen the potential for confusion, and failover will be the
+point at which there is the greatest potential for confusion. </p>
+</div>
+<p> If the database is very large, it may take many hours to
+recover node1 as a functioning <span class="productname">Slony-I</span> node; that is another reason
+to consider failover as an undesirable &#8220;<span class="quote">final
+resort.</span>&#8221;</p>
+</div>
+</div></body>
+</html>

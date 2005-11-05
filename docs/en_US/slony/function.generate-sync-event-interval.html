@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.58.        generate_sync_event( interval )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html" title="1.57.        forwardconfirm( integer, integer, bigint, timestamp without time zone )
+      ">
+<link rel="next" href="function.getlocalnodeid-name.html" title="1.59.        getlocalnodeid( name )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.generate-sync-event-interval"></a>1.58.        generate_sync_event( interval )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       Generate a sync event if there has not been one in 30 seconds.
+        </p>
+<pre class="programlisting">declare
+	p_interval     alias for $1;
+	v_node_row     record;
+
+BEGIN
+	select 1 into v_node_row from sl_event 
+       	  where ev_type = 'SYNC' and ev_origin = getLocalNodeId('schemadoc')
+          and ev_timestamp &gt; now() - p_interval limit 1;
+	if not found then
+		-- If there has been no SYNC in the last interval, then push one
+		perform createEvent('schemadoc', 'SYNC', NULL);
+		return 1;
+	else
+		return 0;
+	end if;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

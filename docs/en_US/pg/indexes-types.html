@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>11.2. Index Types</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexes-types"></a>11.2. Index Types</h2></div></div></div>
+<p>   <span class="productname">PostgreSQL</span> provides several index types:
+   B-tree, R-tree, Hash, and GiST.  Each index type uses a different
+   algorithm that is best suited to different types of queries.
+   By default, the <code class="command">CREATE INDEX</code> command will create a
+   B-tree index, which fits the most common situations.
+  </p>
+<p>   <a name="id575137"></a>
+   <a name="id575147"></a>
+   B-trees can handle equality and range queries on data that can be sorted
+   into some ordering.
+   In particular, the <span class="productname">PostgreSQL</span> query planner
+   will consider using a B-tree index whenever an indexed column is
+   involved in a comparison using one of these operators:
+
+   </p>
+<table class="simplelist" border="0" summary="Simple list">
+<tr><td><code class="literal">&lt;</code></td></tr>
+<tr><td><code class="literal">&lt;=</code></td></tr>
+<tr><td><code class="literal">=</code></td></tr>
+<tr><td><code class="literal">&gt;=</code></td></tr>
+<tr><td><code class="literal">&gt;</code></td></tr>
+</table>
+<p>
+
+   Constructs equivalent to combinations of these operators, such as
+   <code class="literal">BETWEEN</code> and <code class="literal">IN</code>, can also be implemented with
+   a B-tree index search.  (But note that <code class="literal">IS NULL</code> is not
+   equivalent to <code class="literal">=</code> and is not indexable.)
+  </p>
+<p>   The optimizer can also use a B-tree index for queries involving the
+   pattern matching operators <code class="literal">LIKE</code>,
+   <code class="literal">ILIKE</code>, <code class="literal">~</code>, and
+   <code class="literal">~*</code>, <span class="emphasis"><em>if</em></span> the pattern is a constant
+   and is anchored to the beginning of the string [mdash ] for example,
+   <code class="literal">col LIKE 'foo%'</code> or <code class="literal">col ~ '^foo'</code>,
+   but not <code class="literal">col LIKE '%bar'</code>.  However, if your server does
+   not use the C locale you will need to create the index with a
+   special operator class to support indexing of pattern-matching queries.
+   See <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below.
+  </p>
+<p>   <a name="id575302"></a>
+   <a name="id575312"></a>
+   R-tree indexes are suited for queries on two-dimensional spatial data.
+   To create an R-tree index, use a command of the form
+</p>
+<pre class="synopsis">CREATE INDEX <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> USING rtree (<em class="replaceable"><code>column</code></em>);</pre>
+<p>
+   The <span class="productname">PostgreSQL</span> query planner will
+   consider using an R-tree index whenever an indexed column is
+   involved in a comparison using one of these operators:
+
+   </p>
+<table class="simplelist" border="0" summary="Simple list">
+<tr><td><code class="literal">&lt;&lt;</code></td></tr>
+<tr><td><code class="literal">&amp;&lt;</code></td></tr>
+<tr><td><code class="literal">&amp;&gt;</code></td></tr>
+<tr><td><code class="literal">&gt;&gt;</code></td></tr>
+<tr><td><code class="literal">&lt;&lt;|</code></td></tr>
+<tr><td><code class="literal">&amp;&lt;|</code></td></tr>
+<tr><td><code class="literal">|&amp;&gt;</code></td></tr>
+<tr><td><code class="literal">|&gt;&gt;</code></td></tr>
+<tr><td><code class="literal">~</code></td></tr>
+<tr><td><code class="literal">@</code></td></tr>
+<tr><td><code class="literal">~=</code></td></tr>
+<tr><td><code class="literal">&amp;&amp;</code></td></tr>
+</table>
+<p>
+
+   (See <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
+   these operators.)
+  </p>
+<p>   <a name="id575443"></a>
+   <a name="id575453"></a>
+   Hash indexes can only handle simple equality comparisons.
+   The query planner will consider using a hash index whenever an
+   indexed column is involved in a comparison using the
+   <code class="literal">=</code> operator.  The following command is used to
+   create a hash index:
+</p>
+<pre class="synopsis">CREATE INDEX <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> USING hash (<em class="replaceable"><code>column</code></em>);</pre>
+<p>
+  </p>
+<p>   GiST indexes are not a single kind of index, but rather an infrastructure
+   within which many different indexing strategies can be implemented.
+   Accordingly, the particular operators with which a GiST index can be
+   used vary depending on the indexing strategy (the <em class="firstterm">operator
+   class</em>).  The standard distribution of
+   <span class="productname">PostgreSQL</span> includes GiST operator classes
+   equivalent to the R-tree operator classes, and many other GiST operator
+   classes are available in the <code class="literal">contrib</code> collection or as separate
+   projects.  For more information see <a href="gist.html" title="Chapter 49. GiST Indexes">Chapter 49, <i>GiST Indexes</i></a>.
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    Testing has shown <span class="productname">PostgreSQL</span>'s hash
+    indexes to perform no better than B-tree indexes, and the
+    index size and build time for hash indexes is much worse.
+    Furthermore, hash index operations are not presently WAL-logged,
+    so hash indexes may need to be rebuilt with <code class="command">REINDEX</code>
+    after a database crash.
+    For these reasons, hash index use is presently discouraged.
+   </p>
+<p>    Similarly, R-tree indexes do not seem to have any performance
+    advantages compared to the equivalent operations of GiST indexes.
+    Like hash indexes, they are not WAL-logged and may need
+    reindexing after a database crash.
+   </p>
+<p>    While the problems with hash indexes may be fixed eventually,
+    it is likely that the R-tree index type will be retired in a future
+    release.  Users are encouraged to migrate applications that use R-tree
+    indexes to GiST indexes.
+   </p>
+</div>
+</div></body>
+</html>

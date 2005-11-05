@@ -1,0 +1,131 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.8. pg_authid</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-attribute.html" title="42.7. pg_attribute">
+<link rel="next" href="catalog-pg-auth-members.html" title="42.9. pg_auth_members">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-authid"></a>42.8. <code class="structname">pg_authid</code></h2></div></div></div>
+<a name="id770145"></a><p>   The catalog <code class="structname">pg_authid</code> contains information about
+   database authorization identifiers (roles).  A role subsumes the concepts
+   of &#8220;<span class="quote">users</span>&#8221; and &#8220;<span class="quote">groups</span>&#8221;.  A user is essentially just a
+   role with the <code class="structfield">rolcanlogin</code> flag set.  Any role (with or
+   without <code class="structfield">rolcanlogin</code>) may have other roles as members; see
+   <a href="catalog-pg-auth-members.html" title="42.9. pg_auth_members"><code class="structname">pg_auth_members</code></a>.
+  </p>
+<p>   Since this catalog contains passwords, it must not be publicly readable.
+   <a href="view-pg-roles.html" title="42.39. pg_roles"><code class="structname">pg_roles</code></a>
+   is a publicly readable view on
+   <code class="structname">pg_authid</code> that blanks out the password field.
+  </p>
+<p>   <a href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> contains detailed information about user and
+   privilege management.
+  </p>
+<p>   Because user identities are cluster-wide,
+   <code class="structname">pg_authid</code>
+   is shared across all databases of a cluster: there is only one
+   copy of <code class="structname">pg_authid</code> per cluster, not
+   one per database.
+  </p>
+<div class="table">
+<a name="id770237"></a><p class="title"><b>Table 42.8. <code class="structname">pg_authid</code> Columns</b></p>
+<table summary="pg_authid Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">rolname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Role name</td>
+</tr>
+<tr>
+<td><code class="structfield">rolsuper</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role has superuser privileges</td>
+</tr>
+<tr>
+<td><code class="structfield">rolinherit</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role automatically inherits privileges of roles it is a
+       member of</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcreaterole</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role may create more roles</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcreatedb</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role may create databases</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcatupdate</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       Role may update system catalogs directly.  (Even a superuser may not do
+       this unless this column is true.)
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolcanlogin</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       Role may log in, that is, this role can be given as the initial
+       session authorization identifier.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolconnlimit</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       For roles that can log in, this sets maximum number of concurrent 
+       connections this role can make.  -1 means no limit.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolpassword</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Password (possibly encrypted); NULL if none</td>
+</tr>
+<tr>
+<td><code class="structfield">rolvaliduntil</code></td>
+<td><code class="type">timestamptz</code></td>
+<td> </td>
+<td>Password expiry time (only used for password authentication);
+       NULL if no expiration</td>
+</tr>
+<tr>
+<td><code class="structfield">rolconfig</code></td>
+<td><code class="type">text[]</code></td>
+<td> </td>
+<td>Session defaults for run-time configuration variables</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

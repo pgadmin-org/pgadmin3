@@ -1,0 +1,193 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>8. Slony-I listen paths</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="failover.html" title="7. Doing switchover and failover with Slony-I">
+<link rel="next" href="plainpaths.html" title="9.  Slony-I Path Communications">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="listenpaths"></a>8. <span class="productname">Slony-I</span> listen paths</h2></div></div></div>
+<a name="id518148"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p> If you are running version
+<span class="productname">Slony-I</span> 1.1 or later it should be
+<span class="emphasis"><em>completely unnecessary</em></span> to read this section as it
+introduces a way to automatically manage this part of its
+configuration.  For earlier versions, however, it is needful.</p>
+</div>
+<p>If you have more than two or three nodes, and any degree of
+usage of cascaded subscribers (<span class="emphasis"><em>e.g.</em></span> - subscribers
+that are subscribing through a subscriber node), you will have to be
+fairly careful about the configuration of &#8220;<span class="quote">listen paths</span>&#8221;
+via the Slonik <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> and <a href="stmtdroplisten.html" title="DROP LISTEN"><span class="refentrytitle">DROP LISTEN</span></a> statements that control the contents of the
+table <a href="table.sl-listen.html">sl_listen</a>.</p>
+<p>The &#8220;<span class="quote">listener</span>&#8221; entries in this table control where
+each node expects to listen in order to get events propagated from
+other nodes.  You might think that nodes only need to listen to the
+&#8220;<span class="quote">parent</span>&#8221; from whom they are getting updates, but in
+reality, they need to be able to receive messages from
+<span class="emphasis"><em>all</em></span> nodes in order to be able to conclude that
+<code class="command">sync</code>s have been received everywhere, and that,
+therefore, entries in <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a> have been applied everywhere, and can
+therefore be purged.  this extra communication is needful so
+<span class="productname">Slony-I</span> is able to shift origins to other
+locations.</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id518257"></a>8.1. How listening can break</h3></div></div></div>
+<p>On one occasion, I had a need to drop a subscriber node (#2) and
+recreate it.  That node was the data provider for another subscriber
+(#3) that was, in effect, a &#8220;<span class="quote">cascaded slave.</span>&#8221; Dropping
+the subscriber node initially didn't work, as <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+informed me that there was a dependant node.  I repointed the
+dependant node to the &#8220;<span class="quote">master</span>&#8221; node for the subscription
+set, which, for a while, replicated without difficulties.</p>
+<p>I then dropped the subscription on &#8220;<span class="quote">node 2</span>&#8221;, and
+started resubscribing it.  that raised the <span class="productname">Slony-I</span>
+<code class="command">set_subscription</code> event, which started copying
+tables.  at that point in time, events stopped propagating to
+&#8220;<span class="quote">node 3</span>&#8221;, and while it was in perfectly ok shape, no
+events were making it to it.</p>
+<p>The problem was that node #3 was expecting to receive events
+from node #2, which was busy processing the <code class="command">set_subscription</code>
+event, and was not passing anything else on.</p>
+<p>We dropped the listener rules that caused node #3 to listen to
+node 2, replacing them with rules where it expected its events to come
+from node #1 (the origin node for the replication set).  At that
+moment, &#8220;<span class="quote">as if by magic</span>&#8221;, node #3 started replicating again, as
+it discovered a place to get <code class="command">sync</code> events.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id518342"></a>8.2. How the listen configuration should look</h3></div></div></div>
+<p>The simple cases tend to be simple to cope with.  We need to
+instead look at a more complex node configuration.</p>
+<p>Consider a set of nodes, 1 thru 6, where 1 is the origin, 
+where 2-4 subscribe directly to the origin, and where 5 subscribes to
+2, and 6 subscribes to 5.</p>
+<p>Here is a &#8220;<span class="quote">listener network</span>&#8221; that indicates where each
+node should listen for messages coming from each other node:
+
+</p>
+<pre class="screen">       1|   2|   3|   4|   5|   6|
+--------------------------------------------
+   1   0    2    3    4    2    2 
+   2   1    0    1    1    5    5 
+   3   1    1    0    1    1    1 
+   4   1    1    1    0    1    1 
+   5   2    2    2    2    0    6 
+   6   5    5    5    5    5    0 </pre>
+<p>Row 2 indicates all of the listen rules for node 2; it gets
+events for nodes 1, 3, and 4 throw node 1, and gets events for nodes 5
+and 6 from node 5.</p>
+<p>The row of 5's at the bottom, for node 6, indicate that node 6
+listens to node 5 to get events from nodes 1-5.</p>
+<p>The set of slonik <code class="command">set listen</code> statements to express
+this &#8220;<span class="quote">listener network</span>&#8221; are as follows:
+
+</p>
+<pre class="programlisting">store listen (origin = 1, receiver = 2, provider = 1);
+store listen (origin = 1, receiver = 3, provider = 1);
+store listen (origin = 1, receiver = 4, provider = 1);
+store listen (origin = 1, receiver = 5, provider = 2);
+store listen (origin = 1, receiver = 6, provider = 5);
+store listen (origin = 2, receiver = 1, provider = 2);
+store listen (origin = 2, receiver = 3, provider = 1);
+store listen (origin = 2, receiver = 4, provider = 1);
+store listen (origin = 2, receiver = 5, provider = 2);
+store listen (origin = 2, receiver = 6, provider = 5);
+store listen (origin = 3, receiver = 1, provider = 3);
+store listen (origin = 3, receiver = 2, provider = 1);
+store listen (origin = 3, receiver = 4, provider = 1);
+store listen (origin = 3, receiver = 5, provider = 2);
+store listen (origin = 3, receiver = 6, provider = 5);
+store listen (origin = 4, receiver = 1, provider = 4);
+store listen (origin = 4, receiver = 2, provider = 1);
+store listen (origin = 4, receiver = 3, provider = 1);
+store listen (origin = 4, receiver = 5, provider = 2);
+store listen (origin = 4, receiver = 6, provider = 5);
+store listen (origin = 5, receiver = 1, provider = 2);
+store listen (origin = 5, receiver = 2, provider = 5);
+store listen (origin = 5, receiver = 3, provider = 1);
+store listen (origin = 5, receiver = 4, provider = 1);
+store listen (origin = 5, receiver = 6, provider = 5);
+store listen (origin = 6, receiver = 1, provider = 2);
+store listen (origin = 6, receiver = 2, provider = 5);
+store listen (origin = 6, receiver = 3, provider = 1);
+store listen (origin = 6, receiver = 4, provider = 1);
+store listen (origin = 6, receiver = 5, provider = 6);</pre>
+<p>How we read these listen statements is thus...</p>
+<p>When on the &#8220;<span class="quote">receiver</span>&#8221; node, look to the &#8220;<span class="quote">provider</span>&#8221;
+node to provide events coming from the &#8220;<span class="quote">origin</span>&#8221; node.</p>
+<p>The tool <code class="filename">init_cluster</code> in the
+<code class="filename">altperl</code> scripts produces optimized listener
+networks in both the tabular form shown above as well as in the form
+of <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> statements.</p>
+<p>There are three &#8220;<span class="quote">thorns</span>&#8221; in this set of roses:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> If you change the shape of the node set, so that the
+nodes subscribe differently to things, you need to drop <a href="table.sl-listen.html">sl_listen</a> entries and create new ones to indicate the
+new preferred paths between nodes.  Until <span class="productname">Slony-I</span>, there is no
+automated way at this point to do this
+&#8220;<span class="quote">reshaping</span>&#8221;.</p></li>
+<li><p> If you <span class="emphasis"><em>don't</em></span> change the
+<a href="table.sl-listen.html">sl_listen</a> entries, events will likely continue to propagate so long as
+all of the nodes continue to run well.  the problem will only be
+noticed when a node is taken down, &#8220;<span class="quote">orphaning</span>&#8221; any nodes
+that are listening through it.</p></li>
+<li><p> you might have multiple replication sets that have
+<span class="emphasis"><em>different</em></span> shapes for their respective trees of
+subscribers.  there won't be a single &#8220;<span class="quote">best</span>&#8221; listener
+configuration in that case.</p></li>
+<li><p> In order for there to be an <a href="table.sl-listen.html">sl_listen</a> path, there <span class="emphasis"><em>must</em></span> be a
+series of <a href="table.sl-path.html">sl_path</a> entries connecting the origin
+to the receiver.  this means that if the contents of <a href="table.sl-path.html">sl_path</a> do not express a &#8220;<span class="quote">connected</span>&#8221;
+network of nodes, then some nodes will not be reachable.  this would
+typically happen, in practice, when you have two sets of nodes, one in
+one subnet, and another in another subnet, where there are only a
+couple of &#8220;<span class="quote">firewall</span>&#8221; nodes that can talk between the
+subnets.  cut out those nodes and the subnets stop
+communicating.</p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="autolisten"></a>8.3. Automated Listen Path Generation</h3></div></div></div>
+<p> In <span class="productname">Slony-I</span> version 1.1, a heuristic scheme is introduced to
+automatically generate <code class="envar">sl_listen</code> entries.  This
+happens, in order, based on three data sources:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> <a href="table.sl-subscribe.html">sl_subscribe</a> entries are the
+first, most vital control as to what listens to what; we
+<span class="emphasis"><em>know</em></span> there must be a direct path between each
+subscriber node and its provider.</p></li>
+<li><p> <a href="table.sl-path.html">sl_path</a> entries are the second
+indicator; if <a href="table.sl-subscribe.html">sl_subscribe</a> has not already
+indicated &#8220;<span class="quote">how to listen,</span>&#8221; then a node may listen
+directly to the event's origin if there is a suitable <a href="table.sl-path.html">sl_path</a> entry.</p></li>
+<li><p> Lastly, if there has been no guidance thus far based
+on the above data sources, then nodes can listen indirectly via every
+node that is either a provider for the receiver, or that is using the
+receiver as a provider.</p></li>
+</ul></div>
+<p> Any time <a href="table.sl-subscribe.html">sl_subscribe</a> or <a href="table.sl-path.html">sl_path</a> are modified,
+<code class="function">RebuildListenEntries()</code> will be called to revise
+the listener paths.</p>
+<p> If you are running an earlier version of <span class="productname">Slony-I</span>, you may want
+to take a look at <a href="altperl.html#regenlisten" title="18.25. regenerate-listens">Section 18.25, &#8220;regenerate-listens&#8221;</a>, a Perl script which
+duplicates the functionality of the stored procedure in the form of a
+script that generates the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> requests to
+generate the listener paths.</p>
+</div>
+</div></body>
+</html>

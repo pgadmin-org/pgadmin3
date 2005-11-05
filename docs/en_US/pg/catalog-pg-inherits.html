@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.19. pg_inherits</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-index.html" title="42.18. pg_index">
+<link rel="next" href="catalog-pg-language.html" title="42.20. pg_language">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-inherits"></a>42.19. <code class="structname">pg_inherits</code></h2></div></div></div>
+<a name="id773652"></a><p>   The catalog <code class="structname">pg_inherits</code> records information about
+   table inheritance hierarchies.  There is one entry for each direct
+   child table in the database.  (Indirect inheritance can be determined
+   by following chains of entries.)
+  </p>
+<div class="table">
+<a name="id773673"></a><p class="title"><b>Table 42.19. <code class="structname">pg_inherits</code> Columns</b></p>
+<table summary="pg_inherits Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">inhrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>       The OID of the child table.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">inhparent</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>       The OID of the parent table.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">inhseqno</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       If there is more than one direct parent for a child table (multiple
+       inheritance), this number tells the order in which the
+       inherited columns are to be arranged.  The count starts at 1.
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

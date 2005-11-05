@@ -1,0 +1,80 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.88.        slon_quote_input( text )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.slon-quote-brute-text.html" title="1.87.        slon_quote_brute( text )
+      ">
+<link rel="next" href="function.slonyversion.html" title="1.89.        slonyversion(  )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.slon-quote-input-text"></a>1.88.        slon_quote_input( text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>text</div>
+</div>
+</div>
+<p>
+ 
+       quote all words that aren[apos  ]t quoted yet
+        </p>
+<pre class="programlisting">declare
+    p_tab_fqname alias for $1;
+    v_temp_fqname text default '';
+    v_pre_quoted text[] default '{}';
+    v_pre_quote_counter smallint default 0;
+    v_count_fqname smallint default 0;
+    v_fqname_split text[];
+    v_quoted_fqname text default '';
+begin
+    v_temp_fqname := p_tab_fqname;
+
+    LOOP
+	v_pre_quote_counter := v_pre_quote_counter + 1;
+	v_pre_quoted[v_pre_quote_counter] := 
+	    substring(v_temp_fqname from '%#""%"#"%' for '#');
+	IF v_pre_quoted[v_pre_quote_counter] &lt;&gt; '' THEN
+	    v_temp_fqname := replace(v_temp_fqname,
+	        v_pre_quoted[v_pre_quote_counter], '@' ||
+		v_pre_quote_counter);
+	ELSE
+	    EXIT;
+	END IF;
+    END LOOP;
+
+    v_fqname_split := string_to_array(v_temp_fqname , '.');
+    v_count_fqname := array_upper (v_fqname_split, 1);
+
+    FOR i in 1..v_count_fqname LOOP
+        IF substring(v_fqname_split[i],1,1) = '@' THEN
+            v_quoted_fqname := v_quoted_fqname || 
+		v_pre_quoted[substring (v_fqname_split[i] from 2)::int];
+        ELSE
+            v_quoted_fqname := v_quoted_fqname || '"' || 
+		v_fqname_split[i] || '"';
+        END IF;
+
+        IF i &lt; v_count_fqname THEN
+            v_quoted_fqname := v_quoted_fqname || '.' ;
+        END IF;
+    END LOOP;
+	
+    return v_quoted_fqname;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

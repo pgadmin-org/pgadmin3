@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER AGGREGATE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-abort.html" title="ABORT">
+<link rel="next" href="sql-alterconversion.html" title="ALTER CONVERSION">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-alteraggregate"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER AGGREGATE &#8212; change the definition of an aggregate function</p>
+</div>
+<a name="id687141"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) RENAME TO <em class="replaceable"><code>new_name</code></em>
+ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) OWNER TO <em class="replaceable"><code>new_owner</code></em>
+ALTER AGGREGATE <em class="replaceable"><code>name</code></em> ( <em class="replaceable"><code>type</code></em> ) SET SCHEMA <em class="replaceable"><code>new_schema</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687196"></a><h2>Description</h2>
+<p>   <code class="command">ALTER AGGREGATE</code> changes the definition of an
+   aggregate function.
+  </p>
+<p>   You must own the aggregate function to use <code class="command">ALTER AGGREGATE</code>.
+   To change the schema of an aggregate function, you must also have
+   <code class="literal">CREATE</code> privilege on the new schema.
+   To alter the owner, you must also be a direct or indirect member of the new
+   owning role, and that role must have <code class="literal">CREATE</code> privilege on
+   the aggregate function's schema.  (These restrictions enforce that altering
+   the owner doesn't do anything you couldn't do by dropping and recreating
+   the aggregate function.  However, a superuser can alter ownership of any
+   aggregate function anyway.)
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687241"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of an existing aggregate function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>type</code></em></span></dt>
+<dd><p>      The argument data type of the aggregate function, or
+      <code class="literal">*</code> if the function accepts any data type.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_name</code></em></span></dt>
+<dd><p>      The new name of the aggregate function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_owner</code></em></span></dt>
+<dd><p>      The new owner of the aggregate function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>new_schema</code></em></span></dt>
+<dd><p>      The new schema for the aggregate function.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687315"></a><h2>Examples</h2>
+<p>   To rename the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> to <code class="literal">my_average</code>:
+</p>
+<pre class="programlisting">ALTER AGGREGATE myavg(integer) RENAME TO my_average;</pre>
+<p>
+  </p>
+<p>   To change the owner of the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> to <code class="literal">joe</code>:
+</p>
+<pre class="programlisting">ALTER AGGREGATE myavg(integer) OWNER TO joe;</pre>
+<p>
+  </p>
+<p>   To move the aggregate function <code class="literal">myavg</code> for type
+   <code class="type">integer</code> into schema <code class="literal">myschema</code>:
+</p>
+<pre class="programlisting">ALTER AGGREGATE myavg(integer) SET SCHEMA myschema;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687402"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ALTER AGGREGATE</code> statement in the SQL
+   standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id687416"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createaggregate.html">CREATE AGGREGATE</a>, <a href="sql-dropaggregate.html">DROP AGGREGATE</a></span>
+</div>
+</div></body>
+</html>

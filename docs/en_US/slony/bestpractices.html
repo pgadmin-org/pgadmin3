@@ -1,0 +1,309 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>20.  Slony-I &#8220;Best Practices&#8221; </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="prev" href="versionupgrade.html" title="19. Using Slony-I for PostgreSQL Upgrades">
+<link rel="next" href="help.html" title="21. More Slony-I Help">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bestpractices"></a>20.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </h2></div></div></div>
+<a name="id523350"></a><p> It is common for managers to have a desire to operate systems
+using some available, documented set of &#8220;<span class="quote">best practices.</span>&#8221;
+Documenting that sort of thing is essential to ISO 9000, ISO 9001, and
+other sorts of organizational certifications. </p>
+<p> It is worthwhile to preface a discussion of &#8220;<span class="quote">best
+practices</span>&#8221; by mentioning that each organization that uses
+<span class="productname">Slony-I</span> is unique, and there may be a need for local policies to
+reflect unique local operating characteristics.  It is for that reason
+that <span class="productname">Slony-I</span> does <span class="emphasis"><em>not</em></span> impose its own policies
+for such things as <a href="failover.html" title="7. Doing switchover and failover with Slony-I"> failover </a>; those
+will need to be determined based on the overall shape of your network,
+of your set of database servers, and of your usage patterns for those
+servers. </p>
+<p> There are, however, a number of things that early adopters of
+<span class="productname">Slony-I</span> have discovered which can at least help to suggest the sorts
+of policies you might want to consider. </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> <span class="productname">Slony-I</span> is a complex multi-client, multi-server
+system, with the result that there are almost an innumerable set of
+places where problems can arise.  </p>
+<p> As a natural result, maintaining a clean environment is really
+valuable, as any sort of environmental &#8220;<span class="quote">messiness</span>&#8221; can
+either cause unexpected problems or mask the real problem. </p>
+<p> Numerous users have reported problems resulting from mismatches
+between <span class="productname">Slony-I</span> versions, local libraries, and <span class="productname">PostgreSQL</span> libraries.
+Details count; you need to be clear on what hosts are running what
+versions of what software.</p>
+</li>
+<li>
+<p> Principle: Use an unambiguous, stable time zone such
+as UTC or GMT.</p>
+<p> Users have run into problems when their system uses a time zone
+that <span class="productname">PostgreSQL</span> was unable to recognize such as CUT0 or WST.  It is
+necessary that you use a timezone that <span class="productname">PostgreSQL</span> can recognize
+correctly.</p>
+<p> It is furthermore preferable to use a time zone where times do
+not shift around due to Daylight Savings Time. </p>
+<p> The &#8220;<span class="quote">geographically unbiased</span>&#8221; choice seems to be
+<code class="command"><code class="envar">TZ</code>=UTC</code> or
+<code class="command"><code class="envar">TZ</code>=GMT</code>. </p>
+<p> See also <a href="requirements.html#times" title="3.3.  Time Synchronization">Section 3.3, &#8220; Time Synchronization&#8221;</a>.</p>
+</li>
+<li>
+<p> Principle: Long running transactions are Evil </p>
+<p> The FAQ has an entry on <a href="faq.html#pglistenerfull"> growth
+of <code class="envar">pg_listener</code> </a> which discusses this in a fair
+bit of detail; the long and short is that long running transactions
+have numerous ill effects.  They are particularly troublesome on an
+&#8220;<span class="quote">origin</span>&#8221; node, holding onto locks, preventing vacuums
+from taking effect, and the like.</p>
+</li>
+<li>
+<p> <a href="failover.html" title="7. Doing switchover and failover with Slony-I"> Failover </a> policies
+should be planned for ahead of time.  </p>
+<p> This may simply involve thinking about what the priority lists
+should be of what should fail to what, as opposed to trying to
+automate it.  But knowing what to do ahead of time cuts down on the
+number of mistakes made.</p>
+<p> At Afilias, some internal [<span class="citation">The 3AM Unhappy DBA's Guide
+to...</span>] guides have been created to provide checklists of
+what to do when certain &#8220;<span class="quote">unhappy</span>&#8221; events take place; this
+sort of material is highly specific to the applications running, so
+you would need to generate your own such documents.</p>
+</li>
+<li><p> <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> should be used to allow
+preventative maintenance to prevent problems from becoming serious
+enough to require <a href="failover.html" title="7. Doing switchover and failover with Slony-I"> failover </a>. </p></li>
+<li>
+<p> <code class="command">VACUUM</code> policy needs to be
+carefully defined.</p>
+<p> As mentioned above, &#8220;<span class="quote">long running transactions are
+Evil.</span>&#8221; <code class="command">VACUUM</code>s are no exception in this.  A
+<code class="command">VACUUM</code> on a huge table will open a long-running
+transaction with all the known ill effects.</p>
+</li>
+<li>
+<p> Running all of the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons on a
+central server for each network has proven preferable. </p>
+<p> Each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> should run on a host on the same
+local network as the node that it is servicing, as it does a
+<span class="emphasis"><em>lot</em></span> of communications with its database.  </p>
+<p> In theory, the &#8220;<span class="quote">best</span>&#8221; speed would come from
+running the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> on the database server that it is
+servicing. </p>
+<p> In practice, having the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes strewn
+across a dozen servers turns out to be really inconvenient to manage,
+as making changes to their configuration requires logging onto a whole
+bunch of servers.  In environments where it is necessary to use
+<span class="application">sudo</span> for users to switch to application
+users, this turns out to be seriously inconvenient.  It turns out to
+be <span class="emphasis"><em>much</em></span> easier to manage to group the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes on one server per local network, so that
+<span class="emphasis"><em>one</em></span> script can start, monitor, terminate, and
+otherwise maintain <span class="emphasis"><em>all</em></span> of the nearby nodes.</p>
+<p> That also has the implication that configuration data and
+configuration scripts only need to be maintained in one place,
+eliminating duplication of configuration efforts.</p>
+</li>
+<li><p>The <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)"> Database Schema
+Changes </a> section outlines some practices that have been found
+useful for handling changes to database schemas. </p></li>
+<li>
+<p> Handling of Primary Keys </p>
+<p> Discussed in the section on <a href="definingsets.html" title="7. Defining Slony-I Replication Sets">Replication Sets, </a> it is <span class="emphasis"><em>ideal</em></span> if each
+replicated table has a true primary key constraint; it is
+<span class="emphasis"><em>acceptable</em></span> to use a &#8220;<span class="quote">candidate primary key.</span>&#8221;</p>
+<p> It is <span class="emphasis"><em>not recommended</em></span> that a
+<span class="productname">Slony-I</span>-defined key be used to introduce a candidate primary key, as
+this introduces the possibility that updates to this table can fail
+due to the introduced unique index, which means that <span class="productname">Slony-I</span> has
+introduced a new failure mode for your application.</p>
+</li>
+<li><p> <a href="definingsets.html#definesets" title="7.2. Grouping tables into sets"> Grouping tables into sets</a> suggests strategies for determining how to group tables and
+sequences into replication sets. </p></li>
+<li><p> It should be obvious that actions that can delete a
+lot of data should be taken with great care; the section on <a href="dropthings.html" title="12. Dropping things from Slony-I Replication"> Dropping things from <span class="productname">Slony-I</span> Replication</a>
+discusses the different sorts of &#8220;<span class="quote">deletion</span>&#8221; that <span class="productname">Slony-I</span>
+supports.  </p></li>
+<li>
+<p> <a href="locking.html" title="10. Locking Issues"> Locking issues </a></p>
+<p> Certain <span class="productname">Slony-I</span> operations, notably <a href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add table</code> </a>,
+<a href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move set</code> </a>,
+<a href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set </code> </a>,
+and <a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute script</code></a> require acquiring <span class="emphasis"><em>exclusive locks</em></span> on the
+tables being replicated. </p>
+<p> Depending on the kind of activity on the databases, this may or
+may not have the effect of requiring a (hopefully brief) database
+outage. </p>
+</li>
+<li>
+<p><a name="slonyuser"></a> <span class="productname">Slony-I</span>-specific user names. </p>
+<p> It has proven useful to define a <code class="command">slony</code> user
+for use by <span class="productname">Slony-I</span>, as distinct from a generic
+<code class="command">postgres</code> or <code class="command">pgsql</code> user.  </p>
+<p> If all sorts of automatic &#8220;<span class="quote">maintenance</span>&#8221;
+activities, such as <code class="command">vacuum</code>ing and performing
+backups, are performed under the &#8220;<span class="quote">ownership</span>&#8221; of a single
+<span class="productname">PostgreSQL</span> user, it turns out to be pretty easy to run into deadlock
+problems. </p>
+<p> For instance, a series of <code class="command">vacuums</code> that
+unexpectedly run against a database that has a large
+<code class="command">SUBSCRIBE_SET</code> event under way may run into a
+deadlock which would roll back several hours worth of data copying
+work.</p>
+<p> If, instead, different maintenance roles are performed by
+different users, you may, during vital operations such as
+<code class="command">SUBSCRIBE_SET</code>, lock out other users at the
+<code class="filename">pg_hba.conf</code> level, only allowing the
+<code class="command">slony</code> user in, which substantially reduces the risk
+of problems while the subscription is in progress.</p>
+</li>
+<li>
+<p> Path configuration </p>
+<p> The section on <a href="plainpaths.html" title="9.  Slony-I Path Communications"> Path Communications</a> discusses the issues surrounding what network connections need
+to be in place in order for <span class="productname">Slony-I</span> to function.</p>
+</li>
+<li>
+<p> The section on <a href="listenpaths.html" title="8. Slony-I listen paths"> listen
+paths </a> discusses the issues surrounding the table <a href="table.sl-listen.html">sl_listen</a>.</p>
+<p> As of <span class="productname">Slony-I</span> 1.1, its contents are computed automatically
+based on the communications information available to <span class="productname">Slony-I</span> which
+should alleviate the problems found in earlier versions where this had
+to be configured by hand.  Many seemingly inexplicable communications
+failures, where nodes failed to talk to one another even though they
+technically could, were a result of incorrect listen path
+configuration. </p>
+</li>
+<li>
+<p> Configuring <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> </p>
+<p> As of version 1.1, <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> configuration may be
+drawn either from the command line or from configuration files.
+&#8220;<span class="quote">Best</span>&#8221; practices have yet to emerge from the two
+options:</p>
+</li>
+</ul></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Configuration via command line options</p>
+<p> This approach has the merit that all the options that are
+active are visible in the process environment.  (And if there are a
+lot of them, they may be a nuisance to read.)</p>
+<p> Unfortunately, if you invoke <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> from the
+command line, you could <span class="emphasis"><em>forget</em></span> to include <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files"> log shipping </a> configuration and thereby
+destroy the sequence of logs for a log shipping node. </p>
+</li>
+<li>
+<p> Unlike when command line options are used, the
+active options are <span class="emphasis"><em>not</em></span> visible.  They can only be
+inferred from the name and/or contents of the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
+configuration file, and will not reflect subsequent changes to the
+configuration file.  </p>
+<p> By putting the options in a file, you won't forget including
+any of them, so this is safer for <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files"> log
+shipping. </a> </p>
+</li>
+</ul></div>
+<div class="itemizedlist"><ul type="disc"><li>
+<p> Things to do when subscribing nodes </p>
+<p> When a new node is running the <code class="command">COPY_SET</code>
+event for a large replication set (<span class="emphasis"><em>e.g.</em></span> - one
+which takes several hours to subscribe) it has been found to be
+desirable to lock all users other than the <code class="command">slony</code>
+user out of the new subscriber because:</p>
+</li></ul></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Applications will run into partially-copied,
+half-baked data that is not totally consistent. </p></li>
+<li><p> It is possible for applications (and maintenance
+scripts) to submit combinations of queries that will get the system
+into a deadlock situation, thereby terminating the
+<code class="command">COPY_SET</code> event, and requiring the subscription to
+start over again.  </p></li>
+</ul></div>
+<p> It <span class="emphasis"><em>may</em></span> be worth considering turning the
+<span class="productname">PostgreSQL</span> <code class="function">fsync</code> functionality off during the
+copying of data, as this will improve performance, and if the database
+&#8220;<span class="quote">falls over</span>&#8221; during the <code class="command">COPY_SET</code>
+event, you will be restarting the copy of the whole replication
+set.</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Managing use of slonik </p>
+<p> The notes on <a href="usingslonik.html" title="15. Using Slonik"> Using Slonik </a>
+describe some of the lessons learned from managing large numbers of
+<a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> scripts.</p>
+</li>
+<li>
+<p> Handling Very Large Replication Sets </p>
+<p> Some users have set up replication on replication sets that are
+tens to hundreds of gigabytes in size, which puts some added
+&#8220;<span class="quote">strain</span>&#8221; on the system, in particular where it may take
+several days for the <code class="command">COPY_SET</code> event to complete.
+Here are some principles that have been observed for dealing with
+these sorts of situtations.</p>
+</li>
+</ul></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Drop all indices other than the primary key index
+while the <code class="command">COPY_SET</code> event is run. </p>
+<p> When data is copied into a table that has indices on it,
+<span class="productname">PostgreSQL</span> builds the indices incrementally, on the fly.  This is much
+slower than simply copying the data into the table, and then
+recreating each index &#8220;<span class="quote">ex nihilo</span>&#8221;, as the latter can take
+substantial advantage of sort memory. </p>
+<p> In a future release, it is hopeful that indices will be dropped
+and recreated automatically, which would eliminate this.</p>
+</li>
+<li>
+<p> If there are large numbers of updates taking place as
+the large set is being copied, this can lead to the subscriber being
+behind by some enormous number of <code class="command">SYNC</code> events.</p>
+<p> If a <code class="command"> SYNC </code> is generated about once per
+second, that leads to the subscriber &#8220;<span class="quote">falling behind</span>&#8221; by
+around 90,000 <code class="command">SYNC</code>s per day, possibly for several
+days.  </p>
+<p> There will correspondingly be an <span class="emphasis"><em>enormous</em></span>
+growth of <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-seqlog.html">sl_seqlog</a>.  Unfortunately, once the
+<code class="command">COPY_SET</code> completes, users have found that the
+queries against these tables wind up reverting to <code class="command">Seq
+Scans</code> so that even though a particular
+<code class="command">SYNC</code> processing event is only processing a small
+number of those 90,000 <code class="command">SYNC</code> events, it still reads
+through the entire table.  In such a case, you may never see
+replication catch up.</p>
+<p> Several things can be done that will help, involving
+careful selection of <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> parameters:</p>
+</li>
+</ul></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Ensure that there exists, on the
+&#8220;<span class="quote">master</span>&#8221; node, an index on <code class="function"> sl_log_1(log_xid)</code>.  If it doesn't exist, as the <span class="productname">Slony-I</span> instance was set up
+before version 1.1.1, see <code class="filename"> slony1_base.sql </code> for
+the exact form that the index setup should take. </p></li>
+<li><p> On the subscriber's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, increase
+the number of <code class="command">SYNC</code> events processed together, with
+the <a href="slon-config-interval.html#slon-config-sync-group-maxsize">slon_conf_sync_group_maxsize</a> parameter to some
+value that allows it to process a significant portion of the
+outstanding <code class="command">SYNC</code> events. </p></li>
+<li><p> On the subscriber's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, set the
+<a href="slon-config-interval.html#slon-config-desired-sync-time">desired_sync_time</a> to 0, as the adaptive
+<code class="command">SYNC</code> grouping system will start with small
+groupings that will, under these circumstances, perform
+poorly. </p></li>
+<li><p> Increase the <a href="slon-config-interval.html#slon-config-sync-interval">slon_conf_sync_interval</a> on the origin's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> so that <code class="command">SYNC</code> events are generated
+less frequently.  If a <code class="command">SYNC</code> is only generated once
+per minute instead of once per second, that will cut down the number
+of events by a factor of 60. </p></li>
+</ul></div>
+<div class="itemizedlist"><ul type="disc"><li><p> It is likely to be worthwhile to use <a href="slon-config-interval.html#slon-config-vac-frequency">slon_conf_vac_frequency</a> to deactivate <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>-initiated vacuuming in favor of running your own
+vacuum scripts, as there will be a buildup of unpurgeable data while
+the data is copied and the subscriber starts to catch up. </p></li></ul></div>
+</div></body>
+</html>

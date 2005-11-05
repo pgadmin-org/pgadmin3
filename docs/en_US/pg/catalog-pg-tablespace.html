@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.31. pg_tablespace</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-statistic.html" title="42.30. pg_statistic">
+<link rel="next" href="catalog-pg-trigger.html" title="42.32. pg_trigger">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-tablespace"></a>42.31. <code class="structname">pg_tablespace</code></h2></div></div></div>
+<a name="id776876"></a><p>   The catalog <code class="structname">pg_tablespace</code> stores information
+   about the available tablespaces.  Tables can be placed in particular
+   tablespaces to aid administration of disk layout.
+  </p>
+<p>   Unlike most system catalogs, <code class="structname">pg_tablespace</code>
+   is shared across all databases of a cluster: there is only one
+   copy of <code class="structname">pg_tablespace</code> per cluster, not
+   one per database.
+  </p>
+<div class="table">
+<a name="id776910"></a><p class="title"><b>Table 42.31. <code class="structname">pg_tablespace</code> Columns</b></p>
+<table summary="pg_tablespace Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">spcname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Tablespace name</td>
+</tr>
+<tr>
+<td><code class="structfield">spcowner</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>Owner of the tablespace, usually the user who created it</td>
+</tr>
+<tr>
+<td><code class="structfield">spclocation</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Location (directory path) of the tablespace</td>
+</tr>
+<tr>
+<td><code class="structfield">spcacl</code></td>
+<td><code class="type">aclitem[]</code></td>
+<td> </td>
+<td>       Access privileges; see
+       <a href="sql-grant.html">GRANT</a> and
+       <a href="sql-revoke.html">REVOKE</a>
+       for details.
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,133 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SET TRANSACTION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION">
+<link rel="next" href="sql-show.html" title="SHOW">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-set-transaction"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SET TRANSACTION &#8212; set the characteristics of the current transaction</p>
+</div>
+<a name="id735092"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">SET TRANSACTION <em class="replaceable"><code>transaction_mode</code></em> [, ...]
+SET SESSION CHARACTERISTICS AS TRANSACTION <em class="replaceable"><code>transaction_mode</code></em> [, ...]
+
+where <em class="replaceable"><code>transaction_mode</code></em> is one of:
+
+    ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
+    READ WRITE | READ ONLY</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id735133"></a><h2>Description</h2>
+<p>   The <code class="command">SET TRANSACTION</code> command sets the
+   characteristics of the current transaction. It has no effect on any
+   subsequent transactions.  <code class="command">SET SESSION
+   CHARACTERISTICS</code> sets the default transaction
+   characteristics for subsequent transactions of a session.  These
+   defaults can be overridden by <code class="command">SET TRANSACTION</code>
+   for an individual transaction.
+  </p>
+<p>   The available transaction characteristics are the transaction
+   isolation level and the transaction access mode (read/write or
+   read-only).
+  </p>
+<p>   The isolation level of a transaction determines what data the
+   transaction can see when other transactions are running concurrently:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">READ COMMITTED</code></span></dt>
+<dd><p>       A statement can only see rows committed before it began. This
+       is the default.
+      </p></dd>
+<dt><span class="term"><code class="literal">SERIALIZABLE</code></span></dt>
+<dd><p>       All statements of the current transaction can only see rows committed
+       before the first query or data-modification statement was executed in
+       this transaction.
+      </p></dd>
+</dl></div>
+<p>
+
+   The SQL standard defines two additional levels, <code class="literal">READ
+   UNCOMMITTED</code> and <code class="literal">REPEATABLE READ</code>.
+   In <span class="productname">PostgreSQL</span> <code class="literal">READ
+   UNCOMMITTED</code> is treated as
+   <code class="literal">READ COMMITTED</code>, while <code class="literal">REPEATABLE
+   READ</code> is treated as <code class="literal">SERIALIZABLE</code>.
+  </p>
+<p>   The transaction isolation level cannot be changed after the first query or
+   data-modification statement (<code class="command">SELECT</code>,
+   <code class="command">INSERT</code>, <code class="command">DELETE</code>,
+   <code class="command">UPDATE</code>, <code class="command">FETCH</code>, or
+   <code class="command">COPY</code>) of a transaction has been executed.  See
+   <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more information about transaction
+   isolation and concurrency control.
+  </p>
+<p>   The transaction access mode determines whether the transaction is
+   read/write or read-only.  Read/write is the default.  When a
+   transaction is read-only, the following SQL commands are
+   disallowed: <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>,
+   <code class="literal">DELETE</code>, and <code class="literal">COPY TO</code> if the
+   table they would write to is not a temporary table; all
+   <code class="literal">CREATE</code>, <code class="literal">ALTER</code>, and
+   <code class="literal">DROP</code> commands; <code class="literal">COMMENT</code>,
+   <code class="literal">GRANT</code>, <code class="literal">REVOKE</code>,
+   <code class="literal">TRUNCATE</code>; and <code class="literal">EXPLAIN ANALYZE</code>
+   and <code class="literal">EXECUTE</code> if the command they would execute is
+   among those listed.  This is a high-level notion of read-only that
+   does not prevent all writes to disk.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id735399"></a><h2>Notes</h2>
+<p>   If <code class="command">SET TRANSACTION</code> is executed without a prior
+   <code class="command">START TRANSACTION</code> or  <code class="command">BEGIN</code>,
+   it will appear to have no effect, since the transaction will immediately
+   end.
+  </p>
+<p>   It is possible to dispense with <code class="command">SET TRANSACTION</code>
+   by instead specifying the desired <em class="replaceable"><code>transaction_modes</code></em> in
+   <code class="command">BEGIN</code> or <code class="command">START TRANSACTION</code>.
+  </p>
+<p>   The session default transaction modes can also be set by setting the
+   configuration parameters <a href="runtime-config-client.html#guc-default-transaction-isolation">default_transaction_isolation</a>
+   and <a href="runtime-config-client.html#guc-default-transaction-read-only">default_transaction_read_only</a>.
+   (In fact <code class="command">SET SESSION CHARACTERISTICS</code> is just a
+   verbose equivalent for setting these variables with <code class="command">SET</code>.)
+   This means the defaults can be set in the configuration file, via
+   <code class="command">ALTER DATABASE</code>, etc.  Consult <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a>
+   for more information.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="r1-sql-set-transaction-3"></a><h2>Compatibility</h2>
+<p>   Both commands are defined in the <span class="acronym">SQL</span> standard.
+   <code class="literal">SERIALIZABLE</code> is the default transaction
+   isolation level in the standard.  In
+   <span class="productname">PostgreSQL</span> the default is ordinarily
+   <code class="literal">READ COMMITTED</code>, but you can change it as
+   mentioned above.  Because of lack of predicate locking, the
+   <code class="literal">SERIALIZABLE</code> level is not truly
+   serializable. See <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for details.
+  </p>
+<p>   In the SQL standard, there is one other transaction characteristic
+   that can be set with these commands: the size of the diagnostics
+   area.  This concept is specific to embedded SQL, and therefore is
+   not implemented in the <span class="productname">PostgreSQL</span> server.
+  </p>
+<p>   The SQL standard requires commas between successive <em class="replaceable"><code>transaction_modes</code></em>, but for historical
+   reasons <span class="productname">PostgreSQL</span> allows the commas to be
+   omitted.
+  </p>
+</div>
+</div></body>
+</html>

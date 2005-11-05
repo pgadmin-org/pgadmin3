@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.18. key_column_usage</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-enabled-roles.html" title="31.17. enabled_roles">
+<link rel="next" href="infoschema-parameters.html" title="31.19. parameters">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-key-column-usage"></a>31.18. <code class="literal">key_column_usage</code></h2></div></div></div>
+<p>   The view <code class="literal">key_column_usage</code> identifies all columns
+   in the current database that are restricted by some unique, primary
+   key, or foreign key constraint.  Check constraints are not included
+   in this view.  Only those columns are shown that are contained in a
+   table owned by the current user.
+  </p>
+<div class="table">
+<a name="id643597"></a><p class="title"><b>Table 31.16. <code class="literal">key_column_usage</code> Columns</b></p>
+<table summary="key_column_usage Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">constraint_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database that contains the constraint (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">constraint_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema that contains the constraint</td>
+</tr>
+<tr>
+<td><code class="literal">constraint_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the constraint</td>
+</tr>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the database that contains the table that contains the
+       column that is restricted by some constraint (always the
+       current database)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the schema that contains the table that contains the
+       column that is restricted by some constraint
+      </td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the table that contains the column that is restricted
+       by some constraint
+      </td>
+</tr>
+<tr>
+<td><code class="literal">column_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the column that is restricted by some constraint
+      </td>
+</tr>
+<tr>
+<td><code class="literal">ordinal_position</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       Ordinal position of the column within the constraint key (count
+       starts at 1)
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,135 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ecpg</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="prev" href="app-dropuser.html" title="dropuser">
+<link rel="next" href="app-pgconfig.html" title="pg_config">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-ecpg"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p><span class="application">ecpg</span> &#8212; embedded SQL C preprocessor</p>
+</div>
+<a name="id742908"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">ecpg</code> [<em class="replaceable"><code>option</code></em>...]  <em class="replaceable"><code>file</code></em>... </p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-ecpg-description"></a><h2>Description</h2>
+<p>   <code class="command">ecpg</code> is the embedded SQL preprocessor for C
+   programs.  It converts C programs with embedded SQL statements to
+   normal C code by replacing the SQL invocations with special
+   function calls.  The output files can then be processed with any C
+   compiler tool chain.
+  </p>
+<p>   <code class="command">ecpg</code> will convert each input file given on the
+   command line to the corresponding C output file.  Input files
+   preferably have the extension <code class="filename">.pgc</code>, in which
+   case the extension will be replaced by <code class="filename">.c</code> to
+   determine the output file name.  If the extension of the input file
+   is not <code class="filename">.pgc</code>, then the output file name is
+   computed by appending <code class="literal">.c</code> to the full file name.
+   The output file name can also be overridden using the
+   <code class="option">-o</code> option.
+  </p>
+<p>   This reference page does not describe the embedded SQL language.
+   See <a href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">Chapter 30, <i><span class="application">ECPG</span> - Embedded <span class="acronym">SQL</span> in C</i></a> for more information on that topic.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id743022"></a><h2>Options</h2>
+<p>   <code class="command">ecpg</code> accepts the following command-line
+   arguments:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="option">-c</code></span></dt>
+<dd><p>       Automatically generate certain C code from SQL code.  Currently, this
+       works for <code class="literal">EXEC SQL TYPE</code>.
+      </p></dd>
+<dt><span class="term"><code class="option">-C <em class="replaceable"><code>mode</code></em></code></span></dt>
+<dd><p>       Set a compatibility mode.  <em class="replaceable"><code>mode</code></em> may
+       be <code class="literal">INFORMIX</code> or
+       <code class="literal">INFORMIX_SE</code>.
+      </p></dd>
+<dt><span class="term"><code class="option">-D <em class="replaceable"><code>symbol</code></em></code></span></dt>
+<dd><p>       Define a C preprocessor symbol.
+      </p></dd>
+<dt><span class="term"><code class="option">-i</code></span></dt>
+<dd><p>       Parse system include files as well.
+      </p></dd>
+<dt><span class="term"><code class="option">-I <em class="replaceable"><code>directory</code></em></code></span></dt>
+<dd><p>       Specify an additional include path, used to find files included
+       via <code class="literal">EXEC SQL INCLUDE</code>.  Defaults are
+       <code class="filename">.</code> (current directory),
+       <code class="filename">/usr/local/include</code>, the
+       <span class="productname">PostgreSQL</span> include directory which
+       is defined at compile time (default:
+       <code class="filename">/usr/local/pgsql/include</code>), and
+       <code class="filename">/usr/include</code>, in that order.
+      </p></dd>
+<dt><span class="term"><code class="option">-o <em class="replaceable"><code>filename</code></em></code></span></dt>
+<dd><p>       Specifies that <code class="command">ecpg</code> should write all
+       its output to the given <em class="replaceable"><code>filename</code></em>.
+      </p></dd>
+<dt><span class="term"><code class="option">-r <em class="replaceable"><code>option</code></em></code></span></dt>
+<dd><p>       Selects a run-time behavior.  Currently,
+       <em class="replaceable"><code>option</code></em> can only be
+       <code class="literal">no_indicator</code>.
+      </p></dd>
+<dt><span class="term"><code class="option">-t</code></span></dt>
+<dd><p>       Turn on autocommit of transactions. In this mode, each SQL command is
+       automatically committed unless it is inside an explicit
+       transaction block. In the default mode, commands are committed
+       only when <code class="command">EXEC SQL COMMIT</code> is issued.
+      </p></dd>
+<dt><span class="term"><code class="option">-v</code></span></dt>
+<dd><p>       Print additional information including the version and the
+       include path.
+      </p></dd>
+<dt><span class="term"><code class="option">--help</code></span></dt>
+<dd><p>       Show a brief summary of the command usage, then exit.
+      </p></dd>
+<dt><span class="term"><code class="option">--version</code></span></dt>
+<dd><p>       Output version information, then exit.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id743261"></a><h2>Notes</h2>
+<p>   When compiling the preprocessed C code files, the compiler needs to
+   be able to find the <span class="application">ECPG</span> header files in the
+   <span class="productname">PostgreSQL</span> include directory.  Therefore, one might
+   have to use the <code class="option">-I</code> option when invoking the compiler
+   (e.g., <code class="literal">-I/usr/local/pgsql/include</code>).
+  </p>
+<p>   Programs using C code with embedded SQL have to be linked against
+   the <code class="filename">libecpg</code> library, for example using the
+   linker options <code class="literal">-L/usr/local/pgsql/lib -lecpg</code>.
+  </p>
+<p>   The value of either of these directories that is appropriate for
+   the installation can be found out using <a href="app-pgconfig.html" title="pg_config"><span class="refentrytitle"><a name="app-pgconfig-title"></a>pg_config</span></a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id743326"></a><h2>Examples</h2>
+<p>   If you have an embedded SQL C source file named
+   <code class="filename">prog1.pgc</code>, you can create an executable
+   program using the following sequence of commands:
+</p>
+<pre class="programlisting">ecpg prog1.pgc
+cc -I/usr/local/pgsql/include -c prog1.c
+cc -o prog1 prog1.o -L/usr/local/pgsql/lib -lecpg</pre>
+<p>
+  </p>
+</div>
+</div></body>
+</html>

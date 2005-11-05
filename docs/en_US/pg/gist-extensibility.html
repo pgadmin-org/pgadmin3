@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>49.2. Extensibility</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="gist.html" title="Chapter 49. GiST Indexes">
+<link rel="prev" href="gist.html" title="Chapter 49. GiST Indexes">
+<link rel="next" href="gist-implementation.html" title="49.3. Implementation">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="gist-extensibility"></a>49.2. Extensibility</h2></div></div></div>
+<p>   Traditionally, implementing a new index access method meant a lot of
+   difficult work.  It was necessary to understand the inner workings of the
+   database, such as the lock manager and Write-Ahead Log.  The
+   <span class="acronym">GiST</span> interface has a high level of abstraction,
+   requiring the access method implementer to only implement the semantics of
+   the data type being accessed.  The <span class="acronym">GiST</span> layer itself
+   takes care of concurrency, logging and searching the tree structure.
+ </p>
+<p>   This extensibility should not be confused with the extensibility of the
+   other standard search trees in terms of the data they can handle.  For
+   example, <span class="productname">PostgreSQL</span> supports extensible B+-trees
+   and R-trees. That means that you can use
+   <span class="productname">PostgreSQL</span> to build a B+-tree or R-tree over any
+   data type you want. But B+-trees only support range predicates
+   (<code class="literal">&lt;</code>, <code class="literal">=</code>, <code class="literal">&gt;</code>),
+   and R-trees only support n-D range queries (contains, contained, equals).
+ </p>
+<p>   So if you index, say, an image collection with a
+   <span class="productname">PostgreSQL</span> B+-tree, you can only issue queries
+   such as &#8220;<span class="quote">is imagex equal to imagey</span>&#8221;, &#8220;<span class="quote">is imagex less
+   than imagey</span>&#8221; and &#8220;<span class="quote">is imagex greater than imagey</span>&#8221;?
+   Depending on how you define &#8220;<span class="quote">equals</span>&#8221;, &#8220;<span class="quote">less than</span>&#8221;
+   and &#8220;<span class="quote">greater than</span>&#8221; in this context, this could be useful.
+   However, by using a <span class="acronym">GiST</span> based index, you could create
+   ways to ask domain-specific questions, perhaps &#8220;<span class="quote">find all images of
+   horses</span>&#8221; or &#8220;<span class="quote">find all over-exposed images</span>&#8221;.
+ </p>
+<p>   All it takes to get a <span class="acronym">GiST</span> access method up and running
+   is to implement seven user-defined methods, which define the behavior of
+   keys in the tree. Of course these methods have to be pretty fancy to
+   support fancy queries, but for all the standard queries (B+-trees,
+   R-trees, etc.) they're relatively straightforward. In short,
+   <span class="acronym">GiST</span> combines extensibility along with generality, code
+   reuse, and a clean interface.
+  </p>
+</div></body>
+</html>

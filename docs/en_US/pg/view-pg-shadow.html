@@ -1,0 +1,98 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.42. pg_shadow</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="view-pg-settings.html" title="42.41. pg_settings">
+<link rel="next" href="view-pg-stats.html" title="42.43. pg_stats">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-shadow"></a>42.42. <code class="structname">pg_shadow</code></h2></div></div></div>
+<a name="id780269"></a><p>   The view <code class="structname">pg_shadow</code> exists for backwards
+   compatibility: it emulates a catalog that existed in
+   <span class="productname">PostgreSQL</span> before version 8.1.
+   It shows properties of all roles that are marked as
+   <code class="structfield">rolcanlogin</code>.
+  </p>
+<p>   The name stems from the fact that this table
+   should not be readable by the public since it contains passwords.
+   <a href="view-pg-user.html" title="42.45. pg_user"><code class="structname">pg_user</code></a>
+   is a publicly readable view on
+   <code class="structname">pg_shadow</code> that blanks out the password field.
+  </p>
+<div class="table">
+<a name="id780319"></a><p class="title"><b>Table 42.42. <code class="structname">pg_shadow</code> Columns</b></p>
+<table summary="pg_shadow Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">usename</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.rolname</code></td>
+<td>User name</td>
+</tr>
+<tr>
+<td><code class="structfield">usesysid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>ID of this user</td>
+</tr>
+<tr>
+<td><code class="structfield">usecreatedb</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>User may create databases</td>
+</tr>
+<tr>
+<td><code class="structfield">usesuper</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>User is a superuser</td>
+</tr>
+<tr>
+<td><code class="structfield">usecatupd</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       User may update system catalogs.  (Even a superuser may not do
+       this unless this column is true.)
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">passwd</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Password (possibly encrypted)</td>
+</tr>
+<tr>
+<td><code class="structfield">valuntil</code></td>
+<td><code class="type">abstime</code></td>
+<td> </td>
+<td>Password expiry time (only used for password authentication)</td>
+</tr>
+<tr>
+<td><code class="structfield">useconfig</code></td>
+<td><code class="type">text[]</code></td>
+<td> </td>
+<td>Session defaults for run-time configuration variables</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

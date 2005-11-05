@@ -1,0 +1,45 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.33. Release 7.2.4</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-2-5.html" title="E.32. Release 7.2.5">
+<link rel="next" href="release-7-2-3.html" title="E.34. Release 7.2.3">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-2-4"></a>E.33. Release 7.2.4</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2003-01-30</p>
+</div>
+<p>   This release contains a variety of fixes for version 7.2.3,
+   including fixes to prevent possible data loss.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id835190"></a>E.33.1. Migration to version 7.2.4</h3></div></div></div>
+<p>    A dump/restore is <span class="emphasis"><em>not</em></span> required for those
+    running version 7.2.*.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id835202"></a>E.33.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Fix some additional cases of VACUUM "No one parent tuple was found" error</p></li>
+<li><p>Prevent VACUUM from being called inside a function  (Bruce)</p></li>
+<li><p>Ensure pg_clog updates are sync'd to disk before marking checkpoint complete</p></li>
+<li><p>Avoid integer overflow during large hash joins</p></li>
+<li><p>Make GROUP commands work when pg_group.grolist is large enough to be toasted</p></li>
+<li><p>Fix errors in datetime tables; some timezone names weren't being recognized</p></li>
+<li><p>Fix integer overflows in circle_poly(), path_encode(), path_add()  (Neil)</p></li>
+<li><p>Repair long-standing logic errors in lseg_eq(), lseg_ne(), lseg_center()</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

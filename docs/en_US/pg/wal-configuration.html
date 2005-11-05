@@ -1,0 +1,141 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>26.3. WAL Configuration</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">
+<link rel="prev" href="wal-intro.html" title="26.2. Write-Ahead Logging (WAL)">
+<link rel="next" href="wal-internals.html" title="26.4. WAL Internals">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="wal-configuration"></a>26.3. <span class="acronym">WAL</span> Configuration</h2></div></div></div>
+<p>   There are several <span class="acronym">WAL</span>-related configuration parameters that
+   affect database performance. This section explains their use.
+   Consult <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> for general information about
+   setting server configuration parameters.
+  </p>
+<p>   <em class="firstterm">Checkpoints</em><a name="id620871"></a>
+   are points in the sequence of transactions at which it is guaranteed
+   that the data files have been updated with all information written before
+   the checkpoint.  At checkpoint time, all dirty data pages are flushed to
+   disk and a special checkpoint record is written to the log file.
+   In the event of a crash, the crash recovery procedure looks at the latest
+   checkpoint record to determine the point in the log (known as the redo
+   record) from which it should start the REDO operation.  Any changes made to
+   data files before that point are known to be already on disk.  Hence, after
+   a checkpoint has been made, any log segments preceding the one containing
+   the redo record are no longer needed and can be recycled or removed. (When
+   <span class="acronym">WAL</span> archiving is being done, the log segments must be
+   archived before being recycled or removed.)
+  </p>
+<p>   The server's background writer process will automatically perform
+   a checkpoint every so often.  A checkpoint is created every <a href="runtime-config-wal.html#guc-checkpoint-segments">checkpoint_segments</a> log segments, or every <a href="runtime-config-wal.html#guc-checkpoint-timeout">checkpoint_timeout</a> seconds, whichever comes first.
+   The default settings are 3 segments and 300 seconds respectively.
+   It is also possible to force a checkpoint by using the SQL command
+   <code class="command">CHECKPOINT</code>.
+  </p>
+<p>   Reducing <code class="varname">checkpoint_segments</code> and/or
+   <code class="varname">checkpoint_timeout</code> causes checkpoints to be done
+   more often. This allows faster after-crash recovery (since less work
+   will need to be redone). However, one must balance this against the
+   increased cost of flushing dirty data pages more often. If 
+   <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> is set (as is the default), there is 
+   another factor to consider. To ensure data page consistency, 
+   the first modification of a data page after each checkpoint results in 
+   logging the entire page content. In that case,
+   a smaller checkpoint interval increases the volume of output to the WAL log,
+   partially negating the goal of using a smaller interval, 
+   and in any case causing more disk I/O.
+  </p>
+<p>   Checkpoints are fairly expensive, first because they require writing
+   out all currently dirty buffers, and second because they result in
+   extra subsequent WAL traffic as discussed above.  It is therefore
+   wise to set the checkpointing parameters high enough that checkpoints
+   don't happen too often.  As a simple sanity check on your checkpointing
+   parameters, you can set the <a href="runtime-config-wal.html#guc-checkpoint-warning">checkpoint_warning</a>
+   parameter.  If checkpoints happen closer together than
+   <code class="varname">checkpoint_warning</code> seconds, 
+   a message will be output to the server log recommending increasing 
+   <code class="varname">checkpoint_segments</code>.  Occasional appearance of such
+   a message is not cause for alarm, but if it appears often then the
+   checkpoint control parameters should be increased. Bulk operations such
+   as large <code class="command">COPY</code> transfers may cause a number of such warnings
+   to appear if you have not set <code class="varname">checkpoint_segments</code> high
+   enough.
+  </p>
+<p>   There will be at least one WAL segment file, and will normally
+   not be more than 2 * <code class="varname">checkpoint_segments</code> + 1
+   files.  Each segment file is normally 16 MB (though this size can be
+   altered when building the server).  You can use this to estimate space
+   requirements for <span class="acronym">WAL</span>.
+   Ordinarily, when old log segment files are no longer needed, they
+   are recycled (renamed to become the next segments in the numbered
+   sequence). If, due to a short-term peak of log output rate, there
+   are more than 2 * <code class="varname">checkpoint_segments</code> + 1
+   segment files, the unneeded segment files will be deleted instead
+   of recycled until the system gets back under this limit.
+  </p>
+<p>   There are two commonly used internal <span class="acronym">WAL</span> functions:
+   <code class="function">LogInsert</code> and <code class="function">LogFlush</code>.
+   <code class="function">LogInsert</code> is used to place a new record into
+   the <span class="acronym">WAL</span> buffers in shared memory. If there is no
+   space for the new record, <code class="function">LogInsert</code> will have
+   to write (move to kernel cache) a few filled <span class="acronym">WAL</span>
+   buffers. This is undesirable because <code class="function">LogInsert</code>
+   is used on every database low level modification (for example, row
+   insertion) at a time when an exclusive lock is held on affected
+   data pages, so the operation needs to be as fast as possible.  What
+   is worse, writing <span class="acronym">WAL</span> buffers may also force the
+   creation of a new log segment, which takes even more
+   time. Normally, <span class="acronym">WAL</span> buffers should be written
+   and flushed by a <code class="function">LogFlush</code> request, which is
+   made, for the most part, at transaction commit time to ensure that
+   transaction records are flushed to permanent storage. On systems
+   with high log output, <code class="function">LogFlush</code> requests may
+   not occur often enough to prevent <code class="function">LogInsert</code>
+   from having to do writes.  On such systems
+   one should increase the number of <span class="acronym">WAL</span> buffers by
+   modifying the configuration parameter <a href="runtime-config-wal.html#guc-wal-buffers">wal_buffers</a>.  The default number of <span class="acronym">WAL</span>
+   buffers is 8.  Increasing this value will
+   correspondingly increase shared memory usage.  When 
+   <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> is set and the system is very busy, 
+   setting this value higher will help smooth response times during the 
+   period immediately following each checkpoint.
+  </p>
+<p>   The <a href="runtime-config-wal.html#guc-commit-delay">commit_delay</a> parameter defines for how many
+   microseconds the server process will sleep after writing a commit
+   record to the log with <code class="function">LogInsert</code> but before
+   performing a <code class="function">LogFlush</code>. This delay allows other
+   server processes to add their commit records to the log so as to have all
+   of them flushed with a single log sync. No sleep will occur if
+   <a href="runtime-config-wal.html#guc-fsync">fsync</a>
+   is not enabled, nor if fewer than <a href="runtime-config-wal.html#guc-commit-siblings">commit_siblings</a>
+   other sessions are currently in active transactions; this avoids
+   sleeping when it's unlikely that any other session will commit soon.
+   Note that on most platforms, the resolution of a sleep request is
+   ten milliseconds, so that any nonzero <code class="varname">commit_delay</code>
+   setting between 1 and 10000 microseconds would have the same effect.
+   Good values for these parameters are not yet clear; experimentation
+   is encouraged.
+  </p>
+<p>   The <a href="runtime-config-wal.html#guc-wal-sync-method">wal_sync_method</a> parameter determines how
+   <span class="productname">PostgreSQL</span> will ask the kernel to force
+    <span class="acronym">WAL</span> updates out to disk. 
+   All the options should be the same as far as reliability goes,
+   but it's quite platform-specific which one will be the fastest.
+   Note that this parameter is irrelevant if <code class="varname">fsync</code>
+   has been turned off.
+  </p>
+<p>   Enabling the <a href="runtime-config-developer.html#guc-wal-debug">wal_debug</a> configuration parameter
+   (provided that <span class="productname">PostgreSQL</span> has been
+   compiled with support for it) will result in each
+   <code class="function">LogInsert</code> and <code class="function">LogFlush</code>
+   <span class="acronym">WAL</span> call being logged to the server log. This
+   option may be replaced by a more general mechanism in the future.
+  </p>
+</div></body>
+</html>

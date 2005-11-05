@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SET CONSTRAINTS</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-set.html" title="SET">
+<link rel="next" href="sql-set-role.html" title="SET ROLE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-set-constraints"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SET CONSTRAINTS &#8212; set constraint checking modes for the current transaction</p>
+</div>
+<a name="id734236"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">SET CONSTRAINTS { ALL | <em class="replaceable"><code>name</code></em> [, ...] } { DEFERRED | IMMEDIATE }</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id734261"></a><h2>Description</h2>
+<p>   <code class="command">SET CONSTRAINTS</code> sets the behavior of constraint
+   checking within the current transaction. <code class="literal">IMMEDIATE</code>
+   constraints are checked at the end of each
+   statement. <code class="literal">DEFERRED</code> constraints are not checked until
+   transaction commit.  Each constraint has its own
+   <code class="literal">IMMEDIATE</code> or <code class="literal">DEFERRED</code> mode.
+  </p>
+<p>   Upon creation, a constraint is given one of three
+   characteristics: <code class="literal">DEFERRABLE INITIALLY DEFERRED</code>,
+   <code class="literal">DEFERRABLE INITIALLY IMMEDIATE</code>, or
+   <code class="literal">NOT DEFERRABLE</code>. The third
+   class is always <code class="literal">IMMEDIATE</code> and is not affected by the
+   <code class="command">SET CONSTRAINTS</code> command.  The first two classes start
+   every transaction in the indicated mode, but their behavior can be changed
+   within a transaction by <code class="command">SET CONSTRAINTS</code>.
+  </p>
+<p>   <code class="command">SET CONSTRAINTS</code> with a list of constraint names changes
+   the mode of just those constraints (which must all be deferrable).  If
+   there are multiple constraints matching any given name, all are affected.
+   <code class="command">SET CONSTRAINTS ALL</code> changes the mode of all deferrable
+   constraints.
+  </p>
+<p>   When <code class="command">SET CONSTRAINTS</code> changes the mode of a constraint
+   from <code class="literal">DEFERRED</code>
+   to <code class="literal">IMMEDIATE</code>, the new mode takes effect
+   retroactively: any outstanding data modifications that would have
+   been checked at the end of the transaction are instead checked during the
+   execution of the <code class="command">SET CONSTRAINTS</code> command.
+   If any such constraint is violated, the <code class="command">SET CONSTRAINTS</code>
+   fails (and does not change the constraint mode).  Thus, <code class="command">SET
+   CONSTRAINTS</code> can be used to force checking of constraints to
+   occur at a specific point in a transaction.
+  </p>
+<p>   Currently, only foreign key constraints are affected by this
+   setting. Check and unique constraints are always effectively
+   not deferrable.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id734427"></a><h2>Notes</h2>
+<p>   This command only alters the behavior of constraints within the
+   current transaction. Thus, if you execute this command outside of a
+   transaction block
+   (<code class="command">BEGIN</code>/<code class="command">COMMIT</code> pair), it will
+   not appear to have any effect.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id734450"></a><h2>Compatibility</h2>
+<p>   This command complies with the behavior defined in the SQL
+   standard, except for the limitation that, in
+   <span class="productname">PostgreSQL</span>, it only applies to
+   foreign-key constraints.
+  </p>
+<p>   The SQL standard says that constraint names appearing in <code class="command">SET
+   CONSTRAINTS</code> can be schema-qualified.  This is not yet
+   supported by <span class="productname">PostgreSQL</span>: the names must
+   be unqualified, and all constraints matching the command will be
+   affected no matter which schema they are in.
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.55.        failednode2( integer, integer, integer, bigint, bigint )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.failednode-integer-integer.html" title="1.54.        failednode( integer, integer )
+      ">
+<link rel="next" href="function.failoverset-int-integer-integer-integer.html" title="1.56.        failoverset_int( integer, integer, integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.failednode2-integer-integer-integer-bigint-bigint"></a>1.55.        failednode2( integer, integer, integer, bigint, bigint )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       FUNCTION failedNode2 (failed_node, backup_node, set_id, ev_seqno, ev_seqfake)
+
+On the node that has the highest sequence number of the failed node,
+fake the FAILED_NODE event.
+        </p>
+<pre class="programlisting">declare
+	p_failed_node		alias for $1;
+	p_backup_node		alias for $2;
+	p_set_id			alias for $3;
+	p_ev_seqno			alias for $4;
+	p_ev_seqfake		alias for $5;
+	v_row				record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	select * into v_row
+			from sl_event
+			where ev_origin = p_failed_node
+			and ev_seqno = p_ev_seqno;
+	if not found then
+		raise exception 'Slony-I: event %,% not found',
+				p_failed_node, p_ev_seqno;
+	end if;
+
+	insert into sl_event
+			(ev_origin, ev_seqno, ev_timestamp,
+			ev_minxid, ev_maxxid, ev_xip,
+			ev_type, ev_data1, ev_data2, ev_data3)
+			values 
+			(p_failed_node, p_ev_seqfake, CURRENT_TIMESTAMP,
+			v_row.ev_minxid, v_row.ev_maxxid, v_row.ev_xip,
+			'FAILOVER_SET', p_failed_node::text, p_backup_node::text,
+			p_set_id::text);
+	insert into sl_confirm
+			(con_origin, con_received, con_seqno, con_timestamp)
+			values
+			(p_failed_node, getLocalNodeId('_schemadoc'),
+			p_ev_seqfake, CURRENT_TIMESTAMP);
+	notify "_schemadoc_Event";
+	notify "_schemadoc_Confirm";
+	notify "_schemadoc_Restart";
+
+	perform failoverSet_int(p_failed_node,
+			p_backup_node, p_set_id);
+
+	return p_ev_seqfake;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

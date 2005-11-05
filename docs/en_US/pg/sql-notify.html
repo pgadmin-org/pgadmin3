@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>NOTIFY</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-move.html" title="MOVE">
+<link rel="next" href="sql-prepare.html" title="PREPARE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-notify"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>NOTIFY &#8212; generate a notification</p>
+</div>
+<a name="id724958"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">NOTIFY <em class="replaceable"><code>name</code></em>        </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id724980"></a><h2>Description</h2>
+<p>   The <code class="command">NOTIFY</code> command sends a notification event to each
+   client application that has previously executed
+   <code class="command">LISTEN <em class="replaceable"><code>name</code></em></code>
+   for the specified notification name in the current database.
+  </p>
+<p>   <code class="command">NOTIFY</code> provides a simple form of signal or
+   interprocess communication mechanism for a collection of processes
+   accessing the same <span class="productname">PostgreSQL</span> database.
+   Higher-level mechanisms can be built by using tables in the database to
+   pass additional data (beyond a mere notification name) from notifier to
+   listener(s).
+  </p>
+<p>   The information passed to the client for a notification event includes the notification
+   name and the notifying session's server process <span class="acronym">PID</span>.  It is up to the
+   database designer to define the notification names that will be used in a given
+   database and what each one means.
+  </p>
+<p>   Commonly, the notification name is the same as the name of some table in
+   the database, and the notify event essentially means, &#8220;<span class="quote">I changed this table,
+   take a look at it to see what's new</span>&#8221;.  But no such association is enforced by
+   the <code class="command">NOTIFY</code> and <code class="command">LISTEN</code> commands.  For
+   example, a database designer could use several different notification names
+   to signal different sorts of changes to a single table.
+  </p>
+<p>   When <code class="command">NOTIFY</code> is used to signal the occurrence of changes
+   to a particular table, a useful programming technique is to put the
+   <code class="command">NOTIFY</code> in a rule that is triggered by table updates.
+   In this way, notification happens automatically when the table is changed,
+   and the application programmer can't accidentally forget to do it.
+  </p>
+<p>   <code class="command">NOTIFY</code> interacts with SQL transactions in some important
+   ways.  Firstly, if a <code class="command">NOTIFY</code> is executed inside a
+   transaction, the notify events are not delivered until and unless the
+   transaction is committed.  This is appropriate, since if the transaction
+   is aborted, all the commands within it have had no
+   effect, including <code class="command">NOTIFY</code>.  But it can be disconcerting if one
+   is expecting the notification events to be delivered immediately.  Secondly, if
+   a listening session receives a notification signal while it is within a transaction,
+   the notification event will not be delivered to its connected client until just
+   after the transaction is completed (either committed or aborted).  Again, the
+   reasoning is that if a notification were delivered within a transaction that was
+   later aborted, one would want the notification to be undone somehow [mdash ]
+   but
+   the server cannot &#8220;<span class="quote">take back</span>&#8221; a notification once it has sent it to the client.
+   So notification events are only delivered between transactions.  The upshot of this
+   is that applications using <code class="command">NOTIFY</code> for real-time signaling
+   should try to keep their transactions short.
+  </p>
+<p>   <code class="command">NOTIFY</code> behaves like Unix signals in one important
+   respect: if the same notification name is signaled multiple times in quick
+   succession, recipients may get only one notification event for several executions
+   of <code class="command">NOTIFY</code>.  So it is a bad idea to depend on the number
+   of notifications received.  Instead, use <code class="command">NOTIFY</code> to wake up
+   applications that need to pay attention to something, and use a database
+   object (such as a sequence) to keep track of what happened or how many times
+   it happened.
+  </p>
+<p>   It is common for a client that executes <code class="command">NOTIFY</code>
+   to be listening on the same notification name itself.  In that case
+   it will get back a notification event, just like all the other
+   listening sessions.  Depending on the application logic, this could
+   result in useless work, for example, reading a database table to
+   find the same updates that that session just wrote out.  It is
+   possible to avoid such extra work by noticing whether the notifying
+   session's server process <span class="acronym">PID</span> (supplied in the
+   notification event message) is the same as one's own session's
+   <span class="acronym">PID</span> (available from <span class="application">libpq</span>).  When they
+   are the same, the notification event is one's own work bouncing
+   back, and can be ignored.  (Despite what was said in the preceding
+   paragraph, this is a safe technique.
+   <span class="productname">PostgreSQL</span> keeps self-notifications
+   separate from notifications arriving from other sessions, so you
+   cannot miss an outside notification by ignoring your own
+   notifications.)
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id725214"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      Name of the notification to be signaled (any identifier).
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id725232"></a><h2>Examples</h2>
+<p>   Configure and execute a listen/notify sequence from
+   <span class="application">psql</span>:
+
+</p>
+<pre class="programlisting">LISTEN virtual;
+NOTIFY virtual;
+Asynchronous notification "virtual" received from server process with PID 8448.</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id725254"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">NOTIFY</code> statement in the SQL
+   standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id725268"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-unlisten.html">UNLISTEN</a></span>
+</div>
+</div></body>
+</html>

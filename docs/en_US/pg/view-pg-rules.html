@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.40. pg_rules</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="view-pg-roles.html" title="42.39. pg_roles">
+<link rel="next" href="view-pg-settings.html" title="42.41. pg_settings">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-rules"></a>42.40. <code class="structname">pg_rules</code></h2></div></div></div>
+<a name="id779812"></a><p>   The view <code class="structname">pg_rules</code> provides access to
+   useful information about query rewrite rules.
+  </p>
+<div class="table">
+<a name="id779831"></a><p class="title"><b>Table 42.40. <code class="structname">pg_rules</code> Columns</b></p>
+<table summary="pg_rules Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">schemaname</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="42.23. pg_namespace"><code class="structname">pg_namespace</code></a>.nspname</code></td>
+<td>name of schema containing table</td>
+</tr>
+<tr>
+<td><code class="structfield">tablename</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.relname</code></td>
+<td>name of table the rule is for</td>
+</tr>
+<tr>
+<td><code class="structfield">rulename</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-rewrite.html" title="42.28. pg_rewrite"><code class="structname">pg_rewrite</code></a>.rulename</code></td>
+<td>name of rule</td>
+</tr>
+<tr>
+<td><code class="structfield">definition</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>rule definition (a reconstructed creation command)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   The <code class="structname">pg_rules</code> view excludes the ON SELECT rules of
+   views; those can be seen in <code class="structname">pg_views</code>.
+  </p>
+</div></body>
+</html>

@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.71.        rebuildlistenentriesone( integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.rebuildlistenentries.html" title="1.70.        rebuildlistenentries(  )
+      ">
+<link rel="next" href="function.sequencelastvalue-text.html" title="1.72.        sequencelastvalue( text )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.rebuildlistenentriesone-integer-integer"></a>1.71.        rebuildlistenentriesone( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       RebuildListenEntriesOne(p_origin, p_receiver)
+
+Rebuilding of sl_listen entries for one origin, receiver pair.
+        </p>
+<pre class="programlisting">declare
+	p_origin		alias for $1;
+	p_receiver		alias for $2;
+	v_row			record;
+begin
+	-- 1. If the receiver is subscribed to any set from the origin,
+	--    listen on the same provider(s).
+	for v_row in select distinct sub_provider
+			from sl_subscribe, sl_set,
+				sl_path
+			where sub_set = set_id
+			and set_origin = p_origin
+			and sub_receiver = p_receiver
+			and sub_provider = pa_server
+			and sub_receiver = pa_client
+	loop
+		perform storeListen_int(p_origin, 
+				v_row.sub_provider, p_receiver);
+	end loop;
+	if found then
+		return 1;
+	end if;
+
+	-- 2. If the receiver has a direct path to the provider,
+	--    use that.
+	if exists (select true
+			from sl_path
+			where pa_server = p_origin
+			and pa_client = p_receiver)
+	then
+		perform storeListen_int(p_origin, p_origin, p_receiver);
+		return 1;
+	end if;
+
+	-- 3. Listen on every node that is either provider for the
+	--    receiver or is using the receiver as provider (follow the
+	--    normal subscription routes).
+	for v_row in select distinct provider from (
+			select sub_provider as provider
+					from sl_subscribe
+					where sub_receiver = p_receiver
+			union
+			select sub_receiver as provider
+					from sl_subscribe
+					where sub_provider = p_receiver
+					and exists (select true from sl_path
+								where pa_server = sub_receiver
+								and pa_client = sub_provider)
+			) as S
+	loop
+		perform storeListen_int(p_origin,
+				v_row.provider, p_receiver);
+	end loop;
+	if found then
+		return 1;
+	end if;
+
+	-- 4. If all else fails - meaning there are no subscriptions to
+	--    guide us to the right path - use every node we have a path
+	--    to as provider. This normally only happens when the cluster
+	--    is built or a new node added. This brute force fallback
+	--    ensures that events will propagate if possible at all.
+	for v_row in select pa_server as provider
+			from sl_path
+			where pa_client = p_receiver
+	loop
+		perform storeListen_int(p_origin, 
+				v_row.provider, p_receiver);
+	end loop;
+	if found then
+		return 1;
+	end if;
+
+	return 0;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

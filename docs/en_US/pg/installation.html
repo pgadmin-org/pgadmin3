@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 14.   Installation Instructions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="admin.html" title="Part III. Server Administration">
+<link rel="next" href="install-requirements.html" title="14.2. Requirements">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="installation">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="installation"></a>Chapter 14.   Installation Instructions</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="installation.html#install-short">14.1. Short Version</a></span></dt>
+<dt><span class="sect1"><a href="install-requirements.html">14.2. Requirements</a></span></dt>
+<dt><span class="sect1"><a href="install-getsource.html">14.3. Getting The Source</a></span></dt>
+<dt><span class="sect1"><a href="install-upgrading.html">14.4. If You Are Upgrading</a></span></dt>
+<dt><span class="sect1"><a href="install-procedure.html">14.5. Installation Procedure</a></span></dt>
+<dt><span class="sect1"><a href="install-post.html">14.6. Post-Installation Setup</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="install-post.html#id584442">14.6.1. Shared Libraries</a></span></dt>
+<dt><span class="sect2"><a href="install-post.html#id584815">14.6.2. Environment Variables</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="supported-platforms.html">14.7. Supported Platforms</a></span></dt>
+</dl>
+</div>
+<a name="id581486"></a><p>  This 
+  chapter describes the installation of
+  <span class="productname">PostgreSQL</span> from the source code
+  distribution.  (If you are installing a pre-packaged distribution,
+  such as an RPM or Debian package, ignore this
+  
+  chapter
+  and read the packager's instructions instead.)
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="install-short"></a>14.1. Short Version</h2></div></div></div>
+<pre class="synopsis">./configure
+gmake
+su
+gmake install
+adduser postgres
+mkdir /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data
+su - postgres
+/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;
+/usr/local/pgsql/bin/createdb test
+/usr/local/pgsql/bin/psql test</pre>
+<p>
+   The long version is the rest of this
+   
+   chapter.
+  </p>
+</div>
+</div></body>
+</html>

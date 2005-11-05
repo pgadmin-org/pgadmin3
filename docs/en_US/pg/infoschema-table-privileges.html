@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.35. table_privileges</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-table-constraints.html" title="31.34. table_constraints">
+<link rel="next" href="infoschema-tables.html" title="31.36. tables">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-table-privileges"></a>31.35. <code class="literal">table_privileges</code></h2></div></div></div>
+<p>   The view <code class="literal">table_privileges</code> identifies all
+   privileges granted on tables or views to the current user or by the
+   current user.  There is one row for each combination of table,
+   grantor, and grantee.  Privileges granted to groups are identified
+   in the view <code class="literal">role_table_grants</code>.
+  </p>
+<div class="table">
+<a name="id648534"></a><p class="title"><b>Table 31.33. <code class="literal">table_privileges</code> Columns</b></p>
+<table summary="table_privileges Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the user that granted the privilege</td>
+</tr>
+<tr>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the user or group that the privilege was granted to</td>
+</tr>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database that contains the table (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema that contains the table</td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the table</td>
+</tr>
+<tr>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Type of the privilege: <code class="literal">SELECT</code>,
+       <code class="literal">DELETE</code>, <code class="literal">INSERT</code>,
+       <code class="literal">UPDATE</code>, <code class="literal">REFERENCES</code>,
+       <code class="literal">RULE</code>, or <code class="literal">TRIGGER</code>
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
+<td>
+<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
+</tr>
+<tr>
+<td><code class="literal">with_hierarchy</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   Note that the column <code class="literal">grantee</code> makes no
+   distinction between users and groups.  If you have users and groups
+   with the same name, there is unfortunately no way to distinguish
+   them.  A future version of <span class="productname">PostgreSQL</span>
+   will possibly prohibit having users and groups with the same name.
+  </p>
+</div></body>
+</html>

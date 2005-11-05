@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ROLLBACK</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-revoke.html" title="REVOKE">
+<link rel="next" href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-rollback"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ROLLBACK &#8212; abort the current transaction</p>
+</div>
+<a name="id727898"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id727915"></a><h2>Description</h2>
+<p>   <code class="command">ROLLBACK</code> rolls back the current transaction and causes
+   all the updates made by the transaction to be discarded.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id727930"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WORK</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">TRANSACTION</code></span>
+</dt>
+<dd><p>      Optional key words. They have no effect.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id727953"></a><h2>Notes</h2>
+<p>   Use <a href="sql-commit.html">COMMIT</a> to
+   successfully terminate a transaction.
+  </p>
+<p>   Issuing <code class="command">ROLLBACK</code> when not inside a transaction does
+   no harm, but it will provoke a warning message.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id727982"></a><h2>Examples</h2>
+<p>   To abort all changes:
+</p>
+<pre class="programlisting">ROLLBACK;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id727996"></a><h2>Compatibility</h2>
+<p>   The SQL standard only specifies the two forms
+   <code class="literal">ROLLBACK</code> and <code class="literal">ROLLBACK
+   WORK</code>. Otherwise, this command is fully conforming.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id728018"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a></span>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>2.8. Updates</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
+<link rel="prev" href="tutorial-agg.html" title="2.7. Aggregate Functions">
+<link rel="next" href="tutorial-delete.html" title="2.9. Deletions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-update"></a>2.8. Updates</h2></div></div></div>
+<a name="id516878"></a><p>    You can update existing rows using the
+    <code class="command">UPDATE</code> command. 
+    Suppose you discover the temperature readings are
+    all  off  by 2 degrees as of November 28.  You may update the
+    data as follows:
+
+</p>
+<pre class="programlisting">UPDATE weather
+    SET temp_hi = temp_hi - 2,  temp_lo = temp_lo - 2
+    WHERE date &gt; '1994-11-28';</pre>
+<p>
+   </p>
+<p>    Look at the new state of the data:
+</p>
+<pre class="programlisting">SELECT * FROM weather;
+
+     city      | temp_lo | temp_hi | prcp |    date
+---------------+---------+---------+------+------------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27
+ San Francisco |      41 |      55 |    0 | 1994-11-29
+ Hayward       |      35 |      52 |      | 1994-11-29
+(3 rows)</pre>
+<p>
+   </p>
+</div></body>
+</html>

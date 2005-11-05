@@ -1,0 +1,91 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>36.3. Structure of PL/pgSQL</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql-development-tips.html" title="36.2. Tips for Developing in PL/pgSQL">
+<link rel="next" href="plpgsql-declarations.html" title="36.4. Declarations">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-structure"></a>36.3. Structure of <span class="application">PL/pgSQL</span></h2></div></div></div>
+<p>   <span class="application">PL/pgSQL</span> is a block-structured language.
+   The complete text of a function definition must be a
+   <em class="firstterm">block</em>. A block is defined as:
+
+</p>
+<pre class="synopsis">[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
+[<span class="optional"> DECLARE
+    <em class="replaceable"><code>declarations</code></em> </span>]
+BEGIN
+    <em class="replaceable"><code>statements</code></em>
+END [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];</pre>
+<p>
+    </p>
+<p>     Each declaration and each statement within a block is terminated
+     by a semicolon.  A block that appears within another block must
+     have a semicolon after <code class="literal">END</code>, as shown above;
+     however the final <code class="literal">END</code> that
+     concludes a function body does not require a semicolon.
+    </p>
+<p>     All key words and identifiers can be written in mixed upper and
+     lower case.  Identifiers are implicitly converted to lowercase
+     unless double-quoted.
+    </p>
+<p>     There are two types of comments in <span class="application">PL/pgSQL</span>. A double
+     dash (<code class="literal">--</code>) starts a comment that extends to the end of
+     the line. A <code class="literal">/*</code> starts a block comment that extends to
+     the next occurrence of <code class="literal">*/</code>.  Block comments cannot be
+     nested, but double dash comments can be enclosed into a block comment and
+     a double dash can hide the block comment delimiters <code class="literal">/*</code>
+     and <code class="literal">*/</code>.
+    </p>
+<p>     Any statement in the statement section of a block
+     can be a <em class="firstterm">subblock</em>.  Subblocks can be used for
+     logical grouping or to localize variables to a small group
+     of statements.
+    </p>
+<p>     The variables declared in the declarations section preceding a
+     block are initialized to their default values every time the
+     block is entered, not only once per function call. For example:
+</p>
+<pre class="programlisting">CREATE FUNCTION somefunc() RETURNS integer AS $$
+DECLARE
+    quantity integer := 30;
+BEGIN
+    RAISE NOTICE 'Quantity here is %', quantity;  -- Quantity here is 30
+    quantity := 50;
+    --
+    -- Create a subblock
+    --
+    DECLARE
+        quantity integer := 80;
+    BEGIN
+        RAISE NOTICE 'Quantity here is %', quantity;  -- Quantity here is 80
+    END;
+
+    RAISE NOTICE 'Quantity here is %', quantity;  -- Quantity here is 50
+
+    RETURN quantity;
+END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+    </p>
+<p>     It is important not to confuse the use of
+     <code class="command">BEGIN</code>/<code class="command">END</code> for grouping statements in
+     <span class="application">PL/pgSQL</span> with the database commands for transaction
+     control.  <span class="application">PL/pgSQL</span>'s <code class="command">BEGIN</code>/<code class="command">END</code>
+     are only for grouping; they do not start or end a transaction.
+     Functions and trigger procedures are always executed within a transaction
+     established by an outer query [mdash ] they cannot start or commit that
+     transaction, since there would be no context for them to execute in.
+     However, a block containing an <code class="literal">EXCEPTION</code> clause effectively
+     forms a subtransaction that can be rolled back without affecting the
+     outer transaction.  For more about that see <a href="plpgsql-control-structures.html#plpgsql-error-trapping" title="36.7.5. Trapping Errors">Section 36.7.5, &#8220;Trapping Errors&#8221;</a>.
+    </p>
+</div></body>
+</html>

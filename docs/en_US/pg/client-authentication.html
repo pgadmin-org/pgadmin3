@@ -1,0 +1,404 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 20. Client Authentication</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="manage-ag-tablespaces.html" title="19.6. Tablespaces">
+<link rel="next" href="auth-methods.html" title="20.2. Authentication methods">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="client-authentication">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="client-authentication"></a>Chapter 20. Client Authentication</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="client-authentication.html#auth-pg-hba-conf">20.1. The <code class="filename">pg_hba.conf</code> file</a></span></dt>
+<dt><span class="sect1"><a href="auth-methods.html">20.2. Authentication methods</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="auth-methods.html#auth-trust">20.2.1. Trust authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-password">20.2.2. Password authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#kerberos-auth">20.2.3. Kerberos authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-ident">20.2.4. Ident-based authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-pam">20.2.5. PAM authentication</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="client-authentication-problems.html">20.3. Authentication problems</a></span></dt>
+</dl>
+</div>
+<a name="id607388"></a><p>  When a client application connects to the database server, it
+  specifies which <span class="productname">PostgreSQL</span> database user name it
+  wants to connect as, much the same way one logs into a Unix computer
+  as a particular user. Within the SQL environment the active database
+  user name determines access privileges to database objects [mdash ] see
+  <a href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> for more information. Therefore, it is
+  essential to restrict which database users can connect.
+ </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>   As explained in <a href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a>,
+   <span class="productname">PostgreSQL</span> actually does privilege
+   management in terms of &#8220;<span class="quote">roles</span>&#8221;.  In this chapter, we
+   consistently use <em class="firstterm">database user</em> to mean &#8220;<span class="quote">role with the
+   <code class="literal">LOGIN</code> privilege</span>&#8221;.
+  </p>
+</div>
+<p>  <em class="firstterm">Authentication</em> is the process by which the
+  database server establishes the identity of the client, and by
+  extension determines whether the client application (or the user
+  who runs the client application) is permitted to connect with the
+  database user name that was requested.
+ </p>
+<p>  <span class="productname">PostgreSQL</span> offers a number of different
+  client authentication methods. The method used to authenticate a
+  particular client connection can be selected on the basis of
+  (client) host address, database, and user.
+ </p>
+<p>  <span class="productname">PostgreSQL</span> database user names are logically
+  separate from user names of the operating system in which the server
+  runs. If all the users of a particular server also have accounts on
+  the server's machine, it makes sense to assign database user names
+  that match their operating system user names. However, a server that
+  accepts remote connections may have many database users who have no local operating system
+  account, and in such cases there need be no connection between
+  database user names and OS user names.
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="auth-pg-hba-conf"></a>20.1. The <code class="filename">pg_hba.conf</code> file</h2></div></div></div>
+<a name="id607516"></a><p>   Client authentication is controlled by a configuration file,
+   which traditionally is named
+   <code class="filename">pg_hba.conf</code> and is stored in the database
+   cluster's data directory.
+   (<span class="acronym">HBA</span> stands for host-based authentication.) A default
+   <code class="filename">pg_hba.conf</code> file is installed when the data
+   directory is initialized by <code class="command">initdb</code>.  It is
+   possible to place the authentication configuration file elsewhere,
+   however; see the <a href="runtime-config-file-locations.html#guc-hba-file">hba_file</a> configuration parameter.
+  </p>
+<p>   The general format of the <code class="filename">pg_hba.conf</code> file is
+   a set of records, one per line. Blank lines are ignored, as is any
+   text after the <code class="literal">#</code> comment character. A record is made
+   up of a number of fields which are separated by spaces and/or tabs.
+   Fields can contain white space if the field value is quoted. Records
+   cannot be continued across lines.
+  </p>
+<p>   Each record specifies a connection type, a client IP address range
+   (if relevant for the connection type), a database name, a user name,
+   and the authentication method to be used for connections matching
+   these parameters. The first record with a matching connection type,
+   client address, requested database, and user name is used to perform
+   authentication. There is no &#8220;<span class="quote">fall-through</span>&#8221; or
+   &#8220;<span class="quote">backup</span>&#8221;: if one record is chosen and the authentication
+   fails, subsequent records are not considered. If no record matches,
+   access is denied.
+  </p>
+<p>   A record may have one of the seven formats
+</p>
+<pre class="synopsis">local      <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-option</code></em></span>]
+host       <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>CIDR-address</code></em>  <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-option</code></em></span>]
+hostssl    <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>CIDR-address</code></em>  <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-option</code></em></span>]
+hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>CIDR-address</code></em>  <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-option</code></em></span>]
+host       <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>  <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-option</code></em></span>]
+hostssl    <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>  <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-option</code></em></span>]
+hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>  <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-option</code></em></span>]</pre>
+<p>
+   The meaning of the fields is as follows:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">local</code></span></dt>
+<dd><p>       This record matches connection attempts using Unix-domain
+       sockets.  Without a record of this type, Unix-domain socket
+       connections are disallowed.
+      </p></dd>
+<dt><span class="term"><code class="literal">host</code></span></dt>
+<dd>
+<p>       This record matches connection attempts made using TCP/IP.
+       <code class="literal">host</code> records match either
+       <span class="acronym">SSL</span> or non-<span class="acronym">SSL</span> connection
+       attempts.
+      </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>       Remote TCP/IP connections will not be possible unless
+       the server is started with an appropriate value for the
+       <a href="runtime-config-connection.html#guc-listen-addresses">listen_addresses</a> configuration parameter,
+       since the default behavior is to listen for TCP/IP connections
+       only on the local loopback address <code class="literal">localhost</code>.
+      </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">hostssl</code></span></dt>
+<dd>
+<p>       This record matches connection attempts made using TCP/IP,
+       but only when the connection is made with <span class="acronym">SSL</span>
+       encryption.
+      </p>
+<p>       To make use of this option the server must be built with
+       <span class="acronym">SSL</span> support. Furthermore,
+       <span class="acronym">SSL</span> must be enabled at server start time
+       by setting the <a href="runtime-config-connection.html#guc-ssl">ssl</a> configuration parameter (see
+       <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> for more information).
+      </p>
+</dd>
+<dt><span class="term"><code class="literal">hostnossl</code></span></dt>
+<dd><p>       This record type has the opposite logic to <code class="literal">hostssl</code>:
+       it only matches connection attempts made over
+       TCP/IP that do not use <span class="acronym">SSL</span>.
+      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>database</code></em></span></dt>
+<dd><p>       Specifies which database names this record matches.  The value
+       <code class="literal">all</code> specifies that it matches all databases.
+       The value <code class="literal">sameuser</code> specifies that the record
+       matches if the requested database has the same name as the
+       requested user.  The value <code class="literal">samerole</code> specifies that
+       the requested user must be a member of the role with the same
+       name as the requested database.  (<code class="literal">samegroup</code> is an
+       obsolete but still accepted spelling of <code class="literal">samerole</code>.)
+       Otherwise, this is the name of
+       a specific <span class="productname">PostgreSQL</span> database.
+       Multiple database names can be supplied by separating them with
+       commas.  A separate file containing database names can be specified by
+       preceding the file name with <code class="literal">@</code>.
+      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>user</code></em></span></dt>
+<dd><p>       Specifies which database user names this record
+       matches. The value <code class="literal">all</code> specifies that it
+       matches all users.  Otherwise, this is either the name of a specific
+       database user, or a group name preceded by <code class="literal">+</code>.
+       (Recall that there is no real distinction between users and groups
+       in <span class="productname">PostgreSQL</span>; a <code class="literal">+</code> mark really means
+       &#8220;<span class="quote">match any of the roles that are directly or indirectly members
+       of this role</span>&#8221;, while a name without a <code class="literal">+</code> mark matches
+       only that specific role.)
+       Multiple user names can be supplied by separating them with commas.
+       A separate file containing user names can be specified by preceding the
+       file name with <code class="literal">@</code>.
+      </p></dd>
+<dt><span class="term"><em class="replaceable"><code>CIDR-address</code></em></span></dt>
+<dd>
+<p>       Specifies the client machine IP address range that this record
+       matches. It contains an IP address in standard dotted decimal
+       notation and a CIDR mask length. (IP addresses can only be
+       specified numerically, not as domain or host names.)  The mask
+       length indicates the number of high-order bits of the client
+       IP address that must match.  Bits to the right of this must
+       be zero in the given IP address.
+       There must not be any white space between the IP address, the
+       <code class="literal">/</code>, and the CIDR mask length.
+      </p>
+<p>       A typical <em class="replaceable"><code>CIDR-address</code></em> is
+       <code class="literal">172.20.143.89/32</code> for a single host, or
+       <code class="literal">172.20.143.0/24</code> for a network.
+       To specify a single host, use a CIDR mask of 32 for IPv4 or
+       128 for IPv6.
+      </p>
+<p>       An IP address given in IPv4 format will match IPv6 connections that
+       have the corresponding address, for example <code class="literal">127.0.0.1</code>
+       will match the IPv6 address <code class="literal">::ffff:127.0.0.1</code>.  An entry
+       given in IPv6 format will match only IPv6 connections, even if the
+       represented address is in the IPv4-in-IPv6 range.  Note that entries
+       in IPv6 format will be rejected if the system's C library does not have
+       support for IPv6 addresses.
+      </p>
+<p>       This field only applies to <code class="literal">host</code>,
+       <code class="literal">hostssl</code>, and <code class="literal">hostnossl</code> records.
+      </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>IP-address</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><em class="replaceable"><code>IP-mask</code></em></span>
+</dt>
+<dd>
+<p>       These fields may be used as an alternative to the
+       <em class="replaceable"><code>CIDR-address</code></em> notation. Instead of
+       specifying the mask length, the actual mask is specified in a
+       separate column. For example, <code class="literal">255.0.0.0</code> represents an IPv4
+       CIDR mask length of 8, and <code class="literal">255.255.255.255</code> represents a
+       CIDR mask length of 32.
+      </p>
+<p>       These fields only apply to <code class="literal">host</code>,
+       <code class="literal">hostssl</code>, and <code class="literal">hostnossl</code> records.
+      </p>
+</dd>
+<dt><span class="term"><em class="replaceable"><code>auth-method</code></em></span></dt>
+<dd>
+<p>       Specifies the authentication method to use when connecting via
+       this record. The possible choices are summarized here; details
+       are in <a href="auth-methods.html" title="20.2. Authentication methods">Section 20.2, &#8220;Authentication methods&#8221;</a>.
+
+       </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">trust</code></span></dt>
+<dd><p>          Allow the connection unconditionally. This method
+          allows anyone that can connect to the
+          <span class="productname">PostgreSQL</span> database server to login as
+          any <span class="productname">PostgreSQL</span> user they like,
+          without the need for a password.  See <a href="auth-methods.html#auth-trust" title="20.2.1. Trust authentication">Section 20.2.1, &#8220;Trust authentication&#8221;</a> for details.
+         </p></dd>
+<dt><span class="term"><code class="literal">reject</code></span></dt>
+<dd><p>          Reject the connection unconditionally. This is useful for
+          &#8220;<span class="quote">filtering out</span>&#8221; certain hosts from a group.
+         </p></dd>
+<dt><span class="term"><code class="literal">md5</code></span></dt>
+<dd><p>          Require the client to supply an MD5-encrypted password for
+          authentication.
+          See <a href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
+         </p></dd>
+<dt><span class="term"><code class="literal">crypt</code></span></dt>
+<dd>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>          This option is recommended only for communicating with pre-7.2
+          clients.
+         </p>
+</div>
+<p>          Require the client to supply a <code class="function">crypt()</code>-encrypted
+          password for authentication.
+          <code class="literal">md5</code> is now recommended over <code class="literal">crypt</code>.
+          See <a href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
+         </p>
+</dd>
+<dt><span class="term"><code class="literal">password</code></span></dt>
+<dd><p>          Require the client to supply an unencrypted password for
+          authentication.
+          Since the password is sent in clear text over the
+          network, this should not be used on untrusted networks.
+          It also does not usually work with threaded client applications.
+          See <a href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
+         </p></dd>
+<dt><span class="term"><code class="literal">krb5</code></span></dt>
+<dd><p>          Use Kerberos V5 to authenticate the user. This is only
+          available for TCP/IP connections.  See <a href="auth-methods.html#kerberos-auth" title="20.2.3. Kerberos authentication">Section 20.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
+         </p></dd>
+<dt><span class="term"><code class="literal">ident</code></span></dt>
+<dd><p>          Obtain the operating system user name of the client (for
+          TCP/IP connections by contacting the ident server on the
+          client, for local connections by getting it from the
+          operating system) and check if the user is allowed to
+          connect as the requested database user by consulting the map
+          specified after the <code class="literal">ident</code> key word.
+          See <a href="auth-methods.html#auth-ident" title="20.2.4. Ident-based authentication">Section 20.2.4, &#8220;Ident-based authentication&#8221;</a> for details.
+         </p></dd>
+<dt><span class="term"><code class="literal">pam</code></span></dt>
+<dd><p>          Authenticate using the Pluggable Authentication Modules
+          (PAM) service provided by the operating system.  See <a href="auth-methods.html#auth-pam" title="20.2.5. PAM authentication">Section 20.2.5, &#8220;PAM authentication&#8221;</a> for details.
+         </p></dd>
+</dl></div>
+<p>
+
+      </p>
+</dd>
+<dt><span class="term"><em class="replaceable"><code>auth-option</code></em></span></dt>
+<dd><p>       The meaning of this optional field depends on the chosen
+       authentication method.  Details appear below.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   Files included by <code class="literal">@</code> constructs are read as lists of names,
+   which can be separated by either whitespace or commas.  Comments are
+   introduced by <code class="literal">#</code>, just as in
+   <code class="filename">pg_hba.conf</code>, and nested <code class="literal">@</code> constructs are
+   allowed.  Unless the file name following <code class="literal">@</code> is an absolute
+   path, it is taken to be relative to the directory containing the
+   referencing file.
+  </p>
+<p>   Since the <code class="filename">pg_hba.conf</code> records are examined
+   sequentially for each connection attempt, the order of the records is
+   significant. Typically, earlier records will have tight connection
+   match parameters and weaker authentication methods, while later
+   records will have looser match parameters and stronger authentication
+   methods. For example, one might wish to use <code class="literal">trust</code>
+   authentication for local TCP/IP connections but require a password for
+   remote TCP/IP connections. In this case a record specifying
+   <code class="literal">trust</code> authentication for connections from 127.0.0.1 would
+   appear before a record specifying password authentication for a wider
+   range of allowed client IP addresses.
+  </p>
+<p>   The <code class="filename">pg_hba.conf</code> file is read on start-up and when
+   the main server process (<code class="command">postmaster</code>) receives a
+   <span class="systemitem">SIGHUP</span><a name="id608539"></a>
+   signal. If you edit the file on an
+   active system, you will need to signal the <code class="command">postmaster</code>
+   (using <code class="literal">pg_ctl reload</code> or <code class="literal">kill -HUP</code>) to make it
+   re-read the file.
+  </p>
+<p>   Some examples of <code class="filename">pg_hba.conf</code> entries are shown in
+   <a href="client-authentication.html#example-pg-hba.conf" title="Example 20.1. Example pg_hba.conf entries">Example 20.1, &#8220;Example <code class="filename">pg_hba.conf</code> entries&#8221;</a>. See the next section for details on the
+   different authentication methods.
+  </p>
+<div class="example">
+<a name="example-pg-hba.conf"></a><p class="title"><b>Example 20.1. Example <code class="filename">pg_hba.conf</code> entries</b></p>
+<pre class="programlisting"># Allow any user on the local system to connect to any database under
+# any database user name using Unix-domain sockets (the default for local
+# connections).
+#
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+local   all         all                               trust
+
+# The same using local loopback TCP/IP connections.
+#
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    all         all         127.0.0.1/32          trust     
+
+# The same as the last line but using a separate netmask column
+#
+# TYPE  DATABASE    USER        IP-ADDRESS    IP-MASK             METHOD
+host    all         all         127.0.0.1     255.255.255.255     trust     
+
+# Allow any user from any host with IP address 192.168.93.x to connect
+# to database "postgres" as the same user name that ident reports for
+# the connection (typically the Unix user name).
+# 
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    postgres    all         192.168.93.0/24       ident sameuser
+
+# Allow a user from host 192.168.12.10 to connect to database
+# "postgres" if the user's password is correctly supplied.
+# 
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    postgres    all         192.168.12.10/32      md5
+
+# In the absence of preceding "host" lines, these two lines will
+# reject all connection from 192.168.54.1 (since that entry will be
+# matched first), but allow Kerberos 5 connections from anywhere else
+# on the Internet.  The zero mask means that no bits of the host IP
+# address are considered so it matches any host.
+# 
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    all         all         192.168.54.1/32       reject
+host    all         all         0.0.0.0/0             krb5
+
+# Allow users from 192.168.x.x hosts to connect to any database, if
+# they pass the ident check.  If, for example, ident says the user is
+# "bryanh" and he requests to connect as PostgreSQL user "guest1", the
+# connection is allowed if there is an entry in pg_ident.conf for map
+# "omicron" that says "bryanh" is allowed to connect as "guest1".
+#
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    all         all         192.168.0.0/16        ident omicron
+
+# If these are the only three lines for local connections, they will
+# allow local users to connect only to their own databases (databases
+# with the same name as their database user name) except for administrators
+# and members of role "support", who may connect to all databases.  The file
+# $PGDATA/admins contains a list of names of administrators.  Passwords
+# are required in all cases.
+#
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+local   sameuser    all                               md5
+local   all         @admins                           md5
+local   all         +support                          md5
+
+# The last two lines above can be combined into a single line:
+local   all         @admins,+support                  md5
+
+# The database column can also use lists and file names:
+local   db1,db2,@demodbs  all                         md5</pre>
+</div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>LOCK SET</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET">
+<link rel="next" href="stmtunlockset.html" title="UNLOCK SET">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtlockset"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>LOCK SET &#8212;  Guard <span class="productname">Slony-I</span> replication
+    set to prepare for <code class="command">MOVE SET</code>
+    </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">LOCK SET (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id535811"></a><h2>Description</h2>
+<p> Guards a replication set against client application updates
+    in preparation for a <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> command.
+    </p>
+<p> This command must be the first in a possible statement
+    group (<code class="command">try</code>).  The reason for this is that it
+    needs to commit the changes made to the tables (adding a special
+    trigger function) before it can wait for every concurrent
+    transaction to finish. At the same time it cannot hold an open
+    transaction to the same database itself since this would result in
+    blocking itself forever.</p>
+<p> Note that this is a <a href="locking.html" title="10. Locking Issues"> locking
+    operation, </a> which means that it can get stuck behind other
+    database activity.
+     
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
+<dd><p> ID of the set to lock</p></dd>
+<dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
+<dd><p> Node ID of the current set origin</p></dd>
+</dl></div>
+<p>
+    </p>
+<p> This uses <a href="function.lockset-integer.html">schemadoclockset( integer )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id535886"></a><h2>Example</h2>
+<pre class="programlisting">LOCK SET (
+   ID = 1,
+   RECEIVER = 3
+);
+    </pre>
+</div>
+</div></body>
+</html>

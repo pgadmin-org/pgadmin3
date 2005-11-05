@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.8. column_udt_usage</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-column-privileges.html" title="31.7. column_privileges">
+<link rel="next" href="infoschema-columns.html" title="31.9. columns">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-column-udt-usage"></a>31.8. <code class="literal">column_udt_usage</code></h2></div></div></div>
+<p>   The view <code class="literal">column_udt_usage</code> identifies all columns
+   that use data types owned by the current user.  Note that in
+   <span class="productname">PostgreSQL</span>, built-in data types behave
+   like user-defined types, so they are included here as well.  See
+   also <a href="infoschema-columns.html" title="31.9. columns">Section 31.9, &#8220;<code class="literal">columns</code>&#8221;</a> for details.
+  </p>
+<div class="table">
+<a name="id640410"></a><p class="title"><b>Table 31.6. <code class="literal">column_udt_usage</code> Columns</b></p>
+<table summary="column_udt_usage Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the database that the column data type (the underlying
+       type of the domain, if applicable) is defined in (always the
+       current database)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the schema that the column data type (the underlying
+       type of the domain, if applicable) is defined in
+      </td>
+</tr>
+<tr>
+<td><code class="literal">udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the column data type (the underlying type of the
+       domain, if applicable)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the table (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the table</td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the table</td>
+</tr>
+<tr>
+<td><code class="literal">column_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the column</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

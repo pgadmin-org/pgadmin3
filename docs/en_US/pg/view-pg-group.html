@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.35. pg_group</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="views-overview.html" title="42.34. System Views">
+<link rel="next" href="view-pg-indexes.html" title="42.36. pg_indexes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-group"></a>42.35. <code class="structname">pg_group</code></h2></div></div></div>
+<a name="id778556"></a><p>   The view <code class="structname">pg_group</code> exists for backwards
+   compatibility: it emulates a catalog that existed in
+   <span class="productname">PostgreSQL</span> before version 8.1.
+   It shows the names and members of all roles that are marked as not
+   <code class="structfield">rolcanlogin</code>, which is an approximation to the set
+   of roles that are being used as groups.
+  </p>
+<div class="table">
+<a name="id778589"></a><p class="title"><b>Table 42.35. <code class="structname">pg_group</code> Columns</b></p>
+<table summary="pg_group Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">groname</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.rolname</code></td>
+<td>Name of the group</td>
+</tr>
+<tr>
+<td><code class="structfield">grosysid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>ID of this group</td>
+</tr>
+<tr>
+<td><code class="structfield">grolist</code></td>
+<td><code class="type">oid[]</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>An array containing the IDs of the roles in this group</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

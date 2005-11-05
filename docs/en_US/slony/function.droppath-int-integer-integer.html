@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.45.        droppath_int( integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.droppath-integer-integer.html" title="1.44.        droppath( integer, integer )
+      ">
+<link rel="next" href="function.dropset-integer.html" title="1.46.        dropset( integer )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.droppath-int-integer-integer"></a>1.45.        droppath_int( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       Process DROP_PATH event to drop path from pa_server to pa_client
+        </p>
+<pre class="programlisting">declare
+	p_pa_server		alias for $1;
+	p_pa_client		alias for $2;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Remove any dangling sl_listen entries with the server
+	-- as provider and the client as receiver. This must have
+	-- been cleared out before, but obviously was not.
+	-- ----
+	delete from sl_listen
+			where li_provider = p_pa_server
+			and li_receiver = p_pa_client;
+
+	delete from sl_path
+			where pa_server = p_pa_server
+			and pa_client = p_pa_client;
+
+	if found then
+		-- Rewrite sl_listen table
+		perform RebuildListenEntries();
+
+		return 1;
+	else
+		-- Rewrite sl_listen table
+		perform RebuildListenEntries();
+
+		return 0;
+	end if;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

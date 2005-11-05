@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.41. pg_settings</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="view-pg-rules.html" title="42.40. pg_rules">
+<link rel="next" href="view-pg-shadow.html" title="42.42. pg_shadow">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-settings"></a>42.41. <code class="structname">pg_settings</code></h2></div></div></div>
+<a name="id779971"></a><p>   The view <code class="structname">pg_settings</code> provides access to
+   run-time parameters of the server.  It is essentially an alternative
+   interface to the <code class="command">SHOW</code> and <code class="command">SET</code> commands.
+   It also provides access to some facts about each parameter that are
+   not directly available from <code class="command">SHOW</code>, such as minimum and
+   maximum values.
+  </p>
+<div class="table">
+<a name="id780013"></a><p class="title"><b>Table 42.41. <code class="structname">pg_settings</code> Columns</b></p>
+<table summary="pg_settings Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">name</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>run-time configuration parameter name</td>
+</tr>
+<tr>
+<td><code class="structfield">setting</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>current value of the parameter</td>
+</tr>
+<tr>
+<td><code class="structfield">category</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>logical group of the parameter</td>
+</tr>
+<tr>
+<td><code class="structfield">short_desc</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>a brief description of the parameter</td>
+</tr>
+<tr>
+<td><code class="structfield">extra_desc</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>additional, more detailed, information about the parameter</td>
+</tr>
+<tr>
+<td><code class="structfield">context</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>context required to set the parameter's value</td>
+</tr>
+<tr>
+<td><code class="structfield">vartype</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>parameter type (<code class="literal">bool</code>, <code class="literal">integer</code>,
+       <code class="literal">real</code>, or <code class="literal">string</code>)
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">source</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>source of the current parameter value</td>
+</tr>
+<tr>
+<td><code class="structfield">min_val</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>minimum allowed value of the parameter (NULL for nonnumeric
+      values)</td>
+</tr>
+<tr>
+<td><code class="structfield">max_val</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>maximum allowed value of the parameter (NULL for nonnumeric
+      values)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   The <code class="structname">pg_settings</code> view cannot be inserted into or
+   deleted from, but it can be updated.  An <code class="command">UPDATE</code> applied
+   to a row of <code class="structname">pg_settings</code> is equivalent to executing
+   the <a href="sql-set.html">SET</a> command on that named
+   parameter. The change only affects the value used by the current
+   session. If an <code class="command">UPDATE</code> is issued within a transaction
+   that is later aborted, the effects of the <code class="command">UPDATE</code> command
+   disappear when the transaction is rolled back. Once the surrounding
+   transaction is committed, the effects will persist until the end of the
+   session, unless overridden by another <code class="command">UPDATE</code> or
+   <code class="command">SET</code>.
+  </p>
+</div></body>
+</html>

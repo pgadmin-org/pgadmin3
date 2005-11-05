@@ -1,0 +1,77 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SET ADD SEQUENCE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtsetaddtable.html" title="SET ADD TABLE">
+<link rel="next" href="stmtsetdroptable.html" title="SET DROP TABLE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtsetaddsequence"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SET ADD SEQUENCE &#8212;  Add a sequence to a
+    <span class="productname">Slony-I</span> replication set
+    </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">SET ADD SEQUENCE (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id534677"></a><h2>Description</h2>
+<p>     Add an existing user sequence to a replication set. The set
+     cannot currently be subscribed by any other node - that
+     functionality is supported by the <a href="stmtmergeset.html" title="MERGE
+     SET"><span class="refentrytitle">MERGE
+     SET</span></a>
+     command.
+     
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> SET ID = ival </code></span></dt>
+<dd><p> ID of the set to which the sequence is to be added.
+	</p></dd>
+<dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
+<dd><p> Origin node for the set.  A future version of <span class="application">slonik</span>
+	 might figure out this information by itself.</p></dd>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
+<dd>
+<p> Unique ID of the sequence.  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p> Note
+	   that this ID needs to be unique <span class="emphasis"><em>across
+	    sequences</em></span> throughout the cluster; the numbering of
+	   tables is separate, so you might have a table with ID 20 and a
+	   sequence with ID 20, and they would be recognized as
+	   separate.</p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal"> FULLY QUALIFIED NAME = 'string' </code></span></dt>
+<dd><p> The full sequence name as described in
+	 &lt; linkend="stmttableaddkey"&gt;.</p></dd>
+<dt><span class="term"><code class="literal"> COMMENT = 'string' </code></span></dt>
+<dd><p> A descriptive text added to the sequence entry.  </p></dd>
+</dl></div>
+<p>
+    </p>
+<p> This uses <a href="function.setaddsequence-integer-integer-text-text.html">schemadocsetaddsequence( integer, integer, text, text )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id534789"></a><h2>Example</h2>
+<pre class="programlisting">     SET ADD SEQUENCE (
+     SET ID = 1,
+     ORIGIN = 1,
+     ID = 20,
+     FULLY QUALIFIED NAME = 'public.tracker_ticket_id_seq',
+     COMMENT = 'Support ticket ID sequence'
+     );
+    </pre>
+</div>
+</div></body>
+</html>

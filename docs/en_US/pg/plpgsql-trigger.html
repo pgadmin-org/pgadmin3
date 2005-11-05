@@ -1,0 +1,335 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>36.10. Trigger Procedures</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql-errors-and-messages.html" title="36.9. Errors and Messages">
+<link rel="next" href="plpgsql-porting.html" title="36.11. Porting from Oracle PL/SQL">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-trigger"></a>36.10. Trigger Procedures</h2></div></div></div>
+<a name="id673741"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
+        procedures. A trigger procedure is created with the
+        <code class="command">CREATE FUNCTION</code> command, declaring it as a function with
+        no arguments and a return type of <code class="type">trigger</code>.  Note that
+        the function must be declared with no arguments even if it expects
+        to receive arguments specified in <code class="command">CREATE TRIGGER</code> [mdash ]
+        trigger arguments are passed via <code class="varname">TG_ARGV</code>, as described
+        below.
+  </p>
+<p>   When a <span class="application">PL/pgSQL</span> function is called as a
+   trigger, several special variables are created automatically in the 
+   top-level block. They are:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="varname">NEW</code></span></dt>
+<dd><p>       Data type <code class="type">RECORD</code>; variable holding the new
+       database row for <code class="command">INSERT</code>/<code class="command">UPDATE</code> operations in row-level
+       triggers. This variable is <code class="symbol">NULL</code> in statement-level triggers.
+      </p></dd>
+<dt><span class="term"><code class="varname">OLD</code></span></dt>
+<dd><p>       Data type <code class="type">RECORD</code>; variable holding the old
+       database row for <code class="command">UPDATE</code>/<code class="command">DELETE</code> operations in row-level
+       triggers. This variable is <code class="symbol">NULL</code> in statement-level triggers.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_NAME</code></span></dt>
+<dd><p>       Data type <code class="type">name</code>; variable that contains the name of the trigger actually
+       fired.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_WHEN</code></span></dt>
+<dd><p>       Data type <code class="type">text</code>; a string of either 
+              <code class="literal">BEFORE</code> or <code class="literal">AFTER</code>
+              depending on the trigger's definition.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_LEVEL</code></span></dt>
+<dd><p>       Data type <code class="type">text</code>; a string of either
+       <code class="literal">ROW</code> or <code class="literal">STATEMENT</code>
+       depending on the trigger's definition.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_OP</code></span></dt>
+<dd><p>       Data type <code class="type">text</code>; a string of
+       <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, or
+       <code class="literal">DELETE</code> telling for which operation the
+       trigger was fired.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_RELID</code></span></dt>
+<dd><p>       Data type <code class="type">oid</code>; the object ID of the table that caused the
+       trigger invocation.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_RELNAME</code></span></dt>
+<dd><p>       Data type <code class="type">name</code>; the name of the table that caused the trigger
+       invocation.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_NARGS</code></span></dt>
+<dd><p>       Data type <code class="type">integer</code>; the number of arguments given to the trigger
+       procedure in the <code class="command">CREATE TRIGGER</code> statement.
+      </p></dd>
+<dt><span class="term"><code class="varname">TG_ARGV[]</code></span></dt>
+<dd><p>       Data type array of <code class="type">text</code>; the arguments from
+              the <code class="command">CREATE TRIGGER</code> statement.
+       The index counts from 0. Invalid
+       indices (less than 0 or greater than or equal to <code class="varname">tg_nargs</code>) result in a null value.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>    A trigger function must return either <code class="symbol">NULL</code> or a
+    record/row value having exactly the structure of the table the
+    trigger was fired for.
+   </p>
+<p>    Row-level triggers fired <code class="literal">BEFORE</code> may return null to signal the
+    trigger manager to skip the rest of the operation for this row
+    (i.e., subsequent triggers are not fired, and the
+    <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code> does not occur
+    for this row).  If a nonnull 
+    value is returned then the operation proceeds with that row value.
+    Returning a row value different from the original value
+    of <code class="varname">NEW</code> alters the row that will be inserted or updated
+    (but has no direct effect in the <code class="command">DELETE</code> case).
+    To alter the row to be stored, it is possible to replace single values
+    directly in <code class="varname">NEW</code> and return the modified <code class="varname">NEW</code>,
+    or to build a complete new record/row to return.
+   </p>
+<p>    The return value of a <code class="literal">BEFORE</code> or <code class="literal">AFTER</code>
+    statement-level trigger or an <code class="literal">AFTER</code> row-level trigger is
+    always ignored; it may as well be null. However, any of these types of
+    triggers can still abort the entire operation by raising an error.
+   </p>
+<p>    <a href="plpgsql-trigger.html#plpgsql-trigger-example" title="Example 36.2. A PL/pgSQL Trigger Procedure">Example 36.2, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure&#8221;</a> shows an example of a
+    trigger procedure in <span class="application">PL/pgSQL</span>.
+   </p>
+<div class="example">
+<a name="plpgsql-trigger-example"></a><p class="title"><b>Example 36.2. A <span class="application">PL/pgSQL</span> Trigger Procedure</b></p>
+<p>     This example trigger ensures that any time a row is inserted or updated
+     in the table, the current user name and time are stamped into the
+     row. And it checks that an employee's name is given and that the
+     salary is a positive value.
+    </p>
+<pre class="programlisting">CREATE TABLE emp (
+    empname text,
+    salary integer,
+    last_date timestamp,
+    last_user text
+);
+
+CREATE FUNCTION emp_stamp() RETURNS trigger AS $emp_stamp$
+    BEGIN
+        -- Check that empname and salary are given
+        IF NEW.empname IS NULL THEN
+            RAISE EXCEPTION 'empname cannot be null';
+        END IF;
+        IF NEW.salary IS NULL THEN
+            RAISE EXCEPTION '% cannot have null salary', NEW.empname;
+        END IF;
+
+        -- Who works for us when she must pay for it?
+        IF NEW.salary &lt; 0 THEN
+            RAISE EXCEPTION '% cannot have a negative salary', NEW.empname;
+        END IF;
+
+        -- Remember who changed the payroll when
+        NEW.last_date := current_timestamp;
+        NEW.last_user := current_user;
+        RETURN NEW;
+    END;
+$emp_stamp$ LANGUAGE plpgsql;
+
+CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
+    FOR EACH ROW EXECUTE PROCEDURE emp_stamp();</pre>
+</div>
+<p>    Another way to log changes to a table involves creating a new table that
+    holds a row for each insert, update, or delete that occurs. This approach
+    can be thought of as auditing changes to a table.
+    <a href="plpgsql-trigger.html#plpgsql-trigger-audit-example" title="Example 36.3. A PL/pgSQL Trigger Procedure For Auditing">Example 36.3, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing&#8221;</a> shows an example of an
+    audit trigger procedure in <span class="application">PL/pgSQL</span>.
+   </p>
+<div class="example">
+<a name="plpgsql-trigger-audit-example"></a><p class="title"><b>Example 36.3. A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing</b></p>
+<p>     This example trigger ensures that any insert, update or delete of a row
+     in the <code class="literal">emp</code> table is recorded (i.e., audited) in the <code class="literal">emp_audit</code> table. 
+     The current time and user name are stamped into the row, together with 
+     the type of operation performed on it.
+    </p>
+<pre class="programlisting">CREATE TABLE emp (
+    empname           text NOT NULL,
+    salary            integer
+);
+
+CREATE TABLE emp_audit( 
+    operation         char(1)   NOT NULL,
+    stamp             timestamp NOT NULL,
+    userid            text      NOT NULL,
+    empname           text      NOT NULL,
+    salary integer
+);
+
+CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
+    BEGIN
+        --
+        -- Create a row in emp_audit to reflect the operation performed on emp,
+        -- make use of the special variable TG_OP to work out the operation.
+        --
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO emp_audit SELECT 'D', now(), user, OLD.*;
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO emp_audit SELECT 'U', now(), user, NEW.*;
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO emp_audit SELECT 'I', now(), user, NEW.*;
+            RETURN NEW;
+        END IF;
+        RETURN NULL; -- result is ignored since this is an AFTER trigger
+    END;
+$emp_audit$ LANGUAGE plpgsql;
+
+CREATE TRIGGER emp_audit
+AFTER INSERT OR UPDATE OR DELETE ON emp
+    FOR EACH ROW EXECUTE PROCEDURE process_emp_audit();</pre>
+</div>
+<p>    One use of triggers is to maintain a summary table
+    of another table. The resulting summary can be used in place of the 
+    original table for certain queries [mdash ] often with vastly reduced run 
+    times.
+    This technique is commonly used in Data Warehousing, where the tables
+    of measured or observed data (called fact tables) can be extremely large.
+    <a href="plpgsql-trigger.html#plpgsql-trigger-summary-example" title="Example 36.4. A PL/pgSQL Trigger Procedure For Maintaining A Summary Table">Example 36.4, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure For Maintaining A Summary Table&#8221;</a> shows an example of a
+    trigger procedure in <span class="application">PL/pgSQL</span> that maintains
+    a summary table for a fact table in a data warehouse.
+   </p>
+<div class="example">
+<a name="plpgsql-trigger-summary-example"></a><p class="title"><b>Example 36.4. A <span class="application">PL/pgSQL</span> Trigger Procedure For Maintaining A Summary Table</b></p>
+<p>     The schema detailed here is partly based on the <span class="emphasis"><em>Grocery Store
+     </em></span> example from <span class="emphasis"><em>The Data Warehouse Toolkit</em></span> 
+     by Ralph Kimball.
+    </p>
+<pre class="programlisting">--
+-- Main tables - time dimension and sales fact.
+--
+CREATE TABLE time_dimension (
+    time_key                    integer NOT NULL,
+    day_of_week                 integer NOT NULL,
+    day_of_month                integer NOT NULL,
+    month                       integer NOT NULL,
+    quarter                     integer NOT NULL,
+    year                        integer NOT NULL
+);
+CREATE UNIQUE INDEX time_dimension_key ON time_dimension(time_key);
+
+CREATE TABLE sales_fact (
+    time_key                    integer NOT NULL,
+    product_key                 integer NOT NULL,
+    store_key                   integer NOT NULL,
+    amount_sold                 numeric(12,2) NOT NULL,
+    units_sold                  integer NOT NULL,
+    amount_cost                 numeric(12,2) NOT NULL
+);
+CREATE INDEX sales_fact_time ON sales_fact(time_key);
+
+--
+-- Summary table - sales by time.
+--
+CREATE TABLE sales_summary_bytime (
+    time_key                    integer NOT NULL,
+    amount_sold                 numeric(15,2) NOT NULL,
+    units_sold                  numeric(12) NOT NULL,
+    amount_cost                 numeric(15,2) NOT NULL
+);
+CREATE UNIQUE INDEX sales_summary_bytime_key ON sales_summary_bytime(time_key);
+
+--
+-- Function and trigger to amend summarized column(s) on UPDATE, INSERT, DELETE.
+--
+CREATE OR REPLACE FUNCTION maint_sales_summary_bytime() RETURNS TRIGGER AS $maint_sales_summary_bytime$
+    DECLARE
+        delta_time_key          integer;
+        delta_amount_sold       numeric(15,2);
+        delta_units_sold        numeric(12);
+        delta_amount_cost       numeric(15,2);
+    BEGIN
+
+        -- Work out the increment/decrement amount(s).
+        IF (TG_OP = 'DELETE') THEN
+
+            delta_time_key = OLD.time_key;
+            delta_amount_sold = -1 * OLD.amount_sold;
+            delta_units_sold = -1 * OLD.units_sold;
+            delta_amount_cost = -1 * OLD.amount_cost;
+
+        ELSIF (TG_OP = 'UPDATE') THEN
+
+            -- forbid updates that change the time_key -
+            -- (probably not too onerous, as DELETE + INSERT is how most 
+            -- changes will be made).
+            IF ( OLD.time_key != NEW.time_key) THEN
+                RAISE EXCEPTION 'Update of time_key : % -&gt; % not allowed', OLD.time_key, NEW.time_key;
+            END IF;
+
+            delta_time_key = OLD.time_key;
+            delta_amount_sold = NEW.amount_sold - OLD.amount_sold;
+            delta_units_sold = NEW.units_sold - OLD.units_sold;
+            delta_amount_cost = NEW.amount_cost - OLD.amount_cost;
+
+        ELSIF (TG_OP = 'INSERT') THEN
+
+            delta_time_key = NEW.time_key;
+            delta_amount_sold = NEW.amount_sold;
+            delta_units_sold = NEW.units_sold;
+            delta_amount_cost = NEW.amount_cost;
+
+        END IF;
+
+
+        -- Update the summary row with the new values.
+        UPDATE sales_summary_bytime
+            SET amount_sold = amount_sold + delta_amount_sold,
+                units_sold = units_sold + delta_units_sold,
+                amount_cost = amount_cost + delta_amount_cost
+            WHERE time_key = delta_time_key;
+
+
+        -- There might have been no row with this time_key (e.g new data!).
+        IF (NOT FOUND) THEN
+            BEGIN
+                INSERT INTO sales_summary_bytime (
+                            time_key, 
+                            amount_sold, 
+                            units_sold, 
+                            amount_cost)
+                    VALUES ( 
+                            delta_time_key,
+                            delta_amount_sold,
+                            delta_units_sold,
+                            delta_amount_cost
+                           );
+            EXCEPTION
+                --
+                -- Catch race condition when two transactions are adding data
+                -- for a new time_key.
+                --
+                WHEN UNIQUE_VIOLATION THEN
+                    UPDATE sales_summary_bytime
+                        SET amount_sold = amount_sold + delta_amount_sold,
+                            units_sold = units_sold + delta_units_sold,
+                            amount_cost = amount_cost + delta_amount_cost
+                        WHERE time_key = delta_time_key;
+
+            END;
+        END IF;
+        RETURN NULL;
+
+    END;
+$maint_sales_summary_bytime$ LANGUAGE plpgsql;
+
+CREATE TRIGGER maint_sales_summary_bytime
+AFTER INSERT OR UPDATE OR DELETE ON sales_fact
+    FOR EACH ROW EXECUTE PROCEDURE maint_sales_summary_bytime();</pre>
+</div>
+</div></body>
+</html>

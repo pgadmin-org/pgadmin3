@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP FUNCTION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-dropdomain.html" title="DROP DOMAIN">
+<link rel="next" href="sql-dropgroup.html" title="DROP GROUP">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-dropfunction"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP FUNCTION &#8212; remove a function</p>
+</div>
+<a name="id716803"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP FUNCTION <em class="replaceable"><code>name</code></em> ( [ [ <em class="replaceable"><code>argmode</code></em> ] [ <em class="replaceable"><code>argname</code></em> ] <em class="replaceable"><code>argtype</code></em> [, ...] ] )
+    [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id716847"></a><h2>Description</h2>
+<p>   <code class="command">DROP FUNCTION</code> removes the definition of an existing
+   function. To execute this command the user must be the
+   owner of the function. The argument types to the
+   function must be specified, since several different functions
+   may exist with the same name and different argument lists.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id716865"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of an existing function.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>argmode</code></em></span></dt>
+<dd><p>      The mode of an argument: either <code class="literal">IN</code>, <code class="literal">OUT</code>,
+      or <code class="literal">INOUT</code>.  If omitted, the default is <code class="literal">IN</code>.
+      Note that <code class="command">DROP FUNCTION</code> does not actually pay
+      any attention to <code class="literal">OUT</code> arguments, since only the input
+      arguments are needed to determine the function's identity.
+      So it is sufficient to list the <code class="literal">IN</code> and <code class="literal">INOUT</code>
+      arguments.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>argname</code></em></span></dt>
+<dd><p>      The name of an argument.
+      Note that <code class="command">DROP FUNCTION</code> does not actually pay
+      any attention to argument names, since only the argument data
+      types are needed to determine the function's identity.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>argtype</code></em></span></dt>
+<dd><p>      The data type(s) of the function's arguments (optionally 
+      schema-qualified), if any.
+     </p></dd>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
+<dd><p>      Automatically drop objects that depend on the function (such as
+      operators or triggers).
+     </p></dd>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
+<dd><p>      Refuse to drop the function if any objects depend on it.  This
+      is the default.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-dropfunction-examples"></a><h2>Examples</h2>
+<p>   This command removes the square root function:
+
+</p>
+<pre class="programlisting">DROP FUNCTION sqrt(integer);</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-dropfunction-compatibility"></a><h2>Compatibility</h2>
+<p>   A <code class="command">DROP FUNCTION</code> statement is defined in the SQL
+   standard, but it is not compatible with this command.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id717049"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-alterfunction.html">ALTER FUNCTION</a></span>
+</div>
+</div></body>
+</html>

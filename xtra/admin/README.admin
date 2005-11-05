@@ -1,0 +1,50 @@
+PostgreSQL Administration Functions
+===================================
+
+This directory is a PostgreSQL 'contrib' module which implements a number of
+support functions which pgAdmin will use to provide additional functionality
+if installed on a server.
+
+*** This version should be used on PostgreSQL 8.0.x and lower Servers ***
+
+Installation
+============
+
+You will need a PostgreSQL source tree which has been properly configured
+for the local system using the 'configure' script.
+
+Copy this directory into the /contrib directory of the PostgreSQL source tree,
+and then run the following commands as a users with appropriate privileges:
+
+make
+make install
+
+pgAdmin will look for the functions in the Initial Database specified in the
+connection dialogue for the server. To install the functions in the database,
+either run the admin.sql script using the pgAdmin SQL tool (and then restart
+pgAdmin), or run the script using psql, eg:
+
+psql -u postgres template1 < admin.sql
+
+Objects implemented
+===================
+
+genfile.c (superuser only):
+-----------------------------
+record pg_file_stat(fname text)
+int8 pg_file_length(fname text)
+text pg_file_read(fname text, offs int8, len int8)
+int8 pg_file_write(fname text, data text, append bool)
+bool pg_file_rename(oldname text, newname text)
+bool pg_file_rename(oldname text, newname text, archivname text)
+bool pg_file_unlink(fname text)
+setof text pg_dir_ls(dirname text, bool fullpath)
+
+
+misc.c (superuser only):
+-----------------------------
+int4 pg_reload_conf()
+bool pg_logfile_rotate()
+setof record pg_logdir_ls()
+
+VIEW pg_logdir_ls(filetime timestamp, filename text)

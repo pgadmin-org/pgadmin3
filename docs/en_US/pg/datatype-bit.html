@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>8.9. Bit String Types</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
+<link rel="prev" href="datatype-net-types.html" title="8.8. Network Address Types">
+<link rel="next" href="arrays.html" title="8.10. Arrays">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datatype-bit"></a>8.9. Bit String Types</h2></div></div></div>
+<a name="id538492"></a><p>    Bit strings are strings of 1's and 0's.  They can be used to store
+    or visualize bit masks.  There are two SQL bit types:
+    <code class="type">bit(<em class="replaceable"><code>n</code></em>)</code> and <code class="type">bit
+    varying(<em class="replaceable"><code>n</code></em>)</code>, where
+    <em class="replaceable"><code>n</code></em> is a positive integer.
+   </p>
+<p>    <code class="type">bit</code> type data must match the length
+    <em class="replaceable"><code>n</code></em> exactly; it is an error to attempt to
+    store shorter or longer bit strings.  <code class="type">bit varying</code> data is
+    of variable length up to the maximum length
+    <em class="replaceable"><code>n</code></em>; longer strings will be rejected.
+    Writing <code class="type">bit</code> without a length is equivalent to
+    <code class="literal">bit(1)</code>, while <code class="type">bit varying</code> without a length
+    specification means unlimited length.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     If one explicitly casts a bit-string value to
+     <code class="type">bit(<em class="replaceable"><code>n</code></em>)</code>, it will be truncated or
+     zero-padded on the right to be exactly <em class="replaceable"><code>n</code></em> bits,
+     without raising an error.  Similarly,
+     if one explicitly casts a bit-string value to
+     <code class="type">bit varying(<em class="replaceable"><code>n</code></em>)</code>, it will be truncated
+     on the right if it is more than <em class="replaceable"><code>n</code></em> bits.
+    </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Prior to <span class="productname">PostgreSQL</span> 7.2, <code class="type">bit</code> data
+     was always silently truncated or zero-padded on the right, with
+     or without an explicit cast. This was changed to comply with the
+     <span class="acronym">SQL</span> standard.
+    </p>
+</div>
+<p>    Refer to <a href="sql-syntax.html#sql-syntax-bit-strings" title="4.1.2.3. Bit-String Constants">Section 4.1.2.3, &#8220;Bit-String Constants&#8221;</a> for information about the syntax
+    of bit string constants.  Bit-logical operators and string
+    manipulation functions are available; see <a href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">Section 9.6, &#8220;Bit String Functions and Operators&#8221;</a>.
+   </p>
+<div class="example">
+<a name="id538643"></a><p class="title"><b>Example 8.3. Using the bit string types</b></p>
+<pre class="programlisting">CREATE TABLE test (a BIT(3), b BIT VARYING(5));
+INSERT INTO test VALUES (B'101', B'00');
+INSERT INTO test VALUES (B'10', B'101');
+<code class="computeroutput">ERROR:  bit string length 2 does not match type bit(3)</code>
+INSERT INTO test VALUES (B'10'::bit(3), B'101');
+SELECT * FROM test;
+<code class="computeroutput">  a  |  b
+-----+-----
+ 101 | 00
+ 100 | 101</code></pre>
+</div>
+</div></body>
+</html>

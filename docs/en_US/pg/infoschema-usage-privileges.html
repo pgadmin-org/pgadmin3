@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.38. usage_privileges</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-triggers.html" title="31.37. triggers">
+<link rel="next" href="infoschema-view-column-usage.html" title="31.39. view_column_usage">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-usage-privileges"></a>31.38. <code class="literal">usage_privileges</code></h2></div></div></div>
+<p>   The view <code class="literal">usage_privileges</code> is meant to identify
+   <code class="literal">USAGE</code> privileges granted on various kinds of
+   objects to the current user or by the current user.  In
+   <span class="productname">PostgreSQL</span>, this currently only applies
+   to domains, and since domains do not have real privileges in
+   <span class="productname">PostgreSQL</span>, this view shows implicit
+   <code class="literal">USAGE</code> privileges granted to
+   <code class="literal">PUBLIC</code> for all domains.  In the future, this
+   view may contain more useful information.
+  </p>
+<div class="table">
+<a name="id649469"></a><p class="title"><b>Table 31.36. <code class="literal">usage_privileges</code> Columns</b></p>
+<table summary="usage_privileges Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Currently set to the name of the owner of the object</td>
+</tr>
+<tr>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Currently always <code class="literal">PUBLIC</code>
+</td>
+</tr>
+<tr>
+<td><code class="literal">object_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the object (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">object_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the object</td>
+</tr>
+<tr>
+<td><code class="literal">object_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the object</td>
+</tr>
+<tr>
+<td><code class="literal">object_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Currently always <code class="literal">DOMAIN</code>
+</td>
+</tr>
+<tr>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always <code class="literal">USAGE</code>
+</td>
+</tr>
+<tr>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
+<td>Currently always <code class="literal">NO</code>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

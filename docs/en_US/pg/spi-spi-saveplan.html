@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_saveplan</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="40.1. Interface Functions">
+<link rel="prev" href="spi-spi-cursor-close.html" title="SPI_cursor_close">
+<link rel="next" href="spi-interface-support.html" title="40.2. Interface Support Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-saveplan"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_saveplan &#8212; save a plan</p>
+</div>
+<a name="id683948"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">void * SPI_saveplan(void * <em class="parameter"><code>plan</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id683967"></a><h2>Description</h2>
+<p>   <code class="function">SPI_saveplan</code> saves a passed plan (prepared by
+   <code class="function">SPI_prepare</code>) in memory protected from freeing
+   by <code class="function">SPI_finish</code> and by the transaction manager
+   and returns a pointer to the saved plan.  This gives you the
+   ability to reuse prepared plans in the subsequent invocations of
+   your procedure in the current session.  You may save the pointer
+   returned in a local variable.  Always check if this pointer is
+   <code class="symbol">NULL</code> or not either when preparing a plan or using
+   an already prepared plan in <code class="function">SPI_execute_plan</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684011"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">void * <em class="parameter"><code>plan</code></em></code></span></dt>
+<dd><p>      the plan to be saved
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684033"></a><h2>Return Value</h2>
+<p>   Pointer to the saved plan; <code class="symbol">NULL</code> if unsuccessful.
+   On error, <code class="varname">SPI_result</code> is set thus:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="symbol">SPI_ERROR_ARGUMENT</code></span></dt>
+<dd><p>       if <em class="parameter"><code>plan</code></em> is <code class="symbol">NULL</code>
+      </p></dd>
+<dt><span class="term"><code class="symbol">SPI_ERROR_UNCONNECTED</code></span></dt>
+<dd><p>       if called from an unconnected procedure
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id684082"></a><h2>Notes</h2>
+<p>   If one of the objects (a table, function, etc.) referenced by the
+   prepared plan is dropped during the session then the results of
+   <code class="function">SPI_execute_plan</code> for this plan will be unpredictable.
+  </p>
+</div>
+</div></body>
+</html>

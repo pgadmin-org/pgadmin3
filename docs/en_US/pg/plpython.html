@@ -1,0 +1,102 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 39. PL/Python - Python Procedural Language</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="plperl-missing.html" title="38.7. Limitations and Missing Features">
+<link rel="next" href="plpython-trigger.html" title="39.2. Trigger Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpython">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="plpython"></a>Chapter 39. PL/Python - Python Procedural Language</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="plpython.html#plpython-funcs">39.1. PL/Python Functions</a></span></dt>
+<dt><span class="sect1"><a href="plpython-trigger.html">39.2. Trigger Functions</a></span></dt>
+<dt><span class="sect1"><a href="plpython-database.html">39.3. Database Access</a></span></dt>
+</dl>
+</div>
+<a name="id679563"></a><a name="id679573"></a><p>  The <span class="application">PL/Python</span> procedural language allows
+  <span class="productname">PostgreSQL</span> functions to be written in the
+  <a href="http://www.python.org" target="_top">Python language</a>.
+ </p>
+<p>  To install PL/Python in a particular database, use
+  <code class="literal">createlang plpythonu <em class="replaceable"><code>dbname</code></em></code>.
+ </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>    If a language is installed into <code class="literal">template1</code>, all subsequently
+    created databases will have the language installed automatically.
+   </p>
+</div>
+<p>  As of <span class="productname">PostgreSQL</span> 7.4, PL/Python is only
+  available as an &#8220;<span class="quote">untrusted</span>&#8221; language (meaning it does not
+  offer any way of restricting what users can do in it).  It has
+  therefore been renamed to <code class="literal">plpythonu</code>.  The trusted
+  variant <code class="literal">plpython</code> may become available again in future,
+  if a new secure execution mechanism is developed in Python.
+ </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>   Users of source packages must specially enable the build of
+   PL/Python during the installation process.  (Refer to the
+   installation instructions for more information.)  Users of binary
+   packages might find PL/Python in a separate subpackage.
+  </p>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpython-funcs"></a>39.1. PL/Python Functions</h2></div></div></div>
+<p>   Functions in PL/Python are declared via the usual <a href="sql-createfunction.html">CREATE FUNCTION</a>
+   syntax. For example:
+</p>
+<pre class="programlisting">CREATE FUNCTION myfunc(text) RETURNS text
+    AS 'return args[0]'
+    LANGUAGE plpythonu;</pre>
+<p>
+
+   The Python code that is given as the body of the function definition
+   gets transformed into a Python function.
+   For example, the above results in
+
+</p>
+<pre class="programlisting">def __plpython_procedure_myfunc_23456():
+        return args[0]</pre>
+<p>
+
+   assuming that 23456 is the OID assigned to the function by
+   <span class="productname">PostgreSQL</span>.
+  </p>
+<p>   If you do not provide a return value, Python returns the default
+   <code class="symbol">None</code>. <span class="application">PL/Python</span> translates
+   Python's <code class="symbol">None</code> into the SQL null
+   value.<a name="id679740"></a>
+  </p>
+<p>   The <span class="productname">PostgreSQL</span> function parameters are available in
+   the global <code class="varname">args</code> list.  In the
+   <code class="function">myfunc</code> example, <code class="varname">args[0]</code> contains
+   whatever was passed in as the text argument.  For
+   <code class="literal">myfunc2(text, integer)</code>, <code class="varname">args[0]</code>
+   would contain the <code class="type">text</code> argument and
+   <code class="varname">args[1]</code> the <code class="type">integer</code> argument.
+  </p>
+<p>   The global dictionary <code class="varname">SD</code> is available to store
+   data between function calls.  This variable is private static data.
+   The global dictionary <code class="varname">GD</code> is public data,
+   available to all Python functions within a session.  Use with
+   care.<a name="id679817"></a>
+  </p>
+<p>   Each function gets its own execution environment in the
+   Python interpreter, so that global data and function arguments from
+   <code class="function">myfunc</code> are not available to
+   <code class="function">myfunc2</code>.  The exception is the data in the
+   <code class="varname">GD</code> dictionary, as mentioned above.
+  </p>
+</div>
+</div></body>
+</html>

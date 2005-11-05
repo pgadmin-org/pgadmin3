@@ -1,0 +1,126 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.56.        failoverset_int( integer, integer, integer )
+      </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.55.        failednode2( integer, integer, integer, bigint, bigint )
+      ">
+<link rel="next" href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html" title="1.57.        forwardconfirm( integer, integer, bigint, timestamp without time zone )
+      ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.failoverset-int-integer-integer-integer"></a>1.56.        failoverset_int( integer, integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       FUNCTION failoverSet_int (failed_node, backup_node, set_id)
+
+Finish failover for one set.
+        </p>
+<pre class="programlisting">declare
+	p_failed_node		alias for $1;
+	p_backup_node		alias for $2;
+	p_set_id			alias for $3;
+	v_row				record;
+	v_last_sync			int8;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Change the origin of the set now to the backup node.
+	-- On the backup node this includes changing all the
+	-- trigger and protection stuff
+	-- ----
+	if p_backup_node = getLocalNodeId('_schemadoc') then
+		for v_row in select * from sl_table
+				where tab_set = p_set_id
+		loop
+			perform alterTableRestore(v_row.tab_id);
+		end loop;
+
+		delete from sl_setsync
+				where ssy_setid = p_set_id;
+		delete from sl_subscribe
+				where sub_set = p_set_id
+					and sub_receiver = p_backup_node;
+		update sl_set
+				set set_origin = p_backup_node
+				where set_id = p_set_id;
+
+		for v_row in select * from sl_table
+				where tab_set = p_set_id
+		loop
+			perform alterTableForReplication(v_row.tab_id);
+		end loop;
+	else
+		delete from sl_subscribe
+				where sub_set = p_set_id
+					and sub_receiver = p_backup_node;
+		update sl_set
+				set set_origin = p_backup_node
+				where set_id = p_set_id;
+	end if;
+
+	-- Rewrite sl_listen table
+	perform RebuildListenEntries();
+
+	-- ----
+	-- If we are a subscriber of the set ourself, change our
+	-- setsync status to reflect the new set origin.
+	-- ----
+	if exists (select true from sl_subscribe
+			where sub_set = p_set_id
+				and sub_receiver = getLocalNodeId(
+						'_schemadoc'))
+	then
+		delete from sl_setsync
+				where ssy_setid = p_set_id;
+
+		select coalesce(max(ev_seqno), 0) into v_last_sync
+				from sl_event
+				where ev_origin = p_backup_node
+					and ev_type = 'SYNC';
+		if v_last_sync &gt; 0 then
+			insert into sl_setsync
+					(ssy_setid, ssy_origin, ssy_seqno,
+					ssy_minxid, ssy_maxxid, ssy_xip, ssy_action_list)
+					select p_set_id, p_backup_node, v_last_sync,
+					ev_minxid, ev_maxxid, ev_xip, NULL
+					from sl_event
+					where ev_origin = p_backup_node
+						and ev_seqno = v_last_sync;
+		else
+			insert into sl_setsync
+					(ssy_setid, ssy_origin, ssy_seqno,
+					ssy_minxid, ssy_maxxid, ssy_xip, ssy_action_list)
+					values (p_set_id, p_backup_node, '0',
+					'0', '0', '', NULL);
+		end if;
+				
+	end if;
+
+	return p_failed_node;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

@@ -1,0 +1,34 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>18.5. Functions and Triggers</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
+<link rel="prev" href="role-membership.html" title="18.4. Role Membership">
+<link rel="next" href="managing-databases.html" title="Chapter 19. Managing Databases">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="perm-functions"></a>18.5. Functions and Triggers</h2></div></div></div>
+<p>   Functions and triggers allow users to insert code into the backend
+   server that other users may execute unintentionally. Hence, both
+   mechanisms permit users to &#8220;<span class="quote">Trojan horse</span>&#8221;
+   others with relative ease. The only real protection is tight
+   control over who can define functions.
+  </p>
+<p>   Functions run inside the backend
+   server process with the operating system permissions of the
+   database server daemon.  If the programming language
+   used for the function allows unchecked memory accesses, it is
+   possible to change the server's internal data structures.
+   Hence, among many other things, such functions can circumvent any
+   system access controls.  Function languages that allow such access
+   are considered &#8220;<span class="quote">untrusted</span>&#8221;, and
+   <span class="productname">PostgreSQL</span> allows only superusers to
+   create functions written in those languages.
+  </p>
+</div></body>
+</html>

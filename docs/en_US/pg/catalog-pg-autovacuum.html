@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.10. pg_autovacuum</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="catalog-pg-auth-members.html" title="42.9. pg_auth_members">
+<link rel="next" href="catalog-pg-cast.html" title="42.11. pg_cast">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-autovacuum"></a>42.10. <code class="structname">pg_autovacuum</code></h2></div></div></div>
+<a name="id770595"></a><a name="id770606"></a><p>   The catalog <code class="structname">pg_autovacuum</code> stores optional
+   per-relation configuration parameters for <a href="maintenance.html#autovacuum">The auto-vacuum daemon</a>.
+   If there is an entry here for a particular relation, the given
+   parameters will be used for autovacuuming that table.  If no entry
+   is present, the system-wide defaults will be used.
+  </p>
+<div class="table">
+<a name="id770642"></a><p class="title"><b>Table 42.10. <code class="structname">pg_autovacuum</code> Columns</b></p>
+<table summary="pg_autovacuum Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">vacrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>The table this entry is for</td>
+</tr>
+<tr>
+<td><code class="structfield">enabled</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>If false, this table is never autovacuumed</td>
+</tr>
+<tr>
+<td><code class="structfield">vac_base_thresh</code></td>
+<td><code class="type">integer</code></td>
+<td> </td>
+<td>Minimum number of modified tuples before vacuum</td>
+</tr>
+<tr>
+<td><code class="structfield">vac_scale_factor</code></td>
+<td><code class="type">float4</code></td>
+<td> </td>
+<td>Multiplier for reltuples to add to
+       <code class="structfield">vac_base_thresh</code>
+</td>
+</tr>
+<tr>
+<td><code class="structfield">anl_base_thresh</code></td>
+<td><code class="type">integer</code></td>
+<td> </td>
+<td>Minimum number of modified tuples before analyze</td>
+</tr>
+<tr>
+<td><code class="structfield">anl_scale_factor</code></td>
+<td><code class="type">float4</code></td>
+<td> </td>
+<td>Multiplier for reltuples to add to
+       <code class="structfield">anl_base_thresh</code>
+</td>
+</tr>
+<tr>
+<td><code class="structfield">vac_cost_delay</code></td>
+<td><code class="type">integer</code></td>
+<td> </td>
+<td>Custom <code class="varname">vacuum_cost_delay</code> parameter</td>
+</tr>
+<tr>
+<td><code class="structfield">vac_cost_limit</code></td>
+<td><code class="type">integer</code></td>
+<td> </td>
+<td>Custom <code class="varname">vacuum_cost_limit</code> parameter</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   The autovacuum daemon will initiate a <code class="command">VACUUM</code> operation
+   on a particular table when the number of updated or deleted tuples
+   exceeds <code class="structfield">vac_base_thresh</code> plus
+   <code class="structfield">vac_scale_factor</code> times the number of
+   live tuples currently estimated to be in the relation.
+   Similarly, it will initiate an <code class="command">ANALYZE</code> operation
+   when the number of inserted, updated or deleted tuples
+   exceeds <code class="structfield">anl_base_thresh</code> plus
+   <code class="structfield">anl_scale_factor</code> times the number of
+   live tuples currently estimated to be in the relation.
+  </p>
+<p>   Any of the numerical fields can contain <code class="literal">-1</code> (or indeed
+   any negative value) to indicate that the system-wide default should
+   be used for this particular value.  Observe that the
+   <code class="structfield">vac_cost_delay</code> variable inherits its default value from the
+   <code class="varname">autovacuum_vacuum_cost_delay</code> configuration parameter,
+   or from <code class="varname">vacuum_cost_delay</code> if the former is set to a negative
+   value.  The same applies to <code class="structfield">vac_cost_limit</code>.
+  </p>
+</div></body>
+</html>

@@ -1,0 +1,161 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.2. A Brief History of PostgreSQL</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="preface.html" title="Preface">
+<link rel="prev" href="preface.html" title="Preface">
+<link rel="next" href="notation.html" title="1.3. Conventions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="history"></a>1.2. A Brief History of <span class="productname">PostgreSQL</span></h2></div></div></div>
+<a name="id459738"></a><p>  The object-relational database management system now known as
+  <span class="productname">PostgreSQL</span> is derived from the
+  <span class="productname">POSTGRES</span> package written at the
+  University of California at Berkeley.  With over a decade of
+  development behind it, <span class="productname">PostgreSQL</span> is now
+  the most advanced open-source database available anywhere.
+ </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="history-berkeley"></a>1.2.1. The Berkeley <span class="productname">POSTGRES</span> Project</h3></div></div></div>
+<a name="id459793"></a><p>   The <span class="productname">POSTGRES</span> project, led by Professor
+   Michael Stonebraker, was sponsored by the Defense Advanced Research
+   Projects Agency (<span class="acronym">DARPA</span>), the Army Research
+   Office (<span class="acronym">ARO</span>), the National Science Foundation
+   (<span class="acronym">NSF</span>), and ESL, Inc.  The implementation of
+   <span class="productname">POSTGRES</span> began in 1986.  The initial
+   concepts for the system were presented in [<a href="biblio.html#ston86" title="[ston86]">ston86</a>]
+   and the definition of the initial data model appeared in [<a href="biblio.html#rowe87" title="[rowe87]">rowe87</a>].  The design of the rule system at that time was
+   described in [<a href="biblio.html#ston87a" title="[ston87a]">ston87a</a>].  The rationale and
+   architecture of the storage manager were detailed in [<a href="biblio.html#ston87b" title="[ston87b]">ston87b</a>].
+  </p>
+<p>   <span class="productname">POSTGRES</span> has undergone several major
+   releases since then.  The first &#8220;<span class="quote">demoware</span>&#8221; system
+   became operational in 1987 and was shown at the 1988
+   <span class="acronym">ACM-SIGMOD</span> Conference.  Version 1, described in
+   [<a href="biblio.html#ston90a" title="[ston90a]">ston90a</a>], was released to a few external users in
+   June 1989.  In response to a critique of the first rule system
+   ([<a href="biblio.html#ston89" title="[ston89]">ston89</a>]), the rule system was redesigned ([<a href="biblio.html#ston90b" title="[ston90b]">ston90b</a>]) and Version 2 was released in June 1990 with
+   the new rule system.  Version 3 appeared in 1991 and added support
+   for multiple storage managers, an improved query executor, and a
+   rewritten rule system.  For the most part, subsequent releases
+   until <span class="productname">Postgres95</span> (see below) focused on
+   portability and reliability.
+  </p>
+<p>   <span class="productname">POSTGRES</span> has been used to implement many
+   different research and production applications.  These include: a
+   financial data analysis system, a jet engine performance monitoring
+   package, an asteroid tracking database, a medical information
+   database, and several geographic information systems.
+   <span class="productname">POSTGRES</span> has also been used as an
+   educational tool at several universities.  Finally, Illustra
+   Information Technologies (later merged into 
+   <a href="http://www.informix.com/" target="_top"><span class="productname">Informix</span></a>,
+   which is now owned by <a href="http://www.ibm.com/" target="_top">IBM</a>) picked up the code and
+   commercialized it.  In late 1992,
+   <span class="productname">POSTGRES</span> became the primary data manager
+   for the 
+   <a href="http://meteora.ucsd.edu/s2k/s2k_home.html" target="_top">   Sequoia 2000 scientific computing project</a>.
+  </p>
+<p>   The size of the external user community nearly doubled during 1993.
+   It became increasingly obvious that maintenance of the prototype
+   code and support was taking up large amounts of time that should
+   have been devoted to database research.  In an effort to reduce
+   this support burden, the Berkeley
+   <span class="productname">POSTGRES</span> project officially ended with
+   Version 4.2.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="history-postgres95"></a>1.2.2. <span class="productname">Postgres95</span></h3></div></div></div>
+<a name="id459997"></a><p>   In 1994, Andrew Yu and Jolly Chen added a SQL language interpreter
+   to <span class="productname">POSTGRES</span>.  Under a new name,
+   <span class="productname">Postgres95</span> was subsequently released to
+   the web to find its own way in the world as an open-source
+   descendant of the original <span class="productname">POSTGRES</span>
+   Berkeley code.
+  </p>
+<p>   <span class="productname">Postgres95</span> code was completely ANSI C
+   and trimmed in size by 25%. Many internal changes improved
+   performance and
+   maintainability. <span class="productname">Postgres95</span> release
+   1.0.x ran about 30-50% faster on the Wisconsin Benchmark compared
+   to <span class="productname">POSTGRES</span>, Version 4.2.  Apart from
+   bug fixes, the following were the major enhancements:
+
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      The query language PostQUEL was replaced with
+      <span class="acronym">SQL</span> (implemented in the server).  Subqueries
+      were not supported until <span class="productname">PostgreSQL</span>
+      (see below), but they could be imitated in
+      <span class="productname">Postgres95</span> with user-defined
+      <span class="acronym">SQL</span> functions. Aggregate functions were
+      re-implemented.  Support for the <code class="literal">GROUP BY</code>
+      query clause was also added.
+     </p></li>
+<li><p>      A new program
+      (<span class="application">psql</span>) was provided for interactive
+      SQL queries, which used <span class="acronym">GNU</span>
+      <span class="application">Readline</span>.  This largely superseded
+      the old <span class="application">monitor</span> program.
+     </p></li>
+<li><p>      A new front-end library, <code class="filename">libpgtcl</code>,
+      supported <span class="acronym">Tcl</span>-based clients.  A sample shell,
+      <code class="command">pgtclsh</code>, provided new Tcl commands to
+      interface <span class="application">Tcl</span> programs with the
+      <span class="productname">Postgres95</span> server.
+     </p></li>
+<li><p>      The large-object interface was overhauled. The inversion large
+      objects were the only mechanism for storing large objects.  (The
+      inversion file system was removed.)
+     </p></li>
+<li><p>      The instance-level rule system was removed.  Rules were still
+      available as rewrite rules.
+     </p></li>
+<li><p>      A short tutorial introducing regular <span class="acronym">SQL</span>
+      features as well as those of
+      <span class="productname">Postgres95</span> was distributed with the
+      source code
+     </p></li>
+<li><p>      <span class="acronym">GNU</span> make (instead of <span class="acronym">BSD</span>
+      make) was used for the build.  Also,
+      <span class="productname">Postgres95</span> could be compiled with an
+      unpatched <span class="productname">GCC</span> (data alignment of
+      doubles was fixed).
+     </p></li>
+</ul></div>
+<p>
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id460215"></a>1.2.3. <span class="productname">PostgreSQL</span></h3></div></div></div>
+<p>   By 1996, it became clear that the name &#8220;<span class="quote">Postgres95</span>&#8221;
+   would not stand the test of time. We chose a new name,
+   <span class="productname">PostgreSQL</span>, to reflect the relationship
+   between the original <span class="productname">POSTGRES</span> and the
+   more recent versions with <span class="acronym">SQL</span> capability.  At
+   the same time, we set the version numbering to start at 6.0,
+   putting the numbers back into the sequence originally begun by the
+   Berkeley <span class="productname">POSTGRES</span> project.
+  </p>
+<p>   The emphasis during development of
+   <span class="productname">Postgres95</span> was on identifying and
+   understanding existing problems in the server code.  With
+   <span class="productname">PostgreSQL</span>, the emphasis has shifted to
+   augmenting features and capabilities, although work continues in
+   all areas.
+  </p>
+<p>   Details about what has happened in <span class="productname">PostgreSQL</span> since
+   then can be found in <a href="release.html" title="Appendix E. Release Notes">Appendix E, <i>Release Notes</i></a>.
+  </p>
+</div>
+</div></body>
+</html>

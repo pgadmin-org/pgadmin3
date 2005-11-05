@@ -1,0 +1,215 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.15. Aggregate Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions-array.html" title="9.14. Array Functions and Operators">
+<link rel="next" href="functions-subquery.html" title="9.16. Subquery Expressions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-aggregate"></a>9.15. Aggregate Functions</h2></div></div></div>
+<a name="id566268"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
+   value from a set of input values.  <a href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. Aggregate Functions">Table 9.37, &#8220;Aggregate Functions&#8221;</a> shows the built-in aggregate
+   functions.  The special syntax considerations for aggregate
+   functions are explained in <a href="sql-expressions.html#syntax-aggregates" title="4.2.7. Aggregate Expressions">Section 4.2.7, &#8220;Aggregate Expressions&#8221;</a>.
+   Consult <a href="tutorial-agg.html" title="2.7. Aggregate Functions">Section 2.7, &#8220;Aggregate Functions&#8221;</a> for additional introductory
+   information.
+  </p>
+<div class="table">
+<a name="functions-aggregate-table"></a><p class="title"><b>Table 9.37. Aggregate Functions</b></p>
+<table summary="Aggregate Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Argument Type</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>       <a name="id566345"></a>
+       <code class="function">avg(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, <code class="type">numeric</code>, or <code class="type">interval</code>
+      </td>
+<td>       <code class="type">numeric</code> for any integer type argument,
+       <code class="type">double precision</code> for a floating-point argument,
+       otherwise the same as the argument data type
+      </td>
+<td>the average (arithmetic mean) of all input values</td>
+</tr>
+<tr>
+<td>       <a name="id566415"></a>
+       <code class="function">bit_and(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>, <code class="type">bigint</code>, or
+       <code class="type">bit</code>
+      </td>
+<td>        same as argument data type
+      </td>
+<td>the bitwise AND of all non-null input values, or null if none</td>
+</tr>
+<tr>
+<td>       <a name="id566464"></a>
+       <code class="function">bit_or(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>, <code class="type">bigint</code>, or
+       <code class="type">bit</code>
+      </td>
+<td>        same as argument data type
+      </td>
+<td>the bitwise OR of all non-null input values, or null if none</td>
+</tr>
+<tr>
+<td>       <a name="id566513"></a>
+       <code class="function">bool_and(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>true if all input values are true, otherwise false</td>
+</tr>
+<tr>
+<td>       <a name="id566553"></a>
+       <code class="function">bool_or(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>true if at least one input value is true, otherwise false</td>
+</tr>
+<tr>
+<td><code class="function">count(*)</code></td>
+<td> </td>
+<td><code class="type">bigint</code></td>
+<td>number of input values</td>
+</tr>
+<tr>
+<td><code class="function">count(<em class="replaceable"><code>expression</code></em>)</code></td>
+<td>any</td>
+<td><code class="type">bigint</code></td>
+<td>       number of input values for which the value of <em class="replaceable"><code>expression</code></em> is not null
+      </td>
+</tr>
+<tr>
+<td>       <a name="id566640"></a>
+       <code class="function">every(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>       <code class="type">bool</code>
+      </td>
+<td>equivalent to <code class="function">bool_and</code>
+</td>
+</tr>
+<tr>
+<td><code class="function">max(<em class="replaceable"><code>expression</code></em>)</code></td>
+<td>any array, numeric, string, or date/time type</td>
+<td>same as argument type</td>
+<td>       maximum value of <em class="replaceable"><code>expression</code></em> across all input
+       values
+      </td>
+</tr>
+<tr>
+<td><code class="function">min(<em class="replaceable"><code>expression</code></em>)</code></td>
+<td>any array, numeric, string, or date/time type</td>
+<td>same as argument type</td>
+<td>       minimum value of <em class="replaceable"><code>expression</code></em> across all input
+       values
+      </td>
+</tr>
+<tr>
+<td>       <a name="id566745"></a>
+       <code class="function">stddev(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>sample standard deviation of the input values</td>
+</tr>
+<tr>
+<td><code class="function">sum(<em class="replaceable"><code>expression</code></em>)</code></td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, <code class="type">numeric</code>, or
+       <code class="type">interval</code>
+      </td>
+<td>       <code class="type">bigint</code> for <code class="type">smallint</code> or
+       <code class="type">int</code> arguments, <code class="type">numeric</code> for
+       <code class="type">bigint</code> arguments, <code class="type">double precision</code>
+       for floating-point arguments, otherwise the same as the
+       argument data type
+      </td>
+<td>sum of <em class="replaceable"><code>expression</code></em> across all input values</td>
+</tr>
+<tr>
+<td>       <a name="id566894"></a>
+       <code class="function">variance</code>(<em class="replaceable"><code>expression</code></em>)
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>sample variance of the input values (square of the sample standard deviation)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   It should be noted that except for <code class="function">count</code>,
+   these functions return a null value when no rows are selected.  In
+   particular, <code class="function">sum</code> of no rows returns null, not
+   zero as one might expect.  The <code class="function">coalesce</code> function may be
+   used to substitute zero for null when necessary.
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<a name="id566984"></a><a name="id566990"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
+      <code class="function">bool_or</code> correspond to standard SQL aggregates
+      <code class="function">every</code> and <code class="function">any</code> or
+      <code class="function">some</code>. 
+      As for <code class="function">any</code> and <code class="function">some</code>, 
+      it seems that there is an ambiguity built into the standard syntax:
+</p>
+<pre class="programlisting">SELECT b1 = ANY((SELECT b2 FROM t2 ...)) FROM t1 ...;</pre>
+<p>
+      Here <code class="function">ANY</code> can be considered both as leading
+      to a subquery or as an aggregate if the select expression returns 1 row.
+      Thus the standard name cannot be given to these aggregates.
+    </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    Users accustomed to working with other SQL database management
+    systems may be surprised by the performance of the
+    <code class="function">count</code> aggregate when it is applied to the
+    entire table. A query like:
+</p>
+<pre class="programlisting">SELECT count(*) FROM sometable;</pre>
+<p>
+    will be executed by <span class="productname">PostgreSQL</span> using a
+    sequential scan of the entire table.
+   </p>
+</div>
+</div></body>
+</html>
