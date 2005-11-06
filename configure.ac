@@ -6,7 +6,7 @@ AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_SRCDIR([src/pgAdmin3.cpp])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_HOST
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([tar-ustar])
 AC_PREFIX_DEFAULT([/usr/local/pgadmin3])
 
 # Checks for programs.
