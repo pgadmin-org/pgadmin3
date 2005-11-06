@@ -11,9 +11,9 @@
 
 
 // Application Versions
-#define VERSION_STR     wxT("1.4.0")
-#define VERSION_NUM     1,4,0,100
-#define VERSION_PACKAGE 1.4.0
+#define VERSION_STR     wxT("1.4.1")
+#define VERSION_NUM     1,4,1,100
+#define VERSION_PACKAGE 1.4.1
 #define VERSION_SVN     wxT("$Rev$")
 
 #define PRERELEASE 0
