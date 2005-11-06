@@ -15,9 +15,11 @@ EXTRA_DIST = \
 	$(top_srcdir)/LICENCE.txt
 
 TMP_docs = \
-	$(top_srcdir)/docs/en_US/pg/*.html \
-	$(top_srcdir)/docs/en_US/hints/*.html \
 	$(top_srcdir)/docs/en_US/pg/*.css \
+	$(top_srcdir)/docs/en_US/pg/*.html \
+	$(top_srcdir)/docs/en_US/slony/*.css \
+	$(top_srcdir)/docs/en_US/slony/*.html \
+	$(top_srcdir)/docs/en_US/hints/*.html \
 	$(top_srcdir)/docs/en_US/images/*.png \
 	$(top_srcdir)/docs/en_US/*.html \
 	$(top_srcdir)/docs/en_US/*.css \
