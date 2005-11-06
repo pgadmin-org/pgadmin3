@@ -11,12 +11,12 @@
 
 
 // Application Versions
-#define VERSION_STR     wxT("1.4.0")
-#define VERSION_NUM     1,4,0,100
-#define VERSION_PACKAGE 1.4.0
+#define VERSION_STR     wxT("1.5.0")
+#define VERSION_NUM     1,5,0,0
+#define VERSION_PACKAGE 1.5.0
 #define VERSION_SVN     wxT("$Rev$")
 
-#define PRERELEASE 0
+#define PRERELEASE 1
 // #define BUILD "..."
 
 #ifdef RC_INVOKED
