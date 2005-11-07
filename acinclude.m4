@@ -10,378 +10,341 @@
 #######################################################################
 
 #############################
-# Override wx-config binary #
-#############################
-AC_DEFUN([CHECK_WX_CONFIG_BINARY],
-[AC_MSG_CHECKING(for wx-config binary)
-AC_ARG_WITH(wx-config,
-[  --with-wx-config=FILE  name of wx-config binary],
-[if test "$withval" != no; then
-    AC_MSG_RESULT(yes)
-    wx_config_binary="$withval"
- else
-    AC_MSG_RESULT(no)
-    AC_MSG_ERROR([you must specify a filename when using --with-wx-config=FILE])
- fi])
- AC_MSG_RESULT(yes)
-])
-
-#############################
 # Override wxWidgets version #
 #############################
-AC_DEFUN([CHECK_WX_VERSION],
-[AC_MSG_CHECKING(the wxWidgets version)
-AC_ARG_WITH(wx-version,
-[  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.6)],
-[if test "$withval" == yes; then
-    AC_MSG_RESULT(unspecified)
-    AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
- else
-    if test -z "$withval"; then
-        AC_MSG_RESULT(unspecified)
-        AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
-	else
-	    wx_version="$withval"
-		AC_MSG_RESULT($wx_version)
-	fi
- fi],
-[wx_version="2.6"
-AC_MSG_RESULT($wx_version)])
+AC_DEFUN([SET_WX_VERSION],
+[
+	AC_ARG_WITH(wx-version, [  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.6)],
+	[
+		if test "$withval" == yes; then
+			AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
+		else
+			if test -z "$withval"; then
+				AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
+			else
+				WX_VERSION="$withval"
+			fi
+		fi
+	],
+	[
+		WX_VERSION="2.6"
+	])
 ])
 
-#########################################
-# Override PostgreSQL include directory #
-#########################################
-AC_DEFUN([CHECK_PGSQL_INCLUDE],
-[AC_MSG_CHECKING(for pgsql include files)
-AC_ARG_WITH(pgsql-include,
-[  --with-pgsql-include=DIR  location of PostgreSQL include files],
-[if test "$withval" != no; then
-    AC_MSG_RESULT(yes)
-    pgsql_include="$withval"
- else
-    AC_MSG_RESULT(no)
-    AC_MSG_ERROR([you must specify a directory when using --with-pgsql-include=DIR])
- fi])
-    AC_MSG_RESULT(yes)
+####################
+# Locate wxWidgets #
+####################
+AC_DEFUN([LOCATE_WXWIDGETS],
+[
+	AC_ARG_WITH(wx, [  --with-wx=DIR       root directory for wxWidgets installation],
+	[
+		if test "$withval" != no
+		then
+			WX_HOME="$withval"
+		fi
+	], 
+	[
+		WX_HOME=/usr/local/wx2
+		if test ! -f "${WX_HOME}/bin/wx-config"
+		then
+			WX_HOME=/usr/local
+			if test ! -f "${WX_HOME}/bin/wx-config"
+			then
+				WX_HOME=/usr
+				if test ! -f "${WX_HOME}/bin/wx-config"
+				then
+					AC_MSG_ERROR([Could not find your wxWidgets installation. You might need to use the --with-wx=DIR configure option])
+				fi
+			fi
+		fi
+		WX_CONFIG=${WX_HOME}/bin/wx-config
+	])
+])
+
+#####################
+# Locate PostgreSQL #
+#####################
+AC_DEFUN([LOCATE_POSTGRESQL],
+[
+	AC_ARG_WITH(pgsql, [  --with-pgsql=DIR    root directory for PostgreSQL installation],
+	[
+		if test "$withval" != no
+		then
+			PG_HOME="$withval"
+		fi
+	],
+	[
+		PG_HOME=/usr/local/pgsql
+		if test ! -f "${PG_HOME}/bin/pg_config"
+		then
+			PG_HOME=/usr/local
+			if test ! -f "${PG_HOME}/bin/pg_config"
+			then
+				PG_HOME=/usr
+				if test ! -f "${PG_HOME}/bin/pg_config"
+				then
+					AC_MSG_ERROR([Could not find your PostgreSQL installation. You might need to use the --with-pgsql=DIR configure option])
+				fi
+			fi
+		fi
+		PG_CONFIG=${PG_HOME}/bin/pg_config
+	])
 ])
 
 ###########################
 # Debug build of pgAdmin3 #
 ###########################
 AC_DEFUN([ENABLE_DEBUG],
-[AC_ARG_ENABLE(debug,
-[  --enable-debug       build a debug version of pgAdmin3],
 [
-if test "$enableval" = yes
-then
-	pg_debug_build=yes
-else
-	pg_debug_build=no
-fi
-],
-[pg_debug_build=no])
+	AC_ARG_ENABLE(debug, [  --enable-debug       build a debug version of pgAdmin3],
+	[
+		if test "$enableval" = yes
+		then
+			BUILD_DEBUG=yes
+		else
+			BUILD_DEBUG=no
+		fi
+	],
+	[
+		BUILD_DEBUG=no
+	])
 ])
-AC_SUBST(pg_debug_build)
+AC_SUBST(BUILD_DEBUG)
 
 ############################
 # Static build of pgAdmin3 #
 ############################
 AC_DEFUN([ENABLE_STATIC],
-[AC_ARG_ENABLE(static,
-[  --enable-static      build a statically linked version of pgAdmin3],
 [
-if test "$enableval" = yes
-then
-    pg_static_build=yes
-    WX_STATIC="--static=yes"
-else
-    pg_static_build=no
-    WX_STATIC="--static=no"
-fi
-],
-[pg_static_build=no
-WX_STATIC="--static=no"])
+	AC_ARG_ENABLE(static, [  --enable-static      build a statically linked version of pgAdmin3],
+	[
+		if test "$enableval" = yes
+		then
+			BUILD_STATIC=yes
+			WX_STATIC="--static=yes"
+		else
+			BUILD_STATIC=no
+			WX_STATIC="--static=no"
+		fi
+	],
+	[
+		BUILD_STATIC=no
+		WX_STATIC="--static=no"
+	])
 ])
 
 ############################
 # Build an pgAdmin III.app  #
 ############################
 AC_DEFUN([ENABLE_APPBUNDLE],
-[AC_ARG_ENABLE(appbundle,
-[  --enable-appbundle   Build a Mac OS X appbundle],
 [
-if test "$enableval" = yes
-then
-    pg_appbundle=yes
-    prefix=$(pwd)/tmp
-    bundledir="$(pwd)/pgAdmin3.app"
-    bindir="$bundledir/Contents/MacOS"
-    datadir="$bundledir/Contents/SharedSupport"
-    AC_SUBST(bundledir)
-else
-    pg_appbundle=no
-fi
-],
-[pg_appbundle=no])
+	AC_ARG_ENABLE(appbundle, [  --enable-appbundle   Build a Mac OS X appbundle],
+	[
+		if test "$enableval" = yes
+		then
+			BUILD_APPBUNDLE=yes
+			prefix=$(pwd)/tmp
+			bundledir="$(pwd)/pgAdmin3.app"
+			bindir="$bundledir/Contents/MacOS"
+			datadir="$bundledir/Contents/SharedSupport"
+			AC_SUBST(bundledir)
+		else
+			BUILD_APPBUNDLE=no
+		fi
+	],
+	[
+		BUILD_APPBUNDLE=no
+	])
 ])
 
-########################################
-# Check for PostgreSQL library (libpq) #
-########################################
-AC_DEFUN([CHECK_PGSQL],
-[AC_MSG_CHECKING(for pgsql)
-AC_ARG_WITH(pgsql,
-[  --with-pgsql=DIR    directory to look for pgsql libraries and headers],
-[if test "$withval" != no
-then
-    AC_MSG_RESULT(yes)
-    LIBPQ_HOME="$withval"
-else
-    AC_MSG_RESULT(no)
-fi], [
-    AC_MSG_RESULT(yes)
-    LIBPQ_HOME="/usr/local/pgsql"
-    # Check for headers
-    if test "$pgsql_include" = ""
-    then
-        if test ! -f "${LIBPQ_HOME}/include/libpq-fe.h"
-        then
-            LIBPQ_HOME=/usr/local
-            if test ! -f "${LIBPQ_HOME}/include/libpq-fe.h"
-            then
-                LIBPQ_HOME=/usr
-            fi
-        fi
-        if test -f "/usr/include/libpq-fe.h"
-        then
-            pgsql_include="/usr/include"
-        else
-            if test -f "/usr/include/pgsql/libpq-fe.h"
-            then
-                pgsql_include="/usr/include/pgsql"
-            fi
-        fi
-    fi
-])
+#########################################
+# Check for libpq libraries and headers #
+#########################################
+AC_DEFUN([SETUP_POSTGRESQL],
+[
+	if test -n "${PG_HOME}"
+	then
+		PGSQL_OLD_LDFLAGS="$LDFLAGS"
+		PGSQL_OLD_CPPFLAGS="$CPPFLAGS"
 
-#
-# Check for libpq libraries and headers
-#
-if test -n "${LIBPQ_HOME}"
-then
-    PGSQL_OLD_LDFLAGS="$LDFLAGS"
-    PGSQL_OLD_CPPFLAGS="$CPPFLAGS"
+		# Solaris needs -lssl for this test
+		case "${host}" in
+			*solaris*)
+				LDFLAGS="$LDFLAGS -L${PG_HOME}/lib -lssl"
+				;;
+			*)
+				LDFLAGS="$LDFLAGS -L${PG_HOME}/lib"
+				;;
+		esac
 
-    # Solaris needs -lssl for this test
-    case "${host}" in
-        *solaris*)
-            LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib -lssl"
-            ;;
-        *)
-            LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
-            ;;
-    esac
+		AC_LANG_SAVE
+		AC_LANG_C
+		AC_CHECK_LIB(pq, PQexec, [PG_LIBPQ=yes], [PG_LIBPQ=no])
 
+		if test "$build_cpu-$build_vendor" = "powerpc-apple"
+		then
+			echo -n "Checking if libpq links against libssl: "
+			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libssl)" -gt 0
+			then
+				PG_SSL="yes"
+			else
+				PG_SSL="no"
+			fi
+			echo $PG_SSL
+		else
+			AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
+		fi
+		AC_LANG_RESTORE
 
-    AC_LANG_SAVE
-    AC_LANG_C
-    AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
-    if test "$build_cpu-$build_vendor" = "powerpc-apple"; then
-        echo -n "Checking if libpq links against libssl: "
-        if test "$(otool -L ${LIBPQ_HOME}/lib/libpq.?.dylib | grep -c libssl)" -gt 0
-        then
-            pgsql_ssl_libpq="yes"
-        else
-            pgsql_ssl_libpq="no"
-        fi
-        echo $pgsql_ssl_libpq
-    else
-        AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=no])
-    fi
-    AC_LANG_RESTORE
-
-    if test "$pgsql_include" != ""
-    then
-        CPPFLAGS="$CPPFLAGS -I${pgsql_include}"
-    else
-        CPPFLAGS="$CPPFLAGS -I${LIBPQ_HOME}/include"
-    fi
-
-    if test "$pg_static_build" = "yes"
-    then
-        if test "$build_cpu-$build_vendor" = "powerpc-apple"
-        then
-            CRYPT_LIB=""
-        else
-            CRYPT_LIB="-lcrypt"
-        fi
-
-        if test "$pgsql_ssl_libpq" = "yes"
-        then
-            LIBS="${LIBPQ_HOME}/lib/libpq.a $CRYPT_LIB $LIBS -lssl -lcrypto"
-        else
-            LIBS="${LIBPQ_HOME}/lib/libpq.a $CRYPT_LIB $LIBS -lcrypto"
-        fi
-    else
-        if test "$pgsql_ssl_libpq" = "yes"
-        then
-            LIBS="$LIBS -lssl -lcrypto -lpq"
-        else
-            LIBS="$LIBS -lcrypto -lpq"
-        fi
-    fi
-
-    AC_LANG_SAVE
-    AC_LANG_C
-    AC_CHECK_HEADER(libpq-fe.h, [pgsql_cv_libpqfe_h=yes], [pgsql_cv_libpqfe_h=no])
-    AC_LANG_RESTORE
-
-    if test "$pgsql_cv_libpq" = "yes" -a "$pgsql_cv_libpqfe_h" = "yes"
-    then
-        AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
-        AC_MSG_RESULT(ok)
-    else
-        AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
-        AC_MSG_RESULT(failed)
-        LDFLAGS="$PGSQL_OLD_LDFLAGS"
-        CPPFLAGS="$PGSQL_OLD_CPPFLAGS"
-        AC_MSG_ERROR([you must specify a valid pgsql installation with --with-pgsql=DIR])
-    fi
-
-    if test "$pgsql_ssl_libpq" = "yes"
-    then
-        CPPFLAGS="$CPPFLAGS -DSSL"
-    fi
-fi
-])
-
-#####################################################################
-# wxWidgets linking checks                                          #
-# This check should be specified last in configure.ac, since all of #
-# the above checks affect this test in some way or another.         #
-#####################################################################
-AC_DEFUN([CHECK_WXWIDGETS],
-[AC_MSG_CHECKING(for wxWidgets)
-AC_ARG_WITH(wx,
-[  --with-wx=DIR       root directory for wxWidgets installation],
-[if test "$withval" != no
-then
-    AC_MSG_RESULT(yes)
-    WX_HOME="$withval"
-else
-    AC_MSG_RESULT(no)
-fi], [
-    AC_MSG_RESULT(yes)
-    WX_HOME=/usr/local/wx2
-    if test ! -f "${WX_HOME}/include/wx-${wx_version}/wx/wx.h"
-    then
-        WX_HOME=/usr/local
-        if test ! -f "${WX_HOME}/include/wx-${wx_version}/wx/wx.h"
-        then
-            WX_HOME=/usr
-            if test ! -f "${WX_HOME}/include/wx-${wx_version}/wx/wx.h"
-            then
-                AC_MSG_ERROR([Could not find your wxWidgets ${wx_version} installation. You might need to use the --with-wx=DIR configure option])
-            fi
-        fi
-    fi
-])
-
-if test -n "${WX_HOME}"
-then
-    # Check for wx-config binary
-    if test "$wx_config_binary" != ""
-    then
-        if test ! -f "${WX_HOME}/bin/${wx_config_binary}"
-        then
-            if test ! -f "${WX_HOME}/${wx_config_binary}"
-            then
-                AC_MSG_ERROR([Could not find ${wx_config_binary}])
-            else
-                WX_CONFIG="${WX_HOME}/${wx_config_binary}"
-            fi
-        else
-            WX_CONFIG="${WX_HOME}/bin/${wx_config_binary}"
-        fi
-    else
-        if test ! -f "${WX_HOME}/bin/wx-config"
-        then
-            if test ! -f "${WX_HOME}/wx-config"
-            then
-                AC_MSG_ERROR([Could not find wx-config in ${WX_HOME}])
-            else
-                WX_CONFIG="${WX_HOME}/wx-config"
-            fi
-        else
-            WX_CONFIG="${WX_HOME}/bin/wx-config"
-        fi
-    fi
-
-    LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
-    WX_OLD_LDFLAGS="$LDFLAGS"
-    WX_OLD_CPPFLAGS="$CPPFLAGS"
+		PG_INCLUDE=`${PG_CONFIG} --includedir` 
+		CPPFLAGS="$CPPFLAGS -I${PG_INCLUDE}"
 	
-    if test "$pg_debug_build" == yes
-    then
-        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${wx_version}`
-        CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
-			
-        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=yes --version=${wx_version}`
-        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=yes --version=${wx_version}`
-        LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
-    else
-        WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${wx_version}`
-        CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
+		PG_LIB=`${PG_CONFIG} --libdir`
+
+		PG_VERSION=`${PG_CONFIG} --version`
 		
-        WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=no --version=${wx_version}`
-        WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=no --version=${wx_version}`
-        LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
-    fi
+		if test "$BUILD_STATIC" = "yes"
+		then
+			if test "$build_cpu-$build_vendor" = "powerpc-apple"
+			then
+				CRYPT_LIB=""
+			else
+				CRYPT_LIB="-lcrypt"
+			fi
 
-    if test "$WX_NEW_CPPFLAGS" = "" -o "$WX_NEW_LIBS" = "" -o "$WX_NEW_CONTRIB_LIBS" = ""
-    then
-        AC_MSG_ERROR([Your wxWidgets installation cannot support pgAdmin in the selected configuration. This may be because it was configured without the --enable-unicode option, or the combination of dynamic/static linking and debug/non-debug libraries selected did not match any installed wxWidgets libraries.])
-    fi
+			if test "$PG_SSL" = "yes"
+			then
+				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS -lssl -lcrypto"
+			else
+				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS -lcrypto"
+			fi
+		else
+			if test "$PG_SSL" = "yes"
+			then
+				LIBS="$LIBS -L${PG_LIB} -lssl -lcrypto -lpq"
+			else
+				LIBS="$LIBS -L${PG_LIB} -lcrypto -lpq"
+			fi
+		fi
 
-    case "${host}" in
-        *-apple-darwin*)
-            CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
-            ;;
-        *solaris*)
-            LDFLAGS="$LDFLAGS -lnsl"
-            ;;
-        *)
-            ;;
-    esac
-fi
+		AC_LANG_SAVE
+		AC_LANG_C
+		AC_CHECK_HEADER(libpq-fe.h, [PG_LIBPQFE=yes], [PG_LIBPQFE=no])
+		AC_LANG_RESTORE
 
-# Print a configuration summary
-echo
-echo "Using wxWidgets version:             $wx_version"
-if test "$pg_debug_build" == yes
-then
-	echo "Building a debug version of pgAdmin: Yes"
-else
-	echo "Building a debug version of pgAdmin: No"
-fi
-if test "$pg_static_build" == yes
-then
-	echo "Statically linking pgAdmin:          Yes"
-else
-	echo "Statically linking pgAdmin:          No"
-fi
-if test "$pg_appbundle" == yes
-then
-	echo "Building a Mac OS X appbundle:       Yes"
-else
-	echo "Building a Mac OS X appbundle:       No"
-fi
-echo
+		if test "$PG_LIBPQ" = "yes" -a "$PG_LIBPQ" = "yes"
+		then
+			AC_MSG_CHECKING(PostgreSQL in ${PG_HOME})
+			AC_MSG_RESULT(ok)
+		else
+			AC_MSG_CHECKING(PostgreSQL in ${PG_HOME})
+			AC_MSG_RESULT(failed)
+			LDFLAGS="$PGSQL_OLD_LDFLAGS"
+			CPPFLAGS="$PGSQL_OLD_CPPFLAGS"
+			AC_MSG_ERROR([you must specify a valid PostgreSQL installation with --with-pgsql=DIR])
+		fi
 
-# CFLAGS/CXXFLAGS may well contain unwanted settings, so clear them.
-CFLAGS=""
-CXXFLAGS=""
+		if test "$PG_SSL" = "yes"
+		then
+			CPPFLAGS="$CPPFLAGS -DSSL"
+		fi
+	fi
+])
+AC_SUBST(PG_CONFIG)
 
+################################################
+# Check for wxWidgets libraries and headers    #
+################################################
+AC_DEFUN([SETUP_WXWIDGETS],
+[
+	if test -n "${WX_HOME}"
+	then
+		LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
+		WX_OLD_LDFLAGS="$LDFLAGS"
+		WX_OLD_CPPFLAGS="$CPPFLAGS"
+	
+		if test "$BUILD_DEBUG" == yes
+		then
+			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION}`
+			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
+			
+			WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=yes --version=${WX_VERSION}`
+			WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION}`
+			LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+		else
+			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION}`
+			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
+		
+			WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=no --version=${WX_VERSION}`
+			WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=no --version=${WX_VERSION}`
+			LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+		fi
+
+		AC_MSG_CHECKING(wxWidgets in ${WX_HOME})
+		if test "$WX_NEW_CPPFLAGS" = "" -o "$WX_NEW_LIBS" = "" -o "$WX_NEW_CONTRIB_LIBS" = ""
+		then
+		    AC_MSG_RESULT(failed)
+			AC_MSG_ERROR([Your wxWidgets installation cannot support pgAdmin in the selected configuration. This may be because it was configured without the --enable-unicode option, or the combination of dynamic/static linking and debug/non-debug libraries selected did not match any installed wxWidgets libraries.])
+		else
+			AC_MSG_RESULT(ok)
+		fi
+
+		case "${host}" in
+			*-apple-darwin*)
+				CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
+				;;
+			*solaris*)
+				LDFLAGS="$LDFLAGS -lnsl"
+				;;
+			*)
+				;;
+		esac
+	fi
 ])
 AC_SUBST(WX_CONFIG)
+
+###########
+# Cleanup #
+###########
+AC_DEFUN([CLEANUP],
+[
+	# CFLAGS/CXXFLAGS may well contain unwanted settings, so clear them.
+	CFLAGS=""
+	CXXFLAGS=""
+])
+
+#########################
+# Configuration summary #
+#########################
+AC_DEFUN([SUMMARY],
+[
+	# Print a configuration summary
+	echo
+	echo "PostgreSQL directory:                $PG_HOME"
+	echo "PostgreSQL pg_config binary:         $PG_CONFIG"
+	echo "PostgreSQL version:                  $PG_VERSION"
+	echo
+	echo "wxWidgets directory:                 $WX_HOME"
+	echo "wxWidgets wx-config binary:          $WX_CONFIG"
+	echo "wxWidgets version:                   $WX_VERSION"
+	echo
+	if test "$BUILD_DEBUG" == yes
+	then
+		echo "Building a debug version of pgAdmin: Yes"
+	else
+		echo "Building a debug version of pgAdmin: No"
+	fi
+	if test "$BUILD_STATIC" == yes
+	then
+		echo "Statically linking pgAdmin:          Yes"
+	else
+		echo "Statically linking pgAdmin:          No"
+	fi
+	if test "$BUILD_APPBUNDLE" == yes
+	then
+		echo "Building a Mac OS X appbundle:       Yes"
+	else
+		echo "Building a Mac OS X appbundle:       No"
+	fi
+	echo
+])
