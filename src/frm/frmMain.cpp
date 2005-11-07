@@ -215,7 +215,7 @@ frmMain::frmMain(const wxString& title)
 
     new tipOfDayFactory(menuFactories, helpMenu, 0);
     helpMenu->AppendSeparator();
-    new onlineUpdateFactory(menuFactories, helpMenu, 0);
+    // new onlineUpdateFactory(menuFactories, helpMenu, 0);
     new bugReportFactory(menuFactories, helpMenu, 0);
     actionFactory *abFact=new aboutFactory(menuFactories, helpMenu, 0);
     
