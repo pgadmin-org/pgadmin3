@@ -33,7 +33,7 @@ extern wxString docPath;
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
     // Tip Of The Day
-    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, true); 
+    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, 1); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
     // Log. Try to get a vaguely usable default path.
@@ -278,7 +278,7 @@ wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
 // Tip of the Day
 //////////////////////////////////////////////////////////////////////////
 
-void sysSettings::SetShowTipOfTheDay(const bool newval)
+void sysSettings::SetShowTipOfTheDay(const int newval)
 {
     showTipOfTheDay = newval;
     Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);

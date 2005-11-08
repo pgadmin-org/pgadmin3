@@ -25,8 +25,8 @@ public:
     ~sysSettings();
 
     // Tip Of The Day
-    bool GetShowTipOfTheDay() const { return showTipOfTheDay; }
-    void SetShowTipOfTheDay(const bool newval);
+    int GetShowTipOfTheDay() const { return showTipOfTheDay; }
+    void SetShowTipOfTheDay(const int newval);
     int GetNextTipOfTheDay() const { return nextTipOfTheDay; }
     void SetNextTipOfTheDay(const int newval);
 
@@ -151,7 +151,7 @@ private:
     wxFont systemFont, sqlFont; 
 
     // Tip Of The Day
-    bool showTipOfTheDay;
+    int showTipOfTheDay;
     int nextTipOfTheDay;
 
     // Log
