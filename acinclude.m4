@@ -41,7 +41,13 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 		if test "$withval" != no
 		then
 			WX_HOME="$withval"
+                        if test ! -f "${WX_HOME}/bin/wx-config"
+                        then
+                                AC_MSG_ERROR([Could not find your wxWidgets installation in ${WX_HOME}])
+                        fi
+
 		fi
+		WX_CONFIG=${WX_HOME}/bin/wx-config
 	], 
 	[
 		WX_HOME=/usr/local/wx2
@@ -71,7 +77,13 @@ AC_DEFUN([LOCATE_POSTGRESQL],
 		if test "$withval" != no
 		then
 			PG_HOME="$withval"
+                        if test ! -f "${PG_HOME}/bin/pg_config"
+                        then
+                                AC_MSG_ERROR([Could not find your PostgreSQL installation in ${PG_HOME}])
+                        fi
+
 		fi
+		PG_CONFIG=${PG_HOME}/bin/pg_config
 	],
 	[
 		PG_HOME=/usr/local/pgsql
