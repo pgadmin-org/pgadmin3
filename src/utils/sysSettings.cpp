@@ -32,6 +32,25 @@ extern wxString docPath;
 
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
+    // Convert setting from pre-1.3
+#ifdef __WXMSW__
+    DWORD type=0;
+    HKEY hkey=0;
+    RegOpenKeyEx(HKEY_CURRENT_USER, wxT("Software\\") + GetAppName(), 0, KEY_READ, &hkey);
+    if (hkey)
+    {
+        RegQueryValueEx(hkey, wxT("ShowTipOfTheDay"), 0, &type, 0, 0);
+        if (type == REG_DWORD)
+        {
+            long value;
+            Read(wxT("ShowTipOfTheDay"), &value, 0L);
+
+            Write(wxT("ShowTipOfTheDay"), value != 0);
+        }
+        RegCloseKey(hkey);
+    }
+#endif
+
     // Tip Of The Day
     Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, true); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
