@@ -841,6 +841,8 @@ void dlgTypeProperty::AddType(const wxString &typ, const OID oid, const wxString
             case PGOID_TYPE_BIT_ARRAY:
             case PGOID_TYPE_CHAR:
             case PGOID_TYPE_CHAR_ARRAY:
+            case PGOID_TYPE_BPCHAR:
+            case PGOID_TYPE_BPCHAR_ARRAY:
             case PGOID_TYPE_VARCHAR:
             case PGOID_TYPE_VARCHAR_ARRAY:
                 vartyp=wxT("L");
