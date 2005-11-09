@@ -25,3 +25,4 @@ Translation
 Translation into your preferred language is easily possible even for 
 non-programmers. Please see http://www.pgadmin.org/translation.php for 
 further details.
+
