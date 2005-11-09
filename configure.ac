@@ -43,7 +43,6 @@ LOCATE_WXWIDGETS
 SETUP_WXWIDGETS
 
 CLEANUP
-SUMMARY
 
 AC_CONFIG_FILES([Makefile
 		 i18n/Makefile
@@ -62,3 +61,5 @@ AC_CONFIG_FILES([Makefile
 		 xtra/pgagent/Makefile
 		 xtra/pgagent/pgaevent/Makefile])
 AC_OUTPUT
+
+SUMMARY

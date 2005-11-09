@@ -338,7 +338,7 @@ AC_DEFUN([SUMMARY],
 	echo
 	echo "wxWidgets directory:                 $WX_HOME"
 	echo "wxWidgets wx-config binary:          $WX_CONFIG"
-	echo "wxWidgets version:                   $WX_VERSION"
+	echo "wxWidgets version:                   wxWidgets "`$WX_CONFIG --version --version=$WX_VERSION`
 	echo
 	if test "$BUILD_DEBUG" == yes
 	then
@@ -359,4 +359,8 @@ AC_DEFUN([SUMMARY],
 		echo "Building a Mac OS X appbundle:       No"
 	fi
 	echo
+
+	echo "pgAdmin configuration is now complete. You can now compile and"
+	echo "install pgAdmin using 'make; make install'."
+        echo
 ])
