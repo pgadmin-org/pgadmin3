@@ -34,6 +34,7 @@ class pgFunction : public pgSchemaObject
 {
 public:
     pgFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
+    pgFunction(pgSchema *newSchema, pgaFactory &factory, const wxString& newName = wxT(""));
     ~pgFunction();
 
 
