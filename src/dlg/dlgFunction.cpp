@@ -536,9 +536,9 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
                     {
                         int i=GetDirection(colName);
                         wxString dir=rdbDirection->GetString(i);
-                        colName = colName.Mid(dir.Length());
+                        colName = colName.Mid(dir.Length()+1);
 
-                        args += dir + qtIdent(colName) + wxT(" ");
+                        args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
                     }
                     else
                     {
