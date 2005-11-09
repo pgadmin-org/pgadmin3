@@ -380,6 +380,19 @@ void ctlSQLBox::OnFind(wxCommandEvent& ev)
 }
 
 
+void ctlSQLBox::OnReplace(wxCommandEvent& ev)
+{
+    if (!m_dlgFind)
+    {
+        m_dlgFind = new wxFindReplaceDialog(this, &m_findData, _("Find text"), wxFR_REPLACEDIALOG);
+
+        m_dlgFind->Show(true);
+    }
+    else
+        m_dlgFind->SetFocus();
+}
+
+
 void ctlSQLBox::OnFindDialog(wxFindDialogEvent& event)
 {
     wxEventType type = event.GetEventType();
@@ -420,10 +433,57 @@ void ctlSQLBox::OnFindDialog(wxFindDialogEvent& event)
                         wxICON_EXCLAMATION | wxOK, this);
         }
     }
-    else if (type == wxEVT_COMMAND_FIND_REPLACE || type == wxEVT_COMMAND_FIND_REPLACE_ALL)
+    else if (type == wxEVT_COMMAND_FIND_REPLACE)
     {
-        wxMessageBox(_("Not implemented"), _("Find text"),
-                     wxICON_EXCLAMATION | wxOK, this);
+        int flags = 0;
+        if (event.GetFlags() & wxFR_MATCHCASE)
+            flags |= wxSTC_FIND_MATCHCASE;
+
+        if (event.GetFlags() & wxFR_WHOLEWORD)
+            flags |= wxSTC_FIND_WHOLEWORD;
+
+        int startPos = GetSelectionStart();
+        int endPos = GetTextLength();
+
+        int pos = FindText(startPos, endPos, event.GetFindString().c_str(), flags);
+
+        if (pos >= 0)
+        {
+            SetSelectionStart(pos);
+            SetSelectionEnd(pos + event.GetFindString().Length());
+            ReplaceSelection(event.GetReplaceString().c_str());
+            EnsureCaretVisible();
+        }
+        else
+        {
+            wxMessageBox(_("Reached end of the document"), _("Replace text"),
+                        wxICON_EXCLAMATION | wxOK, this);
+        }
+    }
+    else if (type == wxEVT_COMMAND_FIND_REPLACE_ALL)
+    {
+        int flags = 0;
+        if (event.GetFlags() & wxFR_MATCHCASE)
+            flags |= wxSTC_FIND_MATCHCASE;
+
+        if (event.GetFlags() & wxFR_WHOLEWORD)
+            flags |= wxSTC_FIND_WHOLEWORD;
+
+        int initialPos = GetCurrentPos();
+        int startPos = 0;
+        int endPos = GetTextLength();
+
+        int pos = FindText(startPos, endPos, event.GetFindString().c_str(), flags);
+
+        while (pos >= 0)
+        {
+            SetSelectionStart(pos);
+            SetSelectionEnd(pos + event.GetFindString().Length());
+            ReplaceSelection(event.GetReplaceString().c_str());
+            pos = FindText(pos, endPos, event.GetFindString().c_str(), flags);
+        }
+
+        GotoPos(initialPos);
     }
     else if (type == wxEVT_COMMAND_FIND_CLOSE)
     {

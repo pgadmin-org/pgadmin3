@@ -62,6 +62,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_PASTE,             frmQuery::OnPaste)
     EVT_MENU(MNU_CLEAR,             frmQuery::OnClear)
     EVT_MENU(MNU_FIND,              frmQuery::OnFind)
+    EVT_MENU(MNU_REPLACE,           frmQuery::OnReplace)
     EVT_MENU(MNU_UNDO,              frmQuery::OnUndo)
     EVT_MENU(MNU_REDO,              frmQuery::OnRedo)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
@@ -125,6 +126,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->Append(MNU_CLEAR, _("C&lear window"), _("Clear edit window"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
     editMenu->Append(MNU_FIND, _("&Find\tCtrl-F"), _("Find text"), wxITEM_NORMAL);
+    editMenu->Append(MNU_REPLACE, _("&Replace\tCtrl-R"), _("Find and Replace text"), wxITEM_NORMAL);
     menuBar->Append(editMenu, _("&Edit"));
 
     queryMenu = new wxMenu();
@@ -156,16 +158,17 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     UpdateRecentFiles();
 
-    wxAcceleratorEntry entries[8];
+    wxAcceleratorEntry entries[9];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
     entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
     entries[2].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
     entries[3].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
-    entries[4].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
-    entries[5].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
-    entries[6].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
-    entries[7].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+    entries[4].Set(wxACCEL_CTRL,                (int)'R',      MNU_REPLACE);
+    entries[5].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
+    entries[6].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
+    entries[7].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
+    entries[8].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
     wxAcceleratorTable accel(8, entries);
     SetAcceleratorTable(accel);
@@ -631,6 +634,12 @@ void frmQuery::OnFind(wxCommandEvent& ev)
 {
       sqlQuery->OnFind(ev);
 }
+
+void frmQuery::OnReplace(wxCommandEvent& ev)
+{
+      sqlQuery->OnReplace(ev);
+}
+
 
 void frmQuery::OnUndo(wxCommandEvent& ev)
 {

@@ -42,6 +42,7 @@ enum
     MNU_PASTE,
     MNU_CLEAR,
     MNU_FIND,
+    MNU_REPLACE,
     MNU_UNDO,
     MNU_REDO,
     MNU_CANCEL,

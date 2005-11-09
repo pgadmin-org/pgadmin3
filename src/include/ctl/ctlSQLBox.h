@@ -34,6 +34,7 @@ public:
 
     void OnKeyDown(wxKeyEvent& event);
     void OnFind(wxCommandEvent& event);
+    void OnReplace(wxCommandEvent& event);
     void OnFindDialog(wxFindDialogEvent& event);
     
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
