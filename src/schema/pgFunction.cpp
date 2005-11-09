@@ -23,6 +23,13 @@ pgFunction::pgFunction(pgSchema *newSchema, const wxString& newName)
 {
 }
 
+
+pgFunction::pgFunction(pgSchema *newSchema, pgaFactory &factory, const wxString& newName)
+: pgSchemaObject(newSchema, factory, newName)
+{
+}
+
+
 pgFunction::~pgFunction()
 {
 }
@@ -42,12 +49,12 @@ pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName
 }
 
 pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newName)
-: pgFunction(newSchema, newName)
+: pgFunction(newSchema, triggerFunctionFactory, newName)
 {
 }
 
 pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
-: pgFunction(newSchema, newName)
+: pgFunction(newSchema, procedureFactory, newName)
 {
 }
 
