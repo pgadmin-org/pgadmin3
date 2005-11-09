@@ -1,0 +1,534 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE DATABASE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE CONVERSION"
+HREF="sql-createconversion.html"><LINK
+REL="NEXT"
+TITLE="CREATE DOMAIN"
+HREF="sql-createdomain.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createconversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createconversion.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createdomain.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createdomain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEDATABASE"
+></A
+>CREATE DATABASE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38908"
+></A
+><H2
+>Name</H2
+>CREATE DATABASE&nbsp;--&nbsp;create a new database</DIV
+><A
+NAME="AEN38911"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38913"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    [ [ WITH ] [ OWNER [=] <TT
+CLASS="REPLACEABLE"
+><I
+>dbowner</I
+></TT
+> ]
+           [ TEMPLATE [=] <TT
+CLASS="REPLACEABLE"
+><I
+>template</I
+></TT
+> ]
+           [ ENCODING [=] <TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+> ]
+           [ TABLESPACE [=] <TT
+CLASS="REPLACEABLE"
+><I
+>tablespace</I
+></TT
+> ] ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38920"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> creates a new
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+  </P
+><P
+>   To create a database, you must be a superuser or have the special
+   <TT
+CLASS="LITERAL"
+>CREATEDB</TT
+> privilege.
+   See <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+>.
+  </P
+><P
+>   Normally, the creator becomes the owner of the new database.
+   Superusers can create databases owned by other users using the
+   <TT
+CLASS="LITERAL"
+>OWNER</TT
+> clause. They can even create databases owned by
+   users with no special privileges. Non-superusers with <TT
+CLASS="LITERAL"
+>CREATEDB</TT
+>
+   privilege can only create databases owned by themselves.
+  </P
+><P
+>   By default, the new database will be created by cloning the standard
+   system database <TT
+CLASS="LITERAL"
+>template1</TT
+>.  A different template can be
+   specified by writing <TT
+CLASS="LITERAL"
+>TEMPLATE
+   <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></TT
+>.  In particular,
+   by writing <TT
+CLASS="LITERAL"
+>TEMPLATE template0</TT
+>, you can create a virgin
+   database containing only the standard objects predefined by your
+   version of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  This is useful
+   if you wish to avoid copying
+   any installation-local objects that may have been added to
+   <TT
+CLASS="LITERAL"
+>template1</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38938"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>        The name of a database to create.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbowner</I
+></TT
+></DT
+><DD
+><P
+>        The name of the database user who will own the new database,
+        or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> to use the default (namely, the
+        user executing the command).
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>template</I
+></TT
+></DT
+><DD
+><P
+>        The name of the template from which to create the new database,
+        or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> to use the default template
+        (<TT
+CLASS="LITERAL"
+>template1</TT
+>).
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+></DT
+><DD
+><P
+>        Character set encoding to use in the new database.  Specify
+        a string constant (e.g., <TT
+CLASS="LITERAL"
+>'SQL_ASCII'</TT
+>),
+        or an integer encoding number, or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+>
+        to use the default encoding. The character sets supported by the
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server are described in
+        <A
+HREF="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED"
+>Section 20.2.1</A
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>tablespace</I
+></TT
+></DT
+><DD
+><P
+>        The name of the tablespace that will be associated with the
+        new database, or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> to use the
+        template database's tablespace. This
+        tablespace will be the default tablespace used for objects
+        created in this database. See
+        <A
+HREF="sql-createtablespace.html"
+><I
+>CREATE TABLESPACE</I
+></A
+>
+        for more information.
+       </P
+></DD
+></DL
+></DIV
+><P
+>   Optional parameters can be written in any order, not only the order
+   illustrated above.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38976"
+></A
+><H2
+>Notes</H2
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> cannot be executed inside a transaction
+    block.
+   </P
+><P
+>    Errors along the line of <SPAN
+CLASS="QUOTE"
+>"could not initialize database directory"</SPAN
+>
+    are most likely related to insufficient permissions on the data
+    directory, a full disk, or other file system problems.
+   </P
+><P
+>    Use <A
+HREF="sql-dropdatabase.html"
+><I
+>DROP DATABASE</I
+></A
+> to remove a database.
+   </P
+><P
+>    The program <A
+HREF="app-createdb.html"
+><I
+><I
+>createdb</I
+></I
+></A
+> is a
+    wrapper program around this command, provided for convenience.
+   </P
+><P
+>   Although it is possible to copy a database other than <TT
+CLASS="LITERAL"
+>template1</TT
+>
+   by specifying its name as the template, this is not (yet) intended as
+   a general-purpose <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="COMMAND"
+>COPY DATABASE</TT
+>"</SPAN
+> facility.
+   We recommend that databases used as templates be treated as read-only.
+   See <A
+HREF="manage-ag-templatedbs.html"
+>Section 18.3</A
+> for more information.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38991"
+></A
+><H2
+>Examples</H2
+><P
+>   To create a new database:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DATABASE lusiadas;</PRE
+><P>
+  </P
+><P
+>   To create a database <TT
+CLASS="LITERAL"
+>sales</TT
+> owned by user <TT
+CLASS="LITERAL"
+>salesapp</TT
+>
+   with a default tablespace of <TT
+CLASS="LITERAL"
+>salesspace</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DATABASE sales OWNER salesapp TABLESPACE salesspace;</PRE
+><P>
+  </P
+><P
+>   To create a database <TT
+CLASS="LITERAL"
+>music</TT
+> which supports the ISO-8859-1 
+   character set:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DATABASE music ENCODING 'LATIN1';</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39003"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> statement in the SQL
+   standard.  Databases are equivalent to catalogs, whose creation is
+   implementation-defined.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createconversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createdomain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE CONVERSION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE DOMAIN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

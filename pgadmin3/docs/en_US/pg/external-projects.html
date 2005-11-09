@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>External Projects</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
+REL="PREVIOUS"
+TITLE="Style Guide"
+HREF="docguide-style.html"><LINK
+REL="NEXT"
+TITLE="Extensions"
+HREF="external-extensions.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="APPENDIX"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="docguide-style.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="docguide.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="biblio.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="external-extensions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="EXTERNAL-PROJECTS"
+></A
+>Appendix H. External Projects</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>H.1. <A
+HREF="external-projects.html#EXTERNAL-INTERFACES"
+>Externally Developed Interfaces</A
+></DT
+><DT
+>H.2. <A
+HREF="external-extensions.html"
+>Extensions</A
+></DT
+></DL
+></DIV
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is a complex software project,
+   and managing it is difficult. We have found that many
+   enhancements to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can be more
+   efficiently developed separately from the core project. Separate
+   projects can
+   have their own developer teams, email lists, bug tracking,
+   and release schedules. While their independence makes
+   development easier, it makes users' jobs harder. They have to hunt
+   around looking for database enhancements to meet their needs.
+   This section describes some of the more popular externally
+   developed enhancements and guides you on how to find them.
+  </P
+><P
+>   Many <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-related projects are
+   hosted at either
+   <SPAN
+CLASS="PRODUCTNAME"
+>GBorg</SPAN
+> at <A
+HREF="http://gborg.postgresql.org"
+TARGET="_top"
+>http://gborg.postgresql.org</A
+>
+   or <SPAN
+CLASS="PRODUCTNAME"
+>pgFoundry</SPAN
+> at <A
+HREF="http://pgfoundry.org"
+TARGET="_top"
+>http://pgfoundry.org</A
+>.
+   There are other
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-related projects that are hosted
+   elsewhere, but you will have to do an Internet search to find them.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="EXTERNAL-INTERFACES"
+>H.1. Externally Developed Interfaces</A
+></H1
+><A
+NAME="AEN74477"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> includes very few interfaces
+   with the base distribution. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is packaged because
+   it is the primary <SPAN
+CLASS="APPLICATION"
+>C</SPAN
+> interface and many other
+   interfaces are built on top of it. <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> is packaged
+   because it is tied to the server-side grammar so is very dependent
+   on the database version. All the other interfaces are independent
+   projects and must be installed separately.
+  </P
+><P
+>   Some of the more popular interfaces are:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>psqlODBC</DT
+><DD
+><P
+>       This is the most common interface for <SPAN
+CLASS="APPLICATION"
+>Windows</SPAN
+>
+       applications.
+      </P
+></DD
+><DT
+>pgjdbc</DT
+><DD
+><P
+>       A <SPAN
+CLASS="APPLICATION"
+>JDBC</SPAN
+> interface.
+      </P
+></DD
+><DT
+>Npgsql</DT
+><DD
+><P
+>       <SPAN
+CLASS="APPLICATION"
+>.Net</SPAN
+> interface for more recent
+       <SPAN
+CLASS="APPLICATION"
+>Windows</SPAN
+> applications.
+      </P
+></DD
+><DT
+>libpqxx</DT
+><DD
+><P
+>       A newer <SPAN
+CLASS="APPLICATION"
+>C++</SPAN
+> interface.
+      </P
+></DD
+><DT
+>libpq++</DT
+><DD
+><P
+>       An older <SPAN
+CLASS="APPLICATION"
+>C++</SPAN
+> interface.
+      </P
+></DD
+><DT
+>pgperl</DT
+><DD
+><P
+>       A <SPAN
+CLASS="APPLICATION"
+>Perl</SPAN
+> interface with an <ACRONYM
+CLASS="ACRONYM"
+>API</ACRONYM
+> similar
+       to <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>.
+      </P
+></DD
+><DT
+>DBD-Pg</DT
+><DD
+><P
+>       A <SPAN
+CLASS="APPLICATION"
+>Perl</SPAN
+> interface that uses the
+       <ACRONYM
+CLASS="ACRONYM"
+>DBD</ACRONYM
+>-standard <SPAN
+CLASS="APPLICATION"
+>API</SPAN
+>.
+      </P
+></DD
+><DT
+>pgtclng</DT
+><DD
+><P
+>       A newer version of the <SPAN
+CLASS="APPLICATION"
+>Tcl</SPAN
+> interface.
+      </P
+></DD
+><DT
+>pgtcl</DT
+><DD
+><P
+>       The original version of the <SPAN
+CLASS="APPLICATION"
+>Tcl</SPAN
+> interface.
+      </P
+></DD
+><DT
+>PyGreSQL</DT
+><DD
+><P
+>       A <SPAN
+CLASS="APPLICATION"
+>Python</SPAN
+> interface library.
+      </P
+></DD
+></DL
+></DIV
+><P>
+
+   All of these can be found at 
+   <SPAN
+CLASS="PRODUCTNAME"
+>GBorg</SPAN
+> (<A
+HREF="http://gborg.postgresql.org"
+TARGET="_top"
+>http://gborg.postgresql.org</A
+>)
+   or <SPAN
+CLASS="PRODUCTNAME"
+>pgFoundry</SPAN
+> (<A
+HREF="http://pgfoundry.org"
+TARGET="_top"
+>http://pgfoundry.org</A
+>).
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="docguide-style.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="external-extensions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Style Guide</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="appendixes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Extensions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

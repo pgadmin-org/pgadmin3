@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Multicolumn Indexes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="PREVIOUS"
+TITLE="Index Types"
+HREF="indexes-types.html"><LINK
+REL="NEXT"
+TITLE="Unique Indexes"
+HREF="indexes-unique.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 11. Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-unique.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-MULTICOLUMN"
+>11.3. Multicolumn Indexes</A
+></H1
+><A
+NAME="AEN14143"
+></A
+><P
+>   An index can be defined on more than one column.  For example, if
+   you have a table of this form:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test2 (
+  major int,
+  minor int,
+  name varchar
+);</PRE
+><P>
+   (say, you keep your <TT
+CLASS="FILENAME"
+>/dev</TT
+>
+   directory in a database...) and you frequently make queries like
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name FROM test2 WHERE major = <TT
+CLASS="REPLACEABLE"
+><I
+>constant</I
+></TT
+> AND minor = <TT
+CLASS="REPLACEABLE"
+><I
+>constant</I
+></TT
+>;</PRE
+><P>
+   then it may be appropriate to define an index on the columns
+   <TT
+CLASS="STRUCTFIELD"
+>major</TT
+> and
+   <TT
+CLASS="STRUCTFIELD"
+>minor</TT
+> together, e.g.,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE INDEX test2_mm_idx ON test2 (major, minor);</PRE
+><P>
+  </P
+><P
+>   Currently, only the B-tree and GiST implementations support multicolumn
+   indexes.  Up to 32 columns may be specified.  (This limit can be
+   altered when building <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>; see the
+   file <TT
+CLASS="FILENAME"
+>pg_config_manual.h</TT
+>.)
+  </P
+><P
+>   The query planner can use a multicolumn index for queries that
+   involve the leftmost column in the index definition plus any number
+   of columns listed to the right of it, without a gap.  For example,
+   an index on <TT
+CLASS="LITERAL"
+>(a, b, c)</TT
+> can be used in queries
+   involving all of <TT
+CLASS="LITERAL"
+>a</TT
+>, <TT
+CLASS="LITERAL"
+>b</TT
+>, and
+   <TT
+CLASS="LITERAL"
+>c</TT
+>, or in queries involving both
+   <TT
+CLASS="LITERAL"
+>a</TT
+> and <TT
+CLASS="LITERAL"
+>b</TT
+>, or in queries
+   involving only <TT
+CLASS="LITERAL"
+>a</TT
+>, but not in other combinations.
+   (In a query involving <TT
+CLASS="LITERAL"
+>a</TT
+> and <TT
+CLASS="LITERAL"
+>c</TT
+>
+   the planner could choose to use the index for
+   <TT
+CLASS="LITERAL"
+>a</TT
+>, while treating <TT
+CLASS="LITERAL"
+>c</TT
+> like an
+   ordinary unindexed column.)  Of course, each column must be used with
+   operators appropriate to the index type; clauses that involve other
+   operators will not be considered.
+  </P
+><P
+>   Multicolumn indexes can only be used if the clauses involving the
+   indexed columns are joined with <TT
+CLASS="LITERAL"
+>AND</TT
+>.  For instance,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name FROM test2 WHERE major = <TT
+CLASS="REPLACEABLE"
+><I
+>constant</I
+></TT
+> OR minor = <TT
+CLASS="REPLACEABLE"
+><I
+>constant</I
+></TT
+>;</PRE
+><P>
+   cannot make use of the index <TT
+CLASS="STRUCTNAME"
+>test2_mm_idx</TT
+>
+   defined above to look up both columns.  (It can be used to look up
+   only the <TT
+CLASS="STRUCTFIELD"
+>major</TT
+> column, however.)
+  </P
+><P
+>   Multicolumn indexes should be used sparingly.  Most of the time,
+   an index on a single column is sufficient and saves space and time.
+   Indexes with more than three columns are unlikely to be helpful
+   unless the usage of the table is extremely stylized.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-unique.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Index Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Unique Indexes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

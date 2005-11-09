@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Function Overloading</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL"
+HREF="extend.html"><LINK
+REL="PREVIOUS"
+TITLE="Query Language (SQL) Functions"
+HREF="xfunc-sql.html"><LINK
+REL="NEXT"
+TITLE="Function Volatility Categories"
+HREF="xfunc-volatility.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc-sql.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 31. Extending <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="extend.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-volatility.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XFUNC-OVERLOAD"
+>31.5. Function Overloading</A
+></H1
+><A
+NAME="AEN29609"
+></A
+><P
+>    More than one function may be defined with the same SQL name, so long
+    as the arguments they take are different.  In other words,
+    function names can be <I
+CLASS="FIRSTTERM"
+>overloaded</I
+>.  When a
+    query is executed, the server will determine which function to
+    call from the data types and the number of the provided arguments.
+    Overloading can also be used to simulate functions with a variable
+    number of arguments, up to a finite maximum number.
+   </P
+><P
+>    When creating a family of overloaded functions, one should be
+    careful not to create ambiguities.  For instance, given the
+    functions
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION test(int, real) RETURNS ...
+CREATE FUNCTION test(smallint, double precision) RETURNS ...</PRE
+><P>
+    it is not immediately clear which function would be called with
+    some trivial input like <TT
+CLASS="LITERAL"
+>test(1, 1.5)</TT
+>.  The
+    currently implemented resolution rules are described in
+    <A
+HREF="typeconv.html"
+>Chapter 10</A
+>, but it is unwise to design a system that subtly
+    relies on this behavior.
+   </P
+><P
+>    A function that takes a single argument of a composite type should
+    generally not have the same name as any attribute (field) of that type.
+    Recall that <TT
+CLASS="LITERAL"
+>attribute(table)</TT
+> is considered equivalent
+    to <TT
+CLASS="LITERAL"
+>table.attribute</TT
+>.  In the case that there is an
+    ambiguity between a function on a composite type and an attribute of
+    the composite type, the attribute will always be used.  It is possible
+    to override that choice by schema-qualifying the function name
+    (that is, <TT
+CLASS="LITERAL"
+>schema.func(table)</TT
+>) but it's better to
+    avoid the problem by not choosing conflicting names.
+   </P
+><P
+>    When overloading C-language functions, there is an additional
+    constraint: The C name of each function in the family of
+    overloaded functions must be different from the C names of all
+    other functions, either internal or dynamically loaded.  If this
+    rule is violated, the behavior is not portable.  You might get a
+    run-time linker error, or one of the functions will get called
+    (usually the internal one).  The alternative form of the
+    <TT
+CLASS="LITERAL"
+>AS</TT
+> clause for the SQL <TT
+CLASS="COMMAND"
+>CREATE
+    FUNCTION</TT
+> command decouples the SQL function name from
+    the function name in the C source code.  For instance,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION test(int) RETURNS int
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>', 'test_1arg'
+    LANGUAGE C;
+CREATE FUNCTION test(int, int) RETURNS int
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>', 'test_2arg'
+    LANGUAGE C;</PRE
+><P>
+    The names of the C functions here reflect one of many possible conventions.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc-sql.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-volatility.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Query Language (<ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>) Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="extend.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Function Volatility Categories</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

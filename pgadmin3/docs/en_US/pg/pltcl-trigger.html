@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Trigger Procedures in PL/Tcl</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/Tcl - Tcl Procedural Language"
+HREF="pltcl.html"><LINK
+REL="PREVIOUS"
+TITLE="Database Access from PL/Tcl"
+HREF="pltcl-dbaccess.html"><LINK
+REL="NEXT"
+TITLE="Modules and the unknown command"
+HREF="pltcl-unknown.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl-dbaccess.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 36. PL/Tcl - Tcl Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pltcl-unknown.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLTCL-TRIGGER"
+>36.6. Trigger Procedures in PL/Tcl</A
+></H1
+><A
+NAME="AEN33934"
+></A
+><P
+>     Trigger procedures can be written in PL/Tcl.
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> requires that a procedure that is to be called
+     as a trigger must be declared as a function with no arguments
+     and a return type of <TT
+CLASS="LITERAL"
+>trigger</TT
+>.
+    </P
+><P
+>     The information from the trigger manager is passed to the procedure body
+     in the following variables:
+
+     <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>$TG_name</TT
+></DT
+><DD
+><P
+>         The name of the trigger from the <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> statement.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$TG_relid</TT
+></DT
+><DD
+><P
+>         The object ID of the table that caused the trigger procedure
+         to be invoked.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$TG_relatts</TT
+></DT
+><DD
+><P
+>         A Tcl list of the table column names, prefixed with an empty list
+         element. So looking up a column name in the list with <SPAN
+CLASS="APPLICATION"
+>Tcl</SPAN
+>'s
+         <CODE
+CLASS="FUNCTION"
+>lsearch</CODE
+> command returns the element's number starting
+         with 1 for the first column, the same way the columns are customarily
+         numbered in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  (Empty list
+         elements also appear in the positions of columns that have been
+         dropped, so that the attribute numbering is correct for columns
+         to their right.)
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$TG_when</TT
+></DT
+><DD
+><P
+>         The string <TT
+CLASS="LITERAL"
+>BEFORE</TT
+> or <TT
+CLASS="LITERAL"
+>AFTER</TT
+> depending on the
+         type of trigger call.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$TG_level</TT
+></DT
+><DD
+><P
+>         The string <TT
+CLASS="LITERAL"
+>ROW</TT
+> or <TT
+CLASS="LITERAL"
+>STATEMENT</TT
+> depending on the
+         type of trigger call.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$TG_op</TT
+></DT
+><DD
+><P
+>         The string <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, or
+         <TT
+CLASS="LITERAL"
+>DELETE</TT
+> depending on the type of trigger call.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$NEW</TT
+></DT
+><DD
+><P
+>         An associative array containing the values of the new table
+         row for <TT
+CLASS="COMMAND"
+>INSERT</TT
+> or <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> actions, or
+         empty for <TT
+CLASS="COMMAND"
+>DELETE</TT
+>.  The array is indexed by column
+         name.  Columns that are null will not appear in the array.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$OLD</TT
+></DT
+><DD
+><P
+>         An associative array containing the values of the old table
+         row for <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> or <TT
+CLASS="COMMAND"
+>DELETE</TT
+> actions, or
+         empty for <TT
+CLASS="COMMAND"
+>INSERT</TT
+>.  The array is indexed by column
+         name.  Columns that are null will not appear in the array.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>$args</TT
+></DT
+><DD
+><P
+>         A Tcl list of the arguments to the procedure as given in the
+         <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> statement. These arguments are also accessible as
+         <TT
+CLASS="LITERAL"
+>$1</TT
+> ... <TT
+CLASS="LITERAL"
+>$<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></TT
+> in the procedure body.
+        </P
+></DD
+></DL
+></DIV
+><P>
+    </P
+><P
+>     The return value from a trigger procedure can be one of the strings
+     <TT
+CLASS="LITERAL"
+>OK</TT
+> or <TT
+CLASS="LITERAL"
+>SKIP</TT
+>, or a list as returned by the
+     <TT
+CLASS="LITERAL"
+>array get</TT
+> Tcl command. If the return value is <TT
+CLASS="LITERAL"
+>OK</TT
+>,
+     the operation (<TT
+CLASS="COMMAND"
+>INSERT</TT
+>/<TT
+CLASS="COMMAND"
+>UPDATE</TT
+>/<TT
+CLASS="COMMAND"
+>DELETE</TT
+>) that fired the trigger will proceed
+     normally. <TT
+CLASS="LITERAL"
+>SKIP</TT
+> tells the trigger manager to silently suppress
+     the operation for this row. If a list is returned, it tells PL/Tcl to
+     return a modified row to the trigger manager that will be inserted
+     instead of the one given in <TT
+CLASS="VARNAME"
+>$NEW</TT
+>.  (This works for <TT
+CLASS="COMMAND"
+>INSERT</TT
+> and <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>
+     only.) Needless to say that all this is only meaningful when the trigger
+     is <TT
+CLASS="LITERAL"
+>BEFORE</TT
+> and <TT
+CLASS="COMMAND"
+>FOR EACH ROW</TT
+>; otherwise the return value is ignored.
+    </P
+><P
+>     Here's a little example trigger procedure that forces an integer value
+     in a table to keep track of the number of updates that are performed on the
+     row. For new rows inserted, the value is initialized to 0 and then
+     incremented on every update operation.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION trigfunc_modcount() RETURNS trigger AS $$
+    switch $TG_op {
+        INSERT {
+            set NEW($1) 0
+        }
+        UPDATE {
+            set NEW($1) $OLD($1)
+            incr NEW($1)
+        }
+        default {
+            return OK
+        }
+    }
+    return [array get NEW]
+$$ LANGUAGE pltcl;
+
+CREATE TABLE mytab (num integer, description text, modcnt integer);
+
+CREATE TRIGGER trig_mytab_modcount BEFORE INSERT OR UPDATE ON mytab
+    FOR EACH ROW EXECUTE PROCEDURE trigfunc_modcount('modcnt');</PRE
+><P>
+
+     Notice that the trigger procedure itself does not know the column
+     name; that's supplied from the trigger arguments.  This lets the
+     trigger procedure be reused with different tables.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl-dbaccess.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pltcl-unknown.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Database Access from PL/Tcl</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Modules and the <CODE
+CLASS="FUNCTION"
+>unknown</CODE
+> command</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

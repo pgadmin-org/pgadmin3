@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>System Views</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_type"
+HREF="catalog-pg-type.html"><LINK
+REL="NEXT"
+TITLE="pg_indexes"
+HREF="view-pg-indexes.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-type.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-indexes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="VIEWS-OVERVIEW"
+>41.31. System Views</A
+></H1
+><P
+>   In addition to the system catalogs, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   provides a number of built-in views.  Some system views provide convenient
+   access to some commonly used queries on the system catalogs.  Other views
+   provide access to internal server state.
+  </P
+><P
+>   The information schema (<A
+HREF="information-schema.html"
+>Chapter 30</A
+>) provides
+   an alternative set of views which overlap the functionality of the system
+   views.  Since the information schema is SQL-standard whereas the views
+   described here are <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-specific,
+   it's usually better to use the information schema if it provides all
+   the information you need.
+  </P
+><P
+>   <A
+HREF="views-overview.html#VIEW-TABLE"
+>Table 41-31</A
+> lists the system views described here.
+   More detailed documentation of each view follows below.
+   There are some additional views that provide access to the results of
+   the statistics collector; they are described in <A
+HREF="monitoring-stats.html#MONITORING-STATS-VIEWS-TABLE"
+>Table 23-1</A
+>.
+  </P
+><P
+>   Except where noted, all the views described here are read-only.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="VIEW-TABLE"
+></A
+><P
+><B
+>Table 41-31. System Views</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><THEAD
+><TR
+><TH
+>View Name</TH
+><TH
+>Purpose</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><A
+HREF="view-pg-indexes.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_indexes</TT
+></A
+></TD
+><TD
+>indexes</TD
+></TR
+><TR
+><TD
+><A
+HREF="view-pg-locks.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_locks</TT
+></A
+></TD
+><TD
+>currently held locks</TD
+></TR
+><TR
+><TD
+><A
+HREF="view-pg-rules.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_rules</TT
+></A
+></TD
+><TD
+>rules</TD
+></TR
+><TR
+><TD
+><A
+HREF="view-pg-settings.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+></A
+></TD
+><TD
+>parameter settings</TD
+></TR
+><TR
+><TD
+><A
+HREF="view-pg-stats.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+></A
+></TD
+><TD
+>planner statistics</TD
+></TR
+><TR
+><TD
+><A
+HREF="view-pg-tables.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_tables</TT
+></A
+></TD
+><TD
+>tables</TD
+></TR
+><TR
+><TD
+><A
+HREF="view-pg-user.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_user</TT
+></A
+></TD
+><TD
+>database users</TD
+></TR
+><TR
+><TD
+><A
+HREF="view-pg-views.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_views</TT
+></A
+></TD
+><TD
+>views</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-type.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="view-pg-indexes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_indexes</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

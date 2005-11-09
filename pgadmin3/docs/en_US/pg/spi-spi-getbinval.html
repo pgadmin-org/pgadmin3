@@ -1,0 +1,311 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SPI_getbinval</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Support Functions"
+HREF="spi-interface-support.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_getvalue"
+HREF="spi-spi-getvalue.html"><LINK
+REL="NEXT"
+TITLE="SPI_gettype"
+HREF="spi-spi-gettype.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-getvalue.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-getvalue.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-gettype.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-gettype.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-GETBINVAL"
+></A
+>SPI_getbinval</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN35560"
+></A
+><H2
+>Name</H2
+>SPI_getbinval&nbsp;--&nbsp;return the binary value of the specified column</DIV
+><A
+NAME="AEN35563"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN35565"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>Datum SPI_getbinval(HeapTuple <TT
+CLASS="PARAMETER"
+>row</TT
+>, TupleDesc <TT
+CLASS="PARAMETER"
+>rowdesc</TT
+>, int <TT
+CLASS="PARAMETER"
+>colnumber</TT
+>, bool * <TT
+CLASS="PARAMETER"
+>isnull</TT
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35571"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_getbinval</CODE
+> returns the value of the
+   specified column in the internal form (as type <TT
+CLASS="TYPE"
+>Datum</TT
+>).
+  </P
+><P
+>   This function does not allocate new space for the datum.  In the
+   case of a pass-by-reference data type, the return value will be a
+   pointer into the passed row.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35577"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>HeapTuple <TT
+CLASS="PARAMETER"
+>row</TT
+></TT
+></DT
+><DD
+><P
+>      input row to be examined
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>TupleDesc <TT
+CLASS="PARAMETER"
+>rowdesc</TT
+></TT
+></DT
+><DD
+><P
+>      input row description
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>int <TT
+CLASS="PARAMETER"
+>colnumber</TT
+></TT
+></DT
+><DD
+><P
+>      column number (count starts at 1)
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>bool * <TT
+CLASS="PARAMETER"
+>isnull</TT
+></TT
+></DT
+><DD
+><P
+>      flag for a null value in the column
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35604"
+></A
+><H2
+>Return Value</H2
+><P
+>   The binary value of the column is returned.  The variable pointed
+   to by <TT
+CLASS="PARAMETER"
+>isnull</TT
+> is set to true if the column is
+   null, else to false.
+  </P
+><P
+>   <TT
+CLASS="VARNAME"
+>SPI_result</TT
+> is set to
+   <TT
+CLASS="SYMBOL"
+>SPI_ERROR_NOATTRIBUTE</TT
+> on error.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-getvalue.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-gettype.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_getvalue</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_gettype</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

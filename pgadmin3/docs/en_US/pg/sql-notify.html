@@ -1,0 +1,435 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>NOTIFY</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="MOVE"
+HREF="sql-move.html"><LINK
+REL="NEXT"
+TITLE="PREPARE"
+HREF="sql-prepare.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-move.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-move.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-prepare.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-NOTIFY"
+></A
+>NOTIFY</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43846"
+></A
+><H2
+>Name</H2
+>NOTIFY&nbsp;--&nbsp;generate a notification</DIV
+><A
+NAME="AEN43849"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43851"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>NOTIFY <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>        </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43854"
+></A
+><H2
+>Description</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> command sends a notification event to each
+   client application that has previously executed
+   <TT
+CLASS="COMMAND"
+>LISTEN <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></TT
+>
+   for the specified notification name in the current database.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> provides a simple form of signal or
+   interprocess communication mechanism for a collection of processes
+   accessing the same <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+   Higher-level mechanisms can be built by using tables in the database to
+   pass additional data (beyond a mere notification name) from notifier to
+   listener(s).
+  </P
+><P
+>   The information passed to the client for a notification event includes the notification
+   name and the notifying session's server process <ACRONYM
+CLASS="ACRONYM"
+>PID</ACRONYM
+>.  It is up to the
+   database designer to define the notification names that will be used in a given
+   database and what each one means.
+  </P
+><P
+>   Commonly, the notification name is the same as the name of some table in
+   the database, and the notify event essentially means, <SPAN
+CLASS="QUOTE"
+>"I changed this table,
+   take a look at it to see what's new"</SPAN
+>.  But no such association is enforced by
+   the <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> and <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> commands.  For
+   example, a database designer could use several different notification names
+   to signal different sorts of changes to a single table.
+  </P
+><P
+>   When <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> is used to signal the occurrence of changes
+   to a particular table, a useful programming technique is to put the
+   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> in a rule that is triggered by table updates.
+   In this way, notification happens automatically when the table is changed,
+   and the application programmer can't accidentally forget to do it.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> interacts with SQL transactions in some important
+   ways.  Firstly, if a <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> is executed inside a
+   transaction, the notify events are not delivered until and unless the
+   transaction is committed.  This is appropriate, since if the transaction
+   is aborted, all the commands within it have had no
+   effect, including <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>.  But it can be disconcerting if one
+   is expecting the notification events to be delivered immediately.  Secondly, if
+   a listening session receives a notification signal while it is within a transaction,
+   the notification event will not be delivered to its connected client until just
+   after the transaction is completed (either committed or aborted).  Again, the
+   reasoning is that if a notification were delivered within a transaction that was
+   later aborted, one would want the notification to be undone somehow &mdash;
+   but
+   the server cannot <SPAN
+CLASS="QUOTE"
+>"take back"</SPAN
+> a notification once it has sent it to the client.
+   So notification events are only delivered between transactions.  The upshot of this
+   is that applications using <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> for real-time signaling
+   should try to keep their transactions short.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> behaves like Unix signals in one important
+   respect: if the same notification name is signaled multiple times in quick
+   succession, recipients may get only one notification event for several executions
+   of <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>.  So it is a bad idea to depend on the number
+   of notifications received.  Instead, use <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> to wake up
+   applications that need to pay attention to something, and use a database
+   object (such as a sequence) to keep track of what happened or how many times
+   it happened.
+  </P
+><P
+>   It is common for a client that executes <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>
+   to be listening on the same notification name itself.  In that case
+   it will get back a notification event, just like all the other
+   listening sessions.  Depending on the application logic, this could
+   result in useless work, for example, reading a database table to
+   find the same updates that that session just wrote out.  It is
+   possible to avoid such extra work by noticing whether the notifying
+   session's server process <ACRONYM
+CLASS="ACRONYM"
+>PID</ACRONYM
+> (supplied in the
+   notification event message) is the same as one's own session's
+   <ACRONYM
+CLASS="ACRONYM"
+>PID</ACRONYM
+> (available from <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>).  When they
+   are the same, the notification event is one's own work bouncing
+   back, and can be ignored.  (Despite what was said in the preceding
+   paragraph, this is a safe technique.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> keeps self-notifications
+   separate from notifications arriving from other sessions, so you
+   cannot miss an outside notification by ignoring your own
+   notifications.)
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43888"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      Name of the notification to be signaled (any identifier).
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43896"
+></A
+><H2
+>Examples</H2
+><P
+>   Configure and execute a listen/notify sequence from
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>LISTEN virtual;
+NOTIFY virtual;
+Asynchronous notification "virtual" received from server process with PID 8448.</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43901"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> statement in the SQL
+   standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43905"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-listen.html"
+><I
+>LISTEN</I
+></A
+>, <A
+HREF="sql-unlisten.html"
+><I
+>UNLISTEN</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-move.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>MOVE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>PREPARE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

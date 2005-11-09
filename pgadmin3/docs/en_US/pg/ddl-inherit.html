@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Inheritance</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="PREVIOUS"
+TITLE="System Columns"
+HREF="ddl-system-columns.html"><LINK
+REL="NEXT"
+TITLE="Modifying Tables"
+HREF="ddl-alter.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl-system-columns.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Data Definition</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-alter.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DDL-INHERIT"
+>5.5. Inheritance</A
+></H1
+><P
+>   Let's create two tables. The capitals  table  contains
+   state  capitals  which  are also cities. Naturally, the
+   capitals table should inherit from cities.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE cities (
+    name            text,
+    population      float,
+    altitude        int     -- (in ft)
+);
+
+CREATE TABLE capitals (
+    state           char(2)
+) INHERITS (cities);</PRE
+><P>
+
+   In this case, a row of capitals <I
+CLASS="FIRSTTERM"
+>inherits</I
+> all
+   attributes (name, population, and altitude) from its parent, cities.  State
+   capitals have an extra attribute, state, that shows their state.  In
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, a table can inherit from zero or
+   more other tables, and a query can reference either all rows of a table or
+   all rows of a table plus all of its descendants.
+
+   </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The inheritance hierarchy is actually a directed acyclic graph.
+    </P
+></BLOCKQUOTE
+></DIV
+><P>
+  </P
+><P
+>    For example, the  following  query finds the  names  of  all  cities,
+    including  state capitals, that are located at an altitude 
+    over 500ft:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name, altitude
+    FROM cities
+    WHERE altitude &gt; 500;</PRE
+><P>
+
+   which returns:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>   name    | altitude
+-----------+----------
+ Las Vegas |     2174
+ Mariposa  |     1953
+ Madison   |      845</PRE
+><P>
+  </P
+><P
+>    On the other hand, the  following  query  finds
+    all  the cities that are not state capitals and
+    are situated at an altitude over 500ft:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name, altitude
+    FROM ONLY cities
+    WHERE altitude &gt; 500;
+
+   name    | altitude
+-----------+----------
+ Las Vegas |     2174
+ Mariposa  |     1953</PRE
+><P>         
+  </P
+><P
+>   Here the <SPAN
+CLASS="QUOTE"
+>"ONLY"</SPAN
+> before cities indicates that the query should
+   be  run over only cities and not tables below cities in the
+   inheritance hierarchy.  Many of the  commands  that  we
+   have  already discussed -- <TT
+CLASS="COMMAND"
+>SELECT</TT
+>,
+   <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> and <TT
+CLASS="COMMAND"
+>DELETE</TT
+> --
+   support this <SPAN
+CLASS="QUOTE"
+>"ONLY"</SPAN
+> notation.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Deprecated: </B
+>     In previous versions of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, the
+     default behavior was not to include child tables in queries. This was
+     found to be error prone and is also in violation of the SQL:1999
+     standard. Under the old syntax, to get the sub-tables you append
+     <TT
+CLASS="LITERAL"
+>*</TT
+> to the table name.
+     For example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * from cities*;</PRE
+><P>
+     You can still explicitly specify scanning child tables by appending
+     <TT
+CLASS="LITERAL"
+>*</TT
+>, as well as explicitly specify not scanning child tables by
+     writing <SPAN
+CLASS="QUOTE"
+>"ONLY"</SPAN
+>.  But beginning in version 7.1, the default
+     behavior for an undecorated table name is to scan its child tables
+     too, whereas before the default was not to do so.  To get the old
+     default behavior, set the configuration option
+     <TT
+CLASS="LITERAL"
+>SQL_Inheritance</TT
+> to off, e.g.,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET SQL_Inheritance TO OFF;</PRE
+><P>
+     or add a line in your <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>  In some cases you may wish to know which table a particular row
+  originated from. There is a system column called
+  <TT
+CLASS="STRUCTFIELD"
+>tableoid</TT
+> in each table which can tell you the
+  originating table:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT c.tableoid, c.name, c.altitude
+FROM cities c
+WHERE c.altitude &gt; 500;</PRE
+><P>
+
+   which returns:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+> tableoid |   name    | altitude
+----------+-----------+----------
+   139793 | Las Vegas |     2174
+   139793 | Mariposa  |     1953
+   139798 | Madison   |      845</PRE
+><P>
+
+   (If you try to reproduce this example, you will probably get
+   different numeric OIDs.)  By doing a join with
+   <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> you can see the actual table names:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT p.relname, c.name, c.altitude
+FROM cities c, pg_class p
+WHERE c.altitude &gt; 500 and c.tableoid = p.oid;</PRE
+><P>
+
+   which returns:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+> relname  |   name    | altitude
+----------+-----------+----------
+ cities   | Las Vegas |     2174
+ cities   | Mariposa  |     1953
+ capitals | Madison   |      845</PRE
+><P>
+   
+  </P
+><P
+>   A table can inherit from more than one parent table, in which case it has
+   the union of the columns defined by the parent tables (plus any columns
+   declared specifically for the child table).
+  </P
+><P
+>   A serious limitation of the inheritance feature is that indexes (including
+   unique constraints) and foreign key constraints only apply to single
+   tables, not to their inheritance children.  This is true on both the
+   referencing and referenced sides of a foreign key constraint.  Thus,
+   in the terms of the above example:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      If we declared <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.<TT
+CLASS="STRUCTFIELD"
+>name</TT
+> to be
+      <TT
+CLASS="LITERAL"
+>UNIQUE</TT
+> or a <TT
+CLASS="LITERAL"
+>PRIMARY KEY</TT
+>, this would not stop the
+      <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+> table from having rows with names duplicating
+      rows in <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.  And those duplicate rows would by
+      default show up in queries from <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.  In fact, by
+      default <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+> would have no unique constraint at all,
+      and so could contain multiple rows with the same name.
+      You could add a unique constraint to <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+>, but this
+      would not prevent duplication compared to <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.
+     </P
+></LI
+><LI
+><P
+>      Similarly, if we were to specify that
+      <TT
+CLASS="STRUCTNAME"
+>cities</TT
+>.<TT
+CLASS="STRUCTFIELD"
+>name</TT
+> <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+> some
+      other table, this constraint would not automatically propagate to
+      <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+>.  In this case you could work around it by
+      manually adding the same <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+> constraint to
+      <TT
+CLASS="STRUCTNAME"
+>capitals</TT
+>.
+     </P
+></LI
+><LI
+><P
+>      Specifying that another table's column <TT
+CLASS="LITERAL"
+>REFERENCES
+      cities(name)</TT
+> would allow the other table to contain city names, but
+      not capital names.  There is no good workaround for this case.
+     </P
+></LI
+></UL
+><P>
+
+   These deficiencies will probably be fixed in some future release,
+   but in the meantime considerable care is needed in deciding whether
+   inheritance is useful for your problem.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl-system-columns.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-alter.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>System Columns</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Modifying Tables</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

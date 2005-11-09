@@ -1,0 +1,751 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Bug Reporting Guidelines</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Preface"
+HREF="preface.html"><LINK
+REL="PREVIOUS"
+TITLE="Further Information"
+HREF="resources.html"><LINK
+REL="NEXT"
+TITLE="Tutorial"
+HREF="tutorial.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="resources.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="preface.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Preface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="preface.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="BUG-REPORTING"
+>Bug Reporting Guidelines</A
+></H1
+><P
+>  When you find a bug in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> we want to
+  hear about it. Your bug reports play an important part in making
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> more reliable because even the utmost
+  care cannot guarantee that every part of
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+  will work on every platform under every circumstance.
+ </P
+><P
+>  The following suggestions are intended to assist you in forming bug reports
+  that can be handled in an effective fashion. No one is required to follow
+  them but doing so tends to be to everyone's advantage.
+ </P
+><P
+>  We cannot promise to fix every bug right away. If the bug is obvious, critical,
+  or affects a lot of users, chances are good that someone will look into it. It
+  could also happen that we tell you to update to a newer version to see if the
+  bug happens there. Or we might decide that the bug
+  cannot be fixed before some major rewrite we might be planning is done. Or
+  perhaps it is simply too hard and there are more important things on the agenda.
+  If you need help immediately, consider obtaining a commercial support contract.
+ </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN265"
+>Identifying Bugs</A
+></H2
+><P
+>   Before you report a bug, please read and re-read the
+   documentation to verify that you can really do whatever it is you are
+   trying. If it is not clear from the documentation whether you can do
+   something or not, please report that too; it is a bug in the documentation.
+   If it turns out that a program does something different from what the
+   documentation says, that is a bug. That might include, but is not limited to,
+   the following circumstances:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      A program terminates with a fatal signal or an operating system
+      error message that would point to a problem in the program. (A
+      counterexample might be a <SPAN
+CLASS="QUOTE"
+>"disk full"</SPAN
+> message,
+      since you have to fix that yourself.)
+     </P
+></LI
+><LI
+><P
+>      A program produces the wrong output for any given input.
+     </P
+></LI
+><LI
+><P
+>      A program refuses to accept valid input (as defined in the documentation).
+     </P
+></LI
+><LI
+><P
+>      A program accepts invalid input without a notice or error message.
+      But keep in mind that your idea of invalid input might be our idea of
+      an extension or compatibility with traditional practice.
+     </P
+></LI
+><LI
+><P
+>      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> fails to compile, build, or
+      install according to the instructions on supported platforms.
+     </P
+></LI
+></UL
+><P>
+
+   Here <SPAN
+CLASS="QUOTE"
+>"program"</SPAN
+> refers to any executable, not only the backend server.
+  </P
+><P
+>   Being slow or resource-hogging is not necessarily a bug. Read the
+   documentation or ask on one of the mailing lists for help in tuning your
+   applications. Failing to comply to the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard is
+   not necessarily a bug either, unless compliance for the
+   specific feature is explicitly claimed.
+  </P
+><P
+>   Before you continue, check on the TODO list and in the FAQ to see if your bug is
+   already known. If you cannot decode the information on the TODO list, report your
+   problem. The least we can do is make the TODO list clearer.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN285"
+>What to report</A
+></H2
+><P
+>   The most important thing to remember about bug reporting is to state all
+   the facts and only facts. Do not speculate what you think went wrong, what
+   <SPAN
+CLASS="QUOTE"
+>"it seemed to do"</SPAN
+>, or which part of the program has a fault.
+   If you are not familiar with the implementation you would probably guess
+   wrong and not help us a bit. And even if you are, educated explanations are
+   a great supplement to but no substitute for facts. If we are going to fix
+   the bug we still have to see it happen for ourselves first.
+   Reporting the bare facts
+   is relatively straightforward (you can probably copy and paste them from the
+   screen) but all too often important details are left out because someone
+   thought it does not matter or the report would be understood
+   anyway.
+  </P
+><P
+>   The following items should be contained in every bug report:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      The exact sequence of steps <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>from program
+      start-up</I
+></SPAN
+> necessary to reproduce the problem. This
+      should be self-contained; it is not enough to send in a bare
+      <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement without the preceding
+      <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+> and <TT
+CLASS="COMMAND"
+>INSERT</TT
+>
+      statements, if the output should depend on the data in the
+      tables. We do not have the time to reverse-engineer your
+      database schema, and if we are supposed to make up our own data
+      we would probably miss the problem.
+     </P
+><P
+>      The best format for a test case for SQL-related problems is a
+      file that can be run through the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+      frontend that shows the problem. (Be sure to not have anything
+      in your <TT
+CLASS="FILENAME"
+>~/.psqlrc</TT
+> start-up file.)  An easy
+      start at this file is to use <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>
+      to dump out the table declarations and data needed to set the
+      scene, then add the problem query.  You are encouraged to
+      minimize the size of your example, but this is not absolutely
+      necessary.  If the bug is reproducible, we will find it either
+      way.
+     </P
+><P
+>      If your application uses some other client interface, such as <SPAN
+CLASS="APPLICATION"
+>PHP</SPAN
+>, then
+      please try to isolate the offending queries. We will probably not set up a
+      web server to reproduce your problem. In any case remember to provide
+      the exact input files; do not guess that the problem happens for
+      <SPAN
+CLASS="QUOTE"
+>"large files"</SPAN
+> or <SPAN
+CLASS="QUOTE"
+>"midsize databases"</SPAN
+>, etc. since this
+      information is too inexact to be of use.
+     </P
+></LI
+><LI
+><P
+>      The output you got. Please do not say that it <SPAN
+CLASS="QUOTE"
+>"didn't work"</SPAN
+> or
+      <SPAN
+CLASS="QUOTE"
+>"crashed"</SPAN
+>. If there is an error message,
+      show it, even if you do not understand it. If the program terminates with
+      an operating system error, say which. If nothing at all happens, say so.
+      Even if the result of your test case is a program crash or otherwise obvious
+      it might not happen on our platform. The easiest thing is to copy the output
+      from the terminal, if possible.
+     </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       If you are reporting an error message, please obtain the most verbose
+       form of the message.  In <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, say <TT
+CLASS="LITERAL"
+>\set
+       VERBOSITY verbose</TT
+> beforehand.  If you are extracting the message
+       from the server log, set the run-time parameter
+       <A
+HREF="runtime-config.html#GUC-LOG-ERROR-VERBOSITY"
+>log_error_verbosity</A
+> to <TT
+CLASS="LITERAL"
+>verbose</TT
+> so that all
+       details are logged.
+      </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       In case of fatal errors, the error message reported by the client might
+       not contain all the information available. Please also look at the
+       log output of the database server. If you do not keep your server's log
+       output, this would be a good time to start doing so.
+      </P
+></BLOCKQUOTE
+></DIV
+></LI
+><LI
+><P
+>      The output you expected is very important to state. If you just write
+      <SPAN
+CLASS="QUOTE"
+>"This command gives me that output."</SPAN
+> or <SPAN
+CLASS="QUOTE"
+>"This is not
+      what I expected."</SPAN
+>, we might run it ourselves, scan the output, and
+      think it looks OK and is exactly what we expected. We should not have to
+      spend the time to decode the exact semantics behind your commands.
+      Especially refrain from merely saying that <SPAN
+CLASS="QUOTE"
+>"This is not what SQL says/Oracle
+      does."</SPAN
+> Digging out the correct behavior from <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
+      is not a fun undertaking, nor do we all know how all the other relational
+      databases out there behave. (If your problem is a program crash, you can
+      obviously omit this item.)
+     </P
+></LI
+><LI
+><P
+>      Any command line options and other start-up options, including
+      any relevant environment variables or configuration files that
+      you changed from the default. Again, please provide exact
+      information. If you are using a prepackaged distribution that
+      starts the database server at boot time, you should try to find
+      out how that is done.
+     </P
+></LI
+><LI
+><P
+>      Anything you did at all differently from the installation
+      instructions.
+     </P
+></LI
+><LI
+><P
+>      The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> version. You can run the command
+      <TT
+CLASS="LITERAL"
+>SELECT version();</TT
+> to
+      find out the version of the server you are connected to.  Most executable
+      programs also support a <TT
+CLASS="OPTION"
+>--version</TT
+> option; at least
+      <TT
+CLASS="LITERAL"
+>postmaster --version</TT
+> and <TT
+CLASS="LITERAL"
+>psql --version</TT
+>
+      should work.
+      If the function or the options do not exist then your version is
+      more than old enough to warrant an upgrade.
+      If you run a prepackaged version, such as RPMs, say so, including any
+      subversion the package may have. If you are talking about a CVS
+      snapshot, mention that, including its date and time.
+     </P
+><P
+>      If your version is older than 8.0.4 we will almost certainly
+      tell you to upgrade. There are many bug fixes and improvements
+      in each new release, so it is quite possible that a bug you have
+      encountered in an older release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+      has already been fixed. We can only provide limited support for
+      sites using older releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>; if you
+      require more than we can provide, consider acquiring a
+      commercial support contract.
+     </P
+><P
+>     </P
+></LI
+><LI
+><P
+>      Platform information. This includes the kernel name and version,
+      C library, processor, memory information, and so on. In most
+      cases it is sufficient to report the vendor and version, but do
+      not assume everyone knows what exactly <SPAN
+CLASS="QUOTE"
+>"Debian"</SPAN
+>
+      contains or that everyone runs on Pentiums. If you have
+      installation problems then information about the toolchain on
+      your machine (compiler, <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+>, and so
+      on) is also necessary.
+     </P
+></LI
+></UL
+><P>
+
+   Do not be afraid if your bug report becomes rather lengthy. That is a fact of life.
+   It is better to report everything the first time than us having to squeeze the
+   facts out of you. On the other hand, if your input files are huge, it is
+   fair to ask first whether somebody is interested in looking into it.
+  </P
+><P
+>   Do not spend all your time to figure out which changes in the input make
+   the problem go away. This will probably not help solving it. If it turns
+   out that the bug cannot be fixed right away, you will still have time to
+   find and share your work-around. Also, once again, do not waste your time
+   guessing why the bug exists. We will find that out soon enough.
+  </P
+><P
+>   When writing a bug report, please avoid confusing terminology.
+   The software package in total is called <SPAN
+CLASS="QUOTE"
+>"PostgreSQL"</SPAN
+>,
+   sometimes <SPAN
+CLASS="QUOTE"
+>"Postgres"</SPAN
+> for short. If you
+   are specifically talking about the backend server, mention that, do not
+   just say <SPAN
+CLASS="QUOTE"
+>"PostgreSQL crashes"</SPAN
+>.  A crash of a single
+   backend server process is quite different from crash of the parent
+   <SPAN
+CLASS="QUOTE"
+>"postmaster"</SPAN
+> process; please don't say <SPAN
+CLASS="QUOTE"
+>"the postmaster
+   crashed"</SPAN
+> when you mean a single backend process went down, nor vice versa.
+   Also, client programs such as the interactive frontend <SPAN
+CLASS="QUOTE"
+>"<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>"</SPAN
+>
+   are completely separate from the backend.  Please try to be specific
+   about whether the problem is on the client or server side.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN351"
+>Where to report bugs</A
+></H2
+><P
+>   In general, send bug reports to the bug report mailing list at
+   <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:pgsql-bugs@postgresql.org"
+>pgsql-bugs@postgresql.org</A
+>&#62;</CODE
+>.
+   You are requested to use a descriptive subject for your email
+   message, perhaps parts of the error message.
+  </P
+><P
+> 
+   Another method is to fill in the bug report web-form available
+   at the project's web site
+   <A
+HREF="http://www.postgresql.org/"
+TARGET="_top"
+>http://www.postgresql.org/</A
+>.
+   Entering a bug report this way causes it to be mailed to the
+   <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:pgsql-bugs@postgresql.org"
+>pgsql-bugs@postgresql.org</A
+>&#62;</CODE
+> mailing list.
+  </P
+><P
+>   If your bug report has security implications and you'd prefer that it
+   not become immediately visible in public archives, don't send it to
+   <TT
+CLASS="LITERAL"
+>pgsql-bugs</TT
+>.  Security issues can be
+   reported privately to <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:security@postgresql.org"
+>security@postgresql.org</A
+>&#62;</CODE
+>.
+  </P
+><P
+> 
+   Do not send bug reports to any of the user mailing lists, such as
+   <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:pgsql-sql@postgresql.org"
+>pgsql-sql@postgresql.org</A
+>&#62;</CODE
+> or
+   <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:pgsql-general@postgresql.org"
+>pgsql-general@postgresql.org</A
+>&#62;</CODE
+>.
+   These mailing lists are for answering
+   user questions, and their subscribers normally do not wish to receive
+   bug reports. More importantly, they are unlikely to fix them.
+  </P
+><P
+>   Also, please do <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> send reports to
+   the developers' mailing list <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:pgsql-hackers@postgresql.org"
+>pgsql-hackers@postgresql.org</A
+>&#62;</CODE
+>.
+   This list is for discussing the
+   development of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, and it would be nice
+   if we could keep the bug reports separate. We might choose to take up a
+   discussion about your bug report on <TT
+CLASS="LITERAL"
+>pgsql-hackers</TT
+>,
+   if the problem needs more review.
+  </P
+><P
+>   If you have a problem with the documentation, the best place to report it
+   is the documentation mailing list <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:pgsql-docs@postgresql.org"
+>pgsql-docs@postgresql.org</A
+>&#62;</CODE
+>.
+   Please be specific about what part of the documentation you are unhappy
+   with.
+  </P
+><P
+>   If your bug is a portability problem on a non-supported platform,
+   send mail to <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:pgsql-ports@postgresql.org"
+>pgsql-ports@postgresql.org</A
+>&#62;</CODE
+>,
+   so we (and you) can work on
+   porting <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to your platform.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    Due to the unfortunate amount of spam going around, all of the above
+    email addresses are closed mailing lists. That is, you need to be
+    subscribed to a list to be allowed to post on it.  (You need not be
+    subscribed to use the bug-report web form, however.)
+    If you would like to send mail but do not want to receive list traffic,
+    you can subscribe and set your subscription option to <TT
+CLASS="LITERAL"
+>nomail</TT
+>.
+    For more information send mail to
+    <CODE
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:majordomo@postgresql.org"
+>majordomo@postgresql.org</A
+>&#62;</CODE
+>
+    with the single word <TT
+CLASS="LITERAL"
+>help</TT
+> in the body of the message.
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="resources.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Further Information</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="preface.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Tutorial</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

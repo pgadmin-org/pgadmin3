@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER GROUP</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER FUNCTION"
+HREF="sql-alterfunction.html"><LINK
+REL="NEXT"
+TITLE="ALTER INDEX"
+HREF="sql-alterindex.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterindex.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERGROUP"
+></A
+>ALTER GROUP</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36583"
+></A
+><H2
+>Name</H2
+>ALTER GROUP&nbsp;--&nbsp;change a user group</DIV
+><A
+NAME="AEN36586"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN36588"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> ADD USER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [, ... ]
+ALTER GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> DROP USER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [, ... ]
+
+ALTER GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> RENAME TO <TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36596"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER GROUP</TT
+> changes the attributes of a user group.
+  </P
+><P
+>   The first two variants add users to a group or remove them from a group.
+   Only database superusers can use this command.
+  </P
+><P
+>   The third variant changes the name of the group.  Only a database
+   superuser can rename groups.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36602"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+></DT
+><DD
+><P
+>      The name of the group to modify.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>      Users that are to be added to or removed from the group. The users
+      must already exist; <TT
+CLASS="COMMAND"
+>ALTER GROUP</TT
+> does not create or
+      drop users.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+></DT
+><DD
+><P
+>      The new name of the group.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36621"
+></A
+><H2
+>Examples</H2
+><P
+>   Add users to a group:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER GROUP staff ADD USER karl, john;</PRE
+><P>
+
+   Remove a user from a group:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER GROUP workers DROP USER beth;</PRE
+><P>
+
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36626"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>ALTER GROUP</TT
+> statement in the SQL
+   standard. The concept of roles is similar.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36630"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-creategroup.html"
+><I
+>CREATE GROUP</I
+></A
+>, <A
+HREF="sql-dropgroup.html"
+><I
+>DROP GROUP</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER FUNCTION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER INDEX</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

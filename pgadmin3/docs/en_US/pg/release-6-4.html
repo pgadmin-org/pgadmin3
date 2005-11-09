@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Release 6.4</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 6.4.1"
+HREF="release-6-4-1.html"><LINK
+REL="NEXT"
+TITLE="Release 6.3.2"
+HREF="release-6-3-2.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-6-4-1.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-6-3-2.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-6-4"
+>E.51. Release 6.4</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>1998-10-30</P
+></BLOCKQUOTE
+></DIV
+><P
+>There are <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>many</I
+></SPAN
+> new features and improvements in this release.
+Thanks to our developers and maintainers, nearly every aspect of the system
+has received some attention since the previous release.
+Here is a brief, incomplete summary:
+
+<P
+></P
+></P><UL
+><LI
+><P
+>Views and rules are now functional thanks to extensive new code in the 
+rewrite rules system from Jan Wieck. He also wrote a chapter on it
+for the <I
+CLASS="CITETITLE"
+>Programmer's Guide</I
+>.</P
+></LI
+><LI
+><P
+>Jan also contributed a second procedural language, <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>, to go with the
+original <SPAN
+CLASS="APPLICATION"
+>PL/pgTCL</SPAN
+> procedural language he contributed last release.</P
+></LI
+><LI
+><P
+>We have optional multiple-byte character set support from Tatsuo Ishii
+to complement our existing locale support.</P
+></LI
+><LI
+><P
+>Client/server communications has been cleaned up, with better support for
+asynchronous messages and interrupts thanks to Tom Lane.</P
+></LI
+><LI
+><P
+>The parser will now perform automatic type coercion to match arguments
+to available operators and functions, and to match columns and expressions
+with target columns. This uses a generic mechanism which supports
+the type extensibility features of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+There is a new chapter in the <I
+CLASS="CITETITLE"
+>User's Guide</I
+>
+which covers this topic.</P
+></LI
+><LI
+><P
+>Three new data types have been added. 
+Two types, <TT
+CLASS="TYPE"
+>inet</TT
+> and <TT
+CLASS="TYPE"
+>cidr</TT
+>, support various forms
+of IP network, subnet, and machine addressing. There is now an 8-byte integer
+type available on some platforms. See the chapter on data types
+in the <I
+CLASS="CITETITLE"
+>User's Guide</I
+> for details.
+A fourth type, <TT
+CLASS="TYPE"
+>serial</TT
+>, is now supported by the parser as an
+amalgam of the <TT
+CLASS="TYPE"
+>int4</TT
+> type, a sequence, and a unique index.</P
+></LI
+><LI
+><P
+>Several more <ACRONYM
+CLASS="ACRONYM"
+>SQL92</ACRONYM
+>-compatible syntax features have been
+added, including <TT
+CLASS="COMMAND"
+>INSERT DEFAULT VALUES</TT
+></P
+></LI
+><LI
+><P
+>The automatic configuration and installation system has received some
+attention, and should be more robust for more platforms than it has ever
+been.</P
+></LI
+></UL
+><P></P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN73234"
+>E.51.1. Migration to version 6.4</A
+></H2
+><P
+>A dump/restore using <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> 
+or <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+>
+is required for those wishing to migrate data from any
+previous release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN73240"
+>E.51.2. Changes</A
+></H2
+><P
+>     </P><PRE
+CLASS="PROGRAMLISTING"
+>Bug Fixes
+---------
+Fix for a tiny memory leak in PQsetdb/PQfinish(Bryan)
+Remove char2-16 data types, use char/varchar(Darren)
+Pqfn not handles a NOTICE message(Anders)
+Reduced busywaiting overhead for spinlocks with many backends (dg)
+Stuck spinlock detection (dg)
+Fix up "ISO-style" timespan decoding and encoding(Thomas)
+Fix problem with table drop after rollback of transaction(Vadim)
+Change error message and remove non-functional update message(Vadim)
+Fix for COPY array checking
+Fix for SELECT 1 UNION SELECT NULL
+Fix for buffer leaks in large object calls(Pascal)
+Change owner from oid to int4 type(Bruce)
+Fix a bug in the oracle compatibility functions btrim() ltrim() and rtrim()
+Fix for shared invalidation cache overflow(Massimo)
+Prevent file descriptor leaks in failed COPY's(Bruce)
+Fix memory leak in libpgtcl's pg_select(Constantin)
+Fix problems with username/passwords over 8 characters(Tom)
+Fix problems with handling of asynchronous NOTIFY in backend(Tom)
+Fix of many bad system table entries(Tom)
+
+Enhancements
+------------
+Upgrade ecpg and ecpglib,see src/interfaces/ecpc/ChangeLog(Michael)
+Show the index used in an EXPLAIN(Zeugswetter)
+EXPLAIN  invokes  rule system and shows plan(s) for rewritten queries(Jan)
+Multibyte awareness of many data types and functions, via configure(Tatsuo)
+New configure --with-mb option(Tatsuo)
+New initdb --pgencoding option(Tatsuo)
+New createdb -E multibyte option(Tatsuo)
+Select version(); now returns PostgreSQL version(Jeroen)
+libpq now allows asynchronous clients(Tom)
+Allow cancel from client of backend query(Tom)
+psql now cancels query with Control-C(Tom)
+libpq users need not issue dummy queries to get NOTIFY messages(Tom)
+NOTIFY now sends sender's PID, so you can tell whether it was your own(Tom)
+PGresult struct now includes associated error message, if any(Tom)
+Define "tz_hour" and "tz_minute" arguments to date_part()(Thomas)
+Add routines to convert between varchar and bpchar(Thomas)
+Add routines to allow sizing of varchar and bpchar into target columns(Thomas)
+Add bit flags to support timezonehour and minute in data retrieval(Thomas)
+Allow more variations on valid floating point numbers (e.g. ".1", "1e6")(Thomas)
+Fixes for unary minus parsing with leading spaces(Thomas)
+Implement TIMEZONE_HOUR, TIMEZONE_MINUTE per SQL92 specs(Thomas)
+Check for and properly ignore FOREIGN KEY column constraints(Thomas)
+Define USER as synonym for CURRENT_USER per SQL92 specs(Thomas)
+Enable HAVING clause but no fixes elsewhere yet.
+Make "char" type a synonym for "char(1)" (actually implemented as bpchar)(Thomas)
+Save string type if specified for DEFAULT clause handling(Thomas)
+Coerce operations involving different data types(Thomas)
+Allow some index use for columns of different types(Thomas)
+Add capabilities for automatic type conversion(Thomas)
+Cleanups for large objects, so file is truncated on open(Peter)
+Readline cleanups(Tom)
+Allow psql  \f \ to make spaces as delimiter(Bruce)
+Pass pg_attribute.atttypmod to the frontend for column field lengths(Tom,Bruce)
+Msql compatibility library in /contrib(Aldrin)
+Remove the requirement that ORDER/GROUP BY clause identifiers be 
+included in the target list(David)
+Convert columns to match columns in UNION clauses(Thomas)
+Remove fork()/exec() and only do fork()(Bruce)
+Jdbc cleanups(Peter)
+Show backend status on ps command line(only works on some platforms)(Bruce)
+Pg_hba.conf now has a sameuser option in the database field
+Make lo_unlink take oid param, not int4
+New DISABLE_COMPLEX_MACRO for compilers that can't handle our macros(Bruce)
+Libpgtcl now handles NOTIFY as a Tcl event, need not send dummy queries(Tom)
+libpgtcl cleanups(Tom)
+Add -error option to libpgtcl's pg_result command(Tom)
+New locale patch, see docs/README/locale(Oleg)
+Fix for pg_dump so CONSTRAINT and CHECK syntax is correct(ccb)
+New contrib/lo code for large object orphan removal(Peter)
+New psql command "SET CLIENT_ENCODING TO 'encoding'" for multibytes
+feature, see /doc/README.mb(Tatsuo)
+contrib/noupdate code to revoke update permission on a column
+libpq can now be compiled on Windows(Magnus)
+Add PQsetdbLogin() in libpq
+New 8-byte integer type, checked by configure for OS support(Thomas)
+Better support for quoted table/column names(Thomas)
+Surround table and column names with double-quotes in pg_dump(Thomas)
+PQreset() now works with passwords(Tom)
+Handle case of GROUP BY target list column number out of range(David)
+Allow UNION in subselects
+Add auto-size to screen to \d? commands(Bruce)
+Use UNION to show all \d? results in one query(Bruce)
+Add \d? field search feature(Bruce)
+Pg_dump issues fewer \connect requests(Tom)
+Make pg_dump -z flag work better, document it in manual page(Tom)
+Add HAVING clause with full support for subselects and unions(Stephan)
+Full text indexing routines in contrib/fulltextindex(Maarten)
+Transaction ids now stored in shared memory(Vadim)
+New PGCLIENTENCODING when issuing COPY command(Tatsuo)
+Support for SQL92 syntax "SET NAMES"(Tatsuo)
+Support for LATIN2-5(Tatsuo)
+Add UNICODE regression test case(Tatsuo)
+Lock manager cleanup, new locking modes for LLL(Vadim)
+Allow index use with OR clauses(Bruce)
+Allows "SELECT NULL ORDER BY 1;"
+Explain VERBOSE prints the plan, and now pretty-prints the plan to
+the postmaster log file(Bruce)
+Add indexes display to \d command(Bruce)
+Allow GROUP BY on functions(David)
+New pg_class.relkind for large objects(Bruce)
+New way to send libpq NOTICE messages to a different location(Tom)
+New \w write command to psql(Bruce)
+New /contrib/findoidjoins scans oid columns to find join relationships(Bruce)
+Allow binary-compatible indexes to be considered when checking for valid
+Indexes for restriction clauses containing a constant(Thomas)
+New ISBN/ISSN code in /contrib/isbn_issn
+Allow NOT LIKE, IN, NOT IN, BETWEEN, and NOT BETWEEN constraint(Thomas)
+New rewrite system fixes many problems with rules and views(Jan)
+        * Rules on relations work
+        * Event qualifications on insert/update/delete work
+        * New OLD variable to reference CURRENT, CURRENT will be remove in future
+        * Update rules can reference NEW and OLD in rule qualifications/actions
+        * Insert/update/delete rules on views work
+        * Multiple rule actions are now supported, surrounded by parentheses
+        * Regular users can create views/rules on tables they have RULE permits
+        * Rules and views inherit the privileges of the creator
+        * No rules at the column level
+        * No UPDATE NEW/OLD rules
+        * New pg_tables, pg_indexes, pg_rules and pg_views system views
+        * Only a single action on SELECT rules
+        * Total rewrite overhaul, perhaps for 6.5
+        * handle subselects
+        * handle aggregates on views
+        * handle insert into select from view works
+System indexes are now multikey(Bruce)
+Oidint2, oidint4, and oidname types are removed(Bruce)
+Use system cache for more system table lookups(Bruce)
+New backend programming language PL/pgSQL in backend/pl(Jan)
+New SERIAL data type, auto-creates sequence/index(Thomas)
+Enable assert checking without a recompile(Massimo)
+User lock enhancements(Massimo)
+New setval() command to set sequence value(Massimo)
+Auto-remove unix socket file on start-up if no postmaster running(Massimo)
+Conditional trace package(Massimo)
+New UNLISTEN command(Massimo)
+psql and libpq now compile under Windows using win32.mak(Magnus)
+Lo_read no longer stores trailing NULL(Bruce)
+Identifiers are now truncated to 31 characters internally(Bruce)
+Createuser options now availble on the command line
+Code for 64-bit integer supported added, configure tested, int8 type(Thomas)
+Prevent file descriptor leaf from failed COPY(Bruce)
+New pg_upgrade command(Bruce)
+Updated /contrib directories(Massimo)
+New CREATE TABLE DEFAULT VALUES statement available(Thomas)
+New INSERT INTO TABLE DEFAULT VALUES statement available(Thomas)
+New DECLARE and FETCH feature(Thomas)
+libpq's internal structures now not exported(Tom)
+Allow up to 8 key indexes(Bruce)
+Remove ARCHIVE key word, that is no longer used(Thomas)
+pg_dump -n flag to supress quotes around indentifiers
+disable system columns for views(Jan)
+new INET and CIDR types for network addresses(TomH, Paul)
+no more double quotes in psql output
+pg_dump now dumps views(Terry)
+new SET QUERY_LIMIT(Tatsuo,Jan)
+
+Source Tree Changes
+-------------------
+/contrib cleanup(Jun)
+Inline some small functions called for every row(Bruce)
+Alpha/linux fixes
+HP-UX cleanups(Tom)
+Multibyte regression tests(Soonmyung.)
+Remove --disabled options from configure
+Define PGDOC to use POSTGRESDIR by default
+Make regression optional
+Remove extra braces code to pgindent(Bruce)
+Add bsdi shared library support(Bruce)
+New --without-CXX support configure option(Brook)
+New FAQ_CVS
+Update backend flowchart in tools/backend(Bruce)
+Change atttypmod from int16 to int32(Bruce, Tom)
+Getrusage() fix for platforms that do not have it(Tom)
+Add PQconnectdb, PGUSER, PGPASSWORD to libpq man page
+NS32K platform fixes(Phil Nelson, John Buller)
+SCO 7/UnixWare 2.x fixes(Billy,others)
+Sparc/Solaris 2.5 fixes(Ryan)
+Pgbuiltin.3 is obsolete, move to doc files(Thomas)
+Even more documention(Thomas)
+Nextstep support(Jacek)
+Aix support(David)
+pginterface manual page(Bruce)
+shared libraries all have version numbers
+merged all OS-specific shared library defines into one file
+smarter TCL/TK configuration checking(Billy)
+smarter perl configuration(Brook)
+configure uses supplied install-sh if no install script found(Tom)
+new Makefile.shlib for shared library configuration(Tom)</PRE
+><P></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-6-4-1.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-6-3-2.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 6.4.1</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 6.3.2</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

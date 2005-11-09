@@ -1,0 +1,485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_database</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_conversion"
+HREF="catalog-pg-conversion.html"><LINK
+REL="NEXT"
+TITLE="pg_depend"
+HREF="catalog-pg-depend.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-conversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-depend.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-DATABASE"
+>41.12. <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></A
+></H1
+><A
+NAME="AEN53085"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+> stores information
+   about the available databases.  Databases are created with the
+   <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> command.  Consult
+   <A
+HREF="managing-databases.html"
+>Chapter 18</A
+> for details about the meaning of some of the
+   parameters.
+  </P
+><P
+>   Unlike most system catalogs, <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+>
+   is shared across all databases of a cluster: there is only one
+   copy of <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+> per cluster, not
+   one per database.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN53094"
+></A
+><P
+><B
+>Table 41-12. <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Database name</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datdba</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</TT
+></TD
+><TD
+>Owner of the database, usually the user who created it</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>encoding</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Character encoding for this database</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datistemplate</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       If true then this database can be used in the
+       <TT
+CLASS="LITERAL"
+>TEMPLATE</TT
+> clause of <TT
+CLASS="COMMAND"
+>CREATE
+       DATABASE</TT
+> to create a new database as a clone of
+       this one.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datallowconn</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       If false then no one can connect to this database.  This is
+       used to protect the <TT
+CLASS="LITERAL"
+>template0</TT
+> database from being altered.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datlastsysoid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Last system OID in the database; useful
+       particularly to <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datvacuumxid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>xid</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       All rows inserted or deleted by transaction IDs before this one
+       have been marked as known committed or known aborted in this database.
+       This is used to determine when commit-log space can be recycled.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datfrozenxid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>xid</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       All rows inserted by transaction IDs before this one have been
+       relabeled with a permanent (<SPAN
+CLASS="QUOTE"
+>"frozen"</SPAN
+>) transaction ID in this
+       database.  This is useful to check whether a database must be vacuumed
+       soon to avoid transaction ID wrap-around problems.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>dattablespace</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-tablespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_tablespace</TT
+></A
+>.oid</TT
+></TD
+><TD
+>       The default tablespace for the database.
+       Within this database, all tables for which
+       <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+>.<TT
+CLASS="STRUCTFIELD"
+>reltablespace</TT
+> is zero
+       will be stored in this tablespace; in particular, all the non-shared
+       system catalogs will be there.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datconfig</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Session defaults for run-time configuration variables</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>datacl</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>aclitem[]</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Access privileges; see
+       <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> and
+       <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+>
+       for details.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-conversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-depend.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

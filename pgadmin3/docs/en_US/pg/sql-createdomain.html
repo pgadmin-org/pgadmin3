@@ -1,0 +1,470 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE DOMAIN</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE DATABASE"
+HREF="sql-createdatabase.html"><LINK
+REL="NEXT"
+TITLE="CREATE FUNCTION"
+HREF="sql-createfunction.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createdatabase.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEDOMAIN"
+></A
+>CREATE DOMAIN</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39011"
+></A
+><H2
+>Name</H2
+>CREATE DOMAIN&nbsp;--&nbsp;define a new domain</DIV
+><A
+NAME="AEN39014"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39016"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE DOMAIN <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [AS] <TT
+CLASS="REPLACEABLE"
+><I
+>data_type</I
+></TT
+>
+    [ DEFAULT <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> ]
+    [ <TT
+CLASS="REPLACEABLE"
+><I
+>constraint</I
+></TT
+> [ ... ] ]
+
+where <TT
+CLASS="REPLACEABLE"
+><I
+>constraint</I
+></TT
+> is:
+
+[ CONSTRAINT <TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+> ]
+{ NOT NULL | NULL | CHECK (<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>) }</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39025"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE DOMAIN</TT
+> creates a new data domain.  The
+   user who defines a domain becomes its owner.
+  </P
+><P
+>   If a schema name is given (for example, <TT
+CLASS="LITERAL"
+>CREATE DOMAIN
+   myschema.mydomain ...</TT
+>) then the domain is created in the
+   specified schema.  Otherwise it is created in the current schema.
+   The domain name must be unique among the types and domains existing
+   in its schema.
+  </P
+><P
+>   Domains are useful for abstracting common fields between tables into
+   a single location for maintenance.  For example, an email address column may be used
+   in several tables, all with the same properties.  Define a domain and
+   use that rather than setting up each table's constraints individually.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39032"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>        The name (optionally schema-qualified) of a domain to be created.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>data_type</I
+></TT
+></DT
+><DD
+><P
+>        The underlying data type of the domain. This may include array
+        specifiers.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DEFAULT <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        The <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> clause specifies a default value for
+        columns of the domain data type.  The value is any
+        variable-free expression (but subqueries are not allowed).
+        The data type of the default expression must match the data
+        type of the domain.  If no default value is specified, then
+        the default value is the null value.
+       </P
+><P
+>        The default expression will be used in any insert operation
+        that does not specify a value for the column.  If a default
+        value is defined for a particular column, it overrides any
+        default associated with the domain.  In turn, the domain
+        default overrides any default value associated with the
+        underlying data type.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CONSTRAINT <TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        An optional name for a constraint.  If not specified,
+        the system generates a name.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NOT NULL</TT
+></DT
+><DD
+><P
+>        Values of this domain are not allowed to be null.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NULL</TT
+></DT
+><DD
+><P
+>        Values of this domain are allowed to be null.  This is the default.
+       </P
+><P
+>        This clause is only intended for compatibility with
+        nonstandard SQL databases.  Its use is discouraged in new
+        applications.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CHECK (<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</TT
+></DT
+><DD
+><P
+>      <TT
+CLASS="LITERAL"
+>CHECK</TT
+> clauses specify integrity constraints or tests
+      which values of the domain must satisfy.
+      Each constraint must be an expression
+      producing a Boolean result.  It should use the name <TT
+CLASS="LITERAL"
+>VALUE</TT
+>
+      to refer to the value being tested.
+     </P
+><P
+>      Currently, <TT
+CLASS="LITERAL"
+>CHECK</TT
+> expressions cannot contain
+      subqueries nor refer to variables other than <TT
+CLASS="LITERAL"
+>VALUE</TT
+>.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39081"
+></A
+><H2
+>Examples</H2
+><P
+>   This example creates the <TT
+CLASS="TYPE"
+>us_postal_code</TT
+> data type and
+   then uses the type in a table definition.  A regular expression test
+   is used to verify that the value looks like a valid US postal code.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DOMAIN us_postal_code AS TEXT
+CHECK(
+   VALUE ~ '^\\d{5}$'
+OR VALUE ~ '^\\d{5}-\\d{4}$'
+);
+
+CREATE TABLE us_snail_addy (
+  address_id SERIAL NOT NULL PRIMARY KEY
+, street1 TEXT NOT NULL
+, street2 TEXT
+, street3 TEXT
+, city TEXT NOT NULL
+, postal us_postal_code NOT NULL
+);</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEDOMAIN-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The command <TT
+CLASS="COMMAND"
+>CREATE DOMAIN</TT
+> conforms to the SQL
+   standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEDOMAIN-SEE-ALSO"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alterdomain.html"
+><I
+>ALTER DOMAIN</I
+></A
+>, <A
+HREF="sql-dropdomain.html"
+><I
+>DROP DOMAIN</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE DATABASE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE FUNCTION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

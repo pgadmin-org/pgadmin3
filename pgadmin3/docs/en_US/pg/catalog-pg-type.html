@@ -1,0 +1,1075 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_type</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_trigger"
+HREF="catalog-pg-trigger.html"><LINK
+REL="NEXT"
+TITLE="System Views"
+HREF="views-overview.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-trigger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="views-overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-TYPE"
+>41.30. <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+></H1
+><A
+NAME="AEN54695"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+> stores information about data
+   types.  Base types (scalar types) are created with
+   <A
+HREF="sql-createtype.html"
+><I
+>CREATE TYPE</I
+></A
+>, and
+   domains with
+   <A
+HREF="sql-createdomain.html"
+><I
+>CREATE DOMAIN</I
+></A
+>.
+   A composite type is automatically created for each table in the database, to
+   represent the row structure of the table.  It is also possible to create
+   composite types with <TT
+CLASS="COMMAND"
+>CREATE TYPE AS</TT
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN54702"
+></A
+><P
+><B
+>Table 41-30. <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typname</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Data type name</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typnamespace</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</TT
+></TD
+><TD
+>       The OID of the namespace that contains this type
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typowner</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</TT
+></TD
+><TD
+>Owner of the type</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       For a fixed-size type, <TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+> is the number
+       of bytes in the internal representation of the type.  But for a
+       variable-length type, <TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+> is negative.
+       -1 indicates a <SPAN
+CLASS="QUOTE"
+>"varlena"</SPAN
+> type (one that has a length word),
+       -2 indicates a null-terminated C string.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typbyval</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       <TT
+CLASS="STRUCTFIELD"
+>typbyval</TT
+> determines whether internal
+       routines pass a value of this type by value or by reference.
+       <TT
+CLASS="STRUCTFIELD"
+>typbyval</TT
+> had better be false if
+       <TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+> is not 1, 2, or 4 (or 8 on machines
+       where Datum is 8 bytes).
+       Variable-length types are always passed by reference. Note that
+       <TT
+CLASS="STRUCTFIELD"
+>typbyval</TT
+> can be false even if the
+       length would allow pass-by-value; this is currently true for
+       type <TT
+CLASS="TYPE"
+>float4</TT
+>, for example.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typtype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       <TT
+CLASS="STRUCTFIELD"
+>typtype</TT
+> is <TT
+CLASS="LITERAL"
+>b</TT
+> for
+       a base type, <TT
+CLASS="LITERAL"
+>c</TT
+> for a composite type (e.g., a
+       table's row type), <TT
+CLASS="LITERAL"
+>d</TT
+> for a domain, or
+       <TT
+CLASS="LITERAL"
+>p</TT
+> for a pseudo-type.  See also
+       <TT
+CLASS="STRUCTFIELD"
+>typrelid</TT
+> and
+       <TT
+CLASS="STRUCTFIELD"
+>typbasetype</TT
+>.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typisdefined</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       True if the type is defined, false if this is a placeholder
+       entry for a not-yet-defined type.  When
+       <TT
+CLASS="STRUCTFIELD"
+>typisdefined</TT
+> is false, nothing
+       except the type name, namespace, and OID can be relied on.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typdelim</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Character that separates two values of this type when parsing
+      array input.  Note that the delimiter is associated with the array
+      element data type, not the array data type.</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typrelid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</TT
+></TD
+><TD
+>       If this is a composite type (see
+       <TT
+CLASS="STRUCTFIELD"
+>typtype</TT
+>), then this column points to
+       the <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> entry that defines the
+       corresponding table.  (For a free-standing composite type, the
+       <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> entry doesn't really represent
+       a table, but it is needed anyway for the type's
+       <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> entries to link to.)
+       Zero for non-composite types.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</TT
+></TD
+><TD
+>       If <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+> is not 0 then it
+       identifies another row in <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+>.
+       The current type can then be subscripted like an array yielding
+       values of type <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+>.  A
+       <SPAN
+CLASS="QUOTE"
+>"true"</SPAN
+> array type is variable length
+       (<TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+> = -1),
+       but some fixed-length (<TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+> &gt; 0) types
+       also have nonzero <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+>, for example
+       <TT
+CLASS="TYPE"
+>name</TT
+> and <TT
+CLASS="TYPE"
+>oidvector</TT
+>.
+       If a fixed-length type has a <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+> then
+       its internal representation must be some number of values of the
+       <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+> data type with no other data.
+       Variable-length array types have a header defined by the array
+       subroutines.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typinput</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</TT
+></TD
+><TD
+>Input conversion function (text format)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typoutput</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</TT
+></TD
+><TD
+>Output conversion function (text format)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typreceive</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</TT
+></TD
+><TD
+>Input conversion function (binary format), or 0 if none</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typsend</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</TT
+></TD
+><TD
+>Output conversion function (binary format), or 0 if none</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typanalyze</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</TT
+></TD
+><TD
+>Custom ANALYZE function, or 0 to use the standard function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typalign</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><P
+>&#13;       <TT
+CLASS="STRUCTFIELD"
+>typalign</TT
+> is the alignment required
+       when storing a value of this type.  It applies to storage on
+       disk as well as most representations of the value inside
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+       When multiple values are stored consecutively, such
+       as in the representation of a complete row on disk, padding is
+       inserted before a datum of this type so that it begins on the
+       specified boundary.  The alignment reference is the beginning
+       of the first datum in the sequence.
+      </P
+><P
+>       Possible values are:
+       <P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>c</TT
+> = <TT
+CLASS="TYPE"
+>char</TT
+> alignment, i.e., no alignment needed.</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>s</TT
+> = <TT
+CLASS="TYPE"
+>short</TT
+> alignment (2 bytes on most machines).</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>i</TT
+> = <TT
+CLASS="TYPE"
+>int</TT
+> alignment (4 bytes on most machines).</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>d</TT
+> = <TT
+CLASS="TYPE"
+>double</TT
+> alignment (8 bytes on many machines, but by no means all).</P
+></LI
+></UL
+><P>
+      </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>        For types used in system tables, it is critical that the size
+        and alignment defined in <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+>
+        agree with the way that the compiler will lay out the column in
+        a structure representing a table row.
+       </P
+></BLOCKQUOTE
+></DIV
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typstorage</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>char</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><P
+>       <TT
+CLASS="STRUCTFIELD"
+>typstorage</TT
+> tells for varlena
+       types (those with <TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+> = -1) if
+       the type is prepared for toasting and what the default strategy
+       for attributes of this type should be.
+       Possible values are
+       <P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>p</TT
+>: Value must always be stored plain.</P
+></LI
+><LI
+><P
+>          <TT
+CLASS="LITERAL"
+>e</TT
+>: Value can be stored in a <SPAN
+CLASS="QUOTE"
+>"secondary"</SPAN
+>
+          relation (if relation has one, see
+          <TT
+CLASS="LITERAL"
+>pg_class.reltoastrelid</TT
+>).
+         </P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>m</TT
+>: Value can be stored compressed inline.</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>x</TT
+>: Value can be stored compressed inline or stored in <SPAN
+CLASS="QUOTE"
+>"secondary"</SPAN
+> storage.</P
+></LI
+></UL
+><P>
+       Note that <TT
+CLASS="LITERAL"
+>m</TT
+> columns can also be moved out to secondary
+       storage, but only as a last resort (<TT
+CLASS="LITERAL"
+>e</TT
+> and <TT
+CLASS="LITERAL"
+>x</TT
+> columns are
+       moved first).
+      </P
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typnotnull</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><P
+>       <TT
+CLASS="STRUCTFIELD"
+>typnotnull</TT
+> represents a not-null
+       constraint on a type.  Used for domains only.
+      </P
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typbasetype</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</TT
+></TD
+><TD
+><P
+>       If this is a domain (see <TT
+CLASS="STRUCTFIELD"
+>typtype</TT
+>),
+       then <TT
+CLASS="STRUCTFIELD"
+>typbasetype</TT
+> identifies
+       the type that this one is based on.  Zero if not a domain.
+      </P
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typtypmod</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><P
+>       Domains use <TT
+CLASS="STRUCTFIELD"
+>typtypmod</TT
+> to record the <TT
+CLASS="LITERAL"
+>typmod</TT
+>
+       to be applied to their base type (-1 if base type does not use a
+       <TT
+CLASS="LITERAL"
+>typmod</TT
+>).  -1 if this type is not a domain.
+      </P
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typndims</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><P
+>       <TT
+CLASS="STRUCTFIELD"
+>typndims</TT
+> is the number of array dimensions
+       for a domain that is an array (that is, <TT
+CLASS="STRUCTFIELD"
+>typbasetype</TT
+> is an array type;
+       the domain's <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+> will match the base type's <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+>).
+       Zero for types other than array domains.
+       </P
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typdefaultbin</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><P
+>       If <TT
+CLASS="STRUCTFIELD"
+>typdefaultbin</TT
+> is not null, it is the <CODE
+CLASS="FUNCTION"
+>nodeToString()</CODE
+>
+       representation of a default expression for the type.  This is
+       only used for domains.
+      </P
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typdefault</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+><P
+>       <TT
+CLASS="STRUCTFIELD"
+>typdefault</TT
+> is null if the type has no associated
+       default value. If <TT
+CLASS="STRUCTFIELD"
+>typdefaultbin</TT
+> is not null,
+       <TT
+CLASS="STRUCTFIELD"
+>typdefault</TT
+> must contain a human-readable version of the
+       default expression represented by <TT
+CLASS="STRUCTFIELD"
+>typdefaultbin</TT
+>.  If
+       <TT
+CLASS="STRUCTFIELD"
+>typdefaultbin</TT
+> is null and <TT
+CLASS="STRUCTFIELD"
+>typdefault</TT
+> is
+       not, then <TT
+CLASS="STRUCTFIELD"
+>typdefault</TT
+> is the external representation of
+       the type's default value, which may be fed to the type's input
+       converter to produce a constant.
+      </P
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-trigger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="views-overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>System Views</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

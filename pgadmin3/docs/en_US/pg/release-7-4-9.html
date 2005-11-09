@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Release 7.4.9</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 8.0"
+HREF="release-8-0.html"><LINK
+REL="NEXT"
+TITLE="Release 7.4.8"
+HREF="release-7-4-8.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-8-0.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-4-8.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-4-9"
+>E.6. Release 7.4.9</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2005-10-04</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This release contains a variety of fixes from 7.4.8.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN68939"
+>E.6.1. Migration to version 7.4.9</A
+></H2
+><P
+>     A dump/restore is not required for those running 7.4.X.  However,
+     if you are upgrading from a version earlier than 7.4.8, see the release
+     notes for 7.4.8.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN68942"
+>E.6.2. Changes</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>Fix error that allowed <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> to remove
+<TT
+CLASS="LITERAL"
+>ctid</TT
+> chains too soon, and add more checking in code that follows
+<TT
+CLASS="LITERAL"
+>ctid</TT
+> links</P
+><P
+>This fixes a long-standing problem that could cause crashes in very rare
+circumstances.</P
+></LI
+><LI
+><P
+>Fix <TT
+CLASS="TYPE"
+>CHAR()</TT
+> to properly pad spaces to the specified
+length when using a multiple-byte character set (Yoshiyuki Asaba)</P
+><P
+>In prior releases, the padding of <TT
+CLASS="TYPE"
+>CHAR()</TT
+> was incorrect
+because it only padded to the specified number of bytes without
+considering how many characters were stored.</P
+></LI
+><LI
+><P
+>Fix the sense of the test for read-only transaction
+in <TT
+CLASS="COMMAND"
+>COPY</TT
+></P
+><P
+>The code formerly prohibited <TT
+CLASS="COMMAND"
+>COPY TO</TT
+>, where it should
+prohibit <TT
+CLASS="COMMAND"
+>COPY FROM</TT
+>.</P
+></LI
+><LI
+><P
+>Fix planning problem with outer-join ON clauses that reference
+only the inner-side relation</P
+></LI
+><LI
+><P
+>Further fixes for <TT
+CLASS="LITERAL"
+>x FULL JOIN y ON true</TT
+> corner
+cases</P
+></LI
+><LI
+><P
+>Make <CODE
+CLASS="FUNCTION"
+>array_in</CODE
+> and <CODE
+CLASS="FUNCTION"
+>array_recv</CODE
+> more
+paranoid about validating their OID parameter</P
+></LI
+><LI
+><P
+>Fix missing rows in queries like <TT
+CLASS="LITERAL"
+>UPDATE a=... WHERE
+a...</TT
+> with GiST index on column <TT
+CLASS="LITERAL"
+>a</TT
+></P
+></LI
+><LI
+><P
+>Improve robustness of datetime parsing</P
+></LI
+><LI
+><P
+>Improve checking for partially-written WAL
+pages</P
+></LI
+><LI
+><P
+>Improve robustness of signal handling when SSL is
+enabled</P
+></LI
+><LI
+><P
+>Don't try to open more than <TT
+CLASS="LITERAL"
+>max_files_per_process</TT
+>
+files during postmaster startup</P
+></LI
+><LI
+><P
+>Various memory leakage fixes</P
+></LI
+><LI
+><P
+>Various portability improvements</P
+></LI
+><LI
+><P
+>Fix PL/PgSQL to handle <TT
+CLASS="LITERAL"
+>var := var</TT
+> correctly when
+the variable is of pass-by-reference type</P
+></LI
+><LI
+><P
+>Update <TT
+CLASS="FILENAME"
+>contrib/tsearch2</TT
+> to use current Snowball
+code</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-8-0.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-4-8.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 8.0</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.4.8</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

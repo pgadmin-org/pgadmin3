@@ -1,0 +1,855 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_dumpall</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_dump"
+HREF="app-pgdump.html"><LINK
+REL="NEXT"
+TITLE="pg_restore"
+HREF="app-pgrestore.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgdump.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgdump.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgrestore.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgrestore.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-PG-DUMPALL"
+></A
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN47787"
+></A
+><H2
+>Name</H2
+>pg_dumpall&nbsp;--&nbsp;extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster into a script file</DIV
+><A
+NAME="AEN47791"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN47793"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>pg_dumpall</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+>...]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-PG-DUMPALL-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> is a utility for writing out
+   (<SPAN
+CLASS="QUOTE"
+>"dumping"</SPAN
+>) all <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> databases
+   of a cluster into one script file.  The script file contains
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands that can be used as input to <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> to restore the databases.  It does this by
+   calling <A
+HREF="app-pgdump.html"
+>pg_dump</A
+> for each database in a cluster.
+   <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> also dumps global objects
+   that are common to all databases.
+   (<SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does not save these objects.)
+   This currently includes information about database users and
+   groups, and access permissions that apply to databases as a whole.
+  </P
+><P
+>   Thus, <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> is an integrated
+   solution for backing up your databases.  But note a limitation:
+   it cannot dump <SPAN
+CLASS="QUOTE"
+>"large objects"</SPAN
+>, since
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> cannot dump such objects into
+   text files.  If you have databases containing large objects,
+   they should be dumped using one of <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>'s
+   non-text output modes.
+  </P
+><P
+>   Since <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> reads tables from all
+   databases you will most likely have to connect as a database
+   superuser in order to produce a complete dump.  Also you will need
+   superuser privileges to execute the saved script in order to be
+   allowed to add users and groups, and to create databases.
+  </P
+><P
+>   The SQL script will be written to the standard output.  Shell
+   operators should be used to redirect it into a file.
+  </P
+><P
+>  <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> needs to connect several
+  times to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server (once per
+  database).  If you use password authentication it is likely to ask for
+  a password each time. It is convenient to have a
+  <TT
+CLASS="FILENAME"
+>~/.pgpass</TT
+> file in such cases. See <A
+HREF="libpq-pgpass.html"
+>Section 27.12</A
+> for more information.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47822"
+></A
+><H2
+>Options</H2
+><P
+>    The following command-line options control the content and
+    format of the output.
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-a</TT
+><BR><TT
+CLASS="OPTION"
+>--data-only</TT
+></DT
+><DD
+><P
+>        Dump only the data, not the schema (data definitions).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-c</TT
+><BR><TT
+CLASS="OPTION"
+>--clean</TT
+></DT
+><DD
+><P
+>        Include SQL commands to clean (drop) the databases before
+        recreating them.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-d</TT
+><BR><TT
+CLASS="OPTION"
+>--inserts</TT
+></DT
+><DD
+><P
+>        Dump data as <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands (rather
+        than <TT
+CLASS="COMMAND"
+>COPY</TT
+>).  This will make restoration very slow;
+        it is mainly useful for making dumps that can be loaded into
+        non-<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> databases.  Note that
+        the restore may fail altogether if you have rearranged column order.
+        The <TT
+CLASS="OPTION"
+>-D</TT
+> option is safer, though even slower.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-D</TT
+><BR><TT
+CLASS="OPTION"
+>--column-inserts</TT
+><BR><TT
+CLASS="OPTION"
+>--attribute-inserts</TT
+></DT
+><DD
+><P
+>        Dump data as <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands with explicit
+        column names (<TT
+CLASS="LITERAL"
+>INSERT INTO
+        <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>
+        (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+>, ...) VALUES
+        ...</TT
+>).  This will make restoration very slow; it is mainly
+        useful for making dumps that can be loaded into
+        non-<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> databases.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-g</TT
+><BR><TT
+CLASS="OPTION"
+>--globals-only</TT
+></DT
+><DD
+><P
+>        Dump only global objects (users and groups), no databases.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-i</TT
+><BR><TT
+CLASS="OPTION"
+>--ignore-version</TT
+></DT
+><DD
+><P
+>        Ignore version mismatch between
+        <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> and the database server.
+       </P
+><P
+>        <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> can handle databases
+        from previous releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, but very
+        old versions are not supported anymore (currently prior to
+        7.0).  Use this option if you need to override the version
+        check (and if <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> then
+        fails, don't say you weren't warned).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-o</TT
+><BR><TT
+CLASS="OPTION"
+>--oids</TT
+></DT
+><DD
+><P
+>        Dump object identifiers (<ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+>s) as part of the
+        data for every table.  Use this option if your application references
+        the <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+>
+        columns in some way (e.g., in a foreign key constraint).
+        Otherwise, this option should not be used.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-O</TT
+><BR><TT
+CLASS="OPTION"
+>--no-owner</TT
+></DT
+><DD
+><P
+>        Do not output commands to set
+        ownership of objects to match the original database.
+        By default, <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> issues
+        <TT
+CLASS="COMMAND"
+>ALTER OWNER</TT
+> or 
+        <TT
+CLASS="COMMAND"
+>SET SESSION AUTHORIZATION</TT
+>
+        statements to set ownership of created schema elements.
+        These statements
+        will fail when the script is run unless it is started by a superuser
+        (or the same user that owns all of the objects in the script).
+        To make a script that can be restored by any user, but will give
+        that user ownership of all the objects, specify <TT
+CLASS="OPTION"
+>-O</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-s</TT
+><BR><TT
+CLASS="OPTION"
+>--schema-only</TT
+></DT
+><DD
+><P
+>        Dump only the object definitions (schema), not data.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-S <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--superuser=<TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specify the superuser user name to use when disabling triggers.
+        This is only relevant if <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+> is used.
+        (Usually, it's better to leave this out, and instead start the
+        resulting script as superuser.)
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-v</TT
+><BR><TT
+CLASS="OPTION"
+>--verbose</TT
+></DT
+><DD
+><P
+>        Specifies verbose mode.  This will cause
+        <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> to output start/stop
+        times to the dump file, and progress messages to standard error.
+        It will also enable verbose output in <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-x</TT
+><BR><TT
+CLASS="OPTION"
+>--no-privileges</TT
+><BR><TT
+CLASS="OPTION"
+>--no-acl</TT
+></DT
+><DD
+><P
+>        Prevent dumping of access privileges (grant/revoke commands).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X disable-dollar-quoting</TT
+><BR><TT
+CLASS="OPTION"
+>--disable-dollar-quoting</TT
+></DT
+><DD
+><P
+>        This option disables the use of dollar quoting for function bodies,
+        and forces them to be quoted using SQL standard string syntax.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X disable-triggers</TT
+><BR><TT
+CLASS="OPTION"
+>--disable-triggers</TT
+></DT
+><DD
+><P
+>        This option is only relevant when creating a data-only dump.
+        It instructs <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> to include commands
+        to temporarily disable triggers on the target tables while
+        the data is reloaded.  Use this if you have referential
+        integrity checks or other triggers on the tables that you
+        do not want to invoke during data reload.
+       </P
+><P
+>        Presently, the commands emitted for <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+>
+        must be done as superuser.  So, you should also specify
+        a superuser name with <TT
+CLASS="OPTION"
+>-S</TT
+>, or preferably be careful to
+        start the resulting script as a superuser.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X use-set-session-authorization</TT
+><BR><TT
+CLASS="OPTION"
+>--use-set-session-authorization</TT
+></DT
+><DD
+><P
+>        Output SQL standard SET SESSION AUTHORIZATION commands instead
+        of OWNER TO commands.  This makes the dump more standards compatible,
+        but depending on the history of the objects in the dump, may not
+        restore properly.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>   The following command-line options control the database connection parameters.
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></DT
+><DD
+><P
+>        Specifies the host name of the machine on which the database
+        server is running.  If the value begins with a slash, it is
+        used as the directory for the Unix domain socket.  The default
+        is taken from the <TT
+CLASS="ENVAR"
+>PGHOST</TT
+> environment variable,
+        if set, else a Unix domain socket connection is attempted.
+       </P
+></DD
+><DT
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></DT
+><DD
+><P
+>        Specifies the TCP port or local Unix domain socket file
+        extension on which the server is listening for connections.
+        Defaults to the <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> environment variable, if
+        set, or a compiled-in default.
+       </P
+></DD
+><DT
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>        Connect as the given user.
+       </P
+></DD
+><DT
+>-W</DT
+><DD
+><P
+>        Force a password prompt.  This should happen automatically if
+        the server requires password authentication.
+       </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47987"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47999"
+></A
+><H2
+>Notes</H2
+><P
+>   Since <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> calls
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> internally, some diagnostic
+   messages will refer to <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>.
+  </P
+><P
+>   Once restored, it is wise to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> on each
+   database so the optimizer has useful statistics. You
+   can also run <TT
+CLASS="COMMAND"
+>vacuumdb -a -z</TT
+> to analyze all
+   databases.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-PG-DUMPALL-EX"
+></A
+><H2
+>Examples</H2
+><P
+>   To dump all databases:
+
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>pg_dumpall &gt; db.out</KBD
+></PRE
+><P>
+  </P
+><P
+>   To reload this database use, for example:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>psql -f db.out template1</KBD
+></PRE
+><P>
+   (It is not important to which database you connect here since the
+   script file created by <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> will
+   contain the appropriate commands to create and connect to the saved
+   databases.)
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48019"
+></A
+><H2
+>See Also</H2
+><P
+>    <A
+HREF="app-pgdump.html"
+>pg_dump</A
+>.  Check there for details on possible
+    error conditions.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgdump.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgrestore.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_dump</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_restore</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

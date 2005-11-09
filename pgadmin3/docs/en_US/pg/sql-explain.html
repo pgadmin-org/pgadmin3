@@ -1,0 +1,554 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>EXPLAIN</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="EXECUTE"
+HREF="sql-execute.html"><LINK
+REL="NEXT"
+TITLE="FETCH"
+HREF="sql-fetch.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-execute.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-execute.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-fetch.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-fetch.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-EXPLAIN"
+></A
+>EXPLAIN</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42966"
+></A
+><H2
+>Name</H2
+>EXPLAIN&nbsp;--&nbsp;show the execution plan of a statement</DIV
+><A
+NAME="AEN42969"
+></A
+><A
+NAME="AEN42971"
+></A
+><A
+NAME="AEN42974"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42977"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>EXPLAIN [ ANALYZE ] [ VERBOSE ] <TT
+CLASS="REPLACEABLE"
+><I
+>statement</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42980"
+></A
+><H2
+>Description</H2
+><P
+>   This command displays the execution plan that the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> planner generates for the
+   supplied statement.  The execution plan shows how the table(s)
+   referenced by the statement will be scanned &mdash; by plain sequential scan,
+   index scan, etc. &mdash; and if multiple tables are referenced, what join
+   algorithms will be used to bring together the required rows from
+   each input table.
+  </P
+><P
+>   The most critical part of the display is the estimated statement execution
+   cost, which is the planner's guess at how long it will take to run the
+   statement (measured in units of disk page fetches).  Actually two numbers
+   are shown: the start-up time before the first row can be returned, and
+   the total time to return all the rows.  For most queries the total time
+   is what matters, but in contexts such as a subquery in <TT
+CLASS="LITERAL"
+>EXISTS</TT
+>, the planner
+   will choose the smallest start-up time instead of the smallest total time
+   (since the executor will stop after getting one row, anyway).
+   Also, if you limit the number of rows to return with a <TT
+CLASS="LITERAL"
+>LIMIT</TT
+> clause,
+   the planner makes an appropriate interpolation between the endpoint
+   costs to estimate which plan is really the cheapest.
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>ANALYZE</TT
+> option causes the statement to be actually executed, not only
+   planned.  The total elapsed time expended within each plan node (in
+   milliseconds) and total number of rows it actually returned are added to
+   the display.  This is useful for seeing whether the planner's estimates
+   are close to reality.
+  </P
+><DIV
+CLASS="IMPORTANT"
+><BLOCKQUOTE
+CLASS="IMPORTANT"
+><P
+><B
+>Important: </B
+>    Keep in mind that the statement is actually executed when
+    <TT
+CLASS="LITERAL"
+>ANALYZE</TT
+> is used.  Although
+    <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+> will discard any output that a
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> would return, other side effects of the
+    statement will happen as usual.  If you wish to use
+    <TT
+CLASS="COMMAND"
+>EXPLAIN ANALYZE</TT
+> on an
+    <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>,
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+>, or <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement
+    without letting the command affect your data, use this approach:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
+EXPLAIN ANALYZE ...;
+ROLLBACK;</PRE
+><P>
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43000"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>ANALYZE</TT
+></DT
+><DD
+><P
+>      Carry out the command and show the actual run times.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>VERBOSE</TT
+></DT
+><DD
+><P
+>      Show the full internal representation of the plan tree, rather
+      than just a summary.  Usually this option is only useful for
+      specialized debugging purposes.  The
+      <TT
+CLASS="LITERAL"
+>VERBOSE</TT
+> output is either pretty-printed or
+      not, depending on the setting of the <A
+HREF="runtime-config.html#GUC-EXPLAIN-PRETTY-PRINT"
+>explain_pretty_print</A
+> configuration parameter.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>statement</I
+></TT
+></DT
+><DD
+><P
+>      Any <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>,
+      <TT
+CLASS="COMMAND"
+>DELETE</TT
+>, <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>, or <TT
+CLASS="COMMAND"
+>DECLARE</TT
+>
+      statement, whose execution plan you wish to see.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43026"
+></A
+><H2
+>Notes</H2
+><P
+>   There is only sparse documentation on the optimizer's use of cost
+   information in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  Refer to
+   <A
+HREF="performance-tips.html#USING-EXPLAIN"
+>Section 13.1</A
+> for more information.
+  </P
+><P
+>   In order to allow the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query
+   planner to make reasonably informed decisions when optimizing
+   queries, the <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> statement should be run to
+   record statistics about the distribution of data within the
+   table. If you have not done this (or if the statistical
+   distribution of the data in the table has changed significantly
+   since the last time <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> was run), the
+   estimated costs are unlikely to conform to the real properties of
+   the query, and consequently an inferior query plan may be chosen.
+  </P
+><P
+>   Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3, the plan was
+   emitted in the form of a <TT
+CLASS="LITERAL"
+>NOTICE</TT
+> message.  Now it
+   appears as a query result (formatted like a table with a single
+   text column).
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43038"
+></A
+><H2
+>Examples</H2
+><P
+>   To show the plan for a simple query on a table with a single
+   <TT
+CLASS="TYPE"
+>integer</TT
+> column and 10000 rows:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXPLAIN SELECT * FROM foo;
+
+                       QUERY PLAN
+---------------------------------------------------------
+ Seq Scan on foo  (cost=0.00..155.00 rows=10000 width=4)
+(1 row)</PRE
+><P>
+  </P
+><P
+>   If there is an index and we use a query with an indexable
+   <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition, <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+>
+   might show a different plan:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXPLAIN SELECT * FROM foo WHERE i = 4;
+
+                         QUERY PLAN
+--------------------------------------------------------------
+ Index Scan using fi on foo  (cost=0.00..5.98 rows=1 width=4)
+   Index Cond: (i = 4)
+(2 rows)</PRE
+><P>
+  </P
+><P
+>   And here is an example of a query plan for a query
+   using an aggregate function:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXPLAIN SELECT sum(i) FROM foo WHERE i &lt; 10;
+
+                             QUERY PLAN
+---------------------------------------------------------------------
+ Aggregate  (cost=23.93..23.93 rows=1 width=4)
+   -&gt;  Index Scan using fi on foo  (cost=0.00..23.92 rows=6 width=4)
+         Index Cond: (i &lt; 10)
+(3 rows)</PRE
+><P>
+  </P
+><P
+>   Here is an example of using <TT
+CLASS="COMMAND"
+>EXPLAIN EXECUTE</TT
+> to
+   display the execution plan for a prepared query:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PREPARE query(int, int) AS SELECT sum(bar) FROM test
+    WHERE id &gt; $1 AND id &lt; $2
+    GROUP BY foo;
+
+EXPLAIN ANALYZE EXECUTE query(100, 200);
+
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=39.53..39.53 rows=1 width=8) (actual time=0.661..0.672 rows=7 loops=1)
+   -&gt;  Index Scan using test_pkey on test  (cost=0.00..32.97 rows=1311 width=8) (actual time=0.050..0.395 rows=99 loops=1)
+         Index Cond: ((id &gt; $1) AND (id &lt; $2))
+ Total runtime: 0.851 ms
+(4 rows)</PRE
+><P>
+  </P
+><P
+>   Of course, the specific numbers shown here depend on the actual
+   contents of the tables involved.  Also note that the numbers, and
+   even the selected query strategy, may vary between
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> releases due to planner
+   improvements. In addition, the <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> command
+   uses random sampling to estimate data statistics; therefore, it is
+   possible for cost estimates to change after a fresh run of
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, even if the actual distribution of data
+   in the table has not changed.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43056"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+> statement defined in the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43060"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-execute.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-fetch.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>EXECUTE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>FETCH</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

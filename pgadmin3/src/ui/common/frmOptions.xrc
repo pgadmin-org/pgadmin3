@@ -1,0 +1,199 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxDialog" name="frmOptions">
+    <title>Options</title>
+    <pos>0,0d</pos>
+    <size>246,166d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxDIALOG_MODAL|wxCAPTION|wxSYSTEM_MENU</style>
+    <object class="wxNotebook" name="nbOptions">
+      <object class="notebookpage">
+        <label>General</label>
+        <selected>1</selected>
+        <object class="wxPanel" name="pnlGeneral">
+          <object class="wxStaticText" name="stLanguage">
+            <label>User language</label>
+            <pos>5,5d</pos>
+          </object>
+          <object class="wxComboBox" name="cbLanguage">
+            <content/>
+            <pos>70,5d</pos>
+            <size>160,12d</size>
+            <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+          </object>
+          <object class="wxStaticText" name="stSqlHelpSite">
+            <label>SQL help site</label>
+            <pos>5,22d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtSqlHelpSite">
+            <pos>70,20d</pos>
+            <size>160,-1d</size>
+            <tooltip>Enter the path or URL to the PostgreSQL documentation</tooltip>
+          </object>
+          <object class="wxStaticText" name="stProxy">
+            <label>HTTP proxy</label>
+            <pos>5,37d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtProxy">
+            <pos>70,35d</pos>
+            <size>160,-1d</size>
+          </object>
+        </object>
+      </object>
+      <object class="notebookpage">
+        <label>Preferences</label>
+        <object class="wxPanel" name="pnlPreferences">
+          <object class="wxStaticText" name="stFont">
+            <label>Font</label>
+            <pos>5,7d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtFont">
+            <pos>70,5d</pos>
+            <size>140,12d</size>
+            <style>wxTE_READONLY</style>
+          </object>
+          <object class="wxButton" name="btnFont">
+            <label>...</label>
+            <pos>215,5d</pos>
+            <size>15,-1d</size>
+          </object>
+          <object class="wxCheckBox" name="chkUnicodeFile">
+            <label>Read and write Unicode UTF-8 files</label>
+            <pos>5,35d</pos>
+            <size>226,12d</size>
+          </object>
+          <object class="wxCheckBox" name="chkAskSaveConfirm">
+            <label>Do not prompt for unsaved files on exit</label>
+            <checked>0</checked>
+            <pos>5,47d</pos>
+            <size>226,12d</size>
+          </object>
+          <object class="wxCheckBox" name="chkAskDelete">
+            <label>Confirm object deletion?</label>
+            <checked>1</checked>
+            <pos>5,59d</pos>
+            <size>226,12d</size>
+          </object>
+          <object class="wxCheckBox" name="chkShowUsersForPrivileges">
+            <label>Show users for privileges?</label>
+            <checked>0</checked>
+            <pos>5,71d</pos>
+            <size>226,12d</size>
+          </object>
+          <object class="wxCheckBox" name="chkDoubleClickProperties">
+            <label>Show object properties on double click in treeview?</label>
+            <checked>0</checked>
+            <pos>5,83d</pos>
+            <size>226,12d</size>
+          </object>
+        </object>
+      </object>
+      <object class="notebookpage">
+        <label>Query</label>
+        <object class="wxPanel" name="pnlQuery">
+          <object class="wxStaticText" name="stSqlFont">
+            <label>Font</label>
+            <pos>5,7d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtSqlFont">
+            <pos>70,5d</pos>
+            <size>140,-1d</size>
+            <style>wxTE_READONLY</style>
+          </object>
+          <object class="wxButton" name="btnSqlFont">
+            <label>...</label>
+            <pos>215,5d</pos>
+            <size>15,-1d</size>
+          </object>
+          <object class="wxStaticText" name="lblMaxRows">
+            <label>Maximum rows to retrieve</label>
+            <pos>5,22d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtMaxRows">
+            <value>100</value>
+            <pos>175,20d</pos>
+            <size>35,-1d</size>
+            <tooltip>Maximums rows to retrieve into output window; 0 = unlimited</tooltip>
+          </object>
+          <object class="wxStaticText" name="lblMaxColSize">
+            <label>Max. characters per column</label>
+            <pos>5,37d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtMaxColSize">
+            <value>256</value>
+            <pos>175,35d</pos>
+            <size>35,-1d</size>
+          </object>
+          <object class="wxStaticText" name="stAutoRowCount">
+            <label>Count rows if estimated less than</label>
+            <pos>5,52d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtAutoRowCount">
+            <pos>175,50d</pos>
+            <size>35,-1d</size>
+          </object>
+          <object class="wxCheckBox" name="chkStickySql">
+            <label>Copy SQL from main form to SQL dialogue</label>
+            <checked>1</checked>
+            <pos>5,67d</pos>
+            <size>226,12d</size>
+          </object>
+        </object>
+      </object>
+      <object class="notebookpage">
+        <label>Logging</label>
+        <object class="wxPanel" name="pnlLogging">
+          <object class="wxStaticText" name="lblLogfile">
+            <label>Logfile (%ID will be replaced with the Process ID)</label>
+            <pos>5,5d</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtLogfile">
+            <value>pgadmin3_%ID.log</value>
+            <pos>5,17d</pos>
+            <size>205,-1d</size>
+            <tooltip>Enter a filename to write application logs to.</tooltip>
+          </object>
+          <object class="wxButton" name="btnBrowseLogfile">
+            <label>...</label>
+            <pos>215,17d</pos>
+            <size>15,-1d</size>
+            <tooltip>Browse for a logfile.</tooltip>
+          </object>
+          <object class="wxRadioBox" name="radLoglevel">
+            <label>Log Level</label>
+            <content>
+              <item>&amp;No logging</item>
+              <item>&amp;Errors only</item>
+              <item>Errors and N&amp;otices</item>
+              <item>Errors, Notices, &amp;SQL</item>
+              <item>&amp;Debug (not recommended for normal use)</item>
+            </content>
+            <selection>2</selection>
+            <dimension>1</dimension>
+            <pos>25,35d</pos>
+            <style>wxRA_SPECIFY_COLS</style>
+            <tooltip>Select the level of detail to record in the logfile.</tooltip>
+          </object>
+        </object>
+      </object>
+      <pos>2,3d</pos>
+      <size>240,141d</size>
+    </object>
+    <object class="wxButton" name="wxID_HELP">
+      <label>&amp;Help</label>
+      <pos>2,147d</pos>
+      <tooltip>Accept the current settings and close the dialogue.</tooltip>
+    </object>
+    <object class="wxButton" name="wxID_OK">
+      <label>&amp;OK</label>
+      <default>1</default>
+      <pos>140,147d</pos>
+      <tooltip>Accept the current settings and close the dialogue.</tooltip>
+    </object>
+    <object class="wxButton" name="wxID_CANCEL">
+    <label>&amp;Cancel</label>
+      <default>0</default>
+      <pos>193,147d</pos>
+      <tooltip>Cancel any changes and close the dialogue.</tooltip>
+    </object>
+  </object>
+</resource>

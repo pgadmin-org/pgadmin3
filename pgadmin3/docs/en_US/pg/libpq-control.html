@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Control Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions Associated with the COPY Command"
+HREF="libpq-copy.html"><LINK
+REL="NEXT"
+TITLE="Notice Processing"
+HREF="libpq-notice-processing.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-copy.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 27. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-notice-processing.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-CONTROL"
+>27.9. Control Functions</A
+></H1
+><P
+>These functions control miscellaneous details of
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>'s behavior.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQsetErrorVerbosity</CODE
+><A
+NAME="AEN24464"
+></A
+></DT
+><DD
+><P
+>Determines the verbosity of messages returned by
+<CODE
+CLASS="FUNCTION"
+>PQerrorMessage</CODE
+> and <CODE
+CLASS="FUNCTION"
+>PQresultErrorMessage</CODE
+>.
+</P><PRE
+CLASS="SYNOPSIS"
+>typedef enum {
+    PQERRORS_TERSE,
+    PQERRORS_DEFAULT,
+    PQERRORS_VERBOSE
+} PGVerbosity;
+
+PGVerbosity PQsetErrorVerbosity(PGconn *conn, PGVerbosity verbosity);</PRE
+><P>
+<CODE
+CLASS="FUNCTION"
+>PQsetErrorVerbosity</CODE
+> sets the verbosity mode, returning
+the connection's previous setting.  In <I
+CLASS="FIRSTTERM"
+>TERSE</I
+> mode,
+returned messages include severity, primary text, and position only;
+this will normally fit on a single line.  The default mode produces
+messages that include the above plus any detail, hint, or context
+fields (these may span multiple lines).  The <I
+CLASS="FIRSTTERM"
+>VERBOSE</I
+>
+mode includes all available fields.  Changing the verbosity does not
+affect the messages available from already-existing
+<TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> objects, only subsequently-created ones.</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQtrace</CODE
+><A
+NAME="AEN24478"
+></A
+></DT
+><DD
+><P
+>          Enables  tracing of the client/server communication to a debugging file stream.
+</P><PRE
+CLASS="SYNOPSIS"
+>void PQtrace(PGconn *conn, FILE *stream);</PRE
+><P></P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQuntrace</CODE
+><A
+NAME="AEN24486"
+></A
+></DT
+><DD
+><P
+>          Disables tracing started by <CODE
+CLASS="FUNCTION"
+>PQtrace</CODE
+>.
+</P><PRE
+CLASS="SYNOPSIS"
+>void PQuntrace(PGconn *conn);</PRE
+><P></P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-copy.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-notice-processing.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions Associated with the <TT
+CLASS="COMMAND"
+>COPY</TT
+> Command</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Notice Processing</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

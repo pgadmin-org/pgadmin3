@@ -1,0 +1,1583 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Geometric Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Date/Time Functions and Operators"
+HREF="functions-datetime.html"><LINK
+REL="NEXT"
+TITLE="Network Address Functions and Operators"
+HREF="functions-net.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-datetime.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-net.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-GEOMETRY"
+>9.10. Geometric Functions and Operators</A
+></H1
+><P
+>    The geometric types <TT
+CLASS="TYPE"
+>point</TT
+>, <TT
+CLASS="TYPE"
+>box</TT
+>,
+    <TT
+CLASS="TYPE"
+>lseg</TT
+>, <TT
+CLASS="TYPE"
+>line</TT
+>, <TT
+CLASS="TYPE"
+>path</TT
+>,
+    <TT
+CLASS="TYPE"
+>polygon</TT
+>, and <TT
+CLASS="TYPE"
+>circle</TT
+> have a large set of
+    native support functions and operators, shown in <A
+HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-OP-TABLE"
+>Table 9-28</A
+>, <A
+HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-FUNC-TABLE"
+>Table 9-29</A
+>, and <A
+HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-CONV-TABLE"
+>Table 9-30</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-GEOMETRY-OP-TABLE"
+></A
+><P
+><B
+>Table 9-28. Geometric Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Operator</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>+</TT
+> </TD
+><TD
+>Translation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box '((0,0),(1,1))' + point '(2.0,0)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>-</TT
+> </TD
+><TD
+>Translation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box '((0,0),(1,1))' - point '(2.0,0)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>*</TT
+> </TD
+><TD
+>Scaling/rotation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box '((0,0),(1,1))' * point '(2.0,0)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>/</TT
+> </TD
+><TD
+>Scaling/rotation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box '((0,0),(2,2))' / point '(2.0,0)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>#</TT
+> </TD
+><TD
+>Point or box of intersection</TD
+><TD
+><TT
+CLASS="LITERAL"
+>'((1,-1),(-1,1))' # '((1,1),(-1,-1))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>#</TT
+> </TD
+><TD
+>Number of points in path or polygon</TD
+><TD
+><TT
+CLASS="LITERAL"
+># '((1,0),(0,1),(-1,0))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>@-@</TT
+> </TD
+><TD
+>Length or circumference</TD
+><TD
+><TT
+CLASS="LITERAL"
+>@-@ path '((0,0),(1,0))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>@@</TT
+> </TD
+><TD
+>Center</TD
+><TD
+><TT
+CLASS="LITERAL"
+>@@ circle '((0,0),10)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>##</TT
+> </TD
+><TD
+>Closest point to first operand on second operand</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point '(0,0)' ## lseg '((2,0),(0,2))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;-&gt;</TT
+> </TD
+><TD
+>Distance between</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle '((0,0),1)' &lt;-&gt; circle '((5,0),1)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&amp;&amp;</TT
+> </TD
+><TD
+>Overlaps?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box '((0,0),(1,1))' &amp;&amp; box '((0,0),(2,2))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&amp;&lt;</TT
+> </TD
+><TD
+>Does not extend to the right of?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box '((0,0),(1,1))' &amp;&lt; box '((0,0),(2,2))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&amp;&gt;</TT
+> </TD
+><TD
+>Does not extend to the left of?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box '((0,0),(3,3))' &amp;&gt; box '((0,0),(2,2))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;&lt;</TT
+> </TD
+><TD
+>Is left of?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle '((0,0),1)' &lt;&lt; circle '((5,0),1)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;&gt;</TT
+> </TD
+><TD
+>Is right of?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle '((5,0),1)' &gt;&gt; circle '((0,0),1)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;^</TT
+> </TD
+><TD
+>Is below?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle '((0,0),1)' &lt;^ circle '((0,5),1)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;^</TT
+> </TD
+><TD
+>Is above?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle '((0,5),1)' &gt;^ circle '((0,0),1)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>?#</TT
+> </TD
+><TD
+>Intersects?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>lseg '((-1,0),(1,0))' ?# box '((-2,-2),(2,2))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>?-</TT
+> </TD
+><TD
+>Is horizontal?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>?- lseg '((-1,0),(1,0))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>?-</TT
+> </TD
+><TD
+>Are horizontally aligned?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point '(1,0)' ?- point '(0,0)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>?|</TT
+> </TD
+><TD
+>Is vertical?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>?| lseg '((-1,0),(1,0))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>?|</TT
+> </TD
+><TD
+>Are vertically aligned?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point '(0,1)' ?| point '(0,0)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>?-|</TT
+> </TD
+><TD
+>Is perpendicular?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>lseg '((0,0),(0,1))' ?-| lseg '((0,0),(1,0))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>?||</TT
+> </TD
+><TD
+>Are parallel?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>lseg '((-1,0),(1,0))' ?|| lseg '((-1,2),(1,2))'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>~</TT
+> </TD
+><TD
+>Contains?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle '((0,0),2)' ~ point '(1,1)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>@</TT
+> </TD
+><TD
+>Contained in or on?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point '(1,1)' @ circle '((0,0),2)'</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>~=</TT
+> </TD
+><TD
+>Same as?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>polygon '((0,0),(1,1))' ~= polygon '((1,1),(0,0))'</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-GEOMETRY-FUNC-TABLE"
+></A
+><P
+><B
+>Table 9-29. Geometric Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>area</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>object</I
+></TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+>area</TD
+><TD
+><TT
+CLASS="LITERAL"
+>area(box '((0,0),(1,1))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>box_intersect</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>, <TT
+CLASS="TYPE"
+>box</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>box</TT
+></TD
+><TD
+>intersection box</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box_intersect(box '((0,0),(1,1))',box '((0.5,0.5),(2,2))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>center</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>object</I
+></TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>center</TD
+><TD
+><TT
+CLASS="LITERAL"
+>center(box '((0,0),(1,2))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>diameter</CODE
+>(<TT
+CLASS="TYPE"
+>circle</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+>diameter of circle</TD
+><TD
+><TT
+CLASS="LITERAL"
+>diameter(circle '((0,0),2.0)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>height</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+>vertical size of box</TD
+><TD
+><TT
+CLASS="LITERAL"
+>height(box '((0,0),(1,1))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>isclosed</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>a closed path?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>isclosed(path '((0,0),(1,1),(2,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>isopen</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>an open path?</TD
+><TD
+><TT
+CLASS="LITERAL"
+>isopen(path '[(0,0),(1,1),(2,0)]')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>length</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>object</I
+></TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+>length</TD
+><TD
+><TT
+CLASS="LITERAL"
+>length(path '((-1,0),(1,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>npoints</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>number of points</TD
+><TD
+><TT
+CLASS="LITERAL"
+>npoints(path '[(0,0),(1,1),(2,0)]')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>npoints</CODE
+>(<TT
+CLASS="TYPE"
+>polygon</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>number of points</TD
+><TD
+><TT
+CLASS="LITERAL"
+>npoints(polygon '((1,1),(0,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pclose</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>path</TT
+></TD
+><TD
+>convert path to closed</TD
+><TD
+><TT
+CLASS="LITERAL"
+>pclose(path '[(0,0),(1,1),(2,0)]')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>popen</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>path</TT
+></TD
+><TD
+>convert path to open</TD
+><TD
+><TT
+CLASS="LITERAL"
+>popen(path '((0,0),(1,1),(2,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>radius</CODE
+>(<TT
+CLASS="TYPE"
+>circle</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+>radius of circle</TD
+><TD
+><TT
+CLASS="LITERAL"
+>radius(circle '((0,0),2.0)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>width</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>double precision</TT
+></TD
+><TD
+>horizontal size of box</TD
+><TD
+><TT
+CLASS="LITERAL"
+>width(box '((0,0),(1,1))')</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-GEOMETRY-CONV-TABLE"
+></A
+><P
+><B
+>Table 9-30. Geometric Type Conversion Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>box</CODE
+>(<TT
+CLASS="TYPE"
+>circle</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>box</TT
+></TD
+><TD
+>circle to box</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box(circle '((0,0),2.0)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>box</CODE
+>(<TT
+CLASS="TYPE"
+>point</TT
+>, <TT
+CLASS="TYPE"
+>point</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>box</TT
+></TD
+><TD
+>points to box</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box(point '(0,0)', point '(1,1)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>box</CODE
+>(<TT
+CLASS="TYPE"
+>polygon</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>box</TT
+></TD
+><TD
+>polygon to box</TD
+><TD
+><TT
+CLASS="LITERAL"
+>box(polygon '((0,0),(1,1),(2,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>circle</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>circle</TT
+></TD
+><TD
+>box to circle</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle(box '((0,0),(1,1))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>circle</CODE
+>(<TT
+CLASS="TYPE"
+>point</TT
+>, <TT
+CLASS="TYPE"
+>double precision</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>circle</TT
+></TD
+><TD
+>center and radius to circle</TD
+><TD
+><TT
+CLASS="LITERAL"
+>circle(point '(0,0)', 2.0)</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>lseg</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>lseg</TT
+></TD
+><TD
+>box diagonal to line segment</TD
+><TD
+><TT
+CLASS="LITERAL"
+>lseg(box '((-1,0),(1,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>lseg</CODE
+>(<TT
+CLASS="TYPE"
+>point</TT
+>, <TT
+CLASS="TYPE"
+>point</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>lseg</TT
+></TD
+><TD
+>points to line segment</TD
+><TD
+><TT
+CLASS="LITERAL"
+>lseg(point '(-1,0)', point '(1,0)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>path</CODE
+>(<TT
+CLASS="TYPE"
+>polygon</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>polygon to path</TD
+><TD
+><TT
+CLASS="LITERAL"
+>path(polygon '((0,0),(1,1),(2,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>point</CODE
+>(<TT
+CLASS="TYPE"
+>double
+         precision</TT
+>, <TT
+CLASS="TYPE"
+>double precision</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>construct point</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point(23.4, -44.5)</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>point</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>center of box</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point(box '((-1,0),(1,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>point</CODE
+>(<TT
+CLASS="TYPE"
+>circle</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>center of circle</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point(circle '((0,0),2.0)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>point</CODE
+>(<TT
+CLASS="TYPE"
+>lseg</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>center of lseg</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point(lseg '((-1,0),(1,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>point</CODE
+>(<TT
+CLASS="TYPE"
+>lseg</TT
+>, <TT
+CLASS="TYPE"
+>lseg</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>intersection</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point(lseg '((-1,0),(1,0))', lseg '((-2,-2),(2,2))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>point</CODE
+>(<TT
+CLASS="TYPE"
+>polygon</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>point</TT
+></TD
+><TD
+>center of polygon</TD
+><TD
+><TT
+CLASS="LITERAL"
+>point(polygon '((0,0),(1,1),(2,0))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>polygon</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>polygon</TT
+></TD
+><TD
+>box to 4-point polygon</TD
+><TD
+><TT
+CLASS="LITERAL"
+>polygon(box '((0,0),(1,1))')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>polygon</CODE
+>(<TT
+CLASS="TYPE"
+>circle</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>polygon</TT
+></TD
+><TD
+>circle to 12-point polygon</TD
+><TD
+><TT
+CLASS="LITERAL"
+>polygon(circle '((0,0),2.0)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>polygon</CODE
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>npts</I
+></TT
+>, <TT
+CLASS="TYPE"
+>circle</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>polygon</TT
+></TD
+><TD
+>circle to <TT
+CLASS="REPLACEABLE"
+><I
+>npts</I
+></TT
+>-point polygon</TD
+><TD
+><TT
+CLASS="LITERAL"
+>polygon(12, circle '((0,0),2.0)')</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>polygon</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>polygon</TT
+></TD
+><TD
+>path to polygon</TD
+><TD
+><TT
+CLASS="LITERAL"
+>polygon(path '((0,0),(1,1),(2,0))')</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>     It is possible to access the two component numbers of a <TT
+CLASS="TYPE"
+>point</TT
+>
+     as though it were an array with indices 0 and 1.  For example, if
+     <TT
+CLASS="LITERAL"
+>t.p</TT
+> is a <TT
+CLASS="TYPE"
+>point</TT
+> column then
+     <TT
+CLASS="LITERAL"
+>SELECT p[0] FROM t</TT
+> retrieves the X coordinate and
+     <TT
+CLASS="LITERAL"
+>UPDATE t SET p[1] = ...</TT
+> changes the Y coordinate.
+     In the same way, a value of type <TT
+CLASS="TYPE"
+>box</TT
+> or <TT
+CLASS="TYPE"
+>lseg</TT
+> may be treated
+     as an array of two <TT
+CLASS="TYPE"
+>point</TT
+> values.
+    </P
+><P
+>     The <CODE
+CLASS="FUNCTION"
+>area</CODE
+> function works for the types
+     <TT
+CLASS="TYPE"
+>box</TT
+>, <TT
+CLASS="TYPE"
+>circle</TT
+>, and <TT
+CLASS="TYPE"
+>path</TT
+>.
+     The <CODE
+CLASS="FUNCTION"
+>area</CODE
+> function only works on the
+     <TT
+CLASS="TYPE"
+>path</TT
+> data type if the points in the
+     <TT
+CLASS="TYPE"
+>path</TT
+> are non-intersecting.  For example, the
+     <TT
+CLASS="TYPE"
+>path</TT
+>
+     <TT
+CLASS="LITERAL"
+>'((0,0),(0,1),(2,1),(2,2),(1,2),(1,0),(0,0))'::PATH</TT
+>
+     won't work, however, the following visually identical
+     <TT
+CLASS="TYPE"
+>path</TT
+>
+     <TT
+CLASS="LITERAL"
+>'((0,0),(0,1),(1,1),(1,2),(2,2),(2,1),(1,1),(1,0),(0,0))'::PATH</TT
+>
+     will work.  If the concept of an intersecting versus
+     non-intersecting <TT
+CLASS="TYPE"
+>path</TT
+> is confusing, draw both of the
+     above <TT
+CLASS="TYPE"
+>path</TT
+>s side by side on a piece of graph paper.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-datetime.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-net.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Date/Time Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Network Address Functions and Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

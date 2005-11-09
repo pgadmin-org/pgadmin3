@@ -1,0 +1,405 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Queries</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
+REL="PREVIOUS"
+TITLE="Deleting Data"
+HREF="dml-delete.html"><LINK
+REL="NEXT"
+TITLE="Table Expressions"
+HREF="queries-table-expressions.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dml-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dml.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries-table-expressions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="QUERIES"
+></A
+>Chapter 7. Queries</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>7.1. <A
+HREF="queries.html#QUERIES-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>7.2. <A
+HREF="queries-table-expressions.html"
+>Table Expressions</A
+></DT
+><DD
+><DL
+><DT
+>7.2.1. <A
+HREF="queries-table-expressions.html#QUERIES-FROM"
+>The <TT
+CLASS="LITERAL"
+>FROM</TT
+> Clause</A
+></DT
+><DT
+>7.2.2. <A
+HREF="queries-table-expressions.html#QUERIES-WHERE"
+>The <TT
+CLASS="LITERAL"
+>WHERE</TT
+> Clause</A
+></DT
+><DT
+>7.2.3. <A
+HREF="queries-table-expressions.html#QUERIES-GROUP"
+>The <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+> and <TT
+CLASS="LITERAL"
+>HAVING</TT
+> Clauses</A
+></DT
+></DL
+></DD
+><DT
+>7.3. <A
+HREF="queries-select-lists.html"
+>Select Lists</A
+></DT
+><DD
+><DL
+><DT
+>7.3.1. <A
+HREF="queries-select-lists.html#QUERIES-SELECT-LIST-ITEMS"
+>Select-List Items</A
+></DT
+><DT
+>7.3.2. <A
+HREF="queries-select-lists.html#QUERIES-COLUMN-LABELS"
+>Column Labels</A
+></DT
+><DT
+>7.3.3. <A
+HREF="queries-select-lists.html#QUERIES-DISTINCT"
+><TT
+CLASS="LITERAL"
+>DISTINCT</TT
+></A
+></DT
+></DL
+></DD
+><DT
+>7.4. <A
+HREF="queries-union.html"
+>Combining Queries</A
+></DT
+><DT
+>7.5. <A
+HREF="queries-order.html"
+>Sorting Rows</A
+></DT
+><DT
+>7.6. <A
+HREF="queries-limit.html"
+><TT
+CLASS="LITERAL"
+>LIMIT</TT
+> and <TT
+CLASS="LITERAL"
+>OFFSET</TT
+></A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN2698"
+></A
+><A
+NAME="AEN2700"
+></A
+><P
+>  The previous chapters explained how to create tables, how to fill
+  them with data, and how to manipulate that data.  Now we finally
+  discuss how to retrieve the data out of the database.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="QUERIES-OVERVIEW"
+>7.1. Overview</A
+></H1
+><P
+>   The process of retrieving or the command to retrieve data from a
+   database is called a <I
+CLASS="FIRSTTERM"
+>query</I
+>.  In SQL the
+   <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command is used to specify queries.  The
+   general syntax of the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command is
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>select_list</I
+></TT
+> FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table_expression</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>sort_specification</I
+></TT
+></SPAN
+>]</PRE
+><P>
+   The following sections describe the details of the select list, the
+   table expression, and the sort specification.
+  </P
+><P
+>   The simplest kind of query has the form
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM table1;</PRE
+><P>
+  Assuming that there is a table called <TT
+CLASS="LITERAL"
+>table1</TT
+>,
+  this command would retrieve all rows and all columns from
+  <TT
+CLASS="LITERAL"
+>table1</TT
+>.  (The method of retrieval depends on the
+  client application.  For example, the
+  <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> program will display an ASCII-art
+  table on the screen, while client libraries will offer functions to
+  extract individual values from the query result.)  The select list
+  specification <TT
+CLASS="LITERAL"
+>*</TT
+> means all columns that the table
+  expression happens to provide.  A select list can also select a
+  subset of the available columns or make calculations using the
+  columns.  For example, if
+  <TT
+CLASS="LITERAL"
+>table1</TT
+> has columns named <TT
+CLASS="LITERAL"
+>a</TT
+>,
+  <TT
+CLASS="LITERAL"
+>b</TT
+>, and <TT
+CLASS="LITERAL"
+>c</TT
+> (and perhaps others) you can make
+  the following query:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a, b + c FROM table1;</PRE
+><P>
+  (assuming that <TT
+CLASS="LITERAL"
+>b</TT
+> and <TT
+CLASS="LITERAL"
+>c</TT
+> are of a numerical
+  data type).
+  See <A
+HREF="queries-select-lists.html"
+>Section 7.3</A
+> for more details.
+ </P
+><P
+>  <TT
+CLASS="LITERAL"
+>FROM table1</TT
+> is a particularly simple kind of
+  table expression: it reads just one table.  In general, table
+  expressions can be complex constructs of base tables, joins, and
+  subqueries.  But you can also omit the table expression entirely and
+  use the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command as a calculator:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT 3 * 4;</PRE
+><P>
+  This is more useful if the expressions in the select list return
+  varying results.  For example, you could call a function this way:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT random();</PRE
+><P>
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dml-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries-table-expressions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Deleting Data</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Table Expressions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

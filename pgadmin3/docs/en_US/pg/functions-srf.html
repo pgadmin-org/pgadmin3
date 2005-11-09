@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Set Returning Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Row and Array Comparisons"
+HREF="functions-comparisons.html"><LINK
+REL="NEXT"
+TITLE="System Information Functions"
+HREF="functions-info.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-comparisons.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-info.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-SRF"
+>9.18. Set Returning Functions</A
+></H1
+><A
+NAME="AEN12833"
+></A
+><P
+>   This section describes functions that possibly return more than one row.
+   Currently the only functions in this class are series generating functions,
+   as detailed in <A
+HREF="functions-srf.html#FUNCTIONS-SRF-SERIES"
+>Table 9-38</A
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-SRF-SERIES"
+></A
+><P
+><B
+>Table 9-38. Series Generating Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Argument Type</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>generate_series</CODE
+>(<TT
+CLASS="PARAMETER"
+>start</TT
+>, <TT
+CLASS="PARAMETER"
+>stop</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+> or <TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>setof int</TT
+> or <TT
+CLASS="TYPE"
+>setof bigint</TT
+> (same as argument type)</TD
+><TD
+>       Generate a series of values, from <TT
+CLASS="PARAMETER"
+>start</TT
+> to <TT
+CLASS="PARAMETER"
+>stop</TT
+>
+       with a step size of one.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>generate_series</CODE
+>(<TT
+CLASS="PARAMETER"
+>start</TT
+>, <TT
+CLASS="PARAMETER"
+>stop</TT
+>, <TT
+CLASS="PARAMETER"
+>step</TT
+>)</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int</TT
+> or <TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>setof int</TT
+> or <TT
+CLASS="TYPE"
+>setof bigint</TT
+> (same as argument type)</TD
+><TD
+>       Generate a series of values, from <TT
+CLASS="PARAMETER"
+>start</TT
+> to <TT
+CLASS="PARAMETER"
+>stop</TT
+>
+       with a step size of <TT
+CLASS="PARAMETER"
+>step</TT
+>.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   When <TT
+CLASS="PARAMETER"
+>step</TT
+> is positive, zero rows are returned if
+   <TT
+CLASS="PARAMETER"
+>start</TT
+> is greater than <TT
+CLASS="PARAMETER"
+>stop</TT
+>.
+   Conversely, when <TT
+CLASS="PARAMETER"
+>step</TT
+> is negative, zero rows are
+   returned if <TT
+CLASS="PARAMETER"
+>start</TT
+> is less than <TT
+CLASS="PARAMETER"
+>stop</TT
+>.
+   Zero rows are also returned for <TT
+CLASS="LITERAL"
+>NULL</TT
+> inputs. It is an error
+   for <TT
+CLASS="PARAMETER"
+>step</TT
+> to be zero. Some examples follow:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>select * from generate_series(2,4);
+ generate_series
+-----------------
+               2
+               3
+               4
+(3 rows)
+
+select * from generate_series(5,1,-2);
+ generate_series
+-----------------
+               5
+               3
+               1
+(3 rows)
+
+select * from generate_series(4,3);
+ generate_series
+-----------------
+(0 rows)
+
+select current_date + s.a as dates from generate_series(0,14,7) as s(a);
+   dates
+------------
+ 2004-02-05
+ 2004-02-12
+ 2004-02-19
+(3 rows)</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-comparisons.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-info.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Row and Array Comparisons</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>System Information Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

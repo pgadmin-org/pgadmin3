@@ -1,0 +1,2307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Message Formats</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Frontend/Backend Protocol"
+HREF="protocol.html"><LINK
+REL="PREVIOUS"
+TITLE="Message Data Types"
+HREF="protocol-message-types.html"><LINK
+REL="NEXT"
+TITLE="Error and Notice Message Fields"
+HREF="protocol-error-fields.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-message-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 42. Frontend/Backend Protocol</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-error-fields.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PROTOCOL-MESSAGE-FORMATS"
+>42.4. Message Formats</A
+></H1
+><P
+>This section describes the detailed format of each message.  Each is marked to
+indicate that it may be sent by a frontend (F), a backend (B), or both
+(F &amp; B).
+Notice that although each message includes a byte count at the beginning,
+the message format is defined so that the message end can be found without
+reference to the byte count.  This aids validity checking.  (The CopyData
+message is an exception, because it forms part of a data stream; the contents
+of any individual CopyData message may not be interpretable on their own.)</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>AuthenticationOk (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('R')</DT
+><DD
+><P
+>                Identifies the message as an authentication request.</P
+></DD
+><DT
+>Int32(8)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(0)</DT
+><DD
+><P
+>                Specifies that the authentication was successful.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>AuthenticationKerberosV4 (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('R')</DT
+><DD
+><P
+>                Identifies the message as an authentication request.</P
+></DD
+><DT
+>Int32(8)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(1)</DT
+><DD
+><P
+>                Specifies that Kerberos V4 authentication is required.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>AuthenticationKerberosV5 (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('R')</DT
+><DD
+><P
+>                Identifies the message as an authentication request.</P
+></DD
+><DT
+>Int32(8)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(2)</DT
+><DD
+><P
+>                Specifies that Kerberos V5 authentication is required.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>AuthenticationCleartextPassword (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('R')</DT
+><DD
+><P
+>                Identifies the message as an authentication request.</P
+></DD
+><DT
+>Int32(8)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(3)</DT
+><DD
+><P
+>                Specifies that a clear-text password is required.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>AuthenticationCryptPassword (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('R')</DT
+><DD
+><P
+>                Identifies the message as an authentication request.</P
+></DD
+><DT
+>Int32(10)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Specifies that a crypt()-encrypted password is required.</P
+></DD
+><DT
+>Byte2</DT
+><DD
+><P
+>                The salt to use when encrypting the password.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>AuthenticationMD5Password (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('R')</DT
+><DD
+><P
+>                Identifies the message as an authentication request.</P
+></DD
+><DT
+>Int32(12)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(5)</DT
+><DD
+><P
+>                Specifies that an MD5-encrypted password is required.</P
+></DD
+><DT
+>Byte4</DT
+><DD
+><P
+>                The salt to use when encrypting the password.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>AuthenticationSCMCredential (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('R')</DT
+><DD
+><P
+>                Identifies the message as an authentication request.</P
+></DD
+><DT
+>Int32(8)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(6)</DT
+><DD
+><P
+>                Specifies that an SCM credentials message is required.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>BackendKeyData (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('K')</DT
+><DD
+><P
+>                Identifies the message as cancellation key data.
+                The frontend must save these values if it wishes to be
+                able to issue CancelRequest messages later.</P
+></DD
+><DT
+>Int32(12)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The process ID of this backend.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The secret key of this backend.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>Bind (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('B')</DT
+><DD
+><P
+>                Identifies the message as a Bind command.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the destination portal
+		(an empty string selects the unnamed portal).</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the source prepared statement
+		(an empty string selects the unnamed prepared statement).</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>		The number of parameter format codes that follow
+		(denoted <TT
+CLASS="REPLACEABLE"
+><I
+>C</I
+></TT
+> below).
+		This can be zero to indicate that there are no parameters
+		or that the parameters all use the default format (text);
+		or one, in which case the specified format code is applied
+		to all parameters; or it can equal the actual number of
+		parameters.</P
+></DD
+><DT
+>Int16[<TT
+CLASS="REPLACEABLE"
+><I
+>C</I
+></TT
+>]</DT
+><DD
+><P
+>                The parameter format codes.  Each must presently be
+		zero (text) or one (binary).</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                The number of parameter values that follow (possibly zero).
+		This must match the number of parameters needed by the query.</P
+></DD
+></DL
+></DIV
+><P>
+        Next, the following pair of fields appear for each parameter:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32</DT
+><DD
+><P
+>                The length of the parameter value, in bytes (this count
+		does not include itself).  Can be zero.
+		As a special case, -1 indicates a NULL parameter value.
+		No value bytes follow in the NULL case.</P
+></DD
+><DT
+>Byte<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></DT
+><DD
+><P
+>                The value of the parameter, in the format indicated by the
+		associated format code.
+                <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is the above length.</P
+></DD
+></DL
+></DIV
+><P>
+        After the last parameter, the following fields appear:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int16</DT
+><DD
+><P
+>		The number of result-column format codes that follow
+		(denoted <TT
+CLASS="REPLACEABLE"
+><I
+>R</I
+></TT
+> below).
+		This can be zero to indicate that there are no result columns
+		or that the result columns should all use the default format
+		(text); 
+		or one, in which case the specified format code is applied
+		to all result columns (if any); or it can equal the actual
+		number of result columns of the query.</P
+></DD
+><DT
+>Int16[<TT
+CLASS="REPLACEABLE"
+><I
+>R</I
+></TT
+>]</DT
+><DD
+><P
+>                The result-column format codes.  Each must presently be
+		zero (text) or one (binary).</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>BindComplete (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('2')</DT
+><DD
+><P
+>                Identifies the message as a Bind-complete indicator.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>CancelRequest (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32(16)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(80877102)</DT
+><DD
+><P
+>                The cancel request code.  The value is chosen to contain
+                <TT
+CLASS="LITERAL"
+>1234</TT
+> in the most significant 16 bits, and <TT
+CLASS="LITERAL"
+>5678</TT
+> in the
+                least 16 significant bits.  (To avoid confusion, this code
+                must not be the same as any protocol version number.)</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The process ID of the target backend.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The secret key for the target backend.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>Close (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('C')</DT
+><DD
+><P
+>                Identifies the message as a Close command.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Byte1</DT
+><DD
+><P
+>                '<TT
+CLASS="LITERAL"
+>S</TT
+>' to close a prepared statement; or
+                '<TT
+CLASS="LITERAL"
+>P</TT
+>' to close a portal.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the prepared statement or portal to close
+		(an empty string selects the unnamed prepared statement
+		or portal).</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>CloseComplete (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('3')</DT
+><DD
+><P
+>                Identifies the message as a Close-complete indicator.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>CommandComplete (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('C')</DT
+><DD
+><P
+>                Identifies the message as a command-completed response.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>        The command tag.  This is usually a single
+        word that identifies which SQL command was completed.
+       </P
+><P
+>        For an <TT
+CLASS="COMMAND"
+>INSERT</TT
+> command, the tag is
+        <TT
+CLASS="LITERAL"
+>INSERT <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+>
+        <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+></TT
+>, where
+        <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+> is the number of rows
+        inserted. <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+> is the object ID
+        of the inserted row if <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+> is 1
+	and the target table has OIDs;
+	otherwise <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+> is 0.
+       </P
+><P
+>        For a <TT
+CLASS="COMMAND"
+>DELETE</TT
+> command, the tag is
+	<TT
+CLASS="LITERAL"
+>DELETE <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+></TT
+> where
+        <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+> is the number of rows deleted.
+       </P
+><P
+>        For an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> command, the tag is
+	<TT
+CLASS="LITERAL"
+>UPDATE <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+></TT
+> where
+        <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+> is the number of rows updated.
+       </P
+><P
+>        For a <TT
+CLASS="COMMAND"
+>MOVE</TT
+> command, the tag is
+        <TT
+CLASS="LITERAL"
+>MOVE <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+></TT
+> where
+        <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+> is the number of rows the
+        cursor's position has been changed by.
+       </P
+><P
+>        For a <TT
+CLASS="COMMAND"
+>FETCH</TT
+> command, the tag is
+        <TT
+CLASS="LITERAL"
+>FETCH <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+></TT
+> where
+        <TT
+CLASS="REPLACEABLE"
+><I
+>rows</I
+></TT
+> is the number of rows that
+        have been retrieved from the cursor.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>CopyData (F &amp; B)</DT
+><DD
+><P
+><P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('d')</DT
+><DD
+><P
+>                Identifies the message as <TT
+CLASS="COMMAND"
+>COPY</TT
+> data.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Byte<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></DT
+><DD
+><P
+>                Data that forms part of a <TT
+CLASS="COMMAND"
+>COPY</TT
+> data stream.  Messages sent
+		from the backend will always correspond to single data rows,
+		but messages sent by frontends may divide the data stream
+		arbitrarily.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>CopyDone (F &amp; B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('c')</DT
+><DD
+><P
+>                Identifies the message as a <TT
+CLASS="COMMAND"
+>COPY</TT
+>-complete indicator.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>CopyFail (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('f')</DT
+><DD
+><P
+>                Identifies the message as a <TT
+CLASS="COMMAND"
+>COPY</TT
+>-failure indicator.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                An error message to report as the cause of failure.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>CopyInResponse (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('G')</DT
+><DD
+><P
+>                Identifies the message as a Start Copy In response.
+                The frontend must now send copy-in data (if not
+		prepared to do so, send a CopyFail message).</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int8</DT
+><DD
+><P
+>                0 indicates the overall <TT
+CLASS="COMMAND"
+>COPY</TT
+> format is textual (rows
+		separated by newlines, columns separated by separator
+		characters, etc).
+		1 indicates the overall copy format is binary (similar
+		to DataRow format).
+		See <A
+HREF="sql-copy.html"
+><I
+>COPY</I
+></A
+>
+		for more information.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>		The number of columns in the data to be copied
+		(denoted <TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> below).</P
+></DD
+><DT
+>Int16[<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+>]</DT
+><DD
+><P
+>                The format codes to be used for each column.
+		Each must presently be zero (text) or one (binary).
+		All must be zero if the overall copy format is textual.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>CopyOutResponse (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('H')</DT
+><DD
+><P
+>                Identifies the message as a Start Copy Out response.
+                This message will be followed by copy-out data.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int8</DT
+><DD
+><P
+>                0 indicates the overall <TT
+CLASS="COMMAND"
+>COPY</TT
+> format
+                is textual (rows separated by newlines, columns
+                separated by separator characters, etc). 1 indicates
+                the overall copy format is binary (similar to DataRow
+                format). See <A
+HREF="sql-copy.html"
+><I
+>COPY</I
+></A
+> for more information. </P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>		The number of columns in the data to be copied
+		(denoted <TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> below).</P
+></DD
+><DT
+>Int16[<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+>]</DT
+><DD
+><P
+>                The format codes to be used for each column.
+		Each must presently be zero (text) or one (binary).
+		All must be zero if the overall copy format is textual.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>DataRow (B)</DT
+><DD
+><P
+><P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('D')</DT
+><DD
+><P
+>                Identifies the message as a data row.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                The number of column values that follow (possibly zero).</P
+></DD
+></DL
+></DIV
+><P>
+        Next, the following pair of fields appear for each column:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32</DT
+><DD
+><P
+>                The length of the column value, in bytes (this count
+		does not include itself).  Can be zero.
+		As a special case, -1 indicates a NULL column value.
+		No value bytes follow in the NULL case.</P
+></DD
+><DT
+>Byte<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></DT
+><DD
+><P
+>                The value of the column, in the format indicated by the
+		associated format code.
+                <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is the above length.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>Describe (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('D')</DT
+><DD
+><P
+>                Identifies the message as a Describe command.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Byte1</DT
+><DD
+><P
+>                '<TT
+CLASS="LITERAL"
+>S</TT
+>' to describe a prepared statement; or
+                '<TT
+CLASS="LITERAL"
+>P</TT
+>' to describe a portal.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the prepared statement or portal to describe
+		(an empty string selects the unnamed prepared statement
+		or portal).</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>EmptyQueryResponse (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('I')</DT
+><DD
+><P
+>                Identifies the message as a response to an empty query string.
+		(This substitutes for CommandComplete.)</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>ErrorResponse (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('E')</DT
+><DD
+><P
+>                Identifies the message as an error.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>
+        The message body consists of one or more identified fields,
+	followed by a zero byte as a terminator.  Fields may appear in
+	any order.  For each field there is the following:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1</DT
+><DD
+><P
+>                A code identifying the field type; if zero, this is
+		the message terminator and no string follows.
+		The presently defined field types are listed in
+		<A
+HREF="protocol-error-fields.html"
+>Section 42.5</A
+>.
+		Since more field types may be added in future,
+		frontends should silently ignore fields of unrecognized
+		type.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The field value.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>Execute (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('E')</DT
+><DD
+><P
+>                Identifies the message as an Execute command.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the portal to execute
+		(an empty string selects the unnamed portal).</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Maximum number of rows to return, if portal contains
+		a query that returns rows (ignored otherwise).  Zero
+		denotes <SPAN
+CLASS="QUOTE"
+>"no limit"</SPAN
+>.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>Flush (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('H')</DT
+><DD
+><P
+>                Identifies the message as a Flush command.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>FunctionCall (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('F')</DT
+><DD
+><P
+>                Identifies the message as a function call.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Specifies the object ID of the function to call.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>		The number of argument format codes that follow
+		(denoted <TT
+CLASS="REPLACEABLE"
+><I
+>C</I
+></TT
+> below).
+		This can be zero to indicate that there are no arguments
+		or that the arguments all use the default format (text);
+		or one, in which case the specified format code is applied
+		to all arguments; or it can equal the actual number of
+		arguments.</P
+></DD
+><DT
+>Int16[<TT
+CLASS="REPLACEABLE"
+><I
+>C</I
+></TT
+>]</DT
+><DD
+><P
+>                The argument format codes.  Each must presently be
+		zero (text) or one (binary).</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                Specifies the number of arguments being supplied to the
+                function.</P
+></DD
+></DL
+></DIV
+><P>
+        Next, the following pair of fields appear for each argument:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32</DT
+><DD
+><P
+>                The length of the argument value, in bytes (this count
+		does not include itself).  Can be zero.
+		As a special case, -1 indicates a NULL argument value.
+		No value bytes follow in the NULL case.</P
+></DD
+><DT
+>Byte<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></DT
+><DD
+><P
+>                The value of the argument, in the format indicated by the
+		associated format code.
+                <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is the above length.</P
+></DD
+></DL
+></DIV
+><P>
+        After the last argument, the following field appears:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int16</DT
+><DD
+><P
+>                The format code for the function result. Must presently be
+		zero (text) or one (binary).</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>FunctionCallResponse (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('V')</DT
+><DD
+><P
+>                Identifies the message as a function call result.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The length of the function result value, in bytes (this count
+		does not include itself).  Can be zero.
+		As a special case, -1 indicates a NULL function result.
+		No value bytes follow in the NULL case.</P
+></DD
+><DT
+>Byte<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></DT
+><DD
+><P
+>                The value of the function result, in the format indicated by
+		the associated format code.
+                <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is the above length.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>NoData (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('n')</DT
+><DD
+><P
+>                Identifies the message as a no-data indicator.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>NoticeResponse (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('N')</DT
+><DD
+><P
+>                Identifies the message as a notice.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>
+        The message body consists of one or more identified fields,
+	followed by a zero byte as a terminator.  Fields may appear in
+	any order.  For each field there is the following:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1</DT
+><DD
+><P
+>                A code identifying the field type; if zero, this is
+		the message terminator and no string follows.
+		The presently defined field types are listed in
+		<A
+HREF="protocol-error-fields.html"
+>Section 42.5</A
+>.
+		Since more field types may be added in future,
+		frontends should silently ignore fields of unrecognized
+		type.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The field value.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>NotificationResponse (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('A')</DT
+><DD
+><P
+>                Identifies the message as a notification response.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The process ID of the notifying backend process.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the condition that the notify has been raised on.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                Additional information passed from the notifying process.
+		(Currently, this feature is unimplemented so the field
+		is always an empty string.)</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>ParameterDescription (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('t')</DT
+><DD
+><P
+>                Identifies the message as a parameter description.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                The number of parameters used by the statement
+		(may be zero).</P
+></DD
+></DL
+></DIV
+><P>
+        Then, for each parameter, there is the following:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32</DT
+><DD
+><P
+>                Specifies the object ID of the parameter data type.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>ParameterStatus (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('S')</DT
+><DD
+><P
+>                Identifies the message as a run-time parameter status report.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the run-time parameter being reported.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The current value of the parameter.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>Parse (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('P')</DT
+><DD
+><P
+>                Identifies the message as a Parse command.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The name of the destination prepared statement
+		(an empty string selects the unnamed prepared statement).</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The query string to be parsed.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                The number of parameter data types specified
+		(may be zero).  Note that this is not an indication of
+		the number of parameters that might appear in the
+		query string, only the number that the frontend wants to
+		prespecify types for.</P
+></DD
+></DL
+></DIV
+><P>
+        Then, for each parameter, there is the following:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32</DT
+><DD
+><P
+>                Specifies the object ID of the parameter data type.
+		Placing a zero here is equivalent to leaving the type
+		unspecified.</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>ParseComplete (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('1')</DT
+><DD
+><P
+>                Identifies the message as a Parse-complete indicator.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>PasswordMessage (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('p')</DT
+><DD
+><P
+>                Identifies the message as a password response.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The password (encrypted, if requested).</P
+></DD
+></DL
+></DIV
+><P></P
+></DD
+><DT
+>PortalSuspended (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('s')</DT
+><DD
+><P
+>                Identifies the message as a portal-suspended indicator.
+		Note this only appears if an Execute message's row-count limit
+		was reached.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>Query (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('Q')</DT
+><DD
+><P
+>                Identifies the message as a simple query.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The query string itself.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>ReadyForQuery (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('Z')</DT
+><DD
+><P
+>                Identifies the message type.  ReadyForQuery is sent
+                whenever the backend is ready for a new query cycle.</P
+></DD
+><DT
+>Int32(5)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Byte1</DT
+><DD
+><P
+>                Current backend transaction status indicator.
+		Possible values are '<TT
+CLASS="LITERAL"
+>I</TT
+>' if idle (not in
+		a transaction block); '<TT
+CLASS="LITERAL"
+>T</TT
+>' if in a transaction
+		block; or '<TT
+CLASS="LITERAL"
+>E</TT
+>' if in a failed transaction
+		block (queries will be rejected until block is ended).</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>RowDescription (B)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('T')</DT
+><DD
+><P
+>                Identifies the message as a row description.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                Specifies the number of fields in a row (may be zero).</P
+></DD
+></DL
+></DIV
+><P>
+        Then, for each field, there is the following:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>String</DT
+><DD
+><P
+>                The field name.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                If the field can be identified as a column of a specific
+		table, the object ID of the table; otherwise zero.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                If the field can be identified as a column of a specific
+		table, the attribute number of the column; otherwise zero.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The object ID of the field's data type.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                The data type size (see <TT
+CLASS="VARNAME"
+>pg_type.typlen</TT
+>).
+		Note that negative values denote variable-width types.</P
+></DD
+><DT
+>Int32</DT
+><DD
+><P
+>                The type modifier (see <TT
+CLASS="VARNAME"
+>pg_attribute.atttypmod</TT
+>).
+		The meaning of the modifier is type-specific.</P
+></DD
+><DT
+>Int16</DT
+><DD
+><P
+>                The format code being used for the field.  Currently will
+		be zero (text) or one (binary).  In a RowDescription
+		returned from the statement variant of Describe, the
+		format code is not yet known and will always be zero.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>SSLRequest (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32(8)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(80877103)</DT
+><DD
+><P
+>                The <ACRONYM
+CLASS="ACRONYM"
+>SSL</ACRONYM
+> request code.  The value is chosen to contain
+                <TT
+CLASS="LITERAL"
+>1234</TT
+> in the most significant 16 bits, and <TT
+CLASS="LITERAL"
+>5679</TT
+> in the
+                least 16 significant bits.  (To avoid confusion, this code
+                must not be the same as any protocol version number.)</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>StartupMessage (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int32</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+><DT
+>Int32(196608)</DT
+><DD
+><P
+>                The protocol version number.  The most significant 16 bits are
+                the major version number (3 for the protocol described here).
+		The least significant 16 bits are the minor version number
+		(0 for the protocol described here).</P
+></DD
+></DL
+></DIV
+><P>
+        The protocol version number is followed by one or more pairs of
+	parameter name and value strings.  A zero byte is required as a
+	terminator after the last name/value pair.
+	Parameters can appear in any
+	order.  <TT
+CLASS="LITERAL"
+>user</TT
+> is required, others are optional.
+	Each parameter is specified as:
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>String</DT
+><DD
+><P
+>                The parameter name.  Currently recognized names are:
+
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>user</TT
+></DT
+><DD
+><P
+>                        The database user name to connect as.  Required;
+			there is no default.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>database</TT
+></DT
+><DD
+><P
+>                        The database to connect to.  Defaults to the user name.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>options</TT
+></DT
+><DD
+><P
+>                        Command-line arguments for the backend.  (This is
+			deprecated in favor of setting individual run-time
+			parameters.)</P
+></DD
+></DL
+></DIV
+><P>
+
+                In addition to the above, any run-time parameter that can be
+		set at backend start time may be listed.  Such settings
+		will be applied during backend start (after parsing the
+		command-line options if any).  The values will act as
+		session defaults.</P
+></DD
+><DT
+>String</DT
+><DD
+><P
+>                The parameter value.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>Sync (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('S')</DT
+><DD
+><P
+>                Identifies the message as a Sync command.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+><DT
+>Terminate (F)</DT
+><DD
+><P
+>&#13;<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Byte1('X')</DT
+><DD
+><P
+>                Identifies the message as a termination.</P
+></DD
+><DT
+>Int32(4)</DT
+><DD
+><P
+>                Length of message contents in bytes, including self.</P
+></DD
+></DL
+></DIV
+><P>&#13;</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-message-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-error-fields.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Message Data Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="protocol.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Error and Notice Message Fields</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

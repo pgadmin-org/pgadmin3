@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_largeobject</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_language"
+HREF="catalog-pg-language.html"><LINK
+REL="NEXT"
+TITLE="pg_listener"
+HREF="catalog-pg-listener.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-language.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 41. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-listener.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-LARGEOBJECT"
+>41.19. <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+></A
+></H1
+><A
+NAME="AEN53649"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+> holds the data making up
+   <SPAN
+CLASS="QUOTE"
+>"large objects"</SPAN
+>.  A large object is identified by an
+   OID assigned when it is created.  Each large object is broken into
+   segments or <SPAN
+CLASS="QUOTE"
+>"pages"</SPAN
+> small enough to be conveniently stored as rows
+   in <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+>.
+   The amount of data per page is defined to be <TT
+CLASS="LITERAL"
+>LOBLKSIZE</TT
+> (which is currently
+   <TT
+CLASS="LITERAL"
+>BLCKSZ/4</TT
+>, or typically 2 kB).
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN53658"
+></A
+><P
+><B
+>Table 41-19. <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>References</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>loid</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Identifier of the large object that includes this page</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>pageno</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Page number of this page within its large object
+      (counting from zero)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>data</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>       Actual data stored in the large object.
+       This will never be more than <TT
+CLASS="SYMBOL"
+>LOBLKSIZE</TT
+> bytes and may be less.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   Each row of <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+> holds data
+   for one page of a large object, beginning at
+   byte offset (<TT
+CLASS="LITERAL"
+>pageno * LOBLKSIZE</TT
+>) within the object.  The implementation
+   allows sparse storage: pages may be missing, and may be shorter than
+   <TT
+CLASS="LITERAL"
+>LOBLKSIZE</TT
+> bytes even if they are not the last page of the object.
+   Missing regions within a large object read as zeroes.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-language.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-listener.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="STRUCTNAME"
+>pg_listener</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

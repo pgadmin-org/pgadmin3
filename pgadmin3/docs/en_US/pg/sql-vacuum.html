@@ -1,0 +1,535 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>VACUUM</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="UPDATE"
+HREF="sql-update.html"><LINK
+REL="NEXT"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-update.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-VACUUM"
+></A
+>VACUUM</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45887"
+></A
+><H2
+>Name</H2
+>VACUUM&nbsp;--&nbsp;garbage-collect and optionally analyze a database</DIV
+><A
+NAME="AEN45890"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45892"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>VACUUM [ FULL | FREEZE ] [ VERBOSE ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> ]
+VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [, ...] ) ] ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45897"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> reclaims storage occupied by deleted tuples.
+   In normal <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> operation, tuples that
+   are deleted or obsoleted by an update are not physically removed from
+   their table; they remain present until a <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> is
+   done.  Therefore it's necessary to do <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>
+   periodically, especially on frequently-updated tables.
+  </P
+><P
+>   With no parameter, <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> processes every table in the
+   current database.  With a parameter, <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> processes
+   only that table.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>VACUUM ANALYZE</TT
+> performs a <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>
+   and then an <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> for each selected table.  This
+   is a handy combination form for routine maintenance scripts.  See
+   <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+>
+   for more details about its processing.
+  </P
+><P
+>   Plain <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> (without <TT
+CLASS="LITERAL"
+>FULL</TT
+>) simply reclaims
+   space and makes it
+   available for re-use.  This form of the command can operate in parallel
+   with normal reading and writing of the table, as an exclusive lock
+   is not obtained. <TT
+CLASS="COMMAND"
+>VACUUM
+   FULL</TT
+> does more extensive processing, including moving of tuples
+   across blocks to try to compact the table to the minimum number of disk
+   blocks.  This form is much slower and requires an exclusive lock on each
+   table while it is being processed.
+  </P
+><P
+>   <TT
+CLASS="LITERAL"
+>FREEZE</TT
+> is a special-purpose option that
+   causes tuples to be marked <SPAN
+CLASS="QUOTE"
+>"frozen"</SPAN
+> as soon as possible,
+   rather than waiting until they are quite old.  If this is done when there
+   are no other open transactions in the same database, then it is guaranteed
+   that all tuples in the database are <SPAN
+CLASS="QUOTE"
+>"frozen"</SPAN
+> and will not be
+   subject to transaction ID wraparound problems, no matter how long the
+   database is left unvacuumed.
+   <TT
+CLASS="LITERAL"
+>FREEZE</TT
+> is not recommended for routine use.  Its only
+   intended usage is in connection with preparation of user-defined template
+   databases, or other databases that are completely read-only and will not
+   receive routine maintenance <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> operations.
+   See <A
+HREF="maintenance.html"
+>Chapter 21</A
+> for details.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45923"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>FULL</TT
+></DT
+><DD
+><P
+>      Selects <SPAN
+CLASS="QUOTE"
+>"full"</SPAN
+> vacuum, which may reclaim more
+      space, but takes much longer and exclusively locks the table.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>FREEZE</TT
+></DT
+><DD
+><P
+>      Selects aggressive <SPAN
+CLASS="QUOTE"
+>"freezing"</SPAN
+> of tuples.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>VERBOSE</TT
+></DT
+><DD
+><P
+>      Prints a detailed vacuum activity report for each table.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>ANALYZE</TT
+></DT
+><DD
+><P
+>      Updates statistics used by the planner to determine the most
+      efficient way to execute a query.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of a specific table to
+      vacuum. Defaults to all tables in the current database.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+></DT
+><DD
+><P
+>      The name of a specific column to analyze. Defaults to all columns.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45958"
+></A
+><H2
+>Outputs</H2
+><P
+>    When <TT
+CLASS="LITERAL"
+>VERBOSE</TT
+> is specified, <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> emits
+    progress messages to indicate which table is currently being
+    processed.  Various statistics about the tables are printed as well.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45963"
+></A
+><H2
+>Notes</H2
+><P
+>    We recommend that active production databases be
+    vacuumed frequently (at least nightly), in order to
+    remove expired rows. After adding or deleting a large number
+    of rows, it may be a good idea to issue a <TT
+CLASS="COMMAND"
+>VACUUM
+    ANALYZE</TT
+> command for the affected table. This will update the
+    system catalogs with
+    the results of all recent changes, and allow the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query planner to make better
+    choices in planning queries.
+   </P
+><P
+>    The <TT
+CLASS="OPTION"
+>FULL</TT
+> option is not recommended for routine use,
+    but may be useful in special cases.  An example is when you have deleted
+    most of the rows in a table and would like the table to physically shrink
+    to occupy less disk space.  <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> will usually
+    shrink the table more than a plain <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> would.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45972"
+></A
+><H2
+>Examples</H2
+><P
+>   The following is an example from running <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> on a
+   table in the regression database:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>regression=# VACUUM VERBOSE ANALYZE onek;
+INFO:  vacuuming "public.onek"
+INFO:  index "onek_unique1" now contains 1000 tuples in 14 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.01s/0.08u sec elapsed 0.18 sec.
+INFO:  index "onek_unique2" now contains 1000 tuples in 16 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.00s/0.07u sec elapsed 0.23 sec.
+INFO:  index "onek_hundred" now contains 1000 tuples in 13 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.01s/0.08u sec elapsed 0.17 sec.
+INFO:  index "onek_stringu1" now contains 1000 tuples in 48 pages
+DETAIL:  3000 index tuples were removed.
+0 index pages have been deleted, 0 are currently reusable.
+CPU 0.01s/0.09u sec elapsed 0.59 sec.
+INFO:  "onek": removed 3000 tuples in 108 pages
+DETAIL:  CPU 0.01s/0.06u sec elapsed 0.07 sec.
+INFO:  "onek": found 3000 removable, 1000 nonremovable tuples in 143 pages
+DETAIL:  0 dead tuples cannot be removed yet.
+There were 0 unused item pointers.
+0 pages are entirely empty.
+CPU 0.07s/0.39u sec elapsed 1.56 sec.
+INFO:  analyzing "public.onek"
+INFO:  "onek": 36 pages, 1000 rows sampled, 1000 estimated total rows
+VACUUM</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45977"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> statement in the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45981"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-vacuumdb.html"
+><I
+><I
+>vacuumdb</I
+></I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>UPDATE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>PostgreSQL Client Applications</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

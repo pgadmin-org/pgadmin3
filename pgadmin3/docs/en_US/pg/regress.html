@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Regression Tests</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Administration"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Internals"
+HREF="wal-internals.html"><LINK
+REL="NEXT"
+TITLE="Test Evaluation"
+HREF="regress-evaluation.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="wal-internals.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="wal.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="client-interfaces.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress-evaluation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="REGRESS"
+></A
+>Chapter 26. Regression Tests</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>26.1. <A
+HREF="regress.html#REGRESS-RUN"
+>Running the Tests</A
+></DT
+><DT
+>26.2. <A
+HREF="regress-evaluation.html"
+>Test Evaluation</A
+></DT
+><DD
+><DL
+><DT
+>26.2.1. <A
+HREF="regress-evaluation.html#AEN22390"
+>Error message differences</A
+></DT
+><DT
+>26.2.2. <A
+HREF="regress-evaluation.html#AEN22395"
+>Locale differences</A
+></DT
+><DT
+>26.2.3. <A
+HREF="regress-evaluation.html#AEN22408"
+>Date and time differences</A
+></DT
+><DT
+>26.2.4. <A
+HREF="regress-evaluation.html#AEN22418"
+>Floating-point differences</A
+></DT
+><DT
+>26.2.5. <A
+HREF="regress-evaluation.html#AEN22432"
+>Row ordering differences</A
+></DT
+><DT
+>26.2.6. <A
+HREF="regress-evaluation.html#AEN22443"
+>The <SPAN
+CLASS="QUOTE"
+>"random"</SPAN
+> test</A
+></DT
+></DL
+></DD
+><DT
+>26.3. <A
+HREF="regress-platform.html"
+>Platform-specific comparison files</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN22323"
+></A
+><A
+NAME="AEN22325"
+></A
+><P
+>   The regression tests are a comprehensive set of tests for the SQL
+   implementation in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  They test
+   standard SQL operations as well as the extended capabilities of
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="REGRESS-RUN"
+>26.1. Running the Tests</A
+></H1
+><P
+>   The regression tests can be run against an already installed and
+   running server, or using a temporary installation within the build
+   tree.  Furthermore, there is a <SPAN
+CLASS="QUOTE"
+>"parallel"</SPAN
+> and a
+   <SPAN
+CLASS="QUOTE"
+>"sequential"</SPAN
+> mode for running the tests.  The
+   sequential method runs each test script in turn, whereas the
+   parallel method starts up multiple server processes to run groups
+   of tests in parallel.  Parallel testing gives confidence that
+   interprocess communication and locking are working correctly.  For
+   historical reasons, the sequential test is usually run against an
+   existing installation and the parallel method against a temporary
+   installation, but there are no technical reasons for this.
+  </P
+><P
+>   To run the regression tests after building but before installation,
+   type
+</P><PRE
+CLASS="SCREEN"
+>gmake check</PRE
+><P>
+   in the top-level directory.  (Or you can change to
+   <TT
+CLASS="FILENAME"
+>src/test/regress</TT
+> and run the command there.)
+   This will first build several auxiliary files, such as
+   some sample user-defined trigger functions, and then run the test driver
+   script.  At the end you should see something like
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>======================
+ All 96 tests passed.
+======================</SAMP
+></PRE
+><P>
+   or otherwise a note about which tests failed.  See <A
+HREF="regress-evaluation.html"
+>Section 26.2</A
+> below before assuming that a
+   <SPAN
+CLASS="QUOTE"
+>"failure"</SPAN
+> represents a serious problem.
+  </P
+><P
+>    Because this test method runs a temporary server, it will not work
+    when you are the root user (since the server will not start as root).
+    If you already did the build as root, you do not have to start all
+    over.  Instead, make the regression test directory writable by
+    some other user, log in as that user, and restart the tests.
+    For example
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>root# </SAMP
+><KBD
+CLASS="USERINPUT"
+>chmod -R a+w src/test/regress</KBD
+>
+<SAMP
+CLASS="PROMPT"
+>root# </SAMP
+><KBD
+CLASS="USERINPUT"
+>chmod -R a+w contrib/spi</KBD
+>
+<SAMP
+CLASS="PROMPT"
+>root# </SAMP
+><KBD
+CLASS="USERINPUT"
+>su - joeuser</KBD
+>
+<SAMP
+CLASS="PROMPT"
+>joeuser$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>cd <TT
+CLASS="REPLACEABLE"
+><I
+>top-level build directory</I
+></TT
+></KBD
+>
+<SAMP
+CLASS="PROMPT"
+>joeuser$ </SAMP
+><KBD
+CLASS="USERINPUT"
+>gmake check</KBD
+></PRE
+><P>
+    (The only possible <SPAN
+CLASS="QUOTE"
+>"security risk"</SPAN
+> here is that other
+    users might be able to alter the regression test results behind
+    your back.  Use common sense when managing user permissions.)
+   </P
+><P
+>    Alternatively, run the tests after installation.
+   </P
+><P
+>    If you have configured <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to install
+    into a location where an older <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    installation already exists, and you perform <TT
+CLASS="LITERAL"
+>gmake check</TT
+>
+    before installing the new version, you may find that the tests fail
+    because the new programs try to use the already-installed shared
+    libraries.  (Typical symptoms are complaints about undefined symbols.)
+    If you wish to run the tests before overwriting the old installation,
+    you'll need to build with <TT
+CLASS="LITERAL"
+>configure --disable-rpath</TT
+>.
+    It is not recommended that you use this option for the final installation,
+    however.
+   </P
+><P
+>    The parallel regression test starts quite a few processes under your
+    user ID.  Presently, the maximum concurrency is twenty parallel test
+    scripts, which means sixty processes: there's a server process, a
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, and usually a shell parent process for the
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> for each test script.
+    So if your system enforces a per-user limit on the number of processes,
+    make sure this limit is at least seventy-five or so, else you may get
+    random-seeming failures in the parallel test.  If you are not in
+    a position to raise the limit, you can cut down the degree of parallelism
+    by setting the <TT
+CLASS="LITERAL"
+>MAX_CONNECTIONS</TT
+> parameter.  For example,
+</P><PRE
+CLASS="SCREEN"
+>gmake MAX_CONNECTIONS=10 check</PRE
+><P>
+    runs no more than ten tests concurrently.
+   </P
+><P
+>    On some systems, the default Bourne-compatible shell
+    (<TT
+CLASS="FILENAME"
+>/bin/sh</TT
+>) gets confused when it has to manage
+    too many child processes in parallel.  This may cause the parallel
+    test run to lock up or fail.  In such cases, specify a different
+    Bourne-compatible shell on the command line, for example:
+</P><PRE
+CLASS="SCREEN"
+>gmake SHELL=/bin/ksh check</PRE
+><P>
+    If no non-broken shell is available, you may be able to work around the
+    problem by limiting the number of connections, as shown above.
+   </P
+><P
+>   To run the tests after installation (see <A
+HREF="installation.html"
+>Chapter 14</A
+>),
+   initialize a data area and start the
+   server, as explained in <A
+HREF="runtime.html"
+>Chapter 16</A
+>,  then type
+</P><PRE
+CLASS="SCREEN"
+>gmake installcheck</PRE
+><P>
+or for a parallel test
+</P><PRE
+CLASS="SCREEN"
+>gmake installcheck-parallel</PRE
+><P>
+   The tests will expect to contact the server at the local host and the
+   default port number, unless directed otherwise by <TT
+CLASS="ENVAR"
+>PGHOST</TT
+> and
+   <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> environment variables.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="wal-internals.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress-evaluation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Internals</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Test Evaluation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

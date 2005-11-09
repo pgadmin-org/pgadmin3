@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The Parser Stage</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Overview of PostgreSQL Internals"
+HREF="overview.html"><LINK
+REL="PREVIOUS"
+TITLE="How Connections are Established"
+HREF="connect-estab.html"><LINK
+REL="NEXT"
+TITLE="The PostgreSQL Rule System"
+HREF="rule-system.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="connect-estab.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="overview.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 40. Overview of PostgreSQL Internals</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="overview.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rule-system.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PARSER-STAGE"
+>40.3. The Parser Stage</A
+></H1
+><P
+>    The <I
+CLASS="FIRSTTERM"
+>parser stage</I
+> consists of two parts:
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       The <I
+CLASS="FIRSTTERM"
+>parser</I
+> defined in
+       <TT
+CLASS="FILENAME"
+>gram.y</TT
+> and <TT
+CLASS="FILENAME"
+>scan.l</TT
+> is
+       built using the Unix tools <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+>
+       and <SPAN
+CLASS="APPLICATION"
+>lex</SPAN
+>.
+      </P
+></LI
+><LI
+><P
+>       The <I
+CLASS="FIRSTTERM"
+>transformation process</I
+> does
+       modifications and augmentations to the data structures returned by the parser.
+      </P
+></LI
+></UL
+><P>
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN51599"
+>40.3.1. Parser</A
+></H2
+><P
+>     The parser has to check the query string (which arrives as plain
+     ASCII text) for valid syntax. If the syntax is correct a
+     <I
+CLASS="FIRSTTERM"
+>parse tree</I
+> is built up and handed back;
+     otherwise an error is returned. The parser and lexer are
+     implemented using the well-known Unix tools <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+>
+     and <SPAN
+CLASS="APPLICATION"
+>lex</SPAN
+>.
+    </P
+><P
+>     The <I
+CLASS="FIRSTTERM"
+>lexer</I
+> is defined in the file
+     <TT
+CLASS="FILENAME"
+>scan.l</TT
+> and is responsible
+     for recognizing <I
+CLASS="FIRSTTERM"
+>identifiers</I
+>,
+     the <I
+CLASS="FIRSTTERM"
+>SQL key words</I
+> etc. For
+     every key word or identifier that is found, a <I
+CLASS="FIRSTTERM"
+>token</I
+>
+     is generated and handed to the parser.
+    </P
+><P
+>     The parser is defined in the file <TT
+CLASS="FILENAME"
+>gram.y</TT
+> and
+     consists of a set of <I
+CLASS="FIRSTTERM"
+>grammar rules</I
+> and
+     <I
+CLASS="FIRSTTERM"
+>actions</I
+> that are executed whenever a rule
+     is fired. The code of the actions (which is actually C code) is
+     used to build up the parse tree.
+    </P
+><P
+>     The file <TT
+CLASS="FILENAME"
+>scan.l</TT
+> is transformed to the C
+     source file <TT
+CLASS="FILENAME"
+>scan.c</TT
+> using the program
+     <SPAN
+CLASS="APPLICATION"
+>lex</SPAN
+> and <TT
+CLASS="FILENAME"
+>gram.y</TT
+> is
+     transformed to <TT
+CLASS="FILENAME"
+>gram.c</TT
+> using
+     <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+>.  After these transformations
+     have taken place a normal C compiler can be used to create the
+     parser. Never make any changes to the generated C files as they
+     will be overwritten the next time <SPAN
+CLASS="APPLICATION"
+>lex</SPAN
+>
+     or <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+> is called.
+
+     </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       The mentioned transformations and compilations are normally done
+       automatically using the <I
+CLASS="FIRSTTERM"
+>makefiles</I
+>
+       shipped with the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+       source distribution.
+      </P
+></BLOCKQUOTE
+></DIV
+><P>
+    </P
+><P
+>     A detailed description of <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+> or
+     the grammar rules given in <TT
+CLASS="FILENAME"
+>gram.y</TT
+> would be
+     beyond the scope of this paper. There are many books and
+     documents dealing with <SPAN
+CLASS="APPLICATION"
+>lex</SPAN
+> and
+     <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+>. You should be familiar with
+     <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+> before you start to study the
+     grammar given in <TT
+CLASS="FILENAME"
+>gram.y</TT
+> otherwise you won't
+     understand what happens there.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN51635"
+>40.3.2. Transformation Process</A
+></H2
+><P
+>     The parser stage creates a parse tree using only fixed rules about
+     the syntactic structure of SQL.  It does not make any lookups in the
+     system catalogs, so there is no possibility to understand the detailed
+     semantics of the requested operations.  After the parser completes,
+     the <I
+CLASS="FIRSTTERM"
+>transformation process</I
+> takes the tree handed
+     back by the parser as input and does the semantic interpretation needed
+     to understand which tables, functions, and operators are referenced by
+     the query.  The data structure that is built to represent this
+     information is called the <I
+CLASS="FIRSTTERM"
+>query tree</I
+>.
+    </P
+><P
+>     The reason for separating raw parsing from semantic analysis is that
+     system catalog lookups can only be done within a transaction, and we
+     do not wish to start a transaction immediately upon receiving a query
+     string.  The raw parsing stage is sufficient to identify the transaction
+     control commands (<TT
+CLASS="COMMAND"
+>BEGIN</TT
+>, <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+>, etc), and
+     these can then be correctly executed without any further analysis.
+     Once we know that we are dealing with an actual query (such as
+     <TT
+CLASS="COMMAND"
+>SELECT</TT
+> or <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>), it is okay to
+     start a transaction if we're not already in one.  Only then can the
+     transformation process be invoked.
+    </P
+><P
+>     The query tree created by the transformation process is structurally
+     similar to the raw parse tree in most places, but it has many differences
+     in detail.  For example, a <TT
+CLASS="STRUCTNAME"
+>FuncCall</TT
+> node in the
+     parse tree represents something that looks syntactically like a function
+     call.  This may be transformed to either a <TT
+CLASS="STRUCTNAME"
+>FuncExpr</TT
+>
+     or <TT
+CLASS="STRUCTNAME"
+>Aggref</TT
+> node depending on whether the referenced
+     name turns out to be an ordinary function or an aggregate function.
+     Also, information about the actual data types of columns and expression
+     results is added to the query tree.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="connect-estab.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rule-system.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>How Connections are Established</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Rule System</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

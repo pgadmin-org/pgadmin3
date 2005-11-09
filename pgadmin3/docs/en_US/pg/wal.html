@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Write-Ahead Logging (WAL)</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Administration"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Disk Full Failure"
+HREF="disk-full.html"><LINK
+REL="NEXT"
+TITLE="WAL Configuration"
+HREF="wal-configuration.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="disk-full.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="diskusage.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="wal-configuration.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="WAL"
+></A
+>Chapter 25. Write-Ahead Logging (<ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>)</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>25.1. <A
+HREF="wal.html#WAL-BENEFITS"
+>Benefits of <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+></A
+></DT
+><DT
+>25.2. <A
+HREF="wal-configuration.html"
+><ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> Configuration</A
+></DT
+><DT
+>25.3. <A
+HREF="wal-internals.html"
+>Internals</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN22195"
+></A
+><A
+NAME="AEN22197"
+></A
+><P
+>   <I
+CLASS="FIRSTTERM"
+>Write-Ahead Logging</I
+> (<ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>)
+   is a standard approach to transaction logging.  Its detailed
+   description may be found in most (if not all) books about
+   transaction processing. Briefly, <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>'s central
+   concept is that changes to data files (where tables and indexes
+   reside) must be written only after those changes have been logged,
+   that is, when log records describing the changes have been flushed
+   to permanent storage. If we follow this procedure, we do not need
+   to flush data pages to disk on every transaction commit, because we
+   know that in the event of a crash we will be able to recover the
+   database using the log: any changes that have not been applied to
+   the data pages can be redone from the log records.  (This is
+   roll-forward recovery, also known as REDO.)
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="WAL-BENEFITS"
+>25.1. Benefits of <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+></A
+></H1
+><A
+NAME="AEN22207"
+></A
+><P
+>    The first major benefit of using <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> is a
+    significantly reduced number of disk writes, because only the log
+    file needs to be flushed to disk at the time of transaction
+    commit, rather than every data file changed by the transaction.
+    In multiuser environments, commits of many transactions
+    may be accomplished with a single <CODE
+CLASS="FUNCTION"
+>fsync</CODE
+> of
+    the log file. Furthermore, the log file is written sequentially,
+    and so the cost of syncing the log is much less than the cost of
+    flushing the data pages.   This is especially true for servers
+    handling many small transactions touching different parts of the data
+    store.
+   </P
+><P
+>    The next benefit is consistency of the data pages. The truth is
+    that, before <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>,
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> was never able to guarantee
+    consistency in the case of a crash.  Before
+    <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>, any crash during writing could result in:
+
+    <P
+></P
+></P><OL
+TYPE="1"
+><LI
+><P
+>index rows pointing to nonexistent table rows</P
+></LI
+><LI
+><P
+>index rows lost in split operations</P
+></LI
+><LI
+><P
+>totally corrupted table or index page content, because
+      of partially written data pages</P
+></LI
+></OL
+><P>
+
+    Problems with indexes (problems 1 and 2) could possibly have been
+    fixed by additional <CODE
+CLASS="FUNCTION"
+>fsync</CODE
+> calls, but it is
+    not obvious how to handle the last case without
+    <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>.  <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> saves the entire data
+    page content in the log if that is required to ensure page
+    consistency for after-crash recovery.
+   </P
+><P
+>    Finally, <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> makes it possible to support on-line
+    backup and point-in-time recovery, as described in <A
+HREF="backup-online.html"
+>Section 22.3</A
+>.  By archiving the WAL data we can support
+    reverting to any time instant covered by the available WAL data:
+    we simply install a prior physical backup of the database, and
+    replay the WAL log just as far as the desired time.  What's more,
+    the physical backup doesn't have to be an instantaneous snapshot
+    of the database state &mdash; if it is made over some period of time,
+    then replaying the WAL log for that period will fix any internal
+    inconsistencies.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="disk-full.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="wal-configuration.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Disk Full Failure</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

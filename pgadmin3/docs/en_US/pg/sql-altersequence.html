@@ -1,0 +1,528 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ALTER SEQUENCE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER SCHEMA"
+HREF="sql-alterschema.html"><LINK
+REL="NEXT"
+TITLE="ALTER TABLE"
+HREF="sql-altertable.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERSEQUENCE"
+></A
+>ALTER SEQUENCE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36931"
+></A
+><H2
+>Name</H2
+>   ALTER SEQUENCE
+  &nbsp;--&nbsp;   change the definition of a sequence generator
+  </DIV
+><A
+NAME="AEN36934"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN36936"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER SEQUENCE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [ INCREMENT [ BY ] <TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+> ]
+    [ MINVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> | NO MINVALUE ] [ MAXVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+> | NO MAXVALUE ]
+    [ RESTART [ WITH ] <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ] [ CACHE <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+> ] [ [ NO ] CYCLE ]
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36944"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> changes the parameters of an existing
+   sequence generator.  Any parameter not specifically set in the
+   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> command retains its prior setting.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36949"
+></A
+><H2
+>Parameters</H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>        The name (optionally schema-qualified) of a sequence to be altered.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+></DT
+><DD
+><P
+>        The clause <TT
+CLASS="LITERAL"
+>INCREMENT BY <TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+></TT
+> is
+        optional. A positive value will make an ascending sequence, a
+        negative one a descending sequence.  If unspecified, the old
+        increment value will be maintained.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+><BR><TT
+CLASS="LITERAL"
+>NO MINVALUE</TT
+></DT
+><DD
+><P
+>        The optional clause <TT
+CLASS="LITERAL"
+>MINVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+></TT
+> determines
+        the minimum value a sequence can generate. If <TT
+CLASS="LITERAL"
+>NO
+        MINVALUE</TT
+> is specified, the defaults of 1 and
+        -2<SUP
+>63</SUP
+>-1 for ascending and descending sequences,
+        respectively, will be used.  If neither option is specified,
+        the current minimum value will be maintained.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+><BR><TT
+CLASS="LITERAL"
+>NO MAXVALUE</TT
+></DT
+><DD
+><P
+>        The optional clause <TT
+CLASS="LITERAL"
+>MAXVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+></TT
+> determines
+        the maximum value for the sequence. If <TT
+CLASS="LITERAL"
+>NO
+        MAXVALUE</TT
+> is specified, the defaults are
+        2<SUP
+>63</SUP
+>-1 and -1 for ascending and descending
+        sequences, respectively, will be used.  If neither option is
+        specified, the current maximum value will be maintained.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+></DT
+><DD
+><P
+>        The optional clause <TT
+CLASS="LITERAL"
+>RESTART WITH <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+></TT
+> changes the
+        current value of the sequence.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+></DT
+><DD
+><P
+>        The clause <TT
+CLASS="LITERAL"
+>CACHE <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+></TT
+> enables
+        sequence numbers to be preallocated and stored in memory for
+        faster access. The minimum value is 1 (only one value can be
+        generated at a time, i.e., no cache).  If unspecified, the old
+        cache value will be maintained.
+       </P
+></DD
+><DT
+>CYCLE</DT
+><DD
+><P
+>        The optional <TT
+CLASS="LITERAL"
+>CYCLE</TT
+> key word may be used to enable
+        the sequence to wrap around when the
+        <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+> or
+        <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> has been
+        reached by
+        an ascending or descending sequence respectively. If the limit is
+        reached, the next number generated will be the
+        <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> or
+        <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+>,
+        respectively.
+       </P
+></DD
+><DT
+>NO CYCLE</DT
+><DD
+><P
+>        If the optional <TT
+CLASS="LITERAL"
+>NO CYCLE</TT
+> key word is
+        specified, any calls to <CODE
+CLASS="FUNCTION"
+>nextval</CODE
+> after the
+        sequence has reached its maximum value will return an error.
+        If neither <TT
+CLASS="LITERAL"
+>CYCLE</TT
+> or <TT
+CLASS="LITERAL"
+>NO
+        CYCLE</TT
+> are specified, the old cycle behaviour will be
+        maintained.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37018"
+></A
+><H2
+>Examples</H2
+><P
+>   Restart a sequence called <TT
+CLASS="LITERAL"
+>serial</TT
+>, at 105:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER SEQUENCE serial RESTART WITH 105;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37023"
+></A
+><H2
+>Notes</H2
+><P
+>   To avoid blocking of concurrent transactions that obtain numbers from the
+   same sequence, <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> is never rolled back;
+   the changes take effect immediately and are not reversible.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> will not immediately affect
+   <TT
+CLASS="LITERAL"
+>nextval</TT
+> results in backends,
+   other than the current one, that have preallocated (cached) sequence
+   values. They will use up all cached values prior to noticing the changed
+   sequence parameters.  The current backend will be affected immediately.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37030"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> conforms with <ACRONYM
+CLASS="ACRONYM"
+>SQL:2003</ACRONYM
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER SCHEMA</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER TABLE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Database Users and Privileges</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Administration"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Secure TCP/IP Connections with SSH Tunnels"
+HREF="ssh-tunnels.html"><LINK
+REL="NEXT"
+TITLE="User Attributes"
+HREF="user-attributes.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ssh-tunnels.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="runtime.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-attributes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="USER-MANAG"
+></A
+>Chapter 17. Database Users and Privileges</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>17.1. <A
+HREF="user-manag.html#DATABASE-USERS"
+>Database Users</A
+></DT
+><DT
+>17.2. <A
+HREF="user-attributes.html"
+>User Attributes</A
+></DT
+><DT
+>17.3. <A
+HREF="groups.html"
+>Groups</A
+></DT
+><DT
+>17.4. <A
+HREF="privileges.html"
+>Privileges</A
+></DT
+><DT
+>17.5. <A
+HREF="perm-functions.html"
+>Functions and Triggers</A
+></DT
+></DL
+></DIV
+><P
+>  Every database cluster contains a set of database users.  Those
+  users are separate from the users managed by the operating system on
+  which the server runs.  Users own database objects (for example,
+  tables) and can assign privileges on those objects to other users to
+  control who has access to which object.
+ </P
+><P
+>  This chapter describes how to create and manage users and introduces
+  the privilege system.  More information about the various types of
+  database objects and the effects of privileges can be found in <A
+HREF="ddl.html"
+>Chapter 5</A
+>.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATABASE-USERS"
+>17.1. Database Users</A
+></H1
+><A
+NAME="AEN19455"
+></A
+><A
+NAME="AEN19457"
+></A
+><A
+NAME="AEN19459"
+></A
+><P
+>   Database users are conceptually completely separate from
+   operating system users. In practice it might be convenient to
+   maintain a correspondence, but this is not required. Database user
+   names are global across a database cluster installation (and not
+   per individual database). To create a user use the <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+> SQL command:
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE USER <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>;</PRE
+><P>
+   <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> follows the rules for SQL
+   identifiers: either unadorned without special characters, or
+   double-quoted. To remove an existing user, use the analogous
+   <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+> command:
+</P><PRE
+CLASS="SYNOPSIS"
+>DROP USER <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>;</PRE
+><P>
+  </P
+><A
+NAME="AEN19469"
+></A
+><A
+NAME="AEN19471"
+></A
+><P
+>   For convenience, the programs <A
+HREF="app-createuser.html"
+><SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+></A
+>
+   and <A
+HREF="app-dropuser.html"
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></A
+> are provided as wrappers
+   around these SQL commands that can be called from the shell command
+   line:
+</P><PRE
+CLASS="SYNOPSIS"
+>createuser <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+dropuser <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></PRE
+><P>
+  </P
+><P
+>   To determine the set of existing users, examine the <TT
+CLASS="STRUCTNAME"
+>pg_user</TT
+>
+   system catalog, for example
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT usename FROM pg_user;</PRE
+><P>
+   The <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> program's <TT
+CLASS="LITERAL"
+>\du</TT
+> meta-command
+   is also useful for listing the existing users.
+  </P
+><P
+>   In order to bootstrap the database system, a freshly initialized
+   system always contains one predefined user. This user will have the
+   fixed ID 1, and by default (unless altered when running
+   <TT
+CLASS="COMMAND"
+>initdb</TT
+>) it will have the same name as the
+   operating system user that initialized the database
+   cluster. Customarily, this user will be named
+   <TT
+CLASS="LITERAL"
+>postgres</TT
+>. In order to create more users you
+   first have to connect as this initial user.
+  </P
+><P
+>   Exactly one user identity is active for a connection to the
+   database server.  The user name to use for a particular database
+   connection is indicated by the client that is initiating the
+   connection request in an application-specific fashion. For example,
+   the <TT
+CLASS="COMMAND"
+>psql</TT
+> program uses the
+   <TT
+CLASS="OPTION"
+>-U</TT
+> command line option to indicate the user to
+   connect as.  Many applications assume the name of the current
+   operating system user by default (including
+   <TT
+CLASS="COMMAND"
+>createuser</TT
+> and <TT
+CLASS="COMMAND"
+>psql</TT
+>).  Therefore it
+   is convenient to maintain a naming correspondence between the two
+   user sets.
+  </P
+><P
+>   The set of database users a given client connection may connect as
+   is determined by the client authentication setup, as explained in
+   <A
+HREF="client-authentication.html"
+>Chapter 19</A
+>. (Thus, a client is not
+   necessarily limited to connect as the user with the same name as
+   its operating system user, just as a person's login name 
+   need not match her real name.)  Since the user
+   identity determines the set of privileges available to a connected
+   client, it is important to carefully configure this when setting up
+   a multiuser environment.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ssh-tunnels.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-attributes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Secure TCP/IP Connections with <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> Tunnels</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>User Attributes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>RESET</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="RELEASE SAVEPOINT"
+HREF="sql-release-savepoint.html"><LINK
+REL="NEXT"
+TITLE="REVOKE"
+HREF="sql-revoke.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-release-savepoint.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-release-savepoint.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-RESET"
+></A
+>RESET</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44169"
+></A
+><H2
+>Name</H2
+>RESET&nbsp;--&nbsp;restore the value of a run-time parameter to the default value</DIV
+><A
+NAME="AEN44172"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44174"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>RESET <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+RESET ALL</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44177"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>RESET</TT
+> restores run-time parameters to their
+   default values.  <TT
+CLASS="COMMAND"
+>RESET</TT
+> is an alternative
+   spelling for
+</P><PRE
+CLASS="SYNOPSIS"
+>SET <TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+> TO DEFAULT</PRE
+><P>
+   Refer to <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> for
+   details.
+  </P
+><P
+>   The default value is defined as the value that the parameter would
+   have had, had no <TT
+CLASS="COMMAND"
+>SET</TT
+> ever been issued for it in the
+   current session.  The actual source of this value might be a
+   compiled-in default, the configuration file, command-line options,
+   or per-database or per-user default settings.  See <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> for details.
+  </P
+><P
+>   See the <TT
+CLASS="COMMAND"
+>SET</TT
+> reference page for details on the
+   transaction behavior of <TT
+CLASS="COMMAND"
+>RESET</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44191"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name of a run-time parameter. See <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> for a list.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>ALL</TT
+></DT
+><DD
+><P
+>      Resets all settable run-time parameters to default values.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44205"
+></A
+><H2
+>Examples</H2
+><P
+>   Set the <TT
+CLASS="VARNAME"
+>geqo</TT
+> configuration variable to its default value:
+</P><PRE
+CLASS="SCREEN"
+>RESET geqo;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44210"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>RESET</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-release-savepoint.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>RELEASE SAVEPOINT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>REVOKE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

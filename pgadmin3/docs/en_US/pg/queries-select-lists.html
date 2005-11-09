@@ -1,0 +1,457 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Select Lists</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Queries"
+HREF="queries.html"><LINK
+REL="PREVIOUS"
+TITLE="Table Expressions"
+HREF="queries-table-expressions.html"><LINK
+REL="NEXT"
+TITLE="Combining Queries"
+HREF="queries-union.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries-table-expressions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Queries</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries-union.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="QUERIES-SELECT-LISTS"
+>7.3. Select Lists</A
+></H1
+><A
+NAME="AEN3123"
+></A
+><P
+>   As shown in the previous section,
+   the table expression in the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command
+   constructs an intermediate virtual table by possibly combining
+   tables, views, eliminating rows, grouping, etc.  This table is
+   finally passed on to processing by the <I
+CLASS="FIRSTTERM"
+>select list</I
+>.  The select
+   list determines which <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>columns</I
+></SPAN
+> of the
+   intermediate table are actually output.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="QUERIES-SELECT-LIST-ITEMS"
+>7.3.1. Select-List Items</A
+></H2
+><A
+NAME="AEN3132"
+></A
+><P
+>    The simplest kind of select list is <TT
+CLASS="LITERAL"
+>*</TT
+> which
+    emits all columns that the table expression produces.  Otherwise,
+    a select list is a comma-separated list of value expressions (as
+    defined in <A
+HREF="sql-expressions.html"
+>Section 4.2</A
+>).  For instance, it
+    could be a list of column names:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a, b, c FROM ...</PRE
+><P>
+     The columns names <TT
+CLASS="LITERAL"
+>a</TT
+>, <TT
+CLASS="LITERAL"
+>b</TT
+>, and <TT
+CLASS="LITERAL"
+>c</TT
+>
+     are either the actual names of the columns of tables referenced
+     in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause, or the aliases given to them as
+     explained in <A
+HREF="queries-table-expressions.html#QUERIES-TABLE-ALIASES"
+>Section 7.2.1.2</A
+>.  The name
+     space available in the select list is the same as in the
+     <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause, unless grouping is used, in which case
+     it is the same as in the <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clause.
+   </P
+><P
+>    If more than one table has a column of the same name, the table
+    name must also be given, as in
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT tbl1.a, tbl2.a, tbl1.b FROM ...</PRE
+><P>
+    When working with multiple tables, it can also be useful to ask for
+    all the columns of a particular table:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT tbl1.*, tbl2.a FROM ...</PRE
+><P>
+    (See also <A
+HREF="queries-table-expressions.html#QUERIES-WHERE"
+>Section 7.2.2</A
+>.)
+   </P
+><P
+>    If an arbitrary value expression is used in the select list, it
+    conceptually adds a new virtual column to the returned table.  The
+    value expression is evaluated once for each result row, with
+    the row's values substituted for any column references.  But the
+    expressions in the select list do not have to reference any
+    columns in the table expression of the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause;
+    they could be constant arithmetic expressions as well, for
+    instance.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="QUERIES-COLUMN-LABELS"
+>7.3.2. Column Labels</A
+></H2
+><A
+NAME="AEN3153"
+></A
+><P
+>    The entries in the select list can be assigned names for further
+    processing.  The <SPAN
+CLASS="QUOTE"
+>"further processing"</SPAN
+> in this case is
+    an optional sort specification and the client application (e.g.,
+    column headers for display).  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a AS value, b + c AS sum FROM ...</PRE
+><P>
+   </P
+><P
+>    If no output column name is specified using <TT
+CLASS="LITERAL"
+>AS</TT
+>, the system assigns a
+    default name.  For simple column references, this is the name of the
+    referenced column.  For function 
+    calls, this is the name of the function.  For complex expressions,
+    the system will generate a generic name.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The naming of output columns here is different from that done in
+     the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause (see <A
+HREF="queries-table-expressions.html#QUERIES-TABLE-ALIASES"
+>Section 7.2.1.2</A
+>).  This pipeline will in fact
+     allow you to rename the same column twice, but the name chosen in
+     the select list is the one that will be passed on.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="QUERIES-DISTINCT"
+>7.3.3. <TT
+CLASS="LITERAL"
+>DISTINCT</TT
+></A
+></H2
+><A
+NAME="AEN3168"
+></A
+><A
+NAME="AEN3170"
+></A
+><P
+>    After the select list has been processed, the result table may
+    optionally be subject to the elimination of duplicate rows.  The
+    <TT
+CLASS="LITERAL"
+>DISTINCT</TT
+> key word is written directly after
+    <TT
+CLASS="LITERAL"
+>SELECT</TT
+> to specify this:
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT DISTINCT <TT
+CLASS="REPLACEABLE"
+><I
+>select_list</I
+></TT
+> ...</PRE
+><P>
+    (Instead of <TT
+CLASS="LITERAL"
+>DISTINCT</TT
+> the key word <TT
+CLASS="LITERAL"
+>ALL</TT
+>
+    can be used to specify the default behavior of retaining all rows.)
+   </P
+><P
+>    <A
+NAME="AEN3180"
+></A
+>
+    Obviously, two rows are considered distinct if they differ in at
+    least one column value.  Null values are considered equal in this
+    comparison.
+   </P
+><P
+>    Alternatively, an arbitrary expression can determine what rows are
+    to be considered distinct:
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT DISTINCT ON (<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> ...</SPAN
+>]) <TT
+CLASS="REPLACEABLE"
+><I
+>select_list</I
+></TT
+> ...</PRE
+><P>
+    Here <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> is an arbitrary value
+    expression that is evaluated for all rows.  A set of rows for
+    which all the expressions are equal are considered duplicates, and
+    only the first row of the set is kept in the output.  Note that
+    the <SPAN
+CLASS="QUOTE"
+>"first row"</SPAN
+> of a set is unpredictable unless the
+    query is sorted on enough columns to guarantee a unique ordering
+    of the rows arriving at the <TT
+CLASS="LITERAL"
+>DISTINCT</TT
+> filter.
+    (<TT
+CLASS="LITERAL"
+>DISTINCT ON</TT
+> processing occurs after <TT
+CLASS="LITERAL"
+>ORDER
+    BY</TT
+> sorting.)
+   </P
+><P
+>    The <TT
+CLASS="LITERAL"
+>DISTINCT ON</TT
+> clause is not part of the SQL standard
+    and is sometimes considered bad style because of the potentially
+    indeterminate nature of its results.  With judicious use of
+    <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+> and subqueries in <TT
+CLASS="LITERAL"
+>FROM</TT
+> the
+    construct can be avoided, but it is often the most convenient
+    alternative.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries-table-expressions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries-union.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Table Expressions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Combining Queries</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

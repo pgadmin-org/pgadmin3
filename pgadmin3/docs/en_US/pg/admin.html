@@ -1,0 +1,607 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Server Administration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Populating a Database"
+HREF="populate.html"><LINK
+REL="NEXT"
+TITLE="  Installation Instructions"
+HREF="installation.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="PART"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="populate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="client-interfaces.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="installation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="ADMIN"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>III. Server Administration</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN14983"
+></A
+><P
+>    This part covers topics that are of interest to a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database administrator.  This includes
+    installation of the software, set up and configuration of the
+    server, management of users and databases, and maintenance tasks.
+    Anyone who runs a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server, even for
+    personal use, but especially in production, should be familiar
+    with the topics covered in this part.
+   </P
+><P
+>    The information in this part is arranged approximately in the
+    order in which a new user should read it.  But the chapters are
+    self-contained and can be read individually as desired.  The
+    information in this part is presented in a narrative fashion in
+    topical units.  Readers looking for a complete description of a
+    particular command should look into <A
+HREF="reference.html"
+>Part VI</A
+>.
+   </P
+><P
+>    The first few chapters are written so that they can be understood
+    without prerequisite knowledge, so that new users who need to set
+    up their own server can begin their exploration with this part.
+    The rest of this part is about tuning and management; that material
+    assumes that the reader is familiar with the general use of
+    the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database system.  Readers are
+    encouraged to look at <A
+HREF="tutorial.html"
+>Part I</A
+> and <A
+HREF="sql.html"
+>Part II</A
+> for additional information.
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>14. <A
+HREF="installation.html"
+>Installation Instructions</A
+></DT
+><DD
+><DL
+><DT
+>14.1. <A
+HREF="installation.html#INSTALL-SHORT"
+>Short Version</A
+></DT
+><DT
+>14.2. <A
+HREF="install-requirements.html"
+>Requirements</A
+></DT
+><DT
+>14.3. <A
+HREF="install-getsource.html"
+>Getting The Source</A
+></DT
+><DT
+>14.4. <A
+HREF="install-upgrading.html"
+>If You Are Upgrading</A
+></DT
+><DT
+>14.5. <A
+HREF="install-procedure.html"
+>Installation Procedure</A
+></DT
+><DT
+>14.6. <A
+HREF="install-post.html"
+>Post-Installation Setup</A
+></DT
+><DT
+>14.7. <A
+HREF="supported-platforms.html"
+>Supported Platforms</A
+></DT
+></DL
+></DD
+><DT
+>15. <A
+HREF="install-win32.html"
+>Client-Only Installation on <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+></A
+></DT
+><DT
+>16. <A
+HREF="runtime.html"
+>Server Run-time Environment</A
+></DT
+><DD
+><DL
+><DT
+>16.1. <A
+HREF="runtime.html#POSTGRES-USER"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> User Account</A
+></DT
+><DT
+>16.2. <A
+HREF="creating-cluster.html"
+>Creating a Database Cluster</A
+></DT
+><DT
+>16.3. <A
+HREF="postmaster-start.html"
+>Starting the Database Server</A
+></DT
+><DT
+>16.4. <A
+HREF="runtime-config.html"
+>Run-time Configuration</A
+></DT
+><DT
+>16.5. <A
+HREF="kernel-resources.html"
+>Managing Kernel Resources</A
+></DT
+><DT
+>16.6. <A
+HREF="postmaster-shutdown.html"
+>Shutting Down the Server</A
+></DT
+><DT
+>16.7. <A
+HREF="encryption-options.html"
+>Encryption Options</A
+></DT
+><DT
+>16.8. <A
+HREF="ssl-tcp.html"
+>Secure TCP/IP Connections with SSL</A
+></DT
+><DT
+>16.9. <A
+HREF="ssh-tunnels.html"
+>Secure TCP/IP Connections with <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> Tunnels</A
+></DT
+></DL
+></DD
+><DT
+>17. <A
+HREF="user-manag.html"
+>Database Users and Privileges</A
+></DT
+><DD
+><DL
+><DT
+>17.1. <A
+HREF="user-manag.html#DATABASE-USERS"
+>Database Users</A
+></DT
+><DT
+>17.2. <A
+HREF="user-attributes.html"
+>User Attributes</A
+></DT
+><DT
+>17.3. <A
+HREF="groups.html"
+>Groups</A
+></DT
+><DT
+>17.4. <A
+HREF="privileges.html"
+>Privileges</A
+></DT
+><DT
+>17.5. <A
+HREF="perm-functions.html"
+>Functions and Triggers</A
+></DT
+></DL
+></DD
+><DT
+>18. <A
+HREF="managing-databases.html"
+>Managing Databases</A
+></DT
+><DD
+><DL
+><DT
+>18.1. <A
+HREF="managing-databases.html#MANAGE-AG-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>18.2. <A
+HREF="manage-ag-createdb.html"
+>Creating a Database</A
+></DT
+><DT
+>18.3. <A
+HREF="manage-ag-templatedbs.html"
+>Template Databases</A
+></DT
+><DT
+>18.4. <A
+HREF="manage-ag-config.html"
+>Database Configuration</A
+></DT
+><DT
+>18.5. <A
+HREF="manage-ag-dropdb.html"
+>Destroying a Database</A
+></DT
+><DT
+>18.6. <A
+HREF="manage-ag-tablespaces.html"
+>Tablespaces</A
+></DT
+></DL
+></DD
+><DT
+>19. <A
+HREF="client-authentication.html"
+>Client Authentication</A
+></DT
+><DD
+><DL
+><DT
+>19.1. <A
+HREF="client-authentication.html#AUTH-PG-HBA-CONF"
+>The <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+> file</A
+></DT
+><DT
+>19.2. <A
+HREF="auth-methods.html"
+>Authentication methods</A
+></DT
+><DT
+>19.3. <A
+HREF="client-authentication-problems.html"
+>Authentication problems</A
+></DT
+></DL
+></DD
+><DT
+>20. <A
+HREF="charset.html"
+>Localization</A
+></DT
+><DD
+><DL
+><DT
+>20.1. <A
+HREF="charset.html#LOCALE"
+>Locale Support</A
+></DT
+><DT
+>20.2. <A
+HREF="multibyte.html"
+>Character Set Support</A
+></DT
+></DL
+></DD
+><DT
+>21. <A
+HREF="maintenance.html"
+>Routine Database Maintenance Tasks</A
+></DT
+><DD
+><DL
+><DT
+>21.1. <A
+HREF="maintenance.html#ROUTINE-VACUUMING"
+>Routine Vacuuming</A
+></DT
+><DT
+>21.2. <A
+HREF="routine-reindex.html"
+>Routine Reindexing</A
+></DT
+><DT
+>21.3. <A
+HREF="logfile-maintenance.html"
+>Log File Maintenance</A
+></DT
+></DL
+></DD
+><DT
+>22. <A
+HREF="backup.html"
+>Backup and Restore</A
+></DT
+><DD
+><DL
+><DT
+>22.1. <A
+HREF="backup.html#BACKUP-DUMP"
+><ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Dump</A
+></DT
+><DT
+>22.2. <A
+HREF="backup-file.html"
+>File system level backup</A
+></DT
+><DT
+>22.3. <A
+HREF="backup-online.html"
+>On-line backup and point-in-time recovery (PITR)</A
+></DT
+><DT
+>22.4. <A
+HREF="migration.html"
+>Migration Between Releases</A
+></DT
+></DL
+></DD
+><DT
+>23. <A
+HREF="monitoring.html"
+>Monitoring Database Activity</A
+></DT
+><DD
+><DL
+><DT
+>23.1. <A
+HREF="monitoring.html#MONITORING-PS"
+>Standard Unix Tools</A
+></DT
+><DT
+>23.2. <A
+HREF="monitoring-stats.html"
+>The Statistics Collector</A
+></DT
+><DT
+>23.3. <A
+HREF="monitoring-locks.html"
+>Viewing Locks</A
+></DT
+></DL
+></DD
+><DT
+>24. <A
+HREF="diskusage.html"
+>Monitoring Disk Usage</A
+></DT
+><DD
+><DL
+><DT
+>24.1. <A
+HREF="diskusage.html#DISK-USAGE"
+>Determining Disk Usage</A
+></DT
+><DT
+>24.2. <A
+HREF="disk-full.html"
+>Disk Full Failure</A
+></DT
+></DL
+></DD
+><DT
+>25. <A
+HREF="wal.html"
+>Write-Ahead Logging (<ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>)</A
+></DT
+><DD
+><DL
+><DT
+>25.1. <A
+HREF="wal.html#WAL-BENEFITS"
+>Benefits of <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+></A
+></DT
+><DT
+>25.2. <A
+HREF="wal-configuration.html"
+><ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> Configuration</A
+></DT
+><DT
+>25.3. <A
+HREF="wal-internals.html"
+>Internals</A
+></DT
+></DL
+></DD
+><DT
+>26. <A
+HREF="regress.html"
+>Regression Tests</A
+></DT
+><DD
+><DL
+><DT
+>26.1. <A
+HREF="regress.html#REGRESS-RUN"
+>Running the Tests</A
+></DT
+><DT
+>26.2. <A
+HREF="regress-evaluation.html"
+>Test Evaluation</A
+></DT
+><DT
+>26.3. <A
+HREF="regress-platform.html"
+>Platform-specific comparison files</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="populate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="installation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Populating a Database</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Installation Instructions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,457 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Creating a Database</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Getting Started"
+HREF="tutorial-start.html"><LINK
+REL="PREVIOUS"
+TITLE="Architectural Fundamentals"
+HREF="tutorial-arch.html"><LINK
+REL="NEXT"
+TITLE="Accessing a Database"
+HREF="tutorial-accessdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-arch.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-start.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Getting Started</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-start.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-accessdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-CREATEDB"
+>1.3. Creating a Database</A
+></H1
+><A
+NAME="AEN434"
+></A
+><A
+NAME="AEN437"
+></A
+><P
+>    The first test to see whether you can access the database server
+    is to try to create a database.  A running
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server can manage many
+    databases.  Typically, a separate database is used for each
+    project or for each user.
+   </P
+><P
+>    Possibly, your site administrator has already created a database
+    for your use.  He should have told you what the name of your
+    database is.  In that case you can omit this step and skip ahead
+    to the next section.
+   </P
+><P
+>    To create a new database, in this example named
+    <TT
+CLASS="LITERAL"
+>mydb</TT
+>, you use the following command:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>createdb mydb</KBD
+></PRE
+><P>
+    This should produce as response:
+</P><PRE
+CLASS="SCREEN"
+>CREATE DATABASE</PRE
+><P>
+    If so, this step was successful and you can skip over the
+    remainder of this section.
+   </P
+><P
+>    If you see a message similar to
+</P><PRE
+CLASS="SCREEN"
+>createdb: command not found</PRE
+><P>
+    then <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> was not installed properly.  Either it was not
+    installed at all or the search path was not set correctly.  Try
+    calling the command with an absolute path instead:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>/usr/local/pgsql/bin/createdb mydb</KBD
+></PRE
+><P>
+    The path at your site might be different.  Contact your site
+    administrator or check back in the installation instructions to
+    correct the situation.
+   </P
+><P
+>    Another response could be this:
+</P><PRE
+CLASS="SCREEN"
+>createdb: could not connect to database template1: could not connect to server:
+No such file or directory
+        Is the server running locally and accepting
+        connections on Unix domain socket "/tmp/.s.PGSQL.5432"?</PRE
+><P>
+    This means that the server was not started, or it was not started
+    where <TT
+CLASS="COMMAND"
+>createdb</TT
+> expected it.  Again, check the
+    installation instructions or consult the administrator.
+   </P
+><P
+>    Another response could be this:
+</P><PRE
+CLASS="SCREEN"
+>createdb: could not connect to database template1: FATAL:  user "joe" does not
+exist</PRE
+><P>
+    where your own login name is mentioned.  This will happen if the
+    administrator has not created a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account
+    for you.  (<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user accounts are distinct from
+    operating system user accounts.)  If you are the administrator, see
+    <A
+HREF="user-manag.html"
+>Chapter 17</A
+> for help creating accounts.  You will need to
+    become the operating system user under which <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    was installed (usually <TT
+CLASS="LITERAL"
+>postgres</TT
+>) to create the first user
+    account.  It could also be that you were assigned a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user name that is different from your
+    operating system user name; in that case you need to use the <TT
+CLASS="OPTION"
+>-U</TT
+>
+    switch or set the <TT
+CLASS="ENVAR"
+>PGUSER</TT
+> environment variable to specify your
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user name.
+   </P
+><P
+>    If you have a user account but it does not have the privileges required to
+    create a database, you will see the following:
+</P><PRE
+CLASS="SCREEN"
+>createdb: database creation failed: ERROR:  permission denied to create database</PRE
+><P>
+    Not every user has authorization to create new databases.  If
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> refuses to create databases
+    for you then the site administrator needs to grant you permission
+    to create databases.  Consult your site administrator if this
+    occurs.  If you installed <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    yourself then you should log in for the purposes of this tutorial
+    under the user account that you started the server as.
+
+    <A
+NAME="AEN472"
+HREF="#FTN.AEN472"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>
+   </P
+><P
+>    You can also create databases with other names.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows you to create any
+    number of databases at a given site.  Database names must have an
+    alphabetic first character and are limited to 63 characters in
+    length.  A convenient choice is to create a database with the same
+    name as your current user name.  Many tools assume that database
+    name as the default, so it can save you some typing.  To create
+    that database, simply type
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>createdb</KBD
+></PRE
+><P>
+   </P
+><P
+>    If you do not want to use your database anymore you can remove it.
+    For example, if you are the owner (creator) of the database
+    <TT
+CLASS="LITERAL"
+>mydb</TT
+>, you can destroy it using the following
+    command:
+</P><PRE
+CLASS="SCREEN"
+><SAMP
+CLASS="PROMPT"
+>$</SAMP
+> <KBD
+CLASS="USERINPUT"
+>dropdb mydb</KBD
+></PRE
+><P>
+    (For this command, the database name does not default to the user
+    account name.  You always need to specify it.)  This action
+    physically removes all files associated with the database and
+    cannot be undone, so this should only be done with a great deal of
+    forethought.
+   </P
+><P
+>    More about <TT
+CLASS="COMMAND"
+>createdb</TT
+> and <TT
+CLASS="COMMAND"
+>dropdb</TT
+> may
+    be found in <A
+HREF="app-createdb.html"
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></A
+> and <A
+HREF="app-dropdb.html"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></A
+>
+    respectively.
+   </P
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN472"
+HREF="tutorial-createdb.html#AEN472"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>      As an explanation for why this works:
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user names are separate
+      from operating system user accounts.  If you connect to a
+      database, you can choose what
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user name to connect as;
+      if you don't, it will default to the same name as your current
+      operating system account.  As it happens, there will always be a
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account that has the
+      same name as the operating system user that started the server,
+      and it also happens that that user always has permission to
+      create databases.  Instead of logging in as that user you can
+      also specify the <TT
+CLASS="OPTION"
+>-U</TT
+> option everywhere to select
+      a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user name to connect as.
+     </P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-arch.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-accessdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Architectural Fundamentals</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-start.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Accessing a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

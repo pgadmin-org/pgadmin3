@@ -1,0 +1,749 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>parameters</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="key_column_usage"
+HREF="infoschema-key-column-usage.html"><LINK
+REL="NEXT"
+TITLE="referential_constraints"
+HREF="infoschema-referential-constraints.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-key-column-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 30. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-referential-constraints.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-PARAMETERS"
+>30.19. <TT
+CLASS="LITERAL"
+>parameters</TT
+></A
+></H1
+><P
+>   The view <TT
+CLASS="LITERAL"
+>parameters</TT
+> contains information about
+   the parameters (arguments) of all functions in the current database.
+   Only those functions are shown that the current user has access to
+   (by way of being the owner or having some privilege).
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN27234"
+></A
+><P
+><B
+>Table 30-17. <TT
+CLASS="LITERAL"
+>parameters</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>specific_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database containing the function (always the current database)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>specific_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema containing the function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>specific_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       The <SPAN
+CLASS="QUOTE"
+>"specific name"</SPAN
+> of the function.  See <A
+HREF="infoschema-routines.html"
+>Section 30.26</A
+> for more information.
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>ordinal_position</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       Ordinal position of the parameter in the argument list of the
+       function (count starts at 1)
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>parameter_mode</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Always <TT
+CLASS="LITERAL"
+>IN</TT
+>, meaning input parameter (in the
+       future there might be other parameter modes)
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>is_result</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>as_locator</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>parameter_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the parameter, or null if the parameter has no name</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>data_type</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Data type of the parameter, if it is a built-in type, or
+       <TT
+CLASS="LITERAL"
+>ARRAY</TT
+> if it is some array (in that case, see
+       the view <TT
+CLASS="LITERAL"
+>element_types</TT
+>), else
+       <TT
+CLASS="LITERAL"
+>USER-DEFINED</TT
+> (in that case, the type is
+       identified in <TT
+CLASS="LITERAL"
+>udt_name</TT
+> and associated
+       columns).
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>character_maximum_length</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>character_octet_length</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>character_set_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>character_set_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>character_set_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>collation_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>collation_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>collation_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>numeric_precision</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>numeric_precision_radix</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>numeric_scale</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>datetime_precision</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>interval_type</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>interval_precision</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Always null, since this information is not applied to parameter data types in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>udt_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the database that the data type of the parameter is
+       defined in (always the current database)
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>udt_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the schema that the data type of the parameter is
+       defined in
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>udt_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the data type of the parameter
+      </TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>scope_catalog</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>scope_schema</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>scope_name</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>maximum_cardinality</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, because arrays always have unlimited maximum cardinality in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>dtd_identifier</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       An identifier of the data type descriptor of the parameter,
+       unique among the data type descriptors pertaining to the
+       function.  This is mainly useful for joining with other
+       instances of such identifiers.  (The specific format of the
+       identifier is not defined and not guaranteed to remain the same
+       in future versions.)
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-key-column-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-referential-constraints.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>key_column_usage</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>referential_constraints</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

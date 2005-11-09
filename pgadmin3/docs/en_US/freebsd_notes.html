@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Compilation on unix platforms</title>
+</head>
+
+<body>
+
+<h3>FreeBSD Notes</h3>
+
+<p>First, there is a limitation in the contents which can move by the 
+fundamental version.<br>
+&nbsp;</p>
+<p><b>FreeBSD Version 4.x</b></p>
+<p><br>
+The use of UNICODE can't be expected with Version 4.x. libc lacks the wchar wide 
+character routines required. It is difficult work to fix this. This problem will 
+be seen when building wxWidgets. The following message will be output.<br>
+<br>
+...<br>
+<i>implicit declaration of function `inttowupper (...) '</i><br>
+...<br>
+<br>
+In this case, build wxWidgets without UNICODE support - wxWidgets may be 
+configured with the following command.<br>
+<br>
+<i>./configure --disable-shared --enable-static --with-gtk --enable-gtk2</i><br>
+&nbsp;</p>
+<p><b>FreeBSD Version 5.1 higher</b><br>
+&nbsp;</p>
+<p>UNICODE is supported, and pgAdmin3 should work well. There is a UTF-8 locales 
+support package in misc of the ports collection.<br>
+<br>
+Be careful in the establishment of locale. wxWidgets has the locale check of the 
+language with dot.<br>
+<br>
+For example, when it is LANG=ja_JP.UTF-8<br>
+/usr/share/locale<br>
+<br>
+ex.) locheck.c<br>
+#include &lt;stdlib.h&gt;<br>
+#include &lt;locale.h&gt;<br>
+int main(int argc,char *argv[])<br>
+{<br>
+if (argc &gt; 1)<br>
+printf(&quot;setlocale=%s\n&quot;,setlocale(LC_ALL,argv[1]));<br>
+return 0;<br>
+}<br>
+<br>
+cc -o locheck locheck.c<br>
+#FreeBSD running...<br>
+locheck ja_JP<br>
+(null) &lt;--- bad locale.<br>
+<br>
+ln -s /usr/share/locale/ja_JP.UTF-8 /usr/share/locale/ja_JP<br>
+locheck ja_JP<br>
+ja_JP &lt;--- it is OK.<br>
+<br>
+wxWidgets may be configured with the following command.<br>
+<br>
+<i>../configure --disable-shared --enable-static --enable-unicode --with-gtk 
+--enable-gtk2 --enable-debug </i><br>
+<br>
+Configured wxWidgets 2.5.0 for `i386-unknown-freebsd5.1'<br>
+<br>
+Which GUI toolkit should wxWidgets use? GTK<br>
+Should wxWidgets be compiled in debug mode? yes<br>
+Should wxWidgets be linked as a shared library? no<br>
+Should wxWidgets be compiled in Unicode mode? yes<br>
+What level of wxWidgets compatibility should be enabled?<br>
+wxWidgets 2.0 no<br>
+wxWidgets 2.2 no<br>
+wxWidgets 2.4 yes<br>
+Which libraries should wxWidgets use?<br>
+jpeg sys<br>
+png sys<br>
+regex sys<br>
+tiff sys<br>
+zlib sys<br>
+odbc no</p>
+
+</body>
+
+</html>

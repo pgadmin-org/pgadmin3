@@ -1,0 +1,440 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>pg_resetxlog</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_ctl"
+HREF="app-pg-ctl.html"><LINK
+REL="NEXT"
+TITLE="postgres"
+HREF="app-postgres.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pg-ctl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pg-ctl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-PGRESETXLOG"
+></A
+><SPAN
+CLASS="APPLICATION"
+>pg_resetxlog</SPAN
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN50767"
+></A
+><H2
+>Name</H2
+>pg_resetxlog&nbsp;--&nbsp;reset the write-ahead log and other control information of a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN50771"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> [ -f ] [ -n ] [ -o <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+> ] [ -x <TT
+CLASS="REPLACEABLE"
+><I
+>xid</I
+></TT
+> ] [ -l <TT
+CLASS="REPLACEABLE"
+><I
+>timelineid</I
+></TT
+>,<TT
+CLASS="REPLACEABLE"
+><I
+>fileid</I
+></TT
+>,<TT
+CLASS="REPLACEABLE"
+><I
+>seg</I
+></TT
+> ]  <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+> </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-PGRESETXLOG-1"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> clears the write-ahead log (WAL) and
+   optionally resets some other control information (stored in the
+   <TT
+CLASS="FILENAME"
+>pg_control</TT
+> file).  This function is sometimes needed
+   if these files have become corrupted.  It should be used only as a
+   last resort, when the server will not start due to such corruption.
+  </P
+><P
+>   After running this command, it should be possible to start the server,
+   but bear in mind that the database may contain inconsistent data due to
+   partially-committed transactions.  You should immediately dump your data,
+   run <TT
+CLASS="COMMAND"
+>initdb</TT
+>, and reload.  After reload, check for
+   inconsistencies and repair as needed.
+  </P
+><P
+>   This utility can only be run by the user who installed the server, because
+   it requires read/write access to the data directory.
+   For safety reasons, you must specify the data directory on the command line.
+   <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> does not use the environment variable
+   <TT
+CLASS="ENVAR"
+>PGDATA</TT
+>.
+  </P
+><P
+>   If <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> complains that it cannot determine
+   valid data for <TT
+CLASS="FILENAME"
+>pg_control</TT
+>, you can force it to proceed anyway
+   by specifying the <TT
+CLASS="LITERAL"
+>-f</TT
+> (force) switch.  In this case plausible
+   values will be substituted for the missing data.  Most of the fields can be
+   expected to match, but manual assistance may be needed for the next OID,
+   next transaction ID, WAL starting address, and database locale fields.
+   The first three of these can be set using the switches discussed below.
+   <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+>'s own environment is the source for its
+   guess at the locale fields; take care that <TT
+CLASS="ENVAR"
+>LANG</TT
+> and so forth
+   match the environment that <TT
+CLASS="COMMAND"
+>initdb</TT
+> was run in.
+   If you are not able to determine correct values for all these fields,
+   <TT
+CLASS="LITERAL"
+>-f</TT
+> can still be used, but
+   the recovered database must be treated with even more suspicion than
+   usual: an immediate dump and reload is imperative.  <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Do not</I
+></SPAN
+>
+   execute any data-modifying operations in the database before you dump;
+   as any such action is likely to make the corruption worse.
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>-o</TT
+>, <TT
+CLASS="LITERAL"
+>-x</TT
+>, and <TT
+CLASS="LITERAL"
+>-l</TT
+> switches allow
+   the next OID, next transaction ID, and WAL starting address values to
+   be set manually.  These are only needed when
+   <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> is unable to determine appropriate values
+   by reading <TT
+CLASS="FILENAME"
+>pg_control</TT
+>.  A safe value for the
+   next transaction ID may be determined by looking for the numerically largest
+   file name in the directory <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> under the data directory,
+   adding one,
+   and then multiplying by 1048576.  Note that the file names are in
+   hexadecimal.  It is usually easiest to specify the switch value in
+   hexadecimal too. For example, if <TT
+CLASS="FILENAME"
+>0011</TT
+> is the largest entry
+   in <TT
+CLASS="FILENAME"
+>pg_clog</TT
+>, <TT
+CLASS="LITERAL"
+>-x 0x1200000</TT
+> will work (five trailing
+   zeroes provide the proper multiplier).
+   The WAL starting address should be
+   larger than any file name currently existing in
+   the directory <TT
+CLASS="FILENAME"
+>pg_xlog</TT
+> under the data directory.
+   These names are also in hexadecimal and have three parts.  The first
+   part is the <SPAN
+CLASS="QUOTE"
+>"timeline ID"</SPAN
+> and should usually be kept the same.
+   Do not choose a value larger than 255 (<TT
+CLASS="LITERAL"
+>0xFF</TT
+>) for the third
+   part; instead increment the second part and reset the third part to 0.
+   For example, if <TT
+CLASS="FILENAME"
+>00000001000000320000004A</TT
+> is the
+   largest entry in <TT
+CLASS="FILENAME"
+>pg_xlog</TT
+>, <TT
+CLASS="LITERAL"
+>-l 0x1,0x32,0x4B</TT
+> will
+   work; but if the largest entry is
+   <TT
+CLASS="FILENAME"
+>000000010000003A000000FF</TT
+>, choose <TT
+CLASS="LITERAL"
+>-l 0x1,0x3B,0x0</TT
+>
+   or more.
+   There is no comparably easy way to determine a next OID that's beyond
+   the largest one in the database, but fortunately it is not critical to
+   get the next-OID setting right.
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>-n</TT
+> (no operation) switch instructs
+   <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> to print the values reconstructed from
+   <TT
+CLASS="FILENAME"
+>pg_control</TT
+> and then exit without modifying anything.
+   This is mainly a debugging tool, but may be useful as a sanity check
+   before allowing <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> to proceed for real.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50828"
+></A
+><H2
+>Notes</H2
+><P
+>   This command must not be used when the server is 
+   running.  <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> will refuse to start up if
+   it finds a server lock file in the data directory.  If the
+   server crashed then a lock file may have been left
+   behind; in that case you can remove the lock file to allow
+   <TT
+CLASS="COMMAND"
+>pg_resetxlog</TT
+> to run.  But before you do
+   so, make doubly certain that there
+   is no <TT
+CLASS="COMMAND"
+>postmaster</TT
+> nor any backend server process still alive.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pg-ctl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,374 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Cancelling Queries in Progress</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="Asynchronous Command Processing"
+HREF="libpq-async.html"><LINK
+REL="NEXT"
+TITLE="The Fast-Path Interface"
+HREF="libpq-fastpath.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-async.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 27. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-fastpath.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-CANCEL"
+>27.5. Cancelling Queries in Progress</A
+></H1
+><A
+NAME="AEN24022"
+></A
+><P
+>A client application can request cancellation of
+a command that is still being processed by the
+server, using the functions described in this section.
+
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQgetCancel</CODE
+><A
+NAME="AEN24030"
+></A
+></DT
+><DD
+><P
+>          Creates a data structure containing the information needed to cancel
+          a command issued through a particular database connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGcancel *PQgetCancel(PGconn *conn);</PRE
+><P></P
+><P
+><CODE
+CLASS="FUNCTION"
+>PQgetCancel</CODE
+> creates a 
+<TT
+CLASS="STRUCTNAME"
+>PGcancel</TT
+><A
+NAME="AEN24038"
+></A
+> object given
+a <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> connection object.  It will return NULL if the
+given <TT
+CLASS="PARAMETER"
+>conn</TT
+> is NULL or an invalid connection.  The
+<TT
+CLASS="STRUCTNAME"
+>PGcancel</TT
+> object is an opaque structure that is not meant
+to be accessed directly by the application; it can only be passed to
+<CODE
+CLASS="FUNCTION"
+>PQcancel</CODE
+> or <CODE
+CLASS="FUNCTION"
+>PQfreeCancel</CODE
+>.</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQfreeCancel</CODE
+><A
+NAME="AEN24048"
+></A
+></DT
+><DD
+><P
+>          Frees a data structure created by <CODE
+CLASS="FUNCTION"
+>PQgetCancel</CODE
+>.
+</P><PRE
+CLASS="SYNOPSIS"
+>void PQfreeCancel(PGcancel *cancel);</PRE
+><P></P
+><P
+><CODE
+CLASS="FUNCTION"
+>PQfreeCancel</CODE
+> frees a data object previously created
+by <CODE
+CLASS="FUNCTION"
+>PQgetCancel</CODE
+>.</P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQcancel</CODE
+><A
+NAME="AEN24060"
+></A
+></DT
+><DD
+><P
+>          Requests that the server abandon
+          processing of the current command.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQcancel(PGcancel *cancel, char *errbuf, int errbufsize);</PRE
+><P></P
+><P
+>The return value is 1 if the cancel request was successfully
+dispatched and 0 if not.  If not, <TT
+CLASS="PARAMETER"
+>errbuf</TT
+> is filled with an error
+message explaining why not.  <TT
+CLASS="PARAMETER"
+>errbuf</TT
+> must be a char array of size
+<TT
+CLASS="PARAMETER"
+>errbufsize</TT
+> (the recommended size is 256 bytes).</P
+><P
+>Successful dispatch is no guarantee that the request will have any effect,
+however.  If the cancellation is effective, the current command will terminate
+early and return an error result.  If the cancellation fails (say, because the
+server was already done processing the command), then there will be no visible
+result at all.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>PQcancel</CODE
+> can safely be invoked from a signal handler,
+if the <TT
+CLASS="PARAMETER"
+>errbuf</TT
+> is a local variable in the signal handler.  The
+<TT
+CLASS="STRUCTNAME"
+>PGcancel</TT
+> object is read-only as far as
+<CODE
+CLASS="FUNCTION"
+>PQcancel</CODE
+> is concerned, so it can also be invoked from a
+thread that is separate from the one manipulating the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+>
+object.</P
+></DD
+></DL
+></DIV
+><P>
+
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>PQrequestCancel</CODE
+><A
+NAME="AEN24080"
+></A
+></DT
+><DD
+><P
+>          Requests that the server abandon
+          processing of the current command.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQrequestCancel(PGconn *conn);</PRE
+><P></P
+><P
+><CODE
+CLASS="FUNCTION"
+>PQrequestCancel</CODE
+> is a deprecated variant of
+<CODE
+CLASS="FUNCTION"
+>PQcancel</CODE
+>.  It operates directly on the
+<TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object, and in case of failure stores the
+error message in the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object (whence it can be
+retrieved by <CODE
+CLASS="FUNCTION"
+>PQerrorMessage</CODE
+>).  Although the
+functionality is the same, this approach creates hazards for multiple-thread
+programs and signal handlers, since it is possible that overwriting the
+<TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+>'s error message will mess up the operation currently
+in progress on the connection.</P
+></DD
+></DL
+></DIV
+><P></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-async.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-fastpath.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Asynchronous Command Processing</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The Fast-Path Interface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

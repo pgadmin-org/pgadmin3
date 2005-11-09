@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Monitoring Disk Usage</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Administration"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Viewing Locks"
+HREF="monitoring-locks.html"><LINK
+REL="NEXT"
+TITLE="Disk Full Failure"
+HREF="disk-full.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="monitoring-locks.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="monitoring.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="wal.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="disk-full.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DISKUSAGE"
+></A
+>Chapter 24. Monitoring Disk Usage</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>24.1. <A
+HREF="diskusage.html#DISK-USAGE"
+>Determining Disk Usage</A
+></DT
+><DT
+>24.2. <A
+HREF="disk-full.html"
+>Disk Full Failure</A
+></DT
+></DL
+></DIV
+><P
+>  This chapter discusses how to monitor the disk usage of a
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database system.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DISK-USAGE"
+>24.1. Determining Disk Usage</A
+></H1
+><A
+NAME="AEN22149"
+></A
+><P
+>   Each table has a primary heap disk file where most of the data is
+   stored. If the table has any columns with potentially-wide values,
+   there is also a <ACRONYM
+CLASS="ACRONYM"
+>TOAST</ACRONYM
+> file associated with the table,
+   which is used to store values too wide to fit comfortably in the main
+   table (see <A
+HREF="storage-toast.html"
+>Section 49.2</A
+>).  There will be one index on the
+   <ACRONYM
+CLASS="ACRONYM"
+>TOAST</ACRONYM
+> table, if present. There may also be indexes associated
+   with the base table.  Each table and index is stored in a separate disk
+   file &mdash; possibly more than one file, if the file would exceed one
+   gigabyte.  Naming conventions for these files are described in <A
+HREF="storage.html#STORAGE-FILE-LAYOUT"
+>Section 49.1</A
+>.
+  </P
+><P
+>   You can monitor disk space from three places: from
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> using <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> information, from
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> using the tools in <TT
+CLASS="FILENAME"
+>contrib/dbsize</TT
+>, and from
+   the command line using the tools in <TT
+CLASS="FILENAME"
+>contrib/oid2name</TT
+>. Using
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> on a recently vacuumed or analyzed database,
+   you can issue queries to see the disk usage of any table:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT relfilenode, relpages FROM pg_class WHERE relname = 'customer';
+
+ relfilenode | relpages 
+-------------+----------
+       16806 |       60
+(1 row)</PRE
+><P>
+   Each page is typically 8 kilobytes. (Remember, <TT
+CLASS="STRUCTFIELD"
+>relpages</TT
+>
+   is only updated by <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>, <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, and
+   a few DDL commands such as <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+>.)  The
+   <TT
+CLASS="STRUCTFIELD"
+>relfilenode</TT
+> value is of interest if you want to examine
+   the table's disk file directly.
+  </P
+><P
+>   To show the space used by <ACRONYM
+CLASS="ACRONYM"
+>TOAST</ACRONYM
+> tables, use a query
+   like the following:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT relname, relpages
+    FROM pg_class,
+         (SELECT reltoastrelid FROM pg_class
+          WHERE relname = 'customer') ss
+    WHERE oid = ss.reltoastrelid
+       OR oid = (SELECT reltoastidxid FROM pg_class
+                 WHERE oid = ss.reltoastrelid)
+    ORDER BY relname;
+
+       relname        | relpages 
+----------------------+----------
+ pg_toast_16806       |        0
+ pg_toast_16806_index |        1</PRE
+><P>
+  </P
+><P
+>   You can easily display index sizes, too:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT c2.relname, c2.relpages
+    FROM pg_class c, pg_class c2, pg_index i
+    WHERE c.relname = 'customer'
+        AND c.oid = i.indrelid
+        AND c2.oid = i.indexrelid
+    ORDER BY c2.relname;
+
+       relname        | relpages 
+----------------------+----------
+ customer_id_indexdex |       26</PRE
+><P>
+  </P
+><P
+>   It is easy to find your largest tables and indexes using this
+   information:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT relname, relpages FROM pg_class ORDER BY relpages DESC;
+
+       relname        | relpages 
+----------------------+----------
+ bigtable             |     3290
+ customer             |     3144</PRE
+><P>
+  </P
+><P
+>   <TT
+CLASS="FILENAME"
+>contrib/dbsize</TT
+> loads functions into your database that allow
+   you to find the size of a table or database from inside
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> without the need for <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> or <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>.
+  </P
+><P
+>   You can also use <TT
+CLASS="FILENAME"
+>contrib/oid2name</TT
+> to show disk usage. See
+   <TT
+CLASS="FILENAME"
+>README.oid2name</TT
+> in that directory for examples. It includes a script that
+   shows disk usage for each database.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="monitoring-locks.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="disk-full.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Viewing Locks</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Disk Full Failure</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

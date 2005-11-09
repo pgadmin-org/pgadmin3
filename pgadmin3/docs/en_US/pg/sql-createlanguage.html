@@ -1,0 +1,584 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE LANGUAGE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE INDEX"
+HREF="sql-createindex.html"><LINK
+REL="NEXT"
+TITLE="CREATE OPERATOR"
+HREF="sql-createoperator.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createindex.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createoperator.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createoperator.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATELANGUAGE"
+></A
+>CREATE LANGUAGE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39510"
+></A
+><H2
+>Name</H2
+>CREATE LANGUAGE&nbsp;--&nbsp;define a new procedural language</DIV
+><A
+NAME="AEN39513"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39515"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    HANDLER <TT
+CLASS="REPLACEABLE"
+><I
+>call_handler</I
+></TT
+> [ VALIDATOR <TT
+CLASS="REPLACEABLE"
+><I
+>valfunction</I
+></TT
+> ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATELANGUAGE-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   Using <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+>, a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user can register a new
+   procedural language with a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   database.  Subsequently, functions and trigger procedures can be
+   defined in this new language.  The user must have the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> superuser privilege to
+   register a new language.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+> effectively associates the
+   language name with a call handler that is responsible for executing
+   functions written in the language.  Refer to <A
+HREF="xplang.html"
+>Chapter 34</A
+>
+   for more information about language call handlers.
+  </P
+><P
+>   Note that procedural languages are local to individual databases.
+   To make a language available in all databases by default, it should
+   be installed into the <TT
+CLASS="LITERAL"
+>template1</TT
+> database.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATELANGUAGE-PARAMETERS"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>TRUSTED</TT
+></DT
+><DD
+><P
+>       <TT
+CLASS="LITERAL"
+>TRUSTED</TT
+> specifies that the call handler for
+       the language is safe, that is, it does not offer an
+       unprivileged user any functionality to bypass access
+       restrictions. If this key word is omitted when registering the
+       language, only users with the
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> superuser privilege can
+       use this language to create new functions.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>PROCEDURAL</TT
+></DT
+><DD
+><P
+>       This is a noise word.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>       The name of the new procedural language.  The language name is
+       case insensitive. The name must be unique among the languages
+       in the database.
+      </P
+><P
+>       For backward compatibility, the name may be enclosed by single
+       quotes.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>HANDLER</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>call_handler</I
+></TT
+></DT
+><DD
+><P
+>       <TT
+CLASS="REPLACEABLE"
+><I
+>call_handler</I
+></TT
+> is
+       the name of a previously registered function that will be
+       called to execute the procedural language functions.  The call
+       handler for a procedural language must be written in a compiled
+       language such as C with version 1 call convention and
+       registered with <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> as a
+       function taking no arguments and returning the
+       <TT
+CLASS="TYPE"
+>language_handler</TT
+> type, a placeholder type that is
+       simply used to identify the function as a call handler.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>VALIDATOR</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>valfunction</I
+></TT
+></DT
+><DD
+><P
+>       <TT
+CLASS="REPLACEABLE"
+><I
+>valfunction</I
+></TT
+> is the
+       name of a previously registered function that will be called
+       when a new function in the language is created, to validate the
+       new function.
+       If no
+       validator function is specified, then a new function will not
+       be checked when it is created.
+       The validator function must take one argument of
+       type <TT
+CLASS="TYPE"
+>oid</TT
+>, which will be the OID of the
+       to-be-created function, and will typically return <TT
+CLASS="TYPE"
+>void</TT
+>.
+      </P
+><P
+>       A validator function would typically inspect the function body
+       for syntactical correctness, but it can also look at other
+       properties of the function, for example if the language cannot
+       handle certain argument types.  To signal an error, the
+       validator function should use the <CODE
+CLASS="FUNCTION"
+>ereport()</CODE
+>
+       function.  The return value of the function is ignored.
+      </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATELANGUAGE-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   This command normally should not be executed directly by users.
+   For the procedural languages supplied in the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution, the <A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+> program should be used, which will also
+   install the correct call handler.  (<TT
+CLASS="COMMAND"
+>createlang</TT
+>
+   will call <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+> internally.)
+  </P
+><P
+>   In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions before 7.3, it was
+   necessary to declare handler functions as returning the placeholder
+   type <TT
+CLASS="TYPE"
+>opaque</TT
+>, rather than <TT
+CLASS="TYPE"
+>language_handler</TT
+>.
+   To support loading 
+   of old dump files, <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+> will accept a function
+   declared as returning <TT
+CLASS="TYPE"
+>opaque</TT
+>, but it will issue a notice and
+   change the function's declared return type to <TT
+CLASS="TYPE"
+>language_handler</TT
+>.
+  </P
+><P
+>   Use the <A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+> command to create a new
+   function.
+  </P
+><P
+>   Use <A
+HREF="sql-droplanguage.html"
+><I
+>DROP LANGUAGE</I
+></A
+>, or better yet the <A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+> program, to drop procedural languages.
+  </P
+><P
+>   The system catalog <CODE
+CLASS="CLASSNAME"
+>pg_language</CODE
+> (see <A
+HREF="catalog-pg-language.html"
+>Section 41.18</A
+>) records information about the
+   currently installed languages.  Also <TT
+CLASS="COMMAND"
+>createlang</TT
+>
+   has an option to list the installed languages.
+  </P
+><P
+>   To be able to use a procedural language, a user must be granted the
+   <TT
+CLASS="LITERAL"
+>USAGE</TT
+> privilege.  The
+   <TT
+CLASS="COMMAND"
+>createlang</TT
+> program automatically grants
+   permissions to everyone if the language is known to be trusted.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATELANGUAGE-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   The following two commands executed in sequence will register a new
+   procedural language and the associated call handler.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION plsample_call_handler() RETURNS language_handler
+    AS '$libdir/plsample'
+    LANGUAGE C;
+CREATE LANGUAGE plsample
+    HANDLER plsample_call_handler;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATELANGUAGE-COMPAT"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE LANGUAGE</TT
+> is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39608"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alterlanguage.html"
+><I
+>ALTER LANGUAGE</I
+></A
+>, <A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>, <A
+HREF="sql-droplanguage.html"
+><I
+>DROP LANGUAGE</I
+></A
+>, <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+>, <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+>, <A
+HREF="app-createlang.html"
+><I
+><I
+>createlang</I
+></I
+></A
+>, <A
+HREF="app-droplang.html"
+><I
+><I
+>droplang</I
+></I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createoperator.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE INDEX</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE OPERATOR</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

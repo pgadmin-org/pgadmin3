@@ -1,0 +1,638 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CREATE TRIGGER</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE TABLESPACE"
+HREF="sql-createtablespace.html"><LINK
+REL="NEXT"
+TITLE="CREATE TYPE"
+HREF="sql-createtype.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtablespace.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtablespace.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtype.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtype.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATETRIGGER"
+></A
+>CREATE TRIGGER</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN40931"
+></A
+><H2
+>Name</H2
+>CREATE TRIGGER&nbsp;--&nbsp;define a new trigger</DIV
+><A
+NAME="AEN40934"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40936"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE TRIGGER <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> { BEFORE | AFTER } { <TT
+CLASS="REPLACEABLE"
+><I
+>event</I
+></TT
+> [ OR ... ] }
+    ON <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ FOR [ EACH ] { ROW | STATEMENT } ]
+    EXECUTE PROCEDURE <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>arguments</I
+></TT
+> )</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40943"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> creates a new trigger.  The
+   trigger will be associated with the specified table and will
+   execute the specified function <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+> when certain events occur.
+  </P
+><P
+>   The trigger can be specified to fire either before the
+   operation is attempted on a row (before constraints are checked and
+   the <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or
+   <TT
+CLASS="COMMAND"
+>DELETE</TT
+> is attempted) or after the operation has
+   completed (after constraints are checked and the
+   <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or
+   <TT
+CLASS="COMMAND"
+>DELETE</TT
+> has completed). If the trigger fires
+   before the event, the trigger may skip the operation for the
+   current row, or change the row being inserted (for
+   <TT
+CLASS="COMMAND"
+>INSERT</TT
+> and <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> operations
+   only). If the trigger fires after the event, all changes, including
+   the last insertion, update, or deletion, are <SPAN
+CLASS="QUOTE"
+>"visible"</SPAN
+>
+   to the trigger.
+  </P
+><P
+>   A trigger that is marked <TT
+CLASS="LITERAL"
+>FOR EACH ROW</TT
+> is called
+   once for every row that the operation modifies. For example, a
+   <TT
+CLASS="COMMAND"
+>DELETE</TT
+> that affects 10 rows will cause any
+   <TT
+CLASS="LITERAL"
+>ON DELETE</TT
+> triggers on the target relation to be
+   called 10 separate times, once for each deleted row. In contrast, a
+   trigger that is marked <TT
+CLASS="LITERAL"
+>FOR EACH STATEMENT</TT
+> only
+   executes once for any given operation, regardless of how many rows
+   it modifies (in particular, an operation that modifies zero rows
+   will still result in the execution of any applicable <TT
+CLASS="LITERAL"
+>FOR
+   EACH STATEMENT</TT
+> triggers).
+  </P
+><P
+>   If multiple triggers of the same kind are defined for the same event,
+   they will be fired in alphabetical order by name.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>SELECT</TT
+> does not modify any rows so you can not
+   create <TT
+CLASS="COMMAND"
+>SELECT</TT
+> triggers. Rules and views are more
+   appropriate in such cases.
+  </P
+><P
+>   Refer to <A
+HREF="triggers.html"
+>Chapter 32</A
+> for more information about triggers.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40970"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>      The name to give the new trigger.  This must be distinct from
+      the name of any other trigger for the same table.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>BEFORE</TT
+><BR><TT
+CLASS="LITERAL"
+>AFTER</TT
+></DT
+><DD
+><P
+>      Determines whether the function is called before or after the
+      event.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>event</I
+></TT
+></DT
+><DD
+><P
+>      One of <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or
+      <TT
+CLASS="COMMAND"
+>DELETE</TT
+>; this specifies the event that will
+      fire the trigger. Multiple events can be specified using
+      <TT
+CLASS="LITERAL"
+>OR</TT
+>.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of the table the trigger
+      is for.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>FOR EACH ROW</TT
+><BR><TT
+CLASS="LITERAL"
+>FOR EACH STATEMENT</TT
+></DT
+><DD
+><P
+>      This specifies whether the trigger procedure should be fired
+      once for every row affected by the trigger event, or just once
+      per SQL statement. If neither is specified, <TT
+CLASS="LITERAL"
+>FOR EACH
+      STATEMENT</TT
+> is the default.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+></DT
+><DD
+><P
+>      A user-supplied function that is declared as taking no arguments
+      and returning type <TT
+CLASS="LITERAL"
+>trigger</TT
+>, which is executed when
+      the trigger fires.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>arguments</I
+></TT
+></DT
+><DD
+><P
+>      An optional comma-separated list of arguments to be provided to
+      the function when the trigger is executed.  The arguments are
+      literal string constants.  Simple names and numeric constants
+      may be written here, too, but they will all be converted to
+      strings.  Please check the description of the implementation
+      language of the trigger function about how the trigger arguments
+      are accessible within the function; it may be different from
+      normal function arguments.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATETRIGGER-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   To create a trigger on a table, the user must have the
+   <TT
+CLASS="LITERAL"
+>TRIGGER</TT
+> privilege on the table.
+  </P
+><P
+>   In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions before 7.3, it was
+   necessary to declare trigger functions as returning the placeholder
+   type <TT
+CLASS="TYPE"
+>opaque</TT
+>, rather than <TT
+CLASS="TYPE"
+>trigger</TT
+>.  To support loading
+   of old dump files, <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> will accept a function
+   declared as returning <TT
+CLASS="TYPE"
+>opaque</TT
+>, but it will issue a notice and
+   change the function's declared return type to <TT
+CLASS="TYPE"
+>trigger</TT
+>.
+  </P
+><P
+>   Use <A
+HREF="sql-droptrigger.html"
+><I
+>DROP TRIGGER</I
+></A
+> to remove a trigger.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATETRIGGER-2"
+></A
+><H2
+>Examples</H2
+><P
+>   <A
+HREF="trigger-example.html"
+>Section 32.4</A
+> contains a complete example.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATETRIGGER-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> statement in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> implements a subset of the
+   SQL:1999 standard.  (There are no provisions for triggers in SQL-92.)
+   The following functionality is missing:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      SQL:1999 allows triggers to fire on updates to specific columns
+      (e.g., <TT
+CLASS="LITERAL"
+>AFTER UPDATE OF col1, col2</TT
+>).
+     </P
+></LI
+><LI
+><P
+>      SQL:1999 allows you to define aliases for the <SPAN
+CLASS="QUOTE"
+>"old"</SPAN
+>
+      and <SPAN
+CLASS="QUOTE"
+>"new"</SPAN
+> rows or tables for use in the definition
+      of the triggered action (e.g., <TT
+CLASS="LITERAL"
+>CREATE TRIGGER ... ON
+      tablename REFERENCING OLD ROW AS somename NEW ROW AS othername
+      ...</TT
+>).  Since <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+      allows trigger procedures to be written in any number of
+      user-defined languages, access to the data is handled in a
+      language-specific way.
+     </P
+></LI
+><LI
+><P
+>      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> only allows the execution
+      of a user-defined function for the triggered action.  SQL:1999
+      allows the execution of a number of other SQL commands, such as
+      <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+> as triggered action.  This
+      limitation is not hard to work around by creating a user-defined
+      function that executes the desired commands.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   SQL:1999 specifies that multiple triggers should be fired in
+   time-of-creation order.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses
+   name order, which was judged more convenient to work with.
+  </P
+><P
+>   The ability to specify multiple actions for a single trigger using
+   <TT
+CLASS="LITERAL"
+>OR</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension of
+   the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41059"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>, <A
+HREF="sql-altertrigger.html"
+><I
+>ALTER TRIGGER</I
+></A
+>, <A
+HREF="sql-droptrigger.html"
+><I
+>DROP TRIGGER</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtablespace.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtype.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE TABLESPACE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE TYPE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

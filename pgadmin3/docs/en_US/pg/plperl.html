@@ -1,0 +1,479 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>PL/Perl - Perl Procedural Language</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.4 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="server-programming.html"><LINK
+REL="PREVIOUS"
+TITLE="Tcl Procedure Names"
+HREF="pltcl-procnames.html"><LINK
+REL="NEXT"
+TITLE="Database Access from PL/Perl"
+HREF="plperl-database.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"><META
+NAME="creation"
+CONTENT="2005-10-04T01:17:47"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.4 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl-procnames.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpython.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plperl-database.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PLPERL"
+></A
+>Chapter 37. PL/Perl - Perl Procedural Language</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>37.1. <A
+HREF="plperl.html#PLPERL-FUNCS"
+>PL/Perl Functions and Arguments</A
+></DT
+><DT
+>37.2. <A
+HREF="plperl-database.html"
+>Database Access from PL/Perl</A
+></DT
+><DT
+>37.3. <A
+HREF="plperl-data.html"
+>Data Values in PL/Perl</A
+></DT
+><DT
+>37.4. <A
+HREF="plperl-global.html"
+>Global Values in PL/Perl</A
+></DT
+><DT
+>37.5. <A
+HREF="plperl-trusted.html"
+>Trusted and Untrusted PL/Perl</A
+></DT
+><DT
+>37.6. <A
+HREF="plperl-triggers.html"
+>PL/Perl Triggers</A
+></DT
+><DT
+>37.7. <A
+HREF="plperl-missing.html"
+>Limitations and Missing Features</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN34054"
+></A
+><A
+NAME="AEN34056"
+></A
+><P
+>   PL/Perl is a loadable procedural language that enables you to write
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> functions in the <A
+HREF="http://www.perl.com"
+TARGET="_top"
+>Perl</A
+> programming language.
+  </P
+><P
+>   To install PL/Perl in a particular database, use
+   <TT
+CLASS="LITERAL"
+>createlang plperl <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+>.
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    If a language is installed into <TT
+CLASS="LITERAL"
+>template1</TT
+>, all subsequently
+    created databases will have the language installed automatically.
+   </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    Users of source packages must specially enable the build of
+    PL/Perl during the installation process.  (Refer to <A
+HREF="installation.html#INSTALL-SHORT"
+>Section 14.1</A
+> for more information.)  Users of
+    binary packages might find PL/Perl in a separate subpackage.
+   </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPERL-FUNCS"
+>37.1. PL/Perl Functions and Arguments</A
+></H1
+><P
+>   To create a function in the PL/Perl language, use the standard syntax:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>argument-types</I
+></TT
+>) RETURNS <TT
+CLASS="REPLACEABLE"
+><I
+>return-type</I
+></TT
+> AS $$
+    # PL/Perl function body
+$$ LANGUAGE plperl;</PRE
+><P>
+   The body of the function is ordinary Perl code.
+  </P
+><P
+>    The syntax of the <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command requires
+    the function body to be written as a string constant.  It is usually
+    most convenient to use dollar quoting (see <A
+HREF="sql-syntax.html#SQL-SYNTAX-DOLLAR-QUOTING"
+>Section 4.1.2.2</A
+>) for the string constant.
+    If you choose to use regular single-quoted string constant syntax,
+    you must escape single quote marks (<TT
+CLASS="LITERAL"
+>'</TT
+>) and backslashes
+    (<TT
+CLASS="LITERAL"
+>\</TT
+>) used in the body of the function, typically by
+    doubling them (see <A
+HREF="sql-syntax.html#SQL-SYNTAX-STRINGS"
+>Section 4.1.2.1</A
+>).
+   </P
+><P
+>   Arguments and results are handled as in any other Perl subroutine:
+   arguments are passed in <TT
+CLASS="VARNAME"
+>@_</TT
+>, and a result value
+   is returned with <TT
+CLASS="LITERAL"
+>return</TT
+> or as the last expression
+   evaluated in the function.
+  </P
+><P
+>   For example, a function returning the greater of two integer values
+   could be defined as:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS $$
+    if ($_[0] &gt; $_[1]) { return $_[0]; }
+    return $_[1];
+$$ LANGUAGE plperl;</PRE
+><P>
+  </P
+><P
+>   If an SQL null value<A
+NAME="AEN34089"
+></A
+> is passed to a function,
+   the argument value will appear as <SPAN
+CLASS="QUOTE"
+>"undefined"</SPAN
+> in Perl.  The
+   above function definition will not behave very nicely with null
+   inputs (in fact, it will act as though they are zeroes).  We could
+   add <TT
+CLASS="LITERAL"
+>STRICT</TT
+> to the function definition to make
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> do something more reasonable:
+   if a null value is passed, the function will not be called at all,
+   but will just return a null result automatically.  Alternatively,
+   we could check for undefined inputs in the function body.  For
+   example, suppose that we wanted <CODE
+CLASS="FUNCTION"
+>perl_max</CODE
+> with
+   one null and one nonnull argument to return the nonnull argument,
+   rather than a null value:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS $$
+    my ($a,$b) = @_;
+    if (! defined $a) {
+        if (! defined $b) { return undef; }
+        return $b;
+    }
+    if (! defined $b) { return $a; }
+    if ($a &gt; $b) { return $a; }
+    return $b;
+$$ LANGUAGE plperl;</PRE
+><P>
+   As shown above, to return an SQL null value from a PL/Perl
+   function, return an undefined value.  This can be done whether the
+   function is strict or not.
+  </P
+><P
+>   Composite-type arguments are passed to the function as references
+   to hashes.  The keys of the hash are the attribute names of the
+   composite type.  Here is an example:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE employee (
+    name text,
+    basesalary integer,
+    bonus integer
+);
+
+CREATE FUNCTION empcomp(employee) RETURNS integer AS $$
+    my ($emp) = @_;
+    return $emp-&gt;{basesalary} + $emp-&gt;{bonus};
+$$ LANGUAGE plperl;
+
+SELECT name, empcomp(employee.*) FROM employee;</PRE
+><P>
+  </P
+><P
+>   A PL/Perl function can return a composite-type result using the same
+   approach: return a reference to a hash that has the required attributes.
+   For example,
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TYPE testrowperl AS (f1 integer, f2 text, f3 text);
+
+CREATE OR REPLACE FUNCTION perl_row() RETURNS testrowperl AS $$
+    return {f2 =&gt; 'hello', f1 =&gt; 1, f3 =&gt; 'world'};
+$$ LANGUAGE plperl;
+
+SELECT * FROM perl_row();</PRE
+><P>
+
+   Any columns in the declared result data type that are not present in the
+   hash will be returned as NULLs.
+  </P
+><P
+>   PL/Perl functions can also return sets of either scalar or composite
+   types.  To do this, return a reference to an array that contains
+   either scalars or references to hashes, respectively.  Here are
+   some simple examples:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE OR REPLACE FUNCTION perl_set_int(int) RETURNS SETOF INTEGER AS $$
+return [0..$_[0]];
+$$ LANGUAGE plperl;
+
+SELECT * FROM perl_set_int(5);
+
+
+CREATE OR REPLACE FUNCTION perl_set() RETURNS SETOF testrowperl AS $$
+    return [
+        { f1 =&gt; 1, f2 =&gt; 'Hello', f3 =&gt; 'World' },
+        { f1 =&gt; 2, f2 =&gt; 'Hello', f3 =&gt; 'PostgreSQL' },
+        { f1 =&gt; 3, f2 =&gt; 'Hello', f3 =&gt; 'PL/Perl' }
+    ];
+$$  LANGUAGE plperl;
+
+SELECT * FROM perl_set();</PRE
+><P>
+
+   Note that when you do this, Perl will have to build the entire array in
+   memory; therefore the technique does not scale to very large result sets.
+  </P
+><P
+>     <SPAN
+CLASS="APPLICATION"
+>PL/Perl</SPAN
+> does not currently have full support for
+     domain types: it treats a domain the same as the underlying scalar
+     type.  This means that constraints associated with the domain will
+     not be enforced.  This is not an issue for function arguments, but
+     it is a hazard if you declare a <SPAN
+CLASS="APPLICATION"
+>PL/Perl</SPAN
+> function
+     as returning a domain type.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pltcl-procnames.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plperl-database.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Tcl Procedure Names</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="server-programming.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Database Access from PL/Perl</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
