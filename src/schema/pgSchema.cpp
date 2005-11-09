@@ -161,6 +161,17 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 {
     pgSchema *schema=0;
 
+    wxString restr=restriction;
+
+    if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
+    {
+        if (restr.IsEmpty())
+            restr += wxT(" WHERE (");
+        else
+            restr += wxT("   AND (");
+        restr += collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
+    }
+
     pgSet *schemas = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
         wxT("            WHEN (nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
@@ -170,7 +181,7 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
         wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
         wxT("  FROM pg_namespace nsp\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-         + restriction +
+         + restr +
         wxT(" ORDER BY 1, nspname"));
 
     if (schemas)

@@ -61,6 +61,9 @@ public:
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     wxString GetEncoding() const { return encoding; }
     void iSetEncoding(const wxString& newVal) { encoding = newVal; }
+    wxString GetSchemaRestriction() const { return schemaRestriction; }
+    void iSetSchemaRestriction(const wxString &s) { schemaRestriction = s; }
+
     wxArrayString& GetVariables() { return variables; }
     bool GetAllowConnections() const { return allowConnections; }
     void iSetAllowConnections(bool newVal) { allowConnections = newVal; }
@@ -71,6 +74,8 @@ public:
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
     wxArrayString GetSlonyClusters(ctlTree *browser);
+
+
     
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool CanMaintenance() { return GetConnected(); }
@@ -101,6 +106,7 @@ private:
     wxArrayString variables;
 
     wxString schemaChanges;
+    wxString schemaRestriction;
 };
 
 class pgDatabaseCollection : public pgServerObjCollection

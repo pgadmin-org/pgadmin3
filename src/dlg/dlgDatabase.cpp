@@ -25,6 +25,7 @@
 #define stPath          CTRL_STATIC("stPath")
 #define txtPath         CTRL_TEXT("txtPath")
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
+#define txtSchemaRestr  CTRL_TEXT("txtSchemaRestr")
 
 #define lstVariables    CTRL_LISTVIEW("lstVariables")
 #define cbVarname       CTRL_COMBOBOX2("cbVarname")
@@ -52,11 +53,13 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbEncoding"),                   dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbEncoding"),               dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtSchemaRestr"),               dlgDatabase::OnChangeRestr)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
     EVT_BUTTON(wxID_ADD,                            dlgDatabase::OnVarAdd)
     EVT_BUTTON(wxID_REMOVE,                         dlgDatabase::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgDatabase::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgDatabase::OnVarnameSelChange)
+    EVT_BUTTON(wxID_OK,                             dlgDatabase::OnOK)
 END_EVENT_TABLE();
 
 
@@ -64,6 +67,7 @@ dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
 : dlgSecurityProperty(f, frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP"), "CT")
 {
     database=node;
+    schemaRestrictionOk=true;
     lstVariables->CreateColumns(0, _("Variable"), _("Value"));
 
     chkValue->Hide();
@@ -82,6 +86,7 @@ wxString dlgDatabase::GetHelpPage() const
         return wxT("pg/runtime-config");
     return dlgSecurityProperty::GetHelpPage();
 }
+
 
 int dlgDatabase::Go(bool modal)
 {
@@ -130,6 +135,8 @@ int dlgDatabase::Go(bool modal)
 
         cbTemplate->Disable();
         cbEncoding->Disable();
+
+        txtSchemaRestr->SetValue(database->GetSchemaRestriction());
 
         if (readOnly)
         {
@@ -212,18 +219,46 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 }
 
 
-void dlgDatabase::CheckChange()
+void dlgDatabase::OnChangeRestr(wxCommandEvent &ev)
 {
-    if (database)
-    {
-        EnableOK(!GetSql().IsEmpty());
-    }
+    if (txtSchemaRestr->GetValue().IsEmpty())
+        schemaRestrictionOk = true;
     else
     {
-        bool enable=true;
-        CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
-        EnableOK(enable);
+        wxString sql=wxT("EXPLAIN SELECT 1 FROM pg_namespace nsp\n")
+                wxT("  JOIN pg_description des ON des.objoid=nsp.oid\n")
+                wxT(" WHERE (") + txtSchemaRestr->GetValue() + wxT(")");
+
+        wxLogNull nix;
+        wxString result=connection->ExecuteScalar(sql);
+
+        schemaRestrictionOk = !result.IsEmpty();
     }
+    OnChange(ev);
+}
+
+
+void dlgDatabase::OnOK(wxCommandEvent &ev)
+{
+    if (database)
+        database->iSetSchemaRestriction(txtSchemaRestr->GetValue());
+    dlgSecurityProperty::OnOK(ev);
+}
+
+
+void dlgDatabase::CheckChange()
+{
+    bool enable=true;
+    
+    if (database)
+    {
+        enable = txtSchemaRestr->GetValue() != database->GetSchemaRestriction();
+    }
+
+    CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
+    CheckValid(enable, schemaRestrictionOk, _("Restriction not valid."));
+
+    EnableOK(enable);
 }
 
 

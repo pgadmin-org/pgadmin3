@@ -41,6 +41,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     username = newUsername;
     port = newPort;
     ssl=_ssl;
+    serverIndex=0;
 
     connected = false;
     lastSystemOID = 0;
@@ -851,6 +852,9 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         }
         if (GetServerControllable())
             properties->AppendItem(_("Running?"), GetServerRunning());
+
+        if (!GetDbRestriction().IsEmpty())
+            properties->AppendItem(_("DB restriction"), GetDbRestriction());
     }
 
     if(!GetConnected())
@@ -938,7 +942,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, serviceID;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, serviceID, dbRestriction;
     pgServer *server=0;
 
     wxArrayString servicedServers;
@@ -948,43 +952,20 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 	gethostname(buf, 255); 
     wxString hostname = wxString(buf, wxConvUTF8);
 
-    for (loop = 1; loop <= numServers; ++loop) {
+    for (loop = 1; loop <= numServers; ++loop)
+    {
+        key.Printf(wxT("Servers/%d/"), loop);
         
-        // Server
-        key.Printf(wxT("Servers/Server%d"), loop);
-        settings->Read(key, &servername, wxT(""));
-
-        // service location
-        key.Printf(wxT("Servers/ServiceID%d"), loop);
-        settings->Read(key, &serviceID, wxT(""));
-
-        // Comment
-        key.Printf(wxT("Servers/Description%d"), loop);
-        settings->Read(key, &description, wxT(""));
-
-        // Store Password
-        key.Printf(wxT("Servers/StorePwd%d"), loop);
-        settings->Read(key, &storePwd, wxT(""));
-
-        // Port
-        key.Printf(wxT("Servers/Port%d"), loop);
-        settings->Read(key, &port, 0);
-
-        // Database
-        key.Printf(wxT("Servers/Database%d"), loop);
-        settings->Read(key, &database, wxT(""));
-
-        // Username
-        key.Printf(wxT("Servers/Username%d"), loop);
-        settings->Read(key, &username, wxT(""));
-
-        // last Database
-        key.Printf(wxT("Servers/LastDatabase%d"), loop);
-        settings->Read(key, &lastDatabase, wxT(""));
-
-        // last Schema
-        key.Printf(wxT("Servers/LastSchema%d"), loop);
-        settings->Read(key, &lastSchema, wxT(""));
+        settings->Read(key + wxT("Server"), &servername, wxEmptyString);
+        settings->Read(key + wxT("ServiceID"), &serviceID, wxEmptyString);
+        settings->Read(key + wxT("Description"), &description, wxEmptyString);
+        settings->Read(key + wxT("StorePwd"), &storePwd, wxEmptyString);
+        settings->Read(key + wxT("Port"), &port, 0);
+        settings->Read(key + wxT("Database"), &database, wxEmptyString);
+        settings->Read(key + wxT("Username"), &username, wxEmptyString);
+        settings->Read(key + wxT("LastDatabase"), &lastDatabase, wxEmptyString);
+        settings->Read(key + wxT("LastSchema"), &lastSchema, wxEmptyString);
+        settings->Read(key + wxT("DbRestriction"), &dbRestriction, wxEmptyString);
 
         // SSL mode
 #ifdef SSL
@@ -998,6 +979,8 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);
 		server->iSetDiscovered(false);
+        server->iSetDbRestriction(dbRestriction);
+        server->iSetServerIndex(loop);
         browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
 
 

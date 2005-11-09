@@ -418,6 +418,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("System database?"), GetSystemObject());
         if (GetMissingFKs())
             properties->AppendItem(_("Old style FKs"), GetMissingFKs());
+        if (!GetSchemaRestriction().IsEmpty())
+            properties->AppendItem(_("Schema restriction"), GetSchemaRestriction());
         properties->AppendItem(_("Comment"), GetComment());
     }
     if (form && GetCanHint() && !hintShown)
@@ -459,6 +461,18 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     pgDatabase *database=0;
 
     pgSet *databases;
+
+    wxString restr=restriction;
+    if (!collection->GetServer()->GetDbRestriction().IsEmpty())
+    {
+        if (restr.IsEmpty())
+            restr = wxT(" WHERE (");
+        else
+            restr = wxT("   AND (");
+
+        restr += collection->GetServer()->GetDbRestriction() + wxT(")\n");
+    }
+    
     if (collection->GetConnection()->BackendMinimumVersion(7, 5))
         databases = collection->GetServer()->ExecuteSet(
            wxT("SELECT db.oid, datname, spcname, datallowconn, datconfig, datacl, ")
@@ -466,7 +480,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
                   wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
            wxT("  FROM pg_database db\n")
            wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
-           + restriction +
+           + restr +
            wxT(" ORDER BY datname"));
     else
         databases = collection->GetServer()->ExecuteSet(
@@ -474,14 +488,15 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
                   wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
                   wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
            wxT("  FROM pg_database db\n")
-           + restriction +
+           + restr +
            wxT(" ORDER BY datname"));
     
     if (databases)
     {
         while (!databases->Eof())
         {
-            database = new pgDatabase(databases->GetVal(wxT("datname")));
+            wxString name=databases->GetVal(wxT("datname"));
+            database = new pgDatabase(name);
             database->iSetServer(collection->GetServer());
             database->iSetOid(databases->GetOid(wxT("oid")));
             database->iSetOwner(databases->GetVal(wxT("datowner")));
@@ -497,6 +512,15 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
                 database->iSetTablespace(databases->GetVal(wxT("spcname")));
             else
                 database->iSetPath(databases->GetVal(wxT("datpath")));
+
+            if (collection->GetServer()->GetServerIndex())
+            {
+                wxString value;
+                settings->Read(wxT("Servers/") + NumToStr(collection->GetServer()->GetServerIndex())
+                    + wxT("/Databases/") + name + wxT("/SchemaRestriction"), &value, wxEmptyString);
+
+                database->iSetSchemaRestriction(value);
+            }
 
             // Add the treeview node if required
             if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 

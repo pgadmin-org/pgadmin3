@@ -104,13 +104,13 @@ pgCollection *ctlTree::FindCollection(pgaFactory &factory, wxTreeItemId parent)
 
     pgCollection *collection=(pgCollection*)FindObject(*cf, parent);
 
-    if (!collection->IsCollection())
+    if (!collection || !collection->IsCollection())
         return 0;
     return collection;
 }
 
 
-//////////////////////7
+//////////////////////
 
 treeObjectIterator::treeObjectIterator(ctlTree *brow, pgObject *obj)
 {

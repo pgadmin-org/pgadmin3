@@ -34,6 +34,7 @@
 #define chkStorePwd     CTRL_CHECKBOX("chkStorePwd")
 #define stPassword      CTRL_STATIC("stPassword")
 #define txtPassword     CTRL_TEXT("txtPassword")
+#define txtDbRestriction CTRL_TEXT("txtDbRestriction")
 
 
 
@@ -45,6 +46,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_COMBOBOX(XRCID("cbDatabase"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtPort")  ,                    dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtDbRestriction"),             dlgServer::OnChangeRestr)
     EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
@@ -62,6 +64,7 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
 : dlgProperty(f, frame, wxT("dlgServer"))
 {
     server=node;
+    dbRestrictionOk=true;
 
     cbDatabase->Append(wxT("postgres"));
     cbDatabase->Append(wxT("template1"));
@@ -124,6 +127,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
         server->iSetStorePwd(chkStorePwd->GetValue());
+        server->iSetDbRestriction(txtDbRestriction->GetValue());
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
     }
@@ -135,6 +139,27 @@ void dlgServer::OnOK(wxCommandEvent &ev)
     }
     else
         Destroy();
+}
+
+
+void dlgServer::OnChangeRestr(wxCommandEvent &ev)
+{
+    if (!connection || txtDbRestriction->GetValue().IsEmpty())
+        dbRestrictionOk = true;
+    else
+    {
+        wxString sql=wxT("EXPLAIN SELECT 1 FROM pg_database DB\n");
+        if (connection->BackendMinimumVersion(8, 0))
+            sql += wxT(" JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n");
+        sql += wxT(" WHERE (") + txtDbRestriction->GetValue() + wxT(")");
+
+
+        wxLogNull nix;
+        wxString result=connection->ExecuteScalar(sql);
+
+        dbRestrictionOk = !result.IsEmpty();
+    }
+    dlgProperty::OnChange(ev);
 }
 
 
@@ -188,6 +213,8 @@ int dlgServer::Go(bool modal)
         cbDatabase->SetValue(server->GetDatabaseName());
         txtUsername->SetValue(server->GetUsername());
         chkStorePwd->SetValue(server->GetStorePwd());
+        txtDbRestriction->SetValue(server->GetDbRestriction());
+
         stPassword->Disable();
         txtPassword->Disable();
         if (connection)
@@ -256,7 +283,8 @@ void dlgServer::CheckChange()
                || cbDatabase->GetValue() != server->GetDatabaseName()
                || txtUsername->GetValue() != server->GetUsername()
                || cbSSL->GetSelection() != server->GetSSL()
-               || chkStorePwd->GetValue() != server->GetStorePwd();
+               || chkStorePwd->GetValue() != server->GetStorePwd()
+               || txtDbRestriction->GetValue() != server->GetDbRestriction();
     }
 
 
@@ -269,6 +297,7 @@ void dlgServer::CheckChange()
     CheckValid(enable, !txtDescription->GetValue().IsEmpty(), _("Please specify description."));
     CheckValid(enable, StrToLong(txtPort->GetValue()) > 0, _("Please specify port."));
     CheckValid(enable, !txtUsername->GetValue().IsEmpty(), _("Please specify user name"));
+    CheckValid(enable, dbRestrictionOk, _("Restriction not valid."));
 
     EnableOK(enable);
 }

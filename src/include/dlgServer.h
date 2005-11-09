@@ -36,8 +36,10 @@ public:
 
 private:
     pgServer *server;
+    bool dbRestrictionOk;
 
     void OnOK(wxCommandEvent &ev);
+    void OnChangeRestr(wxCommandEvent &ev);
     void OnChangeTryConnect(wxCommandEvent &ev);
     void OnPageSelect(wxNotebookEvent &event);
 

@@ -26,7 +26,7 @@ public:
 
     // Tip Of The Day
     int GetShowTipOfTheDay() const { return showTipOfTheDay; }
-    void SetShowTipOfTheDay(const int newval);
+    void SetShowTipOfTheDay(const bool newval);
     int GetNextTipOfTheDay() const { return nextTipOfTheDay; }
     void SetNextTipOfTheDay(const int newval);
 
@@ -148,10 +148,13 @@ public:
 
 private:
 
+    void moveStringValue(wxChar *oldKey, wxChar *newKey, int index=-1);
+    void moveLongValue(wxChar *oldKey, wxChar *newKey, int index=-1);
+
     wxFont systemFont, sqlFont; 
 
     // Tip Of The Day
-    int showTipOfTheDay;
+    bool showTipOfTheDay;
     int nextTipOfTheDay;
 
     // Log

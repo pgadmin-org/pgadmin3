@@ -32,7 +32,9 @@ public:
 private:
     pgDatabase *database;
     wxArrayString varInfo;
+    bool schemaRestrictionOk;
 
+    void OnChangeRestr(wxCommandEvent &ev);
     void OnGroupAdd(wxCommandEvent &ev);
     void OnGroupRemove(wxCommandEvent &ev);
 
@@ -41,6 +43,7 @@ private:
     void OnVarSelChange(wxListEvent &ev);
 
     void OnVarnameSelChange(wxCommandEvent &ev);
+    void OnOK(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 

@@ -84,6 +84,11 @@ public:
     wxString GetDescription() const { return description; }
     void iSetDescription(const wxString& s) { description=s; }
 
+    wxString GetDbRestriction() const { return dbRestriction; }
+    void iSetDbRestriction(const wxString &s) { dbRestriction=s; }
+
+    long GetServerIndex() const { return serverIndex; }
+    void iSetServerIndex(long l) { serverIndex=l; }
     wxString GetFullName() const;
     int GetPort() const { return port; }
     int GetSSL() const { return ssl; }
@@ -119,6 +124,7 @@ private:
     wxString passwordFilename();
 
     pgConn *conn;
+    long serverIndex;
     bool connected, passwordValid, autovacuumRunning;
     wxString database, username, password, ver, error;
     wxString lastDatabase, lastSchema, description, serviceId;
@@ -128,6 +134,7 @@ private:
     OID lastSystemOID;
     OID dbOid;
     wxString versionNum;
+    wxString dbRestriction;
 
 #ifdef WIN32
     SC_HANDLE scmHandle;

@@ -735,9 +735,6 @@ void frmMain::StoreServers()
     wxLogInfo(wxT("Storing listed servers for later..."));
 
     // Store the currently listed servers for later retrieval.
-    wxCookieType cookie;
-    wxString key;
-    pgObject *data;
     pgServer *server;
     int numServers = 0;
 
@@ -748,61 +745,38 @@ void frmMain::StoreServers()
 
     // Write the individual servers
     // Iterate through all the child nodes of the Servers node
-    wxTreeItemId item = browser->GetFirstChild(serversObj->GetId(), cookie);
-    while (item)
-    {
-        data = browser->GetObject(item);
-        if (data->IsCreatedBy(serverFactory))
-        {
-			// Cast the object, and check if it was autodiscovered before saving.
-			server = (pgServer *)data;
+    treeObjectIterator servers(browser, serversObj);
 
-			// We have an 'added' server, so save it
+    while ((server = (pgServer*)servers.GetNextObject()) != 0)
+    {
+        if (server->IsCreatedBy(serverFactory))
+        {
+            wxString key;
 			++numServers;
 
-			// Hostname
-			key.Printf(wxT("Servers/Server%d"), numServers);
-		    settings->Write(key, server->GetName());
+            key.Printf(wxT("Servers/%d/"), numServers);
+		    settings->Write(key + wxT("Server"), server->GetName());
+	        settings->Write(key + wxT("Description"), server->GetDescription());
+	        settings->Write(key + wxT("ServiceID"), server->GetServiceID());
+		    settings->Write(key + wxT("Port"), server->GetPort());
+	        settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
+	        settings->Write(key + wxT("Database"), server->GetDatabaseName());
+	        settings->Write(key + wxT("Username"), server->GetUsername());
+			settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
+			settings->Write(key + wxT("LastSchema"), server->GetLastSchema());
+            settings->Write(key + wxT("DbRestriction"), server->GetDbRestriction());
+			settings->Write(key + wxT("SSL"), server->GetSSL());
 
-			// Comment
-		    key.Printf(wxT("Servers/Description%d"), numServers);
-	        settings->Write(key, server->GetDescription());
+            pgCollection *coll=browser->FindCollection(databaseFactory, server->GetId());
+            if (coll)
+            {
+                treeObjectIterator dbs(browser, coll);
+                pgDatabase *db;
 
-			// Service ID
-		    key.Printf(wxT("Servers/ServiceID%d"), numServers);
-	        settings->Write(key, server->GetServiceID());
-
-			// Port
-			key.Printf(wxT("Servers/Port%d"), numServers);
-		    settings->Write(key, server->GetPort());
-
-			// Store Password
-			key.Printf(wxT("Servers/StorePwd%d"), numServers);
-	        settings->Write(key, server->GetStorePwd());
-
-			// Database
-			key.Printf(wxT("Servers/Database%d"), numServers);
-	        settings->Write(key, server->GetDatabaseName());
-
-			// Username
-			key.Printf(wxT("Servers/Username%d"), numServers);
-	        settings->Write(key, server->GetUsername());
-
-			// last Database
-			key.Printf(wxT("Servers/LastDatabase%d"), numServers);
-			settings->Write(key, server->GetLastDatabase());
-
-			// last Schema
-			key.Printf(wxT("Servers/LastSchema%d"), numServers);
-			settings->Write(key, server->GetLastSchema());
-	        
-			// SSL
-			key.Printf(wxT("Servers/SSL%d"), numServers);
-			settings->Write(key, server->GetSSL());
+                while ((db=(pgDatabase*)dbs.GetNextObject()) != 0)
+                    settings->Write(key + wxT("Databases/") + db->GetName() + wxT("/SchemaRestriction"), db->GetSchemaRestriction());
+            }
 		}
-
-        // Get the next item
-        item = browser->GetNextChild(serversObj->GetId(), cookie);
     }
 
     // Write the server count

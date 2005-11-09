@@ -32,8 +32,48 @@ extern wxString docPath;
 
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
+
+    // Convert setting from pre-1.3
+#ifdef __WXMSW__
+    DWORD type=0;
+    HKEY hkey=0;
+    RegOpenKeyEx(HKEY_CURRENT_USER, wxT("Software\\") + GetAppName(), 0, KEY_READ, &hkey);
+    if (hkey)
+    {
+        RegQueryValueEx(hkey, wxT("ShowTipOfTheDay"), 0, &type, 0, 0);
+        if (type == REG_DWORD)
+        {
+            long value;
+            Read(wxT("ShowTipOfTheDay"), &value, 0L);
+
+            Write(wxT("ShowTipOfTheDay"), value != 0);
+        }
+        RegCloseKey(hkey);
+    }
+#endif
+
+
+    // Convert settings from pre-1.5
+    long i, serverCount;
+    Read(wxT("Servers/Count"), &serverCount, 0L);
+    for (i=1 ; i <= serverCount ; i++)
+    {
+        moveStringValue(wxT("Servers/Database%d"), wxT("Servers/%d/Database"), i);
+        moveStringValue(wxT("Servers/Description%d"), wxT("Servers/%d/Description"), i);
+        moveStringValue(wxT("Servers/LastDatabase%d"), wxT("Servers/%d/LastDatabase"), i);
+        moveStringValue(wxT("Servers/LastSchema%d"), wxT("Servers/%d/LastSchema"), i);
+        moveStringValue(wxT("Servers/Server%d"), wxT("Servers/%d/Server"), i);
+        moveStringValue(wxT("Servers/ServiceId%d"), wxT("Servers/%d/ServiceId"), i);
+        moveStringValue(wxT("Servers/StorePWD%d"), wxT("Servers/%d/StorePWD"), i);
+        moveStringValue(wxT("Servers/Username%d"), wxT("Servers/%d/Username"), i);
+        moveLongValue(wxT("Servers/Port%d"), wxT("Servers/%d/Port"), i);
+        moveLongValue(wxT("Servers/SSL%d"), wxT("Servers/%d/SSL"), i);
+        moveLongValue(wxT("Servers/LastSSL%d"), wxT("Servers/%d/LastSSL"), i);
+    }
+
+        
     // Tip Of The Day
-    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, 1); 
+    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, true); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
     // Log. Try to get a vaguely usable default path.
@@ -165,6 +205,55 @@ sysSettings::~sysSettings()
 	Save();
 }
 
+
+void sysSettings::moveStringValue(wxChar *oldKey, wxChar *newKey, int index)
+{
+    wxString k1, k2;
+    if (index >= 0)
+    {
+        k1.Printf(oldKey, index);
+        k2.Printf(newKey, index);
+    }
+    else
+    {
+        k1=oldKey;
+        k2=newKey;
+    }
+
+    if (Exists(k1))
+    {
+        wxString value;
+        Read(k1, &value, wxEmptyString);
+        Write(k2, value);
+        DeleteEntry(k1);
+    }
+}
+
+
+
+void sysSettings::moveLongValue(wxChar *oldKey, wxChar *newKey, int index)
+{
+    wxString k1, k2;
+    if (index >= 0)
+    {
+        k1.Printf(oldKey, index);
+        k2.Printf(newKey, index);
+    }
+    else
+    {
+        k1=oldKey;
+        k2=newKey;
+    }
+
+    if (Exists(k1))
+    {
+        long value;
+        Read(k1, &value, 0L);
+        Write(k2, value);
+        DeleteEntry(k1);
+    }
+}
+
 void sysSettings::Save()
 {
     Write(wxT("LogFile"), logFile);
@@ -278,7 +367,7 @@ wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
 // Tip of the Day
 //////////////////////////////////////////////////////////////////////////
 
-void sysSettings::SetShowTipOfTheDay(const int newval)
+void sysSettings::SetShowTipOfTheDay(const bool newval)
 {
     showTipOfTheDay = newval;
     Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
