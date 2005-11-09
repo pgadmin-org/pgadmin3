@@ -36,7 +36,9 @@
 #define PGOID_TYPE_FLOAT8                   701L
 #define PGOID_TYPE_MONEY                    790L
 #define PGOID_TYPE_CHAR_ARRAY               1002L
+#define PGOID_TYPE_BPCHAR_ARRAY             1014L
 #define PGOID_TYPE_VARCHAR_ARRAY            1015L
+#define PGOID_TYPE_BPCHAR                   1042L
 #define PGOID_TYPE_VARCHAR                  1043L
 #define PGOID_TYPE_TIME                     1083L
 #define PGOID_TYPE_TIMESTAMP                1114L

@@ -85,20 +85,25 @@ int dlgColumn::Go(bool modal)
 
         if (!column->IsReferenced())
         {
-            pgSet *set=connection->ExecuteSet(
+            wxString typeSql=
                 wxT("SELECT tt.oid, tt.typname\n")
                 wxT("  FROM pg_cast\n")
                 wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
-                wxT(" WHERE castsource=") + NumToStr(column->GetAttTypId()) + wxT("\n")
-                wxT("   AND castfunc=0"));
+                wxT(" WHERE castsource=") + NumToStr(column->GetAttTypId()) + wxT("\n");
 
-            if (set)
+            if (connection->BackendMinimumVersion(8, 0))
+                typeSql += wxT("   AND castcontext IN ('i', 'a')");
+            else
+                typeSql += wxT("   AND castfunc=0");
+
+            pgSetIterator set(connection, typeSql);
+
+            while (set.RowsLeft())
             {
-                while (!set->Eof())
+                if (set.GetVal(wxT("typname")) != column->GetRawTypename())
                 {
-                    cbDatatype->Append(set->GetVal(wxT("typname")));
-                    AddType(wxT("?"), set->GetOid(wxT("oid")), set->GetVal(wxT("typname")));
-                    set->MoveNext();
+                    cbDatatype->Append(set.GetVal(wxT("typname")));
+                    AddType(wxT("?"), set.GetOid(wxT("oid")), set.GetVal(wxT("typname")));
                 }
             }
         }
