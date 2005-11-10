@@ -447,7 +447,7 @@ wxString dlgRole::GetSql()
     {
         // Edit Mode
 
-        AppendNameChange(sql);
+        AppendNameChange(sql, wxT("ROLE ") + role->GetQuotedFullIdentifier());
 
 
         wxString options;
