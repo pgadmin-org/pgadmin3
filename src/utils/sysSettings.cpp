@@ -138,7 +138,8 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     askSaveConfirmation=StrToBool(Read(wxT("AskSaveConfirmation"), wxT("Yes")));
     confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
-    autoRowCountThreshold=Read(wxT("AutoRowCount"), 2000);
+    Read(wxT("AutoRowCount"), &autoRowCountThreshold, 2000L);
+    Read(wxT("IndentSpaces"), &indentSpaces, 0L);
     Read(wxT("StickySql"), &stickySql, false);
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
     Read(wxT("SuppressGuruHints"), &suppressGuruHints, false);
@@ -275,6 +276,7 @@ void sysSettings::Save()
     Write(wxT("MaxServerLogSize"), maxServerLogSize);
     Write(wxT("SuppressGuruHints"), suppressGuruHints);
     Write(wxT("SlonyPath"), slonyPath);
+    Write(wxT("IndentSpaces"), indentSpaces);
 
 
     Write(wxT("Export/Unicode"), exportUnicode);

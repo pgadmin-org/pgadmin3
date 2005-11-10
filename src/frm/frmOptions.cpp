@@ -47,6 +47,7 @@ extern wxArrayString existingLangNames;
 #define chkAskDelete                CTRL_CHECKBOX("chkAskDelete")
 #define chkShowUsersForPrivileges   CTRL_CHECKBOX("chkShowUsersForPrivileges")
 #define txtAutoRowCount             CTRL_TEXT("txtAutoRowCount")
+#define txtIndent                   CTRL_TEXT("txtIndent")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
@@ -91,6 +92,7 @@ frmOptions::frmOptions(frmMain *parent)
     txtMaxRows->SetValidator(numval);
     txtMaxColSize->SetValidator(numval);
     txtAutoRowCount->SetValidator(numval);
+    txtIndent->SetValidator(numval);
     
     txtLogfile->SetValue(settings->GetLogFile());
     radLoglevel->SetSelection(settings->GetLogLevel());
@@ -100,6 +102,7 @@ frmOptions::frmOptions(frmMain *parent)
     chkAskDelete->SetValue(settings->GetConfirmDelete());
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
+    txtIndent->SetValue(NumToStr(settings->GetIndentSpaces()));
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
@@ -214,6 +217,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetConfirmDelete(chkAskDelete->GetValue());
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->GetValue());
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
+    settings->SetIndentSpaces(StrToLong(txtIndent->GetValue()));
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());

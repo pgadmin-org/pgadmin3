@@ -334,8 +334,8 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     StyleSetFont(11, fntSQLBox);
 
     SetMarginWidth(1, 0);
+    SetIndent(settings->GetIndentSpaces());
     
-
     // Setup the different highlight colurs
     StyleSetForeground(0,  wxColour(0x80, 0x80, 0x80));
     StyleSetForeground(1,  wxColour(0x00, 0x7f, 0x00));

@@ -83,6 +83,9 @@ public:
     long GetAutoRowCountThreshold() const { return autoRowCountThreshold; }
     void SetAutoRowCountThreshold(const long l) { autoRowCountThreshold=l; }
 
+    long GetIndentSpaces() const { return indentSpaces; }
+    void SetIndentSpaces(long l) { indentSpaces=l; }
+
     // Sticky SQL
     bool GetStickySql() const { return stickySql; }
     void SetStickySql(const bool newval);
@@ -179,7 +182,7 @@ private:
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
     bool confirmDelete, suppressGuruHints;
-    long maxRows, maxColSize, autoRowCountThreshold;
+    long maxRows, maxColSize, autoRowCountThreshold, indentSpaces;
     bool stickySql, unicodeFile;
     bool doubleClickProperties;
     long maxServerLogSize;
