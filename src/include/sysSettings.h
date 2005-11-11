@@ -151,8 +151,8 @@ public:
 
 private:
 
-    void moveStringValue(wxChar *oldKey, wxChar *newKey, int index=-1);
-    void moveLongValue(wxChar *oldKey, wxChar *newKey, int index=-1);
+    bool moveStringValue(wxChar *oldKey, wxChar *newKey, int index=-1);
+    bool moveLongValue(wxChar *oldKey, wxChar *newKey, int index=-1);
 
     wxFont systemFont, sqlFont; 
 
