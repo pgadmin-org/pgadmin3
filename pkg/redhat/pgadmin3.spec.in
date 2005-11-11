@@ -6,8 +6,8 @@
 
 Summary:	Graphical client for PostgreSQL.
 Name:		pgadmin3
-Version:        1.4.0
-Release:        beta2
+Version:        PGADMIN_LONG_VERSION
+Release:        1
 License:        Artistic
 Group:          Applications/Databases
 URL:		http://www.pgadmin.org/
@@ -20,12 +20,12 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %define desktop_vendor pgadmin
 %define debug_package %{nil}
 
-%define beta 1
+%define beta 0
 %{?beta:%define __os_install_post /usr/lib/rpm/brp-compress}
 
 # When rebuilding, wxWindows source installation is needed. Currently we don't have
 # a stable RPM for wxWindows.
-#BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
+#BuildRequires: wxGTK2ud >= 2.6-%{wxGTK2_version}, wxGTK2ud-devel >= 2.6-%{wxGTK2_version}, wxGTK2ud-stc >= 2.6-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.6-%{wxGTK2_version}
 
 %description
  pgAdmin III is a powerful administration and development platform for the PostgreSQL 

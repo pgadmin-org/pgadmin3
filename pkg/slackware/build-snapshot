@@ -71,7 +71,7 @@ if [ -x src/pgadmin3 ]; then
         /usr/bin/strip usr/bin/pgadmin3
 	/sbin/makepkg --chown y pgadmin3.tgz 
 	if [ -e pgadmin3.tgz ]; then
-		cp pgadmin3.tgz /var/www/developer.pgadmin.org/snapshots/linux/slackware/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
+		mv pgadmin3.tgz /var/www/developer.pgadmin.org/snapshots/linux/slackware/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
 		ln -s -f linux/slackware/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz /var/www/developer.pgadmin.org/snapshots/pgadmin3-slackware.tgz
 	fi
 fi
