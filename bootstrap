@@ -8,6 +8,10 @@
 #
 #######################################################################
 
+# Create configure.ac
+VERSION=`grep '#define VERSION_PACKAGE' src/include/version.h | awk '{print $3}'`
+sed "s/PGADMIN_VERSION/$VERSION/" configure.ac.in > configure.ac
+
 set -x
 if ! ([ -x config ]); then 
   mkdir config
