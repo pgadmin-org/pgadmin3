@@ -1,1 +1,0 @@
-#define SVNVER 1
