@@ -295,13 +295,18 @@ IMPLEMENT_DYNAMIC_CLASS(ctlSQLBox, wxStyledTextCtrl)
 ctlSQLBox::ctlSQLBox()
 {
     m_dlgFind=0;
+#ifndef __WXMSW__
+	findDlgLast = false;
+#endif
 }
 
 
 ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
     m_dlgFind=0;
-    
+#ifndef __WXMSW__
+    findDlgLast = false;
+#endif
     Create(parent, id, pos, size, style);
 }
 
@@ -369,11 +374,21 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 
 void ctlSQLBox::OnFind(wxCommandEvent& ev)
 {
+#ifndef __WXMSW__
+	if (m_dlgFind && !findDlgLast)
+	{
+		m_dlgFind->Destroy();
+		m_dlgFind = NULL;
+	}
+#endif
+	
     if (!m_dlgFind)
     {
         m_dlgFind = new wxFindReplaceDialog(this, &m_findData, _("Find text"), 0);
-
         m_dlgFind->Show(true);
+#ifndef __WXMSW__
+		findDlgLast = true;
+#endif
     }
     else
         m_dlgFind->SetFocus();
@@ -382,11 +397,21 @@ void ctlSQLBox::OnFind(wxCommandEvent& ev)
 
 void ctlSQLBox::OnReplace(wxCommandEvent& ev)
 {
+#ifndef __WXMSW__
+	if (m_dlgFind && findDlgLast)
+	{
+		m_dlgFind->Destroy();
+		m_dlgFind = NULL;
+	}
+#endif
+	
     if (!m_dlgFind)
     {
         m_dlgFind = new wxFindReplaceDialog(this, &m_findData, _("Find text"), wxFR_REPLACEDIALOG);
-
         m_dlgFind->Show(true);
+#ifndef __WXMSW__
+		findDlgLast = false;
+#endif
     }
     else
         m_dlgFind->SetFocus();

@@ -29,8 +29,6 @@ public:
     ~ctlSQLBox();
 
     void Create(wxWindow *parent, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
-    wxFindReplaceData m_findData;
-    wxFindReplaceDialog* m_dlgFind;
 
     void OnKeyDown(wxKeyEvent& event);
     void OnFind(wxCommandEvent& event);
@@ -39,6 +37,14 @@ public:
     
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
     DECLARE_EVENT_TABLE()
+		
+private:
+	wxFindReplaceData m_findData;
+    wxFindReplaceDialog* m_dlgFind;
+#ifndef __WXMSW__
+	bool findDlgLast;
+#endif
+		
 };
 
 
