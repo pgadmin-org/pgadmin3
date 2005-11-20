@@ -124,7 +124,7 @@ void frmBackup::OnSelectFilename(wxCommandEvent &ev)
     }
 
     
-    wxFileDialog file(this, title, wxGetHomeDir(), txtFilename->GetValue(), prompt);
+    wxFileDialog file(this, title, wxGetHomeDir(), txtFilename->GetValue(), prompt, wxSAVE);
 
     if (file.ShowModal() == wxID_OK)
     {
