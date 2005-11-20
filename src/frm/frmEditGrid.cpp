@@ -671,7 +671,7 @@ void frmEditGrid::Go()
     event.m_size = GetSize();
     OnSize(event);
 
-    if (!hasOids && primaryKeyColNumbers.IsEmpty())
+    if (!hasOids && primaryKeyColNumbers.IsEmpty() && relkind == 'r')
         frmHint::ShowHint(this, HINT_READONLY_NOPK, tableName);
 }
 
