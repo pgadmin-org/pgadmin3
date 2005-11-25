@@ -171,7 +171,7 @@ install-exec-hook:
 	cd $(bindir) ;\
 	mv pgadmin3 tmp ;\
 	mv tmp pgAdmin3 ;\
-	if test "$(pg_debug_build)" = "no"; then \
+	if test "$(BUILD_DEBUG)" = "no"; then \
 		strip pgAdmin3 ;\
 	fi
 
