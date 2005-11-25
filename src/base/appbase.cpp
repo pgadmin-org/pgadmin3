@@ -36,7 +36,6 @@ wxLog *logger;
 #define UI_DIR      wxT("/ui")
 #define I18N_DIR    wxT("/i18n")
 
-#define SCRIPT_DIR  wxT("/scripts")
 #define HELPER_DIR  wxT("/helper")
 
 
@@ -104,8 +103,6 @@ void pgAppBase::InitPaths()
 
     if (wxDir::Exists(dataDir + HELPER_DIR))
         path.Add(dataDir + HELPER_DIR) ;
-    if (wxDir::Exists(dataDir + SCRIPT_DIR))
-        path.Add(dataDir + SCRIPT_DIR) ;
 
 #else // other *ixes
 
