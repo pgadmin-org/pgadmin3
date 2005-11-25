@@ -7,7 +7,11 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
+if !APPBUNDLE
+
 SUBDIRS = pgagent
+
+endif
 
 # Note: We cannot add a Makefile to the admin directory as it already
 #       contains one to be used as part of the PostreSQL contrib build

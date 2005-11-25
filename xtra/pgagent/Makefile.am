@@ -37,24 +37,11 @@ AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(srcd
 AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
 AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
 
-# Automake trys to execute install-exec-hook if it appears anywhere in the file, so we need a dummy
-# for non-APPBUNDLE cases.
-install-exec-hook:
+install-data-local:
+	$(install_sh) -c -m 644 pgagent.sql $(DESTDIR)/$(pkgdatadir)/pgagent.sql
 
 else
 
-AM_CXXFLAGS = -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
-AM_CPPFLAGS = -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
-AM_CFLAGS = -Wall -I$(srcdir)/include
-install-exec-hook:
-		cd $(bindir) ;\
-		mv pgagent tmp ;\
-		mv tmp pgagent ;\
-		if test "$(pg_debug_build)" = "no"; then \
-				strip pgagent ;\
-		fi
+install-data-local:
 
 endif
-
-install-data-local:
-	$(install_sh) -c -m 644 pgagent.sql $(DESTDIR)/$(pkgdatadir)/pgagent.sql
