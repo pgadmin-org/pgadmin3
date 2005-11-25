@@ -358,22 +358,26 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 		long row=0;
 		wxString sql;
 		if (connection->BackendMinimumVersion(7, 4)) {
-			sql = wxT("SELECT ")
-				  wxT("(SELECT datname FROM pg_database WHERE oid = database) AS dbname, ")
-				  wxT("relation::regclass AS class, ")
-				  wxT("pg_get_userbyid(pg_stat_get_backend_userid(pid)::int4) as user, ")
-				  wxT("transaction, pid, mode, granted, ")
-				  wxT("pg_stat_get_backend_activity(pid) AS current_query, ")
-				  wxT("pg_stat_get_backend_activity_start(pid) AS query_start ")
-				  wxT("FROM pg_locks ORDER BY pid");
+            sql = wxT("SELECT ")
+                  wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
+                  wxT("pgl.relation::regclass AS class, ")
+                  wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
+                  wxT("pgl.transaction, pg_stat_get_backend_pid(svrid) AS pid, pgl.mode, pgl.granted, ")
+                  wxT("pg_stat_get_backend_activity(svrid) AS current_query, ")
+                  wxT("pg_stat_get_backend_activity_start(svrid) AS query_start ")
+                  wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
+                  wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
+                  wxT("ORDER BY pid;");
 		} else {
-			sql = wxT("SELECT ")
-				  wxT("(SELECT datname FROM pg_database WHERE oid = database) AS dbname, ")
-				  wxT("relation::regclass AS class, ")
-				  wxT("pg_get_userbyid(pg_stat_get_backend_userid(pid)::int4) as user, ")
-				  wxT("transaction, pid, mode, granted, ")
-				  wxT("pg_stat_get_backend_activity(pid) AS current_query ")
-				  wxT("FROM pg_locks ORDER BY pid");
+            sql = wxT("SELECT ")
+                  wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
+                  wxT("pgl.relation::regclass AS class, ")
+                  wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
+                  wxT("pgl.transaction, pg_stat_get_backend_pid(svrid) AS pid, pgl.mode, pgl.granted, ")
+                  wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
+                  wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
+                  wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
+                  wxT("ORDER BY pid;");
 		}
 
 		pgSet *dataSet2=connection->ExecuteSet(sql);
