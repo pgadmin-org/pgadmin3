@@ -208,7 +208,11 @@ int ctlComboBox::GuessSelection(wxCommandEvent &ev)
 
 int ctlComboBox::GetGuessedSelection() const
 {
+#if wxABI_VERSION >= 20602
+    int sel=wxComboBox::GetCurrentSelection();
+#else
     int sel=wxComboBox::GetSelection();
+#endif
     if (sel < 0)
         sel = FindString(GetValue());
     return sel;
@@ -216,7 +220,11 @@ int ctlComboBox::GetGuessedSelection() const
 
 int ctlComboBox::GetSelection() const
 {
+#if wxABI_VERSION >= 20602
+    int sel=wxComboBox::GetCurrentSelection();
+#else
     int sel=wxComboBox::GetSelection();
+#endif
     if (sel < 0)
         sel = FindString(GetValue());
     return sel;
