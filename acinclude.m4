@@ -164,6 +164,7 @@ fi], [
         fi
     fi
 ])
+AC_SUBST(LIBPQ_HOME)
 
 #
 # Check for libpq libraries and headers
