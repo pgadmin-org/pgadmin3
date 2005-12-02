@@ -32,6 +32,10 @@
 #include "images/ex_join.xpm"
 #include "images/ex_aggregate.xpm"
 #include "images/ex_scan.xpm"
+#include "images/ex_index_scan.xpm"
+#include "images/ex_tid_scan.xpm"
+#include "images/ex_bmp_index.xpm"
+#include "images/ex_bmp_heap.xpm"
 #include "images/ex_sort.xpm"
 #include "images/ex_group.xpm"
 #include "images/ex_subplan.xpm"
@@ -145,8 +149,11 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 
     wxStringTokenizer tokens(str, wxT(" "));
     wxString token = tokens.GetNextToken();
+    wxString token2 = tokens.GetNextToken();
+    wxString token3 = tokens.GetNextToken();
     wxString descr = costPos > 0 ? str.Left(costPos) : str;
 
+    // possible keywords can be found in postgresql/src/backend/commands/explain.c
 
     if (token == wxT("Total"))              return 0;
     else if (token == wxT("Result"))        s = new ExplainShape(ex_result_xpm, descr);
@@ -155,23 +162,15 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     else if (token == wxT("Merge"))         s = new ExplainShape(ex_merge_xpm, descr);
     else if (token == wxT("Hash"))
     {
-        token=tokens.GetNextToken();
-        if (token == wxT("Join"))
+        if (token2 == wxT("Join"))
             s = new ExplainShape(ex_join_xpm, descr);
         else
         {
-            token=tokens.GetNextToken();
-            if (token == wxT("Join"))
+            if (token3 == wxT("Join"))
                 s = new ExplainShape(ex_join_xpm, descr);
             else
                 s = new ExplainShape(ex_hash_xpm, descr);
         }
-    }
-    else if (token == wxT("Seq") || token == wxT("Index") || token == wxT("Tid"))
-    {
-        token = tokens.GetNextToken();
-        if (token == wxT("Scan"))           s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
-        else if (token == wxT("Seek"))      s = new ExplainShape(ex_seek_xpm, descr, 3, 2);
     }
     else if (token == wxT("Subquery"))      s = new ExplainShape(ex_subplan_xpm, descr, 0, 2);
     else if (token == wxT("Function"))      s = new ExplainShape(ex_result_xpm, descr, 0, 2);
@@ -185,6 +184,19 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 
     
     else if (token == wxT("Limit"))         s = new ExplainShape(ex_limit_xpm, descr);
+
+    else if (token == wxT("Bitmap"))
+    {
+        if (token == wxT("Index"))          s = new ExplainShape(ex_bmp_index_xpm, descr, 3, 2);
+        else                                s = new ExplainShape(ex_bmp_heap_xpm, descr, 3, 2);
+    }
+    else if (token2 == wxT("Scan"))
+    {
+        if (token == wxT("Index"))          s = new ExplainShape(ex_index_scan_xpm, descr, 3, 2);
+        else if (token == wxT("Tid"))       s = new ExplainShape(ex_tid_scan_xpm, descr, 3, 2);
+        else                                s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
+    }
+    else if (token2 == wxT("Seek"))         s = new ExplainShape(ex_seek_xpm, descr, 3, 2);
 
     if (!s)
         s = new ExplainShape(ex_unknown_xpm, descr);
