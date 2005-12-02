@@ -199,7 +199,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
 
-    cbConnection = new wxComboBox(toolBar, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxSize(GetCharWidth()*30, -1), 0, 0, wxCB_READONLY|wxCB_DROPDOWN);
+    cbConnection = new ctlComboBoxFix(toolBar, CTRLID_CONNECTION, wxDefaultPosition, wxSize(GetCharWidth()*30, -1), wxCB_READONLY|wxCB_DROPDOWN);
     cbConnection->Append(conn->GetName(), (void*)conn);
     cbConnection->Append(_("<new connection>"), (void*)0);
     toolBar->AddControl(cbConnection);

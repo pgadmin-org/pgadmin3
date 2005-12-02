@@ -20,10 +20,12 @@
 
 
 class pgConnBase;
-class wxComboBoxFix : public wxComboBox
+class ctlComboBoxFix : public wxComboBox
 {
 public:
-    wxComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr);
+    ctlComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr);
+
+    int GetSelection() const;
     int FillLongKey(pgConnBase *conn, const wxChar *qry);
     int FillOidKey(pgConnBase *conn, const wxChar *qry);
     int FillStringKey(pgConnBase *conn, const wxChar *qry);
@@ -47,7 +49,7 @@ public:
 #endif
 };
 
-class ctlComboBox : public wxComboBoxFix
+class ctlComboBox : public ctlComboBoxFix
 {
 public:
     ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr=0);

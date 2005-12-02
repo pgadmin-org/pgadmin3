@@ -139,7 +139,7 @@ void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
 }
 
 
-int dlgSelectConnection::Go(pgConn *conn, wxComboBox *cb)
+int dlgSelectConnection::Go(pgConn *conn, ctlComboBoxFix *cb)
 {
     cbConnection=cb;
     treeObjectIterator servers(mainForm->GetBrowser(), mainForm->GetServerCollection());

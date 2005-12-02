@@ -33,7 +33,7 @@ private:
     ctlSQLResult *sqlResult;
     ExplainCanvas *explainCanvas;
     wxTextCtrl *msgResult, *msgHistory;
-    wxComboBox *cbConnection;
+    ctlComboBoxFix *cbConnection;
 
     pgConn *conn;
     wxLongLong elapsedQuery, elapsedRetrieve;

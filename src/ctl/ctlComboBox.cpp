@@ -27,25 +27,25 @@ public:
 
 
 
-int wxComboBoxFix::Append(const wxString& item, const wxString &str)
+int ctlComboBoxFix::Append(const wxString& item, const wxString &str)
 {
     return wxComboBox::Append(item, new StringClientData(str));
 }
 
 
-int wxComboBoxFix::Append(const wxString& item, long l)
+int ctlComboBoxFix::Append(const wxString& item, long l)
 {
     return wxComboBox::Append(item, (void*)l);
 }
 
 
-int wxComboBoxFix::Append(const wxString& item, OID oid)
+int ctlComboBoxFix::Append(const wxString& item, OID oid)
 {
     return wxComboBox::Append(item, (void*)oid);
 }
 
 
-int wxComboBoxFix::FillLongKey(pgConnBase *conn, const wxChar *qry)
+int ctlComboBoxFix::FillLongKey(pgConnBase *conn, const wxChar *qry)
 {
     int cnt=0;
     pgSetIterator set(conn->ExecuteSet(qry));
@@ -60,7 +60,7 @@ int wxComboBoxFix::FillLongKey(pgConnBase *conn, const wxChar *qry)
 }
 
 
-int wxComboBoxFix::FillOidKey(pgConnBase *conn, const wxChar *qry)
+int ctlComboBoxFix::FillOidKey(pgConnBase *conn, const wxChar *qry)
 {
     int cnt=0;
     pgSetIterator set(conn->ExecuteSet(qry));
@@ -75,7 +75,7 @@ int wxComboBoxFix::FillOidKey(pgConnBase *conn, const wxChar *qry)
 }
 
 
-int wxComboBoxFix::FillStringKey(pgConnBase *conn, const wxChar *qry)
+int ctlComboBoxFix::FillStringKey(pgConnBase *conn, const wxChar *qry)
 {
     int cnt=0;
     pgSetIterator set(conn->ExecuteSet(qry));
@@ -89,21 +89,21 @@ int wxComboBoxFix::FillStringKey(pgConnBase *conn, const wxChar *qry)
     return cnt;
 }
 
-long wxComboBoxFix::GetLongKey(int sel)
+long ctlComboBoxFix::GetLongKey(int sel)
 {
     if (sel < 0)
         sel = GetSelection();
     return (long)GetClientData(sel);
 }
 
-OID wxComboBoxFix::GetOIDKey(int sel)
+OID ctlComboBoxFix::GetOIDKey(int sel)
 {
     if (sel < 0)
         sel = GetSelection();
     return (OID)GetClientData(sel);
 }
 
-wxString wxComboBoxFix::GetStringKey(int sel)
+wxString ctlComboBoxFix::GetStringKey(int sel)
 {
     if (sel < 0)
         sel = GetSelection();
@@ -114,13 +114,13 @@ wxString wxComboBoxFix::GetStringKey(int sel)
 }
 
 
-wxComboBoxFix::wxComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr)
+ctlComboBoxFix::ctlComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr)
 : wxComboBox(wnd, id, wxEmptyString, pos, siz, 0, NULL, attr)
 {
 }
 
 
-bool wxComboBoxFix::SetKey(long val)
+bool ctlComboBoxFix::SetKey(long val)
 {
     int i;
     for (i=0 ; i < GetCount() ; i++)
@@ -136,7 +136,7 @@ bool wxComboBoxFix::SetKey(long val)
 }
 
 
-bool wxComboBoxFix::SetKey(OID val)
+bool ctlComboBoxFix::SetKey(OID val)
 {
     int i;
     for (i=0 ; i < GetCount() ; i++)
@@ -152,7 +152,7 @@ bool wxComboBoxFix::SetKey(OID val)
 }
 
 
-bool wxComboBoxFix::SetKey(const wxString &val)
+bool ctlComboBoxFix::SetKey(const wxString &val)
 {
     int i;
     for (i=0 ; i < GetCount() ; i++)
@@ -168,10 +168,21 @@ bool wxComboBoxFix::SetKey(const wxString &val)
 }
 
 
+int ctlComboBoxFix::GetSelection() const
+{
+#if wxABI_VERSION >= 20602
+    int sel=wxComboBox::GetCurrentSelection();
+#else
+    int sel=wxComboBox::GetSelection();
+#endif
+    return sel;
+}
+
+
 ////////////////////////////////////////////
 
 ctlComboBox::ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr)
-: wxComboBoxFix(wnd, id, pos, siz, attr)
+: ctlComboBoxFix(wnd, id, pos, siz, attr)
 {
 #ifdef __WXGTK__
     SetEditable(false);
@@ -208,11 +219,8 @@ int ctlComboBox::GuessSelection(wxCommandEvent &ev)
 
 int ctlComboBox::GetGuessedSelection() const
 {
-#if wxABI_VERSION >= 20602
-    int sel=wxComboBox::GetCurrentSelection();
-#else
-    int sel=wxComboBox::GetSelection();
-#endif
+    int sel=ctlComboBoxFix::GetCurrentSelection();
+
     if (sel < 0)
         sel = FindString(GetValue());
     return sel;
@@ -220,11 +228,8 @@ int ctlComboBox::GetGuessedSelection() const
 
 int ctlComboBox::GetSelection() const
 {
-#if wxABI_VERSION >= 20602
-    int sel=wxComboBox::GetCurrentSelection();
-#else
-    int sel=wxComboBox::GetSelection();
-#endif
+    int sel=ctlComboBoxFix::GetCurrentSelection();
+
     if (sel < 0)
         sel = FindString(GetValue());
     return sel;

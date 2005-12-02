@@ -82,9 +82,9 @@ public:
     void OnChangeStc(wxStyledTextEvent& event);
 
 protected:
-    void AddUsers(wxComboBox *cb1, wxComboBox *cb2=0);
-    void FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBox *cb2=0);
-    void PrepareTablespace(wxComboBox *cb, const wxChar *current=0);
+    void AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2=0);
+    void FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlComboBoxFix *cb2=0);
+    void PrepareTablespace(ctlComboBoxFix *cb, const wxChar *current=0);
 
     pgConn *connection;
     pgDatabase *database;
