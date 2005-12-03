@@ -132,12 +132,9 @@ DialogWithHelp((frmMain*)parent)
         cbUser->SetValue(user);
         txtIPaddress->SetValue(line->ipaddress);
         txtOption->SetValue(line->option);
-
-        wxCommandEvent noEvent;
-        OnChange(noEvent);
-    }
-    else
-        btnOK->Disable();
+	}
+	wxCommandEvent noEvent;
+	OnChange(noEvent);
 }
 
 
