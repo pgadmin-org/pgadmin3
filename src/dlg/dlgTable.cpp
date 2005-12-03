@@ -516,6 +516,7 @@ wxString dlgTable::GetSql()
                 sql = wxT("ALTER TABLE ") + tabname
                     + wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n")
                     + sql;
+
         }
         // Add the ADD CONSTRAINTs...
         sql += tmpsql;
@@ -527,7 +528,7 @@ wxString dlgTable::GetSql()
         }
         if (cbTablespace->GetValue() != table->GetTablespace())
         {
-            if (cbTablespace->GetSelection() > 0)
+            if (cbTablespace->GetCurrentSelection() > 0)
                 sql += wxT("ALTER TABLE ") + tabname 
                     +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
                     + wxT(";\n");
@@ -632,7 +633,7 @@ wxString dlgTable::GetSql()
             sql += wxT(")\n");
         }
         sql += (chkHasOids->GetValue() ? wxT("WITH OIDS") : wxT("WITHOUT OIDS"));
-        if (cbTablespace->GetSelection() > 0)
+        if (cbTablespace->GetCurrentSelection() > 0)
             sql += wxT("\nTABLESPACE ") + qtIdent(cbTablespace->GetValue());
 
         sql += wxT(";\n");
@@ -932,7 +933,7 @@ void dlgTable::OnSelChangeCol(wxListEvent &ev)
 
 void dlgTable::OnAddConstr(wxCommandEvent &ev)
 {
-    int sel=cbConstrType->GetSelection();
+    int sel=cbConstrType->GetCurrentSelection();
     if (hasPK)
         sel++;
 

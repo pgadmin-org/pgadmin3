@@ -100,7 +100,7 @@ int dlgRepPath::Go(bool modal)
 pgObject *dlgRepPath::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pathFactory.CreateObjects(collection, 0,
-         wxT(" WHERE pa_server = ") + NumToStr((OID)cbServer->GetClientData(cbServer->GetSelection())) +
+         wxT(" WHERE pa_server = ") + NumToStr((OID)cbServer->GetClientData(cbServer->GetCurrentSelection())) +
          wxT("   AND pa_client = ") + NumToStr(node->GetSlId()));
 
     return obj;
@@ -120,7 +120,7 @@ void dlgRepPath::CheckChange()
     {
         bool enable=true;
         CheckValid(enable, cbServer->GetCount() > 0, _("No provider node without path definition left."));
-        CheckValid(enable, cbServer->GetSelection() >= 0, _("Please select provider node."));
+        CheckValid(enable, cbServer->GetCurrentSelection() >= 0, _("Please select provider node."));
 
         wxString connInfo=txtConnInfo->GetValue();
         CheckValid(enable, connInfo.Find(wxT("host=")) >= 0, _("Please provide host in connect info."));
@@ -137,7 +137,7 @@ wxString dlgRepPath::GetSql()
 {
     wxString sql;
 
-    int sel=cbServer->GetSelection();
+    int sel=cbServer->GetCurrentSelection();
 
     if (sel >= 0)
     {

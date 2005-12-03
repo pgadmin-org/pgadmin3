@@ -285,7 +285,7 @@ wxString dlgColumn::GetSql()
                     typname = wxT("int8");
 
                 wxString sequence;
-                bool newSequence = (cbSequence->GetSelection() <= 0);
+                bool newSequence = (cbSequence->GetCurrentSelection() <= 0);
 
                 if (connection->BackendMinimumVersion(8, 0) && newSequence)
                 {
@@ -303,7 +303,7 @@ wxString dlgColumn::GetSql()
                         sql = wxT("CREATE SEQUENCE ") + sequence + wxT(";\n");
                     }
                     else
-                        sequence=sequences.Item(cbSequence->GetSelection());
+                        sequence=sequences.Item(cbSequence->GetCurrentSelection());
 
                     sql +=wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                         + wxT("\n   ADD COLUMN ") + qtIdent(name)

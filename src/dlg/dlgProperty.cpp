@@ -201,7 +201,7 @@ int dlgProperty::Go(bool modal)
     if (pos.x >= 0 && pos.y >= 0)
         Move(pos);
 
-    wxComboBoxFix *cbowner = (wxComboBoxFix*)cbOwner;
+    ctlComboBoxFix *cbowner = (ctlComboBoxFix*)cbOwner;
 
     if (cbClusterSet)
     {
@@ -381,7 +381,7 @@ void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
 }
 
 
-void dlgProperty::FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBox *cb2)
+void dlgProperty::FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
 {
     if (!cb1 && !cb2)
         return;
@@ -401,13 +401,13 @@ void dlgProperty::FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBo
 }
 
 
-void dlgProperty::AddUsers(wxComboBox *cb1, wxComboBox *cb2)
+void dlgProperty::AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
 {
     FillCombobox(wxT("SELECT usename FROM pg_user ORDER BY usename"), cb1, cb2);
 }
 
 
-void dlgProperty::PrepareTablespace(wxComboBox *cb, const wxChar *current)
+void dlgProperty::PrepareTablespace(ctlComboBoxFix *cb, const wxChar *current)
 {
     wxASSERT(cb != 0);
 

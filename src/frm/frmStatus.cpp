@@ -820,7 +820,7 @@ int frmStatus::fillLogfileCombo()
 
 void frmStatus::OnLoadLogfile(wxCommandEvent &event)
 {
-    int pos=cbLogfiles->GetSelection();
+    int pos=cbLogfiles->GetCurrentSelection();
     int lastPos = cbLogfiles->GetCount()-1;
     if (pos >= 0)
     {

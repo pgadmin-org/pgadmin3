@@ -62,7 +62,7 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
 {
     cbDatabase->Clear();
 
-    int sel=cbServer->GetSelection();
+    int sel=cbServer->GetCurrentSelection();
     if (sel >= 0)
     {
         remoteServer = (pgServer*)cbServer->GetClientData(sel);
@@ -123,7 +123,7 @@ wxString dlgSelectConnection::GetDatabase()
 
 void dlgSelectConnection::OnChangeDatabase(wxCommandEvent& ev)
 {
-    btnOK->Enable(cbDatabase->GetCount() > 0 && cbDatabase->GetSelection() >= 0);
+    btnOK->Enable(cbDatabase->GetCount() > 0 && cbDatabase->GetCurrentSelection() >= 0);
 }
 
 
@@ -139,7 +139,7 @@ void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
 }
 
 
-int dlgSelectConnection::Go(pgConn *conn, wxComboBox *cb)
+int dlgSelectConnection::Go(pgConn *conn, ctlComboBoxFix *cb)
 {
     cbConnection=cb;
     treeObjectIterator servers(mainForm->GetBrowser(), mainForm->GetServerCollection());

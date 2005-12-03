@@ -202,7 +202,7 @@ void dlgForeignKey::OnSelChangeCol(wxListEvent &ev)
 
 void dlgForeignKey::OnSelChangeRefCol(wxCommandEvent &ev)
 {
-    btnAddRef->Enable(cbColumns->GetSelection() >= 0 && cbRefColumns->GetSelection() >= 0);
+    btnAddRef->Enable(cbColumns->GetCurrentSelection() >= 0 && cbRefColumns->GetCurrentSelection() >= 0);
 }
 
 
@@ -249,8 +249,8 @@ void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
     if (!col.IsEmpty() && !ref.IsEmpty())
     {
         lstColumns->AppendItem(columnFactory.GetIconId(), col, ref);
-        cbColumns->Delete(cbColumns->GetSelection());
-        cbRefColumns->Delete(cbRefColumns->GetSelection());
+        cbColumns->Delete(cbColumns->GetCurrentSelection());
+        cbRefColumns->Delete(cbRefColumns->GetCurrentSelection());
         cbReferences->Disable();
 
         cbColumns->SetSelection(0);

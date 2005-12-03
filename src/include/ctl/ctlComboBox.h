@@ -20,10 +20,17 @@
 
 
 class pgConnBase;
-class wxComboBoxFix : public wxComboBox
+class ctlComboBoxFix : public wxComboBox
 {
 public:
-    wxComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr);
+    ctlComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr);
+
+#if wxCHECK_VERSION(2,6,2)
+    // we have GetCurrentSelection() in wxChoice, implementing the old GetSelection() semantics
+#else
+    int GetCurrentSelection() const { return wxComboBox::GetSelection(); }
+#endif
+
     int FillLongKey(pgConnBase *conn, const wxChar *qry);
     int FillOidKey(pgConnBase *conn, const wxChar *qry);
     int FillStringKey(pgConnBase *conn, const wxChar *qry);
@@ -45,9 +52,14 @@ public:
 #ifdef __WXMSW__
     wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
 #endif
+
+
+private:
+    // to prevent using it; use GetCurrentSelection() instead
+    int GetSelection() const { return -1; }
 };
 
-class ctlComboBox : public wxComboBoxFix
+class ctlComboBox : public ctlComboBoxFix
 {
 public:
     ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr=0);

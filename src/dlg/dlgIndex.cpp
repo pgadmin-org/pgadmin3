@@ -107,7 +107,7 @@ void dlgIndexBase::OnAddCol(wxCommandEvent &ev)
     if (!col.IsEmpty())
     {
         lstColumns->InsertItem(lstColumns->GetItemCount(), col, columnFactory.GetIconId());
-        cbColumns->Delete(cbColumns->GetSelection());
+        cbColumns->Delete(cbColumns->GetCurrentSelection());
         if (cbColumns->GetCount())
             cbColumns->SetSelection(0);
 

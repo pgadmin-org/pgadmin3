@@ -250,9 +250,9 @@ void dlgOperator::CheckChangeType()
 
     cbRestrict->Append(wxEmptyString);
     cbJoin->Append(wxEmptyString);
-    if (cbRestrict->GetSelection() < 0)
+    if (cbRestrict->GetCurrentSelection() < 0)
         cbRestrict->SetSelection(0);
-    if (cbJoin->GetSelection() < 0)
+    if (cbJoin->GetCurrentSelection() < 0)
         cbJoin->SetSelection(0);
 
 
@@ -352,8 +352,8 @@ void dlgOperator::CheckChangeType()
 
 void dlgOperator::OnChangeJoin(wxCommandEvent &ev)
 {
-    bool implicitMerges = (cbLeftSort->GetSelection() > 0 || cbRightSort->GetSelection() > 0
-               || cbLess->GetSelection() > 0 || cbGreater->GetSelection() > 0);
+    bool implicitMerges = (cbLeftSort->GetCurrentSelection() > 0 || cbRightSort->GetCurrentSelection() > 0
+               || cbLess->GetCurrentSelection() > 0 || cbGreater->GetCurrentSelection() > 0);
 
     if (implicitMerges)
         chkCanMerge->SetValue(true);
@@ -362,7 +362,7 @@ void dlgOperator::OnChangeJoin(wxCommandEvent &ev)
 
 
 
-void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBoxFix *cb)
+void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, ctlComboBoxFix *cb)
 {
     wxString op=cb->GetValue().Trim();
     if (!op.IsNull())
@@ -417,10 +417,10 @@ wxString dlgOperator::GetSql()
         
         if (cbLeftType->GetGuessedSelection() > 0 && cbRightType->GetGuessedSelection() > 0)
         {
-            if (cbRestrict->GetSelection() > 0)
-                sql += wxT(",\n   RESTRICT=") + procedures.Item(cbRestrict->GetSelection()-1);
-            if (cbJoin->GetSelection() > 0)
-                sql += wxT(",\n   JOIN=") + procedures.Item(cbJoin->GetSelection()-1);
+            if (cbRestrict->GetCurrentSelection() > 0)
+                sql += wxT(",\n   RESTRICT=") + procedures.Item(cbRestrict->GetCurrentSelection()-1);
+            if (cbJoin->GetCurrentSelection() > 0)
+                sql += wxT(",\n   JOIN=") + procedures.Item(cbJoin->GetCurrentSelection()-1);
 
             AppendFilledOperator(sql, wxT(",\n   SORT1="), cbLeftSort);
             AppendFilledOperator(sql, wxT(",\n   SORT2="), cbRightSort);

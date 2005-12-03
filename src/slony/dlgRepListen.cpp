@@ -108,9 +108,9 @@ int dlgRepListen::Go(bool modal)
 pgObject *dlgRepListen::CreateObject(pgCollection *collection)
 {
     pgObject *obj=listenFactory.CreateObjects(collection, 0,
-         wxT(" WHERE li_origin = ") + NumToStr((OID)cbOrigin->GetClientData(cbOrigin->GetSelection())) +
+         wxT(" WHERE li_origin = ") + NumToStr((OID)cbOrigin->GetClientData(cbOrigin->GetCurrentSelection())) +
          wxT("   AND li_receiver = ") + NumToStr(node->GetSlId()) +
-         wxT("   AND li_provider = ") + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetSelection()))
+         wxT("   AND li_provider = ") + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetCurrentSelection()))
          );
 
     return obj;
@@ -128,8 +128,8 @@ void dlgRepListen::CheckChange()
     {
         bool enable=true;
         CheckValid(enable, cbProvider->GetCount() > 0, _("No path to any provider node; add proper path."));
-        CheckValid(enable, cbOrigin->GetSelection() >= 0, _("Please select origin node of replication events."));
-        CheckValid(enable, cbProvider->GetSelection() >= 0, _("Please select provider node for replication events."));
+        CheckValid(enable, cbOrigin->GetCurrentSelection() >= 0, _("Please select origin node of replication events."));
+        CheckValid(enable, cbProvider->GetCurrentSelection() >= 0, _("Please select provider node for replication events."));
 
         EnableOK(enable);
     }
@@ -150,8 +150,8 @@ wxString dlgRepListen::GetSql()
         // create mode
 
         sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storelisten(")
-                + NumToStr((OID)cbOrigin->GetClientData(cbOrigin->GetSelection())) + wxT(", ")
-                + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetSelection())) + wxT(", ")
+                + NumToStr((OID)cbOrigin->GetClientData(cbOrigin->GetCurrentSelection())) + wxT(", ")
+                + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetCurrentSelection())) + wxT(", ")
                 + NumToStr(node->GetSlId()) + wxT(");");
     }
 

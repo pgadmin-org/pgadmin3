@@ -249,8 +249,8 @@ void dlgType::CheckChange()
         else
         {
             txtLength->Enable(!chkVariable->GetValue());
-            CheckValid(enable, cbInput->GetSelection() >= 0, _("Please specify input conversion function."));
-            CheckValid(enable, cbOutput->GetSelection() >= 0, _("Please specify output conversion function."));
+            CheckValid(enable, cbInput->GetCurrentSelection() >= 0, _("Please specify input conversion function."));
+            CheckValid(enable, cbOutput->GetCurrentSelection() >= 0, _("Please specify output conversion function."));
             CheckValid(enable, chkVariable->GetValue() || StrToLong(txtLength->GetValue()) > 0, _("Please specify internal storage length."));
         }
         EnableOK(enable);
@@ -363,13 +363,13 @@ wxString dlgType::GetSql()
 
             if (connection->BackendMinimumVersion(7, 4))
             {
-                if (cbReceive->GetSelection() > 0 || cbSend->GetSelection() > 0)
+                if (cbReceive->GetCurrentSelection() > 0 || cbSend->GetCurrentSelection() > 0)
                 {
-                    if (cbReceive->GetSelection() > 0)
+                    if (cbReceive->GetCurrentSelection() > 0)
                     {
                         sql += wxT(",\n   RECEIVE=");
                         AppendQuoted(sql, cbReceive->GetValue());
-                        if (cbSend->GetSelection() > 0)
+                        if (cbSend->GetCurrentSelection() > 0)
                         {
                             sql += wxT(", SEND=");
                             AppendQuoted(sql, cbSend->GetValue());
