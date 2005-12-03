@@ -244,7 +244,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetProxy(txtProxy->GetValue());
     settings->SetSystemSchemas(txtSystemSchemas->GetValue());
 
-    int langNo=cbLanguage->GetSelection();
+    int langNo=cbLanguage->GetCurrentSelection();
     if (langNo >= 0)
     {
         wxLanguage langId;

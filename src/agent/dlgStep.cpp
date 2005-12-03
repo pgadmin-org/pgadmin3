@@ -221,7 +221,7 @@ wxString dlgStep::GetUpdateSql()
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
             
-            if (!cbDatabase->GetSelection())
+            if (!cbDatabase->GetCurrentSelection())
                 vars.Append(wxT("jstdbname=''"));
             else
                 vars.Append(wxT("jstdbname=") + qtString(cbDatabase->GetValue()));

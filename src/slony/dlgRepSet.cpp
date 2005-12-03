@@ -178,7 +178,7 @@ void dlgRepSetMerge::CheckChange()
     bool enable=true;
 
     CheckValid(enable, cbTargetID->GetCount() > 0 , _("No set available to merge to."));
-    CheckValid(enable, cbTargetID->GetSelection() >= 0, _("Please select replication set to merged to."));
+    CheckValid(enable, cbTargetID->GetCurrentSelection() >= 0, _("Please select replication set to merged to."));
     EnableOK(enable);
 }
 
@@ -187,7 +187,7 @@ wxString dlgRepSetMerge::GetSql()
 {
     wxString sql;
     wxString addId=NumToStr(set->GetSlId());
-    wxString toId=NumToStr((long)cbTargetID->GetClientData(cbTargetID->GetSelection()));
+    wxString toId=NumToStr((long)cbTargetID->GetClientData(cbTargetID->GetCurrentSelection()));
     wxString prefix = cluster->GetSchemaPrefix();
 
     if (set->GetSubscriptionCount() > 0)
@@ -293,14 +293,14 @@ void dlgRepSetMove::CheckChange()
     bool enable=true;
 
     CheckValid(enable, cbTargetNode->GetCount() > 0 , _("No node available to move this set to."));
-    CheckValid(enable, cbTargetNode->GetSelection() >= 0, _("Please select node to move this replication set to."));
+    CheckValid(enable, cbTargetNode->GetCurrentSelection() >= 0, _("Please select node to move this replication set to."));
     EnableOK(enable);
 }
 
 
 wxString dlgRepSetMove::GetSql()
 {
-    wxString toId=NumToStr((long)cbTargetNode->GetClientData(cbTargetNode->GetSelection()));
+    wxString toId=NumToStr((long)cbTargetNode->GetClientData(cbTargetNode->GetCurrentSelection()));
 
     wxString sql =
         wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("moveset(") +

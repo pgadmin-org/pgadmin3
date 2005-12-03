@@ -156,7 +156,7 @@ wxString dlgHbaConfig::GetHelpPage() const
 
 void dlgHbaConfig::OnAddDatabase(wxCommandEvent& ev)
 {
-    int sel = cbDatabase->GetSelection();
+    int sel = cbDatabase->GetCurrentSelection();
     if (sel < 3)
         return;
 
@@ -202,7 +202,7 @@ void dlgHbaConfig::OnAddDatabase(wxCommandEvent& ev)
 
 void dlgHbaConfig::OnAddUser(wxCommandEvent& ev)
 {
-    int sel = cbUser->GetSelection();
+    int sel = cbUser->GetCurrentSelection();
     if (sel < 1)
         return;
 
@@ -284,12 +284,12 @@ void dlgHbaConfig::OnChange(wxCommandEvent& ev)
     database = cbDatabase->GetValue();
     user = cbUser->GetValue();
 
-    bool needIp= (cbType->GetSelection() != 0);
+    bool needIp= (cbType->GetCurrentSelection() != 0);
 
     stIPaddress->Enable(needIp);
     txtIPaddress->Enable(needIp);
 
-    bool needOption = (cbMethod->GetSelection() >= pgHbaConfigLine::PGC_IDENT);
+    bool needOption = (cbMethod->GetCurrentSelection() >= pgHbaConfigLine::PGC_IDENT);
     stOption->Enable(needOption);
     txtOption->Enable(needOption);
 
@@ -299,19 +299,19 @@ void dlgHbaConfig::OnChange(wxCommandEvent& ev)
         // we should check for validity of txtIPaddress->GetValue() here
         ipValid = true;
     }
-    btnOK->Enable(cbType->GetSelection() >= 0 && !database.IsEmpty() && !user.IsEmpty() && 
-            cbMethod->GetSelection() >= 0 && ipValid);
+    btnOK->Enable(cbType->GetCurrentSelection() >= 0 && !database.IsEmpty() && !user.IsEmpty() && 
+            cbMethod->GetCurrentSelection() >= 0 && ipValid);
 }
 
 
 void dlgHbaConfig::OnOK(wxCommandEvent& ev)
 {
     line->isComment = !chkEnabled->GetValue();
-    line->connectType = (pgHbaConfigLine::pgHbaConnectType)cbType->GetSelection();
+    line->connectType = (pgHbaConfigLine::pgHbaConnectType)cbType->GetCurrentSelection();
     line->database = database;
     line->user = user;
     line->ipaddress = txtIPaddress->GetValue();
-    line->method = (pgHbaConfigLine::pgHbaMethod)cbMethod->GetSelection();
+    line->method = (pgHbaConfigLine::pgHbaMethod)cbMethod->GetCurrentSelection();
     line->option = txtOption->GetValue();
     line->changed = true;
 

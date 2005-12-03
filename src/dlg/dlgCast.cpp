@@ -193,8 +193,8 @@ wxString dlgCast::GetSql()
         sql = wxT("CREATE CAST (") + cbSourceType->GetValue()
             + wxT(" AS ") + cbTargetType->GetValue()
             + wxT(")\n   ");
-        if (cbFunction->GetSelection() > 0)
-            sql += wxT("WITH FUNCTION ") + functions.Item(cbFunction->GetSelection())
+        if (cbFunction->GetCurrentSelection() > 0)
+            sql += wxT("WITH FUNCTION ") + functions.Item(cbFunction->GetCurrentSelection())
                 +  wxT("(") + cbSourceType->GetValue() + wxT(")");
         else
             sql += wxT("WITHOUT FUNCTION");

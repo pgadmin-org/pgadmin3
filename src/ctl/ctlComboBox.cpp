@@ -168,17 +168,6 @@ bool ctlComboBoxFix::SetKey(const wxString &val)
 }
 
 
-int ctlComboBoxFix::GetSelection() const
-{
-#if wxABI_VERSION >= 20602
-    int sel=wxComboBox::GetCurrentSelection();
-#else
-    int sel=wxComboBox::GetSelection();
-#endif
-    return sel;
-}
-
-
 ////////////////////////////////////////////
 
 ctlComboBox::ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr)
@@ -219,7 +208,7 @@ int ctlComboBox::GuessSelection(wxCommandEvent &ev)
 
 int ctlComboBox::GetGuessedSelection() const
 {
-    int sel=ctlComboBoxFix::GetCurrentSelection();
+    int sel=GetCurrentSelection();
 
     if (sel < 0)
         sel = FindString(GetValue());
@@ -228,7 +217,7 @@ int ctlComboBox::GetGuessedSelection() const
 
 int ctlComboBox::GetSelection() const
 {
-    int sel=ctlComboBoxFix::GetCurrentSelection();
+    int sel=GetCurrentSelection();
 
     if (sel < 0)
         sel = FindString(GetValue());

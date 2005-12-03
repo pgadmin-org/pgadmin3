@@ -139,7 +139,7 @@ void dlgAggregate::CheckChange()
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         CheckValid(enable, cbBaseType->GetGuessedSelection() >=0, _("Please select base datatype."));
         CheckValid(enable, cbStateType->GetGuessedSelection() >=0, _("Please select state datatype."));
-        CheckValid(enable, cbStateFunc->GetSelection() >= 0, _("Please specify state function."));
+        CheckValid(enable, cbStateFunc->GetCurrentSelection() >= 0, _("Please specify state function."));
 
         EnableOK(enable);
     }
@@ -258,7 +258,7 @@ wxString dlgAggregate::GetSql()
             + wxT(",\n   SFUNC=") + cbStateFunc->GetStringKey()
             + wxT(", STYPE=") + GetQuotedTypename(cbStateType->GetGuessedSelection() +1); // skip "any" type
 
-        if (cbFinalFunc->GetSelection() > 0)
+        if (cbFinalFunc->GetCurrentSelection() > 0)
         {
             sql += wxT(",\n   FINALFUNC=") 
                 + cbFinalFunc->GetStringKey();

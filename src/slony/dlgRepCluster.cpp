@@ -113,7 +113,7 @@ void dlgRepClusterBase::OnChangeServer(wxCommandEvent &ev)
         delete remoteConn;
         remoteConn=0;
     }
-    int sel=cbServer->GetSelection();
+    int sel=cbServer->GetCurrentSelection();
     if (sel >= 0)
     {
         remoteServer = (pgServer*)cbServer->GetClientData(sel);
@@ -156,7 +156,7 @@ void dlgRepClusterBase::OnChangeDatabase(wxCommandEvent &ev)
 {
     cbClusterName->Clear();
 
-    int sel=cbDatabase->GetSelection();
+    int sel=cbDatabase->GetCurrentSelection();
     if (remoteServer && sel >= 0)
     {
         if (remoteConn)
@@ -363,7 +363,7 @@ void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
     cbAdminNode->Clear();
     cbAdminNode->Append(_("<none>"), (void*)-1);
 
-    int sel=cbClusterName->GetSelection();
+    int sel=cbClusterName->GetCurrentSelection();
     if (remoteConn && sel >= 0)
     {
         wxString schemaPrefix = qtIdent(wxT("_") + cbClusterName->GetValue()) + wxT(".");
@@ -594,12 +594,12 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
 
         // add admin info to cluster
 
-        if (done && cbAdminNode->GetSelection() > 0)
+        if (done && cbAdminNode->GetCurrentSelection() > 0)
         {
             done = remoteConn->ExecuteVoid(
                 wxT("SELECT ") + schemaPrefix + wxT("storepath(") +
                 txtNodeID->GetValue() + wxT(", ") +
-                    NumToStr((long)cbAdminNode->GetClientData(cbAdminNode->GetSelection())) + wxT(", ") +
+                    NumToStr((long)cbAdminNode->GetClientData(cbAdminNode->GetCurrentSelection())) + wxT(", ") +
                     qtString(wxT("host=") + database->GetServer()->GetName() + 
                             wxT(" port=") + NumToStr((long)database->GetServer()->GetPort()) +
                             wxT(" dbname=") + database->GetName()) + wxT(", ")
@@ -637,7 +637,7 @@ void dlgRepCluster::CheckChange()
 {
     if (cluster)
     {
-        int sel=cbAdminNode->GetSelection();
+        int sel=cbAdminNode->GetCurrentSelection();
         bool changed = (sel >= 0 && (long)cbAdminNode->GetClientData() != cluster->GetAdminNodeID());
 
         EnableOK(changed || txtComment->GetValue() != cluster->GetComment());
@@ -744,7 +744,7 @@ wxString dlgRepCluster::GetSql()
     if (cluster)
     {
         // edit mode
-        int sel=cbAdminNode->GetSelection();
+        int sel=cbAdminNode->GetCurrentSelection();
         if (sel >= 0)
         {
             long id=(long)cbAdminNode->GetClientData(sel);
@@ -934,7 +934,7 @@ void dlgRepClusterUpgrade::CheckChange()
     CheckValid(enable, cluster->GetSlonPid() == 0, _("Slon process running on node; stop it before upgrading."));
     CheckValid(enable, cbDatabase->GetCount() > 0, _("Select server with Slony-I cluster installed."));
     CheckValid(enable, cbClusterName->GetCount() > 0, _("Select database with Slony-I cluster installed."));
-    CheckValid(enable, cbClusterName->GetSelection() >= 0, _("Select Slony-I cluster."));
+    CheckValid(enable, cbClusterName->GetCurrentSelection() >= 0, _("Select Slony-I cluster."));
     CheckValid(enable, version > cluster->GetClusterVersion(), _("Selected cluster doesn't contain newer software."));
     EnableOK(enable);
 }
@@ -1254,7 +1254,7 @@ void dlgRepClusterUpgrade::OnChangeCluster(wxCommandEvent &ev)
     version = wxEmptyString;
     sql = wxEmptyString;
 
-    int sel=cbClusterName->GetSelection();
+    int sel=cbClusterName->GetCurrentSelection();
     if (remoteConn && sel >= 0)
     {
         wxString schemaPrefix = qtIdent(wxT("_") + cbClusterName->GetValue()) + wxT(".");

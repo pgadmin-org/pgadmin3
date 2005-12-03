@@ -394,7 +394,7 @@ void frmQuery::OnContents(wxCommandEvent& event)
 
 void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 {
-    int sel=cbConnection->GetSelection();
+    int sel=cbConnection->GetCurrentSelection();
     if (sel == cbConnection->GetCount()-1)
     {
         // new Connection

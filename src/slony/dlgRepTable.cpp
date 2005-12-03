@@ -224,7 +224,7 @@ void dlgRepTable::CheckChange()
     {
         bool enable=true;
         CheckValid(enable, cbTable->GetGuessedSelection() >= 0, _("Please select table to replicate."));
-        CheckValid(enable, cbIndex->GetSelection() >= 0, _("Please select index."));
+        CheckValid(enable, cbIndex->GetCurrentSelection() >= 0, _("Please select index."));
 
         EnableOK(enable);
     }

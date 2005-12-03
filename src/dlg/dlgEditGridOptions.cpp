@@ -178,7 +178,7 @@ void dlgEditGridOptions::OnAsc(wxCommandEvent &ev)
     lstSortCols->InsertItem(itm, cboColumns->GetValue());
     lstSortCols->SetItem(itm, 1, _("Ascending"));
     lstSortCols->SetItemData(itm, 1);
-    cboColumns->Delete(cboColumns->GetSelection());
+    cboColumns->Delete(cboColumns->GetCurrentSelection());
 
     // Setup the buttons
     OnCboColumnsChange(ev);
@@ -192,7 +192,7 @@ void dlgEditGridOptions::OnDesc(wxCommandEvent &ev)
     lstSortCols->InsertItem(itm, cboColumns->GetValue());
     lstSortCols->SetItem(itm, 1, _("Descending"));
     lstSortCols->SetItemData(itm, 0);
-    cboColumns->Delete(cboColumns->GetSelection());
+    cboColumns->Delete(cboColumns->GetCurrentSelection());
 
     // Setup the buttons
     OnCboColumnsChange(ev);
@@ -209,7 +209,7 @@ void dlgEditGridOptions::OnValidate(wxCommandEvent &ev)
 void dlgEditGridOptions::OnCboColumnsChange(wxCommandEvent &ev)
 {
     // Set the command buttons appropriately
-    if (cboColumns->GetSelection() == wxNOT_FOUND) {
+    if (cboColumns->GetCurrentSelection() == wxNOT_FOUND) {
         btnAsc->Enable(false);
         btnDesc->Enable(false);
     } else {

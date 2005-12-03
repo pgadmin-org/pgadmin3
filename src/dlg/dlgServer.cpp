@@ -93,7 +93,7 @@ dlgServer::~dlgServer()
     {
         settings->SetLastDatabase(cbDatabase->GetValue());
         settings->SetLastPort(StrToLong(txtPort->GetValue()));
-        settings->SetLastSSL(cbSSL->GetSelection());
+        settings->SetLastSSL(cbSSL->GetCurrentSelection());
         settings->SetLastUsername(txtUsername->GetValue());
     }
 }
@@ -123,7 +123,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
             mainForm->EndMsg();
         }
         server->iSetPort(StrToLong(txtPort->GetValue()));
-        server->iSetSSL(cbSSL->GetSelection());
+        server->iSetSSL(cbSSL->GetCurrentSelection());
         server->iSetDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
         server->iSetStorePwd(chkStorePwd->GetValue());
@@ -255,7 +255,7 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
     wxString name=GetName();
 
     pgObject *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
-        txtUsername->GetValue(), StrToLong(txtPort->GetValue()), chkTryConnect->GetValue() && chkStorePwd->GetValue(), cbSSL->GetSelection());
+        txtUsername->GetValue(), StrToLong(txtPort->GetValue()), chkTryConnect->GetValue() && chkStorePwd->GetValue(), cbSSL->GetCurrentSelection());
 
     return obj;
 }
@@ -282,7 +282,7 @@ void dlgServer::CheckChange()
                || StrToLong(txtPort->GetValue()) != server->GetPort()
                || cbDatabase->GetValue() != server->GetDatabaseName()
                || txtUsername->GetValue() != server->GetUsername()
-               || cbSSL->GetSelection() != server->GetSSL()
+               || cbSSL->GetCurrentSelection() != server->GetSSL()
                || chkStorePwd->GetValue() != server->GetStorePwd()
                || txtDbRestriction->GetValue() != server->GetDbRestriction();
     }

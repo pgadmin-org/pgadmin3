@@ -159,7 +159,7 @@ void dlgConversion::CheckChange()
         CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
         CheckValid(enable, !cbSourceEncoding->GetValue().IsEmpty(), _("Please specify source encoding."));
         CheckValid(enable, !cbTargetEncoding->GetValue().IsEmpty(), _("Please specify target encoding."));
-        CheckValid(enable, cbFunction->GetSelection() >= 0, _("Please specify conversion function."));
+        CheckValid(enable, cbFunction->GetCurrentSelection() >= 0, _("Please specify conversion function."));
 
         EnableOK(enable);
     }
@@ -189,7 +189,7 @@ wxString dlgConversion::GetSql()
         sql += wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name)
             + wxT("\n   FOR ") + qtString(cbSourceEncoding->GetValue())
             + wxT(" TO ") + qtString(cbTargetEncoding->GetValue())
-            + wxT("\n   FROM ") + functions.Item(cbFunction->GetSelection())
+            + wxT("\n   FROM ") + functions.Item(cbFunction->GetCurrentSelection())
             + wxT(";\n");
 
         AppendOwnerNew(sql, wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name));
