@@ -471,14 +471,30 @@ void pgServer::StorePassword()
     if (file.IsOpened())
     {
         wxString before;
-        file.Read(before);
-
-        wxStringTokenizer lines(before, wxT("\n\r"));
-
-        wxString seekStr= GetName() + wxT(":") 
-                        + NumToStr((long)GetPort()) + wxT(":*:") 
-                        + username + wxT(":") ;
         wxString after;
+
+        wxString passwd;
+        wxString seekStr;
+        
+#if wxUSE_UNICODE
+        if (GetConnection()->GetNeedUtfConnectString())
+        {
+            passwd = wxString(password.mb_str(wxConvUTF8), wxConvLibc);
+            seekStr = wxString(GetName().mb_str(wxConvUTF8), wxConvLibc) + wxT(":") 
+                    + NumToStr((long)GetPort()) + wxT(":*:") 
+                    + wxString(username.mb_str(wxConvUTF8), wxConvLibc) + wxT(":") ;
+        }
+        else
+#endif
+        {
+            passwd = password;
+            seekStr = GetName() + wxT(":") 
+                    + NumToStr((long)GetPort()) + wxT(":*:") 
+                    + username + wxT(":") ;
+        }
+
+        file.Read(before);
+        wxStringTokenizer lines(before, wxT("\n\r"));
 
         file.Seek(0);
         bool found=false;
@@ -490,13 +506,13 @@ void pgServer::StorePassword()
                 // entry found
                 found=true;
                 if (storePwd)
-                    file.Write(seekStr + password + END_OF_LINE);
+                    file.Write(seekStr + passwd + END_OF_LINE);
             }
             else
                 file.Write(str + END_OF_LINE);
         }
         if (!found && storePwd)
-            file.Write(seekStr + password + END_OF_LINE);
+            file.Write(seekStr + passwd + END_OF_LINE);
 
         file.Close();
     }
@@ -506,6 +522,8 @@ void pgServer::StorePassword()
 int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 {
     wxLogInfo(wxT("Attempting to create a connection object..."));
+    
+    bool storePassword = false;
 
     if (!conn || conn->GetStatus() != PGCONN_OK)
     {
@@ -539,7 +557,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 
                 iSetStorePwd(dlg.GetStorePwd());
                 password = dlg.GetPassword();
-                StorePassword();
+                storePassword = true;
             }
         }
         else
@@ -619,6 +637,8 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
                 settings->Write(wxT("Updates/UseSSL"), true);
 
             UpdateIcon(form->GetBrowser());
+            if (storePassword)
+                StorePassword();
         }
         else
         {

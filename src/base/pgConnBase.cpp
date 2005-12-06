@@ -74,6 +74,7 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
 
     conv = &wxConvLibc;
     needColQuoting = false;
+    utfConnectString = false;
 
     // Check the hostname/ipaddress
     struct hostent *host;
@@ -172,7 +173,9 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
 #if wxUSE_UNICODE
     wxCharBuffer cstrUTF=connstr.mb_str(wxConvUTF8);
     conn = PQconnectdb(cstrUTF);
-    if (PQstatus(conn) != CONNECTION_OK)
+    if (PQstatus(conn) == CONNECTION_OK)
+        utfConnectString = true;
+    else
     {
         wxCharBuffer cstrLibc=connstr.mb_str(wxConvLibc);
         if (strcmp(cstrUTF, cstrLibc))
