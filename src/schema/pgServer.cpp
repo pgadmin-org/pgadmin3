@@ -867,7 +867,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         {
             if (GetUpSince().IsValid())
                 properties->AppendItem(_("Up since"), GetUpSince());
-            properties->AppendItem(wxT("pg_autovacuum"), (autovacuumRunning ? _("running") : _("not running")));
+            properties->AppendItem(wxT("Autovacuum"), (autovacuumRunning ? _("running") : _("not running")));
         }
         if (GetServerControllable())
             properties->AppendItem(_("Running?"), GetServerRunning());

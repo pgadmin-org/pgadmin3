@@ -549,7 +549,7 @@ enum
 const wxChar *hintString[]=
 {
     _("The PostgreSQL server engine is currently configured to listen for local connections only.\nYou might want to check \"listen_addresses\" to enable accessing the server over the network too."),
-    _("The pg_autovacuum backend process is not running.\nIt is recommended to enable it by setting 'stats_start_collector', 'stats_row_level' and 'autovacuum' to 'on'.")
+    _("The autovacuum backend process is not running.\nIt is recommended to enable it by setting 'stats_start_collector', 'stats_row_level' and 'autovacuum' to 'on'.")
 };
 
 
