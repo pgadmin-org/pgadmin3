@@ -188,13 +188,20 @@ int dlgDatabase::Go(bool modal)
         }
         while (!encStr.IsEmpty());
 
+        encStr=connection->ExecuteScalar(wxT("SELECT pg_encoding_to_char(encoding) FROM pg_database WHERE datname = 'template0'"));
+        encNo=cbEncoding->FindString(encStr);
+
+        if (encNo < 0) 
+        {
 #if wxUSE_UNICODE
-        encNo=cbEncoding->FindString(wxT("UNICODE"));
-        if (encNo < 0)
-            encNo=cbEncoding->FindString(wxT("UTF8"));
+            encNo=cbEncoding->FindString(wxT("UNICODE"));
+            if (encNo < 0)
+                encNo=cbEncoding->FindString(wxT("UTF8"));
 #else
-        encNo=cbEncoding->FindString(wxT("SQL_ASCII"));
+            encNo=cbEncoding->FindString(wxT("SQL_ASCII"));
 #endif
+        }
+
         if (encNo >= 0)
             cbEncoding->SetSelection(encNo);
 
