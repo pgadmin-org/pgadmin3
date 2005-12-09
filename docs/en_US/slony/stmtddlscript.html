@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051208 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtfailover.html" title="FAILOVER">
 <link rel="next" href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS">
@@ -21,18 +21,19 @@
 <div class="cmdsynopsis"><p><code class="command">EXECUTE SCRIPT (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536303"></a><h2>Description</h2>
+<a name="id537061"></a><h2>Description</h2>
 <p> Executes a script containing arbitrary SQL statements on
      all nodes that are subscribed to a set at a common controlled
      point within the replication transaction stream.</p>
 <p> The specified event origin must be the origin of the set.
-     The script file must not contain any <code class="command">START</code> or
-     <code class="command">COMMIT TRANSACTION</code> calls.  (This may change in
-     PostgreSQL 8.0 once nested transactions, aka savepoints, are
-     supported) In addition, non-deterministic DML statements (like
-     updating a field with <code class="function">CURRENT_TIMESTAMP</code>) must
-     be avoided, since the data changes done by the script are
-     explicitly not replicated. </p>
+    The script file must not contain any <code class="command">START</code> or
+    <code class="command">COMMIT TRANSACTION</code> calls.  (This changes
+    somewhat in <span class="productname">PostgreSQL</span> 8.0 once nested transactions, aka
+    savepoints, are supported) In addition, non-deterministic DML
+    statements (like updating a field with
+    <code class="function">CURRENT_TIMESTAMP</code>) must be avoided, since the
+    data changes done by the script are explicitly not
+    replicated. </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal"> SET ID = ival </code></span></dt>
 <dd><p> The unique numeric ID number of the set affected by the script</p></dd>
@@ -57,9 +58,8 @@
 	subscribed to the set.</p></dd>
 </dl></div>
 <p> See also the warnings in <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)">Section 14, &#8220;Database Schema Changes (DDL)&#8221;</a>.</p>
-<p> Note that this is a <a href="locking.html" title="10. Locking Issues"> locking
-    operation, </a> which means that it can get stuck behind other
-    database activity.</p>
+<p> Note that this is a <a href="locking.html" title="10. Locking Issues"> locking </a> operation, which means that
+    it can get stuck behind other database activity.</p>
 <p> At the start of this event, all tables in the specified set
     are unlocked via the function
     <code class="function">alterTableRestore(tab_id)</code>.  After the SQL
@@ -72,10 +72,18 @@
 <p> If a table's columns are modified, it is very important
     that the triggers be regenerated, otherwise they may be
     inappropriate for the new form of the table schema.</p>
+<p> Note that if you need to make reference to the cluster
+    name, you can use the token <code class="command">@CLUSTERNAME@</code>; if
+    you need to make reference to the <span class="productname">Slony-I</span> namespace, you can use
+    the token <code class="command">@NAMESPACE@</code>; both will be expanded
+    into the appropriate replacement tokens. </p>
+<p> It generally seems a bad idea to use quotes in DDL scripts.
+    It appears preferable to handle that sort of thing &#8220;<span class="quote">out of
+    band.</span>&#8221; </p>
 <p> This uses <a href="function.ddlscript-integer-text-integer.html">schemadocddlscript( integer, text, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536490"></a><h2>Example</h2>
+<a name="id537289"></a><h2>Example</h2>
 <pre class="programlisting">EXECUTE SCRIPT (
    SET ID = 1,
    FILENAME = '/tmp/changes_2004-05-01.sql',

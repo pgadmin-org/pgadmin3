@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051208 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="logshipping.html" title="13. Log Shipping - Slony-I with Files">
 <link rel="next" href="usingslonik.html" title="15. Using Slonik">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddlchanges"></a>14. Database Schema Changes (DDL)</h2></div></div></div>
-<a name="id520882"></a><p>When changes are made to the database schema,
+<a name="id521250"></a><p>When changes are made to the database schema,
 <span class="emphasis"><em>e.g.</em></span> - adding fields to a table, it is necessary
 for this to be handled rather carefully, otherwise different nodes may
 get rather deranged because they disagree on how particular tables are
@@ -100,7 +100,8 @@ replication sets </a> that consist of smaller sets of tables so
 that fewer locks need to be taken in order for the DDL script to make
 it into place.</p>
 <p> If a particular DDL script only affects one table, it should be
-unnecessary to lock <span class="emphasis"><em>all</em></span> application tables.</p>
+unnecessary to lock <span class="emphasis"><em>all</em></span> application
+tables.</p>
 </li>
 <li><p> You may need to take a brief application outage in
 order to ensure that your applications are not demanding locks that
@@ -120,7 +121,7 @@ more discussion of related issues.</p>
 here: <a href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id521215"></a>14.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<a name="id521583"></a>14.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></h3></div></div></div>
 <p> While it is <span class="emphasis"><em> vitally necessary </em></span> to use
 <code class="command">EXECUTE SCRIPT</code> to propagate DDL modifications to
@@ -182,7 +183,7 @@ created.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id521379"></a>14.2.  Testing DDL Changes </h3></div></div></div>
+<a name="id521746"></a>14.2.  Testing DDL Changes </h3></div></div></div>
 <p> A method for testing DDL changes has been pointed out as a
 likely &#8220;<span class="quote">best practice.</span>&#8221;</p>
 <p> You <span class="emphasis"><em>need</em></span> to test DDL scripts in a

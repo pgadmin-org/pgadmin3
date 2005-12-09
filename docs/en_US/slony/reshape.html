@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051208 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="maintenance.html" title="5. Slony-I Maintenance">
 <link rel="next" href="failover.html" title="7. Doing switchover and failover with Slony-I">
@@ -31,12 +31,13 @@ configuration.</p></li>
 <li><p> If the directions of data flows have changed, it is
 doubtless appropriate to issue a set of <a href="stmtdroplisten.html" title="DROP LISTEN"><span class="refentrytitle">DROP LISTEN</span></a> operations to drop out obsolete paths
 between nodes and <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> to add the new
-ones.  At present, this is not changed automatically; at some point,
-<a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> and <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> might change the paths as a side-effect.
-See <a href="listenpaths.html" title="8. Slony-I listen paths">Section 8, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a> for more information about this.  In
-version 1.1 and later, it is likely that the generation of <a href="table.sl-listen.html">sl_listen</a> entries will be entirely automated, where
-they will be regenerated when changes are made to <a href="table.sl-path.html">sl_path</a> or <a href="table.sl-path.html">sl_path</a>, thereby
-making it unnecessary to even think about <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a>.</p></li>
+ones.  Up until version 1.1, this was not changed automatically; as of
+1.1, <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> and <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> change the paths as a side-effect.  See
+<a href="listenpaths.html" title="8. Slony-I listen paths">Section 8, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a> for more information about this.  In
+version 1.1 and later, generation of <a href="table.sl-listen.html">sl_listen</a>
+entries is entirely automated, so that they are regenerated when
+changes are made to <a href="table.sl-path.html">sl_path</a> or <a href="table.sl-path.html">sl_path</a>, thereby making it unnecessary to even think
+about <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a>.</p></li>
 </ul></div>
 <p> The <code class="filename">altperl</code> toolset includes a
 <span class="application">regenerate-listens</span> script that is up to

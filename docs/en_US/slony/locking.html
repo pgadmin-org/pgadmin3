@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051208 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="plainpaths.html" title="9.  Slony-I Path Communications">
 <link rel="next" href="addthings.html" title="11. Adding Things to Replication">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="locking"></a>10. Locking Issues</h2></div></div></div>
-<a name="id519025"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+<a name="id519395"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
 Multi-Version Concurrency Control (<span class="acronym">MVCC</span>) is that
 this eliminates a whole host of reasons to need to lock database
 objects.  On some other database systems, you need to acquire a table
@@ -136,11 +136,10 @@ it reload the security configuration. </p></li>
 <p>
 </p>
 </li>
-<li><p> The section on <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)"> DDL
-Changes </a> suggests some additional techniques that may be
-useful, such as moving tables between replication sets in such a way
-that you minimize the set of tables that need to be
-locked. </p></li>
+<li><p> The section  <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)">Section 14, &#8220;Database Schema Changes (DDL)&#8221;</a> suggests some additional
+techniques that may be useful, such as moving tables between
+replication sets in such a way that you minimize the set of tables
+that need to be locked. </p></li>
 </ul></div>
 <p> Regrettably, there is no perfect answer to this.  If it is
 <span class="emphasis"><em>necessary</em></span> to submit a <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> request, then it is presumably

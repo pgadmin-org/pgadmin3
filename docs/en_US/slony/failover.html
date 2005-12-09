@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051208 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="reshape.html" title="6. Reshaping a Cluster">
 <link rel="next" href="listenpaths.html" title="8. Slony-I listen paths">
@@ -15,7 +15,7 @@
 <a name="failover"></a>7. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id517604"></a>7.1. Foreword</h3></div></div></div>
+<a name="id517886"></a>7.1. Foreword</h3></div></div></div>
 <p><span class="productname">Slony-I</span> is an asynchronous replication system.  Because of
 that, it is almost certain that at the moment the current origin of a
 set fails, the final transactions committed at the origin will have
@@ -38,8 +38,8 @@ simple 2 node replication system with <span class="productname">Slony-I</span>.<
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id517663"></a>7.2.  Controlled Switchover</h3></div></div></div>
-<a name="id517667"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
+<a name="id517944"></a>7.2.  Controlled Switchover</h3></div></div></div>
+<a name="id517948"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
 &#8220;<span class="quote">subscriber</span>&#8221; as node2 (<span class="emphasis"><em>e.g.</em></span> -
 slave).  A web application on a third server is accessing the database
 on node1.  Both databases are up and running and replication is more
@@ -89,8 +89,8 @@ be any loss of data.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id517791"></a>7.3.  Failover</h3></div></div></div>
-<a name="id517795"></a><p> If some more serious problem occurs on the
+<a name="id518072"></a>7.3.  Failover</h3></div></div></div>
+<a name="id518076"></a><p> If some more serious problem occurs on the
 &#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
 undesirable circumstance, as transactions &#8220;<span class="quote">committed</span>&#8221; on
 the origin, but not applied to the subscribers, will be lost.  You may
@@ -130,6 +130,12 @@ will receive anything from node1 any more.</p>
 <span class="application">pgpool</span>) to cause it to reconnect to
 node2.</p></li>
 <li>
+<p> Purge out the abandoned node </p>
+<p> You will find, after the failover, that there are still a full
+set of references to node 1 in <a href="table.sl-node.html">sl_node</a>, as well
+as in referring tables such as <a href="table.sl-confirm.html">sl_confirm</a>;
+since data in <a href="table.sl-log-1.html">sl_log_1</a> is still present,
+<span class="productname">Slony-I</span> cannot immediately purge out the node. </p>
 <p> After the failover is complete and node2 accepts
 write operations against the tables, remove all remnants of node1's
 configuration information with the <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>
@@ -137,12 +143,22 @@ command:
 
 </p>
 <pre class="programlisting">drop node (id = 1, event node = 2);</pre>
+<p> Supposing the failure resulted from some catastrophic failure
+of the hardware supporting node 1, there might be no
+&#8220;<span class="quote">remains</span>&#8221; left to look at.  If the failure was not
+&#8220;<span class="quote">total</span>&#8221;, as might be the case if the node had to be
+abandoned due to a network communications failure, you will find that
+node 1 still &#8220;<span class="quote">imagines</span>&#8221; itself to be as it was before the
+failure.  See <a href="failover.html#rebuildnode1" title="7.5. After Failover, Reconfiguring
+node 1">Section 7.5, &#8220;After Failover, Reconfiguring
+node 1&#8221;</a> for more details on the
+implications.</p>
 </li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id517945"></a>7.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
+<a name="id518296"></a>7.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
 <p> If you do choose to automate <code class="command">FAIL OVER </code>, it
 is important to do so <span class="emphasis"><em>carefully.</em></span> You need to have
 good assurance that the failed node is well and truly failed, and you
@@ -173,13 +189,24 @@ would remain accessible to system administrators.  </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id518015"></a>7.5. After Failover, Reconfiguring node1</h3></div></div></div>
-<p> After the above failover, the data stored on node1 will rapidly
-become increasingly out of sync with the rest of the nodes, and must
-be treated as corrupt.  Therefore, the only way to get node1 back and
-transfer the origin role back to it is to rebuild it from scratch as a
-subscriber, let it catch up, and then follow the switchover
-procedure.</p>
+<a name="rebuildnode1"></a>7.5. After Failover, Reconfiguring
+node 1</h3></div></div></div>
+<p> What happens to the failed node will depend somewhat on the
+nature of the catastrophe that lead to needing to fail over to another
+node.  If the node had to be abandoned because of physical destruction
+of its disk storage, there will likely not be anything of interest
+left.  On the other hand, a node might be abandoned due to the failure
+of a network connection, in which case the former
+&#8220;<span class="quote">provider</span>&#8221; can appear be functioning perfectly well.
+Nonetheless, once communications are restored, the fact of the
+<code class="command">FAIL OVER</code> makes it mandatory that the failed node
+be abandoned. </p>
+<p> After the above failover, the data stored on node 1 will
+rapidly become increasingly out of sync with the rest of the nodes,
+and must be treated as corrupt.  Therefore, the only way to get node 1
+back and transfer the origin role back to it is to rebuild it from
+scratch as a subscriber, let it catch up, and then follow the
+switchover procedure.</p>
 <p> A good reason <span class="emphasis"><em>not</em></span> to do this automatically
 is the fact that important updates (from a
 <span class="emphasis"><em>business</em></span> perspective) may have been
@@ -210,8 +237,8 @@ the &#8220;<span class="quote">failed</span>&#8221; node.</p>
 network monitoring tool.  You need to have clear methods of
 communicating to applications and users what database hosts are to be
 used.  If those methods are lacking, adding replication to the mix
-will worsen the potential for confusion, and failover will be the
-point at which there is the greatest potential for confusion. </p>
+will worsen the potential for confusion, and failover will be a point
+at which there is enormous potential for confusion. </p>
 </div>
 <p> If the database is very large, it may take many hours to
 recover node1 as a functioning <span class="productname">Slony-I</span> node; that is another reason
