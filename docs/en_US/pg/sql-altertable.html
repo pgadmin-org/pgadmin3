@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-altersequence.html" title="ALTER SEQUENCE">
 <link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>ALTER TABLE &#8212; change the definition of a table</p>
 </div>
-<a name="id691869"></a><div class="refsynopsisdiv">
+<a name="id692097"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER TABLE [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
     <em class="replaceable"><code>action</code></em> [, ... ]
@@ -48,7 +48,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
     SET TABLESPACE <em class="replaceable"><code>new_tablespace</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692102"></a><h2>Description</h2>
+<a name="id692330"></a><h2>Description</h2>
 <p>   <code class="command">ALTER TABLE</code> changes the definition of an existing table.
    There are several subforms:
 
@@ -122,10 +122,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
       <a href="sql-createtable.html">CREATE TABLE</a>. 
      </p></dd>
 <dt><span class="term"><code class="literal">DROP CONSTRAINT</code></span></dt>
-<dd><p>      This form drops constraints on a table.
-      Currently, constraints on tables are not required to have unique
-      names, so there may be more than one constraint matching the specified
-      name.  All matching constraints will be dropped.
+<dd><p>      This form drops the specified constraint on a table.
      </p></dd>
 <dt><span class="term"><code class="literal">DISABLE</code>/<code class="literal">ENABLE TRIGGER</code></span></dt>
 <dd><p>      These forms disable or enable trigger(s) belonging to the table.
@@ -206,7 +203,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692746"></a><h2>Parameters</h2>
+<a name="id692952"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (possibly schema-qualified) of an existing table to
@@ -273,7 +270,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692996"></a><h2>Notes</h2>
+<a name="id693203"></a><h2>Notes</h2>
 <p>    The key word <code class="literal">COLUMN</code> is noise and can be omitted.
    </p>
 <p>    When a column is added with <code class="literal">ADD COLUMN</code>, all existing
@@ -355,7 +352,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id693307"></a><h2>Examples</h2>
+<a name="id693514"></a><h2>Examples</h2>
 <p>   To add a column of type <code class="type">varchar</code> to a table:
 </p>
 <pre class="programlisting">ALTER TABLE distributors ADD COLUMN address varchar(30);</pre>
@@ -446,7 +443,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id693490"></a><h2>Compatibility</h2>
+<a name="id693697"></a><h2>Compatibility</h2>
 <p>   The <code class="literal">ADD</code>, <code class="literal">DROP</code>, and <code class="literal">SET DEFAULT</code>
    forms conform with the SQL standard.  The other forms are
    <span class="productname">PostgreSQL</span> extensions of the SQL standard.

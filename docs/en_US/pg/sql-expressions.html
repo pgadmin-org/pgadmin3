@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.1 Documentation">
 <link rel="up" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
 <link rel="prev" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
 <link rel="next" href="ddl.html" title="Chapter 5. Data Definition">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="sql-expressions"></a>4.2. Value Expressions</h2></div></div></div>
-<a name="id520179"></a><a name="id520192"></a><a name="id520203"></a><p>   Value expressions are used in a variety of contexts, such
+<a name="id520165"></a><a name="id520178"></a><a name="id520189"></a><p>   Value expressions are used in a variety of contexts, such
    as in the target list of the <code class="command">SELECT</code> command, as
    new column values in <code class="command">INSERT</code> or
    <code class="command">UPDATE</code>, or in search conditions in a number of
@@ -56,7 +56,7 @@
      </p></li>
 <li><p>      Another value expression in parentheses, useful to group
       subexpressions and override
-      precedence.<a name="id520319"></a>
+      precedence.<a name="id520305"></a>
      </p></li>
 </ul></div>
 <p>
@@ -72,8 +72,8 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id520361"></a>4.2.1. Column References</h3></div></div></div>
-<a name="id520365"></a><p>    A column can be referenced in the form
+<a name="id520347"></a>4.2.1. Column References</h3></div></div></div>
+<a name="id520351"></a><p>    A column can be referenced in the form
 </p>
 <pre class="synopsis"><em class="replaceable"><code>correlation</code></em>.<em class="replaceable"><code>columnname</code></em></pre>
 <p>
@@ -90,8 +90,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id520439"></a>4.2.2. Positional Parameters</h3></div></div></div>
-<a name="id520443"></a><a name="id520452"></a><p>    A positional parameter reference is used to indicate a value
+<a name="id520425"></a>4.2.2. Positional Parameters</h3></div></div></div>
+<a name="id520429"></a><a name="id520438"></a><p>    A positional parameter reference is used to indicate a value
     that is supplied externally to an SQL statement.  Parameters are
     used in SQL function definitions and in prepared queries.  Some
     client libraries also support specifying data values separately
@@ -117,8 +117,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id520503"></a>4.2.3. Subscripts</h3></div></div></div>
-<a name="id520507"></a><p>    If an expression yields a value of an array type, then a specific
+<a name="id520489"></a>4.2.3. Subscripts</h3></div></div></div>
+<a name="id520493"></a><p>    If an expression yields a value of an array type, then a specific
     element of the array value can be extracted by writing
 </p>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em>[<em class="replaceable"><code>subscript</code></em>]</pre>
@@ -152,8 +152,8 @@ $1[10:42]
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id520595"></a>4.2.4. Field Selection</h3></div></div></div>
-<a name="id520599"></a><p>    If an expression yields a value of a composite type (row type), then a
+<a name="id520581"></a>4.2.4. Field Selection</h3></div></div></div>
+<a name="id520585"></a><p>    If an expression yields a value of a composite type (row type), then a
     specific field of the row can be extracted by writing
 </p>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em>.<em class="replaceable"><code>fieldname</code></em></pre>
@@ -176,8 +176,8 @@ $1.somecolumn
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id520641"></a>4.2.5. Operator Invocations</h3></div></div></div>
-<a name="id520645"></a><p>    There are three possible syntaxes for an operator invocation:
+<a name="id520627"></a>4.2.5. Operator Invocations</h3></div></div></div>
+<a name="id520631"></a><p>    There are three possible syntaxes for an operator invocation:
     </p>
 <table class="simplelist" border="0" summary="Simple list">
 <tr><td>
@@ -203,8 +203,8 @@ $1.somecolumn
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id520757"></a>4.2.6. Function Calls</h3></div></div></div>
-<a name="id520760"></a><p>    The syntax for a function call is the name of a function
+<a name="id520743"></a>4.2.6. Function Calls</h3></div></div></div>
+<a name="id520746"></a><p>    The syntax for a function call is the name of a function
     (possibly qualified with a schema name), followed by its argument list
     enclosed in parentheses:
 
@@ -224,7 +224,7 @@ $1.somecolumn
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="syntax-aggregates"></a>4.2.7. Aggregate Expressions</h3></div></div></div>
-<a name="id520826"></a><p>    An <em class="firstterm">aggregate expression</em> represents the
+<a name="id520812"></a><p>    An <em class="firstterm">aggregate expression</em> represents the
     application of an aggregate function across the rows selected by a
     query.  An aggregate function reduces multiple inputs to a single
     output value, such as the sum or average of the inputs.  The
@@ -287,7 +287,7 @@ $1.somecolumn
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-type-casts"></a>4.2.8. Type Casts</h3></div></div></div>
-<a name="id521039"></a><a name="id521048"></a><p>    A type cast specifies a conversion from one data type to another.
+<a name="id521025"></a><a name="id521034"></a><p>    A type cast specifies a conversion from one data type to another.
     <span class="productname">PostgreSQL</span> accepts two equivalent syntaxes
     for type casts:
 </p>
@@ -344,7 +344,7 @@ $1.somecolumn
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-scalar-subqueries"></a>4.2.9. Scalar Subqueries</h3></div></div></div>
-<a name="id521211"></a><p>    A scalar subquery is an ordinary
+<a name="id521198"></a><p>    A scalar subquery is an ordinary
     <code class="command">SELECT</code> query in parentheses that returns exactly one
     row with one column.  (See <a href="queries.html" title="Chapter 7. Queries">Chapter 7, <i>Queries</i></a> for information about writing queries.)
     The <code class="command">SELECT</code> query is executed
@@ -368,7 +368,7 @@ $1.somecolumn
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-array-constructors"></a>4.2.10. Array Constructors</h3></div></div></div>
-<a name="id521279"></a><a name="id521288"></a><p>    An array constructor is an expression that builds an
+<a name="id521265"></a><a name="id521274"></a><p>    An array constructor is an expression that builds an
     array value from values for its member elements.  A simple array
     constructor 
     consists of the key word <code class="literal">ARRAY</code>, a left square bracket
@@ -447,7 +447,7 @@ SELECT ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] FROM arr;
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-row-constructors"></a>4.2.11. Row Constructors</h3></div></div></div>
-<a name="id521452"></a><a name="id521461"></a><a name="id521470"></a><p>    A row constructor is an expression that builds a row value (also
+<a name="id521438"></a><a name="id521447"></a><a name="id521457"></a><p>    A row constructor is an expression that builds a row value (also
     called a composite value) from values
     for its member fields.  A row constructor consists of the key word
     <code class="literal">ROW</code>, a left parenthesis, zero or more
@@ -515,7 +515,7 @@ SELECT ROW(a, b, c) IS NOT NULL FROM table;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="syntax-express-eval"></a>4.2.12. Expression Evaluation Rules</h3></div></div></div>
-<a name="id521599"></a><p>    The order of evaluation of subexpressions is not defined.  In
+<a name="id521585"></a><p>    The order of evaluation of subexpressions is not defined.  In
     particular, the inputs of an operator or function are not necessarily
     evaluated left-to-right or in any other fixed order.
    </p>

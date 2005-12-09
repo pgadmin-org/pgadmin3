@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.1 Documentation">
 <link rel="up" href="largeobjects.html" title="Chapter 29. Large Objects">
 <link rel="prev" href="lo-implementation.html" title="29.2. Implementation Features">
 <link rel="next" href="lo-funcs.html" title="29.4. Server-Side Functions">
@@ -34,12 +34,12 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id634914"></a>29.3.1. Creating a Large Object</h3></div></div></div>
+<a name="id635008"></a>29.3.1. Creating a Large Object</h3></div></div></div>
 <p>     The function
 </p>
 <pre class="synopsis">Oid lo_creat(PGconn *conn, int mode);</pre>
 <p>
-     <a name="id634928"></a>
+     <a name="id635022"></a>
      creates a new large object.  
      The return value is the OID that was assigned to the new large object,
      or InvalidOid (zero) on failure.
@@ -61,7 +61,7 @@
 </p>
 <pre class="synopsis">Oid lo_create(PGconn *conn, Oid lobjId);</pre>
 <p>
-     <a name="id635004"></a>
+     <a name="id635098"></a>
      also creates a new large object.  The OID to be assigned can be
      specified by <em class="replaceable"><code>lobjId</code></em>;
      if so, failure occurs if that OID is already in use for some large
@@ -83,12 +83,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635073"></a>29.3.2. Importing a Large Object</h3></div></div></div>
+<a name="id635167"></a>29.3.2. Importing a Large Object</h3></div></div></div>
 <p>     To import an operating system file as a large object, call
 </p>
 <pre class="synopsis">Oid lo_import(PGconn *conn, const char *filename);</pre>
 <p>
-     <a name="id635088"></a>
+     <a name="id635182"></a>
      <em class="replaceable"><code>filename</code></em> 
      specifies the operating system name of
      the file to be imported as a large object.
@@ -101,13 +101,13 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635109"></a>29.3.3. Exporting a Large Object</h3></div></div></div>
+<a name="id635203"></a>29.3.3. Exporting a Large Object</h3></div></div></div>
 <p>     To export a large object
      into an operating system file, call
 </p>
 <pre class="synopsis">int lo_export(PGconn *conn, Oid lobjId, const char *filename);</pre>
 <p>
-     <a name="id635124"></a>
+     <a name="id635218"></a>
      The <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the large
      object to export and the <em class="parameter"><code>filename</code></em> argument
      specifies the operating system name of the file.  Note that the file is
@@ -117,12 +117,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635150"></a>29.3.4. Opening an Existing Large Object</h3></div></div></div>
+<a name="id635244"></a>29.3.4. Opening an Existing Large Object</h3></div></div></div>
 <p>     To open an existing large object for reading or writing, call
 </p>
 <pre class="synopsis">int lo_open(PGconn *conn, Oid lobjId, int mode);</pre>
 <p>
-     <a name="id635165"></a>
+     <a name="id635259"></a>
      The <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the large
      object to open.   The <em class="parameter"><code>mode</code></em> bits control whether the
      object is opened for reading (<code class="symbol">INV_READ</code>), writing
@@ -161,12 +161,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635331"></a>29.3.5. Writing Data to a Large Object</h3></div></div></div>
+<a name="id635425"></a>29.3.5. Writing Data to a Large Object</h3></div></div></div>
 <p>     The function
 </p>
 <pre class="synopsis">int lo_write(PGconn *conn, int fd, const char *buf, size_t len);</pre>
 <p>
-     <a name="id635346"></a> writes
+     <a name="id635440"></a> writes
      <em class="parameter"><code>len</code></em> bytes from <em class="parameter"><code>buf</code></em>
      to large object descriptor <em class="parameter"><code>fd</code></em>.  The <em class="parameter"><code>fd</code></em>
      argument must have been returned by a previous
@@ -176,12 +176,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635389"></a>29.3.6. Reading Data from a Large Object</h3></div></div></div>
+<a name="id635483"></a>29.3.6. Reading Data from a Large Object</h3></div></div></div>
 <p>     The function
 </p>
 <pre class="synopsis">int lo_read(PGconn *conn, int fd, char *buf, size_t len);</pre>
 <p>
-     <a name="id635404"></a> reads
+     <a name="id635498"></a> reads
      <em class="parameter"><code>len</code></em> bytes from large object descriptor
      <em class="parameter"><code>fd</code></em> into <em class="parameter"><code>buf</code></em>. The
      <em class="parameter"><code>fd</code></em> argument must have been returned by a
@@ -191,13 +191,13 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635447"></a>29.3.7. Seeking in a Large Object</h3></div></div></div>
+<a name="id635541"></a>29.3.7. Seeking in a Large Object</h3></div></div></div>
 <p>     To change the current read or write location associated with a
      large object descriptor, call
 </p>
 <pre class="synopsis">int lo_lseek(PGconn *conn, int fd, int offset, int whence);</pre>
 <p>
-     <a name="id635463"></a> This function moves the
+     <a name="id635557"></a> This function moves the
      current location pointer for the large object descriptor identified by
      <em class="parameter"><code>fd</code></em> to the new location specified by
      <em class="parameter"><code>offset</code></em>.  The valid values for <em class="parameter"><code>whence</code></em>
@@ -208,23 +208,23 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635508"></a>29.3.8. Obtaining the Seek Position of a Large Object</h3></div></div></div>
+<a name="id635602"></a>29.3.8. Obtaining the Seek Position of a Large Object</h3></div></div></div>
 <p>     To obtain the current read or write location of a large object descriptor,
      call
 </p>
 <pre class="synopsis">int lo_tell(PGconn *conn, int fd);</pre>
 <p>
-     <a name="id635524"></a> If there is an error, the
+     <a name="id635618"></a> If there is an error, the
      return value is negative.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635532"></a>29.3.9. Closing a Large Object Descriptor</h3></div></div></div>
+<a name="id635627"></a>29.3.9. Closing a Large Object Descriptor</h3></div></div></div>
 <p>     A large object descriptor may be closed by calling
 </p>
 <pre class="synopsis">int lo_close(PGconn *conn, int fd);</pre>
 <p>
-     <a name="id635547"></a> where <em class="parameter"><code>fd</code></em> is a
+     <a name="id635642"></a> where <em class="parameter"><code>fd</code></em> is a
      large object descriptor returned by <code class="function">lo_open</code>.
      On success, <code class="function">lo_close</code> returns zero.  On
      error, the return value is negative.</p>
@@ -233,12 +233,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id635581"></a>29.3.10. Removing a Large Object</h3></div></div></div>
+<a name="id635675"></a>29.3.10. Removing a Large Object</h3></div></div></div>
 <p>     To remove a large object from the database, call
 </p>
 <pre class="synopsis">int lo_unlink(PGconn *conn, Oid lobjId);</pre>
 <p>
-     <a name="id635596"></a> The
+     <a name="id635690"></a> The
      <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the
      large object to remove.  Returns 1 if successful, -1 on failure.
     </p>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="next" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">
@@ -131,7 +131,7 @@
 </tbody>
 </table>
 </div>
-<a name="id558706"></a><a name="id558712"></a><a name="id558719"></a><a name="id558725"></a><a name="id558732"></a><a name="id558738"></a><a name="id558744"></a><a name="id558751"></a><a name="id558757"></a><a name="id558764"></a><a name="id558770"></a><a name="id558776"></a><a name="id558783"></a><a name="id558789"></a><div class="table">
+<a name="id558722"></a><a name="id558728"></a><a name="id558734"></a><a name="id558741"></a><a name="id558747"></a><a name="id558754"></a><a name="id558760"></a><a name="id558766"></a><a name="id558773"></a><a name="id558779"></a><a name="id558786"></a><a name="id558792"></a><a name="id558798"></a><a name="id558804"></a><div class="table">
 <a name="functions-datetime-table"></a><p class="title"><b>Table 9.26. Date/Time Functions</b></p>
 <table summary="Date/Time Functions" border="1">
 <colgroup>
@@ -338,7 +338,7 @@ SELECT (DATE '2001-02-16', INTERVAL '100 days') OVERLAPS
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-extract"></a>9.9.1. <code class="function">EXTRACT</code>, <code class="function">date_part</code></h3></div></div></div>
-<a name="id559743"></a><a name="id559750"></a><pre class="synopsis">EXTRACT(<em class="replaceable"><code>field</code></em> FROM <em class="replaceable"><code>source</code></em>)</pre>
+<a name="id559759"></a><a name="id559765"></a><pre class="synopsis">EXTRACT(<em class="replaceable"><code>field</code></em> FROM <em class="replaceable"><code>source</code></em>)</pre>
 <p>    The <code class="function">extract</code> function retrieves subfields
     such as year or hour from date/time values.
     <em class="replaceable"><code>source</code></em> must be a value expression of
@@ -494,7 +494,7 @@ SELECT EXTRACT(MONTH FROM INTERVAL '2 years 13 months');
 <dt><span class="term"><code class="literal">second</code></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts (0 -
-        59<sup>[<a name="id560320" href="#ftn.id560320">5</a>]</sup>)
+        59<sup>[<a name="id560336" href="#ftn.id560336">5</a>]</sup>)
        </p>
 <pre class="screen">SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40');
 <em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">40</code>
@@ -564,7 +564,7 @@ SELECT date_part('hour', INTERVAL '4 hours 3 minutes');
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-trunc"></a>9.9.2. <code class="function">date_trunc</code></h3></div></div></div>
-<a name="id560615"></a><p>    The function <code class="function">date_trunc</code> is conceptually
+<a name="id560631"></a><p>    The function <code class="function">date_trunc</code> is conceptually
     similar to the <code class="function">trunc</code> function for numbers.
    </p>
 <pre class="synopsis">date_trunc('<em class="replaceable"><code>field</code></em>', <em class="replaceable"><code>source</code></em>)</pre>
@@ -611,7 +611,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-zoneconvert"></a>9.9.3. <code class="literal">AT TIME ZONE</code></h3></div></div></div>
-<a name="id560829"></a><a name="id560838"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
+<a name="id560845"></a><a name="id560854"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
     of time stamps to different time zones.  <a href="functions-datetime.html#functions-datetime-zoneconvert-table" title="Table 9.27. AT TIME ZONE Variants">Table 9.27, &#8220;<code class="literal">AT TIME ZONE</code> Variants&#8221;</a> shows its
     variants.
    </p>
@@ -678,7 +678,7 @@ SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-current"></a>9.9.4. Current Date/Time</h3></div></div></div>
-<a name="id561104"></a><a name="id561113"></a><p>    The following functions are available to obtain the current date and/or
+<a name="id561119"></a><a name="id561128"></a><p>    The following functions are available to obtain the current date and/or
     time:
 </p>
 <pre class="synopsis">CURRENT_DATE
@@ -784,7 +784,7 @@ SELECT TIMESTAMP 'now';  -- incorrect for use with DEFAULT</pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id560320" href="#id560320">5</a>] </sup>60 if leap seconds are
+<div class="footnote"><p><sup>[<a name="ftn.id560336" href="#id560336">5</a>] </sup>60 if leap seconds are
         implemented by the operating system</p></div>
 </div>
 </div></body>

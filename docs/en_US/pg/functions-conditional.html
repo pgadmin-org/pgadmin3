@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">
 <link rel="next" href="functions-array.html" title="9.14. Array Functions and Operators">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-conditional"></a>9.13. Conditional Expressions</h2></div></div></div>
-<a name="id565024"></a><a name="id565030"></a><p>   This section describes the <span class="acronym">SQL</span>-compliant conditional expressions
+<a name="id565040"></a><a name="id565046"></a><p>   This section describes the <span class="acronym">SQL</span>-compliant conditional expressions
    available in <span class="productname">PostgreSQL</span>.
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -25,7 +25,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id565057"></a>9.13.1. <code class="literal">CASE</code></h3></div></div></div>
+<a name="id565074"></a>9.13.1. <code class="literal">CASE</code></h3></div></div></div>
 <p>   The <span class="acronym">SQL</span> <code class="token">CASE</code> expression is a
    generic conditional expression, similar to if/else statements in
    other languages:
@@ -124,13 +124,12 @@ END</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id565292"></a>9.13.2. <code class="literal">COALESCE</code></h3></div></div></div>
-<a name="id565299"></a><pre class="synopsis"><code class="function">COALESCE</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
+<a name="id565308"></a>9.13.2. <code class="literal">COALESCE</code></h3></div></div></div>
+<a name="id565316"></a><a name="id565322"></a><a name="id565328"></a><pre class="synopsis"><code class="function">COALESCE</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
 <p>   The <code class="function">COALESCE</code> function returns the first of its
    arguments that is not null.  Null is returned only if all arguments
-   are null.  This is often useful to substitute a
-   default value for null values when data is retrieved for display,
-   for example:
+   are null.  It is often used to substitute a default value for 
+   null values when data is retrieved for display, for example:
 </p>
 <pre class="programlisting">SELECT COALESCE(description, short_description, '(none)') ...</pre>
 <p>
@@ -138,28 +137,32 @@ END</pre>
 <p>    Like a <code class="token">CASE</code> expression, <code class="function">COALESCE</code> will
     not evaluate arguments that are not needed to determine the result;
     that is, arguments to the right of the first non-null argument are
-    not evaluated.
+    not evaluated.  This SQL-standard function provides capabilities similar
+    to <code class="function">NVL</code> and <code class="function">IFNULL</code>, which are used in some other
+    database systems.
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id565361"></a>9.13.3. <code class="literal">NULLIF</code></h3></div></div></div>
-<a name="id565368"></a><pre class="synopsis"><code class="function">NULLIF</code>(<em class="replaceable"><code>value1</code></em>, <em class="replaceable"><code>value2</code></em>)</pre>
-<p>   The <code class="function">NULLIF</code> function returns a null value if and only
-   if <em class="replaceable"><code>value1</code></em> and
-   <em class="replaceable"><code>value2</code></em> are equal.  Otherwise it returns
-   <em class="replaceable"><code>value1</code></em>.  This can be used to perform the
-   inverse operation of the <code class="function">COALESCE</code> example
-   given above:
+<a name="id565404"></a>9.13.3. <code class="literal">NULLIF</code></h3></div></div></div>
+<a name="id565412"></a><pre class="synopsis"><code class="function">NULLIF</code>(<em class="replaceable"><code>value1</code></em>, <em class="replaceable"><code>value2</code></em>)</pre>
+<p>   The <code class="function">NULLIF</code> function returns a null value if
+   <em class="replaceable"><code>value1</code></em> and <em class="replaceable"><code>value2</code></em>
+   are equal;  otherwise it returns <em class="replaceable"><code>value1</code></em>.
+   This can be used to perform the inverse operation of the
+   <code class="function">COALESCE</code> example given above:
 </p>
 <pre class="programlisting">SELECT NULLIF(value, '(none)') ...</pre>
 <p>
   </p>
+<p>   If <em class="replaceable"><code>value1</code></em> is <code class="literal">(none)</code>, return a null,
+   otherwise return <em class="replaceable"><code>value1</code></em>.
+  </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id565430"></a>9.13.4. <code class="literal">GREATEST</code> and <code class="literal">LEAST</code></h3></div></div></div>
-<a name="id565444"></a><a name="id565451"></a><pre class="synopsis"><code class="function">GREATEST</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
+<a name="id565492"></a>9.13.4. <code class="literal">GREATEST</code> and <code class="literal">LEAST</code></h3></div></div></div>
+<a name="id565506"></a><a name="id565512"></a><pre class="synopsis"><code class="function">GREATEST</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
 <pre class="synopsis"><code class="function">LEAST</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
 <p>    The <code class="function">GREATEST</code> and <code class="function">LEAST</code> functions select the
     largest or smallest value from a list of any number of expressions.
