@@ -10,6 +10,7 @@
 EXTRA_DIST = \
     $(srcdir)/Make.bat \
     $(srcdir)/README.txt \
+    $(srcdir)/upgrade.bat \
     $(srcdir)/resources/banner.bmp \
     $(srcdir)/resources/new.bmp \
     $(srcdir)/resources/up.bmp \
