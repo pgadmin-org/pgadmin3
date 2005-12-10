@@ -21,18 +21,18 @@
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-identifiers">4.1.1. Identifiers and Key Words</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-constants">4.1.2. Constants</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-operators">4.1.3. Operators</a></span></dt>
-<dt><span class="sect2"><a href="sql-syntax.html#id519511">4.1.4. Special Characters</a></span></dt>
+<dt><span class="sect2"><a href="sql-syntax.html#id519535">4.1.4. Special Characters</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-comments">4.1.5. Comments</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-precedence">4.1.6. Lexical Precedence</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="sql-expressions.html">4.2. Value Expressions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="sql-expressions.html#id520347">4.2.1. Column References</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id520425">4.2.2. Positional Parameters</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id520489">4.2.3. Subscripts</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id520581">4.2.4. Field Selection</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id520627">4.2.5. Operator Invocations</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id520743">4.2.6. Function Calls</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id520376">4.2.1. Column References</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id520454">4.2.2. Positional Parameters</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id520518">4.2.3. Subscripts</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id520610">4.2.4. Field Selection</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id520656">4.2.5. Operator Invocations</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id520772">4.2.6. Function Calls</a></span></dt>
 <dt><span class="sect2"><a href="sql-expressions.html#syntax-aggregates">4.2.7. Aggregate Expressions</a></span></dt>
 <dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-type-casts">4.2.8. Type Casts</a></span></dt>
 <dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-scalar-subqueries">4.2.9. Scalar Subqueries</a></span></dt>
@@ -42,7 +42,7 @@
 </dl></dd>
 </dl>
 </div>
-<a name="id517933"></a><p>  This chapter describes the syntax of SQL.  It forms the foundation
+<a name="id517946"></a><p>  This chapter describes the syntax of SQL.  It forms the foundation
   for understanding the following chapters which will go into detail
   about how the SQL commands are applied to define and modify data.
  </p>
@@ -54,7 +54,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="sql-syntax-lexical"></a>4.1. Lexical Structure</h2></div></div></div>
-<a name="id517973"></a><p>   SQL input consists of a sequence of
+<a name="id517987"></a><p>   SQL input consists of a sequence of
    <em class="firstterm">commands</em>.  A command is composed of a
    sequence of <em class="firstterm">tokens</em>, terminated by a
    semicolon (&#8220;<span class="quote">;</span>&#8221;).  The end of the input stream also
@@ -97,7 +97,7 @@ INSERT INTO MY_TABLE VALUES (3, 'hi there');</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-identifiers"></a>4.1.1. Identifiers and Key Words</h3></div></div></div>
-<a name="id518106"></a><a name="id518120"></a><a name="id518134"></a><p>    Tokens such as <code class="token">SELECT</code>, <code class="token">UPDATE</code>, or
+<a name="id518120"></a><a name="id518134"></a><a name="id518147"></a><p>    Tokens such as <code class="token">SELECT</code>, <code class="token">UPDATE</code>, or
     <code class="token">VALUES</code> in the example above are examples of
     <em class="firstterm">key words</em>, that is, words that have a fixed
     meaning in the SQL language.  The tokens <code class="token">MY_TABLE</code>
@@ -124,7 +124,7 @@ INSERT INTO MY_TABLE VALUES (3, 'hi there');</pre>
     form are safe against possible conflict with future extensions of the
     standard.
    </p>
-<p>    <a name="id518254"></a>
+<p>    <a name="id518268"></a>
     The system uses no more than <code class="symbol">NAMEDATALEN</code>-1
     characters of an identifier; longer names can be written in
     commands, but they will be truncated.  By default,
@@ -133,7 +133,7 @@ INSERT INTO MY_TABLE VALUES (3, 'hi there');</pre>
     changing the <code class="symbol">NAMEDATALEN</code> constant in
     <code class="filename">src/include/postgres_ext.h</code>.
    </p>
-<p>    <a name="id518291"></a>
+<p>    <a name="id518304"></a>
     Identifier and key word names are case insensitive.  Therefore
 </p>
 <pre class="programlisting">UPDATE MY_TABLE SET A = 5;</pre>
@@ -148,7 +148,7 @@ INSERT INTO MY_TABLE VALUES (3, 'hi there');</pre>
 <pre class="programlisting">UPDATE my_table SET a = 5;</pre>
 <p>
    </p>
-<p>    <a name="id518328"></a>
+<p>    <a name="id518342"></a>
     There is a second kind of identifier:  the <em class="firstterm">delimited
     identifier</em> or <em class="firstterm">quoted
     identifier</em>.  It is formed by enclosing an arbitrary
@@ -190,7 +190,7 @@ INSERT INTO MY_TABLE VALUES (3, 'hi there');</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-constants"></a>4.1.2. Constants</h3></div></div></div>
-<a name="id518481"></a><p>    There are three kinds of <em class="firstterm">implicitly-typed
+<a name="id518494"></a><p>    There are three kinds of <em class="firstterm">implicitly-typed
     constants</em> in <span class="productname">PostgreSQL</span>:
     strings, bit strings, and numbers.
     Constants can also be specified with explicit types, which can
@@ -201,7 +201,7 @@ INSERT INTO MY_TABLE VALUES (3, 'hi there');</pre>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="sql-syntax-strings"></a>4.1.2.1. String Constants</h4></div></div></div>
-<a name="id518518"></a><p>     <a name="id518535"></a>
+<a name="id518532"></a><p>     <a name="id518549"></a>
      A string constant in SQL is an arbitrary sequence of characters
      bounded by single quotes (<code class="literal">'</code>), for example
      <code class="literal">'This is a string'</code>.  The standard-compliant way of
@@ -267,7 +267,7 @@ INSERT INTO MY_TABLE VALUES (3, 'hi there');</pre>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="sql-syntax-dollar-quoting"></a>4.1.2.2. Dollar-Quoted String Constants</h4></div></div></div>
-<a name="id518751"></a><p>     While the standard syntax for specifying string constants is usually
+<a name="id518765"></a><p>     While the standard syntax for specifying string constants is usually
      convenient, it can be difficult to understand when the desired string
      contains many single quotes or backslashes, since each of those must
      be doubled. To allow more readable queries in such situations,
@@ -333,7 +333,7 @@ $function$</pre>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="sql-syntax-bit-strings"></a>4.1.2.3. Bit-String Constants</h4></div></div></div>
-<a name="id518895"></a><p>     Bit-string constants look like regular string constants with a
+<a name="id518919"></a><p>     Bit-string constants look like regular string constants with a
      <code class="literal">B</code> (upper or lower case) immediately before the
      opening quote (no intervening whitespace), e.g.,
      <code class="literal">B'1001'</code>.  The only characters allowed within
@@ -352,8 +352,8 @@ $function$</pre>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id518967"></a>4.1.2.4. Numeric Constants</h4></div></div></div>
-<a name="id518970"></a><p>     Numeric constants are accepted in these general forms:
+<a name="id518991"></a>4.1.2.4. Numeric Constants</h4></div></div></div>
+<a name="id518995"></a><p>     Numeric constants are accepted in these general forms:
 </p>
 <pre class="synopsis"><em class="replaceable"><code>digits</code></em>
 <em class="replaceable"><code>digits</code></em>.[<span class="optional"><em class="replaceable"><code>digits</code></em></span>][<span class="optional">e[<span class="optional">+-</span>]<em class="replaceable"><code>digits</code></em></span>]
@@ -379,9 +379,9 @@ $function$</pre>
 1.925e-3</p></div>
 <p>
     </p>
-<p>     <a name="id519067"></a>
-     <a name="id519074"></a>
-     <a name="id519082"></a>
+<p>     <a name="id519091"></a>
+     <a name="id519099"></a>
+     <a name="id519106"></a>
      A numeric constant that contains neither a decimal point nor an
      exponent is initially presumed to be type <code class="type">integer</code> if its
      value fits in type <code class="type">integer</code> (32 bits); otherwise it is
@@ -396,7 +396,7 @@ $function$</pre>
      the constant will be automatically coerced to the most
      appropriate type depending on context.  When necessary, you can
      force a numeric value to be interpreted as a specific data type
-     by casting it.<a name="id519129"></a>
+     by casting it.<a name="id519154"></a>
      For example, you can force a numeric value to be treated as type
      <code class="type">real</code> (<code class="type">float4</code>) by writing
 
@@ -412,7 +412,7 @@ $function$</pre>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="sql-syntax-constants-generic"></a>4.1.2.5. Constants of Other Types</h4></div></div></div>
-<a name="id519164"></a><p>     A constant of an <span class="emphasis"><em>arbitrary</em></span> type can be
+<a name="id519189"></a><p>     A constant of an <span class="emphasis"><em>arbitrary</em></span> type can be
      entered using any one of the following notations:
 </p>
 <pre class="synopsis"><em class="replaceable"><code>type</code></em> '<em class="replaceable"><code>string</code></em>'
@@ -459,7 +459,7 @@ CAST ( '<em class="replaceable"><code>string</code></em>' AS <em class="replacea
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-operators"></a>4.1.3. Operators</h3></div></div></div>
-<a name="id519373"></a><p>    An operator name is a sequence of up to <code class="symbol">NAMEDATALEN</code>-1
+<a name="id519397"></a><p>    An operator name is a sequence of up to <code class="symbol">NAMEDATALEN</code>-1
     (63 by default) characters from the following list:
 </p>
 <div class="literallayout"><p>+ - * / &lt; &gt; = ~ ! @ # % ^ &amp; | ` ?</p></div>
@@ -498,7 +498,7 @@ CAST ( '<em class="replaceable"><code>string</code></em>' AS <em class="replacea
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id519511"></a>4.1.4. Special Characters</h3></div></div></div>
+<a name="id519535"></a>4.1.4. Special Characters</h3></div></div></div>
 <p>   Some characters that are not alphanumeric have a special meaning
    that is different from being an operator.  Details on the usage can
    be found at the location where the respective syntax element is
@@ -549,7 +549,7 @@ CAST ( '<em class="replaceable"><code>string</code></em>' AS <em class="replacea
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-syntax-comments"></a>4.1.5. Comments</h3></div></div></div>
-<a name="id519657"></a><p>    A comment is an arbitrary sequence of characters beginning with
+<a name="id519686"></a><p>    A comment is an arbitrary sequence of characters beginning with
     double dashes and extending to the end of the line, e.g.:
 </p>
 <pre class="programlisting">-- This is a standard SQL comment</pre>
@@ -574,7 +574,7 @@ CAST ( '<em class="replaceable"><code>string</code></em>' AS <em class="replacea
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sql-precedence"></a>4.1.6. Lexical Precedence</h3></div></div></div>
-<a name="id519725"></a><p>    <a href="sql-syntax.html#sql-precedence-table" title="Table 4.1. Operator Precedence (decreasing)">Table 4.1, &#8220;Operator Precedence (decreasing)&#8221;</a> shows the precedence and
+<a name="id519754"></a><p>    <a href="sql-syntax.html#sql-precedence-table" title="Table 4.1. Operator Precedence (decreasing)">Table 4.1, &#8220;Operator Precedence (decreasing)&#8221;</a> shows the precedence and
     associativity of the operators in <span class="productname">PostgreSQL</span>.
     Most operators have the same precedence and are left-associative.
     The precedence and associativity of the operators is hard-wired

@@ -16,14 +16,14 @@
 <h2>Name</h2>
 <p>CREATE TRIGGER &#8212; define a new trigger</p>
 </div>
-<a name="id712075"></a><div class="refsynopsisdiv">
+<a name="id712103"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE TRIGGER <em class="replaceable"><code>name</code></em> { BEFORE | AFTER } { <em class="replaceable"><code>event</code></em> [ OR ... ] }
     ON <em class="replaceable"><code>table</code></em> [ FOR [ EACH ] { ROW | STATEMENT } ]
     EXECUTE PROCEDURE <em class="replaceable"><code>funcname</code></em> ( <em class="replaceable"><code>arguments</code></em> )</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id712126"></a><h2>Description</h2>
+<a name="id712155"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TRIGGER</code> creates a new trigger.  The
    trigger will be associated with the specified table and will
    execute the specified function <em class="replaceable"><code>funcname</code></em> when certain events occur.
@@ -64,7 +64,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id712293"></a><h2>Parameters</h2>
+<a name="id712321"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name to give the new trigger.  This must be distinct from
@@ -163,7 +163,16 @@
   </p>
 <p>   SQL specifies that multiple triggers should be fired in
    time-of-creation order.  <span class="productname">PostgreSQL</span> uses
-   name order, which was judged more convenient to work with.
+   name order, which was judged to be more convenient.
+  </p>
+<p>   SQL specifies that <code class="literal">BEFORE DELETE</code> triggers on cascaded
+   deletes fire <span class="emphasis"><em>after</em></span> the cascaded <code class="literal">DELETE</code> completes.
+   The <span class="productname">PostgreSQL</span> behavior is for <code class="literal">BEFORE
+   DELETE</code> to always fire before the delete action, even a cascading
+   one.  This is considered more consistent.  There is also unpredictable
+   behavior when <code class="literal">BEFORE</code> triggers modify rows that are later
+   to be modified by referential actions.  This can lead to contraint violations
+   or stored data that does not honor the referential constraint.
   </p>
 <p>   The ability to specify multiple actions for a single trigger using
    <code class="literal">OR</code> is a <span class="productname">PostgreSQL</span> extension of
@@ -171,7 +180,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id712671"></a><h2>See Also</h2>
+<a name="id712746"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-altertrigger.html">ALTER TRIGGER</a>, <a href="sql-droptrigger.html">DROP TRIGGER</a></span>
 </div>
 </div></body>
