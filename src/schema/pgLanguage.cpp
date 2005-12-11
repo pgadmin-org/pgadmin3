@@ -47,7 +47,12 @@ wxString pgLanguage::GetSql(ctlTree *browser)
         if (GetTrusted())
             sql += wxT("TRUSTED ");
         sql += wxT("PROCEDURAL LANGUAGE '") + GetName() 
-            +  wxT("'\n  HANDLER ") + GetHandlerProc() + wxT(";\n")
+            +  wxT("'\n  HANDLER ") + GetHandlerProc();
+
+        if (!GetValidatorProc().IsEmpty())
+            sql += wxT("\n  VALIDATOR ") + GetValidatorProc();
+        
+        sql += wxT(";\n")
             +  GetGrant(wxT("X"), wxT("LANGUAGE ") + GetQuotedFullIdentifier());
 
     }
