@@ -30,6 +30,7 @@ public:
 
 private:
     pgLanguage *language;
+    void OnChangeName(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

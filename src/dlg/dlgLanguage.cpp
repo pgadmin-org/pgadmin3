@@ -22,6 +22,7 @@
 
 
 // pointer to controls
+#define cbName          CTRL_COMBOBOX("cbName")
 #define chkTrusted      CTRL_CHECKBOX("chkTrusted")
 #define cbHandler       CTRL_COMBOBOX("cbHandler")
 #define cbValidator     CTRL_COMBOBOX("cbValidator")
@@ -34,6 +35,8 @@ dlgProperty *pgLanguageFactory::CreateDialog(frmMain *frame, pgObject *node, pgO
 
 
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
+    EVT_TEXT(XRCID("cbName"),                       dlgLanguage::OnChangeName)
+    EVT_COMBOBOX(XRCID("cbName"),                   dlgLanguage::OnChangeName)
     EVT_TEXT(XRCID("cbHandler"),                    dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbHandler"),                dlgProperty::OnChange)
 END_EVENT_TABLE();
@@ -81,6 +84,23 @@ int dlgLanguage::Go(bool modal)
     else
     {
         // create mode
+        if (connection->BackendMinimumVersion(8, 1))
+        {
+            pgSetIterator languages(connection, 
+                wxT("SELECT tmplname FROM pg_pltemplate\n")
+                wxT("  LEFT JOIN pg_language ON tmplname=lanname\n")
+                wxT(" WHERE lanname IS NULL\n")
+                wxT(" ORDER BY tmplname"));
+
+            while (languages.RowsLeft())
+                cbName->Append(languages.GetVal(wxT("tmplname")));
+        }
+        else
+        {
+            // to clear drop down list
+            cbName->Append(wxT(" "));
+            cbName->Delete(0);
+        }
         cbValidator->Append(wxT(""));
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT nspname, proname, prorettype\n")
@@ -110,16 +130,29 @@ int dlgLanguage::Go(bool modal)
 
 pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 {
-    wxString name=GetName();
+    wxString name=cbName->wxComboBox::GetValue();
 
     pgObject *obj=languageFactory.CreateObjects(collection, 0, wxT("\n   AND lanname ILIKE ") + qtString(name));
     return obj;
 }
 
 
+void dlgLanguage::OnChangeName(wxCommandEvent &ev)
+{
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+        bool useTemplate = (cbName->FindString(cbName->wxComboBox::GetValue()) >= 0);
+        chkTrusted->Enable(!useTemplate);
+        cbHandler->Enable(!useTemplate);
+        cbValidator->Enable(!useTemplate);
+    }
+    OnChange(ev);
+}
+
+
 void dlgLanguage::CheckChange()
 {
-    wxString name=GetName();
+    wxString name=cbName->wxComboBox::GetValue();
     if (language)
     {
         EnableOK(name != language->GetName() || txtComment->GetValue() != language->GetComment());
@@ -128,8 +161,10 @@ void dlgLanguage::CheckChange()
     {
 
         bool enable=true;
+        bool useTemplate = (cbName->FindString(name) >= 0);
+
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, !cbHandler->GetValue().IsEmpty(), _("Please specify language handler."));
+        CheckValid(enable, useTemplate || !cbHandler->GetValue().IsEmpty(), _("Please specify language handler."));
         EnableOK(enable);
     }
 }
@@ -139,7 +174,7 @@ void dlgLanguage::CheckChange()
 wxString dlgLanguage::GetSql()
 {
     wxString sql, name;
-    name=GetName();
+    name=cbName->wxComboBox::GetValue();
 
     if (language)
     {
@@ -149,13 +184,19 @@ wxString dlgLanguage::GetSql()
     else
     {
         // create mode
-        sql = wxT("CREATE ");
-        if (chkTrusted->GetValue())
-            sql += wxT("TRUSTED ");
-        sql += wxT("LANGUAGE ") + qtIdent(name) + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue());
-        AppendIfFilled(sql, wxT("\n   VALIDATOR "), qtIdent(cbValidator->GetValue()));
-        sql += wxT(";\n");
-
+        if (connection->BackendMinimumVersion(8, 1) && cbName->FindString(name) >= 0)
+        {
+            sql = wxT("CREATE LANGUAGE ") + qtIdent(name) + wxT(";\n");
+        }
+        else
+        {
+            sql = wxT("CREATE ");
+            if (chkTrusted->GetValue())
+                sql += wxT("TRUSTED ");
+            sql += wxT("LANGUAGE ") + qtIdent(name) + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue());
+            AppendIfFilled(sql, wxT("\n   VALIDATOR "), qtIdent(cbValidator->GetValue()));
+            sql += wxT(";\n");
+        }
     }
 
     sql += GetGrant(wxT("X"), wxT("LANGUAGE ") + qtIdent(name));
