@@ -37,6 +37,7 @@ bool pgLanguage::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
+
 wxString pgLanguage::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
@@ -47,12 +48,18 @@ wxString pgLanguage::GetSql(ctlTree *browser)
         if (GetTrusted())
             sql += wxT("TRUSTED ");
         sql += wxT("PROCEDURAL LANGUAGE '") + GetName() 
-            +  wxT("'\n  HANDLER ") + GetHandlerProc() + wxT(";\n")
+            +  wxT("'\n  HANDLER ") + GetHandlerProc();
+
+        if (!GetValidatorProc().IsEmpty())
+            sql += wxT("\n  VALIDATOR ") + GetValidatorProc();
+        
+        sql += wxT(";\n")
             +  GetGrant(wxT("X"), wxT("LANGUAGE ") + GetQuotedFullIdentifier());
 
     }
     return sql;
 }
+
 
 void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
