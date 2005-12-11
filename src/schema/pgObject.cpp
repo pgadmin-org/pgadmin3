@@ -162,7 +162,7 @@ void pgObject::ShowStatistics(frmMain *form, ctlListView *statistics)
 bool pgObject::UpdateIcon(ctlTree *browser)
 {
     int icon=GetIconId();
-    if (browser->GetItemImage(GetId(), wxTreeItemIcon_Normal) != icon)
+    if (GetId() && browser->GetItemImage(GetId(), wxTreeItemIcon_Normal) != icon)
     {
         browser->SetItemImage(GetId(), GetIconId(), wxTreeItemIcon_Normal);
         browser->SetItemImage(GetId(), GetIconId(), wxTreeItemIcon_Selected);
