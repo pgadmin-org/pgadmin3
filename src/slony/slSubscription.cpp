@@ -61,6 +61,12 @@ bool slSubscription::CanCreate()
 }
 
 
+bool slSubscription::CanDrop()
+{
+    return GetReceiverId() == GetCluster()->GetLocalNodeID();
+}
+
+
 wxString slSubscription::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())

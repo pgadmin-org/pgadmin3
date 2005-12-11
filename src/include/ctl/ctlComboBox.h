@@ -52,11 +52,6 @@ public:
 #ifdef __WXMSW__
     wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
 #endif
-
-
-private:
-    // to prevent using it; use GetCurrentSelection() instead
-    int GetSelection() const { return -1; }
 };
 
 class ctlComboBox : public ctlComboBoxFix

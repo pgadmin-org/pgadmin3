@@ -59,6 +59,7 @@ public:
 
   
     bool CanCreate();
+    bool CanDrop();
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);
