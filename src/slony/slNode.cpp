@@ -171,7 +171,7 @@ void slNode::ShowStatistics(frmMain *form, ctlListView *statistics)
                 wxT("       st_last_event_ts - st_last_received_ts AS eventlag,")
                 wxT("       ev_seqno, ev_type || ' ' || COALESCE(ev_data1, '') AS hanging\n")
                 wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
-                wxT("  LEFT JOIN ") + GetCluster()->GetSchemaPrefix() + wxT("sl_event ON ev_seqno=\n")
+                wxT("  LEFT JOIN ") + GetCluster()->GetSchemaPrefix() + wxT("sl_event ON ev_origin=st_origin AND ev_seqno=\n")
                 wxT("         (SELECT MIN(ev_seqno) FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_event WHERE ev_seqno > st_last_received)\n")
                 wxT(" WHERE st_origin = ") + NumToStr(GetCluster()->GetLocalNodeID()) + wxT("\n")
                 wxT("   AND st_received = ") + NumToStr(GetSlId()));
@@ -331,7 +331,7 @@ void slNodeCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
         wxT("       CASE WHEN st_lag_num_events > 0 THEN st_last_event_ts - st_last_received_ts END AS eventlag,")
         wxT("       ev_seqno, ev_type || ' ' || COALESCE(ev_data1, '') AS hanging\n")
         wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
-        wxT("  LEFT JOIN ") + GetCluster()->GetSchemaPrefix() + wxT("sl_event ON ev_seqno=\n")
+        wxT("  LEFT JOIN ") + GetCluster()->GetSchemaPrefix() + wxT("sl_event ON ev_origin=st_origin AND ev_seqno=\n")
         wxT("         (SELECT MIN(ev_seqno) FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_event WHERE ev_seqno > st_last_received)\n")
         wxT(" WHERE st_origin = ") + NumToStr(GetCluster()->GetLocalNodeID()));
 
