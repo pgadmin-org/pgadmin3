@@ -1,265 +1,85 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 7.0</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 7.0.1"
-HREF="release-7-0-1.html"><LINK
-REL="NEXT"
-TITLE="Release 6.5.3"
-HREF="release-6-5-3.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-0-1.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-6-5-3.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-7-0"
->E.44. Release 7.0</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2000-05-08</P
-></BLOCKQUOTE
-></DIV
-><P
-> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.47. Release 7.0</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-0-1.html" title="E.46. Release 7.0.1">
+<link rel="next" href="release-6-5-3.html" title="E.48. Release 6.5.3">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-0"></a>E.47. Release 7.0</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2000-05-08</p>
+</div>
+<p> 
     This release contains improvements in many areas, demonstrating
-    the continued growth of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
+    the continued growth of <span class="productname">PostgreSQL</span>.
     There are more improvements and fixes in 7.0 than in any previous
     release. The developers have confidence that this is the best
     release yet; we do our best to put out only solid releases, and
     this one is no exception.
-   </P
-><P
->    Major changes in this release:
-   </P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->Foreign Keys</DT
-><DD
-><P
->       Foreign keys are now implemented, with the exception of PARTIAL MATCH
+   </p>
+<p>    Major changes in this release:
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">      Foreign Keys
+     </span></dt>
+<dd><p>       Foreign keys are now implemented, with the exception of PARTIAL MATCH
        foreign keys. Many users have been asking for this feature, and we are
        pleased to offer it.
-      </P
-></DD
-><DT
->Optimizer Overhaul</DT
-><DD
-><P
->       Continuing on work started a year ago, the optimizer has been
+      </p></dd>
+<dt><span class="term">      Optimizer Overhaul
+     </span></dt>
+<dd><p>       Continuing on work started a year ago, the optimizer has been
        improved, allowing better query plan selection and faster performance
        with less memory usage.
-      </P
-></DD
-><DT
->Updated <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></DT
-><DD
-><P
->       <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->, our interactive terminal monitor, has been
-       updated with a variety of new features. See the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> manual page for details.
-      </P
-></DD
-><DT
->Join Syntax</DT
-><DD
-><P
->       SQL92 join syntax is now supported, though only as
-       <TT
-CLASS="LITERAL"
->INNER JOIN</TT
-> for this release. <TT
-CLASS="LITERAL"
->JOIN</TT
->,
-       <TT
-CLASS="LITERAL"
->NATURAL JOIN</TT
->, <TT
-CLASS="LITERAL"
->JOIN</TT
->/<TT
-CLASS="LITERAL"
->USING</TT
->,
-       and <TT
-CLASS="LITERAL"
->JOIN</TT
->/<TT
-CLASS="LITERAL"
->ON</TT
-> are available, as are
+      </p></dd>
+<dt><span class="term">      Updated <span class="application">psql</span>
+     </span></dt>
+<dd><p>       <span class="application">psql</span>, our interactive terminal monitor, has been
+       updated with a variety of new features. See the <span class="application">psql</span> manual page for details.
+      </p></dd>
+<dt><span class="term">      Join Syntax
+     </span></dt>
+<dd><p>       SQL92 join syntax is now supported, though only as
+       <code class="literal">INNER JOIN</code> for this release. <code class="literal">JOIN</code>,
+       <code class="literal">NATURAL JOIN</code>, <code class="literal">JOIN</code>/<code class="literal">USING</code>,
+       and <code class="literal">JOIN</code>/<code class="literal">ON</code> are available, as are
        column correlation names.
-      </P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN72999"
->E.44.1. Migration to version 7.0</A
-></H2
-><P
->     A dump/restore using <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->
+      </p></dd>
+</dl></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id811610"></a>E.47.1. Migration to version 7.0</h3></div></div></div>
+<p>     A dump/restore using <span class="application">pg_dump</span>
      is required for those wishing to migrate data from any
-     previous release of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
+     previous release of <span class="productname">PostgreSQL</span>.
      For those upgrading from 6.5.*, you may instead use 
-     <SPAN
-CLASS="APPLICATION"
->pg_upgrade</SPAN
-> to upgrade to this
+     <span class="application">pg_upgrade</span> to upgrade to this
      release; however, a full dump/reload installation is always the
      most robust method for upgrades.
-    </P
-><P
->     Interface and compatibility issues to consider for the new
+    </p>
+<p>     Interface and compatibility issues to consider for the new
      release include:
-    </P
-><P
-></P
-><UL
-><LI
-><P
->       The date/time types <TT
-CLASS="TYPE"
->datetime</TT
-> and
-       <TT
-CLASS="TYPE"
->timespan</TT
-> have been superseded by the
-       SQL92-defined types <TT
-CLASS="TYPE"
->timestamp</TT
-> and
-       <TT
-CLASS="TYPE"
->interval</TT
->. Although there has been some effort to
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       The date/time types <code class="type">datetime</code> and
+       <code class="type">timespan</code> have been superseded by the
+       SQL92-defined types <code class="type">timestamp</code> and
+       <code class="type">interval</code>. Although there has been some effort to
        ease the transition by allowing
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to recognize
+       <span class="productname">PostgreSQL</span> to recognize
        the deprecated type names and translate them to the new type
        names, this mechanism may not be completely transparent to
        your existing application.
-      </P
-></LI
-><LI
-><P
->       The optimizer has been substantially improved in the area of
+      </p></li>
+<li><p>       The optimizer has been substantially improved in the area of
        query cost estimation. In some cases, this will result in
        decreased query times as the optimizer makes a better choice
        for the preferred plan. However, in a small number of cases,
@@ -267,52 +87,23 @@ CLASS="PRODUCTNAME"
        query times may go up. If you are dealing with large amounts
        of data, you may want to check your queries to verify
        performance.
-      </P
-></LI
-><LI
-><P
->       The <ACRONYM
-CLASS="ACRONYM"
->JDBC</ACRONYM
-> and <ACRONYM
-CLASS="ACRONYM"
->ODBC</ACRONYM
->
+      </p></li>
+<li><p>       The <span class="acronym">JDBC</span> and <span class="acronym">ODBC</span>
        interfaces have been upgraded and extended.
-      </P
-></LI
-><LI
-><P
->       The string function <CODE
-CLASS="FUNCTION"
->CHAR_LENGTH</CODE
-> is now a
+      </p></li>
+<li><p>       The string function <code class="function">CHAR_LENGTH</code> is now a
        native function. Previous versions translated this into a call
-       to <CODE
-CLASS="FUNCTION"
->LENGTH</CODE
->, which could result in
+       to <code class="function">LENGTH</code>, which could result in
        ambiguity with other types implementing
-       <CODE
-CLASS="FUNCTION"
->LENGTH</CODE
-> such as the geometric types.
-      </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN73025"
->E.44.2. Changes</A
-></H2
-><P
->     </P><PRE
-CLASS="PROGRAMLISTING"
->Bug Fixes
+       <code class="function">LENGTH</code> such as the geometric types.
+      </p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id811733"></a>E.47.2. Changes</h3></div></div></div>
+<p>     </p>
+<pre class="programlisting">Bug Fixes
 ---------
 Prevent function calls exceeding maximum number of arguments (Tom)
 Improve CASE construct (Tom)
@@ -393,13 +184,7 @@ Enhancements
 ------------
 New CLI interface include file sqlcli.h, based on SQL3/SQL98
 Remove all limits on query length, row length limit still exists (Tom)
-Update jdbc protocol to 2.0 (Jens Glaser <CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:jens@jens.de"
->jens@jens.de</A
->&#62;</CODE
->)
+Update jdbc protocol to 2.0 (Jens Glaser <code class="email">&lt;<a href="mailto:jens@jens.de">jens@jens.de</a>&gt;</code>)
 Add TRUNCATE command to quickly truncate relation (Mike Mascari)
 Fix to give super user and createdb user proper update catalog rights (Peter E)
 Allow ecpg bool variables to have NULL values (Christof)
@@ -420,13 +205,7 @@ Allow WHERE restriction on ctid (physical heap location) (Hiroshi)
 Move pginterface from contrib to interface directory, rename to pgeasy (Bruce)
 Change pgeasy connectdb() parameter ordering (Bruce)
 Require SELECT DISTINCT target list to have all ORDER BY columns (Tom)
-Add Oracle's COMMENT ON command (Mike Mascari <CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:mascarim@yahoo.com"
->mascarim@yahoo.com</A
->&#62;</CODE
->)
+Add Oracle's COMMENT ON command (Mike Mascari <code class="email">&lt;<a href="mailto:mascarim@yahoo.com">mascarim@yahoo.com</a>&gt;</code>)
 libpq's PQsetNoticeProcessor function now returns previous hook(Peter E)
 Prevent PQsetNoticeProcessor from being set to NULL (Peter E)
 Make USING in COPY optional (Bruce)
@@ -620,13 +399,7 @@ Add scripts for checking includes (Bruce)
 Remove un-needed #include's from *.c files (Bruce)
 Change #include's to use &lt;&gt; and "" as appropriate (Bruce)
 Enable Windows compilation of libpq
-Alpha spinlock fix from Uncle George <CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:gatgul@voicenet.com"
->gatgul@voicenet.com</A
->&#62;</CODE
->
+Alpha spinlock fix from Uncle George <code class="email">&lt;<a href="mailto:gatgul@voicenet.com">gatgul@voicenet.com</a>&gt;</code>
 Overhaul of optimizer data structures (Tom)
 Fix to cygipc library (Yutaka Tanida)
 Allow pgsql to work on newer Cygwin snapshots (Dan)
@@ -644,82 +417,12 @@ Fix for plpgsql on BSD/OS
 Add SQL_ASCII test case to the regression test (Tatsuo)
 configure --with-mb now deprecated (Tatsuo)
 NT fixes
-NetBSD fixes (Johnny C. Lam <CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:lamj@stat.cmu.edu"
->lamj@stat.cmu.edu</A
->&#62;</CODE
->)
+NetBSD fixes (Johnny C. Lam <code class="email">&lt;<a href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</code>)
 Fixes for Alpha compiles
 New multibyte encodings
-     </PRE
-><P>
-    </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-0-1.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-6-5-3.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 7.0.1</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 6.5.3</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+     </pre>
+<p>
+    </p>
+</div>
+</div></body>
+</html>

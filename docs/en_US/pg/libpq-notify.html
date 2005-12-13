@@ -1,386 +1,84 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Asynchronous Notification</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="libpq - C Library"
-HREF="libpq.html"><LINK
-REL="PREVIOUS"
-TITLE="The Fast-Path Interface"
-HREF="libpq-fastpath.html"><LINK
-REL="NEXT"
-TITLE="Functions Associated with the COPY Command"
-HREF="libpq-copy.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-fastpath.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 27. <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> - C Library</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-copy.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LIBPQ-NOTIFY"
->27.7. Asynchronous Notification</A
-></H1
-><A
-NAME="AEN24128"
-></A
-><P
-><SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> offers asynchronous notification via the
-<TT
-CLASS="COMMAND"
->LISTEN</TT
-> and <TT
-CLASS="COMMAND"
->NOTIFY</TT
-> commands.  A client session registers its interest in a particular
-notification condition with the <TT
-CLASS="COMMAND"
->LISTEN</TT
-> command (and can stop listening
-with the <TT
-CLASS="COMMAND"
->UNLISTEN</TT
-> command).  All sessions listening on a
-particular condition will be notified asynchronously when a <TT
-CLASS="COMMAND"
->NOTIFY</TT
-> command with that
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>27.7. Asynchronous Notification</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
+<link rel="prev" href="libpq-fastpath.html" title="27.6. The Fast-Path Interface">
+<link rel="next" href="libpq-copy.html" title="27.8. Functions Associated with the COPY Command">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-notify"></a>27.7. Asynchronous Notification</h2></div></div></div>
+<a name="id621020"></a><p><span class="productname">PostgreSQL</span> offers asynchronous notification via the
+<code class="command">LISTEN</code> and <code class="command">NOTIFY</code> commands.  A client session registers its interest in a particular
+notification condition with the <code class="command">LISTEN</code> command (and can stop listening
+with the <code class="command">UNLISTEN</code> command).  All sessions listening on a
+particular condition will be notified asynchronously when a <code class="command">NOTIFY</code> command with that
 condition name is executed by any session.  No additional information is
 passed from the notifier to the listener.  Thus, typically, any actual data
 that needs to be communicated is transferred through a database table.
 Commonly, the condition name is the same as the associated table, but it is
-not necessary for there to be any associated table.</P
-><P
-><SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> applications submit
-<TT
-CLASS="COMMAND"
->LISTEN</TT
-> and <TT
-CLASS="COMMAND"
->UNLISTEN</TT
-> commands as
-ordinary SQL commands.  The arrival of <TT
-CLASS="COMMAND"
->NOTIFY</TT
->
+not necessary for there to be any associated table.</p>
+<p><span class="application">libpq</span> applications submit
+<code class="command">LISTEN</code> and <code class="command">UNLISTEN</code> commands as
+ordinary SQL commands.  The arrival of <code class="command">NOTIFY</code>
 messages can subsequently be detected by calling
-<CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
->.<A
-NAME="AEN24144"
-></A
-></P
-><P
->The function <CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
->
+<code class="function">PQnotifies</code>.<a name="id621120"></a></p>
+<p>The function <code class="function">PQnotifies</code>
           returns  the next notification from a list of unhandled
           notification messages received from the server.  It returns a null pointer if
           there are no pending notifications.  Once a notification is
-          returned from <CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
->, it is considered handled and will be
+          returned from <code class="function">PQnotifies</code>, it is considered handled and will be
           removed from the list of notifications.
-</P><PRE
-CLASS="SYNOPSIS"
->PGnotify *PQnotifies(PGconn *conn);
+</p>
+<pre class="synopsis">PGnotify *PQnotifies(PGconn *conn);
 
 typedef struct pgNotify {
     char *relname;              /* notification condition name */
     int  be_pid;                /* process ID of server process */
     char *extra;                /* notification parameter */
-} PGnotify;</PRE
-><P>
-After processing a <TT
-CLASS="STRUCTNAME"
->PGnotify</TT
-> object returned by
-<CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
->, be sure to free it with
-<CODE
-CLASS="FUNCTION"
->PQfreemem</CODE
->.  It is sufficient to free the
-<TT
-CLASS="STRUCTNAME"
->PGnotify</TT
-> pointer; the
-<TT
-CLASS="STRUCTFIELD"
->relname</TT
-> and <TT
-CLASS="STRUCTFIELD"
->extra</TT
-> fields
+} PGnotify;</pre>
+<p>
+After processing a <code class="structname">PGnotify</code> object returned by
+<code class="function">PQnotifies</code>, be sure to free it with
+<code class="function">PQfreemem</code>.  It is sufficient to free the
+<code class="structname">PGnotify</code> pointer; the
+<code class="structfield">relname</code> and <code class="structfield">extra</code> fields
 do not represent separate allocations.
-(At present, the <TT
-CLASS="STRUCTFIELD"
->extra</TT
-> field is unused and will
-always point to an empty string.)</P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
-> In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 6.4 and later,
- the <TT
-CLASS="STRUCTFIELD"
->be_pid</TT
-> is that of the notifying server process,
- whereas in earlier versions it was always the <ACRONYM
-CLASS="ACRONYM"
->PID</ACRONYM
-> of your own server process.</P
-></BLOCKQUOTE
-></DIV
-><P
-><A
-HREF="libpq-example.html#LIBPQ-EXAMPLE-2"
->Example 27-2</A
-> gives a sample program that illustrates the use
-of asynchronous notification.</P
-><P
-><CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
-> does not actually read data from the server; it just
-returns messages previously absorbed by another <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->
-function.  In prior releases of <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->, the only way
-to ensure timely receipt of <TT
-CLASS="COMMAND"
->NOTIFY</TT
-> messages was to constantly submit commands,
-even empty ones, and then check <CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
-> after each
-<CODE
-CLASS="FUNCTION"
->PQexec</CODE
->.  While this still works, it is
-deprecated as a waste of processing power.</P
-><P
->A better way to check for <TT
-CLASS="COMMAND"
->NOTIFY</TT
->
+(At present, the <code class="structfield">extra</code> field is unused and will
+always point to an empty string.)</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p> In <span class="productname">PostgreSQL</span> 6.4 and later,
+ the <code class="structfield">be_pid</code> is that of the notifying server process,
+ whereas in earlier versions it was always the <span class="acronym">PID</span> of your own server process.</p>
+</div>
+<p><a href="libpq-example.html#libpq-example-2" title="Example 27.2. libpq Example Program 2">Example 27.2, &#8220;<span class="application">libpq</span> Example Program 2&#8221;</a> gives a sample program that illustrates the use
+of asynchronous notification.</p>
+<p><code class="function">PQnotifies</code> does not actually read data from the server; it just
+returns messages previously absorbed by another <span class="application">libpq</span>
+function.  In prior releases of <span class="application">libpq</span>, the only way
+to ensure timely receipt of <code class="command">NOTIFY</code> messages was to constantly submit commands,
+even empty ones, and then check <code class="function">PQnotifies</code> after each
+<code class="function">PQexec</code>.  While this still works, it is
+deprecated as a waste of processing power.</p>
+<p>A better way to check for <code class="command">NOTIFY</code>
 messages when you have no useful commands to execute is to call
-<CODE
-CLASS="FUNCTION"
->PQconsumeInput</CODE
->, then check
-<CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
->.
-You can use <CODE
-CLASS="FUNCTION"
->select()</CODE
-> to wait for data to
-arrive from the server, thereby using no <ACRONYM
-CLASS="ACRONYM"
->CPU</ACRONYM
-> power unless there is something
-to do.  (See <CODE
-CLASS="FUNCTION"
->PQsocket</CODE
-> to obtain the file descriptor
-number to use with <CODE
-CLASS="FUNCTION"
->select()</CODE
->.)
+<code class="function">PQconsumeInput</code>, then check
+<code class="function">PQnotifies</code>.
+You can use <code class="function">select()</code> to wait for data to
+arrive from the server, thereby using no <span class="acronym">CPU</span> power unless there is something
+to do.  (See <code class="function">PQsocket</code> to obtain the file descriptor
+number to use with <code class="function">select()</code>.)
 Note that this will work OK whether you submit commands with
-<CODE
-CLASS="FUNCTION"
->PQsendQuery</CODE
->/<CODE
-CLASS="FUNCTION"
->PQgetResult</CODE
-> or simply
-use <CODE
-CLASS="FUNCTION"
->PQexec</CODE
->.  You should, however, remember to
-check <CODE
-CLASS="FUNCTION"
->PQnotifies</CODE
-> after each
-<CODE
-CLASS="FUNCTION"
->PQgetResult</CODE
-> or <CODE
-CLASS="FUNCTION"
->PQexec</CODE
->, to see
-if any notifications came in during the processing of the command.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-fastpath.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-copy.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->The Fast-Path Interface</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libpq.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Functions Associated with the <TT
-CLASS="COMMAND"
->COPY</TT
-> Command</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<code class="function">PQsendQuery</code>/<code class="function">PQgetResult</code> or simply
+use <code class="function">PQexec</code>.  You should, however, remember to
+check <code class="function">PQnotifies</code> after each
+<code class="function">PQgetResult</code> or <code class="function">PQexec</code>, to see
+if any notifications came in during the processing of the command.</p>
+</div></body>
+</html>

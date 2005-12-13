@@ -1,253 +1,40 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->The Password File</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="libpq - C Library"
-HREF="libpq.html"><LINK
-REL="PREVIOUS"
-TITLE="Environment Variables"
-HREF="libpq-envars.html"><LINK
-REL="NEXT"
-TITLE="SSL Support"
-HREF="libpq-ssl.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-envars.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 27. <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> - C Library</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-ssl.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LIBPQ-PGPASS"
->27.12. The Password File</A
-></H1
-><A
-NAME="AEN24713"
-></A
-><A
-NAME="AEN24715"
-></A
-><P
->The file <TT
-CLASS="FILENAME"
->.pgpass</TT
-> in a user's home directory is a file
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>27.12. The Password File</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
+<link rel="prev" href="libpq-envars.html" title="27.11. Environment Variables">
+<link rel="next" href="libpq-ssl.html" title="27.13. SSL Support">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-pgpass"></a>27.12. The Password File</h2></div></div></div>
+<a name="id623901"></a><a name="id623910"></a><p>The file <code class="filename">.pgpass</code> in a user's home directory is a file
 that can contain passwords to be used if the connection requires a
 password (and no password has been specified otherwise).
 On Microsoft Windows the file is named
-<TT
-CLASS="FILENAME"
->%APPDATA%\postgresql\pgpass.conf</TT
-> (where <TT
-CLASS="FILENAME"
->%APPDATA%</TT
->
-refers to the Application Data subdirectory in the user's profile).</P
-><P
->This file should contain lines of the following format:
-</P><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->hostname</I
-></TT
->:<TT
-CLASS="REPLACEABLE"
-><I
->port</I
-></TT
->:<TT
-CLASS="REPLACEABLE"
-><I
->database</I
-></TT
->:<TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
->:<TT
-CLASS="REPLACEABLE"
-><I
->password</I
-></TT
-></PRE
-><P>
-Each of the first four fields may be a literal value, or <TT
-CLASS="LITERAL"
->*</TT
->,
+<code class="filename">%APPDATA%\postgresql\pgpass.conf</code> (where <code class="filename">%APPDATA%</code>
+refers to the Application Data subdirectory in the user's profile).</p>
+<p>This file should contain lines of the following format:
+</p>
+<pre class="synopsis"><em class="replaceable"><code>hostname</code></em>:<em class="replaceable"><code>port</code></em>:<em class="replaceable"><code>database</code></em>:<em class="replaceable"><code>username</code></em>:<em class="replaceable"><code>password</code></em></pre>
+<p>
+Each of the first four fields may be a literal value, or <code class="literal">*</code>,
 which
 matches anything.  The password field from the first line that matches the
 current connection parameters will be used.  (Therefore, put more-specific
 entries first when you are using wildcards.)
-If an entry needs to contain <TT
-CLASS="LITERAL"
->:</TT
-> or
-<TT
-CLASS="LITERAL"
->\</TT
->, escape this character with <TT
-CLASS="LITERAL"
->\</TT
->.</P
-><P
->The permissions on <TT
-CLASS="FILENAME"
->.pgpass</TT
-> must disallow any
+If an entry needs to contain <code class="literal">:</code> or
+<code class="literal">\</code>, escape this character with <code class="literal">\</code>.</p>
+<p>The permissions on <code class="filename">.pgpass</code> must disallow any
 access to world or group; achieve this by the command
-<TT
-CLASS="COMMAND"
->chmod 0600 ~/.pgpass</TT
->.
+<code class="command">chmod 0600 ~/.pgpass</code>.
 If the permissions are less strict than this, the file will be ignored.
 (The file permissions are not currently checked on Microsoft Windows,
-however.)</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-envars.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-ssl.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Environment Variables</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libpq.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SSL Support</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+however.)</p>
+</div></body>
+</html>

@@ -1,300 +1,66 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->TRUNCATE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="START TRANSACTION"
-HREF="sql-start-transaction.html"><LINK
-REL="NEXT"
-TITLE="UNLISTEN"
-HREF="sql-unlisten.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-start-transaction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-start-transaction.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-unlisten.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-unlisten.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-TRUNCATE"
-></A
->TRUNCATE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN45666"
-></A
-><H2
->Name</H2
->TRUNCATE&nbsp;--&nbsp;empty a table</DIV
-><A
-NAME="AEN45669"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN45671"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->TRUNCATE [ TABLE ] <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45674"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->TRUNCATE</TT
-> quickly removes all rows from a
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRUNCATE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-start-transaction.html" title="START TRANSACTION">
+<link rel="next" href="sql-unlisten.html" title="UNLISTEN">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-truncate"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>TRUNCATE &#8212; empty a table</p>
+</div>
+<a name="id720109"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">TRUNCATE [ TABLE ] <em class="replaceable"><code>name</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720130"></a><h2>Description</h2>
+<p>   <code class="command">TRUNCATE</code> quickly removes all rows from a
    table. It has the same effect as an unqualified
-   <TT
-CLASS="COMMAND"
->DELETE</TT
-> but since it does not actually scan the
+   <code class="command">DELETE</code> but since it does not actually scan the
    table it is faster. This is most useful on large tables.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45679"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of the table to be truncated.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45687"
-></A
-><H2
->Notes</H2
-><P
->   Only the owner of a table may <TT
-CLASS="COMMAND"
->TRUNCATE</TT
-> it.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->TRUNCATE</TT
-> cannot be used if there are foreign-key references
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720153"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table to be truncated.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720171"></a><h2>Notes</h2>
+<p>   Only the owner of a table may <code class="command">TRUNCATE</code> it.
+  </p>
+<p>   <code class="command">TRUNCATE</code> cannot be used if there are foreign-key references
    to the table from other tables.  Checking validity in such cases would
    require table scans, and the whole point is not to do one.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->TRUNCATE</TT
-> will not run any user-defined <TT
-CLASS="LITERAL"
->ON
-   DELETE</TT
-> triggers that might exist for the table.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45696"
-></A
-><H2
->Examples</H2
-><P
->   Truncate the table <TT
-CLASS="LITERAL"
->bigtable</TT
->:
+  </p>
+<p>   <code class="command">TRUNCATE</code> will not run any user-defined <code class="literal">ON
+   DELETE</code> triggers that might exist for the table.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720214"></a><h2>Examples</h2>
+<p>   Truncate the table <code class="literal">bigtable</code>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->TRUNCATE TABLE bigtable;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45701"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->TRUNCATE</TT
-> command in the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-start-transaction.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-unlisten.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->START TRANSACTION</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->UNLISTEN</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">TRUNCATE TABLE bigtable;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720234"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">TRUNCATE</code> command in the SQL standard.
+  </p>
+</div>
+</div></body>
+</html>

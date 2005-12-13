@@ -1,314 +1,71 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->pg_description</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_depend"
-HREF="catalog-pg-depend.html"><LINK
-REL="NEXT"
-TITLE="pg_group"
-HREF="catalog-pg-group.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-depend.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-group.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-DESCRIPTION"
->41.14. <TT
-CLASS="STRUCTNAME"
->pg_description</TT
-></A
-></H1
-><A
-NAME="AEN53317"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_description</TT
-> stores optional descriptions
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.14. pg_description</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="prev" href="catalog-pg-depend.html" title="41.13. pg_depend">
+<link rel="next" href="catalog-pg-group.html" title="41.15. pg_group">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-description"></a>41.14. <code class="structname">pg_description</code></h2></div></div></div>
+<a name="id750495"></a><p>   The catalog <code class="structname">pg_description</code> stores optional descriptions
    (comments) for each database object.  Descriptions can be manipulated
-   with the <TT
-CLASS="COMMAND"
->COMMENT</TT
-> command and viewed with
-   <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->'s <TT
-CLASS="LITERAL"
->\d</TT
-> commands.
+   with the <code class="command">COMMENT</code> command and viewed with
+   <span class="application">psql</span>'s <code class="literal">\d</code> commands.
    Descriptions of many built-in system objects are provided in the initial
-   contents of <TT
-CLASS="STRUCTNAME"
->pg_description</TT
->.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN53325"
-></A
-><P
-><B
->Table 41-14. <TT
-CLASS="STRUCTNAME"
->pg_description</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->objoid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
->any OID column</TD
-><TD
->The OID of the object this description pertains to</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->classoid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-class.html"
-><TT
-CLASS="STRUCTNAME"
->pg_class</TT
-></A
->.oid</TT
-></TD
-><TD
->The OID of the system catalog this object appears in</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->objsubid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       For a comment on a table column, this is the column number (the
-       <TT
-CLASS="STRUCTFIELD"
->objoid</TT
-> and <TT
-CLASS="STRUCTFIELD"
->classoid</TT
-> refer to
+   contents of <code class="structname">pg_description</code>.
+  </p>
+<div class="table">
+<a name="id750540"></a><p class="title"><b>Table 41.14. <code class="structname">pg_description</code> Columns</b></p>
+<table summary="pg_description Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">objoid</code></td>
+<td><code class="type">oid</code></td>
+<td>any OID column</td>
+<td>The OID of the object this description pertains to</td>
+</tr>
+<tr>
+<td><code class="structfield">classoid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="41.9. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>The OID of the system catalog this object appears in</td>
+</tr>
+<tr>
+<td><code class="structfield">objsubid</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       For a comment on a table column, this is the column number (the
+       <code class="structfield">objoid</code> and <code class="structfield">classoid</code> refer to
        the table itself).  For all other object types, this column is
        zero.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->description</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Arbitrary text that serves as the description of this object.</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-depend.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-group.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_depend</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_group</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">description</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Arbitrary text that serves as the description of this object.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

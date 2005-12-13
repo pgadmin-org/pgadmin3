@@ -1,296 +1,75 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 7.4.6</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 7.4.7"
-HREF="release-7-4-7.html"><LINK
-REL="NEXT"
-TITLE="Release 7.4.5"
-HREF="release-7-4-5.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-4-7.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-4-5.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-7-4-6"
->E.9. Release 7.4.6</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2004-10-22</P
-></BLOCKQUOTE
-></DIV
-><P
->    This release contains a variety of fixes from 7.4.5.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN69141"
->E.9.1. Migration to version 7.4.6</A
-></H2
-><P
->     A dump/restore is not required for those running 7.4.X.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN69144"
->E.9.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Repair possible failure to update hint bits on disk</P
-><P
->Under rare circumstances this oversight could lead to 
-<SPAN
-CLASS="QUOTE"
->"could not access transaction status"</SPAN
-> failures, which qualifies
-it as a potential-data-loss bug.</P
-></LI
-><LI
-><P
->Ensure that hashed outer join does not miss tuples</P
-><P
->Very large left joins using a hash join plan could fail to output unmatched
-left-side rows given just the right data distribution.</P
-></LI
-><LI
-><P
->Disallow running <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
-> as root</P
-><P
->This is to guard against any possible security issues.</P
-></LI
-><LI
-><P
->Avoid using temp files in <TT
-CLASS="FILENAME"
->/tmp</TT
-> in <TT
-CLASS="COMMAND"
->make_oidjoins_check</TT
-></P
-><P
->This has been reported as a security issue, though it's hardly worthy of
-concern since there is no reason for non-developers to use this script anyway.</P
-></LI
-><LI
-><P
->Prevent forced backend shutdown from re-emitting prior command
-result</P
-><P
->In rare cases, a client might think that its last command had succeeded when
-it really had been aborted by forced database shutdown.</P
-></LI
-><LI
-><P
->Repair bug in <CODE
-CLASS="FUNCTION"
->pg_stat_get_backend_idset</CODE
-></P
-><P
->This could lead to misbehavior in some of the system-statistics views.</P
-></LI
-><LI
-><P
->Fix small memory leak in postmaster</P
-></LI
-><LI
-><P
->Fix <SPAN
-CLASS="QUOTE"
->"expected both swapped tables to have TOAST
-tables"</SPAN
-> bug</P
-><P
->This could arise in cases such as CLUSTER after ALTER TABLE DROP COLUMN.</P
-></LI
-><LI
-><P
->Prevent <TT
-CLASS="LITERAL"
->pg_ctl restart</TT
-> from adding <TT
-CLASS="LITERAL"
->-D</TT
-> multiple times</P
-></LI
-><LI
-><P
->Fix problem with NULL values in GiST indexes</P
-></LI
-><LI
-><P
-><TT
-CLASS="LITERAL"
->::</TT
-> is no longer interpreted as a variable in an
-ECPG prepare statement</P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-4-7.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-4-5.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 7.4.7</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 7.4.5</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.11. Release 7.4.6</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4-7.html" title="E.10. Release 7.4.7">
+<link rel="next" href="release-7-4-5.html" title="E.12. Release 7.4.5">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-4-6"></a>E.11. Release 7.4.6</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2004-10-22</p>
+</div>
+<p>    This release contains a variety of fixes from 7.4.5.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id794964"></a>E.11.1. Migration to version 7.4.6</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.4.X.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id794972"></a>E.11.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Repair possible failure to update hint bits on disk</p>
+<p>Under rare circumstances this oversight could lead to 
+&#8220;<span class="quote">could not access transaction status</span>&#8221; failures, which qualifies
+it as a potential-data-loss bug.</p>
+</li>
+<li>
+<p>Ensure that hashed outer join does not miss tuples</p>
+<p>Very large left joins using a hash join plan could fail to output unmatched
+left-side rows given just the right data distribution.</p>
+</li>
+<li>
+<p>Disallow running <span class="application">pg_ctl</span> as root</p>
+<p>This is to guard against any possible security issues.</p>
+</li>
+<li>
+<p>Avoid using temp files in <code class="filename">/tmp</code> in <code class="command">make_oidjoins_check</code></p>
+<p>This has been reported as a security issue, though it's hardly worthy of
+concern since there is no reason for non-developers to use this script anyway.</p>
+</li>
+<li>
+<p>Prevent forced backend shutdown from re-emitting prior command
+result</p>
+<p>In rare cases, a client might think that its last command had succeeded when
+it really had been aborted by forced database shutdown.</p>
+</li>
+<li>
+<p>Repair bug in <code class="function">pg_stat_get_backend_idset</code></p>
+<p>This could lead to misbehavior in some of the system-statistics views.</p>
+</li>
+<li><p>Fix small memory leak in postmaster</p></li>
+<li>
+<p>Fix &#8220;<span class="quote">expected both swapped tables to have TOAST
+tables</span>&#8221; bug</p>
+<p>This could arise in cases such as CLUSTER after ALTER TABLE DROP COLUMN.</p>
+</li>
+<li><p>Prevent <code class="literal">pg_ctl restart</code> from adding <code class="literal">-D</code> multiple times</p></li>
+<li><p>Fix problem with NULL values in GiST indexes</p></li>
+<li><p><code class="literal">::</code> is no longer interpreted as a variable in an
+ECPG prepare statement</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

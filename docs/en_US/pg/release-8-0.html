@@ -1,818 +1,296 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 8.0</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 8.0.1"
-HREF="release-8-0-1.html"><LINK
-REL="NEXT"
-TITLE="Release 7.4.9"
-HREF="release-7-4-9.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-8-0-1.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-4-9.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-8-0"
->E.5. Release 8.0</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2005-01-19</P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN67903"
->E.5.1. Overview</A
-></H2
-><P
->     Major changes in this release:
-    </P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->Microsoft Windows Native Server</DT
-><DD
-><P
->        This is the first <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> release
-        to run natively on <SPAN
-CLASS="TRADEMARK"
->Microsoft Windows</SPAN
->&reg; as
-        a server. It can run as a <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
-> service. This
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.6. Release 8.0</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-1.html" title="E.5. Release 8.0.1">
+<link rel="next" href="release-7-4-10.html" title="E.7. Release 7.4.10">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0"></a>E.6. Release 8.0</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-01-19</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id789843"></a>E.6.1. Overview</h3></div></div></div>
+<p>     Major changes in this release:
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term">       Microsoft Windows Native Server
+      </span></dt>
+<dd>
+<p>        This is the first <span class="productname">PostgreSQL</span> release
+        to run natively on <span class="trademark">Microsoft Windows</span>® as
+        a server. It can run as a <span class="productname">Windows</span> service. This
         release supports NT-based Windows releases like
-        <SPAN
-CLASS="PRODUCTNAME"
->Windows 2000</SPAN
->, <SPAN
-CLASS="PRODUCTNAME"
->Windows XP</SPAN
->, and
-        <SPAN
-CLASS="PRODUCTNAME"
->Windows 2003</SPAN
->. Older releases like
-        <SPAN
-CLASS="PRODUCTNAME"
->Windows 95</SPAN
->, <SPAN
-CLASS="PRODUCTNAME"
->Windows 98</SPAN
->, and
-        <SPAN
-CLASS="PRODUCTNAME"
->Windows ME</SPAN
-> are not supported because these operating
+        <span class="productname">Windows 2000</span>, <span class="productname">Windows XP</span>, and
+        <span class="productname">Windows 2003</span>. Older releases like
+        <span class="productname">Windows 95</span>, <span class="productname">Windows 98</span>, and
+        <span class="productname">Windows ME</span> are not supported because these operating
         systems do not have the infrastructure to support
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->. A separate installer
+        <span class="productname">PostgreSQL</span>. A separate installer
         project has been created to ease installation on
-        <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
-> &mdash; see <A
-HREF="http://www.postgresql.org/ftp/win32/"
-TARGET="_top"
->http://www.postgresql.org/ftp/win32/</A
->.
-       </P
-><P
->        Although tested throughout our release cycle, the Windows port
+        <span class="productname">Windows</span> [mdash ] see <a href="http://www.postgresql.org/ftp/win32/" target="_top">http://www.postgresql.org/ftp/win32/</a>.
+       </p>
+<p>        Although tested throughout our release cycle, the Windows port
         does not have the benefit of years of use in production
-        environments that <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has on
+        environments that <span class="productname">PostgreSQL</span> has on
         Unix platforms.  Therefore it should be treated with the same
         level of caution as you would a new product.
-       </P
-><P
->        Previous releases required the Unix emulation toolkit
-        <SPAN
-CLASS="PRODUCTNAME"
->Cygwin</SPAN
-> in order to run the server on Windows
-        operating systems.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has
+       </p>
+<p>        Previous releases required the Unix emulation toolkit
+        <span class="productname">Cygwin</span> in order to run the server on Windows
+        operating systems.  <span class="productname">PostgreSQL</span> has
         supported native clients on Windows for many years.
-       </P
-></DD
-><DT
->Savepoints</DT
-><DD
-><P
->        Savepoints allow specific parts of a transaction to be aborted
+       </p>
+</dd>
+<dt><span class="term">       Savepoints
+      </span></dt>
+<dd><p>        Savepoints allow specific parts of a transaction to be aborted
         without affecting the remainder of the transaction. Prior
         releases had no such capability; there was no way to recover
         from a statement failure within a transaction except by
         aborting the whole transaction. This feature is valuable for
         application writers who require error recovery within a
         complex transaction.
-       </P
-></DD
-><DT
->Point-In-Time Recovery</DT
-><DD
-><P
->        In previous releases there was no way to recover from disk
+       </p></dd>
+<dt><span class="term">       Point-In-Time Recovery
+      </span></dt>
+<dd><p>        In previous releases there was no way to recover from disk
         drive failure except to restore from a previous backup or use
         a standby replication server.  Point-in-time recovery allows
         continuous backup of the server.  You can recover either to
         the point of failure or to some transaction in the past.
-       </P
-></DD
-><DT
->Tablespaces</DT
-><DD
-><P
->        Tablespaces allow administrators to select different file systems
+       </p></dd>
+<dt><span class="term">       Tablespaces
+      </span></dt>
+<dd><p>        Tablespaces allow administrators to select different file systems
         for storage of individual tables, indexes, and databases.
         This improves performance and control over disk space
-        usage. Prior releases used <SPAN
-CLASS="APPLICATION"
->initlocation</SPAN
-> and
+        usage. Prior releases used <span class="application">initlocation</span> and
         manual symlink management for such tasks.
-       </P
-></DD
-><DT
->Improved Buffer Management, <TT
-CLASS="COMMAND"
->CHECKPOINT</TT
->,
-       <TT
-CLASS="COMMAND"
->VACUUM</TT
-></DT
-><DD
-><P
->        This release has a more intelligent buffer replacement strategy,
+       </p></dd>
+<dt><span class="term">       Improved Buffer Management, <code class="command">CHECKPOINT</code>,
+       <code class="command">VACUUM</code>
+      </span></dt>
+<dd><p>        This release has a more intelligent buffer replacement strategy,
         which will make better use of available shared buffers and
         improve performance. The performance impact of vacuum and
         checkpoints is also lessened.
-       </P
-></DD
-><DT
->Change Column Types</DT
-><DD
-><P
->        A column's data type can now be changed with <TT
-CLASS="COMMAND"
->ALTER
-        TABLE</TT
->.
-       </P
-></DD
-><DT
->New Perl Server-Side Language</DT
-><DD
-><P
->        A new version of the <SPAN
-CLASS="APPLICATION"
->plperl</SPAN
-> server-side language now
+       </p></dd>
+<dt><span class="term">       Change Column Types
+      </span></dt>
+<dd><p>        A column's data type can now be changed with <code class="command">ALTER
+        TABLE</code>.
+       </p></dd>
+<dt><span class="term">       New Perl Server-Side Language
+      </span></dt>
+<dd><p>        A new version of the <span class="application">plperl</span> server-side language now
         supports a persistent shared storage area, triggers, returning records
         and arrays of records, and SPI calls to access the database.
-       </P
-></DD
-><DT
->Comma-separated-value (CSV) support in <TT
-CLASS="COMMAND"
->COPY</TT
-></DT
-><DD
-><P
->        <TT
-CLASS="COMMAND"
->COPY</TT
-> can now read and write
+       </p></dd>
+<dt><span class="term">        Comma-separated-value (CSV) support in <code class="command">COPY</code>
+      </span></dt>
+<dd><p>        <code class="command">COPY</code> can now read and write
         comma-separated-value files. It has the flexibility to
         interpret non-standard quoting and separation characters too.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN67963"
->E.5.2. Migration to version 8.0</A
-></H2
-><P
->     A dump/restore using <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> is
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id790111"></a>E.6.2. Migration to version 8.0</h3></div></div></div>
+<p>     A dump/restore using <span class="application">pg_dump</span> is
      required for those wishing to migrate data from any previous
      release.
-    </P
-><P
->     Observe the following incompatibilities:
-    </P
-><P
-></P
-><UL
-><LI
-><P
->       In <TT
-CLASS="OPTION"
->READ COMMITTED</TT
-> serialization mode, volatile functions
+    </p>
+<p>     Observe the following incompatibilities:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       In <code class="option">READ COMMITTED</code> serialization mode, volatile functions
        now see the results of concurrent transactions committed up to the
        beginning of each statement within the function, rather than up to the
        beginning of the interactive command that called the function.
-      </P
-></LI
-><LI
-><P
->       Functions declared <TT
-CLASS="OPTION"
->STABLE</TT
-> or <TT
-CLASS="OPTION"
->IMMUTABLE</TT
-> always
+      </p></li>
+<li><p>       Functions declared <code class="option">STABLE</code> or <code class="option">IMMUTABLE</code> always
        use the snapshot of the calling query, and therefore do not see the
        effects of actions taken after the calling query starts, whether in
        their own transaction or other transactions.  Such a function must be
        read-only, too, meaning that it cannot use any SQL commands other than
-       <TT
-CLASS="COMMAND"
->SELECT</TT
->.
-      </P
-></LI
-><LI
-><P
->       Non-deferred <TT
-CLASS="OPTION"
->AFTER</TT
-> triggers are now fired immediately
+       <code class="command">SELECT</code>.
+      </p></li>
+<li><p>       Non-deferred <code class="option">AFTER</code> triggers are now fired immediately
        after completion of the triggering query, rather than upon
        finishing the current interactive command. This makes a
        difference when the triggering query occurred within a function:
        the trigger is invoked before the function proceeds to its next
        operation.
-      </P
-></LI
-><LI
-><P
->       Server configuration parameters <TT
-CLASS="VARNAME"
->virtual_host</TT
-> and
-       <TT
-CLASS="VARNAME"
->tcpip_socket</TT
-> have been replaced with a more general
-       parameter <TT
-CLASS="VARNAME"
->listen_addresses</TT
->. Also, the server now listens on
-       <TT
-CLASS="LITERAL"
->localhost</TT
-> by default, which eliminates the need for the
-       <TT
-CLASS="LITERAL"
->-i</TT
-> postmaster switch in many scenarios.
-      </P
-></LI
-><LI
-><P
->       Server configuration parameters <TT
-CLASS="VARNAME"
->SortMem</TT
-> and
-       <TT
-CLASS="VARNAME"
->VacuumMem</TT
-> have been renamed to <TT
-CLASS="VARNAME"
->work_mem</TT
->
-       and <TT
-CLASS="VARNAME"
->maintenance_work_mem</TT
-> to better reflect their
+      </p></li>
+<li><p>       Server configuration parameters <code class="varname">virtual_host</code> and
+       <code class="varname">tcpip_socket</code> have been replaced with a more general
+       parameter <code class="varname">listen_addresses</code>. Also, the server now listens on
+       <code class="literal">localhost</code> by default, which eliminates the need for the
+       <code class="literal">-i</code> postmaster switch in many scenarios.
+      </p></li>
+<li><p>       Server configuration parameters <code class="varname">SortMem</code> and
+       <code class="varname">VacuumMem</code> have been renamed to <code class="varname">work_mem</code>
+       and <code class="varname">maintenance_work_mem</code> to better reflect their
        use. The original names are still supported in
-       <TT
-CLASS="COMMAND"
->SET</TT
-> and <TT
-CLASS="COMMAND"
->SHOW</TT
->.
-      </P
-></LI
-><LI
-><P
->       Server configuration parameters <TT
-CLASS="VARNAME"
->log_pid</TT
->,
-       <TT
-CLASS="VARNAME"
->log_timestamp</TT
->, and <TT
-CLASS="VARNAME"
->log_source_port</TT
-> have been
-       replaced with a more general parameter <TT
-CLASS="VARNAME"
->log_line_prefix</TT
->.
-      </P
-></LI
-><LI
-><P
->       Server configuration parameter <TT
-CLASS="VARNAME"
->syslog</TT
-> has been
-       replaced with a more logical <TT
-CLASS="VARNAME"
->log_destination</TT
-> variable to
+       <code class="command">SET</code> and <code class="command">SHOW</code>.
+      </p></li>
+<li><p>       Server configuration parameters <code class="varname">log_pid</code>,
+       <code class="varname">log_timestamp</code>, and <code class="varname">log_source_port</code> have been
+       replaced with a more general parameter <code class="varname">log_line_prefix</code>.
+      </p></li>
+<li><p>       Server configuration parameter <code class="varname">syslog</code> has been
+       replaced with a more logical <code class="varname">log_destination</code> variable to
        control the log output destination.
-      </P
-></LI
-><LI
-><P
->       Server configuration parameter <TT
-CLASS="VARNAME"
->log_statement</TT
-> has been
+      </p></li>
+<li><p>       Server configuration parameter <code class="varname">log_statement</code> has been
        changed so it can selectively log just database modification or
        data definition statements.  Server configuration parameter
-       <TT
-CLASS="VARNAME"
->log_duration</TT
-> now prints only when <TT
-CLASS="VARNAME"
->log_statement</TT
->
+       <code class="varname">log_duration</code> now prints only when <code class="varname">log_statement</code>
        prints the query.
-      </P
-></LI
-><LI
-><P
->       Server configuration parameter <TT
-CLASS="VARNAME"
->max_expr_depth</TT
-> parameter has
-       been replaced with <TT
-CLASS="VARNAME"
->max_stack_depth</TT
-> which measures the
+      </p></li>
+<li><p>       Server configuration parameter <code class="varname">max_expr_depth</code> parameter has
+       been replaced with <code class="varname">max_stack_depth</code> which measures the
        physical stack size rather than the expression nesting depth. This
        helps prevent session termination due to stack overflow caused by
        recursive functions.
-      </P
-></LI
-><LI
-><P
->       The <CODE
-CLASS="FUNCTION"
->length()</CODE
-> function no longer counts trailing spaces in
-       <TT
-CLASS="TYPE"
->CHAR(n)</TT
-> values.
-      </P
-></LI
-><LI
-><P
->      Casting an integer to <TT
-CLASS="TYPE"
->BIT(N)</TT
-> selects the rightmost N bits of the
+      </p></li>
+<li><p>       The <code class="function">length()</code> function no longer counts trailing spaces in
+       <code class="type">CHAR(n)</code> values.
+      </p></li>
+<li><p>      Casting an integer to <code class="type">BIT(N)</code> selects the rightmost N bits of the
       integer, not the leftmost N bits as before.
-     </P
-></LI
-><LI
-><P
->      Updating an element or slice of a NULL array value now produces
+     </p></li>
+<li><p>      Updating an element or slice of a NULL array value now produces
       a non-NULL array result, namely an array containing
       just the assigned-to positions.
-     </P
-></LI
-><LI
-><P
->       Syntax checking of array input values has been tightened up
+     </p></li>
+<li><p>       Syntax checking of array input values has been tightened up
        considerably. Junk that was previously allowed in odd places with
        odd results now causes an error. Empty-string element values
-       must now be written as <TT
-CLASS="LITERAL"
->""</TT
->, rather than writing nothing.
+       must now be written as <code class="literal">""</code>, rather than writing nothing.
        Also changed behavior with respect to whitespace surrounding
        array elements: trailing whitespace is now ignored, for symmetry
        with leading whitespace (which has always been ignored).
-      </P
-></LI
-><LI
-><P
->       Overflow in integer arithmetic operations is now detected and
+      </p></li>
+<li><p>       Overflow in integer arithmetic operations is now detected and
        reported as an error.
-      </P
-></LI
-><LI
-><P
->       The arithmetic operators associated with the single-byte
-       <TT
-CLASS="TYPE"
->"char"</TT
-> data type have been removed.
-      </P
-></LI
-><LI
-><P
->       The <CODE
-CLASS="FUNCTION"
->extract()</CODE
-> function (also called
-       <CODE
-CLASS="FUNCTION"
->date_part</CODE
->) now returns the proper year for BC dates.
+      </p></li>
+<li><p>       The arithmetic operators associated with the single-byte
+       <code class="type">"char"</code> data type have been removed.
+      </p></li>
+<li><p>       The <code class="function">extract()</code> function (also called
+       <code class="function">date_part</code>) now returns the proper year for BC dates.
        It previously returned one less than the correct year. The
        function now also returns the proper values for millennium and
        century.
-      </P
-></LI
-><LI
-><P
->      <TT
-CLASS="TYPE"
->CIDR</TT
-> values now must have their non-masked bits be zero.
+      </p></li>
+<li><p>      <code class="type">CIDR</code> values now must have their non-masked bits be zero.
       For example, we no longer allow
-      <TT
-CLASS="LITERAL"
->204.248.199.1/31</TT
-> as a <TT
-CLASS="TYPE"
->CIDR</TT
-> value. Such
+      <code class="literal">204.248.199.1/31</code> as a <code class="type">CIDR</code> value. Such
       values should never have been accepted by
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> and will now be rejected.
-     </P
-></LI
-><LI
-><P
->       <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> now returns a completion tag that
+      <span class="productname">PostgreSQL</span> and will now be rejected.
+     </p></li>
+<li><p>       <code class="command">EXECUTE</code> now returns a completion tag that
        matches the executed statement.
-      </P
-></LI
-><LI
-><P
->       <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->'s <TT
-CLASS="COMMAND"
->\copy</TT
-> command now reads or
-       writes to the query's <TT
-CLASS="LITERAL"
->stdin/stdout</TT
->, rather than
-       <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->'s <TT
-CLASS="LITERAL"
->stdin/stdout</TT
->. The previous
+      </p></li>
+<li><p>       <span class="application">psql</span>'s <code class="command">\copy</code> command now reads or
+       writes to the query's <code class="literal">stdin/stdout</code>, rather than
+       <span class="application">psql</span>'s <code class="literal">stdin/stdout</code>. The previous
        behavior can be accessed via new
-       <TT
-CLASS="OPTION"
->pstdin</TT
->/<TT
-CLASS="OPTION"
->pstdout</TT
-> parameters.
-      </P
-></LI
-><LI
-><P
->      The JDBC client interface has been removed from the core
-      distribution, and is now hosted at <A
-HREF="http://jdbc.postgresql.org"
-TARGET="_top"
->http://jdbc.postgresql.org</A
->.
-      </P
-></LI
-><LI
-><P
->      The Tcl client interface has also been removed. There are several
-      Tcl interfaces now hosted at <A
-HREF="http://gborg.postgresql.org"
-TARGET="_top"
->http://gborg.postgresql.org</A
->.
-      </P
-></LI
-><LI
-><P
->       The server now uses its own time zone database, rather than the
+       <code class="option">pstdin</code>/<code class="option">pstdout</code> parameters.
+      </p></li>
+<li><p>      The JDBC client interface has been removed from the core
+      distribution, and is now hosted at <a href="http://jdbc.postgresql.org" target="_top">http://jdbc.postgresql.org</a>.
+      </p></li>
+<li><p>      The Tcl client interface has also been removed. There are several
+      Tcl interfaces now hosted at <a href="http://gborg.postgresql.org" target="_top">http://gborg.postgresql.org</a>.
+      </p></li>
+<li><p>       The server now uses its own time zone database, rather than the
        one supplied by the operating system. This will provide consistent
        behavior across all platforms.  In most cases, there should be
        little noticeable difference in time zone behavior, except that
-       the time zone names used by <TT
-CLASS="COMMAND"
->SET</TT
->/<TT
-CLASS="COMMAND"
->SHOW</TT
->
-       <TT
-CLASS="VARNAME"
->TimeZone</TT
-> may
+       the time zone names used by <code class="command">SET</code>/<code class="command">SHOW</code>
+       <code class="varname">TimeZone</code> may
        be different from what your platform provides.
-      </P
-></LI
-><LI
-><P
->       <SPAN
-CLASS="APPLICATION"
->Configure</SPAN
->'s threading option no longer requires
+      </p></li>
+<li><p>       <span class="application">Configure</span>'s threading option no longer requires
        users to run tests or edit configuration files; threading options
        are now detected automatically.
-      </P
-></LI
-><LI
-><P
->       Now that tablespaces have been implemented,
-       <SPAN
-CLASS="APPLICATION"
->initlocation</SPAN
-> has been removed.
-      </P
-></LI
-><LI
-><P
->       The API for user-defined GiST indexes has been changed. The
+      </p></li>
+<li><p>       Now that tablespaces have been implemented,
+       <span class="application">initlocation</span> has been removed.
+      </p></li>
+<li><p>       The API for user-defined GiST indexes has been changed. The
        Union and PickSplit methods are now passed a pointer to a
-       special <TT
-CLASS="STRUCTNAME"
->GistEntryVector</TT
-> structure,
-       rather than a <TT
-CLASS="TYPE"
->bytea</TT
->.
-      </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN68074"
->E.5.3. Deprecated Features</A
-></H2
-><P
->     Some aspects of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s behavior
+       special <code class="structname">GistEntryVector</code> structure,
+       rather than a <code class="type">bytea</code>.
+      </p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id790588"></a>E.6.3. Deprecated Features</h3></div></div></div>
+<p>     Some aspects of <span class="productname">PostgreSQL</span>'s behavior
      have been determined to be suboptimal. For the sake of backward
      compatibility these have not been removed in 8.0, but they are
      considered deprecated and will be removed in the next major
      release.
-     </P
-><P
-></P
-><UL
-><LI
-><P
->       The 8.1 release will remove the <CODE
-CLASS="FUNCTION"
->to_char()</CODE
-> function
+     </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       The 8.1 release will remove the <code class="function">to_char()</code> function
        for intervals.
-      </P
-></LI
-><LI
-><P
->        The server now warns of empty strings passed to
-        <TT
-CLASS="TYPE"
->oid</TT
->/<TT
-CLASS="TYPE"
->float4</TT
->/<TT
-CLASS="TYPE"
->float8</TT
-> data
+      </p></li>
+<li><p>        The server now warns of empty strings passed to
+        <code class="type">oid</code>/<code class="type">float4</code>/<code class="type">float8</code> data
         types, but continues to interpret them as zeroes as before.
         In the next major release, empty strings will be considered
         invalid input for these data types.
-       </P
-></LI
-><LI
-><P
->       By default, tables in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 8.0
-       and earlier are created with <TT
-CLASS="TYPE"
->OID</TT
->s. In the next release,
-       this will <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> be the case: to create a table
-       that contains <TT
-CLASS="TYPE"
->OID</TT
->s, the <TT
-CLASS="OPTION"
->WITH OIDS</TT
-> clause must
-       be specified or the <TT
-CLASS="VARNAME"
->default_with_oids</TT
->
+       </p></li>
+<li><p>       By default, tables in <span class="productname">PostgreSQL</span> 8.0
+       and earlier are created with <code class="type">OID</code>s. In the next release,
+       this will <span class="emphasis"><em>not</em></span> be the case: to create a table
+       that contains <code class="type">OID</code>s, the <code class="option">WITH OIDS</code> clause must
+       be specified or the <code class="varname">default_with_oids</code>
        configuration parameter must be set. Users are encouraged to
-       explicitly specify <TT
-CLASS="OPTION"
->WITH OIDS</TT
-> if their tables
+       explicitly specify <code class="option">WITH OIDS</code> if their tables
        require OIDs for compatibility with future releases of
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
-      </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN68097"
->E.5.4. Changes</A
-></H2
-><P
->     Below you will find a detailed account of the changes between
+       <span class="productname">PostgreSQL</span>.
+      </p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id790686"></a>E.6.4. Changes</h3></div></div></div>
+<p>     Below you will find a detailed account of the changes between
      release 8.0 and the previous major release.
-    </P
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68100"
->E.5.4.1. Performance Improvements</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Support cross-data-type index usage (Tom)
-       </P
-><P
->        Before this change, many queries would not use an index if the data
+    </p>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id790695"></a>E.6.4.1. Performance Improvements</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Support cross-data-type index usage (Tom)
+       </p>
+<p>        Before this change, many queries would not use an index if the data
         types did not match exactly. This improvement makes index usage more
         intuitive and consistent.
-       </P
-></LI
-><LI
-><P
->        New buffer replacement strategy that improves caching (Jan)
-       </P
-><P
->        Prior releases used a least-recently-used (LRU) cache to keep
+       </p>
+</li>
+<li>
+<p>        New buffer replacement strategy that improves caching (Jan)
+       </p>
+<p>        Prior releases used a least-recently-used (LRU) cache to keep
         recently referenced pages in memory. The LRU algorithm
         did not consider the number of times a specific cache entry was
         accessed, so large table scans could force out useful cache pages.
@@ -822,499 +300,240 @@ NAME="AEN68100"
         lead to much more efficient use of the shared buffer cache.
         Administrators who have tested shared buffer sizes in the past
         should retest with this new cache replacement policy.
-       </P
-></LI
-><LI
-><P
->        Add subprocess to write dirty buffers periodically to reduce
+       </p>
+</li>
+<li>
+<p>        Add subprocess to write dirty buffers periodically to reduce
         checkpoint writes (Jan)
-       </P
-><P
->        In previous releases, the checkpoint process, which runs every few
+       </p>
+<p>        In previous releases, the checkpoint process, which runs every few
         minutes, would write all dirty buffers to the operating system's
         buffer cache then flush all dirty operating system buffers to
         disk. This resulted in a periodic spike in disk usage that often
         hurt performance. The new code uses a background writer to trickle
         disk writes at a steady pace so checkpoints have far fewer dirty
         pages to write to disk. Also, the new code does not issue a global
-        <CODE
-CLASS="FUNCTION"
->sync()</CODE
-> call, but instead <CODE
-CLASS="FUNCTION"
->fsync()</CODE
->s just
+        <code class="function">sync()</code> call, but instead <code class="function">fsync()</code>s just
         the files written since the last checkpoint. This should improve
         performance and minimize degradation during checkpoints.
-       </P
-></LI
-><LI
-><P
->        Add ability to prolong vacuum to reduce performance impact (Jan)
-       </P
-><P
->        On busy systems, <TT
-CLASS="COMMAND"
->VACUUM</TT
-> performs many I/O
+       </p>
+</li>
+<li>
+<p>        Add ability to prolong vacuum to reduce performance impact (Jan)
+       </p>
+<p>        On busy systems, <code class="command">VACUUM</code> performs many I/O
         requests which can hurt performance for other users. This
-        release allows you to slow down <TT
-CLASS="COMMAND"
->VACUUM</TT
-> to
+        release allows you to slow down <code class="command">VACUUM</code> to
         reduce its impact on other users, though this increases the
-        total duration of <TT
-CLASS="COMMAND"
->VACUUM</TT
->.
-       </P
-></LI
-><LI
-><P
->        Improve B-tree index performance for duplicate keys (Dmitry Tkach, Tom)
-       </P
-><P
->        This improves the way indexes are scanned when many duplicate
+        total duration of <code class="command">VACUUM</code>.
+       </p>
+</li>
+<li>
+<p>        Improve B-tree index performance for duplicate keys (Dmitry Tkach, Tom)
+       </p>
+<p>        This improves the way indexes are scanned when many duplicate
         values exist in the index.
-       </P
-></LI
-><LI
-><P
->        Use dynamically-generated table size estimates while planning (Tom)
-       </P
-><P
->        Formerly the planner estimated table sizes using the values seen
-        by the last <TT
-CLASS="COMMAND"
->VACUUM</TT
-> or <TT
-CLASS="COMMAND"
->ANALYZE</TT
->,
+       </p>
+</li>
+<li>
+<p>        Use dynamically-generated table size estimates while planning (Tom)
+       </p>
+<p>        Formerly the planner estimated table sizes using the values seen
+        by the last <code class="command">VACUUM</code> or <code class="command">ANALYZE</code>,
         both as to physical table size (number of pages) and number of rows.
         Now, the current physical table size is obtained from the kernel,
         and the number of rows is estimated by multiplying the table size
         by the row density (rows per page) seen by the last
-        <TT
-CLASS="COMMAND"
->VACUUM</TT
-> or <TT
-CLASS="COMMAND"
->ANALYZE</TT
->.  This should
+        <code class="command">VACUUM</code> or <code class="command">ANALYZE</code>.  This should
         produce more reliable estimates in cases where the table size has
         changed significantly since the last housekeeping command.
-       </P
-></LI
-><LI
-><P
->        Improved index usage with <TT
-CLASS="LITERAL"
->OR</TT
-> clauses (Tom)
-       </P
-><P
->        This allows the optimizer to use indexes in statements with many OR
+       </p>
+</li>
+<li>
+<p>        Improved index usage with <code class="literal">OR</code> clauses (Tom)
+       </p>
+<p>        This allows the optimizer to use indexes in statements with many OR
         clauses that would not have been indexed in the past.  It can also use
         multi-column indexes where the first column is specified and the second
-        column is part of an <TT
-CLASS="LITERAL"
->OR</TT
-> clause.
-       </P
-></LI
-><LI
-><P
->        Improve matching of partial index clauses (Tom)
-       </P
-><P
->        The server is now smarter about using partial indexes in queries
-        involving complex <TT
-CLASS="OPTION"
->WHERE</TT
-> clauses.
-       </P
-></LI
-><LI
-><P
->        Improve performance of the GEQO optimizer (Tom)
-       </P
-><P
->        The GEQO optimizer is used to plan queries involving many tables (by
+        column is part of an <code class="literal">OR</code> clause.
+       </p>
+</li>
+<li>
+<p>        Improve matching of partial index clauses (Tom)
+       </p>
+<p>        The server is now smarter about using partial indexes in queries
+        involving complex <code class="option">WHERE</code> clauses.
+       </p>
+</li>
+<li>
+<p>        Improve performance of the GEQO optimizer (Tom)
+       </p>
+<p>        The GEQO optimizer is used to plan queries involving many tables (by
         default, twelve or more). This release speeds up the way queries are
         analyzed to decrease time spent in optimization.
-       </P
-></LI
-><LI
-><P
->        Miscellaneous optimizer improvements
-       </P
-><P
->        There is not room here to list all the minor improvements made, but
+       </p>
+</li>
+<li>
+<p>        Miscellaneous optimizer improvements
+       </p>
+<p>        There is not room here to list all the minor improvements made, but
         numerous special cases work better than in prior releases.
-       </P
-></LI
-><LI
-><P
->        Improve lookup speed for C functions (Tom)
-       </P
-><P
->        This release uses a hash table to lookup information for dynamically
+       </p>
+</li>
+<li>
+<p>        Improve lookup speed for C functions (Tom)
+       </p>
+<p>        This release uses a hash table to lookup information for dynamically
         loaded C functions. This improves their speed so they perform nearly as
         quickly as functions that are built into the server executable.
-       </P
-></LI
-><LI
-><P
->        Add type-specific <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> statistics
+       </p>
+</li>
+<li>
+<p>        Add type-specific <code class="command">ANALYZE</code> statistics
         capability (Mark Cave-Ayland)
-       </P
-><P
->        This feature allows more flexibility in generating statistics
+       </p>
+<p>        This feature allows more flexibility in generating statistics
         for non-standard data types.
-       </P
-></LI
-><LI
-><P
->        <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> now collects statistics for
+       </p>
+</li>
+<li>
+<p>        <code class="command">ANALYZE</code> now collects statistics for
         expression indexes (Tom)
-       </P
-><P
->        Expression indexes (also called functional indexes) allow users to
+       </p>
+<p>        Expression indexes (also called functional indexes) allow users to
         index not just columns but the results of expressions and function
         calls. With this release, the optimizer can gather and use statistics
         about the contents of expression indexes.  This will greatly improve
         the quality of planning for queries in which an expression index is
         relevant.
-       </P
-></LI
-><LI
-><P
->        New two-stage sampling method for <TT
-CLASS="COMMAND"
->ANALYZE</TT
->
+       </p>
+</li>
+<li>
+<p>        New two-stage sampling method for <code class="command">ANALYZE</code>
         (Manfred Koizar)
-       </P
-><P
->        This gives better statistics when the density of valid rows is very
+       </p>
+<p>        This gives better statistics when the density of valid rows is very
         different in different regions of a table.
-       </P
-></LI
-><LI
-><P
->        Speed up <TT
-CLASS="COMMAND"
->TRUNCATE</TT
-> (Tom)
-       </P
-><P
->        This buys back some of the performance loss observed in 7.4, while still
-        keeping <TT
-CLASS="COMMAND"
->TRUNCATE</TT
-> transaction-safe.
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68165"
->E.5.4.2. Server Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Add WAL file archiving and point-in-time recovery (Simon Riggs)
-       </P
-></LI
-><LI
-><P
->        Add tablespaces so admins can control disk layout (Gavin)
-       </P
-></LI
-><LI
-><P
->        Add a built-in log rotation program (Andreas Pflug)
-       </P
-><P
->        It is now possible to log server messages conveniently without
-        relying on either <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> or an external log
+       </p>
+</li>
+<li>
+<p>        Speed up <code class="command">TRUNCATE</code> (Tom)
+       </p>
+<p>        This buys back some of the performance loss observed in 7.4, while still
+        keeping <code class="command">TRUNCATE</code> transaction-safe.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id790993"></a>E.6.4.2. Server Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Add WAL file archiving and point-in-time recovery (Simon Riggs)
+       </p></li>
+<li><p>        Add tablespaces so admins can control disk layout (Gavin)
+       </p></li>
+<li>
+<p>        Add a built-in log rotation program (Andreas Pflug)
+       </p>
+<p>        It is now possible to log server messages conveniently without
+        relying on either <span class="application">syslog</span> or an external log
         rotation program.
-       </P
-></LI
-><LI
-><P
->        Add new read-only server configuration parameters to show server
-        compile-time settings: <TT
-CLASS="VARNAME"
->block_size</TT
->,
-        <TT
-CLASS="VARNAME"
->integer_datetimes</TT
->, <TT
-CLASS="VARNAME"
->max_function_args</TT
->,
-        <TT
-CLASS="VARNAME"
->max_identifier_length</TT
->, <TT
-CLASS="VARNAME"
->max_index_keys</TT
->  (Joe)
-       </P
-></LI
-><LI
-><P
->        Make quoting of <TT
-CLASS="LITERAL"
->sameuser</TT
->, <TT
-CLASS="LITERAL"
->samegroup</TT
->, and
-        <TT
-CLASS="LITERAL"
->all</TT
-> remove special meaning of these terms in
-        <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
-> (Andrew)
-       </P
-></LI
-><LI
-><P
->        Use clearer IPv6 name <TT
-CLASS="LITERAL"
->::1/128</TT
-> for
-        <TT
-CLASS="LITERAL"
->localhost</TT
-> in default <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
-> (Andrew)
-       </P
-></LI
-><LI
-><P
->        Use CIDR format in <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
-> examples (Andrew)
-       </P
-></LI
-><LI
-><P
->        Rename server configuration parameters <TT
-CLASS="VARNAME"
->SortMem</TT
-> and
-        <TT
-CLASS="VARNAME"
->VacuumMem</TT
-> to <TT
-CLASS="VARNAME"
->work_mem</TT
-> and
-        <TT
-CLASS="VARNAME"
->maintenance_work_mem</TT
-> (Old names still supported) (Tom)
-       </P
-><P
->        This change was made to clarify that bulk operations such as index and
-        foreign key creation use <TT
-CLASS="VARNAME"
->maintenance_work_mem</TT
->, while
-        <TT
-CLASS="VARNAME"
->work_mem</TT
-> is for workspaces used during query execution.
-       </P
-></LI
-><LI
-><P
->        Allow logging of session disconnections using server configuration
-        <TT
-CLASS="VARNAME"
->log_disconnections</TT
-> (Andrew)
-       </P
-></LI
-><LI
-><P
->        Add new server configuration parameter <TT
-CLASS="VARNAME"
->log_line_prefix</TT
-> to
+       </p>
+</li>
+<li><p>        Add new read-only server configuration parameters to show server
+        compile-time settings: <code class="varname">block_size</code>,
+        <code class="varname">integer_datetimes</code>, <code class="varname">max_function_args</code>,
+        <code class="varname">max_identifier_length</code>, <code class="varname">max_index_keys</code>  (Joe)
+       </p></li>
+<li><p>        Make quoting of <code class="literal">sameuser</code>, <code class="literal">samegroup</code>, and
+        <code class="literal">all</code> remove special meaning of these terms in
+        <code class="filename">pg_hba.conf</code> (Andrew)
+       </p></li>
+<li><p>        Use clearer IPv6 name <code class="literal">::1/128</code> for
+        <code class="literal">localhost</code> in default <code class="filename">pg_hba.conf</code> (Andrew)
+       </p></li>
+<li><p>        Use CIDR format in <code class="filename">pg_hba.conf</code> examples (Andrew)
+       </p></li>
+<li>
+<p>        Rename server configuration parameters <code class="varname">SortMem</code> and
+        <code class="varname">VacuumMem</code> to <code class="varname">work_mem</code> and
+        <code class="varname">maintenance_work_mem</code> (Old names still supported) (Tom)
+       </p>
+<p>        This change was made to clarify that bulk operations such as index and
+        foreign key creation use <code class="varname">maintenance_work_mem</code>, while
+        <code class="varname">work_mem</code> is for workspaces used during query execution.
+       </p>
+</li>
+<li><p>        Allow logging of session disconnections using server configuration
+        <code class="varname">log_disconnections</code> (Andrew)
+       </p></li>
+<li>
+<p>        Add new server configuration parameter <code class="varname">log_line_prefix</code> to
         allow control of information emitted in each log line (Andrew)
-       </P
-><P
->        Available information includes user name, database name, remote IP
+       </p>
+<p>        Available information includes user name, database name, remote IP
         address, and session start time.
-       </P
-></LI
-><LI
-><P
->        Remove server configuration parameters <TT
-CLASS="VARNAME"
->log_pid</TT
->,
-        <TT
-CLASS="VARNAME"
->log_timestamp</TT
->, <TT
-CLASS="VARNAME"
->log_source_port</TT
->; functionality
-        superseded by <TT
-CLASS="VARNAME"
->log_line_prefix</TT
-> (Andrew)
-       </P
-></LI
-><LI
-><P
->        Replace the <TT
-CLASS="VARNAME"
->virtual_host</TT
-> and <TT
-CLASS="VARNAME"
->tcpip_socket</TT
->
-        parameters with a unified <TT
-CLASS="VARNAME"
->listen_addresses</TT
-> parameter
+       </p>
+</li>
+<li><p>        Remove server configuration parameters <code class="varname">log_pid</code>,
+        <code class="varname">log_timestamp</code>, <code class="varname">log_source_port</code>; functionality
+        superseded by <code class="varname">log_line_prefix</code> (Andrew)
+       </p></li>
+<li>
+<p>        Replace the <code class="varname">virtual_host</code> and <code class="varname">tcpip_socket</code>
+        parameters with a unified <code class="varname">listen_addresses</code> parameter
         (Andrew, Tom)
-       </P
-><P
->        <TT
-CLASS="VARNAME"
->virtual_host</TT
-> could only specify a single IP address to
-        listen on.  <TT
-CLASS="VARNAME"
->listen_addresses</TT
-> allows multiple addresses
+       </p>
+<p>        <code class="varname">virtual_host</code> could only specify a single IP address to
+        listen on.  <code class="varname">listen_addresses</code> allows multiple addresses
         to be specified.
-       </P
-></LI
-><LI
-><P
->        Listen on localhost by default, which eliminates the need for the
-        <TT
-CLASS="OPTION"
->-i</TT
-> postmaster switch in many scenarios (Andrew)
-       </P
-><P
->        Listening on localhost (<TT
-CLASS="LITERAL"
->127.0.0.1</TT
->) opens no new
+       </p>
+</li>
+<li>
+<p>        Listen on localhost by default, which eliminates the need for the
+        <code class="option">-i</code> postmaster switch in many scenarios (Andrew)
+       </p>
+<p>        Listening on localhost (<code class="literal">127.0.0.1</code>) opens no new
         security holes but allows configurations like Windows and JDBC,
         which do not support local sockets, to work without special
         adjustments.
-       </P
-></LI
-><LI
-><P
->        Remove <TT
-CLASS="VARNAME"
->syslog</TT
-> server configuration parameter, and add more
-        logical <TT
-CLASS="VARNAME"
->log_destination</TT
-> variable to control log output
+       </p>
+</li>
+<li><p>        Remove <code class="varname">syslog</code> server configuration parameter, and add more
+        logical <code class="varname">log_destination</code> variable to control log output
         location (Magnus)
-       </P
-></LI
-><LI
-><P
->        Change server configuration parameter <TT
-CLASS="VARNAME"
->log_statement</TT
-> to take
-        values <TT
-CLASS="VARNAME"
->all</TT
->, <TT
-CLASS="VARNAME"
->mod</TT
->, <TT
-CLASS="VARNAME"
->ddl</TT
->, or
-        <TT
-CLASS="VARNAME"
->none</TT
-> to select which queries are logged (Bruce)
-       </P
-><P
->        This allows administrators to log only data definition changes or
+       </p></li>
+<li>
+<p>        Change server configuration parameter <code class="varname">log_statement</code> to take
+        values <code class="varname">all</code>, <code class="varname">mod</code>, <code class="varname">ddl</code>, or
+        <code class="varname">none</code> to select which queries are logged (Bruce)
+       </p>
+<p>        This allows administrators to log only data definition changes or
         only data modification statements.
-       </P
-></LI
-><LI
-><P
->        Some logging-related configuration parameters could formerly be adjusted
-        by ordinary users, but only in the <SPAN
-CLASS="QUOTE"
->"more verbose"</SPAN
-> direction.
+       </p>
+</li>
+<li><p>        Some logging-related configuration parameters could formerly be adjusted
+        by ordinary users, but only in the &#8220;<span class="quote">more verbose</span>&#8221; direction.
         They are now treated more strictly: only superusers can set them.
-        However, a superuser may use <TT
-CLASS="COMMAND"
->ALTER USER</TT
-> to provide per-user
+        However, a superuser may use <code class="command">ALTER USER</code> to provide per-user
         settings of these values for non-superusers.  Also, it is now possible
         for superusers to set values of superuser-only configuration parameters
-        via <TT
-CLASS="LITERAL"
->PGOPTIONS</TT
->.
-       </P
-></LI
-><LI
-><P
->        Allow configuration files to be placed outside the data directory (mlw)
-       </P
-><P
->        By default, configuration files are kept in the cluster's top directory.
+        via <code class="literal">PGOPTIONS</code>.
+       </p></li>
+<li>
+<p>        Allow configuration files to be placed outside the data directory (mlw)
+       </p>
+<p>        By default, configuration files are kept in the cluster's top directory.
         With this addition, configuration files can be placed outside the
         data directory, easing administration.
-       </P
-></LI
-><LI
-><P
->        Plan prepared queries only when first executed so constants can be
+       </p>
+</li>
+<li>
+<p>        Plan prepared queries only when first executed so constants can be
         used for statistics (Oliver Jowett)
-       </P
-><P
->        Prepared statements plan queries once and execute them many
+       </p>
+<p>        Prepared statements plan queries once and execute them many
         times. While prepared queries avoid the overhead of re-planning
         on each use, the quality of the plan suffers from not knowing the exact
         parameters to be used in the query.  In this release, planning of
@@ -1322,123 +541,60 @@ CLASS="LITERAL"
         and the actual parameter values of that execution are used as
         optimization hints.  This allows use of out-of-line parameter passing
         without incurring a performance penalty.
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="COMMAND"
->DECLARE CURSOR</TT
-> to take parameters
+       </p>
+</li>
+<li>
+<p>        Allow <code class="command">DECLARE CURSOR</code> to take parameters
         (Oliver Jowett)
-       </P
-><P
->        It is now useful to issue <TT
-CLASS="COMMAND"
->DECLARE CURSOR</TT
-> in a
-        <CODE
-CLASS="FUNCTION"
->Parse</CODE
-> message with parameters. The parameter values
-        sent at <CODE
-CLASS="FUNCTION"
->Bind</CODE
-> time will be substituted into the
+       </p>
+<p>        It is now useful to issue <code class="command">DECLARE CURSOR</code> in a
+        <code class="function">Parse</code> message with parameters. The parameter values
+        sent at <code class="function">Bind</code> time will be substituted into the
         execution of the cursor's query.
-       </P
-></LI
-><LI
-><P
->        Fix hash joins and aggregates of <TT
-CLASS="TYPE"
->inet</TT
-> and
-        <TT
-CLASS="TYPE"
->cidr</TT
-> data types (Tom)
-       </P
-><P
->        Release 7.4 handled hashing of mixed <TT
-CLASS="TYPE"
->inet</TT
-> and
-        <TT
-CLASS="TYPE"
->cidr</TT
-> values incorrectly.  (This bug did not exist
+       </p>
+</li>
+<li>
+<p>        Fix hash joins and aggregates of <code class="type">inet</code> and
+        <code class="type">cidr</code> data types (Tom)
+       </p>
+<p>        Release 7.4 handled hashing of mixed <code class="type">inet</code> and
+        <code class="type">cidr</code> values incorrectly.  (This bug did not exist
         in prior releases because they wouldn't try to hash either
         data type.)
-       </P
-></LI
-><LI
-><P
->        Make <TT
-CLASS="VARNAME"
->log_duration</TT
-> print only when <TT
-CLASS="VARNAME"
->log_statement</TT
->
+       </p>
+</li>
+<li><p>        Make <code class="varname">log_duration</code> print only when <code class="varname">log_statement</code>
         prints the query (Ed L.)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68273"
->E.5.4.3. Query Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Add savepoints (nested transactions) (Alvaro)
-       </P
-></LI
-><LI
-><P
->        Unsupported isolation levels are now accepted and promoted to the
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id791437"></a>E.6.4.3. Query Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Add savepoints (nested transactions) (Alvaro)
+       </p></li>
+<li>
+<p>        Unsupported isolation levels are now accepted and promoted to the
         nearest supported level (Peter)
-       </P
-><P
->        The SQL specification states that if a database doesn't support a
+       </p>
+<p>        The SQL specification states that if a database doesn't support a
         specific isolation level, it should use the next more restrictive level.
         This change complies with that recommendation.
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="COMMAND"
->BEGIN WORK</TT
-> to specify transaction
-        isolation levels like <TT
-CLASS="COMMAND"
->START TRANSACTION</TT
-> does
+       </p>
+</li>
+<li><p>        Allow <code class="command">BEGIN WORK</code> to specify transaction
+        isolation levels like <code class="command">START TRANSACTION</code> does
         (Bruce)
-       </P
-></LI
-><LI
-><P
->        Fix table permission checking for cases in which rules generate
+       </p></li>
+<li><p>        Fix table permission checking for cases in which rules generate
         a query type different from the originally submitted query (Tom)
-       </P
-></LI
-><LI
-><P
->        Implement dollar quoting to simplify single-quote usage (Andrew, Tom, 
+       </p></li>
+<li>
+<p>        Implement dollar quoting to simplify single-quote usage (Andrew, Tom, 
         David Fetter)
-       </P
-><P
->        In previous releases, because single quotes had to be used to
+       </p>
+<p>        In previous releases, because single quotes had to be used to
         quote a function's body, the use of single quotes inside the
         function text required use of two single quotes or other error-prone
         notations. With this release we add the ability to use "dollar
@@ -1446,1124 +602,469 @@ CLASS="COMMAND"
         quoting delimiters at different nesting levels greatly simplifies
         the task of quoting correctly, especially in complex functions.
         Dollar quoting can be used anywhere quoted text is needed.
-       </P
-></LI
-><LI
-><P
->        Make <TT
-CLASS="LITERAL"
->CASE val WHEN compval1 THEN ...</TT
-> evaluate <TT
-CLASS="LITERAL"
->val</TT
-> only once (Tom)
-       </P
-><P
->        <TT
-CLASS="OPTION"
->CASE</TT
-> no longer evaluates the tested expression multiple
+       </p>
+</li>
+<li>
+<p>        Make <code class="literal">CASE val WHEN compval1 THEN ...</code> evaluate <code class="literal">val</code> only once (Tom)
+       </p>
+<p>        <code class="option">CASE</code> no longer evaluates the tested expression multiple
         times. This has benefits when the expression is complex or is
         volatile.
-       </P
-></LI
-><LI
-><P
->        Test <TT
-CLASS="OPTION"
->HAVING</TT
-> before computing target list of an
+       </p>
+</li>
+<li>
+<p>        Test <code class="option">HAVING</code> before computing target list of an
         aggregate query (Tom)
-       </P
-><P
->        Fixes improper failure of cases such as <TT
-CLASS="LITERAL"
->SELECT SUM(win)/SUM(lose)
-        ... GROUP BY ... HAVING SUM(lose) &gt; 0</TT
->.  This should work but formerly
+       </p>
+<p>        Fixes improper failure of cases such as <code class="literal">SELECT SUM(win)/SUM(lose)
+        ... GROUP BY ... HAVING SUM(lose) &gt; 0</code>.  This should work but formerly
         could fail with divide-by-zero.
-       </P
-></LI
-><LI
-><P
->        Replace <TT
-CLASS="VARNAME"
->max_expr_depth</TT
-> parameter with
-        <TT
-CLASS="VARNAME"
->max_stack_depth</TT
-> parameter, measured in kilobytes of stack
+       </p>
+</li>
+<li>
+<p>        Replace <code class="varname">max_expr_depth</code> parameter with
+        <code class="varname">max_stack_depth</code> parameter, measured in kilobytes of stack
         size (Tom)
-       </P
-><P
->       This gives us a fairly bulletproof defense against crashing due to 
+       </p>
+<p>       This gives us a fairly bulletproof defense against crashing due to 
        runaway recursive functions. Instead of measuring the depth of expression
        nesting, we now directly measure the size of the execution stack.
-       </P
-></LI
-><LI
-><P
->        Allow arbitrary row expressions (Tom)
-       </P
-><P
->        This release allows SQL expressions to contain arbitrary composite
+       </p>
+</li>
+<li>
+<p>        Allow arbitrary row expressions (Tom)
+       </p>
+<p>        This release allows SQL expressions to contain arbitrary composite
         types, that is, row values. It also allows functions to more easily
         take rows as arguments and return row values.
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="OPTION"
->LIKE</TT
->/<TT
-CLASS="OPTION"
->ILIKE</TT
-> to be used as the operator
+       </p>
+</li>
+<li><p>        Allow <code class="option">LIKE</code>/<code class="option">ILIKE</code> to be used as the operator
         in row and subselect comparisons (Fabien Coelho)
-       </P
-></LI
-><LI
-><P
->        Avoid locale-specific case conversion of basic ASCII letters in
+       </p></li>
+<li>
+<p>        Avoid locale-specific case conversion of basic ASCII letters in
         identifiers and keywords (Tom)
-       </P
-><P
->        This solves the <SPAN
-CLASS="QUOTE"
->"Turkish problem"</SPAN
-> with mangling of words
-        containing <TT
-CLASS="LITERAL"
->I</TT
-> and  <TT
-CLASS="LITERAL"
->i</TT
->.  Folding of characters
+       </p>
+<p>        This solves the &#8220;<span class="quote">Turkish problem</span>&#8221; with mangling of words
+        containing <code class="literal">I</code> and  <code class="literal">i</code>.  Folding of characters
         outside the 7-bit-ASCII set is still locale-aware.
-       </P
-></LI
-><LI
-><P
->        Improve syntax error reporting (Fabien, Tom)
-       </P
-><P
->        Syntax error reports are more useful than before.
-       </P
-></LI
-><LI
-><P
->        Change <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> to return a completion tag
+       </p>
+</li>
+<li>
+<p>        Improve syntax error reporting (Fabien, Tom)
+       </p>
+<p>        Syntax error reports are more useful than before.
+       </p>
+</li>
+<li>
+<p>        Change <code class="command">EXECUTE</code> to return a completion tag
         matching the executed statement (Kris Jurka)
-       </P
-><P
->        Previous releases return an <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> tag for
-        any <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> call. In this release, the tag
+       </p>
+<p>        Previous releases return an <code class="command">EXECUTE</code> tag for
+        any <code class="command">EXECUTE</code> call. In this release, the tag
         returned will reflect the command executed.
-       </P
-></LI
-><LI
-><P
->        Avoid emitting <TT
-CLASS="OPTION"
->NATURAL CROSS JOIN</TT
-> in rule listings (Tom)
-       </P
-><P
->        Such a clause makes no logical sense, but in some cases the rule
+       </p>
+</li>
+<li>
+<p>        Avoid emitting <code class="option">NATURAL CROSS JOIN</code> in rule listings (Tom)
+       </p>
+<p>        Such a clause makes no logical sense, but in some cases the rule
         decompiler formerly produced this syntax.
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68332"
->E.5.4.4. Object Manipulation Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Add <TT
-CLASS="COMMAND"
->COMMENT ON</TT
-> for casts, conversions, languages,
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id791687"></a>E.6.4.4. Object Manipulation Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Add <code class="command">COMMENT ON</code> for casts, conversions, languages,
         operator classes, and large objects (Christopher)
-       </P
-></LI
-><LI
-><P
->        Add new server configuration parameter <TT
-CLASS="VARNAME"
->default_with_oids</TT
-> to
-        control whether tables are created with <TT
-CLASS="TYPE"
->OID</TT
->s by default (Neil)
-       </P
-><P
->        This allows administrators to control whether <TT
-CLASS="COMMAND"
->CREATE
-        TABLE</TT
-> commands create tables with or without <TT
-CLASS="TYPE"
->OID</TT
->
+       </p></li>
+<li>
+<p>        Add new server configuration parameter <code class="varname">default_with_oids</code> to
+        control whether tables are created with <code class="type">OID</code>s by default (Neil)
+       </p>
+<p>        This allows administrators to control whether <code class="command">CREATE
+        TABLE</code> commands create tables with or without <code class="type">OID</code>
         columns by default.  (Note: the current factory default setting for
-        <TT
-CLASS="VARNAME"
->default_with_oids</TT
-> is <TT
-CLASS="LITERAL"
->TRUE</TT
->, but the default
-        will become <TT
-CLASS="LITERAL"
->FALSE</TT
-> in future releases.)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->WITH</TT
-> / <TT
-CLASS="OPTION"
->WITHOUT OIDS</TT
-> clause to
-        <TT
-CLASS="COMMAND"
->CREATE TABLE AS</TT
-> (Neil)
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="COMMAND"
->ALTER TABLE DROP COLUMN</TT
-> to drop an <TT
-CLASS="TYPE"
->OID</TT
->
-        column (<TT
-CLASS="COMMAND"
->ALTER TABLE SET WITHOUT OIDS</TT
-> still works)
+        <code class="varname">default_with_oids</code> is <code class="literal">TRUE</code>, but the default
+        will become <code class="literal">FALSE</code> in future releases.)
+       </p>
+</li>
+<li><p>        Add <code class="option">WITH</code> / <code class="option">WITHOUT OIDS</code> clause to
+        <code class="command">CREATE TABLE AS</code> (Neil)
+       </p></li>
+<li><p>        Allow <code class="command">ALTER TABLE DROP COLUMN</code> to drop an <code class="type">OID</code>
+        column (<code class="command">ALTER TABLE SET WITHOUT OIDS</code> still works)
         (Tom)
-       </P
-></LI
-><LI
-><P
->        Allow composite types as table columns (Tom)
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="COMMAND"
->ALTER ... ADD COLUMN</TT
-> with defaults and
-        <TT
-CLASS="OPTION"
->NOT NULL</TT
-> constraints; works per SQL spec (Rod)
-       </P
-><P
->        It is now possible for <TT
-CLASS="OPTION"
->ADD COLUMN</TT
-> to create a column
+       </p></li>
+<li><p>        Allow composite types as table columns (Tom)
+       </p></li>
+<li>
+<p>        Allow <code class="command">ALTER ... ADD COLUMN</code> with defaults and
+        <code class="option">NOT NULL</code> constraints; works per SQL spec (Rod)
+       </p>
+<p>        It is now possible for <code class="option">ADD COLUMN</code> to create a column
         that is not initially filled with NULLs, but with a specified
         default value.
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="COMMAND"
->ALTER COLUMN TYPE</TT
-> to change column's type (Rod)
-       </P
-><P
->        It is now possible to alter a column's data type without dropping
+       </p>
+</li>
+<li>
+<p>        Add <code class="command">ALTER COLUMN TYPE</code> to change column's type (Rod)
+       </p>
+<p>        It is now possible to alter a column's data type without dropping
         and re-adding the column.
-       </P
-></LI
-><LI
-><P
->        Allow multiple <TT
-CLASS="COMMAND"
->ALTER</TT
-> actions in a single <TT
-CLASS="COMMAND"
->ALTER
-        TABLE</TT
-> command (Rod)
-       </P
-><P
->        This is particularly useful for <TT
-CLASS="COMMAND"
->ALTER</TT
-> commands that
-        rewrite the table (which include <TT
-CLASS="OPTION"
->ALTER COLUMN TYPE</TT
-> and
-        <TT
-CLASS="OPTION"
->ADD COLUMN</TT
-> with a default). By grouping
-        <TT
-CLASS="COMMAND"
->ALTER</TT
-> commands together, the table need be rewritten
+       </p>
+</li>
+<li>
+<p>        Allow multiple <code class="command">ALTER</code> actions in a single <code class="command">ALTER
+        TABLE</code> command (Rod)
+       </p>
+<p>        This is particularly useful for <code class="command">ALTER</code> commands that
+        rewrite the table (which include <code class="option">ALTER COLUMN TYPE</code> and
+        <code class="option">ADD COLUMN</code> with a default). By grouping
+        <code class="command">ALTER</code> commands together, the table need be rewritten
         only once.
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="COMMAND"
->ALTER TABLE</TT
-> to add <TT
-CLASS="TYPE"
->SERIAL</TT
->
+       </p>
+</li>
+<li>
+<p>        Allow <code class="command">ALTER TABLE</code> to add <code class="type">SERIAL</code>
         columns (Tom)
-       </P
-><P
->        This falls out from the new capability of specifying defaults for new
+       </p>
+<p>        This falls out from the new capability of specifying defaults for new
         columns.
-       </P
-></LI
-><LI
-><P
->        Allow changing the owners of aggregates, conversions, databases,
+       </p>
+</li>
+<li>
+<p>        Allow changing the owners of aggregates, conversions, databases,
         functions, operators, operator classes, schemas, types, and tablespaces
         (Christopher, Euler Taveira de Oliveira)
-       </P
-><P
->        Previously this required modifying the system tables directly.
-       </P
-></LI
-><LI
-><P
->        Allow temporary object creation to be limited to <TT
-CLASS="OPTION"
->SECURITY
-        DEFINER</TT
-> functions (Sean Chittenden)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->ALTER TABLE ... SET WITHOUT CLUSTER</TT
-> (Christopher)
-       </P
-><P
->        Prior to this release, there was no way to clear an auto-cluster
+       </p>
+<p>        Previously this required modifying the system tables directly.
+       </p>
+</li>
+<li><p>        Allow temporary object creation to be limited to <code class="option">SECURITY
+        DEFINER</code> functions (Sean Chittenden)
+       </p></li>
+<li>
+<p>        Add <code class="option">ALTER TABLE ... SET WITHOUT CLUSTER</code> (Christopher)
+       </p>
+<p>        Prior to this release, there was no way to clear an auto-cluster
         specification except to modify the system tables.
-       </P
-></LI
-><LI
-><P
->        Constraint/Index/<TT
-CLASS="TYPE"
->SERIAL</TT
-> names are now
-        <TT
-CLASS="REPLACEABLE"
-><I
->table_column_type</I
-></TT
->
+       </p>
+</li>
+<li>
+<p>        Constraint/Index/<code class="type">SERIAL</code> names are now
+        <em class="replaceable"><code>table_column_type</code></em>
         with numbers appended to guarantee uniqueness within the schema
         (Tom)
-       </P
-><P
->        The SQL specification states that such names should be unique
+       </p>
+<p>        The SQL specification states that such names should be unique
         within a schema.
-       </P
-></LI
-><LI
-><P
->        Add <CODE
-CLASS="FUNCTION"
->pg_get_serial_sequence()</CODE
-> to return a
-        <TT
-CLASS="TYPE"
->SERIAL</TT
-> column's sequence name (Christopher)
-       </P
-><P
->        This allows automated scripts to reliably find the <TT
-CLASS="TYPE"
->SERIAL</TT
->
+       </p>
+</li>
+<li>
+<p>        Add <code class="function">pg_get_serial_sequence()</code> to return a
+        <code class="type">SERIAL</code> column's sequence name (Christopher)
+       </p>
+<p>        This allows automated scripts to reliably find the <code class="type">SERIAL</code>
         sequence name.
-       </P
-></LI
-><LI
-><P
->        Warn when primary/foreign key data type mismatch requires costly lookup
-       </P
-></LI
-><LI
-><P
->        New <TT
-CLASS="COMMAND"
->ALTER INDEX</TT
-> command to allow moving of indexes
+       </p>
+</li>
+<li><p>        Warn when primary/foreign key data type mismatch requires costly lookup
+       </p></li>
+<li><p>        New <code class="command">ALTER INDEX</code> command to allow moving of indexes
         between tablespaces (Gavin)
-       </P
-></LI
-><LI
-><P
->        Make <TT
-CLASS="COMMAND"
->ALTER TABLE OWNER</TT
-> change dependent sequence
+       </p></li>
+<li><p>        Make <code class="command">ALTER TABLE OWNER</code> change dependent sequence
         ownership too (Alvaro)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68413"
->E.5.4.5. Utility Command Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Allow <TT
-CLASS="COMMAND"
->CREATE SCHEMA</TT
-> to create triggers,
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id792013"></a>E.6.4.5. Utility Command Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Allow <code class="command">CREATE SCHEMA</code> to create triggers,
         indexes, and sequences (Neil)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->ALSO</TT
-> keyword to <TT
-CLASS="COMMAND"
->CREATE RULE</TT
-> (Fabien
+       </p></li>
+<li>
+<p>        Add <code class="option">ALSO</code> keyword to <code class="command">CREATE RULE</code> (Fabien
         Coelho)
-       </P
-><P
->        This allows <TT
-CLASS="OPTION"
->ALSO</TT
-> to be added to rule creation to contrast it with
-        <TT
-CLASS="OPTION"
->INSTEAD</TT
-> rules.
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->NOWAIT</TT
-> option to <TT
-CLASS="COMMAND"
->LOCK</TT
-> (Tatsuo)
-       </P
-><P
->        This allows the <TT
-CLASS="COMMAND"
->LOCK</TT
-> command to fail if it
+       </p>
+<p>        This allows <code class="option">ALSO</code> to be added to rule creation to contrast it with
+        <code class="option">INSTEAD</code> rules.
+       </p>
+</li>
+<li>
+<p>        Add <code class="option">NOWAIT</code> option to <code class="command">LOCK</code> (Tatsuo)
+       </p>
+<p>        This allows the <code class="command">LOCK</code> command to fail if it
         would have to wait for the requested lock.
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="COMMAND"
->COPY</TT
-> to read and write
+       </p>
+</li>
+<li><p>        Allow <code class="command">COPY</code> to read and write
         comma-separated-value (CSV) files (Andrew, Bruce)
-       </P
-></LI
-><LI
-><P
->        Generate error if the <TT
-CLASS="COMMAND"
->COPY</TT
-> delimiter and NULL
+       </p></li>
+<li><p>        Generate error if the <code class="command">COPY</code> delimiter and NULL
         string conflict (Bruce)
-       </P
-></LI
-><LI
-><P
->        <TT
-CLASS="COMMAND"
->GRANT</TT
->/<TT
-CLASS="COMMAND"
->REVOKE</TT
-> behavior
+       </p></li>
+<li><p>        <code class="command">GRANT</code>/<code class="command">REVOKE</code> behavior
         follows the SQL spec more closely
-       </P
-></LI
-><LI
-><P
->        Avoid locking conflict between <TT
-CLASS="COMMAND"
->CREATE INDEX</TT
->
-        and <TT
-CLASS="COMMAND"
->CHECKPOINT</TT
-> (Tom)
-       </P
-><P
->        In 7.3 and 7.4, a long-running B-tree index build could block concurrent
-        <TT
-CLASS="COMMAND"
->CHECKPOINT</TT
->s from completing, thereby causing WAL bloat because the
+       </p></li>
+<li>
+<p>        Avoid locking conflict between <code class="command">CREATE INDEX</code>
+        and <code class="command">CHECKPOINT</code> (Tom)
+       </p>
+<p>        In 7.3 and 7.4, a long-running B-tree index build could block concurrent
+        <code class="command">CHECKPOINT</code>s from completing, thereby causing WAL bloat because the
         WAL log could not be recycled.
-       </P
-></LI
-><LI
-><P
->        Database-wide <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> does not hold locks
+       </p>
+</li>
+<li>
+<p>        Database-wide <code class="command">ANALYZE</code> does not hold locks
         across tables (Tom)
-       </P
-><P
->        This reduces the potential for deadlocks against other backends
+       </p>
+<p>        This reduces the potential for deadlocks against other backends
         that want exclusive locks on tables.  To get the benefit of this
-        change, do not execute database-wide <TT
-CLASS="COMMAND"
->ANALYZE</TT
->
-        inside a transaction block (<TT
-CLASS="COMMAND"
->BEGIN</TT
-> block); it
+        change, do not execute database-wide <code class="command">ANALYZE</code>
+        inside a transaction block (<code class="command">BEGIN</code> block); it
         must be able to commit and start a new transaction for each
         table.
-       </P
-></LI
-><LI
-><P
->        <TT
-CLASS="COMMAND"
->REINDEX</TT
-> does not exclusively lock the index's
+       </p>
+</li>
+<li>
+<p>        <code class="command">REINDEX</code> does not exclusively lock the index's
         parent table anymore
-       </P
-><P
->        The index itself is still exclusively locked, but readers of the
+       </p>
+<p>        The index itself is still exclusively locked, but readers of the
         table can continue if they are not using the particular index
         being rebuilt.
-       </P
-></LI
-><LI
-><P
->        Erase MD5 user passwords when a user is renamed (Bruce)
-       </P
-><P
->        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> uses the user name as salt
+       </p>
+</li>
+<li>
+<p>        Erase MD5 user passwords when a user is renamed (Bruce)
+       </p>
+<p>        <span class="productname">PostgreSQL</span> uses the user name as salt
         when encrypting passwords via MD5. When a user's name is changed,
         the salt will no longer match the stored MD5 password, so the
         stored password becomes useless.  In this release a notice is
         generated and the password is cleared.  A new password must then
         be assigned if the user is to be able to log in with a password.
-       </P
-></LI
-><LI
-><P
->        New <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
-> <TT
-CLASS="OPTION"
->kill</TT
-> option for Windows (Andrew)
-       </P
-><P
->        Windows does not have a <TT
-CLASS="LITERAL"
->kill</TT
-> command to send signals to
-        backends so this capability was added to <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
->.
-       </P
-></LI
-><LI
-><P
->        Information schema improvements
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->--pwfile</TT
-> option to
-        <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
-> so the initial password can be
+       </p>
+</li>
+<li>
+<p>        New <span class="application">pg_ctl</span> <code class="option">kill</code> option for Windows (Andrew)
+       </p>
+<p>        Windows does not have a <code class="literal">kill</code> command to send signals to
+        backends so this capability was added to <span class="application">pg_ctl</span>.
+       </p>
+</li>
+<li><p>        Information schema improvements
+       </p></li>
+<li><p>        Add <code class="option">--pwfile</code> option to
+        <span class="application">initdb</span> so the initial password can be
         set by GUI tools (Magnus)
-       </P
-></LI
-><LI
-><P
->        Detect locale/encoding mismatch in
-        <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
-> (Peter)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->register</TT
-> command to <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
-> to
+       </p></li>
+<li><p>        Detect locale/encoding mismatch in
+        <span class="application">initdb</span> (Peter)
+       </p></li>
+<li><p>        Add <code class="option">register</code> command to <span class="application">pg_ctl</span> to
         register Windows operating system service (Dave Page)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68482"
->E.5.4.6. Data Type and Function Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        More complete support for composite types (row types)  (Tom)
-       </P
-><P
->        Composite values can be used in many places where only scalar values
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id792306"></a>E.6.4.6. Data Type and Function Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        More complete support for composite types (row types)  (Tom)
+       </p>
+<p>        Composite values can be used in many places where only scalar values
         worked before.
-       </P
-></LI
-><LI
-><P
->        Reject non-rectangular array values as erroneous (Joe)
-       </P
-><P
->        Formerly, <CODE
-CLASS="FUNCTION"
->array_in</CODE
-> would silently build a
+       </p>
+</li>
+<li>
+<p>        Reject non-rectangular array values as erroneous (Joe)
+       </p>
+<p>        Formerly, <code class="function">array_in</code> would silently build a
         surprising result.
-       </P
-></LI
-><LI
-><P
->         Overflow in integer arithmetic operations is now detected (Tom)
-        </P
-></LI
-><LI
-><P
->         The arithmetic operators associated with the single-byte
-         <TT
-CLASS="TYPE"
->"char"</TT
-> data type have been removed.
-        </P
-><P
->         Formerly, the parser would select these operators in many situations
-         where an <SPAN
-CLASS="QUOTE"
->"unable to select an operator"</SPAN
-> error would be more
-         appropriate, such as <TT
-CLASS="LITERAL"
->null * null</TT
->.  If you actually want
-         to do arithmetic on a <TT
-CLASS="TYPE"
->"char"</TT
-> column, you can cast it to
+       </p>
+</li>
+<li><p>         Overflow in integer arithmetic operations is now detected (Tom)
+        </p></li>
+<li>
+<p>         The arithmetic operators associated with the single-byte
+         <code class="type">"char"</code> data type have been removed.
+        </p>
+<p>         Formerly, the parser would select these operators in many situations
+         where an &#8220;<span class="quote">unable to select an operator</span>&#8221; error would be more
+         appropriate, such as <code class="literal">null * null</code>.  If you actually want
+         to do arithmetic on a <code class="type">"char"</code> column, you can cast it to
          integer explicitly.
-        </P
-></LI
-><LI
-><P
->         Syntax checking of array input values considerably tightened up (Joe)
-        </P
-><P
->         Junk that was previously allowed in odd places with odd results
-         now causes an <TT
-CLASS="LITERAL"
->ERROR</TT
->, for example, non-whitespace
+        </p>
+</li>
+<li>
+<p>         Syntax checking of array input values considerably tightened up (Joe)
+        </p>
+<p>         Junk that was previously allowed in odd places with odd results
+         now causes an <code class="literal">ERROR</code>, for example, non-whitespace
          after the closing right brace.
-        </P
-></LI
-><LI
-><P
->         Empty-string array element values must now be written as
-         <TT
-CLASS="LITERAL"
->""</TT
->, rather than writing nothing (Joe)
-        </P
-><P
->         Formerly, both ways of writing an empty-string element value were
+        </p>
+</li>
+<li>
+<p>         Empty-string array element values must now be written as
+         <code class="literal">""</code>, rather than writing nothing (Joe)
+        </p>
+<p>         Formerly, both ways of writing an empty-string element value were
          allowed, but now a quoted empty string is required.  The case where
          nothing at all appears will probably be considered to be a NULL
          element value in some future release.
-        </P
-></LI
-><LI
-><P
->         Array element trailing whitespace is now ignored (Joe)
-        </P
-><P
->         Formerly leading whitespace was ignored, but trailing whitespace
+        </p>
+</li>
+<li>
+<p>         Array element trailing whitespace is now ignored (Joe)
+        </p>
+<p>         Formerly leading whitespace was ignored, but trailing whitespace
          between an element value and the delimiter or right brace was
          significant.  Now trailing whitespace is also ignored.
-        </P
-></LI
-><LI
-><P
->        Emit array values with explicit array bounds when lower bound is not one
+        </p>
+</li>
+<li><p>        Emit array values with explicit array bounds when lower bound is not one
         (Joe)
-       </P
-></LI
-><LI
-><P
->        Accept <TT
-CLASS="LITERAL"
->YYYY-monthname-DD</TT
-> as a date string (Tom)
-       </P
-></LI
-><LI
-><P
->        Make <CODE
-CLASS="FUNCTION"
->netmask</CODE
-> and <CODE
-CLASS="FUNCTION"
->hostmask</CODE
-> functions
+       </p></li>
+<li><p>        Accept <code class="literal">YYYY-monthname-DD</code> as a date string (Tom)
+       </p></li>
+<li><p>        Make <code class="function">netmask</code> and <code class="function">hostmask</code> functions
         return maximum-length mask length (Tom)
-       </P
-></LI
-><LI
-><P
->        Change factorial function to return <TT
-CLASS="TYPE"
->numeric</TT
-> (Gavin)
-       </P
-><P
->        Returning <TT
-CLASS="TYPE"
->numeric</TT
-> allows the factorial function to
+       </p></li>
+<li>
+<p>        Change factorial function to return <code class="type">numeric</code> (Gavin)
+       </p>
+<p>        Returning <code class="type">numeric</code> allows the factorial function to
         work for a wider range of input values.
-       </P
-></LI
-><LI
-><P
->        <CODE
-CLASS="FUNCTION"
->to_char</CODE
->/<CODE
-CLASS="FUNCTION"
->to_date()</CODE
-> date conversion
+       </p>
+</li>
+<li><p>        <code class="function">to_char</code>/<code class="function">to_date()</code> date conversion
         improvements (Kurt Roeckx, Fabien Coelho)
-       </P
-></LI
-><LI
-><P
->        Make <CODE
-CLASS="FUNCTION"
->length()</CODE
-> disregard trailing spaces in
-        <TT
-CLASS="TYPE"
->CHAR(n)</TT
-> (Gavin)
-       </P
-><P
->        This change was made to improve consistency: trailing spaces are
-        semantically insignificant in <TT
-CLASS="TYPE"
->CHAR(n)</TT
-> data, so they
-        should not be counted by <CODE
-CLASS="FUNCTION"
->length()</CODE
->.
-       </P
-></LI
-><LI
-><P
->        Warn about empty string being passed to
-        <TT
-CLASS="TYPE"
->OID</TT
->/<TT
-CLASS="TYPE"
->float4</TT
->/<TT
-CLASS="TYPE"
->float8</TT
-> data types (Neil)
-       </P
-><P
->        8.1 will throw an error instead.
-       </P
-></LI
-><LI
-><P
->        Allow leading or trailing whitespace in
-        <TT
-CLASS="TYPE"
->int2</TT
->/<TT
-CLASS="TYPE"
->int4</TT
->/<TT
-CLASS="TYPE"
->int8</TT
->/<TT
-CLASS="TYPE"
->float4</TT
->/<TT
-CLASS="TYPE"
->float8</TT
->
+       </p></li>
+<li>
+<p>        Make <code class="function">length()</code> disregard trailing spaces in
+        <code class="type">CHAR(n)</code> (Gavin)
+       </p>
+<p>        This change was made to improve consistency: trailing spaces are
+        semantically insignificant in <code class="type">CHAR(n)</code> data, so they
+        should not be counted by <code class="function">length()</code>.
+       </p>
+</li>
+<li>
+<p>        Warn about empty string being passed to
+        <code class="type">OID</code>/<code class="type">float4</code>/<code class="type">float8</code> data types (Neil)
+       </p>
+<p>        8.1 will throw an error instead.
+       </p>
+</li>
+<li><p>        Allow leading or trailing whitespace in
+        <code class="type">int2</code>/<code class="type">int4</code>/<code class="type">int8</code>/<code class="type">float4</code>/<code class="type">float8</code>
         input routines
         (Neil)
-       </P
-></LI
-><LI
-><P
->        Better support for IEEE <TT
-CLASS="LITERAL"
->Infinity</TT
-> and <TT
-CLASS="LITERAL"
->NaN</TT
->
-        values in <TT
-CLASS="TYPE"
->float4</TT
->/<TT
-CLASS="TYPE"
->float8</TT
-> (Neil)
-       </P
-><P
->        These should now work on all platforms that support IEEE-compliant
+       </p></li>
+<li>
+<p>        Better support for IEEE <code class="literal">Infinity</code> and <code class="literal">NaN</code>
+        values in <code class="type">float4</code>/<code class="type">float8</code> (Neil)
+       </p>
+<p>        These should now work on all platforms that support IEEE-compliant
         floating point arithmetic.
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->week</TT
-> option to <CODE
-CLASS="FUNCTION"
->date_trunc()</CODE
-> (Robert Creager)
-       </P
-></LI
-><LI
-><P
->        Fix <CODE
-CLASS="FUNCTION"
->to_char</CODE
-> for <TT
-CLASS="LITERAL"
->1 BC</TT
->
-        (previously it returned <TT
-CLASS="LITERAL"
->1 AD</TT
->) (Bruce)
-       </P
-></LI
-><LI
-><P
->        Fix <CODE
-CLASS="FUNCTION"
->date_part(year)</CODE
-> for BC dates (previously it
+       </p>
+</li>
+<li><p>        Add <code class="option">week</code> option to <code class="function">date_trunc()</code> (Robert Creager)
+       </p></li>
+<li><p>        Fix <code class="function">to_char</code> for <code class="literal">1 BC</code>
+        (previously it returned <code class="literal">1 AD</code>) (Bruce)
+       </p></li>
+<li><p>        Fix <code class="function">date_part(year)</code> for BC dates (previously it
         returned one less than the correct year) (Bruce)
-       </P
-></LI
-><LI
-><P
->        Fix <CODE
-CLASS="FUNCTION"
->date_part()</CODE
-> to return the proper millennium and
+       </p></li>
+<li>
+<p>        Fix <code class="function">date_part()</code> to return the proper millennium and
         century (Fabien Coelho)
-       </P
-><P
->        In previous versions, the century and millennium results had a wrong
+       </p>
+<p>        In previous versions, the century and millennium results had a wrong
         number and started in the wrong year, as compared to standard
         reckoning of such things.
-       </P
-></LI
-><LI
-><P
->        Add <CODE
-CLASS="FUNCTION"
->ceiling()</CODE
-> as an alias for <CODE
-CLASS="FUNCTION"
->ceil()</CODE
->,
-        and <CODE
-CLASS="FUNCTION"
->power()</CODE
-> as an alias for <CODE
-CLASS="FUNCTION"
->pow()</CODE
-> for
+       </p>
+</li>
+<li><p>        Add <code class="function">ceiling()</code> as an alias for <code class="function">ceil()</code>,
+        and <code class="function">power()</code> as an alias for <code class="function">pow()</code> for
         standards compliance (Neil)
-       </P
-></LI
-><LI
-><P
->        Change <CODE
-CLASS="FUNCTION"
->ln()</CODE
->, <CODE
-CLASS="FUNCTION"
->log()</CODE
->,
-        <CODE
-CLASS="FUNCTION"
->power()</CODE
->, and <CODE
-CLASS="FUNCTION"
->sqrt()</CODE
-> to emit the correct
-        <TT
-CLASS="LITERAL"
->SQLSTATE</TT
-> error codes for certain error conditions, as
+       </p></li>
+<li><p>        Change <code class="function">ln()</code>, <code class="function">log()</code>,
+        <code class="function">power()</code>, and <code class="function">sqrt()</code> to emit the correct
+        <code class="literal">SQLSTATE</code> error codes for certain error conditions, as
         specified by SQL:2003 (Neil)
-       </P
-></LI
-><LI
-><P
->        Add <CODE
-CLASS="FUNCTION"
->width_bucket()</CODE
-> function as defined by SQL:2003 (Neil)
-       </P
-></LI
-><LI
-><P
->        Add <CODE
-CLASS="FUNCTION"
->generate_series()</CODE
-> functions to simplify working
+       </p></li>
+<li><p>        Add <code class="function">width_bucket()</code> function as defined by SQL:2003 (Neil)
+       </p></li>
+<li><p>        Add <code class="function">generate_series()</code> functions to simplify working
         with numeric sets (Joe)
-       </P
-></LI
-><LI
-><P
->        Fix <CODE
-CLASS="FUNCTION"
->upper/lower/initcap()</CODE
-> functions to work with
+       </p></li>
+<li><p>        Fix <code class="function">upper/lower/initcap()</code> functions to work with
         multibyte encodings (Tom)
-       </P
-></LI
-><LI
-><P
->        Add boolean and bitwise integer <TT
-CLASS="OPTION"
->AND</TT
->/<TT
-CLASS="OPTION"
->OR</TT
->
+       </p></li>
+<li><p>        Add boolean and bitwise integer <code class="option">AND</code>/<code class="option">OR</code>
         aggregates (Fabien Coelho)
-       </P
-></LI
-><LI
-><P
->        New session information functions to return network addresses for client
+       </p></li>
+<li><p>        New session information functions to return network addresses for client
         and server (Sean Chittenden)
-       </P
-></LI
-><LI
-><P
->        Add function to determine the area of a closed path (Sean Chittenden)
-       </P
-></LI
-><LI
-><P
->        Add function to send cancel request to other backends (Magnus)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="TYPE"
->interval</TT
-> plus <TT
-CLASS="TYPE"
->datetime</TT
-> operators (Tom)
-       </P
-><P
->        The reverse ordering, <TT
-CLASS="TYPE"
->datetime</TT
-> plus <TT
-CLASS="TYPE"
->interval</TT
->,
+       </p></li>
+<li><p>        Add function to determine the area of a closed path (Sean Chittenden)
+       </p></li>
+<li><p>        Add function to send cancel request to other backends (Magnus)
+       </p></li>
+<li>
+<p>        Add <code class="type">interval</code> plus <code class="type">datetime</code> operators (Tom)
+       </p>
+<p>        The reverse ordering, <code class="type">datetime</code> plus <code class="type">interval</code>,
         was already supported, but both are required by the SQL standard.
-       </P
-></LI
-><LI
-><P
->        Casting an integer to <TT
-CLASS="TYPE"
->BIT(N)</TT
-> selects the rightmost N bits
+       </p>
+</li>
+<li>
+<p>        Casting an integer to <code class="type">BIT(N)</code> selects the rightmost N bits
         of the integer
         (Tom)
-       </P
-><P
->        In prior releases, the leftmost N bits were selected, but this was
+       </p>
+<p>        In prior releases, the leftmost N bits were selected, but this was
         deemed unhelpful, not to mention inconsistent with casting from bit
         to int.
-       </P
-></LI
-><LI
-><P
->        Require <TT
-CLASS="TYPE"
->CIDR</TT
-> values to have all non-masked bits be zero
+       </p>
+</li>
+<li><p>        Require <code class="type">CIDR</code> values to have all non-masked bits be zero
         (Kevin Brintnall)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68619"
->E.5.4.7. Server-Side Language Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        In <TT
-CLASS="LITERAL"
->READ COMMITTED</TT
-> serialization mode, volatile functions
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id792853"></a>E.6.4.7. Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        In <code class="literal">READ COMMITTED</code> serialization mode, volatile functions
         now see the results of concurrent transactions committed up to the
         beginning of each statement within the function, rather than up to the
         beginning of the interactive command that called the function.
-       </P
-></LI
-><LI
-><P
->        Functions declared <TT
-CLASS="LITERAL"
->STABLE</TT
-> or <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> always
+       </p></li>
+<li><p>        Functions declared <code class="literal">STABLE</code> or <code class="literal">IMMUTABLE</code> always
         use the snapshot of the calling query, and therefore do not see the
         effects of actions taken after the calling query starts, whether in
         their own transaction or other transactions.  Such a function must be
         read-only, too, meaning that it cannot use any SQL commands other than
-        <TT
-CLASS="COMMAND"
->SELECT</TT
->.  There is a considerable performance gain from
-        declaring a function <TT
-CLASS="LITERAL"
->STABLE</TT
-> or <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
->
-        rather than <TT
-CLASS="LITERAL"
->VOLATILE</TT
->.
-       </P
-></LI
-><LI
-><P
->        Non-deferred <TT
-CLASS="OPTION"
->AFTER</TT
-> triggers are now fired immediately
+        <code class="command">SELECT</code>.  There is a considerable performance gain from
+        declaring a function <code class="literal">STABLE</code> or <code class="literal">IMMUTABLE</code>
+        rather than <code class="literal">VOLATILE</code>.
+       </p></li>
+<li><p>        Non-deferred <code class="option">AFTER</code> triggers are now fired immediately
         after completion of the triggering query, rather than upon
         finishing the current interactive command. This makes a difference
         when the triggering query occurred within a function: the trigger
@@ -2571,969 +1072,338 @@ CLASS="OPTION"
         example, if a function inserts a new row into a table, any
         non-deferred foreign key checks occur before proceeding with the
         function.
-       </P
-></LI
-><LI
-><P
->        Allow function parameters to be declared with names (Dennis Bjorklund)
-       </P
-><P
->        This allows better documentation of functions.  Whether the names
+       </p></li>
+<li>
+<p>        Allow function parameters to be declared with names (Dennis Bjorklund)
+       </p>
+<p>        This allows better documentation of functions.  Whether the names
         actually do anything depends on the specific function language
         being used.
-       </P
-></LI
-><LI
-><P
->        Allow PL/pgSQL parameter names to be referenced in the function (Dennis Bjorklund)
-       </P
-><P
->        This basically creates an automatic alias for each named parameter.
-       </P
-></LI
-><LI
-><P
->        Do minimal syntax checking of PL/pgSQL functions at creation time (Tom)
-       </P
-><P
->        This allows us to catch simple syntax errors sooner.
-       </P
-></LI
-><LI
-><P
->        More support for composite types (row and record variables) in PL/pgSQL
-       </P
-><P
->        For example, it now works to pass a rowtype variable to another function
+       </p>
+</li>
+<li>
+<p>        Allow PL/pgSQL parameter names to be referenced in the function (Dennis Bjorklund)
+       </p>
+<p>        This basically creates an automatic alias for each named parameter.
+       </p>
+</li>
+<li>
+<p>        Do minimal syntax checking of PL/pgSQL functions at creation time (Tom)
+       </p>
+<p>        This allows us to catch simple syntax errors sooner.
+       </p>
+</li>
+<li>
+<p>        More support for composite types (row and record variables) in PL/pgSQL
+       </p>
+<p>        For example, it now works to pass a rowtype variable to another function
         as a single variable.
-       </P
-></LI
-><LI
-><P
->        Default values for PL/pgSQL variables can now reference previously
+       </p>
+</li>
+<li><p>        Default values for PL/pgSQL variables can now reference previously
         declared variables
-       </P
-></LI
-><LI
-><P
->        Improve parsing of PL/pgSQL FOR loops (Tom)
-       </P
-><P
->        Parsing is now driven by presence of <TT
-CLASS="LITERAL"
->".."</TT
-> rather than
-        data type of <TT
-CLASS="OPTION"
->FOR</TT
-> variable. This makes no difference for
+       </p></li>
+<li>
+<p>        Improve parsing of PL/pgSQL FOR loops (Tom)
+       </p>
+<p>        Parsing is now driven by presence of <code class="literal">".."</code> rather than
+        data type of <code class="option">FOR</code> variable. This makes no difference for
         correct functions, but should result in more understandable error
         messages when a mistake is made.
-       </P
-></LI
-><LI
-><P
->        Major overhaul of PL/Perl server-side language (Command Prompt, Andrew Dunstan)
-       </P
-></LI
-><LI
-><P
->        In PL/Tcl, SPI commands are now run in subtransactions.  If an error
+       </p>
+</li>
+<li><p>        Major overhaul of PL/Perl server-side language (Command Prompt, Andrew Dunstan)
+       </p></li>
+<li><p>        In PL/Tcl, SPI commands are now run in subtransactions.  If an error
         occurs, the subtransaction is cleaned up and the error is reported
-        as an ordinary Tcl error, which can be trapped with <TT
-CLASS="LITERAL"
->catch</TT
->.
+        as an ordinary Tcl error, which can be trapped with <code class="literal">catch</code>.
         Formerly, it was not possible to catch such errors.
-       </P
-></LI
-><LI
-><P
->        Accept <TT
-CLASS="COMMAND"
->ELSEIF</TT
-> in PL/pgSQL (Neil)
-       </P
-><P
->        Previously PL/pgSQL only allowed <TT
-CLASS="COMMAND"
->ELSIF</TT
->, but many people
-        are accustomed to spelling this keyword <TT
-CLASS="COMMAND"
->ELSEIF</TT
->.
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68666"
->E.5.4.8. <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Improve <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> information display about database
+       </p></li>
+<li>
+<p>        Accept <code class="command">ELSEIF</code> in PL/pgSQL (Neil)
+       </p>
+<p>        Previously PL/pgSQL only allowed <code class="command">ELSIF</code>, but many people
+        are accustomed to spelling this keyword <code class="command">ELSEIF</code>.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id793056"></a>E.6.4.8. <span class="application">psql</span> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Improve <span class="application">psql</span> information display about database
         objects (Christopher)
-       </P
-></LI
-><LI
-><P
->        Allow <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> to display group membership in
-        <TT
-CLASS="COMMAND"
->\du</TT
-> and <TT
-CLASS="COMMAND"
->\dg</TT
-> (Markus Bertheau)
-       </P
-></LI
-><LI
-><P
->        Prevent <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> <TT
-CLASS="COMMAND"
->\dn</TT
-> from showing
+       </p></li>
+<li><p>        Allow <span class="application">psql</span> to display group membership in
+        <code class="command">\du</code> and <code class="command">\dg</code> (Markus Bertheau)
+       </p></li>
+<li><p>        Prevent <span class="application">psql</span> <code class="command">\dn</code> from showing
         temporary schemas (Bruce)
-       </P
-></LI
-><LI
-><P
->        Allow <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> to handle tilde user expansion for file
+       </p></li>
+<li><p>        Allow <span class="application">psql</span> to handle tilde user expansion for file
         names (Zach Irmen)
-       </P
-></LI
-><LI
-><P
->        Allow <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> to display fancy prompts, including
-        color, via <SPAN
-CLASS="APPLICATION"
->readline</SPAN
-> (Reece Hart, Chet Ramey)
-       </P
-></LI
-><LI
-><P
->        Make <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> <TT
-CLASS="COMMAND"
->\copy</TT
-> match <TT
-CLASS="COMMAND"
->COPY</TT
-> command syntax
+       </p></li>
+<li><p>        Allow <span class="application">psql</span> to display fancy prompts, including
+        color, via <span class="application">readline</span> (Reece Hart, Chet Ramey)
+       </p></li>
+<li><p>        Make <span class="application">psql</span> <code class="command">\copy</code> match <code class="command">COPY</code> command syntax
         fully (Tom)
-       </P
-></LI
-><LI
-><P
->        Show the location of syntax errors (Fabien Coelho, Tom)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="COMMAND"
->CLUSTER</TT
-> information to <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->
-        <TT
-CLASS="COMMAND"
->\d</TT
-> display
+       </p></li>
+<li><p>        Show the location of syntax errors (Fabien Coelho, Tom)
+       </p></li>
+<li><p>        Add <code class="command">CLUSTER</code> information to <span class="application">psql</span>
+        <code class="command">\d</code> display
         (Bruce)
-       </P
-></LI
-><LI
-><P
->        Change <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> <TT
-CLASS="COMMAND"
->\copy stdin/stdout</TT
-> to read
+       </p></li>
+<li><p>        Change <span class="application">psql</span> <code class="command">\copy stdin/stdout</code> to read
         from command input/output (Bruce)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->pstdin</TT
->/<TT
-CLASS="OPTION"
->pstdout</TT
-> to read from
-        <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->'s <TT
-CLASS="LITERAL"
->stdin</TT
->/<TT
-CLASS="LITERAL"
->stdout</TT
-> (Mark
+       </p></li>
+<li><p>        Add <code class="option">pstdin</code>/<code class="option">pstdout</code> to read from
+        <span class="application">psql</span>'s <code class="literal">stdin</code>/<code class="literal">stdout</code> (Mark
         Feit)
-       </P
-></LI
-><LI
-><P
->        Add global <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> configuration file, <TT
-CLASS="FILENAME"
->psqlrc.sample</TT
->
+       </p></li>
+<li>
+<p>        Add global <span class="application">psql</span> configuration file, <code class="filename">psqlrc.sample</code>
         (Bruce)
-       </P
-><P
->        This allows a central file where global <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> startup commands can
+       </p>
+<p>        This allows a central file where global <span class="application">psql</span> startup commands can
         be stored.
-       </P
-></LI
-><LI
-><P
->        Have <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> <TT
-CLASS="COMMAND"
->\d+</TT
-> indicate if the table
-        has an <TT
-CLASS="TYPE"
->OID</TT
-> column (Neil)
-       </P
-></LI
-><LI
-><P
->        On Windows, use binary mode in <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> when reading files so control-Z
+       </p>
+</li>
+<li><p>        Have <span class="application">psql</span> <code class="command">\d+</code> indicate if the table
+        has an <code class="type">OID</code> column (Neil)
+       </p></li>
+<li><p>        On Windows, use binary mode in <span class="application">psql</span> when reading files so control-Z
         is not seen as end-of-file
-       </P
-></LI
-><LI
-><P
->        Have <TT
-CLASS="COMMAND"
->\dn+</TT
-> show permissions and description for schemas (Dennis
+       </p></li>
+<li><p>        Have <code class="command">\dn+</code> show permissions and description for schemas (Dennis
         Bjorklund)
-       </P
-></LI
-><LI
-><P
->        Improve tab completion support (Stefan Kaltenbrunn, Greg Sabino Mullane)
-       </P
-></LI
-><LI
-><P
->        Allow boolean settings to be set using upper or lower case (Michael Paesold)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68733"
->E.5.4.9. <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Use dependency information to improve the reliability of
-        <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> (Tom)
-       </P
-><P
->        This should solve the longstanding problems with related objects
+       </p></li>
+<li><p>        Improve tab completion support (Stefan Kaltenbrunn, Greg Sabino Mullane)
+       </p></li>
+<li><p>        Allow boolean settings to be set using upper or lower case (Michael Paesold)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id793338"></a>E.6.4.9. <span class="application">pg_dump</span> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Use dependency information to improve the reliability of
+        <span class="application">pg_dump</span> (Tom)
+       </p>
+<p>        This should solve the longstanding problems with related objects
         sometimes being dumped in the wrong order.
-       </P
-></LI
-><LI
-><P
->        Have <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> output objects in alphabetical order if possible (Tom)
-       </P
-><P
->        This should make it easier to identify changes between
+       </p>
+</li>
+<li>
+<p>        Have <span class="application">pg_dump</span> output objects in alphabetical order if possible (Tom)
+       </p>
+<p>        This should make it easier to identify changes between
         dump files.
-       </P
-></LI
-><LI
-><P
->        Allow <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> to ignore some SQL errors (Fabien Coelho)
-       </P
-><P
->        This makes <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
->'s behavior similar to the
-        results of feeding a <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> output script to
-        <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->. In most cases, ignoring errors and plowing
+       </p>
+</li>
+<li>
+<p>        Allow <span class="application">pg_restore</span> to ignore some SQL errors (Fabien Coelho)
+       </p>
+<p>        This makes <span class="application">pg_restore</span>'s behavior similar to the
+        results of feeding a <span class="application">pg_dump</span> output script to
+        <span class="application">psql</span>. In most cases, ignoring errors and plowing
         ahead is the most useful thing to do. Also added was a pg_restore
         option to give the old behavior of exiting on an error.
-       </P
-></LI
-><LI
-><P
->        <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> <TT
-CLASS="OPTION"
->-l</TT
-> display now includes
+       </p>
+</li>
+<li><p>        <span class="application">pg_restore</span> <code class="option">-l</code> display now includes
         objects' schema names
-       </P
-></LI
-><LI
-><P
->        New begin/end markers in <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> text output (Bruce)
-       </P
-></LI
-><LI
-><P
->        Add start/stop times for
-        <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->/<SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-> in verbose mode
+       </p></li>
+<li><p>        New begin/end markers in <span class="application">pg_dump</span> text output (Bruce)
+       </p></li>
+<li><p>        Add start/stop times for
+        <span class="application">pg_dump</span>/<span class="application">pg_dumpall</span> in verbose mode
         (Bruce)
-       </P
-></LI
-><LI
-><P
->        Allow most <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> options in
-        <SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-> (Christopher)
-       </P
-></LI
-><LI
-><P
->        Have <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> use <TT
-CLASS="COMMAND"
->ALTER OWNER</TT
-> rather
-        than <TT
-CLASS="COMMAND"
->SET SESSION AUTHORIZATION</TT
-> by default
+       </p></li>
+<li><p>        Allow most <span class="application">pg_dump</span> options in
+        <span class="application">pg_dumpall</span> (Christopher)
+       </p></li>
+<li><p>        Have <span class="application">pg_dump</span> use <code class="command">ALTER OWNER</code> rather
+        than <code class="command">SET SESSION AUTHORIZATION</code> by default
         (Christopher)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68772"
->E.5.4.10. libpq Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Make libpq's <TT
-CLASS="OPTION"
->SIGPIPE</TT
-> handling thread-safe (Bruce)
-       </P
-></LI
-><LI
-><P
->        Add <CODE
-CLASS="FUNCTION"
->PQmbdsplen()</CODE
-> which returns the display length
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id793506"></a>E.6.4.10. libpq Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Make libpq's <code class="option">SIGPIPE</code> handling thread-safe (Bruce)
+       </p></li>
+<li><p>        Add <code class="function">PQmbdsplen()</code> which returns the display length
         of a character (Tatsuo)
-       </P
-></LI
-><LI
-><P
->        Add thread locking to <SPAN
-CLASS="APPLICATION"
->SSL</SPAN
-> and
-        <SPAN
-CLASS="APPLICATION"
->Kerberos</SPAN
-> connections (Manfred Spraul)
-       </P
-></LI
-><LI
-><P
->        Allow <CODE
-CLASS="FUNCTION"
->PQoidValue()</CODE
->, <CODE
-CLASS="FUNCTION"
->PQcmdTuples()</CODE
->, and
-        <CODE
-CLASS="FUNCTION"
->PQoidStatus()</CODE
-> to work on <TT
-CLASS="COMMAND"
->EXECUTE</TT
->
+       </p></li>
+<li><p>        Add thread locking to <span class="application">SSL</span> and
+        <span class="application">Kerberos</span> connections (Manfred Spraul)
+       </p></li>
+<li><p>        Allow <code class="function">PQoidValue()</code>, <code class="function">PQcmdTuples()</code>, and
+        <code class="function">PQoidStatus()</code> to work on <code class="command">EXECUTE</code>
         commands (Neil)
-       </P
-></LI
-><LI
-><P
->        Add <CODE
-CLASS="FUNCTION"
->PQserverVersion()</CODE
-> to provide more convenient
+       </p></li>
+<li><p>        Add <code class="function">PQserverVersion()</code> to provide more convenient
         access to the server version number (Greg Sabino Mullane)
-       </P
-></LI
-><LI
-><P
->        Add <CODE
-CLASS="FUNCTION"
->PQprepare/PQsendPrepared()</CODE
-> functions to support
+       </p></li>
+<li><p>        Add <code class="function">PQprepare/PQsendPrepared()</code> functions to support
         preparing statements without necessarily specifying the data types
         of their parameters (Abhijit Menon-Sen)
-       </P
-></LI
-><LI
-><P
->        Many ECPG improvements, including <TT
-CLASS="COMMAND"
->SET DESCRIPTOR</TT
-> (Michael)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68800"
->E.5.4.11. Source Code Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Allow the database server to run natively on Windows (Claudio, Magnus, Andrew)
-       </P
-></LI
-><LI
-><P
->        Shell script commands converted to C versions for Windows support (Andrew)
-       </P
-></LI
-><LI
-><P
->        Create an extension makefile framework (Fabien Coelho, Peter)
-       </P
-><P
->        This simplifies the task of building extensions outside the original
+       </p></li>
+<li><p>        Many ECPG improvements, including <code class="command">SET DESCRIPTOR</code> (Michael)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id793618"></a>E.6.4.11. Source Code Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Allow the database server to run natively on Windows (Claudio, Magnus, Andrew)
+       </p></li>
+<li><p>        Shell script commands converted to C versions for Windows support (Andrew)
+       </p></li>
+<li>
+<p>        Create an extension makefile framework (Fabien Coelho, Peter)
+       </p>
+<p>        This simplifies the task of building extensions outside the original
         source tree.
-       </P
-></LI
-><LI
-><P
->        Support relocatable installations (Bruce)
-       </P
-><P
->        Directory paths for installed files (such as the
-        <TT
-CLASS="FILENAME"
->/share</TT
-> directory) are now computed relative to the
+       </p>
+</li>
+<li>
+<p>        Support relocatable installations (Bruce)
+       </p>
+<p>        Directory paths for installed files (such as the
+        <code class="filename">/share</code> directory) are now computed relative to the
         actual location of the executables, so that an installation tree
         can be moved to another place without reconfiguring and
         rebuilding.
-       </P
-></LI
-><LI
-><P
->        Use <TT
-CLASS="OPTION"
->--with-docdir</TT
-> to choose installation location of documentation; also
-        allow <TT
-CLASS="OPTION"
->--infodir</TT
-> (Peter)
-       </P
-></LI
-><LI
-><P
->        Add <TT
-CLASS="OPTION"
->--without-docdir</TT
-> to prevent installation of documentation (Peter)
-       </P
-></LI
-><LI
-><P
->        Upgrade to <SPAN
-CLASS="APPLICATION"
->DocBook</SPAN
-> V4.2 SGML (Peter)
-       </P
-></LI
-><LI
-><P
->        New <TT
-CLASS="LITERAL"
->PostgreSQL</TT
-> <SPAN
-CLASS="APPLICATION"
->CVS</SPAN
-> tag (Marc)
-       </P
-><P
->        This was done to make it easier for organizations to manage their
-        own copies of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-        <SPAN
-CLASS="APPLICATION"
->CVS</SPAN
-> repository. File version stamps from the master
+       </p>
+</li>
+<li><p>        Use <code class="option">--with-docdir</code> to choose installation location of documentation; also
+        allow <code class="option">--infodir</code> (Peter)
+       </p></li>
+<li><p>        Add <code class="option">--without-docdir</code> to prevent installation of documentation (Peter)
+       </p></li>
+<li><p>        Upgrade to <span class="application">DocBook</span> V4.2 SGML (Peter)
+       </p></li>
+<li>
+<p>        New <code class="literal">PostgreSQL</code> <span class="application">CVS</span> tag (Marc)
+       </p>
+<p>        This was done to make it easier for organizations to manage their
+        own copies of the <span class="productname">PostgreSQL</span>
+        <span class="application">CVS</span> repository. File version stamps from the master
         repository will not get munged by checking into or out of a copied
         repository.
-       </P
-></LI
-><LI
-><P
->        Clarify locking code (Manfred Koizar)
-       </P
-></LI
-><LI
-><P
->        Buffer manager cleanup (Neil)
-       </P
-></LI
-><LI
-><P
->        Decouple platform tests from CPU spinlock code (Bruce, Tom)
-       </P
-></LI
-><LI
-><P
->        Add inlined test-and-set code on PA-RISC for <SPAN
-CLASS="APPLICATION"
->gcc</SPAN
->
+       </p>
+</li>
+<li><p>        Clarify locking code (Manfred Koizar)
+       </p></li>
+<li><p>        Buffer manager cleanup (Neil)
+       </p></li>
+<li><p>        Decouple platform tests from CPU spinlock code (Bruce, Tom)
+       </p></li>
+<li><p>        Add inlined test-and-set code on PA-RISC for <span class="application">gcc</span>
         (ViSolve, Tom)
-       </P
-></LI
-><LI
-><P
->        Improve i386 spinlock code (Manfred Spraul)
-       </P
-></LI
-><LI
-><P
->        Clean up spinlock assembly code to avoid warnings from newer
-        <SPAN
-CLASS="APPLICATION"
->gcc</SPAN
-> releases (Tom)
-       </P
-></LI
-><LI
-><P
->        Remove JDBC from source tree; now a separate project
-       </P
-></LI
-><LI
-><P
->        Remove the libpgtcl client interface; now a separate project
-       </P
-></LI
-><LI
-><P
->        More accurately estimate memory and file descriptor usage (Tom)
-       </P
-></LI
-><LI
-><P
->        Improvements to the Mac OS X startup scripts (Ray A.)
-       </P
-></LI
-><LI
-><P
->        New <CODE
-CLASS="FUNCTION"
->fsync()</CODE
-> test program (Bruce)
-       </P
-></LI
-><LI
-><P
->        Major documentation improvements (Neil, Peter)
-       </P
-></LI
-><LI
-><P
->        Remove <SPAN
-CLASS="APPLICATION"
->pg_encoding</SPAN
->; not needed
+       </p></li>
+<li><p>        Improve i386 spinlock code (Manfred Spraul)
+       </p></li>
+<li><p>        Clean up spinlock assembly code to avoid warnings from newer
+        <span class="application">gcc</span> releases (Tom)
+       </p></li>
+<li><p>        Remove JDBC from source tree; now a separate project
+       </p></li>
+<li><p>        Remove the libpgtcl client interface; now a separate project
+       </p></li>
+<li><p>        More accurately estimate memory and file descriptor usage (Tom)
+       </p></li>
+<li><p>        Improvements to the Mac OS X startup scripts (Ray A.)
+       </p></li>
+<li><p>        New <code class="function">fsync()</code> test program (Bruce)
+       </p></li>
+<li><p>        Major documentation improvements (Neil, Peter)
+       </p></li>
+<li><p>        Remove <span class="application">pg_encoding</span>; not needed
         anymore
-       </P
-></LI
-><LI
-><P
->        Remove <SPAN
-CLASS="APPLICATION"
->pg_id</SPAN
->; not needed anymore
-       </P
-></LI
-><LI
-><P
->        Remove <SPAN
-CLASS="APPLICATION"
->initlocation</SPAN
->; not needed
+       </p></li>
+<li><p>        Remove <span class="application">pg_id</span>; not needed anymore
+       </p></li>
+<li><p>        Remove <span class="application">initlocation</span>; not needed
         anymore
-       </P
-></LI
-><LI
-><P
->        Auto-detect thread flags (no more manual testing) (Bruce)
-       </P
-></LI
-><LI
-><P
->        Use Olson's public domain <SPAN
-CLASS="APPLICATION"
->timezone</SPAN
-> library (Magnus)
-       </P
-></LI
-><LI
-><P
->        With threading enabled, use thread flags on Unixware for 
+       </p></li>
+<li><p>        Auto-detect thread flags (no more manual testing) (Bruce)
+       </p></li>
+<li><p>        Use Olson's public domain <span class="application">timezone</span> library (Magnus)
+       </p></li>
+<li>
+<p>        With threading enabled, use thread flags on Unixware for 
         backend executables too (Bruce)
-       </P
-><P
->        Unixware cannot mix threaded and non-threaded object files in the
+       </p>
+<p>        Unixware cannot mix threaded and non-threaded object files in the
         same executable, so everything must be compiled as threaded.
-       </P
-></LI
-><LI
-><P
->        <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> now uses a <SPAN
-CLASS="APPLICATION"
->flex</SPAN
->-generated
+       </p>
+</li>
+<li><p>        <span class="application">psql</span> now uses a <span class="application">flex</span>-generated
         lexical analyzer to process command strings
-       </P
-></LI
-><LI
-><P
->        Reimplement the linked list data structure used throughout the
+       </p></li>
+<li>
+<p>        Reimplement the linked list data structure used throughout the
         backend (Neil)
-       </P
-><P
->        This improves performance by allowing list append and length
+       </p>
+<p>        This improves performance by allowing list append and length
         operations to be more efficient.
-       </P
-></LI
-><LI
-><P
->        Allow dynamically loaded modules to create their own server configuration
+       </p>
+</li>
+<li><p>        Allow dynamically loaded modules to create their own server configuration
         parameters (Thomas Hallgren)
-       </P
-></LI
-><LI
-><P
->        New Brazilian version of FAQ (Euler Taveira de Oliveira)
-       </P
-></LI
-><LI
-><P
->        Add French FAQ (Guillaume Lelarge)
-       </P
-></LI
-><LI
-><P
->        New <SPAN
-CLASS="APPLICATION"
->pgevent</SPAN
-> for Windows logging
-       </P
-></LI
-><LI
-><P
->        Make libpq and ECPG build as proper shared libraries on OS X (Tom)
-       </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN68893"
->E.5.4.12. Contrib Changes</A
-></H3
-><P
-></P
-><UL
-><LI
-><P
->        Overhaul of <TT
-CLASS="FILENAME"
->contrib/dblink</TT
-> (Joe)
-       </P
-></LI
-><LI
-><P
->        <TT
-CLASS="FILENAME"
->contrib/dbmirror</TT
-> improvements (Steven Singer)
-       </P
-></LI
-><LI
-><P
->        New <TT
-CLASS="FILENAME"
->contrib/xml2</TT
-> (John Gray, Torchbox)
-       </P
-></LI
-><LI
-><P
->        Updated <TT
-CLASS="FILENAME"
->contrib/mysql</TT
->
-       </P
-></LI
-><LI
-><P
->        New version of <TT
-CLASS="FILENAME"
->contrib/btree_gist</TT
-> (Teodor)
-       </P
-></LI
-><LI
-><P
->        New <TT
-CLASS="FILENAME"
->contrib/trgm</TT
->, trigram matching for
-        <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> (Teodor)
-       </P
-></LI
-><LI
-><P
->        Many <TT
-CLASS="FILENAME"
->contrib/tsearch2</TT
-> improvements (Teodor)
-       </P
-></LI
-><LI
-><P
->        Add double metaphone to <TT
-CLASS="FILENAME"
->contrib/fuzzystrmatch</TT
-> (Andrew)
-       </P
-></LI
-><LI
-><P
->        Allow <TT
-CLASS="FILENAME"
->contrib/pg_autovacuum</TT
-> to run as a Windows service (Dave Page)
-       </P
-></LI
-><LI
-><P
->        Add functions to <TT
-CLASS="FILENAME"
->contrib/dbsize</TT
-> (Andreas Pflug)
-       </P
-></LI
-><LI
-><P
->        Removed <TT
-CLASS="FILENAME"
->contrib/pg_logger</TT
->: obsoleted by integrated logging
+       </p></li>
+<li><p>        New Brazilian version of FAQ (Euler Taveira de Oliveira)
+       </p></li>
+<li><p>        Add French FAQ (Guillaume Lelarge)
+       </p></li>
+<li><p>        New <span class="application">pgevent</span> for Windows logging
+       </p></li>
+<li><p>        Make libpq and ECPG build as proper shared libraries on OS X (Tom)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id793931"></a>E.6.4.12. Contrib Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Overhaul of <code class="filename">contrib/dblink</code> (Joe)
+       </p></li>
+<li><p>        <code class="filename">contrib/dbmirror</code> improvements (Steven Singer)
+       </p></li>
+<li><p>        New <code class="filename">contrib/xml2</code> (John Gray, Torchbox)
+       </p></li>
+<li><p>        Updated <code class="filename">contrib/mysql</code>
+       </p></li>
+<li><p>        New version of <code class="filename">contrib/btree_gist</code> (Teodor)
+       </p></li>
+<li><p>        New <code class="filename">contrib/trgm</code>, trigram matching for
+        <span class="productname">PostgreSQL</span> (Teodor)
+       </p></li>
+<li><p>        Many <code class="filename">contrib/tsearch2</code> improvements (Teodor)
+       </p></li>
+<li><p>        Add double metaphone to <code class="filename">contrib/fuzzystrmatch</code> (Andrew)
+       </p></li>
+<li><p>        Allow <code class="filename">contrib/pg_autovacuum</code> to run as a Windows service (Dave Page)
+       </p></li>
+<li><p>        Add functions to <code class="filename">contrib/dbsize</code> (Andreas Pflug)
+       </p></li>
+<li><p>        Removed <code class="filename">contrib/pg_logger</code>: obsoleted by integrated logging
         subprocess
-       </P
-></LI
-><LI
-><P
->        Removed <TT
-CLASS="FILENAME"
->contrib/rserv</TT
->: obsoleted by various separate projects
-       </P
-></LI
-></UL
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-8-0-1.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-4-9.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 8.0.1</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 7.4.9</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+       </p></li>
+<li><p>        Removed <code class="filename">contrib/rserv</code>: obsoleted by various separate projects
+       </p></li>
+</ul></div>
+</div>
+</div>
+</div></body>
+</html>

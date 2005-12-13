@@ -1,391 +1,100 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->pg_cast</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_attribute"
-HREF="catalog-pg-attribute.html"><LINK
-REL="NEXT"
-TITLE="pg_class"
-HREF="catalog-pg-class.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-attribute.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-class.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-CAST"
->41.8. <TT
-CLASS="STRUCTNAME"
->pg_cast</TT
-></A
-></H1
-><A
-NAME="AEN52534"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_cast</TT
-> stores data type conversion paths,
-   both built-in paths and those defined with <TT
-CLASS="COMMAND"
->CREATE CAST</TT
->.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN52539"
-></A
-><P
-><B
->Table 41-8. <TT
-CLASS="STRUCTFIELD"
->pg_cast</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->castsource</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->OID of the source data type</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->casttarget</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->OID of the target data type</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->castfunc</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-proc.html"
-><TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-></A
->.oid</TT
-></TD
-><TD
->       The OID of the function to use to perform this cast.  Zero is
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.8. pg_cast</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="prev" href="catalog-pg-attribute.html" title="41.7. pg_attribute">
+<link rel="next" href="catalog-pg-class.html" title="41.9. pg_class">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-cast"></a>41.8. <code class="structname">pg_cast</code></h2></div></div></div>
+<a name="id748215"></a><p>   The catalog <code class="structname">pg_cast</code> stores data type conversion paths,
+   both built-in paths and those defined with <code class="command">CREATE CAST</code>.
+  </p>
+<div class="table">
+<a name="id748239"></a><p class="title"><b>Table 41.8. <code class="structfield">pg_cast</code> Columns</b></p>
+<table summary="pg_cast Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">castsource</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td>OID of the source data type</td>
+</tr>
+<tr>
+<td><code class="structfield">casttarget</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td>OID of the target data type</td>
+</tr>
+<tr>
+<td><code class="structfield">castfunc</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>       The OID of the function to use to perform this cast.  Zero is
        stored if the data types are binary compatible (that is, no
        run-time operation is needed to perform the cast).
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->castcontext</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->char</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       Indicates what contexts the cast may be invoked in.
-       <TT
-CLASS="LITERAL"
->e</TT
-> means only as an explicit cast (using
-       <TT
-CLASS="LITERAL"
->CAST</TT
-> or <TT
-CLASS="LITERAL"
->::</TT
-> syntax).
-       <TT
-CLASS="LITERAL"
->a</TT
-> means implicitly in assignment
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">castcontext</code></td>
+<td><code class="type">char</code></td>
+<td> </td>
+<td>       Indicates what contexts the cast may be invoked in.
+       <code class="literal">e</code> means only as an explicit cast (using
+       <code class="literal">CAST</code> or <code class="literal">::</code> syntax).
+       <code class="literal">a</code> means implicitly in assignment
        to a target column, as well as explicitly.
-       <TT
-CLASS="LITERAL"
->i</TT
-> means implicitly in expressions, as well as the
+       <code class="literal">i</code> means implicitly in expressions, as well as the
        other cases.
-      </TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   The cast functions listed in <TT
-CLASS="STRUCTNAME"
->pg_cast</TT
-> must
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   The cast functions listed in <code class="structname">pg_cast</code> must
    always take the cast source type as their first argument type, and
    return the cast destination type as their result type.  A cast
    function can have up to three arguments.  The second argument,
-   if present, must be type <TT
-CLASS="TYPE"
->integer</TT
->; it receives the type
-   modifier associated with the destination type, or <TT
-CLASS="LITERAL"
->-1</TT
->
+   if present, must be type <code class="type">integer</code>; it receives the type
+   modifier associated with the destination type, or <code class="literal">-1</code>
    if there is none.  The third argument,
-   if present, must be type <TT
-CLASS="TYPE"
->boolean</TT
->; it receives <TT
-CLASS="LITERAL"
->true</TT
->
-   if the cast is an explicit cast, <TT
-CLASS="LITERAL"
->false</TT
-> otherwise.
-  </P
-><P
->   It is legitimate to create a <TT
-CLASS="STRUCTNAME"
->pg_cast</TT
-> entry
+   if present, must be type <code class="type">boolean</code>; it receives <code class="literal">true</code>
+   if the cast is an explicit cast, <code class="literal">false</code> otherwise.
+  </p>
+<p>   It is legitimate to create a <code class="structname">pg_cast</code> entry
    in which the source and target types are the same, if the associated
    function takes more than one argument.  Such entries represent
-   <SPAN
-CLASS="QUOTE"
->"length coercion functions"</SPAN
-> that coerce values of the type
+   &#8220;<span class="quote">length coercion functions</span>&#8221; that coerce values of the type
    to be legal for a particular type modifier value.  Note however that
    at present there is no support for associating non-default type
    modifiers with user-created data types, and so this facility is only
    of use for the small number of built-in types that have type modifier
    syntax built into the grammar.
-  </P
-><P
->   When a <TT
-CLASS="STRUCTNAME"
->pg_cast</TT
-> entry has different source and
+  </p>
+<p>   When a <code class="structname">pg_cast</code> entry has different source and
    target types and a function that takes more than one argument, it
    represents converting from one type to another and applying a length
    coercion in a single step.  When no such entry is available, coercion
    to a type that uses a type modifier involves two steps, one to
    convert between data types and a second to apply the modifier.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-attribute.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-class.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_attribute</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_class</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

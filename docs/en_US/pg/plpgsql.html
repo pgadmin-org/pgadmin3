@@ -1,809 +1,239 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->PL/pgSQL - SQL Procedural Language</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Programming"
-HREF="server-programming.html"><LINK
-REL="PREVIOUS"
-TITLE="Procedural Languages"
-HREF="xplang.html"><LINK
-REL="NEXT"
-TITLE="Tips for Developing in PL/pgSQL"
-HREF="plpgsql-development-tips.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xplang.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xplang.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="pltcl.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-development-tips.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="PLPGSQL"
-></A
->Chapter 35. <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> - <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Procedural Language</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->35.1. <A
-HREF="plpgsql.html#PLPGSQL-OVERVIEW"
->Overview</A
-></DT
-><DD
-><DL
-><DT
->35.1.1. <A
-HREF="plpgsql.html#PLPGSQL-ADVANTAGES"
->Advantages of Using <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></A
-></DT
-><DT
->35.1.2. <A
-HREF="plpgsql.html#PLPGSQL-ARGS-RESULTS"
->Supported Argument and Result Data Types</A
-></DT
-></DL
-></DD
-><DT
->35.2. <A
-HREF="plpgsql-development-tips.html"
->Tips for Developing in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></A
-></DT
-><DT
->35.3. <A
-HREF="plpgsql-structure.html"
->Structure of <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></A
-></DT
-><DT
->35.4. <A
-HREF="plpgsql-declarations.html"
->Declarations</A
-></DT
-><DD
-><DL
-><DT
->35.4.1. <A
-HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-ALIASES"
->Aliases for Function Parameters</A
-></DT
-><DT
->35.4.2. <A
-HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-TYPE"
->Copying Types</A
-></DT
-><DT
->35.4.3. <A
-HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-ROWTYPES"
->Row Types</A
-></DT
-><DT
->35.4.4. <A
-HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-RECORDS"
->Record Types</A
-></DT
-><DT
->35.4.5. <A
-HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-RENAMING-VARS"
-><TT
-CLASS="LITERAL"
->RENAME</TT
-></A
-></DT
-></DL
-></DD
-><DT
->35.5. <A
-HREF="plpgsql-expressions.html"
->Expressions</A
-></DT
-><DT
->35.6. <A
-HREF="plpgsql-statements.html"
->Basic Statements</A
-></DT
-><DD
-><DL
-><DT
->35.6.1. <A
-HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-ASSIGNMENT"
->Assignment</A
-></DT
-><DT
->35.6.2. <A
-HREF="plpgsql-statements.html#PLPGSQL-SELECT-INTO"
-><TT
-CLASS="COMMAND"
->SELECT INTO</TT
-></A
-></DT
-><DT
->35.6.3. <A
-HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-PERFORM"
->Executing an Expression or Query With No Result</A
-></DT
-><DT
->35.6.4. <A
-HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-NULL"
->Doing Nothing At All</A
-></DT
-><DT
->35.6.5. <A
-HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN"
->Executing Dynamic Commands</A
-></DT
-><DT
->35.6.6. <A
-HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-DIAGNOSTICS"
->Obtaining the Result Status</A
-></DT
-></DL
-></DD
-><DT
->35.7. <A
-HREF="plpgsql-control-structures.html"
->Control Structures</A
-></DT
-><DD
-><DL
-><DT
->35.7.1. <A
-HREF="plpgsql-control-structures.html#PLPGSQL-STATEMENTS-RETURNING"
->Returning From a Function</A
-></DT
-><DT
->35.7.2. <A
-HREF="plpgsql-control-structures.html#PLPGSQL-CONDITIONALS"
->Conditionals</A
-></DT
-><DT
->35.7.3. <A
-HREF="plpgsql-control-structures.html#PLPGSQL-CONTROL-STRUCTURES-LOOPS"
->Simple Loops</A
-></DT
-><DT
->35.7.4. <A
-HREF="plpgsql-control-structures.html#PLPGSQL-RECORDS-ITERATING"
->Looping Through Query Results</A
-></DT
-><DT
->35.7.5. <A
-HREF="plpgsql-control-structures.html#PLPGSQL-ERROR-TRAPPING"
->Trapping Errors</A
-></DT
-></DL
-></DD
-><DT
->35.8. <A
-HREF="plpgsql-cursors.html"
->Cursors</A
-></DT
-><DD
-><DL
-><DT
->35.8.1. <A
-HREF="plpgsql-cursors.html#PLPGSQL-CURSOR-DECLARATIONS"
->Declaring Cursor Variables</A
-></DT
-><DT
->35.8.2. <A
-HREF="plpgsql-cursors.html#PLPGSQL-CURSOR-OPENING"
->Opening Cursors</A
-></DT
-><DT
->35.8.3. <A
-HREF="plpgsql-cursors.html#PLPGSQL-CURSOR-USING"
->Using Cursors</A
-></DT
-></DL
-></DD
-><DT
->35.9. <A
-HREF="plpgsql-errors-and-messages.html"
->Errors and Messages</A
-></DT
-><DT
->35.10. <A
-HREF="plpgsql-trigger.html"
->Trigger Procedures</A
-></DT
-><DT
->35.11. <A
-HREF="plpgsql-porting.html"
->Porting from <SPAN
-CLASS="PRODUCTNAME"
->Oracle</SPAN
-> PL/SQL</A
-></DT
-><DD
-><DL
-><DT
->35.11.1. <A
-HREF="plpgsql-porting.html#AEN33510"
->Porting Examples</A
-></DT
-><DT
->35.11.2. <A
-HREF="plpgsql-porting.html#PLPGSQL-PORTING-OTHER"
->Other Things to Watch For</A
-></DT
-><DT
->35.11.3. <A
-HREF="plpgsql-porting.html#PLPGSQL-PORTING-APPENDIX"
->Appendix</A
-></DT
-></DL
-></DD
-></DL
-></DIV
-><A
-NAME="AEN32276"
-></A
-><P
->  <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> is a loadable procedural
-  language for the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database
-  system.  The design goals of <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> were to create
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 35. PL/pgSQL - SQL Procedural Language</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="xplang.html" title="Chapter 34. Procedural Languages">
+<link rel="next" href="plpgsql-development-tips.html" title="35.2. Tips for Developing in PL/pgSQL">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpgsql">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="plpgsql"></a>Chapter 35. <span class="application">PL/pgSQL</span> - <span class="acronym">SQL</span> Procedural Language</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="plpgsql.html#plpgsql-overview">35.1. Overview</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql.html#plpgsql-advantages">35.1.1. Advantages of Using <span class="application">PL/pgSQL</span></a></span></dt>
+<dt><span class="sect2"><a href="plpgsql.html#plpgsql-args-results">35.1.2. Supported Argument and Result Data Types</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-development-tips.html">35.2. Tips for Developing in <span class="application">PL/pgSQL</span></a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="plpgsql-development-tips.html#plpgsql-quote-tips">35.2.1. Handling of Quotation Marks</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="plpgsql-structure.html">35.3. Structure of <span class="application">PL/pgSQL</span></a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-declarations.html">35.4. Declarations</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-aliases">35.4.1. Aliases for Function Parameters</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-type">35.4.2. Copying Types</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-rowtypes">35.4.3. Row Types</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-records">35.4.4. Record Types</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-renaming-vars">35.4.5. <code class="literal">RENAME</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-expressions.html">35.5. Expressions</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-statements.html">35.6. Basic Statements</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-assignment">35.6.1. Assignment</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-select-into">35.6.2. <code class="command">SELECT INTO</code></a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-perform">35.6.3. Executing an Expression or Query With No Result</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-null">35.6.4. Doing Nothing At All</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-executing-dyn">35.6.5. Executing Dynamic Commands</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-diagnostics">35.6.6. Obtaining the Result Status</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-control-structures.html">35.7. Control Structures</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-statements-returning">35.7.1. Returning From a Function</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-conditionals">35.7.2. Conditionals</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-control-structures-loops">35.7.3. Simple Loops</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-records-iterating">35.7.4. Looping Through Query Results</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-error-trapping">35.7.5. Trapping Errors</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-cursors.html">35.8. Cursors</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-cursors.html#plpgsql-cursor-declarations">35.8.1. Declaring Cursor Variables</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-cursors.html#plpgsql-cursor-opening">35.8.2. Opening Cursors</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-cursors.html#plpgsql-cursor-using">35.8.3. Using Cursors</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-errors-and-messages.html">35.9. Errors and Messages</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-trigger.html">35.10. Trigger Procedures</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-porting.html">35.11. Porting from <span class="productname">Oracle</span> PL/SQL</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-porting.html#id664182">35.11.1. Porting Examples</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-other">35.11.2. Other Things to Watch For</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-appendix">35.11.3. Appendix</a></span></dt>
+</dl></dd>
+</dl>
+</div>
+<a name="id657092"></a><p>  <span class="application">PL/pgSQL</span> is a loadable procedural
+  language for the <span class="productname">PostgreSQL</span> database
+  system.  The design goals of <span class="application">PL/pgSQL</span> were to create
   a loadable procedural language that
 
-    <P
-></P
-></P><UL
-><LI
-><P
->       can be used to create functions and trigger procedures,
-      </P
-></LI
-><LI
-><P
->       adds control structures to the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> language,
-      </P
-></LI
-><LI
-><P
->       can perform complex computations,
-      </P
-></LI
-><LI
-><P
->       inherits all user-defined types, functions, and operators,
-      </P
-></LI
-><LI
-><P
->       can be defined to be trusted by the server,
-      </P
-></LI
-><LI
-><P
->       is easy to use.
-      </P
-></LI
-></UL
-><P>
-   </P
-><P
->    Except for input/output conversion and calculation functions
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       can be used to create functions and trigger procedures,
+      </p></li>
+<li><p>       adds control structures to the <span class="acronym">SQL</span> language,
+      </p></li>
+<li><p>       can perform complex computations,
+      </p></li>
+<li><p>       inherits all user-defined types, functions, and operators,
+      </p></li>
+<li><p>       can be defined to be trusted by the server,
+      </p></li>
+<li><p>       is easy to use.
+      </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    Except for input/output conversion and calculation functions
     for user-defined types, anything that can be defined in C language
-    functions can also be done with <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->.
+    functions can also be done with <span class="application">PL/pgSQL</span>.
     For example, it is possible to
     create complex conditional computation functions and later use
     them to define operators or use them in index expressions.
-   </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLPGSQL-OVERVIEW"
->35.1. Overview</A
-></H1
-><P
->    The <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> call handler parses the function's source text and
+   </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-overview"></a>35.1. Overview</h2></div></div></div>
+<p>    The <span class="application">PL/pgSQL</span> call handler parses the function's source text and
     produces an internal binary instruction tree the first time the
     function is called (within each session).  The instruction tree
     fully translates the 
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> statement structure, but individual
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> expressions and <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> commands
+    <span class="application">PL/pgSQL</span> statement structure, but individual
+    <span class="acronym">SQL</span> expressions and <span class="acronym">SQL</span> commands
     used in the function are not translated immediately.
-   </P
-><P
->    As each expression and <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command is first
-    used in the function, the <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> interpreter
+   </p>
+<p>    As each expression and <span class="acronym">SQL</span> command is first
+    used in the function, the <span class="application">PL/pgSQL</span> interpreter
     creates a prepared execution plan (using the
-    <ACRONYM
-CLASS="ACRONYM"
->SPI</ACRONYM
-> manager's <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
->
-    and <CODE
-CLASS="FUNCTION"
->SPI_saveplan</CODE
->
-    functions).<A
-NAME="AEN32311"
-></A
-> Subsequent visits to that expression or command
+    <span class="acronym">SPI</span> manager's <code class="function">SPI_prepare</code>
+    and <code class="function">SPI_saveplan</code>
+    functions).<a name="id657248"></a> Subsequent visits to that expression or command
     reuse the prepared plan.  Thus, a function with conditional code
     that contains many statements for which execution plans might be
     required will only prepare and save those plans that are really
     used during the lifetime of the database connection.  This can
     substantially reduce the total amount of time required to parse,
     and generate execution plans for the statements in a
-    <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function. A disadvantage is that errors
+    <span class="application">PL/pgSQL</span> function. A disadvantage is that errors
     in a specific expression or command may not be detected until that
     part of the function is reached in execution.
-   </P
-><P
->    Once <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> has made an execution plan for a particular
+   </p>
+<p>    Once <span class="application">PL/pgSQL</span> has made an execution plan for a particular
     command in a function, it will reuse that plan for the life of the
     database connection.  This is usually a win for performance, but it
     can cause some problems if you dynamically
     alter your database schema. For example:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION populate() RETURNS integer AS $$
+</p>
+<pre class="programlisting">CREATE FUNCTION populate() RETURNS integer AS $$
 DECLARE
     -- declarations
 BEGIN
     PERFORM my_function();
 END;
-$$ LANGUAGE plpgsql;</PRE
-><P>
+$$ LANGUAGE plpgsql;</pre>
+<p>
 
     If you execute the above function, it will reference the OID for
-    <CODE
-CLASS="FUNCTION"
->my_function()</CODE
-> in the execution plan produced for
-    the <TT
-CLASS="COMMAND"
->PERFORM</TT
-> statement. Later, if you
-    drop and recreate <CODE
-CLASS="FUNCTION"
->my_function()</CODE
->, then
-    <CODE
-CLASS="FUNCTION"
->populate()</CODE
-> will not be able to find
-    <CODE
-CLASS="FUNCTION"
->my_function()</CODE
-> anymore. You would then have to
-    recreate <CODE
-CLASS="FUNCTION"
->populate()</CODE
->, or at least start a new
+    <code class="function">my_function()</code> in the execution plan produced for
+    the <code class="command">PERFORM</code> statement. Later, if you
+    drop and recreate <code class="function">my_function()</code>, then
+    <code class="function">populate()</code> will not be able to find
+    <code class="function">my_function()</code> anymore. You would then have to
+    recreate <code class="function">populate()</code>, or at least start a new
     database session so that it will be compiled afresh. Another way
-    to avoid this problem is to use <TT
-CLASS="COMMAND"
->CREATE OR REPLACE
-    FUNCTION</TT
-> when updating the definition of
-    <CODE
-CLASS="FUNCTION"
->my_function</CODE
-> (when a function is
-    <SPAN
-CLASS="QUOTE"
->"replaced"</SPAN
->, its OID is not changed).
-   </P
-><P
->    Because <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> saves execution plans
+    to avoid this problem is to use <code class="command">CREATE OR REPLACE
+    FUNCTION</code> when updating the definition of
+    <code class="function">my_function</code> (when a function is
+    &#8220;<span class="quote">replaced</span>&#8221;, its OID is not changed).
+   </p>
+<p>    Because <span class="application">PL/pgSQL</span> saves execution plans
         in this way, SQL commands that appear directly in a
-        <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function must refer to the
+        <span class="application">PL/pgSQL</span> function must refer to the
         same tables and columns on every execution; that is, you cannot use
         a parameter as the name of a table or column in an SQL command.  To get
         around this restriction, you can construct dynamic commands using
-        the <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> <TT
-CLASS="COMMAND"
->EXECUTE</TT
->
-        statement &mdash; at the price of constructing a new execution plan on
+        the <span class="application">PL/pgSQL</span> <code class="command">EXECUTE</code>
+        statement [mdash ] at the price of constructing a new execution plan on
         every execution.
-   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->         The <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->
-         <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement is not related to the
-         <A
-HREF="sql-execute.html"
-><I
->EXECUTE</I
-></A
-> SQL
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>         The <span class="application">PL/pgSQL</span>
+         <code class="command">EXECUTE</code> statement is not related to the
+         <a href="sql-execute.html">EXECUTE</a> SQL
          statement supported by the
-         <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server. The server's
-         <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement cannot be used within
-         <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> functions (and is not needed).
-        </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-ADVANTAGES"
->35.1.1. Advantages of Using <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></A
-></H2
-><P
->     <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> is the language <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+         <span class="productname">PostgreSQL</span> server. The server's
+         <code class="command">EXECUTE</code> statement cannot be used within
+         <span class="application">PL/pgSQL</span> functions (and is not needed).
+        </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-advantages"></a>35.1.1. Advantages of Using <span class="application">PL/pgSQL</span></h3></div></div></div>
+<p>     <span class="acronym">SQL</span> is the language <span class="productname">PostgreSQL</span>
      and most other relational databases use as query language. It's
-     portable and easy to learn. But every <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->
+     portable and easy to learn. But every <span class="acronym">SQL</span>
      statement must be executed individually by the database server.
-    </P
-><P
->     That means that your client application must send each query to
+    </p>
+<p>     That means that your client application must send each query to
      the database server, wait for it to be processed, receive the
      results, do some computation, then send other queries to the
      server. All this incurs interprocess communication and may also
      incur network overhead if your client is on a different machine
      than the database server.
-    </P
-><P
->     With <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> you can group a block of computation and a
-     series of queries <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->inside</I
-></SPAN
-> the
+    </p>
+<p>     With <span class="application">PL/pgSQL</span> you can group a block of computation and a
+     series of queries <span class="emphasis"><em>inside</em></span> the
      database server, thus having the power of a procedural
      language and the ease of use of SQL, but saving lots of
      time because you don't have the whole client/server
      communication overhead. This can make for a
      considerable performance increase.
-    </P
-><P
->     Also, with <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> you can use all
+    </p>
+<p>     Also, with <span class="application">PL/pgSQL</span> you can use all
      the data types, operators and functions of SQL.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-ARGS-RESULTS"
->35.1.2. Supported Argument and Result Data Types</A
-></H2
-><P
->     Functions written in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> can accept
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-args-results"></a>35.1.2. Supported Argument and Result Data Types</h3></div></div></div>
+<p>     Functions written in <span class="application">PL/pgSQL</span> can accept
      as arguments any scalar or array data type supported by the server,
      and they can return a result of any of these types.  They can also
      accept or return any composite type (row type) specified by name.
-     It is also possible to declare a <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->
-     function as returning <TT
-CLASS="TYPE"
->record</TT
->, which means that the result
+     It is also possible to declare a <span class="application">PL/pgSQL</span>
+     function as returning <code class="type">record</code>, which means that the result
      is a row type whose columns are determined by specification in the
-     calling query, as discussed in <A
-HREF="queries-table-expressions.html#QUERIES-TABLEFUNCTIONS"
->Section 7.2.1.4</A
->.
-    </P
-><P
->     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> functions may also be declared to accept
+     calling query, as discussed in <a href="queries-table-expressions.html#queries-tablefunctions" title="7.2.1.4. Table Functions">Section 7.2.1.4, &#8220;Table Functions&#8221;</a>.
+    </p>
+<p>     <span class="application">PL/pgSQL</span> functions may also be declared to accept
      and return the polymorphic types
-     <TT
-CLASS="TYPE"
->anyelement</TT
-> and <TT
-CLASS="TYPE"
->anyarray</TT
->.  The actual
+     <code class="type">anyelement</code> and <code class="type">anyarray</code>.  The actual
      data types handled by a polymorphic function can vary from call to
-     call, as discussed in <A
-HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 31.2.5</A
->.
-     An example is shown in <A
-HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-ALIASES"
->Section 35.4.1</A
->.
-    </P
-><P
->     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> functions can also be declared to return
-     a <SPAN
-CLASS="QUOTE"
->"set"</SPAN
->, or table, of any data type they can return a single
+     call, as discussed in <a href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a>.
+     An example is shown in <a href="plpgsql-declarations.html#plpgsql-declaration-aliases" title="35.4.1. Aliases for Function Parameters">Section 35.4.1, &#8220;Aliases for Function Parameters&#8221;</a>.
+    </p>
+<p>     <span class="application">PL/pgSQL</span> functions can also be declared to return
+     a &#8220;<span class="quote">set</span>&#8221;, or table, of any data type they can return a single
      instance of.  Such a function generates its output by executing
-     <TT
-CLASS="LITERAL"
->RETURN NEXT</TT
-> for each desired element of the result set.
-    </P
-><P
->     Finally, a <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function may be declared to return
-     <TT
-CLASS="TYPE"
->void</TT
-> if it has no useful return value.
-    </P
-><P
->     <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> does not currently have full support for
+     <code class="literal">RETURN NEXT</code> for each desired element of the result set.
+    </p>
+<p>     Finally, a <span class="application">PL/pgSQL</span> function may be declared to return
+     <code class="type">void</code> if it has no useful return value.
+    </p>
+<p>     <span class="application">PL/pgSQL</span> does not currently have full support for
      domain types: it treats a domain the same as the underlying scalar
      type.  This means that constraints associated with the domain will
      not be enforced.  This is not an issue for function arguments, but
-     it is a hazard if you declare a <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function
+     it is a hazard if you declare a <span class="application">PL/pgSQL</span> function
      as returning a domain type.
-    </P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xplang.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-development-tips.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Procedural Languages</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="server-programming.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Tips for Developing in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    </p>
+</div>
+</div>
+</div></body>
+</html>

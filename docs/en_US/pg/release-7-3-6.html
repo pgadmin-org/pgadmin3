@@ -1,270 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 7.3.6</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 7.3.7"
-HREF="release-7-3-7.html"><LINK
-REL="NEXT"
-TITLE="Release 7.3.5"
-HREF="release-7-3-5.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-3-7.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-5.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-7-3-6"
->E.21. Release 7.3.6</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2004-03-02</P
-></BLOCKQUOTE
-></DIV
-><P
->    This release contains a variety of fixes from 7.3.5.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN70751"
->E.21.1. Migration to version 7.3.6</A
-></H2
-><P
->     A dump/restore is <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> required for those
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.24. Release 7.3.6</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-3-7.html" title="E.23. Release 7.3.7">
+<link rel="next" href="release-7-3-5.html" title="E.25. Release 7.3.5">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-6"></a>E.24. Release 7.3.6</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2004-03-02</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.5.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id805217"></a>E.24.1. Migration to version 7.3.6</h3></div></div></div>
+<p>     A dump/restore is <span class="emphasis"><em>not</em></span> required for those
      running 7.3.*.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN70755"
->E.21.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Revert erroneous changes in rule permissions checking</P
-><P
->A patch applied in 7.3.3 to fix a corner case in rule permissions checks
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id805229"></a>E.24.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Revert erroneous changes in rule permissions checking</p>
+<p>A patch applied in 7.3.3 to fix a corner case in rule permissions checks
 turns out to have disabled rule-related permissions checks in many
 not-so-corner cases.  This would for example allow users to insert into views
 they weren't supposed to have permission to insert into.  We have therefore
-reverted the 7.3.3 patch.  The original bug will be fixed in 8.0.</P
-></LI
-><LI
-><P
->Repair incorrect order of operations in
-GetNewTransactionId()</P
-><P
->This bug could result in failure under out-of-disk-space conditions, including
-inability to restart even after disk space is freed.</P
-></LI
-><LI
-><P
->Ensure configure selects -fno-strict-aliasing even when
-an external value for CFLAGS is supplied</P
-><P
->On some platforms, building with -fstrict-aliasing causes bugs.</P
-></LI
-><LI
-><P
->Make pg_restore handle 64-bit off_t correctly</P
-><P
->This bug prevented proper restoration from archive files exceeding 4Gb.</P
-></LI
-><LI
-><P
->Make contrib/dblink not assume that local and remote type OIDs
-match (Joe)</P
-></LI
-><LI
-><P
->Quote connectby()'s start_with argument properly (Joe)</P
-></LI
-><LI
-><P
->Don't crash when a rowtype argument to a plpgsql function is
-NULL</P
-></LI
-><LI
-><P
->Avoid generating invalid character encoding sequences in
-corner cases when planning LIKE operations</P
-></LI
-><LI
-><P
->Ensure text_position() cannot scan past end of source string
-in multibyte cases (Korea PostgreSQL Users' Group)</P
-></LI
-><LI
-><P
->Fix index optimization and selectivity estimates for LIKE
-operations on bytea columns (Joe)</P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-3-7.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-5.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 7.3.7</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 7.3.5</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+reverted the 7.3.3 patch.  The original bug will be fixed in 8.0.</p>
+</li>
+<li>
+<p>Repair incorrect order of operations in
+GetNewTransactionId()</p>
+<p>This bug could result in failure under out-of-disk-space conditions, including
+inability to restart even after disk space is freed.</p>
+</li>
+<li>
+<p>Ensure configure selects -fno-strict-aliasing even when
+an external value for CFLAGS is supplied</p>
+<p>On some platforms, building with -fstrict-aliasing causes bugs.</p>
+</li>
+<li>
+<p>Make pg_restore handle 64-bit off_t correctly</p>
+<p>This bug prevented proper restoration from archive files exceeding 4Gb.</p>
+</li>
+<li><p>Make contrib/dblink not assume that local and remote type OIDs
+match (Joe)</p></li>
+<li><p>Quote connectby()'s start_with argument properly (Joe)</p></li>
+<li><p>Don't crash when a rowtype argument to a plpgsql function is
+NULL</p></li>
+<li><p>Avoid generating invalid character encoding sequences in
+corner cases when planning LIKE operations</p></li>
+<li><p>Ensure text_position() cannot scan past end of source string
+in multibyte cases (Korea PostgreSQL Users' Group)</p></li>
+<li><p>Fix index optimization and selectivity estimates for LIKE
+operations on bytea columns (Joe)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

@@ -1,261 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Extensibility</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="GiST Indexes"
-HREF="gist.html"><LINK
-REL="PREVIOUS"
-TITLE="GiST Indexes"
-HREF="gist.html"><LINK
-REL="NEXT"
-TITLE="Implementation"
-HREF="implementation.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="gist.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="gist.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 48. GiST Indexes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="gist.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="implementation.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="EXTENSIBILITY"
->48.2. Extensibility</A
-></H1
-><P
->   Traditionally, implementing a new index access method meant a lot of
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>48.2. Extensibility</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="gist.html" title="Chapter 48. GiST Indexes">
+<link rel="prev" href="gist.html" title="Chapter 48. GiST Indexes">
+<link rel="next" href="implementation.html" title="48.3. Implementation">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="extensibility"></a>48.2. Extensibility</h2></div></div></div>
+<p>   Traditionally, implementing a new index access method meant a lot of
    difficult work.  It was necessary to understand the inner workings of the
    database, such as the lock manager and Write-Ahead Log.  The
-   <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> interface has a high level of abstraction,
+   <span class="acronym">GiST</span> interface has a high level of abstraction,
    requiring the access method implementor to only implement the semantics of
-   the data type being accessed.  The <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> layer itself
+   the data type being accessed.  The <span class="acronym">GiST</span> layer itself
    takes care of concurrency, logging and searching the tree structure.
- </P
-><P
->   This extensibility should not be confused with the extensibility of the
+ </p>
+<p>   This extensibility should not be confused with the extensibility of the
    other standard search trees in terms of the data they can handle.  For
-   example, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> supports extensible B+-trees
+   example, <span class="productname">PostgreSQL</span> supports extensible B+-trees
    and R-trees. That means that you can use
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to build a B+-tree or R-tree over any
+   <span class="productname">PostgreSQL</span> to build a B+-tree or R-tree over any
    data type you want. But B+-trees only support range predicates
-   (<TT
-CLASS="LITERAL"
->&lt;</TT
->, <TT
-CLASS="LITERAL"
->=</TT
->, <TT
-CLASS="LITERAL"
->&gt;</TT
->),
+   (<code class="literal">&lt;</code>, <code class="literal">=</code>, <code class="literal">&gt;</code>),
    and R-trees only support n-D range queries (contains, contained, equals).
- </P
-><P
->   So if you index, say, an image collection with a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> B+-tree, you can only issue queries
-   such as <SPAN
-CLASS="QUOTE"
->"is imagex equal to imagey"</SPAN
->, <SPAN
-CLASS="QUOTE"
->"is imagex less
-   than imagey"</SPAN
-> and <SPAN
-CLASS="QUOTE"
->"is imagex greater than imagey"</SPAN
->?
-   Depending on how you define <SPAN
-CLASS="QUOTE"
->"equals"</SPAN
->, <SPAN
-CLASS="QUOTE"
->"less than"</SPAN
->
-   and <SPAN
-CLASS="QUOTE"
->"greater than"</SPAN
-> in this context, this could be useful.
-   However, by using a <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> based index, you could create
-   ways to ask domain-specific questions, perhaps <SPAN
-CLASS="QUOTE"
->"find all images of
-   horses"</SPAN
-> or <SPAN
-CLASS="QUOTE"
->"find all over-exposed images"</SPAN
->.
- </P
-><P
->   All it takes to get a <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> access method up and running
+ </p>
+<p>   So if you index, say, an image collection with a
+   <span class="productname">PostgreSQL</span> B+-tree, you can only issue queries
+   such as &#8220;<span class="quote">is imagex equal to imagey</span>&#8221;, &#8220;<span class="quote">is imagex less
+   than imagey</span>&#8221; and &#8220;<span class="quote">is imagex greater than imagey</span>&#8221;?
+   Depending on how you define &#8220;<span class="quote">equals</span>&#8221;, &#8220;<span class="quote">less than</span>&#8221;
+   and &#8220;<span class="quote">greater than</span>&#8221; in this context, this could be useful.
+   However, by using a <span class="acronym">GiST</span> based index, you could create
+   ways to ask domain-specific questions, perhaps &#8220;<span class="quote">find all images of
+   horses</span>&#8221; or &#8220;<span class="quote">find all over-exposed images</span>&#8221;.
+ </p>
+<p>   All it takes to get a <span class="acronym">GiST</span> access method up and running
    is to implement seven user-defined methods, which define the behavior of
    keys in the tree. Of course these methods have to be pretty fancy to
    support fancy queries, but for all the standard queries (B+-trees,
    R-trees, etc.) they're relatively straightforward. In short,
-   <ACRONYM
-CLASS="ACRONYM"
->GiST</ACRONYM
-> combines extensibility along with generality, code
+   <span class="acronym">GiST</span> combines extensibility along with generality, code
    reuse, and a clean interface.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="gist.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="implementation.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->GiST Indexes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="gist.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Implementation</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

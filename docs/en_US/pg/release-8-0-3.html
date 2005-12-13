@@ -1,419 +1,119 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 8.0.3</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="NEXT"
-TITLE="Release 8.0.2"
-HREF="release-8-0-2.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-8-0-2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-8-0-3"
->E.2. Release 8.0.3</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2005-05-09</P
-></BLOCKQUOTE
-></DIV
-><P
->    This release contains a variety of fixes from 8.0.2, including several
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.3. Release 8.0.3</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-4.html" title="E.2. Release 8.0.4">
+<link rel="next" href="release-8-0-2.html" title="E.4. Release 8.0.2">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0-3"></a>E.3. Release 8.0.3</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-05-09</p>
+</div>
+<p>    This release contains a variety of fixes from 8.0.2, including several
     security-related issues.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN67633"
->E.2.1. Migration to version 8.0.3</A
-></H2
-><P
->     A dump/restore is not required for those running 8.0.X.  However,
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id788805"></a>E.3.1. Migration to version 8.0.3</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.X.  However,
      it is one possible way of handling two significant security problems
      that have been found in the initial contents of 8.0.X system
      catalogs.  A dump/initdb/reload sequence using 8.0.3's initdb will
      automatically correct these problems.
-    </P
-><P
->     The larger security problem is that the built-in character set encoding
+    </p>
+<p>     The larger security problem is that the built-in character set encoding
      conversion functions can be invoked from SQL commands by unprivileged
      users, but the functions were not designed for such use and are not
      secure against malicious choices of arguments.  The fix involves changing
      the declared parameter list of these functions so that they can no longer
      be invoked from SQL commands.  (This does not affect their normal use
      by the encoding conversion machinery.)
-    </P
-><P
->     The lesser problem is that the <TT
-CLASS="FILENAME"
->contrib/tsearch2</TT
-> module
+    </p>
+<p>     The lesser problem is that the <code class="filename">contrib/tsearch2</code> module
      creates several functions that are improperly declared to return
-     <TT
-CLASS="TYPE"
->internal</TT
-> when they do not accept <TT
-CLASS="TYPE"
->internal</TT
-> arguments.
-     This breaks type safety for all functions using <TT
-CLASS="TYPE"
->internal</TT
->
+     <code class="type">internal</code> when they do not accept <code class="type">internal</code> arguments.
+     This breaks type safety for all functions using <code class="type">internal</code>
      arguments.
-    </P
-><P
->     It is strongly recommended that all installations repair these errors,
+    </p>
+<p>     It is strongly recommended that all installations repair these errors,
      either by initdb or by following the manual repair procedure given
      below.  The errors at least allow unprivileged database users to crash
      their server process, and may allow unprivileged users to gain the
      privileges of a database superuser.
-    </P
-><P
->     If you wish not to do an initdb, perform the same manual repair
-     procedures shown in the <A
-HREF="release-7-4-8.html"
->7.4.8 release
-     notes</A
->.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN67645"
->E.2.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Change encoding function signature to prevent
-misuse</P
-></LI
-><LI
-><P
->Change <TT
-CLASS="FILENAME"
->contrib/tsearch2</TT
-> to avoid unsafe use of
-<TT
-CLASS="TYPE"
->INTERNAL</TT
-> function results</P
-></LI
-><LI
-><P
->Guard against incorrect second parameter to
-<CODE
-CLASS="FUNCTION"
->record_out</CODE
-></P
-></LI
-><LI
-><P
->Repair ancient race condition that allowed a transaction to be
+    </p>
+<p>     If you wish not to do an initdb, perform the same manual repair
+     procedures shown in the <a href="release-7-4-8.html" title="E.9. Release 7.4.8">7.4.8 release
+     notes</a>.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id788878"></a>E.3.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Change encoding function signature to prevent
+misuse</p></li>
+<li><p>Change <code class="filename">contrib/tsearch2</code> to avoid unsafe use of
+<code class="type">INTERNAL</code> function results</p></li>
+<li><p>Guard against incorrect second parameter to
+<code class="function">record_out</code></p></li>
+<li>
+<p>Repair ancient race condition that allowed a transaction to be
 seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
-than for other purposes</P
-><P
->This is an extremely serious bug since it could lead to apparent
-data inconsistencies being briefly visible to applications.</P
-></LI
-><LI
-><P
->Repair race condition between relation extension and
-VACUUM</P
-><P
->This could theoretically have caused loss of a page's worth of
+than for other purposes</p>
+<p>This is an extremely serious bug since it could lead to apparent
+data inconsistencies being briefly visible to applications.</p>
+</li>
+<li>
+<p>Repair race condition between relation extension and
+VACUUM</p>
+<p>This could theoretically have caused loss of a page's worth of
 freshly-inserted data, although the scenario seems of very low probability.
-There are no known cases of it having caused more than an Assert failure.</P
-></LI
-><LI
-><P
->Fix comparisons of <TT
-CLASS="TYPE"
->TIME WITH TIME ZONE</TT
-> values</P
-><P
->The comparison code was wrong in the case where the
-<TT
-CLASS="LITERAL"
->--enable-integer-datetimes</TT
-> configuration switch had been used.
-NOTE: if you have an index on a <TT
-CLASS="TYPE"
->TIME WITH TIME ZONE</TT
-> column,
-it will need to be <TT
-CLASS="COMMAND"
->REINDEX</TT
->ed after installing this update, because
-the fix corrects the sort order of column values.</P
-></LI
-><LI
-><P
->Fix <CODE
-CLASS="FUNCTION"
->EXTRACT(EPOCH)</CODE
-> for
-<TT
-CLASS="TYPE"
->TIME WITH TIME ZONE</TT
-> values</P
-></LI
-><LI
-><P
->Fix mis-display of negative fractional seconds in
-<TT
-CLASS="TYPE"
->INTERVAL</TT
-> values</P
-><P
->This error only occurred when the
-<TT
-CLASS="LITERAL"
->--enable-integer-datetimes</TT
-> configuration switch had been used.</P
-></LI
-><LI
-><P
->Fix pg_dump to dump trigger names containing <TT
-CLASS="LITERAL"
->%</TT
->
-correctly (Neil)</P
-></LI
-><LI
-><P
->Still more 64-bit fixes for
-<TT
-CLASS="FILENAME"
->contrib/intagg</TT
-></P
-></LI
-><LI
-><P
->Prevent incorrect optimization of functions returning
-<TT
-CLASS="TYPE"
->RECORD</TT
-></P
-></LI
-><LI
-><P
->Prevent crash on <TT
-CLASS="LITERAL"
->COALESCE(NULL,NULL)</TT
-></P
-></LI
-><LI
-><P
->Fix Borland makefile for libpq</P
-></LI
-><LI
-><P
->Fix <TT
-CLASS="FILENAME"
->contrib/btree_gist</TT
-> for <TT
-CLASS="TYPE"
->timetz</TT
-> type
-(Teodor)</P
-></LI
-><LI
-><P
->Make <TT
-CLASS="COMMAND"
->pg_ctl</TT
-> check the PID found in
-<TT
-CLASS="FILENAME"
->postmaster.pid</TT
-> to see if it is still a live
-process</P
-></LI
-><LI
-><P
->Fix <TT
-CLASS="COMMAND"
->pg_dump</TT
->/<TT
-CLASS="COMMAND"
->pg_restore</TT
-> problems caused
-by addition of dump timestamps</P
-></LI
-><LI
-><P
->Fix interaction between materializing holdable cursors and
-firing deferred triggers during transaction commit</P
-></LI
-><LI
-><P
->Fix memory leak in SQL functions returning pass-by-reference
-data types</P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-8-0-2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release Notes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 8.0.2</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+There are no known cases of it having caused more than an Assert failure.</p>
+</li>
+<li>
+<p>Fix comparisons of <code class="type">TIME WITH TIME ZONE</code> values</p>
+<p>The comparison code was wrong in the case where the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.
+NOTE: if you have an index on a <code class="type">TIME WITH TIME ZONE</code> column,
+it will need to be <code class="command">REINDEX</code>ed after installing this update, because
+the fix corrects the sort order of column values.</p>
+</li>
+<li><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
+<code class="type">TIME WITH TIME ZONE</code> values</p></li>
+<li>
+<p>Fix mis-display of negative fractional seconds in
+<code class="type">INTERVAL</code> values</p>
+<p>This error only occurred when the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.</p>
+</li>
+<li><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
+correctly (Neil)</p></li>
+<li><p>Still more 64-bit fixes for
+<code class="filename">contrib/intagg</code></p></li>
+<li><p>Prevent incorrect optimization of functions returning
+<code class="type">RECORD</code></p></li>
+<li><p>Prevent crash on <code class="literal">COALESCE(NULL,NULL)</code></p></li>
+<li><p>Fix Borland makefile for libpq</p></li>
+<li><p>Fix <code class="filename">contrib/btree_gist</code> for <code class="type">timetz</code> type
+(Teodor)</p></li>
+<li><p>Make <code class="command">pg_ctl</code> check the PID found in
+<code class="filename">postmaster.pid</code> to see if it is still a live
+process</p></li>
+<li><p>Fix <code class="command">pg_dump</code>/<code class="command">pg_restore</code> problems caused
+by addition of dump timestamps</p></li>
+<li><p>Fix interaction between materializing holdable cursors and
+firing deferred triggers during transaction commit</p></li>
+<li><p>Fix memory leak in SQL functions returning pass-by-reference
+data types</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

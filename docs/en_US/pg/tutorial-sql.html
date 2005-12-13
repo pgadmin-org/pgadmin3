@@ -1,374 +1,76 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->The SQL Language</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Tutorial"
-HREF="tutorial.html"><LINK
-REL="PREVIOUS"
-TITLE="Accessing a Database"
-HREF="tutorial-accessdb.html"><LINK
-REL="NEXT"
-TITLE="Concepts"
-HREF="tutorial-concepts.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-accessdb.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-start.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-concepts.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="TUTORIAL-SQL"
-></A
->Chapter 2. The <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Language</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->2.1. <A
-HREF="tutorial-sql.html#TUTORIAL-SQL-INTRO"
->Introduction</A
-></DT
-><DT
->2.2. <A
-HREF="tutorial-concepts.html"
->Concepts</A
-></DT
-><DT
->2.3. <A
-HREF="tutorial-table.html"
->Creating a New Table</A
-></DT
-><DT
->2.4. <A
-HREF="tutorial-populate.html"
->Populating a Table With Rows</A
-></DT
-><DT
->2.5. <A
-HREF="tutorial-select.html"
->Querying a Table</A
-></DT
-><DT
->2.6. <A
-HREF="tutorial-join.html"
->Joins Between Tables</A
-></DT
-><DT
->2.7. <A
-HREF="tutorial-agg.html"
->Aggregate Functions</A
-></DT
-><DT
->2.8. <A
-HREF="tutorial-update.html"
->Updates</A
-></DT
-><DT
->2.9. <A
-HREF="tutorial-delete.html"
->Deletions</A
-></DT
-></DL
-></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TUTORIAL-SQL-INTRO"
->2.1. Introduction</A
-></H1
-><P
->    This chapter provides an overview of how to use
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> to perform simple operations.  This
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 2. The SQL Language</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="tutorial.html" title="Part I. Tutorial">
+<link rel="prev" href="tutorial-accessdb.html" title="1.4. Accessing a Database">
+<link rel="next" href="tutorial-concepts.html" title="2.2. Concepts">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="tutorial-sql">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="tutorial-sql"></a>Chapter 2. The <span class="acronym">SQL</span> Language</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="tutorial-sql.html#tutorial-sql-intro">2.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-concepts.html">2.2. Concepts</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-table.html">2.3. Creating a New Table</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-populate.html">2.4. Populating a Table With Rows</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-select.html">2.5. Querying a Table</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-join.html">2.6. Joins Between Tables</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-agg.html">2.7. Aggregate Functions</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-update.html">2.8. Updates</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-delete.html">2.9. Deletions</a></span></dt>
+</dl>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-sql-intro"></a>2.1. Introduction</h2></div></div></div>
+<p>    This chapter provides an overview of how to use
+    <span class="acronym">SQL</span> to perform simple operations.  This
     tutorial is only intended to give you an introduction and is in no
-    way a complete tutorial on <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->.  Numerous books
-    have been written on <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->, including <A
-HREF="biblio.html#MELT93"
-><I
->Understanding the New <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-></I
-></A
-> and <A
-HREF="biblio.html#DATE97"
-><I
->A Guide to the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Standard</I
-></A
->.
-    You should be aware that some <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+    way a complete tutorial on <span class="acronym">SQL</span>.  Numerous books
+    have been written on <span class="acronym">SQL</span>, including [<a href="biblio.html#melt93" title="[melt93]">melt93</a>] and [<a href="biblio.html#date97" title="[date97]">date97</a>].
+    You should be aware that some <span class="productname">PostgreSQL</span>
     language features are extensions to the standard.
-   </P
-><P
->    In the examples that follow, we assume that you have created a
-    database named <TT
-CLASS="LITERAL"
->mydb</TT
->, as described in the previous
-    chapter, and have started <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->.
-   </P
-><P
->    Examples in this manual can also be found in the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> source distribution
-    in the directory <TT
-CLASS="FILENAME"
->src/tutorial/</TT
->.  To use those
-    files, first change to that directory and run <SPAN
-CLASS="APPLICATION"
->make</SPAN
->:
+   </p>
+<p>    In the examples that follow, we assume that you have created a
+    database named <code class="literal">mydb</code>, as described in the previous
+    chapter, and have started <span class="application">psql</span>.
+   </p>
+<p>    Examples in this manual can also be found in the
+    <span class="productname">PostgreSQL</span> source distribution
+    in the directory <code class="filename">src/tutorial/</code>.  To use those
+    files, first change to that directory and run <span class="application">make</span>:
 
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->cd <TT
-CLASS="REPLACEABLE"
-><I
->....</I
-></TT
->/src/tutorial</KBD
->
-<SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->make</KBD
-></PRE
-><P>
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>cd <em class="replaceable"><code>....</code></em>/src/tutorial</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>make</code></strong></pre>
+<p>
 
     This creates the scripts and compiles the C files containing user-defined
-    functions and types.  (You must use GNU make for this &mdash; it may be named
-    something different on your system, often <SPAN
-CLASS="APPLICATION"
->gmake</SPAN
->.)
+    functions and types.  (You must use GNU make for this [mdash ] it may be named
+    something different on your system, often <span class="application">gmake</span>.)
     Then, to start the tutorial, do the following:
 
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->cd <TT
-CLASS="REPLACEABLE"
-><I
->....</I
-></TT
->/src/tutorial</KBD
->
-<SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->psql -s mydb</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->...</SAMP
->
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>cd <em class="replaceable"><code>....</code></em>/src/tutorial</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>psql -s mydb</code></strong>
+<code class="computeroutput">...</code>
 
-<SAMP
-CLASS="PROMPT"
->mydb=&gt;</SAMP
-> <KBD
-CLASS="USERINPUT"
->\i basics.sql</KBD
-></PRE
-><P>
+<code class="prompt">mydb=&gt;</code> <strong class="userinput"><code>\i basics.sql</code></strong></pre>
+<p>
 
-    The <TT
-CLASS="LITERAL"
->\i</TT
-> command reads in commands from the
-    specified file. The <TT
-CLASS="LITERAL"
->-s</TT
-> option puts you in
+    The <code class="literal">\i</code> command reads in commands from the
+    specified file. The <code class="literal">-s</code> option puts you in
     single step mode which pauses before sending each statement to the
     server.  The commands used in this section are in the file
-    <TT
-CLASS="FILENAME"
->basics.sql</TT
->.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-accessdb.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-concepts.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Accessing a Database</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="tutorial.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Concepts</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    <code class="filename">basics.sql</code>.
+   </p>
+</div>
+</div></body>
+</html>

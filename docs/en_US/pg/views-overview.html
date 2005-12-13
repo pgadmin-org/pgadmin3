@@ -1,329 +1,83 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->System Views</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_type"
-HREF="catalog-pg-type.html"><LINK
-REL="NEXT"
-TITLE="pg_indexes"
-HREF="view-pg-indexes.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-type.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="view-pg-indexes.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="VIEWS-OVERVIEW"
->41.31. System Views</A
-></H1
-><P
->   In addition to the system catalogs, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.31. System Views</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="prev" href="catalog-pg-type.html" title="41.30. pg_type">
+<link rel="next" href="view-pg-indexes.html" title="41.32. pg_indexes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="views-overview"></a>41.31. System Views</h2></div></div></div>
+<p>   In addition to the system catalogs, <span class="productname">PostgreSQL</span>
    provides a number of built-in views.  Some system views provide convenient
    access to some commonly used queries on the system catalogs.  Other views
    provide access to internal server state.
-  </P
-><P
->   The information schema (<A
-HREF="information-schema.html"
->Chapter 30</A
->) provides
+  </p>
+<p>   The information schema (<a href="information-schema.html" title="Chapter 30. The Information Schema">Chapter 30, <i>The Information Schema</i></a>) provides
    an alternative set of views which overlap the functionality of the system
    views.  Since the information schema is SQL-standard whereas the views
-   described here are <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->-specific,
+   described here are <span class="productname">PostgreSQL</span>-specific,
    it's usually better to use the information schema if it provides all
    the information you need.
-  </P
-><P
->   <A
-HREF="views-overview.html#VIEW-TABLE"
->Table 41-31</A
-> lists the system views described here.
+  </p>
+<p>   <a href="views-overview.html#view-table" title="Table 41.31. System Views">Table 41.31, &#8220;System Views&#8221;</a> lists the system views described here.
    More detailed documentation of each view follows below.
    There are some additional views that provide access to the results of
-   the statistics collector; they are described in <A
-HREF="monitoring-stats.html#MONITORING-STATS-VIEWS-TABLE"
->Table 23-1</A
->.
-  </P
-><P
->   Except where noted, all the views described here are read-only.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="VIEW-TABLE"
-></A
-><P
-><B
->Table 41-31. System Views</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><THEAD
-><TR
-><TH
->View Name</TH
-><TH
->Purpose</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><A
-HREF="view-pg-indexes.html"
-><TT
-CLASS="STRUCTNAME"
->pg_indexes</TT
-></A
-></TD
-><TD
->indexes</TD
-></TR
-><TR
-><TD
-><A
-HREF="view-pg-locks.html"
-><TT
-CLASS="STRUCTNAME"
->pg_locks</TT
-></A
-></TD
-><TD
->currently held locks</TD
-></TR
-><TR
-><TD
-><A
-HREF="view-pg-rules.html"
-><TT
-CLASS="STRUCTNAME"
->pg_rules</TT
-></A
-></TD
-><TD
->rules</TD
-></TR
-><TR
-><TD
-><A
-HREF="view-pg-settings.html"
-><TT
-CLASS="STRUCTNAME"
->pg_settings</TT
-></A
-></TD
-><TD
->parameter settings</TD
-></TR
-><TR
-><TD
-><A
-HREF="view-pg-stats.html"
-><TT
-CLASS="STRUCTNAME"
->pg_stats</TT
-></A
-></TD
-><TD
->planner statistics</TD
-></TR
-><TR
-><TD
-><A
-HREF="view-pg-tables.html"
-><TT
-CLASS="STRUCTNAME"
->pg_tables</TT
-></A
-></TD
-><TD
->tables</TD
-></TR
-><TR
-><TD
-><A
-HREF="view-pg-user.html"
-><TT
-CLASS="STRUCTNAME"
->pg_user</TT
-></A
-></TD
-><TD
->database users</TD
-></TR
-><TR
-><TD
-><A
-HREF="view-pg-views.html"
-><TT
-CLASS="STRUCTNAME"
->pg_views</TT
-></A
-></TD
-><TD
->views</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-type.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="view-pg-indexes.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_indexes</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   the statistics collector; they are described in <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 23.1. Standard Statistics Views">Table 23.1, &#8220;Standard Statistics Views&#8221;</a>.
+  </p>
+<p>   Except where noted, all the views described here are read-only.
+  </p>
+<div class="table">
+<a name="view-table"></a><p class="title"><b>Table 41.31. System Views</b></p>
+<table summary="System Views" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>View Name</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><a href="view-pg-indexes.html" title="41.32. pg_indexes"><code class="structname">pg_indexes</code></a></td>
+<td>indexes</td>
+</tr>
+<tr>
+<td><a href="view-pg-locks.html" title="41.33. pg_locks"><code class="structname">pg_locks</code></a></td>
+<td>currently held locks</td>
+</tr>
+<tr>
+<td><a href="view-pg-rules.html" title="41.34. pg_rules"><code class="structname">pg_rules</code></a></td>
+<td>rules</td>
+</tr>
+<tr>
+<td><a href="view-pg-settings.html" title="41.35. pg_settings"><code class="structname">pg_settings</code></a></td>
+<td>parameter settings</td>
+</tr>
+<tr>
+<td><a href="view-pg-stats.html" title="41.36. pg_stats"><code class="structname">pg_stats</code></a></td>
+<td>planner statistics</td>
+</tr>
+<tr>
+<td><a href="view-pg-tables.html" title="41.37. pg_tables"><code class="structname">pg_tables</code></a></td>
+<td>tables</td>
+</tr>
+<tr>
+<td><a href="view-pg-user.html" title="41.38. pg_user"><code class="structname">pg_user</code></a></td>
+<td>database users</td>
+</tr>
+<tr>
+<td><a href="view-pg-views.html" title="41.39. pg_views"><code class="structname">pg_views</code></a></td>
+<td>views</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

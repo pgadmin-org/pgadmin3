@@ -1,535 +1,147 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Type Conversion</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The SQL Language"
-HREF="sql.html"><LINK
-REL="PREVIOUS"
-TITLE="System Administration Functions"
-HREF="functions-admin.html"><LINK
-REL="NEXT"
-TITLE="Operators"
-HREF="typeconv-oper.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-admin.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv-oper.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="TYPECONV"
-></A
->Chapter 10. Type Conversion</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->10.1. <A
-HREF="typeconv.html#TYPECONV-OVERVIEW"
->Overview</A
-></DT
-><DT
->10.2. <A
-HREF="typeconv-oper.html"
->Operators</A
-></DT
-><DT
->10.3. <A
-HREF="typeconv-func.html"
->Functions</A
-></DT
-><DT
->10.4. <A
-HREF="typeconv-query.html"
->Value Storage</A
-></DT
-><DT
->10.5. <A
-HREF="typeconv-union-case.html"
-><TT
-CLASS="LITERAL"
->UNION</TT
->, <TT
-CLASS="LITERAL"
->CASE</TT
->, and <TT
-CLASS="LITERAL"
->ARRAY</TT
-> Constructs</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN13682"
-></A
-><P
-><ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> statements can, intentionally or not, require
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 10. Type Conversion</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="sql.html" title="Part II. The SQL Language">
+<link rel="prev" href="functions-admin.html" title="9.20. System Administration Functions">
+<link rel="next" href="typeconv-oper.html" title="10.2. Operators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="typeconv">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="typeconv"></a>Chapter 10. Type Conversion</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="typeconv.html#typeconv-overview">10.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-oper.html">10.2. Operators</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-func.html">10.3. Functions</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-query.html">10.4. Value Storage</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-union-case.html">10.5. <code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> Constructs</a></span></dt>
+</dl>
+</div>
+<a name="id569494"></a><p><span class="acronym">SQL</span> statements can, intentionally or not, require
 mixing of different data types in the same expression. 
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has extensive facilities for
-evaluating mixed-type expressions.</P
-><P
->In many cases a user will not need
+<span class="productname">PostgreSQL</span> has extensive facilities for
+evaluating mixed-type expressions.</p>
+<p>In many cases a user will not need
 to understand the details of the type conversion mechanism.
-However, the implicit conversions done by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+However, the implicit conversions done by <span class="productname">PostgreSQL</span>
 can affect the results of a query.  When necessary, these results
-can be tailored by using <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->explicit</I
-></SPAN
-> type conversion.</P
-><P
->This chapter introduces the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+can be tailored by using <span class="emphasis"><em>explicit</em></span> type conversion.</p>
+<p>This chapter introduces the <span class="productname">PostgreSQL</span>
 type conversion mechanisms and conventions.
-Refer to the relevant sections in <A
-HREF="datatype.html"
->Chapter 8</A
-> and <A
-HREF="functions.html"
->Chapter 9</A
->
+Refer to the relevant sections in <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a> and <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
 for more information on specific data types and allowed functions and
-operators.</P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TYPECONV-OVERVIEW"
->10.1. Overview</A
-></H1
-><P
-><ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> is a strongly typed language. That is, every data item
+operators.</p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="typeconv-overview"></a>10.1. Overview</h2></div></div></div>
+<p><span class="acronym">SQL</span> is a strongly typed language. That is, every data item
 has an associated data type which determines its behavior and allowed usage.
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> has an extensible type system that is
-much more general and flexible than other <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> implementations.
-Hence, most type conversion behavior in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-is governed by general rules rather than by <I
-CLASS="FOREIGNPHRASE"
->ad hoc</I
->
+<span class="productname">PostgreSQL</span> has an extensible type system that is
+much more general and flexible than other <span class="acronym">SQL</span> implementations.
+Hence, most type conversion behavior in <span class="productname">PostgreSQL</span>
+is governed by general rules rather than by <span class="foreignphrase"><em class="foreignphrase">ad hoc</em></span>
 heuristics.  This allows
-mixed-type expressions to be meaningful even with user-defined types.</P
-><P
->The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> scanner/parser divides lexical
+mixed-type expressions to be meaningful even with user-defined types.</p>
+<p>The <span class="productname">PostgreSQL</span> scanner/parser divides lexical
 elements into only five fundamental categories: integers, non-integer numbers,
 strings, identifiers, and key words.  Constants of most non-numeric types are
-first classified as strings. The <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> language definition
+first classified as strings. The <span class="acronym">SQL</span> language definition
 allows specifying type names with strings, and this mechanism can be used in
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to start the parser down the correct
+<span class="productname">PostgreSQL</span> to start the parser down the correct
 path. For example, the query
 
-</P><PRE
-CLASS="SCREEN"
->SELECT text 'Origin' AS "label", point '(0,0)' AS "value";
+</p>
+<pre class="screen">SELECT text 'Origin' AS "label", point '(0,0)' AS "value";
 
  label  | value
 --------+-------
  Origin | (0,0)
-(1 row)</PRE
-><P>
+(1 row)</pre>
+<p>
 
-has two literal constants, of type <TT
-CLASS="TYPE"
->text</TT
-> and <TT
-CLASS="TYPE"
->point</TT
->.
+has two literal constants, of type <code class="type">text</code> and <code class="type">point</code>.
 If a type is not specified for a string literal, then the placeholder type
-<TT
-CLASS="TYPE"
->unknown</TT
-> is assigned initially, to be resolved in later
-stages as described below.</P
-><P
->There are four fundamental <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> constructs requiring
-distinct type conversion rules in the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+<code class="type">unknown</code> is assigned initially, to be resolved in later
+stages as described below.</p>
+<p>There are four fundamental <span class="acronym">SQL</span> constructs requiring
+distinct type conversion rules in the <span class="productname">PostgreSQL</span>
 parser:
 
-<P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->Function calls</DT
-><DD
-><P
->Much of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> type system is built around a
+</p>
+<div class="variablelist"><dl>
+<dt><span class="term">Function calls</span></dt>
+<dd><p>Much of the <span class="productname">PostgreSQL</span> type system is built around a
 rich set of functions. Functions can have one or more arguments.
-Since <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> permits function
+Since <span class="productname">PostgreSQL</span> permits function
 overloading, the function name alone does not uniquely identify the function
 to be called; the parser must select the right function based on the data
-types of the supplied arguments.</P
-></DD
-><DT
->Operators</DT
-><DD
-><P
-><SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> allows expressions with
+types of the supplied arguments.</p></dd>
+<dt><span class="term">Operators</span></dt>
+<dd><p><span class="productname">PostgreSQL</span> allows expressions with
 prefix and postfix unary (one-argument) operators,
 as well as binary (two-argument) operators.  Like functions, operators can
 be overloaded, and so the same problem of selecting the right operator
-exists.</P
-></DD
-><DT
->Value Storage</DT
-><DD
-><P
-><ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> <TT
-CLASS="COMMAND"
->INSERT</TT
-> and <TT
-CLASS="COMMAND"
->UPDATE</TT
-> statements place the results of
+exists.</p></dd>
+<dt><span class="term">Value Storage</span></dt>
+<dd><p><span class="acronym">SQL</span> <code class="command">INSERT</code> and <code class="command">UPDATE</code> statements place the results of
 expressions into a table. The expressions in the statement must be matched up
-with, and perhaps converted to, the types of the target columns.</P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->UNION</TT
->, <TT
-CLASS="LITERAL"
->CASE</TT
->, and <TT
-CLASS="LITERAL"
->ARRAY</TT
-> constructs</DT
-><DD
-><P
->Since all query results from a unionized <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement
+with, and perhaps converted to, the types of the target columns.</p></dd>
+<dt><span class="term"><code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> constructs</span></dt>
+<dd><p>Since all query results from a unionized <code class="command">SELECT</code> statement
 must appear in a single set of columns, the types of the results of each
-<TT
-CLASS="COMMAND"
->SELECT</TT
-> clause must be matched up and converted to a uniform set.
-Similarly, the result expressions of a <TT
-CLASS="LITERAL"
->CASE</TT
-> construct must be
-converted to a common type so that the <TT
-CLASS="LITERAL"
->CASE</TT
-> expression as a whole
-has a known output type.  The same holds for <TT
-CLASS="LITERAL"
->ARRAY</TT
-> constructs.</P
-></DD
-></DL
-></DIV
-><P></P
-><P
->The system catalogs store information about which conversions, called
-<I
-CLASS="FIRSTTERM"
->casts</I
->, between data types are valid, and how to
+<code class="command">SELECT</code> clause must be matched up and converted to a uniform set.
+Similarly, the result expressions of a <code class="literal">CASE</code> construct must be
+converted to a common type so that the <code class="literal">CASE</code> expression as a whole
+has a known output type.  The same holds for <code class="literal">ARRAY</code> constructs.</p></dd>
+</dl></div>
+<p>The system catalogs store information about which conversions, called
+<em class="firstterm">casts</em>, between data types are valid, and how to
 perform those conversions.  Additional casts can be added by the user
-with the <TT
-CLASS="COMMAND"
->CREATE CAST</TT
-> command.  (This is usually
+with the <code class="command">CREATE CAST</code> command.  (This is usually
 done in conjunction with defining new data types.  The set of casts
 between the built-in types has been carefully crafted and is best not
-altered.)</P
-><A
-NAME="AEN13748"
-></A
-><P
->An additional heuristic is provided in the parser to allow better guesses
-at proper behavior for <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> standard types. There are
-several basic <I
-CLASS="FIRSTTERM"
->type categories</I
-> defined: <TT
-CLASS="TYPE"
->boolean</TT
->,
-<TT
-CLASS="TYPE"
->numeric</TT
->, <TT
-CLASS="TYPE"
->string</TT
->, <TT
-CLASS="TYPE"
->bitstring</TT
->, <TT
-CLASS="TYPE"
->datetime</TT
->, <TT
-CLASS="TYPE"
->timespan</TT
->, <TT
-CLASS="TYPE"
->geometric</TT
->, <TT
-CLASS="TYPE"
->network</TT
->,
+altered.)</p>
+<a name="id569826"></a><p>An additional heuristic is provided in the parser to allow better guesses
+at proper behavior for <span class="acronym">SQL</span> standard types. There are
+several basic <em class="firstterm">type categories</em> defined: <code class="type">boolean</code>,
+<code class="type">numeric</code>, <code class="type">string</code>, <code class="type">bitstring</code>, <code class="type">datetime</code>, <code class="type">timespan</code>, <code class="type">geometric</code>, <code class="type">network</code>,
 and user-defined. Each category, with the exception of user-defined, has
-one or more <I
-CLASS="FIRSTTERM"
->preferred types</I
-> which are preferentially
+one or more <em class="firstterm">preferred types</em> which are preferentially
 selected when there is ambiguity.
 In the user-defined category, each type is its own preferred type.
 Ambiguous expressions (those with multiple candidate parsing solutions)
 can therefore often be resolved when there are multiple possible built-in types, but
 they will raise an error when there are multiple choices for user-defined
-types.</P
-><P
->All type conversion rules are designed with several principles in mind:
+types.</p>
+<p>All type conversion rules are designed with several principles in mind:
 
-<P
-></P
-></P><UL
-><LI
-><P
->Implicit conversions should never have surprising or unpredictable outcomes.</P
-></LI
-><LI
-><P
->User-defined types, of which the parser has no <I
-CLASS="FOREIGNPHRASE"
->a priori</I
-> knowledge, should be
-<SPAN
-CLASS="QUOTE"
->"higher"</SPAN
-> in the type hierarchy. In mixed-type expressions, native types shall always
-be converted to a user-defined type (of course, only if conversion is necessary).</P
-></LI
-><LI
-><P
->User-defined types are not related. Currently, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Implicit conversions should never have surprising or unpredictable outcomes.</p></li>
+<li><p>User-defined types, of which the parser has no <span class="foreignphrase"><em class="foreignphrase">a priori</em></span> knowledge, should be
+&#8220;<span class="quote">higher</span>&#8221; in the type hierarchy. In mixed-type expressions, native types shall always
+be converted to a user-defined type (of course, only if conversion is necessary).</p></li>
+<li><p>User-defined types are not related. Currently, <span class="productname">PostgreSQL</span>
 does not have information available to it on relationships between types, other than
 hardcoded heuristics for built-in types and implicit relationships based on
-available functions and casts.</P
-></LI
-><LI
-><P
->There should be no extra overhead from the parser or executor
+available functions and casts.</p></li>
+<li>
+<p>There should be no extra overhead from the parser or executor
 if a query does not need implicit type conversion.
 That is, if a query is well formulated and the types already match up, then the query should proceed
 without spending extra time in the parser and without introducing unnecessary implicit conversion
-calls into the query.</P
-><P
->Additionally, if a query usually requires an implicit conversion for a function, and
+calls into the query.</p>
+<p>Additionally, if a query usually requires an implicit conversion for a function, and
 if then the user defines a new function with the correct argument types, the parser
-should use this new function and will no longer do the implicit conversion using the old function.</P
-></LI
-></UL
-><P></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-admin.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv-oper.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->System Administration Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Operators</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+should use this new function and will no longer do the implicit conversion using the old function.</p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>

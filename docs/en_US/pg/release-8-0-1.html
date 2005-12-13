@@ -1,299 +1,75 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 8.0.1</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 8.0.2"
-HREF="release-8-0-2.html"><LINK
-REL="NEXT"
-TITLE="Release 8.0"
-HREF="release-8-0.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-8-0-2.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-8-0.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-8-0-1"
->E.4. Release 8.0.1</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2005-01-31</P
-></BLOCKQUOTE
-></DIV
-><P
->    This release contains a variety of fixes from 8.0.0, including several
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.5. Release 8.0.1</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-2.html" title="E.4. Release 8.0.2">
+<link rel="next" href="release-8-0.html" title="E.6. Release 8.0">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0-1"></a>E.5. Release 8.0.1</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-01-31</p>
+</div>
+<p>    This release contains a variety of fixes from 8.0.0, including several
     security-related issues.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN67856"
->E.4.1. Migration to version 8.0.1</A
-></H2
-><P
->     A dump/restore is not required for those running 8.0.0.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN67859"
->E.4.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Disallow <TT
-CLASS="COMMAND"
->LOAD</TT
-> to non-superusers</P
-><P
->On platforms that will automatically execute initialization functions of a
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id789704"></a>E.5.1. Migration to version 8.0.1</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.0.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id789712"></a>E.5.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Disallow <code class="command">LOAD</code> to non-superusers</p>
+<p>On platforms that will automatically execute initialization functions of a
 shared library (this includes at least Windows and ELF-based Unixen),
-<TT
-CLASS="COMMAND"
->LOAD</TT
-> can be used to make the server execute arbitrary code.
-Thanks to NGS Software for reporting this.</P
-></LI
-><LI
-><P
->Check that creator of an aggregate function has the right to
-execute the specified transition functions</P
-><P
->This oversight made it possible to bypass denial of EXECUTE
-permission on a function.</P
-></LI
-><LI
-><P
->Fix security and 64-bit issues in
-contrib/intagg</P
-></LI
-><LI
-><P
->Add needed STRICT marking to some contrib functions (Kris
-Jurka)</P
-></LI
-><LI
-><P
->Avoid buffer overrun when plpgsql cursor declaration has too
-many parameters (Neil)</P
-></LI
-><LI
-><P
->Make <TT
-CLASS="COMMAND"
->ALTER TABLE ADD COLUMN</TT
-> enforce domain
-constraints in all cases</P
-></LI
-><LI
-><P
->Fix planning error for FULL and RIGHT outer joins</P
-><P
->The result of the join was mistakenly supposed to be sorted the same as the
+<code class="command">LOAD</code> can be used to make the server execute arbitrary code.
+Thanks to NGS Software for reporting this.</p>
+</li>
+<li>
+<p>Check that creator of an aggregate function has the right to
+execute the specified transition functions</p>
+<p>This oversight made it possible to bypass denial of EXECUTE
+permission on a function.</p>
+</li>
+<li><p>Fix security and 64-bit issues in
+contrib/intagg</p></li>
+<li><p>Add needed STRICT marking to some contrib functions (Kris
+Jurka)</p></li>
+<li><p>Avoid buffer overrun when plpgsql cursor declaration has too
+many parameters (Neil)</p></li>
+<li><p>Make <code class="command">ALTER TABLE ADD COLUMN</code> enforce domain
+constraints in all cases</p></li>
+<li>
+<p>Fix planning error for FULL and RIGHT outer joins</p>
+<p>The result of the join was mistakenly supposed to be sorted the same as the
 left input.  This could not only deliver mis-sorted output to the user, but
-in case of nested merge joins could give outright wrong answers.</P
-></LI
-><LI
-><P
->Improve planning of grouped aggregate queries</P
-></LI
-><LI
-><P
-><TT
-CLASS="COMMAND"
->ROLLBACK TO <TT
-CLASS="REPLACEABLE"
-><I
->savepoint</I
-></TT
-></TT
->
-closes cursors created since the savepoint</P
-></LI
-><LI
-><P
->Fix inadequate backend stack size on Windows</P
-></LI
-><LI
-><P
->Avoid SHGetSpecialFolderPath() on Windows
-(Magnus)</P
-></LI
-><LI
-><P
->Fix some problems in running pg_autovacuum as a Windows
-service (Dave Page)</P
-></LI
-><LI
-><P
->Multiple minor bug fixes in
-pg_dump/pg_restore</P
-></LI
-><LI
-><P
->Fix ecpg segfault with named structs used in
-typedefs (Michael)</P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-8-0-2.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-8-0.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 8.0.2</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 8.0</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+in case of nested merge joins could give outright wrong answers.</p>
+</li>
+<li><p>Improve planning of grouped aggregate queries</p></li>
+<li><p><code class="command">ROLLBACK TO <em class="replaceable"><code>savepoint</code></em></code>
+closes cursors created since the savepoint</p></li>
+<li><p>Fix inadequate backend stack size on Windows</p></li>
+<li><p>Avoid SHGetSpecialFolderPath() on Windows
+(Magnus)</p></li>
+<li><p>Fix some problems in running pg_autovacuum as a Windows
+service (Dave Page)</p></li>
+<li><p>Multiple minor bug fixes in
+pg_dump/pg_restore</p></li>
+<li><p>Fix ecpg segfault with named structs used in
+typedefs (Michael)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

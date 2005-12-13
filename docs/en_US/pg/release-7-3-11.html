@@ -1,275 +1,61 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 7.3.11</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 7.4"
-HREF="release-7-4.html"><LINK
-REL="NEXT"
-TITLE="Release 7.3.10"
-HREF="release-7-3-10.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-4.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-10.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-7-3-11"
->E.16. Release 7.3.11</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2005-10-04</P
-></BLOCKQUOTE
-></DIV
-><P
->    This release contains a variety of fixes from 7.3.10.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN70570"
->E.16.1. Migration to version 7.3.11</A
-></H2
-><P
->     A dump/restore is not required for those running 7.3.X.  However,
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.19. Release 7.3.11</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-3-12.html" title="E.18. Release 7.3.12">
+<link rel="next" href="release-7-3-10.html" title="E.20. Release 7.3.10">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-11"></a>E.19. Release 7.3.11</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-10-04</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.10.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id804574"></a>E.19.1. Migration to version 7.3.11</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.3.X.  However,
      if you are upgrading from a version earlier than 7.3.10, see the release
      notes for 7.3.10.
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN70573"
->E.16.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Fix error that allowed <TT
-CLASS="COMMAND"
->VACUUM</TT
-> to remove
-<TT
-CLASS="LITERAL"
->ctid</TT
-> chains too soon, and add more checking in code that follows
-<TT
-CLASS="LITERAL"
->ctid</TT
-> links</P
-><P
->This fixes a long-standing problem that could cause crashes in very rare
-circumstances.</P
-></LI
-><LI
-><P
->Fix <TT
-CLASS="TYPE"
->CHAR()</TT
-> to properly pad spaces to the specified
-length when using a multiple-byte character set (Yoshiyuki Asaba)</P
-><P
->In prior releases, the padding of <TT
-CLASS="TYPE"
->CHAR()</TT
-> was incorrect
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id804584"></a>E.19.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Fix error that allowed <code class="command">VACUUM</code> to remove
+<code class="literal">ctid</code> chains too soon, and add more checking in code that follows
+<code class="literal">ctid</code> links</p>
+<p>This fixes a long-standing problem that could cause crashes in very rare
+circumstances.</p>
+</li>
+<li>
+<p>Fix <code class="type">CHAR()</code> to properly pad spaces to the specified
+length when using a multiple-byte character set (Yoshiyuki Asaba)</p>
+<p>In prior releases, the padding of <code class="type">CHAR()</code> was incorrect
 because it only padded to the specified number of bytes without
-considering how many characters were stored.</P
-></LI
-><LI
-><P
->Fix missing rows in queries like <TT
-CLASS="LITERAL"
->UPDATE a=... WHERE
-a...</TT
-> with GiST index on column <TT
-CLASS="LITERAL"
->a</TT
-></P
-></LI
-><LI
-><P
->Improve checking for partially-written WAL
-pages</P
-></LI
-><LI
-><P
->Improve robustness of signal handling when SSL is
-enabled</P
-></LI
-><LI
-><P
->Various memory leakage fixes</P
-></LI
-><LI
-><P
->Various portability improvements</P
-></LI
-><LI
-><P
->Fix PL/PgSQL to handle <TT
-CLASS="LITERAL"
->var := var</TT
-> correctly when
-the variable is of pass-by-reference type</P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-4.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-10.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 7.4</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 7.3.10</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+considering how many characters were stored.</p>
+</li>
+<li><p>Fix missing rows in queries like <code class="literal">UPDATE a=... WHERE
+a...</code> with GiST index on column <code class="literal">a</code></p></li>
+<li><p>Improve checking for partially-written WAL
+pages</p></li>
+<li><p>Improve robustness of signal handling when SSL is
+enabled</p></li>
+<li><p>Various memory leakage fixes</p></li>
+<li><p>Various portability improvements</p></li>
+<li><p>Fix PL/PgSQL to handle <code class="literal">var := var</code> correctly when
+the variable is of pass-by-reference type</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

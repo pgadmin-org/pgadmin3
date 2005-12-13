@@ -1,365 +1,89 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->UNLISTEN</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="TRUNCATE"
-HREF="sql-truncate.html"><LINK
-REL="NEXT"
-TITLE="UPDATE"
-HREF="sql-update.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-truncate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-truncate.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-update.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-update.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-UNLISTEN"
-></A
->UNLISTEN</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN45709"
-></A
-><H2
->Name</H2
->UNLISTEN&nbsp;--&nbsp;stop listening for a notification</DIV
-><A
-NAME="AEN45712"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN45714"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->UNLISTEN { <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> | * }</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45717"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->UNLISTEN</TT
-> is used to remove an existing
-   registration for <TT
-CLASS="COMMAND"
->NOTIFY</TT
-> events.
-   <TT
-CLASS="COMMAND"
->UNLISTEN</TT
-> cancels any existing registration of
-   the current <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> session as a
-   listener on the notification <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->.  The special wildcard
-   <TT
-CLASS="LITERAL"
->*</TT
-> cancels all listener registrations for the
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>UNLISTEN</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-truncate.html" title="TRUNCATE">
+<link rel="next" href="sql-update.html" title="UPDATE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-unlisten"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>UNLISTEN &#8212; stop listening for a notification</p>
+</div>
+<a name="id720272"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">UNLISTEN { <em class="replaceable"><code>name</code></em> | * }</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720294"></a><h2>Description</h2>
+<p>   <code class="command">UNLISTEN</code> is used to remove an existing
+   registration for <code class="command">NOTIFY</code> events.
+   <code class="command">UNLISTEN</code> cancels any existing registration of
+   the current <span class="productname">PostgreSQL</span> session as a
+   listener on the notification <em class="replaceable"><code>name</code></em>.  The special wildcard
+   <code class="literal">*</code> cancels all listener registrations for the
    current session.
-  </P
-><P
->   <A
-HREF="sql-notify.html"
-><I
->NOTIFY</I
-></A
->
+  </p>
+<p>   <a href="sql-notify.html">NOTIFY</a>
    contains a more extensive
-   discussion of the use of <TT
-CLASS="COMMAND"
->LISTEN</TT
-> and
-   <TT
-CLASS="COMMAND"
->NOTIFY</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45730"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->      Name of a notification (any identifier).
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->*</TT
-></DT
-><DD
-><P
->      All current listen registrations for this session are cleared.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45743"
-></A
-><H2
->Notes</H2
-><P
->   You may unlisten something you were not listening for; no warning or error
+   discussion of the use of <code class="command">LISTEN</code> and
+   <code class="command">NOTIFY</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720371"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      Name of a notification (any identifier).
+     </p></dd>
+<dt><span class="term"><code class="literal">*</code></span></dt>
+<dd><p>      All current listen registrations for this session are cleared.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720401"></a><h2>Notes</h2>
+<p>   You may unlisten something you were not listening for; no warning or error
    will appear.
-  </P
-><P
->   At the end of each session, <TT
-CLASS="COMMAND"
->UNLISTEN *</TT
-> is
+  </p>
+<p>   At the end of each session, <code class="command">UNLISTEN *</code> is
    automatically executed.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45748"
-></A
-><H2
->Examples</H2
-><P
->   To make a registration:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720420"></a><h2>Examples</h2>
+<p>   To make a registration:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->LISTEN virtual;
+</p>
+<pre class="programlisting">LISTEN virtual;
 NOTIFY virtual;
-Asynchronous notification "virtual" received from server process with PID 8448.</PRE
-><P>
-  </P
-><P
->   Once <TT
-CLASS="COMMAND"
->UNLISTEN</TT
-> has been executed, further <TT
-CLASS="COMMAND"
->NOTIFY</TT
->
+Asynchronous notification "virtual" received from server process with PID 8448.</pre>
+<p>
+  </p>
+<p>   Once <code class="command">UNLISTEN</code> has been executed, further <code class="command">NOTIFY</code>
    commands will be ignored:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->UNLISTEN virtual;
+</p>
+<pre class="programlisting">UNLISTEN virtual;
 NOTIFY virtual;
--- no NOTIFY event is received</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45756"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->UNLISTEN</TT
-> command in the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45760"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-listen.html"
-><I
->LISTEN</I
-></A
->, <A
-HREF="sql-notify.html"
-><I
->NOTIFY</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-truncate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-update.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->TRUNCATE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->UPDATE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+-- no NOTIFY event is received</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720459"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">UNLISTEN</code> command in the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id720473"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-notify.html">NOTIFY</a></span>
+</div>
+</div></body>
+</html>

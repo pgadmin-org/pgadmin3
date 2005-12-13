@@ -1,523 +1,142 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Database Physical Storage</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Examples"
-HREF="examples.html"><LINK
-REL="NEXT"
-TITLE="TOAST"
-HREF="storage-toast.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="examples.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="gist.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="bki.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="storage-toast.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="STORAGE"
-></A
->Chapter 49. Database Physical Storage</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->49.1. <A
-HREF="storage.html#STORAGE-FILE-LAYOUT"
->Database File Layout</A
-></DT
-><DT
->49.2. <A
-HREF="storage-toast.html"
->TOAST</A
-></DT
-><DT
->49.3. <A
-HREF="storage-page-layout.html"
->Database Page Layout</A
-></DT
-></DL
-></DIV
-><P
->This chapter provides an overview of the physical storage format used by
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> databases.</P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="STORAGE-FILE-LAYOUT"
->49.1. Database File Layout</A
-></H1
-><P
->This section describes the storage format at the level of files and
-directories.</P
-><P
->All the data needed for a database cluster is stored within the cluster's data
-directory, commonly referred to as <TT
-CLASS="VARNAME"
->PGDATA</TT
-> (after the name of the
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 49. Database Physical Storage</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="examples.html" title="48.5. Examples">
+<link rel="next" href="storage-toast.html" title="49.2. TOAST">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="storage">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="storage"></a>Chapter 49. Database Physical Storage</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="storage.html#storage-file-layout">49.1. Database File Layout</a></span></dt>
+<dt><span class="sect1"><a href="storage-toast.html">49.2. TOAST</a></span></dt>
+<dt><span class="sect1"><a href="storage-page-layout.html">49.3. Database Page Layout</a></span></dt>
+</dl>
+</div>
+<p>This chapter provides an overview of the physical storage format used by
+<span class="productname">PostgreSQL</span> databases.</p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="storage-file-layout"></a>49.1. Database File Layout</h2></div></div></div>
+<p>This section describes the storage format at the level of files and
+directories.</p>
+<p>All the data needed for a database cluster is stored within the cluster's data
+directory, commonly referred to as <code class="varname">PGDATA</code> (after the name of the
 environment variable that can be used to define it).  A common location for
-<TT
-CLASS="VARNAME"
->PGDATA</TT
-> is <TT
-CLASS="FILENAME"
->/var/lib/pgsql/data</TT
->.  Multiple clusters,
-managed by different postmasters, can exist on the same machine.</P
-><P
->The <TT
-CLASS="VARNAME"
->PGDATA</TT
-> directory contains several subdirectories and control
-files, as shown in <A
-HREF="storage.html#PGDATA-CONTENTS-TABLE"
->Table 49-1</A
->.  In addition to
+<code class="varname">PGDATA</code> is <code class="filename">/var/lib/pgsql/data</code>.  Multiple clusters,
+managed by different postmasters, can exist on the same machine.</p>
+<p>The <code class="varname">PGDATA</code> directory contains several subdirectories and control
+files, as shown in <a href="storage.html#pgdata-contents-table" title="Table 49.1. Contents of PGDATA">Table 49.1, &#8220;Contents of <code class="varname">PGDATA</code>&#8221;</a>.  In addition to
 these required items, the cluster configuration files
-<TT
-CLASS="FILENAME"
->postgresql.conf</TT
->, <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
->, and
-<TT
-CLASS="FILENAME"
->pg_ident.conf</TT
-> are traditionally stored in
-<TT
-CLASS="VARNAME"
->PGDATA</TT
-> (although beginning in
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 8.0 it is possible to keep them
-elsewhere). </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="PGDATA-CONTENTS-TABLE"
-></A
-><P
-><B
->Table 49-1. Contents of <TT
-CLASS="VARNAME"
->PGDATA</TT
-></B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><THEAD
-><TR
-><TH
->Item</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->PG_VERSION</TT
-></TD
-><TD
->A file containing the major version number of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->base</TT
-></TD
-><TD
->Subdirectory containing per-database subdirectories</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->global</TT
-></TD
-><TD
->Subdirectory containing cluster-wide tables, such as
- <TT
-CLASS="STRUCTNAME"
->pg_database</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->pg_clog</TT
-></TD
-><TD
->Subdirectory containing transaction commit status data</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->pg_subtrans</TT
-></TD
-><TD
->Subdirectory containing subtransaction status data</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->pg_tblspc</TT
-></TD
-><TD
->Subdirectory containing symbolic links to tablespaces</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->pg_xlog</TT
-></TD
-><TD
->Subdirectory containing WAL (Write Ahead Log) files</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->postmaster.opts</TT
-></TD
-><TD
->A file recording the command-line options the postmaster was
-last started with</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="FILENAME"
->postmaster.pid</TT
-></TD
-><TD
->A lock file recording the current postmaster PID and shared memory
-segment ID (not present after postmaster shutdown)</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->For each database in the cluster there is a subdirectory within
-<TT
-CLASS="VARNAME"
->PGDATA</TT
-><TT
-CLASS="FILENAME"
->/base</TT
->, named after the database's OID in
-<TT
-CLASS="STRUCTNAME"
->pg_database</TT
->.  This subdirectory is the default location
+<code class="filename">postgresql.conf</code>, <code class="filename">pg_hba.conf</code>, and
+<code class="filename">pg_ident.conf</code> are traditionally stored in
+<code class="varname">PGDATA</code> (although beginning in
+<span class="productname">PostgreSQL</span> 8.0 it is possible to keep them
+elsewhere). </p>
+<div class="table">
+<a name="pgdata-contents-table"></a><p class="title"><b>Table 49.1. Contents of <code class="varname">PGDATA</code></b></p>
+<table summary="Contents of PGDATA" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Item</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="filename">PG_VERSION</code></td>
+<td>A file containing the major version number of <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="filename">base</code></td>
+<td>Subdirectory containing per-database subdirectories</td>
+</tr>
+<tr>
+<td><code class="filename">global</code></td>
+<td>Subdirectory containing cluster-wide tables, such as
+ <code class="structname">pg_database</code>
+</td>
+</tr>
+<tr>
+<td><code class="filename">pg_clog</code></td>
+<td>Subdirectory containing transaction commit status data</td>
+</tr>
+<tr>
+<td><code class="filename">pg_subtrans</code></td>
+<td>Subdirectory containing subtransaction status data</td>
+</tr>
+<tr>
+<td><code class="filename">pg_tblspc</code></td>
+<td>Subdirectory containing symbolic links to tablespaces</td>
+</tr>
+<tr>
+<td><code class="filename">pg_xlog</code></td>
+<td>Subdirectory containing WAL (Write Ahead Log) files</td>
+</tr>
+<tr>
+<td><code class="filename">postmaster.opts</code></td>
+<td>A file recording the command-line options the postmaster was
+last started with</td>
+</tr>
+<tr>
+<td><code class="filename">postmaster.pid</code></td>
+<td>A lock file recording the current postmaster PID and shared memory
+segment ID (not present after postmaster shutdown)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For each database in the cluster there is a subdirectory within
+<code class="varname">PGDATA</code><code class="filename">/base</code>, named after the database's OID in
+<code class="structname">pg_database</code>.  This subdirectory is the default location
 for the database's files; in particular, its system catalogs are stored
-there.</P
-><P
->Each table and index is stored in a separate file, named after the table
-or index's <I
-CLASS="FIRSTTERM"
->filenode</I
-> number, which can be found in
-<TT
-CLASS="STRUCTNAME"
->pg_class</TT
->.<TT
-CLASS="STRUCTFIELD"
->relfilenode</TT
->.</P
-><DIV
-CLASS="CAUTION"
-><P
-></P
-><TABLE
-CLASS="CAUTION"
-BORDER="1"
-WIDTH="100%"
-><TR
-><TD
-ALIGN="CENTER"
-><B
->Caution</B
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-><P
->Note that while a table's filenode often matches its OID, this is
-<SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> necessarily the case; some operations, like
-<TT
-CLASS="COMMAND"
->TRUNCATE</TT
->, <TT
-CLASS="COMMAND"
->REINDEX</TT
->, <TT
-CLASS="COMMAND"
->CLUSTER</TT
-> and some forms
-of <TT
-CLASS="COMMAND"
->ALTER TABLE</TT
->, can change the filenode while preserving the OID.
-Avoid assuming that filenode and table OID are the same.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
->When a table or index exceeds 1Gb, it is divided into gigabyte-sized
-<I
-CLASS="FIRSTTERM"
->segments</I
->.  The first segment's file name is the same as the
+there.</p>
+<p>Each table and index is stored in a separate file, named after the table
+or index's <em class="firstterm">filenode</em> number, which can be found in
+<code class="structname">pg_class</code>.<code class="structfield">relfilenode</code>.</p>
+<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Caution</h3>
+<p>Note that while a table's filenode often matches its OID, this is
+<span class="emphasis"><em>not</em></span> necessarily the case; some operations, like
+<code class="command">TRUNCATE</code>, <code class="command">REINDEX</code>, <code class="command">CLUSTER</code> and some forms
+of <code class="command">ALTER TABLE</code>, can change the filenode while preserving the OID.
+Avoid assuming that filenode and table OID are the same.</p>
+</div>
+<p>When a table or index exceeds 1Gb, it is divided into gigabyte-sized
+<em class="firstterm">segments</em>.  The first segment's file name is the same as the
 filenode; subsequent segments are named filenode.1, filenode.2, etc.
 This arrangement avoids problems on platforms that have file size limitations.
 The contents of tables and indexes are discussed further in
-<A
-HREF="storage-page-layout.html"
->Section 49.3</A
->.</P
-><P
->A table that has columns with potentially large entries will have an
-associated <I
-CLASS="FIRSTTERM"
->TOAST</I
-> table, which is used for out-of-line storage of
+<a href="storage-page-layout.html" title="49.3. Database Page Layout">Section 49.3, &#8220;Database Page Layout&#8221;</a>.</p>
+<p>A table that has columns with potentially large entries will have an
+associated <em class="firstterm">TOAST</em> table, which is used for out-of-line storage of
 field values that are too large to keep in the table rows proper.
-<TT
-CLASS="STRUCTNAME"
->pg_class</TT
->.<TT
-CLASS="STRUCTFIELD"
->reltoastrelid</TT
-> links from a table to
-its <ACRONYM
-CLASS="ACRONYM"
->TOAST</ACRONYM
-> table, if any.
-See <A
-HREF="storage-toast.html"
->Section 49.2</A
-> for more information.</P
-><P
->Tablespaces make the scenario more complicated.  Each user-defined tablespace
-has a symbolic link inside the <TT
-CLASS="VARNAME"
->PGDATA</TT
-><TT
-CLASS="FILENAME"
->/pg_tblspc</TT
->
+<code class="structname">pg_class</code>.<code class="structfield">reltoastrelid</code> links from a table to
+its <span class="acronym">TOAST</span> table, if any.
+See <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a> for more information.</p>
+<p>Tablespaces make the scenario more complicated.  Each user-defined tablespace
+has a symbolic link inside the <code class="varname">PGDATA</code><code class="filename">/pg_tblspc</code>
 directory, which points to the physical tablespace directory (as specified in
-its <TT
-CLASS="COMMAND"
->CREATE TABLESPACE</TT
-> command).  The symbolic link is named after
+its <code class="command">CREATE TABLESPACE</code> command).  The symbolic link is named after
 the tablespace's OID.  Inside the physical tablespace directory there is
 a subdirectory for each database that has elements in the tablespace, named
 after the database's OID.  Tables within that directory follow the filenode
-naming scheme.  The <TT
-CLASS="LITERAL"
->pg_default</TT
-> tablespace is not accessed through
-<TT
-CLASS="FILENAME"
->pg_tblspc</TT
->, but corresponds to
-<TT
-CLASS="VARNAME"
->PGDATA</TT
-><TT
-CLASS="FILENAME"
->/base</TT
->.  Similarly, the <TT
-CLASS="LITERAL"
->pg_global</TT
->
-tablespace is not accessed through <TT
-CLASS="FILENAME"
->pg_tblspc</TT
->, but corresponds to
-<TT
-CLASS="VARNAME"
->PGDATA</TT
-><TT
-CLASS="FILENAME"
->/global</TT
->.</P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="examples.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="storage-toast.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Examples</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->TOAST</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+naming scheme.  The <code class="literal">pg_default</code> tablespace is not accessed through
+<code class="filename">pg_tblspc</code>, but corresponds to
+<code class="varname">PGDATA</code><code class="filename">/base</code>.  Similarly, the <code class="literal">pg_global</code>
+tablespace is not accessed through <code class="filename">pg_tblspc</code>, but corresponds to
+<code class="varname">PGDATA</code><code class="filename">/global</code>.</p>
+</div>
+</div></body>
+</html>

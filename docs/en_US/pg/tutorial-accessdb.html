@@ -1,195 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Accessing a Database</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Getting Started"
-HREF="tutorial-start.html"><LINK
-REL="PREVIOUS"
-TITLE="Creating a Database"
-HREF="tutorial-createdb.html"><LINK
-REL="NEXT"
-TITLE="The SQL Language"
-HREF="tutorial-sql.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-createdb.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-start.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 1. Getting Started</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-start.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TUTORIAL-ACCESSDB"
->1.4. Accessing a Database</A
-></H1
-><A
-NAME="AEN496"
-></A
-><P
->    Once you have created a database, you can access it by:
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.4. Accessing a Database</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="tutorial-start.html" title="Chapter 1. Getting Started">
+<link rel="prev" href="tutorial-createdb.html" title="1.3. Creating a Database">
+<link rel="next" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-accessdb"></a>1.4. Accessing a Database</h2></div></div></div>
+<a name="id514647"></a><p>    Once you have created a database, you can access it by:
 
-    <P
-></P
-></P><UL
-COMPACT="COMPACT"
-><LI
-STYLE="list-style-type: disc"
-><P
->       Running the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> interactive
-       terminal program, called <SPAN
-CLASS="APPLICATION"
-><I
-CLASS="FIRSTTERM"
->psql</I
-></SPAN
->, which allows you
+    </p>
+<div class="itemizedlist"><ul type="bullet" compact>
+<li style="list-style-type: disc"><p>       Running the <span class="productname">PostgreSQL</span> interactive
+       terminal program, called <span class="application"><em class="firstterm">psql</em></span>, which allows you
        to interactively enter, edit, and execute
-       <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> commands.
-      </P
-></LI
-><LI
-STYLE="list-style-type: disc"
-><P
->       Using an existing graphical frontend tool like
-       <SPAN
-CLASS="APPLICATION"
->PgAccess</SPAN
-> or an office suite with
-       <ACRONYM
-CLASS="ACRONYM"
->ODBC</ACRONYM
-> support to create and manipulate a
+       <span class="acronym">SQL</span> commands.
+      </p></li>
+<li style="list-style-type: disc"><p>       Using an existing graphical frontend tool like
+       <span class="application">PgAccess</span> or an office suite with
+       <span class="acronym">ODBC</span> support to create and manipulate a
        database.  These possibilities are not covered in this
        tutorial.
-      </P
-></LI
-><LI
-STYLE="list-style-type: disc"
-><P
->       Writing a custom application, using one of the several
+      </p></li>
+<li style="list-style-type: disc"><p>       Writing a custom application, using one of the several
        available language bindings.  These possibilities are discussed
-       further in <A
-HREF="client-interfaces.html"
->Part IV</A
->.
-      </P
-></LI
-></UL
-><P>
+       further in <a href="client-interfaces.html" title="Part IV. Client Interfaces">Part IV, &#8220;Client Interfaces&#8221;</a>.
+      </p></li>
+</ul></div>
+<p>
 
-    You probably want to start up <TT
-CLASS="COMMAND"
->psql</TT
->, to try out
+    You probably want to start up <code class="command">psql</code>, to try out
     the examples in this tutorial.  It can be activated for the
-    <TT
-CLASS="LITERAL"
->mydb</TT
-> database by typing the command:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$</SAMP
-> <KBD
-CLASS="USERINPUT"
->psql mydb</KBD
-></PRE
-><P>
+    <code class="literal">mydb</code> database by typing the command:
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>psql mydb</code></strong></pre>
+<p>
     If you leave off the database name then it will default to your
     user account name.  You already discovered this scheme in the
     previous section.
-   </P
-><P
->    In <TT
-CLASS="COMMAND"
->psql</TT
->, you will be greeted with the following
+   </p>
+<p>    In <code class="command">psql</code>, you will be greeted with the following
     message:
-</P><PRE
-CLASS="SCREEN"
->Welcome to psql 8.0.4, the PostgreSQL interactive terminal.
+</p>
+<pre class="screen">Welcome to psql 8.0.5, the PostgreSQL interactive terminal.
  
 Type:  \copyright for distribution terms
        \h for help with SQL commands
@@ -197,251 +56,74 @@ Type:  \copyright for distribution terms
        \g or terminate with semicolon to execute query
        \q to quit
  
-mydb=&gt;</PRE
-><P>
-    <A
-NAME="AEN521"
-></A
->
+mydb=&gt;</pre>
+<p>
+    <a name="id514785"></a>
     The last line could also be
-</P><PRE
-CLASS="SCREEN"
->mydb=#</PRE
-><P>
+</p>
+<pre class="screen">mydb=#</pre>
+<p>
     That would mean you are a database superuser, which is most likely
-    the case if you installed <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+    the case if you installed <span class="productname">PostgreSQL</span>
     yourself.  Being a superuser means that you are not subject to
     access controls.  For the purpose of this tutorial this is not of
     importance.
-   </P
-><P
->    If you encounter problems starting <TT
-CLASS="COMMAND"
->psql</TT
->
+   </p>
+<p>    If you encounter problems starting <code class="command">psql</code>
     then go back to the previous section.  The diagnostics of
-    <TT
-CLASS="COMMAND"
->createdb</TT
-> and <TT
-CLASS="COMMAND"
->psql</TT
-> are
+    <code class="command">createdb</code> and <code class="command">psql</code> are
     similar, and if the former worked the latter should work as well.
-   </P
-><P
->    The last line printed out by <TT
-CLASS="COMMAND"
->psql</TT
-> is the
-    prompt, and it indicates that <TT
-CLASS="COMMAND"
->psql</TT
-> is listening
-    to you and that you can type <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> queries into a
-    work space maintained by <TT
-CLASS="COMMAND"
->psql</TT
->.  Try out these
+   </p>
+<p>    The last line printed out by <code class="command">psql</code> is the
+    prompt, and it indicates that <code class="command">psql</code> is listening
+    to you and that you can type <span class="acronym">SQL</span> queries into a
+    work space maintained by <code class="command">psql</code>.  Try out these
     commands:
-    <A
-NAME="AEN534"
-></A
->
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->mydb=&gt;</SAMP
-> <KBD
-CLASS="USERINPUT"
->SELECT version();</KBD
->
+    <a name="id514866"></a>
+</p>
+<pre class="screen"><code class="prompt">mydb=&gt;</code> <strong class="userinput"><code>SELECT version();</code></strong>
                             version
 ----------------------------------------------------------------
- PostgreSQL 8.0.4 on i586-pc-linux-gnu, compiled by GCC 2.96
+ PostgreSQL 8.0.5 on i586-pc-linux-gnu, compiled by GCC 2.96
 (1 row)
 
-<SAMP
-CLASS="PROMPT"
->mydb=&gt;</SAMP
-> <KBD
-CLASS="USERINPUT"
->SELECT current_date;</KBD
->
+<code class="prompt">mydb=&gt;</code> <strong class="userinput"><code>SELECT current_date;</code></strong>
     date
 ------------
  2002-08-31
 (1 row)
 
-<SAMP
-CLASS="PROMPT"
->mydb=&gt;</SAMP
-> <KBD
-CLASS="USERINPUT"
->SELECT 2 + 2;</KBD
->
+<code class="prompt">mydb=&gt;</code> <strong class="userinput"><code>SELECT 2 + 2;</code></strong>
  ?column?
 ----------
         4
-(1 row)</PRE
-><P>
-   </P
-><P
->    The <TT
-CLASS="COMMAND"
->psql</TT
-> program has a number of internal
+(1 row)</pre>
+<p>
+   </p>
+<p>    The <code class="command">psql</code> program has a number of internal
     commands that are not SQL commands.  They begin with the backslash
-    character, <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->\</TT
->"</SPAN
->.  Some of these
+    character, &#8220;<span class="quote"><code class="literal">\</code></span>&#8221;.  Some of these
     commands were listed in the welcome message.  For example,
     you can get help on the syntax of various
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->
+    <span class="productname">PostgreSQL</span> <span class="acronym">SQL</span>
     commands by typing:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->mydb=&gt;</SAMP
-> <KBD
-CLASS="USERINPUT"
->\h</KBD
-></PRE
-><P>
-   </P
-><P
->    To get out of <TT
-CLASS="COMMAND"
->psql</TT
->, type
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->mydb=&gt;</SAMP
-> <KBD
-CLASS="USERINPUT"
->\q</KBD
-></PRE
-><P>
-    and <TT
-CLASS="COMMAND"
->psql</TT
-> will quit and return you to your
+</p>
+<pre class="screen"><code class="prompt">mydb=&gt;</code> <strong class="userinput"><code>\h</code></strong></pre>
+<p>
+   </p>
+<p>    To get out of <code class="command">psql</code>, type
+</p>
+<pre class="screen"><code class="prompt">mydb=&gt;</code> <strong class="userinput"><code>\q</code></strong></pre>
+<p>
+    and <code class="command">psql</code> will quit and return you to your
     command shell. (For more internal commands, type
-    <TT
-CLASS="LITERAL"
->\?</TT
-> at the <TT
-CLASS="COMMAND"
->psql</TT
-> prompt.)  The
-    full capabilities of <TT
-CLASS="COMMAND"
->psql</TT
-> are documented in
-    <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
->.  If <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is
-    installed correctly you can also type <TT
-CLASS="LITERAL"
->man psql</TT
->
+    <code class="literal">\?</code> at the <code class="command">psql</code> prompt.)  The
+    full capabilities of <code class="command">psql</code> are documented in
+    <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.  If <span class="productname">PostgreSQL</span> is
+    installed correctly you can also type <code class="literal">man psql</code>
     at the operating system shell prompt to see the documentation.  In
     this tutorial we will not use these features explicitly, but you
     can use them yourself when you see fit.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-createdb.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Creating a Database</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="tutorial-start.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->The <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Language</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div></body>
+</html>

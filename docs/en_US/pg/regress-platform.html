@@ -1,257 +1,59 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Platform-specific comparison files</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Regression Tests"
-HREF="regress.html"><LINK
-REL="PREVIOUS"
-TITLE="Test Evaluation"
-HREF="regress-evaluation.html"><LINK
-REL="NEXT"
-TITLE="Client Interfaces"
-HREF="client-interfaces.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="regress-evaluation.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="regress.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 26. Regression Tests</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="regress.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="client-interfaces.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="REGRESS-PLATFORM"
->26.3. Platform-specific comparison files</A
-></H1
-><P
->    Since some of the tests inherently produce platform-specific
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>26.3. Platform-specific comparison files</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="regress.html" title="Chapter 26. Regression Tests">
+<link rel="prev" href="regress-evaluation.html" title="26.2. Test Evaluation">
+<link rel="next" href="client-interfaces.html" title="Part IV. Client Interfaces">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="regress-platform"></a>26.3. Platform-specific comparison files</h2></div></div></div>
+<p>    Since some of the tests inherently produce platform-specific
     results, we have provided a way to supply platform-specific result
     comparison files.  Frequently, the same variation applies to
     multiple platforms; rather than supplying a separate comparison
     file for every platform, there is a mapping file that defines
     which comparison file to use.  So, to eliminate bogus test
-    <SPAN
-CLASS="QUOTE"
->"failures"</SPAN
-> for a particular platform, you must choose
+    &#8220;<span class="quote">failures</span>&#8221; for a particular platform, you must choose
     or make a variant result file, and then add a line to the mapping
-    file, which is <TT
-CLASS="FILENAME"
->src/test/regress/resultmap</TT
->.
-   </P
-><P
->    Each line in the mapping file is of the form
-</P><PRE
-CLASS="SYNOPSIS"
->testname/platformpattern=comparisonfilename</PRE
-><P>
+    file, which is <code class="filename">src/test/regress/resultmap</code>.
+   </p>
+<p>    Each line in the mapping file is of the form
+</p>
+<pre class="synopsis">testname/platformpattern=comparisonfilename</pre>
+<p>
     The test name is just the name of the particular regression test
     module.  The platform pattern is a pattern in the style of the Unix
-    tool <TT
-CLASS="COMMAND"
->expr</TT
-> (that is, a regular expression with an implicit
-    <TT
-CLASS="LITERAL"
->^</TT
-> anchor
+    tool <code class="command">expr</code> (that is, a regular expression with an implicit
+    <code class="literal">^</code> anchor
     at the start).  It is matched against the platform name as printed
-    by <TT
-CLASS="COMMAND"
->config.guess</TT
-> followed by
-    <TT
-CLASS="LITERAL"
->:gcc</TT
-> or <TT
-CLASS="LITERAL"
->:cc</TT
->, depending on
+    by <code class="command">config.guess</code> followed by
+    <code class="literal">:gcc</code> or <code class="literal">:cc</code>, depending on
     whether you use the GNU compiler or the system's native compiler
     (on systems where there is a difference).  The comparison file
     name is the name of the substitute result comparison file.
-   </P
-><P
->    For example: some systems interpret very small floating-point values
+   </p>
+<p>    For example: some systems interpret very small floating-point values
     as zero, rather than reporting an underflow error.  This causes a
-    few differences in the <TT
-CLASS="FILENAME"
->float8</TT
-> regression test.
+    few differences in the <code class="filename">float8</code> regression test.
     Therefore, we provide a variant comparison file,
-    <TT
-CLASS="FILENAME"
->float8-small-is-zero.out</TT
->, which includes
+    <code class="filename">float8-small-is-zero.out</code>, which includes
     the results to be expected on these systems.  To silence the bogus
-    <SPAN
-CLASS="QUOTE"
->"failure"</SPAN
-> message on <SPAN
-CLASS="SYSTEMITEM"
->OpenBSD</SPAN
->
-    platforms, <TT
-CLASS="FILENAME"
->resultmap</TT
-> includes
-</P><PRE
-CLASS="PROGRAMLISTING"
->float8/i.86-.*-openbsd=float8-small-is-zero</PRE
-><P>
+    &#8220;<span class="quote">failure</span>&#8221; message on <span class="systemitem">OpenBSD</span>
+    platforms, <code class="filename">resultmap</code> includes
+</p>
+<pre class="programlisting">float8/i.86-.*-openbsd=float8-small-is-zero</pre>
+<p>
     which will trigger on any machine for which the output of
-    <TT
-CLASS="COMMAND"
->config.guess</TT
-> matches <TT
-CLASS="LITERAL"
->i.86-.*-openbsd</TT
->.
+    <code class="command">config.guess</code> matches <code class="literal">i.86-.*-openbsd</code>.
     Other lines
-    in <TT
-CLASS="FILENAME"
->resultmap</TT
-> select the variant comparison file for other
+    in <code class="filename">resultmap</code> select the variant comparison file for other
     platforms where it's appropriate.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="regress-evaluation.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="client-interfaces.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Test Evaluation</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="regress.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Client Interfaces</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div></body>
+</html>

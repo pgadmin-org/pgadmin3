@@ -1,218 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Type Conversion"
-HREF="typeconv.html"><LINK
-REL="PREVIOUS"
-TITLE="Operators"
-HREF="typeconv-oper.html"><LINK
-REL="NEXT"
-TITLE="Value Storage"
-HREF="typeconv-query.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="typeconv-oper.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="typeconv.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 10. Type Conversion</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv-query.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TYPECONV-FUNC"
->10.3. Functions</A
-></H1
-><A
-NAME="AEN13857"
-></A
-><P
->   The specific function to be used in a function invocation is determined
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>10.3. Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
+<link rel="prev" href="typeconv-oper.html" title="10.2. Operators">
+<link rel="next" href="typeconv-query.html" title="10.4. Value Storage">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="typeconv-func"></a>10.3. Functions</h2></div></div></div>
+<a name="id570352"></a><p>   The specific function to be used in a function invocation is determined
    according to the following steps.
-  </P
-><DIV
-CLASS="PROCEDURE"
-><P
-><B
->Function Type Resolution</B
-></P
-><OL
-TYPE="1"
-><LI
-CLASS="STEP"
-><P
->Select the functions to be considered from the
-<CODE
-CLASS="CLASSNAME"
->pg_proc</CODE
-> system catalog.  If an unqualified
+  </p>
+<div class="procedure">
+<a name="id570372"></a><p class="title"><b>Function Type Resolution</b></p>
+<ol type="1">
+<li>
+<p>Select the functions to be considered from the
+<code class="classname">pg_proc</code> system catalog.  If an unqualified
 function name was used, the functions
 considered are those of the right name and argument count that are
-visible in the current search path (see <A
-HREF="ddl-schemas.html#DDL-SCHEMAS-PATH"
->Section 5.8.3</A
->).
+visible in the current search path (see <a href="ddl-schemas.html#ddl-schemas-path" title="5.8.3. The Schema Search Path">Section 5.8.3, &#8220;The Schema Search Path&#8221;</a>).
 If a qualified function name was given, only functions in the specified
-schema are considered.</P
-><OL
-CLASS="SUBSTEPS"
-TYPE="a"
-><LI
-CLASS="STEP"
-><P
->If the search path finds multiple functions of identical argument types,
+schema are considered.</p>
+<ol type="a"><li><p>If the search path finds multiple functions of identical argument types,
 only the one appearing earliest in the path is considered.  But functions of
 different argument types are considered on an equal footing regardless of
-search path position.</P
-></LI
-></OL
-></LI
-><LI
-CLASS="STEP"
-><P
->Check for a function accepting exactly the input argument types.
+search path position.</p></li></ol>
+</li>
+<li><p>Check for a function accepting exactly the input argument types.
 If one exists (there can be only one exact match in the set of
 functions considered), use it.
-(Cases involving <TT
-CLASS="TYPE"
->unknown</TT
-> will never find a match at
-this step.)</P
-></LI
-><LI
-CLASS="STEP"
-><P
->If no exact match is found, see whether the function call appears
+(Cases involving <code class="type">unknown</code> will never find a match at
+this step.)</p></li>
+<li><p>If no exact match is found, see whether the function call appears
 to be a trivial type conversion request.  This happens if the function call
 has just one argument and the function name is the same as the (internal)
 name of some data type.  Furthermore, the function argument must be either
 an unknown-type literal or a type that is binary-compatible with the named
 data type.  When these conditions are met, the function argument is converted
-to the named data type without any actual function call.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Look for the best match.</P
-><OL
-CLASS="SUBSTEPS"
-TYPE="a"
-><LI
-CLASS="STEP"
-><P
->Discard candidate functions for which the input types do not match
+to the named data type without any actual function call.</p></li>
+<li>
+<p>Look for the best match.</p>
+<ol type="a">
+<li><p>Discard candidate functions for which the input types do not match
 and cannot be converted (using an implicit conversion) to match.
-<TT
-CLASS="TYPE"
->unknown</TT
-> literals are
+<code class="type">unknown</code> literals are
 assumed to be convertible to anything for this purpose.  If only one
-candidate remains, use it; else continue to the next step.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Run through all candidates and keep those with the most exact matches
+candidate remains, use it; else continue to the next step.</p></li>
+<li><p>Run through all candidates and keep those with the most exact matches
 on input types.  (Domains are considered the same as their base type
 for this purpose.)  Keep all candidates if none have any exact matches.
-If only one candidate remains, use it; else continue to the next step.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Run through all candidates and keep those that accept preferred types (of the
+If only one candidate remains, use it; else continue to the next step.</p></li>
+<li><p>Run through all candidates and keep those that accept preferred types (of the
 input data type's type category) at the most positions where type conversion
 will be required.
 Keep all candidates if none accept preferred types.
-If only one candidate remains, use it; else continue to the next step.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->If any input arguments are <TT
-CLASS="TYPE"
->unknown</TT
->, check the type categories
+If only one candidate remains, use it; else continue to the next step.</p></li>
+<li><p>If any input arguments are <code class="type">unknown</code>, check the type categories
 accepted 
 at those argument positions by the remaining candidates.  At each position,
-select the <TT
-CLASS="TYPE"
->string</TT
-> category if any candidate accepts that category.
+select the <code class="type">string</code> category if any candidate accepts that category.
 (This bias towards string
 is appropriate since an unknown-type literal does look like a string.)
 Otherwise, if all the remaining candidates accept the same type category,
@@ -221,270 +73,98 @@ the correct choice cannot be deduced without more clues.
 Now discard candidates that do not accept the selected type category.
 Furthermore, if any candidate accepts a preferred type at a given argument
 position, discard candidates that accept non-preferred types for that
-argument.</P
-></LI
-><LI
-CLASS="STEP"
-><P
->If only one candidate remains, use it.  If no candidate or more than one
+argument.</p></li>
+<li><p>If only one candidate remains, use it.  If no candidate or more than one
 candidate remains,
-then fail.</P
-></LI
-></OL
-></LI
-></OL
-></DIV
-><P
->Note that the <SPAN
-CLASS="QUOTE"
->"best match"</SPAN
-> rules are identical for operator and
+then fail.</p></li>
+</ol>
+</li>
+</ol>
+</div>
+<p>Note that the &#8220;<span class="quote">best match</span>&#8221; rules are identical for operator and
 function type resolution.
-Some examples follow.</P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN13893"
-></A
-><P
-><B
->Example 10-4. Rounding Function Argument Type Resolution</B
-></P
-><P
->There is only one <CODE
-CLASS="FUNCTION"
->round</CODE
-> function with two
-arguments.  (The first is <TT
-CLASS="TYPE"
->numeric</TT
->, the second is
-<TT
-CLASS="TYPE"
->integer</TT
->.)  So the following query automatically converts
-the first argument of type <TT
-CLASS="TYPE"
->integer</TT
-> to
-<TT
-CLASS="TYPE"
->numeric</TT
->:
+Some examples follow.</p>
+<div class="example">
+<a name="id570532"></a><p class="title"><b>Example 10.4. Rounding Function Argument Type Resolution</b></p>
+<p>There is only one <code class="function">round</code> function with two
+arguments.  (The first is <code class="type">numeric</code>, the second is
+<code class="type">integer</code>.)  So the following query automatically converts
+the first argument of type <code class="type">integer</code> to
+<code class="type">numeric</code>:
 
-</P><PRE
-CLASS="SCREEN"
->SELECT round(4, 4);
+</p>
+<pre class="screen">SELECT round(4, 4);
 
  round
 --------
  4.0000
-(1 row)</PRE
-><P>
+(1 row)</pre>
+<p>
 
 That query is actually transformed by the parser to
-</P><PRE
-CLASS="SCREEN"
->SELECT round(CAST (4 AS numeric), 4);</PRE
-><P></P
-><P
->Since numeric constants with decimal points are initially assigned the
-type <TT
-CLASS="TYPE"
->numeric</TT
->, the following query will require no type
+</p>
+<pre class="screen">SELECT round(CAST (4 AS numeric), 4);</pre>
+<p>Since numeric constants with decimal points are initially assigned the
+type <code class="type">numeric</code>, the following query will require no type
 conversion and may therefore be slightly more efficient:
-</P><PRE
-CLASS="SCREEN"
->SELECT round(4.0, 4);</PRE
-><P></P
-></DIV
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN13906"
-></A
-><P
-><B
->Example 10-5. Substring Function Type Resolution</B
-></P
-><P
->There are several <CODE
-CLASS="FUNCTION"
->substr</CODE
-> functions, one of which
-takes types <TT
-CLASS="TYPE"
->text</TT
-> and <TT
-CLASS="TYPE"
->integer</TT
->.  If called
+</p>
+<pre class="screen">SELECT round(4.0, 4);</pre>
+</div>
+<div class="example">
+<a name="id570593"></a><p class="title"><b>Example 10.5. Substring Function Type Resolution</b></p>
+<p>There are several <code class="function">substr</code> functions, one of which
+takes types <code class="type">text</code> and <code class="type">integer</code>.  If called
 with a string constant of unspecified type, the system chooses the
 candidate function that accepts an argument of the preferred category
-<TT
-CLASS="LITERAL"
->string</TT
-> (namely of type <TT
-CLASS="TYPE"
->text</TT
->).
+<code class="literal">string</code> (namely of type <code class="type">text</code>).
 
-</P><PRE
-CLASS="SCREEN"
->SELECT substr('1234', 3);
+</p>
+<pre class="screen">SELECT substr('1234', 3);
 
  substr
 --------
      34
-(1 row)</PRE
-><P></P
-><P
->If the string is declared to be of type <TT
-CLASS="TYPE"
->varchar</TT
->, as might be the case
-if it comes from a table, then the parser will try to convert it to become <TT
-CLASS="TYPE"
->text</TT
->:
-</P><PRE
-CLASS="SCREEN"
->SELECT substr(varchar '1234', 3);
+(1 row)</pre>
+<p>If the string is declared to be of type <code class="type">varchar</code>, as might be the case
+if it comes from a table, then the parser will try to convert it to become <code class="type">text</code>:
+</p>
+<pre class="screen">SELECT substr(varchar '1234', 3);
 
  substr
 --------
      34
-(1 row)</PRE
-><P>
+(1 row)</pre>
+<p>
 
 This is transformed by the parser to effectively become
-</P><PRE
-CLASS="SCREEN"
->SELECT substr(CAST (varchar '1234' AS text), 3);</PRE
-><P></P
-><P
-></P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->The parser learns from the <TT
-CLASS="STRUCTNAME"
->pg_cast</TT
-> catalog that
-<TT
-CLASS="TYPE"
->text</TT
-> and <TT
-CLASS="TYPE"
->varchar</TT
->
+</p>
+<pre class="screen">SELECT substr(CAST (varchar '1234' AS text), 3);</pre>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>The parser learns from the <code class="structname">pg_cast</code> catalog that
+<code class="type">text</code> and <code class="type">varchar</code>
 are binary-compatible, meaning that one can be passed to a function that
 accepts the other without doing any physical conversion.  Therefore, no
-explicit type conversion call is really inserted in this case.</P
-></BLOCKQUOTE
-></DIV
-><P></P
-><P
->And, if the function is called with an argument of type <TT
-CLASS="TYPE"
->integer</TT
->, the parser will
-try to convert that to <TT
-CLASS="TYPE"
->text</TT
->:
-</P><PRE
-CLASS="SCREEN"
->SELECT substr(1234, 3);
+explicit type conversion call is really inserted in this case.</p>
+</div>
+<p>And, if the function is called with an argument of type <code class="type">integer</code>, the parser will
+try to convert that to <code class="type">text</code>:
+</p>
+<pre class="screen">SELECT substr(1234, 3);
 
  substr
 --------
      34
-(1 row)</PRE
-><P>
+(1 row)</pre>
+<p>
 
 This actually executes as
-</P><PRE
-CLASS="SCREEN"
->SELECT substr(CAST (1234 AS text), 3);</PRE
-><P>
+</p>
+<pre class="screen">SELECT substr(CAST (1234 AS text), 3);</pre>
+<p>
 This automatic transformation can succeed because there is an
-implicitly invocable cast from <TT
-CLASS="TYPE"
->integer</TT
-> to
-<TT
-CLASS="TYPE"
->text</TT
->.</P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="typeconv-oper.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv-query.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Operators</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="typeconv.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Value Storage</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+implicitly invocable cast from <code class="type">integer</code> to
+<code class="type">text</code>.</p>
+</div>
+</div></body>
+</html>

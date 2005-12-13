@@ -1,292 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Dependency Tracking</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Data Definition"
-HREF="ddl.html"><LINK
-REL="PREVIOUS"
-TITLE="Other Database Objects"
-HREF="ddl-others.html"><LINK
-REL="NEXT"
-TITLE="Data Manipulation"
-HREF="dml.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl-others.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 5. Data Definition</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="dml.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DDL-DEPEND"
->5.10. Dependency Tracking</A
-></H1
-><A
-NAME="AEN2591"
-></A
-><A
-NAME="AEN2594"
-></A
-><P
->   When you create complex database structures involving many tables
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>5.10. Dependency Tracking</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="prev" href="ddl-others.html" title="5.9. Other Database Objects">
+<link rel="next" href="dml.html" title="Chapter 6. Data Manipulation">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ddl-depend"></a>5.10. Dependency Tracking</h2></div></div></div>
+<a name="id525524"></a><a name="id525538"></a><p>   When you create complex database structures involving many tables
    with foreign key constraints, views, triggers, functions, etc. you
    will implicitly create a net of dependencies between the objects.
    For instance, a table with a foreign key constraint depends on the
    table it references.
-  </P
-><P
->   To ensure the integrity of the entire database structure,
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> makes sure that you cannot
+  </p>
+<p>   To ensure the integrity of the entire database structure,
+   <span class="productname">PostgreSQL</span> makes sure that you cannot
    drop objects that other objects still depend on.  For example,
-   attempting to drop the products table we had considered in <A
-HREF="ddl-constraints.html#DDL-CONSTRAINTS-FK"
->Section 5.3.5</A
->, with the orders table depending on
+   attempting to drop the products table we had considered in <a href="ddl-constraints.html#ddl-constraints-fk" title="5.3.5. Foreign Keys">Section 5.3.5, &#8220;Foreign Keys&#8221;</a>, with the orders table depending on
    it, would result in an error message such as this:
-</P><PRE
-CLASS="SCREEN"
->DROP TABLE products;
+</p>
+<pre class="screen">DROP TABLE products;
 
 NOTICE:  constraint orders_product_no_fkey on table orders depends on table products
 ERROR:  cannot drop table products because other objects depend on it
-HINT:  Use DROP ... CASCADE to drop the dependent objects too.</PRE
-><P>
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.</pre>
+<p>
    The error message contains a useful hint: if you do not want to
    bother deleting all the dependent objects individually, you can run
-</P><PRE
-CLASS="SCREEN"
->DROP TABLE products CASCADE;</PRE
-><P>
+</p>
+<pre class="screen">DROP TABLE products CASCADE;</pre>
+<p>
    and all the dependent objects will be removed.  In this case, it
    doesn't remove the orders table, it only removes the foreign key
-   constraint.  (If you want to check what <TT
-CLASS="LITERAL"
->DROP ... CASCADE</TT
-> will do,
-   run <TT
-CLASS="COMMAND"
->DROP</TT
-> without <TT
-CLASS="LITERAL"
->CASCADE</TT
-> and read the <TT
-CLASS="LITERAL"
->NOTICE</TT
-> messages.)
-  </P
-><P
->   All drop commands in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> support
-   specifying <TT
-CLASS="LITERAL"
->CASCADE</TT
->.  Of course, the nature of
+   constraint.  (If you want to check what <code class="literal">DROP ... CASCADE</code> will do,
+   run <code class="command">DROP</code> without <code class="literal">CASCADE</code> and read the <code class="literal">NOTICE</code> messages.)
+  </p>
+<p>   All drop commands in <span class="productname">PostgreSQL</span> support
+   specifying <code class="literal">CASCADE</code>.  Of course, the nature of
    the possible dependencies varies with the type of the object.  You
-   can also write <TT
-CLASS="LITERAL"
->RESTRICT</TT
-> instead of
-   <TT
-CLASS="LITERAL"
->CASCADE</TT
-> to get the default behavior, which is to
+   can also write <code class="literal">RESTRICT</code> instead of
+   <code class="literal">CASCADE</code> to get the default behavior, which is to
    prevent drops of objects that other objects depend on.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    According to the SQL standard, specifying either
-    <TT
-CLASS="LITERAL"
->RESTRICT</TT
-> or <TT
-CLASS="LITERAL"
->CASCADE</TT
-> is
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    According to the SQL standard, specifying either
+    <code class="literal">RESTRICT</code> or <code class="literal">CASCADE</code> is
     required.  No database system actually enforces that rule, but
-    whether the default behavior is <TT
-CLASS="LITERAL"
->RESTRICT</TT
-> or
-    <TT
-CLASS="LITERAL"
->CASCADE</TT
-> varies across systems.
-   </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    Foreign key constraint dependencies and serial column dependencies
-    from <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> versions prior to 7.3
-    are <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> maintained or created during the
+    whether the default behavior is <code class="literal">RESTRICT</code> or
+    <code class="literal">CASCADE</code> varies across systems.
+   </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    Foreign key constraint dependencies and serial column dependencies
+    from <span class="productname">PostgreSQL</span> versions prior to 7.3
+    are <span class="emphasis"><em>not</em></span> maintained or created during the
     upgrade process.  All other dependency types will be properly
     created during an upgrade from a pre-7.3 database.
-   </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl-others.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="dml.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Other Database Objects</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="ddl.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Data Manipulation</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

@@ -1,245 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SPI_cursor_find</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_cursor_open"
-HREF="spi-spi-cursor-open.html"><LINK
-REL="NEXT"
-TITLE="SPI_cursor_fetch"
-HREF="spi-spi-cursor-fetch.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-open.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-open.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-fetch.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-fetch.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-CURSOR-FIND"
-></A
->SPI_cursor_find</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN35239"
-></A
-><H2
->Name</H2
->SPI_cursor_find&nbsp;--&nbsp;find an existing cursor by name</DIV
-><A
-NAME="AEN35242"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN35244"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->Portal SPI_cursor_find(const char * <TT
-CLASS="PARAMETER"
->name</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35247"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_cursor_find</CODE
-> finds an existing portal by
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_cursor_find</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
+<link rel="prev" href="spi-spi-cursor-open.html" title="SPI_cursor_open">
+<link rel="next" href="spi-spi-cursor-fetch.html" title="SPI_cursor_fetch">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-cursor-find"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_cursor_find &#8212; find an existing cursor by name</p>
+</div>
+<a name="id672594"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">Portal SPI_cursor_find(const char * <em class="parameter"><code>name</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id672613"></a><h2>Description</h2>
+<p>   <code class="function">SPI_cursor_find</code> finds an existing portal by
    name.  This is primarily useful to resolve a cursor name returned
    as text by some other function.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35251"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->const char * <TT
-CLASS="PARAMETER"
->name</TT
-></TT
-></DT
-><DD
-><P
->      name of the portal
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35260"
-></A
-><H2
->Return Value</H2
-><P
->   pointer to the portal with the specified name, or
-   <TT
-CLASS="SYMBOL"
->NULL</TT
-> if none was found
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-open.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-fetch.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_cursor_open</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_cursor_fetch</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id672628"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">const char * <em class="parameter"><code>name</code></em></code></span></dt>
+<dd><p>      name of the portal
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id672650"></a><h2>Return Value</h2>
+<p>   pointer to the portal with the specified name, or
+   <code class="symbol">NULL</code> if none was found
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,646 +1,190 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->ALTER USER</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER TYPE"
-HREF="sql-altertype.html"><LINK
-REL="NEXT"
-TITLE="ANALYZE"
-HREF="sql-analyze.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-analyze.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-analyze.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERUSER"
-></A
->ALTER USER</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN37499"
-></A
-><H2
->Name</H2
->ALTER USER&nbsp;--&nbsp;change a database user account</DIV
-><A
-NAME="AEN37502"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN37504"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ [ WITH ] <TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
-> [ ... ] ]
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER USER</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-altertype.html" title="ALTER TYPE">
+<link rel="next" href="sql-analyze.html" title="ANALYZE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-alteruser"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER USER &#8212; change a database user account</p>
+</div>
+<a name="id681322"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER USER <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
-where <TT
-CLASS="REPLACEABLE"
-><I
->option</I
-></TT
-> can be:
+where <em class="replaceable"><code>option</code></em> can be:
 
     CREATEDB | NOCREATEDB
     | CREATEUSER | NOCREATEUSER 
-    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
-CLASS="REPLACEABLE"
-><I
->password</I
-></TT
->' 
-    | VALID UNTIL '<TT
-CLASS="REPLACEABLE"
-><I
->abstime</I
-></TT
->'
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<em class="replaceable"><code>password</code></em>' 
+    | VALID UNTIL '<em class="replaceable"><code>abstime</code></em>'
 
-ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> RENAME TO <TT
-CLASS="REPLACEABLE"
-><I
->newname</I
-></TT
->
+ALTER USER <em class="replaceable"><code>name</code></em> RENAME TO <em class="replaceable"><code>newname</code></em>
 
-ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> SET <TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-> { TO | = } { <TT
-CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-> | DEFAULT }
-ALTER USER <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> RESET <TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37518"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER USER</TT
-> changes the attributes of a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user account.  Attributes not
+ALTER USER <em class="replaceable"><code>name</code></em> SET <em class="replaceable"><code>parameter</code></em> { TO | = } { <em class="replaceable"><code>value</code></em> | DEFAULT }
+ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="replaceable"><code>parameter</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id681411"></a><h2>Description</h2>
+<p>   <code class="command">ALTER USER</code> changes the attributes of a
+   <span class="productname">PostgreSQL</span> user account.  Attributes not
    mentioned in the command retain their previous settings.
-  </P
-><P
->   The first variant of this command listed in the synopsis changes certain
+  </p>
+<p>   The first variant of this command listed in the synopsis changes certain
    per-user privileges and authentication settings.  (See below for
    details.)  Database superusers can change any of these settings for any
    user.  Ordinary users can only change their own password.
-  </P
-><P
->   The second variant changes the name of the user.  Only a database
+  </p>
+<p>   The second variant changes the name of the user.  Only a database
    superuser can rename user accounts.  The current session user cannot be
    renamed.  (Connect as a different user if you need to do that.)
-   Because <TT
-CLASS="LITERAL"
->MD5</TT
->-encrypted passwords use the user name as
-   cryptographic salt, renaming a user clears their <TT
-CLASS="LITERAL"
->MD5</TT
->
+   Because <code class="literal">MD5</code>-encrypted passwords use the user name as
+   cryptographic salt, renaming a user clears their <code class="literal">MD5</code>
    password.
-  </P
-><P
->   The third and the fourth variant change a user's session default for
+  </p>
+<p>   The third and the fourth variant change a user's session default for
    a specified configuration variable.  Whenever the user subsequently
    starts a new session, the specified value becomes the session default,
-   overriding whatever setting is present in <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->
-   or has been received from the <TT
-CLASS="COMMAND"
->postmaster</TT
-> command line.
+   overriding whatever setting is present in <code class="filename">postgresql.conf</code>
+   or has been received from the <code class="command">postmaster</code> command line.
    Ordinary users can change their own session defaults.
    Superusers can change anyone's session defaults.
    Certain variables cannot be set this way, or can only be
    set by a superuser.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37530"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->        The name of the user whose attributes are to be altered.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CREATEDB</TT
-><BR><TT
-CLASS="LITERAL"
->NOCREATEDB</TT
-></DT
-><DD
-><P
->        These clauses define a user's ability to create databases.  If
-        <TT
-CLASS="LITERAL"
->CREATEDB</TT
-> is specified, the user
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id681485"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>        The name of the user whose attributes are to be altered.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CREATEDB</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">NOCREATEDB</code></span>
+</dt>
+<dd><p>        These clauses define a user's ability to create databases.  If
+        <code class="literal">CREATEDB</code> is specified, the user
         will be allowed to create his own databases. Using
-        <TT
-CLASS="LITERAL"
->NOCREATEDB</TT
-> will deny a user the ability to
+        <code class="literal">NOCREATEDB</code> will deny a user the ability to
         create databases.  (If the user is also a superuser, then this
         setting has no real effect.)
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CREATEUSER</TT
-><BR><TT
-CLASS="LITERAL"
->NOCREATEUSER</TT
-></DT
-><DD
-><P
->        These clauses determine whether a user will be permitted to
-        create new users himself. <TT
-CLASS="LITERAL"
->CREATEUSER</TT
-> will also make
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CREATEUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">NOCREATEUSER</code></span>
+</dt>
+<dd><p>        These clauses determine whether a user will be permitted to
+        create new users himself. <code class="literal">CREATEUSER</code> will also make
         the user a superuser, who can override all access restrictions.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->password</I
-></TT
-></DT
-><DD
-><P
->        The new password to be used for this account.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->ENCRYPTED</TT
-><BR><TT
-CLASS="LITERAL"
->UNENCRYPTED</TT
-></DT
-><DD
-><P
->        These key words control whether the password is stored
-        encrypted in <TT
-CLASS="LITERAL"
->pg_shadow</TT
->.  (See
-        <A
-HREF="sql-createuser.html"
-><I
->CREATE USER</I
-></A
->
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>password</code></em></span></dt>
+<dd><p>        The new password to be used for this account.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">ENCRYPTED</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">UNENCRYPTED</code></span>
+</dt>
+<dd><p>        These key words control whether the password is stored
+        encrypted in <code class="literal">pg_shadow</code>.  (See
+        <a href="sql-createuser.html">CREATE USER</a>
         for more information about this choice.)
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->abstime</I
-></TT
-></DT
-><DD
-><P
->        The date (and, optionally, the time)
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>abstime</code></em></span></dt>
+<dd><p>        The date (and, optionally, the time)
         at which this user's password is to expire.  To set the password
-        never to expire, use <TT
-CLASS="LITERAL"
->'infinity'</TT
->.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->newname</I
-></TT
-></DT
-><DD
-><P
->        The new name of the user.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-><BR><TT
-CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-></DT
-><DD
-><P
->        Set this user's session default for the specified configuration
+        never to expire, use <code class="literal">'infinity'</code>.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
+<dd><p>        The new name of the user.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><em xmlns="" class="replaceable"><code>parameter</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><em class="replaceable"><code>value</code></em></span>
+</dt>
+<dd>
+<p>        Set this user's session default for the specified configuration
         parameter to the given value.  If
-        <TT
-CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-> is <TT
-CLASS="LITERAL"
->DEFAULT</TT
->
-        or, equivalently, <TT
-CLASS="LITERAL"
->RESET</TT
-> is used, the
+        <em class="replaceable"><code>value</code></em> is <code class="literal">DEFAULT</code>
+        or, equivalently, <code class="literal">RESET</code> is used, the
         user-specific variable setting is removed, so the user will
         inherit the system-wide default setting in new sessions.  Use
-        <TT
-CLASS="LITERAL"
->RESET ALL</TT
-> to clear all user-specific settings.
-       </P
-><P
->        See <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-> and <A
-HREF="runtime-config.html"
->Section 16.4</A
-> for more information about allowed
+        <code class="literal">RESET ALL</code> to clear all user-specific settings.
+       </p>
+<p>        See <a href="sql-set.html">SET</a> and <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more information about allowed
         parameter names and values.
-       </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37594"
-></A
-><H2
->Notes</H2
-><P
->   Use <A
-HREF="sql-createuser.html"
-><I
->CREATE USER</I
-></A
->
-   to add new users, and <A
-HREF="sql-dropuser.html"
-><I
->DROP USER</I
-></A
-> to remove a user.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->ALTER USER</TT
-> cannot change a user's group memberships.
-   Use <A
-HREF="sql-altergroup.html"
-><I
->ALTER GROUP</I
-></A
->
+       </p>
+</dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id681711"></a><h2>Notes</h2>
+<p>   Use <a href="sql-createuser.html">CREATE USER</a>
+   to add new users, and <a href="sql-dropuser.html">DROP USER</a> to remove a user.
+  </p>
+<p>   <code class="command">ALTER USER</code> cannot change a user's group memberships.
+   Use <a href="sql-altergroup.html">ALTER GROUP</a>
    to do that.
-  </P
-><P
->   The <TT
-CLASS="LITERAL"
->VALID UNTIL</TT
-> clause defines an expiration time for a
-   password only, not for the user account <I
-CLASS="FOREIGNPHRASE"
->per se</I
->.  In
+  </p>
+<p>   The <code class="literal">VALID UNTIL</code> clause defines an expiration time for a
+   password only, not for the user account <span class="foreignphrase"><em class="foreignphrase">per se</em></span>.  In
    particular, the expiration time is not enforced when logging in using
    a non-password-based authentication method.
-  </P
-><P
->   It is also possible to tie a
+  </p>
+<p>   It is also possible to tie a
    session default to a specific database rather than to a user; see
-   <A
-HREF="sql-alterdatabase.html"
-><I
->ALTER DATABASE</I
-></A
->.
+   <a href="sql-alterdatabase.html">ALTER DATABASE</a>.
    User-specific settings override database-specific
    ones if there is a conflict.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37607"
-></A
-><H2
->Examples</H2
-><P
->   Change a user's password:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id681794"></a><h2>Examples</h2>
+<p>   Change a user's password:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER USER davide WITH PASSWORD 'hu8jmn3';</PRE
-><P>
-  </P
-><P
->   Change the expiration date of the user's password:
+</p>
+<pre class="programlisting">ALTER USER davide WITH PASSWORD 'hu8jmn3';</pre>
+<p>
+  </p>
+<p>   Change the expiration date of the user's password:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER USER manuel VALID UNTIL 'Jan 31 2030';</PRE
-><P>
-  </P
-><P
->   Change a password expiration date, specifying that the password
+</p>
+<pre class="programlisting">ALTER USER manuel VALID UNTIL 'Jan 31 2030';</pre>
+<p>
+  </p>
+<p>   Change a password expiration date, specifying that the password
    should expire at midday on 4th May 2005 using
-   the time zone which is one hour ahead of <ACRONYM
-CLASS="ACRONYM"
->UTC</ACRONYM
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER USER chris VALID UNTIL 'May 4 12:00:00 2005 +1';</PRE
-><P>
-  </P
-><P
->   Make a password valid forever:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER USER fred VALID UNTIL 'infinity';</PRE
-><P>
-  </P
-><P
->   Give a user the ability to create other users and new databases:
+   the time zone which is one hour ahead of <span class="acronym">UTC</span>:
+</p>
+<pre class="programlisting">ALTER USER chris VALID UNTIL 'May 4 12:00:00 2005 +1';</pre>
+<p>
+  </p>
+<p>   Make a password valid forever:
+</p>
+<pre class="programlisting">ALTER USER fred VALID UNTIL 'infinity';</pre>
+<p>
+  </p>
+<p>   Give a user the ability to create other users and new databases:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER USER miriam CREATEUSER CREATEDB;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37620"
-></A
-><H2
->Compatibility</H2
-><P
->   The <TT
-CLASS="COMMAND"
->ALTER USER</TT
-> statement is a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.  The SQL standard
+</p>
+<pre class="programlisting">ALTER USER miriam CREATEUSER CREATEDB;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id681856"></a><h2>Compatibility</h2>
+<p>   The <code class="command">ALTER USER</code> statement is a
+   <span class="productname">PostgreSQL</span> extension.  The SQL standard
    leaves the definition of users to the implementation.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37625"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-createuser.html"
-><I
->CREATE USER</I
-></A
->, <A
-HREF="sql-dropuser.html"
-><I
->DROP USER</I
-></A
->, <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertype.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-analyze.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER TYPE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ANALYZE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id681877"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createuser.html">CREATE USER</a>, <a href="sql-dropuser.html">DROP USER</a>, <a href="sql-set.html">SET</a></span>
+</div>
+</div></body>
+</html>

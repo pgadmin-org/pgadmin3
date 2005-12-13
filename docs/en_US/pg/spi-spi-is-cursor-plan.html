@@ -1,300 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SPI_is_cursor_plan</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_getargtypeid"
-HREF="spi-spi-getargtypeid.html"><LINK
-REL="NEXT"
-TITLE="SPI_execute_plan"
-HREF="spi-spi-execute-plan.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getargtypeid.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getargtypeid.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-execute-plan.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-execute-plan.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-IS-CURSOR-PLAN"
-></A
->SPI_is_cursor_plan</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN34966"
-></A
-><H2
->Name</H2
->SPI_is_cursor_plan&nbsp;--&nbsp;return <TT
-CLASS="SYMBOL"
->true</TT
-> if a plan
-  prepared by <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
-> can be used with
-  <CODE
-CLASS="FUNCTION"
->SPI_cursor_open</CODE
-></DIV
-><A
-NAME="AEN34972"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN34974"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->bool SPI_is_cursor_plan(void * <TT
-CLASS="PARAMETER"
->plan</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34977"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_is_cursor_plan</CODE
-> returns <TT
-CLASS="SYMBOL"
->true</TT
->
-   if a plan prepared by <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
-> can be passed
-   as an argument to <CODE
-CLASS="FUNCTION"
->SPI_cursor_open</CODE
-> and <TT
-CLASS="SYMBOL"
->   false</TT
-> if that is not the case. The criteria are that the
-   <TT
-CLASS="PARAMETER"
->plan</TT
-> represents one single command and that this
-   command is a <TT
-CLASS="COMMAND"
->SELECT</TT
-> without an <TT
-CLASS="COMMAND"
->INTO</TT
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_is_cursor_plan</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
+<link rel="prev" href="spi-spi-getargtypeid.html" title="SPI_getargtypeid">
+<link rel="next" href="spi-spi-execute-plan.html" title="SPI_execute_plan">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-is-cursor-plan"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_is_cursor_plan &#8212; return <code class="symbol">true</code> if a plan
+  prepared by <code class="function">SPI_prepare</code> can be used with
+  <code class="function">SPI_cursor_open</code></p>
+</div>
+<a name="id671548"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">bool SPI_is_cursor_plan(void * <em class="parameter"><code>plan</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id671567"></a><h2>Description</h2>
+<p>   <code class="function">SPI_is_cursor_plan</code> returns <code class="symbol">true</code>
+   if a plan prepared by <code class="function">SPI_prepare</code> can be passed
+   as an argument to <code class="function">SPI_cursor_open</code> and <code class="symbol">   false</code> if that is not the case. The criteria are that the
+   <em class="parameter"><code>plan</code></em> represents one single command and that this
+   command is a <code class="command">SELECT</code> without an <code class="command">INTO</code>
    clause.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34988"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->void * <TT
-CLASS="PARAMETER"
->plan</TT
-></TT
-></DT
-><DD
-><P
->      execution plan (returned by <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
->)
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34998"
-></A
-><H2
->Return Value</H2
-><P
->    <TT
-CLASS="SYMBOL"
->true</TT
-> or <TT
-CLASS="SYMBOL"
->false</TT
-> to indicate if the
-    <TT
-CLASS="PARAMETER"
->plan</TT
-> can produce a cursor or not, or
-    <TT
-CLASS="SYMBOL"
->SPI_ERROR_ARGUMENT</TT
-> if the <TT
-CLASS="PARAMETER"
->plan</TT
->
-    is <TT
-CLASS="SYMBOL"
->NULL</TT
->
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-getargtypeid.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-execute-plan.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_getargtypeid</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_execute_plan</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id671625"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">void * <em class="parameter"><code>plan</code></em></code></span></dt>
+<dd><p>      execution plan (returned by <code class="function">SPI_prepare</code>)
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id671654"></a><h2>Return Value</h2>
+<p>    <code class="symbol">true</code> or <code class="symbol">false</code> to indicate if the
+    <em class="parameter"><code>plan</code></em> can produce a cursor or not, or
+    <code class="symbol">SPI_ERROR_ARGUMENT</code> if the <em class="parameter"><code>plan</code></em>
+    is <code class="symbol">NULL</code>
+  </p>
+</div>
+</div></body>
+</html>

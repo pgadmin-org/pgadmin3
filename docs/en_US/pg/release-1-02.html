@@ -1,249 +1,82 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 1.02</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 1.09"
-HREF="release-1-09.html"><LINK
-REL="NEXT"
-TITLE="Release 1.01"
-HREF="release-1-01.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-1-09.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-1-01.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-1-02"
->E.61. Release 1.02</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->1996-08-01</P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN73476"
->E.61.1. Migration from version 1.02 to version 1.02.1</A
-></H2
-><P
->Here is a new migration file for 1.02.1.  It includes the 'copy' change
-and a script to convert old <ACRONYM
-CLASS="ACRONYM"
->ASCII</ACRONYM
-> files.</P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->The following notes are for the benefit of users who want to migrate
-databases from <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> 1.01 and 1.02 to <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> 1.02.1.</P
-><P
->If you are starting afresh with <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> 1.02.1 and do not need
-to migrate old databases, you do not need to read any further.</P
-></BLOCKQUOTE
-></DIV
-><P
->In order to upgrade older <SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> version 1.01 or 1.02 databases to
-version 1.02.1, the following steps are required:</P
-><DIV
-CLASS="PROCEDURE"
-><OL
-TYPE="1"
-><LI
-CLASS="STEP"
-><P
->Start up a new 1.02.1 postmaster</P
-></LI
-><LI
-CLASS="STEP"
-><P
->Add the new built-in functions and operators of 1.02.1 to 1.01 or 1.02
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.64. Release 1.02</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-1-09.html" title="E.63. Release 1.09">
+<link rel="next" href="release-1-01.html" title="E.65. Release 1.01">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-1-02"></a>E.64. Release 1.02</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>1996-08-01</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id815427"></a>E.64.1. Migration from version 1.02 to version 1.02.1</h3></div></div></div>
+<p>Here is a new migration file for 1.02.1.  It includes the 'copy' change
+and a script to convert old <span class="acronym">ASCII</span> files.</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>The following notes are for the benefit of users who want to migrate
+databases from <span class="productname">Postgres95</span> 1.01 and 1.02 to <span class="productname">Postgres95</span> 1.02.1.</p>
+<p>If you are starting afresh with <span class="productname">Postgres95</span> 1.02.1 and do not need
+to migrate old databases, you do not need to read any further.</p>
+</div>
+<p>In order to upgrade older <span class="productname">Postgres95</span> version 1.01 or 1.02 databases to
+version 1.02.1, the following steps are required:</p>
+<div class="procedure"><ol type="1">
+<li><p>Start up a new 1.02.1 postmaster</p></li>
+<li>
+<p>Add the new built-in functions and operators of 1.02.1 to 1.01 or 1.02
    databases.  This is done by running the new 1.02.1 server against
    your own 1.01 or 1.02 database and applying the queries attached at
-   the end of the file.   This can be done easily through <TT
-CLASS="COMMAND"
->psql</TT
->.  If your
-   1.01 or 1.02 database is named <TT
-CLASS="LITERAL"
->testdb</TT
-> and you have cut the commands
-   from the end of this file and saved them in <TT
-CLASS="FILENAME"
->addfunc.sql</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->        % psql testdb -f addfunc.sql</PRE
-><P>
+   the end of the file.   This can be done easily through <code class="command">psql</code>.  If your
+   1.01 or 1.02 database is named <code class="literal">testdb</code> and you have cut the commands
+   from the end of this file and saved them in <code class="filename">addfunc.sql</code>:
+</p>
+<pre class="programlisting">        % psql testdb -f addfunc.sql</pre>
+<p>
 
 Those upgrading 1.02 databases will get a warning when executing the
 last two statements in the file because they are already present in 1.02.  This is
-not a cause for concern.</P
-></LI
-></OL
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN73497"
->E.61.2. Dump/Reload Procedure</A
-></H2
-><P
->If you are trying to reload a pg_dump or text-mode, <TT
-CLASS="LITERAL"
->copy tablename to
-stdout</TT
-> generated with a previous version, you will need to run the
-attached <TT
-CLASS="COMMAND"
->sed</TT
-> script on the ASCII file before loading it into the
+not a cause for concern.</p>
+</li>
+</ol></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id815477"></a>E.64.2. Dump/Reload Procedure</h3></div></div></div>
+<p>If you are trying to reload a pg_dump or text-mode, <code class="literal">copy tablename to
+stdout</code> generated with a previous version, you will need to run the
+attached <code class="command">sed</code> script on the ASCII file before loading it into the
 database.  The old format used '.' as end-of-data, while '\.' is now the
 end-of-data marker.  Also, empty strings are now loaded in as '' rather
 than NULL. See the copy manual page for full details.
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->        sed 's/^\.$/\\./g' &lt;in_file &gt;out_file</PRE
-><P></P
-><P
->If you are loading an older binary copy or non-<SPAN
-CLASS="SYSTEMITEM"
->stdout</SPAN
-> copy, there is no
+</p>
+<pre class="programlisting">        sed 's/^\.$/\\./g' &lt;in_file &gt;out_file</pre>
+<p>If you are loading an older binary copy or non-<span class="systemitem">stdout</span> copy, there is no
 end-of-data character, and hence no conversion necessary.
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->-- following lines added by agc to reflect the case-insensitive
+</p>
+<pre class="programlisting">-- following lines added by agc to reflect the case-insensitive
 -- regexp searching for varchar (in 1.02), and bpchar (in 1.02.1)
 create operator ~* (leftarg = bpchar, rightarg = text, procedure = texticregexeq);
 create operator !~* (leftarg = bpchar, rightarg = text, procedure = texticregexne);
 create operator ~* (leftarg = varchar, rightarg = text, procedure = texticregexeq);
-create operator !~* (leftarg = varchar, rightarg = text, procedure = texticregexne);</PRE
-><P></P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN73506"
->E.61.3. Changes</A
-></H2
-><P
-></P><PRE
-CLASS="PROGRAMLISTING"
->Source code maintenance and development
+create operator !~* (leftarg = varchar, rightarg = text, procedure = texticregexne);</pre>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id815533"></a>E.64.3. Changes</h3></div></div></div>
+<pre class="programlisting">Source code maintenance and development
  * worldwide team of volunteers
  * the source tree now in CVS at ftp.ki.net
 
@@ -267,72 +100,7 @@ Bug Fixes (almost too numerous to mention)
 New Ports
  * added SolarisX86 port
  * added BSD/OS 2.1 port
- * added DG/UX port</PRE
-><P></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-1-09.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-1-01.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 1.09</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 1.01</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+ * added DG/UX port</pre>
+</div>
+</div></body>
+</html>

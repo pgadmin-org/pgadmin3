@@ -1,253 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->How Connections are Established</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Overview of PostgreSQL Internals"
-HREF="overview.html"><LINK
-REL="PREVIOUS"
-TITLE="Overview of PostgreSQL Internals"
-HREF="overview.html"><LINK
-REL="NEXT"
-TITLE="The Parser Stage"
-HREF="parser-stage.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="overview.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="overview.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 40. Overview of PostgreSQL Internals</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="overview.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="parser-stage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CONNECT-ESTAB"
->40.2. How Connections are Established</A
-></H1
-><P
->    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is implemented using a
-    simple <SPAN
-CLASS="QUOTE"
->"process per user"</SPAN
-> client/server model.  In this model
-    there is one <I
-CLASS="FIRSTTERM"
->client process</I
-> connected to
-    exactly one <I
-CLASS="FIRSTTERM"
->server process</I
->.  As we do not
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>40.2. How Connections are Established</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
+<link rel="prev" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
+<link rel="next" href="parser-stage.html" title="40.3. The Parser Stage">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="connect-estab"></a>40.2. How Connections are Established</h2></div></div></div>
+<p>    <span class="productname">PostgreSQL</span> is implemented using a
+    simple &#8220;<span class="quote">process per user</span>&#8221; client/server model.  In this model
+    there is one <em class="firstterm">client process</em> connected to
+    exactly one <em class="firstterm">server process</em>.  As we do not
     know ahead of time how many connections will be made, we have to
-    use a <I
-CLASS="FIRSTTERM"
->master process</I
-> that spawns a new
+    use a <em class="firstterm">master process</em> that spawns a new
     server process every time a connection is requested. This master
-    process is called <TT
-CLASS="LITERAL"
->postmaster</TT
-> and listens at a
+    process is called <code class="literal">postmaster</code> and listens at a
     specified TCP/IP port for incoming connections. Whenever a request
-    for a connection is detected the <TT
-CLASS="LITERAL"
->postmaster</TT
->
+    for a connection is detected the <code class="literal">postmaster</code>
     process spawns a new server process called
-    <TT
-CLASS="LITERAL"
->postgres</TT
->. The server tasks
-    (<TT
-CLASS="LITERAL"
->postgres</TT
-> processes) communicate with each
-    other using <I
-CLASS="FIRSTTERM"
->semaphores</I
-> and
-    <I
-CLASS="FIRSTTERM"
->shared memory</I
-> to ensure data integrity
+    <code class="literal">postgres</code>. The server tasks
+    (<code class="literal">postgres</code> processes) communicate with each
+    other using <em class="firstterm">semaphores</em> and
+    <em class="firstterm">shared memory</em> to ensure data integrity
     throughout concurrent data access.
-   </P
-><P
->    The client process can be any program that understands the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> protocol described in
-    <A
-HREF="protocol.html"
->Chapter 42</A
->.  Many clients are based on the
-    C-language library <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->, but several independent
+   </p>
+<p>    The client process can be any program that understands the
+    <span class="productname">PostgreSQL</span> protocol described in
+    <a href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">Chapter 42, <i>Frontend/Backend Protocol</i></a>.  Many clients are based on the
+    C-language library <span class="application">libpq</span>, but several independent
     implementations of the protocol exist, such as the Java
-    <SPAN
-CLASS="APPLICATION"
->JDBC</SPAN
-> driver.
-   </P
-><P
->    Once a connection is established the client process can send a query
-    to the <I
-CLASS="FIRSTTERM"
->backend</I
-> (server). The query is transmitted using plain text,
-    i.e. there is no parsing done in the <I
-CLASS="FIRSTTERM"
->frontend</I
-> (client). The
-    server parses the query, creates an <I
-CLASS="FIRSTTERM"
->execution plan</I
->,
+    <span class="application">JDBC</span> driver.
+   </p>
+<p>    Once a connection is established the client process can send a query
+    to the <em class="firstterm">backend</em> (server). The query is transmitted using plain text,
+    i.e. there is no parsing done in the <em class="firstterm">frontend</em> (client). The
+    server parses the query, creates an <em class="firstterm">execution plan</em>,
     executes the plan and returns the retrieved rows to the client
     by transmitting them over the established connection.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="overview.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="parser-stage.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Overview of PostgreSQL Internals</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="overview.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->The Parser Stage</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div></body>
+</html>

@@ -1,264 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->SPI_getargcount</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_prepare"
-HREF="spi-spi-prepare.html"><LINK
-REL="NEXT"
-TITLE="SPI_getargtypeid"
-HREF="spi-spi-getargtypeid.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-prepare.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-prepare.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-getargtypeid.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-getargtypeid.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-GETARGCOUNT"
-></A
->SPI_getargcount</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN34889"
-></A
-><H2
->Name</H2
->SPI_getargcount&nbsp;--&nbsp;return the number of arguments needed by a plan
-  prepared by <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
-></DIV
-><A
-NAME="AEN34893"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN34895"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->int SPI_getargcount(void * <TT
-CLASS="PARAMETER"
->plan</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34898"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_getargcount</CODE
-> returns the number of arguments needed
-   to execute a plan prepared by <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34903"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->void * <TT
-CLASS="PARAMETER"
->plan</TT
-></TT
-></DT
-><DD
-><P
->      execution plan (returned by <CODE
-CLASS="FUNCTION"
->SPI_prepare</CODE
->)
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34913"
-></A
-><H2
->Return Value</H2
-><P
->    The expected argument count for the <TT
-CLASS="PARAMETER"
->plan</TT
->, or
-    <TT
-CLASS="SYMBOL"
->SPI_ERROR_ARGUMENT</TT
-> if the <TT
-CLASS="PARAMETER"
->plan
-    </TT
-> is <TT
-CLASS="SYMBOL"
->NULL</TT
->
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-prepare.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-getargtypeid.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_prepare</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_getargtypeid</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_getargcount</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
+<link rel="prev" href="spi-spi-prepare.html" title="SPI_prepare">
+<link rel="next" href="spi-spi-getargtypeid.html" title="SPI_getargtypeid">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-getargcount"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_getargcount &#8212; return the number of arguments needed by a plan
+  prepared by <code class="function">SPI_prepare</code></p>
+</div>
+<a name="id671256"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">int SPI_getargcount(void * <em class="parameter"><code>plan</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id671275"></a><h2>Description</h2>
+<p>   <code class="function">SPI_getargcount</code> returns the number of arguments needed
+   to execute a plan prepared by <code class="function">SPI_prepare</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id671296"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">void * <em class="parameter"><code>plan</code></em></code></span></dt>
+<dd><p>      execution plan (returned by <code class="function">SPI_prepare</code>)
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id671325"></a><h2>Return Value</h2>
+<p>    The expected argument count for the <em class="parameter"><code>plan</code></em>, or
+    <code class="symbol">SPI_ERROR_ARGUMENT</code> if the <em class="parameter"><code>plan
+    </code></em> is <code class="symbol">NULL</code>
+  </p>
+</div>
+</div></body>
+</html>

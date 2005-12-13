@@ -1,133 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Release 7.3.10</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Release Notes"
-HREF="release.html"><LINK
-REL="PREVIOUS"
-TITLE="Release 7.3.11"
-HREF="release-7-3-11.html"><LINK
-REL="NEXT"
-TITLE="Release 7.3.9"
-HREF="release-7-3-9.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-3-11.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix E. Release Notes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-9.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="RELEASE-7-3-10"
->E.17. Release 7.3.10</A
-></H1
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Release date: </B
->2005-05-09</P
-></BLOCKQUOTE
-></DIV
-><P
->    This release contains a variety of fixes from 7.3.9, including several
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.20. Release 7.3.10</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-3-11.html" title="E.19. Release 7.3.11">
+<link rel="next" href="release-7-3-9.html" title="E.21. Release 7.3.9">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-10"></a>E.20. Release 7.3.10</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-05-09</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.9, including several
     security-related issues.
-   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN70608"
->E.17.1. Migration to version 7.3.10</A
-></H2
-><P
->     A dump/restore is not required for those running 7.3.X.  However,
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id804702"></a>E.20.1. Migration to version 7.3.10</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.3.X.  However,
      it is one possible way of handling a significant security problem
      that has been found in the initial contents of 7.3.X system
      catalogs.  A dump/initdb/reload sequence using 7.3.10's initdb will
      automatically correct this problem.
-    </P
-><P
->     The security problem is that the built-in character set encoding
+    </p>
+<p>     The security problem is that the built-in character set encoding
      conversion functions can be invoked from SQL commands by unprivileged
      users, but the functions were not designed for such use and are not
      secure against malicious choices of arguments.  The fix involves changing
@@ -139,257 +41,89 @@ NAME="AEN70608"
      below.  The error at least allows unprivileged database users to crash
      their server process, and may allow unprivileged users to gain the
      privileges of a database superuser.
-    </P
-><P
->     If you wish not to do an initdb, perform the following procedure instead.
+    </p>
+<p>     If you wish not to do an initdb, perform the following procedure instead.
      As the database superuser, do:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->BEGIN;
+</p>
+<pre class="programlisting">BEGIN;
 UPDATE pg_proc SET proargtypes[3] = 'internal'::regtype
 WHERE pronamespace = 11 AND pronargs = 5
       AND proargtypes[2] = 'cstring'::regtype;
 -- The command should report having updated 90 rows;
 -- if not, rollback and investigate instead of committing!
-COMMIT;</PRE
-><P>
-    </P
-><P
->     The above procedure must be carried out in <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->each</I
-></SPAN
-> database
-     of an installation, including <TT
-CLASS="LITERAL"
->template1</TT
->, and ideally
-     including <TT
-CLASS="LITERAL"
->template0</TT
-> as well.  If you do not fix the
+COMMIT;</pre>
+<p>
+    </p>
+<p>     The above procedure must be carried out in <span class="emphasis"><em>each</em></span> database
+     of an installation, including <code class="literal">template1</code>, and ideally
+     including <code class="literal">template0</code> as well.  If you do not fix the
      template databases then any subsequently created databases will contain
-     the same error.  <TT
-CLASS="LITERAL"
->template1</TT
-> can be fixed in the same way
-     as any other database, but fixing <TT
-CLASS="LITERAL"
->template0</TT
-> requires
+     the same error.  <code class="literal">template1</code> can be fixed in the same way
+     as any other database, but fixing <code class="literal">template0</code> requires
      additional steps.  First, from any database issue
-</P><PRE
-CLASS="PROGRAMLISTING"
->UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</PRE
-><P>
-      Next connect to <TT
-CLASS="LITERAL"
->template0</TT
-> and perform the above repair
+</p>
+<pre class="programlisting">UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</pre>
+<p>
+      Next connect to <code class="literal">template0</code> and perform the above repair
       procedure.  Finally, do
-</P><PRE
-CLASS="PROGRAMLISTING"
->-- re-freeze template0:
+</p>
+<pre class="programlisting">-- re-freeze template0:
 VACUUM FREEZE;
 -- and protect it against future alterations:
-UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</PRE
-><P>
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN70623"
->E.17.2. Changes</A
-></H2
-><P
-></P
-><UL
-><LI
-><P
->Change encoding function signature to prevent
-misuse</P
-></LI
-><LI
-><P
->Repair ancient race condition that allowed a transaction to be
+UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id804811"></a>E.20.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Change encoding function signature to prevent
+misuse</p></li>
+<li>
+<p>Repair ancient race condition that allowed a transaction to be
 seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
-than for other purposes</P
-><P
->This is an extremely serious bug since it could lead to apparent
-data inconsistencies being briefly visible to applications.</P
-></LI
-><LI
-><P
->Repair race condition between relation extension and
-VACUUM</P
-><P
->This could theoretically have caused loss of a page's worth of
+than for other purposes</p>
+<p>This is an extremely serious bug since it could lead to apparent
+data inconsistencies being briefly visible to applications.</p>
+</li>
+<li>
+<p>Repair race condition between relation extension and
+VACUUM</p>
+<p>This could theoretically have caused loss of a page's worth of
 freshly-inserted data, although the scenario seems of very low probability.
-There are no known cases of it having caused more than an Assert failure.</P
-></LI
-><LI
-><P
->Fix comparisons of <TT
-CLASS="TYPE"
->TIME WITH TIME ZONE</TT
-> values</P
-><P
->The comparison code was wrong in the case where the
-<TT
-CLASS="LITERAL"
->--enable-integer-datetimes</TT
-> configuration switch had been used.
-NOTE: if you have an index on a <TT
-CLASS="TYPE"
->TIME WITH TIME ZONE</TT
-> column,
-it will need to be <TT
-CLASS="COMMAND"
->REINDEX</TT
->ed after installing this update, because
-the fix corrects the sort order of column values.</P
-></LI
-><LI
-><P
->Fix <CODE
-CLASS="FUNCTION"
->EXTRACT(EPOCH)</CODE
-> for
-<TT
-CLASS="TYPE"
->TIME WITH TIME ZONE</TT
-> values</P
-></LI
-><LI
-><P
->Fix mis-display of negative fractional seconds in
-<TT
-CLASS="TYPE"
->INTERVAL</TT
-> values</P
-><P
->This error only occurred when the
-<TT
-CLASS="LITERAL"
->--enable-integer-datetimes</TT
-> configuration switch had been used.</P
-></LI
-><LI
-><P
->Additional buffer overrun checks in plpgsql
-(Neil)</P
-></LI
-><LI
-><P
->Fix pg_dump to dump trigger names containing <TT
-CLASS="LITERAL"
->%</TT
->
-correctly (Neil)</P
-></LI
-><LI
-><P
->Prevent <CODE
-CLASS="FUNCTION"
->to_char(interval)</CODE
-> from dumping core for
-month-related formats</P
-></LI
-><LI
-><P
->Fix <TT
-CLASS="FILENAME"
->contrib/pgcrypto</TT
-> for newer OpenSSL builds
-(Marko Kreen)</P
-></LI
-><LI
-><P
->Still more 64-bit fixes for
-<TT
-CLASS="FILENAME"
->contrib/intagg</TT
-></P
-></LI
-><LI
-><P
->Prevent incorrect optimization of functions returning
-<TT
-CLASS="TYPE"
->RECORD</TT
-></P
-></LI
-></UL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="release-7-3-11.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="release-7-3-9.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Release 7.3.11</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="release.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Release 7.3.9</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+There are no known cases of it having caused more than an Assert failure.</p>
+</li>
+<li>
+<p>Fix comparisons of <code class="type">TIME WITH TIME ZONE</code> values</p>
+<p>The comparison code was wrong in the case where the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.
+NOTE: if you have an index on a <code class="type">TIME WITH TIME ZONE</code> column,
+it will need to be <code class="command">REINDEX</code>ed after installing this update, because
+the fix corrects the sort order of column values.</p>
+</li>
+<li><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
+<code class="type">TIME WITH TIME ZONE</code> values</p></li>
+<li>
+<p>Fix mis-display of negative fractional seconds in
+<code class="type">INTERVAL</code> values</p>
+<p>This error only occurred when the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.</p>
+</li>
+<li><p>Additional buffer overrun checks in plpgsql
+(Neil)</p></li>
+<li><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
+correctly (Neil)</p></li>
+<li><p>Prevent <code class="function">to_char(interval)</code> from dumping core for
+month-related formats</p></li>
+<li><p>Fix <code class="filename">contrib/pgcrypto</code> for newer OpenSSL builds
+(Marko Kreen)</p></li>
+<li><p>Still more 64-bit fixes for
+<code class="filename">contrib/intagg</code></p></li>
+<li><p>Prevent incorrect optimization of functions returning
+<code class="type">RECORD</code></p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

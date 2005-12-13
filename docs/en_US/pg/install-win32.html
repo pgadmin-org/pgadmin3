@@ -1,424 +1,102 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Client-Only Installation on Windows</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Administration"
-HREF="admin.html"><LINK
-REL="PREVIOUS"
-TITLE="Supported Platforms"
-HREF="supported-platforms.html"><LINK
-REL="NEXT"
-TITLE="Server Run-time Environment"
-HREF="runtime.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="supported-platforms.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="installation.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="INSTALL-WIN32"
-></A
->Chapter 15. Client-Only Installation on <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
-></H1
-><A
-NAME="AEN16310"
-></A
-><P
->  Although a complete <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> installation
-  for <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
-> can only be built using
-  <SPAN
-CLASS="PRODUCTNAME"
->MinGW</SPAN
-> or
-  <SPAN
-CLASS="PRODUCTNAME"
->Cygwin</SPAN
->, the C client library
-  (<SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->) and the interactive terminal
-  (<SPAN
-CLASS="APPLICATION"
->psql</SPAN
->) can be compiled using other Windows
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 15. Client-Only Installation on Windows</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="supported-platforms.html" title="14.7. Supported Platforms">
+<link rel="next" href="runtime.html" title="Chapter 16. Server Run-time Environment">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="install-win32">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="install-win32"></a>Chapter 15. Client-Only Installation on <span class="productname">Windows</span></h2></div></div></div>
+<a name="id582461"></a><p>  Although a complete <span class="productname">PostgreSQL</span> installation
+  for <span class="productname">Windows</span> can only be built using
+  <span class="productname">MinGW</span> or
+  <span class="productname">Cygwin</span>, the C client library
+  (<span class="application">libpq</span>) and the interactive terminal
+  (<span class="application">psql</span>) can be compiled using other Windows
   tool sets. Makefiles are included in the source distribution for
-  <SPAN
-CLASS="PRODUCTNAME"
->Microsoft Visual C++</SPAN
-> and
-  <SPAN
-CLASS="PRODUCTNAME"
->Borland C++</SPAN
->. It should be possible to
+  <span class="productname">Microsoft Visual C++</span> and
+  <span class="productname">Borland C++</span>. It should be possible to
   compile the libraries manually for other configurations.
- </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->   Using <SPAN
-CLASS="PRODUCTNAME"
->MinGW</SPAN
-> or
-   <SPAN
-CLASS="PRODUCTNAME"
->Cygwin</SPAN
-> is preferred.  If using one of
-   those tool sets, see <A
-HREF="installation.html"
->Chapter 14</A
->.
-  </P
-></BLOCKQUOTE
-></DIV
-><P
->  To build everything that you can on <SPAN
-CLASS="PRODUCTNAME"
->Windows</SPAN
->
-  using <SPAN
-CLASS="PRODUCTNAME"
->Microsoft Visual C++</SPAN
->, change into the
-  <TT
-CLASS="FILENAME"
->src</TT
-> directory and type the command
-</P><PRE
-CLASS="SCREEN"
-><KBD
-CLASS="USERINPUT"
->nmake /f win32.mak</KBD
-></PRE
-><P>
-  This assumes that you have <SPAN
-CLASS="PRODUCTNAME"
->Visual C++</SPAN
-> in
+ </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>   Using <span class="productname">MinGW</span> or
+   <span class="productname">Cygwin</span> is preferred.  If using one of
+   those tool sets, see <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>.
+  </p>
+</div>
+<p>  To build everything that you can on <span class="productname">Windows</span>
+  using <span class="productname">Microsoft Visual C++</span>, change into the
+  <code class="filename">src</code> directory and type the command
+</p>
+<pre class="screen"><strong class="userinput"><code>nmake /f win32.mak</code></strong></pre>
+<p>
+  This assumes that you have <span class="productname">Visual C++</span> in
   your path.
- </P
-><P
->  To build everything using <SPAN
-CLASS="PRODUCTNAME"
->Borland
-  C++</SPAN
->, change into the <TT
-CLASS="FILENAME"
->src</TT
-> directory
+ </p>
+<p>  To build everything using <span class="productname">Borland
+  C++</span>, change into the <code class="filename">src</code> directory
   and type the command
-</P><PRE
-CLASS="SCREEN"
-><KBD
-CLASS="USERINPUT"
->make -N -DCFG=Release /f bcc32.mak</KBD
-></PRE
-><P>
- </P
-><P
->  The following files will be built:
+</p>
+<pre class="screen"><strong class="userinput"><code>make -N -DCFG=Release /f bcc32.mak</code></strong></pre>
+<p>
+ </p>
+<p>  The following files will be built:
 
-  <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="FILENAME"
->interfaces\libpq\Release\libpq.dll</TT
-></DT
-><DD
-><P
->      The dynamically linkable frontend library
-     </P
-></DD
-><DT
-><TT
-CLASS="FILENAME"
->interfaces\libpq\Release\libpqdll.lib</TT
-></DT
-><DD
-><P
->      Import library to link your programs to <TT
-CLASS="FILENAME"
->libpq.dll</TT
->
-     </P
-></DD
-><DT
-><TT
-CLASS="FILENAME"
->interfaces\libpq\Release\libpq.lib</TT
-></DT
-><DD
-><P
->      Static version of the frontend library
-     </P
-></DD
-><DT
-><TT
-CLASS="FILENAME"
->bin\psql\Release\psql.exe</TT
-></DT
-><DD
-><P
->      The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> interactive terminal
-     </P
-></DD
-></DL
-></DIV
-><P>
- </P
-><P
->  The only file that really needs to be installed is the
-  <TT
-CLASS="FILENAME"
->libpq.dll</TT
-> library.  This file should in most
-  cases be placed in the <TT
-CLASS="FILENAME"
->WINNT\SYSTEM32</TT
-> directory
-  (or in <TT
-CLASS="FILENAME"
->WINDOWS\SYSTEM</TT
-> on a Windows 95/98/ME
+  </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="filename">interfaces\libpq\Release\libpq.dll</code></span></dt>
+<dd><p>      The dynamically linkable frontend library
+     </p></dd>
+<dt><span class="term"><code class="filename">interfaces\libpq\Release\libpqdll.lib</code></span></dt>
+<dd><p>      Import library to link your programs to <code class="filename">libpq.dll</code>
+     </p></dd>
+<dt><span class="term"><code class="filename">interfaces\libpq\Release\libpq.lib</code></span></dt>
+<dd><p>      Static version of the frontend library
+     </p></dd>
+<dt><span class="term"><code class="filename">bin\psql\Release\psql.exe</code></span></dt>
+<dd><p>      The <span class="productname">PostgreSQL</span> interactive terminal
+     </p></dd>
+</dl></div>
+<p>
+ </p>
+<p>  The only file that really needs to be installed is the
+  <code class="filename">libpq.dll</code> library.  This file should in most
+  cases be placed in the <code class="filename">WINNT\SYSTEM32</code> directory
+  (or in <code class="filename">WINDOWS\SYSTEM</code> on a Windows 95/98/ME
   system).  If this file is installed using a setup program, it should
   be installed with version checking using the
-  <TT
-CLASS="SYMBOL"
->VERSIONINFO</TT
-> resource included in the file, to
+  <code class="symbol">VERSIONINFO</code> resource included in the file, to
   ensure that a newer version of the library is not overwritten.
- </P
-><P
->  If you plan to do development using <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->
+ </p>
+<p>  If you plan to do development using <span class="application">libpq</span>
   on this machine, you will have to add the
-  <TT
-CLASS="FILENAME"
->src\include</TT
-> and
-  <TT
-CLASS="FILENAME"
->src\interfaces\libpq</TT
-> subdirectories of the source
+  <code class="filename">src\include</code> and
+  <code class="filename">src\interfaces\libpq</code> subdirectories of the source
   tree to the include path in your compiler's settings.
- </P
-><P
->  To use the library, you must add the
-  <TT
-CLASS="FILENAME"
->libpqdll.lib</TT
-> file to your project.  (In Visual
+ </p>
+<p>  To use the library, you must add the
+  <code class="filename">libpqdll.lib</code> file to your project.  (In Visual
   C++, just right-click on the project and choose to add it.)
- </P
-><P
->  Free development tools from <SPAN
-CLASS="PRODUCTNAME"
->Microsoft</SPAN
->
+ </p>
+<p>  Free development tools from <span class="productname">Microsoft</span>
   can be downloaded from
-  <A
-HREF="http://msdn.microsoft.com/visualc/vctoolkit2003/"
-TARGET="_top"
->http://msdn.microsoft.com/visualc/vctoolkit2003/</A
->.
-  You will also need <TT
-CLASS="FILENAME"
->MSVCRT.lib</TT
-> from the platform SDK from
-  <A
-HREF="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/"
-TARGET="_top"
->http://www.microsoft.com/msdownload/platformsdk/sdkupdate/</A
->.
-  You can also download the <SPAN
-CLASS="APPLICATION"
->.NET</SPAN
-> framework from
-  <A
-HREF="http://msdn.microsoft.com/netframework/downloads/updates/default.aspx"
-TARGET="_top"
->http://msdn.microsoft.com/netframework/downloads/updates/default.aspx</A
->.
+  <a href="http://msdn.microsoft.com/visualc/vctoolkit2003/" target="_top">http://msdn.microsoft.com/visualc/vctoolkit2003/</a>.
+  You will also need <code class="filename">MSVCRT.lib</code> from the platform SDK from
+  <a href="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/" target="_top">http://www.microsoft.com/msdownload/platformsdk/sdkupdate/</a>.
+  You can also download the <span class="application">.NET</span> framework from
+  <a href="http://msdn.microsoft.com/netframework/downloads/updates/default.aspx" target="_top">http://msdn.microsoft.com/netframework/downloads/updates/default.aspx</a>.
   Once installed, the toolkit binaries must be in your path, and you might
-  need to add a <TT
-CLASS="LITERAL"
->/lib:&lt;libpath&gt;</TT
-> to point to <TT
-CLASS="FILENAME"
->MSVCRT.lib</TT
->.
-  Free <SPAN
-CLASS="PRODUCTNAME"
->Borland C++</SPAN
-> compiler tools can be downloaded from
-  <A
-HREF="http://www.borland.com/products/downloads/download_cbuilder.html#"
-TARGET="_top"
->http://www.borland.com/products/downloads/download_cbuilder.html#</A
->,
+  need to add a <code class="literal">/lib:&lt;libpath&gt;</code> to point to <code class="filename">MSVCRT.lib</code>.
+  Free <span class="productname">Borland C++</span> compiler tools can be downloaded from
+  <a href="http://www.borland.com/products/downloads/download_cbuilder.html#" target="_top">http://www.borland.com/products/downloads/download_cbuilder.html#</a>,
   and require similar setup.
- </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="supported-platforms.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="runtime.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Supported Platforms</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="admin.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Server Run-time Environment</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+ </p>
+</div></body>
+</html>

@@ -1,258 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->Groups</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Database Users and Privileges"
-HREF="user-manag.html"><LINK
-REL="PREVIOUS"
-TITLE="User Attributes"
-HREF="user-attributes.html"><LINK
-REL="NEXT"
-TITLE="Privileges"
-HREF="privileges.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="user-attributes.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="user-manag.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 17. Database Users and Privileges</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="user-manag.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="privileges.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="GROUPS"
->17.3. Groups</A
-></H1
-><A
-NAME="AEN19541"
-></A
-><P
->   As in Unix, groups are a way of logically grouping users to ease
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.3. Groups</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="user-manag.html" title="Chapter 17. Database Users and Privileges">
+<link rel="prev" href="user-attributes.html" title="17.2. User Attributes">
+<link rel="next" href="privileges.html" title="17.4. Privileges">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="groups"></a>17.3. Groups</h2></div></div></div>
+<a name="id597596"></a><p>   As in Unix, groups are a way of logically grouping users to ease
    management of privileges: privileges can be granted to, or revoked
-   from, a group as a whole.  To create a group, use the <A
-HREF="sql-creategroup.html"
-><I
->CREATE GROUP</I
-></A
-> SQL command:
-</P><PRE
-CLASS="SYNOPSIS"
->CREATE GROUP <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->;</PRE
-><P>
+   from, a group as a whole.  To create a group, use the <a href="sql-creategroup.html">CREATE GROUP</a> SQL command:
+</p>
+<pre class="synopsis">CREATE GROUP <em class="replaceable"><code>name</code></em>;</pre>
+<p>
 
-   To add users to or remove users from an existing group, use <A
-HREF="sql-altergroup.html"
-><I
->ALTER GROUP</I
-></A
->:
-</P><PRE
-CLASS="SYNOPSIS"
->ALTER GROUP <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ADD USER <TT
-CLASS="REPLACEABLE"
-><I
->uname1</I
-></TT
->, ... ;
-ALTER GROUP <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> DROP USER <TT
-CLASS="REPLACEABLE"
-><I
->uname1</I
-></TT
->, ... ;</PRE
-><P>
+   To add users to or remove users from an existing group, use <a href="sql-altergroup.html">ALTER GROUP</a>:
+</p>
+<pre class="synopsis">ALTER GROUP <em class="replaceable"><code>name</code></em> ADD USER <em class="replaceable"><code>uname1</code></em>, ... ;
+ALTER GROUP <em class="replaceable"><code>name</code></em> DROP USER <em class="replaceable"><code>uname1</code></em>, ... ;</pre>
+<p>
 
-   To destroy a group, use <A
-HREF="sql-dropgroup.html"
-><I
->DROP GROUP</I
-></A
->:
-</P><PRE
-CLASS="SYNOPSIS"
->DROP GROUP <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->;</PRE
-><P>
+   To destroy a group, use <a href="sql-dropgroup.html">DROP GROUP</a>:
+</p>
+<pre class="synopsis">DROP GROUP <em class="replaceable"><code>name</code></em>;</pre>
+<p>
    This only drops the group, not its member users.
-  </P
-><P
->   To determine the set of existing groups, examine the <TT
-CLASS="STRUCTNAME"
->pg_group</TT
->
+  </p>
+<p>   To determine the set of existing groups, examine the <code class="structname">pg_group</code>
    system catalog, for example
-</P><PRE
-CLASS="SYNOPSIS"
->SELECT groname FROM pg_group;</PRE
-><P>
-   The <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> program's <TT
-CLASS="LITERAL"
->\dg</TT
-> meta-command
+</p>
+<pre class="synopsis">SELECT groname FROM pg_group;</pre>
+<p>
+   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\dg</code> meta-command
    is also useful for listing the existing groups.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="user-attributes.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="privileges.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->User Attributes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="user-manag.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Privileges</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

@@ -1,319 +1,72 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->ABORT</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="NEXT"
-TITLE="ALTER AGGREGATE"
-HREF="sql-alteraggregate.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-commands.html#AEN36140"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alteraggregate.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alteraggregate.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ABORT"
-></A
->ABORT</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN36149"
-></A
-><H2
->Name</H2
->ABORT&nbsp;--&nbsp;abort the current transaction</DIV
-><A
-NAME="AEN36152"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN36154"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ABORT [ WORK | TRANSACTION ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36156"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ABORT</TT
-> rolls back the current transaction and causes
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ABORT</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-commands.html" title="SQL Commands">
+<link rel="next" href="sql-alteraggregate.html" title="ALTER AGGREGATE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-abort"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ABORT &#8212; abort the current transaction</p>
+</div>
+<a name="id675921"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ABORT [ WORK | TRANSACTION ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id675939"></a><h2>Description</h2>
+<p>   <code class="command">ABORT</code> rolls back the current transaction and causes
    all the updates made by the transaction to be discarded. 
    This command is identical
-   in behavior to the standard <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command
-   <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
->,
+   in behavior to the standard <span class="acronym">SQL</span> command
+   <a href="sql-rollback.html">ROLLBACK</a>,
    and is present only for historical reasons.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36162"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->WORK</TT
-><BR><TT
-CLASS="LITERAL"
->TRANSACTION</TT
-></DT
-><DD
-><P
->      Optional key words. They have no effect.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36172"
-></A
-><H2
->Notes</H2
-><P
->   Use <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
-> to
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id675974"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WORK</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">TRANSACTION</code></span>
+</dt>
+<dd><p>      Optional key words. They have no effect.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id675998"></a><h2>Notes</h2>
+<p>   Use <a href="sql-commit.html">COMMIT</a> to
    successfully terminate a transaction.
-  </P
-><P
->   Issuing <TT
-CLASS="COMMAND"
->ABORT</TT
-> when not inside a transaction does
+  </p>
+<p>   Issuing <code class="command">ABORT</code> when not inside a transaction does
    no harm, but it will provoke a warning message.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36178"
-></A
-><H2
->Examples</H2
-><P
->   To abort all changes:
-</P><PRE
-CLASS="PROGRAMLISTING"
->ABORT;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36182"
-></A
-><H2
->Compatibility</H2
-><P
->   This command is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension
-   present for historical reasons. <TT
-CLASS="COMMAND"
->ROLLBACK</TT
-> is the
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id676029"></a><h2>Examples</h2>
+<p>   To abort all changes:
+</p>
+<pre class="programlisting">ABORT;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id676043"></a><h2>Compatibility</h2>
+<p>   This command is a <span class="productname">PostgreSQL</span> extension
+   present for historical reasons. <code class="command">ROLLBACK</code> is the
    equivalent standard SQL command.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36187"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-begin.html"
-><I
->BEGIN</I
-></A
->, <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
->, <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alteraggregate.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SQL Commands</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ALTER AGGREGATE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id676064"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a></span>
+</div>
+</div></body>
+</html>

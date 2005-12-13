@@ -1,324 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->RESET</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="RELEASE SAVEPOINT"
-HREF="sql-release-savepoint.html"><LINK
-REL="NEXT"
-TITLE="REVOKE"
-HREF="sql-revoke.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-HTTP-EQUIV="Content-Type"
-CONTENT="text/html; charset=ISO-8859-1"><META
-NAME="creation"
-CONTENT="2005-10-04T01:17:47"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-release-savepoint.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-release-savepoint.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-revoke.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-revoke.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-RESET"
-></A
->RESET</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN44169"
-></A
-><H2
->Name</H2
->RESET&nbsp;--&nbsp;restore the value of a run-time parameter to the default value</DIV
-><A
-NAME="AEN44172"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN44174"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->RESET <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-RESET ALL</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44177"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->RESET</TT
-> restores run-time parameters to their
-   default values.  <TT
-CLASS="COMMAND"
->RESET</TT
-> is an alternative
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>RESET</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">
+<link rel="next" href="sql-revoke.html" title="REVOKE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-reset"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>RESET &#8212; restore the value of a run-time parameter to the default value</p>
+</div>
+<a name="id711730"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">RESET <em class="replaceable"><code>name</code></em>
+RESET ALL</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id711755"></a><h2>Description</h2>
+<p>   <code class="command">RESET</code> restores run-time parameters to their
+   default values.  <code class="command">RESET</code> is an alternative
    spelling for
-</P><PRE
-CLASS="SYNOPSIS"
->SET <TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-> TO DEFAULT</PRE
-><P>
-   Refer to <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-> for
+</p>
+<pre class="synopsis">SET <em class="replaceable"><code>parameter</code></em> TO DEFAULT</pre>
+<p>
+   Refer to <a href="sql-set.html">SET</a> for
    details.
-  </P
-><P
->   The default value is defined as the value that the parameter would
-   have had, had no <TT
-CLASS="COMMAND"
->SET</TT
-> ever been issued for it in the
+  </p>
+<p>   The default value is defined as the value that the parameter would
+   have had, had no <code class="command">SET</code> ever been issued for it in the
    current session.  The actual source of this value might be a
    compiled-in default, the configuration file, command-line options,
-   or per-database or per-user default settings.  See <A
-HREF="runtime-config.html"
->Section 16.4</A
-> for details.
-  </P
-><P
->   See the <TT
-CLASS="COMMAND"
->SET</TT
-> reference page for details on the
-   transaction behavior of <TT
-CLASS="COMMAND"
->RESET</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44191"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->      The name of a run-time parameter. See <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-> for a list.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->ALL</TT
-></DT
-><DD
-><P
->      Resets all settable run-time parameters to default values.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44205"
-></A
-><H2
->Examples</H2
-><P
->   Set the <TT
-CLASS="VARNAME"
->geqo</TT
-> configuration variable to its default value:
-</P><PRE
-CLASS="SCREEN"
->RESET geqo;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44210"
-></A
-><H2
->Compatibility</H2
-><P
->   <TT
-CLASS="COMMAND"
->RESET</TT
-> is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-release-savepoint.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-revoke.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->RELEASE SAVEPOINT</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->REVOKE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   or per-database or per-user default settings.  See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for details.
+  </p>
+<p>   See the <code class="command">SET</code> reference page for details on the
+   transaction behavior of <code class="command">RESET</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id711837"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name of a run-time parameter. See <a href="sql-set.html">SET</a> for a list.
+     </p></dd>
+<dt><span class="term"><code class="literal">ALL</code></span></dt>
+<dd><p>      Resets all settable run-time parameters to default values.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id711877"></a><h2>Examples</h2>
+<p>   Set the <code class="varname">geqo</code> configuration variable to its default value:
+</p>
+<pre class="screen">RESET geqo;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id711895"></a><h2>Compatibility</h2>
+<p>   <code class="command">RESET</code> is a <span class="productname">PostgreSQL</span> extension.
+  </p>
+</div>
+</div></body>
+</html>
