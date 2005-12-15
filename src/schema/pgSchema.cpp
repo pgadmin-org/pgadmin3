@@ -174,8 +174,7 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 
     pgSet *schemas = collection->GetDatabase()->ExecuteSet(
         wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
-        wxT("            WHEN (nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
-                         wxT(" OR nspname like 'pg\\_%') AND nspname != 'public' THEN 0\n")
+        wxT("            WHEN (nspname LIKE 'pg\\_%' OR nspname = 'information_schema') THEN 0\n")
         wxT("            ELSE 3 END AS nsptyp,\n")
         wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
         wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
