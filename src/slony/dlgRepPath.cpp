@@ -77,7 +77,8 @@ int dlgRepPath::Go(bool modal)
             wxT("  FROM ") + cluster->GetSchemaPrefix() + wxT("sl_node\n")
             wxT("  LEFT JOIN ") + cluster->GetSchemaPrefix() + wxT("sl_path ON pa_client=\n") + NumToStr(node->GetSlId()) +
                         wxT(" AND pa_server=no_id\n")
-            wxT("  WHERE no_active AND pa_client IS NULL\n")
+            wxT(" WHERE no_active AND pa_client IS NULL\n")
+            wxT("   AND no_id <> ") + NumToStr(node->GetSlId()) + wxT("\n")
             wxT(" ORDER BY no_id")
             );
 
@@ -91,6 +92,8 @@ int dlgRepPath::Go(bool modal)
             }
             delete nodes;
         }
+        if (cbServer->GetCount() > 0)
+            cbServer->SetSelection(0);
     }
 
     return dlgProperty::Go(modal);

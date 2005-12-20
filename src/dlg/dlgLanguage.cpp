@@ -75,8 +75,9 @@ int dlgLanguage::Go(bool modal)
             cbValidator->SetSelection(0);
         }
 
+        cbName->SetValue(language->GetName());
         if (!connection->BackendMinimumVersion(7, 4))
-            txtName->Disable();
+            cbName->Disable();
         cbHandler->Disable();
         chkTrusted->Disable();
         cbValidator->Disable();
@@ -179,7 +180,9 @@ wxString dlgLanguage::GetSql()
     if (language)
     {
         // edit mode
-        AppendNameChange(sql);
+        if (name != language->GetName())
+            sql += wxT("ALTER LANGUAGE ") + qtIdent(language->GetName()) 
+                +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
     }
     else
     {
@@ -200,7 +203,7 @@ wxString dlgLanguage::GetSql()
     }
 
     sql += GetGrant(wxT("X"), wxT("LANGUAGE ") + qtIdent(name));
-    AppendComment(sql, wxT("LANGUAGE"), 0, language);
+    AppendComment(sql, wxT("LANGUAGE ") + qtIdent(name), 0, language);
 
     return sql;
 }
