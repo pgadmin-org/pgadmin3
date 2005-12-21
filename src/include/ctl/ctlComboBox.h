@@ -25,7 +25,7 @@ class ctlComboBoxFix : public wxComboBox
 public:
     ctlComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr);
 
-#if wxCHECK_VERSION(2,6,2)
+#if wxCHECK_VERSION(2,6,2) && !defined(__WXMAC__)
     // we have GetCurrentSelection() in wxChoice, implementing the old GetSelection() semantics
 #else
     int GetCurrentSelection() const { return wxComboBox::GetSelection(); }
