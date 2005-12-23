@@ -275,31 +275,31 @@ BEGIN
         IF nextday = 32 THEN
             IF nextmonth = 1 THEN
                 nextday := 31;
-            ELSEIF nextmonth = 2 THEN
+            ELSIF nextmonth = 2 THEN
                 IF pgagent.pga_is_leap_year(nextyear) = TRUE THEN
                     nextday := 29;
                 ELSE
                     nextday := 28;
                 END IF;
-            ELSEIF nextmonth = 3 THEN
+            ELSIF nextmonth = 3 THEN
                 nextday := 31;
-            ELSEIF nextmonth = 4 THEN
+            ELSIF nextmonth = 4 THEN
                 nextday := 30;
-            ELSEIF nextmonth = 5 THEN
+            ELSIF nextmonth = 5 THEN
                 nextday := 31;
-            ELSEIF nextmonth = 6 THEN
+            ELSIF nextmonth = 6 THEN
                 nextday := 30;
-            ELSEIF nextmonth = 7 THEN
+            ELSIF nextmonth = 7 THEN
                 nextday := 31;
-            ELSEIF nextmonth = 8 THEN
+            ELSIF nextmonth = 8 THEN
                 nextday := 31;
-            ELSEIF nextmonth = 9 THEN
+            ELSIF nextmonth = 9 THEN
                 nextday := 30;
-            ELSEIF nextmonth = 10 THEN
+            ELSIF nextmonth = 10 THEN
                 nextday := 31;
-            ELSEIF nextmonth = 11 THEN
+            ELSIF nextmonth = 11 THEN
                 nextday := 30;
-            ELSEIF nextmonth = 12 THEN
+            ELSIF nextmonth = 12 THEN
                 nextday := 31;
             END IF;
         END IF;
@@ -337,7 +337,7 @@ BEGIN
                         -- Wrap into next month
                         IF (nextmonth = 1 OR nextmonth = 3 OR nextmonth = 5 OR nextmonth = 7 OR nextmonth = 8 OR nextmonth = 10 OR nextmonth = 12) THEN
                             d = 31;
-                        ELSEIF (nextmonth = 4 OR nextmonth = 6 OR nextmonth = 9 OR nextmonth = 11) THEN
+                        ELSIF (nextmonth = 4 OR nextmonth = 6 OR nextmonth = 9 OR nextmonth = 11) THEN
                             d = 30;
                         ELSE
                             IF pgagent.pga_is_leap_year(nextyear) = TRUE THEN
@@ -405,7 +405,7 @@ BEGIN
                         -- Wrap into next hour
                         IF (nextmonth = 1 OR nextmonth = 3 OR nextmonth = 5 OR nextmonth = 7 OR nextmonth = 8 OR nextmonth = 10 OR nextmonth = 12) THEN
                             d = 31;
-                        ELSEIF (nextmonth = 4 OR nextmonth = 6 OR nextmonth = 9 OR nextmonth = 11) THEN
+                        ELSIF (nextmonth = 4 OR nextmonth = 6 OR nextmonth = 9 OR nextmonth = 11) THEN
                             d = 30;
                         ELSE
                             IF pgagent.pga_is_leap_year(nextyear) = TRUE THEN
