@@ -1158,7 +1158,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
     pgSet *colSet=connection->ExecuteSet(
         wxT("SELECT n.nspname AS nspname, relname, t.typname, nt.nspname AS typnspname, ")
-               wxT("attname, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
+               wxT("attname, attnum, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n")
         wxT("  FROM pg_attribute att\n")
@@ -1279,23 +1279,20 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             if (!columns[i].attr->IsReadOnly())
                 canInsert=true;
 
+            wxStringTokenizer collist(primaryKeyColNumbers, wxT(","));
+            long cn=0;
+            long attnum=colSet->GetLong(wxT("attnum"));
+
+            while (cn < attnum && collist.HasMoreTokens())
+            {
+                cn=StrToLong(collist.GetNextToken());
+                if (cn == attnum)
+                    columns[i].isPrimaryKey = true;
+            }
+
             colSet->MoveNext();
         }
         delete colSet;
-
-        if (!hasOids)
-        {
-            wxStringTokenizer collist(primaryKeyColNumbers, wxT(","));
-            long cn;
-            int pkcolcount=0;
-
-            while (collist.HasMoreTokens())
-            {
-                pkcolcount++;
-                cn=StrToLong(collist.GetNextToken());
-                columns[cn-1].isPrimaryKey = true;
-            }
-        }
     }
     else
     {
