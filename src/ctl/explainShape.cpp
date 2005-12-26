@@ -187,8 +187,8 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 
     else if (token == wxT("Bitmap"))
     {
-        if (token == wxT("Index"))          s = new ExplainShape(ex_bmp_index_xpm, descr, 3, 2);
-        else                                s = new ExplainShape(ex_bmp_heap_xpm, descr, 3, 2);
+        if (token2 == wxT("Index"))         s = new ExplainShape(ex_bmp_index_xpm, descr, 4, 3);
+        else                                s = new ExplainShape(ex_bmp_heap_xpm, descr, 4, 3);
     }
     else if (token2 == wxT("Scan"))
     {
