@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: sysLogger.h 3942 2005-01-10 15:26:30Z dpage $
-// Copyright (C) 2002 - 2005, The pgAdmin Development Team
+// Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // sysLogger.h - Log handling class

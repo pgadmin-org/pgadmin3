@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: misc.cpp 4054 2005-03-28 16:43:01Z andreas $
-// Copyright (C) 2002 - 2005, The pgAdmin Development Team
+// Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // base.cpp - Miscellaneous Basic Utilities

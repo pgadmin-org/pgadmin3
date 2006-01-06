@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: pgConnBase.cpp 4084 2005-04-14 15:26:22Z dpage $
-// Copyright (C) 2002 - 2005, The pgAdmin Development Team
+// Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // pgConnBase.cpp - PostgreSQL basic Connection class
