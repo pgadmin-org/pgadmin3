@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051208 Documentation">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="reshape.html" title="6. Reshaping a Cluster">
 <link rel="next" href="listenpaths.html" title="8. Slony-I listen paths">
@@ -15,7 +15,7 @@
 <a name="failover"></a>7. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id517886"></a>7.1. Foreword</h3></div></div></div>
+<a name="id517734"></a>7.1. Foreword</h3></div></div></div>
 <p><span class="productname">Slony-I</span> is an asynchronous replication system.  Because of
 that, it is almost certain that at the moment the current origin of a
 set fails, the final transactions committed at the origin will have
@@ -38,8 +38,8 @@ simple 2 node replication system with <span class="productname">Slony-I</span>.<
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id517944"></a>7.2.  Controlled Switchover</h3></div></div></div>
-<a name="id517948"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
+<a name="id517793"></a>7.2.  Controlled Switchover</h3></div></div></div>
+<a name="id517797"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
 &#8220;<span class="quote">subscriber</span>&#8221; as node2 (<span class="emphasis"><em>e.g.</em></span> -
 slave).  A web application on a third server is accessing the database
 on node1.  Both databases are up and running and replication is more
@@ -89,8 +89,8 @@ be any loss of data.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id518072"></a>7.3.  Failover</h3></div></div></div>
-<a name="id518076"></a><p> If some more serious problem occurs on the
+<a name="id517921"></a>7.3.  Failover</h3></div></div></div>
+<a name="id517925"></a><p> If some more serious problem occurs on the
 &#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
 undesirable circumstance, as transactions &#8220;<span class="quote">committed</span>&#8221; on
 the origin, but not applied to the subscribers, will be lost.  You may
@@ -158,7 +158,7 @@ implications.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id518296"></a>7.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
+<a name="id518144"></a>7.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
 <p> If you do choose to automate <code class="command">FAIL OVER </code>, it
 is important to do so <span class="emphasis"><em>carefully.</em></span> You need to have
 good assurance that the failed node is well and truly failed, and you
