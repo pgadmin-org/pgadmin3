@@ -1,0 +1,67 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.23. Release 7.3.13</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4.html" title="E.22. Release 7.4">
+<link rel="next" href="release-7-3-12.html" title="E.24. Release 7.3.12">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-13"></a>E.23. Release 7.3.13</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2006-01-09</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.12.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id832517"></a>E.23.1. Migration to version 7.3.13</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.3.X.  However,
+     if you are upgrading from a version earlier than 7.3.10, see the release
+     notes for 7.3.10.
+     Also, you might need to <code class="command">REINDEX</code> indexes on textual
+     columns after updating, if you are affected by the locale or
+     <span class="application">plperl</span> issues described below.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id832542"></a>E.23.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Fix character string comparison for locales that consider
+different character combinations as equal, such as Hungarian (Tom)</p>
+<p>This might require <code class="command">REINDEX</code> to fix existing indexes on
+textual columns.</p>
+</li>
+<li>
+<p>Set locale environment variables during postmaster startup
+to ensure that <span class="application">plperl</span> won't change the locale later</p>
+<p>This fixes a problem that occurred if the <span class="application">postmaster</span> was
+started with environment variables specifying a different locale than what
+<span class="application">initdb</span> had been told.  Under these conditions, any use of
+<span class="application">plperl</span> was likely to lead to corrupt indexes.  You may need
+<code class="command">REINDEX</code> to fix existing indexes on
+textual columns if this has happened to you.</p>
+</li>
+<li><p>Fix longstanding bug in strpos() and regular expression
+handling in certain rarely used Asian multi-byte character sets (Tatsuo)</p></li>
+<li>
+<p>Fix bug in <code class="filename">/contrib/pgcrypto</code> gen_salt,
+which caused it not to use all available salt space for MD5 and
+XDES algorithms (Marko Kreen, Solar Designer)</p>
+<p>Salts for Blowfish and standard DES are unaffected.</p>
+</li>
+<li><p>Fix <code class="filename">/contrib/dblink</code> to throw an error,
+rather than crashing, when the number of columns specified is different from
+what's actually returned by the query (Joe)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

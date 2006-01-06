@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
 <link rel="up" href="queries.html" title="Chapter 7. Queries">
 <link rel="prev" href="queries.html" title="Chapter 7. Queries">
 <link rel="next" href="queries-select-lists.html" title="7.3. Select Lists">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="queries-table-expressions"></a>7.2. Table Expressions</h2></div></div></div>
-<a name="id527645"></a><p>   A <em class="firstterm">table expression</em> computes a table.  The
+<a name="id527669"></a><p>   A <em class="firstterm">table expression</em> computes a table.  The
    table expression contains a <code class="literal">FROM</code> clause that is
    optionally followed by <code class="literal">WHERE</code>, <code class="literal">GROUP BY</code>, and
    <code class="literal">HAVING</code> clauses.  Trivial table expressions simply refer
@@ -47,7 +47,7 @@
     and <code class="literal">HAVING</code> clauses and is finally the result of the
     overall table expression.
    </p>
-<a name="id527813"></a><p>    When a table reference names a table that is the supertable of a
+<a name="id527837"></a><p>    When a table reference names a table that is the supertable of a
     table inheritance hierarchy, the table reference produces rows of
     not only that table but all of its subtable successors, unless the
     key word <code class="literal">ONLY</code> precedes the table name.  However, the
@@ -57,7 +57,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="queries-join"></a>7.2.1.1. Joined Tables</h4></div></div></div>
-<a name="id527840"></a><p>     A joined table is a table derived from two other (real or
+<a name="id527866"></a><p>     A joined table is a table derived from two other (real or
      derived) tables according to the rules of the particular join
      type.  Inner, outer, and cross-joins are available.
     </p>
@@ -119,8 +119,8 @@
         <code class="literal">a</code>, <code class="literal">b</code>, and <code class="literal">c</code> in the result,
         whereas with <code class="literal">USING</code> there will be only one of each.
        </p>
-<p>        <a name="id528222"></a>
-        <a name="id528232"></a>
+<p>        <a name="id528249"></a>
+        <a name="id528259"></a>
         Finally, <code class="literal">NATURAL</code> is a shorthand form of
         <code class="literal">USING</code>: it forms a <code class="literal">USING</code> list
         consisting of exactly those column names that appear in both
@@ -275,7 +275,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="queries-table-aliases"></a>7.2.1.2. Table and Column Aliases</h4></div></div></div>
-<a name="id528606"></a><a name="id528619"></a><p>     A temporary name can be given to tables and complex table
+<a name="id528632"></a><a name="id528646"></a><p>     A temporary name can be given to tables and complex table
      references to be used for references to the derived table in
      the rest of the query.  This is called a <em class="firstterm">table
      alias</em>.
@@ -356,7 +356,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="queries-subqueries"></a>7.2.1.3. Subqueries</h4></div></div></div>
-<a name="id528870"></a><p>     Subqueries specifying a derived table must be enclosed in
+<a name="id528897"></a><p>     Subqueries specifying a derived table must be enclosed in
      parentheses and <span class="emphasis"><em>must</em></span> be assigned a table
      alias name.  (See <a href="queries-table-expressions.html#queries-table-aliases" title="7.2.1.2. Table and Column Aliases">Section 7.2.1.2, &#8220;Table and Column Aliases&#8221;</a>.)  For
      example:
@@ -373,7 +373,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="queries-tablefunctions"></a>7.2.1.4. Table Functions</h4></div></div></div>
-<a name="id528925"></a><a name="id528936"></a><p>     Table functions are functions that produce a set of rows, made up
+<a name="id528951"></a><a name="id528963"></a><p>     Table functions are functions that produce a set of rows, made up
      of either base data types (scalar types) or composite data types
      (table rows).  They are used like a table, view, or subquery in
      the <code class="literal">FROM</code> clause of a query. Columns returned by table
@@ -435,7 +435,7 @@ SELECT * FROM vw_getfoo;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="queries-where"></a>7.2.2. The <code class="literal">WHERE</code> Clause</h3></div></div></div>
-<a name="id529092"></a><p>    The syntax of the <a href="sql-select.html#sql-where"><code class="literal">WHERE</code> Clause</a> is
+<a name="id529118"></a><p>    The syntax of the <a href="sql-select.html#sql-where"><code class="literal">WHERE</code> Clause</a> is
 </p>
 <pre class="synopsis">WHERE <em class="replaceable"><code>search_condition</code></em></pre>
 <p>
@@ -510,7 +510,7 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="queries-group"></a>7.2.3. The <code class="literal">GROUP BY</code> and <code class="literal">HAVING</code> Clauses</h3></div></div></div>
-<a name="id529380"></a><a name="id529391"></a><p>    After passing the <code class="literal">WHERE</code> filter, the derived input
+<a name="id529406"></a><a name="id529417"></a><p>    After passing the <code class="literal">WHERE</code> filter, the derived input
     table may be subject to grouping, using the <code class="literal">GROUP BY</code>
     clause, and elimination of group rows using the <code class="literal">HAVING</code>
     clause.
@@ -601,7 +601,7 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</pre>
     select list.  Grouping by value expressions instead of simple
     column names is also allowed.
    </p>
-<a name="id529678"></a><p>    If a table has been grouped using a <code class="literal">GROUP BY</code>
+<a name="id529705"></a><p>    If a table has been grouped using a <code class="literal">GROUP BY</code>
     clause, but then only certain groups are of interest, the
     <code class="literal">HAVING</code> clause can be used, much like a
     <code class="literal">WHERE</code> clause, to eliminate groups from a grouped

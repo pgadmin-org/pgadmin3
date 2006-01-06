@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
 <link rel="up" href="spi-memory.html" title="40.3. Memory Management">
 <link rel="prev" href="spi-spi-returntuple.html" title="SPI_returntuple">
 <link rel="next" href="spi-spi-freetuple.html" title="SPI_freetuple">
@@ -16,19 +16,19 @@
 <h2>Name</h2>
 <p>SPI_modifytuple &#8212; create a row by replacing selected fields of a given row</p>
 </div>
-<a name="id686260"></a><div class="refsynopsisdiv">
+<a name="id686306"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">HeapTuple SPI_modifytuple(Relation <em class="parameter"><code>rel</code></em>, HeapTuple <em class="parameter"><code>row</code></em>, <em class="parameter"><code>ncols</code></em>, <em class="parameter"><code>colnum</code></em>, Datum * <em class="parameter"><code>values</code></em>, const char * <em class="parameter"><code>nulls</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686312"></a><h2>Description</h2>
+<a name="id686357"></a><h2>Description</h2>
 <p>   <code class="function">SPI_modifytuple</code> creates a new row by
    substituting new values for selected columns, copying the original
    row's columns at other positions.  The input row is not modified.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686328"></a><h2>Arguments</h2>
+<a name="id686373"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">Relation <em class="parameter"><code>rel</code></em></code></span></dt>
 <dd><p>      Used only as the source of the row descriptor for the row.
@@ -56,7 +56,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686451"></a><h2>Return Value</h2>
+<a name="id686497"></a><h2>Return Value</h2>
 <p>   new row with modifications, allocated in the upper executor
    context; <code class="symbol">NULL</code> only if <em class="parameter"><code>row</code></em>
    is <code class="symbol">NULL</code>
