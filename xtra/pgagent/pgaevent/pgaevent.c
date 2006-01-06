@@ -2,7 +2,7 @@
 //
 // pgAgent - PostgreSQL Tools
 // RCS-ID:      $Id$
-// Copyright (C) 2003-2005 The pgAdmin Development Team
+// Copyright (C) 2003 - 2006 The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // pgaevent.c - win32 message format dll

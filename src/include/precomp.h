@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: pgAdmin3.h 4388 2005-08-09 18:03:49Z andreas $
-// Copyright (C) 2002 - 2005, The pgAdmin Development Team
+// Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // precomp.h - All header files for compilers supporting precompiled headers
