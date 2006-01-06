@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-srf.html" title="9.18. Set Returning Functions">
 <link rel="next" href="functions-admin.html" title="9.20. System Administration Functions">
@@ -89,7 +89,7 @@
 </tbody>
 </table>
 </div>
-<a name="id566342"></a><a name="id566356"></a><a name="id566368"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
+<a name="id566272"></a><a name="id566286"></a><a name="id566298"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
     the current database connection; but superusers can change this setting
     with <a href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION"><span class="refentrytitle"><a name="sql-set-session-authorization-title"></a>SET SESSION AUTHORIZATION</span></a>.
     The <code class="function">current_user</code> is the user identifier
@@ -123,7 +123,7 @@
 <p>
     </p>
 </div>
-<a name="id566509"></a><a name="id566520"></a><a name="id566530"></a><a name="id566541"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
+<a name="id566439"></a><a name="id566450"></a><a name="id566460"></a><a name="id566471"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
      current client, and <code class="function">inet_client_port</code> returns the
      port number.
      <code class="function">inet_server_addr</code> returns the IP address on which
@@ -132,10 +132,10 @@
      All these functions return NULL if the current connection is via a
      Unix-domain socket.
    </p>
-<a name="id566586"></a><p>    <code class="function">version()</code> returns a string describing the
+<a name="id566516"></a><p>    <code class="function">version()</code> returns a string describing the
     <span class="productname">PostgreSQL</span> server's version.
    </p>
-<a name="id566612"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
+<a name="id566542"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
    allow the user to query object access privileges programmatically.
    See <a href="ddl-priv.html" title="5.7. Privileges">Section 5.7, &#8220;Privileges&#8221;</a> for more information about
    privileges.
@@ -259,7 +259,7 @@
 </tbody>
 </table>
 </div>
-<a name="id567121"></a><a name="id567132"></a><a name="id567142"></a><a name="id567153"></a><a name="id567163"></a><a name="id567173"></a><p>    <code class="function">has_table_privilege</code> checks whether a user
+<a name="id567051"></a><a name="id567062"></a><a name="id567072"></a><a name="id567083"></a><a name="id567093"></a><a name="id567104"></a><p>    <code class="function">has_table_privilege</code> checks whether a user
     can access a table in a particular way.  The user can be
     specified by name or by ID
     (<code class="literal">pg_user.usesysid</code>), or if the argument is
@@ -395,7 +395,7 @@
 </tbody>
 </table>
 </div>
-<a name="id567686"></a><a name="id567697"></a><a name="id567707"></a><a name="id567718"></a><a name="id567728"></a><a name="id567738"></a><p>   <code class="function">pg_table_is_visible</code> performs the check for
+<a name="id567616"></a><a name="id567627"></a><a name="id567638"></a><a name="id567648"></a><a name="id567658"></a><a name="id567669"></a><p>   <code class="function">pg_table_is_visible</code> performs the check for
    tables (or views, or any other kind of <code class="literal">pg_class</code> entry).
    <code class="function">pg_type_is_visible</code>,
    <code class="function">pg_function_is_visible</code>,
@@ -419,7 +419,7 @@
     Note that it would not make much sense to test an unqualified name in
     this way [mdash ] if the name can be recognized at all, it must be visible.
    </p>
-<a name="id567843"></a><a name="id567853"></a><a name="id567863"></a><a name="id567874"></a><a name="id567884"></a><a name="id567895"></a><a name="id567905"></a><a name="id567915"></a><a name="id567925"></a><a name="id567936"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
+<a name="id567773"></a><a name="id567784"></a><a name="id567794"></a><a name="id567804"></a><a name="id567814"></a><a name="id567825"></a><a name="id567836"></a><a name="id567846"></a><a name="id567856"></a><a name="id567866"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
    extract information from the system catalogs.
   </p>
 <div class="table">
@@ -571,7 +571,7 @@
   <code class="function">pg_tablespace_databases</code> and query their
   <code class="structname">pg_class</code> catalogs.
   </p>
-<a name="id568714"></a><a name="id568724"></a><a name="id568734"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
+<a name="id568644"></a><a name="id568655"></a><a name="id568665"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
     previously stored with the <code class="command">COMMENT</code> command.  A
     null value is returned if no comment could be found matching the
     specified parameters.

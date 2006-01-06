@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="disk-full.html" title="24.2. Disk Full Failure">
 <link rel="next" href="wal-configuration.html" title="25.2. WAL Configuration">
@@ -21,7 +21,7 @@
 <dt><span class="sect1"><a href="wal-internals.html">25.3. Internals</a></span></dt>
 </dl>
 </div>
-<a name="id611614"></a><a name="id611624"></a><p>   <em class="firstterm">Write-Ahead Logging</em> (<span class="acronym">WAL</span>)
+<a name="id611565"></a><a name="id611575"></a><p>   <em class="firstterm">Write-Ahead Logging</em> (<span class="acronym">WAL</span>)
    is a standard approach to transaction logging.  Its detailed
    description may be found in most (if not all) books about
    transaction processing. Briefly, <span class="acronym">WAL</span>'s central
@@ -38,7 +38,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="wal-benefits"></a>25.1. Benefits of <span class="acronym">WAL</span></h2></div></div></div>
-<a name="id611670"></a><p>    The first major benefit of using <span class="acronym">WAL</span> is a
+<a name="id611621"></a><p>    The first major benefit of using <span class="acronym">WAL</span> is a
     significantly reduced number of disk writes, because only the log
     file needs to be flushed to disk at the time of transaction
     commit, rather than every data file changed by the transaction.

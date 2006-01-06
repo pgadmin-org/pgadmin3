@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="prev" href="libpq-notice-processing.html" title="27.10. Notice Processing">
 <link rel="next" href="libpq-pgpass.html" title="27.12. The Password File">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="libpq-envars"></a>27.11. Environment Variables</h2></div></div></div>
-<a name="id623169"></a><p>The following environment variables can be used to select default
+<a name="id623106"></a><p>The following environment variables can be used to select default
 connection parameter values, which will be used by
 <code class="function">PQconnectdb</code>, <code class="function">PQsetdbLogin</code> and
 <code class="function">PQsetdb</code> if no value is directly specified by the calling
@@ -22,14 +22,14 @@ information into simple client applications, for example.
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p><a name="id623210"></a>
+<li><p><a name="id623146"></a>
 <code class="envar">PGHOST</code> sets the database server name.
 If this begins with a slash, it specifies Unix-domain communication
 rather than TCP/IP communication; the value is then the name of the
 directory in which the socket file is stored (in a default installation
 setup this would be <code class="filename">/tmp</code>).</p></li>
 <li>
-<p><a name="id623236"></a>
+<p><a name="id623172"></a>
 <code class="envar">PGHOSTADDR</code> specifies the numeric IP address of the database
 server.  This can be set instead of or in addition to <code class="envar">PGHOST</code>
 to avoid DNS lookup overhead. See the documentation of
@@ -40,17 +40,17 @@ the default behavior is to connect using a local Unix-domain socket; or on
 machines without Unix-domain sockets, <span class="application">libpq</span> will
 attempt to connect to <code class="literal">localhost</code>.</p>
 </li>
-<li><p><a name="id623292"></a>
+<li><p><a name="id623229"></a>
 <code class="envar">PGPORT</code> sets the TCP port number or Unix-domain
 socket file extension for communicating with the
 <span class="productname">PostgreSQL</span> server.</p></li>
-<li><p><a name="id623316"></a>
+<li><p><a name="id623252"></a>
 <code class="envar">PGDATABASE</code>  sets the 
 <span class="productname">PostgreSQL</span> database name.</p></li>
-<li><p><a name="id623338"></a>
+<li><p><a name="id623274"></a>
 <code class="envar">PGUSER</code>
 sets the user name used to connect to the database.</p></li>
-<li><p><a name="id623354"></a>
+<li><p><a name="id623290"></a>
 <code class="envar">PGPASSWORD</code>
 sets the password used if the server demands password
 authentication.  Use of this environment variable is not 
@@ -58,11 +58,11 @@ recommended for security reasons (some operating systems
 allow non-root users to see process environment variables via
 <span class="application">ps</span>); instead consider using  the 
 <code class="filename">~/.pgpass</code> file (see <a href="libpq-pgpass.html" title="27.12. The Password File">Section 27.12, &#8220;The Password File&#8221;</a>).</p></li>
-<li><p><a name="id623394"></a>
+<li><p><a name="id623330"></a>
 <code class="envar">PGSERVICE</code>
 sets the service name to be looked up in <code class="filename">pg_service.conf</code>.
 This offers a shorthand way of setting all the parameters.</p></li>
-<li><p><a name="id623417"></a>
+<li><p><a name="id623354"></a>
 <code class="envar">PGREALM</code> sets the Kerberos realm to  use  with  
 <span class="productname">PostgreSQL</span>, if  it is different from the local realm.
 If <code class="envar">PGREALM</code> is set, <span class="application">libpq</span>
@@ -70,10 +70,10 @@ applications  will  attempt authentication  with  servers for this realm and use
 separate ticket files to avoid conflicts with  local
 ticket  files.   This  environment  variable is only
 used if Kerberos authentication is selected by the server.</p></li>
-<li><p><a name="id623455"></a>
+<li><p><a name="id623392"></a>
 <code class="envar">PGOPTIONS</code> sets additional run-time  options  for  
 the <span class="productname">PostgreSQL</span> server.</p></li>
-<li><p><a name="id623478"></a>
+<li><p><a name="id623414"></a>
 <code class="envar">PGSSLMODE</code> determines whether and with what priority an
 <span class="acronym">SSL</span> connection will be negotiated with the server. There are
 four modes: <code class="literal">disable</code> will attempt only an unencrypted
@@ -88,7 +88,7 @@ using option <code class="literal">require</code> will cause an error, while opt
 <code class="literal">allow</code> and <code class="literal">prefer</code> will be accepted but
 <span class="application">libpq</span> will not in fact attempt an <span class="acronym">SSL</span>
 connection.</p></li>
-<li><p><a name="id623591"></a>
+<li><p><a name="id623528"></a>
 <code class="envar">PGREQUIRESSL</code> sets whether or not the connection must be
 made over <span class="acronym">SSL</span>. If set to
 &#8220;<span class="quote">1</span>&#8221;, <span class="application">libpq</span>
@@ -98,7 +98,7 @@ an <span class="acronym">SSL</span> connection (equivalent to <code class="liter
 This option is deprecated in favor of the <code class="literal">sslmode</code>
 setting, and is only available if
 <span class="productname">PostgreSQL</span> is compiled with SSL support.</p></li>
-<li><p><a name="id623655"></a>
+<li><p><a name="id623591"></a>
 <code class="envar">PGCONNECT_TIMEOUT</code> sets the maximum number of seconds
 that <span class="application">libpq</span> will wait when attempting to
 connect to the <span class="productname">PostgreSQL</span> server.  If unset
@@ -115,19 +115,19 @@ basis.)
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p><a name="id623729"></a>
+<li><p><a name="id623666"></a>
 <code class="envar">PGDATESTYLE</code>
 sets the default style of date/time representation.
 (Equivalent to <code class="literal">SET datestyle TO ...</code>.)</p></li>
-<li><p><a name="id623752"></a>
+<li><p><a name="id623688"></a>
 <code class="envar">PGTZ</code>
 sets the default time zone.
 (Equivalent to <code class="literal">SET timezone TO ...</code>.)</p></li>
-<li><p><a name="id623774"></a>
+<li><p><a name="id623711"></a>
 <code class="envar">PGCLIENTENCODING</code>
 sets the default client character set encoding.
 (Equivalent to <code class="literal">SET client_encoding TO ...</code>.)</p></li>
-<li><p><a name="id623798"></a>
+<li><p><a name="id623734"></a>
 <code class="envar">PGGEQO</code>
 sets the default mode for the genetic query optimizer.
 (Equivalent to <code class="literal">SET geqo TO ...</code>.)</p></li>
@@ -142,10 +142,10 @@ for information on correct values for these environment variables.</p>
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p><a name="id623849"></a>
+<li><p><a name="id623786"></a>
 <code class="envar">PGSYSCONFDIR</code>
 sets the directory containing the <code class="filename">pg_service.conf</code> file.</p></li>
-<li><p><a name="id623872"></a>
+<li><p><a name="id623808"></a>
 <code class="envar">PGLOCALEDIR</code>
 sets the directory containing the <code class="literal">locale</code> files for message
 internationalization.</p></li>

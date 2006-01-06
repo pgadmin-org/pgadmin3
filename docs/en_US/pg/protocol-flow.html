@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
 <link rel="up" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
 <link rel="prev" href="protocol.html" title="Chapter 42. Frontend/Backend Protocol">
 <link rel="next" href="protocol-message-types.html" title="42.3. Message Data Types">
@@ -25,7 +25,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id757769"></a>42.2.1. Start-Up</h3></div></div></div>
+<a name="id757710"></a>42.2.1. Start-Up</h3></div></div></div>
 <p>    To begin a session, a frontend opens a connection to the server and sends
     a startup message.  This message includes the names of the user and of the
     database the user wants to connect to; it also identifies the particular
@@ -166,7 +166,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id758027"></a>42.2.2. Simple Query</h3></div></div></div>
+<a name="id757968"></a>42.2.2. Simple Query</h3></div></div></div>
 <p>    A simple query cycle is initiated by the frontend sending a Query message
     to the backend.  The message includes an SQL command (or commands)
     expressed as a text string.
@@ -269,7 +269,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id758284"></a>42.2.3. Extended Query</h3></div></div></div>
+<a name="id758226"></a>42.2.3. Extended Query</h3></div></div></div>
 <p>    The extended query protocol breaks down the above-described simple
     query protocol into multiple steps.  The results of preparatory
     steps can be re-used multiple times for improved efficiency.
@@ -470,7 +470,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id758591"></a>42.2.4. Function Call</h3></div></div></div>
+<a name="id758532"></a>42.2.4. Function Call</h3></div></div></div>
 <p>    The Function Call sub-protocol allows the client to request a direct
     call of any function that exists in the database's
     <code class="structname">pg_proc</code> system catalog.  The client must have
@@ -649,7 +649,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id759020"></a>42.2.7. Cancelling Requests in Progress</h3></div></div></div>
+<a name="id758961"></a>42.2.7. Cancelling Requests in Progress</h3></div></div></div>
 <p>    During the processing of a query, the frontend may request
     cancellation of the query.  The cancel request is not sent
     directly on the open connection to the backend for reasons of
@@ -701,7 +701,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id759083"></a>42.2.8. Termination</h3></div></div></div>
+<a name="id759024"></a>42.2.8. Termination</h3></div></div></div>
 <p>    The normal, graceful termination procedure is that the frontend
     sends a Terminate message and immediately closes the connection.
     On receipt of this message, the backend closes the connection and
@@ -733,7 +733,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id759143"></a>42.2.9. <span class="acronym">SSL</span> Session Encryption</h3></div></div></div>
+<a name="id759084"></a>42.2.9. <span class="acronym">SSL</span> Session Encryption</h3></div></div></div>
 <p>    If <span class="productname">PostgreSQL</span> was built with
     <span class="acronym">SSL</span> support, frontend/backend communications
     can be encrypted using <span class="acronym">SSL</span>.  This provides
