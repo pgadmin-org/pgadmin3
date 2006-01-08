@@ -24,7 +24,7 @@
 #define wxT(str) str
 #define _(str)   str
 
-#include "ver.h"
+#include "winver.h"
 #ifdef __WXDEBUG__
 #define VER_DEBUG               VS_FF_DEBUG
 #else
