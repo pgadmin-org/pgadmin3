@@ -73,6 +73,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
+	EVT_MENU(MNU_SELECTALL,		    frmQuery::OnSelectAll)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
     EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
@@ -158,7 +159,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     UpdateRecentFiles();
 
-    wxAcceleratorEntry entries[9];
+    wxAcceleratorEntry entries[10];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
     entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
@@ -168,9 +169,10 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     entries[5].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
     entries[6].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
     entries[7].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
-    entries[8].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+	entries[8].Set(wxACCEL_CTRL,				(int)'A',	   MNU_SELECTALL);
+    entries[9].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
-    wxAcceleratorTable accel(8, entries);
+    wxAcceleratorTable accel(9, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
@@ -628,6 +630,20 @@ void frmQuery::OnClear(wxCommandEvent& ev)
         msgResult->Clear();
     else if (wnd == msgHistory)
         msgHistory->Clear();
+}
+
+void frmQuery::OnSelectAll(wxCommandEvent& ev)
+{
+	wxWindow *wnd=currentControl();
+
+	if (wnd == sqlQuery)
+		sqlQuery->SelectAll();
+	else if (wnd == msgResult)
+		msgResult->SelectAll();
+	else if (wnd == msgHistory)
+		msgHistory->SelectAll();
+	else if (wnd == sqlResult)
+		sqlResult->SelectAll();
 }
 
 void frmQuery::OnFind(wxCommandEvent& ev)

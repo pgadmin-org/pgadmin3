@@ -65,6 +65,7 @@ private:
     void OnClearHistory(wxCommandEvent& event);
     void OnActivate(wxActivateEvent& event);
     void OnFocus(wxFocusEvent& event);
+	void OnSelectAll(wxCommandEvent& event);
 
     bool CheckChanged(bool canVeto);
     void OpenLastFile();

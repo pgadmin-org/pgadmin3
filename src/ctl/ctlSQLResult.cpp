@@ -40,6 +40,12 @@ void ctlSQLResult::SetConnection(pgConn *_conn)
 }
 
 
+void ctlSQLResult::SelectAll()
+{
+	for (int i = 0; i < GetItemCount(); i++)
+		Select(i);
+}
+
 bool ctlSQLResult::Export()
 {
     if (rowsRetrieved>0 || (thread && thread->DataSet()->NumRows() > 0))

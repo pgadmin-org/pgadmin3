@@ -41,6 +41,8 @@ public:
     int RetrieveOne();
     int Abort();
 
+	void SelectAll();
+
     bool Export();
     bool CanExport() { return rowsRetrieved>0 && colNames.GetCount() > 0; }
 
