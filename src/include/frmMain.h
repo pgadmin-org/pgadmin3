@@ -59,9 +59,10 @@ public:
     ctlListView *GetDependsOn();
     ctlListView *GetReferencedBy();
     void StoreServers();
-    int ReconnectServer(pgServer *server);
+    int ReconnectServer(pgServer *server, bool restore = true);
     void ReportConnError(pgServer *server);
     pgServerCollection *GetServerCollection() { return serversObj; }
+	pgServer *ConnectToServer(const wxString& servername, bool restore = false);
 
 private:
     ctlTree *browser;

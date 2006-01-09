@@ -630,7 +630,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 }
 
 
-int frmMain::ReconnectServer(pgServer *server)
+int frmMain::ReconnectServer(pgServer *server, bool restore)
 {
     // Create a server object and connect it.
     wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
@@ -644,26 +644,29 @@ int frmMain::ReconnectServer(pgServer *server)
     {
         case PGCONN_OK:
         {
-            StartMsg(_("Restoring previous environment"));
-            wxLogInfo(wxT("pgServer object initialised as required."));
+			if (restore)
+			{
+				StartMsg(_("Restoring previous environment"));
+				wxLogInfo(wxT("pgServer object initialised as required."));
 
-            server->ShowTreeDetail(browser);
-            browser->Freeze();
-            item=RestoreEnvironment(server);
-            browser->Thaw();
+				server->ShowTreeDetail(browser);
+				browser->Freeze();
+				item=RestoreEnvironment(server);
+				browser->Thaw();
 
-            if (item)
-            {
-                browser->SelectItem(item);
+				if (item)
+				{
+					browser->SelectItem(item);
 
-                wxSafeYield();
-                browser->Expand(item);
-                browser->EnsureVisible(item);
-            }
-			if (item)
-				EndMsg(true);
-			else
-				EndMsg(false);
+					wxSafeYield();
+					browser->Expand(item);
+					browser->EnsureVisible(item);
+				}
+				if (item)
+					EndMsg(true);
+				else
+					EndMsg(false);
+			}
             return res;
         }
         case PGCONN_DNSERR:
@@ -797,6 +800,24 @@ void frmMain::RetrieveServers()
     browser->SetItemText(serversObj->GetId(), label);
 }
 
+pgServer *frmMain::ConnectToServer(const wxString& servername, bool restore)
+{
+	for (int i = 0; ; i++)
+	{
+		pgObject *o = serversObj->FindChild(browser, i);
+		if (!o)
+			return NULL;
+		if (o->IsCreatedBy(serverFactory))
+		{
+			pgServer *s = (pgServer *)o;
+			if (s->GetDescription() == servername)
+			{
+				ReconnectServer(s, restore);
+				return s;
+			}
+		}
+	}
+}
 
 void frmMain::StartMsg(const wxString& msg)
 {

@@ -15,6 +15,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/app.h>
+#include <wx/cmdline.h>
 #include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/xrc/xmlres.h>
@@ -170,34 +171,45 @@ void frmDlgTest::OnSelect(wxCommandEvent &ev)
 // The Application!
 bool pgAdmin3::OnInit()
 {
+	static const wxCmdLineEntryDesc cmdLineDesc[] = 
+	{
+		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), wxT("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), wxT("open query tool to auto-connected server"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, wxT("cm"), NULL, wxT("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, wxT("ch"), NULL, wxT("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, wxT("c"), NULL, wxT("edit any configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_SWITCH, wxT("t"), NULL, wxT("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_NONE}
+	};
+
+
     // we are here
     InitPaths();
 
     frmConfig::tryMode configMode=frmConfig::NONE;
+	wxString configFile;
 
-    if (argc > 1 && *argv[1] == '-')
-    {
-        switch (argv[1][1])
-        {
-            case 'c':
-            {
-                // file configurator mode
-                if (argv[1][2]== 'm')
-                    configMode = frmConfig::MAINFILE;
-                else if (argv[1][2]== 'h')
-                    configMode = frmConfig::HBAFILE;
-                else
-                    configMode=frmConfig::ANYFILE;
+	wxCmdLineParser cmdParser(cmdLineDesc, argc, argv);
+	if (cmdParser.Parse() != 0) 
+		return false;
 
-                break;
-            }
-            case 't':
-            {
-                dialogTestMode = true;
-                break;
-            }
-        }
-    }
+	if (cmdParser.Found(wxT("q")) && !cmdParser.Found(wxT("s")))
+	{
+		cmdParser.Usage();
+		return false;
+	}
+	
+	if (cmdParser.Found(wxT("cm"), &configFile)) 
+		configMode = frmConfig::MAINFILE;
+	else if (cmdParser.Found(wxT("ch"), &configFile))
+		configMode = frmConfig::HBAFILE;
+	else if (cmdParser.Found(wxT("c"), &configFile))
+		configMode = frmConfig::ANYFILE;
+
+	if (cmdParser.Found(wxT("t")))
+		dialogTestMode = true;
+
 
     // evaluate all working paths
 
@@ -351,29 +363,15 @@ bool pgAdmin3::OnInit()
 
     if (configMode)
     {
-        int i;
-
-        for (i=2 ; i < argc ; i++)
-        {
-            wxString str;
-            if (*argv[i] == '"')
-            {
-                wxString str=argv[i]+1;
-                str=str.Mid(0, str.Length()-1);
-            }
-            else
-                str = argv[i];
-
-            if (configMode == frmConfig::ANYFILE && wxDir::Exists(str))
-            {
-                frmConfig::Create(APPNAME_L, str + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
-                frmConfig::Create(APPNAME_L, str + wxT("/postgresql.conf"), frmConfig::MAINFILE);
-            }
-            else
-            {
-                frmConfig::Create(APPNAME_L, str, configMode);
-            }
-        }
+		if (configMode == frmConfig::ANYFILE && wxDir::Exists(configFile))
+		{
+			frmConfig::Create(APPNAME_L, configFile + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
+			frmConfig::Create(APPNAME_L, configFile + wxT("/postgresql.conf"), frmConfig::MAINFILE);
+		}
+		else
+		{
+			frmConfig::Create(APPNAME_L, configFile, configMode);
+		}
         if (winSplash)
         {
             winSplash->Close();
@@ -412,6 +410,17 @@ bool pgAdmin3::OnInit()
             winSplash->Close();
             delete winSplash;
         }
+
+		wxString str;
+		if (cmdParser.Found(wxT("s"), &str))
+		{
+			pgServer *srv = winMain->ConnectToServer(str, !cmdParser.Found(wxT("q")));
+			if (srv && cmdParser.Found(wxT("q")))
+			{
+				frmQuery *fq = new frmQuery(winMain, wxEmptyString, srv->CreateConn(), wxString(wxT("")));
+				fq->Go();
+			}
+		}
 
         // Display a Tip if required.
         extern sysSettings *settings;
