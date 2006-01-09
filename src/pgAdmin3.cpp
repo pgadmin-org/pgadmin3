@@ -46,8 +46,10 @@
 #include "misc.h"
 #include "sysSettings.h"
 #include "update.h"
+#include "pgServer.h"
 #include "frmMain.h"
 #include "frmConfig.h"
+#include "frmQuery.h"
 #include "frmSplash.h"
 #include <wx/dir.h>
 #include <wx/fs_zip.h>
