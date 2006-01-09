@@ -78,19 +78,25 @@ wxString ctlSQLResult::GetExportLine(int row)
 
         wxString text=GetItemText(row, col);
 
-        bool needQuote=(settings->GetExportQuoting() > 1);
+		bool needQuote  = false;
+		if (settings->GetExportQuoting() == 1)
+		{
+			/* Quote strings only */
+			switch (colTypClasses.Item(col))
+			{
+			case PGTYPCLASS_NUMERIC:
+			case PGTYPCLASS_BOOL:
+				break;
+			default:
+				needQuote=true;
+				break;
+			}
+		}
+		else if (settings->GetExportQuoting() == 2)
+			/* Quote everything */
+			needQuote = true;
 
-    
-        switch (colTypClasses.Item(col))
-        {
-            case PGTYPCLASS_NUMERIC:
-            case PGTYPCLASS_BOOL:
-                break;
-            default:
-                needQuote=true;
-                break;
-        }
-        if (needQuote)
+		if (needQuote)
             str.Append(settings->GetExportQuoteChar());
         str.Append(text);
         if (needQuote)
