@@ -64,7 +64,7 @@ frmExport::frmExport(wxWindow *p)
 
     bool uc=settings->GetExportUnicode();
     rbUnicode->SetValue(uc);
-    rbLocal->SetValue(uc);
+    rbLocal->SetValue(!uc);
 
     bool isCrLf=settings->GetExportRowSeparator() == wxT("\r\n");
     rbCRLF->SetValue(isCrLf);
