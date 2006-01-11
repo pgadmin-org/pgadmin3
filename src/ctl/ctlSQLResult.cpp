@@ -74,12 +74,12 @@ wxString ctlSQLResult::GetExportLine(int row)
     for (col=1 ; col < GetColumnCount() ; col++)
     {
         if (col > 1)
-            str.Append(settings->GetExportColSeparator());
+            str.Append(settings->GetCopyColSeparator());
 
         wxString text=GetItemText(row, col);
 
 		bool needQuote  = false;
-		if (settings->GetExportQuoting() == 1)
+		if (settings->GetCopyQuoting() == 1)
 		{
 			/* Quote strings only */
 			switch (colTypClasses.Item(col))
@@ -92,15 +92,15 @@ wxString ctlSQLResult::GetExportLine(int row)
 				break;
 			}
 		}
-		else if (settings->GetExportQuoting() == 2)
+		else if (settings->GetCopyQuoting() == 2)
 			/* Quote everything */
 			needQuote = true;
 
 		if (needQuote)
-            str.Append(settings->GetExportQuoteChar());
+            str.Append(settings->GetCopyQuoteChar());
         str.Append(text);
         if (needQuote)
-            str.Append(settings->GetExportQuoteChar());
+            str.Append(settings->GetCopyQuoteChar());
     }    
     return str;
 }

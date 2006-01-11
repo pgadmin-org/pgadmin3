@@ -139,11 +139,19 @@ public:
     int GetExportQuoting() const { return exportQuoting; }  // 0=none 1=string 2=all
     bool GetExportUnicode() const { return exportUnicode; }
 
+	wxString GetCopyQuoteChar() const { return copyQuoteChar; }
+	wxString GetCopyColSeparator() const { return copyColSeparator; }
+	int GetCopyQuoting() const { return copyQuoting; } // 0=none 1=string 2=all
+
     void SetExportQuoteChar(const wxString &s) { exportQuoteChar=s; }
     void SetExportRowSeparator(const wxString &s) { exportRowSeparator=s; }
     void SetExportColSeparator(const wxString &s) { exportColSeparator=s; }
     void SetExportQuoting(const int i) { exportQuoting = i; }
     void SetExportUnicode(const bool b) { exportUnicode=b; }
+
+	void SetCopyQuoteChar(const wxString &s) { copyQuoteChar=s; }
+	void SetCopyColSeparator(const wxString &s) { copyColSeparator=s; }
+	void SetCopyQuoting(const int i) { copyQuoting = i; }
 
 	void Save();
 
@@ -195,6 +203,11 @@ private:
     wxString exportQuoteChar;
     int exportQuoting;
     bool exportUnicode;
+
+	// copy options
+	wxString copyColSeparator;
+	wxString copyQuoteChar;
+	int copyQuoting;
 };
 
 #endif

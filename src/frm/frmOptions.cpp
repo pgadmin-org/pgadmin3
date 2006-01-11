@@ -48,6 +48,9 @@ extern wxArrayString existingLangNames;
 #define chkShowUsersForPrivileges   CTRL_CHECKBOX("chkShowUsersForPrivileges")
 #define txtAutoRowCount             CTRL_TEXT("txtAutoRowCount")
 #define txtIndent                   CTRL_TEXT("txtIndent")
+#define cbCopyQuote					CTRL_COMBOBOX("cbCopyQuote")
+#define cbCopyQuoteChar				CTRL_COMBOBOX("cbCopyQuoteChar")
+#define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
@@ -103,6 +106,9 @@ frmOptions::frmOptions(frmMain *parent)
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     txtIndent->SetValue(NumToStr(settings->GetIndentSpaces()));
+	cbCopyQuote->SetSelection(settings->GetCopyQuoting());
+	cbCopyQuoteChar->SetValue(settings->GetCopyQuoteChar());
+	cbCopySeparator->SetValue(settings->GetCopyColSeparator());
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
@@ -218,6 +224,9 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->GetValue());
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
     settings->SetIndentSpaces(StrToLong(txtIndent->GetValue()));
+	settings->SetCopyQuoting(cbCopyQuote->GetCurrentSelection());
+	settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
+	settings->SetCopyColSeparator(cbCopySeparator->GetValue());
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());

@@ -169,6 +169,15 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
         exportQuoting = 1;
     else
         exportQuoting = 0;
+	Read(wxT("Copy/ColSeparator"), &copyColSeparator, wxT(";"));
+	Read(wxT("Copy(QuoteChar"), &copyQuoteChar, wxT("\""));
+	Read(wxT("Copy/Quote"), &val, wxT("Strings"));
+	if (val == wxT("All"))
+		copyQuoting = 2;
+	else if (val == wxT("Strings"))
+		copyQuoting = 1;
+	else
+		copyQuoting = 0;
 
 
 
@@ -309,6 +318,23 @@ void sysSettings::Save()
         default:
             break;
     }
+
+	Write(wxT("Copy/QuoteChar"), copyQuoteChar);
+	Write(wxT("Copy/ColSeparator"), copyColSeparator);
+	switch (copyQuoting)
+	{
+		case 2:
+			Write(wxT("Copy/Quote"), wxT("All"));
+			break;
+		case 1:
+			Write(wxT("Copy/Quote"), wxT("Strings"));
+			break;
+		case 0:
+			Write(wxT("Copy/Quote"), wxT("None"));
+			break;
+		default:
+			break;
+	}
 
     wxString fontName = systemFont.GetNativeFontInfoDesc();
 
