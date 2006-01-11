@@ -419,8 +419,13 @@ bool pgAdmin3::OnInit()
 			pgServer *srv = winMain->ConnectToServer(str, !cmdParser.Found(wxT("q")));
 			if (srv && cmdParser.Found(wxT("q")))
 			{
-				frmQuery *fq = new frmQuery(winMain, wxEmptyString, srv->CreateConn(), wxString(wxT("")));
-				fq->Go();
+				pgConn *conn;
+				conn = srv->CreateConn();
+				if (conn)
+				{
+					frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxString(wxT("")));
+					fq->Go();
+				}
 			}
 		}
 
