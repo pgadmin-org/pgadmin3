@@ -91,7 +91,7 @@ wxString pgRole::GetSql(ctlTree *browser)
         else                        sql += wxT(" NOINHERIT");
         if (GetCreateDatabase())    sql += wxT(" CREATEDB");
         else                        sql += wxT(" NOCREATEDB");
-        if (GetUpdateCatalog())     sql += wxT(" CREATEROLE");
+        if (GetCreateRole())        sql += wxT(" CREATEROLE");
         else                        sql += wxT(" NOCREATEROLE");
         if (GetAccountExpires().IsValid())
         AppendIfFilled(sql, wxT(" VALID UNTIL "), qtString(DateToAnsiStr(GetAccountExpires())));
