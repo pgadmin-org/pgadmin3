@@ -505,6 +505,7 @@ void ctlSQLBox::OnFindDialog(wxFindDialogEvent& event)
             SetSelectionStart(pos);
             SetSelectionEnd(pos + event.GetFindString().Length());
             ReplaceSelection(event.GetReplaceString().c_str());
+            pos = pos + event.GetReplaceString().Length();
             pos = FindText(pos, endPos, event.GetFindString().c_str(), flags);
         }
 
