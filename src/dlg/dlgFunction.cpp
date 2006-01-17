@@ -166,7 +166,6 @@ int dlgFunction::Go(bool modal)
         }
         stReturntype->Hide();
         cbReturntype->Hide();
-        chkSetof->Hide();
     }
     else
     {
@@ -622,21 +621,38 @@ wxString dlgFunction::GetSql()
         {
             if (!connection->EdbMinimumVersion(8, 0))
             {
-                bool hasOut=false;
+                int outParams=0;
+                wxString setType;
 
                 int i;
                 for (i=0 ; i < lstArguments->GetItemCount() ; i++)
                 {
                     if (GetDirection(lstArguments->GetText(i)) > 0)
                     {
-                        hasOut=true;
-                        break;
+                        setType = lstArguments->GetText(i, typeColNo);
+                        outParams++;
                     }
                 }
 
-                if (!hasOut)
+                if (outParams == 0)
                     sql += wxT(" RETURNS void");
+                else 
+                {
+                    if (chkSetof->GetValue())
+                    {
+                        if (outParams == 1)
+                        {
+                            sql += wxT(" RETURNS SETOF ") + setType;
+                        }
+                        else
+                        {
+                            sql += wxT(" RETURNS SETOF record");
+                        }
+                    }
+                }
+                    
             }
+
         }
         else
         {
