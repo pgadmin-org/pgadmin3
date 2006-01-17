@@ -296,6 +296,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                         function->iAddArgMode(mode);
                         argTypeNames += mode + wxT(" ");
                         quotedArgTypeNames += mode + wxT(" ");
+                        quotedArgTypes += mode + wxT(" ");
                     }
                     if (!name.IsNull())
                     {
