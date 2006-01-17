@@ -238,7 +238,7 @@ wxWindow *faqFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     frmHelp *h=new frmHelp(form);
     h->Show(true);
-    if (!h->Load(wxT("http://www.pgadmin.org/faq/")))
+    if (!h->Load(wxT("http://www.pgadmin.org/pgadmin3/faq/")))
     {
         h->Destroy();
         h=0;

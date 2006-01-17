@@ -10,7 +10,7 @@
 #######################################################################
 
 # Define the list of 'published' languages. This should match those
-# at  http://www.pgadmin.org/translation.php. These are the only ones
+# at  http://www.pgadmin.org/translation/status.php. These are the only ones
 # that will be installed, but all will be shipped in the source tarball.
 
 PUB_TX = af_ZA ar_SA ca_ES de_DE es_ES fi_FI fr_FR ja_JP nl_NL pl_PL sl_SI tr_TR
