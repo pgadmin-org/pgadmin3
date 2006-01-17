@@ -74,7 +74,12 @@ wxString pgFunction::GetSql(ctlTree *browser)
             sql += wxT("\n  RETURNS ");
             if (GetReturnAsSet())
                 sql += wxT("SETOF ");
-            sql +=GetQuotedReturnType();
+            sql += GetQuotedReturnType();
+        }
+        else if (GetReturnAsSet())
+        {
+            sql += wxT("\n  RETURNS SETOF ");
+            sql += GetQuotedReturnType();
         }
 
         sql += wxT(" AS\n");
@@ -155,8 +160,15 @@ wxString pgProcedure::GetSql(ctlTree *browser)
 
         sql = wxT("-- Procedure: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- DROP PROCEDURE") + GetQuotedFullIdentifier() + wxT(";")
-            + wxT("\n\nCREATE OR REPLACE ") + qtName 
-            + wxT(" AS\n")
+            + wxT("\n\nCREATE OR REPLACE ") + qtName;
+
+        if (GetReturnAsSet())
+        {
+            sql += wxT("\n  RETURNS SETOF ");
+            sql +=GetQuotedReturnType();
+        }
+
+        sql += wxT(" AS\n")
             + qtStringDollar(GetSource())
             + wxT(";\n");
 
