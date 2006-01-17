@@ -41,7 +41,7 @@ public:
 	void Return();
 
 private:
-    bool DBconn::Connect(const wxString &connectString);
+    bool Connect(const wxString &connectString);
 
 protected:
     static wxString basicConnectString;

@@ -85,7 +85,7 @@ public:
     pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgDatabaseObject(newType, newName)
         { SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
 
-    pgSchemaObject::~pgSchemaObject()
+    ~pgSchemaObject()
         { wxLogInfo(wxT("Destroying a pg") + GetTypeName() + wxT(" object")); }
 
     bool GetSystemObject() const;
