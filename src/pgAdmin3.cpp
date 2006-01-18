@@ -175,13 +175,13 @@ bool pgAdmin3::OnInit()
 {
 	static const wxCmdLineEntryDesc cmdLineDesc[] = 
 	{
-		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
-		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), wxT("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
-		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), wxT("open query tool to auto-connected server"), wxCMD_LINE_VAL_NONE},
-		{wxCMD_LINE_OPTION, wxT("cm"), NULL, wxT("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-		{wxCMD_LINE_OPTION, wxT("ch"), NULL, wxT("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-		{wxCMD_LINE_OPTION, wxT("c"), NULL, wxT("edit any configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-		{wxCMD_LINE_SWITCH, wxT("t"), NULL, wxT("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool to auto-connected server"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, wxT("c"), NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_SWITCH, wxT("t"), NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_NONE}
 	};
 
