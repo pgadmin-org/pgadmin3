@@ -392,14 +392,14 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
 
 startServiceFactory::startServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Start service"), _("Start PostgreSQL Service"));
+    mnu->Append(id, _("Start Service"), _("Start PostgreSQL Service"));
 }
 
 
 wxWindow *startServiceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     pgServer *server= (pgServer*)obj;
-    form->StartMsg(_("Starting service"));
+    form->StartMsg(_("Starting Service"));
     bool rc = server->StartService();
     if (rc)
         form->execSelChange(server->GetId(), true);
@@ -421,7 +421,7 @@ bool startServiceFactory::CheckEnable(pgObject *obj)
 
 stopServiceFactory::stopServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Stop service"), _("Stop PostgreSQL Service"));
+    mnu->Append(id, _("Stop Service"), _("Stop PostgreSQL Service"));
 }
 
 
@@ -429,7 +429,7 @@ wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     pgServer *server= (pgServer*)obj;
 	wxMessageDialog msg(form, _("Are you sure you wish to shutdown this server?"),
-            _("Stop service"), wxYES_NO | wxICON_QUESTION);
+            _("Stop Service"), wxYES_NO | wxICON_QUESTION);
     if (msg.ShowModal() == wxID_YES)
     {
         form->StartMsg(_("Stopping service"));

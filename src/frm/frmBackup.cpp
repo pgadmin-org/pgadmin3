@@ -272,7 +272,7 @@ void frmBackup::Go()
 
 backupFactory::backupFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("&Backup"), _("Creates a backup of the current database to a local file"));
+    mnu->Append(id, _("&Backup..."), _("Creates a backup of the current database to a local file"));
 }
 
 

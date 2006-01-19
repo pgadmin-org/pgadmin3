@@ -313,7 +313,7 @@ wxString dlgRepSetMove::GetSql()
 
 slonyMergeSetFactory::slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Merge set"), _("Merge two replication sets."));
+    mnu->Append(id, _("Merge Set"), _("Merge two replication sets."));
 }
 
 
@@ -343,7 +343,7 @@ bool slonyMergeSetFactory::CheckEnable(pgObject *obj)
 
 slonyLockSetFactory::slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Lock set"), _("Lock a replication set against updates."));
+    mnu->Append(id, _("Lock Set"), _("Lock a replication set against updates."));
 }
 
 
@@ -375,7 +375,7 @@ bool slonyLockSetFactory::CheckEnable(pgObject *obj)
 
 slonyUnlockSetFactory::slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Unlock set"), _("Unlock a replication set and re-allow updates."));
+    mnu->Append(id, _("Unlock Set"), _("Unlock a replication set and re-allow updates."));
 }
 
 
@@ -408,7 +408,7 @@ bool slonyUnlockSetFactory::CheckEnable(pgObject *obj)
 
 slonyMoveSetFactory::slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Move set"), _("Move replication set to different node"));
+    mnu->Append(id, _("Move Set"), _("Move replication set to different node"));
 }
 
 

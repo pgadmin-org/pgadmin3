@@ -1279,7 +1279,7 @@ bool clusterActionFactory::CheckEnable(pgObject *obj)
 
 slonyRestartFactory::slonyRestartFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
 {
-    mnu->Append(id, _("Restart node"), _("Restart node."));
+    mnu->Append(id, _("Restart Node"), _("Restart node."));
 }
 
 
@@ -1317,7 +1317,7 @@ wxWindow *slonyRestartFactory::StartDialog(frmMain *form, pgObject *obj)
 
 slonyUpgradeFactory::slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
 {
-    mnu->Append(id, _("Upgrade node"), _("Upgrade node to newest replication software version."));
+    mnu->Append(id, _("Upgrade Node"), _("Upgrade node to newest replication software version."));
 }
 
 

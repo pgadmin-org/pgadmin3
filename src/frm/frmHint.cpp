@@ -461,7 +461,7 @@ bool hintFactory::CheckEnable(pgObject *obj)
 tipOfDayFactory::tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
     if (mnu)
-        mnu->Append(id, _("&Tip of the day"), _("Show a tip of the day."));
+        mnu->Append(id, _("&Tip of the Day"), _("Show a tip of the day."));
 }
 
 

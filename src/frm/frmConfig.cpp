@@ -133,7 +133,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
     toolBar->AddSeparator();
 
 
-    helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the pgAdmin III helpfile."));
 
     helpMenu->Append(MNU_HINT, _("Hints"), _("Display helpful hints on current object."));
     toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm),   _("Display helpful hints on current object."));

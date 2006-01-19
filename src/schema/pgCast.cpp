@@ -163,7 +163,7 @@ pgObject *pgCastFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 #include "images/casts.xpm"
 
 pgCastFactory::pgCastFactory() 
-: pgDatabaseObjFactory(__("Cast"), __("New Cast"), __("Create a new Cast."), cast_xpm, cast_sm_xpm)
+: pgDatabaseObjFactory(__("Cast"), __("New Cast..."), __("Create a new Cast."), cast_xpm, cast_sm_xpm)
 {
 }
 

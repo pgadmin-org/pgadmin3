@@ -199,7 +199,7 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 #include "images/aggregates.xpm"
 
 pgAggregateFactory::pgAggregateFactory() 
-: pgaFactory(__("Aggregate"), __("New Aggregate"), __("Create a new Aggregate."), aggregate_xpm, aggregate_sm_xpm)
+: pgaFactory(__("Aggregate"), __("New Aggregate..."), __("Create a new Aggregate."), aggregate_xpm, aggregate_sm_xpm)
 {
 }
 

@@ -638,7 +638,7 @@ bool mainConfigFactory::CheckEnable(pgObject *obj)
 
 mainConfigFileFactory::mainConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("Open postgresql.conf"), _("Open configuration editor with postgresql.conf."));
+    mnu->Append(id, _("Open postgresql.conf..."), _("Open configuration editor with postgresql.conf."));
 }
 
 

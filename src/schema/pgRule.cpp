@@ -152,7 +152,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 #include "images/rules.xpm"
 
 pgRuleFactory::pgRuleFactory() 
-: pgSchemaObjFactory(__("Rule"), __("New Rule"), __("Create a new Rule."), rule_xpm)
+: pgSchemaObjFactory(__("Rule"), __("New Rule..."), __("Create a new Rule."), rule_xpm)
 {
 }
 

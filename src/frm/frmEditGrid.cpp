@@ -2034,7 +2034,7 @@ wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
 #include "images/viewfiltereddata.xpm"
 editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
 {
-    mnu->Append(id, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
+    mnu->Append(id, _("View F&iltered Data..."), _("Apply a filter and view the data in the selected object."));
     toolbar->AddTool(id, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
 }
 

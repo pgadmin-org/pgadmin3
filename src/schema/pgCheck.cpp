@@ -144,7 +144,7 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
 #include "images/check.xpm"
 
 pgCheckFactory::pgCheckFactory() 
-: pgTableObjFactory(__("Check"), __("New Check"), __("Create a new Check constraint."), check_xpm)
+: pgTableObjFactory(__("Check"), __("New Check..."), __("Create a new Check constraint."), check_xpm)
 {
     metaType = PGM_CHECK;
     collectionFactory = &constraintCollectionFactory;

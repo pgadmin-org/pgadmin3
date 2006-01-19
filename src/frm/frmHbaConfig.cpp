@@ -316,7 +316,7 @@ bool hbaConfigFactory::CheckEnable(pgObject *obj)
 
 hbaConfigFileFactory::hbaConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("Open pg_hba.conf"), _("Open configuration editor with pg_hba.conf."));
+    mnu->Append(id, _("Open pg_hba.conf..."), _("Open configuration editor with pg_hba.conf."));
 }
 
 

@@ -94,7 +94,7 @@ void frmPassword::OnCancel(wxCommandEvent& event)
 
 passwordFactory::passwordFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("C&hange password..."), _("Change your password."));
+    mnu->Append(id, _("C&hange Password..."), _("Change your password."));
 }
 
 

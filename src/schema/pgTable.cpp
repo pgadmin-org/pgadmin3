@@ -709,7 +709,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 #include "images/tables.xpm"
 
 pgTableFactory::pgTableFactory() 
-: pgSchemaObjFactory(__("Table"), __("New Table"), __("Create a new Table."), table_xpm, table_sm_xpm)
+: pgSchemaObjFactory(__("Table"), __("New Table..."), __("Create a new Table."), table_xpm, table_sm_xpm)
 {
     metaType = PGM_TABLE;
     if (WantSmallIcon())

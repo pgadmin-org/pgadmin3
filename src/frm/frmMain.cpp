@@ -133,7 +133,7 @@ frmMain::frmMain(const wxString& title)
 
 
 
-    fileMenu->Append(MNU_SAVEDEFINITION, _("&Save definition..."),_("Save the SQL definition of the selected object."));
+    fileMenu->Append(MNU_SAVEDEFINITION, _("&Save Definition..."),_("Save the SQL definition of the selected object."));
     fileMenu->AppendSeparator();
     new addServerFactory(menuFactories, fileMenu, toolBar);
 
@@ -143,7 +143,7 @@ frmMain::frmMain(const wxString& title)
     new separatorFactory(menuFactories);
 
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System Objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     toolBar->AddSeparator();
 
     new passwordFactory(menuFactories, fileMenu, 0);
@@ -198,7 +198,7 @@ frmMain::frmMain(const wxString& title)
     new grantWizardFactory(menuFactories, toolsMenu, 0);
     new mainConfigFactory(menuFactories, cfgMenu, 0);
     new hbaConfigFactory(menuFactories, cfgMenu, 0);
-    toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
+    toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server Configuration"), cfgMenu);
     toolsMenu->AppendSeparator();
 
     new separatorFactory(menuFactories);

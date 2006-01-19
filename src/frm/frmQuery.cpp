@@ -147,7 +147,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     menuBar->Append(queryMenu, _("&Query"));
 
     wxMenu *helpMenu=new wxMenu();
-    helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the pgAdmin III helpfile."));
     helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
     menuBar->Append(helpMenu, _("&Help"));
 

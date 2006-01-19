@@ -1318,7 +1318,7 @@ void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 propertyFactory::propertyFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
     if (mnu)
-        mnu->Append(id, _("&Properties"), _("Display/edit the properties of the selected object."));
+        mnu->Append(id, _("&Properties..."), _("Display/edit the properties of the selected object."));
     else
         context=false;
     if (toolbar)
@@ -1344,7 +1344,7 @@ bool propertyFactory::CheckEnable(pgObject *obj)
 #include "images/create.xpm"
 createFactory::createFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("&Create"),  _("Create a new object of the same type as the selected object."));
+    mnu->Append(id, _("&Create..."),  _("Create a new object of the same type as the selected object."));
     toolbar->AddTool(id, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
 }
 
@@ -1387,7 +1387,7 @@ bool dropFactory::CheckEnable(pgObject *obj)
 
 dropCascadedFactory::dropCascadedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Drop cascaded"), _("Drop the selected object and all objects dependent on it."));
+    mnu->Append(id, _("Drop Cascaded"), _("Drop the selected object and all objects dependent on it."));
 }
 
 

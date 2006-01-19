@@ -191,7 +191,7 @@ pgObject *pgSequenceFactory::CreateObjects(pgCollection *collection, ctlTree *br
 #include "images/sequences.xpm"
 
 pgSequenceFactory::pgSequenceFactory() 
-: pgSchemaObjFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_xpm)
+: pgSchemaObjFactory(__("Sequence"), __("New Sequence..."), __("Create a new Sequence."), sequence_xpm)
 {
     metaType = PGM_SEQUENCE;
 }

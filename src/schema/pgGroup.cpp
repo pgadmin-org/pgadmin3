@@ -147,7 +147,7 @@ pgObject *pgGroupFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 #include "images/groups.xpm"
 
 pgGroupFactory::pgGroupFactory() 
-: pgServerObjFactory(__("Group"), __("New Group"), __("Create a new Group."), group_xpm)
+: pgServerObjFactory(__("Group"), __("New Group..."), __("Create a new Group."), group_xpm)
 {
 }
 

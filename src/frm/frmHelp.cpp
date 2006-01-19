@@ -217,7 +217,7 @@ void ctlHelpWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
 
 contentsFactory::contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("&Help..."), _("Open the pgAdmin III helpfile."));
+    mnu->Append(id, _("&Help"), _("Open the pgAdmin III helpfile."));
 }
 
 
@@ -270,7 +270,7 @@ wxWindow *pgsqlHelpFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bugReportFactory::bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("&Bugreport"), _("How to send a bugreport to the pgAdmin Development Team."));
+    mnu->Append(id, _("&Bug Report"), _("How to send a bugreport to the pgAdmin Development Team."));
 }
 
 

@@ -252,7 +252,7 @@ void pgTablespaceCollection::ShowStatistics(frmMain *form, ctlListView *statisti
 
 
 pgTablespaceFactory::pgTablespaceFactory() 
-: pgServerObjFactory(__("Tablespace"), __("New Tablespace"), __("Create a new Tablespace."), tablespace_xpm)
+: pgServerObjFactory(__("Tablespace"), __("New Tablespace..."), __("Create a new Tablespace."), tablespace_xpm)
 {
 }
 

@@ -66,7 +66,7 @@ void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 
 aboutFactory::aboutFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("&About..."), _("Show about dialog."));
+    mnu->Append(id, _("&About"), _("Show about dialog."));
 }
 
 
