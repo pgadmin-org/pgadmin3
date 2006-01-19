@@ -110,10 +110,13 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     statusList->AddColumn(_("Database"), 70);
     statusList->AddColumn(_("User"), 70);
     if (connection->BackendMinimumVersion(8, 1))
+	{
         statusList->AddColumn(_("Client"), 70);
+		statusList->AddColumn(_("Client start"), 80);
+	}
 
     if (connection->BackendMinimumVersion(7, 4))
-        statusList->AddColumn(_("Start"), 50);
+        statusList->AddColumn(_("Query start"), 50);
 
     statusList->AddColumn(_("Query"), 500);
 
@@ -317,6 +320,8 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                         if (client == wxT(":-1"))
                             client = _("local pipe");
                         statusList->SetItem(row, colpos++, client);
+
+						statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("backend_start")));
                     }
                     if (connection->BackendMinimumVersion(7, 4))
 					{
