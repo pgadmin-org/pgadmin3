@@ -10,9 +10,11 @@
 SUBDIRS = i18n src pkg xtra
 
 EXTRA_DIST = \
-	$(top_srcdir)/README.txt \
-	$(top_srcdir)/BUGS.txt \
-	$(top_srcdir)/LICENCE.txt
+	$(top_srcdir)/BUGS \
+	$(top_srcdir)/CHANGELOG \
+	$(top_srcdir)/LICENCE \
+	$(top_srcdir)/README \
+	$(top_srcdir)/TODO
 
 TMP_docs = \
 	$(top_srcdir)/docs/en_US/pg/*.css \

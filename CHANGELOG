@@ -1,0 +1,529 @@
+pgAdmin III Changelog
+=====================
+
+Notes
+-----
+
+This is the pgAdmin III changelog. Items are marked with the initials of the 
+developer responsible for them, and the version of pgAdmin that the change
+will first appear in. For convenience, changes during Beta and RC phases may
+include an RCx or Bx suffix on the version number, but for simplicity these 
+will not normally be retained.
+
+A name in square braces [Joe Bloggs] indicates that the change was written by
+Joe. The initialed developer was responsible for reviewing the changes in these
+cases.
+
+Names shown as "per joe Bloggs", indicate that Joe reported the problem and may 
+have provided help debugging it, but did not actually provide the change.
+
+Key to developers
+-----------------
+
+- DP   Dave Page
+- AP   Andreas Pflug
+- JMP  Jean-Michel Poure
+- HS   Hiroshi Saito
+- AHP  Adam H. Pendleton
+- MP   Marc Persuy
+- DAP  Darko Prenosil
+- FGP  Florian G. Pflug
+
+Changes
+-------
+
+Date       Dev Ver    Change details
+---------- --- -----  --------------
+2006-01-11 DP  1.6.0  Allow result copy quoting configuration to be set 
+                      explicitly rather than using the result export settings 
+                      [Magnus Hagander]
+2006-01-09 DP  1.6.0  Add -a and -q command line options to auto connect to a 
+                      server and open a query window respectively [Magnus 
+                      Hagander]
+2006-01-09 DP  1.4.2  Honour the copy quoting setting properly in the SQL 
+                      results pane [Magnus Hagander]
+2006-01-09 DP  1.6.0  Use Ctrl-A to select all results in the query results 
+                      pane. [Magnus Hagander]
+2006-01-09 DP  1.4.2  Set the initial Unicode/Local charset options correctly 
+                      in the Export dialogue [Magnus Hagander]
+2005-12-26 AP  1.4.2  Fix PK detection in EditGrid per Andrus Moor
+2005-12-26 AP  1.4.2  Fix Bitmap Index explain per Alexander Kirpa
+2005-12-23 DP  1.4.2  Use ELSIF not ELSEIF in pgagent.sql for compatibility 
+                      with 7.x servers [Glen Sasek]
+2005-12-22 HS  1.6.0  dlgLanguage name+comment, dlgDatabase comment
+2005-12-15 DP  1.4.2  Exclude system schemas by name rather than OID, so that 
+                      'public' can be safely renamed.
+2005-12-12 AP  1.4.2  fix slony node statistics
+2005-12-11 AP  1.6.0  support 8.1 language templates
+2005-12-11 AP  1.4.2  Fix: Unsubscribe set on receiver
+2005-12-11 AP  1.4.2  Another wxComboBox(2.6.2) related fix
+2005-12-09 DP  1.4.1  Default the encoding of new databases to the cluster 
+                      encoding, per Peter Eisentraut.
+2005-12-09 DP  1.4.1  Sort encoding names in dlgDatabase, per Peter Eisentraut.
+2005-12-06 AP  1.4.1  store UTF8 connect info in pgpass.conf if necessary
+2005-12-03 AP  1.4.1  Major fix for wx2.6.2 API changes (comboboxes)
+2005-12-02 DP  1.4.1  Drop constraints on columns before the columns themselves
+                      [Miha Radej]
+2005-12-01 AP  1.4.1  Deal with incompatible wx2.6.2 API changes (comboboxes)
+2005-11-30 AP  1.4.1  Graphical explain: distinct scan images
+2005-11-25 DP  1.4.1  Fix the server status SQL query
+2005-11-25 FGP 1.4.1  Don't include pgAgent in the Mac OSX bundle
+2005-11-25 FGP 1.4.1  Include pg_dump/pg_restore in the Mac OSX bundle
+2005-11-20 DP  1.4.1  Use a proper 'Save As' style dialogue for selecting 
+                      backup files
+2005-11-20 AP  1.4.1  Don't show pk hint when editing view
+2005-11-20 AP  1.4.1  Add missing NO ACTION FK constraint
+2005-11-11 DP  1.6.0  Set version numbers whereever required from version.h 
+                      during bootstrap
+2005-11-11 AP  1.6.0  leave pre-1.5 server config settings untouched
+2005-11-10 AP  1.6.0  Configurable indent in ctlSqlBox
+2005-11-10 DP  1.6.0  Ensure we always use aclocal/automake 1.9 during bootstrap
+2005-11-10 AP  1.4.1  Fix role rename per Antonio
+2005-11-09 AP  1.6.0  database and schema display restriction
+2005-11-09 AP  1.6.0  overhaul of server config settings
+2005-11-09 AP  1.4.1  fix procedure/triggerFunc collection list
+2005-11-09 AP  1.4.1  Allow all 8.x column changes per Chris Velevitch
+2005-11-09 DP  1.6.0  Add search/replace to the query editor
+2005-11-09 AP  1.4.1  Fix param name quoting for procedures per Alex Tyagloff
+2005-11-10 DP  1.6.0  Overhaul the autoconf stuff. Make full use of 
+                      pg_config/wx-config.
+2005-11-04 AP  1.4.0  Fix SET role per Florian Pflug, fix role help
+2005-11-04 DP  1.4.0  Fix role inheritance option when creating roles, per Mike
+                      Allen
+2005-11-03 DP  1.4.0  Minor fix to the pgAgent command line parser, per Harald 
+                      Armin Massa
+2005-11-03 DP  1.4.0  Honour type length/precision when creating composite types
+                      per Ivan
+2005-11-02 AP  1.4.0  Fix crash in trigger property per Oriza Triznyak
+2005-11-01 AP  1.4.0  Fix function return type array per Andras Voros
+2005-11-01 AP  1.4.0  Fix query tool connect annoyance per Florian Pflug
+2005-10-31 DP  1.4.0  Fix eventlog output in pgAgent, per Paolo Saudin
+2005-10-31 DP  1.4.0  Quote member names in compsoite types, per Ivan
+2005-10-31 DP  1.4.0  Enable the precision textbox when adding numeric members 
+                      to composite types, per Ivan
+2005-10-30 DP  1.4.0  Display line numbers in the query tool to aid function 
+                      debugging/editting 
+2005-10-30 DP  1.4.0  Don't enable the OK button when setting the ACL for 
+                      as-yet-uncreated objects
+2005-10-27 DP  1.4.0  Reverse dialog OK/Cancel buttons for UI consistency on 
+                      OS X per John DeSoi
+2005-10-27 DP  1.4.0  Append the .sql file extension when saving files as type 
+                      sql on OS X, per Florian G. Pflug
+2005-10-24 DP  1.4.0  Prevent attempts to backup or restore if pg_dump or
+                      pg_restore cannot be found.
+2005-10-23 AP  1.4.0  Fix crash when extracting schema from slony cluster
+2005-10-22 AP  1.4.0  Fix New.. context menu
+2005-10-21 AP  1.4.0  Fix Create a.. toolbar button on collection per Li Fei
+2005-10-20 AP  1.4.0  Fix Maintenance crash of disconnected DBs per 
+                      A.J.Langereis
+2005-10-20 AP  1.4.0  Fix Unicode/pgsql80win32 hint per Oryza Triznyak
+2005-10-20 DP  1.4.0  Ensure the user can cancel the maintenance dialogue when
+                      it is running.
+2005-10-20 DP  1.4.0  Fix the recent files list on the config file editor. per
+                      Miha Radej
+2005-10-18 DP  1.4.0  Correct font size on Splash and About forms on Mac.
+2005-10-18 AP  1.4.0  Prevent refresh of the servers treeview node
+2005-10-18 DP  1.4.0  Fix the autoconf code to ensure the debug and static 
+                      options do what they should, and that a unicode wx build
+                      is used 
+2005-10-18 DP  1.4.0  Ensure strings can be editted in the data grid on Mac.
+2005-10-14 DP  1.4.0  Prevent errors in the logger causing crashes
+2005-10-14 DP  1.4.0  Use a sensible default location for the logfile
+2005-10-12 AP  1.4.0  Fix 'ambiguous proname column' bug for servers < 8.0
+2005-10-12 AP  1.4.0  Fix count crash on tables per Merlin Moncure
+2005-10-12 AP  1.4.0  Fix slony detection on tables for pgsql7.x
+2005-10-08 AP  1.4.0  Fix "New" context menu crash on disconnected server per 
+                      Tomasz Rybak
+2005-10-08 AP  1.4.0  Check for catalog access privilege in pg_authid and 
+                      pg_depend per Christopher St.John
+2005-10-04 AP  1.4.0  -t cmd line option to enable language debugging
+2005-10-03 AP  1.4.0  pg_autovacuum support
+2005-10-03 AP  1.4.0  upgrade slony node
+2005-09-17 AP  1.4.0  Allow Query Tool to use multiple connections
+2005-09-04 AP  1.4.0  use ddlscript to replicate schema changes
+2005-09-04 AP  1.4.0  table reverse engineering sql changes
+2005-09-04 AP  1.4.0  role fixes
+2005-09-04 AP  1.4.0  more guru hints
+2005-09-03 DP  1.4.0  new splash screen
+2005-08-23 AP  1.4.0  shared dependencies
+2005-08-21 AP  1.4.0  Roles
+2005-08-21 AP  1.4.0  smaller icons for win32
+2005-08-11 DP  1.4.0  New set of icons, custom designed by Niko [ennixo at 
+                      free.fr]
+2005-08-11 AP  1.4.0  pgServerObjCollection per Eugene Shekhtman
+2005-08-08 AP  1.4.0  Refactoring object and tool handling using class factories
+                      to make extensions easier
+2005-08-02 AP  1.4.0  Support for pgsql 8.1 prepared transactions
+2005-08-01 AP  1.4.0  Store passwords in .pgpass/pgpass.conf
+2005-08-01 AP  1.4.0  Allow server registration without connect
+2005-07-21 DP  1.4.0  Prompt the user before removing columns, constraints or 
+                      inherited tables in the table dialogue.
+2005-07-06 DP  1.4.0  Prompt the user to cancel running queries before closing 
+                      the Query tool.
+2005-07-04 DP  1.4.0  Check for and display asynchronous notifications in the 
+                      query tool.
+2005-06-21 AP  1.4.0  typo fixes, rename "initial db" to "maintenance db"
+2005-06-19 AP  1.4.0  pgAgent moved under server, some more fixes
+2005-06-19 AP  1.4.0  further translation issues
+2005-06-17 AP  1.4.0  reduce translation nightmare
+2005-06-17 AP  1.4.0  use wxDatePickCtrl for wxCalendarBox
+2005-06-17 AP  1.2.3  Fix changing initial db
+2005-06-09 DP  1.4.0  Flash the task bar icon at the user if a query finishes 
+                      and the query window is not active.
+2005-06-09 AP  1.4.0  Different icons for own and foreign slony sets and 
+                      subscriptions
+2005-06-09 DP  1.2.3  Fix disable triggers option for data only plain text 
+                      backups per Howard Cole.
+2005-06-03 AP  1.4.0  Support for pgsql 8.1 aggregate sortop
+2005-06-03 AP  1.4.0  Support for pgsql 8.1 pg_stat_activity
+2005-06-03 AP  1.4.0  Support for pgsql 8.1 instrumentation
+2005-06-01 AP  1.4.0  Support for Procedures aka functions "with out-parameters"
+2005-06-01 AP  1.4.0  Support for EDB8.0
+2005-05-31 DP  1.2.3  Fix domain RE SQL, per Ivan
+2005-05-31 DP  1.2.3  Add missing ; to RE SQL, per Ivan
+2005-05-27 DP  1.4.0  New WiX based installer for Win32
+2005-05-25 DP  1.4.0  Cleanup doc location code for internal consistency
+2005-05-25 DP  1.4.0  Reorganise doc index, cleanup inappropriate/old docs and 
+                      improve admin pack documentation
+2005-05-24 DP  1.4.0  Add pgAgent service/daemon, pgAdmin control interface and 
+                      documentation
+2005-05-10 HS  1.2.2  Display comments on contraints properly
+2005-05-08 DP  1.4.0  Major source code reshuffle
+2005-05-08 DP  1.4.0  Overhaul *nix automake build system
+2005-03-25 DP  1.4.0  Mac OSX support [Florian G. Pflug]
+2005-04-22 AP  1.4.0  more Hint enhancements
+2005-04-19 AP  1.4.0  Hint enhancements
+2005-04-18 AP  1.4.0  Unix Domain Socket additional stuff
+2005-04-18 AP  1.4.0  switch to wxWidgets 2.6
+2005-04-15 DP  1.4.0  Unix Domain Socket support as inspired by Dominique 
+                      Quatravaux
+2005-04-07 AP  1.4.0  VACUUM hint
+2005-04-04 AP  1.4.0  Control dependent win32 services
+2005-04-01 AP  1.4.0  Speed up of column property retrieval
+2005-04-01 DP  1.2.2  Fix changing of view ownership
+2005-03-28 AP  1.4.0  FK MATCH FULL
+2005-03-28 AP  1.4.0  Option: User defined system schemas
+2005-03-27 AP  1.4.0  Guru hint for server connections
+2005-03-25 DP  1.2.1  Correctly identify primary key columns in properties pane.
+2005-03-18 DP  1.2.1  Set column stats and comments correctly when creating 
+                      tables.
+2005-03-18 DP  1.2.1  Include the hostname in the connect string for Kerberos 
+                      support, per Magnus Hagander
+2005-03-15 FGP 1.4.0  Fix for non-SSL enabled libpq builds
+2005-03-15 HS  1.4.0  Mask the password on the main tab of the user properties 
+                      dialogue
+2005-03-13 AP  1.4.0  Change plain backup file default extension to .sql
+2005-03-13 AP  1.4.0  Add CASCADE dropping
+2005-03-04 DP  1.2.1  Fix aggregate SQL generation per James Prichard
+2005-03-03 AP  1.4.0  graphical EXPLAIN
+2005-03-03 AP  1.4.0  pgAgent fixes (jobId)
+2005-03-02 DP  1.4.0  Rewrite pgAgent browser code to use pgCollection
+2005-02-25 AP  1.4.0  some more Slony-I stuff
+2005-02-24 AP  1.4.0  some Slony-I stuff
+2005-02-24 AP  1.2.1  require unicode to compile utffile.cpp
+2005-02-23 AP  1.4.0  Slony-1 statistics
+2005-02-14 AP  1.2.1  TreeSelChange fixes (menu/statistics/dependency refresh)
+2005-02-14 AP  1.4.0  wx2.5.4 preparation
+2005-02-13 AP  1.4.0  Slony admin node, join cluster using pg_dump
+2005-02-13 AP  1.2.1  Make sure IsAlive check isn't affected by dead 
+                      transactions
+2005-02-13 AP  1.2.1  Fix missing schema prefix for casts
+2005-02-11 AP  1.4.0  Slony-I support
+2005-02-09 AP  1.2.1  fix trigger reengineering name quoting per Lucas Galfaso
+2005-02-07 AP  1.2.1  remove tablespace for sequences
+2005-02-07 AHP 1.2.1  fix libpq/ssl library detection
+2005-01-14 AP  1.2.1  table statistics including TOAST and indexes
+2005-01-14 AP  1.2.1  fix adding sequence columns
+2005-01-14 AP  1.2.1  fix Grant Wizard for functions per Robert Köpferl
+2005-01-14 AP  1.2.1  fix reengineered DOMAIN with CHECK per Robert Köpferl
+2005-01-13 DP  1.2.1  fix EXPLICIT CAST sql generation per Merlin Moncure
+2005-01-07 AP  1.2.1  fix closing QueryTool if FindDlg still open per 
+                      Maximiliano Di Rienzo
+2005-01-07 AP  1.2.1  fix quoting identifiers starting with numbers per 
+                      Alexander Borkowski
+2005-01-04 AP  1.2.1  fix typo in pgDomain per Pascal Pochet
+2004-12-16 AP  1.2.1  fix server menu after failed connect
+2004-12-15 AP  1.4.0  Fix changing pg_hba.conf
+2004-12-10 AP  1.2.1  Fix missing drop confirmation per Cheetah
+2004-12-06 AP  1.2.1  Fix tablespace reference in namespace
+2004-11-19 AP  1.2.0  catch possible false error msg
+2004-11-19 AP  1.2.0  fix tables statistics
+2004-11-18 AP  1.2.0  fix change column dialog per Walter Haslbeck
+2004-11-18 AP  1.2.0  fix missing schema in EditGrid per Martin Susil
+2004-11-16 AP  1.2.0  fix pg_dump option
+2004-11-10 AP  1.2.0  Remove tablespace from schema (pgsql post-beta4 change)
+2004-11-10 AP  1.2.0  Fix properties for multiply inherited tables per Riccardo 
+                      G. Facchini
+2004-11-10 AP  1.2.0  Fix OSX issue per Patrick Hatcher
+2004-11-09 AP  1.2.0  Fix remembering SSL connection parameter per Justin Clift
+2004-11-09 AP  1.2.0  Fix GTK comboboxes per Tim Booth
+2004-11-05 AP  1.2.0  Disable changing parameters of connected servers
+2004-11-04 AP  1.2.0  Fix duplicate functions in Cast dialog per Alexander 
+                      Borkowski
+2004-11-03 AP  1.2.0  MSW Combobox Workaround: missing EVT_TEXT events
+2004-11-02 AP  1.2.0  Fix some type related issues per Alexander Borkowski
+2004-11-02 AP  1.2.0  Fix some owner change related issues per Alexander 
+                      Borkowski
+2004-10-29 AP  1.2.0  full casting in utffile fixing some compilers
+2004-10-27 AP  1.2.0  Workaround for wxGrid bug not returning selected rows
+2004-10-27 AP  1.2.0  Fix user/group selection in privileges per Walter 
+                      Haslbeck, Gary Doades
+2004-10-27 AP  1.2.0  Fix refresh when dropping single object from collection 
+                      listview
+2004-10-26 AP  1.2.0  fix $$ translation problem per Miha Radej
+2004-10-22 AP  1.2.0  fix Edit Tool to store data when selecting a row per 
+                      Virgil Frum
+2004-10-22 AP  1.2.0  fix Query Tool which marked text as changed when scrolling
+                      per Gary Doades
+2004-10-22 AP  1.2.0  Workaround for wxMSW-2.5.3 malfunctioning combobox per 
+                      Gary Doades
+2004-10-22 AP  1.2.0  fix Query Tool recent menu per Gary Doades
+2004-10-22 AP  1.2.0  fix column type change sql per Ben Trewern
+2004-10-21 AP  1.2.0  fix SET DEFAULT FK restriction per Ferenc from Hungary
+2004-10-21 AP  1.2.0  refresh fixes when modifying object from collection list
+2004-10-21 AP  1.2.0  sequence fixes
+2004-10-16 AP  1.2.0  use wxWidgets 2.5.3
+2004-10-15 AP  1.2.0  change unsigned conversion for oids per Richard van den 
+                      Berg, Patrick Hatcher
+2004-10-14 AP  1.2.0  Prevent StatusBar from being overwritten by Toolbar per 
+                      Virgil Frum
+2004-10-13 AP  1.2.0  Connect to databases with special names per Frank Lupo
+2004-10-08 AP  1.2.0  review object owner code regarding pgsql versions
+2004-10-08 AP  1.2.0  remove maximize button on MSW
+2004-10-07 AP  1.2.0  Fix new server ssl option duplication on connect failure 
+                      per Alexander Borkowski
+2004-10-06 AP  1.2.0  Fix cast property crash per Alexander Borkowski
+2004-10-05 AP  1.2.0  Use PostgreSQL's list of keywords for syntax highlighting
+2004-10-05 AP  1.2.0  Fix adding columns with constraints using table properties 
+                      on 7.3 and 7.4 per teknokrat, Virgil Frum
+2004-10-05 DP  1.2.0  Drop rows correctly when selected in reverse in the edit 
+                      grid. Also, confirm drop first. per Virgil Frum
+2004-09-27 DP  1.2.0  Dynamically link libpq/OpenSSL for sensible installation 
+                      with Win32 PostgreSQL
+2004-09-18 DP  1.2.0  Prevent dropped servers reappearing after View System 
+                      Objects change.
+2004-09-17 AP  1.2.0  GRANT for functions in reengineered SQL window
+2004-09-17 AP  1.2.0  Fix Database creation for 7.3/7.4 per Jona
+2004-09-16 AP  1.2.0  resources: use wxID_xxx IDs to enable GTK wxStockButtons
+2004-09-16 AP  1.2.0  resources: use 12d height for comboboxes (GTK positioning 
+                      issue)
+2004-09-16 AP  1.2.0  rewrite of properties actions
+2004-09-16 DP  1.2.0  mask passwords on dlgServer [Ivan Nejgebauer]
+2004-09-15 DP  1.2.0  fix function return type quoting
+2004-09-10 AP  1.2.0  fix GrantWizard for sequence and view
+2004-09-10 AP  1.2.0  fix type quoting
+2004-09-08 AP  1.2.0  fix OnAdd server property positioning
+2004-09-05 AP  1.2.0  performance speedup retrieving server features
+2004-09-05 AP  1.2.0  qtIdent checks keywords
+2004-08-29 AP  1.2.0  Sequence schema fix
+2004-08-25 DAP 1.2.0  Prevent crash when non-superuser views database 
+                      properties.
+2004-08-18 AP  1.2.0  set PGPASSWORD environment for backup/restore
+2004-08-18 AP  1.2.0  fix ACL for quoted user/group names
+2004-08-15 AP  1.2.0  buglet cleanups
+2004-08-11 AP  1.2.0  restore wizard
+2004-08-11 AP  1.2.0  rework of ctlComboBox
+2004-08-09 AP  1.2.0  server property
+2004-08-05 AP  1.2.0  win32 service control
+2004-08-05 AP  1.2.0  refactor tree context menu: create instead of en/disable 
+                      items
+2004-08-02 DP  1.2.0  Auto-discover locally installed servers when registered by
+                      the Win32 binary installer.
+2004-07-30 AP  1.2.0  Tablespace usage fix for objects using the database's 
+                      default tablespace
+2004-07-27 AP  1.2.0  Reworked schema prefixing
+2004-07-25 AP  1.2.0  support of pg_xxx_size if available
+2004-07-21 AP  1.2.0  Improved disconnect handling
+2004-07-21 AP  1.2.0  StatusBar with size handle for frmStatus, dlgFunction and
+                      dlgView
+2004-07-21 AP  1.2.0  Update ServerStatus to pg_logdir_ls
+2004-07-21 AP  1.2.0  catch SIGPIPE
+2004-07-20 AP  1.2.0  owner, name, comment refactoring in dlgProperty
+2004-07-20 AP  1.2.0  support of function parameters
+2004-07-20 AP  1.2.0  tablespace changes
+2004-07-19 AP  1.2.0  fix dependency display for tablespaces and users
+2004-07-18 AP  1.2.0  Update ServerStatus to pg_logfiles_ls and 
+                      pg_file_read/pg_file_length
+2004-07-18 AP  1.2.0  Allow change of some function attributes
+2004-07-12 AP  1.2.0  Fix check constraint in table reengineering
+2004-07-11 AP  1.2.0  Fix combobox size/position issue on gtk
+2004-07-11 AP  1.2.0  Fix button height issue with modern gtk themes
+2004-06-30 AP  1.2.0  Tablespace ACLs
+2004-06-23 DP  1.2.0  Split Windows installer into a merge module and installer
+                      to allow inclusion in other packages.
+2004-06-23 DP  1.2.0  Allow cancelling of queries and termination of backends 
+                      from server status dialogue for 8.0+.
+2004-06-20 AP  1.2.0  backup database using pg_dump
+2004-06-19 AP  1.2.0  Tablespace dependencies
+2004-06-19 AP  1.2.0  combobox guessing cleanups
+2004-06-18 AP  1.2.0  8.0 Tablespace
+2004-06-18 AP  1.2.0  Count menu instead of refresh to count rows in a table
+2004-06-18 AP  1.2.0  CLUSTERed index support for PostgreSQL 7.4 - ALTER TABLE 
+                      foo CLUSTER ON blah;
+2004-06-17 AP  1.2.0  copy rows to clipboard from Query Tool and View Data Tool
+2004-06-16 AP  1.2.0  allow omitting server disconnect when switching "Show 
+                      System Objects"
+2004-06-16 AP  1.2.0  guess combobox selection while typing
+2004-06-13 AP  1.2.0  fix "no schema" bug when database is initial database
+2004-06-11 AP  1.2.0  Apply for some function and view property dialogs
+2004-06-11 AP  1.2.0  Display server log
+2004-06-08 AP  1.2.0  Allow Server Status & Maintenance windows to be resized 
+                      to allow easy reading of data
+2004-06-07 AP  1.2.0  changed connection loss handling
+2004-06-07 AP  1.2.0  fix storing of existing files (didn't truncate)
+2004-06-06 AP  1.2.0  GRANT wizard
+2004-06-06 AP  1.2.0  ALTER AGGREGATE/FUNCTION/GROUP/LANGUAGE/SCHEMA/TRIGGER
+                      /USER RENAME TO for 7.4+
+2004-06-04 AP  1.2.0  SQL Window: Try to preserve result column width
+2004-06-04 AP  1.2.0  8.0 support: comment on cast/conversion/language
+2004-06-04 AP  1.2.0  checks on column type changes
+2004-05-28 AP  1.2.0  handle lost connections safely
+2004-05-28 AP  1.2.0  fix server status not cleaning old connections
+2004-05-28 AP  1.2.0  line numbers in function definition property dialog
+2004-05-26 AP  1.2.0  warn when deleting superuser privilege
+2004-05-10 DP  1.2.0  Generate function SQL correctly when the return type needs
+                      a schema specification
+2004-05-04 DP  1.2.0  Prevent duplication of functional indexes
+2004-03-30 AP  1.2.0  no initial language selection (using system default)
+2004-03-25 AP  1.2.0  Allow initial selection of language "Default"
+2004-03-24 AP  1.2.0  changed font handling to accept exotic weights
+2004-03-17 AP  1.2.0  Updated sources for wx 2.5.1
+2004-03-17 AP  1.2.0  Added Font Option
+2004-03-06 AP  1.2.0  Fixed missing qtIdent for CREATE DATABASE TEMPLATE option
+2004-02-23 DP  1.2.0  Correct syntax for constraint comments generated SQL
+2004-01-30 DP  1.2.0  Include column comments in generated table SQL
+2004-01-13 AP  1.2.0  Fix crash refreshing dropped object
+2003-12-28 AP  1.2.0  gtk: fix for dlgForeignKey combobox illegal selection 
+2003-12-28 AP  1.2.0  Fix for pgDatabase::database crash
+2003-12-10 AP  1.2.0  serial/bigserial datatype for ALTER TABLE; can create new
+                      sequence/dependency
+2003-12-09 AP  1.2.0  Fix for Tagalog language
+2003-12-08 AP  1.2.0  Refactor virtual pgObject::GetDatabase()
+2003-12-08 AP  1.2.0  Rewrite of schema qualifier suppression: configurable or 
+                      search_path
+2003-12-08 DP  1.2.0  Prompt to save changes before opening SQL files.
+2003-12-08 AP  1.2.0  Query tool: display of inserted OIDs
+2003-12-08 AP  1.2.0  pgAgent schema, changed system schema discovery
+2003-12-05 AP  1.2.0  allow all 'p' types except any,trigger,language_handler 
+                      as return types for functions
+2003-12-03 AP  1.2.0  fix connect to MULE_INTERNAL db
+2003-12-02 AP  1.2.0  fix acl property display
+2003-12-02 AP  1.2.0  another fix closing Query Tool
+2003-12-01 AP  1.2.0  add display of superuser context settings
+2003-11-30 AP  1.2.0  handle covering index for Foreign Keys
+2003-11-30 AP  1.2.0  fix closing Query Tool while query is running
+2003-11-30 AP  1.2.0  fix error message when SET client_encoding fails
+2003-11-28 HS  1.2.0  Fix case sensitive keyword highlighting.
+2003-11-28 DP  1.0.2  Update PostgreSQL docs to 7.4
+2003-11-26 AP  1.0.2  fix notice processing for pgQueryThread
+2003-11-24 AP  1.2.0  refactoring stats/depends: populate on demand
+2003-11-24 AP  1.2.0  remember property dialog sizes (refactoring syssettings 
+                      for pos/size)
+2003-11-16 AP  1.2.0  Fix file writing
+2003-11-14 DP  1.2.0  Allow creation/display of functions with class data types.
+2003-11-11 AP  1.2.0  refactoring: ctlListView
+2003-11-11 AP  1.2.0  Show referencing/referenced objects
+2003-11-05 AP  1.2.0  File format (won't change existing format)
+2003-10-31 AP  1.2.0  Rows affected in query tool
+2003-10-31 AP  1.2.0  counting non-constraint FKs for databases
+2003-10-26 AP  1.2.0  precompiled headers under msw
+2003-10-23 AP  1.0.2  another SQL_ASCII fix
+2003-10-23 AP  1.2.0  Fix estimated rowcount
+2003-10-20 AP  1.2.0  wxTimeSpinCtrl
+2003-10-20 HS  1.2.0  Added support for column statistics.
+2003-10-19 AP  1.2.0  Loading of ctlSQLBox from resource
+2003-10-19 AP  1.2.0  User expiry
+2003-10-18 DP  1.2.0  Allow filtering of data in the edit grid.
+2003-10-17 DP  1.2.0  Allow sorting of data in the edit grid.
+2003-10-16 AHP 1.2.0  Fix SSL compile bug.
+2003-10-14 DP  1.0.1  Update PostgreSQL docs to 7.4Beta4
+2003-10-13 AP  1.0.1  Fix ReadOnly security
+2003-10-13 AP  1.0.1  Fix encoding when connecting
+2003-10-10 AP  1.2.0  Query Tool execute to file
+2003-10-07 DP  1.0.1  Set cache value correctly when creating sequences.
+2003-10-07 DP  1.2.0  Handle array of definable length types correctly e.g. 
+                      numeric(12,8)[].
+2003-10-07 DP  1.0.1  Display/use char instead of bpchar.
+2003-10-07 AP  1.0.1  Fixed the frogfrog constraint (doubling of names).
+2003-10-06 AP  1.2.0  Check if PQfnumber wants quoting or not
+2003-10-06 AP  1.0.1  Fix Unique Constraint creation
+2003-10-06 AP  1.2.0  Fix DlgUnit sizing, review of XRC files
+2003-10-03 DP  1.2.0  When connecting to a new server, if logon fails remember 
+                      description as well as other info.
+2003-10-03 DP  1.2.0  Added locks tab to server status window.
+2003-10-03 DP  1.0.1  Reconnect to databases properly after failed attempt to 
+                      drop.
+2003-10-01 AP  1.2.0  generic TreeItem renderer for gtk [+] / [-]
+2003-10-01 AP  1.0.1  client encoding SQL_ASCII for server SQL_ASCII
+2003-10-01 DP  1.0.1  Correctly quote table names when creating indexes.
+2003-10-01 AP  1.2.0  fonts determine metrics for dialog resizing
+2003-09-30 HS  1.0.1  Display new triggers correctly in the treeview.
+2003-09-30 DP  1.0.1  Allow creation of triggers with functions in schemas not 
+                      in the search path.
+2003-09-28 AP  1.2.0  Statistics translatable
+2003-09-26 HS  1.0.0  Handle Primary Key comments correctly.
+2003-09-24 AP  1.0.0  rule condition fix
+2003-09-26 HS  1.0.0  column quoting when reading pgSet
+2003-09-14 AP  1.0.0  document-here support for pgsql8.0
+2003-09-12 HS  1.0.0  Display and edit check constraint comments properly.
+2003-09-12 HS  1.0.0  Display fkey comments properly.
+2003-09-11 JMP 1.0.0  RPM packages now install pgAdmin3 icon.
+2003-09-11 JMP 1.0.0  SRPM package should rebuild anywhere.
+2003-09-10 AP  1.0.0  correct quoting in dlg Operator, support schema qualified 
+                      merge ops.
+2003-09-10 AHP 1.0.0  Search for PostgreSQL includes in /usr/include and 
+                      /usr/include/pgsql.
+2003-09-09 HS  1.0.0  Populate Operator combos properly.
+2003-09-09 HS  1.0.0  Retrieve freshly created conversions correctly.
+2003-09-09 HS  1.0.0  Correctly quote the ANY keyword in aggregate definitions.
+2003-09-09 HS  1.0.0  Fix for casts with created WITHOUT FUNCTION (binary 
+                      compatible).
+2003-09-09 AP  1.0.0  fix grid for tables with multicolumn pk
+2003-09-08 HS  1.0.0  Don't crash when selecting SQL command help when not 
+                      connected to a server
+2003-09-08 AP  1.0.0  update query tool toolbar after clipboard cut/copy
+2003-09-08 AP  1.0.0  fix trigger dialog for multiple events
+2003-09-08 AP  1.0.0  export and option dialog partially bigger
+2003-09-06 AP  1.0.0  missed some strings for translation
+2003-09-03 AP  1.0.0  fixing the grid's edit control 
+2003-09-03 AP  1.0.0  enabling menu etc from a collection's properties listview,
+                      including a bugfix if the object wasn't expanded and still
+                      had a dummy child.
+2003-09-02 AP  0.9.3  include public trigger functions
+2003-08-29 AP  0.9.3  frmEditGrid: double click on labels resizes column or row
+2003-08-28 AP  0.9.3  handle editor scrolling in frmEditGrid
+2003-08-28 AP  0.9.3  Fix numeric truncation in frmEditGrid
+2003-08-25 AP  0.9.3  SSL support for win32.
+2003-08-25 AP  0.9.3  save SSL option under Servers/SSL%d.
+2003-08-24 AP  0.9.3  Provide dummy child item to make [+] appear in tree for 
+                      table and view.
+2003-08-24 AP  0.9.3  proxy option.
+2003-08-24 AP  0.9.3  Shift-F10 in tree control for context menu.
+2003-08-23 AP  0.9.3  Fixed missing comments and function arguments.
+2003-08-21 AP  0.9.3  Using EVT_TEXT for combobox selchange events.
+2003-08-21 AP  0.9.3  encoding names read from backend, removed from resource.
+2003-08-19 DP  0.9.3  Prevent comments on view columns causing display problems.
+2003-08-19 MP  0.9.3  Updated wxWindows-pgAdmin3 to resolve FreeBSD 5.1 locale 
+                      search bug.
+2003-08-18 DP  0.9.3  Correctly quote primary key name in Edit Grid. Was 
+                      preventing viewing of data in some tables.
+2003-08-17 AP  0.9.3  added REINDEX, frmVacuum->frmMaintenance.
+2003-08-15 AP  0.9.3  added SSL-support.
+2003-08-15 AP  0.9.3  Wording: "maintenance" instead of "reorganize".
+2003-08-14 DP  0.9.3  Shorten minimum length of rule definition to allow 
+                      'NOTHING'.
+2003-08-14 DP  0.9.3  Add DROP SQL for rule definitions.
+2003-08-13 AP  0.9.3  Added VERSION Resource for win32.
+2003-08-11 DP  0.9.3  Use compiled HTML help file for Help on windows.
+2003-08-11 AP  0.9.3  Added "Change column" in table property.
+2003-08-11 AP  0.9.3  Corrected SQL generation for table property.
+2003-08-11 AP  0.9.2  Select current item if right click on tree item.
+2003-08-11 AP  0.9.2  Added win32 version resource.
+2003-08-11 AP  0.9.2  Corrected missing quoting for FK.
+2003-08-08 AP  0.9.2  Allow tables without columns for 7.4
+2003-08-08 AP  0.9.2  Support of several new 7.4 features.
+2003-08-08 DP  0.9.2  Added missing helpfile images to Win32 Installer.
+2003-08-07 AP  0.9.2  help system cleanups, support of CHM help for win32.
+2003-08-07 AP  0.9.2  Added missing comment in domain property.
+2003-08-06 DP  0.9.2  Bumped version number.
+
