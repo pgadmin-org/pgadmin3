@@ -312,7 +312,7 @@ void frmConfig::OpenLastFile()
         buffer[cnt] = 0;
         file.Close();
 
-        DisplayFile(wxString::FromAscii(buffer));
+        DisplayFile(wxString(buffer, wxConvUTF8));
 
         delete buffer;
         statusBar->SetStatusText(wxString::Format(_(" Configuration read from %s"), lastPath.c_str()));
