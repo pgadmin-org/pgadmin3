@@ -301,20 +301,18 @@ void frmConfig::OnSaveAs(wxCommandEvent& event)
 
 void frmConfig::OpenLastFile()
 {
-    wxFile file(lastPath, wxFile::read);
+    wxUtfFile file(lastPath, wxFile::read, wxFONTENCODING_SYSTEM);
     if (file.IsOpened())
     {
 #ifdef __WXMSW__
         _setmode(file.fd(), _O_BINARY);
 #endif
-        char *buffer=new char[file.Length()+1];
-        int cnt=file.Read(buffer,file.Length());
-        buffer[cnt] = 0;
+        wxString buffer;
+        file.Read(buffer);
         file.Close();
 
-        DisplayFile(wxString(buffer, wxConvLibc));
+        DisplayFile(buffer);
 
-        delete buffer;
         statusBar->SetStatusText(wxString::Format(_(" Configuration read from %s"), lastPath.c_str()));
 
         fileMenu->Enable(MNU_SAVE, false);
@@ -373,9 +371,12 @@ bool frmConfig::DoWriteFile(const wxChar *str, pgConn *conn)
     }
     else
     {
-        wxFile file(lastPath, wxFile::write);
+        wxUtfFile file(lastPath, wxFile::write, wxFONTENCODING_SYSTEM);
         if (file.IsOpened())
         {
+#ifdef __WXMSW__
+            _setmode(file.fd(), _O_BINARY);
+#endif
             file.Write(str);
             file.Close();
             done=true;
