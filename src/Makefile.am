@@ -45,7 +45,8 @@ $(srcdir)/ctl/ctlSQLBox.cpp $(srcdir)/ctl/ctlSQLResult.cpp \
 $(srcdir)/ctl/explainCanvas.cpp $(srcdir)/ctl/explainShape.cpp \
 \
 $(srcdir)/dlg/dlgEditGridOptions.cpp $(srcdir)/dlg/dlgConnect.cpp \
-$(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp $(srcdir)/dlg/dlgSelectConnection.cpp \
+$(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp \
+$(srcdir)/dlg/dlgPgpassConfig.cpp $(srcdir)/dlg/dlgSelectConnection.cpp \
 \
 $(srcdir)/frm/frmExport.cpp $(srcdir)/frm/frmAbout.cpp \
 $(srcdir)/frm/frmIndexcheck.cpp  $(srcdir)/frm/frmMain.cpp \
@@ -53,7 +54,8 @@ $(srcdir)/frm/frmOptions.cpp $(srcdir)/frm/frmPassword.cpp $(srcdir)/frm/frmQuer
 $(srcdir)/frm/frmHelp.cpp $(srcdir)/frm/frmSplash.cpp $(srcdir)/frm/frmMaintenance.cpp \
 $(srcdir)/frm/frmBackup.cpp $(srcdir)/frm/frmRestore.cpp $(srcdir)/frm/frmGrantWizard.cpp \
 $(srcdir)/frm/frmEditGrid.cpp $(srcdir)/frm/frmStatus.cpp $(srcdir)/frm/frmUpdate.cpp \
-$(srcdir)/frm/frmConfig.cpp $(srcdir)/frm/frmHbaConfig.cpp $(srcdir)/frm/frmMainConfig.cpp $(srcdir)/frm/frmHint.cpp \
+$(srcdir)/frm/frmConfig.cpp $(srcdir)/frm/frmHbaConfig.cpp $(srcdir)/frm/frmMainConfig.cpp \
+$(srcdir)/frm/frmPgpassConfig.cpp $(srcdir)/frm/frmHint.cpp \
 \
 $(srcdir)/dlg/dlgProperty.cpp $(srcdir)/dlg/dlgUser.cpp \
 $(srcdir)/dlg/dlgServer.cpp $(srcdir)/dlg/dlgGroup.cpp $(srcdir)/dlg/dlgDatabase.cpp $(srcdir)/dlg/dlgLanguage.cpp \
@@ -123,8 +125,10 @@ $(srcdir)/include/pgTrigger.h $(srcdir)/include/pgType.h $(srcdir)/include/pgUse
 $(srcdir)/include/pgView.h $(srcdir)/include/sysLogger.h $(srcdir)/include/utffile.h \
 $(srcdir)/include/sysSettings.h $(srcdir)/include/sysProcess.h $(srcdir)/include/wxgridsel.h $(srcdir)/include/menu.h\
 $(srcdir)/include/pgconfig.h $(srcdir)/include/update.h $(srcdir)/include/frmUpdate.h \
-$(srcdir)/include/dlgHbaConfig.h $(srcdir)/include/dlgMainConfig.h $(srcdir)/include/frmHint.h \
-$(srcdir)/include/frmConfig.h $(srcdir)/include/frmHbaConfig.h $(srcdir)/include/frmMainConfig.h \
+$(srcdir)/include/dlgHbaConfig.h $(srcdir)/include/dlgMainConfig.h \
+$(srcdir)/include/dlgPgpassConfig.h $(srcdir)/include/frmHint.h \
+$(srcdir)/include/frmConfig.h $(srcdir)/include/frmHbaConfig.h \
+$(srcdir)/include/frmMainConfig.h \ $(srcdir)/include/frmPgpassConfig.h \
 $(srcdir)/include/explainCanvas.h \
 $(srcdir)/agent/include/pgaJob.h \
 $(srcdir)/agent/include/pgaStep.h $(srcdir)/agent/include/pgaSchedule.h \

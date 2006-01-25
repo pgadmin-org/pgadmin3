@@ -49,6 +49,7 @@
 #include "frmGrantWizard.h"
 #include "frmMainConfig.h"
 #include "frmHbaConfig.h"
+#include "frmPgpassConfig.h"
 #include "frmBackup.h"
 #include "frmRestore.h"
 #include "frmMaintenance.h"
@@ -152,6 +153,7 @@ frmMain::frmMain(const wxString& title)
     fileMenu->AppendSeparator();
     new mainConfigFileFactory(menuFactories, fileMenu, 0);
     new hbaConfigFileFactory(menuFactories, fileMenu, 0);
+	new pgpassConfigFileFactory(menuFactories, fileMenu, 0);
 
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));

@@ -20,6 +20,7 @@
 #include <wx/wx.h>
 #include <wx/config.h>
 #include <wx/url.h>
+#include <wx/stdpaths.h>
 
 // App headers
 #include "sysSettings.h"
@@ -499,4 +500,26 @@ void sysSettings::SetDoubleClickProperties(const bool newval)
 {
     doubleClickProperties = newval;
     Write(wxT("DoubleClickProperties"), doubleClickProperties);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Get system wide configuration file names
+//////////////////////////////////////////////////////////////////////////
+wxString sysSettings::GetConfigFile(configFileName cfgname)
+{
+	if (cfgname == configFileName::PGPASS)
+	{
+	    wxStandardPaths stdp;
+	    wxString fname=stdp.GetUserConfigDir()
+#ifdef WIN32
+	        + wxT("\\postgresql"); 
+	    mkdir(fname.ToAscii());
+	    fname += wxT("\\pgpass.conf");
+
+#else
+	    + wxT("/.pgpass");
+#endif
+		return fname;
+	}
+	return wxT("");
 }

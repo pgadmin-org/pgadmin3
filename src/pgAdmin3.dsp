@@ -608,6 +608,10 @@ SOURCE=.\frm\frmPassword.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\frm\frmPgpassConfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\frm\frmQuery.cpp
 # End Source File
 # Begin Source File
@@ -665,6 +669,10 @@ SOURCE=.\dlg\dlgHbaConfig.cpp
 # Begin Source File
 
 SOURCE=.\dlg\dlgMainConfig.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dlg\dlgPgpassConfig.cpp
 # End Source File
 # Begin Source File
 
@@ -774,6 +782,10 @@ SOURCE=.\include\dlgMainConfig.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgPgpassConfig.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgSelectConnection.h
 # End Source File
 # Begin Source File
@@ -835,6 +847,10 @@ SOURCE=.\include\frmOptions.h
 # Begin Source File
 
 SOURCE=.\include\frmPassword.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmPgpassConfig.h
 # End Source File
 # Begin Source File
 

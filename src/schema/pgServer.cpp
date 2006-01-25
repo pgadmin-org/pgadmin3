@@ -14,7 +14,6 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include <wx/stdpaths.h>
 
 #include "misc.h"
 #include "frmMain.h"
@@ -408,16 +407,7 @@ bool pgServer::GetServerControllable()
 
 wxString pgServer::passwordFilename()
 {
-    wxStandardPaths stdp;
-    wxString fname=stdp.GetUserConfigDir()
-#ifdef WIN32
-        + wxT("\\postgresql"); 
-    mkdir(fname.ToAscii());
-    fname += wxT("\\pgpass.conf");
-
-#else
-        + wxT("/.pgpass");
-#endif
+	wxString fname = sysSettings::GetConfigFile(sysSettings::configFileName::PGPASS);
 
     wxLogInfo(wxT("Using password file %s"), fname.c_str());
     return fname;

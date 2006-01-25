@@ -30,7 +30,8 @@ public:
         NONE=0,
         ANYFILE,
         HBAFILE,
-        MAINFILE
+        MAINFILE,
+		PGPASSFILE
     };
 
     static frmConfig *Create(const wxString &title, const wxString &configFile, tryMode mode);
@@ -59,6 +60,7 @@ private:
 
     void OnClose(wxCloseEvent& event);
     void OnExecute(wxCommandEvent& event);
+	void OnHelp(wxCommandEvent& event);
     void OnHint(wxCommandEvent& event);
     void OnBugreport(wxCommandEvent& event);
 

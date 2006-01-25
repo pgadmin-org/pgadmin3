@@ -35,8 +35,10 @@ WX_DEFINE_OBJARRAY(pgHbaConfigLineArray);
 
 BEGIN_EVENT_TABLE(frmHbaConfig, frmConfig)
     EVT_MENU(MNU_UNDO,                      frmHbaConfig::OnUndo)
+	EVT_MENU(MNU_DELETE,					frmHbaConfig::OnDelete)
     EVT_MENU(MNU_CONTENTS,                  frmHbaConfig::OnContents)
     EVT_LIST_ITEM_ACTIVATED(CTL_CFGVIEW,    frmHbaConfig::OnEditSetting)
+    EVT_LIST_ITEM_SELECTED(CTL_CFGVIEW,     frmHbaConfig::OnSelectSetting)
 END_EVENT_TABLE()
 
 #define BACE_TITLE wxString(wxT("pgAdmin III - ")) + _("Backend Access Configuration Editor")
@@ -104,6 +106,32 @@ void frmHbaConfig::Init()
     listEdit->AddColumn(_("IP-Address"), 100);
     listEdit->AddColumn(_("Method"), 40);
     listEdit->AddColumn(_("Option"), 100);
+
+	helpMenu->Enable(MNU_HINT, false);
+	toolBar->EnableTool(MNU_HINT, false);
+
+	editMenu->Enable(MNU_DELETE, false);
+	toolBar->EnableTool(MNU_DELETE, false);
+}
+
+
+void frmHbaConfig::OnSelectSetting(wxListEvent& event)
+{
+    // Enable delete because an item has been selected
+    if (event.GetIndex() != listEdit->GetItemCount() - 1)
+    {
+    editMenu->Enable(MNU_DELETE, true);
+    toolBar->EnableTool(MNU_DELETE, true);
+    }
+    else
+    {
+    editMenu->Enable(MNU_DELETE, false);
+    toolBar->EnableTool(MNU_DELETE, false);
+    }
+
+    // Disable undo because we don't want to undo the wrong line.
+    editMenu->Enable(MNU_UNDO, false);
+    toolBar->EnableTool(MNU_UNDO, false);
 }
 
 
@@ -225,6 +253,42 @@ void frmHbaConfig::OnUndo(wxCommandEvent& ev)
             }
         }
     }
+}
+
+void frmHbaConfig::OnDelete(wxCommandEvent &event)
+{
+	bool found = false;
+	int pos = listEdit->GetSelection();
+	if (pos >= 0)
+	{
+		listEdit->DeleteCurrentItem();
+		size_t i;
+		for (i=0; i < lines.GetCount(); i++)
+		{
+			if (lines.Item(i).item == pos)
+			{
+				lines.RemoveAt(i);
+				changed = true;
+                fileMenu->Enable(MNU_SAVE, true);
+                editMenu->Enable(MNU_UNDO, false);
+                editMenu->Enable(MNU_DELETE, false);
+                toolBar->EnableTool(MNU_SAVE, true);
+                toolBar->EnableTool(MNU_UNDO, false);
+	            toolBar->EnableTool(MNU_DELETE, false);
+				found = true;
+				break;
+			}
+		}
+		if (found) 
+		{
+			/* Renumber all positions */
+			for (i=0; i < lines.GetCount(); i++)
+			{
+				if (lines.Item(i).item > pos)
+					lines.Item(i).item--;
+			}
+		}
+	}
 }
 
 

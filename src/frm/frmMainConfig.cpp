@@ -36,6 +36,7 @@ BEGIN_EVENT_TABLE(frmMainConfig, frmConfig)
     EVT_MENU(MNU_UNDO,                      frmMainConfig::OnUndo)
     EVT_MENU(MNU_CONTENTS,                  frmMainConfig::OnContents)
     EVT_LIST_ITEM_ACTIVATED(CTL_CFGVIEW,    frmMainConfig::OnEditSetting)
+    EVT_LIST_ITEM_SELECTED(CTL_CFGVIEW,     frmMainConfig::OnSelectSetting)
 END_EVENT_TABLE()
 
 
@@ -119,6 +120,9 @@ void frmMainConfig::Init(pgSettingReader *reader)
         }
     }
     while (item);
+
+	editMenu->Enable(MNU_DELETE, false);
+	toolBar->EnableTool(MNU_DELETE,false);
 }
 
 
@@ -165,6 +169,13 @@ void frmMainConfig::Init()
     delete reader;
 }
 
+void frmMainConfig::OnSelectSetting(wxListEvent& event)
+{
+
+    // Disable undo because we don't want to undo the wrong line.
+    editMenu->Enable(MNU_UNDO, false);
+    toolBar->EnableTool(MNU_UNDO, false);
+}
 
 void frmMainConfig::OnEditSetting(wxListEvent& event)
 {

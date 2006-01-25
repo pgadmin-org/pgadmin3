@@ -156,6 +156,11 @@ public:
 	void Save();
 
 
+	enum configFileName
+	{
+		PGPASS
+	};
+	static wxString GetConfigFile(configFileName cfgname);
 
 private:
 

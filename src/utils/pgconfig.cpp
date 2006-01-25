@@ -546,3 +546,42 @@ wxString pgHbaConfigLine::GetText()
     return str;
 }
 
+
+////////////////////////////////////////////////
+pgPassConfigLine::pgPassConfigLine(const wxString &line)
+{
+    item=-1;
+    Init(line);
+}
+
+void pgPassConfigLine::Init(const wxString &line)
+{
+	text = line;
+
+    if (line.IsEmpty())
+        return;
+
+	isComment = line.StartsWith(wxT("#"));
+
+	wxStringTokenizer tok(isComment?line.Mid(1):line, wxT(":"));
+	if (tok.HasMoreTokens())
+		hostname = tok.GetNextToken();
+	if (tok.HasMoreTokens())
+		port = tok.GetNextToken();
+	if (tok.HasMoreTokens())
+		database = tok.GetNextToken();
+	if (tok.HasMoreTokens())
+		username = tok.GetNextToken();
+	if (tok.HasMoreTokens())
+		password = tok.GetNextToken();
+}
+
+wxString pgPassConfigLine::GetText()
+{
+	return (isComment?wxT("#"):wxT("")) +
+		   hostname + wxT(":") + 
+		   port + wxT(":") +
+		   database + wxT(":") +
+		   username + wxT(":") +
+		   password;
+}

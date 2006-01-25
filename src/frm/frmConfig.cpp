@@ -22,6 +22,7 @@
 #include "frmHint.h"
 #include "frmMainConfig.h"
 #include "frmHbaConfig.h"
+#include "frmPgpassConfig.h"
 #include "frmMain.h"
 #include "frmAbout.h"
 #include "frmHelp.h"
@@ -34,6 +35,7 @@
 #include "images/file_open.xpm"
 #include "images/file_save.xpm"
 #include "images/edit_undo.xpm"
+#include "images/delete.xpm"
 #include "images/help.xpm"
 #include "images/hint2.xpm"
 #include "images/checked.xpm"
@@ -47,6 +49,7 @@ BEGIN_EVENT_TABLE(frmConfig, pgFrame)
     EVT_MENU(MNU_SAVE,                      frmConfig::OnSave)
     EVT_MENU(MNU_SAVEAS,                    frmConfig::OnSaveAs)
     EVT_MENU(MNU_EXECUTE,                   frmConfig::OnExecute)
+	EVT_MENU(MNU_HELP,						frmConfig::OnHelp)
     EVT_MENU(MNU_HINT,                      frmConfig::OnHint)
 END_EVENT_TABLE()
 
@@ -129,6 +132,9 @@ void frmConfig::InitFrame(const wxChar *frameName)
 
     editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
+	editMenu->AppendSeparator();
+	editMenu->Append(MNU_DELETE, _("&Delete\tDEL"), _("Delete current row"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete current row"), wxITEM_NORMAL);
 
     toolBar->AddSeparator();
 
@@ -201,7 +207,6 @@ void frmConfig::Go()
     Show();
 }
 
-
 void frmConfig::DoOpen(const wxString &fn)
 {
     wxCommandEvent ev;
@@ -219,6 +224,10 @@ void frmConfig::OnClose(wxCloseEvent& event)
     Destroy();
 }
 
+void frmConfig::OnHelp(wxCommandEvent& event)
+{
+	DisplayHelp(this, GetHelpPage());
+}
 
 void frmConfig::OnHint(wxCommandEvent& event)
 {
@@ -417,6 +426,8 @@ frmConfig *frmConfig ::Create(const wxString &title, const wxString &configFile,
             frm = new frmHbaConfig(title, configFile);
         else if (mode == MAINFILE || configFile.Right(15) == wxT("postgresql.conf"))
             frm = new frmMainConfig(title, configFile);
+		else if (mode == PGPASSFILE || configFile.Right(11) == wxT("pgpass.conf"))
+			frm = new frmPgpassConfig(title, configFile);
 
         // unknown config file!
     }

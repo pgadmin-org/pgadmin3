@@ -46,6 +46,7 @@ private:
     void OnContents(wxCommandEvent& event);
     void OnUndo(wxCommandEvent& event);
     void OnEditSetting(wxListEvent& event);
+    void OnSelectSetting(wxListEvent& event);
 
     void UpdateLine(int line);
 

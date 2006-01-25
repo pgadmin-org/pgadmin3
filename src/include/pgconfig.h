@@ -90,6 +90,22 @@ public:
     bool changed;
 };
 
+class pgPassConfigLine
+{
+public:
+	pgPassConfigLine(const wxString &line=wxEmptyString);
+	wxString GetText();
+	void Init(const wxString &line);
+
+	wxString text;
+	wxString hostname,port,database,username,password;
+
+	long item;
+
+	bool isComment;
+};
+
+
 class pgSettingItem
 {
 public:
