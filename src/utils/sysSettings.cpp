@@ -507,7 +507,7 @@ void sysSettings::SetDoubleClickProperties(const bool newval)
 //////////////////////////////////////////////////////////////////////////
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
-	if (cfgname == configFileName::PGPASS)
+	if (cfgname == PGPASS)
 	{
 	    wxStandardPaths stdp;
 	    wxString fname=stdp.GetUserConfigDir()

@@ -341,7 +341,7 @@ void frmMainConfig::WriteFile(pgConn *conn)
 
 void frmMainConfig::DisplayFile(const wxString &str)
 {
-    lines.Empty();
+//    lines.Empty();
 
     filetype = wxTextFileType_Unix;
     wxStringTokenizer strtok;

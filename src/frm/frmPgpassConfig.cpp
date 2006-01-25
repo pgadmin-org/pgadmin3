@@ -58,7 +58,7 @@ frmPgpassConfig::frmPgpassConfig(frmMain *parent)
 {
 	Init();
 
-	lastPath = sysSettings::GetConfigFile(sysSettings::configFileName::PGPASS);
+	lastPath = sysSettings::GetConfigFile(sysSettings::PGPASS);
 	wxFile f;
 	if (!f.Exists(lastPath))
 		f.Create(lastPath, false, wxS_DEFAULT);

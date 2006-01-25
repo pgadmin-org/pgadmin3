@@ -407,7 +407,7 @@ bool pgServer::GetServerControllable()
 
 wxString pgServer::passwordFilename()
 {
-	wxString fname = sysSettings::GetConfigFile(sysSettings::configFileName::PGPASS);
+	wxString fname = sysSettings::GetConfigFile(sysSettings::PGPASS);
 
     wxLogInfo(wxT("Using password file %s"), fname.c_str());
     return fname;
