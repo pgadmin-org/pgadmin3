@@ -1,0 +1,36 @@
+Known issues
+============
+
+pgAdmin III
+-----------
+
+- [Property]  Working with property dialog after the corresponding node is 
+              refreshed crashes
+- [Edit grid] Editing very large columns freezes (might be restricted to bytea)
+- [Edit grid] bool editing doesn't know NULL; major redesign needed
+- [Edit grid] sqlGridTextEditor is broken on Mac. We're currently using 
+              wxGridCellAutoWrapStringEditor which works but isn't overly user 
+              friendly
+
+wxWidgets
+---------
+
+- [Scintilla] ASSERT when typing a multibyte char [wx patch 1072408]
+- [Object Tree] Scrollbar doesn't scroll page by page under gtk
+- [Scintilla lexer] doesn't know about escaping quotes
+- [Main listview] Background behind the tabs doesn't redraw on Win XP and 2003.
+- [gtk] FindFocus reports bogus controls. Symptom: select a menu or toolbar, 
+        but nothing happens.
+- [gtk] combobox positioning when height is not specified; current workaround: 
+        fixed 12d height
+- [Edit Grid] several platform-dependent misbehaviours when starting editing a 
+        cell (F2 or any key): waiting for new wxGrid implementation
+- [gtk] Crash with some themes; probably gtk issue.
+
+Known issues, that might stay unfixed
+-------------------------------------
+
+- [non-unicode build] Reading unicode files won't convert (wx not capable, use
+                      unicode build instead)
+- [Object Tree] M$ Context menu key doesn't work in Windows (wxWidgets bug?).
+
