@@ -2022,11 +2022,11 @@ SOURCE=.\base\sysLogger.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\BUGS.txt
+SOURCE=..\BUGS
 # End Source File
 # Begin Source File
 
-SOURCE=..\CHANGELOG.txt
+SOURCE=..\CHANGELOG
 # End Source File
 # Begin Source File
 
@@ -2038,7 +2038,7 @@ SOURCE="..\programmers-readme.txt"
 # End Source File
 # Begin Source File
 
-SOURCE=..\TODO.txt
+SOURCE=..\TODO
 # End Source File
 # End Group
 # End Target
