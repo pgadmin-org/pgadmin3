@@ -128,7 +128,7 @@ $(srcdir)/include/pgconfig.h $(srcdir)/include/update.h $(srcdir)/include/frmUpd
 $(srcdir)/include/dlgHbaConfig.h $(srcdir)/include/dlgMainConfig.h \
 $(srcdir)/include/dlgPgpassConfig.h $(srcdir)/include/frmHint.h \
 $(srcdir)/include/frmConfig.h $(srcdir)/include/frmHbaConfig.h \
-$(srcdir)/include/frmMainConfig.h \ $(srcdir)/include/frmPgpassConfig.h \
+$(srcdir)/include/frmMainConfig.h $(srcdir)/include/frmPgpassConfig.h \
 $(srcdir)/include/explainCanvas.h \
 $(srcdir)/agent/include/pgaJob.h \
 $(srcdir)/agent/include/pgaStep.h $(srcdir)/agent/include/pgaSchedule.h \
