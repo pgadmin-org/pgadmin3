@@ -263,7 +263,24 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
             {
                 wxMenuItem *menuItem=menuBar->FindItem(id);
                 if (menuItem && menuItem->IsEnabled())
-                    lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
+				{
+					if (!menuItem->IsSubMenu())
+						lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
+					else
+					{
+						/* Copy of submenu */
+						wxMenu *oldSubMenu = menuItem->GetSubMenu();
+						wxMenu *newSubMenu = new wxMenu();
+
+						size_t i;
+						for (i=0; i < oldSubMenu->GetMenuItemCount(); i++)
+						{
+							wxMenuItem *oldMenuItem = oldSubMenu->FindItemByPosition(i);
+							newSubMenu->Append(oldMenuItem->GetId(), oldMenuItem->GetLabel(), oldMenuItem->GetHelp());
+						}
+						lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), newSubMenu);
+					}
+				}
             }
         }
         else

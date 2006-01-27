@@ -45,6 +45,9 @@
 #include "images/help.xpm"
 #include "images/clip_copy.xpm"
 
+#define CTRLID_LIMITLABEL       4224
+#define CTRLID_LIMITSPACER      4225
+#define CTRLID_LIMITCOMBO       4226
 
 
 BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
@@ -77,6 +80,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     mainForm=form;
     thread=0;
     relkind=0;
+	limit=0;
     relid=(Oid)obj->GetOid();
 
 
@@ -105,6 +109,21 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected lines."), wxITEM_NORMAL);
     toolBar->AddSeparator();
+
+    wxStaticText *txtLimit = new wxStaticText(toolBar, CTRLID_LIMITLABEL, _("Row limit"), wxDefaultPosition);
+    toolBar->AddControl(txtLimit);
+    wxStaticText *txtSpacer = new wxStaticText(toolBar, CTRLID_LIMITSPACER, wxT("  "), wxDefaultPosition);
+    toolBar->AddControl(txtSpacer);
+
+    cbLimit = new ctlComboBoxFix(toolBar, CTRLID_LIMITCOMBO, wxDefaultPosition, wxSize(GetCharWidth()*12, -1), wxCB_DROPDOWN);
+    cbLimit->Append(_("No limit"));
+    cbLimit->Append(wxT("1000"));
+    cbLimit->Append(wxT("500"));
+    cbLimit->Append(wxT("100"));
+    cbLimit->SetValue(_("No limit"));
+    toolBar->AddControl(cbLimit);
+    toolBar->AddSeparator();
+
     toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(sortfilter_xpm), _("Sort/filter options."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
@@ -114,7 +133,6 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->EnableTool(MNU_UNDO, false);
     toolBar->EnableTool(MNU_COPY, false);
     toolBar->EnableTool(MNU_DELETE, false);
-
 
     wxAcceleratorEntry entries[5];
 
@@ -166,6 +184,18 @@ void frmEditGrid::SetFilter(const wxString &filter)
 		rowFilter = filter; 
 		optionsChanged = true;
 	} 
+}
+
+void frmEditGrid::SetLimit(const int rowlimit)
+{
+	if (rowlimit != limit) {
+		limit = rowlimit;
+
+    	if (limit <= 0)
+	    	cbLimit->SetValue(_("No limit"));
+	    else
+		    cbLimit->SetValue(wxString::Format(wxT("%i"), limit));
+	}
 }
 
 void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
@@ -618,6 +648,24 @@ void frmEditGrid::ShowForm(bool filter)
 
 void frmEditGrid::Go()
 {
+    long templong;
+
+	if (cbLimit->GetValue() != wxT("") &&
+        cbLimit->GetValue() != _("No limit") &&
+		!cbLimit->GetValue().ToLong(&templong))
+	{
+		wxLogError(_("The row limit must be an integer number or 'No limit'"));
+		return;
+    }
+
+	if (cbLimit->GetValue() == _("No limit"))
+		SetLimit(0);
+	else
+    {
+		cbLimit->GetValue().ToLong(&templong);
+	    SetLimit(templong);
+    }
+
     SetStatusText(_("Refreshing data, please wait."), 0);
 
     wxString qry=wxT("SELECT ");
@@ -632,6 +680,8 @@ void frmEditGrid::Go()
     {
         qry += wxT(" ORDER BY ") + orderBy;
     }
+	if (limit > 0)
+		qry += wxT(" LIMIT ") + wxString::Format(wxT("%i"), limit);
 
     thread=new pgQueryThread(connection, qry);
     if (thread->Create() != wxTHREAD_NO_ERROR)
@@ -2011,6 +2061,7 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
             + wxT(" - ") + obj->GetFullIdentifier();
 
         frmEditGrid *eg= new frmEditGrid(form, txt, conn, (pgSchemaObject*)obj);
+		eg->SetLimit(rowlimit);
         eg->ShowForm(filter);
         return eg;
     }
@@ -2020,8 +2071,9 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
 
 editGridFactory::editGridFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
 {
-    mnu->Append(id, _("View &Data"), _("View the data in the selected object."));
-    toolbar->AddTool(id, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+    mnu->Append(id, _("View &All Rows"), _("View the data in the selected object."));
+    toolbar->AddTool(id, _("View All Rows"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+	context = false;
 }
 
 
@@ -2034,8 +2086,9 @@ wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
 #include "images/viewfiltereddata.xpm"
 editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
 {
-    mnu->Append(id, _("View F&iltered Data..."), _("Apply a filter and view the data in the selected object."));
-    toolbar->AddTool(id, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
+    mnu->Append(id, _("View F&iltered Rows..."), _("Apply a filter and view the data in the selected object."));
+    toolbar->AddTool(id, _("View Filtered Rows"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
+	context = false;
 }
 
 
@@ -2044,3 +2097,14 @@ wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
     return ViewData(form, obj, true);
 }
 
+editGridLimitedFactory::editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, int limit) : editGridFactoryBase(list)
+{
+	mnu->Append(id, wxString::Format(_("View Top %i Rows"), limit), _("View a limited number of rows in the selected object."));
+	rowlimit = limit;
+	context = false;
+}
+
+wxWindow *editGridLimitedFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	return ViewData(form, obj, false);
+}

@@ -163,6 +163,8 @@ public:
 	void SetSortCols(const wxString &cols);
 	wxString GetFilter() const { return rowFilter; } ;
 	void SetFilter(const wxString &filter);
+	int GetLimit() const { return limit; } ;
+	void SetLimit(const int rowlimit);
 
 private:
     void OnClose(wxCloseEvent& event);
@@ -187,6 +189,7 @@ private:
     pgConn *connection;
     pgQueryThread *thread;
     wxToolBar *toolBar;
+    ctlComboBoxFix *cbLimit;
 
     char relkind;
     OID relid;
@@ -196,6 +199,7 @@ private:
     wxString primaryKeyColNumbers;
     wxString orderBy;
 	wxString rowFilter;
+	int limit;
 
     DECLARE_EVENT_TABLE();
 };
@@ -207,8 +211,9 @@ public:
     bool CheckEnable(pgObject *obj);
 
 protected:
-    editGridFactoryBase(menuFactoryList *list) : contextActionFactory(list) {}
+    editGridFactoryBase(menuFactoryList *list) : contextActionFactory(list) { rowlimit = 0; }
     wxWindow *ViewData(frmMain *form, pgObject *obj, bool filter);
+	int rowlimit;
 };
 
 
@@ -225,6 +230,13 @@ class editGridFilteredFactory : public editGridFactoryBase
 public:
     editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+class editGridLimitedFactory : public editGridFactoryBase
+{
+public:
+	editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, int limit);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 #endif

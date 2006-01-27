@@ -364,6 +364,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     enableSubmenu(MNU_CONFIGSUBMENU);
     enableSubmenu(MNU_SLONY_SUBMENU);
     enableSubmenu(newMenuFactory->GetId());
+	enableSubmenu(viewdataMenuFactory->GetId());
 }
 
 
