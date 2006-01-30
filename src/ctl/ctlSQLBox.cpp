@@ -554,9 +554,9 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 }
 
 
+extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
 void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 {
-    extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
 	if (GetReadOnly())
 		return;
 	if (m_database == NULL)
