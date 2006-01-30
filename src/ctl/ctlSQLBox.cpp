@@ -15,6 +15,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "pgSet.h"
 #include "ctl/ctlSQLBox.h"
 
 
@@ -276,10 +277,9 @@ LexerModule lmPostgreSQL(SCLEX_AUTOMATIC, ColouriseSQLDoc, "sql");
 
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
-#ifdef __WXGTK__
     EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
-#endif
     EVT_MENU(MNU_FIND,ctlSQLBox::OnFind)
+	EVT_MENU(MNU_AUTOCOMPLETE,ctlSQLBox::OnAutoComplete)
     EVT_FIND(-1, ctlSQLBox::OnFindDialog)
     EVT_FIND_NEXT(-1, ctlSQLBox::OnFindDialog)
     EVT_FIND_REPLACE(-1, ctlSQLBox::OnFindDialog)
@@ -304,6 +304,7 @@ ctlSQLBox::ctlSQLBox()
 ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
     m_dlgFind=0;
+	m_database=NULL;
 #ifndef __WXMSW__
     findDlgLast = false;
 #endif
@@ -362,15 +363,26 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     SetLexer(wxSTC_LEX_SQL);
     SetKeyWords(0, sqlKeywords);
 
-    wxAcceleratorEntry entries[1];
+    wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_CTRL, (int)'F', MNU_FIND);
-    wxAcceleratorTable accel(1, entries);
+	entries[1].Set(wxACCEL_CTRL, (int)' ', MNU_AUTOCOMPLETE);
+    wxAcceleratorTable accel(2, entries);
     SetAcceleratorTable(accel);
 
     m_findData.SetFlags(wxFR_DOWN);
 
+	// Autocompletion configuration
+	AutoCompSetSeparator('\t');
+	AutoCompSetChooseSingle(true);
+	AutoCompSetIgnoreCase(true);
+	AutoCompSetFillUps(wxT(" \t"));
+	AutoCompSetDropRestOfWord(true);
 }
 
+void ctlSQLBox::SetDatabase(pgConn *db)
+{
+	m_database = db;
+}
 
 void ctlSQLBox::OnFind(wxCommandEvent& ev)
 {
@@ -526,8 +538,49 @@ void ctlSQLBox::OnFindDialog(wxFindDialogEvent& event)
 
 void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 {
-    event.m_metaDown=false;
+#ifdef __WXGTK__
+	event.m_metaDown=false;
     event.Skip();
+#endif
+	if (!AutoCompActive() &&
+		 ( settings->GetTabForCompletion() && /* autocomplete on tab only if specifically configured */
+		  !event.AltDown() && !event.CmdDown() && !event.ControlDown() && event.GetKeyCode() == '\t'
+		 ))
+	{
+		wxCommandEvent e;
+		OnAutoComplete(e);
+	}
+	else
+		wxStyledTextCtrl::OnKeyDown(event);
+}
+
+extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
+void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
+{
+	if (GetReadOnly())
+		return;
+	if (m_database == NULL)
+		return;
+
+	wxString what = GetCurLine().Left(GetCurrentPos()-PositionFromLine(GetCurrentLine()));;
+	int spaceidx = what.Find(' ',true);
+	
+	char *tab_ret;
+	if (spaceidx == -1)
+		tab_ret = tab_complete(what.mb_str(wxConvUTF8), 0, what.Len()+1, m_database);
+	else
+		tab_ret = tab_complete(what.mb_str(wxConvUTF8), spaceidx+1, what.Len()+1, m_database);
+
+	if (tab_ret == NULL || tab_ret[0] == '\0')
+		return; /* No autocomplete available for this string */
+
+	wxString wxRet = wxString(tab_ret, wxConvUTF8);
+	free(tab_ret);
+
+	if (spaceidx == -1)
+		AutoCompShow(what.Len(), wxRet);
+	else
+		AutoCompShow(what.Len()-spaceidx-1, wxRet);
 }
 
 
@@ -539,4 +592,42 @@ ctlSQLBox::~ctlSQLBox()
         m_dlgFind->Destroy();
         delete m_dlgFind;
     }
+}
+
+
+/*
+ * Callback function from tab-complete.c, bridging the gap between C++ and C.
+ * Execute a query using the C++ APIs, returning it as a tab separated
+ * "char*-string"
+ * The query is expected to return only one column, and will have an ORDER BY
+ * clause for this column added automatically.
+ */
+extern "C"
+char *pg_query_to_single_ordered_string(char *query, void *dbptr)
+{
+	pgConn *db = (pgConn *)dbptr;
+	pgSet *res = db->ExecuteSet(wxString(query, wxConvUTF8) + wxT(" ORDER BY 1"));
+	if (!res)
+		return NULL;
+
+	wxString ret = wxString();
+    wxString tmp;
+
+	while (!res->Eof())
+	{
+        tmp =  res->GetVal(0);
+        if (tmp.Mid(tmp.Length() - 1) == wxT("."))
+		    ret += tmp + wxT("\t");
+        else
+		    ret += tmp + wxT(" \t");
+
+		res->MoveNext();
+	}
+
+	ret.Trim();
+	// Trims both space and tab, but we want to keep the space!
+	if (ret.Length() > 0)
+	    ret += wxT(" ");
+
+	return strdup(ret.mb_str(wxConvUTF8));
 }

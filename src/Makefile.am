@@ -68,7 +68,9 @@ $(srcdir)/dlg/dlgSequence.cpp $(srcdir)/dlg/dlgTrigger.cpp $(srcdir)/dlg/dlgType
 $(srcdir)/dlg/dlgCheck.cpp \
 \
 $(srcdir)/utils/sysSettings.cpp $(srcdir)/utils/sysProcess.cpp \
-utils/misc.cpp $(srcdir)/utils/utffile.cpp $(srcdir)/utils/pgconfig.cpp $(srcdir)/utils/update.cpp \
+$(srcdir)/utils/misc.cpp $(srcdir)/utils/utffile.cpp \
+$(srcdir)/utils/pgconfig.cpp $(srcdir)/utils/update.cpp \
+$(srcdir)/utils/tabcomplete.c \
 \
 $(srcdir)/slony/slCluster.cpp $(srcdir)/slony/slNode.cpp \
 $(srcdir)/slony/slPath.cpp $(srcdir)/slony/slListen.cpp $(srcdir)/slony/slSet.cpp \
@@ -151,7 +153,9 @@ $(srcdir)/pgAdmin3.dsw \
 $(srcdir)/include/images/*.xpm \
 $(srcdir)/include/images/pgAdmin3.ico \
 $(srcdir)/main/pgAdmin3.rc \
-$(srcdir)/utils/precomp.cpp
+$(srcdir)/utils/precomp.cpp \
+$(srcdir)/utils/tabcomplete.inc \
+$(srcdir)/utils/tabcomplete.pl
 
 TMP_ui = \
 $(srcdir)/ui/*.xrc

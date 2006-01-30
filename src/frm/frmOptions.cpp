@@ -51,6 +51,7 @@ extern wxArrayString existingLangNames;
 #define cbCopyQuote					CTRL_COMBOBOX("cbCopyQuote")
 #define cbCopyQuoteChar				CTRL_COMBOBOX("cbCopyQuoteChar")
 #define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
+#define chkTabForCompletion			CTRL_CHECKBOX("chkTabForCompletion")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
@@ -109,6 +110,7 @@ frmOptions::frmOptions(frmMain *parent)
 	cbCopyQuote->SetSelection(settings->GetCopyQuoting());
 	cbCopyQuoteChar->SetValue(settings->GetCopyQuoteChar());
 	cbCopySeparator->SetValue(settings->GetCopyColSeparator());
+	chkTabForCompletion->SetValue(settings->GetTabForCompletion());
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
@@ -227,6 +229,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	settings->SetCopyQuoting(cbCopyQuote->GetCurrentSelection());
 	settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
 	settings->SetCopyColSeparator(cbCopySeparator->GetValue());
+	settings->SetTabForCompletion(chkTabForCompletion->GetValue());
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());

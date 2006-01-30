@@ -86,6 +86,10 @@ public:
     long GetIndentSpaces() const { return indentSpaces; }
     void SetIndentSpaces(long l) { indentSpaces=l; }
 
+	// Tab for completion
+	bool GetTabForCompletion() const { return tabForCompletion; }
+	void SetTabForCompletion(const bool newval) { tabForCompletion = newval; }
+
     // Sticky SQL
     bool GetStickySql() const { return stickySql; }
     void SetStickySql(const bool newval);
@@ -196,7 +200,7 @@ private:
     bool askSaveConfirmation;
     bool confirmDelete, suppressGuruHints;
     long maxRows, maxColSize, autoRowCountThreshold, indentSpaces;
-    bool stickySql, unicodeFile;
+    bool stickySql, unicodeFile, tabForCompletion;
     bool doubleClickProperties;
     long maxServerLogSize;
 

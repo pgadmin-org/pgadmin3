@@ -142,6 +142,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
     Read(wxT("AutoRowCount"), &autoRowCountThreshold, 2000L);
     Read(wxT("IndentSpaces"), &indentSpaces, 0L);
+	Read(wxT("TabForCompletion"), &tabForCompletion, false);
     Read(wxT("StickySql"), &stickySql, false);
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
     Read(wxT("SuppressGuruHints"), &suppressGuruHints, false);
@@ -294,7 +295,7 @@ void sysSettings::Save()
     Write(wxT("SuppressGuruHints"), suppressGuruHints);
     Write(wxT("SlonyPath"), slonyPath);
     Write(wxT("IndentSpaces"), indentSpaces);
-
+	Write(wxT("TabForCompletion"), tabForCompletion);
 
     Write(wxT("Export/Unicode"), exportUnicode);
     Write(wxT("Export/QuoteChar"), exportQuoteChar);

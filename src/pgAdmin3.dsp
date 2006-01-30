@@ -265,6 +265,11 @@ SOURCE=.\utils\sysSettings.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\utils\tabcomplete.c
+# SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\update.cpp
 # End Source File
 # Begin Source File

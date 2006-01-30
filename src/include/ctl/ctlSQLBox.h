@@ -17,6 +17,7 @@
 #include <wx/stc/stc.h>
 #include <wx/fdrepdlg.h>
 
+#include "pgConn.h"
 
 // Class declarations
 class ctlSQLBox : public wxStyledTextCtrl
@@ -30,7 +31,10 @@ public:
 
     void Create(wxWindow *parent, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
 
+	void SetDatabase(pgConn *db);
+
     void OnKeyDown(wxKeyEvent& event);
+	void OnAutoComplete(wxCommandEvent& event);
     void OnFind(wxCommandEvent& event);
     void OnReplace(wxCommandEvent& event);
     void OnFindDialog(wxFindDialogEvent& event);
@@ -41,6 +45,7 @@ public:
 private:
 	wxFindReplaceData m_findData;
     wxFindReplaceDialog* m_dlgFind;
+	pgConn *m_database;
 #ifndef __WXMSW__
 	bool findDlgLast;
 #endif

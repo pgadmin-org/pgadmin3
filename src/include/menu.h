@@ -66,6 +66,8 @@ enum
 
     MNU_ONLINEUPDATE_NEWDATA,
 
+	MNU_AUTOCOMPLETE, 
+
     MNU_RECENT,
 
     MNU_NEW=MNU_RECENT+15,  // leave space for recent file entries
