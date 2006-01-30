@@ -55,5 +55,6 @@ AC_CONFIG_FILES([Makefile
 		 pkg/win32/Makefile
 		 xtra/Makefile
 		 xtra/pgagent/Makefile
-		 xtra/pgagent/pgaevent/Makefile])
+		 xtra/pgagent/pgaevent/Makefile
+		 xtra/wx-build/Makefile])
 AC_OUTPUT

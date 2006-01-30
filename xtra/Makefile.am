@@ -7,7 +7,7 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
-SUBDIRS = pgagent
+SUBDIRS = pgagent wx-build
 
 # Note: We cannot add a Makefile to the admin directory as it already
 #       contains one to be used as part of the PostreSQL contrib build
