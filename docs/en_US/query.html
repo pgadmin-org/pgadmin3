@@ -8,84 +8,97 @@
 
 <body>
 
-<H3>pgAdmin Query Tool</H3>
+<h3>pgAdmin Query Tool</h3>
 
 <center><img src="images/query.png"></center>
 
-<P>The Query Tool enables you to execute arbitrary SQL commands. All
+<p>The Query Tool enables you to execute arbitrary SQL commands. All
 rules that are mentioned in the PostgreSQL User's guide apply.
-</P>
-<P>The upper part of the Query Tool contains the edit entry window,
+</p>
+<p>The upper part of the Query Tool contains the edit entry window,
 where you type your commands. You may read the query from a file, or
 write it out to a file. When writing a file, the encoding of the file
 is determined by the file suffix: if it is *.sql, a 8 byte local
 character set is used. If *.usql is selected, the file will be
 written in UTF-8, which enables the storage of virtually all
 characters used throughout the world, according to the coding rules
-of the <A HREF="http://www.unicode.org/">Unicode Consortium</A>. If
-you select *.*, the setting from the <A HREF="options-tab2.html">read/write
-unicode option</A> is used.</P>
-<P>To execute the query, you select Execute from the Query menu, or
+of the <a href="http://www.unicode.org/">Unicode Consortium</a>. If
+you select *.*, the setting from the <a href="options-tab2.html">read/write
+unicode option</a> is used.</p>
+
+<p>The edit entry window also contains autocompletion code to help you
+write queries. To use autocomplete, simply start typing your query
+and then press Control+Space to see a list of possible object names to
+insert. For example, type "<i>SELECT * FROM</i> " (without the quotes, but
+with the trailing space), and then hit Control and Space together to see
+a popup menu of autocomplete options. The autocomplete system is based on
+code from <i>psql</i>, the PostgreSQL command line interpreter and will
+generally be able to offer autocomplete options in the same places that
+it can in <i>psql</i>. You can optionally enable the Tab key to activate
+the autocomplete feature as well - the can be done on the
+<a href="options-tab3.html">options dialog</a>.</p>
+
+<p>To execute the query, you select Execute from the Query menu, or
 you press the execute toolbar button, or you press the F5 function
 key. If you didn't select a word, the complete contents of the window
 will be sent to the database server, which executes it. You may also
 execute just a part of the text, by selecting only the text that you
-want the server to execute.</P>
-<P>Explain from the Query menu, or F7 function key will execute the
+want the server to execute.</p>
+<p>Explain from the Query menu, or F7 function key will execute the
 EXPLAIN command. The database server will analyze the query that's
 sent to it, and will return the results.
-</P><P>
+</p><p>
 <center><img src="images/query-analyze.png"></center>
-</P><P>
+</p><p>
 The result is displayed as text in the Data Output page, and graphically 
 visualized on the Explain page. This enables you to find out how the query is parsed, optimized and executed. You can modify the
 degree of inspection by changing the Explain options for this in the
-Query menu. Please note that "EXPLAIN VERBOSE" can not be displayed graphically.</P>
-<P>In case the query you sent to the server using the Execute or
+Query menu. Please note that "EXPLAIN VERBOSE" can not be displayed graphically.</p>
+<p>In case the query you sent to the server using the Execute or
 Explain command takes longer than you expect, and you would like to
 abort the execution, you can select Cancel from the Query menu, press
 the Cancel toolbar button or use Alt-Break function key to abort the
 execution. 
-</P>
-<P>If you want to have help about a SQL command you want to execute,
+</p>
+<p>If you want to have help about a SQL command you want to execute,
 you can mark a SQL keyword and select SQL Help from the Help menu,
 the SQL Help toolbar button or simply press the F1 key. pgAdmin III
 will try to locate the appropriate information in the PostgreSQL
-documentation for you.</P>
-<P>The result of the database server execution will be displayed in
+documentation for you.</p>
+<p>The result of the database server execution will be displayed in
 the lower part of the Query Tool. If the last command in the chain of
 SQL command sent to the server was as command returning a result set,
 this will be shown on the Data Output page. All rowsets from previous
-commands will be discarded.</P>
-<P>To save the data in the Data Output page to a file, you can use
-the <A HREF="export.html">Export</A> dialog. 
-</P>
-<P>Information about all commands just executed will go to the
+commands will be discarded.</p>
+<p>To save the data in the Data Output page to a file, you can use
+the <a href="export.html">Export</a> dialog. 
+</p>
+<p>Information about all commands just executed will go to the
 Messages page. The History page will remember all commands executed
 and the results from this, until you use Clear History from the Query
 menu to clear the window. If you want to retain the history for later
 inspection, you can save the contents of the History page to a file
-using the Save history option from the Query menu.</P>
-<P>The status line will show how long the last query took to
+using the Save history option from the Query menu.</p>
+<p>The status line will show how long the last query took to
 complete. If a dataset was returned, not only the elapsed time for
 server execution is displayed, but also the time to retrieve the data
-from the server to the Data Output page.</P>
-<P>
+from the server to the Data Output page.</p>
+<p>
 In the toolbar combobox you can quickly change your database connection from
 one database to another, without launching another instance of the query tool. 
 Initially, only one database will be available, but by selecting &less;new connection&gt; from 
 the combobox, you can add another connection to it.
-</P><P>
+</p><p>
 <center><img src="images/query-connect.png"></center>
-</P>
-<P>In the <A HREF="options-tab3.html">options dialog</A>, you
+</p>
+<p>In the <a href="options-tab3.html">options dialog</a>, you
 can specify a default limit for the rowset size to retrieve. By
 default, this value will be 100. If the number of rows to retrieve
 from the server exceeds this value, a message box will appear asking
 what to do to prevent retrieval of an unexpected high amount of data.
 You may decide to retrieve just the first rows, as configured with
 tha max rows setting, or retrieving the complete rowset regardless of
-the setting, or abort the query, effectively retrieving zero rows.</P>
+the setting, or abort the query, effectively retrieving zero rows.</p>
 
-</BODY>
-</HTML>
+</body>
+</html>
