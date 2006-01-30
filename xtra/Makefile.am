@@ -9,7 +9,7 @@
 
 if !APPBUNDLE
 
-SUBDIRS = pgagent
+SUBDIRS = pgagent wx-build
 
 endif
 

@@ -149,7 +149,9 @@ EXTRA_DIST = \
 $(srcdir)/pgAdmin3.dsp \
 $(srcdir)/pgAdmin3.dsw \
 $(srcdir)/include/images/*.xpm \
-$(srcdir)/include/images/pgAdmin3.ico
+$(srcdir)/include/images/pgAdmin3.ico \
+$(srcdir)/main/pgAdmin3.rc \
+$(srcdir)/utils/precomp.cpp
 
 TMP_ui = \
 $(srcdir)/ui/*.xrc
