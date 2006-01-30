@@ -540,8 +540,9 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 {
 #ifdef __WXGTK__
 	event.m_metaDown=false;
-    event.Skip();
 #endif
+    event.Skip();
+
 	if (!AutoCompActive() &&
 		 ( settings->GetTabForCompletion() && /* autocomplete on tab only if specifically configured */
 		  !event.AltDown() && !event.CmdDown() && !event.ControlDown() && event.GetKeyCode() == '\t'
@@ -550,13 +551,12 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 		wxCommandEvent e;
 		OnAutoComplete(e);
 	}
-	else
-		wxStyledTextCtrl::OnKeyDown(event);
 }
 
-extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
+
 void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 {
+    extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
 	if (GetReadOnly())
 		return;
 	if (m_database == NULL)
