@@ -285,6 +285,7 @@ BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
     EVT_FIND_REPLACE(-1, ctlSQLBox::OnFindDialog)
     EVT_FIND_REPLACE_ALL(-1, ctlSQLBox::OnFindDialog)
     EVT_FIND_CLOSE(-1, ctlSQLBox::OnFindDialog)
+	EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
 END_EVENT_TABLE()
 
 
@@ -551,6 +552,11 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 		wxCommandEvent e;
 		OnAutoComplete(e);
 	}
+}
+
+void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
+{
+	AutoCompCancel();
 }
 
 

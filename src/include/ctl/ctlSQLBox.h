@@ -38,6 +38,7 @@ public:
     void OnFind(wxCommandEvent& event);
     void OnReplace(wxCommandEvent& event);
     void OnFindDialog(wxFindDialogEvent& event);
+	void OnKillFocus(wxFocusEvent& event);
     
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
     DECLARE_EVENT_TABLE()
