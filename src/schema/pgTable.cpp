@@ -186,6 +186,9 @@ wxString pgTable::GetSql(ctlTree *browser)
                         sql += wxT("\n");
                     }
 
+                    if (column->GetInheritedCount() > 0)
+                        sql += wxString::Format(wxT("-- %s: "), _("Inherited"));
+
                     sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
                         + column->GetDefinition();
 
