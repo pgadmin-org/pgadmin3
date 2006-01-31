@@ -110,8 +110,9 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 
     btnRemoveTable->Disable();
 
-    lstColumns->CreateColumns(0, _("Column name"), _("Definition"), 90);
-    lstColumns->AddColumn(wxT("Inherited from table"), 0);
+    lstColumns->AddColumn(_("Column name"), 90);
+    lstColumns->AddColumn(_("Definition"), 135);
+    lstColumns->AddColumn(wxT("Inherited from table"), 40);
     lstColumns->AddColumn(wxT("Column definition"), 0);
     lstColumns->AddColumn(wxT("Column comment"), 0);
     lstColumns->AddColumn(wxT("Column statistics"), 0);
@@ -927,7 +928,7 @@ void dlgTable::OnSelChangeCol(wxListEvent &ev)
     wxString inheritedFromTable=lstColumns->GetText(pos, 2);
     
     btnRemoveCol->Enable(inheritedFromTable.IsEmpty());
-    btnChangeCol->Enable(table != 0 && !lstColumns->GetText(pos, 6).IsEmpty());
+    btnChangeCol->Enable(table != 0 && !lstColumns->GetText(pos, 6).IsEmpty() && inheritedFromTable.IsEmpty());
 }
 
 
