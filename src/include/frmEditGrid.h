@@ -113,6 +113,8 @@ public:
     bool DeleteRows(size_t pos, size_t rows);
     int  LastRow() { return lastRow; }
     wxString GetExportLine(int row);
+    wxString GetExportLine(int row, int col1, int col2);
+    wxString sqlTable::GetExportLine(int row, wxArrayInt cols);
 
     bool CheckInCache(int row);
 

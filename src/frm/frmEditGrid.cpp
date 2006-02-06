@@ -325,11 +325,13 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
 void frmEditGrid::OnCopy(wxCommandEvent &ev)
 {
-    wxArrayInt rows=sqlGrid->GetSelectedRows();
+    wxString str;
+    int copied = 0;
     size_t i;
-    if (rows.GetCount())
-    {
-        wxString str;
+
+    if (sqlGrid->GetSelectedRows().GetCount()) {
+        wxArrayInt rows=sqlGrid->GetSelectedRows();
+
         for (i=0 ; i < rows.GetCount() ; i++)
         {
             str.Append(sqlGrid->GetTable()->GetExportLine(rows.Item(i)));
@@ -337,13 +339,61 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
             if (rows.GetCount() > 1)
                 str.Append(END_OF_LINE);
         }
-        if (wxTheClipboard->Open())
-        {
-            wxTheClipboard->SetData(new wxTextDataObject(str));
-            wxTheClipboard->Close();
-        }
+
+        copied = rows.GetCount();
     }
-    SetStatusText(wxString::Format(_("%d rows copied to clipboard."), rows.GetCount()));
+    else if (sqlGrid->GetSelectedCols().GetCount()) {
+        wxArrayInt cols=sqlGrid->GetSelectedCols();
+        size_t numRows = sqlGrid->GetNumberRows();
+
+        for (i=0 ; i < numRows ; i++)
+        {
+            str.Append(sqlGrid->GetTable()->GetExportLine(i, cols));
+    
+            if (numRows > 1)
+                str.Append(END_OF_LINE);
+        }
+
+        copied = numRows;
+    }
+    else if (sqlGrid->GetSelectionBlockTopLeft().GetCount() > 0 &&
+        sqlGrid->GetSelectionBlockBottomRight().GetCount() > 0) {
+        unsigned int x1, x2, y1, y2;
+
+        x1 = sqlGrid->GetSelectionBlockTopLeft()[0].GetCol();
+        x2 = sqlGrid->GetSelectionBlockBottomRight()[0].GetCol();
+        y1 = sqlGrid->GetSelectionBlockTopLeft()[0].GetRow();
+        y2 = sqlGrid->GetSelectionBlockBottomRight()[0].GetRow();
+
+        for (i = y1; i <= y2; i++) {
+            str.Append(sqlGrid->GetTable()->GetExportLine(i, x1, x2));
+
+            if (y2 > y1)
+                str.Append(END_OF_LINE);
+        }
+
+        copied = y2 - y1 + 1;
+    }
+    else {
+        int row, col;
+
+        row = sqlGrid->GetGridCursorRow();
+        col = sqlGrid->GetGridCursorCol();
+
+        str.Append(sqlGrid->GetTable()->GetExportLine(row, col, col));
+        copied = 1;
+    }
+
+    if (copied && wxTheClipboard->Open())
+    {
+        wxTheClipboard->SetData(new wxTextDataObject(str));
+        wxTheClipboard->Close();
+    }
+    else {
+        copied = 0;
+    }
+
+    SetStatusText(wxString::Format(_("%d rows copied to clipboard."), copied));
 }
 
 
@@ -1405,31 +1455,55 @@ int sqlTable::GetNumberStoredRows()
 
 wxString sqlTable::GetExportLine(int row)
 {
+    return GetExportLine(row, 0, nCols - 1);
+}
+
+wxString sqlTable::GetExportLine(int row, int col1, int col2)
+{
+    wxArrayInt cols;
+    wxString str;
+    int i;
+
+    if (col2 < col1)
+        return str;
+
+    cols.Alloc(col2 - col1 + 1);
+    for (i = col1; i <= col2; i++) {
+        cols.Add(i);
+    }
+
+    return GetExportLine(row, cols);
+}
+
+
+wxString sqlTable::GetExportLine(int row, wxArrayInt cols)
+{
     wxString str;
     cacheLine *line = GetLine(row);
     if (line)
     {
-        int col;
-        for (col=0 ; col < nCols ; col++)
+        unsigned int col;
+        for (col=0 ; col < cols.Count() ; col++)
         {
-            if (col)
+            if (col > 0)
                 str.Append(settings->GetExportColSeparator());
-            bool needQuote = settings->GetExportQuoting() > 1;
 
-            // find out if string
-            switch (columns[col].type)
-            {
-                case PGTYPCLASS_NUMERIC:
-                case PGTYPCLASS_BOOL:
-                    break;
-                default:
-                    needQuote=true;
-                    break;
+            bool needQuote  = false;
+
+            if (settings->GetCopyQuoting() == 1)
+		    {
+                /* Quote strings only */
+                needQuote = !columns[cols[col]].numeric;
+		    }
+            else if (settings->GetCopyQuoting() == 2) {
+			    /* Quote everything */
+			    needQuote = true;
             }
+
             if (needQuote)
                 str.Append(settings->GetExportQuoteChar());
 
-            str.Append(line->cols[col]);
+            str.Append(line->cols[cols[col]]);
         
             if (needQuote)
                 str.Append(settings->GetExportQuoteChar());
