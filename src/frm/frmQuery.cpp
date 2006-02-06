@@ -804,8 +804,8 @@ void frmQuery::OnChangeStc(wxStyledTextEvent& event)
     {
         changed=true;
         setExtendedTitle();
-        updateMenu();
     }
+    updateMenu();
 }
 
 void frmQuery::OnPositionStc(wxStyledTextEvent& event)
