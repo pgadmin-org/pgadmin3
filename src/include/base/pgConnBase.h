@@ -44,6 +44,15 @@ enum
     PGCONN_FATAL_ERROR = PGRES_FATAL_ERROR
 };
 
+enum
+{
+    PGCONN_TXSTATUS_IDLE = PQTRANS_IDLE,
+    PGCONN_TXSTATUS_ACTIVE = PQTRANS_ACTIVE,
+    PGCONN_TXSTATUS_INTRANS = PQTRANS_INTRANS,
+    PGCONN_TXSTATUS_INERROR = PQTRANS_INERROR,
+    PGCONN_TXSTATUS_UNKNOWN = PQTRANS_UNKNOWN,
+};
+
 
 // Our version of a pgNotify
 typedef struct pgNotification {
@@ -91,6 +100,7 @@ public:
     PGconn *connection() { return conn; }
     void Notice(const char *msg);
     pgNotification *GetNotification();
+    int GetTxStatus();
 
 protected:
     PGconn *conn;

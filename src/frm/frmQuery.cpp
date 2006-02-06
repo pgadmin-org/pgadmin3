@@ -1305,6 +1305,9 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     msgResult->AppendText(wxT("\n"));
     msgHistory->AppendText(wxT("\n"));
 
+    // If the transaction aborted for some reason, issue a rollback to cleanup.
+    if (conn->GetTxStatus() == PGCONN_TXSTATUS_INERROR)
+        conn->ExecuteVoid(wxT("ROLLBACK;"));
 
     setTools(false);
     if (rowsReadTotal)
