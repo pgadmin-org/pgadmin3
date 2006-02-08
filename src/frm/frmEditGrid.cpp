@@ -131,7 +131,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->Realize();
     toolBar->EnableTool(MNU_SAVE, false);
     toolBar->EnableTool(MNU_UNDO, false);
-    toolBar->EnableTool(MNU_COPY, false);
+    toolBar->EnableTool(MNU_COPY, true);
     toolBar->EnableTool(MNU_DELETE, false);
 
     wxAcceleratorEntry entries[5];
@@ -393,7 +393,7 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
         copied = 0;
     }
 
-    SetStatusText(wxString::Format(_("%d rows copied to clipboard."), copied));
+    SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
 }
 
 
@@ -663,7 +663,6 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
             }
         }
         toolBar->EnableTool(MNU_DELETE, enable);
-        toolBar->EnableTool(MNU_COPY,  enable);
     }
     event.Skip();
 }
@@ -991,6 +990,7 @@ public:
 protected:
     int textlen;
     bool isMultiLine;
+    wxString m_startValue;
 };
 
 
@@ -1015,6 +1015,7 @@ void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* ev
 
 void sqlGridTextEditor::BeginEdit(int row, int col, wxGrid *grid)
 {
+    m_startValue = grid->GetTable()->GetValue(row, col);
     wxGridCellTextEditor::BeginEdit(row, col, grid);
     ((ctlSQLGrid*)grid)->ResizeEditor(row, col);
 }
@@ -1024,7 +1025,9 @@ bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
 {
     bool changed = false;
     wxString value = Text()->GetValue();
-    changed = true;
+    
+    if (value != m_startValue)
+        changed = true;
 
     if (changed)
         grid->GetTable()->SetValue(row, col, value);
