@@ -162,7 +162,8 @@ public:
 
 	enum configFileName
 	{
-		PGPASS
+		PGPASS,
+		PGAFAVOURITES
 	};
 	static wxString GetConfigFile(configFileName cfgname);
 

@@ -72,7 +72,11 @@ enum
 
     MNU_NEW=MNU_RECENT+15,  // leave space for recent file entries
 
-    MNU_ACTION=MNU_NEW+1000 // leave space for objects
+    MNU_ACTION=MNU_NEW+1000, // leave space for objects
+
+	MNU_FAVOURITES_ADD=MNU_ACTION+1000, // leave space for actions
+	MNU_FAVOURITES_MANAGE,
+	// Leave space for actual favourites here
 };
 
 

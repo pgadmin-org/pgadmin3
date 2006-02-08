@@ -16,7 +16,6 @@
 #include <wx/wx.h>
 #include <wx/treectrl.h>
 
-
 class pgObject;
 class pgCollection;
 class pgaFactory;

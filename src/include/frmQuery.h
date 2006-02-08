@@ -14,6 +14,7 @@
 
 #include "dlgClasses.h"
 #include "base/factory.h"
+#include "favourites.h"
 
 class ExplainCanvas;
 class ctlSQLResult;
@@ -66,6 +67,9 @@ private:
     void OnActivate(wxActivateEvent& event);
     void OnFocus(wxFocusEvent& event);
 	void OnSelectAll(wxCommandEvent& event);
+	void OnAddFavourite(wxCommandEvent& event);
+	void OnManageFavourites(wxCommandEvent& event);
+	void OnSelectFavourite(wxCommandEvent& event);
 
     bool CheckChanged(bool canVeto);
     void OpenLastFile();
@@ -74,10 +78,14 @@ private:
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
+	void UpdateFavouritesList();
     wxWindow *currentControl();
     wxMenu *queryMenu;
+	wxMenu *favouritesMenu;
     wxString title;
     wxString lastFilename, lastDir;
+
+	queryFavouriteFolder *favourites;
 
     bool aborted;
     bool lastFileFormat;

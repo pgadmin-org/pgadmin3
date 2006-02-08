@@ -68,6 +68,37 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 ])
 
 #####################
+# Locate libxml    #
+#####################
+AC_DEFUN([LOCATE_LIBXML2],
+[
+   AC_ARG_WITH(libxml2, [  --with-libxml2=DIR  root directory for libxml2 installation],
+   [
+      if test "$withval" != no
+      then
+         XML2_HOME="$withval"
+         if test ! -f "${XML2_HOME}/bin/xml2-config"
+         then
+            AC_MSG_ERROR([Could not find your libxml2 installation in ${XML2_HOME}])
+         fi
+      fi
+      XML2_CONFIG=${XML2_HOME}/bin/xml2-config
+   ],
+   [
+      XML2_HOME=/usr/local
+      if test ! -f "${XML2_HOME}/bin/xml2-config"
+      then
+          XML2_HOME=/usr
+          if test ! -f "${XML2_HOME}/bin/xml2-config"
+          then
+             AC_MSG_ERROR([Could not find your libxml2 installation. You might need to use the --with-libxml2=DIR configure option])
+          fi
+      fi
+      XML2_CONFIG=${XML2_HOME}/bin/xml2-config
+   ])
+])
+
+#####################
 # Locate PostgreSQL #
 #####################
 AC_DEFUN([LOCATE_POSTGRESQL],
@@ -314,6 +345,30 @@ AC_DEFUN([SETUP_WXWIDGETS],
 	fi
 ])
 AC_SUBST(WX_CONFIG)
+
+#########################
+# Setup libxml2 headers #
+#########################
+AC_DEFUN([SETUP_LIBXML2],
+[
+    if test -n "${XML2_HOME}"
+    then
+        XML2_CFLAGS=`${XML2_CONFIG} --cflags`
+        XML2_LIBS=`${XML2_CONFIG} --libs`
+        AC_MSG_CHECKING(libxml2 in ${XML2_HOME})
+        if test "${XML2_CFLAGS}" = "" -o "${XML2_LIBS}" = ""
+        then
+            AC_MSG_RESULT(failed)
+            AC_MSG_ERROR([Your libxml2 installation does not appear to be complete])
+        else
+            AC_MSG_RESULT(ok)
+            CPPFLAGS="$CPPFLAGS $XML2_CFLAGS"
+            LIBS="$LIBS $XML2_LIBS"
+        fi
+    fi
+])
+AC_SUBST(XML2_CONFIG)
+        
 
 ###########
 # Cleanup #

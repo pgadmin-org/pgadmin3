@@ -38,15 +38,19 @@ $(srcdir)/schema/pgDatatype.cpp \
 $(srcdir)/agent/pgaJob.cpp $(srcdir)/agent/pgaStep.cpp $(srcdir)/agent/pgaSchedule.cpp \
 $(srcdir)/agent/dlgJob.cpp $(srcdir)/agent/dlgSchedule.cpp $(srcdir)/agent/dlgStep.cpp \
 \
-$(srcdir)/ctl/xh_sqlbox.cpp $(srcdir)/ctl/xh_calb.cpp $(srcdir)/ctl/xh_timespin.cpp $(srcdir)/ctl/xh_ctlcombo.cpp \
-$(srcdir)/ctl/ctlSecurityPanel.cpp $(srcdir)/ctl/ctlComboBox.cpp $(srcdir)/ctl/ctlTree.cpp \
-$(srcdir)/ctl/calbox.cpp $(srcdir)/ctl/timespin.cpp $(srcdir)/ctl/ctlListView.cpp \
+$(srcdir)/ctl/xh_sqlbox.cpp $(srcdir)/ctl/xh_calb.cpp \
+$(srcdir)/ctl/xh_timespin.cpp $(srcdir)/ctl/xh_ctlcombo.cpp \
+$(srcdir)/ctl/xh_ctltree.cpp \
+$(srcdir)/ctl/ctlSecurityPanel.cpp $(srcdir)/ctl/ctlComboBox.cpp \
+$(srcdir)/ctl/ctlTree.cpp $(srcdir)/ctl/calbox.cpp \
+$(srcdir)/ctl/timespin.cpp $(srcdir)/ctl/ctlListView.cpp \
 $(srcdir)/ctl/ctlSQLBox.cpp $(srcdir)/ctl/ctlSQLResult.cpp \
 $(srcdir)/ctl/explainCanvas.cpp $(srcdir)/ctl/explainShape.cpp \
 \
 $(srcdir)/dlg/dlgEditGridOptions.cpp $(srcdir)/dlg/dlgConnect.cpp \
 $(srcdir)/dlg/dlgHbaConfig.cpp $(srcdir)/dlg/dlgMainConfig.cpp \
 $(srcdir)/dlg/dlgPgpassConfig.cpp $(srcdir)/dlg/dlgSelectConnection.cpp \
+$(srcdir)/dlg/dlgAddFavourite.cpp $(srcdir)/dlg/dlgManageFavourites.cpp \
 \
 $(srcdir)/frm/frmExport.cpp $(srcdir)/frm/frmAbout.cpp \
 $(srcdir)/frm/frmIndexcheck.cpp  $(srcdir)/frm/frmMain.cpp \
@@ -70,7 +74,7 @@ $(srcdir)/dlg/dlgCheck.cpp \
 $(srcdir)/utils/sysSettings.cpp $(srcdir)/utils/sysProcess.cpp \
 $(srcdir)/utils/misc.cpp $(srcdir)/utils/utffile.cpp \
 $(srcdir)/utils/pgconfig.cpp $(srcdir)/utils/update.cpp \
-$(srcdir)/utils/tabcomplete.c \
+$(srcdir)/utils/tabcomplete.c $(srcdir)/utils/favourites.cpp \
 \
 $(srcdir)/slony/slCluster.cpp $(srcdir)/slony/slNode.cpp \
 $(srcdir)/slony/slPath.cpp $(srcdir)/slony/slListen.cpp $(srcdir)/slony/slSet.cpp \

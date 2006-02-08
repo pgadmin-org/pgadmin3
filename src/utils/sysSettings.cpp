@@ -508,17 +508,16 @@ void sysSettings::SetDoubleClickProperties(const bool newval)
 //////////////////////////////////////////////////////////////////////////
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
-	if (cfgname == PGPASS)
+	if (cfgname == PGPASS || cfgname == PGAFAVOURITES)
 	{
 	    wxStandardPaths stdp;
 	    wxString fname=stdp.GetUserConfigDir()
 #ifdef WIN32
 	        + wxT("\\postgresql"); 
 	    mkdir(fname.ToAscii());
-	    fname += wxT("\\pgpass.conf");
-
+		fname += (cfgname==PGPASS)?wxT("\\pgpass.conf"):wxT("\\pgadmin_favourites.xml");
 #else
-	    + wxT("/.pgpass");
+			+ ((cfgname==PGPASS)?wxT("/.pgpass"):wxT("/.pgadminfavourites"));
 #endif
 		return fname;
 	}

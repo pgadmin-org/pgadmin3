@@ -82,6 +82,7 @@ extern sysSettings *settings;
 #define CTRL_SPIN(id)           (XRCCTRL(*this, id, wxSpinCtrl))
 #define CTRL_CHECKLISTBOX(id)   (XRCCTRL(*this, id, wxCheckListBox))
 #define CTRL_DATEPICK(id)       (XRCCTRL(*this, id, wxDatePickerCtrl))
+#define CTRL_TREE(id)           (XRCCTRL(*this, id, ctlTree))
 
 // Conversions
 wxString BoolToStr(bool value);         // english; used for config values

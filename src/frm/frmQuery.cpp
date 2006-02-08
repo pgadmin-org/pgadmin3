@@ -24,6 +24,9 @@
 #include "ctl/ctlSQLResult.h"
 #include "pgDatabase.h"
 #include "dlgSelectConnection.h"
+#include "dlgAddFavourite.h"
+#include "dlgManageFavourites.h"
+#include "favourites.h"
 
 #include <wx/clipbrd.h>
 
@@ -74,6 +77,9 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
 	EVT_MENU(MNU_SELECTALL,		    frmQuery::OnSelectAll)
+	EVT_MENU(MNU_FAVOURITES_ADD,	frmQuery::OnAddFavourite)
+	EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
+	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
     EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
@@ -145,6 +151,14 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->AppendSeparator();
     queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
+
+	favouritesMenu = new wxMenu();
+	favouritesMenu->Append(MNU_FAVOURITES_ADD, _("Add favourite"), _("Add current query to favourites"));
+	favouritesMenu->Append(MNU_FAVOURITES_MANAGE, _("Manage favourites"), _("Edit and delete favourites"));
+	favouritesMenu->AppendSeparator();
+	favourites = queryFavouriteFileProvider::LoadFavourites(true);
+	UpdateFavouritesList();
+	menuBar->Append(favouritesMenu, _("&Favourites"));
 
     wxMenu *helpMenu=new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the pgAdmin III helpfile."));
@@ -283,6 +297,9 @@ frmQuery::~frmQuery()
         delete (pgConn*)cbConnection->GetClientData(0);
         cbConnection->Delete(0);
     }
+
+	if (favourites)
+		delete favourites;
 }
 
 
@@ -691,6 +708,7 @@ void frmQuery::updateMenu(wxObject *obj)
     bool canRedo=false;
     bool canClear=false;
     bool canFind=false;
+	bool canAddFavourite=false;
 
 
     if (!obj || obj == sqlQuery)
@@ -702,6 +720,8 @@ void frmQuery::updateMenu(wxObject *obj)
         canCut = true;
         canClear = true;
         canFind = true;
+
+		canAddFavourite = (sqlQuery->GetLength() > 0);
     }
     else if (obj == msgResult || obj == msgHistory)
     {
@@ -726,8 +746,73 @@ void frmQuery::updateMenu(wxObject *obj)
 
     toolBar->EnableTool(MNU_FIND, canFind);
     editMenu->Enable(MNU_FIND, canFind);
+
+	favouritesMenu->Enable(MNU_FAVOURITES_ADD, canAddFavourite);
 }
 
+void frmQuery::UpdateFavouritesList()
+{
+	while (favouritesMenu->GetMenuItemCount() > 3)
+	{
+		favouritesMenu->Destroy(favouritesMenu->GetMenuItems()[3]);
+	}
+
+	favourites->AppendAllToMenu(favouritesMenu, MNU_FAVOURITES_MANAGE+1);
+}
+
+void frmQuery::OnAddFavourite(wxCommandEvent &event)
+{
+	if (sqlQuery->GetText().Trim().IsEmpty())
+		return;
+	if (dlgAddFavourite(this,favourites).AddFavourite(sqlQuery->GetText()))
+	{
+		/* Added a favourite, so save */
+		queryFavouriteFileProvider::SaveFavourites(favourites);
+		UpdateFavouritesList();
+	}
+}
+
+void frmQuery::OnManageFavourites(wxCommandEvent &event)
+{
+	int r = dlgManageFavourites(this,favourites).ManageFavourites();
+	if (r == 1)
+	{
+		/* Changed something, so save */
+		queryFavouriteFileProvider::SaveFavourites(favourites);
+		UpdateFavouritesList();
+	}
+	else if (r == -1)
+	{
+		/* Changed something requiring rollback */
+		delete favourites;
+		favourites = queryFavouriteFileProvider::LoadFavourites(true);
+		UpdateFavouritesList();
+	}
+}
+
+void frmQuery::OnSelectFavourite(wxCommandEvent &event)
+{
+	queryFavouriteItem *fav;
+
+	fav = favourites->FindFavourite(event.GetId());
+	if (!fav)
+		return;
+
+	if (!sqlQuery->GetText().Trim().IsEmpty())
+	{
+		int r = wxMessageDialog(this, _("Replace current query?"), _("Confirm replace"), wxYES_NO | wxCANCEL | wxICON_QUESTION).ShowModal();
+		if (r == wxID_CANCEL)
+			return;
+		else if (r == wxID_YES)
+			sqlQuery->ClearAll();
+		else
+		{
+			if (sqlQuery->GetText().Last() != '\n')
+				sqlQuery->AddText(wxT("\n")); // Add a newline after the last query
+		}
+	}
+	sqlQuery->AddText(fav->GetContents());
+}
 
 
 bool frmQuery::CheckChanged(bool canVeto)

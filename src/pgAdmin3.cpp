@@ -57,6 +57,7 @@
 #include "ctl/xh_timespin.h"
 #include "ctl/xh_sqlbox.h"
 #include "ctl/xh_ctlcombo.h"
+#include "ctl/xh_ctltree.h"
 
 #include "base/appbase.h"
 
@@ -347,6 +348,7 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->AddHandler(new wxTimeSpinXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlSQLBoxXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlComboBoxXmlHandler);
+    wxXmlResource::Get()->AddHandler(new ctlTreeXmlHandler);
 
 
     appearanceFactory = new pgAppearanceFactory();
