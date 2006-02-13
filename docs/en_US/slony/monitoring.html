@@ -17,7 +17,7 @@
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id516414"></a>4.1. CONFIG notices</h3></div></div></div>
+<a name="id516774"></a>4.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -34,7 +34,7 @@ CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id516438"></a>4.2. DEBUG Notices</h3></div></div></div>
+<a name="id516798"></a>4.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -63,7 +63,7 @@ events.</p></dd>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id516495"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id516855"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
 <p> Note that as far as slon is concerned, there is no "master" or
 "slave."  They are just nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -136,12 +136,12 @@ about how the threads work, what to expect in the logs after you run a</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id516713"></a>4.4.  Nagios Replication Checks </h3></div></div></div>
+<a name="id517073"></a>4.4.  <span class="productname">Nagios</span>&amp; Replication Checks </h3></div></div></div>
 <p> The script in the <code class="filename">tools</code> directory called
-<code class="command"> pgsql_replication_check.pl </code> represents about best
-answers yet arrived at in several attempts to build replication tests
-to plug into the <a href="http://www.nagios.org/" target="_top"> Nagios </a>
-system monitoring tool.</p>
+<code class="command"> pgsql_replication_check.pl </code> represents some of the
+best answers arrived at in attempts to build replication tests to plug
+into the <a href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span> </a> system
+monitoring tool.</p>
 <p> A former script, <code class="filename">test_slony_replication.pl</code>, took a &#8220;<span class="quote">clever</span>&#8221;
 approach where a &#8220;<span class="quote">test script</span>&#8221; is periodically run, which
 rummages through the <span class="productname">Slony-I</span> configuration to find origin and
@@ -152,8 +152,10 @@ the system.  It had two problems:</p>
 <span class="emphasis"><em>single</em></span> host where the test ran would make it look
 as though replication was destroyed.  Overall, this monitoring
 approach has been fragile to numerous error conditions.</p></li>
-<li><p> Nagios has no ability to benefit from the
-&#8220;<span class="quote">cleverness</span>&#8221; of automatically exploring the set of nodes.</p></li>
+<li><p> <span class="productname">Nagios</span> has no ability to benefit from the
+&#8220;<span class="quote">cleverness</span>&#8221; of automatically exploring the set of nodes.
+You need to set up a <span class="productname">Nagios</span> monitoring rule for each and every node
+being monitored.  </p></li>
 </ul></div>
 <p> The new script, <code class="command">pgsql_replication_check.pl</code>,
 takes the minimalist approach of assuming that the system is an online
@@ -170,12 +172,41 @@ number for the most recently processed order. </p></li>
 most recently created domain.</p></li>
 </ul></div>
 <p> An instance of the script will need to be run for each node
-that is to be monitored; that is the way
-<span class="application">Nagios</span> works. </p>
+that is to be monitored; that is the way <span class="productname">Nagios</span> works. </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="testslonystate"></a>4.5.  test_slony_state</h3></div></div></div>
+<a name="slonymrtg"></a>4.5.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
+<p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
+<a href="http://people.ee.ethz.ch/~oetiker/webtools/mrtg/" target="_top"><span class="application"> mrtg - Multi Router Traffic Grapher </span></a> to monitor <span class="productname">Slony-I</span> replication.</p>
+<p> ... Since I use <span class="application">mrtg</span> to graph data
+from multiple servers I use snmp (<span class="application">net-snmp</span>
+to be exact).  On database server, I added the following line to
+<span class="application">snmpd</span> configuration:
+
+</p>
+<pre class="programlisting">exec replicationLagTime  /cvs/scripts/snmpReplicationLagTime.sh 2</pre>
+<p>
+
+where <code class="filename"> /cvs/scripts/snmpReplicationLagTime.sh</code> looks like this:
+
+</p>
+<pre class="programlisting">#!/bin/bash
+/home/pgdba/work/bin/psql -U pgdba -h 127.0.0.1 -p 5800 -d _DBNAME_ -qAt -c
+"select cast(extract(epoch from st_lag_time) as int8) FROM _irr.sl_status
+WHERE st_received = $1"</pre>
+<p>
+</p>
+<p> Then, in mrtg configuration,  add this target:</p>
+<pre class="programlisting">Target[db_replication_lagtime]:extOutput.3&amp;extOutput.3:public at db::30:::
+MaxBytes[db_replication_lagtime]: 400000000
+Title[db_replication_lagtime]: db: replication lag time
+PageTop[db_replication_lagtime]: &lt;H1&gt;db: replication lag time&lt;/H1&gt;
+Options[db_replication_lagtime]: gauge,nopercent,growright</pre>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="testslonystate"></a>4.6.  test_slony_state</h3></div></div></div>
 <p> This script is in preliminary stages, and may be used to do
 some analysis of the state of a <span class="productname">Slony-I</span> cluster.</p>
 <p> You specify arguments including <code class="option">database</code>,

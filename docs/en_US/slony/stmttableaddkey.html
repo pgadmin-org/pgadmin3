@@ -23,7 +23,7 @@
 <div class="cmdsynopsis"><p><code class="command">TABLE ADD KEY (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id535213"></a><h2>Description</h2>
+<a name="id536224"></a><h2>Description</h2>
 <p>     In the <span class="productname">Slony-I</span> replication system,
      every replicated table is required to have at least one
      <code class="command">UNIQUE</code> constraint whose columns are
@@ -55,16 +55,52 @@
     we can't see there being terribly much interest in replicating
     tables that contain no application data.</p>
 </div>
+<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Caution</h3>
+<p> <code class="command">TABLE ADD KEY</code> <span class="emphasis"><em>should
+    not be used</em></span> if you can possibly avoid it.  It is
+    emphatically <span class="emphasis"><em>not</em></span> a <a href="bestpractices.html" title="20.  Slony-I &#8220;Best Practices&#8221; ">Best Practice</a>. </p>
+<p> The absence of a proper primary key should be a big red
+    flag that the database schema is <span class="emphasis"><em>broken.</em></span> The
+    <span class="emphasis"><em>right</em></span> way to repair this is to introduce a
+    proper primary key, not to have <span class="productname">Slony-I</span> &#8220;<span class="quote">fake</span>&#8221; one
+    up.</p>
+<p>It is <span class="emphasis"><em>not</em></span> supported in <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping</a>,
+    and will not be.</p>
+</div>
 <p> This uses <a href="function.tableaddkey-text.html">schemadoctableaddkey( text )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id535335"></a><h2>Example</h2>
+<a name="id536412"></a><h2>Example</h2>
 <pre class="programlisting">     TABLE ADD KEY ( NODE ID = 1, 
      FULLY QUALIFIED NAME = 'public.history' );
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id535345"></a><h2> Version Information </h2>
+<a name="id536422"></a><h2> Locking Behaviour </h2>
+<p> On the origin node, this will take out an exclusive lock on
+    the table being modified for as long as it takes to:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Alter the table, adding the column;</p></li>
+<li><p> Alter each row in the table, attaching the sequence value;</p></li>
+<li><p> Adding the new unique index to the table.</p></li>
+</ul></div>
+<p>
+
+    </p>
+<p> On subscriber nodes, these alterations take place on the
+    table when it is empty, and do not add any particular additional
+    burden to subscription time where the table will be locked on the
+    subscriber node.</p>
+<p> If the table is large and frequently updated, by your
+    applications, this will impose a not-insignificant application
+    outage for the duration of the time it takes to modify the table
+    on the origin node.  That is why it is recommended that this
+    command should not be used if you can possibly avoid it.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id536462"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

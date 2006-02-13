@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-subquery.html" title="9.16. Subquery Expressions">
 <link rel="next" href="functions-srf.html" title="9.18. Set Returning Functions">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-comparisons"></a>9.17. Row and Array Comparisons</h2></div></div></div>
-<a name="id568132"></a><a name="id568138"></a><a name="id568144"></a><a name="id568150"></a><a name="id568156"></a><a name="id568162"></a><a name="id568171"></a><a name="id568177"></a><a name="id568184"></a><p>   This section describes several specialized constructs for making
+<a name="id568108"></a><a name="id568114"></a><a name="id568120"></a><a name="id568126"></a><a name="id568132"></a><a name="id568138"></a><a name="id568148"></a><a name="id568154"></a><a name="id568160"></a><p>   This section describes several specialized constructs for making
    multiple comparisons between groups of values.  These forms are
    syntactically related to the subquery forms of the previous section,
    but do not involve subqueries.
@@ -25,7 +25,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id568210"></a>9.17.1. <code class="literal">IN</code></h3></div></div></div>
+<a name="id568187"></a>9.17.1. <code class="literal">IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IN (<em class="replaceable"><code>value</code></em>[<span class="optional">, ...</span>])</pre>
 <p>   The right-hand side is a parenthesized list
    of scalar expressions.  The result is &#8220;<span class="quote">true</span>&#8221; if the left-hand expression's
@@ -49,7 +49,7 @@ OR
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id568275"></a>9.17.2. <code class="literal">NOT IN</code></h3></div></div></div>
+<a name="id568252"></a>9.17.2. <code class="literal">NOT IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> NOT IN (<em class="replaceable"><code>value</code></em>[<span class="optional">, ...</span>])</pre>
 <p>   The right-hand side is a parenthesized list
    of scalar expressions.  The result is &#8220;<span class="quote">true</span>&#8221; if the left-hand expression's
@@ -82,7 +82,7 @@ AND
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id568370"></a>9.17.3. <code class="literal">ANY</code>/<code class="literal">SOME</code> (array)</h3></div></div></div>
+<a name="id568347"></a>9.17.3. <code class="literal">ANY</code>/<code class="literal">SOME</code> (array)</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ANY (<em class="replaceable"><code>array expression</code></em>)
 <em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> SOME (<em class="replaceable"><code>array expression</code></em>)</pre>
 <p>   The right-hand side is a parenthesized expression, which must yield an
@@ -100,7 +100,7 @@ AND
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id568450"></a>9.17.4. <code class="literal">ALL</code> (array)</h3></div></div></div>
+<a name="id568427"></a>9.17.4. <code class="literal">ALL</code> (array)</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ALL (<em class="replaceable"><code>array expression</code></em>)</pre>
 <p>   The right-hand side is a parenthesized expression, which must yield an
    array value.
@@ -115,7 +115,7 @@ AND
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id568501"></a>9.17.5. Row-wise Comparison</h3></div></div></div>
+<a name="id568477"></a>9.17.5. Row-wise Comparison</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> <em class="replaceable"><code>row_constructor</code></em></pre>
 <p>   Each side is a row constructor,
    as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
@@ -131,7 +131,7 @@ AND
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of the row comparison is unknown (null).
   </p>
-<a name="id568566"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> IS DISTINCT FROM <em class="replaceable"><code>row_constructor</code></em></pre>
+<a name="id568542"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> IS DISTINCT FROM <em class="replaceable"><code>row_constructor</code></em></pre>
 <p>   This construct is similar to a <code class="literal">&lt;&gt;</code> row comparison,
    but it does not yield null for null inputs.  Instead, any null value is
    considered unequal to (distinct from) any non-null value, and any two

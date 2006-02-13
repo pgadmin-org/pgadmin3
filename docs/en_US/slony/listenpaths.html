@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="listenpaths"></a>8. <span class="productname">Slony-I</span> listen paths</h2></div></div></div>
-<a name="id518366"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<a name="id518862"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> If you are running version
 <span class="productname">Slony-I</span> 1.1 or later it should be
@@ -40,7 +40,7 @@ therefore be purged.  this extra communication is needful so
 locations.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id518475"></a>8.1. How listening can break</h3></div></div></div>
+<a name="id518971"></a>8.1. How listening can break</h3></div></div></div>
 <p>On one occasion, I had a need to drop a subscriber node (#2) and
 recreate it.  That node was the data provider for another subscriber
 (#3) that was, in effect, a &#8220;<span class="quote">cascaded slave.</span>&#8221; Dropping
@@ -65,7 +65,7 @@ it discovered a place to get <code class="command">sync</code> events.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id518560"></a>8.2. How the listen configuration should look</h3></div></div></div>
+<a name="id519056"></a>8.2. How the listen configuration should look</h3></div></div></div>
 <p>The simple cases tend to be simple to cope with.  We need to
 instead look at a more complex node configuration.</p>
 <p>Consider a set of nodes, 1 thru 6, where 1 is the origin, 
@@ -183,11 +183,6 @@ receiver as a provider.</p></li>
 <p> Any time <a href="table.sl-subscribe.html">sl_subscribe</a> or <a href="table.sl-path.html">sl_path</a> are modified,
 <code class="function">RebuildListenEntries()</code> will be called to revise
 the listener paths.</p>
-<p> If you are running an earlier version of <span class="productname">Slony-I</span>, you may want
-to take a look at <a href="altperl.html#regenlisten" title="18.25. regenerate-listens">Section 18.25, &#8220;regenerate-listens&#8221;</a>, a Perl script which
-duplicates the functionality of the stored procedure in the form of a
-script that generates the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> requests to
-generate the listener paths.</p>
 </div>
 </div></body>
 </html>

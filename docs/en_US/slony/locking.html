@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="locking"></a>10. Locking Issues</h2></div></div></div>
-<a name="id519271"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+<a name="id519712"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
 Multi-Version Concurrency Control (<span class="acronym">MVCC</span>) is that
 this eliminates a whole host of reasons to need to lock database
 objects.  On some other database systems, you need to acquire a table
@@ -32,7 +32,7 @@ modifying <span class="productname">Slony-I</span> configuration can bring back 
 <li>
 <p><a href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add
 table</code> </a></p>
-<p> A momentary table lock must be acquired on the
+<p> A momentary exclusive table lock must be acquired on the
 &#8220;<span class="quote">origin</span>&#8221; node in order to add the trigger that collects
 updates for that table.  It only needs to be acquired long enough to
 establish the new trigger.</p>
@@ -40,9 +40,10 @@ establish the new trigger.</p>
 <li>
 <p><a href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move
 set</code> </a></p>
-<p> When a set origin is shifted from one node to another, locks
-must be acquired on each of the tables on both the old origin and the
-new origin in order to change the triggers on the tables.</p>
+<p> When a set origin is shifted from one node to another,
+exclusive locks must be acquired on each replicated table on both the
+old origin and the new origin in order to change the triggers on the
+tables.  </p>
 </li>
 <li>
 <p><a href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set</code> </a> </p>
@@ -59,12 +60,20 @@ being restored.  The operation therefore must acquire table locks on
 all replicated tables on each node. </p>
 </li>
 <li>
-<p> During the <code class="command">COPY_SET</code> event on a new
-subscriber </p>
+<p> During the <code class="command">SUBSCRIBE_SET</code> event on
+a new subscriber </p>
 <p> In a sense, this is the least provocative scenario, since,
 before the replication set has been populated, it is pretty reasonable
 to say that the node is &#8220;<span class="quote">unusable</span>&#8221; and that <span class="productname">Slony-I</span>
 could reasonably demand exclusive access to the node. </p>
+<p> A change in version 1.2 is that an express <code class="command">LOCK
+TABLE</code> SQL request is submitted in the loop that validates
+that all of the tables are there.  This means that
+<span class="emphasis"><em>all</em></span> tables in the replication set will be locked
+via an exclusive lock for the entire duration of the process of
+subscription.  By locking the tables early, this means that the
+subscription cannot fail after copying some of the data due to some
+other process having held on to a table. </p>
 </li>
 </ul></div>
 <p> Each of these actions requires, at some point, modifying each

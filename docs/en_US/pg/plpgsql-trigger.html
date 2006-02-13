@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-errors-and-messages.html" title="36.9. Errors and Messages">
 <link rel="next" href="plpgsql-porting.html" title="36.11. Porting from Oracle PL/SQL">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plpgsql-trigger"></a>36.10. Trigger Procedures</h2></div></div></div>
-<a name="id674008"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
+<a name="id673956"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
         procedures. A trigger procedure is created with the
         <code class="command">CREATE FUNCTION</code> command, declaring it as a function with
         no arguments and a return type of <code class="type">trigger</code>.  Note that
@@ -286,16 +286,17 @@ CREATE OR REPLACE FUNCTION maint_sales_summary_bytime() RETURNS TRIGGER AS $main
         END IF;
 
 
-        -- Update the summary row with the new values.
-        UPDATE sales_summary_bytime
-            SET amount_sold = amount_sold + delta_amount_sold,
-                units_sold = units_sold + delta_units_sold,
-                amount_cost = amount_cost + delta_amount_cost
-            WHERE time_key = delta_time_key;
+        -- Insert or update the summary row with the new values.
+        &lt;&lt;insert_update&gt;&gt;
+        LOOP
+            UPDATE sales_summary_bytime
+                SET amount_sold = amount_sold + delta_amount_sold,
+                    units_sold = units_sold + delta_units_sold,
+                    amount_cost = amount_cost + delta_amount_cost
+                WHERE time_key = delta_time_key;
 
+            EXIT insert_update WHEN found;    
 
-        -- There might have been no row with this time_key (e.g new data!).
-        IF (NOT FOUND) THEN
             BEGIN
                 INSERT INTO sales_summary_bytime (
                             time_key, 
@@ -308,20 +309,15 @@ CREATE OR REPLACE FUNCTION maint_sales_summary_bytime() RETURNS TRIGGER AS $main
                             delta_units_sold,
                             delta_amount_cost
                            );
-            EXCEPTION
-                --
-                -- Catch race condition when two transactions are adding data
-                -- for a new time_key.
-                --
-                WHEN UNIQUE_VIOLATION THEN
-                    UPDATE sales_summary_bytime
-                        SET amount_sold = amount_sold + delta_amount_sold,
-                            units_sold = units_sold + delta_units_sold,
-                            amount_cost = amount_cost + delta_amount_cost
-                        WHERE time_key = delta_time_key;
 
+                EXIT insert_update;
+
+            EXCEPTION
+                WHEN UNIQUE_VIOLATION THEN
+                    -- do nothing
             END;
-        END IF;
+        END LOOP insert_update;
+
         RETURN NULL;
 
     END;
@@ -329,7 +325,17 @@ $maint_sales_summary_bytime$ LANGUAGE plpgsql;
 
 CREATE TRIGGER maint_sales_summary_bytime
 AFTER INSERT OR UPDATE OR DELETE ON sales_fact
-    FOR EACH ROW EXECUTE PROCEDURE maint_sales_summary_bytime();</pre>
+    FOR EACH ROW EXECUTE PROCEDURE maint_sales_summary_bytime();
+
+INSERT INTO sales_fact VALUES(1,1,1,10,3,15);
+INSERT INTO sales_fact VALUES(1,2,1,20,5,35);
+INSERT INTO sales_fact VALUES(2,2,1,40,15,135);
+INSERT INTO sales_fact VALUES(2,3,1,10,1,13);
+SELECT * FROM sales_summary_bytime;
+DELETE FROM sales_fact WHERE product_key = 1;
+SELECT * FROM sales_summary_bytime;
+UPDATE sales_fact SET units_sold = units_sold * 2;
+SELECT * FROM sales_summary_bytime;</pre>
 </div>
 </div></body>
 </html>

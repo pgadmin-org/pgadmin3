@@ -15,15 +15,13 @@
 <a name="addthings"></a>11. Adding Things to Replication</h2></div></div></div>
 <p>You may discover that you have missed replicating things that
 you wish you were replicating.</p>
-<p>This can be fairly easily remedied.</p>
-<p>You cannot directly use <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
-<a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> or <a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>
-in order to add tables and sequences
-to a replication set that is presently replicating; you must instead
-create a new replication set.  Once it is identically subscribed
-(e.g. - the set of providers and subscribers is <span class="emphasis"><em>entirely
-identical</em></span> to that for the set it is to merge with), the
-sets may be merged together using <a href="stmtmergeset.html" title="MERGE
+<p>This can generally be fairly easily remedied.</p>
+<p>You cannot directly use <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> or <a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a> in
+order to add tables and sequences to a replication set that is
+presently replicating; you must instead create a new replication set.
+Once it is identically subscribed (e.g. - the set of providers and
+subscribers is <span class="emphasis"><em>entirely identical</em></span> to that for the
+set it is to merge with), the sets may be merged together using <a href="stmtmergeset.html" title="MERGE
      SET"><span class="refentrytitle">MERGE
      SET</span></a>.</p>
 <p>Up to and including 1.0.2, there was a potential problem where
@@ -53,5 +51,111 @@ node reconfigurations by making sure that one change has been
 successfully processed before going on to the next.  It's way easier
 to fix one thing that has broken than to piece things together after
 the interaction of five things that have all broken.</p>
+<p> Here are a set of &#8220;<span class="quote">recipes</span>&#8221; for how to do various
+sorts of modifications to replication configuration:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Adding a table to replication </p>
+<p> <span class="productname">Slony-I</span> does not allow you to add a table to a replication set
+that is already being replicated. In principle, it would certainly be
+<span class="emphasis"><em>possible;</em></span> what would happen is that the
+SET_ADD_TABLE event would lead to the relevant code from the
+SUBSCRIBE_SET event being invoked to initialize the table. That would,
+regrettably, significantly complicate the logic of all of these
+components, so this is not permitted. </p>
+<p>Instead, what you must do is thus:
+
+</p>
+<div class="itemizedlist"><ul type="circle">
+<li>
+<p> Add the new table on each node. </p>
+<p> In principle, <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> could be used for
+this, but the fact that this leads to <a href="locking.html" title="10. Locking Issues"> Locking
+Issues </a> and requires altering <span class="emphasis"><em>all</em></span> tables
+in some existing replication set, on <span class="emphasis"><em>all</em></span> nodes,
+makes <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> an unattractive approach on a
+busy system.  This breaks the <span class="productname">Slony-I</span> feature that you &#8220;<span class="quote">don't
+have to interrupt normal activity to introduce replication.</span>&#8221;</p>
+<p> Instead, you can add the table via
+<span class="application">psql</span> on each node.
+</p>
+</li>
+<li><p> Create a new replication set <a href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a></p></li>
+<li><p> 
+Add the table to the new set <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> </p></li>
+<li><p> 
+Request subscription <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> for this new set. If there are several nodes, you will need to <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> once for each node that should subscribe.</p></li>
+<li><p> 
+Once the subscriptions have all been set up so that the new set has an identical set of subscriptions to the old set, you can merge the new set in alongside the old one via <a href="stmtmergeset.html" title="MERGE
+     SET"><span class="refentrytitle">MERGE
+     SET</span></a></p></li>
+</ul></div>
+</li>
+<li>
+<p> How to add columns to a replicated table </p>
+<p> This also answers the question &#8220;<span class="quote">How do I rename columns
+on a replicated table?</span>&#8221;, and, more generally, other questions
+to the effect of &#8220;<span class="quote">How do I modify the definitions of replicated
+tables?</span>&#8221;</p>
+<p>If you change the &#8220;<span class="quote">shape</span>&#8221; of a replicated table, this needs to take place at exactly the same point in all of the &#8220;<span class="quote">transaction streams</span>&#8221; on all nodes that are subscribed to the set containing the table.</p>
+<p> Thus, the way to do this is to construct an SQL script consisting of the DDL changes, and then submit that script to all of the nodes via the Slonik command <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>.
+</p>
+<p> There are a number of &#8220;<span class="quote">sharp edges</span>&#8221; to note...
+</p>
+<div class="itemizedlist"><ul type="circle">
+<li><p> You absolutely <span class="emphasis"><em>must not</em></span> include transaction control commands, particularly <code class="command">BEGIN</code> and <code class="command">COMMIT</code>, inside these DDL scripts. <span class="productname">Slony-I</span> wraps DDL scripts with a <code class="command">BEGIN</code>/<code class="command">COMMIT</code> pair; adding extra transaction control will mean that parts of the DDL will commit outside the control of <span class="productname">Slony-I</span> </p></li>
+<li><p> Avoid, if possible, having quotes in the DDL script </p></li>
+</ul></div>
+<p>
+</p>
+</li>
+<li>
+<p> How to remove replication for a node</p>
+<p> You will want to remove the various <span class="productname">Slony-I</span> components connected to the database(s).</p>
+<p> We will just consider, for now, doing this to one node. If you have multiple nodes, you will have to repeat this as many times as necessary.</p>
+<p> Components to be Removed: </p>
+<div class="itemizedlist"><ul type="circle">
+<li><p>    Log Triggers / Update Denial Triggers 
+</p></li>
+<li><p>    The "cluster" schema containing <span class="productname">Slony-I</span> tables indicating the state of the node as well as various stored functions </p></li>
+<li><p>    <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process that manages the node </p></li>
+<li><p>    Optionally, the SQL and pl/pgsql scripts and <span class="productname">Slony-I</span> binaries that are part of the <span class="productname">PostgreSQL</span> build. (Of course, this would make it challenging to restart replication; it is unlikely that you truly need to do this...) </p></li>
+</ul></div>
+<p> How To Conveniently Handle Removal</p>
+<div class="itemizedlist"><ul type="circle">
+<li><p>    You may use the Slonik <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> command to remove the node from the cluster. This will lead to the triggers and everything in the cluster schema being dropped from the node. The <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process will automatically die off. </p></li>
+<li><p>
+    In the case of a failed node (where you used <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to switch to another node), you may need to use <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> to drop out the triggers and schema and functions. </p></li>
+<li><p>
+    If the above things work out particularly badly, you could submit the SQL command <code class="command">DROP SCHEMA "_ClusterName" CASCADE;</code>, which will drop out <span class="productname">Slony-I</span> functions, tables, and triggers alike. </p></li>
+</ul></div>
+</li>
+<li>
+<p> Adding A Node To Replication</p>
+<p>Things are not fundamentally different whether you are adding a brand new, fresh node, or if you had previously dropped a node and are recreating it. In either case, you are adding a node to replication. </p>
+<p>The needful steps are thus... </p>
+<div class="itemizedlist"><ul type="circle">
+<li><p>   Determine the node number and any relevant DSNs for the new node.  Use <span class="productname">PostgreSQL</span> command <code class="command">createdb</code> to create the database; add the table definitions for the tables that are to be replicated, as <span class="productname">Slony-I</span> does not automatically propagate that information.</p></li>
+<li><p>   If the node had been a failed node, you may need to issue the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> in order to get rid of its vestiges in the cluster, and to drop out the schema that <span class="productname">Slony-I</span> creates.</p></li>
+<li><p>    Issue the slonik command <a href="stmtstorenode.html" title="STORE NODE"><span class="refentrytitle">STORE NODE</span></a> to establish the new node.</p></li>
+<li><p>    At this point, you may start a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>  daemon against the new node. It may not know much about the other nodes yet, so the logs for this node may be pretty quiet.</p></li>
+<li><p>    Issue the slonik command <a href="stmtstorepath.html" title="STORE
+     PATH"><span class="refentrytitle">STORE
+     PATH</span></a> to indicate how <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes are to communicate with the new node.  In <span class="productname">Slony-I</span> version 1.1 and later, this will then automatically generate <a href="listenpaths.html" title="8. Slony-I listen paths"> listen path </a> entries; in earlier versions, you will need to use <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> to generate them manually.</p></li>
+<li><p>   Issue the slonik command <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> to subscribe the node to some replication set. </p></li>
+</ul></div>
+</li>
+<li>
+<p> How do I reshape the subscriptions?
+</p>
+<p> For instance, I want subscriber node 3 to draw data from node
+1, when it is presently drawing data from node 2. </p>
+<p> This isn't a case for <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; we're not
+shifting the origin, just reshaping the subscribers. </p>
+<p> For this purpose, you can simply submit <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> requests to <span class="emphasis"><em>revise</em></span>
+the subscriptions.  Subscriptions will not be started from scratch;
+they will merely be reconfigured.  </p>
+</li>
+</ul></div>
 </div></body>
 </html>

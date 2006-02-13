@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-query.html" title="17.6. Query Planning">
 <link rel="next" href="runtime-config-statistics.html" title="17.8. Run-Time Statistics">
@@ -13,10 +13,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-logging"></a>17.7. Error Reporting and Logging</h2></div></div></div>
-<a name="id597823"></a><div class="sect2" lang="en">
+<a name="id597803"></a><div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-logging-where"></a>17.7.1. Where To Log</h3></div></div></div>
-<a name="id597844"></a><div class="variablelist"><dl>
+<a name="id597824"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
@@ -28,7 +28,7 @@
          option to a list of desired log destinations separated by
          commas. The default is to log to <span class="systemitem">stderr</span> 
          only.
-         This option can only be set at server start or in the
+         This option can be set at server start or in the
          <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
@@ -50,7 +50,7 @@
         determines the directory in which log files will be created.
         It may be specified as an absolute path, or relative to the
         cluster data directory.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
@@ -67,7 +67,7 @@
         if <code class="varname">log_filename</code> were <code class="literal">server_log</code>, then the
         chosen file name would be <code class="literal">server_log.1093827753</code>
         for a log starting at Sun Aug 29 19:02:33 2004 MST.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
@@ -78,7 +78,7 @@
         After this many minutes have elapsed, a new log file will
         be created.  Set to zero to disable time-based creation of
         new log files.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
@@ -89,7 +89,7 @@
         After this many kilobytes have been emitted into a log file,
         a new log file will be created.  Set to zero to disable size-based
         creation of new log files.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
@@ -106,7 +106,7 @@
         a <code class="varname">log_filename</code> like <code class="literal">postgresql-%H.log</code>
         would result in generating twenty-four hourly log files and then
         cyclically overwriting them.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> configuration file.
        </p>
 <p>        Example:  To keep 7 days of logs, one log file per day named
@@ -139,7 +139,7 @@
         the default is <code class="literal">LOCAL0</code>. See also the
         documentation of your system's
         <span class="application">syslog</span> daemon.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
@@ -150,7 +150,7 @@
          <span class="productname">PostgreSQL</span> messages in
          <span class="application">syslog</span> logs. The default is
          <code class="literal">postgres</code>.
-         This option can only be set at server start or in the
+         This option can be set at server start or in the
          <code class="filename">postgresql.conf</code> configuration file.
         </p></dd>
 </dl></div>
@@ -318,7 +318,7 @@
 <dd><p>        This outputs a line in the server log similar to
         <code class="varname">log_connections</code> but at session termination,
         and includes the duration of the session.  This is off by
-        default. This option can only be set at server start or in the
+        default. This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> configuration file.
        </p></dd>
 <dt>
@@ -346,7 +346,7 @@
          produces its own 
          time stamp and process ID information, so you probably do not want to
          use those escapes if you are using <span class="application">syslog</span>.
-         This option can only be set at server start or in the
+         This option can be set at server start or in the
          <code class="filename">postgresql.conf</code> configuration file.
 
          </p>
@@ -485,7 +485,7 @@
         connecting host. Turning on this option causes logging of the
         host name as well.  Note that depending on your host name resolution
         setup this might impose a non-negligible performance penalty. This
-        option can only be set at server start or in the
+        option can be set at server start or in the
         <code class="filename">postgresql.conf</code> file.
        </p></dd>
 </dl></div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
@@ -19,8 +19,8 @@
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id575295"></a>
-   <a name="id575305"></a>
+<p>   <a name="id575279"></a>
+   <a name="id575289"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -43,18 +43,21 @@
    equivalent to <code class="literal">=</code> and is not indexable.)
   </p>
 <p>   The optimizer can also use a B-tree index for queries involving the
-   pattern matching operators <code class="literal">LIKE</code>,
-   <code class="literal">ILIKE</code>, <code class="literal">~</code>, and
-   <code class="literal">~*</code>, <span class="emphasis"><em>if</em></span> the pattern is a constant
-   and is anchored to the beginning of the string [mdash ] for example,
-   <code class="literal">col LIKE 'foo%'</code> or <code class="literal">col ~ '^foo'</code>,
-   but not <code class="literal">col LIKE '%bar'</code>.  However, if your server does
-   not use the C locale you will need to create the index with a
-   special operator class to support indexing of pattern-matching queries.
-   See <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below.
+   pattern matching operators <code class="literal">LIKE</code> and <code class="literal">~</code>
+   <span class="emphasis"><em>if</em></span> the pattern is a constant and is anchored to
+   the beginning of the string [mdash ] for example, <code class="literal">col LIKE
+   'foo%'</code> or <code class="literal">col ~ '^foo'</code>, but not
+   <code class="literal">col LIKE '%bar'</code>. However, if your server does not
+   use the C locale you will need to create the index with a special
+   operator class to support indexing of pattern-matching queries. See
+   <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below. It is also possible to use
+   B-tree indexes for <code class="literal">ILIKE</code> and
+   <code class="literal">~*</code>, but only if the pattern starts with
+   non-alphabetic characters, i.e. characters that are not affected by
+   upper/lower case conversion.
   </p>
-<p>   <a name="id575460"></a>
-   <a name="id575470"></a>
+<p>   <a name="id575447"></a>
+   <a name="id575458"></a>
    R-tree indexes are suited for queries on two-dimensional spatial data.
    To create an R-tree index, use a command of the form
 </p>
@@ -84,8 +87,8 @@
    (See <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
    these operators.)
   </p>
-<p>   <a name="id575601"></a>
-   <a name="id575611"></a>
+<p>   <a name="id575588"></a>
+   <a name="id575598"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the

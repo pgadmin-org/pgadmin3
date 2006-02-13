@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterschema.html" title="ALTER SCHEMA">
 <link rel="next" href="sql-altertable.html" title="ALTER TABLE">
@@ -18,7 +18,7 @@
    &#8212;    change the definition of a sequence generator
   </p>
 </div>
-<a name="id691628"></a><div class="refsynopsisdiv">
+<a name="id691552"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
     [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
@@ -27,7 +27,7 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
   </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691702"></a><h2>Description</h2>
+<a name="id691627"></a><h2>Description</h2>
 <p>   <code class="command">ALTER SEQUENCE</code> changes the parameters of an existing
    sequence generator.  Any parameters not specifically set in the
    <code class="command">ALTER SEQUENCE</code> command retain their prior settings.
@@ -38,7 +38,7 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691742"></a><h2>Parameters</h2>
+<a name="id691666"></a><h2>Parameters</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
@@ -109,7 +109,7 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692039"></a><h2>Examples</h2>
+<a name="id691963"></a><h2>Examples</h2>
 <p>   Restart a sequence called <code class="literal">serial</code>, at 105:
 </p>
 <pre class="programlisting">ALTER SEQUENCE serial RESTART WITH 105;</pre>
@@ -117,7 +117,7 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692059"></a><h2>Notes</h2>
+<a name="id691984"></a><h2>Notes</h2>
 <p>   To avoid blocking of concurrent transactions that obtain numbers from the
    same sequence, <code class="command">ALTER SEQUENCE</code> is never rolled back;
    the changes take effect immediately and are not reversible.
@@ -134,7 +134,7 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692113"></a><h2>Compatibility</h2>
+<a name="id692038"></a><h2>Compatibility</h2>
 <p>   <code class="command">ALTER SEQUENCE</code> conforms to the <span class="acronym">SQL</span>
    standard,
    except for the <code class="literal">SET SCHEMA</code> variant, which is a

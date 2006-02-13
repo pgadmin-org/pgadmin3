@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="spi-memory.html" title="40.3. Memory Management">
 <link rel="prev" href="spi-spi-copytuple.html" title="SPI_copytuple">
 <link rel="next" href="spi-spi-modifytuple.html" title="SPI_modifytuple">
@@ -16,12 +16,12 @@
 <h2>Name</h2>
 <p>SPI_returntuple &#8212; prepare to return a tuple as a Datum</p>
 </div>
-<a name="id686147"></a><div class="refsynopsisdiv">
+<a name="id686071"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">HeapTupleHeader SPI_returntuple(HeapTuple <em class="parameter"><code>row</code></em>, TupleDesc <em class="parameter"><code>rowdesc</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686173"></a><h2>Description</h2>
+<a name="id686097"></a><h2>Description</h2>
 <p>   <code class="function">SPI_returntuple</code> makes a copy of a row in
    the upper executor context, returning it in the form of a row type <code class="type">Datum</code>.
    The returned pointer need only be converted to <code class="type">Datum</code> via <code class="function">PointerGetDatum</code>
@@ -33,7 +33,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686216"></a><h2>Arguments</h2>
+<a name="id686140"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
 <dd><p>      row to be copied
@@ -45,7 +45,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id686256"></a><h2>Return Value</h2>
+<a name="id686180"></a><h2>Return Value</h2>
 <p>   <code class="type">HeapTupleHeader</code> pointing to copied row;
    <code class="symbol">NULL</code> only if
    <em class="parameter"><code>row</code></em> or <em class="parameter"><code>rowdesc</code></em> is

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
 <link rel="prev" href="tutorial-populate.html" title="2.4. Populating a Table With Rows">
 <link rel="next" href="tutorial-join.html" title="2.6. Joins Between Tables">
@@ -13,8 +13,8 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="tutorial-select"></a>2.5. Querying a Table</h2></div></div></div>
-<p>    <a name="id515808"></a>
-    <a name="id515815"></a>
+<p>    <a name="id515803"></a>
+    <a name="id515810"></a>
 
     To retrieve data from a table, the table is
     <em class="firstterm">queried</em>.  An <span class="acronym">SQL</span>
@@ -29,7 +29,7 @@
 <pre class="programlisting">SELECT * FROM weather;</pre>
 <p>
     Here <code class="literal">*</code> is a shorthand for &#8220;<span class="quote">all columns</span>&#8221;.
-     <sup>[<a name="id515865" href="#ftn.id515865">2</a>]</sup>
+     <sup>[<a name="id515861" href="#ftn.id515861">2</a>]</sup>
     So the same result would be had with:
 </p>
 <pre class="programlisting">SELECT city, temp_lo, temp_hi, prcp, date FROM weather;</pre>
@@ -84,7 +84,7 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id516002"></a>
+<p>    <a name="id515998"></a>
 
     You can request that the results of a query
     be returned in sorted order:
@@ -111,8 +111,8 @@
     ORDER BY city, temp_lo;</pre>
 <p>
    </p>
-<p>    <a name="id516042"></a>
-    <a name="id516050"></a>
+<p>    <a name="id516038"></a>
+    <a name="id516045"></a>
 
     You can request that duplicate rows be removed from the result of
     a query:
@@ -133,7 +133,7 @@
     Here again, the result row ordering might vary.
     You can ensure consistent results by using <code class="literal">DISTINCT</code> and
     <code class="literal">ORDER BY</code> together:
-     <sup>[<a name="id516089" href="#ftn.id516089">3</a>]</sup>
+     <sup>[<a name="id516084" href="#ftn.id516084">3</a>]</sup>
 
 </p>
 <pre class="programlisting">SELECT DISTINCT city
@@ -143,11 +143,11 @@
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id515865" href="#id515865">2</a>] </sup>       While <code class="literal">SELECT *</code> is useful for off-the-cuff
+<div class="footnote"><p><sup>[<a name="ftn.id515861" href="#id515861">2</a>] </sup>       While <code class="literal">SELECT *</code> is useful for off-the-cuff
        queries, it is widely considered bad style in production code,
        since adding a column to the table would change the results.
       </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id516089" href="#id516089">3</a>] </sup>       In some database systems, including older versions of
+<div class="footnote"><p><sup>[<a name="ftn.id516084" href="#id516084">3</a>] </sup>       In some database systems, including older versions of
        <span class="productname">PostgreSQL</span>, the implementation of
        <code class="literal">DISTINCT</code> automatically orders the rows and
        so <code class="literal">ORDER BY</code> is redundant.  But this is not

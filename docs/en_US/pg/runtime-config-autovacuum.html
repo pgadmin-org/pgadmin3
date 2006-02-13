@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-statistics.html" title="17.8. Run-Time Statistics">
 <link rel="next" href="runtime-config-client.html" title="17.10. Client Connection Defaults">
@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-autovacuum"></a>17.9. Automatic Vacuuming</h2></div></div></div>
-<a name="id600466"></a><p>      These settings control the default behavior for the <em class="firstterm">autovacuum
+<a name="id600445"></a><p>      These settings control the default behavior for the <em class="firstterm">autovacuum
       daemon</em>. Please refer to <a href="maintenance.html#autovacuum" title="22.1.4. The auto-vacuum daemon">Section 22.1.4, &#8220;The auto-vacuum daemon&#8221;</a> for
       more information.
      </p>
@@ -25,7 +25,7 @@
         autovacuum subprocess.  This is off by default.
         <code class="varname">stats_start_collector</code> and <code class="varname">stats_row_level</code>
         must also be on for this to start.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> file.
        </p></dd>
 <dt>
@@ -36,7 +36,7 @@
         and issues <code class="command">VACUUM</code> and <code class="command">ANALYZE</code> commands
         as needed for tables in that database.  The delay is measured
         in seconds, and the default is 60.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> file.
        </p></dd>
 <dt>
@@ -45,7 +45,7 @@
 <dd><p>        Specifies the minimum number of updated or deleted tuples needed
         to trigger a <code class="command">VACUUM</code> in any one table.
         The default is 1000.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
         <code class="structname">pg_autovacuum</code>.
@@ -56,7 +56,7 @@
 <dd><p>        Specifies the minimum number of inserted, updated or deleted tuples
         needed to trigger an <code class="command">ANALYZE</code> in any one table.
         The default is 500.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
         <code class="structname">pg_autovacuum</code>.
@@ -68,7 +68,7 @@
         <code class="varname">autovacuum_vacuum_threshold</code>
         when deciding whether to trigger a <code class="command">VACUUM</code>.
         The default is 0.4.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
         <code class="structname">pg_autovacuum</code>.
@@ -80,7 +80,7 @@
         <code class="varname">autovacuum_analyze_threshold</code>
         when deciding whether to trigger an <code class="command">ANALYZE</code>.
         The default is 0.2.
-        This option can only be set at server start or in the
+        This option can be set at server start or in the
         <code class="filename">postgresql.conf</code> file.
         This setting can be overridden for individual tables by entries in
         <code class="structname">pg_autovacuum</code>.

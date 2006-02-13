@@ -13,7 +13,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bestpractices"></a>20.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </h2></div></div></div>
-<a name="id523635"></a><p> It is common for managers to have a desire to operate systems
+<a name="id524630"></a><p> It is common for managers to have a desire to operate systems
 using some available, documented set of &#8220;<span class="quote">best practices.</span>&#8221;
 Documenting that sort of thing is essential to ISO 9000, ISO 9001, and
 other sorts of organizational certifications. </p>
@@ -120,10 +120,11 @@ useful for handling changes to database schemas. </p></li>
 replicated table has a true primary key constraint; it is
 <span class="emphasis"><em>acceptable</em></span> to use a &#8220;<span class="quote">candidate primary key.</span>&#8221;</p>
 <p> It is <span class="emphasis"><em>not recommended</em></span> that a
-<span class="productname">Slony-I</span>-defined key be used to introduce a candidate primary key, as
-this introduces the possibility that updates to this table can fail
-due to the introduced unique index, which means that <span class="productname">Slony-I</span> has
-introduced a new failure mode for your application.</p>
+<span class="productname">Slony-I</span>-defined key (created via <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>) be
+used to introduce a candidate primary key, as this introduces the
+possibility that updates to this table can fail due to the introduced
+unique index, which means that <span class="productname">Slony-I</span> has introduced a new failure
+mode for your application.</p>
 </li>
 <li><p> <a href="definingsets.html#definesets" title="7.2. Grouping tables into sets"> Grouping tables into sets</a> suggests strategies for determining how to group tables and
 sequences into replication sets. </p></li>
@@ -195,8 +196,9 @@ options:</p>
 active are visible in the process environment.  (And if there are a
 lot of them, they may be a nuisance to read.)</p>
 <p> Unfortunately, if you invoke <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> from the
-command line, you could <span class="emphasis"><em>forget</em></span> to include <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files"> log shipping </a> configuration and thereby
-destroy the sequence of logs for a log shipping node. </p>
+command line, you could <span class="emphasis"><em>forget</em></span> to include
+<a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping</a> configuration and thereby destroy the sequence of logs
+for a log shipping node. </p>
 </li>
 <li>
 <p> Unlike when command line options are used, the
@@ -205,8 +207,7 @@ inferred from the name and/or contents of the <a href="slon.html" title="slon"><
 configuration file, and will not reflect subsequent changes to the
 configuration file.  </p>
 <p> By putting the options in a file, you won't forget including
-any of them, so this is safer for <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files"> log
-shipping. </a> </p>
+any of them, so this is safer for <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping</a>. </p>
 </li>
 </ul></div>
 <div class="itemizedlist"><ul type="disc"><li>
