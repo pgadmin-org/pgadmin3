@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-unlisten.html" title="UNLISTEN">
 <link rel="next" href="sql-vacuum.html" title="VACUUM">
@@ -16,14 +16,14 @@
 <h2>Name</h2>
 <p>UPDATE &#8212; update rows of a table</p>
 </div>
-<a name="id720463"></a><div class="refsynopsisdiv">
+<a name="id720477"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">UPDATE [ ONLY ] <em class="replaceable"><code>table</code></em> SET <em class="replaceable"><code>column</code></em> = { <em class="replaceable"><code>expression</code></em> | DEFAULT } [, ...]
     [ FROM <em class="replaceable"><code>fromlist</code></em> ]
     [ WHERE <em class="replaceable"><code>condition</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720514"></a><h2>Description</h2>
+<a name="id720527"></a><h2>Description</h2>
 <p>   <code class="command">UPDATE</code> changes the values of the specified
    columns in all rows that satisfy the condition. Only the columns to
    be modified need be mentioned in the <code class="literal">SET</code> clause;
@@ -48,7 +48,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720600"></a><h2>Parameters</h2>
+<a name="id720614"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to update.
@@ -83,7 +83,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720739"></a><h2>Outputs</h2>
+<a name="id720753"></a><h2>Outputs</h2>
 <p>   On successful completion, an <code class="command">UPDATE</code> command returns a command
    tag of the form
 </p>
@@ -96,7 +96,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720787"></a><h2>Notes</h2>
+<a name="id720801"></a><h2>Notes</h2>
 <p>   When a <code class="literal">FROM</code> clause is present, what essentially happens
    is that the target table is joined to the tables mentioned in the
    <em class="replaceable"><code>fromlist</code></em>, and each output row of the join
@@ -114,7 +114,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720826"></a><h2>Examples</h2>
+<a name="id720840"></a><h2>Examples</h2>
 <p>   Change the word <code class="literal">Drama</code> to <code class="literal">Dramatic</code> in the
    column <code class="structfield">kind</code> of the table <code class="structname">films</code>:
 
@@ -164,7 +164,7 @@ COMMIT;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720931"></a><h2>Compatibility</h2>
+<a name="id720945"></a><h2>Compatibility</h2>
 <p>   This command conforms to the <span class="acronym">SQL</span> standard, except
    that the <code class="literal">FROM</code> clause is a
    <span class="productname">PostgreSQL</span> extension.

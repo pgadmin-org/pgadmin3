@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-constraints.html" title="5.3. Constraints">
 <link rel="next" href="ddl-inherit.html" title="5.5. Inheritance">
@@ -21,9 +21,9 @@
    restrictions.)  You do not really need to be concerned about these
    columns, just know they exist.
   </p>
-<a name="id523032"></a><div class="variablelist"><dl>
+<a name="id523055"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="structfield">oid</code></span></dt>
-<dd><p>      <a name="id523051"></a>
+<dd><p>      <a name="id523073"></a>
       The object identifier (object ID) of a row.  This is a serial
       number that is automatically added by
       <span class="productname">PostgreSQL</span> to all table rows (unless
@@ -33,7 +33,7 @@
      </p></dd>
 <dt><span class="term"><code class="structfield">tableoid</code></span></dt>
 <dd>
-<a name="id523098"></a><p>      The OID of the table containing this row.  This column is
+<a name="id523120"></a><p>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
       hierarchies, since without it, it's difficult to tell which
       individual table a row came from.  The
@@ -44,7 +44,7 @@
 </dd>
 <dt><span class="term"><code class="structfield">xmin</code></span></dt>
 <dd>
-<a name="id523131"></a><p>      The identity (transaction ID) of the inserting transaction for
+<a name="id523153"></a><p>      The identity (transaction ID) of the inserting transaction for
       this row version.  (A row version is an individual state of a
       row; each update of a row creates a new row version for the same
       logical row.)
@@ -52,13 +52,13 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmin</code></span></dt>
 <dd>
-<a name="id523150"></a><p>      The command identifier (starting at zero) within the inserting
+<a name="id523172"></a><p>      The command identifier (starting at zero) within the inserting
       transaction.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">xmax</code></span></dt>
 <dd>
-<a name="id523166"></a><p>      The identity (transaction ID) of the deleting transaction, or
+<a name="id523189"></a><p>      The identity (transaction ID) of the deleting transaction, or
       zero for an undeleted row version.  It is possible for this column to
       be nonzero in a visible row version. That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
@@ -67,12 +67,12 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmax</code></span></dt>
 <dd>
-<a name="id523187"></a><p>      The command identifier within the deleting transaction, or zero.
+<a name="id523210"></a><p>      The command identifier within the deleting transaction, or zero.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">ctid</code></span></dt>
 <dd>
-<a name="id523203"></a><p>      The physical location of the row version within its table.  Note that
+<a name="id523226"></a><p>      The physical location of the row version within its table.  Note that
       although the <code class="structfield">ctid</code> can be used to
       locate the row version very quickly, a row's
       <code class="structfield">ctid</code> will change each time it is

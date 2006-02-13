@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 <link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
@@ -53,7 +53,7 @@
         <em class="parameter"><code>string</code></em></code></td>
 <td> <code class="type">text</code> </td>
 <td>        String concatenation
-        <a name="id542922"></a>
+        <a name="id542937"></a>
        </td>
 <td><code class="literal">'Post' || 'greSQL'</code></td>
 <td><code class="literal">PostgreSQL</code></td>
@@ -71,8 +71,8 @@
 </td>
 <td><code class="type">integer</code></td>
 <td>        Number of characters in string
-        <a name="id543027"></a>
-        <a name="id543037"></a>
+        <a name="id543042"></a>
+        <a name="id543052"></a>
        </td>
 <td><code class="literal">char_length('jose')</code></td>
 <td><code class="literal">4</code></td>
@@ -108,7 +108,7 @@
 <td><code class="literal"><code class="function">overlay</code>(<em class="parameter"><code>string</code></em> placing <em class="parameter"><code>string</code></em> from <code class="type">integer</code> [<span class="optional">for <code class="type">integer</code></span>])</code></td>
 <td><code class="type">text</code></td>
 <td>        Replace substring
-        <a name="id543251"></a>
+        <a name="id543266"></a>
        </td>
 <td><code class="literal">overlay('Txxxxas' placing 'hom' from 2 for 4)</code></td>
 <td><code class="literal">Thomas</code></td>
@@ -124,7 +124,7 @@
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">integer</code></span>] [<span class="optional">for <code class="type">integer</code></span>])</code></td>
 <td><code class="type">text</code></td>
 <td>        Extract substring
-        <a name="id543355"></a>
+        <a name="id543370"></a>
        </td>
 <td><code class="literal">substring('Thomas' from 2 for 3)</code></td>
 <td><code class="literal">hom</code></td>
@@ -133,7 +133,7 @@
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>        Extract substring matching POSIX regular expression
-        <a name="id543406"></a>
+        <a name="id543422"></a>
        </td>
 <td><code class="literal">substring('Thomas' from '...$')</code></td>
 <td><code class="literal">mas</code></td>
@@ -143,7 +143,7 @@
 <td><code class="type">text</code></td>
 <td>        Extract substring matching <span class="acronym">SQL</span> regular
         expression
-        <a name="id543465"></a>
+        <a name="id543481"></a>
        </td>
 <td><code class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</code></td>
 <td><code class="literal">oma</code></td>
@@ -272,8 +272,8 @@
 <td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></td>
 <td><code class="type">integer</code></td>
 <td>        Number of characters in <em class="parameter"><code>string</code></em>.
-        <a name="id544115"></a>
-        <a name="id544126"></a>
+        <a name="id544130"></a>
+        <a name="id544141"></a>
        </td>
 <td><code class="literal">length('jose')</code></td>
 <td><code class="literal">4</code></td>
@@ -326,7 +326,7 @@
 </tr>
 <tr>
 <td>
-<code class="literal"><code class="function">quote_ident</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id544430"></a>
+<code class="literal"><code class="function">quote_ident</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id544445"></a>
 </td>
 <td><code class="type">text</code></td>
 <td>        Return the given string suitably quoted to be used as an identifier
@@ -340,7 +340,7 @@
 </tr>
 <tr>
 <td>
-<code class="literal"><code class="function">quote_literal</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id544483"></a>
+<code class="literal"><code class="function">quote_literal</code>(<em class="parameter"><code>string</code></em> text)</code><a name="id544498"></a>
 </td>
 <td><code class="type">text</code></td>
 <td>        Return the given string suitably quoted to be used as a string literal
@@ -433,7 +433,7 @@
         [<span class="optional">, <em class="parameter"><code>encoding</code></em></span>])</code></td>
 <td><code class="type">text</code></td>
 <td>       Convert <em class="parameter"><code>text</code></em> to <span class="acronym">ASCII</span> from another encoding
-       <sup>[<a name="id545103" href="#ftn.id545103">a</a>]</sup>
+       <sup>[<a name="id545118" href="#ftn.id545118">a</a>]</sup>
        </td>
 <td><code class="literal">to_ascii('Karel')</code></td>
 <td><code class="literal">Karel</code></td>
@@ -464,7 +464,7 @@
 <td><code class="literal">a23x5</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id545103" href="#id545103">a</a>] </sup>         The <code class="function">to_ascii</code> function supports conversion from
+<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id545118" href="#id545118">a</a>] </sup>         The <code class="function">to_ascii</code> function supports conversion from
          <code class="literal">LATIN1</code>, <code class="literal">LATIN2</code>, <code class="literal">LATIN9</code>,
          and <code class="literal">WIN1250</code> encodings only.
         </p></div></td></tr></tbody>
@@ -480,7 +480,7 @@
 </colgroup>
 <thead><tr>
 <th>Conversion Name
-        <sup>[<a name="id545312" href="#ftn.id545312">a</a>]</sup>
+        <sup>[<a name="id545327" href="#ftn.id545327">a</a>]</sup>
        </th>
 <th>Source Encoding</th>
 <th>Destination Encoding</th>
@@ -1057,7 +1057,7 @@
 <td><code class="literal">UNICODE</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id545312" href="#id545312">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id545327" href="#id545327">a</a>] </sup>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
           by <code class="literal">_to_</code> followed by the equally processed

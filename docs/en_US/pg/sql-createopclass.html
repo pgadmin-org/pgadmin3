@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.6 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createoperator.html" title="CREATE OPERATOR">
 <link rel="next" href="sql-createrule.html" title="CREATE RULE">
@@ -16,7 +16,7 @@
 <h2>Name</h2>
 <p>CREATE OPERATOR CLASS &#8212; define a new operator class</p>
 </div>
-<a name="id691841"></a><div class="refsynopsisdiv">
+<a name="id691852"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE OPERATOR CLASS <em class="replaceable"><code>name</code></em> [ DEFAULT ] FOR TYPE <em class="replaceable"><code>data_type</code></em> USING <em class="replaceable"><code>index_method</code></em> AS
   {  OPERATOR <em class="replaceable"><code>strategy_number</code></em> <em class="replaceable"><code>operator_name</code></em> [ ( <em class="replaceable"><code>op_type</code></em>, <em class="replaceable"><code>op_type</code></em> ) ] [ RECHECK ]
@@ -25,7 +25,7 @@
   } [, ... ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691933"></a><h2>Description</h2>
+<a name="id691944"></a><h2>Description</h2>
 <p>   <code class="command">CREATE OPERATOR CLASS</code> creates a new operator class.
    An operator class defines how a particular data type can be used with
    an index.  The operator class specifies that certain operators will fill
@@ -55,7 +55,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691995"></a><h2>Parameters</h2>
+<a name="id692006"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the operator class to be created.  The name may be
@@ -116,14 +116,14 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692206"></a><h2>Notes</h2>
+<a name="id692217"></a><h2>Notes</h2>
 <p>   The operators should not be defined by SQL functions.  A SQL function
    is likely to be inlined into the calling query, which will prevent
    the optimizer from recognizing that the query matches an index.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692216"></a><h2>Examples</h2>
+<a name="id692227"></a><h2>Examples</h2>
 <p>   The following example command defines a GiST index operator class
    for the data type <code class="literal">_int4</code> (array of <code class="type">int4</code>).  See
    <code class="filename">contrib/intarray/</code> for the complete example.
@@ -144,7 +144,7 @@
         FUNCTION        7       g_int_same (_int4, _int4, internal);</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692277"></a><h2>Compatibility</h2>
+<a name="id692287"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE OPERATOR CLASS</code> is a
    <span class="productname">PostgreSQL</span> extension.  There is no
    <code class="command">CREATE OPERATOR CLASS</code> statement in the SQL
@@ -152,7 +152,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id692304"></a><h2>See Also</h2>
+<a name="id692315"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-alteropclass.html">ALTER OPERATOR CLASS</a>, <a href="sql-dropopclass.html">DROP OPERATOR CLASS</a></span>
 </div>
 </div></body>
