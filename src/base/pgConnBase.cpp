@@ -168,7 +168,9 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
     connstr.Trim(false);
     
     // Open the connection
-    wxLogInfo(wxT("Opening connection with connection string: %s"), connstr.c_str());
+    wxString cleanConnStr = connstr;
+    cleanConnStr.Replace(qtConnString(password), wxT("'XXXXXX'"));
+    wxLogInfo(wxT("Opening connection with connection string: %s"), cleanConnStr);
 
 #if wxUSE_UNICODE
     wxCharBuffer cstrUTF=connstr.mb_str(wxConvUTF8);
