@@ -124,23 +124,23 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
     wxString connstr;
     if (!hostname.IsEmpty()) {
       connstr.Append(wxT(" host="));
-      connstr.Append(qtString(hostname));
+      connstr.Append(qtConnString(hostname));
     }
     if (!hostip.IsEmpty()) {
       connstr.Append(wxT(" hostaddr="));
-      connstr.Append(qtString(hostip));
+      connstr.Append(qtConnString(hostip));
     }
     if (!database.IsEmpty()) {
       connstr.Append(wxT(" dbname="));
-      connstr.Append(qtString(database));
+      connstr.Append(qtConnString(database));
     }
     if (!username.IsEmpty()) {
       connstr.Append(wxT(" user="));
-      connstr.Append(qtString(username));
+      connstr.Append(qtConnString(username));
     }
     if (!password.IsEmpty()) {
       connstr.Append(wxT(" password="));
-      connstr.Append(qtString(password));
+      connstr.Append(qtConnString(password));
     }
     if (port > 0) {
       connstr.Append(wxT(" port="));

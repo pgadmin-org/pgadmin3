@@ -217,3 +217,15 @@ wxString qtString(const wxString& value)
 	
     return result;
 }
+
+wxString qtConnString(const wxString& value)
+{
+    wxString result = value;	
+
+    result.Replace(wxT("\\"), wxT("\\\\"));
+    result.Replace(wxT("'"), wxT("\\'"));
+    result.Append(wxT("'"));
+    result.Prepend(wxT("'"));
+	
+    return result;
+}
