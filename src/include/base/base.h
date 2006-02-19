@@ -105,8 +105,8 @@ wxString DateToStr(const wxDateTime &datetime);
 
 
 // Quoting
-wxString qtString(const wxString& value);   // add ' and escape if necessary
-wxString qtConnString(const wxString& value); // connection strings always have ' escaped with \
+wxString qtString(const wxString& value);   // add single quote and escape if necessary
+wxString qtConnString(const wxString& value); // connection strings always have single quotes escaped with backslash
 
 // check if size/pos have reasonable values
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0=100, const int h0=70);
