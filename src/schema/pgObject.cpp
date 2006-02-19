@@ -25,6 +25,7 @@
 #include "pgType.h"
 #include "pgDatabase.h"
 #include "pgTable.h"
+#include "pgColumn.h"
 #include "pgView.h"
 #include "pgType.h"
 #include "pgOperator.h"
