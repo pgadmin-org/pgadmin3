@@ -125,12 +125,19 @@ wxString pgColumn::GetCommentSql()
 wxString pgColumn::GetDefinition()
 {
     wxString sql = GetQuotedTypename();
+    wxString seqDefault;
+
+    if (GetDatabase()->BackendMinimumVersion(8, 1))
+        seqDefault = wxT("nextval('") + schema->GetPrefix() + GetTableName()
+				   + wxT("_") + GetName() + wxT("_seq'::regclass)");
+    else
+        seqDefault = wxT("nextval('") 
+                   + schema->GetName() + wxT(".") + GetTableName()
+                   + wxT("_") + GetName() + wxT("_seq'::text)");
 
     if ((sql == wxT("int4") || sql == wxT("int8") || 
          sql == wxT("pg_catalog.int4") || sql == wxT("pg_catalog.int8"))
-        && GetDefault() == wxT("nextval('") 
-                        + schema->GetName() + wxT(".") + GetTableName() 
-                        + wxT("_") + GetName() + wxT("_seq'::text)"))
+        && GetDefault() == seqDefault)
     {
         if (sql.Right(4) == wxT("int8"))
             sql = wxT("bigserial");
