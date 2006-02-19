@@ -142,12 +142,7 @@ frmMain::frmMain(const wxString& title)
     actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
     new countRowsFactory(menuFactories, viewMenu, 0);
 
-	new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
-    new editGridFactory(menuFactories, viewDataMenu, toolBar);
-    new editGridFilteredFactory(menuFactories, viewDataMenu, toolBar);
-    viewdataMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
-	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
-    
+   
     new separatorFactory(menuFactories);
 
     viewMenu->AppendSeparator();
@@ -198,6 +193,13 @@ frmMain::frmMain(const wxString& title)
     toolsMenu->AppendSeparator();
     new queryToolFactory(menuFactories, toolsMenu, toolBar);
 	
+    viewdataMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
+	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
+
+	new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
+    new editGridFactory(menuFactories, viewDataMenu, toolBar);
+    new editGridFilteredFactory(menuFactories, viewDataMenu, toolBar);
+
 	new maintenanceFactory(menuFactories, toolsMenu, toolBar);
 
     new backupFactory(menuFactories, toolsMenu, 0);

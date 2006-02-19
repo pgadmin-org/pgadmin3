@@ -461,9 +461,6 @@ int pgQueryThreadBase::execute()
                 appendMessage(wxString::Format(_("Query inserted one row with OID %d.\n"), insertedOid));
             continue;
         }
-		if (PQresultStatus(res) != PGRES_TUPLES_OK)
-			continue;
-		// If we got values, let's see if it's something we want to keep
         if (lastResult)
         {
             if (PQntuples(lastResult))
