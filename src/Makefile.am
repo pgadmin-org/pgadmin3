@@ -111,7 +111,7 @@ $(srcdir)/include/dlgOperator.h $(srcdir)/include/dlgView.h $(srcdir)/include/dl
 $(srcdir)/include/dlgTrigger.h $(srcdir)/include/dlgUser.h $(srcdir)/include/frmAbout.h \
 $(srcdir)/include/dlgConnect.h $(srcdir)/include/frmHelp.h \
 $(srcdir)/include/frmEditGrid.h $(srcdir)/include/dlgEditGridOptions.h $(srcdir)/include/frmMain.h \
-$(srcdir)/include/dlgSelectConnection.h \
+$(srcdir)/dlg/dlgAddFavourite.cpp $(srcdir)/dlg/dlgManageFavourites.cpp $(srcdir)/include/dlgSelectConnection.h \
 $(srcdir)/include/frmOptions.h $(srcdir)/include/frmPassword.h $(srcdir)/include/frmIndexcheck.h \
 $(srcdir)/include/frmQuery.h $(srcdir)/include/frmSplash.h \
 $(srcdir)/include/frmStatus.h $(srcdir)/include/frmMaintenance.h \
