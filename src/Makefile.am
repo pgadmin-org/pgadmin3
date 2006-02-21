@@ -158,7 +158,7 @@ $(srcdir)/include/images/*.xpm \
 $(srcdir)/include/images/pgAdmin3.ico \
 $(srcdir)/main/pgAdmin3.rc \
 $(srcdir)/utils/precomp.cpp \
-$(srcdir)/utils/tabcomplete.inc \
+$(srcdir)/utils/tab-complete.inc \
 $(srcdir)/utils/tabcomplete.pl
 
 TMP_ui = \
