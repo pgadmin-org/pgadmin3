@@ -245,6 +245,13 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		PG_LIB=`${PG_CONFIG} --libdir`
 
 		PG_VERSION=`${PG_CONFIG} --version`
+
+		if test "$build_os" = "mingw32"
+		then
+			CRYPTO_LIB=""
+		else
+			CRYPTO_LIB="-lcrypto"
+		fi
 		
 		if test "$BUILD_STATIC" = "yes"
 		then
@@ -257,16 +264,16 @@ AC_DEFUN([SETUP_POSTGRESQL],
 
 			if test "$PG_SSL" = "yes"
 			then
-				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS -lssl -lcrypto"
+				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS -lssl $CRYPTO_LIB"
 			else
-				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS -lcrypto"
+				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS $CRYPTO_LIB"
 			fi
 		else
 			if test "$PG_SSL" = "yes"
 			then
-				LIBS="$LIBS -L${PG_LIB} -lssl -lcrypto -lpq"
+				LIBS="$LIBS -L${PG_LIB} -lssl $CRYPTO_LIB -lpq"
 			else
-				LIBS="$LIBS -L${PG_LIB} -lcrypto -lpq"
+				LIBS="$LIBS -L${PG_LIB} $CRYPTO_LIB -lpq"
 			fi
 		fi
 
@@ -275,7 +282,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		AC_CHECK_HEADER(libpq-fe.h, [PG_LIBPQFE=yes], [PG_LIBPQFE=no])
 		AC_LANG_RESTORE
 
-		if test "$PG_LIBPQ" = "yes" -a "$PG_LIBPQ" = "yes"
+		if test "$PG_LIBPQ" = "yes"
 		then
 			AC_MSG_CHECKING(PostgreSQL in ${PG_HOME})
 			AC_MSG_RESULT(ok)
