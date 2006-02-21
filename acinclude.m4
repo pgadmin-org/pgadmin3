@@ -313,14 +313,16 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			
 			WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=yes --version=${WX_VERSION}`
 			WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION}`
-			LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+			pgadmin3_LDADD="$WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=yes --version=${WX_VERSION}`
 		else
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION}`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
 		
 			WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=no --version=${WX_VERSION}`
 			WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=no --version=${WX_VERSION}`
-			LIBS="$LIBS $WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+			pgadmin3_LDADD="$WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=no --version=${WX_VERSION}`
 		fi
 
 		AC_MSG_CHECKING(wxWidgets in ${WX_HOME})
@@ -345,6 +347,8 @@ AC_DEFUN([SETUP_WXWIDGETS],
 	fi
 ])
 AC_SUBST(WX_CONFIG)
+AC_SUBST(pgadmin3_LDADD)
+AC_SUBST(pgagent_LDADD)
 
 #########################
 # Setup libxml2 headers #
@@ -363,11 +367,12 @@ AC_DEFUN([SETUP_LIBXML2],
         else
             AC_MSG_RESULT(ok)
             CPPFLAGS="$CPPFLAGS $XML2_CFLAGS"
-            LIBS="$LIBS $XML2_LIBS"
+            pgadmin3_LDADD="${pgadmin3_LDADD} $XML2_LIBS"
         fi
     fi
 ])
 AC_SUBST(XML2_CONFIG)
+AC_SUBST(pgagent_LDADD)
         
 
 ###########
