@@ -93,9 +93,9 @@ $(srcdir)/include/copyright.h $(srcdir)/include/version.h\
 \
 $(srcdir)/include/ctl/ctlSQLBox.h $(srcdir)/include/ctl/ctlSQLResult.h \
 $(srcdir)/include/ctl/ctlListView.h $(srcdir)/include/ctl/calbox.h \
-$(srcdir)/include/ctl/timespin.h $(srcdir)/include/ctl/ctlComboBox.h \
+$(srcdir)/include/ctl/timespin.h $(srcdir)/include/ctl/ctlComboBox.h $(srcdir)/include/ctlTree.h \
 $(srcdir)/include/ctl/xh_timespin.h $(srcdir)/include/ctl/xh_calb.h $(srcdir)/include/ctl/xh_sqlbox.h \
-$(srcdir)/include/ctl/xh_ctlcombo.h $(srcdir)/include/ctl/ctlTree.h \
+$(srcdir)/include/ctl/xh_ctlcombo.h $(srcdir)/include/ctl/xh_ctltree.h \
 $(srcdir)/include/parser/parse.h $(srcdir)/include/parser/keywords.h $(srcdir)/include/nodes/parsenodes.h \
 $(srcdir)/include/postgres.h $(srcdir)/include/pgDefs.h $(srcdir)/include/pgDatatype.h \
 $(srcdir)/include/ctlSecurityPanel.h $(srcdir)/include/dlgClasses.h $(srcdir)/include/frmGrantWizard.h \
@@ -135,7 +135,7 @@ $(srcdir)/include/dlgHbaConfig.h $(srcdir)/include/dlgMainConfig.h \
 $(srcdir)/include/dlgPgpassConfig.h $(srcdir)/include/frmHint.h \
 $(srcdir)/include/frmConfig.h $(srcdir)/include/frmHbaConfig.h \
 $(srcdir)/include/frmMainConfig.h $(srcdir)/include/frmPgpassConfig.h \
-$(srcdir)/include/explainCanvas.h \
+$(srcdir)/include/explainCanvas.h $(srcdir)/include/favourites.h \
 $(srcdir)/agent/include/pgaJob.h \
 $(srcdir)/agent/include/pgaStep.h $(srcdir)/agent/include/pgaSchedule.h \
 $(srcdir)/agent/include/dlgJob.h $(srcdir)/agent/include/dlgStep.h \
