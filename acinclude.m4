@@ -36,15 +36,15 @@ AC_DEFUN([SET_WX_VERSION],
 ####################
 AC_DEFUN([LOCATE_WXWIDGETS],
 [
-	AC_ARG_WITH(wx, [  --with-wx=DIR       root directory for wxWidgets installation],
+	AC_ARG_WITH(wx, [  --with-wx=DIR	   root directory for wxWidgets installation],
 	[
 		if test "$withval" != no
 		then
 			WX_HOME="$withval"
-                        if test ! -f "${WX_HOME}/bin/wx-config"
-                        then
-                                AC_MSG_ERROR([Could not find your wxWidgets installation in ${WX_HOME}])
-                        fi
+						if test ! -f "${WX_HOME}/bin/wx-config"
+						then
+								AC_MSG_ERROR([Could not find your wxWidgets installation in ${WX_HOME}])
+						fi
 
 		fi
 		WX_CONFIG=${WX_HOME}/bin/wx-config
@@ -68,33 +68,38 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 ])
 
 #####################
-# Locate libxml    #
+# Locate libxml	#
 #####################
 AC_DEFUN([LOCATE_LIBXML2],
 [
-   AC_ARG_WITH(libxml2, [  --with-libxml2=DIR  root directory for libxml2 installation],
-   [
-      if test "$withval" != no
-      then
-         XML2_HOME="$withval"
-         if test ! -f "${XML2_HOME}/bin/xml2-config"
-         then
-            AC_MSG_ERROR([Could not find your libxml2 installation in ${XML2_HOME}])
-         fi
-      fi
-      XML2_CONFIG=${XML2_HOME}/bin/xml2-config
+	AC_ARG_WITH(libxml2, [  --with-libxml2=DIR  root directory for libxml2 installation],
+	[
+	  if test "$withval" != no
+	  then
+		 XML2_HOME="$withval"
+		 if test ! -f "${XML2_HOME}/bin/xml2-config"
+		 then
+			AC_MSG_ERROR([Could not find your libxml2 installation in ${XML2_HOME}])
+		 fi
+	  fi
+	  XML2_CONFIG=${XML2_HOME}/bin/xml2-config
    ],
    [
-      XML2_HOME=/usr/local
-      if test ! -f "${XML2_HOME}/bin/xml2-config"
-      then
-          XML2_HOME=/usr
-          if test ! -f "${XML2_HOME}/bin/xml2-config"
-          then
-             AC_MSG_ERROR([Could not find your libxml2 installation. You might need to use the --with-libxml2=DIR configure option])
-          fi
-      fi
-      XML2_CONFIG=${XML2_HOME}/bin/xml2-config
+	  XML2_HOME=/usr/local
+	  if test ! -f "${XML2_HOME}/bin/xml2-config"
+	  then
+
+		  XML2_HOME=/usr
+		  if test ! -f "${XML2_HOME}/bin/xml2-config"
+		  then
+			  XML2_HOME=/mingw
+			  if test ! -f "${XML2_HOME}/bin/xml2-config"
+			  then
+				  AC_MSG_ERROR([Could not find your libxml2 installation. You might need to use the --with-libxml2=DIR configure option])
+			  fi
+		  fi
+	  fi
+	  XML2_CONFIG=${XML2_HOME}/bin/xml2-config
    ])
 ])
 
@@ -103,15 +108,15 @@ AC_DEFUN([LOCATE_LIBXML2],
 #####################
 AC_DEFUN([LOCATE_POSTGRESQL],
 [
-	AC_ARG_WITH(pgsql, [  --with-pgsql=DIR    root directory for PostgreSQL installation],
+	AC_ARG_WITH(pgsql, [  --with-pgsql=DIR	root directory for PostgreSQL installation],
 	[
 		if test "$withval" != no
 		then
 			PG_HOME="$withval"
-                        if test ! -f "${PG_HOME}/bin/pg_config"
-                        then
-                                AC_MSG_ERROR([Could not find your PostgreSQL installation in ${PG_HOME}])
-                        fi
+			if test ! -f "${PG_HOME}/bin/pg_config"
+			then
+				AC_MSG_ERROR([Could not find your PostgreSQL installation in ${PG_HOME}])
+			fi
 
 		fi
 		PG_CONFIG=${PG_HOME}/bin/pg_config
@@ -139,7 +144,7 @@ AC_DEFUN([LOCATE_POSTGRESQL],
 ###########################
 AC_DEFUN([ENABLE_DEBUG],
 [
-	AC_ARG_ENABLE(debug, [  --enable-debug       build a debug version of pgAdmin3],
+	AC_ARG_ENABLE(debug, [  --enable-debug	   build a debug version of pgAdmin3],
 	[
 		if test "$enableval" = yes
 		then
@@ -159,7 +164,7 @@ AC_SUBST(BUILD_DEBUG)
 ############################
 AC_DEFUN([ENABLE_STATIC],
 [
-	AC_ARG_ENABLE(static, [  --enable-static      build a statically linked version of pgAdmin3],
+	AC_ARG_ENABLE(static, [  --enable-static	  build a statically linked version of pgAdmin3],
 	[
 		if test "$enableval" = yes
 		then
@@ -303,7 +308,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 AC_SUBST(PG_CONFIG)
 
 ################################################
-# Check for wxWidgets libraries and headers    #
+# Check for wxWidgets libraries and headers	#
 ################################################
 AC_DEFUN([SETUP_WXWIDGETS],
 [
@@ -335,7 +340,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 		AC_MSG_CHECKING(wxWidgets in ${WX_HOME})
 		if test "$WX_NEW_CPPFLAGS" = "" -o "$WX_NEW_LIBS" = "" -o "$WX_NEW_CONTRIB_LIBS" = ""
 		then
-		    AC_MSG_RESULT(failed)
+			AC_MSG_RESULT(failed)
 			AC_MSG_ERROR([Your wxWidgets installation cannot support pgAdmin in the selected configuration. This may be because it was configured without the --enable-unicode option, or the combination of dynamic/static linking and debug/non-debug libraries selected did not match any installed wxWidgets libraries.])
 		else
 			AC_MSG_RESULT(ok)
@@ -362,25 +367,25 @@ AC_SUBST(pgagent_LDADD)
 #########################
 AC_DEFUN([SETUP_LIBXML2],
 [
-    if test -n "${XML2_HOME}"
-    then
-        XML2_CFLAGS=`${XML2_CONFIG} --cflags`
-        XML2_LIBS=`${XML2_CONFIG} --libs`
-        AC_MSG_CHECKING(libxml2 in ${XML2_HOME})
-        if test "${XML2_CFLAGS}" = "" -o "${XML2_LIBS}" = ""
-        then
-            AC_MSG_RESULT(failed)
-            AC_MSG_ERROR([Your libxml2 installation does not appear to be complete])
-        else
-            AC_MSG_RESULT(ok)
-            CPPFLAGS="$CPPFLAGS $XML2_CFLAGS"
-            pgadmin3_LDADD="${pgadmin3_LDADD} $XML2_LIBS"
-        fi
-    fi
+	if test -n "${XML2_HOME}"
+	then
+		XML2_CFLAGS=`${XML2_CONFIG} --cflags`
+		XML2_LIBS=`${XML2_CONFIG} --libs`
+		AC_MSG_CHECKING(libxml2 in ${XML2_HOME})
+		if test "${XML2_CFLAGS}" = "" -o "${XML2_LIBS}" = ""
+		then
+			AC_MSG_RESULT(failed)
+			AC_MSG_ERROR([Your libxml2 installation does not appear to be complete])
+		else
+			AC_MSG_RESULT(ok)
+			CPPFLAGS="$CPPFLAGS $XML2_CFLAGS"
+			pgadmin3_LDADD="${pgadmin3_LDADD} $XML2_LIBS"
+		fi
+	fi
 ])
 AC_SUBST(XML2_CONFIG)
 AC_SUBST(pgagent_LDADD)
-        
+		
 
 ###########
 # Cleanup #
@@ -399,35 +404,35 @@ AC_DEFUN([SUMMARY],
 [
 	# Print a configuration summary
 	echo
-	echo "PostgreSQL directory:                $PG_HOME"
-	echo "PostgreSQL pg_config binary:         $PG_CONFIG"
-	echo "PostgreSQL version:                  $PG_VERSION"
+	echo "PostgreSQL directory:			$PG_HOME"
+	echo "PostgreSQL pg_config binary:		$PG_CONFIG"
+	echo "PostgreSQL version:			$PG_VERSION"
 	echo
-	echo "wxWidgets directory:                 $WX_HOME"
-	echo "wxWidgets wx-config binary:          $WX_CONFIG"
-	echo "wxWidgets version:                   wxWidgets "`$WX_CONFIG --version --version=$WX_VERSION`
+	echo "wxWidgets directory:			$WX_HOME"
+	echo "wxWidgets wx-config binary:		$WX_CONFIG"
+	echo "wxWidgets version:			wxWidgets "`$WX_CONFIG --version --version=$WX_VERSION`
 	echo
 	if test "$BUILD_DEBUG" == yes
 	then
-		echo "Building a debug version of pgAdmin: Yes"
+		echo "Building a debug version of pgAdmin:	Yes"
 	else
-		echo "Building a debug version of pgAdmin: No"
+		echo "Building a debug version of pgAdmin:	No"
 	fi
 	if test "$BUILD_STATIC" == yes
 	then
-		echo "Statically linking pgAdmin:          Yes"
+		echo "Statically linking pgAdmin:		Yes"
 	else
-		echo "Statically linking pgAdmin:          No"
+		echo "Statically linking pgAdmin:		No"
 	fi
 	if test "$BUILD_APPBUNDLE" == yes
 	then
-		echo "Building a Mac OS X appbundle:       Yes"
+		echo "Building a Mac OS X appbundle:		Yes"
 	else
-		echo "Building a Mac OS X appbundle:       No"
+		echo "Building a Mac OS X appbundle:		No"
 	fi
 	echo
 
 	echo "pgAdmin configuration is now complete. You can now compile and"
 	echo "install pgAdmin using 'make; make install'."
-        echo
+	echo
 ])
