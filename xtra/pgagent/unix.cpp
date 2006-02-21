@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     argc--;
     argv++;
 
-    setOptions(argc, argv);
+    setOptions(argc, argv, executable);
 
     if (!runInForeground)
         daemonize();

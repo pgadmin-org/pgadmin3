@@ -355,7 +355,7 @@ void usage(const wxString &executable)
 
 ////////////////////////////////////////////////////////////
 
-void setupForRun(int argc, char **argv, bool debug=false)
+void setupForRun(int argc, char **argv, bool debug, const wxString& executable)
 {
     if (!debug)
     {
@@ -364,7 +364,7 @@ void setupForRun(int argc, char **argv, bool debug=false)
             LogMessage(_("Couldn't register event handle."), LOG_ERROR);
     }
 
-    setOptions(argc, argv);
+    setOptions(argc, argv, executable);
 }
 
 
@@ -439,7 +439,7 @@ void main(int argc, char **argv)
     }
     else if (command == wxT("DEBUG"))
     {
-        setupForRun(argc, argv, true);
+        setupForRun(argc, argv, true, executable);
 
         initService();
 #if START_SUSPENDED
@@ -453,7 +453,7 @@ void main(int argc, char **argv)
         SERVICE_TABLE_ENTRY serviceTable[] =
             { (unsigned short *)_("pgAgent Service"), serviceMain, 0, 0};
 
-        setupForRun(argc, argv);
+        setupForRun(argc, argv, false, executable);
 
         if (!StartServiceCtrlDispatcher(serviceTable))
         {

@@ -15,6 +15,8 @@
 #include <unistd.h>
 #endif
 
+// In unix.c or win32.c
+void usage(const wxString& executable);
 
 wxString getArg(int &argc, char** &argv)
 {
@@ -40,7 +42,7 @@ wxString getArg(int &argc, char** &argv)
 }
 
 
-void setOptions(int argc, char **argv)
+void setOptions(int argc, char **argv, const wxString& executable)
 {
     while (argc-- > 0)
     {
@@ -76,6 +78,11 @@ void setOptions(int argc, char **argv)
                     break;
                 }
 #endif
+                default:
+                {
+                    usage(executable);
+                    exit(1);
+                }
             }
         }
         else
