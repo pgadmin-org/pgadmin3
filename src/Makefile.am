@@ -93,7 +93,7 @@ $(srcdir)/include/copyright.h $(srcdir)/include/version.h\
 \
 $(srcdir)/include/ctl/ctlSQLBox.h $(srcdir)/include/ctl/ctlSQLResult.h \
 $(srcdir)/include/ctl/ctlListView.h $(srcdir)/include/ctl/calbox.h \
-$(srcdir)/include/ctl/timespin.h $(srcdir)/include/ctl/ctlComboBox.h $(srcdir)/include/ctlTree.h \
+$(srcdir)/include/ctl/timespin.h $(srcdir)/include/ctl/ctlComboBox.h $(srcdir)/include/ctl/ctlTree.h \
 $(srcdir)/include/ctl/xh_timespin.h $(srcdir)/include/ctl/xh_calb.h $(srcdir)/include/ctl/xh_sqlbox.h \
 $(srcdir)/include/ctl/xh_ctlcombo.h $(srcdir)/include/ctl/xh_ctltree.h \
 $(srcdir)/include/parser/parse.h $(srcdir)/include/parser/keywords.h $(srcdir)/include/nodes/parsenodes.h \
