@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id: version.h 4876 2006-01-08 14:44:48Z dpage $
 // Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
@@ -14,7 +14,7 @@
 #define VERSION_STR     wxT("1.5 Devel")
 #define VERSION_NUM     1,5,0,0
 #define VERSION_PACKAGE 1.5.0
-#define VERSION_SVN     wxT("$Rev$")
+#define VERSION_SVN     wxT("$Rev: 4876 $")
 
 #define PRERELEASE 1
 // #define BUILD "..."

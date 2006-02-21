@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id: pgSchema.h 4899 2006-01-17 09:46:28Z dpage $
 // Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //

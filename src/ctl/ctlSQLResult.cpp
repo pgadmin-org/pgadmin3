@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id: ctlSQLResult.cpp 4887 2006-01-11 09:19:12Z dpage $
 // Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //

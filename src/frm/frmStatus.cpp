@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id: frmStatus.cpp 4932 2006-01-19 13:49:47Z dpage $
 // Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //

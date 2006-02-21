@@ -16,7 +16,9 @@
 #include <wx/wx.h>
 
 #ifdef WIN32
+#ifndef __GNUC__
 #pragma warning(disable:4183)
+#endif
 #endif
 
 class pgObject;
