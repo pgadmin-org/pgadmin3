@@ -14,7 +14,15 @@ EXTRA_DIST = \
 	$(top_srcdir)/CHANGELOG \
 	$(top_srcdir)/LICENSE \
 	$(top_srcdir)/README \
-	$(top_srcdir)/TODO
+	$(top_srcdir)/TODO \
+	$(top_srcdir)/configure.ac.in \
+        $(top_srcdir)/languages.hwx \
+        $(top_srcdir)/languages.po \
+        $(top_srcdir)/pgadmin3-release.pot \
+        $(top_srcdir)/pgadmin3.pot \
+        $(top_srcdir)/stringextract \
+        $(top_srcdir)/stringextract.bat \
+        $(top_srcdir)/stringmerge
 
 TMP_docs = \
 	$(top_srcdir)/docs/en_US/pg/*.css \

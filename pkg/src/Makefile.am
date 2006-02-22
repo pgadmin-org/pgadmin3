@@ -8,4 +8,5 @@
 ##############################################################################
 
 EXTRA_DIST = \
-	$(srcdir)/build-tarball
+	$(srcdir)/build-tarball \
+	$(srcdir)/build-tarball.in

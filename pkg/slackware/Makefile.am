@@ -9,4 +9,5 @@
 
 EXTRA_DIST = \
 	$(srcdir)/build-release \
+	$(srcdir)/build-release.in \
 	$(srcdir)/build-snapshot
