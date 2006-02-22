@@ -11,10 +11,17 @@ Installation
 ============
 
 You will need a PostgreSQL source tree which has been properly configured
-for the local system using the 'configure' script.
+for the local system using the 'configure' script, or you can use PGXS 
+which does not require the full source tree. 
 
-Copy this directory into the /contrib directory of the PostgreSQL source tree,
-and then run the following commands as a users with appropriate privileges:
+To install using PGXS simply run the following commands in this directory:
+
+make USE_PGXS=1 
+make USE_PGXS=1 install 
+
+Otherwise, copy this directory into the /contrib directory of the PostgreSQL 
+source tree, and then run the following commands as a user with appropriate 
+privileges:
 
 make
 make install
