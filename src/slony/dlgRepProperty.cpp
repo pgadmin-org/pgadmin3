@@ -18,8 +18,8 @@
 #include "slCluster.h"
 
 
-dlgRepProperty::dlgRepProperty(frmMain *frame, slCluster *c, const wxString &resName)
-: dlgProperty(frame, resName) 
+dlgRepProperty::dlgRepProperty(pgaFactory *f, frmMain *frame, slCluster *c, const wxString &resName)
+: dlgProperty(f, frame, resName) 
 {
     cluster=c;
 }

@@ -20,8 +20,7 @@ class slCluster;
 class dlgRepProperty : public dlgProperty
 {
 public:
-    dlgRepProperty(pgaFactory *f, frmMain *frame, slCluster *cl, const wxString &resName) 
-        : dlgProperty(f, frame, resName) { cluster=cl; }
+    dlgRepProperty(pgaFactory *f, frmMain *frame, slCluster *c, const wxString &resName);
 
 protected:
     slCluster *cluster;
