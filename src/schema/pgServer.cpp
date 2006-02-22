@@ -140,6 +140,10 @@ wxString pgServer::GetFullName() const
       return wxT("(") + GetIdentifier() + wxT(")");
 }
 
+wxString pgServer::GetFullIdentifier() const 
+{
+    return GetFullName();
+}
 
 bool pgServer::Disconnect(frmMain *form)
 {
