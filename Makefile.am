@@ -15,6 +15,7 @@ EXTRA_DIST = \
 	$(top_srcdir)/LICENSE \
 	$(top_srcdir)/README \
 	$(top_srcdir)/TODO \
+	$(top_srcdir)/bootstrap \
 	$(top_srcdir)/configure.ac.in \
         $(top_srcdir)/languages.hwx \
         $(top_srcdir)/languages.po \
