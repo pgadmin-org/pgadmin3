@@ -1941,6 +1941,10 @@ SOURCE=.\slony\dlgRepPath.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\slony\dlgRepProperty.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\slony\dlgRepSequence.cpp
 # End Source File
 # Begin Source File
