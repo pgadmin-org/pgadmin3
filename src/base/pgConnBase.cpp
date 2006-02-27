@@ -259,7 +259,7 @@ wxString pgConnBase::GetName() const
 {
     wxString str;
     if (dbHost.IsEmpty())
-        str.Printf(_("%s on <localpipe>"), dbname.c_str());
+        str.Printf(_("%s on local socket"), dbname.c_str());
     else
         str.Printf(_("%s on %s:%d"), dbname.c_str(), dbHost.c_str(), GetPort());
     return str;
