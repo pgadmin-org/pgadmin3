@@ -647,7 +647,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n")
             wxT("  FROM pg_class rel\n")
             wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
-            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid -- !!!! AND des.objsubid=0\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
             wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
             wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
             + restriction + 
@@ -663,7 +663,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
             wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n")
             wxT("  FROM pg_class rel\n")
-            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid -- !!!!AND des.objsubid=0\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
             wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
             wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
             + restriction + 
