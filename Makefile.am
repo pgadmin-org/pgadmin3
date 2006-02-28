@@ -7,6 +7,8 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
+AUTOMAKE_OPTIONS = foreign
+
 SUBDIRS = i18n src pkg xtra
 
 EXTRA_DIST = \
