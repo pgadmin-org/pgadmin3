@@ -141,15 +141,12 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
     colHeaders.Empty();
     int num;
 
-#if 0
-    /* Seems pointless to me... */
     int i;
     for (i=0 ; i < GetNumberCols() ; i++)
     {
         colHeaders.Add(GetColLabelValue(i));
         colSizes.Add(GetColSize(i));
     }
-#endif
 
     num = GetNumberRows();
     if (num)
