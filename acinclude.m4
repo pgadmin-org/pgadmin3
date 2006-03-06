@@ -276,7 +276,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		else
 			if test "$PG_SSL" = "yes"
 			then
-				LIBS="$LIBS -L${PG_LIB} -lssl $CRYPTO_LIB -lpq"
+				LIBS="$LIBS -L${PG_LIB} -lpq"
 			else
 				LIBS="$LIBS -L${PG_LIB} $CRYPTO_LIB -lpq"
 			fi
