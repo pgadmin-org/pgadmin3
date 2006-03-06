@@ -156,8 +156,8 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
     }
     else
     {
-        colCount = data->GetColumnCount();
-        rowCount = data->GetItemCount();
+        colCount = data->GetNumberCols();
+        rowCount = data->GetNumberRows();
         if (colCount > 1) // first col contains row count
             startCol=1;
     }

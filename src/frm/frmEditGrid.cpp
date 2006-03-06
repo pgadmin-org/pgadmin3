@@ -93,7 +93,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     wxFont fntLabel(settings->GetSystemFont());
     fntLabel.SetWeight(wxBOLD);
     sqlGrid->SetLabelFont(fntLabel);
-
+    sqlGrid->SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
    
     toolBar = CreateToolBar();
 

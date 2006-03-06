@@ -607,27 +607,16 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
         msgResult->Copy();
     else if (wnd == msgHistory)
         msgHistory->Copy();
-    else if (wnd == sqlResult && sqlResult->GetSelectedItemCount() > 0)
-    {
-        wxString str;
-        int row=-1;
-        while (true)
-        {
-            row = sqlResult->GetNextItem(row, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-            if (row < 0)
+    else {
+        wxWindow *obj = wnd;
+
+        while (obj != NULL) {
+            if (obj == sqlResult) {
+                sqlResult->Copy();
                 break;
-            
-            str.Append(sqlResult->GetExportLine(row));
-            if (sqlResult->GetSelectedItemCount() > 1)
-                str.Append(END_OF_LINE);
+            }
+            obj = obj->GetParent();
         }
-
-        if (wxTheClipboard->Open())
-        {
-            wxTheClipboard->SetData(new wxTextDataObject(str));
-            wxTheClipboard->Close();
-        }
-
     }
     updateMenu();
 }
@@ -1290,6 +1279,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                                 break;
                         }
                     }
+                    sqlResult->SetMaxRows(maxRows);
                     wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
                     wxLongLong elapsed;
                     elapsedRetrieve=0;
@@ -1330,6 +1320,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                             wxYield();
                         }
                     }
+                    sqlResult->ResultsFinished();
                     if (resultFreezed)
                         sqlResult->Thaw();
 
