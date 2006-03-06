@@ -651,6 +651,8 @@ void frmQuery::OnSelectAll(wxCommandEvent& ev)
 		msgHistory->SelectAll();
 	else if (wnd == sqlResult)
 		sqlResult->SelectAll();
+    else if (wnd->GetParent() == sqlResult)
+        sqlResult->SelectAll();
 }
 
 void frmQuery::OnFind(wxCommandEvent& ev)
