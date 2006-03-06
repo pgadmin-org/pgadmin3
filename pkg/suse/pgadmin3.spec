@@ -1,6 +1,6 @@
-%define major_version 1.2.2
+%define major_version 1.4.2
 %define minor_version 1.st2
-%define wxGTK2_version 2.6.1
+%define wxGTK2_version 2.6.2
 %define wx_config /opt/wxGTK-static/bin/wx-config
 %define wx_prefix /opt/wxGTK-static
 
