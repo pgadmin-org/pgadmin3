@@ -83,7 +83,8 @@ wxString ctlSQLResult::GetExportLine(int row, int col1, int col2)
         return str;
 
     cols.Alloc(col2 - col1 + 1);
-    for (i = col1; i <= col2; i++) {
+    for (i = col1; i <= col2; i++) 
+	{
         cols.Add(i);
     }
 
@@ -93,11 +94,12 @@ wxString ctlSQLResult::GetExportLine(int row, int col1, int col2)
 
 wxString ctlSQLResult::GetExportLine(int row, wxArrayInt cols)
 {
-    if (GetNumberCols() <= 1)
-        return GetItemText(row);
-
     wxString str;
     unsigned int col;
+
+    if (GetNumberCols() == 0)
+        return str;
+
     for (col=0 ; col < cols.Count() ; col++)
     {
         if (col > 0)
@@ -196,20 +198,38 @@ int ctlSQLResult::RetrieveOne()
 
     if (!rowsRetrieved)
     {
-        colNames.Add(thread->DataSet()->ColName(0));
+        if (!GetTable())
+            SetTable(new sqlResultTable(), true);
+			
+        wxString colName, colType;
         colTypes.Add(wxT(""));
         colTypClasses.Add(0L);
 
+        Freeze();
+			
+		colName = thread->DataSet()->ColName(0);
+		colType = thread->DataSet()->ColType(0);
+		colNames.Add(colName);
+		colTypes.Add(colType);
+		colTypClasses.Add(thread->DataSet()->ColTypClass(0));
 
-        SetColLabelValue(0, thread->DataSet()->ColName(0));
+	    wxString colHeader = colName + wxT("\n") + colType;
+			
+        GetTable()->AppendCols(1);
+
+        SetColLabelValue(0, colHeader);
         SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
 
         while (!thread->DataSet()->Eof())
         {
-            SetCellValue(rowsRetrieved, 0, thread->DataSet()->GetVal(0));
+            GetTable()->AppendRows(1);
+            GetTable()->SetValue(rowsRetrieved, 0, thread->DataSet()->GetVal(0));
             rowsRetrieved++;
             thread->DataSet()->MoveNext();
         }
+		
+		Thaw();
+		
         return rowsRetrieved;
     }
     return 0;
@@ -234,9 +254,9 @@ int ctlSQLResult::Retrieve(long chunk)
 
         Freeze();
         
-        if (!GetTable()) {
+        if (!GetTable())
             SetTable(new sqlResultTable(), true);
-        }
+
         GetTable()->AppendCols(nCols);
         SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
         if (maxRows)
@@ -304,8 +324,18 @@ int ctlSQLResult::Retrieve(long chunk)
 
 wxString ctlSQLResult::GetItemText(int row, int col)
 {
-    if (col < 0)
-        return GetExportLine(row);
+    if (GetNumberCols() == 0)
+	{
+        wxString t;
+        return t;
+    }
+
+    if (col < 0) {
+        if (GetNumberCols() > 1)
+            return GetExportLine(row);
+        else
+            return GetCellValue(row, 0);
+    }
     else
         return GetCellValue(row, col);
 }
@@ -368,7 +398,8 @@ void ctlSQLResult::Copy()
     int copied = 0;
     size_t i;
 
-    if (GetSelectedRows().GetCount()) {
+    if (GetSelectedRows().GetCount()) 
+	{
         wxArrayInt rows = GetSelectedRows();
 
         for (i=0 ; i < rows.GetCount() ; i++)
@@ -381,7 +412,8 @@ void ctlSQLResult::Copy()
 
         copied = rows.GetCount();
     }
-    else if (GetSelectedCols().GetCount()) {
+    else if (GetSelectedCols().GetCount()) 
+	{
         wxArrayInt cols = GetSelectedCols();
         size_t numRows = GetNumberRows();
 
@@ -396,7 +428,8 @@ void ctlSQLResult::Copy()
         copied = numRows;
     }
     else if (GetSelectionBlockTopLeft().GetCount() > 0 &&
-        GetSelectionBlockBottomRight().GetCount() > 0) {
+        GetSelectionBlockBottomRight().GetCount() > 0) 
+	{
         unsigned int x1, x2, y1, y2;
 
         x1 = GetSelectionBlockTopLeft()[0].GetCol();
@@ -404,7 +437,8 @@ void ctlSQLResult::Copy()
         y1 = GetSelectionBlockTopLeft()[0].GetRow();
         y2 = GetSelectionBlockBottomRight()[0].GetRow();
 
-        for (i = y1; i <= y2; i++) {
+        for (i = y1; i <= y2; i++) 
+		{
             str.Append(GetExportLine(i, x1, x2));
 
             if (y2 > y1)
@@ -413,7 +447,8 @@ void ctlSQLResult::Copy()
 
         copied = y2 - y1 + 1;
     }
-    else {
+    else 
+	{
         int row, col;
 
         row = GetGridCursorRow();
@@ -439,9 +474,8 @@ void ctlSQLResult::ResultsFinished()
 {
     int rows = GetTable()->GetNumberRows();
 
-    if (rowsRetrieved < rows) {
+    if (rowsRetrieved < rows)
         GetTable()->DeleteRows(rowsRetrieved, rows - rowsRetrieved);
-    }
 }
 
 void ctlSQLResult::OnGridSelect(wxGridRangeSelectEvent& event)
@@ -472,7 +506,8 @@ int sqlResultTable::GetNumberCols()
 
 bool sqlResultTable::AppendCols(size_t numCols)
 {
-    if (values.Count()) {
+    if (values.Count()) 
+	{
         values.Clear();
         nRows = 0;
     }
