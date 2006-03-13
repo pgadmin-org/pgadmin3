@@ -1022,17 +1022,25 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     if (analyze)
         sql += wxT(";\nROLLBACK;");
 
-    if (execQuery(sql, resultToRetrieve, true, offset))
+    if (execQuery(sql, resultToRetrieve, false, offset))
     {
         if (!verbose)
         {
             int i;
             wxString str;
-            for (i=0 ; i < sqlResult->NumRows() ; i++)
+            if (sqlResult->NumRows() == 1)
             {
-                if (i)
-                    str.Append(wxT("\n"));
-                str.Append(sqlResult->GetItemText(i));
+                // Avoid shared storage issues with strings
+                str.Append(sqlResult->GetItemText(0).c_str());
+            }
+            else
+            {
+                for (i=0 ; i < sqlResult->NumRows() ; i++)
+                {
+                    if (i)
+                        str.Append(wxT("\n"));
+                    str.Append(sqlResult->GetItemText(i));
+                }
             }
             explainCanvas->SetExplainString(str);
             output->SetSelection(EXPLAIN_PAGE);
