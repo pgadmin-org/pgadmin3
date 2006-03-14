@@ -5,7 +5,7 @@ echo.
 echo You must have pgAdmin III v1.4.x installed 
 echo from the official MSI installation to use this upgrade path.
 echo.
-echo If pgAdmin III or any of it's components are in use
+echo If pgAdmin III or any of its components are in use
 echo a reboot will be required once the upgrade is completed.
 echo.
 echo.
