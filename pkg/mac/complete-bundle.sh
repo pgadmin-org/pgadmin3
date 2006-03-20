@@ -9,18 +9,32 @@ fi
 test -d "$bundle/Contents/Frameworks" || mkdir -p "$bundle/Contents/Frameworks" || exit 1
 
 echo "Completing bundle: $bundle"
+
+GNUXARGS=`xargs --version 2> /dev/null | grep -c GNU`
+
 cd "$bundle"
-todo=$(find ./ -perm +0111 ! -type d | \
-        xargs --replace=line file 'line' | \
-        sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' | \
-        xargs echo -n \
-)
+
+if test "$GNUXARGS" = "1"; then
+	todo=$(find ./ -perm +0111 ! -type d | \
+        	xargs --replace=line file 'line' | \
+        	sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' | \
+        	xargs echo -n \
+	)
+else
+        todo=$(find ./ -perm +0111 ! -type d | \
+                xargs -J line file 'line' | \
+                sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' | \
+                xargs echo -n \
+        )
+fi
 
 echo "Found executables: $todo"
 while test "$todo" != ""; do
 	todo_old=$todo ;
 	todo="" ;
 	for todo_obj in $todo_old; do
+		echo "Post-processing: $todo_obj"
+
 		#Figure out the relative path from todo_obj to Contents/Frameworks
 		fw_relpath=$(echo "$todo_obj" |\
 			sed -n 's|^\(\.//*\)\(\([^/][^/]*/\)*\)[^/][^/]*$|\2|gp' | \
