@@ -63,7 +63,6 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_GRID_RANGE_SELECT(frmEditGrid::OnGridSelectCells)
     EVT_GRID_SELECT_CELL(frmEditGrid::OnCellChange)
     EVT_GRID_EDITOR_SHOWN(frmEditGrid::OnEditorShown)
-    EVT_GRID_LABEL_LEFT_DCLICK(frmEditGrid::OnLabelDoubleClick)
     EVT_GRID_LABEL_RIGHT_CLICK(frmEditGrid::OnLabelRightClick)
 END_EVENT_TABLE()
 
@@ -87,13 +86,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     CreateStatusBar();
     SetStatusBarPane(-1);
 
-    sqlGrid = new ctlSQLGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
+    sqlGrid = new ctlSQLEditGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
     sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
-
-    wxFont fntLabel(settings->GetSystemFont());
-    fntLabel.SetWeight(wxBOLD);
-    sqlGrid->SetLabelFont(fntLabel);
-    sqlGrid->SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
    
     toolBar = CreateToolBar();
 
@@ -206,98 +200,6 @@ void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
     }
 }
 
-#define EXTRAEXTENT_HEIGHT 6
-#define EXTRAEXTENT_WIDTH  6
-
-void frmEditGrid::OnLabelDoubleClick(wxGridEvent& event)
-{
-#if wxCHECK_VERSION(2, 5, 0)
-    // at the moment, not implemented for 2.4
-    int maxHeight, maxWidth;
-    sqlGrid->GetClientSize(&maxWidth, &maxHeight);
-    int row=event.GetRow();
-    int col=event.GetCol();
-
-    int extent, extentWant=0;
-
-    if (row >= 0)
-    {
-        for (col=0 ; col < sqlGrid->GetNumberCols() ; col++)
-        {
-            extent = sqlGrid->GetBestSize(row, col).GetHeight();
-            if (extent > extentWant)
-                extentWant=extent;
-        }
-
-        extentWant += EXTRAEXTENT_HEIGHT;
-        extentWant = wxMax(extentWant, sqlGrid->GetRowMinimalAcceptableHeight());
-        extentWant = wxMin(extentWant, maxHeight*3/4);
-        int currentHeight=sqlGrid->GetRowHeight(row);
-            
-        if (currentHeight >= maxHeight*3/4 || currentHeight == extentWant)
-            extentWant = sqlGrid->GetRowMinimalAcceptableHeight();
-        else if (currentHeight < maxHeight/4)
-            extentWant = wxMin(maxHeight/4, extentWant);
-        else if (currentHeight < maxHeight/2)
-            extentWant = wxMin(maxHeight/2, extentWant);
-        else if (currentHeight < maxHeight*3/4)
-            extentWant = wxMin(maxHeight*3/4, extentWant);
-
-        if (extentWant != currentHeight)
-        {
-            sqlGrid->BeginBatch();
-            if(sqlGrid->IsCellEditControlShown())
-            {
-                sqlGrid->HideCellEditControl();
-                sqlGrid->SaveEditControlValue();
-            }
-
-            sqlGrid->SetRowHeight(row, extentWant);
-            sqlGrid->EndBatch();
-        }
-    }
-    else if (col >= 0)
-    {
-        for (row=0 ; row < sqlGrid->GetNumberRows() ; row++)
-        {
-            if (sqlGrid->GetTable()->CheckInCache(row))
-            {
-                extent = sqlGrid->GetBestSize(row, col).GetWidth();
-                if (extent > extentWant)
-                    extentWant=extent;
-            }
-        }
-
-        extentWant += EXTRAEXTENT_WIDTH;
-        extentWant = wxMax(extentWant, sqlGrid->GetColMinimalAcceptableWidth());
-        extentWant = wxMin(extentWant, maxWidth*3/4);
-        int currentWidth=sqlGrid->GetColumnWidth(col);
-            
-        if (currentWidth >= maxWidth*3/4 || currentWidth == extentWant)
-            extentWant = sqlGrid->GetColMinimalAcceptableWidth();
-        else if (currentWidth < maxWidth/4)
-            extentWant = wxMin(maxWidth/4, extentWant);
-        else if (currentWidth < maxWidth/2)
-            extentWant = wxMin(maxWidth/2, extentWant);
-        else if (currentWidth < maxWidth*3/4)
-            extentWant = wxMin(maxWidth*3/4, extentWant);
-
-        if (extentWant != currentWidth)
-        {
-            sqlGrid->BeginBatch();
-            if(sqlGrid->IsCellEditControlShown())
-            {
-                sqlGrid->HideCellEditControl();
-                sqlGrid->SaveEditControlValue();
-            }
-            sqlGrid->SetColumnWidth(col, extentWant);
-            sqlGrid->EndBatch();
-        }
-    }
-#endif
-}
-
-
 
 void frmEditGrid::OnCellChange(wxGridEvent& event)
 {
@@ -325,73 +227,9 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
 void frmEditGrid::OnCopy(wxCommandEvent &ev)
 {
-    wxString str;
-    int copied = 0;
-    size_t i;
+    int copied;
 
-    if (sqlGrid->GetSelectedRows().GetCount()) {
-        wxArrayInt rows=sqlGrid->GetSelectedRows();
-
-        for (i=0 ; i < rows.GetCount() ; i++)
-        {
-            str.Append(sqlGrid->GetTable()->GetExportLine(rows.Item(i)));
-    
-            if (rows.GetCount() > 1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = rows.GetCount();
-    }
-    else if (sqlGrid->GetSelectedCols().GetCount()) {
-        wxArrayInt cols=sqlGrid->GetSelectedCols();
-        size_t numRows = sqlGrid->GetNumberRows();
-
-        for (i=0 ; i < numRows ; i++)
-        {
-            str.Append(sqlGrid->GetTable()->GetExportLine(i, cols));
-    
-            if (numRows > 1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = numRows;
-    }
-    else if (sqlGrid->GetSelectionBlockTopLeft().GetCount() > 0 &&
-        sqlGrid->GetSelectionBlockBottomRight().GetCount() > 0) {
-        unsigned int x1, x2, y1, y2;
-
-        x1 = sqlGrid->GetSelectionBlockTopLeft()[0].GetCol();
-        x2 = sqlGrid->GetSelectionBlockBottomRight()[0].GetCol();
-        y1 = sqlGrid->GetSelectionBlockTopLeft()[0].GetRow();
-        y2 = sqlGrid->GetSelectionBlockBottomRight()[0].GetRow();
-
-        for (i = y1; i <= y2; i++) {
-            str.Append(sqlGrid->GetTable()->GetExportLine(i, x1, x2));
-
-            if (y2 > y1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = y2 - y1 + 1;
-    }
-    else {
-        int row, col;
-
-        row = sqlGrid->GetGridCursorRow();
-        col = sqlGrid->GetGridCursorCol();
-
-        str.Append(sqlGrid->GetTable()->GetExportLine(row, col, col));
-        copied = 1;
-    }
-
-    if (copied && wxTheClipboard->Open())
-    {
-        wxTheClipboard->SetData(new wxTextDataObject(str));
-        wxTheClipboard->Close();
-    }
-    else {
-        copied = 0;
-    }
+    copied = sqlGrid->Copy();
 
     SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
 }
@@ -804,15 +642,17 @@ void frmEditGrid::Abort()
 }
 
 
-ctlSQLGrid::ctlSQLGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
-: wxGrid(parent, id, pos, size, wxWANTS_CHARS|wxVSCROLL|wxHSCROLL)
+ctlSQLEditGrid::ctlSQLEditGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
+: ctlSQLGrid(parent, id, pos, size)
 {
 }
 
+bool ctlSQLEditGrid::CheckRowPresent(int row)
+{
+    return GetTable()->CheckInCache(row);
+}
 
-
-
-void ctlSQLGrid::ResizeEditor(int row, int col)
+void ctlSQLEditGrid::ResizeEditor(int row, int col)
 {
 
     if (GetTable()->needsResizing(col))
@@ -861,31 +701,11 @@ void ctlSQLGrid::ResizeEditor(int row, int col)
 }
 
 
-wxSize ctlSQLGrid::GetBestSize(int row, int col)
-{
-    wxSize size;
-
-    wxGridCellAttr* attr = GetCellAttr(row, col);
-    wxGridCellRenderer* renderer = attr->GetRenderer(this, row, col);
-    if ( renderer )
-    {
-        wxClientDC dc(GetGridWindow());
-        size = renderer->GetBestSize(*this, *attr, dc, row, col);
-        renderer->DecRef();
-    }
-
-    attr->DecRef();
-
-    return size;
-}
-
-
-
 #if wxCHECK_VERSION(2,5,0)
     // problems are fixed
 #else
 
-bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
+bool ctlSQLEditGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 {
     bool done=false;
     if (m_created)
@@ -938,13 +758,13 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 
 
 
-wxArrayInt ctlSQLGrid::GetSelectedRows() const
+wxArrayInt ctlSQLEditGrid::GetSelectedRows() const
 {
     wxArrayInt rows, rows2;
 
     wxGridCellCoordsArray tl=GetSelectionBlockTopLeft(), br=GetSelectionBlockBottomRight();
 
-    int maxCol=((ctlSQLGrid*)this)->GetNumberCols() -1;
+    int maxCol=((ctlSQLEditGrid*)this)->GetNumberCols() -1;
     size_t i;
     for (i=0 ; i < tl.GetCount() ; i++)
     {
@@ -1017,7 +837,7 @@ void sqlGridTextEditor::BeginEdit(int row, int col, wxGrid *grid)
 {
     m_startValue = grid->GetTable()->GetValue(row, col);
     wxGridCellTextEditor::BeginEdit(row, col, grid);
-    ((ctlSQLGrid*)grid)->ResizeEditor(row, col);
+    ((ctlSQLEditGrid*)grid)->ResizeEditor(row, col);
 }
 
 
@@ -1456,65 +1276,15 @@ int sqlTable::GetNumberStoredRows()
 }
 
 
-wxString sqlTable::GetExportLine(int row)
+bool ctlSQLEditGrid::IsColText(int col)
 {
-    return GetExportLine(row, 0, nCols - 1);
+    return GetTable()->IsColText(col);
 }
 
-wxString sqlTable::GetExportLine(int row, int col1, int col2)
+bool sqlTable::IsColText(int col)
 {
-    wxArrayInt cols;
-    wxString str;
-    int i;
-
-    if (col2 < col1)
-        return str;
-
-    cols.Alloc(col2 - col1 + 1);
-    for (i = col1; i <= col2; i++) {
-        cols.Add(i);
-    }
-
-    return GetExportLine(row, cols);
+    return !columns[col].numeric;
 }
-
-
-wxString sqlTable::GetExportLine(int row, wxArrayInt cols)
-{
-    wxString str;
-    cacheLine *line = GetLine(row);
-    if (line)
-    {
-        unsigned int col;
-        for (col=0 ; col < cols.Count() ; col++)
-        {
-            if (col > 0)
-                str.Append(settings->GetExportColSeparator());
-
-            bool needQuote  = false;
-
-            if (settings->GetCopyQuoting() == 1)
-		    {
-                /* Quote strings only */
-                needQuote = !columns[cols[col]].numeric;
-		    }
-            else if (settings->GetCopyQuoting() == 2) {
-			    /* Quote everything */
-			    needQuote = true;
-            }
-
-            if (needQuote)
-                str.Append(settings->GetExportQuoteChar());
-
-            str.Append(line->cols[cols[col]]);
-        
-            if (needQuote)
-                str.Append(settings->GetExportQuoteChar());
-        }
-    }
-    return str;
-}
-
 
 wxString sqlTable::GetColLabelValue(int col)
 {

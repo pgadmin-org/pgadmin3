@@ -56,7 +56,7 @@ BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
     EVT_LIST_ITEM_DESELECTED (XRCID("lstSortCols"), dlgEditGridOptions::OnLstSortColsChange) 
 END_EVENT_TABLE()
 
-dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxString &rel, ctlSQLGrid *grid)
+dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxString &rel, ctlSQLEditGrid *grid)
 {
     wxLogInfo(wxT("Creating an edit grid options dialogue"));
     editGrid=grid;

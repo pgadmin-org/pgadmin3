@@ -14,6 +14,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/ctl/ctlComboBox.h \
 	$(srcdir)/include/ctl/ctlListView.h \
 	$(srcdir)/include/ctl/ctlSQLBox.h \
+	$(srcdir)/include/ctl/ctlSQLGrid.h \
 	$(srcdir)/include/ctl/ctlSQLResult.h \
 	$(srcdir)/include/ctl/ctlTree.h \
 	$(srcdir)/include/ctl/timespin.h \

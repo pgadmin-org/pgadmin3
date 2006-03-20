@@ -16,6 +16,7 @@
 
 #define CTL_EDITGRID 357
 #include "dlgClasses.h"
+#include "ctl/ctlSQLGrid.h"
 
 class cacheLine
 {
@@ -66,15 +67,17 @@ public:
 
 class sqlTable;
 
-class ctlSQLGrid : public wxGrid
+class ctlSQLEditGrid : public ctlSQLGrid
 {
 public:
-    ctlSQLGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+    ctlSQLEditGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
 
     sqlTable *GetTable() { return (sqlTable*)wxGrid::GetTable(); }
-    wxSize GetBestSize(int row, int col);
+    //wxSize GetBestSize(int row, int col);
     void ResizeEditor(int row, int col);
     wxArrayInt GetSelectedRows() const;
+    bool CheckRowPresent(int row);
+    virtual bool IsColText(int col);
 
 #if wxCHECK_VERSION(2,5,0)
     // problems are fixed
@@ -112,9 +115,7 @@ public:
     bool AppendRows(size_t rows);
     bool DeleteRows(size_t pos, size_t rows);
     int  LastRow() { return lastRow; }
-    wxString GetExportLine(int row);
-    wxString GetExportLine(int row, int col1, int col2);
-    wxString sqlTable::GetExportLine(int row, wxArrayInt cols);
+    bool IsColText(int col);
 
     bool CheckInCache(int row);
 
@@ -146,7 +147,7 @@ private:
     int rowsDeleted;    // rows deleted from initial dataSet
     sqlCellAttr *columns;
 
-    friend class ctlSQLGrid;
+    friend class ctlSQLEditGrid;
 };
 
 
@@ -185,7 +186,7 @@ private:
     void OnLabelRightClick(wxGridEvent& event);
     void Abort();
 
-    ctlSQLGrid *sqlGrid;
+    ctlSQLEditGrid *sqlGrid;
 
     frmMain *mainForm;
     pgConn *connection;

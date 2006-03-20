@@ -25,7 +25,7 @@
 #include <wx/generic/gridctrl.h>
 
 #include "dlgClasses.h"
-class ctlSQLGrid;
+class ctlSQLEditGrid;
 class ctlSQLBox;
 class pgConn;
 class frmEditGrid;
@@ -38,7 +38,7 @@ class dlgEditGridOptions : public pgDialog
 public:
 
 	// Construction
-    dlgEditGridOptions(frmEditGrid *parent, pgConn *conn, const wxString &rel, ctlSQLGrid *grid);
+    dlgEditGridOptions(frmEditGrid *parent, pgConn *conn, const wxString &rel, ctlSQLEditGrid *grid);
 
 private:
 
@@ -54,7 +54,7 @@ private:
 	frmEditGrid *parent;
 	pgConn *connection;
 	wxString relation;
-	ctlSQLGrid *editGrid;
+	ctlSQLEditGrid *editGrid;
 	ctlSQLBox *filter;
 	wxMBConv *conv;
 

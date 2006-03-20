@@ -21,17 +21,13 @@
 
 
 ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const wxPoint& pos, const wxSize& size)
-: wxGrid(parent, id, pos, size, wxWANTS_CHARS|wxVSCROLL|wxHSCROLL)
+: ctlSQLGrid(parent, id, pos, size)
 {
     conn=_conn;
     thread=0;
     CreateGrid(0, 0);
     EnableEditing(false);
     SetSizer(new wxBoxSizer(wxVERTICAL));
-
-    wxFont fntLabel(settings->GetSystemFont());
-    fntLabel.SetWeight(wxBOLD);
-    SetLabelFont(fntLabel);
 
     Connect(wxID_ANY, wxEVT_GRID_RANGE_SELECT, wxGridRangeSelectEventHandler(ctlSQLResult::OnGridSelect));
 }
@@ -67,71 +63,16 @@ bool ctlSQLResult::Export()
 }
 
 
-
-wxString ctlSQLResult::GetExportLine(int row)
+bool ctlSQLResult::IsColText(int col)
 {
-    return GetExportLine(row, 0, GetNumberCols() - 1);
-}
-
-wxString ctlSQLResult::GetExportLine(int row, int col1, int col2)
-{
-    wxArrayInt cols;
-    wxString str;
-    int i;
-
-    if (col2 < col1)
-        return str;
-
-    cols.Alloc(col2 - col1 + 1);
-    for (i = col1; i <= col2; i++) 
+	switch (colTypClasses.Item(col))
 	{
-        cols.Add(i);
-    }
+	case PGTYPCLASS_NUMERIC:
+	case PGTYPCLASS_BOOL:
+		return false;
+	}
 
-    return GetExportLine(row, cols);
-}
-
-
-wxString ctlSQLResult::GetExportLine(int row, wxArrayInt cols)
-{
-    wxString str;
-    unsigned int col;
-
-    if (GetNumberCols() == 0)
-        return str;
-
-    for (col=0 ; col < cols.Count() ; col++)
-    {
-        if (col > 0)
-            str.Append(settings->GetCopyColSeparator());
-
-        wxString text = GetCellValue(row, cols[col]);
-
-		bool needQuote  = false;
-		if (settings->GetCopyQuoting() == 1)
-		{
-			/* Quote strings only */
-			switch (colTypClasses.Item(cols[col]))
-			{
-			case PGTYPCLASS_NUMERIC:
-			case PGTYPCLASS_BOOL:
-				break;
-			default:
-				needQuote=true;
-				break;
-			}
-		}
-		else if (settings->GetCopyQuoting() == 2)
-			/* Quote everything */
-			needQuote = true;
-
-		if (needQuote)
-            str.Append(settings->GetCopyQuoteChar());
-        str.Append(text);
-        if (needQuote)
-            str.Append(settings->GetCopyQuoteChar());
-    }    
-    return str;
+    return true;
 }
 
 
@@ -198,9 +139,6 @@ int ctlSQLResult::RetrieveOne()
 
     if (!rowsRetrieved)
     {
-        if (!GetTable())
-            SetTable(new sqlResultTable(), true);
-			
         wxString colName, colType;
         colTypes.Add(wxT(""));
         colTypClasses.Add(0L);
@@ -218,7 +156,6 @@ int ctlSQLResult::RetrieveOne()
         GetTable()->AppendCols(1);
 
         SetColLabelValue(0, colHeader);
-        SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
 
         while (!thread->DataSet()->Eof())
         {
@@ -254,11 +191,7 @@ int ctlSQLResult::Retrieve(long chunk)
 
         Freeze();
         
-        if (!GetTable())
-            SetTable(new sqlResultTable(), true);
-
         GetTable()->AppendCols(nCols);
-        SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
         if (maxRows)
             GetTable()->AppendRows(maxRows);
         else
@@ -392,79 +325,6 @@ int ctlSQLResult::RunStatus()
 }
 
 
-void ctlSQLResult::Copy()
-{
-    wxString str;
-    int copied = 0;
-    size_t i;
-
-    if (GetSelectedRows().GetCount()) 
-	{
-        wxArrayInt rows = GetSelectedRows();
-
-        for (i=0 ; i < rows.GetCount() ; i++)
-        {
-            str.Append(GetExportLine(rows.Item(i)));
-    
-            if (rows.GetCount() > 1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = rows.GetCount();
-    }
-    else if (GetSelectedCols().GetCount()) 
-	{
-        wxArrayInt cols = GetSelectedCols();
-        size_t numRows = GetNumberRows();
-
-        for (i=0 ; i < numRows ; i++)
-        {
-            str.Append(GetExportLine(i, cols));
-    
-            if (numRows > 1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = numRows;
-    }
-    else if (GetSelectionBlockTopLeft().GetCount() > 0 &&
-        GetSelectionBlockBottomRight().GetCount() > 0) 
-	{
-        unsigned int x1, x2, y1, y2;
-
-        x1 = GetSelectionBlockTopLeft()[0].GetCol();
-        x2 = GetSelectionBlockBottomRight()[0].GetCol();
-        y1 = GetSelectionBlockTopLeft()[0].GetRow();
-        y2 = GetSelectionBlockBottomRight()[0].GetRow();
-
-        for (i = y1; i <= y2; i++) 
-		{
-            str.Append(GetExportLine(i, x1, x2));
-
-            if (y2 > y1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = y2 - y1 + 1;
-    }
-    else 
-	{
-        int row, col;
-
-        row = GetGridCursorRow();
-        col = GetGridCursorCol();
-
-        str.Append(GetExportLine(row, col, col));
-        copied = 1;
-    }
-
-    if (copied && wxTheClipboard->Open())
-    {
-        wxTheClipboard->SetData(new wxTextDataObject(str));
-        wxTheClipboard->Close();
-    }
-}
-
 void ctlSQLResult::SetMaxRows(int rows)
 {
     maxRows = rows;
@@ -481,89 +341,4 @@ void ctlSQLResult::ResultsFinished()
 void ctlSQLResult::OnGridSelect(wxGridRangeSelectEvent& event)
 {
     SetFocus();
-}
-
-sqlResultTable::sqlResultTable()
-{
-    nRows = nCols = 0;
-    values = 0;
-}
-
-sqlResultTable::~sqlResultTable()
-{
-    values.Clear();
-}
-
-int sqlResultTable::GetNumberRows()
-{
-    return nRows;
-}
-
-int sqlResultTable::GetNumberCols()
-{
-    return nCols;
-}
-
-bool sqlResultTable::AppendCols(size_t numCols)
-{
-    if (values.Count()) 
-	{
-        values.Clear();
-        nRows = 0;
-    }
-
-    nCols = numCols;
-    return true;
-}
-
-bool sqlResultTable::AppendRows(size_t numRows)
-{
-    if (numRows <= 0)
-        return false;
-
-    values.Add(wxT(""), nCols * numRows);
-    nRows += numRows;
-    return true;
-}
-
-void sqlResultTable::SetValue(int row, int col, const wxString& s)
-{
-    if (row < 0 || row >= nRows)
-        return;
-
-    if (col < 0 || col >= nCols)
-        return;
-
-    values[row * nCols + col] = s;
-}
-
-wxString sqlResultTable::GetValue(int row, int col)
-{
-    if (row < 0 || row >= nRows)
-        return wxT("");
-
-    if (col < 0 || col >= nCols)
-        return wxT("");
-
-    return values[row * nCols + col];
-}
-
-bool sqlResultTable::IsEmptyCell(int row, int col)
-{
-    return false;
-}
-
-bool sqlResultTable::DeleteRows(size_t pos, size_t numRows)
-{
-    if (pos >= (size_t)nRows)
-        return false;
-
-    values.RemoveAt(pos, numRows);
-
-    if (pos + numRows > (size_t)nRows)
-        nRows = pos;
-    else
-        nRows -= numRows;
-
-    return true;
 }
