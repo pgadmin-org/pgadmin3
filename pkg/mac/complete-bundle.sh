@@ -10,23 +10,9 @@ test -d "$bundle/Contents/Frameworks" || mkdir -p "$bundle/Contents/Frameworks" 
 
 echo "Completing bundle: $bundle"
 
-GNUXARGS=`xargs --version 2> /dev/null | grep -c GNU`
+cd $bundle
 
-cd "$bundle"
-
-if test "$GNUXARGS" = "1"; then
-	todo=$(find ./ -perm +0111 ! -type d | \
-        	xargs --replace=line file 'line' | \
-        	sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' | \
-        	xargs echo -n \
-	)
-else
-        todo=$(find ./ -perm +0111 ! -type d | \
-                xargs -J line file 'line' | \
-                sed -n 's/^\([^:][^:]*\):[[:space:]]*Mach-O executable ppc$/\1/p' | \
-                xargs echo -n \
-        )
-fi
+todo=$(file `find ./ -perm +0111 ! -type d` | grep "Mach-O executable" | awk -F: '{printf "%s  ",$1;next} {print}')
 
 echo "Found executables: $todo"
 while test "$todo" != ""; do
