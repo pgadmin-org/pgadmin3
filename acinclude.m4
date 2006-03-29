@@ -9,6 +9,17 @@
 #
 #######################################################################
 
+#################################
+# Check there is a C++ compiler #
+#################################
+
+AC_DEFUN([CHECK_CPP_COMPILER],
+[
+	if test "$ac_cv_prog_cxx_g" == no; then
+		AC_MSG_ERROR([could not find a suitable C++ to build pgAdmin])
+	fi
+])
+
 #############################
 # Override wxWidgets version #
 #############################
@@ -407,6 +418,12 @@ AC_DEFUN([SUMMARY],
 	echo "PostgreSQL directory:			$PG_HOME"
 	echo "PostgreSQL pg_config binary:		$PG_CONFIG"
 	echo "PostgreSQL version:			$PG_VERSION"
+        if test "$PG_SSL" == yes
+        then
+                echo "PostgreSQL SSL support:                 Present"
+        else
+                echo "PostgreSQL SSL support:                 Missing"
+        fi
 	echo
 	echo "wxWidgets directory:			$WX_HOME"
 	echo "wxWidgets wx-config binary:		$WX_CONFIG"
