@@ -16,7 +16,7 @@
 AC_DEFUN([CHECK_CPP_COMPILER],
 [
 	if test "$ac_cv_prog_cxx_g" == no; then
-		AC_MSG_ERROR([could not find a suitable C++ to build pgAdmin])
+		AC_MSG_ERROR([could not find a suitable C++ compiler to build pgAdmin])
 	fi
 ])
 
