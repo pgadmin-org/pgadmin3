@@ -727,6 +727,10 @@ SOURCE=.\ctl\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ctl\ctlSQLGrid.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ctl\ctlSQLResult.cpp
 # SUBTRACT BASE CPP /YX /Yc /Yu
 # SUBTRACT CPP /YX /Yc /Yu
@@ -1733,6 +1737,10 @@ SOURCE=.\include\ctlSecurityPanel.h
 # Begin Source File
 
 SOURCE=.\include\ctl\ctlSQLBox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\ctl\ctlSQLGrid.h
 # End Source File
 # Begin Source File
 
