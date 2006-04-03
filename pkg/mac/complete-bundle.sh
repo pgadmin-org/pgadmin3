@@ -28,6 +28,8 @@ while test "$todo" != ""; do
 			sed -n 's|[^/][^/]*/|../|gp' \
 		)"Contents/Frameworks"
 
+echo "fw_relpath: $fw_relpath"
+
 		#Find all libraries $todo_obj depends on, but skip system libraries
 		for lib in $(
 			otool -L $todo_obj | \
@@ -42,7 +44,7 @@ while test "$todo" != ""; do
 				install_name_tool \
 					-id "$lib_bn" \
 					"Contents/Frameworks/$lib_bn" || exit 1
-				todo="$todo Contents/Frameworks/$lib_bn"
+				todo="$todo .//Contents/Frameworks/$lib_bn"
 			fi
 			install_name_tool -change \
 				"$lib" \
