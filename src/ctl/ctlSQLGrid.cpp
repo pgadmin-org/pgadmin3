@@ -30,6 +30,7 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     SetLabelFont(fntLabel);
     SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
 	SetRowLabelSize(50);
+	SetDefaultCellOverflow(false);
 
     Connect(wxID_ANY, wxEVT_GRID_LABEL_LEFT_DCLICK, wxGridEventHandler(ctlSQLGrid::OnLabelDoubleClick));
 }

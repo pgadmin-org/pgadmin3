@@ -160,7 +160,6 @@ int ctlSQLResult::RetrieveOne()
         while (!thread->DataSet()->Eof())
         {
             GetTable()->AppendRows(1);
-			SetCellOverflow(rowsRetrieved, 0, false);
             GetTable()->SetValue(rowsRetrieved, 0, thread->DataSet()->GetVal(0));
             rowsRetrieved++;
             thread->DataSet()->MoveNext();
@@ -243,7 +242,6 @@ int ctlSQLResult::Retrieve(long chunk)
                 if ((int)value.Length() > maxColSize)
                     value = value.Left(maxColSize) + wxT(" (..)");
             }
-			SetCellOverflow(rowsRetrieved, col, false);
             GetTable()->SetValue(rowsRetrieved, col, value);
         }
         
