@@ -28,8 +28,6 @@ while test "$todo" != ""; do
 			sed -n 's|[^/][^/]*/|../|gp' \
 		)"Contents/Frameworks"
 
-echo "fw_relpath: $fw_relpath"
-
 		#Find all libraries $todo_obj depends on, but skip system libraries
 		for lib in $(
 			otool -L $todo_obj | \
