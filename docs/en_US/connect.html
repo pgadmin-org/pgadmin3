@@ -47,6 +47,15 @@ executing service control functions, pgAdmin will append
 status/start/stop keywords to this. Example:<BR>
 sudo /usr/local/pgsql/bin/pg_ctl -D /data/pgsql
 </P>
+<p>
+The maintenance DB field is used to specify the initial database that 
+pgAdmin connects to, and that will be expected to have the <a href="pgagent.html">
+pgAgent</a> schema and <a href="extend.html">adminpack</a> objects 
+installed (both optional). On PostgreSQL 8.1 and above, the maintenance
+DB is normally called 'postgres', and on earlier versions 'template1' is
+often used, though it is preferrable to create a 'postgres' database for 
+this purpose to avoid cluttering the template database.
+</p>
 <P>
 You can unckeck the "Connect now" checkbox if you don't want the connection
 to the server being established immediately, but only registered for later use. In this
