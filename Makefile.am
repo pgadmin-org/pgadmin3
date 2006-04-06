@@ -19,19 +19,15 @@ EXTRA_DIST = \
 	$(top_srcdir)/TODO \
 	$(top_srcdir)/bootstrap \
 	$(top_srcdir)/configure.ac.in \
-        $(top_srcdir)/languages.hwx \
-        $(top_srcdir)/languages.po \
-        $(top_srcdir)/pgadmin3-release.pot \
-        $(top_srcdir)/pgadmin3.pot \
-        $(top_srcdir)/stringextract \
-        $(top_srcdir)/stringextract.bat \
-        $(top_srcdir)/stringmerge
+	$(top_srcdir)/languages.hwx \
+	$(top_srcdir)/languages.po \
+	$(top_srcdir)/pgadmin3-release.pot \
+	$(top_srcdir)/pgadmin3.pot \
+	$(top_srcdir)/stringextract \
+	$(top_srcdir)/stringextract.bat \
+	$(top_srcdir)/stringmerge
 
-TMP_docs = \
-	$(top_srcdir)/docs/en_US/pg/*.css \
-	$(top_srcdir)/docs/en_US/pg/*.html \
-	$(top_srcdir)/docs/en_US/slony/*.css \
-	$(top_srcdir)/docs/en_US/slony/*.html \
+TMP_docs_local = \
 	$(top_srcdir)/docs/en_US/hints/*.html \
 	$(top_srcdir)/docs/en_US/images/*.png \
 	$(top_srcdir)/docs/en_US/*.html \
@@ -40,13 +36,27 @@ TMP_docs = \
 	$(top_srcdir)/docs/en_US/tips.txt \
 	$(top_srcdir)/docs/de_DE/tips.txt \
 	$(top_srcdir)/docs/de_DE/hints/*.html \
-        $(top_srcdir)/docs/es_ES/tips.txt \
+	$(top_srcdir)/docs/es_ES/tips.txt \
 	$(top_srcdir)/docs/es_ES/hints/*.html \
 	$(top_srcdir)/docs/fr_FR/*.html \
 	$(top_srcdir)/docs/fr_FR/tips.txt \
 	$(top_srcdir)/docs/fr_FR/hints/*.html \
 	$(top_srcdir)/docs/sl_SI/tips.txt \
 	$(top_srcdir)/docs/sl_SI/hints/*.html
+
+TMP_docs_external = \
+	$(top_srcdir)/docs/en_US/pg/*.css \
+	$(top_srcdir)/docs/en_US/pg/*.html \
+	$(top_srcdir)/docs/en_US/slony/*.css \
+	$(top_srcdir)/docs/en_US/slony/*.html
+
+if INSTALL_DOCS
+TMP_docs = \
+	$(TMP_docs_local) \
+	$(TMP_docs_external)
+else
+TMP_docs =
+endif
 
 if !APPBUNDLE
 nobase_dist_pkgdata_DATA = $(TMP_docs)
