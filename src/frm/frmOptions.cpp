@@ -109,7 +109,12 @@ frmOptions::frmOptions(frmMain *parent)
     txtIndent->SetValue(NumToStr(settings->GetIndentSpaces()));
 	cbCopyQuote->SetSelection(settings->GetCopyQuoting());
 	cbCopyQuoteChar->SetValue(settings->GetCopyQuoteChar());
-	cbCopySeparator->SetValue(settings->GetCopyColSeparator());
+
+    wxString copySeparator = settings->GetCopyColSeparator();
+    if (copySeparator == wxT("\t"))
+        copySeparator = wxT("Tab");
+    cbCopySeparator->SetValue(copySeparator);
+
 	chkTabForCompletion->SetValue(settings->GetTabForCompletion());
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
@@ -228,7 +233,12 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetIndentSpaces(StrToLong(txtIndent->GetValue()));
 	settings->SetCopyQuoting(cbCopyQuote->GetCurrentSelection());
 	settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
-	settings->SetCopyColSeparator(cbCopySeparator->GetValue());
+	
+    wxString copySeparator = cbCopySeparator->GetValue();
+    if (copySeparator == wxT("Tab"))
+        copySeparator = wxT("\t");
+    settings->SetCopyColSeparator(copySeparator);
+
 	settings->SetTabForCompletion(chkTabForCompletion->GetValue());
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
