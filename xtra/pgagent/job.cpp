@@ -234,8 +234,13 @@ int Job::Execute()
                 {
                     output.Printf(_("Couldn't execute script: %s"), filename.c_str());
                     LogMessage(output, LOG_WARNING);
-                    wxRemoveFile(filename);
-                    wxRmdir(dirname);
+
+					// We used to cleanup here if there was an error, but leaving everything behind
+					// will help with debugging.
+					//
+                    // wxRemoveFile(filename);
+                    // wxRmdir(dirname);
+
                     rc=-1;
                     break;
                 }
