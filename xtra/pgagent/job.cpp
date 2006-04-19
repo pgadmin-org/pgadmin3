@@ -232,7 +232,11 @@ int Job::Execute()
                 fp_script = popen(filename.mb_str(wxConvUTF8), "r");
                 if (!fp_script)
                 {
-                    output.Printf(_("Couldn't execute script: %s"), filename.c_str());
+#ifdef WIN32
+                    output.Printf(_("Couldn't execute script: %s, GetLastError() returned %d, errno = %d"), filename.c_str(), GetLastError(), errno);
+#else
+                    output.Printf(_("Couldn't execute script: %s, errno = %d"), filename.c_str(), errno);
+#endif
                     LogMessage(output, LOG_WARNING);
 
 					// We used to cleanup here if there was an error, but leaving everything behind
