@@ -39,9 +39,13 @@ enum
 };
 
 // Prototypes
-void CheckForInterrupt();
 void LogMessage(wxString msg, int level);
 void MainLoop();
+
+#ifdef __WIN32__
+void CheckForInterrupt();
+HANDLE win32_popen_r(const TCHAR *command);
+#endif
 
 #endif // PGAGENT_H
 

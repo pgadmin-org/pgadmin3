@@ -54,22 +54,23 @@ void LogMessage(wxString msg, int level)
 {
     if (eventHandle)
     {
-        char *tmp;
-        tmp = (char *)malloc(msg.length()+1);
-        sprintf(tmp, msg.ToAscii());
+        LPCTSTR *tmp;
+
+		tmp = (LPCTSTR *)malloc(sizeof(LPCTSTR));
+		tmp[0] = _wcsdup(msg.wc_str());
 
         switch (level)
         {
             case LOG_DEBUG:
                 if (minLogLevel >= LOG_DEBUG)
-                    ReportEventA(eventHandle, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
+                    ReportEvent(eventHandle, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, tmp, NULL);
                 break;
             case LOG_WARNING:
                 if (minLogLevel >= LOG_WARNING)
-                    ReportEventA(eventHandle, EVENTLOG_WARNING_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
+                    ReportEvent(eventHandle, EVENTLOG_WARNING_TYPE, 0, 0, NULL, 1, 0, tmp, NULL);
                 break;
             case LOG_ERROR:
-                ReportEventA(eventHandle, EVENTLOG_ERROR_TYPE, 0, 0, NULL, 1, 0, (const char **)&tmp, NULL);
+                ReportEvent(eventHandle, EVENTLOG_ERROR_TYPE, 0, 0, NULL, 1, 0, tmp, NULL);
                 exit(1);
                 break;
         }
@@ -104,6 +105,70 @@ unsigned int __stdcall threadProcedure(void *unused)
 }
 
 
+////////////////////////////////////////////////////////////
+// a replacement popen for windows.
+//
+// _popen doesn't work in Win2K from a service so we have to
+// do it the fun way :-)
+
+HANDLE win32_popen_r(const TCHAR *command)
+{
+    HANDLE hWrite,hRead;
+    SECURITY_ATTRIBUTES saAttr; 
+    BOOL ret=FALSE; 
+   
+    PROCESS_INFORMATION piProcInfo; 
+    STARTUPINFO siStartInfo; 
+	TCHAR *cmd;
+
+	cmd = _wcsdup(command);
+
+    // Set the bInheritHandle flag so pipe handles are inherited. 
+    saAttr.nLength = sizeof(SECURITY_ATTRIBUTES); 
+    saAttr.bInheritHandle = TRUE; 
+    saAttr.lpSecurityDescriptor = NULL; 
+ 
+    // Create a pipe for the child process's STDOUT. 
+    if (!CreatePipe(&hRead, &hWrite, &saAttr, 0)) 
+      return NULL;
+
+    // Ensure the read handle to the pipe for STDOUT is not inherited.
+    SetHandleInformation(hRead, HANDLE_FLAG_INHERIT, 0);
+ 
+    // Now create the child process. 
+    ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
+    ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
+    siStartInfo.cb = sizeof(STARTUPINFO); 
+    siStartInfo.hStdError = hWrite;
+    siStartInfo.hStdOutput = hWrite;
+    siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
+ 
+    ret = CreateProcess(NULL, 
+		cmd,           // command line 
+        NULL,          // process security attributes 
+        NULL,          // primary thread security attributes 
+        TRUE,          // handles are inherited 
+        0,             // creation flags 
+        NULL,          // use parent's environment 
+        NULL,          // use parent's current directory 
+        &siStartInfo,  // STARTUPINFO pointer 
+        &piProcInfo);  // receives PROCESS_INFORMATION 
+   
+    if (!ret) 
+        return NULL;
+    else 
+    {
+		CloseHandle(piProcInfo.hProcess);
+        CloseHandle(piProcInfo.hThread);
+    }
+
+
+    // Close the write end of the pipe and return the read end.
+    if (!CloseHandle(hWrite)) 
+        return NULL; 
+ 
+    return hRead; 
+} 
 
 ////////////////////////////////////////////////////////////
 // service control functions

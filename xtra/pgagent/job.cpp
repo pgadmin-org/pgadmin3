@@ -15,11 +15,9 @@
 #include <wx/filename.h>
 #include <wx/process.h>
 
-#ifdef WIN32
-#define popen _popen
-#define pclose _pclose
+#ifndef __WIN32__
+#include <errno.h>
 #endif
-
 
 Job::Job(DBconn *conn, const wxString &jid)
 {
@@ -177,7 +175,7 @@ int Job::Execute()
                     break;
                 }
 
-#ifdef WIN32
+#ifdef __WIN32__
                 wxString filename = dirname + wxT("\\") + jobid + wxT("_") + stepid + wxT(".bat");
 #else
                 wxString filename = dirname + wxT("/") + jobid + wxT("_") + stepid + wxT(".scr");
@@ -209,7 +207,7 @@ int Job::Execute()
                 // Cleanup the code. If we're on Windows, we need to make all line ends \r\n, 
                 // If we're on Unix, we need \n
                 code.Replace(wxT("\r\n"), wxT("\n"));
-#ifdef WIN32
+#ifdef __WIN32__
                 code.Replace(wxT("\n"), wxT("\r\n"));
 #endif
 
@@ -227,36 +225,61 @@ int Job::Execute()
                 LogMessage(wxString::Format(_("Executing script file: %s"), filename.c_str()), LOG_DEBUG);
 
                 // Execute the file and capture the output
-                FILE *fp_script;
-                char buf[128];
-                fp_script = popen(filename.mb_str(wxConvUTF8), "r");
-                if (!fp_script)
+#ifdef __WIN32__
+				// The Windows way
+				HANDLE h_script;
+				DWORD dwRead; 
+				char chBuf[4096];
+                
+				h_script = win32_popen_r(filename.wc_str());
+                if (!h_script)
                 {
-#ifdef WIN32
                     output.Printf(_("Couldn't execute script: %s, GetLastError() returned %d, errno = %d"), filename.c_str(), GetLastError(), errno);
-#else
-                    output.Printf(_("Couldn't execute script: %s, errno = %d"), filename.c_str(), errno);
-#endif
                     LogMessage(output, LOG_WARNING);
-
-					// We used to cleanup here if there was an error, but leaving everything behind
-					// will help with debugging.
-					//
-                    // wxRemoveFile(filename);
-                    // wxRmdir(dirname);
-
                     rc=-1;
                     break;
                 }
 
 
-               while(!feof(fp_script))
-               {
-                   if (fgets(buf, 128, fp_script) != NULL)
-                       output += wxString::FromAscii(buf);
-               }
+				// Read output from the child process 
+				if (h_script)
+				{
+					for (;;) 
+					{ 
+						if(!ReadFile(h_script, chBuf, 4096, &dwRead, NULL) || dwRead == 0) 
+							break; 
 
-               pclose(fp_script);
+						chBuf[dwRead] = 0;
+						output += wxString::FromAscii(chBuf);
+					}
+				}
+
+
+                CloseHandle(h_script);
+
+#else
+				// The *nix way.
+				FILE *fp_script;
+				char buf[4096];
+
+                fp_script = popen(filename.mb_str(wxConvUTF8), "rt");
+                if (!fp_script)
+                {
+                    output.Printf(_("Couldn't execute script: %s, errno = %d"), filename.c_str(), errno);
+                    LogMessage(output, LOG_WARNING);
+                    rc=-1;
+                    break;
+                }
+
+
+                while(!feof(fp_script))
+                {
+                    if (fgets(buf, 4096, fp_script) != NULL)
+                        output += wxString::FromAscii(buf);
+                }
+
+                pclose(fp_script);
+#endif
 
                 // Delete the file/directory. If we fail, don't overwrite the script output in the log, just throw warnings.
                 if (!wxRemoveFile(filename))
