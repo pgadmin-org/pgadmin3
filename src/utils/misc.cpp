@@ -427,3 +427,10 @@ wxString ExecProcess(const wxString &cmd)
 	return res;
 }
 #endif
+
+#if (_MSC_VER < 1300)
+/* _ftol2 is more than VC7. */
+extern "C" long _ftol( double ); 
+extern "C" long _ftol2( double dblSource ) { return _ftol( dblSource ); } 
+#endif
+
