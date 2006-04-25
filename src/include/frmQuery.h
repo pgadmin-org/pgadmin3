@@ -70,6 +70,7 @@ private:
 	void OnAddFavourite(wxCommandEvent& event);
 	void OnManageFavourites(wxCommandEvent& event);
 	void OnSelectFavourite(wxCommandEvent& event);
+	void OnQuickReport(wxCommandEvent& event);
 
     bool CheckChanged(bool canVeto);
     void OpenLastFile();

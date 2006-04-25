@@ -107,8 +107,7 @@ void pgSchema::CreateReport(wxWindow *parent, int type)
             rep->AddReportPropertyTableRow(_("Comment"), this->GetComment());
             rep->EndReportTable();
 
-            rep->AddReportDetailHeader4(_("Schema SQL"));
-            rep->AddReportDetailCode(this->GetSql(NULL));
+            rep->AddReportSql(this->GetSql(NULL));
 
             break;
 

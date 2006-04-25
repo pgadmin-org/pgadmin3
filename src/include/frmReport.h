@@ -29,7 +29,7 @@ public:
     void AddReportDataTableHeaderRow(const int cols, const wxChar *name,...);
     void AddReportDataTableDataRow(const int cols, const wxChar *value,...);
     void AddReportPropertyTableRow(const wxString &name, const wxString &value);
-    void AddReportDetailCode(const wxString &c);
+    void AddReportSql(const wxString &s);
     void AddReportDetailHeader1(const wxString &h) { detail += wxT("<h1>\n") + HtmlEntities(h) + wxT("\n</h1>\n"); };
     void AddReportDetailHeader2(const wxString &h) { detail += wxT("<h2>\n") + HtmlEntities(h) + wxT("\n</h2>\n"); };
     void AddReportDetailHeader3(const wxString &h) { detail += wxT("<h3>\n") + HtmlEntities(h) + wxT("\n</h3>\n"); };
@@ -47,7 +47,7 @@ private:
     void OnBrowseCSSFile(wxCommandEvent &ev);
 
     wxWindow *parent;
-    wxString title, header, detail;
+    wxString title, header, detail, sql;
     int row;
 
     DECLARE_EVENT_TABLE()

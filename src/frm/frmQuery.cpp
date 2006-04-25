@@ -27,6 +27,7 @@
 #include "dlgAddFavourite.h"
 #include "dlgManageFavourites.h"
 #include "favourites.h"
+#include "frmReport.h"
 
 #include <wx/clipbrd.h>
 
@@ -47,7 +48,6 @@
 #include "images/query_explain.xpm"
 #include "images/query_cancel.xpm"
 #include "images/help.xpm"
-
 
 
 #define CTRLID_CONNECTION       4200
@@ -77,6 +77,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
 	EVT_MENU(MNU_SELECTALL,		    frmQuery::OnSelectAll)
+    EVT_MENU(MNU_QUICKREPORT,       frmQuery::OnQuickReport)
 	EVT_MENU(MNU_FAVOURITES_ADD,	frmQuery::OnAddFavourite)
 	EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
 	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
@@ -117,6 +118,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXPORT, _("&Export"),  _("Export data to file"));
+    fileMenu->Append(MNU_QUICKREPORT, _("&Quick report"),  _("Run a quick report..."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit query window"));
@@ -978,6 +980,28 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
         }
     }
     delete dlg;
+}
+
+void frmQuery::OnQuickReport(wxCommandEvent& event)
+{
+    wxDateTime now = wxDateTime::Now();
+
+    frmReport *rep = new frmReport(this);
+
+    rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
+    rep->AddReportHeaderValue(_("Database"), conn->GetName());
+
+    rep->SetReportTitle(_("Quick report"));
+
+    rep->StartReportTable();
+
+
+    rep->EndReportTable();
+
+    rep->AddReportDetailHeader4(_("Query"));
+    rep->AddReportSql(sqlQuery->GetText());
+
+    rep->ShowModal();
 }
 
 

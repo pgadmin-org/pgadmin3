@@ -28,6 +28,7 @@
 #define rbBuiltin       CTRL_RADIOBUTTON("rbBuiltin")
 #define rbEmbed         CTRL_RADIOBUTTON("rbEmbed")
 #define rbLink          CTRL_RADIOBUTTON("rbLink")
+#define chkSql          CTRL_CHECKBOX("chkSql")
 
 BEGIN_EVENT_TABLE(frmReport, pgDialog)
     EVT_RADIOBUTTON(XRCID("rbBuiltin"),     frmReport::OnChange)
@@ -61,6 +62,7 @@ frmReport::frmReport(wxWindow *p)
     btnOK->Disable();
 
     wxString val;
+    bool bVal;
 
     // Stylesheet
     settings->Read(wxT("Reports/StylesheetMode"), &val, wxT("b"));
@@ -98,6 +100,10 @@ frmReport::frmReport(wxWindow *p)
 
     settings->Read(wxT("Reports/LastStylesheet"), &val, wxT("reports/pgadmin.css"));
     txtCSSFilename->SetValue(val);
+
+    settings->Read(wxT("Reports/IncludeSQL"), &bVal, true);
+    chkSql->SetValue(bVal);
+    chkSql->Disable();
 
     wxCommandEvent ev;
     OnChange(ev);
@@ -182,17 +188,18 @@ void frmReport::OnOK(wxCommandEvent &ev)
         report += wxT("h4 { font-size: 130%; padding-bottom: 0.5ex; color: #009ace; }\n");
         report += wxT("h5 { font-size: 115%; padding-bottom: 0.5ex; color: #009ace; }\n");
         report += wxT("h6 { font-size: 105%; padding-bottom: 0.5ex; color: #009ace; }\n");
-        report += wxT("code { display: block; background-color: #eeeeee; font-family: monospace; font-size: 120% }\n");
         report += wxT("th { text-align: left; background-color: #009ace; color: #eeeeee; }\n");
         report += wxT("#ReportHeader { padding: 10px; background-color: #009ace; color: #eeeeee; border-bottom-style: solid; border-bottom-width: 2px; border-color: #999999; }\n");
         report += wxT("#ReportHeader th { width: 25%; white-space: nowrap; vertical-align: top; }\n");
         report += wxT("#ReportHeader td { vertical-align: top; color: #eeeeee; }\n");
         report += wxT("#ReportNotes { padding: 10px; background-color: #eeeeee; font-size: 80%; border-bottom-style: solid; border-bottom-width: 2px; border-color: #999999; }\n");
-        report += wxT("#ReportDetails { padding: 5px; margin-left: 10px; margin-right: 10px; font-size: 80%; }\n");
+        report += wxT("#ReportSQL { margin-left: 10px; margin-right: 10px; margin-bottom: 10px; display: block; background-color: #eeeeee; font-family: monospace; }\n");
+        report += wxT("#ReportDetails { margin-left: 10px; margin-right: 10px; margin-bottom: 10px; }\n");
+        report += wxT("#ReportDetails td, th { font-size: 80% }\n");
         report += wxT(".ReportDetailsOddDataRow { background-color: #dddddd; }\n");
         report += wxT(".ReportDetailsEvenDataRow { background-color: #eeeeee; }\n");
-        report += wxT(".ReportPropertyTableHeaderCell { background-color: #dddddd; color: #009ace; width: 25%; vertical-align: top }\n");
-        report += wxT(".ReportPropertyTableValueCell { background-color: #eeeeee; vertical-align: top }\n");
+        report += wxT(".ReportPropertyTableHeaderCell { background-color: #dddddd; color: #009ace; width: 25%; vertical-align: top font-size: 80%; }\n");
+        report += wxT(".ReportPropertyTableValueCell { background-color: #eeeeee; vertical-align: top font-size: 80%; }\n");
         report += wxT("#ReportFooter { font-weight: bold; font-size: 80%; text-align: right; background-color: #009ace; color: #eeeeee; margin-top: 10px; padding: 2px; border-bottom-style: solid; border-bottom-width: 2px; border-top-style: solid; border-top-width: 2px; border-color: #999999; }\n");
         report += wxT("#ReportFooter a { color: #ffffff; text-decoration: none; }\n");
         report += wxT("</style>\n");
@@ -228,12 +235,19 @@ void frmReport::OnOK(wxCommandEvent &ev)
         report += wxT("<div id=\"ReportNotes\">\n");
         report += wxT("<b>Notes: </b><br /><br />\n");
         report += notes;
-        report += wxT("\n</div>\n");
+        report += wxT("\n</div>\n\n");
     }
 
     report += wxT("<div id=\"ReportDetails\">\n");
     report += detail;
-    report += wxT("\n</div>\n");
+    report += wxT("\n</div>\n\n");
+
+    if (!sql.IsEmpty() && chkSql->GetValue())
+    {
+        report += wxT("<div id=\"ReportSQL\">\n");
+        report += sql;
+        report += wxT("\n</div>\n\n");
+    }
 
     report += wxT("<div id=\"ReportFooter\">\n");
     wxString credit;
@@ -266,6 +280,7 @@ void frmReport::OnOK(wxCommandEvent &ev)
 
     settings->Write(wxT("Reports/LastStylesheet"), txtCSSFilename->GetValue());
     settings->Write(wxT("Reports/LastFile"), txtOPFilename->GetValue());
+    settings->Write(wxT("Reports/IncludeSQL"), chkSql->GetValue());
 
     // Now go away
     if (IsModal())
@@ -378,12 +393,10 @@ void frmReport::AddReportPropertyTableRow(const wxString &name, const wxString &
     detail += HtmlEntities(value) + wxT("</td></tr>\n");
 }
 
-void frmReport::AddReportDetailCode(const wxString &c)
+void frmReport::AddReportSql(const wxString &s)
 { 
-    wxString sql = HtmlEntities(c);
+    sql = HtmlEntities(s);
     sql.Replace(wxT(" "), wxT("&nbsp;"));
     sql.Replace(wxT("\n"), wxT("<br />"));
-    detail += wxT("<code>\n");
-    detail += sql;
-    detail += wxT("\n</code>\n"); 
+    chkSql->Enable();
 }

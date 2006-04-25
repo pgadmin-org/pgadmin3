@@ -108,8 +108,7 @@ void pgDatabase::CreateReport(wxWindow *parent, int type)
             rep->AddReportPropertyTableRow(_("Comment"), this->GetComment());
             rep->EndReportTable();
 
-            rep->AddReportDetailHeader4(_("Database SQL"));
-            rep->AddReportDetailCode(this->GetSql(NULL));
+            rep->AddReportSql(this->GetSql(NULL));
 
             break;
 

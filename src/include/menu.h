@@ -74,6 +74,8 @@ enum
     MNU_REPORTS_DEPENDENCIES,
     MNU_REPORTS_DEPENDEES,
 
+    MNU_QUICKREPORT,
+
     MNU_RECENT,
 
     MNU_NEW=MNU_RECENT+15,  // leave space for recent file entries
