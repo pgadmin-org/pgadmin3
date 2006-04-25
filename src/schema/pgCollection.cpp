@@ -95,7 +95,8 @@ void pgCollection::CreateReport(wxWindow *parent, int type)
         case MNU_REPORTS_OBJECT_LIST:
 
             rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
-            rep->AddReportHeaderValue(_("Server"), this->GetServer()->GetFullIdentifier());
+            if (this->GetServer())
+                rep->AddReportHeaderValue(_("Server"), this->GetServer()->GetFullIdentifier());
             if (this->GetDatabase())
                 rep->AddReportHeaderValue(_("Database"), this->GetDatabase()->GetFullIdentifier());
             if (this->GetSchema())
@@ -103,14 +104,13 @@ void pgCollection::CreateReport(wxWindow *parent, int type)
             if (this->GetJob())
                 rep->AddReportHeaderValue(_("Job"), this->GetJob()->GetFullIdentifier());
 
-            if (browser->GetParentObject(GetId())->GetMetaType() == PGM_TABLE)
+            if (browser->GetParentObject(GetId()) && browser->GetParentObject(GetId())->GetMetaType() == PGM_TABLE)
             {
                 if (((pgTableObjCollection *)this)->GetTable())
                     rep->AddReportHeaderValue(_("Table"), ((pgTableObjCollection *)this)->GetTable()->GetFullIdentifier());
             }
 
-            title = _("Object list report - ");
-            title += GetIdentifier();
+            title.Printf(_("%s list report..."), GetIdentifier().c_str());
             rep->SetReportTitle(title);
 
             rep->AddReportDetailHeader4(this->GetFullIdentifier());
