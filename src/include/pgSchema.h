@@ -57,6 +57,8 @@ public:
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();
+    wxMenu *GetReportMenu();
+    void CreateReport(wxWindow *parent, int type);
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 

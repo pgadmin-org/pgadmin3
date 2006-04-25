@@ -43,6 +43,8 @@ public:
     void ShowList(ctlTree *browser, ctlListView *properties);
     void UpdateChildCount(ctlTree *browser, int substract=0);
     pgObject *FindChild(ctlTree *browser, const int index);
+    wxMenu *pgCollection::GetReportMenu();
+    void CreateReport(wxWindow *parent, int type=-1);
 
 protected:
     pgServer *server;

@@ -38,6 +38,7 @@ public:
     frmMain(const wxString& title);
     ~frmMain();
     void OnAction(wxCommandEvent &ev);
+    void OnReport(wxCommandEvent &ev);
     wxString GetHelpPage() const;
 
     void StartMsg(const wxString& msg);
@@ -71,12 +72,13 @@ private:
     ctlListView *referencedBy, *dependsOn;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
-    wxMenu *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, *viewDataMenu;
+    wxMenu *newMenu, *reportMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, *viewDataMenu;
     pgServerCollection *serversObj;
     wxSplitterWindow *horizontal, *vertical;
 
     propertyFactory *propFactory;
     actionFactory *newMenuFactory;
+    actionFactory *reportMenuFactory;
 	actionFactory *viewdataMenuFactory;
 
     wxStopWatch stopwatch;

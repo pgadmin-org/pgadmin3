@@ -27,6 +27,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/frm/frmPassword.cpp \
 	$(srcdir)/frm/frmPgpassConfig.cpp \
 	$(srcdir)/frm/frmQuery.cpp \
+	$(srcdir)/frm/frmReport.cpp \
 	$(srcdir)/frm/frmRestore.cpp \
 	$(srcdir)/frm/frmSplash.cpp \
 	$(srcdir)/frm/frmStatus.cpp \

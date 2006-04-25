@@ -14,7 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-
+#include "menu.h"
 #include "misc.h"
 #include "frmMain.h"
 #include "frmHint.h"
@@ -27,6 +27,7 @@
 #include "pgaJob.h"
 #include "utffile.h"
 #include "pgfeatures.h"
+#include "frmReport.h"
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
@@ -101,6 +102,73 @@ wxMenu *pgServer::GetNewMenu()
     return menu;
 }
 
+wxMenu *pgServer::GetReportMenu()
+{
+    wxMenu *menu=pgObject::GetReportMenu();
+
+    menu->Append(MNU_REPORTS_PROPERTIES, wxT("Properties report..."));
+
+    return menu;
+}
+
+void pgServer::CreateReport(wxWindow *parent, int type)
+{
+    wxString title, header;
+
+    wxDateTime now = wxDateTime::Now();
+
+    frmReport *rep = new frmReport(parent);
+
+    switch (type)
+    {
+        case MNU_REPORTS_PROPERTIES:
+
+            rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
+
+            title = _("Server properties report - ");
+            title += GetIdentifier();
+            rep->SetReportTitle(title);
+
+            rep->AddReportDetailHeader4(_("Server properties"));
+
+            rep->StartReportTable();
+            rep->AddReportPropertyTableRow(_("Name"), this->GetIdentifier());
+            rep->AddReportPropertyTableRow(_("Description"), this->GetDescription());
+            rep->AddReportPropertyTableRow(_("Hostname/Address"), this->GetName());
+            rep->AddReportPropertyTableRow(_("Port"), NumToStr((long)this->GetPort()));
+
+            if (this->GetConnected())
+                rep->AddReportPropertyTableRow(_("Encryption"), this->GetConnection()->IsSSLconnected() ? wxT("encrypted") : wxT("not encrypted"));
+
+            rep->AddReportPropertyTableRow(_("Service ID"), this->GetServiceID());
+            rep->AddReportPropertyTableRow(_("Maintenance DB"), this->GetDatabaseName());
+            rep->AddReportPropertyTableRow(_("Username"), this->GetUsername());
+            rep->AddReportPropertyTableRow(_("Store password?"), this->GetStorePwd() ? _("Yes") : _("No"));
+
+            if (this->GetConnected())
+            {
+                rep->AddReportPropertyTableRow(_("Version string"), this->GetVersionString());
+                rep->AddReportPropertyTableRow(_("Version number"), this->GetVersionNumber());
+                rep->AddReportPropertyTableRow(_("Last system OID"), NumToStr((long)this->GetLastSystemOID()));
+            }
+            rep->AddReportPropertyTableRow(_("Connected?"), this->GetConnected() ? _("Yes") : _("No"));
+
+            if (this->GetConnected())
+                rep->AddReportPropertyTableRow(_("Up since"), DateToStr(this->GetUpSince()));
+
+            rep->EndReportTable();
+
+            break;
+
+        default:
+            wxLogError(__("The selected report cannot be found for this object type!"));
+            delete rep;
+            return;
+            break;
+    }
+
+    rep->ShowModal();
+}
 
 pgServer *pgServer::GetServer() const
 {

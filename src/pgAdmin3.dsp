@@ -625,6 +625,10 @@ SOURCE=.\frm\frmQuery.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\frm\frmReport.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\frm\frmRestore.cpp
 # End Source File
 # Begin Source File
@@ -889,6 +893,10 @@ SOURCE=.\include\frmPgpassConfig.h
 # Begin Source File
 
 SOURCE=.\include\frmQuery.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmReport.h
 # End Source File
 # Begin Source File
 

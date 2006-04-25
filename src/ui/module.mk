@@ -69,6 +69,7 @@ TMP_ui += \
 	$(srcdir)/ui/frmMaintenance.xrc \
 	$(srcdir)/ui/frmOptions.xrc \
 	$(srcdir)/ui/frmPassword.xrc \
+	$(srcdir)/ui/frmReport.xrc \
 	$(srcdir)/ui/frmRestore.xrc \
 	$(srcdir)/ui/frmStatus.xrc \
 	$(srcdir)/ui/frmUpdate.xrc

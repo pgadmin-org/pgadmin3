@@ -66,6 +66,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/frmPassword.h \
 	$(srcdir)/include/frmPgpassConfig.h \
 	$(srcdir)/include/frmQuery.h \
+	$(srcdir)/include/frmReport.h \
 	$(srcdir)/include/frmRestore.h \
 	$(srcdir)/include/frmSplash.h \
 	$(srcdir)/include/frmStatus.h \

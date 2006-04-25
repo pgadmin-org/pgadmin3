@@ -140,6 +140,12 @@ void frmMain::OnAction(wxCommandEvent &ev)
 }
 
 
+void frmMain::OnReport(wxCommandEvent &ev)
+{
+    currentObject->CreateReport(this, ev.GetId());
+}
+
+
 void frmMain::OnOnlineUpdateNewData(wxCommandEvent &event)
 {
     wxLogError(__("Could not contact pgAdmin web site to check for updates.\nMaybe your proxy option setting needs adjustment."));
@@ -330,6 +336,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             delete newMenu->Remove(menuItem);
     }
 
+    i=reportMenu->GetMenuItemCount();
+    while (i--)
+    {
+        menuItem=reportMenu->GetMenuItems().Item(i)->GetData();
+        if (menuItem)
+            delete reportMenu->Remove(menuItem);
+    }
+
     i=newContextMenu->GetMenuItemCount();
     while (i--)
     {
@@ -339,6 +353,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     }
 
     editMenu->Enable(newMenuFactory->GetId(), false);
+    toolsMenu->Enable(reportMenuFactory->GetId(), false);
 
     wxMenu *indivMenu=data->GetNewMenu();
     if (indivMenu)
@@ -356,14 +371,30 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         }
         delete indivMenu;
     }
-    else
+
+    indivMenu=data->GetReportMenu();
+    if (indivMenu)
     {
+        if (indivMenu->GetMenuItemCount())
+        {
+            toolsMenu->Enable(reportMenuFactory->GetId(), true);
+
+            for (i=0 ; i < indivMenu->GetMenuItemCount() ; i++)
+            {
+                menuItem=indivMenu->GetMenuItems().Item(i)->GetData();
+                reportMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+                // reportContextMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+            }
+        }
+        delete indivMenu;
     }
+
     menuFactories->CheckMenu(data, menuBar, toolBar);
 
     enableSubmenu(MNU_CONFIGSUBMENU);
     enableSubmenu(MNU_SLONY_SUBMENU);
     enableSubmenu(newMenuFactory->GetId());
+    enableSubmenu(reportMenuFactory->GetId());
 	enableSubmenu(viewdataMenuFactory->GetId());
 }
 
@@ -490,9 +521,49 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
                 }
             }
         }
-
         treeContextMenu->Remove(newItem);
         delete newItem;
+    }
+
+    wxMenuItem *reportItem=treeContextMenu->FindItem(reportMenuFactory->GetId());
+
+    if (reportItem)
+    {
+        size_t reportItemPos;
+
+        wxMenuItemList mil = treeContextMenu->GetMenuItems();
+        for (reportItemPos=0 ; reportItemPos < mil.GetCount() ; reportItemPos++)
+        {
+            if (mil.Item(reportItemPos)->GetData()->GetId() == reportItem->GetId())
+                break;
+        }
+
+        if (object)
+        {
+
+            // Get the reports menu if present
+            wxMenu *reportMenu=object->GetReportMenu();
+            if (reportMenu)
+            {
+                if (reportMenu->GetMenuItemCount() > 1)
+                {
+                    wxMenuItem *menuItem = menuBar->FindItem(reportMenuFactory->GetId());
+                    treeContextMenu->Insert(reportItemPos, reportMenuFactory->GetId(), menuItem->GetLabel(), reportMenu, menuItem->GetHelp());
+                }
+                else
+                {
+                    if (reportMenu->GetMenuItemCount() == 1)
+                    {
+                        wxMenuItem *menuItem=reportMenu->GetMenuItems().Item(0)->GetData();
+                        treeContextMenu->Insert(reportItemPos, menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+                    }
+                    delete reportMenu;
+                }
+            }
+        }
+
+        treeContextMenu->Remove(reportItem);
+        delete reportItem;
     }
 
     if (treeContextMenu->GetMenuItemCount())

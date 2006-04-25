@@ -124,6 +124,7 @@ frmMain::frmMain(const wxString& title)
     viewMenu = new wxMenu();
     helpMenu = new wxMenu();
     newMenu=new wxMenu();
+    reportMenu=new wxMenu();
 	viewDataMenu = new wxMenu();
 
     wxMenu *cfgMenu=new wxMenu();
@@ -194,7 +195,12 @@ frmMain::frmMain(const wxString& title)
     new queryToolFactory(menuFactories, toolsMenu, toolBar);
 	
     viewdataMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
+
 	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
+
+    reportMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "Reports" submenu will be inserted
+    toolsMenu->Append(reportMenuFactory->GetId(), _("&Reports"), reportMenu,    _("Create reports about the selected item."));
+    toolsMenu->AppendSeparator();
 
 	new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
     new editGridFactory(menuFactories, viewDataMenu, toolBar);
@@ -326,6 +332,7 @@ frmMain::frmMain(const wxString& title)
 
     pgaFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnNew));
     menuFactories->RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
+    menuFactories->RegisterReportMenu(this, wxCommandEventHandler(frmMain::OnReport));
     menuFactories->CheckMenu(0, menuBar, toolBar);
 
     // Add the root node

@@ -86,6 +86,8 @@ public:
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
 
     virtual wxMenu *GetNewMenu();
+    virtual wxMenu *GetReportMenu();
+    virtual void CreateReport(wxWindow *parent, int type=-1);
     virtual wxString GetSql(ctlTree *browser) { return wxT(""); }
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""));
     wxString GetCommentSql();

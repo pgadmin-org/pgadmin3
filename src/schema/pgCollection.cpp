@@ -14,9 +14,13 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "menu.h"
 #include "misc.h"
+#include "pgaJob.h"
 #include "pgSchema.h"
-
+#include "pgTable.h"
+#include "frmMain.h"
+#include "frmReport.h"
 
 pgCollection::pgCollection(pgaFactory *factory)
 : pgObject(*factory)
@@ -62,6 +66,82 @@ void pgCollection::ShowList(ctlTree *browser, ctlListView *properties)
     ShowList(((pgaCollectionFactory*)GetFactory())->GetItemTypeName(), browser, properties);
 }
 
+wxMenu *pgCollection::GetReportMenu()
+{
+    wxMenu *menu=pgObject::GetReportMenu();
+
+    wxString title;
+    title.Printf(_("%s list report..."), GetIdentifier().c_str());
+    menu->Append(MNU_REPORTS_OBJECT_LIST, title);
+
+    return menu;
+}
+
+void pgCollection::CreateReport(wxWindow *parent, int type)
+{
+    wxString title, header;
+
+    wxDateTime now = wxDateTime::Now();
+    wxCookieType cookie;
+    pgObject *data;
+    ctlTree *browser = ((frmMain *)parent)->GetBrowser();
+    wxTreeItemId item;
+    long pos=0;
+
+    frmReport *rep = new frmReport(parent);
+
+    switch (type)
+    {
+        case MNU_REPORTS_OBJECT_LIST:
+
+            rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
+            rep->AddReportHeaderValue(_("Server"), this->GetServer()->GetFullIdentifier());
+            if (this->GetDatabase())
+                rep->AddReportHeaderValue(_("Database"), this->GetDatabase()->GetFullIdentifier());
+            if (this->GetSchema())
+                rep->AddReportHeaderValue(_("Schema"), this->GetSchema()->GetFullIdentifier());
+            if (this->GetJob())
+                rep->AddReportHeaderValue(_("Job"), this->GetJob()->GetFullIdentifier());
+
+            if (browser->GetParentObject(GetId())->GetMetaType() == PGM_TABLE)
+            {
+                if (((pgTableObjCollection *)this)->GetTable())
+                    rep->AddReportHeaderValue(_("Table"), ((pgTableObjCollection *)this)->GetTable()->GetFullIdentifier());
+            }
+
+            title = _("Object list report - ");
+            title += GetIdentifier();
+            rep->SetReportTitle(title);
+
+            rep->AddReportDetailHeader4(this->GetFullIdentifier());
+
+            rep->StartReportTable();
+            rep->AddReportDataTableHeaderRow(2, _("Name"), _("Comment"));
+
+            item = browser->GetFirstChild(GetId(), cookie);
+            while (item)
+            {
+                data = browser->GetObject(item);
+                if (IsCollectionFor(data))
+                    rep->AddReportDataTableDataRow(2, data->GetFullName().c_str(), data->GetComment().c_str());
+
+                item = browser->GetNextChild(GetId(), cookie);
+                pos++;
+            }
+
+            rep->EndReportTable();
+
+            break;
+
+        default:
+            wxLogError(__("The selected report cannot be found for this object type!"));
+            delete rep;
+            return;
+            break;
+    }
+
+    rep->ShowModal();
+}
 
 void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView *properties)
 {
@@ -90,8 +170,6 @@ void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView 
         }
     }
 }
-
-
 
 void pgCollection::UpdateChildCount(ctlTree *browser, int substract)
 {

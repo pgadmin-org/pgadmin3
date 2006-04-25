@@ -58,7 +58,8 @@ void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon=0);
 wxString ExecProcess(const wxString &cmd);
 #endif
 
-
+wxString GetHtmlEntity(const wxChar ch);
+wxString HtmlEntities(const wxString &str);
 
 enum 
 {

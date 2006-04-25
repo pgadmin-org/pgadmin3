@@ -66,7 +66,13 @@ enum
 
     MNU_ONLINEUPDATE_NEWDATA,
 
-	MNU_AUTOCOMPLETE, 
+	MNU_AUTOCOMPLETE,
+
+    MNU_REPORTS,
+    MNU_REPORTS_PROPERTIES,
+    MNU_REPORTS_OBJECT_LIST,
+    MNU_REPORTS_DEPENDENCIES,
+    MNU_REPORTS_DEPENDEES,
 
     MNU_RECENT,
 
@@ -76,9 +82,7 @@ enum
 
 	MNU_FAVOURITES_ADD=MNU_ACTION+1000, // leave space for actions
 	MNU_FAVOURITES_MANAGE,
-	// Leave space for actual favourites here
+
 };
-
-
 
 #endif

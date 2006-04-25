@@ -231,6 +231,11 @@ void menuFactoryList::RegisterMenu(wxWindow *w, wxObjectEventFunction func)
         wxEVT_COMMAND_MENU_SELECTED, func);
 }
 
+void menuFactoryList::RegisterReportMenu(wxWindow *w, wxObjectEventFunction func)
+{
+    w->Connect(MNU_REPORTS, MNU_REPORTS+GetCount()-1, 
+        wxEVT_COMMAND_MENU_SELECTED, func);
+}
 
 void menuFactoryList::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar)
 {

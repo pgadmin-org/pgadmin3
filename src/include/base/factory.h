@@ -15,6 +15,8 @@
 // wxWindows headers
 #include <wx/wx.h>
 
+#include "menu.h"
+
 #ifdef WIN32
 #ifndef __GNUC__
 #pragma warning(disable:4183)
@@ -99,6 +101,7 @@ public:
     void AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu);
     actionFactory *GetFactory(int id, bool actionOnly=true);
     void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
+    void RegisterReportMenu(wxWindow *w, wxObjectEventFunction func);
 
 private:
     void Add(menuFactory *f) { wxArrayPtrVoid::Add(f); }

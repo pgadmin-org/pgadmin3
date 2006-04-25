@@ -154,6 +154,16 @@ wxMenu *pgObject::GetNewMenu()
     return menu;
 }
 
+wxMenu *pgObject::GetReportMenu()
+{
+    wxMenu *menu=new wxMenu();
+    return menu;
+}
+
+void pgObject::CreateReport(wxWindow *parent, int type)
+{
+    wxLogError(__("The selected report cannot be found for this object type!"));
+}
 
 void pgObject::ShowStatistics(frmMain *form, ctlListView *statistics)
 {

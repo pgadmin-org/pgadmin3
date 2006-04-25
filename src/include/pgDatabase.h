@@ -92,6 +92,8 @@ public:
     void ClearSchemaChanges() { schemaChanges=wxEmptyString; }
 
     wxMenu *GetNewMenu();
+    wxMenu *GetReportMenu();
+    void CreateReport(wxWindow *parent, int type=-1);
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 

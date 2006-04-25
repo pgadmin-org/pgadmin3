@@ -157,6 +157,10 @@ SOURCE=.\pgAgent.rc
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE="..\wx-build\_wx_intellisense.h"
+# End Source File
+# Begin Source File
+
 SOURCE=..\pgagent.sql
 # End Source File
 # End Group
