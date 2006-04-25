@@ -129,7 +129,7 @@ void pgServer::CreateReport(wxWindow *parent, int type)
             title += GetIdentifier();
             rep->SetReportTitle(title);
 
-            rep->AddReportDetailHeader4(_("Server properties"));
+            rep->AddReportDetailHeader(_("Server properties"));
 
             rep->StartReportTable();
             rep->AddReportPropertyTableRow(_("Name"), this->GetIdentifier());

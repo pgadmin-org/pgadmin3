@@ -29,14 +29,9 @@ public:
     void AddReportDataTableHeaderRow(const int cols, const wxChar *name,...);
     void AddReportDataTableDataRow(const int cols, const wxChar *value,...);
     void AddReportPropertyTableRow(const wxString &name, const wxString &value);
+    void AddReportDataRawHtml(const wxString &row) { detail += row + wxT("\n"); };
     void AddReportSql(const wxString &s);
-    void AddReportDetailHeader1(const wxString &h) { detail += wxT("<h1>\n") + HtmlEntities(h) + wxT("\n</h1>\n"); };
-    void AddReportDetailHeader2(const wxString &h) { detail += wxT("<h2>\n") + HtmlEntities(h) + wxT("\n</h2>\n"); };
-    void AddReportDetailHeader3(const wxString &h) { detail += wxT("<h3>\n") + HtmlEntities(h) + wxT("\n</h3>\n"); };
-    void AddReportDetailHeader4(const wxString &h) { detail += wxT("<h4>\n") + HtmlEntities(h) + wxT("\n</h4>\n"); };
-    void AddReportDetailHeader5(const wxString &h) { detail += wxT("<h5>\n") + HtmlEntities(h) + wxT("\n</h5>\n"); };
-    void AddReportDetailHeader6(const wxString &h) { detail += wxT("<h6>\n") + HtmlEntities(h) + wxT("\n</h6>\n"); };
-
+    void AddReportDetailHeader(const wxString &h) { detail += wxT("<h2>\n") + HtmlEntities(h) + wxT("\n</h2>\n"); };
 
 private:
     void OnChange(wxCommandEvent &ev);

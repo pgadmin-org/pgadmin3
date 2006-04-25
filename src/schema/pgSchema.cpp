@@ -96,7 +96,7 @@ void pgSchema::CreateReport(wxWindow *parent, int type)
             title += GetIdentifier();
             rep->SetReportTitle(title);
 
-            rep->AddReportDetailHeader4(_("Schema properties"));
+            rep->AddReportDetailHeader(_("Schema properties"));
 
             rep->StartReportTable();
             rep->AddReportPropertyTableRow(_("Name"), this->GetFullIdentifier());

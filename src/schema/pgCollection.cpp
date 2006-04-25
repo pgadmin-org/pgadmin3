@@ -113,7 +113,7 @@ void pgCollection::CreateReport(wxWindow *parent, int type)
             title.Printf(_("%s list report"), GetIdentifier().c_str());
             rep->SetReportTitle(title);
 
-            rep->AddReportDetailHeader4(this->GetFullIdentifier());
+            rep->AddReportDetailHeader(this->GetFullIdentifier());
 
             rep->StartReportTable();
             rep->AddReportDataTableHeaderRow(2, _("Name"), _("Comment"));

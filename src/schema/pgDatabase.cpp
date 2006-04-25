@@ -94,7 +94,7 @@ void pgDatabase::CreateReport(wxWindow *parent, int type)
             title += GetIdentifier();
             rep->SetReportTitle(title);
 
-            rep->AddReportDetailHeader4(_("Database properties"));
+            rep->AddReportDetailHeader(_("Database properties"));
 
             rep->StartReportTable();
             rep->AddReportPropertyTableRow(_("Name"), this->GetFullIdentifier());

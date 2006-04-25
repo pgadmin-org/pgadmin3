@@ -117,8 +117,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_EXPORT, _("&Export"),  _("Export data to file"));
-    fileMenu->Append(MNU_QUICKREPORT, _("&Quick report"),  _("Run a quick report..."));
+    fileMenu->Append(MNU_EXPORT, _("&Export..."),  _("Export data to file"));
+    fileMenu->Append(MNU_QUICKREPORT, _("&Quick report..."),  _("Run a quick report..."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit query window"));
@@ -155,8 +155,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     menuBar->Append(queryMenu, _("&Query"));
 
 	favouritesMenu = new wxMenu();
-	favouritesMenu->Append(MNU_FAVOURITES_ADD, _("Add favourite"), _("Add current query to favourites"));
-	favouritesMenu->Append(MNU_FAVOURITES_MANAGE, _("Manage favourites"), _("Edit and delete favourites"));
+	favouritesMenu->Append(MNU_FAVOURITES_ADD, _("Add favourite..."), _("Add current query to favourites"));
+	favouritesMenu->Append(MNU_FAVOURITES_MANAGE, _("Manage favourites..."), _("Edit and delete favourites"));
 	favouritesMenu->AppendSeparator();
 	favourites = queryFavouriteFileProvider::LoadFavourites(true);
 	UpdateFavouritesList();
@@ -993,12 +993,52 @@ void frmQuery::OnQuickReport(wxCommandEvent& event)
 
     rep->SetReportTitle(_("Quick report"));
 
+    rep->AddReportDetailHeader(wxT("Query results"));
+
     rep->StartReportTable();
 
+    // Get the column headers
+    int cols = sqlResult->GetNumberCols();
+
+    wxString row;
+
+    row = wxT("<tr>");
+    for (int x = 0; x < cols; x++)
+    {
+        wxString label = sqlResult->GetColLabelValue(x);
+        label = HtmlEntities(label);
+        label.Replace(wxT("\n"), wxT("<br />"));
+        row += wxT("<th>") + label + wxT("</th>");
+    }
+    row += wxT("</tr>");
+    rep->AddReportDataRawHtml(row);
+
+    // Get the data rows
+    int rows = sqlResult->GetNumberRows();
+
+    for (int y = 0; y < rows; y++)
+    {
+        if (y % 2 == 1)
+            row = wxT("<tr class=\"ReportDetailsOddDataRow\">");
+        else
+            row = wxT("<tr class=\"ReportDetailsEvenDataRow\">");
+
+        for (int x = 0; x < cols; x++)
+        {
+            row += wxT("<td>");
+            row += HtmlEntities(sqlResult->GetCellValue(y, x));
+            row += wxT("</td>");
+        }
+        row += wxT("</tr>");
+        rep->AddReportDataRawHtml(row);
+    }
 
     rep->EndReportTable();
 
-    rep->AddReportDetailHeader4(_("Query"));
+    wxString stats;
+    stats.Printf(wxT("%d rows with %d columns retrieved."), rows, cols);
+    rep->AddReportDetailParagraph(stats);
+
     rep->AddReportSql(sqlQuery->GetText());
 
     rep->ShowModal();
@@ -1112,6 +1152,7 @@ void frmQuery::setTools(const bool running)
     queryMenu->Enable(MNU_EXPLAIN, !running);
     queryMenu->Enable(MNU_CANCEL, running);
     fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
+    fileMenu->Enable(MNU_QUICKREPORT, sqlResult->CanExport());
     fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
 }
 
