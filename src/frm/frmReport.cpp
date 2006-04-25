@@ -183,11 +183,10 @@ void frmReport::OnOK(wxCommandEvent &ev)
         report += wxT("h5 { font-size: 115%; padding-bottom: 0.5ex; color: #009ace; }\n");
         report += wxT("h6 { font-size: 105%; padding-bottom: 0.5ex; color: #009ace; }\n");
         report += wxT("code { display: block; background-color: #eeeeee; font-family: monospace; font-size: 120% }\n");
-        report += wxT("table { width: 100%; }\n");
         report += wxT("th { text-align: left; background-color: #009ace; color: #eeeeee; }\n");
         report += wxT("#ReportHeader { padding: 10px; background-color: #009ace; color: #eeeeee; border-bottom-style: solid; border-bottom-width: 2px; border-color: #999999; }\n");
-        report += wxT("#ReportHeader th { width: 25%; white-space: nowrap; vertical-align: top; }");
-        report += wxT("#ReportHeader td { vertical-align: top; }");
+        report += wxT("#ReportHeader th { width: 25%; white-space: nowrap; vertical-align: top; }\n");
+        report += wxT("#ReportHeader td { vertical-align: top; color: #eeeeee; }\n");
         report += wxT("#ReportNotes { padding: 10px; background-color: #eeeeee; font-size: 80%; border-bottom-style: solid; border-bottom-width: 2px; border-color: #999999; }\n");
         report += wxT("#ReportDetails { padding: 5px; margin-left: 10px; margin-right: 10px; font-size: 80%; }\n");
         report += wxT(".ReportDetailsOddDataRow { background-color: #dddddd; }\n");
