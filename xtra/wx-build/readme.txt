@@ -11,7 +11,7 @@ unicode non-dll configuration)
 Additional tips
 ===============
 
-To view wxString objects in the VC++ debugger:
+To view wxString and other objects in the VC++ debugger:
 
 1.  Locate and open a file called AUTOEXP.DAT. Its in the 
     \Program Files\Microsoft Visual Studio\Common\MSDev98\Bin directory, if you
@@ -19,9 +19,17 @@ To view wxString objects in the VC++ debugger:
 2.  Add the following line to the [autoexpand] section (or the bottom of the
     file). With .NET 2003 be careful not to put it in the [hresult] section!:
 
-      wxString=<m_pchData,st>
+wxString =<m_pchData,st>
+wxPoint =x=<x> y=<y>
+wxSize =w=<x> h=<y>
+wxRect =x=<x> y=<y> w=<width> h=<height>
+wxWindow =<,t> hWnd=<m_hWnd>
 
 3. Restart Visual Studio.
+
+4. Under Tools -> Options -> Debug, switch on the 'Show Unicode Strings' option.
+
+5. Restart Visual Studio
 
 To prevent the debugger stepping into trivial functions, add entries similar to
 the following to AUTOEXP.DAT:
@@ -34,7 +42,10 @@ wxString\:\:~wxString=NoStepInto
 
 Note that the function name match is a regexp, hence the escaping of the colons.
 
-(Originally from: http://www.litwindow.com/Knowhow/wxHowto/wxhowto.html)
+Originally from: 
+  http://www.litwindow.com/Knowhow/wxHowto/wxhowto.html
+  http://lists.wxwidgets.org/archive/wx-users/msg16845.html
+
 
 
 
