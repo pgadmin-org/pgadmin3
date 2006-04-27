@@ -128,15 +128,16 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->EnableTool(MNU_COPY, true);
     toolBar->EnableTool(MNU_DELETE, false);
 
-    wxAcceleratorEntry entries[5];
+    wxAcceleratorEntry entries[6];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
     entries[1].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_REFRESH);
     entries[2].Set(wxACCEL_CTRL,                (int)'Z',      MNU_UNDO);
     entries[3].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
-    entries[3].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
-
-    wxAcceleratorTable accel(5, entries);
+    entries[4].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
+    entries[5].Set(wxACCEL_NORMAL,              WXK_DELETE,    MNU_DELETE);
+    
+    wxAcceleratorTable accel(6, entries);
     SetAcceleratorTable(accel);
 
 
