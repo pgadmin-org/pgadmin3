@@ -92,10 +92,12 @@ public:
     void ClearSchemaChanges() { schemaChanges=wxEmptyString; }
 
     wxMenu *GetNewMenu();
-    wxMenu *GetReportMenu();
-    void CreateReport(wxWindow *parent, int type=-1);
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+
+    bool HasStats() { return true; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
 
 private:
     pgConn *conn;

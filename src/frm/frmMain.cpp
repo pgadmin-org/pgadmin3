@@ -463,6 +463,10 @@ ctlListView *frmMain::GetStatistics()
     return 0;
 }
 
+ctlListView *frmMain::GetStatisticsCtl()
+{
+    return statistics;
+}
 
 ctlListView *frmMain::GetDependsOn()
 {
@@ -471,12 +475,21 @@ ctlListView *frmMain::GetDependsOn()
     return 0;
 }
 
+ctlListView *frmMain::GetDependsOnCtl()
+{
+    return dependsOn;
+}
 
 ctlListView *frmMain::GetReferencedBy()
 {
     if (listViews->GetSelection() == NBP_REFERENCEDBY)
         return referencedBy;
     return 0;
+}
+
+ctlListView *frmMain::GetReferencedByCtl()
+{
+    return referencedBy;
 }
 
 

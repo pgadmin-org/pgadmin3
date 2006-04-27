@@ -17,6 +17,7 @@
 #include "frmReport.h"
 #include "sysSettings.h"
 #include "misc.h"
+#include "ctl/ctlListView.h"
 
 #define txtTitle        CTRL_TEXT("txtTitle")
 #define txtNotes        CTRL_TEXT("txtNotes")
@@ -42,7 +43,6 @@ BEGIN_EVENT_TABLE(frmReport, pgDialog)
     EVT_BUTTON(wxID_OK,                     frmReport::OnOK)
     EVT_BUTTON(wxID_CANCEL,                 frmReport::OnCancel)
 END_EVENT_TABLE()
-
 
 frmReport::frmReport(wxWindow *p)
 {
@@ -195,8 +195,8 @@ void frmReport::OnOK(wxCommandEvent &ev)
         report += wxT("#ReportDetails td, th { font-size: 80%; margin-left: 2px; margin-right: 2px; }\n");
         report += wxT(".ReportDetailsOddDataRow { background-color: #dddddd; }\n");
         report += wxT(".ReportDetailsEvenDataRow { background-color: #eeeeee; }\n");
-        report += wxT(".ReportPropertyTableHeaderCell { background-color: #dddddd; color: #009ace; width: 25%; vertical-align: top font-size: 80%; }\n");
-        report += wxT(".ReportPropertyTableValueCell { background-color: #eeeeee; vertical-align: top font-size: 80%; }\n");
+        report += wxT(".ReportPropertyTableHeaderCell { background-color: #dddddd; color: #009ace; width: 25%; vertical-align: top; font-size: 80%; }\n");
+        report += wxT(".ReportPropertyTableValueCell { background-color: #eeeeee; vertical-align: top; font-size: 80%; }\n");
         report += wxT("#ReportFooter { font-weight: bold; font-size: 80%; text-align: right; background-color: #009ace; color: #eeeeee; margin-top: 10px; padding: 2px; border-bottom-style: solid; border-bottom-width: 2px; border-top-style: solid; border-top-width: 2px; border-color: #999999; }\n");
         report += wxT("#ReportFooter a { color: #ffffff; text-decoration: none; }\n");
         report += wxT("</style>\n");
@@ -402,4 +402,50 @@ void frmReport::AddReportSql(const wxString &s)
     sql.Replace(wxT(" "), wxT("&nbsp;"));
     sql.Replace(wxT("\n"), wxT("<br />"));
     chkSql->Enable();
+}
+
+void frmReport::AddReportTableFromListView(ctlListView *list)
+{
+    this->StartReportTable();
+
+    // Get the column headers
+    int cols = list->GetColumnCount();
+
+    wxString row;
+    wxListItem itm;
+
+    row = wxT("<tr>");
+    for (int x = 0; x < cols; x++)
+    {
+        itm.SetMask(wxLIST_MASK_TEXT);
+        list->GetColumn(x, itm);
+        wxString label = itm.GetText();
+        label = HtmlEntities(label);
+        label.Replace(wxT("\n"), wxT("<br />"));
+        row += wxT("<th>") + label + wxT("</th>");
+    }
+    row += wxT("</tr>");
+    this->AddReportDataRawHtml(row);
+
+    // Get the data rows
+    int rows = list->GetItemCount();
+
+    for (int y = 0; y < rows; y++)
+    {
+        if (y % 2 == 1)
+            row = wxT("<tr class=\"ReportDetailsOddDataRow\">");
+        else
+            row = wxT("<tr class=\"ReportDetailsEvenDataRow\">");
+
+        for (int x = 0; x < cols; x++)
+        {
+            row += wxT("<td>");
+            row += HtmlEntities(list->GetText(y, x));
+            row += wxT("</td>");
+        }
+        row += wxT("</tr>");
+        this->AddReportDataRawHtml(row);
+    }
+
+    this->EndReportTable();
 }

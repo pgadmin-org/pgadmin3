@@ -85,6 +85,10 @@ public:
     bool WantDummyChild() { return true; }
     bool GetCanHint();
 
+    bool HasStats() { return true; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
     wxMenu *GetNewMenu();
     wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const;
@@ -111,7 +115,7 @@ class pgTableObject : public pgSchemaObject
 public:
     pgTableObject(pgTable *newTable, pgaFactory &factory, const wxString& newName = wxT(""))
         : pgSchemaObject(newTable->GetSchema(), factory, newName) { table = newTable; }
-    pgTable *GetTable() { return table; }
+    virtual pgTable *GetTable() const { return table; }
     OID GetTableOid() const {return table->GetOid(); }
     wxString GetTableOidStr() const {return NumToStr(table->GetOid()) + wxT("::oid"); }
 
@@ -132,7 +136,7 @@ class pgTableObjCollection : public pgSchemaObjCollection
 public:
     pgTableObjCollection(pgaFactory *factory, pgTable *_table)
     : pgSchemaObjCollection(factory, _table->GetSchema()) { iSetOid(_table->GetOid()); table=_table; }
-    pgTable *GetTable() { return table; }
+    virtual pgTable *GetTable() const { return table; }
 
 protected:
     pgTable *table;

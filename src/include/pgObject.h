@@ -16,12 +16,15 @@ class ctlTree;
 class ctlSQLBox;
 class ctlListView;
 class frmMain;
+class frmReport;
 class pgDatabase;
 class pgSchema;
 class pgCollection;
 class pgConn;
 class pgSet;
 class pgServer;
+class pgTable;
+class pgaJob;
 
 
 class pgTypes
@@ -61,6 +64,9 @@ public:
     virtual void ShowProperties() const {};
     virtual pgDatabase *GetDatabase() const { return 0; }
     virtual pgServer *GetServer() const { return 0; }
+    virtual pgSchema *GetSchema() const { return 0; }
+    virtual pgTable *GetTable() const { return 0; }
+    virtual pgaJob *GetJob() const { return 0; }
     void iSetName(const wxString& newVal) { name = newVal; }
     wxString GetName() const { return name; }
     OID GetOid() const { return oid; }
@@ -86,8 +92,12 @@ public:
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
 
     virtual wxMenu *GetNewMenu();
-    virtual wxMenu *GetReportMenu();
-    virtual void CreateReport(wxWindow *parent, int type=-1);
+
+    wxMenu *GetReportMenu();
+    void CreateReport(frmMain *parent, int type);
+    virtual wxMenu *GetObjectReportMenu(wxMenu *mnu) { return mnu; };
+    virtual bool CreateObjectReport(frmMain *parent, int type, frmReport *rep) { return false; };
+
     virtual wxString GetSql(ctlTree *browser) { return wxT(""); }
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""));
     wxString GetCommentSql();
@@ -119,6 +129,9 @@ public:
     virtual bool CanBackup() { return false; }
     virtual bool CanRestore() { return false; }
     virtual bool GetCanHint() { return false; }
+    virtual bool HasStats() { return false; }
+    virtual bool HasDepends() { return false; }
+    virtual bool HasReferences() { return false; }
 
 protected:
     void CreateListColumns(ctlListView *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));

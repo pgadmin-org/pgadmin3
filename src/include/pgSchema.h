@@ -57,11 +57,12 @@ public:
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();
-    wxMenu *GetReportMenu();
-    void CreateReport(wxWindow *parent, int type);
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
 private:
     long schemaTyp;
     bool createPrivilege;
@@ -98,7 +99,7 @@ public:
 
     void SetSchema(pgSchema *newSchema);
     void UpdateSchema(ctlTree *browser, OID schemaOid);
-    pgSchema *GetSchema() const {return schema; }
+    virtual pgSchema *GetSchema() const {return schema; }
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     bool ExecuteVoid(const wxString& sql);

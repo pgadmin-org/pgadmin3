@@ -59,6 +59,10 @@ public:
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
 private:
     wxString password;
     wxDateTime accountExpires;

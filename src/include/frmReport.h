@@ -13,6 +13,7 @@
 #define FRMREPORT_H
 
 #include "dlgClasses.h"
+#include "ctl/ctlListView.h"
 
 // Class declarations
 class frmReport : public pgDialog
@@ -32,6 +33,7 @@ public:
     void AddReportDataRawHtml(const wxString &row) { detail += row + wxT("\n"); };
     void AddReportSql(const wxString &s);
     void AddReportDetailHeader(const wxString &h) { detail += wxT("<h2>\n") + HtmlEntities(h) + wxT("\n</h2>\n"); };
+    void AddReportTableFromListView(ctlListView *list);
 
 private:
     void OnChange(wxCommandEvent &ev);

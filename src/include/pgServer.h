@@ -113,13 +113,14 @@ public:
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/managing-databases"); }
     wxMenu *GetNewMenu();
-    wxMenu *GetReportMenu();
-    void CreateReport(wxWindow *parent, int type);
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded) { return true; }
     bool GetCanHint();
     bool CanEdit() { return true; }
     bool CanDrop() { return true; }
+    bool HasStats() { return true; }
+    bool HasDepends() { return false; }
+    bool HasReferences() { return false; }
 
     pgConn *connection() { return conn; }
     

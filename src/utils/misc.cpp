@@ -409,6 +409,13 @@ void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 
 wxString GetHtmlEntity(const wxChar ch)
 {
+    // REWRITE THIS - IT'S BLOODY INEFFICIENT!!
+
+    // Quick bailout
+    if (ch >= 'a' && ch <= 'z' ||
+        ch >= 'A' && ch <= 'Z' ||
+        ch >= '0' && ch <= '9')
+        return wxString(ch);
 
     typedef struct __htmlEntities
     {

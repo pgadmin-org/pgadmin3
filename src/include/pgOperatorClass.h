@@ -54,6 +54,10 @@ public:
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createopclass"); }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
 private:
     wxString inType, keyType, accessMethod;
     wxArrayString operators;

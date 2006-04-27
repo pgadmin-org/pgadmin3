@@ -82,7 +82,7 @@ class pgaJobObject : public pgServerObject
 {
 public:
     pgaJobObject(pgaJob *job, pgaFactory &factory, const wxString& newName);
-    pgaJob *GetJob() { return job; }
+    virtual pgaJob *GetJob() { return job; }
 
     bool CanCreate() { return job->CanCreate(); }
     bool CanView() { return false; }

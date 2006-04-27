@@ -37,14 +37,19 @@ public:
 	pgaJob *GetJob() const { return job; }
 
     int GetIconId();
-    pgaFactory *GetItemFactory() { if (factory) return ((pgaCollectionFactory*)factory)->GetItemFactory(); }
+    pgaFactory *GetItemFactory() { if (factory) return ((pgaCollectionFactory*)factory)->GetItemFactory(); else return NULL; }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowList(const wxString& name, ctlTree *browser, ctlListView *properties);
     void ShowList(ctlTree *browser, ctlListView *properties);
     void UpdateChildCount(ctlTree *browser, int substract=0);
     pgObject *FindChild(ctlTree *browser, const int index);
-    wxMenu *pgCollection::GetReportMenu();
-    void CreateReport(wxWindow *parent, int type=-1);
+
+    wxMenu *pgCollection::GetObjectReportMenu(wxMenu *menu);
+    bool CreateObjectReport(frmMain *parent, int type, frmReport *rep);
+
+    bool HasStats() { return false; }
+    bool HasDepends() { return false; }
+    bool HasReferences() { return false; }
 
 protected:
     pgServer *server;

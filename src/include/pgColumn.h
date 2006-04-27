@@ -95,6 +95,10 @@ public:
     virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop(); }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+    bool HasStats() { return true; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
 private:
     wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
     wxString serialSequence, serialSchema, pkCols;

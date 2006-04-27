@@ -66,81 +66,66 @@ void pgCollection::ShowList(ctlTree *browser, ctlListView *properties)
     ShowList(((pgaCollectionFactory*)GetFactory())->GetItemTypeName(), browser, properties);
 }
 
-wxMenu *pgCollection::GetReportMenu()
+wxMenu *pgCollection::GetObjectReportMenu(wxMenu *menu)
 {
-    wxMenu *menu=pgObject::GetReportMenu();
-
     wxString title;
     title.Printf(_("%s list report..."), GetIdentifier().c_str());
     menu->Append(MNU_REPORTS_OBJECT_LIST, title);
 
+    pgaFactory *f = this->GetItemFactory();
+
+    if (f)
+    {
+        if (f->GetMetaType() == PGM_TABLE ||
+            f->GetMetaType() == PGM_TABLESPACE || 
+            f->GetMetaType() == PGM_DATABASE)
+            menu->Append(MNU_REPORTS_STATISTICS, _("Statistics report..."));
+    }
     return menu;
 }
 
-void pgCollection::CreateReport(wxWindow *parent, int type)
+bool pgCollection::CreateObjectReport(frmMain *parent, int type, frmReport *rep)
 {
-    wxString title, header;
-
-    wxDateTime now = wxDateTime::Now();
-    wxCookieType cookie;
-    pgObject *data;
-    ctlTree *browser = ((frmMain *)parent)->GetBrowser();
-    wxTreeItemId item;
-    long pos=0;
-
-    frmReport *rep = new frmReport(parent);
+    wxString title;
 
     switch (type)
     {
         case MNU_REPORTS_OBJECT_LIST:
-
-            rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
-            if (this->GetServer())
-                rep->AddReportHeaderValue(_("Server"), this->GetServer()->GetFullIdentifier());
-            if (this->GetDatabase())
-                rep->AddReportHeaderValue(_("Database"), this->GetDatabase()->GetFullIdentifier());
-            if (this->GetSchema())
-                rep->AddReportHeaderValue(_("Schema"), this->GetSchema()->GetFullIdentifier());
-            if (this->GetJob())
-                rep->AddReportHeaderValue(_("Job"), this->GetJob()->GetFullIdentifier());
-
-            if (browser->GetParentObject(GetId()) && browser->GetParentObject(GetId())->GetMetaType() == PGM_TABLE)
             {
-                if (((pgTableObjCollection *)this)->GetTable())
-                    rep->AddReportHeaderValue(_("Table"), ((pgTableObjCollection *)this)->GetTable()->GetFullIdentifier());
+                wxCookieType cookie;
+                pgObject *data;
+                ctlTree *browser = parent->GetBrowser();
+                wxTreeItemId item;
+                long pos=0;
+
+                title.Printf(_("%s list report"), GetIdentifier().c_str());
+                rep->SetReportTitle(title);
+
+                rep->AddReportDetailHeader(this->GetFullIdentifier());
+
+                rep->StartReportTable();
+                rep->AddReportDataTableHeaderRow(2, _("Name"), _("Comment"));
+
+                item = browser->GetFirstChild(GetId(), cookie);
+                while (item)
+                {
+                    data = browser->GetObject(item);
+                    if (IsCollectionFor(data))
+                        rep->AddReportDataTableDataRow(2, data->GetFullName().c_str(), data->GetComment().c_str());
+
+                    item = browser->GetNextChild(GetId(), cookie);
+                    pos++;
+                }
+
+                rep->EndReportTable();
             }
-
-            title.Printf(_("%s list report"), GetIdentifier().c_str());
-            rep->SetReportTitle(title);
-
-            rep->AddReportDetailHeader(this->GetFullIdentifier());
-
-            rep->StartReportTable();
-            rep->AddReportDataTableHeaderRow(2, _("Name"), _("Comment"));
-
-            item = browser->GetFirstChild(GetId(), cookie);
-            while (item)
-            {
-                data = browser->GetObject(item);
-                if (IsCollectionFor(data))
-                    rep->AddReportDataTableDataRow(2, data->GetFullName().c_str(), data->GetComment().c_str());
-
-                item = browser->GetNextChild(GetId(), cookie);
-                pos++;
-            }
-
-            rep->EndReportTable();
-
             break;
 
         default:
-            wxLogError(__("The selected report cannot be found for this object type!"));
-            delete rep;
-            return;
-            break;
+            return false;
     }
 
-    rep->ShowModal();
+    return true;
 }
 
 void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView *properties)

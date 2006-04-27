@@ -14,8 +14,10 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "menu.h"
 #include "misc.h"
 #include "pgFunction.h"
+#include "frmReport.h"
 
 
 pgFunction::pgFunction(pgSchema *newSchema, const wxString& newName)
@@ -33,7 +35,6 @@ pgFunction::pgFunction(pgSchema *newSchema, pgaFactory &factory, const wxString&
 pgFunction::~pgFunction()
 {
 }
-
 
 bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {

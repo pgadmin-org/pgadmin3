@@ -36,6 +36,10 @@ public:
     long Precision() const { return prec; }
     static long GetTypmod(const wxString &name, const wxString &len, const wxString &prec);
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
 private:
     wxString schema;
     wxString name;

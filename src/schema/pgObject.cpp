@@ -18,6 +18,7 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "frmMain.h"
+#include "frmReport.h"
 #include "pgDomain.h"
 
 #include "pgSequence.h"
@@ -156,13 +157,127 @@ wxMenu *pgObject::GetNewMenu()
 
 wxMenu *pgObject::GetReportMenu()
 {
-    wxMenu *menu=new wxMenu();
-    return menu;
+    wxMenu *menu = new wxMenu();
+
+    if (!this->IsCollection())
+        menu->Append(MNU_REPORTS_PROPERTIES, wxT("Properties report..."));
+
+    if (this->HasStats())
+        menu->Append(MNU_REPORTS_STATISTICS, wxT("Statistics report..."));
+
+    if (this->HasReferences())
+        menu->Append(MNU_REPORTS_DEPENDEES, wxT("Dependees report..."));
+
+    if (this->HasDepends())
+        menu->Append(MNU_REPORTS_DEPENDENCIES, wxT("Dependencies report..."));
+
+    return GetObjectReportMenu(menu);
 }
 
-void pgObject::CreateReport(wxWindow *parent, int type)
+void pgObject::CreateReport(frmMain *parent, int type)
 {
-    wxLogError(__("The selected report cannot be found for this object type!"));
+    wxString title, header;
+
+    wxDateTime now = wxDateTime::Now();
+
+    frmReport *rep = new frmReport(parent);
+
+    rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
+    if (this->GetServer())
+        rep->AddReportHeaderValue(_("Server"), this->GetServer()->GetFullIdentifier());
+    if (this->GetDatabase())
+        rep->AddReportHeaderValue(_("Database"), this->GetDatabase()->GetName());
+    if (this->GetSchema())
+        rep->AddReportHeaderValue(_("Schema"), this->GetSchema()->GetName());
+    if (this->GetJob())
+        rep->AddReportHeaderValue(_("Job"), this->GetJob()->GetName());
+    if (this->GetTable())
+        rep->AddReportHeaderValue(_("Table"), this->GetTable()->GetName());
+
+    switch (type)
+    {
+        case MNU_REPORTS_PROPERTIES:
+            {
+                title = this->GetTypeName();
+                title += _(" properties report - ");
+                title += GetIdentifier();
+                rep->SetReportTitle(title);
+
+                rep->AddReportDetailHeader(this->GetTypeName() + _(" properties"));
+
+                ctlListView *list = parent->GetProperties();
+                this->ShowProperties();
+
+                rep->AddReportTableFromListView(list);
+
+                rep->AddReportSql(this->GetSql(NULL));
+            }
+            break;
+
+        case MNU_REPORTS_STATISTICS:
+            {
+                title = this->GetTypeName();
+                title += _(" statistics report - ");
+                title += GetIdentifier();
+                rep->SetReportTitle(title);
+
+                rep->AddReportDetailHeader(this->GetTypeName() + _(" statistics"));
+
+                ctlListView *list = parent->GetStatisticsCtl();
+                this->ShowStatistics(parent, list);
+
+                rep->AddReportTableFromListView(list);
+            }
+            break;
+
+
+        case MNU_REPORTS_DEPENDENCIES:
+
+            {
+                title = this->GetTypeName();
+                title += _(" dependencies report - ");
+                title += GetIdentifier();
+                rep->SetReportTitle(title);
+
+                rep->AddReportDetailHeader(this->GetTypeName() + _(" dependencies"));
+
+                ctlListView *list = parent->GetDependsOnCtl();
+                this->ShowDependsOn(parent, list);
+
+                rep->AddReportTableFromListView(list);
+            }
+
+            break;
+
+        case MNU_REPORTS_DEPENDEES:
+
+            {
+                title = this->GetTypeName();
+                title += _(" dependees report - ");
+                title += GetIdentifier();
+                rep->SetReportTitle(title);
+
+                rep->AddReportDetailHeader(this->GetTypeName() + _(" dependees"));
+
+                ctlListView *list = parent->GetReferencedByCtl();
+                this->ShowReferencedBy(parent, list);
+
+                rep->AddReportTableFromListView(list);
+            }
+
+            break;
+
+        default:
+            if (!CreateObjectReport(parent, type, rep))
+            {
+                wxLogError(__("The selected report cannot be found for this object type!"));
+                delete rep;
+                return;
+            }
+            break;
+    }
+
+    rep->ShowModal();
 }
 
 void pgObject::ShowStatistics(frmMain *form, ctlListView *statistics)
@@ -189,6 +304,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
     list->AddColumn(_("Type"), 60);
     list->AddColumn(_("Name"), 100);
     list->AddColumn(_("Restriction"), 50);
+
     pgConn *conn = GetConnection();
     if (conn)
     {
@@ -317,7 +433,6 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
         }
     }
 }
-
 
 void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right)
 {

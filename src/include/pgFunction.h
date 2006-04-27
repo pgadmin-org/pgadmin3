@@ -85,6 +85,10 @@ public:
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createfunction"); }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
 protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
 

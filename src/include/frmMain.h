@@ -57,8 +57,11 @@ public:
     ctlSQLBox *GetSqlPane() { return sqlPane; }
     ctlListView *GetProperties() { return properties; }
     ctlListView *GetStatistics();
+    ctlListView *GetStatisticsCtl();
     ctlListView *GetDependsOn();
+    ctlListView *GetDependsOnCtl();
     ctlListView *GetReferencedBy();
+    ctlListView *GetReferencedByCtl();
     void StoreServers();
     int ReconnectServer(pgServer *server, bool restore = true);
     void ReportConnError(pgServer *server);

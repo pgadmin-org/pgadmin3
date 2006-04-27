@@ -54,6 +54,9 @@ public:
     wxString GetQuotedSortOp() { return quotedSortOp; }
     void iSetQuotedSortOp(const wxString &s) { quotedSortOp=s; }
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);

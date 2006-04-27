@@ -78,6 +78,10 @@ public:
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool CanMaintenance() { return true; }
 
+    bool HasStats() { return true; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
 protected:
     void ReadColumnDetails();
 

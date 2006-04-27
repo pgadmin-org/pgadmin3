@@ -66,62 +66,6 @@ wxMenu *pgDatabase::GetNewMenu()
     return menu;
 }
 
-wxMenu *pgDatabase::GetReportMenu()
-{
-    wxMenu *menu=pgObject::GetReportMenu();
-
-    menu->Append(MNU_REPORTS_PROPERTIES, wxT("Properties report..."));
-
-    return menu;
-}
-
-void pgDatabase::CreateReport(wxWindow *parent, int type)
-{
-    wxString title, header;
-
-    wxDateTime now = wxDateTime::Now();
-
-    frmReport *rep = new frmReport(parent);
-
-    switch (type)
-    {
-        case MNU_REPORTS_PROPERTIES:
-
-            rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
-            rep->AddReportHeaderValue(_("Server"), this->GetServer()->GetFullIdentifier());
-
-            title = _("Database properties report - ");
-            title += GetIdentifier();
-            rep->SetReportTitle(title);
-
-            rep->AddReportDetailHeader(_("Database properties"));
-
-            rep->StartReportTable();
-            rep->AddReportPropertyTableRow(_("Name"), this->GetFullIdentifier());
-            rep->AddReportPropertyTableRow(_("OID"), NumToStr(this->GetOid()));
-            rep->AddReportPropertyTableRow(_("Owner"), this->GetOwner());
-            rep->AddReportPropertyTableRow(_("ACL"), this->GetAcl());
-            rep->AddReportPropertyTableRow(_("Tablespace"), this->GetTablespace());
-            rep->AddReportPropertyTableRow(_("Encoding"), this->GetEncoding());
-            rep->AddReportPropertyTableRow(_("Allow connections?"), this->GetAllowConnections() ? wxT("Yes") : wxT("No"));
-            rep->AddReportPropertyTableRow(_("System database?"), this->GetSystemObject() ? wxT("Yes") : wxT("No"));
-            rep->AddReportPropertyTableRow(_("Comment"), this->GetComment());
-            rep->EndReportTable();
-
-            rep->AddReportSql(this->GetSql(NULL));
-
-            break;
-
-        default:
-            wxLogError(__("The selected report cannot be found for this object type!"));
-            delete rep;
-            return;
-            break;
-    }
-
-    rep->ShowModal();
-}
-
 int pgDatabase::Connect()
 {
     if (!allowConnections)

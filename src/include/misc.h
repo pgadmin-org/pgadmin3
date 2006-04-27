@@ -64,6 +64,7 @@ wxString HtmlEntities(const wxString &str);
 enum 
 {
     PGM_SERVER,
+    PGM_TABLESPACE,
     PGM_DATABASE,
     PGM_SCHEMA,
     PGM_UNKNOWN,

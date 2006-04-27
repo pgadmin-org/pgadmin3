@@ -73,6 +73,10 @@ public:
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
+
 private:
     wxString onUpdate, onDelete, conkey, confkey,
              fkTable, fkSchema, references, refSchema;

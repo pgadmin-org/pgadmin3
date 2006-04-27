@@ -69,6 +69,9 @@ public:
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+    bool HasStats() { return false; }
+    bool HasDepends() { return true; }
+    bool HasReferences() { return true; }
 private:
     wxString event, condition, action, quotedFullTable;
     bool doInstead;
