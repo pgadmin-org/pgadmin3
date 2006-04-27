@@ -188,7 +188,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 	entries[8].Set(wxACCEL_CTRL,				(int)'A',	   MNU_SELECTALL);
     entries[9].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
-    wxAcceleratorTable accel(9, entries);
+    wxAcceleratorTable accel(10, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
