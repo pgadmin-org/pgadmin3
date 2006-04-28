@@ -512,7 +512,8 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
         _("Log files (*.log)|*.log|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
     if (dlg->ShowModal() == wxID_OK)
     {
-        FileWrite(dlg->GetPath(), msgHistory->GetValue(), false);
+        if (!FileWrite(dlg->GetPath(), msgHistory->GetValue(), false))
+            wxLogError(__("Could not write the file %s: Errcode=%d."), dlg->GetPath().c_str(), ::GetLastError());
     }
     delete dlg;
 
@@ -834,6 +835,10 @@ void frmQuery::OnSave(wxCommandEvent& event)
         setExtendedTitle();
         UpdateRecentFiles();
     }
+    else
+    {
+        wxLogError(__("Could not write the file %s: Errcode=%d."), lastPath.c_str(), ::GetLastError());
+    }
 }
 
 
@@ -873,6 +878,10 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
             setExtendedTitle();
             UpdateRecentFiles();
             fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
+        }
+        else
+        {
+            wxLogError(__("Could not write the file %s: Errcode=%d."), lastPath.c_str(), ::GetLastError());
         }
     }
     delete dlg;
