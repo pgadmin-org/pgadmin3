@@ -456,9 +456,9 @@ int pgQueryThreadBase::execute()
             result=res;
             insertedOid=PQoidValue(res);
             if (insertedOid && insertedOid != (OID)-1)
-                appendMessage(wxString::Format(_("Query result with %d rows will be returned.\n"), PQntuples(result)));
-            else
                 appendMessage(wxString::Format(_("Query inserted one row with OID %d.\n"), insertedOid));
+			else
+                appendMessage(wxString::Format(_("Query result with %d rows will be returned.\n"), PQntuples(result)));
             continue;
         }
         if (lastResult)

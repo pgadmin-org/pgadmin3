@@ -101,7 +101,6 @@ public:
     void AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu);
     actionFactory *GetFactory(int id, bool actionOnly=true);
     void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
-    void RegisterReportMenu(wxWindow *w, wxObjectEventFunction func);
 
 private:
     void Add(menuFactory *f) { wxArrayPtrVoid::Add(f); }

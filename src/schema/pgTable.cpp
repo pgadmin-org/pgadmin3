@@ -308,6 +308,24 @@ wxString pgTable::GetCoveringIndex(ctlTree *browser, const wxString &collist)
 }
 
 
+wxString pgTable::GetSelectSql(ctlTree *browser)
+{
+	return wxT("SELECT ");
+}
+
+
+wxString pgTable::GetInsertSql(ctlTree *browser)
+{
+	return wxT("INSERT ");
+}
+
+
+wxString pgTable::GetUpdateSql(ctlTree *browser)
+{
+	return wxT("UPDATE ");
+}
+
+
 void pgTable::UpdateRows()
 {
     pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ") + GetQuotedFullIdentifier());
@@ -318,6 +336,7 @@ void pgTable::UpdateRows()
         rowsCounted = true;
     }
 }
+
 
 void pgTable::UpdateInheritance()
 {

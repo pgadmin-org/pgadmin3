@@ -21,15 +21,22 @@
 
 
 ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const wxPoint& pos, const wxSize& size)
+#if USE_LISTVIEW
+: wxListView(parent, id, pos, size, wxLC_VIRTUAL | wxLC_REPORT | wxSUNKEN_BORDER)
+#else
 : ctlSQLGrid(parent, id, pos, size)
+#endif
 {
     conn=_conn;
     thread=0;
+
+#if !USE_LISTVIEW
     CreateGrid(0, 0);
     EnableEditing(false);
     SetSizer(new wxBoxSizer(wxVERTICAL));
 
     Connect(wxID_ANY, wxEVT_GRID_RANGE_SELECT, wxGridRangeSelectEventHandler(ctlSQLResult::OnGridSelect));
+#endif
 }
 
 
@@ -48,19 +55,65 @@ void ctlSQLResult::SetConnection(pgConn *_conn)
 
 bool ctlSQLResult::Export()
 {
-    if (rowsRetrieved>0 || (thread && thread->DataSet()->NumRows() > 0))
+    if (NumRows() > 0)
     {
         frmExport dlg(this);
         if (dlg.ShowModal() == wxID_OK)
-        {
-            if (rowsRetrieved> 0)
-                return dlg.Export(this);
-            else
-                return dlg.Export(thread->DataSet());
-        }
+            return dlg.Export(thread->DataSet());
     }
     return false;
 }
+
+
+#if USE_LISTVIEW
+void ctlSQLResult::SelectAll()
+{
+	for (int i = 0; i < GetItemCount(); i++)
+		Select(i);
+}
+
+
+wxString ctlSQLResult::GetExportLine(int row)
+{
+   if (GetColumnCount() <= 1)
+        return OnGetItemText(row, 1);
+
+    wxString str;
+    int col;
+    for (col=1 ; col < GetColumnCount() ; col++)
+    {
+        if (col > 1)
+            str.Append(settings->GetCopyColSeparator());
+
+        wxString text=OnGetItemText(row, col);
+
+		bool needQuote  = false;
+		if (settings->GetCopyQuoting() == 1)
+		{
+			/* Quote strings only */
+			switch (colTypClasses.Item(col))
+			{
+			case PGTYPCLASS_NUMERIC:
+			case PGTYPCLASS_BOOL:
+				break;
+			default:
+				needQuote=true;
+				break;
+			}
+		}
+		else if (settings->GetCopyQuoting() == 2)
+			/* Quote everything */
+			needQuote = true;
+
+		if (needQuote)
+            str.Append(settings->GetCopyQuoteChar());
+        str.Append(text);
+        if (needQuote)
+            str.Append(settings->GetCopyQuoteChar());
+    }    
+    return str;
+}
+#endif
 
 
 bool ctlSQLResult::IsColText(int col)
@@ -82,24 +135,39 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
 
     colSizes.Empty();
     colHeaders.Empty();
-    int num;
-
     int i;
+
+#if USE_LISTVIEW
+    wxListItem item;
+    item.SetMask(wxLIST_MASK_TEXT|wxLIST_MASK_WIDTH);
+
+    for (i=0 ; i < GetColumnCount() ; i++)
+    {
+        GetColumn(i, item);
+        colHeaders.Add(item.GetText());
+        colSizes.Add(item.GetWidth());
+    }
+
+    ClearAll();
+
+#else
     for (i=0 ; i < GetNumberCols() ; i++)
     {
         colHeaders.Add(GetColLabelValue(i));
         colSizes.Add(GetColSize(i));
     }
 
+    int num;
     num = GetNumberRows();
     if (num)
         DeleteRows(0, num);
     num = GetNumberCols();
     if (num)
         DeleteCols(0, num);
-
-    rowsRetrieved=0;
     maxRows = 0;
+#endif
+
+
     colNames.Empty();
     colTypes.Empty();
     colTypClasses.Empty();
@@ -128,6 +196,84 @@ int ctlSQLResult::Abort()
     return 0;
 }
 
+
+
+void ctlSQLResult::DisplayData(bool single)
+{
+    if (!thread || !thread->DataValid())
+        return;
+
+    if (thread->ReturnCode() != PGRES_TUPLES_OK)
+		return;
+
+	rowcountSuppressed = single;
+    Freeze();
+	SetItemCount(NumRows());
+
+	if (single)
+    {
+        int w, h;
+        if (colSizes.GetCount() == 1)
+            w = colSizes.Item(0);
+        else
+            GetSize(&w, &h);
+
+        colNames.Add(thread->DataSet()->ColName(0));
+        colTypes.Add(wxT(""));
+        colTypClasses.Add(0L);
+
+
+        InsertColumn(0, thread->DataSet()->ColName(0), wxLIST_FORMAT_LEFT, w);
+    }
+	else
+    {
+        wxString colName, colType;
+        colTypes.Add(wxT(""));
+        colTypClasses.Add(0L);
+
+		wxString rowname=_("Row");
+		size_t rowcolsize=NumToStr(NumRows()).Length();
+		if (rowname.Length() > rowcolsize)
+			rowcolsize = rowname.Length();
+
+        InsertColumn(0, rowname, wxLIST_FORMAT_RIGHT, rowcolsize*8);
+        colNames.Add(wxT("Row"));
+
+        size_t hdrIndex=0;
+		long col, nCols=thread->DataSet()->NumCols();
+
+        for (col=0 ; col < nCols ; col++)
+        {
+            colName = thread->DataSet()->ColName(col);
+            colType = thread->DataSet()->ColType(col);
+            colNames.Add(colName);
+            colTypes.Add(colType);
+            colTypClasses.Add(thread->DataSet()->ColTypClass(col));
+
+            wxString colHeader=colName +wxT(" (")+ colType +wxT(")");
+
+            int w;
+            if (hdrIndex < colHeaders.GetCount() && colHeaders.Item(hdrIndex) == colHeader)
+                w = colSizes.Item(hdrIndex++);
+            else
+            {
+                if (hdrIndex+1 < colHeaders.GetCount() && colHeaders.Item(hdrIndex+1) == colHeader)
+                {
+                    hdrIndex++;
+                    w = colSizes.Item(hdrIndex++);
+                }
+                else
+                    w=-1;
+            }
+
+            InsertColumn(col+1, colHeader, wxLIST_FORMAT_LEFT, w);
+        }
+    }
+    Thaw();
+}
+
+
+#if !USE_LISTVIEW
 
 int ctlSQLResult::RetrieveOne()
 {
@@ -273,6 +419,8 @@ wxString ctlSQLResult::GetItemText(int row, int col)
         return GetCellValue(row, col);
 }
 
+#endif
+
 
 wxString ctlSQLResult::GetMessagesAndClear()
 {
@@ -325,10 +473,31 @@ int ctlSQLResult::RunStatus()
 }
 
 
-void ctlSQLResult::SetMaxRows(int rows)
+wxString ctlSQLResult::OnGetItemText(long item, long col) const
 {
-    maxRows = rows;
+    if (thread && thread->DataValid())
+	{
+		if (!rowcountSuppressed)
+		{
+			if (col)
+				col--;
+			else
+				return NumToStr(item+1L);
+		}
+		if (item >= 0)
+		{
+			thread->DataSet()->Locate(item+1);
+			return thread->DataSet()->GetVal(col);
+		}
+		else
+			return thread->DataSet()->ColName(col);
+	}
+	return wxEmptyString;
 }
+
+
+#if !USE_LISTVIEW
+
 
 void ctlSQLResult::ResultsFinished()
 {
@@ -342,3 +511,5 @@ void ctlSQLResult::OnGridSelect(wxGridRangeSelectEvent& event)
 {
     SetFocus();
 }
+#endif
+

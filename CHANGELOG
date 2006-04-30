@@ -35,98 +35,99 @@ Changes
 
 Date       Dev Ver    Change details
 ---------- --- -----  --------------
+2006-04-30 AP         Use virtual ListView for Query Tool, so no more retrieval time
 2006-04-28 DP  1.4.3  Ensure the user is warned if files cannot be written.
-2006-04-27 DP  1.6.0  Add an accelerator key (Delete) for deleting rows in the
+2006-04-27 DP         Add an accelerator key (Delete) for deleting rows in the
                       edit grid, per Emil Nowak.
-2006-04-25 DP  1.6.0  Add a 'Quick Report' option to the query tool to
+2006-04-25 DP         Add a 'Quick Report' option to the query tool to
                       dump query results through the reporting API.
-2006-04-25 DP  1.6.0  Add an internal HTML reporting API and selection of
+2006-04-25 DP         Add an internal HTML reporting API and selection of
                       schema/object reports.
-2006-04-21 DP  1.6.0  (pgAgent) Replace the batch job execution code for
+2006-04-21 DP         (pgAgent) Replace the batch job execution code for
                       Windows with a custom popen equivalent based on
                       CreateProcess(). This is needed on Win2K on which
                       _popen() will not work from a service.
-2006-04-12 DP  1.6.0  Allow the tab character to be used as the clipboard
+2006-04-12 DP         Allow the tab character to be used as the clipboard
                       column separator to allow pasting of query results
                       straight into apps like Excel, or OOo Calc [Edward Di
                       Geronimo Jr.]
-2006-04-06 DP  1.6.0  Add a --disable-docs configure option to prevent the
+2006-04-06 DP         Add a --disable-docs configure option to prevent the
                       installation of docs [Miha Radej]
-2006-03-20 DP  1.6.0  Refactor Edit Grid and Query Grid into one common base
+2006-03-20 DP         Refactor Edit Grid and Query Grid into one common base
                       class for the control. Use the in-built wxTable for
                       further a performance boost [Edward Di Geronimo Jr.]
 2006-03-20 DP  1.4.3  Install PkgInfo into the Contents directory in the OSX
                       appbundle, per John DeSoi.
 2006-03-20 DP  1.4.3  Detect and correctly use GNU vs. BSD xargs when 
                       completing an appbundle install, per John DeSoi.
-2006-02-27 DP  1.6.0  Don't double-link to libssl/libcrypto [Loïc Minier]
-2006-02-27 DP  1.6.0  Replace the query tool's wxListView control with a
+2006-02-27 DP         Don't double-link to libssl/libcrypto [Loïc Minier]
+2006-02-27 DP         Replace the query tool's wxListView control with a
                       wxGrid and a virtual table to hold the data during 
                       loading for significant speedup. [Edward Di Geronimo Jr]
-2006-02-27 DP  1.6.0  Enhance the query tool to allow copy/paste of arbitrary
+2006-02-27 DP         Enhance the query tool to allow copy/paste of arbitrary
                       groups of columns, rows or individual cells.
                       [Edward Di Geronimo Jr]
-2006-02-27 DP  1.6.0  Change '<localpipe>' to 'local socket' [Peter Eisentraut]
-2006-02-22 DP  1.6.0  Tidy up dlgServer, per Peter Eisentraut.
-2006-02-22 DP  1.6.0  Split src/Makefile.am into one fragment per sub directory
+2006-02-27 DP         Change '<localpipe>' to 'local socket' [Peter Eisentraut]
+2006-02-22 DP         Tidy up dlgServer, per Peter Eisentraut.
+2006-02-22 DP         Split src/Makefile.am into one fragment per sub directory
                       for ease of maintenance.
-2006-02-22 DP  1.6.0  Allow the admin modules to be built with PGXS if required
+2006-02-22 DP         Allow the admin modules to be built with PGXS if required
                       [August Zajonc]
-2006-02-21 MH  1.6.0  Reject invalid command line options in pgAgent
-2006-02-21 MH  1.6.0  Minimal linking for pgAgent under *nix
+2006-02-21 MH         Reject invalid command line options in pgAgent
+2006-02-21 MH         Minimal linking for pgAgent under *nix
 2006-02-21 DP  1.4.2  Fix a typo in the admin pack README [August Zajonc]
 2006-02-19 AP  1.4.2  Fix serial column detection for 8.1 per Kris Jurka
-2006-02-19 AP  1.6.0  Display column dependencies
-2006-02-19 AP  1.6.0  Rearrange "view data" position in toolbar/menu
-2006-02-19 AP  1.6.0  Revert "Allow SELECT inside xact.." to have messages back
+2006-02-19 AP         Display column dependencies
+2006-02-19 AP         Rearrange "view data" position in toolbar/menu
+2006-02-19 AP         Revert "Allow SELECT inside xact.." to have messages back
 2006-02-17 DP  1.4.2  Mask the password when logging the connection string.
 2006-02-17 DP  1.4.2  Properly escape single quotes in connection strings.
 2006-02-08 DP  1.4.2  Re-arrange the Win32 dependencies so that iconv, libxml2
                       and wxwidgets are located in $PGADIR/../pgadmin3-deps/
-2006-02-08 MH  1.6.0  Add a 'Favourites' query organiser to the Query Tool.
+2006-02-08 MH         Add a 'Favourites' query organiser to the Query Tool.
                       Note; this adds a dependecy on libxml2 (and iconv).
 2006-02-06 DP  1.4.2  Properly enable the redo button in the Query Tool when
                       appropriate, per PromoTrade
-2006-02-06 DP  1.6.0  Allow selection and copy of subsets of the columns and 
+2006-02-06 DP         Allow selection and copy of subsets of the columns and 
                       rows in the Edit Grid [Edward Di Geronimo Jr]
-2006-02-06 DP  1.6.0  Cleanup if the query tool leaves a transaction in an 
+2006-02-06 DP         Cleanup if the query tool leaves a transaction in an 
                       error state when the query ends.
-2006-02-06 MH  1.6.0  Allow SELECT inside larger transactions in the Query Tool
-2006-01-30 AP  1.6.0  Fix inherited columns (don't create/edit them) per Peter
+2006-02-06 MH         Allow SELECT inside larger transactions in the Query Tool
+2006-01-30 AP         Fix inherited columns (don't create/edit them) per Peter
                       Eisentraut.
-2006-01-30 MH  1.6.0  Add autocompletion to the Query Tool, based on the logic
+2006-01-30 MH         Add autocompletion to the Query Tool, based on the logic
                       used by psql. Triggered with Control+Space, and 
                       optionally the Tab key as well.
 2006-01-30 DP  1.4.2  Add missing files to the Unix tarball, per Andrus
                       xtra/wxbuild/*, src/utils/precomp.cpp, 
                       src/main/pgAdmin3.rc
-2006-01-27 DP  1.6.0  Allow the number of rows shown in the Edit Grid to be 
+2006-01-27 DP         Allow the number of rows shown in the Edit Grid to be 
                       limited and add a 'View top 100 rows' option to the
                       table/view context menus. [Magnus Hagander, Dave Page]
-2006-01-25 DP  1.6.0  Prevent deletion of the blank item in config editors, and
+2006-01-25 DP         Prevent deletion of the blank item in config editors, and
                       ensure undo will only work on the appropriate line.
-2006-01-25 MH  1.6.0  Add a password file editor,
+2006-01-25 MH         Add a password file editor,
 2006-01-23 MH  1.4.2  Read config files in the local encoding scheme
-2006-01-22 DP  1.6.0  Rename text docs to match GNUish standards, remove all
+2006-01-22 DP         Rename text docs to match GNUish standards, remove all
                       HTML markup and wrap at col 80.
-2006-01-19 DP  1.6.0  Fix capitalisation of menu items. Add '...' to the end of
+2006-01-19 DP         Fix capitalisation of menu items. Add '...' to the end of
                       items that open dialogues [Peter Eisentraut]
-2006-01-19 MH  1.6.0  Display the client start time on the status dialogue with
+2006-01-19 MH         Display the client start time on the status dialogue with
                       PostgreSQL 8.1+
-2006-01-17 DP  1.6.0  Allow set returning functions to be created.
+2006-01-17 DP         Allow set returning functions to be created.
 2006-01-17 DP  1.4.2  Display the definition of set returning procedures 
                       correctly.
 2006-01-17 DP  1.4.2  Fix drop procedure by including IN/OUT parameter flags in 
                       the name.
 2006-01-13 DP  1.4.2  Fix role SQL - correctly define CREATEROLE/NOCREATEROLE 
                       per Andrus.
-2006-01-11 MH  1.6.0  Allow result copy quoting configuration to be set 
+2006-01-11 MH         Allow result copy quoting configuration to be set 
                       explicitly rather than using the result export settings 
-2006-01-09 MH  1.6.0  Add -a and -q command line options to auto connect to a 
+2006-01-09 MH         Add -a and -q command line options to auto connect to a 
                       server and open a query window respectively
 2006-01-09 MH  1.4.2  Honour the copy quoting setting properly in the SQL 
                       results pane
-2006-01-09 MH  1.6.0  Use Ctrl-A to select all results in the query results 
+2006-01-09 MH         Use Ctrl-A to select all results in the query results 
                       pane.
 2006-01-09 MH  1.4.2  Set the initial Unicode/Local charset options correctly 
                       in the Export dialogue
@@ -134,11 +135,11 @@ Date       Dev Ver    Change details
 2005-12-26 AP  1.4.2  Fix Bitmap Index explain per Alexander Kirpa
 2005-12-23 DP  1.4.2  Use ELSIF not ELSEIF in pgagent.sql for compatibility 
                       with 7.x servers [Glen Sasek]
-2005-12-22 HS  1.6.0  dlgLanguage name+comment, dlgDatabase comment
+2005-12-22 HS         dlgLanguage name+comment, dlgDatabase comment
 2005-12-15 DP  1.4.2  Exclude system schemas by name rather than OID, so that 
                       'public' can be safely renamed.
 2005-12-12 AP  1.4.2  fix slony node statistics
-2005-12-11 AP  1.6.0  support 8.1 language templates
+2005-12-11 AP         support 8.1 language templates
 2005-12-11 AP  1.4.2  Fix: Unsubscribe set on receiver
 2005-12-11 AP  1.4.2  Another wxComboBox(2.6.2) related fix
 2005-12-09 DP  1.4.1  Default the encoding of new databases to the cluster 
@@ -157,19 +158,19 @@ Date       Dev Ver    Change details
                       backup files
 2005-11-20 AP  1.4.1  Don't show pk hint when editing view
 2005-11-20 AP  1.4.1  Add missing NO ACTION FK constraint
-2005-11-11 DP  1.6.0  Set version numbers whereever required from version.h 
+2005-11-11 DP         Set version numbers whereever required from version.h 
                       during bootstrap
-2005-11-11 AP  1.6.0  leave pre-1.5 server config settings untouched
-2005-11-10 AP  1.6.0  Configurable indent in ctlSqlBox
-2005-11-10 DP  1.6.0  Ensure we always use aclocal/automake 1.9 during bootstrap
+2005-11-11 AP         leave pre-1.5 server config settings untouched
+2005-11-10 AP         Configurable indent in ctlSqlBox
+2005-11-10 DP         Ensure we always use aclocal/automake 1.9 during bootstrap
 2005-11-10 AP  1.4.1  Fix role rename per Antonio
-2005-11-09 AP  1.6.0  database and schema display restriction
-2005-11-09 AP  1.6.0  overhaul of server config settings
+2005-11-09 AP         database and schema display restriction
+2005-11-09 AP         overhaul of server config settings
 2005-11-09 AP  1.4.1  fix procedure/triggerFunc collection list
 2005-11-09 AP  1.4.1  Allow all 8.x column changes per Chris Velevitch
-2005-11-09 DP  1.6.0  Add search/replace to the query editor
+2005-11-09 DP         Add search/replace to the query editor
 2005-11-09 AP  1.4.1  Fix param name quoting for procedures per Alex Tyagloff
-2005-11-10 DP  1.6.0  Overhaul the autoconf stuff. Make full use of 
+2005-11-10 DP         Overhaul the autoconf stuff. Make full use of 
                       pg_config/wx-config.
 2005-11-04 AP  1.4.0  Fix SET role per Florian Pflug, fix role help
 2005-11-04 DP  1.4.0  Fix role inheritance option when creating roles, per Mike

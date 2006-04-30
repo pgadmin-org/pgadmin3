@@ -115,12 +115,62 @@ enum
 };
 
 
-class queryToolFactory : public actionFactory
+class queryToolBaseFactory : public actionFactory
+{
+protected:
+	queryToolBaseFactory(menuFactoryList *list) : actionFactory(list) {}
+    wxWindow *StartDialogSql(frmMain *form, pgObject *obj, const wxString &sql);
+public:
+    bool CheckEnable(pgObject *obj);
+};
+
+class queryToolDataFactory : public queryToolBaseFactory
+{
+protected:
+	queryToolDataFactory(menuFactoryList *list) : queryToolBaseFactory(list) {}
+public:
+    bool CheckEnable(pgObject *obj);
+};
+
+
+
+class queryToolFactory : public queryToolBaseFactory
 {
 public:
     queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+	
+class queryToolSqlFactory : public queryToolBaseFactory
+{
+public:
+    queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
+};
+
+
+class queryToolSelectFactory : public queryToolDataFactory
+
+{
+public:
+    queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+class queryToolInsertFactory : public queryToolDataFactory
+{
+public:
+    queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+class queryToolUpdateFactory : public queryToolDataFactory
+{
+public:
+    queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 #endif // __FRM_QUERY_H

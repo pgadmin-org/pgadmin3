@@ -425,7 +425,7 @@ bool pgAdmin3::OnInit()
 				conn = srv->CreateConn();
 				if (conn)
 				{
-					frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxString(wxT("")));
+					frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString);
 					fq->Go();
 				}
 			}

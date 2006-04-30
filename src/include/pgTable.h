@@ -91,6 +91,9 @@ public:
 
     wxMenu *GetNewMenu();
     wxString GetSql(ctlTree *browser);
+    wxString GetSelectSql(ctlTree *browser);
+    wxString GetInsertSql(ctlTree *browser);
+    wxString GetUpdateSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const;
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 

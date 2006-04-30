@@ -75,13 +75,15 @@ private:
     ctlListView *referencedBy, *dependsOn;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
-    wxMenu *newMenu, *reportMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, *viewDataMenu;
+    wxMenu *newMenu, *reportMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, 
+		*queryTemplateMenu, *viewDataMenu;
     pgServerCollection *serversObj;
     wxSplitterWindow *horizontal, *vertical;
 
     propertyFactory *propFactory;
     actionFactory *newMenuFactory;
     actionFactory *reportMenuFactory;
+	actionFactory *queryTemplateMenuFactory;
 	actionFactory *viewdataMenuFactory;
 
     wxStopWatch stopwatch;

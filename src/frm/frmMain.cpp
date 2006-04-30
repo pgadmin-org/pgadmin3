@@ -125,6 +125,7 @@ frmMain::frmMain(const wxString& title)
     helpMenu = new wxMenu();
     newMenu=new wxMenu();
     reportMenu=new wxMenu();
+	queryTemplateMenu=new wxMenu();
 	viewDataMenu = new wxMenu();
 
     wxMenu *cfgMenu=new wxMenu();
@@ -192,10 +193,16 @@ frmMain::frmMain(const wxString& title)
 
     toolBar->AddSeparator();
     toolsMenu->AppendSeparator();
-    new queryToolFactory(menuFactories, toolsMenu, toolBar);
-	
-    viewdataMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
+    
+	new queryToolFactory(menuFactories, toolsMenu, toolBar);
+    queryTemplateMenuFactory = new dummyActionFactory(menuFactories);    // placeholder where "Query Template" submenu will be inserted
+	toolsMenu->Append(queryTemplateMenuFactory->GetId(), _("Scripts"), queryTemplateMenu, _("Start Query Tool with scripted query."));
+	new queryToolSqlFactory(menuFactories, queryTemplateMenu, 0);
+	new queryToolSelectFactory(menuFactories, queryTemplateMenu, 0);
+	new queryToolInsertFactory(menuFactories, queryTemplateMenu, 0);
+	new queryToolUpdateFactory(menuFactories, queryTemplateMenu, 0);
 
+    viewdataMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
 	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
 
     reportMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "Reports" submenu will be inserted
@@ -332,7 +339,6 @@ frmMain::frmMain(const wxString& title)
 
     pgaFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnNew));
     menuFactories->RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
-    menuFactories->RegisterReportMenu(this, wxCommandEventHandler(frmMain::OnReport));
     menuFactories->CheckMenu(0, menuBar, toolBar);
 
     // Add the root node

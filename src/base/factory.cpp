@@ -231,11 +231,6 @@ void menuFactoryList::RegisterMenu(wxWindow *w, wxObjectEventFunction func)
         wxEVT_COMMAND_MENU_SELECTED, func);
 }
 
-void menuFactoryList::RegisterReportMenu(wxWindow *w, wxObjectEventFunction func)
-{
-    w->Connect(MNU_REPORTS, MNU_REPORTS+GetCount()-1, 
-        wxEVT_COMMAND_MENU_SELECTED, func);
-}
 
 void menuFactoryList::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar)
 {
@@ -278,12 +273,26 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 						wxMenu *newSubMenu = new wxMenu();
 
 						size_t i;
+						int itemCount=0;
+						wxMenuItem *singleMenuItem;
 						for (i=0; i < oldSubMenu->GetMenuItemCount(); i++)
 						{
 							wxMenuItem *oldMenuItem = oldSubMenu->FindItemByPosition(i);
-							newSubMenu->Append(oldMenuItem->GetId(), oldMenuItem->GetLabel(), oldMenuItem->GetHelp());
+							if (oldMenuItem->IsEnabled())
+							{
+								newSubMenu->Append(oldMenuItem->GetId(), oldMenuItem->GetLabel(), oldMenuItem->GetHelp());
+								itemCount++;
+								singleMenuItem = oldMenuItem;
+							}
 						}
-						lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), newSubMenu);
+						if (itemCount > 1)
+							lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), newSubMenu);
+						else
+						{
+							delete newSubMenu;
+							if (itemCount)
+								lastItem = treeContextMenu->Append(id, singleMenuItem->GetLabel(), singleMenuItem->GetHelp());
+				}
 					}
 				}
             }

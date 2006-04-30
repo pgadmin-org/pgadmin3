@@ -15,7 +15,6 @@
 #include "pgAdmin3.h"
 #include <wx/file.h>
 #include "frmExport.h"
-#include "ctl/ctlSQLResult.h"
 #include "sysSettings.h"
 #include "misc.h"
 
@@ -135,7 +134,7 @@ void frmExport::OnOK(wxCommandEvent &ev)
 
     
 
-bool frmExport::Export(ctlSQLResult *data, pgSet *set)
+bool frmExport::Export(pgSet *set)
 {
     wxFile file(txtFilename->GetValue(), wxFile::write);
     if (!file.IsOpened())
@@ -146,35 +145,22 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
 
     wxString line;
 
-    int startCol=0;
     int colCount, rowCount;
 
-    if (set)
-    {
-        colCount = set->NumCols();
-        rowCount = set->NumRows();
-    }
-    else
-    {
-        colCount = data->GetNumberCols();
-        rowCount = data->GetNumberRows();
-        if (colCount > 1) // first col contains row count
-            startCol=1;
-    }
+
+	colCount = set->NumCols();
+    rowCount = set->NumRows();
 
     int col;
     if (chkColnames->GetValue())
     {
-        for (col=startCol ; col < colCount ; col++)
+        for (col=0 ; col < colCount ; col++)
         {
-            if (col == startCol)
+            if (!col)
                 line=wxEmptyString;
             else
                 line += cbColSeparator->GetValue();
-            if (set)
-                line += set->ColName(col);
-            else
-                line += data->colNames.Item(col);
+            line += set->ColName(col);
         }
         if (rbCRLF->GetValue())
             line += wxT("\r\n");
@@ -194,25 +180,18 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
     int row;
     for (row=0 ; row < rowCount ; row++)
     {
-        for (col=startCol ; col < colCount ; col++)
+        for (col=0 ; col < colCount ; col++)
         {
-            if (col == startCol)
+            if (!col)
                 line=wxEmptyString;
             else
                 line += cbColSeparator->GetValue();
 
             bool needQuote=rbQuoteAll->GetValue();
 
-            if (set)
-            {
-                text = set->GetVal(col);
-                typOid = set->ColTypeOid(col);
-            }
-            else
-            {
-                text = data->GetItemText(row, col);
-                typOid = data->colTypClasses.Item(col);
-            }
+            text = set->GetVal(col);
+            typOid = set->ColTypeOid(col);
+
             if (!needQuote && rbQuoteStrings->GetValue())
             {
                 // find out if string
@@ -245,8 +224,7 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
         else
             file.Write(line, wxConvLibc);
 
-        if (set)
-            set->MoveNext();
+        set->MoveNext();
     }
     file.Close();
 

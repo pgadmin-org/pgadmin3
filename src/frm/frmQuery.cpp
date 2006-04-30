@@ -193,7 +193,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     queryMenu->Enable(MNU_CANCEL, false);
 
-    int iWidths[5] = {0, -1, 110, 110, 110};
+    int iWidths[5] = {0, -1, 80, 80, 80};
     statusBar=CreateStatusBar(5);
     SetStatusBarPane(-1);
     SetStatusWidths(5, iWidths);
@@ -539,7 +539,7 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
     {
         if (!FileWrite(dlg->GetPath(), msgHistory->GetValue(), false))
         {
-            wxLogError(__("Could not write the file %s: Errcode=%d."), dlg->GetPath().c_str(), ::GetLastError());
+            wxLogError(__("Could not write the file %s: Errcode=%d."), dlg->GetPath().c_str(), wxSysErrorCode());
         }
     }
     delete dlg;
@@ -612,7 +612,31 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
         msgResult->Copy();
     else if (wnd == msgHistory)
         msgHistory->Copy();
-    else {
+#if USE_LISTVIEW
+    else if (wnd == sqlResult && sqlResult->GetSelectedItemCount() > 0)
+    {
+        wxString str;
+        int row=-1;
+        while (true)
+        {
+            row = sqlResult->GetNextItem(row, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+            if (row < 0)
+                break;
+            
+            str.Append(sqlResult->GetExportLine(row));
+            if (sqlResult->GetSelectedItemCount() > 1)
+                str.Append(END_OF_LINE);
+        }
+
+        if (wxTheClipboard->Open())
+        {
+            wxTheClipboard->SetData(new wxTextDataObject(str));
+            wxTheClipboard->Close();
+        }
+    }
+#else
+    else 
+	{
         wxWindow *obj = wnd;
 
         while (obj != NULL) {
@@ -623,6 +647,7 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
             obj = obj->GetParent();
         }
     }
+#endif
     updateMenu();
 }
 
@@ -1009,14 +1034,19 @@ void frmQuery::OnQuickReport(wxCommandEvent& event)
     rep->StartReportTable();
 
     // Get the column headers
-    int cols = sqlResult->GetNumberCols();
+    int cols = sqlResult->GetItemCount();
 
     wxString row;
 
     row = wxT("<tr>");
-    for (int x = 0; x < cols; x++)
+	int x;
+	int startX=0;
+	if (sqlResult->hasRowNumber())
+		startX++;		// Skip row no.
+
+    for (x = startX; x < cols; x++)
     {
-        wxString label = sqlResult->GetColLabelValue(x);
+        wxString label = sqlResult->OnGetItemText(-1, x);
         label = HtmlEntities(label);
         label.Replace(wxT("\n"), wxT("<br />"));
         row += wxT("<th>") + label + wxT("</th>");
@@ -1025,19 +1055,20 @@ void frmQuery::OnQuickReport(wxCommandEvent& event)
     rep->AddReportDataRawHtml(row);
 
     // Get the data rows
-    int rows = sqlResult->GetNumberRows();
+    int rows = sqlResult->NumRows();
 
-    for (int y = 0; y < rows; y++)
+	int y;
+    for (y = 0; y < rows; y++)
     {
         if (y % 2 == 1)
             row = wxT("<tr class=\"ReportDetailsOddDataRow\">");
         else
             row = wxT("<tr class=\"ReportDetailsEvenDataRow\">");
 
-        for (int x = 0; x < cols; x++)
+        for (x = startX; x < cols; x++)
         {
             row += wxT("<td>");
-            row += HtmlEntities(sqlResult->GetCellValue(y, x));
+            row += HtmlEntities(sqlResult->OnGetItemText(y, x));
             row += wxT("</td>");
         }
         row += wxT("</tr>");
@@ -1047,7 +1078,7 @@ void frmQuery::OnQuickReport(wxCommandEvent& event)
     rep->EndReportTable();
 
     wxString stats;
-    stats.Printf(wxT("%d rows with %d columns retrieved."), rows, cols);
+    stats.Printf(wxT("%d rows with %d columns retrieved."), rows, cols-startX);
     rep->AddReportDetailParagraph(stats);
 
     rep->AddReportSql(sqlQuery->GetText());
@@ -1097,7 +1128,7 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     if (analyze)
         sql += wxT(";\nROLLBACK;");
 
-    if (execQuery(sql, resultToRetrieve, false, offset))
+    if (execQuery(sql, resultToRetrieve, true, offset))
     {
         if (!verbose)
         {
@@ -1106,7 +1137,7 @@ void frmQuery::OnExplain(wxCommandEvent& event)
             if (sqlResult->NumRows() == 1)
             {
                 // Avoid shared storage issues with strings
-                str.Append(sqlResult->GetItemText(0).c_str());
+                str.Append(sqlResult->OnGetItemText(0, 0).c_str());
             }
             else
             {
@@ -1114,7 +1145,7 @@ void frmQuery::OnExplain(wxCommandEvent& event)
                 {
                     if (i)
                         str.Append(wxT("\n"));
-                    str.Append(sqlResult->GetItemText(i));
+                    str.Append(sqlResult->OnGetItemText(i, 0));
                 }
             }
             explainCanvas->SetExplainString(str);
@@ -1185,7 +1216,6 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 {
     bool done=false;
 
-    long rowsReadTotal=0;
     setTools(true);
     queryMenu->Enable(MNU_SAVEHISTORY, true);
     queryMenu->Enable(MNU_CLEARHISTORY, true);
@@ -1336,101 +1366,28 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             {
                 if (singleResult)
                 {
-                    rowsReadTotal=sqlResult->RetrieveOne();
-                    showMessage(wxString::Format(_("%d rows retrieved."), rowsReadTotal), _("OK."));
+					sqlResult->DisplayData(true);
+
+                    showMessage(wxString::Format(_("%d rows retrieved."), sqlResult->NumRows()), _("OK."));
                 }
                 else
                 {
                     SetStatusText(wxString::Format(_("Retrieving data: %d rows."), rowsTotal), STATUSPOS_MSGS);
                     wxYield();
 
-                    long maxRows=settings->GetMaxRows();
+					sqlResult->DisplayData();
 
-                    if (!maxRows)
-                        maxRows = rowsTotal;
-                    if (rowsTotal > maxRows)
 
-                    {
-                        wxMessageDialog msg(this, wxString::Format(
-                                _("The maximum of %ld rows is exceeded (total %ld)."), maxRows, rowsTotal) +
-                                _("\nRetrieve all rows anyway?"), _("Limit exceeded"), 
-                                    wxYES_NO|wxCANCEL|wxNO_DEFAULT|wxICON_EXCLAMATION);
-                        switch (msg.ShowModal())
-                        {
-                            case wxID_YES:
-                                maxRows = rowsTotal;
-                                break;
-                            case wxID_CANCEL:
-                                maxRows = 0;
-                                break;
-                        }
-                    }
-                    sqlResult->SetMaxRows(maxRows);
-                    wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
-                    wxLongLong elapsed;
-                    elapsedRetrieve=0;
-                    bool resultFreezed=false;
-                
-                    while (!aborted && rowsReadTotal < maxRows)
-                    {
-                        // Rows will be retrieved in chunks, the first being smaller to have an early screen update
-                        // later, screen update is disabled to speed up retrieval
-                        long chunk;
-                        if (!rowsReadTotal) chunk=20;
-                        else                chunk=100;
 
-                        if (chunk > maxRows-rowsReadTotal)
-                            chunk = maxRows-rowsReadTotal;
+                    SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
 
-                        long rowsRead=sqlResult->Retrieve(chunk);
-                        if (!rowsRead)
-                            break;
-
-                        elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
-
-                        if (!rowsReadTotal)
-		                {
-                            wxYield();
-			                if (rowsRead < maxRows)
-    				        {
-        					    resultFreezed=true;
-	        				    sqlResult->Freeze();
-			    	        }
-		                }
-                        rowsReadTotal += rowsRead;
-
-                        if (elapsed > elapsedRetrieve +100)
-                        {
-                            elapsedRetrieve=elapsed;
-                            SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
-                            wxYield();
-                        }
-                    }
-                    sqlResult->ResultsFinished();
-                    if (resultFreezed)
-                        sqlResult->Thaw();
-
-                    elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
-                    SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
-
-                    str= _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") +
-                         _("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n");
+                    str= _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") ;
                     msgResult->AppendText(str);
                     msgHistory->AppendText(str);
 
-                    if (rowsReadTotal == sqlResult->NumRows())
-                        showMessage(wxString::Format(_("%ld rows retrieved."), rowsReadTotal), _("OK."));
-                    else
-                    {
-                        wxString nr;
-                        nr.Printf(_("%ld  rows not retrieved."), rowsTotal - rowsReadTotal);
-                        showMessage(wxString::Format(_("Total %ld rows.\n"), rowsTotal) + nr, nr);
-                    }
+                    showMessage(wxString::Format(_("%ld rows retrieved."), sqlResult->NumRows()), _("OK."));
                 }
-                if (rowsTotal == rowsReadTotal)
-                    SetStatusText(wxString::Format(_("%d rows."), rowsTotal), STATUSPOS_ROWS);
-                else
-                    SetStatusText(wxString::Format(_("%ld of %ld rows"), rowsReadTotal, rowsTotal), STATUSPOS_ROWS);
+                SetStatusText(wxString::Format(_("%d rows."), rowsTotal), STATUSPOS_ROWS);
             }
         }
     }
@@ -1472,18 +1429,44 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         conn->ExecuteVoid(wxT("ROLLBACK;"));
 
     setTools(false);
-    if (rowsReadTotal)
-    {
-        fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
-    }
+    fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
 
-    if (!this->IsActive())
-        this->RequestUserAttention();
+    if (IsActive())
+        RequestUserAttention();
     return done;
 }
 
 
-queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+///////////////////////////////////////////////////////
+
+
+wxWindow *queryToolBaseFactory::StartDialogSql(frmMain *form, pgObject *obj, const wxString &sql)
+{
+    pgDatabase *db=obj->GetDatabase();
+    pgConn *conn = db->CreateConn();
+    if (conn)
+    {
+        frmQuery *fq= new frmQuery(form, wxEmptyString, conn, sql);
+        fq->Go();
+        return fq;
+    }
+    return 0;
+}
+
+
+bool queryToolBaseFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->GetDatabase() && obj->GetDatabase()->GetConnected();
+}
+
+bool queryToolDataFactory::CheckEnable(pgObject *obj)
+{
+    return queryToolBaseFactory::CheckEnable(obj) && obj->IsCreatedBy(tableFactory) && !obj->IsCollection();
+}
+
+
+
+queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolBaseFactory(list)
 {
     mnu->Append(id, _("&Query tool"), _("Execute arbitrary SQL queries."));
     toolbar->AddTool(id, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
@@ -1492,22 +1475,81 @@ queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar
 
 wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    pgDatabase *db=obj->GetDatabase();
-    pgConn *conn = db->CreateConn();
-    if (conn)
+    wxString qry;
+    if (settings->GetStickySql()) 
+        qry = obj->GetSql(form->GetBrowser());
+	return StartDialogSql(form, obj, qry);
+}
+
+
+queryToolSqlFactory::queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolBaseFactory(list)
+{
+    mnu->Append(id, _("CREATE script"), _("Start Query tool with CREATE script."));
+	if (toolbar)
+		toolbar->AddTool(id, _("CREATE script"), wxBitmap(sql_xpm), _("Start query tool with CREATE script."), wxITEM_NORMAL);
+}
+
+
+wxWindow *queryToolSqlFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	return StartDialogSql(form, obj, obj->GetSql(form->GetBrowser()));
+}
+
+bool queryToolSqlFactory::CheckEnable(pgObject *obj)
+{
+    return queryToolBaseFactory::CheckEnable(obj) && obj->CanCreate() && !obj->IsCollection();
+}
+
+
+
+queryToolUpdateFactory::queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
+{
+    mnu->Append(id, _("UPDATE script"), _("Start query tool with UPDATE script."));
+}
+
+
+wxWindow *queryToolUpdateFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (obj->IsCreatedBy(tableFactory))
     {
-        wxString qry;
-        if (settings->GetStickySql()) 
-            qry = form->GetSqlPane()->GetText();
-        frmQuery *fq= new frmQuery(form, wxEmptyString, conn, qry);
-        fq->Go();
-        return fq;
+		pgTable *table = (pgTable*)obj;
+		return StartDialogSql(form, obj, table->GetUpdateSql(form->GetBrowser()));
     }
     return 0;
 }
 
 
-bool queryToolFactory::CheckEnable(pgObject *obj)
+queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
 {
-    return obj && obj->GetDatabase() && obj->GetDatabase()->GetConnected();
+    mnu->Append(id, _("SELECT script"), _("Start query tool with SELECT script."));
 }
+
+
+wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (obj->IsCreatedBy(tableFactory))
+    {
+		pgTable *table = (pgTable*)obj;
+		return StartDialogSql(form, obj, table->GetSelectSql(form->GetBrowser()));
+    }
+    return 0;
+}
+
+
+
+queryToolInsertFactory::queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
+{
+    mnu->Append(id, _("INSERT script"), _("Start query tool with INSERT script."));
+}
+
+
+wxWindow *queryToolInsertFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (obj->IsCreatedBy(tableFactory))
+    {
+		pgTable *table = (pgTable*)obj;
+		return StartDialogSql(form, obj, table->GetInsertSql(form->GetBrowser()));
+    }
+    return 0;
+}
+

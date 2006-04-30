@@ -12,20 +12,29 @@
 #ifndef CTLSQLRESULT_H
 #define CTLSQLRESULT_H
 
+#define USE_LISTVIEW 1
+
 // wxWindows headers
-#include <wx/grid.h>
 #include <wx/thread.h>
 
 #include "pgSet.h"
 #include "pgConn.h"
-#include "ctlSQLGrid.h"
 
+#if USE_LISTVIEW
+#include <wx/listctrl.h>
+#else
+#include "ctlSQLGrid.h"
+#endif
 
 
 
 #define CTLSQL_RUNNING 100  // must be greater than ExecStatusType PGRES_xxx values
 
+#if USE_LISTVIEW
+class ctlSQLResult : public wxListView
+#else
 class ctlSQLResult : public ctlSQLGrid
+#endif
 {
 public:
     ctlSQLResult(wxWindow *parent, pgConn *conn, wxWindowID id, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize);
@@ -38,25 +47,30 @@ public:
     long InsertedCount() const;
     OID  InsertedOid() const;
 
-    int Retrieve(long chunk=-1);
-    int RetrieveOne();
     int Abort();
 
     bool Export();
-    bool CanExport() { return rowsRetrieved>0 && colNames.GetCount() > 0; }
+    bool CanExport() { return NumRows() >0 && colNames.GetCount() > 0; }
 
-    wxString GetItemText(int row, int col=-1);
-    bool ctlSQLResult::IsColText(int col);
+	wxString OnGetItemText(long item, long col) const;
+    bool IsColText(int col);
+	bool hasRowNumber() { return !rowcountSuppressed; }
 
     int RunStatus();
     wxString GetMessagesAndClear();
     wxString GetErrorMessage();
 
+	void DisplayData(bool single=false);
+
+
+#if USE_LISTVIEW
+	void SelectAll();
+	wxString GetExportLine(int row);
+#else
     void SetMaxRows(int rows);
     void ResultsFinished();
-
     void OnGridSelect(wxGridRangeSelectEvent& event);
-
+#endif
     wxArrayString colNames;
     wxArrayString colTypes;
     wxArrayLong colTypClasses;
@@ -67,8 +81,7 @@ public:
 private:
     pgQueryThread *thread;
     pgConn *conn;
-    long rowsRetrieved;
-    int maxRows;
+	bool rowcountSuppressed;
 };
 
 #endif
