@@ -377,39 +377,10 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 
     menuFactories->CheckMenu(data, menuBar, toolBar);
 
-    enableSubmenu(MNU_CONFIGSUBMENU);
-    enableSubmenu(MNU_SLONY_SUBMENU);
-    enableSubmenu(newMenuFactory->GetId());
-    enableSubmenu(reportMenuFactory->GetId());
-	enableSubmenu(queryTemplateMenuFactory->GetId());
-	enableSubmenu(viewdataMenuFactory->GetId());
+    menuFactories->EnableSubmenu(menuBar, MNU_CONFIGSUBMENU);
+    menuFactories->EnableSubmenu(menuBar, MNU_SLONY_SUBMENU);
 }
 
-
-void frmMain::enableSubmenu(int id)
-{
-    wxMenuItem *item=menuBar->FindItem(id);
-    if (item)
-    {
-        wxMenu *menu=item->GetSubMenu();
-        wxASSERT(menu);
-        if (!menu)
-            return;
-
-        size_t position;
-        for (position = 0 ; position < menu->GetMenuItemCount() ; position++)
-        {
-            item = menu->FindItemByPosition(position);
-            if (item && item->IsEnabled())
-            {
-                menuBar->Enable(id, true);
-                return;
-            }
-        }
-
-        menuBar->Enable(id, false);
-    }
-}
 
 void frmMain::OnSelActivated(wxTreeEvent &event)
 {

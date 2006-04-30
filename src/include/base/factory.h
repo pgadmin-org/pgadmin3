@@ -101,6 +101,7 @@ public:
     void AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContextMenu);
     actionFactory *GetFactory(int id, bool actionOnly=true);
     void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
+	void EnableSubmenu(wxMenuBar *menubar, int id);
 
 private:
     void Add(menuFactory *f) { wxArrayPtrVoid::Add(f); }
@@ -112,6 +113,7 @@ class menuFactory
 {
 public:
     virtual bool IsAction() { return false; }
+    virtual bool IsSubmenu() { return false; }
 
 protected:
     menuFactory(menuFactoryList *list);
@@ -143,11 +145,12 @@ protected:
     contextActionFactory(menuFactoryList *list) : actionFactory(list) { context=true; }
 };
 
-class dummyActionFactory : public contextActionFactory
+class submenuFactory : public contextActionFactory
 {
 public:
-    dummyActionFactory(menuFactoryList *list) : contextActionFactory(list) {};
+    submenuFactory(menuFactoryList *list) : contextActionFactory(list) {};
     wxWindow *StartDialog(frmMain *form, pgObject *obj) { return 0; };
+    virtual bool IsSubmenu() { return true; }
 };
 
 class separatorFactory : public menuFactory

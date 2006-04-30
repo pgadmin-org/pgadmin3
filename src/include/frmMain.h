@@ -76,14 +76,14 @@ private:
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenu *newMenu, *reportMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, 
-		*queryTemplateMenu, *viewDataMenu;
+		*scriptingMenu, *viewDataMenu;
     pgServerCollection *serversObj;
     wxSplitterWindow *horizontal, *vertical;
 
     propertyFactory *propFactory;
     actionFactory *newMenuFactory;
     actionFactory *reportMenuFactory;
-	actionFactory *queryTemplateMenuFactory;
+	actionFactory *scriptingMenuFactory;
 	actionFactory *viewdataMenuFactory;
 
     wxStopWatch stopwatch;
@@ -93,6 +93,7 @@ private:
     wxTreeItemId denyCollapseItem;
     pgObject *currentObject;
 
+	void CreateMenus();
     void OnContents(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
 	void ViewData(bool filter = false);
@@ -121,7 +122,6 @@ private:
 
     bool dropSingleObject(pgObject *data, bool updateFinal, bool cascaded);
     void doPopup(wxWindow *win, wxPoint point, pgObject *object);
-    void enableSubmenu(int id);
     void appendIfEnabled(int id);
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
     void RetrieveServers();

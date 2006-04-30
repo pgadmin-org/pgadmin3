@@ -117,175 +117,7 @@ frmMain::frmMain(const wxString& title)
     // wxGTK needs this deferred
     pgaFactory::RealizeImages();
 
-    // Build menus
-    fileMenu = new wxMenu();
-    editMenu = new wxMenu();
-    toolsMenu = new wxMenu();
-    viewMenu = new wxMenu();
-    helpMenu = new wxMenu();
-    newMenu=new wxMenu();
-    reportMenu=new wxMenu();
-	queryTemplateMenu=new wxMenu();
-	viewDataMenu = new wxMenu();
-
-    wxMenu *cfgMenu=new wxMenu();
-    
-    toolBar=CreateToolBar();
-    toolBar->SetToolBitmapSize(wxSize(32, 32));
-
-    menuFactories = new menuFactoryList();
-
-
-
-    fileMenu->Append(MNU_SAVEDEFINITION, _("&Save Definition..."),_("Save the SQL definition of the selected object."));
-    fileMenu->AppendSeparator();
-    new addServerFactory(menuFactories, fileMenu, toolBar);
-
-    actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
-    new countRowsFactory(menuFactories, viewMenu, 0);
-
-   
-    new separatorFactory(menuFactories);
-
-    viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System Objects"),     _("Show or hide system objects."), wxITEM_CHECK);
-    toolBar->AddSeparator();
-
-    new passwordFactory(menuFactories, fileMenu, 0);
-    fileMenu->AppendSeparator();
-    optionsFactory *optFact=new optionsFactory(menuFactories, fileMenu, 0);
-    fileMenu->AppendSeparator();
-    new mainConfigFileFactory(menuFactories, fileMenu, 0);
-    new hbaConfigFileFactory(menuFactories, fileMenu, 0);
-	new pgpassConfigFileFactory(menuFactories, fileMenu, 0);
-
-    fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
-
-    slonyMenu=new wxMenu();
-    new slonyRestartFactory(menuFactories, slonyMenu, 0);
-    new slonyUpgradeFactory(menuFactories, slonyMenu, 0);
-    new slonyFailoverFactory(menuFactories, slonyMenu, 0);
-    new slonyLockSetFactory(menuFactories, slonyMenu, 0);
-    new slonyUnlockSetFactory(menuFactories, slonyMenu, 0);
-    new slonyMergeSetFactory(menuFactories, slonyMenu, 0);
-    new slonyMoveSetFactory(menuFactories, slonyMenu, 0);
-    toolsMenu->Append(MNU_SLONY_SUBMENU, _("Replication"), slonyMenu);
-
-    propFactory = new propertyFactory(menuFactories, 0, toolBar);
-    new separatorFactory(menuFactories);
-
-    newMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "New objects" submenu will be inserted
-    editMenu->Append(newMenuFactory->GetId(), _("New &Object"), newMenu,    _("Create a new object."));
-    editMenu->AppendSeparator();
-
-    new connectServerFactory(menuFactories, toolsMenu, 0);
-    new disconnectServerFactory(menuFactories, toolsMenu, 0);
-
-    new startServiceFactory(menuFactories, toolsMenu, 0);
-    new stopServiceFactory(menuFactories, toolsMenu, 0);
-
-    new createFactory(menuFactories, editMenu, toolBar);
-    new dropFactory(menuFactories, editMenu, toolBar);
-    new dropCascadedFactory(menuFactories, editMenu, 0);
-
-    new separatorFactory(menuFactories);
-
-    toolBar->AddSeparator();
-    toolsMenu->AppendSeparator();
-    
-	new queryToolFactory(menuFactories, toolsMenu, toolBar);
-    queryTemplateMenuFactory = new dummyActionFactory(menuFactories);    // placeholder where "Query Template" submenu will be inserted
-	toolsMenu->Append(queryTemplateMenuFactory->GetId(), _("Scripts"), queryTemplateMenu, _("Start Query Tool with scripted query."));
-	new queryToolSqlFactory(menuFactories, queryTemplateMenu, 0);
-	new queryToolSelectFactory(menuFactories, queryTemplateMenu, 0);
-	new queryToolInsertFactory(menuFactories, queryTemplateMenu, 0);
-	new queryToolUpdateFactory(menuFactories, queryTemplateMenu, 0);
-
-    viewdataMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
-	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
-
-    reportMenuFactory = new dummyActionFactory(menuFactories);     // placeholder where "Reports" submenu will be inserted
-    toolsMenu->Append(reportMenuFactory->GetId(), _("&Reports"), reportMenu,    _("Create reports about the selected item."));
-    toolsMenu->AppendSeparator();
-
-	new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
-    new editGridFactory(menuFactories, viewDataMenu, toolBar);
-    new editGridFilteredFactory(menuFactories, viewDataMenu, toolBar);
-
-	new maintenanceFactory(menuFactories, toolsMenu, toolBar);
-
-    new backupFactory(menuFactories, toolsMenu, 0);
-    new restoreFactory(menuFactories, toolsMenu, 0);
-
-    new grantWizardFactory(menuFactories, toolsMenu, 0);
-    new mainConfigFactory(menuFactories, cfgMenu, 0);
-    new hbaConfigFactory(menuFactories, cfgMenu, 0);
-    toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server Configuration"), cfgMenu);
-    toolsMenu->AppendSeparator();
-
-    new separatorFactory(menuFactories);
-
-    new propertyFactory(menuFactories, editMenu, 0);
-    new serverStatusFactory(menuFactories, toolsMenu, 0);
-
-    toolBar->AddSeparator();
-
-    actionFactory *helpFact = new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
-    new contentsFactory(menuFactories, helpMenu, 0);
-    new hintFactory(menuFactories, helpMenu, toolBar, true);
-    new faqFactory(menuFactories, helpMenu, 0);
-
-    new tipOfDayFactory(menuFactories, helpMenu, 0);
-    helpMenu->AppendSeparator();
-    // new onlineUpdateFactory(menuFactories, helpMenu, 0);
-    new bugReportFactory(menuFactories, helpMenu, 0);
-    actionFactory *abFact=new aboutFactory(menuFactories, helpMenu, 0);
-    
-#ifdef __WXMAC__
-    wxApp::s_macPreferencesMenuItemId = optFact->GetId();
-    wxApp::s_macExitMenuItemId = MNU_EXIT;
-    wxApp::s_macAboutMenuItemId = abFact->GetId();
-#else
-	(void)optFact;
-	(void)abFact;
-#endif 
-
-
-    menuBar = new wxMenuBar();
-    menuBar->Append(fileMenu, _("&File"));
-    menuBar->Append(editMenu, _("&Edit"));
-    menuBar->Append(toolsMenu, _("&Tools"));
-    menuBar->Append(viewMenu, _("&Display"));
-    menuBar->Append(helpMenu, _("&Help"));
-    SetMenuBar(menuBar);
-
-    newContextMenu = new wxMenu();
-    treeContextMenu = 0;
-
-    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
-
-    // Status bar
-    statusBar = CreateStatusBar(3);
-    int iWidths[3] = {0, -1, 100};
-    SetStatusWidths(3, iWidths);
-    SetStatusBarPane(-1);
-    statusBar->SetStatusText(wxT(""), 0);
-    statusBar->SetStatusText(_("Ready."), 1);
-    statusBar->SetStatusText(_("0 Secs"), 2);
-
-    wxAcceleratorEntry entries[4];
-    entries[0].Set(wxACCEL_NORMAL, WXK_F5, refFact->GetId());
-    entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DELETE);
-    entries[2].Set(wxACCEL_NORMAL, WXK_F1, helpFact->GetId());
-    entries[3].Set(wxACCEL_SHIFT, WXK_F10, MNU_CONTEXTMENU);
-    wxAcceleratorTable accel(4, entries);
-
-    SetAcceleratorTable(accel);
-
-    
-    // Display the bar and configure buttons. 
-    toolBar->Realize();
+	CreateMenus();
     
     // Setup the vertical splitter & treeview
     vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
@@ -364,6 +196,193 @@ frmMain::~frmMain()
 
     if (treeContextMenu)
         delete treeContextMenu;
+}
+
+
+
+void frmMain::CreateMenus()
+{
+	// to add a new menu or context menu to the main window, i.e. define a possible
+	// action on a pgObject, everything has to go into this method. Doing menu related
+	// stuff elsewhere is plain wrong!
+	// Create a proper actionFactory  (or contextActionFactory) for each of your new actions 
+	// in the new frmXXX.cpp and register it here.
+
+    fileMenu = new wxMenu();
+    viewMenu = new wxMenu();
+	editMenu = new wxMenu();
+    newMenu=new wxMenu();
+	toolsMenu = new wxMenu();
+    slonyMenu=new wxMenu();
+	scriptingMenu=new wxMenu();
+	viewDataMenu = new wxMenu();
+    reportMenu=new wxMenu();
+    wxMenu *cfgMenu=new wxMenu();
+    helpMenu = new wxMenu();
+    newContextMenu = new wxMenu();
+
+
+    toolBar=CreateToolBar();
+    toolBar->SetToolBitmapSize(wxSize(32, 32));
+    menuFactories = new menuFactoryList();
+
+	//--------------------------
+    fileMenu->Append(MNU_SAVEDEFINITION, _("&Save Definition..."),_("Save the SQL definition of the selected object."));
+    fileMenu->AppendSeparator();
+    new addServerFactory(menuFactories, fileMenu, toolBar);
+
+    actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
+    new countRowsFactory(menuFactories, viewMenu, 0);
+
+   
+	//--------------------------
+    new separatorFactory(menuFactories);
+
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System Objects"),     _("Show or hide system objects."), wxITEM_CHECK);
+    toolBar->AddSeparator();
+
+    new passwordFactory(menuFactories, fileMenu, 0);
+    fileMenu->AppendSeparator();
+    optionsFactory *optFact=new optionsFactory(menuFactories, fileMenu, 0);
+    fileMenu->AppendSeparator();
+    new mainConfigFileFactory(menuFactories, fileMenu, 0);
+    new hbaConfigFileFactory(menuFactories, fileMenu, 0);
+	new pgpassConfigFileFactory(menuFactories, fileMenu, 0);
+
+    fileMenu->AppendSeparator();
+    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
+
+    new slonyRestartFactory(menuFactories, slonyMenu, 0);
+    new slonyUpgradeFactory(menuFactories, slonyMenu, 0);
+    new slonyFailoverFactory(menuFactories, slonyMenu, 0);
+    new slonyLockSetFactory(menuFactories, slonyMenu, 0);
+    new slonyUnlockSetFactory(menuFactories, slonyMenu, 0);
+    new slonyMergeSetFactory(menuFactories, slonyMenu, 0);
+    new slonyMoveSetFactory(menuFactories, slonyMenu, 0);
+    toolsMenu->Append(MNU_SLONY_SUBMENU, _("Replication"), slonyMenu);
+
+    propFactory = new propertyFactory(menuFactories, 0, toolBar);
+    new separatorFactory(menuFactories);
+
+
+	//--------------------------
+    
+    newMenuFactory = new submenuFactory(menuFactories);     // placeholder where "New objects" submenu will be inserted
+    editMenu->Append(newMenuFactory->GetId(), _("New &Object"), newMenu,    _("Create a new object."));
+    editMenu->AppendSeparator();
+
+
+    //--------------------------
+
+    new connectServerFactory(menuFactories, toolsMenu, 0);
+    new disconnectServerFactory(menuFactories, toolsMenu, 0);
+
+    new startServiceFactory(menuFactories, toolsMenu, 0);
+    new stopServiceFactory(menuFactories, toolsMenu, 0);
+
+    new createFactory(menuFactories, editMenu, toolBar);
+    new dropFactory(menuFactories, editMenu, toolBar);
+    new dropCascadedFactory(menuFactories, editMenu, 0);
+
+    new separatorFactory(menuFactories);
+
+    toolBar->AddSeparator();
+    toolsMenu->AppendSeparator();
+    
+	new queryToolFactory(menuFactories, toolsMenu, toolBar);
+    scriptingMenuFactory = new submenuFactory(menuFactories);    // placeholder where "Query Template" submenu will be inserted
+	toolsMenu->Append(scriptingMenuFactory->GetId(), _("Scripts"), scriptingMenu, _("Start Query Tool with scripted query."));
+	new queryToolSqlFactory(menuFactories, scriptingMenu, 0);
+	new queryToolSelectFactory(menuFactories, scriptingMenu, 0);
+	new queryToolInsertFactory(menuFactories, scriptingMenu, 0);
+	new queryToolUpdateFactory(menuFactories, scriptingMenu, 0);
+
+    viewdataMenuFactory = new submenuFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
+	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
+
+    reportMenuFactory = new submenuFactory(menuFactories);     // placeholder where "Reports" submenu will be inserted
+    toolsMenu->Append(reportMenuFactory->GetId(), _("&Reports"), reportMenu,    _("Create reports about the selected item."));
+    toolsMenu->AppendSeparator();
+
+	new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
+    new editGridFactory(menuFactories, viewDataMenu, toolBar);
+    new editGridFilteredFactory(menuFactories, viewDataMenu, toolBar);
+
+	new maintenanceFactory(menuFactories, toolsMenu, toolBar);
+
+    new backupFactory(menuFactories, toolsMenu, 0);
+    new restoreFactory(menuFactories, toolsMenu, 0);
+
+    new grantWizardFactory(menuFactories, toolsMenu, 0);
+    new mainConfigFactory(menuFactories, cfgMenu, 0);
+    new hbaConfigFactory(menuFactories, cfgMenu, 0);
+    toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server Configuration"), cfgMenu);
+    toolsMenu->AppendSeparator();
+
+    new separatorFactory(menuFactories);
+
+    new propertyFactory(menuFactories, editMenu, 0);
+    new serverStatusFactory(menuFactories, toolsMenu, 0);
+
+
+	//--------------------------
+    toolBar->AddSeparator();
+
+    actionFactory *helpFact = new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
+    new contentsFactory(menuFactories, helpMenu, 0);
+    new hintFactory(menuFactories, helpMenu, toolBar, true);
+    new faqFactory(menuFactories, helpMenu, 0);
+
+    new tipOfDayFactory(menuFactories, helpMenu, 0);
+    helpMenu->AppendSeparator();
+    // new onlineUpdateFactory(menuFactories, helpMenu, 0);
+    new bugReportFactory(menuFactories, helpMenu, 0);
+    actionFactory *abFact=new aboutFactory(menuFactories, helpMenu, 0);
+    
+#ifdef __WXMAC__
+    wxApp::s_macPreferencesMenuItemId = optFact->GetId();
+    wxApp::s_macExitMenuItemId = MNU_EXIT;
+    wxApp::s_macAboutMenuItemId = abFact->GetId();
+#else
+	(void)optFact;
+	(void)abFact;
+#endif 
+
+
+    menuBar = new wxMenuBar();
+    menuBar->Append(fileMenu, _("&File"));
+    menuBar->Append(editMenu, _("&Edit"));
+    menuBar->Append(toolsMenu, _("&Tools"));
+    menuBar->Append(viewMenu, _("&Display"));
+    menuBar->Append(helpMenu, _("&Help"));
+    SetMenuBar(menuBar);
+
+    treeContextMenu = 0;
+
+    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
+
+    // Status bar
+    statusBar = CreateStatusBar(3);
+    int iWidths[3] = {0, -1, 100};
+    SetStatusWidths(3, iWidths);
+    SetStatusBarPane(-1);
+    statusBar->SetStatusText(wxT(""), 0);
+    statusBar->SetStatusText(_("Ready."), 1);
+    statusBar->SetStatusText(_("0 Secs"), 2);
+
+    wxAcceleratorEntry entries[4];
+    entries[0].Set(wxACCEL_NORMAL, WXK_F5, refFact->GetId());
+    entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DELETE);
+    entries[2].Set(wxACCEL_NORMAL, WXK_F1, helpFact->GetId());
+    entries[3].Set(wxACCEL_SHIFT, WXK_F10, MNU_CONTEXTMENU);
+    wxAcceleratorTable accel(4, entries);
+
+    SetAcceleratorTable(accel);
+
+    
+    // Display the bar and configure buttons. 
+    toolBar->Realize();
 }
 
 

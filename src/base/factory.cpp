@@ -247,6 +247,38 @@ void menuFactoryList::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *to
                 toolbar->EnableTool(id, how);
         }
     }
+	for (id=0 ; id < GetCount() ; id++)
+	{
+        actionFactory *f=(actionFactory*)Item(id);
+		if (f->IsSubmenu())
+			EnableSubmenu(menubar, id+MNU_ACTION);
+	}
+}
+
+
+void menuFactoryList::EnableSubmenu(wxMenuBar *menuBar, int id)
+{
+    wxMenuItem *item=menuBar->FindItem(id);
+    if (item)
+    {
+        wxMenu *menu=item->GetSubMenu();
+        wxASSERT(menu);
+        if (!menu)
+            return;
+
+        size_t position;
+        for (position = 0 ; position < menu->GetMenuItemCount() ; position++)
+        {
+            item = menu->FindItemByPosition(position);
+            if (item && item->IsEnabled())
+            {
+                menuBar->Enable(id, true);
+                return;
+            }
+        }
+
+        menuBar->Enable(id, false);
+    }
 }
 
 
