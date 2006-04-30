@@ -73,6 +73,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
     EVT_MENU(MNU_EXECFILE,          frmQuery::OnExecFile)
     EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
+    EVT_MENU(MNU_EXPLAINTEXT,       frmQuery::OnExplainText)
     EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
     EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
     EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
@@ -144,6 +145,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
     queryMenu->Append(MNU_EXECFILE, _("Execute to file"), _("Execute query, write result to file"));
     queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
+    queryMenu->Append(MNU_EXPLAINTEXT, _("Explain text"), _("Use current text Explain result and display it graphically"));
 
     wxMenu *eo=new wxMenu();
     eo->Append(MNU_VERBOSE, _("Verbose"), _("Explain verbose query"), wxITEM_CHECK);
@@ -1158,6 +1160,19 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     sqlQuery->SetFocus();
 }
 
+void frmQuery::OnExplainText(wxCommandEvent& event)
+{
+    wxString str=sqlQuery->GetSelectedText();
+    if (str.IsNull())
+        str = sqlQuery->GetText();
+
+    if (str.IsNull())
+        return;
+
+    explainCanvas->SetExplainString(str);
+    output->SetSelection(EXPLAIN_PAGE);
+    sqlQuery->SetFocus();
+}
 
 void frmQuery::OnExecute(wxCommandEvent& event)
 {

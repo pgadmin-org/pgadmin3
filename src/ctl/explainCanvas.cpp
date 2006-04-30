@@ -56,6 +56,30 @@ void ExplainCanvas::SetExplainString(const wxString &str)
     {
         wxString tmp=lines.GetNextToken();
         wxString line=tmp.Strip(wxString::both);
+
+		int braceCount=0;
+		do
+		{
+			const wxChar *cp=line.c_str();
+			while (*cp)
+			{
+				if (*cp == '(')
+					braceCount++;
+				else if (*cp == ')')
+					braceCount--;
+				cp++;
+			}
+			if (braceCount > 0)
+			{
+		        wxString tmp=lines.GetNextToken();
+				line += wxT(" ") + tmp.Strip(wxString::both);
+				braceCount=0;
+			}
+			else
+				break;
+		}
+		while (lines.HasMoreTokens());
+
         long level = (tmp.Length() - line.Length() +4) / 6;
 
         if (last)
@@ -74,6 +98,7 @@ void ExplainCanvas::SetExplainString(const wxString &str)
             while (last && level <= last->GetLevel())
                 last = last->GetUpper();
         }
+
 
         ExplainShape *s=ExplainShape::Create(level, last, line);
         if (!s)
