@@ -21,6 +21,9 @@
 pgView::pgView(pgSchema *newSchema, const wxString& newName)
 : pgRuleObject(newSchema, viewFactory, newName)
 {
+	hasInsertRule=false;
+	hasUpdateRule=false;
+	hasDeleteRule=false;
 }
 
 pgView::~pgView()
@@ -46,6 +49,7 @@ bool pgView::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
+
 wxString pgView::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
@@ -63,6 +67,84 @@ wxString pgView::GetSql(ctlTree *browser)
 }
 
 
+wxString pgView::GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM)
+{
+	wxString sql;
+	wxString line;
+	
+	int colcount=0;
+	pgSetIterator set(GetConnection(),
+		wxT("SELECT attname\n")
+		wxT("  FROM pg_attribute\n")
+		wxT(" WHERE attrelid=") + GetOidStr() + wxT(" AND attnum>0\n")
+		wxT(" ORDER BY attnum"));
+
+
+    while (set.RowsLeft())
+    {
+        if (colcount++)
+		{
+			line += wxT(", ");
+			QMs += wxT(", ");
+		}
+		if (line.Length() > 60)
+		{
+			if (!sql.IsEmpty())
+			{
+				sql += wxT("\n") + wxString(' ', indent);
+			}
+			sql += line;
+			line = wxEmptyString;
+			QMs += wxT("\n") + wxString(' ', indent);
+		}
+
+		line += qtIdent(set.GetVal(0));
+		if (withQM)
+			line += wxT("=?");
+		QMs += wxT("?");
+    }
+
+	if (!line.IsEmpty())
+	{
+		if (!sql.IsEmpty())
+			sql += wxT("\n") + wxString(' ', indent);
+		sql += line;
+	}
+	return sql;
+}
+
+
+wxString pgView::GetSelectSql(ctlTree *browser)
+{
+	wxString qms;
+	wxString sql=
+		wxT("SELECT ") + GetCols(browser, 7, qms, false) + wxT("\n")
+		wxT("  FROM ") + GetQuotedFullIdentifier() + wxT(";\n");
+	return sql;
+}
+
+
+wxString pgView::GetInsertSql(ctlTree *browser)
+{
+	wxString qms;
+	wxString sql = 
+		wxT("INSERT INTO ") + GetQuotedFullIdentifier() + wxT("(\n")
+		wxT("            ") + GetCols(browser, 12, qms, false) + wxT(")\n")
+		wxT("    VALUES (") + qms + wxT(");\n");
+	return sql;
+}
+
+
+wxString pgView::GetUpdateSql(ctlTree *browser)
+{
+	wxString qms;
+	wxString sql = 
+		wxT("UPDATE ") + GetQuotedFullIdentifier() + wxT("\n")
+		wxT("   SET ") + GetCols(browser, 7, qms, true) + wxT("\n")
+		wxT(" WHERE <condition>;\n");
+	return sql;
+}
+
 void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
@@ -72,6 +154,20 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         
         pgCollection *collection = browser->AppendCollection(this, ruleFactory);
         collection->iSetOid(GetOid());
+		collection->ShowTreeDetail(browser);
+        treeObjectIterator colIt(browser, collection);
+
+		pgRule *rule;
+		while (!hasInsertRule && !hasUpdateRule && !hasDeleteRule && (rule=(pgRule*)colIt.GetNextObject()) != 0)
+		{
+			if (rule->GetEvent().Find(wxT("INSERT")) >= 0)
+				hasInsertRule = true;
+			if (rule->GetEvent().Find(wxT("UPDATE")) >= 0)
+				hasUpdateRule = true;
+			if (rule->GetEvent().Find(wxT("DELETE")) >= 0)
+				hasDeleteRule = true;
+		}
+
     }
     if (properties)
     {

@@ -24,6 +24,7 @@
 #include "ctl/ctlSQLResult.h"
 #include "pgDatabase.h"
 #include "pgTable.h"
+#include "pgView.h"
 #include "dlgSelectConnection.h"
 #include "dlgAddFavourite.h"
 #include "dlgManageFavourites.h"
@@ -1462,7 +1463,8 @@ bool queryToolBaseFactory::CheckEnable(pgObject *obj)
 
 bool queryToolDataFactory::CheckEnable(pgObject *obj)
 {
-    return queryToolBaseFactory::CheckEnable(obj) && obj->IsCreatedBy(tableFactory) && !obj->IsCollection();
+    return queryToolBaseFactory::CheckEnable(obj) && !obj->IsCollection() &&
+		(obj->IsCreatedBy(tableFactory) || obj->IsCreatedBy(viewFactory));
 }
 
 
@@ -1502,6 +1504,27 @@ bool queryToolSqlFactory::CheckEnable(pgObject *obj)
 }
 
 
+queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
+{
+    mnu->Append(id, _("SELECT script"), _("Start query tool with SELECT script."));
+}
+
+
+wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (obj->IsCreatedBy(tableFactory))
+    {
+		pgTable *table = (pgTable*)obj;
+		return StartDialogSql(form, obj, table->GetSelectSql(form->GetBrowser()));
+    }
+    else if (obj->IsCreatedBy(viewFactory))
+    {
+		pgView *view = (pgView*)obj;
+		return StartDialogSql(form, obj, view->GetSelectSql(form->GetBrowser()));
+    }
+    return 0;
+}
+
 
 queryToolUpdateFactory::queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
 {
@@ -1516,24 +1539,23 @@ wxWindow *queryToolUpdateFactory::StartDialog(frmMain *form, pgObject *obj)
 		pgTable *table = (pgTable*)obj;
 		return StartDialogSql(form, obj, table->GetUpdateSql(form->GetBrowser()));
     }
-    return 0;
-}
-
-
-queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
-{
-    mnu->Append(id, _("SELECT script"), _("Start query tool with SELECT script."));
-}
-
-
-wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
-{
-    if (obj->IsCreatedBy(tableFactory))
+    else if (obj->IsCreatedBy(viewFactory))
     {
-		pgTable *table = (pgTable*)obj;
-		return StartDialogSql(form, obj, table->GetSelectSql(form->GetBrowser()));
+		pgView *view = (pgView*)obj;
+		return StartDialogSql(form, obj, view->GetUpdateSql(form->GetBrowser()));
     }
     return 0;
+}
+
+bool queryToolUpdateFactory::CheckEnable(pgObject *obj)
+{
+	if (!queryToolDataFactory::CheckEnable(obj))
+		return false;
+	if (obj->IsCreatedBy(tableFactory))
+		return true;
+	pgView *view=(pgView*)obj;
+
+	return view->HasUpdateRule();
 }
 
 
@@ -1551,6 +1573,21 @@ wxWindow *queryToolInsertFactory::StartDialog(frmMain *form, pgObject *obj)
 		pgTable *table = (pgTable*)obj;
 		return StartDialogSql(form, obj, table->GetInsertSql(form->GetBrowser()));
     }
+    else if (obj->IsCreatedBy(viewFactory))
+    {
+		pgView *view = (pgView*)obj;
+		return StartDialogSql(form, obj, view->GetInsertSql(form->GetBrowser()));
+    }
     return 0;
 }
 
+bool queryToolInsertFactory::CheckEnable(pgObject *obj)
+{
+	if (!queryToolDataFactory::CheckEnable(obj))
+		return false;
+	if (obj->IsCreatedBy(tableFactory))
+		return true;
+	pgView *view=(pgView*)obj;
+
+	return view->HasInsertRule();
+}

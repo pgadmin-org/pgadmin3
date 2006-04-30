@@ -39,13 +39,24 @@ public:
     bool CanView() { return true; }
     bool WantDummyChild() { return true; }
 
+	bool HasInsertRule() { return hasInsertRule; }
+	bool HasUpdateRule() { return hasUpdateRule; }
+	bool HasDeleteRule() { return hasDeleteRule; }
+
     wxMenu *GetNewMenu();
     wxString GetSql(ctlTree *browser);
+    wxString GetSelectSql(ctlTree *browser);
+    wxString GetInsertSql(ctlTree *browser);
+    wxString GetUpdateSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
     bool HasStats() { return false; }
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
+
+private:
+	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
+	bool hasInsertRule, hasUpdateRule, hasDeleteRule;
 };
 
 #endif

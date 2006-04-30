@@ -164,6 +164,7 @@ class queryToolInsertFactory : public queryToolDataFactory
 public:
     queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
 class queryToolUpdateFactory : public queryToolDataFactory
@@ -171,6 +172,7 @@ class queryToolUpdateFactory : public queryToolDataFactory
 public:
     queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
 #endif // __FRM_QUERY_H
