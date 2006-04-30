@@ -776,7 +776,7 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
     {
         // Write the file
         if (!FileWrite(filename.GetPath(), sqlPane->GetText()))
-            wxLogError(__("Could not write the file %s: Errcode=%d."), filename.GetPath().c_str(), ::GetLastError());
+            wxLogError(__("Could not write the file %s: Errcode=%d."), filename.GetPath().c_str(), wxSysErrorCode());
     }
     else
     {

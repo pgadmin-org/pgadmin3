@@ -23,6 +23,7 @@
 
 #include "ctl/ctlSQLResult.h"
 #include "pgDatabase.h"
+#include "pgTable.h"
 #include "dlgSelectConnection.h"
 #include "dlgAddFavourite.h"
 #include "dlgManageFavourites.h"
@@ -968,7 +969,7 @@ void frmQuery::OnSave(wxCommandEvent& event)
     }
     else
     {
-        wxLogError(__("Could not write the file %s: Errcode=%d."), lastPath.c_str(), ::GetLastError());
+        wxLogError(__("Could not write the file %s: Errcode=%d."), lastPath.c_str(), wxSysErrorCode());
     }
 }
 
@@ -1012,7 +1013,7 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
         }
         else
         {
-            wxLogError(__("Could not write the file %s: Errcode=%d."), lastPath.c_str(), ::GetLastError());
+            wxLogError(__("Could not write the file %s: Errcode=%d."), lastPath.c_str(), wxSysErrorCode());
         }
     }
     delete dlg;
