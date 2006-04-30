@@ -71,6 +71,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/frmSplash.h \
 	$(srcdir)/include/frmStatus.h \
 	$(srcdir)/include/frmUpdate.h \
+	$(srcdir)/include/md5.h \
 	$(srcdir)/include/menu.h \
 	$(srcdir)/include/misc.h \
 	$(srcdir)/include/pgAdmin3.h \

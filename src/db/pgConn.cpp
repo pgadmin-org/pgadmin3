@@ -36,6 +36,7 @@
 // App headers
 #include "pgConn.h"
 #include "misc.h"
+#include "md5.h"
 #include "pgSet.h"
 #include "sysLogger.h"
 
@@ -173,4 +174,15 @@ bool pgConn::HasFeature(int featureNo)
     if (featureNo <= FEATURE_INITIALIZED || featureNo >= FEATURE_LAST)
         return false;
     return features[featureNo];
+}
+
+
+// Encrypt a password using the appropriate encoding conversion
+wxString pgConn::EncryptPassword(const wxString &user, const wxString &password)
+{
+    char hash[MD5_PASSWD_LEN+1];
+
+    pg_md5_encrypt(password.mb_str(*conv), user.mb_str(*conv), strlen(user.mb_str(*conv)), hash);
+
+    return wxString::FromAscii(hash);
 }

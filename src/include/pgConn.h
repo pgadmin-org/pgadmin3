@@ -32,6 +32,7 @@ public:
     int GetMajorVersion() const { return majorVersion; }
     int GetMinorVersion() const { return minorVersion; }
     bool GetIsEdb();
+    wxString EncryptPassword(const wxString &user, const wxString &password);
 
 private:
     bool features[32];

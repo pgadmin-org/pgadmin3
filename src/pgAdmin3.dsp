@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../../pgadmin3-deps/wxwidgets/include" /I "../../pgadmin3-deps/wxwidgets/contrib/include" /I "c:/program files/postgresql/8.1/include" /I "include/" /I "agent/include" /I "slony/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Fr /Yu"pgadmin3.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /GR- /GX /ZI /Od /I "../../pgadmin3-deps/wxwidgets/include" /I "../../pgadmin3-deps/wxwidgets/contrib/include" /I "c:/program files/postgresql/8.1/include" /I "../../pgadmin3-deps/libxml2/include/" /I "../../pgadmin3-deps/iconv/include/" /I "include/" /I "agent/include" /I "slony/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Fr /Yu"pgadmin3.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../../pgadmin3-deps/wxwidgets/include" /I "../../pgadmin3-deps/wxwidgets/contrib/include" /I "c:/program files/postgresql/8.1/include" /I "../../pgadmin3-deps/libxml2/include/" /I "../../pgadmin3-deps/iconv/include/" /I "include/" /I "agent/include" /I "slony/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Fr /Yu"pgadmin3.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /i "../../pgadmin3-deps/wxwidgets/include" /d "_DEBUG"
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "../../pgadmin3-deps/wxwidgets/include" /I "../../pgadmin3-deps/wxwidgets/contrib/include" /I "c:/program files/postgresql/8.1/include" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GR- /GX /O2 /Ob2 /I "../../pgadmin3-deps/wxwidgets/include" /I "../../pgadmin3-deps/wxwidgets/contrib/include" /I "c:/program files/postgresql/8.1/include" /I "../../pgadmin3-deps/libxml2/include/" /I "../../pgadmin3-deps/iconv/include/" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "../../pgadmin3-deps/wxwidgets/include" /I "../../pgadmin3-deps/wxwidgets/contrib/include" /I "c:/program files/postgresql/8.1/include" /I "../../pgadmin3-deps/libxml2/include/" /I "../../pgadmin3-deps/iconv/include/" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /i "../../pgadmin3-deps/wxwidgets/include" /d "NDEBUG"
@@ -244,6 +244,10 @@ SOURCE=.\schema\pgView.cpp
 # Begin Source File
 
 SOURCE=.\utils\favourites.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\utils\md5.cpp
 # End Source File
 # Begin Source File
 
@@ -1673,6 +1677,10 @@ SOURCE=.\include\favourites.h
 # Begin Source File
 
 SOURCE=.\include\languages.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\md5.h
 # End Source File
 # Begin Source File
 

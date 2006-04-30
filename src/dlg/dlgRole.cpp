@@ -459,7 +459,7 @@ wxString dlgRole::GetSql()
                 options = wxT(" NOLOGIN");
         }
         if (canLogin && !passwd.IsEmpty())
-            options += wxT(" PASSWORD ") + qtString(passwd);
+            options += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
 
         if (createDB != role->GetCreateDatabase() || createRole != role->GetCreateRole() 
             || superuser != role->GetSuperuser() || inherits != role->GetInherits())
@@ -629,7 +629,7 @@ wxString dlgRole::GetSql()
         {
             sql += wxT(" LOGIN");
             if (!passwd.IsEmpty())
-                sql += wxT(" PASSWORD ") + qtString(passwd);
+                sql += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
         }
 
         if (createDB || createRole ||!inherits || superuser)

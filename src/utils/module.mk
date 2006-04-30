@@ -11,6 +11,7 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/utils/favourites.cpp \
+	$(srcdir)/utils/md5.cpp \
 	$(srcdir)/utils/misc.cpp \
 	$(srcdir)/utils/pgconfig.cpp \
 	$(srcdir)/utils/sysProcess.cpp \

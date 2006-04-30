@@ -395,7 +395,7 @@ wxString dlgUser::GetSql()
 
         wxString options;
         if (!passwd.IsEmpty())
-            options += wxT(" PASSWORD ") + qtString(passwd);
+            options += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
 
         if (createDB != user->GetCreateDatabase() || createUser != user->GetSuperuser())
             options += wxT("\n ");
@@ -506,7 +506,7 @@ wxString dlgUser::GetSql()
         if (id)
             sql += wxT("\n  WITH SYSID ") + NumToStr(id);
         if (!passwd.IsEmpty())
-            sql += wxT(" PASSWORD ") + qtString(passwd);
+            sql += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
 
         if (createDB || createUser)
             sql += wxT("\n ");
