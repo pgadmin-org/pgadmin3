@@ -100,6 +100,7 @@ public:
 private:
     void UpdateInheritance();
     bool GetVacuumHint();
+	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
 
     void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
     wxULongLong rows;

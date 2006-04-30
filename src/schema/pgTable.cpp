@@ -308,21 +308,87 @@ wxString pgTable::GetCoveringIndex(ctlTree *browser, const wxString &collist)
 }
 
 
+wxString pgTable::GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM)
+{
+	wxString sql;
+	wxString line;
+	
+	int colcount=0;
+    pgCollection *columns=browser->FindCollection(columnFactory, GetId());
+    if (columns)
+    {
+        columns->ShowTreeDetail(browser);
+        treeObjectIterator colIt(browser, columns);
+
+        pgColumn *column;
+        while ((column = (pgColumn*)colIt.GetNextObject()) != 0)
+        {
+            column->ShowTreeDetail(browser);
+            if (column->GetColNumber() > 0)
+            {
+                if (colcount++)
+				{
+					line += wxT(", ");
+					QMs += wxT(", ");
+				}
+				if (line.Length() > 60)
+				{
+					if (!sql.IsEmpty())
+					{
+						sql += wxT("\n") + wxString(' ', indent);
+					}
+					sql += line;
+					line = wxEmptyString;
+					QMs += wxT("\n") + wxString(' ', indent);
+				}
+
+				line += column->GetQuotedIdentifier();
+				if (withQM)
+					line += wxT("=?");
+				QMs += wxT("?");
+            }
+        }
+    }
+
+	if (!line.IsEmpty())
+	{
+		if (!sql.IsEmpty())
+			sql += wxT("\n") + wxString(' ', indent);
+		sql += line;
+	}
+	return sql;
+}
+
+
 wxString pgTable::GetSelectSql(ctlTree *browser)
 {
-	return wxT("SELECT ");
+	wxString qms;
+	wxString sql=
+		wxT("SELECT ") + GetCols(browser, 7, qms, false) + wxT("\n")
+		wxT("  FROM ") + GetQuotedFullIdentifier() + wxT(";\n");
+	return sql;
 }
 
 
 wxString pgTable::GetInsertSql(ctlTree *browser)
 {
-	return wxT("INSERT ");
+	wxString qms;
+	wxString sql = 
+		wxT("INSERT INTO ") + GetQuotedFullIdentifier() + wxT("(\n")
+		wxT("            ") + GetCols(browser, 12, qms, false) + wxT(")\n")
+		wxT("    VALUES (") + qms + wxT(");\n");
+	return sql;
 }
 
 
 wxString pgTable::GetUpdateSql(ctlTree *browser)
 {
-	return wxT("UPDATE ");
+	wxString qms;
+	wxString sql = 
+		wxT("UPDATE ") + GetQuotedFullIdentifier() + wxT("\n")
+		wxT("   SET ") + GetCols(browser, 7, qms, true) + wxT("\n")
+		wxT(" WHERE <condition>;\n");
+	return sql;
 }
 
 
