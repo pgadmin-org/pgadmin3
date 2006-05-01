@@ -323,8 +323,8 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 						{
 							delete newSubMenu;
 							if (itemCount)
-								lastItem = treeContextMenu->Append(id, singleMenuItem->GetLabel(), singleMenuItem->GetHelp());
-				}
+								lastItem = treeContextMenu->Append(singleMenuItem->GetId(), singleMenuItem->GetLabel(), singleMenuItem->GetHelp());
+						}
 					}
 				}
             }
