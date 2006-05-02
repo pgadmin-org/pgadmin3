@@ -93,11 +93,6 @@ public:
 
     virtual wxMenu *GetNewMenu();
 
-    wxMenu *GetReportMenu();
-    void CreateReport(frmMain *parent, int type);
-    virtual wxMenu *GetObjectReportMenu(wxMenu *mnu) { return mnu; };
-    virtual bool CreateObjectReport(frmMain *parent, int type, frmReport *rep) { return false; };
-
     virtual wxString GetSql(ctlTree *browser) { return wxT(""); }
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""));
     wxString GetCommentSql();

@@ -115,6 +115,7 @@ enum
     CTL_MSGHISTORY
 };
 
+///////////////////////////////////////////////////////
 
 class queryToolBaseFactory : public actionFactory
 {

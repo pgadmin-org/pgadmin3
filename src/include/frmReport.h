@@ -44,10 +44,82 @@ private:
     void OnBrowseCSSFile(wxCommandEvent &ev);
 
     wxWindow *parent;
-    wxString title, header, detail, sql;
+    wxString header, detail, sql;
     int row;
 
     DECLARE_EVENT_TABLE()
 };
 
 #endif
+
+///////////////////////////////////////////////////////
+// Report Factory base class
+///////////////////////////////////////////////////////
+class reportBaseFactory : public contextActionFactory
+{
+protected:
+	reportBaseFactory(menuFactoryList *list) : contextActionFactory(list) {}
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    frmMain *GetFrmMain() { return parent; };
+    virtual void GenerateReport(frmReport *report, pgObject *object) {};
+
+    frmMain *parent;
+public:
+    bool CheckEnable(pgObject *obj) { return false; };
+};
+
+
+///////////////////////////////////////////////////////
+// Object properties report
+///////////////////////////////////////////////////////
+class reportObjectPropertiesFactory : public reportBaseFactory
+{
+public:
+    reportObjectPropertiesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bool CheckEnable(pgObject *obj);
+    void GenerateReport(frmReport *report, pgObject *object);
+};
+
+///////////////////////////////////////////////////////
+// Object statistics report
+///////////////////////////////////////////////////////
+class reportObjectStatisticsFactory : public reportBaseFactory
+{
+public:
+    reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bool CheckEnable(pgObject *obj);
+    void GenerateReport(frmReport *report, pgObject *object);
+};
+
+///////////////////////////////////////////////////////
+// Object dependencies report
+///////////////////////////////////////////////////////
+class reportObjectDependenciesFactory : public reportBaseFactory
+{
+public:
+    reportObjectDependenciesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bool CheckEnable(pgObject *obj);
+    void GenerateReport(frmReport *report, pgObject *object);
+};
+
+///////////////////////////////////////////////////////
+// Object dependees report
+///////////////////////////////////////////////////////
+class reportObjectDependeesFactory : public reportBaseFactory
+{
+public:
+    reportObjectDependeesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bool CheckEnable(pgObject *obj);
+    void GenerateReport(frmReport *report, pgObject *object);
+};
+
+///////////////////////////////////////////////////////
+// Object list report
+///////////////////////////////////////////////////////
+class reportObjectListFactory : public reportBaseFactory
+{
+public:
+    reportObjectListFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bool CheckEnable(pgObject *obj);
+    void GenerateReport(frmReport *report, pgObject *object);
+};

@@ -339,7 +339,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     }
 
     editMenu->Enable(newMenuFactory->GetId(), false);
-    toolsMenu->Enable(reportMenuFactory->GetId(), false);
 
     wxMenu *indivMenu=data->GetNewMenu();
     if (indivMenu)
@@ -353,23 +352,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
                 menuItem=indivMenu->GetMenuItems().Item(i)->GetData();
                 newMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
                 newContextMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
-            }
-        }
-        delete indivMenu;
-    }
-
-    indivMenu=data->GetReportMenu();
-    if (indivMenu)
-    {
-        if (indivMenu->GetMenuItemCount())
-        {
-            toolsMenu->Enable(reportMenuFactory->GetId(), true);
-
-            for (i=0 ; i < indivMenu->GetMenuItemCount() ; i++)
-            {
-                menuItem=indivMenu->GetMenuItems().Item(i)->GetData();
-                reportMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
-                // reportContextMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
             }
         }
         delete indivMenu;

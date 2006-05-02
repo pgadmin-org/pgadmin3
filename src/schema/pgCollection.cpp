@@ -66,68 +66,6 @@ void pgCollection::ShowList(ctlTree *browser, ctlListView *properties)
     ShowList(((pgaCollectionFactory*)GetFactory())->GetItemTypeName(), browser, properties);
 }
 
-wxMenu *pgCollection::GetObjectReportMenu(wxMenu *menu)
-{
-    wxString title;
-    title.Printf(_("%s list report..."), GetIdentifier().c_str());
-    menu->Append(MNU_REPORTS_OBJECT_LIST, title);
-
-    pgaFactory *f = this->GetItemFactory();
-
-    if (f)
-    {
-        if (f->GetMetaType() == PGM_TABLE ||
-            f->GetMetaType() == PGM_TABLESPACE || 
-            f->GetMetaType() == PGM_DATABASE)
-            menu->Append(MNU_REPORTS_STATISTICS, _("Statistics report..."));
-    }
-    return menu;
-}
-
-bool pgCollection::CreateObjectReport(frmMain *parent, int type, frmReport *rep)
-{
-    wxString title;
-
-    switch (type)
-    {
-        case MNU_REPORTS_OBJECT_LIST:
-            {
-                wxCookieType cookie;
-                pgObject *data;
-                ctlTree *browser = parent->GetBrowser();
-                wxTreeItemId item;
-                long pos=0;
-
-                title.Printf(_("%s list report"), GetIdentifier().c_str());
-                rep->SetReportTitle(title);
-
-                rep->AddReportDetailHeader(this->GetFullIdentifier());
-
-                rep->StartReportTable();
-                rep->AddReportDataTableHeaderRow(2, _("Name"), _("Comment"));
-
-                item = browser->GetFirstChild(GetId(), cookie);
-                while (item)
-                {
-                    data = browser->GetObject(item);
-                    if (IsCollectionFor(data))
-                        rep->AddReportDataTableDataRow(2, data->GetFullName().c_str(), data->GetComment().c_str());
-
-                    item = browser->GetNextChild(GetId(), cookie);
-                    pos++;
-                }
-
-                rep->EndReportTable();
-            }
-            break;
-
-        default:
-            return false;
-    }
-
-    return true;
-}
-
 void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView *properties)
 {
     if (properties)

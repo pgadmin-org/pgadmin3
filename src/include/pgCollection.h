@@ -44,9 +44,6 @@ public:
     void UpdateChildCount(ctlTree *browser, int substract=0);
     pgObject *FindChild(ctlTree *browser, const int index);
 
-    wxMenu *pgCollection::GetObjectReportMenu(wxMenu *menu);
-    bool CreateObjectReport(frmMain *parent, int type, frmReport *rep);
-
     bool HasStats() { return false; }
     bool HasDepends() { return false; }
     bool HasReferences() { return false; }

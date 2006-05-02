@@ -47,7 +47,6 @@ END_EVENT_TABLE()
 frmReport::frmReport(wxWindow *p)
 {
     parent = p;
-    title = wxT("");
     header = wxT("");
     detail = wxT("");
 
@@ -175,7 +174,7 @@ void frmReport::OnOK(wxCommandEvent &ev)
     report += wxT("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
     report += wxT("<head>\n");
 
-	report += wxT("<title>") + title + wxT("</title>\n");
+	report += wxT("<title>") + txtTitle->GetValue() + wxT("</title>\n");
     report += wxT("<meta http-equiv=\"Content-Type\" content=\"utf-8\" />\n");
 
     // add the stylesheet
@@ -216,7 +215,7 @@ void frmReport::OnOK(wxCommandEvent &ev)
     report += wxT("</head>\n");
     report += wxT("<body>\n");
     report += wxT("<div id=\"ReportHeader\">\n");
-    report += wxT("<h1>") + title + wxT("</h1>\n");
+    report += wxT("<h1>") + txtTitle->GetValue() + wxT("</h1>\n");
     report += wxT("<table>\n");
     report += header;
     report += wxT("</table>\n");
@@ -330,7 +329,6 @@ void frmReport::OnBrowseOPFile(wxCommandEvent &ev)
 
 void frmReport::SetReportTitle(const wxString &t) 
 { 
-    title = HtmlEntities(t); 
     txtTitle->SetValue(t); 
 }
 
@@ -448,4 +446,253 @@ void frmReport::AddReportTableFromListView(ctlListView *list)
     }
 
     this->EndReportTable();
+}
+
+
+///////////////////////////////////////////////////////
+// Report base
+///////////////////////////////////////////////////////
+wxWindow *reportBaseFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    parent = form;
+
+    frmReport *report = new frmReport(GetFrmMain());
+
+    // Generate the report header
+    wxDateTime now = wxDateTime::Now();
+    report->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
+    if (obj->GetServer())
+        report->AddReportHeaderValue(_("Server"), obj->GetServer()->GetFullIdentifier());
+    if (obj->GetDatabase())
+        report->AddReportHeaderValue(_("Database"), obj->GetDatabase()->GetName());
+    if (obj->GetSchema())
+        report->AddReportHeaderValue(_("Schema"), obj->GetSchema()->GetName());
+    if (obj->GetJob())
+        report->AddReportHeaderValue(_("Job"), obj->GetJob()->GetName());
+    if (obj->GetTable())
+        report->AddReportHeaderValue(_("Table"), obj->GetTable()->GetName());
+
+    GenerateReport(report, obj);
+
+    report->ShowModal();
+    return 0;   
+}
+
+///////////////////////////////////////////////////////
+// Properties report
+///////////////////////////////////////////////////////
+reportObjectPropertiesFactory::reportObjectPropertiesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+: reportBaseFactory(list)
+{
+    mnu->Append(id, _("&Properties report"), _("Generate a properties report for this object."));
+}
+
+bool reportObjectPropertiesFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (obj->IsCollection())
+            return false;
+        else
+            return true;
+    }
+    return false;
+}
+
+void reportObjectPropertiesFactory::GenerateReport(frmReport *report, pgObject *object)
+{
+    wxString title = object->GetTypeName();
+    title += _(" properties report - ");
+    title += object->GetIdentifier();
+    report->SetReportTitle(title);
+
+    report->AddReportDetailHeader(object->GetTypeName() + _(" properties"));
+
+    ctlListView *list = GetFrmMain()->GetProperties();
+    object->ShowProperties();
+
+    report->AddReportTableFromListView(list);
+
+    report->AddReportSql(object->GetSql(NULL));
+}
+
+///////////////////////////////////////////////////////
+// Statistics report
+///////////////////////////////////////////////////////
+reportObjectStatisticsFactory::reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+: reportBaseFactory(list)
+{
+    mnu->Append(id, _("&Statistics report"), _("Generate a statistics report for this object."));
+}
+
+bool reportObjectStatisticsFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (!obj->HasStats())
+        {
+            if (obj->IsCollection())
+            {
+                pgaFactory *f = ((pgCollection *)obj)->GetItemFactory();
+
+                if (f)
+                {
+                    if (f->GetMetaType() == PGM_TABLE ||
+                        f->GetMetaType() == PGM_TABLESPACE || 
+                        f->GetMetaType() == PGM_DATABASE)
+                        return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void reportObjectStatisticsFactory::GenerateReport(frmReport *report, pgObject *object)
+{
+    wxString title = object->GetTypeName();
+    title += _(" statistics report - ");
+    title += object->GetIdentifier();
+    report->SetReportTitle(title);
+
+    report->AddReportDetailHeader(object->GetTypeName() + _(" statistics"));
+
+    ctlListView *list = GetFrmMain()->GetStatisticsCtl();
+    object->ShowStatistics(GetFrmMain(), list);
+
+    report->AddReportTableFromListView(list);
+}
+
+///////////////////////////////////////////////////////
+// Dependencies report
+///////////////////////////////////////////////////////
+reportObjectDependenciesFactory::reportObjectDependenciesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+: reportBaseFactory(list)
+{
+    mnu->Append(id, _("&Dependencies report"), _("Generate a dependencies report for this object."));
+}
+
+bool reportObjectDependenciesFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (!obj->HasDepends())
+            return false;
+        else
+            return true;
+    }
+    return false;
+}
+
+void reportObjectDependenciesFactory::GenerateReport(frmReport *report, pgObject *object)
+{
+    wxString title = object->GetTypeName();
+    title += _(" dependencies report - ");
+    title += object->GetIdentifier();
+    report->SetReportTitle(title);
+
+    report->AddReportDetailHeader(object->GetTypeName() + _(" dependencies"));
+
+    ctlListView *list = GetFrmMain()->GetDependsOnCtl();
+    object->ShowDependsOn(parent, list);
+
+    report->AddReportTableFromListView(list);
+}
+
+///////////////////////////////////////////////////////
+// Dependees report
+///////////////////////////////////////////////////////
+reportObjectDependeesFactory::reportObjectDependeesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+: reportBaseFactory(list)
+{
+    mnu->Append(id, _("&Dependees report"), _("Generate a dependees report for this object."));
+}
+
+bool reportObjectDependeesFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (!obj->HasReferences())
+            return false;
+        else
+            return true;
+    }
+    return false;
+}
+
+void reportObjectDependeesFactory::GenerateReport(frmReport *report, pgObject *object)
+{
+    wxString title = object->GetTypeName();
+    title += _(" dependees report - ");
+    title += object->GetIdentifier();
+    report->SetReportTitle(title);
+
+    report->AddReportDetailHeader(object->GetTypeName() + _(" dependees"));
+
+    ctlListView *list = GetFrmMain()->GetReferencedByCtl();
+    object->ShowReferencedBy(parent, list);
+
+    report->AddReportTableFromListView(list);
+}
+
+///////////////////////////////////////////////////////
+// Object list report
+///////////////////////////////////////////////////////
+reportObjectListFactory::reportObjectListFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+: reportBaseFactory(list)
+{
+    mnu->Append(id, _("&Object list report"), _("Generate an object list report for this collection."));
+}
+
+bool reportObjectListFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (!obj->IsCollection())
+        {
+            return false;
+        }
+        else
+        {
+            pgaFactory *f = ((pgCollection *)obj)->GetItemFactory();
+            if (obj)
+            {
+                if (f->GetMetaType() == PGM_SERVER)
+                    return false;
+            }
+            else
+                return false;
+
+            return true;
+        }
+    }
+    return false;
+}
+
+void reportObjectListFactory::GenerateReport(frmReport *report, pgObject *object)
+{
+    wxString title;
+    title.Printf(_("%s list report"), object->GetIdentifier().c_str());
+    report->SetReportTitle(title);
+
+    report->AddReportDetailHeader(object->GetFullIdentifier());
+
+    ctlListView *list = GetFrmMain()->GetProperties();
+    object->ShowProperties();
+
+    report->AddReportTableFromListView(list);
 }

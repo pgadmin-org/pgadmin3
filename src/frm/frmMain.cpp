@@ -52,6 +52,7 @@
 #include "frmPgpassConfig.h"
 #include "frmBackup.h"
 #include "frmRestore.h"
+#include "frmReport.h"
 #include "frmMaintenance.h"
 #include "frmStatus.h"
 #include "frmPassword.h"
@@ -303,6 +304,13 @@ void frmMain::CreateMenus()
 
     reportMenuFactory = new submenuFactory(menuFactories);     // placeholder where "Reports" submenu will be inserted
     toolsMenu->Append(reportMenuFactory->GetId(), _("&Reports"), reportMenu,    _("Create reports about the selected item."));
+    new reportObjectPropertiesFactory(menuFactories, reportMenu, 0);
+    new reportObjectStatisticsFactory(menuFactories, reportMenu, 0);
+    new reportObjectDependenciesFactory(menuFactories, reportMenu, 0);
+    new reportObjectDependeesFactory(menuFactories, reportMenu, 0);
+    new reportObjectListFactory(menuFactories, reportMenu, 0);
+
+
     toolsMenu->AppendSeparator();
 
 	new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
