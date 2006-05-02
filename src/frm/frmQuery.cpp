@@ -616,29 +616,6 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
         msgResult->Copy();
     else if (wnd == msgHistory)
         msgHistory->Copy();
-#if USE_LISTVIEW
-    else if (wnd == sqlResult && sqlResult->GetSelectedItemCount() > 0)
-    {
-        wxString str;
-        int row=-1;
-        while (true)
-        {
-            row = sqlResult->GetNextItem(row, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-            if (row < 0)
-                break;
-            
-            str.Append(sqlResult->GetExportLine(row));
-            if (sqlResult->GetSelectedItemCount() > 1)
-                str.Append(END_OF_LINE);
-        }
-
-        if (wxTheClipboard->Open())
-        {
-            wxTheClipboard->SetData(new wxTextDataObject(str));
-            wxTheClipboard->Close();
-        }
-    }
-#else
     else 
 	{
         wxWindow *obj = wnd;
@@ -651,7 +628,6 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
             obj = obj->GetParent();
         }
     }
-#endif
     updateMenu();
 }
 
@@ -1038,7 +1014,7 @@ void frmQuery::OnQuickReport(wxCommandEvent& event)
     rep->StartReportTable();
 
     // Get the column headers
-    int cols = sqlResult->GetItemCount();
+    int cols = sqlResult->GetNumberCols();
 
     wxString row;
 

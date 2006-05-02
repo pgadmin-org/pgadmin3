@@ -12,29 +12,18 @@
 #ifndef CTLSQLRESULT_H
 #define CTLSQLRESULT_H
 
-#define USE_LISTVIEW 1
-
 // wxWindows headers
 #include <wx/thread.h>
 
 #include "pgSet.h"
 #include "pgConn.h"
-
-#if USE_LISTVIEW
-#include <wx/listctrl.h>
-#else
 #include "ctlSQLGrid.h"
-#endif
 
 
 
 #define CTLSQL_RUNNING 100  // must be greater than ExecStatusType PGRES_xxx values
 
-#if USE_LISTVIEW
-class ctlSQLResult : public wxListView
-#else
 class ctlSQLResult : public ctlSQLGrid
-#endif
 {
 public:
     ctlSQLResult(wxWindow *parent, pgConn *conn, wxWindowID id, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize);
@@ -63,14 +52,10 @@ public:
 	void DisplayData(bool single=false);
 
 
-#if USE_LISTVIEW
-	void SelectAll();
-	wxString GetExportLine(int row);
-#else
     void SetMaxRows(int rows);
     void ResultsFinished();
     void OnGridSelect(wxGridRangeSelectEvent& event);
-#endif
+
     wxArrayString colNames;
     wxArrayString colTypes;
     wxArrayLong colTypClasses;
@@ -82,6 +67,24 @@ private:
     pgQueryThread *thread;
     pgConn *conn;
 	bool rowcountSuppressed;
+};
+
+class sqlResultTable : public wxGridTableBase
+{
+public:
+    sqlResultTable();
+    wxString GetValue(int row, int col);
+    int GetNumberRows();
+    int GetNumberCols();
+    bool IsEmptyCell(int row, int col) { return false; }
+    wxString GetColLabelValue(int col);
+    void SetValue(int row, int col, const wxString& value) { return; }
+    void SetThread(pgQueryThread *t) { thread = t; }
+    bool DeleteRows(size_t pos = 0, size_t numRows = 1) { return true; }
+    bool DeleteCols(size_t pos = 0, size_t numCols = 1) { return true; }
+
+private:
+    pgQueryThread *thread;
 };
 
 #endif
