@@ -14,10 +14,18 @@
 // App headers
 #include "pgAdmin3.h"
 #include <wx/file.h>
+#include "frmMain.h"
 #include "frmReport.h"
 #include "sysSettings.h"
 #include "misc.h"
 #include "ctl/ctlListView.h"
+#include "pgObject.h"
+#include "pgCollection.h"
+#include "pgServer.h"
+#include "pgDatabase.h"
+#include "pgSchema.h"
+#include "pgTable.h"
+#include "pgaJob.h"
 
 #define txtTitle        CTRL_TEXT("txtTitle")
 #define txtNotes        CTRL_TEXT("txtNotes")

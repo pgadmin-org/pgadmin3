@@ -123,3 +123,4 @@ public:
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
+
