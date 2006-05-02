@@ -55,10 +55,10 @@ private:
 ///////////////////////////////////////////////////////
 // Report Factory base class
 ///////////////////////////////////////////////////////
-class reportBaseFactory : public contextActionFactory
+class reportBaseFactory : public actionFactory
 {
 protected:
-	reportBaseFactory(menuFactoryList *list) : contextActionFactory(list) {}
+	reportBaseFactory(menuFactoryList *list) : actionFactory(list) {}
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     frmMain *GetFrmMain() { return parent; };
     virtual void GenerateReport(frmReport *report, pgObject *object) {};

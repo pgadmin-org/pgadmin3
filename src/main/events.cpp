@@ -407,17 +407,6 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
 #endif
 }
 
-
-void frmMain::appendIfEnabled(int id)
-{
-    if (menuBar->IsEnabled(id))
-    {
-        wxMenuItem *menuItem=menuBar->FindItem(id);
-        if (menuItem)
-            treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
-    }
-}
-
 void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
 {
     if (treeContextMenu)

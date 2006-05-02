@@ -122,7 +122,6 @@ private:
 
     bool dropSingleObject(pgObject *data, bool updateFinal, bool cascaded);
     void doPopup(wxWindow *win, wxPoint point, pgObject *object);
-    void appendIfEnabled(int id);
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
     void RetrieveServers();
     bool reportError(const wxString &error, const wxString &msgToIdentify, const wxString &hint);
