@@ -65,7 +65,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
     parent=win;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(win, wxT("dlgEditGridOptions")); 
-    conv = &wxConvLibc;
+    conv = conn->GetConv();
 
     // Icon
     SetIcon(wxIcon(sortfilter_xpm));
