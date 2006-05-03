@@ -531,6 +531,7 @@ wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString&
         AppendRight(rights, acl, 'r', wxT("SELECT"));
         AppendRight(rights, acl, 'w', wxT("UPDATE"));
         AppendRight(rights, acl, 'a', wxT("INSERT"));
+        AppendRight(rights, acl, 'c', wxT("CONNECT"));
         AppendRight(rights, acl, 'd', wxT("DELETE"));
         AppendRight(rights, acl, 'R', wxT("RULE"));
         AppendRight(rights, acl, 'x', wxT("REFERENCES"));

@@ -64,7 +64,7 @@ END_EVENT_TABLE();
 
 
 dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
-: dlgSecurityProperty(f, frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP"), "CT")
+: dlgSecurityProperty(f, frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP,CONNECT"), "CTc")
 {
     database=node;
     schemaRestrictionOk=true;
@@ -72,7 +72,6 @@ dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
 
     chkValue->Hide();
 }
-
 
 pgObject *dlgDatabase::GetObject()
 {
@@ -213,6 +212,15 @@ int dlgDatabase::Go(bool modal)
             cbEncoding->SetSelection(encNo);
 
     }
+
+    // Find, and disable the CONNECT ACL option if we're on pre 8.2
+    if (!connection->BackendMinimumVersion(8, 2))
+    {
+        // Disable the checkbox
+        if (!DisablePrivilege(wxT("CONNECT")))
+            wxLogError(_("Failed to disable the CONNECT privilege checkbox!"));
+    }
+
     return dlgSecurityProperty::Go(modal);
 }
 
@@ -417,7 +425,12 @@ wxString dlgDatabase::GetSql()
 
         sql += wxT(";\n");
     }
-    sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
+
+
+    if (!connection->BackendMinimumVersion(8, 2))
+        sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
+    else
+        sql += GetGrant(wxT("CTc"), wxT("DATABASE ") + qtIdent(name));
 
     return sql;
 }

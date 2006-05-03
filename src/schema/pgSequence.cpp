@@ -80,9 +80,14 @@ wxString pgSequence::GetSql(ctlTree *browser)
         if (GetCycled())
             sql += wxT("\n  CYCLE");
         sql += wxT(";\n")
-            + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier())
-            + GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier())
-            + GetCommentSql();
+            + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+
+        if (!GetConnection()->BackendMinimumVersion(8, 2))
+            sql += GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
+        else
+            sql += GetGrant(wxT("rwU"), wxT("TABLE ") + GetQuotedFullIdentifier());
+
+        sql += GetCommentSql();
     }
 
     return sql;

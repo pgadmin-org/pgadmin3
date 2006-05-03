@@ -347,8 +347,14 @@ wxString pgDatabase::GetSql(ctlTree *browser)
         for (i=0 ; i < variables.GetCount() ; i++)
             sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
                 +  wxT(" SET ") + variables.Item(i) + wxT(";\n");
-        sql += GetGrant(wxT("CT"))
-            +  GetCommentSql();
+
+        if (!GetConnection()->BackendMinimumVersion(8, 2))
+            sql += GetGrant(wxT("CT"));
+        else
+            sql += GetGrant(wxT("CTc"));
+
+
+        sql += GetCommentSql();
     }
     return sql;
 }

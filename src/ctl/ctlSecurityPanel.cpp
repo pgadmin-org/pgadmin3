@@ -41,6 +41,7 @@ BEGIN_EVENT_TABLE(ctlSecurityPanel, wxPanel)
     EVT_CHECKBOX(CTL_PRIVCB+10,         ctlSecurityPanel::OnPrivCheck)
     EVT_CHECKBOX(CTL_PRIVCB+12,         ctlSecurityPanel::OnPrivCheck)
     EVT_CHECKBOX(CTL_PRIVCB+14,         ctlSecurityPanel::OnPrivCheck)
+    EVT_CHECKBOX(CTL_PRIVCB+16,         ctlSecurityPanel::OnPrivCheck)
 END_EVENT_TABLE();
 
 
@@ -242,17 +243,25 @@ void ctlSecurityPanel::OnPrivCheckAll(wxCommandEvent& ev)
     {
         if (all)
         {
-            privCheckboxes[i*2]->SetValue(true);
-            privCheckboxes[i*2]->Disable();
-            privCheckboxes[i*2+1]->Disable();
-            allPrivilegesGrant->Enable(GrantAllowed());
+            // We use the Name property of the checkboxes as a flag to note if that
+            // box should remain disabled (eg. CONNECT for a DB on PG < 8.2
+            if (privCheckboxes[i*2]->GetName() != wxT("DISABLE"))
+            {
+                privCheckboxes[i*2]->SetValue(true);
+                privCheckboxes[i*2]->Disable();
+                privCheckboxes[i*2+1]->Disable();
+                allPrivilegesGrant->Enable(GrantAllowed());
+            }
         }
         else
         {
-            allPrivilegesGrant->Disable();
-            allPrivilegesGrant->SetValue(false);
-            privCheckboxes[i*2]->Enable();
-            CheckGrantOpt(i);
+            if (privCheckboxes[i*2]->GetName() != wxT("DISABLE"))
+            {
+                allPrivilegesGrant->Disable();
+                allPrivilegesGrant->SetValue(false);
+                privCheckboxes[i*2]->Enable();
+                CheckGrantOpt(i);
+            }
         }
     }
 }
@@ -386,4 +395,19 @@ bool ctlSecurityPanel::GrantAllowed() const
         return false;
 
     return true;
+}
+
+bool ctlSecurityPanel::DisablePrivilege(const wxString &priv)
+{
+    for (int i=0; i < privilegeCount; i++)
+    {
+        if (privCheckboxes[i*2]->GetLabel() == priv)
+        {
+            // Use the Name property as a flag so we don't accidently reenable the control later
+            privCheckboxes[i*2]->SetName(wxT("DISABLE"));
+            privCheckboxes[i*2]->Disable();
+            return true;
+        }
+    }
+    return false;
 }

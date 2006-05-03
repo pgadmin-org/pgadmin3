@@ -17,6 +17,7 @@
 #include <wx/notebook.h>
 #include "pgObject.h"
 #include "pgConn.h"
+#include "ctlSecurityPanel.h"
 
 class pgSchema;
 class pgTable;
@@ -168,6 +169,7 @@ protected:
     void EnableOK(bool enable);
     virtual wxString GetHelpPage() const;
     virtual int Go(bool modal=false);
+    bool DisablePrivilege(const wxString &priv) { return securityPage->DisablePrivilege(priv); };
 
 private:
 

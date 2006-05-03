@@ -49,7 +49,7 @@ dlgProperty *pgSequenceFactory::CreateDialog(frmMain *frame, pgObject *node, pgO
 
 
 dlgSequence::dlgSequence(pgaFactory *f, frmMain *frame, pgSequence *node, pgSchema *sch)
-: dlgSecurityProperty(f, frame, node, wxT("dlgSequence"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
+: dlgSecurityProperty(f, frame, node, wxT("dlgSequence"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER,USAGE"), "arwdRxtU")
 {
     schema=sch;
     sequence=node;
@@ -100,6 +100,28 @@ int dlgSequence::Go(bool modal)
     }
 
     txtStart->SetValidator(numericValidator);
+
+    // Find, and disable the USAGE ACL option if we're on pre 8.2
+    // 8.2+ only supports SELECT, UPDATE and USAGE
+    if (!connection->BackendMinimumVersion(8, 2))
+    {
+        // Disable the checkbox
+        if (!DisablePrivilege(wxT("USAGE")))
+            wxLogError(_("Failed to disable the USAGE privilege checkbox!"));
+    }
+    else
+    {
+        if (!DisablePrivilege(wxT("INSERT")))
+            wxLogError(_("Failed to disable the INSERT privilege checkbox!"));
+        if (!DisablePrivilege(wxT("DELETE")))
+            wxLogError(_("Failed to disable the DELETE privilege checkbox!"));
+        if (!DisablePrivilege(wxT("RULE")))
+            wxLogError(_("Failed to disable the RULE privilege checkbox!"));
+        if (!DisablePrivilege(wxT("REFERENCES")))
+            wxLogError(_("Failed to disable the REFERENCES privilege checkbox!"));
+        if (!DisablePrivilege(wxT("TRIGGER")))
+            wxLogError(_("Failed to disable the TRIGGER privilege checkbox!"));
+    }
 
     return dlgSecurityProperty::Go(modal);
 }
@@ -228,7 +250,11 @@ wxString dlgSequence::GetSql()
         }
     }
 
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+    if (!connection->BackendMinimumVersion(8, 2))
+        sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+    else
+        sql +=  GetGrant(wxT("rwU"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+
     AppendComment(sql, wxT("SEQUENCE"), schema, sequence);
 
     return sql;

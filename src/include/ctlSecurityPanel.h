@@ -46,6 +46,7 @@ public:
     wxStaticText *stGroup;
     void SetConnection(pgConn *conn);
     wxString GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl=0);
+    bool DisablePrivilege(const wxString &priv);
 protected:
     wxNotebook *nbNotebook;
     pgConn *connection;
