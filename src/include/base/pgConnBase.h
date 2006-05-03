@@ -84,6 +84,7 @@ public:
     OID GetLastSystemOID() const { return lastSystemOID; }
     OID GetDbOid() const { return dbOid; }
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
+    wxMBConv *GetConv() { return conv; };
 
     void LogError();
 
