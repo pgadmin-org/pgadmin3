@@ -2,7 +2,7 @@
 <resource>
   <object class="wxDialog" name="frmReport">
     <title>Generate a report</title>
-    <size>253,228d</size>
+    <size>253,283d</size>
     <style>wxDEFAULT_DIALOG_STYLE</style>
     <object class="wxStaticText" name="stTitle">
       <label>Report Title</label>
@@ -11,7 +11,7 @@
     <object class="wxTextCtrl" name="txtTitle">
       <pos>5,15d</pos>
       <size>243,-1d</size>
-      <tooltip>Enter a title for the report.</tooltip>
+      <tooltip>Enter a title for the report</tooltip>
     </object>
     <object class="wxStaticText" name="stNotes">
       <label>Report Notes</label>
@@ -19,81 +19,127 @@
     </object>
     <object class="wxTextCtrl" name="txtNotes">
       <pos>5,45d</pos>
-      <size>243,35d</size>
+      <size>243,45d</size>
       <style>wxTE_AUTO_SCROLL|wxTE_MULTILINE|wxHSCROLL</style>
-      <tooltip>Enter any additional notes to include on the report.</tooltip>
+      <tooltip>Enter any additional notes to include on the report</tooltip>
     </object>
     <object class="wxCheckBox" name="chkSql">
       <label>Include the SQL in the report?</label>
-      <pos>5,89d</pos>
+      <pos>5,99d</pos>
       <tooltip>Include the SQL from the object or query in the report?</tooltip>
     </object>
-    <object class="wxStaticBox" name="rbStylesheet">
+    <object class="wxStaticBox" name="sbFormat">
+      <label>Output format</label>
+      <pos>5,113d</pos>
+      <size>243,45d</size>
+    </object>
+    <object class="wxRadioButton" name="rbHtml">
+      <label>&amp;XHTML 1.0 Strict</label>
+      <value>1</value>
+      <pos>10,128d</pos>
+      <style>wxRB_GROUP</style>
+      <tooltip>Create the report in XHTML 1.0 Strict format</tooltip>
+    </object>
+    <object class="wxRadioButton" name="rbXml">
+      <label>&amp;XML</label>
+      <value>1</value>
+      <pos>10,141d</pos>
+      <tooltip>Create the report in XML format</tooltip>
+    </object>
+    <object class="wxStaticBox" name="sbStylesheet">
       <label>Stylesheet</label>
-      <pos>5,103d</pos>
+      <pos>5,163d</pos>
       <size>243,75d</size>
     </object>
-    <object class="wxRadioButton" name="rbBuiltin">
+    <object class="wxRadioButton" name="rbHtmlBuiltin">
       <label>&amp;Embed the default stylesheet</label>
       <value>1</value>
-      <pos>10,118d</pos>
+      <pos>10,178d</pos>
+      <style>wxRB_GROUP</style>
       <tooltip>Embed pgAdmin's default stylesheet into the report.</tooltip>
     </object>
-    <object class="wxRadioButton" name="rbEmbed">
+    <object class="wxRadioButton" name="rbHtmlEmbed">
       <label>&amp;Embed an external stylesheet (specified file must exist)</label>
-      <pos>10,131d</pos>
+      <pos>10,191d</pos>
       <tooltip>Embed an external stylesheet into the report</tooltip>
     </object>
-    <object class="wxRadioButton" name="rbLink">
+    <object class="wxRadioButton" name="rbHtmlLink">
       <label>&amp;Link to an external stylesheet</label>
-      <pos>10,144d</pos>
+      <pos>10,204d</pos>
       <tooltip>Include a link to an external stylesheet in the report.</tooltip>
     </object>
-    <object class="wxStaticText" name="stCSSFilename">
-      <label>Filename</label>
-      <pos>10,163d</pos>
+    <object class="wxRadioButton" name="rbXmlPlain">
+      <label>&amp;Do not use a stylesheet</label>
+      <value>1</value>
+      <pos>10,178d</pos>
+      <style>wxRB_GROUP</style>
+      <tooltip>Do not use a stylesheet</tooltip>
     </object>
-    <object class="wxTextCtrl" name="txtCSSFilename">
-      <pos>60,160d</pos>
+    <object class="wxRadioButton" name="rbXmlLink">
+      <label>&amp;Link to an external stylesheet</label>
+      <pos>10,191d</pos>
+      <tooltip>Include a link to the specified stylesheet in the XML file</tooltip>
+    </object>
+    <object class="wxRadioButton" name="rbXmlProcess">
+      <label>&amp;XSLT Process the XML data</label>
+      <pos>10,204d</pos>
+      <tooltip>Process the XML data using the specified stylesheet</tooltip>
+    </object>
+    <object class="wxStaticText" name="stStylesheet">
+      <label>Filename</label>
+      <pos>10,223d</pos>
+    </object>
+    <object class="wxTextCtrl" name="txtHtmlStylesheet">
+      <pos>60,220d</pos>
       <size>162,-1d</size>
       <tooltip>Select the stylesheet to use.</tooltip>
     </object>
-    <object class="wxButton" name="btnCSSFilename">
+    <object class="wxTextCtrl" name="txtXmlStylesheet">
+      <pos>60,220d</pos>
+      <size>162,-1d</size>
+      <tooltip>Select the stylesheet to use.</tooltip>
+    </object>
+    <object class="wxButton" name="btnStylesheet">
       <label>...</label>
-      <pos>227,160d</pos>
+      <pos>227,220d</pos>
       <size>15,-1d</size>
       <tooltip>Select the stylesheet to use.</tooltip>
     </object>
-    <object class="wxStaticText" name="stOPFilename">
+    <object class="wxStaticText" name="stFile">
       <label>Output file</label>
-      <pos>5,191d</pos>
+      <pos>5,248d</pos>
     </object>
-    <object class="wxTextCtrl" name="txtOPFilename">
-      <pos>55,188d</pos>
+    <object class="wxTextCtrl" name="txtHtmlFile">
+      <pos>55,245d</pos>
       <size>175,-1d</size>
       <tooltip>Select the file to write the report to.</tooltip>
     </object>
-    <object class="wxButton" name="btnOPFilename">
+    <object class="wxTextCtrl" name="txtXmlFile">
+      <pos>55,245d</pos>
+      <size>175,-1d</size>
+      <tooltip>Select the file to write the report to.</tooltip>
+    </object>
+    <object class="wxButton" name="btnFile">
       <label>...</label>
-      <pos>235,188d</pos>
+      <pos>235,245d</pos>
       <size>15,-1d</size>
       <tooltip>Select the file to write the report to.</tooltip>
     </object>
     <object class="wxButton" name="wxID_HELP">
       <label>&amp;Help</label>
-      <pos>2,210d</pos>
+      <pos>2,265d</pos>
       <style></style>
     </object>
     <object class="wxButton" name="wxID_OK">
       <label>&amp;OK</label>
       <default>1</default>
-      <pos>147,210d</pos>
+      <pos>147,265d</pos>
       <style></style>
     </object>
     <object class="wxButton" name="wxID_CANCEL">
       <label>&amp;Cancel</label>
       <default>0</default>
-      <pos>200,210d</pos>
+      <pos>200,265d</pos>
     </object>
   </object>
 </resource>

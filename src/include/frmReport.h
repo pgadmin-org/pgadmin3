@@ -14,6 +14,7 @@
 
 #include "dlgClasses.h"
 #include "ctl/ctlListView.h"
+#include "ctl/ctlSQLResult.h"
 
 // Class declarations
 class frmReport : public pgDialog
@@ -23,29 +24,40 @@ public:
     ~frmReport();
 
     void SetReportTitle(const wxString &t);
-    void AddReportHeaderValue(const wxString &name, const wxString &value);
-    void AddReportDetailParagraph(const wxString &p) { detail += wxT("<p>\n") + HtmlEntities(p) + wxT("\n</p>\n"); };
-    void StartReportTable() { detail += wxT("<table>\n"); };
-    void EndReportTable() { detail += wxT("</table>\n"); };
-    void AddReportDataTableHeaderRow(const int cols, const wxChar *name,...);
-    void AddReportDataTableDataRow(const int cols, const wxChar *value,...);
-    void AddReportPropertyTableRow(const wxString &name, const wxString &value);
-    void AddReportDataRawHtml(const wxString &row) { detail += row + wxT("\n"); };
-    void AddReportSql(const wxString &s);
-    void AddReportDetailHeader(const wxString &h) { detail += wxT("<h2>\n") + HtmlEntities(h) + wxT("\n</h2>\n"); };
-    void AddReportTableFromListView(ctlListView *list);
+
+    void XmlAddHeaderValue(const wxString &name, const wxString &value);
+    int XmlCreateSection(const wxString &name);
+    void XmlSetSectionTableHeader(const int section, const int columns, const wxChar *name,...);
+    void XmlAddSectionTableRow(const int section, const int columns, const wxChar *value,...);
+    void XmlAddSectionTableFromListView(const int section, ctlListView *list);
+    void XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid);
+    void XmlSetSectionTableInfo(const int section, const wxString &info) { sectionTableInfo[section-1] = info; };
+    void XmlSetSectionSql(int section, const wxString &sql) { sectionSql[section-1] = sql; };
+    void XmlAddSectionValue(const int section, const wxString &name, const wxString &value);
 
 private:
     void OnChange(wxCommandEvent &ev);
     void OnHelp(wxCommandEvent& ev);
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
-    void OnBrowseOPFile(wxCommandEvent &ev);
-    void OnBrowseCSSFile(wxCommandEvent &ev);
+    void OnBrowseFile(wxCommandEvent &ev);
+    void OnBrowseStylesheet(wxCommandEvent &ev);
+
+    wxString GetSectionTableColumns(const int section);
+    wxString GetSectionTableRows(const int section);
+    wxString GetSectionTable(const int section);
+    wxString GetSection(const int section);
+    wxString GetXmlReport(const wxString &stylesheet);
+    wxString XslProcessReport(const wxString &xml, const wxString &xsl);
+
+    wxString GetCssLink(const wxString &file);
+    wxString GetEmbeddedCss(const wxString &css);
+    const wxString GetDefaultCss();
+    wxString GetDefaultXsl(const wxString &css);
 
     wxWindow *parent;
-    wxString header, detail, sql;
-    int row;
+    wxString header;
+    wxArrayString sectionName, sectionData, sectionTableHeader, sectionTableRows, sectionTableInfo, sectionSql;
 
     DECLARE_EVENT_TABLE()
 };

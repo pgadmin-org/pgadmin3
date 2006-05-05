@@ -115,6 +115,42 @@ AC_DEFUN([LOCATE_LIBXML2],
 ])
 
 #####################
+# Locate libxslt    #
+#####################
+AC_DEFUN([LOCATE_LIBXSLT],
+[
+	AC_ARG_WITH(libxslt, [  --with-libxslt=DIR  root directory for libxslt installation],
+	[
+	  if test "$withval" != no
+	  then
+		 XSLT_HOME="$withval"
+		 if test ! -f "${XSLT_HOME}/bin/xslt-config"
+		 then
+			AC_MSG_ERROR([Could not find your libxslt installation in ${XSLT_HOME}])
+		 fi
+	  fi
+	  XSLT_CONFIG=${XSLT_HOME}/bin/xslt-config
+   ],
+   [
+	  XSLT_HOME=/usr/local
+	  if test ! -f "${XSLT_HOME}/bin/xslt-config"
+	  then
+
+		  XSLT_HOME=/usr
+		  if test ! -f "${XSLT_HOME}/bin/xslt-config"
+		  then
+			  XSLT_HOME=/mingw
+			  if test ! -f "${XSLT_HOME}/bin/xslt-config"
+			  then
+				  AC_MSG_ERROR([Could not find your libxslt installation. You might need to use the --with-libxslt=DIR configure option])
+			  fi
+		  fi
+	  fi
+	  XSLT_CONFIG=${XSLT_HOME}/bin/xslt-config
+   ])
+])
+
+#####################
 # Locate PostgreSQL #
 #####################
 AC_DEFUN([LOCATE_POSTGRESQL],
@@ -415,7 +451,30 @@ AC_DEFUN([SETUP_LIBXML2],
 ])
 AC_SUBST(XML2_CONFIG)
 AC_SUBST(pgagent_LDADD)
-		
+	
+#########################
+# Setup libxslt headers #
+#########################
+AC_DEFUN([SETUP_LIBXSLT],
+[
+	if test -n "${XSLT_HOME}"
+	then
+		XSLT_CFLAGS=`${XSLT_CONFIG} --cflags`
+		XSLT_LIBS=`${XSLT_CONFIG} --libs`
+		AC_MSG_CHECKING(libxslt in ${XSLT_HOME})
+		if test "${XSLT_CFLAGS}" = "" -o "${XSLT_LIBS}" = ""
+		then
+			AC_MSG_RESULT(failed)
+			AC_MSG_ERROR([Your libxslt installation does not appear to be complete])
+		else
+			AC_MSG_RESULT(ok)
+			CPPFLAGS="$CPPFLAGS $XSLT_CFLAGS"
+			pgadmin3_LDADD="${pgadmin3_LDADD} $XSLT_LIBS"
+		fi
+	fi
+])
+AC_SUBST(XSLT_CONFIG)
+AC_SUBST(pgagent_LDADD)
 
 ###########
 # Cleanup #

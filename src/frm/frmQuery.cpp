@@ -1004,64 +1004,20 @@ void frmQuery::OnQuickReport(wxCommandEvent& event)
 
     frmReport *rep = new frmReport(this);
 
-    rep->AddReportHeaderValue(_("Report generated at"), now.Format(wxT("%c")));
-    rep->AddReportHeaderValue(_("Database"), conn->GetName());
+    rep->XmlAddHeaderValue(wxT("generated"), now.Format(wxT("%c")));
+    rep->XmlAddHeaderValue(wxT("database"), conn->GetName());
 
     rep->SetReportTitle(_("Quick report"));
 
-    rep->AddReportDetailHeader(wxT("Query results"));
+    int section = rep->XmlCreateSection(_("Query results"));
 
-    rep->StartReportTable();
-
-    // Get the column headers
-    int cols = sqlResult->GetNumberCols();
-
-    wxString row;
-
-    row = wxT("<tr>");
-	int x;
-	int startX=0;
-	if (sqlResult->hasRowNumber())
-		startX++;		// Skip row no.
-
-    for (x = startX; x < cols; x++)
-    {
-        wxString label = sqlResult->OnGetItemText(-1, x);
-        label = HtmlEntities(label);
-        label.Replace(wxT("\n"), wxT("<br />"));
-        row += wxT("<th>") + label + wxT("</th>");
-    }
-    row += wxT("</tr>");
-    rep->AddReportDataRawHtml(row);
-
-    // Get the data rows
-    int rows = sqlResult->NumRows();
-
-	int y;
-    for (y = 0; y < rows; y++)
-    {
-        if (y % 2 == 1)
-            row = wxT("<tr class=\"ReportDetailsOddDataRow\">");
-        else
-            row = wxT("<tr class=\"ReportDetailsEvenDataRow\">");
-
-        for (x = startX; x < cols; x++)
-        {
-            row += wxT("<td>");
-            row += HtmlEntities(sqlResult->OnGetItemText(y, x));
-            row += wxT("</td>");
-        }
-        row += wxT("</tr>");
-        rep->AddReportDataRawHtml(row);
-    }
-
-    rep->EndReportTable();
+    rep->XmlAddSectionTableFromGrid(section, sqlResult);
 
     wxString stats;
-    stats.Printf(wxT("%d rows with %d columns retrieved."), rows, cols-startX);
-    rep->AddReportDetailParagraph(stats);
+    stats.Printf(wxT("%d rows with %d columns retrieved."), sqlResult->NumRows(), sqlResult->GetNumberCols());
+    rep->XmlSetSectionTableInfo(section, stats);
 
-    rep->AddReportSql(sqlQuery->GetText());
+    rep->XmlSetSectionSql(section, sqlQuery->GetText());
 
     rep->ShowModal();
 }
