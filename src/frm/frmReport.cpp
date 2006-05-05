@@ -994,7 +994,7 @@ wxString frmReport::GetXmlReport(const wxString &stylesheet = wxT(""))
 //
 // libxml convenience macros
 //
-#define XML_FROM_WXSTRING(s) ((const xmlChar *)(const char *)s.mb_str(wxConvUTF8))
+#define XML_FROM_WXSTRING(s) ((xmlChar *)(const char *)s.mb_str(wxConvUTF8))
 #define WXSTRING_FROM_XML(s) wxString((char *)s, wxConvUTF8)
 
 wxString frmReport::XslProcessReport(const wxString &xml, const wxString &xsl)
