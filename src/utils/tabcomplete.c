@@ -14,6 +14,7 @@
  * http://support.microsoft.com/default.aspx?scid=kb%3Ben-us%3B315481
  * Adds a bit of C<->C++ cruft...
  */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -56,7 +57,7 @@ static void *pg_malloc(size_t size)
 static int pg_strcasecmp(const char *s1, const char *s2)
 {
 #ifdef WIN32
-	return stricmp(s1, s2);
+	return _stricmp(s1, s2);
 #else
     return strcasecmp(s1, s2);
 #endif
@@ -65,7 +66,7 @@ static int pg_strcasecmp(const char *s1, const char *s2)
 static int pg_strncasecmp(const char *s1, const char *s2, int len)
 {
 #ifdef WIN32
-	return strnicmp(s1, s2, len);
+	return _strnicmp(s1, s2, len);
 #else
     return strncasecmp(s1, s2, len);
 #endif

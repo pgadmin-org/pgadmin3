@@ -11,8 +11,7 @@ EXTRA_DIST = \
         $(srcdir)/MSG00001.bin \
         $(srcdir)/pgaevent.c \
         $(srcdir)/pgaevent.def \
-        $(srcdir)/pgaevent.dsp \
-        $(srcdir)/pgaevent.dsw \
+        $(srcdir)/pgaevent.vcproj \
         $(srcdir)/pgamsgevent.h \
         $(srcdir)/pgamsgevent.mc \
         $(srcdir)/pgamsgevent.rc \

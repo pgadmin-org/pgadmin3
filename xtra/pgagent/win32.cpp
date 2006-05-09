@@ -515,8 +515,10 @@ void main(int argc, char **argv)
     }
     else if (command == wxT("RUN"))
     {
+		wxString app = _("pgAgent Service");
+
         SERVICE_TABLE_ENTRY serviceTable[] =
-            { (unsigned short *)_("pgAgent Service"), serviceMain, 0, 0};
+            { (LPWSTR)app.wc_str(), serviceMain, 0, 0};
 
         setupForRun(argc, argv, false, executable);
 

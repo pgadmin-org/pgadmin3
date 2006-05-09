@@ -15,8 +15,7 @@ pgadmin3_SOURCES = \
 	$(srcdir)/pgAdmin3.cpp
 
 EXTRA_DIST = \
-	$(srcdir)/pgAdmin3.dsp \
-	$(srcdir)/pgAdmin3.dsw
+	$(srcdir)/pgAdmin3.vcproj
 
 TMP_ui = 
 

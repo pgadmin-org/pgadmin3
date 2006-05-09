@@ -20,10 +20,9 @@ pgagent_SOURCES = \
 
 EXTRA_DIST = \
 		$(srcdir)/win32.cpp \
-		$(srcdir)/pgAgent.dsp \
-		$(srcdir)/pgAgent.dsw \
 		$(srcdir)/pgAgent.rc \
-		$(srcdir)/pgagent.sql
+		$(srcdir)/pgagent.sql \
+		$(srcdir)/pgAgent.vcproj
 
 noinst_HEADERS = \
 		$(srcdir)/include/connection.h \

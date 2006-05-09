@@ -41,6 +41,19 @@
 
 const float SERVER_MIN_VERSION = 7.3f;
 
+// Some redefines for modern Microsoft compilers
+#if defined(_MSC_VER) && (_MSC_VER >= 1400) 
+#define creat _creat
+#define close _close
+#define mkdir _mkdir
+#define sprintf _sprintf
+#define snprintf _snprintf
+#define strcat _strcat
+#define strdup _strdup
+#define stricmp _stricmp
+#define strincmp _strincmp
+#endif
+
 
 class pgAppearanceFactory
 {
@@ -62,3 +75,4 @@ extern pgAppearanceFactory *appearanceFactory;
 
 
 #endif // PGADMIN3_H
+

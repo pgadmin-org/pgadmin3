@@ -354,7 +354,7 @@ void dlgFunction::ReplaceSizer(wxWindow *w, bool isC, int border)
     if (isC && !w->GetContainingSizer())
         libcSizer->Add(w, 0, wxLEFT|wxTOP, border);
     else
-        libcSizer->Remove(w);
+        libcSizer->Detach(w);
 }
 
         

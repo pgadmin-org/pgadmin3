@@ -38,6 +38,13 @@
                             <File Id="core_libs.comerr32.dll" Name="comerr32.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/comerr32.dll" />
                             <File Id="core_libs.krb5_32.dll" Name="krb5_32.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/krb5_32.dll" />
                         </Component>
+
+                        <Component Id="core_runtimes" Guid="916C1640-548C-4f72-8AE0-B69907911C43">
+                            <File Id="core_runtimes.msvcm80.dll" Name="msvcm80.dll" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcm80.dll" />
+                            <File Id="core_runtimes.msvcp80.dll" Name="msvcp80.dll" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcp80.dll" />
+                            <File Id="core_runtimes.msvcr80.dll" Name="msvcr80.dll" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcr80.dll" />
+                            <File Id="core_runtimes.Microsoft.VC80.CRT.manifest" Name="manifest.txt" LongName="Microsoft.VC80.CRT.manifest" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/Microsoft.VC80.CRT.manifest" />
+                        </Component>
                         
                         <Component Id="pgadmin_exes" Guid="3F617C40-4FAF-4C46-BEDE-AE7A16E24F61">
                             <File Id="pgadmin_exes.pgadmin3.exe" Name="pgadmin3.exe" DiskId="1" src="../../src/Release/pgAdmin3.exe" />
@@ -215,6 +222,7 @@
         
             <Feature Id="pgadmin3" Title="$(var.APPNAME)" Description="The pgAdmin management and administration console." Display="expand" Level="1">
                 <ComponentRef Id="core_libs" />
+                <ComponentRef Id="core_runtimes" />
                 <ComponentRef Id="pgadmin_exes" />
                 <ComponentRef Id="de_de_docs" />
                 <ComponentRef Id="de_de_hints" />
@@ -235,19 +243,20 @@
             
             <Feature Id="pgagent" Title="pgAgent" Description="A job scheduler designed for centralised management of SQL and shell/batch jobs on one or more hosts." Level="1">
                 <ComponentRef Id="core_libs" />
+                <ComponentRef Id="core_runtimes" />
                 <ComponentRef Id="pgagent_exes" />
                 <ComponentRef Id="pgagent_libs" />
                 <ComponentRef Id="pgagent_scripts" />
             </Feature>
-            
+
             <Feature Id="i18n" Title="Internationalisation" Description="Multi language support for pgAdmin III applications." Level="1">
                 <?include i18nrefs.wxs ?>
             </Feature>
-    
+
         </Feature>
-        
+
         <Media Id="1" EmbedCab="yes" Cabinet="installer.cab"/>
-    
+
 <!-- Properties -->
 
         <Property Id="UILANG" Value="1033"/>
@@ -255,10 +264,10 @@
         <Property Id="DefaultUIFont">MSSansSerif8</Property>
         <Property Id="ALLUSERS">2</Property>
         <Property Id="MaintenanceType" Value="Modify" />
-    
+
 <!-- Include files -->
 
         <?include ui.wxs ?>
-    
+
     </Product>
 </Wix>
