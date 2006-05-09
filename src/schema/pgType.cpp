@@ -179,16 +179,23 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     if (!settings->GetShowSystemObjects())
         systemRestriction = wxT("   AND ct.oid IS NULL\n");
 
-    pgSet *types= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n")
-        wxT("  FROM pg_type t\n")
-        wxT("  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n")
-        wxT("  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
-        wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
-        + systemRestriction +
-        wxT(" ORDER BY t.typname"));
-    if (types)
+	wxString sql =	wxT("SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n")
+			        wxT("  FROM pg_type t\n")
+					wxT("  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n")
+					wxT("  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n")
+					wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n");
+
+	if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
+		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
+	else
+		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
+
+	sql +=	systemRestriction +
+			wxT(" ORDER BY t.typname");
+
+	pgSet *types = collection->GetDatabase()->ExecuteSet(sql);
+		
+	if (types)
     {
         while (!types->Eof())
         {

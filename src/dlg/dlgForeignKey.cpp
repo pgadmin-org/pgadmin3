@@ -371,12 +371,18 @@ int dlgForeignKey::Go(bool modal)
         if (!settings->GetShowSystemObjects())
             systemRestriction = wxT("   AND ") + connection->SystemNamespaceRestriction(wxT("nsp.nspname"));
 
-        pgSet *set=connection->ExecuteSet(
-            wxT("SELECT nspname, relname FROM pg_namespace nsp, pg_class cl\n")
-            wxT(" WHERE relnamespace=nsp.oid AND relkind='r'\n")
-            wxT("   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n")
-            + systemRestriction
-            + wxT(" ORDER BY nsp.oid, relname"));
+		wxString sql =  wxT("SELECT nspname, relname FROM pg_namespace nsp, pg_class cl\n")
+						wxT(" WHERE relnamespace=nsp.oid AND relkind='r'\n");
+
+		if (connection->BackendMinimumVersion(8, 1))
+			sql += wxT("   AND nsp.nspname NOT LIKE E'pg\\_temp\\_%'\n");
+		else
+			sql += wxT("   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
+
+		sql += systemRestriction +
+               wxT(" ORDER BY nsp.oid, relname");
+
+        pgSet *set=connection->ExecuteSet(sql);
 
         if (set)
         {

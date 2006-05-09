@@ -173,16 +173,26 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
         restr += collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
     }
 
-    pgSet *schemas = collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
-        wxT("            WHEN (nspname LIKE 'pg\\_%' OR nspname = 'information_schema') THEN 0\n")
-        wxT("            ELSE 3 END AS nsptyp,\n")
-        wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-        wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
-        wxT("  FROM pg_namespace nsp\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-         + restr +
-        wxT(" ORDER BY 1, nspname"));
+	wxString sql;
+	if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
+	{
+		sql =   wxT("SELECT CASE WHEN nspname LIKE E'pg\\_temp\\_%%' THEN 1\n")
+				wxT("            WHEN (nspname LIKE E'pg\\_%' OR nspname = 'information_schema') THEN 0\n");
+	}
+	else
+	{
+		sql =   wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
+				wxT("            WHEN (nspname LIKE 'pg\\_%' OR nspname = 'information_schema') THEN 0\n");
+	}
+	sql +=	wxT("            ELSE 3 END AS nsptyp,\n")
+			wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
+			wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
+			wxT("  FROM pg_namespace nsp\n")
+			wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+			+ restr +
+			wxT(" ORDER BY 1, nspname");
+
+    pgSet *schemas = collection->GetDatabase()->ExecuteSet(sql);
 
     if (schemas)
     {

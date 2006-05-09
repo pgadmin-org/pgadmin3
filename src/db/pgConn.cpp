@@ -81,7 +81,11 @@ wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
             delete set;
         }
     }
-    return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%' AND ") + nsp + wxT(" NOT in (") + reservedNamespaces + wxT("))");
+
+	if (BackendMinimumVersion(8, 1))
+      return wxT("(") + nsp + wxT(" NOT LIKE E'pg\\_%' AND ") + nsp + wxT(" NOT in (") + reservedNamespaces + wxT("))");
+	else
+      return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%' AND ") + nsp + wxT(" NOT in (") + reservedNamespaces + wxT("))");
 }
 
 
