@@ -44,6 +44,7 @@
 #include "images/sortfilter.xpm"
 #include "images/help.xpm"
 #include "images/clip_copy.xpm"
+#include "images/clip_paste.xpm"
 
 #define CTRLID_LIMITLABEL       4224
 #define CTRLID_LIMITSPACER      4225
@@ -58,11 +59,13 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_MENU(MNU_OPTIONS,   frmEditGrid::OnOptions)
     EVT_MENU(MNU_HELP,      frmEditGrid::OnHelp)
     EVT_MENU(MNU_COPY,      frmEditGrid::OnCopy)
+    EVT_MENU(MNU_PASTE,     frmEditGrid::OnPaste)
     EVT_CLOSE(              frmEditGrid::OnClose)
     EVT_KEY_DOWN(           frmEditGrid::OnKey)
     EVT_GRID_RANGE_SELECT(frmEditGrid::OnGridSelectCells)
     EVT_GRID_SELECT_CELL(frmEditGrid::OnCellChange)
     EVT_GRID_EDITOR_SHOWN(frmEditGrid::OnEditorShown)
+    EVT_GRID_EDITOR_HIDDEN(frmEditGrid::OnEditorHidden)
     EVT_GRID_LABEL_RIGHT_CLICK(frmEditGrid::OnLabelRightClick)
 END_EVENT_TABLE()
 
@@ -81,6 +84,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     relkind=0;
 	limit=0;
     relid=(Oid)obj->GetOid();
+    editorShown = false;
 
 
     CreateStatusBar();
@@ -100,6 +104,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo change of data."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected lines to clipboard"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_PASTE, _("Paste"), wxBitmap(clip_paste_xpm), _("Paste text from the clipboard"), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected lines."), wxITEM_NORMAL);
     toolBar->AddSeparator();
@@ -128,14 +134,15 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->EnableTool(MNU_COPY, true);
     toolBar->EnableTool(MNU_DELETE, false);
 
-    wxAcceleratorEntry entries[6];
+    wxAcceleratorEntry entries[7];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
     entries[1].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_REFRESH);
     entries[2].Set(wxACCEL_CTRL,                (int)'Z',      MNU_UNDO);
     entries[3].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
     entries[4].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
-    entries[5].Set(wxACCEL_NORMAL,              WXK_DELETE,    MNU_DELETE);
+    entries[5].Set(wxACCEL_CTRL,                (int)'V',      MNU_PASTE);
+    entries[6].Set(wxACCEL_NORMAL,              WXK_DELETE,    MNU_DELETE);
     
     wxAcceleratorTable accel(6, entries);
     SetAcceleratorTable(accel);
@@ -235,6 +242,18 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
     SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
 }
 
+
+void frmEditGrid::OnPaste(wxCommandEvent &ev)
+{
+    if (editorShown)
+    {
+        ev.Skip();
+    }
+    else
+    {
+        sqlGrid->GetTable()->Paste();
+    }
+}
 
 void frmEditGrid::OnHelp(wxCommandEvent &ev)
 {
@@ -453,8 +472,15 @@ void frmEditGrid::OnEditorShown(wxGridEvent& event)
 {
     toolBar->EnableTool(MNU_SAVE, true);
     toolBar->EnableTool(MNU_UNDO, true);
+    editorShown = true;
 
     event.Skip();
+}
+
+
+void frmEditGrid::OnEditorHidden(wxGridEvent& event)
+{
+    editorShown = false;
 }
 
 
@@ -1120,9 +1146,11 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8)
                 && colSet->GetBool(wxT("atthasdef")))
             {
-                if (colSet->GetVal(wxT("adsrc")) ==  wxT("nextval('") 
-                        + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname"))
-                        + wxT("_") + columns[i].name + wxT("_seq'::text)"))
+				wxString adsrc = colSet->GetVal(wxT("adsrc"));
+                if (adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::text)") ||
+				    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::text)") ||
+				    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::regclass)") ||
+				    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::regclass)"))
                 {
                     if (columns[i].type == PGOID_TYPE_INT4)
                         columns[i].type = (Oid)PGOID_TYPE_SERIAL;
@@ -1719,6 +1747,112 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
         GetView()->ProcessTableMessage(msg);
     }
     return (rowsDone != 0);
+}
+
+
+void sqlTable::Paste()
+{
+    int row, col;
+    int start, pos, len;
+    wxArrayString data;
+    wxString text, quoteChar, colSep;
+    bool inQuotes, inData, skipSerial;
+
+    if (wxTheClipboard->Open())
+    {
+        if (wxTheClipboard->IsSupported(wxDF_TEXT))
+        {
+            wxTextDataObject textData;
+            wxTheClipboard->GetData(textData);
+            text = textData.GetText();
+        }
+        else {
+            wxTheClipboard->Close();
+            return;
+        }
+        wxTheClipboard->Close();
+    }
+    else {
+        return;
+    }
+
+    start = pos = 0;
+    len = text.Len();
+    quoteChar = settings->GetCopyQuoteChar();
+    colSep = settings->GetCopyColSeparator();
+    inQuotes = inData = false;
+
+    while (pos < len && !(text[pos] == '\n' && !inQuotes))
+    {
+        if (!inData)
+        {
+            if (text[pos] == quoteChar)
+            {
+                inQuotes = inData = true;
+                pos++;
+                start++;
+                continue;
+            }
+            else
+            {
+                inQuotes = false;
+            }
+            inData = true;
+        }
+
+        if (inQuotes && text[pos] == quoteChar &&
+            text[pos+1] == colSep)
+        {
+            data.Add(text.Mid(start, pos - start));
+            start = (pos += 2);
+            inData = false;
+        }
+        else if (!inQuotes && text[pos] == colSep)
+        {
+            data.Add(text.Mid(start, pos - start));
+            start = ++pos;
+            inData = false;
+        }
+        else
+        {
+            pos++;
+        }
+    }
+    if (start < pos)
+    {
+        if (inQuotes && text[pos-1] == quoteChar)
+            data.Add(text.Mid(start, pos - start - 1));
+        else
+            data.Add(text.Mid(start, pos - start));
+    }
+
+    row = GetNumberRows() - 1;
+    skipSerial = false;
+
+    for (col = 0; col < nCols; col++) {
+        if (columns[col].type == PGOID_TYPE_SERIAL ||
+            columns[col].type == PGOID_TYPE_SERIAL8)
+        {
+            wxMessageDialog msg(GetView()->GetParent(),
+                _("This table contains serial columns. Do you want to use the values in the clipboard for these columns?"),
+                _("Paste Data"), wxYES_NO | wxICON_QUESTION);
+            if (msg.ShowModal() != wxID_YES)
+            {
+                skipSerial = true;
+            }
+            break;
+        }
+    }
+
+    for (col = (hasOids ? 1 : 0); col < nCols && col < (int)data.GetCount(); col++)
+    {
+        if (!(skipSerial && (columns[col].type == PGOID_TYPE_SERIAL ||
+            columns[col].type == PGOID_TYPE_SERIAL8)))
+        {
+            SetValue(row, col, data.Item(col));
+        }
+    }
+    GetView()->ForceRefresh();
 }
 
 

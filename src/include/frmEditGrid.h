@@ -119,6 +119,7 @@ public:
 
     bool CheckInCache(int row);
 
+    void Paste();
 
 private:
     pgQueryThread *thread;
@@ -180,8 +181,10 @@ private:
     void OnCellChange(wxGridEvent& event);
     void OnGridSelectCells(wxGridRangeSelectEvent& event);
     void OnEditorShown(wxGridEvent& event);
+    void OnEditorHidden(wxGridEvent& event);
     void OnKey(wxKeyEvent& event);
     void OnCopy(wxCommandEvent& event);
+    void OnPaste(wxCommandEvent& event);
     void OnLabelDoubleClick(wxGridEvent& event);
     void OnLabelRightClick(wxGridEvent& event);
     void Abort();
@@ -203,6 +206,7 @@ private:
     wxString orderBy;
 	wxString rowFilter;
 	int limit;
+    bool editorShown;
 
     DECLARE_EVENT_TABLE();
 };
