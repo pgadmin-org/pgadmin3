@@ -182,7 +182,7 @@ int dlgOperator::Go(bool modal)
 pgObject *dlgOperator::CreateObject(pgCollection *collection)
 {
     pgObject *obj=operatorFactory.CreateObjects(collection, 0,
-         wxT("\n   AND op.oprname=") + qtString(GetName()) +
+         wxT("\n   AND op.oprname=") + qtDbString(GetName()) +
          wxT("\n   AND op.oprnamespace=") + schema->GetOidStr() +
          wxT("\n   AND op.oprleft = ") + GetTypeOid(cbLeftType->GetGuessedSelection()) +
          wxT("\n   AND op.oprright = ") + GetTypeOid(cbRightType->GetGuessedSelection()));

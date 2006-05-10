@@ -33,6 +33,7 @@ public:
     int GetMinorVersion() const { return minorVersion; }
     bool GetIsEdb();
     wxString EncryptPassword(const wxString &user, const wxString &password);
+	wxString qtDbString(const wxString& value);
 
 private:
     bool features[32];

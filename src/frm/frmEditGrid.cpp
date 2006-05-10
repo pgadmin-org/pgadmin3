@@ -1373,7 +1373,7 @@ wxString sqlTable::MakeKey(cacheLine *line)
             if (!where.IsEmpty())
                 where += wxT(" AND ");
             where += qtIdent(columns[cn-1].name) + wxT(" = ") 
-                  + qtString(colval) + wxT("::") + qtIdent(columns[cn-1].typeNspName)
+                  + connection->qtDbString(colval) + wxT("::") + qtIdent(columns[cn-1].typeNspName)
                                      + wxT(".") + qtIdent(columns[cn-1].typeName);
         }
     }
@@ -1429,7 +1429,7 @@ void sqlTable::StoreLine()
                 {
                     if (!valList.IsNull())
                         valList += wxT(", ");
-                    valList += qtIdent(columns[i].name) + wxT("=") + columns[i].Quote(line->cols[i]);
+                    valList += qtIdent(columns[i].name) + wxT("=") + columns[i].Quote(connection, line->cols[i]);
                 }
             }
 
@@ -1461,7 +1461,7 @@ void sqlTable::StoreLine()
                     colList += qtIdent(columns[i].name);
                     if (columns[i].type == PGOID_TYPE_BOOL)
                         line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
-                    valList += columns[i].Quote(line->cols[i]);
+                    valList += columns[i].Quote(connection, line->cols[i]);
                 }
             }
 
@@ -1742,7 +1742,7 @@ wxGridCellAttr* sqlTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind  
 
 
 
-wxString sqlCellAttr::Quote(const wxString& value)
+wxString sqlCellAttr::Quote(pgConn *conn, const wxString& value)
 {
     wxString str;
     if (value.IsEmpty())
@@ -1750,11 +1750,11 @@ wxString sqlCellAttr::Quote(const wxString& value)
     else if (numeric)
         str = value;
     else if (value == wxT("\\'\\'"))
-        str = qtString(wxT("''"));
+        str = conn->qtDbString(wxT("''"));
     else if (value == wxT("''"))
         str = wxT("''");
     else
-        str=qtString(value);
+        str=conn->qtDbString(value);
 
     return str + wxT("::") + qtIdent(typeNspName) + wxT(".") + qtIdent(typeName);
 }

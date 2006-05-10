@@ -82,7 +82,7 @@ wxString slSet::GetSql(ctlTree *browser)
         sql = wxT("-- Create replication set ") + GetName() + wxT(".\n\n")
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("storeset(") 
                     + NumToStr(GetSlId()) + wxT(", ")
-                    + qtString(GetComment()) + wxT(");\n");
+                    + qtDbString(GetComment()) + wxT(");\n");
     }
     return sql;
 }

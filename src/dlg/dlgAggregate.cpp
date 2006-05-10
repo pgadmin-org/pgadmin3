@@ -117,7 +117,7 @@ int dlgAggregate::Go(bool modal)
 pgObject *dlgAggregate::CreateObject(pgCollection *collection)
 {
     pgObject *obj=aggregateFactory.CreateObjects(collection, 0,
-         wxT("\n   AND proname=") + qtString(GetName()) +
+         wxT("\n   AND proname=") + qtDbString(GetName()) +
          wxT("\n   AND pronamespace=") + schema->GetOidStr());
 
     return obj;
@@ -265,7 +265,7 @@ wxString dlgAggregate::GetSql()
         }
         wxString initial=txtInitial->GetValue().Strip(wxString::both);
         if (!initial.IsEmpty())
-            sql += wxT(",\n   INITCOND=") + qtString(initial);
+            sql += wxT(",\n   INITCOND=") + qtDbString(initial);
 
         wxString opr=cbSortOp->GetStringKey();
         if (!opr.IsEmpty())

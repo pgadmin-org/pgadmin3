@@ -147,7 +147,7 @@ wxString dlgRepPath::GetSql()
         sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storepath(")
                 + NumToStr((OID)cbServer->GetClientData(sel)) + wxT(", ")
                 + NumToStr(node->GetSlId()) + wxT(", ")
-                + qtString(txtConnInfo->GetValue()) + wxT(", ")
+                + qtDbString(txtConnInfo->GetValue()) + wxT(", ")
                 + NumToStr(StrToLong(txtConnRetry->GetValue())) + wxT(");");
     }
     return sql;

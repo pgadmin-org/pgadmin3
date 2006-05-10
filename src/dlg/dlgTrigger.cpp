@@ -176,7 +176,7 @@ wxString dlgTrigger::GetSql()
 pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 {
     pgObject *obj=triggerFactory.CreateObjects(collection, 0, 
-        wxT("\n   AND tgname=") + qtString(GetName()) +
+        wxT("\n   AND tgname=") + qtDbString(GetName()) +
         wxT("\n   AND tgrelid=") + table->GetOidStr() +
         wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;

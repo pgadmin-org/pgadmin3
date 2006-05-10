@@ -661,7 +661,7 @@ wxString dlgTable::GetSql()
         if (!lstColumns->GetText(pos, 5).IsEmpty())
             sql += wxT("COMMENT ON COLUMN ") + tabname
                 + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-                + wxT(" IS ") + qtString(lstColumns->GetText(pos, 5))
+                + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
                 + wxT(";\n");
     }
 
@@ -692,7 +692,7 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
     wxString name=GetName();
 
     pgObject *obj=tableFactory.CreateObjects(collection, 0, wxT(
-        "\n   AND rel.relname=") + qtString(name) + wxT(
+        "\n   AND rel.relname=") + qtDbString(name) + wxT(
         "\n   AND rel.relnamespace=") + schema->GetOidStr());
 
     return obj;

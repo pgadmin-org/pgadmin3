@@ -370,7 +370,7 @@ bool frmConfig::DoWriteFile(const wxChar *str, pgConn *conn)
         done = conn->ExecuteVoid(
             wxT("SELECT pg_file_unlink('") + serverFileName + wxT(".bak');\n")
             wxT("SELECT pg_file_write('")  + serverFileName + wxT(".tmp', ") 
-                                           + qtString(str) + wxT(", false);\n")
+                                           + conn->qtDbString(str) + wxT(", false);\n")
             wxT("SELECT pg_file_rename('") + serverFileName + wxT(".tmp', '") 
                                            + serverFileName + wxT("', '") 
                                            + serverFileName + wxT(".bak');"));

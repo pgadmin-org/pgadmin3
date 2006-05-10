@@ -205,19 +205,6 @@ void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
         size.SetHeight(scrH);
 }
 
-
-wxString qtString(const wxString& value)
-{
-    wxString result = value;	
-
-    result.Replace(wxT("\\"), wxT("\\\\"));
-    result.Replace(wxT("'"), wxT("''"));
-    result.Append(wxT("'"));
-    result.Prepend(wxT("'"));
-	
-    return result;
-}
-
 wxString qtConnString(const wxString& value)
 {
     wxString result = value;	

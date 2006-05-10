@@ -426,7 +426,7 @@ pgObject *dlgRole::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=loginRoleFactory.CreateObjects(collection, 0, wxT("\n WHERE rolname=") + qtString(name));
+    pgObject *obj=loginRoleFactory.CreateObjects(collection, 0, wxT("\n WHERE rolname=") + qtDbString(name));
     return obj;
 }
 
@@ -459,7 +459,7 @@ wxString dlgRole::GetSql()
                 options = wxT(" NOLOGIN");
         }
         if (canLogin && !passwd.IsEmpty())
-            options += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
+            options += wxT(" ENCRYPTED PASSWORD ") + qtDbString(connection->EncryptPassword(name, passwd));
 
         if (createDB != role->GetCreateDatabase() || createRole != role->GetCreateRole() 
             || superuser != role->GetSuperuser() || inherits != role->GetInherits())
@@ -498,7 +498,7 @@ wxString dlgRole::GetSql()
         if (DateToStr(datValidUntil->GetValue()) != DateToStr(role->GetAccountExpires()))
         {
             if (datValidUntil->GetValue().IsValid())
-                options += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
+                options += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
             else
                 options += wxT("\n   VALID UNTIL 'infinity'");
         }
@@ -629,7 +629,7 @@ wxString dlgRole::GetSql()
         {
             sql += wxT(" LOGIN");
             if (!passwd.IsEmpty())
-                sql += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
+                sql += wxT(" ENCRYPTED PASSWORD ") + qtDbString(connection->EncryptPassword(name, passwd));
         }
 
         if (createDB || createRole ||!inherits || superuser)
@@ -643,7 +643,7 @@ wxString dlgRole::GetSql()
         if (createRole)
             sql += wxT(" CREATEROLE");
         if (datValidUntil->GetValue().IsValid())
-            sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
+            sql += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
         else
             sql += wxT("\n   VALID UNTIL 'infinity'");
         
@@ -663,7 +663,7 @@ wxString dlgRole::GetSql()
         sql += wxT(";\n");
 
         if (chkUpdateCat->GetValue())
-            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE rolname=") + qtString(name) + wxT(";\n");
+            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE rolname=") + qtDbString(name) + wxT(";\n");
 
         cnt=lstVariables->GetItemCount();
         for (pos=0 ; pos < cnt ; pos++)

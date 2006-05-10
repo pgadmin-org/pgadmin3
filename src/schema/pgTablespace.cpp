@@ -99,7 +99,7 @@ wxString pgTablespace::GetSql(ctlTree *browser)
         else
             sql += wxT("\n\nCREATE TABLESPACE ") + GetQuotedIdentifier()
                 +  wxT("\n  OWNER ") + qtIdent(GetOwner())
-                +  wxT("\n  LOCATION ") + qtString(location)
+                +  wxT("\n  LOCATION ") + qtDbString(location)
                 +  wxT(";\n");
 
     }

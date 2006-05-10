@@ -57,7 +57,7 @@ public:
     int precision();
 
     wxGridCellAttr *attr;
-    wxString Quote(const wxString &value);
+    wxString Quote(pgConn *conn, const wxString &value);
     OID type;
     long typlen, typmod;
     wxString name, typeName, typeNspName;

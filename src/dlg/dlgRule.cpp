@@ -105,7 +105,7 @@ int dlgRule::Go(bool modal)
 pgObject *dlgRule::CreateObject(pgCollection *collection)
 {
     pgObject *obj=ruleFactory.CreateObjects(collection, 0, 
-        wxT("\n   AND rulename=") + qtString(GetName()) +
+        wxT("\n   AND rulename=") + qtDbString(GetName()) +
         wxT("\n   AND rw.ev_class=") + table->GetOidStr());
     return obj;
 }

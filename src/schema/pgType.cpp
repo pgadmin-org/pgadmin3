@@ -52,7 +52,7 @@ wxString pgType::GetSql(ctlTree *browser)
         {
             sql += wxT("\n   (INPUT=") + qtIdent(GetInputFunction()) 
                 + wxT(", OUTPUT=") + qtIdent(GetOutputFunction());
-            AppendIfFilled(sql, wxT(", DEFAULT="), qtString(GetDefault()));
+            AppendIfFilled(sql, wxT(", DEFAULT="), qtDbString(GetDefault()));
             if (!GetElement().IsNull())
             {
                 sql += wxT(",\n       ELEMENT=") + GetElement()

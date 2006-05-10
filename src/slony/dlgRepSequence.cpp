@@ -157,8 +157,8 @@ wxString dlgRepSequence::GetSql()
         else
             sql += wxT("(SELECT COALESCE(MAX(seq_id), 0) + 1 FROM ") + cluster->GetSchemaPrefix() + wxT("sl_sequence)");
 
-        sql += wxT(", ") + qtString(cbSequence->GetGuessedStringSelection())
-            +  wxT(", ") + qtString(txtComment->GetValue())
+        sql += wxT(", ") + qtDbString(cbSequence->GetGuessedStringSelection())
+            +  wxT(", ") + qtDbString(txtComment->GetValue())
             + wxT(")\n");
     }
 

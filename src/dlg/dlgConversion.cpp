@@ -139,7 +139,7 @@ int dlgConversion::Go(bool modal)
 pgObject *dlgConversion::CreateObject(pgCollection *collection)
 {
     pgObject *obj=conversionFactory.CreateObjects(collection, 0,
-         wxT("\n AND conname = ") + qtString(GetName()));
+         wxT("\n AND conname = ") + qtDbString(GetName()));
 
     return obj;
 }
@@ -187,8 +187,8 @@ wxString dlgConversion::GetSql()
         if (chkDefault->GetValue())
             sql += wxT("DEFAULT ");
         sql += wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name)
-            + wxT("\n   FOR ") + qtString(cbSourceEncoding->GetValue())
-            + wxT(" TO ") + qtString(cbTargetEncoding->GetValue())
+            + wxT("\n   FOR ") + qtDbString(cbSourceEncoding->GetValue())
+            + wxT(" TO ") + qtDbString(cbTargetEncoding->GetValue())
             + wxT("\n   FROM ") + functions.Item(cbFunction->GetCurrentSelection())
             + wxT(";\n");
 

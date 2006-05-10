@@ -47,7 +47,7 @@ wxString pgAggregate::GetSql(ctlTree *browser)
             + wxT(",\n  STYPE=") + GetStateType();
         AppendIfFilled(sql, wxT(",\n  FINALFUNC="), qtIdent(GetFinalFunction()));
         if (GetInitialCondition().length() > 0)
-          sql += wxT(",\n  INITCOND=") + qtString(GetInitialCondition());
+          sql += wxT(",\n  INITCOND=") + qtDbString(GetInitialCondition());
         AppendIfFilled(sql, wxT(",\n  SORTOP="), GetQuotedSortOp());
 
         sql += wxT("\n);\n")
@@ -59,7 +59,7 @@ wxString pgAggregate::GetSql(ctlTree *browser)
         {
             sql += wxT("COMMENT ON AGGREGATE ") + GetQuotedFullIdentifier() 
                 + wxT("(") + qtIdent(GetInputType())
-                + wxT(") IS ") + qtString(GetComment()) + wxT(";\n");
+                + wxT(") IS ") + qtDbString(GetComment()) + wxT(";\n");
         }
     }
 

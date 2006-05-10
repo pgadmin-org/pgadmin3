@@ -182,12 +182,12 @@ wxString dlgStep::GetInsertSql()
         else
             jstjobid = wxT("<JobId>");
 
-        db = qtString(cbDatabase->GetValue().Trim());
+        db = qtDbString(cbDatabase->GetValue().Trim());
 
         sql = wxT("INSERT INTO pgagent.pga_jobstep (jstid, jstjobid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdbname)\n")
-              wxT("SELECT <StpId>, ") + jstjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
-                + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 
-                + qtString(onerror) + wxT(", ") + qtString(sqlBox->GetText()) + wxT(", ") + db + wxT(";\n");
+              wxT("SELECT <StpId>, ") + jstjobid + wxT(", ") + qtDbString(name) + wxT(", ") + qtDbString(txtComment->GetValue()) + wxT(", ")
+                + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtDbString(kind) + wxT(", ") 
+                + qtDbString(onerror) + wxT(", ") + qtDbString(sqlBox->GetText()) + wxT(", ") + db + wxT(";\n");
     }
     return sql;
 }
@@ -208,7 +208,7 @@ wxString dlgStep::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jstname=") + qtString(name));
+            vars.Append(wxT("jstname=") + qtDbString(name));
         }
         if (chkEnabled->GetValue() != step->GetEnabled())
         {
@@ -224,34 +224,34 @@ wxString dlgStep::GetUpdateSql()
             if (!cbDatabase->GetCurrentSelection())
                 vars.Append(wxT("jstdbname=''"));
             else
-                vars.Append(wxT("jstdbname=") + qtString(cbDatabase->GetValue()));
+                vars.Append(wxT("jstdbname=") + qtDbString(cbDatabase->GetValue()));
         }
         if (rbxKind->GetSelection() != wxString(wxT("sb")).Find(step->GetKindChar()))
         {
             wxString kind = wxT("sb")[rbxKind->GetSelection()];
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jstkind=") + qtString(kind));
+            vars.Append(wxT("jstkind=") + qtDbString(kind));
         }
         if (rbxOnError->GetSelection() != wxString(wxT("fsi")).Find(step->GetOnErrorChar()))
         {
             wxString onerror = wxT("fsi")[rbxOnError->GetSelection()];
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jstname=") + qtString(name));
+            vars.Append(wxT("jstname=") + qtDbString(name));
         }
         if (txtComment->GetValue() != step->GetComment())
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jstdesc=") + qtString(txtComment->GetValue()));
+            vars.Append(wxT("jstdesc=") + qtDbString(txtComment->GetValue()));
         }
         if (sqlBox->GetText() != step->GetCode())
         {
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jstcode=") + qtString(sqlBox->GetText()));
+            vars.Append(wxT("jstcode=") + qtDbString(sqlBox->GetText()));
         }
         }
 

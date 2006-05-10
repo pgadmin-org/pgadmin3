@@ -220,7 +220,7 @@ int dlgProperty::Go(bool modal)
                     wxT("SELECT set_id\n")
                     wxT("  FROM ") + qtIdent(cluster) + wxT(".sl_set\n")
                     wxT(" WHERE set_origin = ") + qtIdent(cluster) + 
-                    wxT(".getlocalnodeid(") + qtString(cluster) + wxT(");"));
+                    wxT(".getlocalnodeid(") + qtDbString(cluster) + wxT(");"));
                 
                 while (sets.RowsLeft())
                 {
@@ -350,7 +350,7 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objName, pgObject
     if ((!obj && !comment.IsEmpty()) ||(obj && obj->GetComment() != comment))
     {
         sql += wxT("COMMENT ON ") + objName
-            + wxT(" IS ") + qtString(comment) + wxT(";\n");
+            + wxT(" IS ") + qtDbString(comment) + wxT(";\n");
     }
 }
 
@@ -363,7 +363,7 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objType, pgSchema
         sql += wxT("COMMENT ON ") + objType + wxT(" ");
         if (schema)
            sql += schema->GetQuotedPrefix();
-        sql += qtIdent(GetName()) + wxT(" IS ") + qtString(comment) + wxT(";\n");
+        sql += qtIdent(GetName()) + wxT(" IS ") + qtDbString(comment) + wxT(";\n");
     }
 }
 
@@ -558,7 +558,7 @@ bool dlgProperty::apply(const wxString &sql)
 
         tmp = wxT("SELECT ") + qtIdent(data->cluster)
             + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
-            + qtString(sql) + wxT(", 0);\n");
+            + qtDbString(sql) + wxT(", 0);\n");
     }
     else
         tmp = sql;
@@ -765,7 +765,23 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
     return true;
 }
 
-
+wxString dlgProperty::qtDbString(const wxString &str) 
+{ 
+	// Use the server aware version if possible
+	if (connection)
+	    return connection->qtDbString(str);
+	else if (database)
+		return database->GetConnection()->qtDbString(str);
+	else
+	{
+		wxString ret = str;
+		ret.Replace(wxT("\\"), wxT("\\\\"));
+        ret.Replace(wxT("'"), wxT("''"));
+        ret.Append(wxT("'"));
+        ret.Prepend(wxT("'"));
+		return ret;
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////
 

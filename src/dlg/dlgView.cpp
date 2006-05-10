@@ -78,7 +78,7 @@ int dlgView::Go(bool modal)
 pgObject *dlgView::CreateObject(pgCollection *collection)
 {
     pgObject *obj=viewFactory.CreateObjects(collection, 0, 
-        wxT("\n   AND c.relname=") + qtString(txtName->GetValue()) +
+        wxT("\n   AND c.relname=") + qtDbString(txtName->GetValue()) +
         wxT("\n   AND c.relnamespace=") + schema->GetOidStr());
     return obj;
 }

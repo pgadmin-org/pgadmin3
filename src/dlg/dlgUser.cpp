@@ -372,7 +372,7 @@ pgObject *dlgUser::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=userFactory.CreateObjects(collection, 0, wxT("\n WHERE usename=") + qtString(name));
+    pgObject *obj=userFactory.CreateObjects(collection, 0, wxT("\n WHERE usename=") + qtDbString(name));
     return obj;
 }
 
@@ -395,7 +395,7 @@ wxString dlgUser::GetSql()
 
         wxString options;
         if (!passwd.IsEmpty())
-            options += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
+            options += wxT(" ENCRYPTED PASSWORD ") + qtDbString(connection->EncryptPassword(name, passwd));
 
         if (createDB != user->GetCreateDatabase() || createUser != user->GetSuperuser())
             options += wxT("\n ");
@@ -418,7 +418,7 @@ wxString dlgUser::GetSql()
         if (DateToStr(datValidUntil->GetValue()) != DateToStr(user->GetAccountExpires()))
         {
             if (datValidUntil->GetValue().IsValid())
-                options += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
+                options += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
             else
                 options += wxT("\n   VALID UNTIL 'infinity'");
         }
@@ -506,7 +506,7 @@ wxString dlgUser::GetSql()
         if (id)
             sql += wxT("\n  WITH SYSID ") + NumToStr(id);
         if (!passwd.IsEmpty())
-            sql += wxT(" ENCRYPTED PASSWORD ") + qtString(connection->EncryptPassword(name, passwd));
+            sql += wxT(" ENCRYPTED PASSWORD ") + qtDbString(connection->EncryptPassword(name, passwd));
 
         if (createDB || createUser)
             sql += wxT("\n ");
@@ -515,7 +515,7 @@ wxString dlgUser::GetSql()
         if (createUser)
             sql += wxT(" CREATEUSER");
         if (datValidUntil->GetValue().IsValid())
-            sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
+            sql += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
         else
             sql += wxT("\n   VALID UNTIL 'infinity'");
         sql += wxT(";\n");

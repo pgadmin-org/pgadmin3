@@ -82,7 +82,7 @@ wxString pgRole::GetSql(ctlTree *browser)
         {
             sql += wxT(" LOGIN");
             if (GetPassword() != wxT("********") && !GetPassword().IsEmpty())
-                AppendIfFilled(sql, wxT("\n  ENCRYPTED PASSWORD "), qtString(GetPassword()));
+                AppendIfFilled(sql, wxT("\n  ENCRYPTED PASSWORD "), qtDbString(GetPassword()));
         }
         sql += wxT("\n ");
         if (this->GetSuperuser())   sql += wxT(" SUPERUSER");
@@ -94,7 +94,7 @@ wxString pgRole::GetSql(ctlTree *browser)
         if (GetCreateRole())        sql += wxT(" CREATEROLE");
         else                        sql += wxT(" NOCREATEROLE");
         if (GetAccountExpires().IsValid())
-        AppendIfFilled(sql, wxT(" VALID UNTIL "), qtString(DateToAnsiStr(GetAccountExpires())));
+        AppendIfFilled(sql, wxT(" VALID UNTIL "), qtDbString(DateToAnsiStr(GetAccountExpires())));
         sql +=wxT(";\n");
 
         if (GetUpdateCatalog())

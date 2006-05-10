@@ -725,7 +725,7 @@ OID pgServer::GetLastSystemOID()
 bool pgServer::SetPassword(const wxString& newVal)
 {
     wxString sql;
-    sql.Printf(wxT("ALTER USER %s WITH PASSWORD %s;"), qtIdent(username).c_str(), qtString(newVal).c_str());
+    sql.Printf(wxT("ALTER USER %s WITH PASSWORD %s;"), qtIdent(username).c_str(), qtDbString(newVal).c_str());
     bool executed = conn->ExecuteVoid(sql);
     if (executed)
     {

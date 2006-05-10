@@ -160,7 +160,7 @@ pgObject *dlgPrimaryKey::CreateObject(pgCollection *collection)
         return 0;
 
     pgObject *obj=primaryKeyFactory.CreateObjects(collection, 0, wxT(
-        "\n   AND cls.relname=") + qtString(name) + wxT(
+        "\n   AND cls.relname=") + qtDbString(name) + wxT(
         "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
 
     return obj;
@@ -191,7 +191,7 @@ pgObject *dlgUnique::CreateObject(pgCollection *collection)
     wxString name=GetName();
 
     pgObject *obj=uniqueFactory.CreateObjects(collection, 0, wxT(
-        "\n   AND cls.relname=") + qtString(name) + wxT(
+        "\n   AND cls.relname=") + qtDbString(name) + wxT(
         "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
 }

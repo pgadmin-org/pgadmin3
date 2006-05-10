@@ -229,7 +229,7 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=databaseFactory.CreateObjects(collection, 0, wxT(" WHERE datname=") + qtString(name) + wxT("\n"));
+    pgObject *obj=databaseFactory.CreateObjects(collection, 0, wxT(" WHERE datname=") + qtDbString(name) + wxT("\n"));
     return obj;
 }
 
@@ -416,7 +416,7 @@ wxString dlgDatabase::GetSql()
     {
         // create mode
         sql = wxT("CREATE DATABASE ") + qtIdent(name) 
-            + wxT("\n  WITH ENCODING=") + qtString(cbEncoding->GetValue());
+            + wxT("\n  WITH ENCODING=") + qtDbString(cbEncoding->GetValue());
 
         AppendIfFilled(sql, wxT("\n       OWNER="), qtIdent(cbOwner->GetValue()));
         AppendIfFilled(sql, wxT("\n       TEMPLATE="), qtIdent(cbTemplate->GetValue()));

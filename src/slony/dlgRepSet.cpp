@@ -112,7 +112,7 @@ wxString dlgRepSet::GetSql()
         sql += wxT("(SELECT COALESCE(MAX(set_id), 0) + 1 FROM ") 
             +  cluster->GetSchemaPrefix() + wxT("sl_set)");
 
-    sql += wxT(", ") + qtString(txtComment->GetValue())
+    sql += wxT(", ") + qtDbString(txtComment->GetValue())
         +  wxT(");\n");
 
     return sql;

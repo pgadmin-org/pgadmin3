@@ -153,7 +153,7 @@ pgObject *dlgGroup::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=groupFactory.CreateObjects(collection, 0, wxT("\n WHERE groname=") + qtString(name));
+    pgObject *obj=groupFactory.CreateObjects(collection, 0, wxT("\n WHERE groname=") + qtDbString(name));
     return obj;
 }
 

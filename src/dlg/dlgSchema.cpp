@@ -69,7 +69,7 @@ pgObject *dlgSchema::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=schemaFactory.CreateObjects(collection, 0, wxT(" WHERE nspname=") + qtString(name) + wxT("\n"));
+    pgObject *obj=schemaFactory.CreateObjects(collection, 0, wxT(" WHERE nspname=") + qtDbString(name) + wxT("\n"));
     return obj;
 }
 

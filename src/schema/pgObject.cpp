@@ -487,7 +487,7 @@ wxString pgObject::GetCommentSql()
     if (!comment.IsNull())
     {
         cmt = wxT("COMMENT ON ") + GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier() 
-            + wxT(" IS ") + qtString(comment) + wxT(";\n");
+            + wxT(" IS ") + qtDbString(comment) + wxT(";\n");
     }
     return cmt;
 }
@@ -1085,3 +1085,18 @@ gotToken:
     return fc;
 }
 
+wxString pgObject::qtDbString(const wxString &str) 
+{ 
+	// Use the server aware version if possible
+	if (GetDatabase() && GetDatabase()->GetConnection())
+	    return GetDatabase()->GetConnection()->qtDbString(str);
+	else
+	{
+		wxString ret = str;
+		ret.Replace(wxT("\\"), wxT("\\\\"));
+        ret.Replace(wxT("'"), wxT("''"));
+        ret.Append(wxT("'"));
+        ret.Prepend(wxT("'"));
+		return ret;
+	}
+}

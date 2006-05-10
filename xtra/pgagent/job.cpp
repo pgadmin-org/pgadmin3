@@ -316,7 +316,7 @@ int Job::Execute()
             wxT("UPDATE pgagent.pga_jobsteplog ")
             wxT("   SET jslduration = now() - jslstart, ")
             wxT("       jslresult = ") + NumToStr(rc) + wxT(", jslstatus = '") + stepstatus + wxT("', ")
-            wxT("       jsloutput = ") + qtString(output) + wxT(" ")
+            wxT("       jsloutput = ") + qtDbString(output) + wxT(" ")
             wxT(" WHERE jslid=") + jslid);
         if (rc != 1 || stepstatus == wxT("f"))
         {

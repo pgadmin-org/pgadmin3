@@ -73,7 +73,7 @@ wxString pgTrigger::GetSql(ctlTree *browser)
 
         if (!GetComment().IsEmpty())
             sql += wxT("COMMENT ON TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
-                +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+                +  wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
     }
 
     return sql;
@@ -214,7 +214,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
                     if (NumToStr(StrToLong(arg)) == arg)
                         args += arg;
                     else
-                        args += qtString(arg);
+                        args += collection->GetDatabase()->GetConnection()->qtDbString(arg);
                 }
                 if (pos >= 0)
                     arglist = arglist.Mid(pos+4);

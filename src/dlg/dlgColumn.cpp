@@ -321,9 +321,9 @@ wxString dlgColumn::GetSql()
                           wxT("  FROM pg_class cl, pg_attribute, pg_class seq\n")
                           wxT("  JOIN pg_namespace sn ON sn.OID=seq.relnamespace\n")
                           wxT(" WHERE cl.relname='pg_class'\n")
-                          wxT("  AND seq.relname=") + qtString(table->GetName() + wxT("_") + name + wxT("_seq")) + wxT("\n")
-                          wxT("  AND sn.nspname=") + qtString(table->GetSchema()->GetName()) + wxT("\n")
-                          wxT("  AND attrelid=") + table->GetOidStr() + wxT(" AND attname=") + qtString(name) + wxT(";\n");
+                          wxT("  AND seq.relname=") + qtDbString(table->GetName() + wxT("_") + name + wxT("_seq")) + wxT("\n")
+                          wxT("  AND sn.nspname=") + qtDbString(table->GetSchema()->GetName()) + wxT("\n")
+                          wxT("  AND attrelid=") + table->GetOidStr() + wxT(" AND attname=") + qtDbString(name) + wxT(";\n");
                     }
                     else
                     {
@@ -382,8 +382,8 @@ pgObject *dlgColumn::CreateObject(pgCollection *collection)
 {
     pgObject *obj;
     obj=columnFactory.CreateObjects(collection, 0, 
-        wxT("\n   AND attname=") + qtString(GetName()) +
-        wxT("\n   AND cl.relname=") + qtString(table->GetName()) +
+        wxT("\n   AND attname=") + qtDbString(GetName()) +
+        wxT("\n   AND cl.relname=") + qtDbString(table->GetName()) +
         wxT("\n   AND cl.relnamespace=") + table->GetSchema()->GetOidStr() +
         wxT("\n"));
     return obj;

@@ -50,8 +50,8 @@ wxString slSequence::GetSql(ctlTree *browser)
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("setaddsequence(") 
                     + NumToStr(GetSet()->GetSlId()) + wxT(", ") 
                     + NumToStr(GetSlId()) + wxT(", ")
-                    + qtString(GetName()) + wxT(", ")
-                    + qtString(GetComment()) + wxT(");\n");
+                    + qtDbString(GetName()) + wxT(", ")
+                    + qtDbString(GetComment()) + wxT(");\n");
     }
     return sql;
 }

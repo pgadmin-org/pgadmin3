@@ -128,6 +128,8 @@ public:
     virtual bool HasDepends() { return false; }
     virtual bool HasReferences() { return false; }
 
+	wxString qtDbString(const wxString &str);
+
 protected:
     void CreateListColumns(ctlListView *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));
 

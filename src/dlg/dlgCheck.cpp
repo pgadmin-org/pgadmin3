@@ -87,7 +87,7 @@ pgObject *dlgCheck::CreateObject(pgCollection *collection)
         return 0;
 
     pgObject *obj=checkFactory.CreateObjects(collection, 0, wxT(
-        "\n   AND conname=") + qtString(name) + wxT(
+        "\n   AND conname=") + qtDbString(name) + wxT(
         "\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
 }

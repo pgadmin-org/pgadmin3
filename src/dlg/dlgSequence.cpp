@@ -130,7 +130,7 @@ int dlgSequence::Go(bool modal)
 pgObject *dlgSequence::CreateObject(pgCollection *collection)
 {
     pgObject *obj=sequenceFactory.CreateObjects(collection, 0, 
-        wxT("   AND relname=") + qtString(GetName()) +
+        wxT("   AND relname=") + qtDbString(GetName()) +
         wxT("\n   AND relnamespace=") + schema->GetOidStr());
          
     return obj;

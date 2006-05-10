@@ -75,7 +75,7 @@ wxString pgIndexConstraint::GetSql(ctlTree *browser)
 		if (!GetComment().IsNull())
 		{
 		    sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
-			    + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+			    + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
 		}
     }
     return sql;

@@ -337,7 +337,7 @@ wxString pgDatabase::GetSql(ctlTree *browser)
             + wxT("-- DROP DATABASE ") + GetQuotedIdentifier() + wxT(";")
             + wxT("\n\nCREATE DATABASE ") + GetQuotedIdentifier()
             + wxT("\n  WITH OWNER = ") + qtIdent(GetOwner())
-            + wxT("\n       ENCODING = ") + qtString(GetEncoding());
+            + wxT("\n       ENCODING = ") + qtDbString(GetEncoding());
         if (!tablespace.IsEmpty())
             sql += wxT("\n       TABLESPACE = ") + qtIdent(GetTablespace());
         

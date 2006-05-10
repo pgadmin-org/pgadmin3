@@ -52,7 +52,7 @@ wxString slPath::GetSql(ctlTree *browser)
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() 
                     + wxT("storepath(") + NumToStr(GetSlId()) 
                     + wxT(", ") + NumToStr(GetNode()->GetSlId())
-                    + wxT(", ") + qtString(GetConnInfo())
+                    + wxT(", ") + qtDbString(GetConnInfo())
                     + wxT(", ") + NumToStr(GetConnRetry())
                     + wxT(");\n");
     }

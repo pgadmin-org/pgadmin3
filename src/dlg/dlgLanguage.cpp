@@ -133,7 +133,7 @@ pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 {
     wxString name=cbName->wxComboBox::GetValue();
 
-    pgObject *obj=languageFactory.CreateObjects(collection, 0, wxT("\n   AND lanname ILIKE ") + qtString(name));
+    pgObject *obj=languageFactory.CreateObjects(collection, 0, wxT("\n   AND lanname ILIKE ") + qtDbString(name));
     return obj;
 }
 

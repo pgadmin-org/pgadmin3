@@ -117,7 +117,7 @@ wxString pgColumn::GetCommentSql()
 
 	if (!GetComment().IsEmpty())
 		commentSql = wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
-        +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+        +  wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
 	
 	return commentSql;
 }
@@ -241,9 +241,9 @@ void pgColumn::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", histogram_bounds AS ") + qtIdent(_("Histogram Bounds")) +
              wxT(", correlation AS ") + qtIdent(_("Correlation")) + wxT("\n")
         wxT("  FROM pg_stats\n")
-        wxT(" WHERE schemaname = ") + qtString(schema->GetName()) + wxT("\n")
-        wxT("   AND tablename = ") + qtString(GetTableName()) + wxT("\n")
-        wxT("   AND attname = ") + qtString(GetName()));
+        wxT(" WHERE schemaname = ") + qtDbString(schema->GetName()) + wxT("\n")
+        wxT("   AND tablename = ") + qtDbString(GetTableName()) + wxT("\n")
+        wxT("   AND attname = ") + qtDbString(GetName()));
 }
 
 

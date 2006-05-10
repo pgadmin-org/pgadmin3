@@ -127,7 +127,7 @@ wxString NumToStr(const long l)
 }
 
 
-wxString qtString(const wxString& value)
+wxString qtDbString(const wxString& value)
 {
     wxString result = value;
 

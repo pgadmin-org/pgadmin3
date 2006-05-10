@@ -75,7 +75,7 @@ wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
         {
             while (!set->Eof())
             {
-                reservedNamespaces += wxT(", ") + qtString(set->GetVal(wxT("nspname")));
+                reservedNamespaces += wxT(", ") + qtDbString(set->GetVal(wxT("nspname")));
                 set->MoveNext();
             }
             delete set;
@@ -101,8 +101,8 @@ bool pgConn::HasPrivilege(const wxString &objTyp, const wxString &objName, const
 {
     wxString res=ExecuteScalar(
         wxT("SELECT has_") + objTyp.Lower() 
-        + wxT("_privilege(") + qtString(objName)
-        + wxT(", ") + qtString(priv) + wxT(")"));
+        + wxT("_privilege(") + qtDbString(objName)
+        + wxT(", ") + qtDbString(priv) + wxT(")"));
 
     return StrToBool(res);
 }
@@ -189,4 +189,25 @@ wxString pgConn::EncryptPassword(const wxString &user, const wxString &password)
     pg_md5_encrypt(password.mb_str(*conv), user.mb_str(*conv), strlen(user.mb_str(*conv)), hash);
 
     return wxString::FromAscii(hash);
+}
+
+wxString pgConn::qtDbString(const wxString& value)
+{
+    wxString result = value;	
+
+    result.Replace(wxT("\\"), wxT("\\\\"));
+    result.Replace(wxT("'"), wxT("''"));
+    result.Append(wxT("'"));
+
+	if (BackendMinimumVersion(8, 1))
+	{
+		if (result.Contains(wxT("\\")))
+		    result.Prepend(wxT("E'"));
+		else
+			result.Prepend(wxT("'"));
+	}
+	else
+		result.Prepend(wxT("'"));
+
+    return result;
 }

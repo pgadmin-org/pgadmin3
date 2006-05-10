@@ -87,7 +87,7 @@ wxString slNode::GetSql(ctlTree *browser)
         sql = wxT("-- Create replication node ") + GetName() + wxT(".\n\n")
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("storenode(") 
                     + NumToStr(GetSlId()) + wxT(", ")
-                    + qtString(GetComment());
+                    + qtDbString(GetComment());
 
         if (GetCluster()->ClusterMinimumVersion(1, 1))
             sql += wxT(", ") + BoolToStr(GetSpool());
@@ -244,7 +244,7 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
         if (conn && pid < 0)
             pid=StrToLong(conn->ExecuteScalar(
-                wxT("SELECT listenerpid FROM pg_listener WHERE relname=") + qtString(wxT("_") + GetCluster()->GetName() + wxT("_Restart"))));
+                wxT("SELECT listenerpid FROM pg_listener WHERE relname=") + qtDbString(wxT("_") + GetCluster()->GetName() + wxT("_Restart"))));
 
         if (conn)
         {

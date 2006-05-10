@@ -182,7 +182,7 @@ void dlgRepTable::LoadTrigger(OID relid)
         wxT("  JOIN pg_namespace ns ON ns.oid=pronamespace\n")
         wxT(" WHERE tgrelid=") + NumToStr(relid) +
         wxT("   AND NOT tgisconstraint\n")
-        wxT("   AND nspname <> ") + qtString(wxT("_") + set->GetCluster()->GetName()) + wxT("\n")
+        wxT("   AND nspname <> ") + qtDbString(wxT("_") + set->GetCluster()->GetName()) + wxT("\n")
         wxT(" ORDER BY tgname"));
 
     if (trg)
@@ -268,7 +268,7 @@ wxString dlgRepTable::GetSql()
         {
             sql += wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("droptrigger(")
                 +  id + wxT(", ")
-                +  qtString(oldTriggers[i]) + wxT(");\n");
+                +  qtDbString(oldTriggers[i]) + wxT(");\n");
         }
     }
     else
@@ -290,13 +290,13 @@ wxString dlgRepTable::GetSql()
                  wxT("   JOIN pg_class cl ON cl.oid=tab_reloid\n")
                  wxT("   JOIN pg_namespace nsp ON nsp.oid=relnamespace\n")
                  wxT("  WHERE tab_set = ") + NumToStr(set->GetSlId()) + 
-                 wxT("    AND nspname ||'.' || relname = ") + qtString(cbTable->GetGuessedStringSelection()) +
+                 wxT("    AND nspname ||'.' || relname = ") + qtDbString(cbTable->GetGuessedStringSelection()) +
                  wxT(")");
 
         }
-        sql += wxT(", ") + qtString(cbTable->GetGuessedStringSelection())
-            +  wxT(", ") + qtString(cbIndex->GetStringSelection())
-            +  wxT(", ") + qtString(txtComment->GetValue())
+        sql += wxT(", ") + qtDbString(cbTable->GetGuessedStringSelection())
+            +  wxT(", ") + qtDbString(cbIndex->GetStringSelection())
+            +  wxT(", ") + qtDbString(txtComment->GetValue())
             + wxT(");\n");
     }
 
@@ -306,7 +306,7 @@ wxString dlgRepTable::GetSql()
     {
         sql += wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storetrigger(")
             +  id + wxT(", ")
-            +  qtString(newTriggers[i]) + wxT(");\n");
+            +  qtDbString(newTriggers[i]) + wxT(");\n");
     }
 
     return sql;

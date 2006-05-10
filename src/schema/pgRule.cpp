@@ -46,7 +46,7 @@ wxString pgRule::GetSql(ctlTree *browser)
             + wxT("\n");
         if (!GetComment().IsEmpty())
             sql += wxT("COMMENT ON RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
-                +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+                +  wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
     }
     return sql;
 }

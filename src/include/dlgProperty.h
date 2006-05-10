@@ -65,7 +65,7 @@ protected:
     void AppendComment(wxString &sql, const wxString &objType, pgSchema *schema, pgObject *obj);
     void AppendComment(wxString &sql, const wxString &objName, pgObject *obj);
     void AppendQuoted(wxString &sql, const wxString &name);
-
+	wxString qtDbString(const wxString &str);
 
 #if __GNUC__ >= 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
     // ANSI spec 11.5 is quite brain dead about pointers of protected members: In order to access 

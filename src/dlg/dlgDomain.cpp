@@ -108,7 +108,7 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
     wxString name=GetName();
 
     pgObject *obj=domainFactory.CreateObjects(collection, 0, 
-        wxT("   AND d.typname=") + qtString(name) + 
+        wxT("   AND d.typname=") + qtDbString(name) + 
         wxT("\n   AND d.typnamespace=") + schema->GetOidStr() +
         wxT("\n"));
     return obj;

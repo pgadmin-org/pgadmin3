@@ -224,8 +224,8 @@ void dlgForeignKey::OnSelChangeRef(wxCommandEvent &ev)
         wxT("SELECT attname\n")
         wxT("  FROM pg_attribute att, pg_class cl, pg_namespace nsp\n")
         wxT(" WHERE attrelid=cl.oid AND relnamespace=nsp.oid\n")
-        wxT("   AND nspname=") + qtString(nsp) +
-        wxT("\n   AND relname=") + qtString(tab) +
+        wxT("   AND nspname=") + qtDbString(nsp) +
+        wxT("\n   AND relname=") + qtDbString(tab) +
         wxT("\n   AND attnum > 0\n")
           wxT("\n ORDER BY attnum"));
     if (set)
@@ -292,7 +292,7 @@ pgObject *dlgForeignKey::CreateObject(pgCollection *collection)
         return 0;
 
     pgObject *obj=foreignKeyFactory.CreateObjects(collection, 0, wxT(
-        "\n   AND conname=") + qtString(name) + wxT(
+        "\n   AND conname=") + qtDbString(name) + wxT(
         "\n   AND cl.relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
 }

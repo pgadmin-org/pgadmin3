@@ -58,14 +58,14 @@ wxString pgUser::GetSql(ctlTree *browser)
             + wxT("\n\nCREATE USER ") + GetQuotedIdentifier()
             + wxT("\n  WITH SYSID ") + NumToStr(userId);
         if (GetPassword() != wxT("********"))
-            AppendIfFilled(sql, wxT("\n  ENCRYPTED PASSWORD "), qtString(GetPassword()));
+            AppendIfFilled(sql, wxT("\n  ENCRYPTED PASSWORD "), qtDbString(GetPassword()));
         sql += wxT("\n ");
         if (GetCreateDatabase())    sql += wxT(" CREATEDB");
         else                        sql += wxT(" NOCREATEDB");
         if (GetUpdateCatalog())     sql += wxT(" CREATEUSER");
         else                        sql += wxT(" NOCREATEUSER");
         if (GetAccountExpires().IsValid())
-        AppendIfFilled(sql, wxT(" VALID UNTIL "), qtString(DateToAnsiStr(GetAccountExpires())));
+        AppendIfFilled(sql, wxT(" VALID UNTIL "), qtDbString(DateToAnsiStr(GetAccountExpires())));
         sql +=wxT(";\n");
 
         size_t index;

@@ -100,7 +100,7 @@ pgObject *dlgTablespace::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=tablespaceFactory.CreateObjects(collection, 0, wxT("\n WHERE spcname=") + qtString(name));
+    pgObject *obj=tablespaceFactory.CreateObjects(collection, 0, wxT("\n WHERE spcname=") + qtDbString(name));
     return obj;
 }
 
@@ -123,7 +123,7 @@ wxString dlgTablespace::GetSql()
         // Create Mode
         sql = wxT("CREATE TABLESPACE ") + qtIdent(name);
         AppendIfFilled(sql, wxT(" OWNER "), qtIdent(cbOwner->GetValue()));
-        sql += wxT(" LOCATION ") + qtString(txtLocation->GetValue())
+        sql += wxT(" LOCATION ") + qtDbString(txtLocation->GetValue())
             +  wxT(";\n");
     }
     sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + qtIdent(name));

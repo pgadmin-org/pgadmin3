@@ -105,7 +105,6 @@ wxString DateToStr(const wxDateTime &datetime);
 
 
 // Quoting
-wxString qtString(const wxString& value);   // add single quote and escape if necessary
 wxString qtConnString(const wxString& value); // connection strings always have single quotes escaped with backslash
 
 // check if size/pos have reasonable values

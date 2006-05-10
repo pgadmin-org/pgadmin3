@@ -366,10 +366,10 @@ wxString dlgJob::GetInsertSql()
     if (!job)
     {
         sql = wxT("INSERT INTO pgagent.pga_job (jobid, jobjclid, jobname, jobdesc, jobenabled, jobhostagent)\n")
-              wxT("SELECT <JobId>, jcl.jclid, ") + qtString(GetName()) + 
-              wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + 
-			  wxT(", ") + qtString(txtHostAgent->GetValue()) + wxT("\n")
-              wxT("  FROM pgagent.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue()) + wxT(";\n");
+              wxT("SELECT <JobId>, jcl.jclid, ") + qtDbString(GetName()) + 
+              wxT(", ") + qtDbString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + 
+			  wxT(", ") + qtDbString(txtHostAgent->GetValue()) + wxT("\n")
+              wxT("  FROM pgagent.pga_jobclass jcl WHERE jclname=") + qtDbString(cbJobclass->GetValue()) + wxT(";\n");
     }
     return sql;
 }
@@ -389,13 +389,13 @@ wxString dlgJob::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jobname = ") + qtString(name));
+            vars.Append(wxT("jobname = ") + qtDbString(name));
         }
         if (cbJobclass->GetValue().Trim() != job->GetJobclass())
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jobjclid= (SELECT jclid FROM pgagent.pga_jobclass WHERE jclname=") + qtString(cbJobclass->GetValue()) + wxT(")"));
+            vars.Append(wxT("jobjclid= (SELECT jclid FROM pgagent.pga_jobclass WHERE jclname=") + qtDbString(cbJobclass->GetValue()) + wxT(")"));
         }
         if (chkEnabled->GetValue() != job->GetEnabled())
         {
@@ -407,13 +407,13 @@ wxString dlgJob::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jobhostagent = ") + qtString(txtHostAgent->GetValue()));
+            vars.Append(wxT("jobhostagent = ") + qtDbString(txtHostAgent->GetValue()));
         }
         if (txtComment->GetValue() != job->GetComment())
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jobdesc = ") + qtString(txtComment->GetValue()));
+            vars.Append(wxT("jobdesc = ") + qtDbString(txtComment->GetValue()));
         }
 
         if (!vars.IsEmpty())

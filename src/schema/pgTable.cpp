@@ -81,7 +81,7 @@ int pgTable::GetReplicationStatus(ctlTree *browser, wxString *clusterName, long 
         wxString nsp=qtIdent(wxT("_") + clusters.Item(i));
 
         pgSetIterator sets(GetConnection(),
-            wxT("SELECT tab_set, sub_provider, ") + nsp + wxT(".getlocalnodeid(") + qtString(wxT("_") + clusters.Item(i)) + wxT(") AS localnode\n")
+            wxT("SELECT tab_set, sub_provider, ") + nsp + wxT(".getlocalnodeid(") + qtDbString(wxT("_") + clusters.Item(i)) + wxT(") AS localnode\n")
             wxT("  FROM ") + nsp + wxT(".sl_table\n")
             wxT("  LEFT JOIN ") + nsp + wxT(".sl_subscribe ON sub_set=tab_set\n")
             wxT(" WHERE tab_reloid = ") + GetOidStr());
@@ -653,7 +653,7 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
     
     sql += wxT("\n  FROM pg_stat_all_tables st")
            wxT("  JOIN pg_class cl on cl.oid=st.relid\n")
-	       wxT(" WHERE schemaname = ") + qtString(GetSchema()->GetName())
+	       wxT(" WHERE schemaname = ") + qtDbString(GetSchema()->GetName())
 	    +  wxT("\n ORDER BY relname");
 
     pgSet *stats = GetDatabase()->ExecuteSet(sql);
@@ -703,7 +703,7 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
     if (GetConnection()->HasFeature(FEATURE_SIZE))
     {
         sql += wxT(", pg_size_pretty(pg_relation_size(stat.relid)) AS ") + qtIdent(_("Table Size"))
-            +  wxT(", CASE WHEN cl.reltoastrelid = 0 THEN ") + qtString(_("none")) + wxT(" ELSE pg_size_pretty(pg_relation_size(cl.reltoastrelid)+ COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0)) END AS ") + qtIdent(_("Toast Table Size"))
+            +  wxT(", CASE WHEN cl.reltoastrelid = 0 THEN ") + qtDbString(_("none")) + wxT(" ELSE pg_size_pretty(pg_relation_size(cl.reltoastrelid)+ COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0)) END AS ") + qtIdent(_("Toast Table Size"))
             +  wxT(", pg_size_pretty(COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=stat.relid)::int8, 0)) AS ") + qtIdent(_("Indexes Size"));
     }
     sql +=  wxT("\n")

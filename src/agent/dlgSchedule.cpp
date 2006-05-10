@@ -393,7 +393,7 @@ wxString dlgSchedule::GetInsertSql()
 
 		// Build the various arrays of values
         sql = wxT("INSERT INTO pgagent.pga_schedule (jscid, jscjobid, jscname, jscdesc, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths, jscenabled, jscstart, jscend)\n")
-              wxT("VALUES(<SchId>, ") + jscjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
+              wxT("VALUES(<SchId>, ") + jscjobid + wxT(", ") + qtDbString(name) + wxT(", ") + qtDbString(txtComment->GetValue()) + wxT(", ")
 				+ wxT("'") + ChkListBox2PgArray(chkMinutes) + wxT("', ")
 				+ wxT("'") + ChkListBox2PgArray(chkHours) + wxT("', ")
 				+ wxT("'") + ChkListBox2PgArray(chkWeekdays) + wxT("', ")
@@ -428,13 +428,13 @@ wxString dlgSchedule::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jscname = ") + qtString(name));
+            vars.Append(wxT("jscname = ") + qtDbString(name));
         }
         if (txtComment->GetValue() != schedule->GetComment())
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jscdesc = ") + qtString(txtComment->GetValue()));
+            vars.Append(wxT("jscdesc = ") + qtDbString(txtComment->GetValue()));
         }
 
         if ((!chkEnabled->IsChecked() && schedule->GetEnabled()) || (chkEnabled->IsChecked() && !schedule->GetEnabled()))

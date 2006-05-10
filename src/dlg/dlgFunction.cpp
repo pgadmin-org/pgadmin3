@@ -290,7 +290,7 @@ int dlgFunction::Go(bool modal)
 
 pgObject *dlgFunction::CreateObject(pgCollection *collection)
 {
-    wxString sql=wxT(" WHERE proname=") + qtString(GetName()) +
+    wxString sql=wxT(" WHERE proname=") + qtDbString(GetName()) +
         wxT("\n   AND pronamespace=") + schema->GetOidStr();
 
     long argCount;
@@ -674,23 +674,23 @@ wxString dlgFunction::GetSql()
 
         if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
         {
-            sql += qtString(txtObjectFile->GetValue());
+            sql += qtDbString(txtObjectFile->GetValue());
             if (!txtLinkSymbol->GetValue().IsEmpty())
-                sql += wxT(", ") + qtString(txtLinkSymbol->GetValue());
+                sql += wxT(", ") + qtDbString(txtLinkSymbol->GetValue());
         }
         else
         {
             if (connection->BackendMinimumVersion(7, 5))
-                sql += qtStringDollar(txtSqlBox->GetText());
+                sql += qtDbStringDollar(txtSqlBox->GetText());
             else
-                sql += qtString(txtSqlBox->GetText());
+                sql += qtDbString(txtSqlBox->GetText());
         }
 
         if (isProcedure && connection->EdbMinimumVersion(8, 0))
             sql += wxT("\n");
         else
         {
-            sql += wxT("\nLANGUAGE ") + qtString(cbLanguage->GetValue())
+            sql += wxT("\nLANGUAGE ") + qtDbString(cbLanguage->GetValue())
                 +  wxT(" ") + cbVolatility->GetValue();
             if (chkStrict->GetValue())
                 sql += wxT(" STRICT");

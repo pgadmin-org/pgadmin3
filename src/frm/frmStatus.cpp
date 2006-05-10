@@ -556,7 +556,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
         if (isCurrent)
         {
             // check if the current logfile changed
-		    pgSet *set = connection->ExecuteSet(wxT("SELECT pg_file_length(") + qtString(logfileName) + wxT(") AS len"));
+		    pgSet *set = connection->ExecuteSet(wxT("SELECT pg_file_length(") + connection->qtDbString(logfileName) + wxT(") AS len"));
 		    if (set)
 			{
 				newlen = set->GetLong(wxT("len"));
@@ -667,7 +667,7 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
     while (len > read)
     {
         pgSet *set=connection->ExecuteSet(wxT("SELECT pg_file_read(") + 
-            qtString(filename) + wxT(", ") + NumToStr(read) + wxT(", 50000)"));
+            connection->qtDbString(filename) + wxT(", ") + NumToStr(read) + wxT(", 50000)"));
         if (!set)
         {
             connection->IsAlive();
@@ -933,7 +933,7 @@ void frmStatus::OnCommit(wxCommandEvent &event)
     while  (item >= 0)
     {
 		wxString xid = xactList->GetText(item, 1);
-		wxString sql = wxT("COMMIT PREPARED ") + qtString(xid);
+		wxString sql = wxT("COMMIT PREPARED ") + connection->qtDbString(xid);
 		connection->ExecuteScalar(sql);
 
         item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
@@ -955,7 +955,7 @@ void frmStatus::OnRollback(wxCommandEvent &event)
     while  (item >= 0)
     {
 		wxString xid = xactList->GetText(item, 1);
-		wxString sql = wxT("ROLLBACK PREPARED ") + qtString(xid);
+		wxString sql = wxT("ROLLBACK PREPARED ") + connection->qtDbString(xid);
 		connection->ExecuteScalar(sql);
 
         item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);

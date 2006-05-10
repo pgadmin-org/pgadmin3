@@ -223,7 +223,7 @@ long slCluster::GetSlonPid()
 {
     long slonPid=StrToLong(GetConnection()->ExecuteScalar(
         wxT("SELECT listenerpid FROM pg_listener WHERE relname = ")
-            + qtString(wxT("_") + GetName() + wxT("_Event"))));
+            + qtDbString(wxT("_") + GetName() + wxT("_Event"))));
     return slonPid;
 }
 
@@ -258,8 +258,8 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
         {
             sql +=  wxT("  JOIN ") + GetSchemaPrefix() + wxT("sl_path ON no_id = pa_client\n")
                     wxT(" WHERE pa_server = ") + NumToStr(localNodeID) + 
-                    wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + GetServer()->GetName() + wxT("%")) +
-                    wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + GetDatabase()->GetName() + wxT("%"));
+                    wxT("   AND pa_conninfo LIKE ") + qtDbString(wxT("%host=") + GetServer()->GetName() + wxT("%")) +
+                    wxT("   AND pa_conninfo LIKE ") + qtDbString(wxT("%dbname=") + GetDatabase()->GetName() + wxT("%"));
         }
         else
             sql += wxT(" WHERE no_id = ") + NumToStr(adminNodeID); 

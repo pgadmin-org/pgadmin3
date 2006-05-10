@@ -336,7 +336,7 @@ pgObject *dlgType::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=0; //pgType::ReadObjects(collection, 0, wxT("\n WHERE usename=") + qtString(name));
+    pgObject *obj=0; //pgType::ReadObjects(collection, 0, wxT("\n WHERE usename=") + qtDbString(name));
     return obj;
 }
 
@@ -393,7 +393,7 @@ wxString dlgType::GetSql()
             {
                 sql += wxT(",\n    ELEMENT=");
                 AppendQuoted(sql, cbElement->GetValue());
-                AppendIfFilled(sql, wxT(", DELIMITER="), qtString(txtDelimiter->GetValue().Strip(wxString::both)));
+                AppendIfFilled(sql, wxT(", DELIMITER="), qtDbString(txtDelimiter->GetValue().Strip(wxString::both)));
             }
             if (chkByValue->GetValue())
                 sql += wxT(",\n    PASSEDBYVALUE");

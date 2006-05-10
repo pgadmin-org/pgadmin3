@@ -87,14 +87,14 @@ wxString pgFunction::GetSql(ctlTree *browser)
         
         if (GetLanguage().IsSameAs(wxT("C"), false))
         {
-            sql += qtString(GetBin()) + wxT(", ") + qtString(GetSource());
+            sql += qtDbString(GetBin()) + wxT(", ") + qtDbString(GetSource());
         }
         else
         {
             if (GetConnection()->BackendMinimumVersion(7, 5))
-                sql += qtStringDollar(GetSource());
+                sql += qtDbStringDollar(GetSource());
             else
-                sql += qtString(GetSource());
+                sql += qtDbString(GetSource());
         }
         sql += wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
 
@@ -109,7 +109,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
         if (!GetComment().IsNull())
         {
             sql += wxT("COMMENT ON FUNCTION ") + qtName
-                + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+                + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
         }
     }
 
@@ -170,13 +170,13 @@ wxString pgProcedure::GetSql(ctlTree *browser)
         }
 
         sql += wxT(" AS\n")
-            + qtStringDollar(GetSource())
+            + qtDbStringDollar(GetSource())
             + wxT(";\n");
 
         if (!GetComment().IsNull())
         {
             sql += wxT("COMMENT ON FUNCTION ") + qtName
-                + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+                + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
         }
     }
 

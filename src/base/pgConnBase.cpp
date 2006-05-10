@@ -201,10 +201,18 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
 
         wxString sql=wxT("SET DateStyle=ISO;SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
                       wxT("  FROM pg_database WHERE ");
+
         if (oid)
             sql += wxT("oid = ") + NumToStr(oid);
         else
-            sql += wxT("datname=") + qtString(database);
+		{
+			// Note, can't use qtDbString here as we don't know the server version yet.
+			wxString db = database;
+			db.Replace(wxT("\\"), wxT("\\\\"));
+			db.Replace(wxT("'"), wxT("''"));
+            sql += wxT("datname='") + database + wxT("'");
+		}
+		
 
         pgSetBase *set = ExecuteSet(sql);
 

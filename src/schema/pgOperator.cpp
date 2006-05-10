@@ -75,7 +75,7 @@ wxString pgOperator::GetSql(ctlTree *browser)
 	if (!GetComment().IsNull())
 	    sql += wxT("COMMENT ON OPERATOR ") + GetFullIdentifier()
 	    + wxT("(") + GetOperands() + wxT(") IS ")
-		+ qtString(GetComment()) + wxT(";\n");
+		+ qtDbString(GetComment()) + wxT(";\n");
     }
 
     return sql;

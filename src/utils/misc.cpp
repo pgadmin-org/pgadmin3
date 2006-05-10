@@ -53,13 +53,20 @@ wxString IdAndName(long id, const wxString &name)
 }
 
 
-wxString qtStringDollar(const wxString &value)
+wxString qtDbStringDollar(const wxString &value)
 {
     wxString qtDefault=wxT("BODY");
     wxString qt=qtDefault;
     int counter=1;
     if (value.Find('\'') < 0 && value.Find('\n') < 0)
-        return qtString(value);
+	{
+		wxString ret = value;
+		ret.Replace(wxT("\\"), wxT("\\\\"));
+        ret.Replace(wxT("'"), wxT("''"));
+        ret.Append(wxT("'"));
+        ret.Prepend(wxT("'"));
+		return ret;
+	}
 
     while (value.Find(wxT("$") + qt + wxT("$")) >= 0)
         qt.Printf(wxT("%s%d"), qtDefault.c_str(), counter++);

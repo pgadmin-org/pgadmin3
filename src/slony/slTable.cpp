@@ -47,9 +47,9 @@ wxString slTable::GetSql(ctlTree *browser)
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("setaddtable(") 
                     + NumToStr(GetSet()->GetSlId()) + wxT(", ") 
                     + NumToStr(GetSlId()) + wxT(", ")
-                    + qtString(GetName()) + wxT(", ")
-                    + qtString(GetIndexName()) + wxT(", ")
-                    + qtString(GetComment()) + wxT(");\n");
+                    + qtDbString(GetName()) + wxT(", ")
+                    + qtDbString(GetIndexName()) + wxT(", ")
+                    + qtDbString(GetComment()) + wxT(");\n");
 
         
         size_t i;
@@ -57,7 +57,7 @@ wxString slTable::GetSql(ctlTree *browser)
         {
             sql += wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("storetrigger(") 
                     + NumToStr(GetSlId()) + wxT(", ")
-                    + qtString(triggers[i]) + wxT(");\n");
+                    + qtDbString(triggers[i]) + wxT(");\n");
         }
     }
     return sql;

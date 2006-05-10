@@ -21,7 +21,7 @@ wxString IdAndName(long id, const wxString &name);
 // Quoting
 wxString qtIdent(const wxString& value);    // add " if necessary
 wxString qtTypeIdent(const wxString& value);    // add " if necessary
-wxString qtStringDollar(const wxString &value);
+wxString qtDbStringDollar(const wxString &value);
 wxString qtStrip(const wxString& value);    // remove \"
 
 
