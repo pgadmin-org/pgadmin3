@@ -611,7 +611,9 @@ wxString frmReport::GetDefaultXsl(const wxString &css)
             wxT("    </xsl:if>\n")
             wxT("\n")
             wxT("    <div id=\"ReportDetails\">\n")
-            wxT("      <xsl:apply-templates select=\"section\" />\n")
+            wxT("      <xsl:apply-templates select=\"section\" >\n")
+			wxT("        <xsl:sort select=\"@number\" data-type=\"number\" order=\"ascending\" />\n")
+            wxT("      </xsl:apply-templates>\n")
             wxT("    </div>\n")
             wxT("\n")
             wxT("    <div id=\"ReportFooter\">\n");
@@ -637,10 +639,12 @@ wxString frmReport::GetDefaultXsl(const wxString &css)
             wxT("    <table>\n")
             wxT("      <tr>\n")
             wxT("        <xsl:apply-templates select=\"../section[@id = current()/@id]/table/columns/column\">\n")
+			wxT("          <xsl:sort select=\"@number\" data-type=\"number\" order=\"ascending\" />\n")
             wxT("          <xsl:with-param name=\"count\" select=\"count(../section[@id = current()/@id]/table/columns/column)\" />\n")
             wxT("        </xsl:apply-templates>\n")
             wxT("      </tr>\n")
             wxT("      <xsl:apply-templates select=\"../section[@id = current()/@id]/table/rows/*\" mode=\"rows\">\n")
+			wxT("          <xsl:sort select=\"@number\" data-type=\"number\" order=\"ascending\" />\n")
             wxT("        <xsl:with-param name=\"column-meta\" select=\"../section[@id = current()/@id]/table/columns/column\" />\n")
             wxT("      </xsl:apply-templates>\n")
             wxT("    </table>\n")
@@ -765,11 +769,13 @@ void frmReport::XmlSetSectionTableHeader(const int section, int columns, const w
 
     for (int x = 0; x < columns; x++)
     {
-        data += wxT("        <column name=\"");
-        data += HtmlEntities(p);
-        data += wxT("\" id=\"c");
+        data += wxT("        <column id=\"c");
         data += NumToStr((long)(x+1));
-        data += wxT("\" />\n");
+        data += wxT("\" number=\"");
+		data += NumToStr((long)(x+1));
+        data += wxT("\" name=\"");
+        data += HtmlEntities(p);
+		data += wxT("\"/>\n");
         p = va_arg(ap, wxChar*);
     }
 
@@ -778,7 +784,7 @@ void frmReport::XmlSetSectionTableHeader(const int section, int columns, const w
     sectionTableHeader[section-1] = data;
 }
 
-void frmReport::XmlAddSectionTableRow(const int section, int columns, const wxChar *value,...)
+void frmReport::XmlAddSectionTableRow(const int section, int number, int columns, const wxChar *value,...)
 {
     va_list ap;
     const wxChar *p = value;
@@ -786,8 +792,12 @@ void frmReport::XmlAddSectionTableRow(const int section, int columns, const wxCh
 
     va_start(ap, value);
 
-    data = wxT("        <row");
-
+    data = wxT("        <row id=\"r");
+    data += NumToStr((long)number);
+	data += wxT("\" number=\"");
+    data += NumToStr((long)number);
+	data += wxT("\"");
+	
     for (int x = 0; x < columns; x++)
     {
         data += wxT(" c");
@@ -797,6 +807,7 @@ void frmReport::XmlAddSectionTableRow(const int section, int columns, const wxCh
         data += wxT("\"");
         p = va_arg(ap, wxChar*);
     }
+
 
     data += wxT(" />\n");
 
@@ -819,10 +830,12 @@ void frmReport::XmlAddSectionTableFromListView(const int section, ctlListView *l
         itm.SetMask(wxLIST_MASK_TEXT);
         list->GetColumn(x, itm);
         wxString label = itm.GetText();
-        data += wxT("        <column name=\"");
-        data += HtmlEntities(label);
-        data += wxT("\" id=\"c");
+        data += wxT("        <column id=\"c");
         data += NumToStr((long)(x+1));
+        data += wxT("\" number=\"");
+        data += NumToStr((long)(x+1));
+        data += wxT("\" name=\"");
+        data += HtmlEntities(label);
         data += wxT("\" />\n");
     }
     sectionTableHeader[section-1] = data;
@@ -832,7 +845,11 @@ void frmReport::XmlAddSectionTableFromListView(const int section, ctlListView *l
 
     for (int y = 0; y < rows; y++)
     {
-        data = wxT("        <row");
+        data = wxT("        <row id=\"r");
+        data += NumToStr((long)(y+1));
+	    data += wxT("\" number=\"");
+        data += NumToStr((long)(y+1));
+		data += wxT("\"");
 
         for (int x = 0; x < cols; x++)
         {
@@ -858,10 +875,12 @@ void frmReport::XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid
     for (int x = 1; x <= cols; x++)
     {
         wxString label = grid->OnGetItemText(-1, x);
-        data += wxT("        <column name=\"");
-        data += HtmlEntities(label);
-        data += wxT("\" id=\"c");
+        data += wxT("        <column id=\"c");
         data += NumToStr((long)(x));
+        data += wxT("\" number=\"");
+        data += NumToStr((long)(x));
+        data += wxT("\" name=\"");
+        data += HtmlEntities(label);
         data += wxT("\" />\n");
     }
     sectionTableHeader[section-1] = data;
@@ -871,7 +890,11 @@ void frmReport::XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid
 
     for (int y = 0; y < rows; y++)
     {
-        data = wxT("        <row");
+        data = wxT("        <row id=\"r");
+        data += NumToStr((long)(y+1));
+	    data += wxT("\" number=\"");
+        data += NumToStr((long)(y+1));
+		data += wxT("\"");
 
         for (int x = 1; x <= cols; x++)
         {
@@ -938,6 +961,8 @@ wxString frmReport::GetSection(const int section)
     wxString data;
     
     data  = wxT("  <section id=\"s");
+    data += NumToStr((long)section);
+    data += wxT("\" number=\"");
     data += NumToStr((long)section);
     data += wxT("\" name=\"");
     data += sectionName[section-1];

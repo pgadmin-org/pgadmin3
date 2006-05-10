@@ -28,7 +28,7 @@ public:
     void XmlAddHeaderValue(const wxString &name, const wxString &value);
     int XmlCreateSection(const wxString &name);
     void XmlSetSectionTableHeader(const int section, const int columns, const wxChar *name,...);
-    void XmlAddSectionTableRow(const int section, const int columns, const wxChar *value,...);
+    void XmlAddSectionTableRow(const int section, const int number, const int columns, const wxChar *value,...);
     void XmlAddSectionTableFromListView(const int section, ctlListView *list);
     void XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid);
     void XmlSetSectionTableInfo(const int section, const wxString &info) { sectionTableInfo[section-1] = info; };
