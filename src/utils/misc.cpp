@@ -345,7 +345,7 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
         firstCall=false;
         wxString helpdir=docPath + wxT("/") + settings->GetCanonicalLanguage();
 
-        if (!wxFile::Exists(helpdir + wxT("/pgadmin3..hhp")) &&
+        if (!wxFile::Exists(helpdir + wxT("/pgadmin3.hhp")) &&
 #if defined(__WXMSW__) || wxUSE_LIBMSPACK
             !wxFile::Exists(helpdir + wxT("/pgadmin3.chm")) &&
 #endif
