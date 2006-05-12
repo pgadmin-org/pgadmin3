@@ -31,7 +31,7 @@
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
-pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, int _ssl)
+pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl)
 : pgObject(serverFactory, newName)
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
@@ -49,6 +49,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     conn = NULL;
     passwordValid=true;
     storePwd=_storePwd;
+	restore=_restore;
     superUser=false;
     createPrivilege=false;
 #ifdef WIN32
@@ -863,6 +864,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         properties->AppendItem(_("Maintenance database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
         properties->AppendItem(_("Store password?"), GetStorePwd());
+		properties->AppendItem(_("Restore environment?"), GetRestore());
         if (GetConnected())
         {
             properties->AppendItem(_("Version string"), GetVersionString());
@@ -968,7 +970,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, serviceID, dbRestriction;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, dbRestriction;
     pgServer *server=0;
 
     wxArrayString servicedServers;
@@ -986,6 +988,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("ServiceID"), &serviceID, wxEmptyString);
         settings->Read(key + wxT("Description"), &description, wxEmptyString);
         settings->Read(key + wxT("StorePwd"), &storePwd, wxEmptyString);
+	    settings->Read(key + wxT("Restore"), &restore, wxT("true"));
         settings->Read(key + wxT("Port"), &port, 0);
         settings->Read(key + wxT("Database"), &database, wxEmptyString);
         settings->Read(key + wxT("Username"), &username, wxEmptyString);
@@ -1000,7 +1003,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 #endif
 
         // Add the Server node
-        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), ssl);
+        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), StrToBool(restore), ssl);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);

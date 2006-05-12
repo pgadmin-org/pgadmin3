@@ -37,7 +37,7 @@ extern pgServerFactory serverFactory;
 class pgServer : public pgObject
 {
 public:
-    pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, int sslMode=0);
+    pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, bool restore=true, int sslMode=0);
     ~pgServer();
     int GetIconId();
 
@@ -63,6 +63,7 @@ public:
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return password; }
     bool GetStorePwd() const { return storePwd; }
+    bool GetRestore() const { return restore; }
     wxString GetLastError() const;
 
     bool GetDiscovered() const { return discovered; }
@@ -100,6 +101,7 @@ public:
     void iSetUsername(const wxString& newVal) { username = newVal; }
     void iSetPassword(const wxString& newVal) { password = newVal; }
     void iSetStorePwd(const bool b) { storePwd = b; }
+    void iSetRestore(const bool b) { restore = b; }
     bool SetPassword(const wxString& newVal);
     wxDateTime GetUpSince() { return upSince; }
     void iSetUpSince(const wxDateTime &d) { upSince = d; }
@@ -134,7 +136,7 @@ private:
     wxString lastDatabase, lastSchema, description, serviceId;
     wxDateTime upSince;
     int port, ssl;
-    bool storePwd, discovered, createPrivilege, superUser;
+    bool storePwd, restore, discovered, createPrivilege, superUser;
     OID lastSystemOID;
     OID dbOid;
     wxString versionNum;

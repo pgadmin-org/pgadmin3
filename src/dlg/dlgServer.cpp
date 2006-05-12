@@ -32,6 +32,8 @@
 #define chkTryConnect   CTRL_CHECKBOX("chkTryConnect")
 #define stStorePwd      CTRL_STATIC("stStorePwd")
 #define chkStorePwd     CTRL_CHECKBOX("chkStorePwd")
+#define stRestore       CTRL_STATIC("stRestore")
+#define chkRestore      CTRL_CHECKBOX("chkRestore")
 #define stPassword      CTRL_STATIC("stPassword")
 #define txtPassword     CTRL_TEXT("txtPassword")
 #define txtDbRestriction CTRL_TEXT("txtDbRestriction")
@@ -49,6 +51,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_TEXT(XRCID("txtDbRestriction"),             dlgServer::OnChangeRestr)
     EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkRestore"),               dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
     EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
 END_EVENT_TABLE();
@@ -79,6 +82,7 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
  
     chkTryConnect->SetValue(true);
     chkStorePwd->SetValue(true);
+    chkRestore->SetValue(true);
     if (node)
     {
         chkTryConnect->SetValue(false);
@@ -127,6 +131,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
         server->iSetStorePwd(chkStorePwd->GetValue());
+        server->iSetRestore(chkRestore->GetValue());
         server->iSetDbRestriction(txtDbRestriction->GetValue());
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
@@ -213,6 +218,7 @@ int dlgServer::Go(bool modal)
         cbDatabase->SetValue(server->GetDatabaseName());
         txtUsername->SetValue(server->GetUsername());
         chkStorePwd->SetValue(server->GetStorePwd());
+        chkRestore->SetValue(server->GetRestore());
         txtDbRestriction->SetValue(server->GetDbRestriction());
 
         stPassword->Disable();
@@ -255,7 +261,7 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
     wxString name=GetName();
 
     pgObject *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
-        txtUsername->GetValue(), StrToLong(txtPort->GetValue()), chkTryConnect->GetValue() && chkStorePwd->GetValue(), cbSSL->GetCurrentSelection());
+        txtUsername->GetValue(), StrToLong(txtPort->GetValue()), chkTryConnect->GetValue() && chkStorePwd->GetValue(), chkRestore->GetValue(), cbSSL->GetCurrentSelection());
 
     return obj;
 }
@@ -284,6 +290,7 @@ void dlgServer::CheckChange()
                || txtUsername->GetValue() != server->GetUsername()
                || cbSSL->GetCurrentSelection() != server->GetSSL()
                || chkStorePwd->GetValue() != server->GetStorePwd()
+               || chkRestore->GetValue() != server->GetRestore()
                || txtDbRestriction->GetValue() != server->GetDbRestriction();
     }
 

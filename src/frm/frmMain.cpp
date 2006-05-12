@@ -707,28 +707,38 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
     {
         case PGCONN_OK:
         {
-			if (restore)
-			{
-				StartMsg(_("Restoring previous environment"));
-				wxLogInfo(wxT("pgServer object initialised as required."));
+	        if (restore && server->GetRestore())
+			    StartMsg(_("Restoring previous environment"));
+			else
+                StartMsg(_("Establishing connection"));
 
-				server->ShowTreeDetail(browser);
+			wxLogInfo(wxT("pgServer object initialised as required."));
+
+			server->ShowTreeDetail(browser);
+
+			if (restore && server->GetRestore())
+			{
 				browser->Freeze();
 				item=RestoreEnvironment(server);
 				browser->Thaw();
+			}
 
-				if (item)
-				{
-					browser->SelectItem(item);
+			if (item)
+			{
+				browser->SelectItem(item);
 
-					wxSafeYield();
-					browser->Expand(item);
-					browser->EnsureVisible(item);
-				}
-				if (item)
-					EndMsg(true);
-				else
+				wxSafeYield();
+				browser->Expand(item);
+				browser->EnsureVisible(item);
+			}
+			if (item)
+				EndMsg(true);
+			else
+			{
+				if (restore && server->GetRestore())
 					EndMsg(false);
+				else
+					EndMsg(true);
 			}
             return res;
         }
@@ -826,6 +836,7 @@ void frmMain::StoreServers()
 	        settings->Write(key + wxT("ServiceID"), server->GetServiceID());
 		    settings->Write(key + wxT("Port"), server->GetPort());
 	        settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
+		    settings->Write(key + wxT("Restore"), server->GetRestore());
 	        settings->Write(key + wxT("Database"), server->GetDatabaseName());
 	        settings->Write(key + wxT("Username"), server->GetUsername());
 			settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
