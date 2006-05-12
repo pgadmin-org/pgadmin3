@@ -1178,6 +1178,39 @@ void reportObjectPropertiesFactory::GenerateReport(frmReport *report, pgObject *
 }
 
 ///////////////////////////////////////////////////////
+// DDL report
+///////////////////////////////////////////////////////
+reportObjectDdlFactory::reportObjectDdlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+: reportBaseFactory(list)
+{
+    mnu->Append(id, _("&DDL report"), _("Generate a DDL report for this object."));
+}
+
+bool reportObjectDdlFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (obj->GetSql(NULL) == wxEmptyString)
+            return false;
+        else
+            return true;
+    }
+    return false;
+}
+
+void reportObjectDdlFactory::GenerateReport(frmReport *report, pgObject *object)
+{
+    wxString title = object->GetTypeName();
+    title += _(" DDL report - ");
+    title += object->GetIdentifier();
+    report->SetReportTitle(title);
+
+    int section = report->XmlCreateSection(object->GetTypeName() + _(" DDL"));
+
+    report->XmlSetSectionSql(section, object->GetSql(NULL));
+}
+
+///////////////////////////////////////////////////////
 // Statistics report
 ///////////////////////////////////////////////////////
 reportObjectStatisticsFactory::reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)

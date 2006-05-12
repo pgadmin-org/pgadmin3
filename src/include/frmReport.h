@@ -93,6 +93,17 @@ public:
 };
 
 ///////////////////////////////////////////////////////
+// Object DDL report
+///////////////////////////////////////////////////////
+class reportObjectDdlFactory : public reportBaseFactory
+{
+public:
+    reportObjectDdlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bool CheckEnable(pgObject *obj);
+    void GenerateReport(frmReport *report, pgObject *object);
+};
+
+///////////////////////////////////////////////////////
 // Object statistics report
 ///////////////////////////////////////////////////////
 class reportObjectStatisticsFactory : public reportBaseFactory

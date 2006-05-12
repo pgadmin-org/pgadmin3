@@ -305,6 +305,7 @@ void frmMain::CreateMenus()
     reportMenuFactory = new submenuFactory(menuFactories);     // placeholder where "Reports" submenu will be inserted
     toolsMenu->Append(reportMenuFactory->GetId(), _("&Reports"), reportMenu,    _("Create reports about the selected item."));
     new reportObjectPropertiesFactory(menuFactories, reportMenu, 0);
+	new reportObjectDdlFactory(menuFactories, reportMenu, 0);
     new reportObjectStatisticsFactory(menuFactories, reportMenu, 0);
     new reportObjectDependenciesFactory(menuFactories, reportMenu, 0);
     new reportObjectDependeesFactory(menuFactories, reportMenu, 0);
