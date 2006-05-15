@@ -47,6 +47,8 @@ private:
     wxString GetArgs(bool withNames=true, bool quoted=false);
     void ReplaceSizer(wxWindow *w, bool isC, int border);
 
+	virtual bool IsUpToDate();
+
     wxArrayString typOids;
     wxArrayString types;
     wxArrayString argOids;

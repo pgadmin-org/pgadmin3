@@ -30,6 +30,14 @@ pgView::~pgView()
 {
 }
 
+bool pgView::IsUpToDate()
+{
+    wxString sql = wxT("SELECT xmin FROM pg_class WHERE oid = ") + this->GetOidStr();
+	if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) != NumToStr(GetXid()))
+		return false;
+	else
+		return true;
+}
 
 wxMenu *pgView::GetNewMenu()
 {
@@ -207,7 +215,7 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
 
     pgSet *views= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
+        wxT("SELECT c.oid, c.xmin, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
                wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition\n")
         wxT("  FROM pg_class c\n")
         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
@@ -226,6 +234,7 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
             view = new pgView(collection->GetSchema(), views->GetVal(wxT("relname")));
 
             view->iSetOid(views->GetOid(wxT("oid")));
+            view->iSetXid(views->GetOid(wxT("xmin")));
             view->iSetOwner(views->GetVal(wxT("viewowner")));
             view->iSetComment(views->GetVal(wxT("description")));
             view->iSetAcl(views->GetVal(wxT("relacl")));

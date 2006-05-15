@@ -55,6 +55,7 @@ protected:
     ~dlgProperty();
 
     void EnableOK(bool enable);
+	virtual bool IsUpToDate() { return true; };
     void ShowObject();
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);

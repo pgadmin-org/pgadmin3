@@ -30,7 +30,12 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
+	void SetObject(pgObject *obj) { view = (pgView*)obj; }
+
 private:
+
+	virtual bool IsUpToDate();
+
     pgSchema *schema;
     pgView *view;
     wxString oldDefinition;

@@ -348,6 +348,14 @@ void dlgFunction::CheckChange()
     }
 }
 
+bool dlgFunction::IsUpToDate()
+{
+	if (function && !function->IsUpToDate())
+		return false;
+	else
+		return true;
+}
+
 
 void dlgFunction::ReplaceSizer(wxWindow *w, bool isC, int border)
 {

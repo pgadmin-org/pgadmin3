@@ -89,6 +89,8 @@ public:
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
 
+	bool IsUpToDate();
+
 protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
 

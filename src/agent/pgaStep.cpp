@@ -34,6 +34,14 @@ pgaStep::~pgaStep()
     wxLogInfo(wxT("Destroying a pgaStep object"));
 }
 
+bool pgaStep::IsUpToDate()
+{
+    wxString sql = wxT("SELECT xmin FROM pgagent.pga_jobstep WHERE jstid = ") + NumToStr(GetRecId());
+	if (!GetConnection() || GetConnection()->ExecuteScalar(sql) != NumToStr(GetXid()))
+		return false;
+	else
+		return true;
+}
 
 bool pgaStep::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
@@ -84,7 +92,7 @@ pgObject *pgaStepFactory::CreateObjects(pgCollection *collection, ctlTree *brows
     pgaStep *step=0;
 
     pgSet *steps= collection->GetConnection()->ExecuteSet(
-       wxT("SELECT * FROM pgagent.pga_jobstep\n")
+       wxT("SELECT xmin, * FROM pgagent.pga_jobstep\n")
        wxT(" WHERE jstjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jstname"));
@@ -96,6 +104,7 @@ pgObject *pgaStepFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 
             step = new pgaStep(collection, steps->GetVal(wxT("jstname")));
             step->iSetRecId(steps->GetLong(wxT("jstid")));
+			step->iSetXid(steps->GetOid(wxT("xmin")));
             step->iSetDbname(steps->GetVal(wxT("jstdbname")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));
             step->iSetEnabled(steps->GetBool(wxT("jstenabled")));

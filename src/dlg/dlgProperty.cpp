@@ -580,6 +580,12 @@ bool dlgProperty::apply(const wxString &sql)
 
 void dlgProperty::OnApply(wxCommandEvent &ev)
 {
+	if (!IsUpToDate())
+	{
+		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+			return;
+	}
+
     EnableOK(false);
 
     wxString sql=GetSql();
@@ -595,6 +601,12 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
 
 void dlgProperty::OnOK(wxCommandEvent &ev)
 {
+	if (!IsUpToDate())
+	{
+		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+			return;
+	}
+
     EnableOK(false);
 
     if (IsModal())
@@ -1307,13 +1319,17 @@ bool dlgAgentProperty::executeSql()
 
 void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 {
+	if (!IsUpToDate())
+	{
+		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+			return;
+	}
+
     if (IsModal())
     {
         EndModal(0);
         return;
     }
-
-    
 
     connection->ExecuteVoid(wxT("BEGIN TRANSACTION"));
 

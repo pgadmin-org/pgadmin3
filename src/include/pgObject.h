@@ -72,6 +72,8 @@ public:
     OID GetOid() const { return oid; }
     wxString GetOidStr() const {return NumToStr(oid) + wxT("::oid"); }
     void iSetOid(const OID newVal) { oid = newVal; } 
+	void iSetXid(const OID x) { xid = x; };
+	OID GetXid() { return xid; };
     wxString GetOwner() const { return owner; }
     void iSetOwner(const wxString& newVal) { owner = newVal; }
     wxString GetComment() const { return comment; }
@@ -103,8 +105,7 @@ public:
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(name); }
 
-    virtual void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)
-        =0;
+    virtual void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)=0;
     virtual void ShowStatistics(frmMain *form, ctlListView *statistics);
     virtual void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
     virtual void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
@@ -147,7 +148,7 @@ private:
     void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query, const wxString &clsOrder);
     wxString name, owner, comment, acl;
     int type;
-    OID oid;
+    OID oid, xid;
 
     friend class pgaFactory;
 };

@@ -36,6 +36,15 @@ pgFunction::~pgFunction()
 {
 }
 
+bool pgFunction::IsUpToDate()
+{
+    wxString sql = wxT("SELECT xmin FROM pg_proc WHERE oid = ") + this->GetOidStr();
+	if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) != NumToStr(GetXid()))
+		return false;
+	else
+		return true;
+}
+
 bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(")");
@@ -204,7 +213,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
         argNamesCol = wxT("proargnames, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.*, TYP.typname, TYPNS.nspname AS typnsp, lanname, ") + argNamesCol + 
+            wxT("SELECT pr.oid, pr.xmin, pr.*, TYP.typname, TYPNS.nspname AS typnsp, lanname, ") + argNamesCol + 
                         wxT("pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type TYP ON TYP.oid=prorettype\n")
@@ -326,6 +335,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             }
 
             function->iSetOid(functions->GetOid(wxT("oid")));
+			function->iSetXid(functions->GetOid(wxT("xmin")));
             function->UpdateSchema(browser, functions->GetOid(wxT("pronamespace")));
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetAcl(functions->GetVal(wxT("proacl")));

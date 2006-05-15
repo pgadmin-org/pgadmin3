@@ -31,11 +31,17 @@ public:
     wxString GetComment();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+
+    void SetObject(pgObject *obj) { step = (pgaStep*)obj; }
+
     void SetJobId(long id) { jobId = id; }
 
     wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-steps"); }
 
 private:
+
+	virtual bool IsUpToDate();
+
     long jobId;
     ctlSQLBox *sqlBox;
     pgaStep *step;

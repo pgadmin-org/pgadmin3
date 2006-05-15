@@ -54,6 +54,8 @@ public:
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
 
+	bool IsUpToDate();
+
 private:
 	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
 	bool hasInsertRule, hasUpdateRule, hasDeleteRule;

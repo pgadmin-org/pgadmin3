@@ -141,3 +141,11 @@ wxString dlgView::GetSql()
     return sql;
 }
 
+bool dlgView::IsUpToDate()
+{
+	if (view && !view->IsUpToDate())
+		return false;
+	else
+		return true;
+}
+

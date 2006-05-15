@@ -267,3 +267,11 @@ wxString dlgStep::GetUpdateSql()
     }
     return sql;
 }
+
+bool dlgStep::IsUpToDate()
+{
+	if (step && !step->IsUpToDate())
+		return false;
+	else
+		return true;
+}

@@ -54,6 +54,8 @@ public:
 	long GetRecId() const { return recId; }
     void iSetRecId(const long l) { recId=l; }
 
+	bool IsUpToDate();
+
     wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-steps"); }
 
 private:
