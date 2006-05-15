@@ -292,7 +292,8 @@ frmQuery::~frmQuery()
 
     mainForm->RemoveFrame(this);
 
-    settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
+    if (!IsIconized())
+        settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
 

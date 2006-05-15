@@ -147,7 +147,8 @@ void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int def
 
 void pgDialog::SavePosition()
 {
-	settings->Write(dlgName, GetSize(), GetPosition());
+	if (!IsIconized())
+		settings->Write(dlgName, GetSize(), GetPosition());
 }
 
 void pgDialog::LoadResource(wxWindow *parent, const wxChar *name)
@@ -340,7 +341,8 @@ void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defa
 
 void pgFrame::SavePosition()
 {
-	settings->Write(dlgName, GetSize(), GetPosition());
+	if (!IsIconized())
+	    settings->Write(dlgName, GetSize(), GetPosition());
 }
 
 
