@@ -115,10 +115,13 @@ private:
 
     void OnNew(wxCommandEvent& event);
     void OnDelete(wxCommandEvent &ev);
+	void OnCopy(wxCommandEvent &ev) { sqlPane->Copy(); };
 
     void OnCheckAlive(wxCommandEvent& event);
     void OnOnlineUpdate(wxCommandEvent& event);
     void OnOnlineUpdateNewData(wxCommandEvent& event);
+
+    void OnPositionStc(wxStyledTextEvent& event);
 
     bool dropSingleObject(pgObject *data, bool updateFinal, bool cascaded);
     void doPopup(wxWindow *win, wxPoint point, pgObject *object);

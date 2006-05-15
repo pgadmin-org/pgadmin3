@@ -47,6 +47,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
     EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
 
+	EVT_MENU(MNU_COPY,						frmMain::OnCopy)
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
@@ -62,6 +63,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_TREE_ITEM_COLLAPSING(CTL_BROWSER,   frmMain::OnCollapse)
     EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER,    frmMain::OnSelActivated)
     EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
+    EVT_STC_UPDATEUI(CTL_SQLPANE,           frmMain::OnPositionStc)
     EVT_CLOSE(                              frmMain::OnClose)
 #ifdef __WXGTK__
     EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
@@ -784,3 +786,10 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
     }
 }
 
+void frmMain::OnPositionStc(wxStyledTextEvent& event)
+{
+    if (sqlPane->GetSelectedText().IsNull())
+        editMenu->Enable(MNU_COPY, false);
+	else
+        editMenu->Enable(MNU_COPY, true);
+}

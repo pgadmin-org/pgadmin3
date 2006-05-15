@@ -267,6 +267,13 @@ void frmMain::CreateMenus()
     new separatorFactory(menuFactories);
 
 
+	// -------------------------
+
+    editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"),                _("Copy selected text to clipboard"));
+	editMenu->AppendSeparator();
+
+	// -------------------------
+
 	//--------------------------
     
     newMenuFactory = new submenuFactory(menuFactories);     // placeholder where "New objects" submenu will be inserted

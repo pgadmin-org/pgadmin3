@@ -1017,7 +1017,11 @@ void frmQuery::OnQuickReport(wxCommandEvent& event)
     stats.Printf(wxT("%d rows with %d columns retrieved."), sqlResult->NumRows(), sqlResult->GetNumberCols());
     rep->XmlSetSectionTableInfo(section, stats);
 
-    rep->XmlSetSectionSql(section, sqlQuery->GetText());
+    wxString query=sqlQuery->GetSelectedText();
+    if (query.IsNull())
+        query = sqlQuery->GetText();
+
+    rep->XmlSetSectionSql(section, query);
 
     rep->ShowModal();
 }
