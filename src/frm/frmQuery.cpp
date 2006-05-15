@@ -81,6 +81,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
 	EVT_MENU(MNU_SELECTALL,		    frmQuery::OnSelectAll)
     EVT_MENU(MNU_QUICKREPORT,       frmQuery::OnQuickReport)
+	EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
 	EVT_MENU(MNU_FAVOURITES_ADD,	frmQuery::OnAddFavourite)
 	EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
 	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
@@ -139,6 +140,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->AppendSeparator();
     editMenu->Append(MNU_FIND, _("&Find\tCtrl-F"), _("Find text"), wxITEM_NORMAL);
     editMenu->Append(MNU_REPLACE, _("&Replace\tCtrl-R"), _("Find and Replace text"), wxITEM_NORMAL);
+	editMenu->AppendSeparator();
+	editMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
     menuBar->Append(editMenu, _("&Edit"));
 
     queryMenu = new wxMenu();
@@ -264,6 +267,16 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
         splitpos = GetSize().y-50;
     horizontal->SplitHorizontally(sqlQuery, output, splitpos);
 
+    bool bVal;
+
+    // Output format
+    settings->Read(wxT("frmQuery/WordWrap"), &bVal, false);
+	editMenu->Check(MNU_WORDWRAP, bVal);
+    if (bVal)
+		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
+	else
+        sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
+
     sqlQuery->SetText(query);
     sqlQuery->Colourise(0, query.Length());
 
@@ -309,6 +322,17 @@ frmQuery::~frmQuery()
 		delete favourites;
 }
 
+void frmQuery::OnWordWrap(wxCommandEvent &event)
+{
+	editMenu->Check(MNU_WORDWRAP, event.IsChecked());
+
+	settings->Write(wxT("frmQuery/WordWrap"), editMenu->IsChecked(MNU_WORDWRAP));
+	
+	if (editMenu->IsChecked(MNU_WORDWRAP))
+		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
+	else
+		sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
+}
 
 void frmQuery::OnActivate(wxActivateEvent& event)
 {
