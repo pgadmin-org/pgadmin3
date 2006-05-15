@@ -286,6 +286,7 @@ BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
     EVT_FIND_REPLACE_ALL(-1, ctlSQLBox::OnFindDialog)
     EVT_FIND_CLOSE(-1, ctlSQLBox::OnFindDialog)
 	EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
+    EVT_STC_UPDATEUI(-1,  ctlSQLBox::OnPositionStc)
 END_EVENT_TABLE()
 
 
@@ -356,6 +357,10 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     StyleSetForeground(9,  wxColour(0x7f, 0x7f, 0x7f));
     StyleSetForeground(10, wxColour(0x00, 0x00, 0x00));
     StyleSetForeground(11, wxColour(0x00, 0x00, 0x00));
+
+	// Brace maching styles
+    StyleSetBackground(34, wxColour(0x99, 0xF9, 0xFF));
+    StyleSetBackground(35, wxColour(0xFF, 0x61, 0x70));
     
     // SQL Lexer and keywords.
 //    SetLexer(lmPostgreSQL.GetLanguage());
@@ -559,6 +564,25 @@ void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
 	AutoCompCancel();
 }
 
+void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
+{
+	int pos = GetCurrentPos()-1;
+	wxChar ch = GetCharAt(pos);
+
+	if (ch == '{' || ch == '}' ||
+		ch == '[' || ch == ']' ||
+		ch == '(' || ch == ')')
+	{
+		int match = BraceMatch(pos);
+	    if (match != wxSTC_INVALID_POSITION)
+	        BraceHighlight(pos, match);
+		else
+			BraceBadLight(pos);
+	}
+    
+
+	event.Skip();
+}
 
 extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
 void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)

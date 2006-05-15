@@ -44,6 +44,9 @@ public:
     DECLARE_EVENT_TABLE()
 		
 private:
+
+    void OnPositionStc(wxStyledTextEvent& event);
+
 	wxFindReplaceData m_findData;
     wxFindReplaceDialog* m_dlgFind;
 	pgConn *m_database;
