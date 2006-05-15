@@ -284,24 +284,31 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
 #endif
         case WXK_DELETE:
         {
-            if (!sqlGrid->IsCurrentCellReadOnly())
-            {
-                sqlGrid->EnableCellEditControl();
-                sqlGrid->ShowCellEditControl();
+			if (editorShown || !toolBar->GetToolEnabled(MNU_DELETE))
+			{
+				if (!sqlGrid->IsCurrentCellReadOnly())
+				{
+					sqlGrid->EnableCellEditControl();
+					sqlGrid->ShowCellEditControl();
 
-                wxGridCellEditor *edit=sqlGrid->GetCellEditor(currow, curcol);
-                if (edit)
-                {
-                    wxControl *ctl=edit->GetControl();
-                    if (ctl)
-                    {
-                        wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
-                        if (txt)
-                            txt->SetValue(wxEmptyString);
-                    }
-                    edit->DecRef();
-                }
-            }
+					wxGridCellEditor *edit=sqlGrid->GetCellEditor(currow, curcol);
+					if (edit)
+					{
+						wxControl *ctl=edit->GetControl();
+						if (ctl)
+						{
+							wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
+							if (txt)
+								txt->SetValue(wxEmptyString);
+						}
+						edit->DecRef();
+					}
+				}
+			}
+			else
+			{
+				OnDelete(ev);
+			}
             return;
         }
         case WXK_RETURN:
