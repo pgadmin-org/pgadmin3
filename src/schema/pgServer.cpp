@@ -474,11 +474,17 @@ void pgServer::StorePassword()
         if (fd > 0)
             close(fd);
     }
-    file.Open(fname, wxFile::read_write, wxFONTENCODING_SYSTEM);
+
+	// Don't try to read and write in one OP - it doesn't work well
+	wxString before;
+	file.Open(fname, wxFile::read, wxFONTENCODING_SYSTEM);
+	file.Read(before);
+	file.Close();
+
+	file.Open(fname, wxFile::write, wxFONTENCODING_SYSTEM);
 
     if (file.IsOpened())
     {
-        wxString before;
         wxString after;
 
         wxString passwd;
