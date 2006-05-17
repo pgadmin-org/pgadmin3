@@ -362,6 +362,7 @@ pgObject *pgGroupRoleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 pgRoleBaseFactory::pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) 
 : pgServerObjFactory(tn, ns, nls, img)
 {
+	metaType = PGM_ROLE;
 }
 
 pgLoginRoleFactory::pgLoginRoleFactory()

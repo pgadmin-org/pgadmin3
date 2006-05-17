@@ -640,7 +640,12 @@ bool pgServerObject::CanDrop()
     if (GetMetaType() == PGM_DATABASE)
         return server->GetCreatePrivilege();
     else
-        return server->GetSuperUser();
+	{
+		if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
+			return server->GetCreateRole();
+		else
+			return server->GetSuperUser();
+	}
 }
 
 
@@ -649,7 +654,12 @@ bool pgServerObject::CanCreate()
     if (GetMetaType() == PGM_DATABASE)
         return server->GetCreatePrivilege();
     else
-        return server->GetSuperUser();
+	{
+		if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
+			return server->GetCreateRole();
+		else
+			return server->GetSuperUser();
+	}
 }
 
 

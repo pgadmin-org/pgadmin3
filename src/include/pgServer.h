@@ -74,6 +74,8 @@ public:
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
     bool GetSuperUser() const { return superUser; }
     void iSetSuperUser(const bool b) { superUser=b; }
+    bool GetCreateRole() const { return createRole; }
+    void iSetCreateRole(const bool b) { createRole=b; }
 
     pgConn *CreateConn(wxString dbName=wxEmptyString, OID oid=0);
 
@@ -124,7 +126,7 @@ private:
     wxString lastDatabase, lastSchema, description, serviceId;
     wxDateTime upSince;
     int port, ssl;
-    bool storePwd, discovered, createPrivilege, superUser;
+    bool storePwd, discovered, createPrivilege, superUser, createRole;
     OID lastSystemOID;
     OID dbOid;
     wxString versionNum;
