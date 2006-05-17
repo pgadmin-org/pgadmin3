@@ -79,6 +79,7 @@ enum
     PGM_FOREIGNKEY,
     PGM_CHECK,
     PGM_COLUMN,
+	PGM_ROLE,
 
     PGM_STEP,
     PGM_SCHEDULE,

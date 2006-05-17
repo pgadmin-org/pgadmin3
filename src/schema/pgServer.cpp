@@ -85,7 +85,7 @@ int pgServer::GetIconId()
 wxMenu *pgServer::GetNewMenu()
 {
     wxMenu *menu=0;
-    if (connected && GetSuperUser())
+    if (connected && (GetSuperUser() || GetCreateRole()))
     {
         menu=new wxMenu();
         tablespaceFactory.AppendMenu(menu);
@@ -637,6 +637,20 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
                 delete set;
             }
 
+			if (conn->BackendMinimumVersion(8, 1))
+			{
+				set=ExecuteSet(wxT("SELECT rolcreaterole, rolcreatedb FROM pg_roles WHERE rolname = current_user;"));
+	
+				if (set)
+				{
+					iSetCreatePrivilege(set->GetBool(wxT("rolcreatedb")));
+					iSetCreateRole(set->GetBool(wxT("rolcreaterole")));
+					delete set;
+				}
+			}
+			else
+				iSetCreateRole(false);
+
             wxString version, allVersions;
             version.Printf(wxT("%d.%d"), conn->GetMajorVersion(), conn->GetMinorVersion());
             allVersions = settings->Read(wxT("Updates/pgsql-Versions"), wxEmptyString);
@@ -967,7 +981,14 @@ bool pgServerObjCollection::CanCreate()
     if (server->GetMetaType() == PGM_DATABASE)
         return GetServer()->GetCreatePrivilege();
     else
-        return GetServer()->GetSuperUser();
+	{
+		if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
+			return server->GetCreateRole();
+		else if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_DATABASE)
+			return server->GetCreatePrivilege();
+		else
+			return server->GetSuperUser();
+	}
 }
 
 
