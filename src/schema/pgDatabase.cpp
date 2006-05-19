@@ -348,11 +348,18 @@ wxString pgDatabase::GetSql(ctlTree *browser)
             sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
                 +  wxT(" SET ") + variables.Item(i) + wxT(";\n");
 
-        if (!GetConnection()->BackendMinimumVersion(8, 2))
-            sql += GetGrant(wxT("CT"));
-        else
-            sql += GetGrant(wxT("CTc"));
+		// If we can't connect to this database, use the maintenance DB
+		pgConn *myConn = GetConnection();
+		if (!myConn)
+			myConn = GetServer()->GetConnection();
 
+		if (myConn)
+		{
+			if (!myConn->BackendMinimumVersion(8, 2))
+				sql += GetGrant(wxT("CT"));
+			else
+				sql += GetGrant(wxT("CTc"));
+		}
 
         sql += GetCommentSql();
     }

@@ -309,23 +309,20 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     if (showTree)
         data->ShowTree(this, browser, props, sqlbox);
 
-    pgConn *conn=data->GetConnection();
-    if (!conn || (conn && conn->GetStatus() == PGCONN_BROKEN))
-    {
-        sqlbox->SetReadOnly(false);
-        sqlbox->SetText(wxT(""));
-        sqlbox->SetReadOnly(true);
-		wxLogInfo(wxT("Connection borked!!"));
-        CheckAlive();
-        return;
-    }
-
     if (sqlbox)
     {
         sqlbox->SetReadOnly(false);
         sqlbox->SetText(data->GetSql(browser));
         sqlbox->SetReadOnly(true);
     }
+
+    pgConn *conn=data->GetConnection();
+    if (conn && conn->GetStatus() == PGCONN_BROKEN)
+    {
+        CheckAlive();
+        return;
+    }
+
     unsigned int i;
     wxMenuItem *menuItem;
     i=newMenu->GetMenuItemCount();
