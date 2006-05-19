@@ -360,8 +360,8 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 
 	// Brace maching styles
     StyleSetBackground(34, wxColour(0x99, 0xF9, 0xFF));
-    StyleSetBackground(35, wxColour(0xFF, 0x61, 0x70));
-    
+    StyleSetBackground(35, wxColour(0xFF, 0xCF, 0x27));
+
     // SQL Lexer and keywords.
 //    SetLexer(lmPostgreSQL.GetLanguage());
     if (sqlKeywords.IsEmpty())
@@ -566,21 +566,43 @@ void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
 
 void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
 {
-	int pos = GetCurrentPos()-1;
+	int pos = GetCurrentPos();
 	wxChar ch = GetCharAt(pos);
+	int match;
+
+	// Clear all highlighting
+	BraceBadLight(wxSTC_INVALID_POSITION);
+
+	// Highlight the previous set if the match
+	ch = GetCharAt(pos-1);
 
 	if (ch == '{' || ch == '}' ||
 		ch == '[' || ch == ']' ||
 		ch == '(' || ch == ')')
 	{
-		int match = BraceMatch(pos);
-	    if (match != wxSTC_INVALID_POSITION)
-	        BraceHighlight(pos, match);
-		else
-			BraceBadLight(pos);
+		match = BraceMatch(pos-1);
+		if (match != wxSTC_INVALID_POSITION)
+			BraceHighlight(pos-1, match);
+	}
+
+	// Roll back through the doc and highlight any unmatched braces
+	while ((pos--) >= 0)
+	{
+		ch = GetCharAt(pos);
+
+		if (ch == '{' || ch == '}' ||
+			ch == '[' || ch == ']' ||
+			ch == '(' || ch == ')')
+		{
+			match = BraceMatch(pos);
+			if (match == wxSTC_INVALID_POSITION)
+			{
+				BraceBadLight(pos);
+				break;
+			}
+		}
 	}
     
-
 	event.Skip();
 }
 
