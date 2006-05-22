@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>REPAIR CONFIG</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtwaitevent.html" title="WAIT FOR EVENT">
+<link rel="next" href="supportedplatforms.html" title="Slony-I Supported Platforms">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtrepairconfig"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>REPAIR CONFIG &#8212;  Resets the name-to-oid mapping of tables in a replication set, useful for restoring a node after a <span class="application">pg_dump</span>. </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">REPAIR CONFIG (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id594847"></a><h2>Description</h2>
+<p> Resets name-to-oid mapping.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> SET ID = ival </code></span></dt>
+<dd><p> Which set to clean up after.</p></dd>
+<dt><span class="term"><code class="literal"> EVENT NODE = ival </code></span></dt>
+<dd><p> The node ID where this should be submitted.</p></dd>
+<dt><span class="term"><code class="literal"> EXECUTE ONLY ON = ival </code></span></dt>
+<dd><p> The ID of the only node where the mappings are
+       to be updated.  If not specified, the default is to execute
+       this on all nodes subscribed to the set.</p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id594894"></a><h2>Example</h2>
+<pre class="programlisting">REPAIR CONFIG (
+  SET ID = 1,
+  EVENT NODE = 2
+);
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id594903"></a><h2> Locking Behaviour </h2>
+<p> No application-visible locking should take place. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id594911"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.1 </p>
+</div>
+</div></body>
+</html>

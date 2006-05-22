@@ -4,16 +4,17 @@
 <title>36.10. Trigger Procedures</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-errors-and-messages.html" title="36.9. Errors and Messages">
 <link rel="next" href="plpgsql-porting.html" title="36.11. Porting from Oracle PL/SQL">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plpgsql-trigger"></a>36.10. Trigger Procedures</h2></div></div></div>
-<a name="id673956"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
+<a name="id727055"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
         procedures. A trigger procedure is created with the
         <code class="command">CREATE FUNCTION</code> command, declaring it as a function with
         no arguments and a return type of <code class="type">trigger</code>.  Note that
@@ -106,6 +107,7 @@
    </p>
 <div class="example">
 <a name="plpgsql-trigger-example"></a><p class="title"><b>Example 36.2. A <span class="application">PL/pgSQL</span> Trigger Procedure</b></p>
+<div class="example-contents">
 <p>     This example trigger ensures that any time a row is inserted or updated
      in the table, the current user name and time are stamped into the
      row. And it checks that an employee's name is given and that the
@@ -143,7 +145,8 @@ $emp_stamp$ LANGUAGE plpgsql;
 CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
     FOR EACH ROW EXECUTE PROCEDURE emp_stamp();</pre>
 </div>
-<p>    Another way to log changes to a table involves creating a new table that
+</div>
+<br class="example-break"><p>    Another way to log changes to a table involves creating a new table that
     holds a row for each insert, update, or delete that occurs. This approach
     can be thought of as auditing changes to a table.
     <a href="plpgsql-trigger.html#plpgsql-trigger-audit-example" title="Example 36.3. A PL/pgSQL Trigger Procedure For Auditing">Example 36.3, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing&#8221;</a> shows an example of an
@@ -151,6 +154,7 @@ CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
    </p>
 <div class="example">
 <a name="plpgsql-trigger-audit-example"></a><p class="title"><b>Example 36.3. A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing</b></p>
+<div class="example-contents">
 <p>     This example trigger ensures that any insert, update or delete of a row
      in the <code class="literal">emp</code> table is recorded (i.e., audited) in the <code class="literal">emp_audit</code> table. 
      The current time and user name are stamped into the row, together with 
@@ -193,7 +197,8 @@ CREATE TRIGGER emp_audit
 AFTER INSERT OR UPDATE OR DELETE ON emp
     FOR EACH ROW EXECUTE PROCEDURE process_emp_audit();</pre>
 </div>
-<p>    One use of triggers is to maintain a summary table
+</div>
+<br class="example-break"><p>    One use of triggers is to maintain a summary table
     of another table. The resulting summary can be used in place of the 
     original table for certain queries [mdash ] often with vastly reduced run 
     times.
@@ -205,6 +210,7 @@ AFTER INSERT OR UPDATE OR DELETE ON emp
    </p>
 <div class="example">
 <a name="plpgsql-trigger-summary-example"></a><p class="title"><b>Example 36.4. A <span class="application">PL/pgSQL</span> Trigger Procedure For Maintaining A Summary Table</b></p>
+<div class="example-contents">
 <p>     The schema detailed here is partly based on the <span class="emphasis"><em>Grocery Store
      </em></span> example from <span class="emphasis"><em>The Data Warehouse Toolkit</em></span> 
      by Ralph Kimball.
@@ -337,5 +343,7 @@ SELECT * FROM sales_summary_bytime;
 UPDATE sales_fact SET units_sold = units_sold * 2;
 SELECT * FROM sales_summary_bytime;</pre>
 </div>
+</div>
+<br class="example-break">
 </div></body>
 </html>

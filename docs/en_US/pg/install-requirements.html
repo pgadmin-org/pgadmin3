@@ -4,11 +4,12 @@
 <title>14.2. Requirements</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="prev" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="next" href="install-getsource.html" title="14.3. Getting The Source">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -18,7 +19,7 @@
     The platforms that had received specific testing at the
    time of release are listed in <a href="supported-platforms.html" title="14.7. Supported Platforms">Section 14.7, &#8220;Supported Platforms&#8221;</a>
    below. In the <code class="filename">doc</code> subdirectory of the distribution
-   there are several platform-specific <span class="acronym">FAQ</span> documents you
+   there are several platform-specific <acronym class="acronym">FAQ</acronym> documents you
    might wish to consult if you are having trouble.
   </p>
 <p>   The following software packages are required for building
@@ -27,15 +28,15 @@
    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>      <a name="id581770"></a>
+<p>      <a name="id634314"></a>
 
-      <span class="acronym">GNU</span> <span class="application">make</span> is required; other
+      <acronym class="acronym">GNU</acronym> <span class="application">make</span> is required; other
       <span class="application">make</span> programs will <span class="emphasis"><em>not</em></span> work.
-      <span class="acronym">GNU</span> <span class="application">make</span> is often installed under
+      <acronym class="acronym">GNU</acronym> <span class="application">make</span> is often installed under
       the name <code class="filename">gmake</code>; this document will always
       refer to it by that name. (On some systems
-      <span class="acronym">GNU</span> <span class="application">make</span> is the default tool with the name
-      <code class="filename">make</code>.) To test for <span class="acronym">GNU</span>
+      <acronym class="acronym">GNU</acronym> <span class="application">make</span> is the default tool with the name
+      <code class="filename">make</code>.) To test for <acronym class="acronym">GNU</acronym>
       <span class="application">make</span> enter
 </p>
 <pre class="screen"><strong class="userinput"><code>gmake --version</code></strong></pre>
@@ -43,7 +44,7 @@
       It is recommended to use version 3.76.1 or later.
      </p>
 </li>
-<li><p>      You need an <span class="acronym">ISO</span>/<span class="acronym">ANSI</span> C compiler. Recent
+<li><p>      You need an <acronym class="acronym">ISO</acronym>/<acronym class="acronym">ANSI</acronym> C compiler. Recent
       versions of <span class="productname">GCC</span> are recommendable, but
       <span class="productname">PostgreSQL</span> is known to build with a wide variety
       of compilers from different vendors.
@@ -52,9 +53,9 @@
       distribution in the first place, in addition to either
       <span class="application">gzip</span> or <span class="application">bzip2</span>.
      </p></li>
-<li><p>      <a name="id581912"></a>
+<li><p>      <a name="id634456"></a>
 
-      The <span class="acronym">GNU</span> <span class="productname">Readline</span> library (for
+      The <acronym class="acronym">GNU</acronym> <span class="productname">Readline</span> library (for
       comfortable line editing and command history retrieval) will be
       used by default.  If you don't want to use it then you must
       specify the <code class="option">--without-readline</code> option for
@@ -66,7 +67,7 @@
       the <code class="literal">readline</code> and <code class="literal">readline-devel</code> packages,
       if those are separate in your distribution.
      </p></li>
-<li><p>      <a name="id581991"></a>
+<li><p>      <a name="id634535"></a>
 
       The <span class="productname">zlib</span> compression library will be
       used by default. If you don't want to use it then you must
@@ -75,7 +76,7 @@
       support for compressed archives in <span class="application">pg_dump</span> and
       <span class="application">pg_restore</span>.
      </p></li>
-<li><p>      <a name="id582037"></a>
+<li><p>      <a name="id634581"></a>
 
       Additional software is needed to build
       <span class="productname">PostgreSQL</span> on <span class="productname">Windows</span>.
@@ -110,7 +111,7 @@
       <span class="productname">Perl</span> installation, including the
       <code class="filename">libperl</code> library and the header files.
       Since <span class="application">PL/Perl</span> will be a shared
-      library, the <a name="id582211"></a>
+      library, the <a name="id634755"></a>
       <code class="filename">libperl</code> library must be a shared library
       also on most platforms.  This appears to be the default in
       recent <span class="productname">Perl</span> versions, but it was not
@@ -144,7 +145,7 @@
       to install it.
      </p>
 <p>      Since <span class="application">PL/Python</span> will be a shared
-      library, the <a name="id582344"></a>
+      library, the <a name="id634888"></a>
       <code class="filename">libpython</code> library must be a shared library
       also on most platforms.  This is not the case in a default
       <span class="productname">Python</span> installation.  If after
@@ -172,15 +173,15 @@
 <li><p>      If you want to build the <span class="application">PL/Tcl</span>
       procedural language, you of course need a Tcl installation.
      </p></li>
-<li><p>      To enable Native Language Support (<span class="acronym">NLS</span>), that
+<li><p>      To enable Native Language Support (<acronym class="acronym">NLS</acronym>), that
       is, the ability to display a program's messages in a language
       other than English, you need an implementation of the
-      <span class="application">Gettext</span> <span class="acronym">API</span>.  Some operating
+      <span class="application">Gettext</span> <acronym class="acronym">API</acronym>.  Some operating
       systems have this built-in (e.g., <span class="systemitem">Linux</span>, <span class="systemitem">NetBSD</span>,
       <span class="systemitem">Solaris</span>), for other systems you
       can download an add-on package from <a href="http://developer.postgresql.org/~petere/bsd-gettext/" target="_top">http://developer.postgresql.org/~petere/bsd-gettext/</a>.
       If you are using the <span class="application">Gettext</span> implementation in
-      the <span class="acronym">GNU</span> C library then you will additionally
+      the <acronym class="acronym">GNU</acronym> C library then you will additionally
       need the <span class="productname">GNU Gettext</span> package for some
       utility programs.  For any of the other implementations you will
       not need it.
@@ -192,14 +193,14 @@
 </ul></div>
 <p>
   </p>
-<p>   If you are building from a <span class="acronym">CVS</span> tree instead of
+<p>   If you are building from a <acronym class="acronym">CVS</acronym> tree instead of
    using a released source package, or if you want to do development,
    you also need the following packages:
 
    </p>
-<div class="itemizedlist"><ul type="disc"><li><p>      <a name="id582563"></a>
-      <a name="id582570"></a>
-      <a name="id582578"></a>
+<div class="itemizedlist"><ul type="disc"><li><p>      <a name="id635107"></a>
+      <a name="id635114"></a>
+      <a name="id635122"></a>
 
       GNU <span class="application">Flex</span> and <span class="application">Bison</span>
       are needed to build a CVS checkout or if you changed the actual
@@ -212,8 +213,8 @@
      </p></li></ul></div>
 <p>
   </p>
-<p>   If you need to get a <span class="acronym">GNU</span> package, you can find
-   it at your local <span class="acronym">GNU</span> mirror site (see <a href="http://www.gnu.org/order/ftp.html" target="_top">http://www.gnu.org/order/ftp.html</a>
+<p>   If you need to get a <acronym class="acronym">GNU</acronym> package, you can find
+   it at your local <acronym class="acronym">GNU</acronym> mirror site (see <a href="http://www.gnu.org/order/ftp.html" target="_top">http://www.gnu.org/order/ftp.html</a>
    for a list) or at <a href="ftp://ftp.gnu.org/gnu/" target="_top">ftp://ftp.gnu.org/gnu/</a>.
   </p>
 <p>   Also check that you have sufficient disk space. You will need about

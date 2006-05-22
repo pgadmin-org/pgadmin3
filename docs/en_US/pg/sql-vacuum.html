@@ -4,11 +4,12 @@
 <title>VACUUM</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-update.html" title="UPDATE">
 <link rel="next" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-vacuum"></a><div class="titlepage"></div>
@@ -16,13 +17,13 @@
 <h2>Name</h2>
 <p>VACUUM &#8212; garbage-collect and optionally analyze a database</p>
 </div>
-<a name="id737558"></a><div class="refsynopsisdiv">
+<a name="id790721"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">VACUUM [ FULL | FREEZE ] [ VERBOSE ] [ <em class="replaceable"><code>table</code></em> ]
 VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>table</code></em> [ (<em class="replaceable"><code>column</code></em> [, ...] ) ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737595"></a><h2>Description</h2>
+<a name="id790758"></a><h2>Description</h2>
 <p>   <code class="command">VACUUM</code> reclaims storage occupied by deleted tuples.
    In normal <span class="productname">PostgreSQL</span> operation, tuples that
    are deleted or obsoleted by an update are not physically removed from
@@ -65,7 +66,7 @@ VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>tab
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737764"></a><h2>Parameters</h2>
+<a name="id790927"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">FULL</code></span></dt>
 <dd><p>      Selects &#8220;<span class="quote">full</span>&#8221; vacuum, which may reclaim more
@@ -91,14 +92,14 @@ VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>tab
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737854"></a><h2>Outputs</h2>
+<a name="id791017"></a><h2>Outputs</h2>
 <p>    When <code class="literal">VERBOSE</code> is specified, <code class="command">VACUUM</code> emits
     progress messages to indicate which table is currently being
     processed.  Various statistics about the tables are printed as well.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737877"></a><h2>Notes</h2>
+<a name="id791040"></a><h2>Notes</h2>
 <p>    We recommend that active production databases be
     vacuumed frequently (at least nightly), in order to
     remove expired rows. After adding or deleting a large number
@@ -124,7 +125,7 @@ VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>tab
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737949"></a><h2>Examples</h2>
+<a name="id791112"></a><h2>Examples</h2>
 <p>   The following is an example from running <code class="command">VACUUM</code> on a
    table in the regression database:
 
@@ -161,12 +162,12 @@ VACUUM</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id738014"></a><h2>Compatibility</h2>
+<a name="id791155"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">VACUUM</code> statement in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id738027"></a><h2>See Also</h2>
+<a name="id791168"></a><h2>See Also</h2>
 <span class="simplelist"><a href="app-vacuumdb.html"><span class="application">vacuumdb</span></a>, <a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost">       Cost-Based Vacuum Delay
      </a></span>
 </div>

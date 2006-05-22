@@ -4,22 +4,23 @@
 <title>10. Locking Issues</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="plainpaths.html" title="9.  Slony-I Path Communications">
 <link rel="next" href="addthings.html" title="11. Adding Things to Replication">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="locking"></a>10. Locking Issues</h2></div></div></div>
-<a name="id519712"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
-Multi-Version Concurrency Control (<span class="acronym">MVCC</span>) is that
+<a name="id573109"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+Multi-Version Concurrency Control (<acronym class="acronym">MVCC</acronym>) is that
 this eliminates a whole host of reasons to need to lock database
 objects.  On some other database systems, you need to acquire a table
 lock in order to insert data into the table; that can
 <span class="emphasis"><em>severely</em></span> hinder performance.  On other systems,
-read locks can impede writes; with <span class="acronym">MVCC</span>, <span class="productname">PostgreSQL</span>
+read locks can impede writes; with <acronym class="acronym">MVCC</acronym>, <span class="productname">PostgreSQL</span>
 eliminates that whole class of locks in that &#8220;<span class="quote">old reads</span>&#8221;
 can access &#8220;<span class="quote">old tuples.</span>&#8221; Most of the time, this allows
 the gentle user of <span class="productname">PostgreSQL</span> to not need to worry very much about
@@ -74,6 +75,10 @@ via an exclusive lock for the entire duration of the process of
 subscription.  By locking the tables early, this means that the
 subscription cannot fail after copying some of the data due to some
 other process having held on to a table. </p>
+<p> In any case, note that this one began with the wording
+&#8220;<span class="quote">on a new subscriber.</span>&#8221; The locks are applied <span class="emphasis"><em>on
+the new subscriber.</em></span> They are <span class="emphasis"><em>not</em></span>
+applied on the provider or on the origin. </p>
 </li>
 </ul></div>
 <p> Each of these actions requires, at some point, modifying each

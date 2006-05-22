@@ -4,18 +4,19 @@
 <title>50.3. Database Page Layout</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="storage.html" title="Chapter 50. Database Physical Storage">
 <link rel="prev" href="storage-toast.html" title="50.2. TOAST">
 <link rel="next" href="bki.html" title="Chapter 51. BKI Backend Interface">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="storage-page-layout"></a>50.3. Database Page Layout</h2></div></div></div>
 <p>This section provides an overview of the page format used within
-<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id793261" href="#ftn.id793261">10</a>]</sup>
-Sequences and <span class="acronym">TOAST</span> tables are formatted just like a regular table.</p>
+<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id845399" href="#ftn.id845399">10</a>]</sup>
+Sequences and <acronym class="acronym">TOAST</acronym> tables are formatted just like a regular table.</p>
 <p>In the following explanation, a
 <em class="firstterm">byte</em>
 is assumed to contain 8 bits.  In addition, the term
@@ -33,7 +34,7 @@ within the index, depending on the index access method.</p>
 There are five parts to each page.</p>
 <div class="table">
 <a name="page-table"></a><p class="title"><b>Table 50.2. Overall Page Layout</b></p>
-<table summary="Overall Page Layout" border="1">
+<div class="table-contents"><table summary="Overall Page Layout" border="1">
 <colgroup>
 <col>
 <col>
@@ -68,9 +69,9 @@ of this area, new items from the end.</td>
 data. Empty in ordinary tables.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>
+<br class="table-break"><p>
   The first 20 bytes of each page consists of a page header
   (PageHeaderData). Its format is detailed in <a href="storage-page-layout.html#pageheaderdata-table" title="Table 50.3. PageHeaderData Layout">Table 50.3, &#8220;PageHeaderData Layout&#8221;</a>. The first two fields track the most
   recent WAL entry related to this page. They are followed by three 2-byte
@@ -95,7 +96,7 @@ data. Empty in ordinary tables.</td>
  </p>
 <div class="table">
 <a name="pageheaderdata-table"></a><p class="title"><b>Table 50.3. PageHeaderData Layout</b></p>
-<table summary="PageHeaderData Layout" border="1">
+<div class="table-contents"><table summary="PageHeaderData Layout" border="1">
 <colgroup>
 <col>
 <col>
@@ -147,9 +148,9 @@ data. Empty in ordinary tables.</td>
 <td>Page size and layout version number information</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>  All the details may be found in
+<br class="table-break"><p>  All the details may be found in
   <code class="filename">src/include/storage/bufpage.h</code>.
  </p>
 <p>
@@ -214,7 +215,7 @@ data. Empty in ordinary tables.</td>
  </p>
 <div class="table">
 <a name="heaptupleheaderdata-table"></a><p class="title"><b>Table 50.4. HeapTupleHeaderData Layout</b></p>
-<table summary="HeapTupleHeaderData Layout" border="1">
+<div class="table-contents"><table summary="HeapTupleHeaderData Layout" border="1">
 <colgroup>
 <col>
 <col>
@@ -283,9 +284,9 @@ data. Empty in ordinary tables.</td>
 <td>offset to user data</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   All the details may be found in
+<br class="table-break"><p>   All the details may be found in
    <code class="filename">src/include/access/htup.h</code>.
  </p>
 <p> 
@@ -309,13 +310,13 @@ data. Empty in ordinary tables.</td>
   All variable-length datatypes share the common header structure
   <code class="type">varattrib</code>, which includes the total length of the stored
   value and some flag bits.  Depending on the flags, the data may be either
-  inline or in a <span class="acronym">TOAST</span> table;
+  inline or in a <acronym class="acronym">TOAST</acronym> table;
   it might be compressed, too (see <a href="storage-toast.html" title="50.2. TOAST">Section 50.2, &#8220;TOAST&#8221;</a>).
   
  </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id793261" href="#id793261">10</a>] </sup>    Actually, index access methods need not use this page format.
+<div class="footnote"><p><sup>[<a name="ftn.id845399" href="#id845399">10</a>] </sup>    Actually, index access methods need not use this page format.
     All the existing index methods do use this basic format,
     but the data kept on index metapages usually doesn't follow
     the item layout rules.

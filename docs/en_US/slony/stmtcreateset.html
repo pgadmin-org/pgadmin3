@@ -4,11 +4,12 @@
 <title>CREATE SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmttableaddkey.html" title="TABLE ADD KEY">
 <link rel="next" href="stmtdropset.html" title="DROP SET">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="stmtcreateset"></a><div class="titlepage"></div>
@@ -22,7 +23,7 @@
 <div class="cmdsynopsis"><p><code class="command">CREATE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536510"></a><h2>Description</h2>
+<a name="id591376"></a><h2>Description</h2>
 <p>     In the <span class="productname">Slony-I</span> replication system,
      replicated tables are organized in sets. As a general rule of
      thumb, a set should contain all the tables of one application,
@@ -44,24 +45,28 @@
 <dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
 <dd><p> Initial origin node of the set.</p></dd>
 <dt><span class="term"><code class="literal"> COMMENT = 'string' </code></span></dt>
-<dd><p> A descriptive text added to the set entry.</p></dd>
+<dd>
+<p> A descriptive text added to the set entry.</p>
+<p> If none is provided, a default value is set; <code class="command">A replication set so boring no one thought to give it a name</code>. </p>
+</dd>
 </dl></div>
 <p> This uses <a href="function.storeset-integer-text.html">schemadocstoreset( integer, text )</a> . </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536612"></a><h2>Example</h2>
+<a name="id591489"></a><h2>Example</h2>
 <pre class="programlisting">     CREATE SET ( ID = 1, 
                ORIGIN = 1,
                COMMENT = 'Tables for ticketing system' );
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536623"></a><h2> Locking Behaviour </h2>
+<a name="id591500"></a><h2> Locking Behaviour </h2>
 <p> No application-visible locking should take place. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536631"></a><h2> Version Information </h2>
+<a name="id591508"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
+<p> Until version 1.2, it would crash if no comment was provided. </p>
 </div>
 </div></body>
 </html>

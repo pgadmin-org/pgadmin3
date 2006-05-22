@@ -4,11 +4,12 @@
 <title>5.4. System Columns</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-constraints.html" title="5.3. Constraints">
 <link rel="next" href="ddl-alter.html" title="5.5. Modifying Tables">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -21,9 +22,9 @@
    restrictions.)  You do not really need to be concerned about these
    columns, just know they exist.
   </p>
-<a name="id523173"></a><div class="variablelist"><dl>
+<a name="id575741"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="structfield">oid</code></span></dt>
-<dd><p>      <a name="id523191"></a>
+<dd><p>      <a name="id575759"></a>
       The object identifier (object ID) of a row. This column is only
       present if the table was created using <code class="literal">WITH
       OIDS</code>, or if the <a href="runtime-config-compatible.html#guc-default-with-oids">default_with_oids</a>
@@ -32,7 +33,7 @@
      </p></dd>
 <dt><span class="term"><code class="structfield">tableoid</code></span></dt>
 <dd>
-<a name="id523238"></a><p>      The OID of the table containing this row.  This column is
+<a name="id575807"></a><p>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
       hierarchies (see <a href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a>), since without it,
       it's difficult to tell which individual table a row came from.  The
@@ -43,7 +44,7 @@
 </dd>
 <dt><span class="term"><code class="structfield">xmin</code></span></dt>
 <dd>
-<a name="id523278"></a><p>      The identity (transaction ID) of the inserting transaction for
+<a name="id575846"></a><p>      The identity (transaction ID) of the inserting transaction for
       this row version.  (A row version is an individual state of a
       row; each update of a row creates a new row version for the same
       logical row.)
@@ -51,13 +52,13 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmin</code></span></dt>
 <dd>
-<a name="id523297"></a><p>      The command identifier (starting at zero) within the inserting
+<a name="id575865"></a><p>      The command identifier (starting at zero) within the inserting
       transaction.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">xmax</code></span></dt>
 <dd>
-<a name="id523314"></a><p>      The identity (transaction ID) of the deleting transaction, or
+<a name="id575882"></a><p>      The identity (transaction ID) of the deleting transaction, or
       zero for an undeleted row version.  It is possible for this column to
       be nonzero in a visible row version. That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
@@ -66,12 +67,12 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmax</code></span></dt>
 <dd>
-<a name="id523335"></a><p>      The command identifier within the deleting transaction, or zero.
+<a name="id575903"></a><p>      The command identifier within the deleting transaction, or zero.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">ctid</code></span></dt>
 <dd>
-<a name="id523351"></a><p>      The physical location of the row version within its table.  Note that
+<a name="id575919"></a><p>      The physical location of the row version within its table.  Note that
       although the <code class="structfield">ctid</code> can be used to
       locate the row version very quickly, a row's
       <code class="structfield">ctid</code> will change each time it is
@@ -122,10 +123,10 @@
    </p>
 <p>    Command
     identifiers are also 32-bit quantities.  This creates a hard limit
-    of 2<sup>32</sup> (4 billion) <span class="acronym">SQL</span> commands
+    of 2<sup>32</sup> (4 billion) <acronym class="acronym">SQL</acronym> commands
     within a single transaction.  In practice this limit is not a
     problem [mdash ] note that the limit is on number of
-    <span class="acronym">SQL</span> commands, not number of rows processed.
+    <acronym class="acronym">SQL</acronym> commands, not number of rows processed.
    </p>
 </div></body>
 </html>

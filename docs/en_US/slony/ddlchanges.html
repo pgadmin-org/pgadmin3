@@ -4,16 +4,17 @@
 <title>14. Database Schema Changes (DDL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="logshipping.html" title="13. Log Shipping - Slony-I with Files">
 <link rel="next" href="usingslonik.html" title="15. Using Slonik">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddlchanges"></a>14. Database Schema Changes (DDL)</h2></div></div></div>
-<a name="id522168"></a><p>When changes are made to the database schema,
+<a name="id575647"></a><p>When changes are made to the database schema,
 <span class="emphasis"><em>e.g.</em></span> - adding fields to a table, it is necessary
 for this to be handled rather carefully, otherwise different nodes may
 get rather deranged because they disagree on how particular tables are
@@ -109,6 +110,42 @@ will conflict with the ones you need to take in order to update the
 database schema.</p></li>
 </ul></div>
 </li>
+<li>
+<p> In <span class="productname">Slony-I</span> versions 1.0 thru 1.1.5, the script is
+processed as a single query request, which can cause problems if you
+are making complex changes.  In version 1.2, the script is parsed into
+individual SQL statements, and each statement is submitted separately,
+which is a preferable handling of this.  </p>
+<p> The trouble with one query processing a &#8220;<span class="quote">compound
+statement</span>&#8221; is that the SQL parser does its processing for that
+entire set of queries based on the state of the database at the
+<span class="emphasis"><em>beginning</em></span> of the query.</p>
+<p> This causes no particular trouble if those statements are
+independent of one another, such as if you add two columns to a
+table.</p>
+<p> <code class="command"> alter table t1 add column c1 integer; alter table t1 add
+column c2 integer; </code></p>
+<p> Trouble arises if a subsequent query needs to reference an
+earlier one.  Consider the following DDL statements...  </p>
+<p><code class="command"> alter table t1 add column c1 integer; create sequence s1;
+update t1 set c1=nextval('s1'); alter table t1 alter column c1 set not
+null; alter table t1 add primary key(c1); </code></p>
+<p> Up until <span class="productname">Slony-I</span> version 1.2, this query would <span class="emphasis"><em> fail</em></span>.  It would specifically fail upon reaching the
+<code class="command">UPDATE</code> statement, complaining that column
+<code class="envar">c1</code> doesn't exist.  This happens because
+<span class="emphasis"><em>all</em></span> of those queries are parsed based on the
+state of things immediately before the query.  So, the
+<code class="command">UPDATE</code> is evaluated based on a table definition
+<span class="emphasis"><em>before</em></span> the new column was added. Oops. </p>
+<p>If you are running one of the earlier versions, the workaround
+is that you invoke a separate <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> request
+with a separate script, cutting off to a new script each time a
+statement refers to something created in previous statements. </p>
+<p> In <span class="productname">Slony-I</span> version 1.2, there is a state machine that pulls
+apart the DDL script into individual statements.  Each statement is
+submitted as a separate <code class="function">PQexec()</code> request, with
+the result that this is no longer an issue. </p>
+</li>
 </ul></div>
 <p>Unfortunately, this nonetheless implies that the use of the DDL
 facility is somewhat fragile and fairly dangerous.  Making DDL changes
@@ -121,7 +158,7 @@ more discussion of related issues.</p>
 here: <a href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id522501"></a>14.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<a name="id576111"></a>14.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></h3></div></div></div>
 <p> While it is <span class="emphasis"><em> vitally necessary </em></span> to use
 <code class="command">EXECUTE SCRIPT</code> to propagate DDL modifications to
@@ -183,7 +220,7 @@ created.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id522664"></a>14.2.  Testing DDL Changes </h3></div></div></div>
+<a name="id576274"></a>14.2.  Testing DDL Changes </h3></div></div></div>
 <p> A method for testing DDL changes has been pointed out as a
 likely &#8220;<span class="quote">best practice.</span>&#8221;</p>
 <p> You <span class="emphasis"><em>need</em></span> to test DDL scripts in a

@@ -4,11 +4,12 @@
 <title>9.  Slony-I Path Communications</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="listenpaths.html" title="8. Slony-I listen paths">
 <link rel="next" href="locking.html" title="10. Locking Issues">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -27,7 +28,7 @@ cluster.</p>
 <p> It is <span class="emphasis"><em>vital</em></span> that you have connections from the
 central location where you run <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> 
 to each and every node in the network.  These connections are only
-used briefly, to submit the few <span class="acronym">SQL</span> requests required to
+used briefly, to submit the few <acronym class="acronym">SQL</acronym> requests required to
 control the administration of the cluster.</p>
 <p> Since these communications paths are only used briefly, it may
 be quite reasonable to &#8220;<span class="quote">hack together</span>&#8221; temporary
@@ -36,16 +37,16 @@ tunnelling</a>.</p>
 </li>
 <li>
 <p> The <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> DSN parameter. </p>
-<p> The DSN parameter passed to each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
-indicates what network path should be used to get from the slon
-process to the database that it manages.</p>
+<p> The DSN parameter passed to each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> indicates what network
+path should be used to get from the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process to the database
+that it manages.</p>
 </li>
 <li>
 <p> <a href="stmtstorepath.html" title="STORE
      PATH"><span class="refentrytitle">STORE
      PATH</span></a> - controlling how
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons communicate with remote nodes.  These
-paths are stored in <a href="table.sl-path.html">sl_path</a>.</p>
+<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons communicate with remote nodes.  These paths are stored
+in <a href="table.sl-path.html">sl_path</a>.</p>
 <p> You forcibly <span class="emphasis"><em>need</em></span> to have a path between
 each subscriber node and its provider; other paths are optional, and
 will not be used unless a listen path in <a href="table.sl-listen.html">sl_listen</a>. is needed that uses that particular
@@ -62,7 +63,7 @@ uniform set of network addresses.</p>
 <p> Consider the attached diagram, which describes a set of six
 nodes
 
-<span class="inlinemediaobject"><img src="complexenv.png" alt=" Symmetric Multisites "></span></p>
+<span class="inlinemediaobject"><img src="complexenv.png" alt="Symmetric Multisites"></span></p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> DB1 and DB2 are databases residing in a secure

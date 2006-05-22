@@ -4,16 +4,17 @@
 <title>23.3. On-line backup and point-in-time recovery (PITR)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File system level backup">
 <link rel="next" href="migration.html" title="23.4. Migration Between Releases">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="backup-online"></a>23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
-<a name="id616760"></a><a name="id616770"></a><a name="id616780"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id669489"></a><a name="id669499"></a><a name="id669509"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -311,9 +312,9 @@
    </p>
 <p>    The backup history file is just a small text file. It contains the
     label string you gave to <code class="function">pg_start_backup</code>, as well as
-    the starting and ending times of the backup. If you used the label
-    to identify where the associated dump file is kept, then the
-    archived history file is enough to tell you which dump file to
+    the starting and ending times and WAL segments of the backup.
+    If you used the label to identify where the associated dump file is kept, 
+    then the archived history file is enough to tell you which dump file to
     restore, should you need to do so.
    </p>
 <p>    Since you have to keep around all the archived WAL files back to your
@@ -548,7 +549,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id618317"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id671038"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -634,7 +635,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 </ul></div>
 <p>
    </p>
-<p>    It should also be noted that the default <span class="acronym">WAL</span>
+<p>    It should also be noted that the default <acronym class="acronym">WAL</acronym>
     format is fairly bulky since it includes many disk page snapshots.
     These page snapshots are designed to support crash recovery,
     since we may need to fix partially-written disk pages.  Depending

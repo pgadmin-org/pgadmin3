@@ -4,11 +4,12 @@
 <title>UPDATE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-unlisten.html" title="UNLISTEN">
 <link rel="next" href="sql-vacuum.html" title="VACUUM">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-update"></a><div class="titlepage"></div>
@@ -16,14 +17,14 @@
 <h2>Name</h2>
 <p>UPDATE &#8212; update rows of a table</p>
 </div>
-<a name="id736988"></a><div class="refsynopsisdiv">
+<a name="id790168"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">UPDATE [ ONLY ] <em class="replaceable"><code>table</code></em> SET <em class="replaceable"><code>column</code></em> = { <em class="replaceable"><code>expression</code></em> | DEFAULT } [, ...]
     [ FROM <em class="replaceable"><code>fromlist</code></em> ]
     [ WHERE <em class="replaceable"><code>condition</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737039"></a><h2>Description</h2>
+<a name="id790218"></a><h2>Description</h2>
 <p>   <code class="command">UPDATE</code> changes the values of the specified
    columns in all rows that satisfy the condition. Only the columns to
    be modified need be mentioned in the <code class="literal">SET</code> clause;
@@ -48,7 +49,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737125"></a><h2>Parameters</h2>
+<a name="id790304"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to update.
@@ -83,7 +84,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737264"></a><h2>Outputs</h2>
+<a name="id790444"></a><h2>Outputs</h2>
 <p>   On successful completion, an <code class="command">UPDATE</code> command returns a command
    tag of the form
 </p>
@@ -96,7 +97,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737312"></a><h2>Notes</h2>
+<a name="id790492"></a><h2>Notes</h2>
 <p>   When a <code class="literal">FROM</code> clause is present, what essentially happens
    is that the target table is joined to the tables mentioned in the
    <em class="replaceable"><code>fromlist</code></em>, and each output row of the join
@@ -114,7 +115,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737351"></a><h2>Examples</h2>
+<a name="id790530"></a><h2>Examples</h2>
 <p>   Change the word <code class="literal">Drama</code> to <code class="literal">Dramatic</code> in the
    column <code class="structfield">kind</code> of the table <code class="structname">films</code>:
 
@@ -146,18 +147,6 @@
   (SELECT sales_person FROM accounts WHERE name = 'Acme Corporation');</pre>
 <p>
   </p>
-<p>   Now that all the papers are signed, update the most recently closed
-   deal of the travelling salesperson who closed the Rocket Powered
-   Skates deal with the Acme Corporation.
-</p>
-<pre class="programlisting">UPDATE employees SET last_closed_deal = deal.id
-    FROM accounts JOIN deals ON (account.id = deal.account_id)
-    WHERE deal.employee_id = employees.id
-    AND deal.name = 'Rocket Powered Skates'
-    AND accounts.name = 'Acme Corporation'
-    ORDER BY deal.signed_date DESC LIMIT 1;</pre>
-<p>
-  </p>
 <p>   Attempt to insert a new stock item along with the quantity of stock. If
    the item already exists, instead update the stock count of the existing
    item. To do this without failing the entire transaction, use savepoints.
@@ -176,8 +165,8 @@ COMMIT;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id737477"></a><h2>Compatibility</h2>
-<p>   This command conforms to the <span class="acronym">SQL</span> standard, except
+<a name="id790640"></a><h2>Compatibility</h2>
+<p>   This command conforms to the <acronym class="acronym">SQL</acronym> standard, except
    that the <code class="literal">FROM</code> clause is a
    <span class="productname">PostgreSQL</span> extension.
   </p>

@@ -4,11 +4,12 @@
 <title>5. Slony-I Concepts</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="installation.html" title="4. Slony-I Installation">
 <link rel="next" href="cluster.html" title="6. Defining Slony-I Clusters">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -35,8 +36,8 @@ hat</span>&#8221; to Vadim Mikheev, who was responsible for the
 algorithms used in <span class="productname">Slony-I</span>.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514519"></a>5.1. Cluster</h3></div></div></div>
-<a name="id514523"></a><p>In <span class="productname">Slony-I</span> terms, a &#8220;<span class="quote">cluster</span>&#8221; is a named set of
+<a name="id567427"></a>5.1. Cluster</h3></div></div></div>
+<a name="id567431"></a><p>In <span class="productname">Slony-I</span> terms, a &#8220;<span class="quote">cluster</span>&#8221; is a named set of
 <span class="productname">PostgreSQL</span> database instances; replication takes place between those
 databases.</p>
 <p>The cluster name is specified in each and every Slonik script via the directive:</p>
@@ -47,8 +48,8 @@ namespace/schema <code class="envar">_something.</code></p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514578"></a>5.2. Node</h3></div></div></div>
-<a name="id514581"></a><p>A <span class="productname">Slony-I</span> Node is a named <span class="productname">PostgreSQL</span> database that will be
+<a name="id567486"></a>5.2. Node</h3></div></div></div>
+<a name="id567489"></a><p>A <span class="productname">Slony-I</span> Node is a named <span class="productname">PostgreSQL</span> database that will be
 participating in replication.</p>
 <p>It is defined, near the beginning of each Slonik script, using the directive:</p>
 <pre class="programlisting"> NODE 1 ADMIN CONNINFO = 'dbname=testdb host=server1 user=slony';</pre>
@@ -63,21 +64,21 @@ connection information that will ultimately be passed to the
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514660"></a>5.3.  Replication Set</h3></div></div></div>
-<a name="id514664"></a><p>A replication set is defined as a set of tables and sequences
+<a name="id567568"></a>5.3.  Replication Set</h3></div></div></div>
+<a name="id567572"></a><p>A replication set is defined as a set of tables and sequences
 that are to be replicated between nodes in a <span class="productname">Slony-I</span> cluster.</p>
 <p>You may have several sets, and the &#8220;<span class="quote">flow</span>&#8221; of
 replication does not need to be identical between those sets.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514690"></a>5.4.  Origin, Providers and Subscribers</h3></div></div></div>
-<a name="id514694"></a><a name="id514701"></a><p>Each replication set has some origin node, which is the
+<a name="id567598"></a>5.4.  Origin, Providers and Subscribers</h3></div></div></div>
+<a name="id567602"></a><a name="id567608"></a><p>Each replication set has some origin node, which is the
 <span class="emphasis"><em>only</em></span> place where user applications are permitted
 to modify data in the tables that are being replicated.  This might
 also be termed the &#8220;<span class="quote">master provider</span>&#8221;; it is the main
 place from which data is provided.</p>
-<a name="id514722"></a><p>Other nodes in the cluster subscribe to the replication set,
+<a name="id567630"></a><p>Other nodes in the cluster subscribe to the replication set,
 indicating that they want to receive the data.</p>
 <p>The origin node will never be considered a
 &#8220;<span class="quote">subscriber.</span>&#8221; (Ignoring the case where the cluster is
@@ -89,7 +90,7 @@ replication set.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514756"></a>5.5. slon Daemon</h3></div></div></div>
+<a name="id567664"></a>5.5. slon Daemon</h3></div></div></div>
 <p>For each node in the cluster, there will be a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process to manage replication activity for that node.</p>
 <p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is a program implemented in C that
 processes replication events.  There are two main sorts of events:</p>
@@ -109,7 +110,7 @@ applied together to the subscriber nodes.  </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514819"></a>5.6. slonik Configuration Processor</h3></div></div></div>
+<a name="id567726"></a>5.6. slonik Configuration Processor</h3></div></div></div>
 <p> The <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command processor processes scripts
 in a &#8220;<span class="quote">little language</span>&#8221; that are used to submit events to
 update the configuration of a <span class="productname">Slony-I</span> cluster.  This includes such

@@ -4,12 +4,13 @@
 <title>DROP SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtcreateset.html" title="CREATE SET">
 <link rel="next" href="stmtmergeset.html" title="MERGE
      SET">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="stmtdropset"></a><div class="titlepage"></div>
@@ -23,7 +24,7 @@
 <div class="cmdsynopsis"><p><code class="command">DROP SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536679"></a><h2>Description</h2>
+<a name="id591560"></a><h2>Description</h2>
 <p>     Drop a set of tables from the <span class="productname">Slony-I</span>
      configuration. This automatically unsubscribes all nodes from the
      set and restores the original triggers and rules on all
@@ -38,19 +39,19 @@
 <p> This uses <a href="function.dropset-integer.html">schemadocdropset( integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536731"></a><h2>Example</h2>
+<a name="id591612"></a><h2>Example</h2>
 <pre class="programlisting">  DROP SET ( ID = 5, 
              ORIGIN = 2 );
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536741"></a><h2> Locking Behaviour </h2>
+<a name="id591622"></a><h2> Locking Behaviour </h2>
 <p> On each node, this will require taking out exclusive locks
     on each replicated table in order to modify the table schema to
     clean up the triggers and rules.  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536751"></a><h2> Version Information </h2>
+<a name="id591631"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

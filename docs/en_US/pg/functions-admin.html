@@ -4,11 +4,12 @@
 <title>9.20. System Administration Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-info.html" title="9.19. System Information Functions">
 <link rel="next" href="typeconv.html" title="Chapter 10. Type Conversion">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -18,7 +19,7 @@
   </p>
 <div class="table">
 <a name="functions-admin-set-table"></a><p class="title"><b>Table 9.44. Configuration Settings Functions</b></p>
-<table summary="Configuration Settings Functions" border="1">
+<div class="table-contents"><table summary="Configuration Settings Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -45,11 +46,11 @@
 <td>set parameter and return new value</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<a name="id572091"></a><a name="id572102"></a><a name="id572112"></a><p>    The function <code class="function">current_setting</code> yields the
+<br class="table-break"><a name="id624629"></a><a name="id624640"></a><a name="id624650"></a><p>    The function <code class="function">current_setting</code> yields the
     current value of the setting <em class="parameter"><code>setting_name</code></em>.
-    It corresponds to the <span class="acronym">SQL</span> command
+    It corresponds to the <acronym class="acronym">SQL</acronym> command
     <code class="command">SHOW</code>.  An example:
 </p>
 <pre class="programlisting">SELECT current_setting('datestyle');
@@ -77,13 +78,13 @@
 (1 row)</pre>
 <p>
    </p>
-<a name="id572226"></a><a name="id572237"></a><a name="id572247"></a><a name="id572258"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Server Signalling Functions">Table 9.45, &#8220;Server Signalling Functions&#8221;</a> send control signals to
+<a name="id624764"></a><a name="id624775"></a><a name="id624785"></a><a name="id624796"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Server Signalling Functions">Table 9.45, &#8220;Server Signalling Functions&#8221;</a> send control signals to
     other server processes.  Use of these functions is restricted
     to superusers.
    </p>
 <div class="table">
 <a name="functions-admin-signal-table"></a><p class="title"><b>Table 9.45. Server Signalling Functions</b></p>
-<table summary="Server Signalling Functions" border="1">
+<div class="table-contents"><table summary="Server Signalling Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -114,9 +115,9 @@
 <td>Rotate server's log file</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    Each of these functions returns <code class="literal">true</code> if
+<br class="table-break"><p>    Each of these functions returns <code class="literal">true</code> if
     successful and <code class="literal">false</code> otherwise.
    </p>
 <p>    <code class="function">pg_cancel_backend</code> sends a query cancel
@@ -136,12 +137,12 @@
     <code class="varname">redirect_stderr</code> is used for logging, since otherwise there
     is no log-file manager subprocess.
    </p>
-<a name="id572484"></a><a name="id572494"></a><a name="id572504"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
+<a name="id625022"></a><a name="id625032"></a><a name="id625043"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
     Use of these functions is restricted to superusers.
    </p>
 <div class="table">
 <a name="functions-admin-backup-table"></a><p class="title"><b>Table 9.46. Backup Control Functions</b></p>
-<table summary="Backup Control Functions" border="1">
+<div class="table-contents"><table summary="Backup Control Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -166,9 +167,9 @@
 <td>Finish performing on-line backup</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    <code class="function">pg_start_backup</code> accepts a single parameter which is an
+<br class="table-break"><p>    <code class="function">pg_start_backup</code> accepts a single parameter which is an
     arbitrary user-defined label for the backup.  (Typically this would be
     the name under which the backup dump file will be stored.)  The function
     writes a backup label file into the database cluster's data directory,
@@ -190,9 +191,9 @@
 <p>    The functions shown in <a href="functions-admin.html#functions-admin-dbsize" title="Table 9.47. Database Object Size Functions">Table 9.47, &#8220;Database Object Size Functions&#8221;</a> calculate
     the actual disk space usage of database objects.
    </p>
-<a name="id572675"></a><a name="id572685"></a><a name="id572696"></a><a name="id572706"></a><a name="id572716"></a><a name="id572727"></a><div class="table">
+<a name="id625213"></a><a name="id625223"></a><a name="id625234"></a><a name="id625244"></a><a name="id625255"></a><a name="id625265"></a><div class="table">
 <a name="functions-admin-dbsize"></a><p class="title"><b>Table 9.47. Database Object Size Functions</b></p>
-<table summary="Database Object Size Functions" border="1">
+<div class="table-contents"><table summary="Database Object Size Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -272,9 +273,9 @@
 <td>Converts a size in bytes into a human-readable format with size units</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    <code class="function">pg_column_size</code> shows the space used to store any individual
+<br class="table-break"><p>    <code class="function">pg_column_size</code> shows the space used to store any individual
     data value.
    </p>
 <p>    <code class="function">pg_tablespace_size</code> and <code class="function">pg_database_size</code> accept
@@ -301,7 +302,7 @@
    </p>
 <div class="table">
 <a name="functions-admin-genfile"></a><p class="title"><b>Table 9.48. Generic File Access Functions</b></p>
-<table summary="Generic File Access Functions" border="1">
+<div class="table-contents"><table summary="Generic File Access Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -332,18 +333,18 @@
 <td>Return information about a file</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<a name="id573247"></a><p>    <code class="function">pg_ls_dir</code> returns all the names in the specified
+<br class="table-break"><a name="id625785"></a><p>    <code class="function">pg_ls_dir</code> returns all the names in the specified
     directory, except the special entries &#8220;<span class="quote"><code class="literal">.</code></span>&#8221; and
     &#8220;<span class="quote"><code class="literal">..</code></span>&#8221;.
    </p>
-<a name="id573282"></a><p>    <code class="function">pg_read_file</code> returns part of a text file, starting
+<a name="id625820"></a><p>    <code class="function">pg_read_file</code> returns part of a text file, starting
     at the given <em class="parameter"><code>offset</code></em>, returning at most <em class="parameter"><code>length</code></em>
     bytes (less if the end of file is reached first).  If <em class="parameter"><code>offset</code></em>
     is negative, it is relative to the end of the file.
    </p>
-<a name="id573324"></a><p>    <code class="function">pg_stat_file</code> returns a record containing the file
+<a name="id625862"></a><p>    <code class="function">pg_stat_file</code> returns a record containing the file
     size, last accessed time stamp, last modified time stamp, 
     last file status change time stamp (Unix platforms only), 
     file creation timestamp (Windows only), and a <code class="type">boolean</code> indicating 

@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3.  Archive Logging Options </title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<link rel="up" href="runtime-config.html" title="Run-time Configuration">
+<link rel="prev" href="slon-config-connection.html" title="2. Connection settings">
+<link rel="next" href="slon-config-interval.html" title="4. Event Tuning">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="slon-archive-logging"></a>3.  Archive Logging Options </h2></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="slon-config-archive-dir"></a><span class="term"><code class="varname">archive_dir</code> (<code class="type">text</code>)</span>
+</dt>
+<dd><p>This indicates in what directory sync archive files should be stored.
+        </p></dd>
+<dt>
+<a name="slon-config-command-on-logarchive"></a><span class="term"><code class="varname">command_on_logarchive</code> (<code class="type">text</code>)</span>
+</dt>
+<dd>
+<p>This indicates a Unix command to be submitted each time
+        an archive log is successfully generated.
+        </p>
+<p> The command will be passed one parameter, namely the
+        full pathname of the archive file.  Thus, supposing we have
+        the settings...</p>
+<p>        <code class="command">command_on_logarchive = <code class="filename">/usr/local/bin/logstuff</code></code>
+        </p>
+<p>        <code class="command">archive_dir = <code class="filename">/var/log/slony1/archivelogs/payroll</code></code>
+        </p>
+<p> A typical log file might be named something like
+        <code class="filename">/var/log/slony1/archivelogs/payroll/slony1_log_1_00000000000000000036.sql</code></p>
+<p> The command run after that SYNC was generated would be: </p>
+<p>        <code class="command"><code class="filename">/usr/local/bin/logstuff</code> <code class="filename">/var/log/slony1/archivelogs/payroll/slony1_log_1_00000000000000000036.sql</code></code>
+        </p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p> Note that this is run via
+        <code class="function">system(const char *COMMAND)</code>; if the
+        program that is run takes five minutes to run, that will defer
+        the next <code class="command">SYNC</code> by five minutes.  You
+        probably don't want the archiving command to do much
+        &#8220;<span class="quote">in-line</span>&#8221; work.</p>
+</div>
+</dd>
+</dl></div>
+</div></body>
+</html>

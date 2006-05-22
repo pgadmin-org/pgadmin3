@@ -4,11 +4,12 @@
 <title>slon</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="prev" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="next" href="runtime-config.html" title="Run-time Configuration">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="slon"></a><div class="titlepage"></div>
@@ -17,12 +18,12 @@
 <p><span class="application">slon</span> &#8212;    <span class="productname">Slony-I</span> daemon
   </p>
 </div>
-<a name="id531560"></a><div class="refsynopsisdiv">
+<a name="id586182"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">slon</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>clustername</code></em>] [<em class="replaceable"><code>conninfo</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id531612"></a><h2>Description</h2>
+<a name="id586235"></a><h2>Description</h2>
 <p>   <span class="application">slon</span> is the daemon application that
    &#8220;<span class="quote">runs</span>&#8221; <span class="productname">Slony-I</span> replication.  A
    <span class="application">slon</span> instance must be run for each node
@@ -34,8 +35,8 @@
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="option">-d</code><em class="replaceable"><code> debuglevel</code></em></span></dt>
 <dd>
-<p>      The <code class="envar">log_level</code> specifies the level of verbosity
-      that <span class="application">slon</span> should use when logging its
+<p>      The <code class="envar">log_level</code> specifies which Debug levels
+      <span class="application">slon</span> should display when logging its
       activity.
      </p>
 <p>      The eight levels of logging are:
@@ -52,6 +53,11 @@
 </ul></div>
 <p>
      </p>
+<p> Thus, <span class="emphasis"><em>all</em></span> the non-debugging log
+     levels are always displayed in the logs.  If
+     <code class="envar">log_level</code> is set to 2 (a routine, and, seemingly
+     preferable choice), then output at debugging levels 1 and 2 will
+     also be displayed.</p>
 </dd>
 <dt><span class="term"><code class="option">-s</code><em class="replaceable"><code> SYNC check interval</code></em></span></dt>
 <dd>
@@ -236,6 +242,13 @@
       place a sequence of <code class="command">SYNC</code> archive files for
       use in <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping</a> mode.
      </p></dd>
+<dt><span class="term"><code class="option">-x</code><em class="replaceable"><code> command to run on log archive</code></em></span></dt>
+<dd>
+<p>      <code class="envar">command_on_logarchive</code> indicates a command to be run 
+      each time a SYNC file is successfully generated.
+     </p>
+<p> See more details on <a href="slon-archive-logging.html#slon-config-command-on-logarchive">slon_conf_command_on_log_archive</a>.</p>
+</dd>
 <dt><span class="term"><code class="option">-q</code><em class="replaceable"><code> quit based on SYNC provider </code></em></span></dt>
 <dd>
 <p>      <code class="envar">quit_sync_provider</code> indicates which provider's
@@ -253,17 +266,28 @@
       <code class="option">-q</code> option above...
      </p></dd>
 <dt><span class="term"><code class="option">-l</code><em class="replaceable"><code> lag interval </code></em></span></dt>
-<dd><p>      <code class="envar">lag_interval</code> indicates an interval value such as
+<dd>
+<p>      <code class="envar">lag_interval</code> indicates an interval value such as
       <code class="command"> 3 minutes </code> or <code class="command"> 4 hours </code>
       or <code class="command"> 2 days </code> that indicates that this node is
       to lag its providers by the specified interval of time.  This
       causes events to be ignored until they reach the age
       corresponding to the interval.
-     </p></dd>
+     </p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p> There is a concommittant downside to this lag;
+     events that require all nodes to synchronize, as typically
+     happens with <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> and <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>, will have to wait for this lagging
+     node. </p>
+<p> That might not be ideal behaviour at failover time, or at
+     the time when you want to run <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>. </p>
+</div>
+</dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id532564"></a><h2>Exit Status</h2>
+<a name="id587263"></a><h2>Exit Status</h2>
 <p>   <span class="application">slon</span> returns 0 to the shell if it
    finished normally.  It returns via <code class="function">exit(-1)</code>
    (which will likely provide a return value of either 127 or 255,

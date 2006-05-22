@@ -4,11 +4,12 @@
 <title>16.4. Managing Kernel Resources</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="postmaster-shutdown.html" title="16.5. Shutting Down the Server">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -22,9 +23,9 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sysvipc"></a>16.4.1. Shared Memory and Semaphores</h3></div></div></div>
-<a name="id589350"></a><a name="id589360"></a><p>    Shared memory and semaphores are collectively referred to as
+<a name="id641895"></a><a name="id641905"></a><p>    Shared memory and semaphores are collectively referred to as
     &#8220;<span class="quote"><span class="systemitem">System V</span>
-    <span class="acronym">IPC</span></span>&#8221; (together with message queues, which are not
+    <acronym class="acronym">IPC</acronym></span>&#8221; (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
     operating systems provide these features, but not all of them have
     them turned on or sufficiently sized by default, especially systems
@@ -39,17 +40,17 @@
     kernel.  <span class="productname">PostgreSQL</span> won't work without them.
    </p>
 <p>    When <span class="productname">PostgreSQL</span> exceeds one of the various hard
-    <span class="acronym">IPC</span> limits, the server will refuse to start and
+    <acronym class="acronym">IPC</acronym> limits, the server will refuse to start and
     should leave an instructive error message describing the problem
     encountered and what to do about it. (See also <a href="postmaster-start.html#postmaster-start-failures" title="16.3.1. Server Start-up Failures">Section 16.3.1, &#8220;Server Start-up Failures&#8221;</a>.) The relevant kernel
-    parameters are named consistently across different systems; <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;<span class="systemitem">System V</span> <span class="acronym">IPC</span> parameters&#8221;</a> gives an overview. The methods to set
+    parameters are named consistently across different systems; <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a> gives an overview. The methods to set
     them, however, vary. Suggestions for some platforms are given below.
     Be warned that it is often necessary to reboot your machine, and
     possibly even recompile the kernel, to change these settings.
    </p>
 <div class="table">
-<a name="sysvipc-parameters"></a><p class="title"><b>Table 16.1. <span class="systemitem">System V</span> <span class="acronym">IPC</span> parameters</b></p>
-<table summary="System V IPC parameters" border="1">
+<a name="sysvipc-parameters"></a><p class="title"><b>Table 16.1. <span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters</b></p>
+<div class="table-contents"><table summary="System V IPC parameters" border="1">
 <colgroup>
 <col>
 <col>
@@ -115,9 +116,9 @@
 <td>at least 1000 (The default is often 32767, don't change unless forced to)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    <a name="id589666"></a> The most important
+<br class="table-break"><p>    <a name="id642210"></a> The most important
     shared memory parameter is <code class="varname">SHMMAX</code>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <code class="function">shmget</code> like <span class="errorname">Invalid argument</span>, it is
@@ -156,7 +157,7 @@
     other applications. The maximum number of semaphores in the system
     is set by <code class="varname">SEMMNS</code>, which consequently must be at least
     as high as <code class="varname">max_connections</code> plus one extra for each 16
-    allowed connections (see the formula in <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;<span class="systemitem">System V</span> <span class="acronym">IPC</span> parameters&#8221;</a>).  The parameter <code class="varname">SEMMNI</code>
+    allowed connections (see the formula in <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a>).  The parameter <code class="varname">SEMMNI</code>
     determines the limit on the number of semaphore sets that can
     exist on the system at one time.  Hence this parameter must be at
     least <code class="literal">ceil(max_connections / 16)</code>. Lowering the number
@@ -259,6 +260,16 @@ options "SEMMNS=240"</pre>
         This can be accomplished using the <code class="command">sysctl</code>
         setting <code class="literal">kern.ipc.shm_use_phys</code>.
        </p>
+<p>        If running in FreeBSD jails by enabling <span class="application">sysctl</span>'s
+        <code class="literal">security.jail.sysvipc_allowed</code>, <span class="application">postmaster</span>s
+        running in different jails should be run by different operating system
+        users.  This improves security because it prevents non-root users
+        from interfering with shared memory or semaphores in a different jail,
+        and it allows the PostgreSQL IPC cleanup code to function properly.
+        (In FreeBSD 6.0 and later the IPC cleanup code doesn't properly detect
+        processes in other jails, preventing the running of postmasters on the
+        same port in different jails.)
+       </p>
 <p>        <span class="systemitem">FreeBSD</span> versions before 4.0 work like 
         <span class="systemitem">NetBSD</span> and <span class="systemitem">        OpenBSD</span> (see below).
        </p>
@@ -298,8 +309,8 @@ options        SEMMAP=256</pre>
         <code class="varname">SEMMNS</code> is 128, which might be too low for larger
         database sites.
        </p>
-<p>        <span class="acronym">IPC</span> parameters can be set in the <span class="application">System
-        Administration Manager</span> (<span class="acronym">SAM</span>) under
+<p>        <acronym class="acronym">IPC</acronym> parameters can be set in the <span class="application">System
+        Administration Manager</span> (<acronym class="acronym">SAM</acronym>) under
         <span class="guimenu">Kernel
         Configuration</span> &#8594; <span class="guimenuitem">Configurable Parameters</span>. Hit
         <span class="guibutton">Create A New Kernel</span> when you're done.
@@ -349,10 +360,16 @@ sysctl -w kern.sysv.shmall</pre>
         after each update.  In all versions, you'll need to reboot to make
         changes take effect.  
        </p>
-<p>        <code class="varname">SHMALL</code> is measured in 4KB pages on this platform.
-        Also note that some releases of OS X will reject attempts to
-        set <code class="varname">SHMMAX</code> to a value that isn't an exact multiple
-        of 4096.
+<p>        In OS X 10.3.9 and later, the file <code class="filename">/etc/sysctl.conf</code>
+        allows shared memory setting to be saved across operating system
+        upgrades, and is the recommended method for setting these
+        parameters. When using this file, all five shared memory values
+        must be set or the changes will be ignored.
+       </p>
+<p>        <code class="varname">SHMALL</code> is measured in 4KB pages on this platform,
+        and recent releases of OS X reject attempts to set 
+        <code class="varname">SHMALL</code> and <code class="varname">SHMMAX</code> to a value 
+        that isn't an exact multiple of 4096.
        </p>
 </dd>
 <dt><span class="term"><span class="systemitem">SCO OpenServer</span></span></dt>
@@ -442,7 +459,7 @@ set semsys:seminfo_semmsl=32</pre>
 <div class="table">
 <a name="shared-memory-parameters"></a><p class="title"><b>Table 16.2. Configuration parameters affecting
     <span class="productname">PostgreSQL</span>'s shared memory usage</b></p>
-<table summary="Configuration parameters affecting
+<div class="table-contents"><table summary="Configuration parameters affecting
     PostgreSQL's shared memory usage" border="1">
 <colgroup>
 <col>
@@ -480,12 +497,13 @@ set semsys:seminfo_semmsl=32</pre>
 <td>6</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id591048"></a>16.4.2. Resource Limits</h3></div></div></div>
+<a name="id643652"></a>16.4.2. Resource Limits</h3></div></div></div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
     <span class="productname">PostgreSQL</span> server. Of particular
@@ -553,7 +571,7 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id591244"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
+<a name="id643848"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
     optimal for <span class="productname">PostgreSQL</span>. Because of the
     way that the kernel implements memory overcommit, the kernel may

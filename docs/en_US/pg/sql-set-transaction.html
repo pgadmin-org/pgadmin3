@@ -4,11 +4,12 @@
 <title>SET TRANSACTION</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION">
 <link rel="next" href="sql-show.html" title="SHOW">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-set-transaction"></a><div class="titlepage"></div>
@@ -16,7 +17,7 @@
 <h2>Name</h2>
 <p>SET TRANSACTION &#8212; set the characteristics of the current transaction</p>
 </div>
-<a name="id735420"></a><div class="refsynopsisdiv">
+<a name="id788600"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SET TRANSACTION <em class="replaceable"><code>transaction_mode</code></em> [, ...]
 SET SESSION CHARACTERISTICS AS TRANSACTION <em class="replaceable"><code>transaction_mode</code></em> [, ...]
@@ -27,7 +28,7 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
     READ WRITE | READ ONLY</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id735462"></a><h2>Description</h2>
+<a name="id788642"></a><h2>Description</h2>
 <p>   The <code class="command">SET TRANSACTION</code> command sets the
    characteristics of the current transaction. It has no effect on any
    subsequent transactions.  <code class="command">SET SESSION
@@ -88,7 +89,7 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id735727"></a><h2>Notes</h2>
+<a name="id788907"></a><h2>Notes</h2>
 <p>   If <code class="command">SET TRANSACTION</code> is executed without a prior
    <code class="command">START TRANSACTION</code> or  <code class="command">BEGIN</code>,
    it will appear to have no effect, since the transaction will immediately
@@ -110,7 +111,7 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
 </div>
 <div class="refsect1" lang="en">
 <a name="r1-sql-set-transaction-3"></a><h2>Compatibility</h2>
-<p>   Both commands are defined in the <span class="acronym">SQL</span> standard.
+<p>   Both commands are defined in the <acronym class="acronym">SQL</acronym> standard.
    <code class="literal">SERIALIZABLE</code> is the default transaction
    isolation level in the standard.  In
    <span class="productname">PostgreSQL</span> the default is ordinarily

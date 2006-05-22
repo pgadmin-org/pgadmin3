@@ -4,11 +4,12 @@
 <title>DECLARE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-deallocate.html" title="DEALLOCATE">
 <link rel="next" href="sql-delete.html" title="DELETE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-declare"></a><div class="titlepage"></div>
@@ -16,14 +17,14 @@
 <h2>Name</h2>
 <p>DECLARE &#8212; define a cursor</p>
 </div>
-<a name="id714976"></a><a name="id714986"></a><div class="refsynopsisdiv">
+<a name="id768146"></a><a name="id768156"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">DECLARE <em class="replaceable"><code>name</code></em> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
     CURSOR [ { WITH | WITHOUT } HOLD ] FOR <em class="replaceable"><code>query</code></em>
     [ FOR { READ ONLY | UPDATE [ OF <em class="replaceable"><code>column</code></em> [, ...] ] } ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id715028"></a><h2>Description</h2>
+<a name="id768197"></a><h2>Description</h2>
 <p>   <code class="command">DECLARE</code> allows a user to create cursors, which
    can be used to retrieve
    a small number of rows at a time out of a larger query. Cursors can
@@ -65,7 +66,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id715121"></a><h2>Parameters</h2>
+<a name="id768290"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the cursor to be created.
@@ -171,7 +172,7 @@
     specified, then backward fetches are disallowed in any case.
    </p>
 <p>    The SQL standard only makes provisions for cursors in embedded
-    <span class="acronym">SQL</span>.  The <span class="productname">PostgreSQL</span>
+    <acronym class="acronym">SQL</acronym>.  The <span class="productname">PostgreSQL</span>
     server does not implement an <code class="command">OPEN</code> statement for
     cursors; a cursor is considered to be open when it is declared.
     However, <span class="application">ECPG</span>, the embedded SQL
@@ -181,7 +182,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id716329"></a><h2>Examples</h2>
+<a name="id513552"></a><h2>Examples</h2>
 <p>   To declare a cursor:
 </p>
 <pre class="programlisting">DECLARE liahona CURSOR FOR SELECT * FROM films;</pre>
@@ -191,9 +192,9 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id716350"></a><h2>Compatibility</h2>
+<a name="id769519"></a><h2>Compatibility</h2>
 <p>   The SQL standard allows cursors only in embedded
-   <span class="acronym">SQL</span> and in modules. <span class="productname">PostgreSQL</span>
+   <acronym class="acronym">SQL</acronym> and in modules. <span class="productname">PostgreSQL</span>
    permits cursors to be used interactively.
   </p>
 <p>   The SQL standard allows cursors to update table data. All
@@ -204,7 +205,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id716386"></a><h2>See Also</h2>
+<a name="id769556"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-fetch.html">FETCH</a>, <a href="sql-move.html">MOVE</a></span>
 </div>
 </div></body>

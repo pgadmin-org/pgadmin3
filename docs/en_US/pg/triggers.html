@@ -4,11 +4,12 @@
 <title>Chapter 33. Triggers</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="xindex.html" title="32.14. Interfacing Extensions To Indexes">
 <link rel="next" href="trigger-datachanges.html" title="33.2. Visibility of Data Changes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="triggers">
 <div class="titlepage"><div><div><h2 class="title">
@@ -22,10 +23,10 @@
 <dt><span class="sect1"><a href="trigger-example.html">33.4. A Complete Example</a></span></dt>
 </dl>
 </div>
-<a name="id661251"></a><p>   This chapter provides general information about writing trigger functions.
+<a name="id714275"></a><p>   This chapter provides general information about writing trigger functions.
    Trigger functions can be written in most of the available procedural
    languages, including
-   <span class="application">PL/pgSQL</span> (<a href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">Chapter 36, <i><span class="application">PL/pgSQL</span> - <span class="acronym">SQL</span> Procedural Language</i></a>),
+   <span class="application">PL/pgSQL</span> (<a href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">Chapter 36, <i><span class="application">PL/pgSQL</span> - <acronym class="acronym">SQL</acronym> Procedural Language</i></a>),
    <span class="application">PL/Tcl</span> (<a href="pltcl.html" title="Chapter 37. PL/Tcl - Tcl Procedural Language">Chapter 37, <i>PL/Tcl - Tcl Procedural Language</i></a>),
    <span class="application">PL/Perl</span> (<a href="plperl.html" title="Chapter 38. PL/Perl - Perl Procedural Language">Chapter 38, <i>PL/Perl - Perl Procedural Language</i></a>), and
    <span class="application">PL/Python</span> (<a href="plpython.html" title="Chapter 39. PL/Python - Python Procedural Language">Chapter 39, <i>PL/Python - Python Procedural Language</i></a>).
@@ -46,7 +47,7 @@
     performed.  Triggers can be defined to execute either before or after any
     <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
     <code class="command">DELETE</code> operation, either once per modified row,
-    or once per <span class="acronym">SQL</span> statement.
+    or once per <acronym class="acronym">SQL</acronym> statement.
     If a trigger event occurs, the trigger's function is called
     at the appropriate time to handle the event.
    </p>
@@ -149,7 +150,7 @@
     to avoid infinite recursion in such scenarios.
    </p>
 <p>    When a trigger is being defined, arguments can be specified for
-    it.<a name="id661622"></a> The purpose of including arguments in the
+    it.<a name="id714642"></a> The purpose of including arguments in the
     trigger definition is to allow different triggers with similar
     requirements to call the same function.  As an example, there
     could be a generalized trigger function that takes as its

@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.1.3</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-1-2.html" title="E.3. Release 8.1.2">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-1-3"></a>E.2. Release 8.1.3</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2006-02-14</p>
+</div>
+<p>    This release contains a variety of fixes from 8.1.2,
+    including one very serious security issue.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id868113"></a>E.2.1. Migration to version 8.1.3</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.1.X.
+     However, if you are upgrading from a version earlier than 8.1.2, 
+     see the release notes for 8.1.2.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id868122"></a>E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Fix bug that allowed any logged-in user to <code class="command">SET
+ROLE</code> to any other database user id (CVE-2006-0553)</p>
+<p>Due to inadequate validity checking, a user could exploit the special
+case that <code class="command">SET ROLE</code> normally uses to restore the previous role
+setting after an error.  This allowed ordinary users to acquire superuser
+status, for example.
+The escalation-of-privilege risk exists only in 8.1.0-8.1.2.
+However, in all releases back to 7.3 there is a related bug in <code class="command">SET
+SESSION AUTHORIZATION</code> that allows unprivileged users to crash the server,
+if it has been compiled with Asserts enabled (which is not the default).
+Thanks to Akio Ishida for reporting this problem.</p>
+</li>
+<li>
+<p>Fix bug with row visibility logic in self-inserted
+rows (Tom)</p>
+<p>Under rare circumstances a row inserted by the current command
+could be seen as already valid, when it should not be.  Repairs bug
+created in 8.0.4, 7.4.9, and 7.3.11 releases.</p>
+</li>
+<li><p>Fix race condition that could lead to &#8220;<span class="quote">file already
+exists</span>&#8221; errors during pg_clog and pg_subtrans file creation
+(Tom)</p></li>
+<li><p>Fix cases that could lead to crashes if a cache-invalidation
+message arrives at just the wrong time (Tom)</p></li>
+<li><p>Properly check <code class="literal">DOMAIN</code> constraints for
+<code class="literal">UNKNOWN</code> parameters in prepared statements
+(Neil)</p></li>
+<li><p>Ensure <code class="command">ALTER COLUMN TYPE</code> will process
+<code class="literal">FOREIGN KEY</code>, <code class="literal">UNIQUE</code>, and <code class="literal">PRIMARY KEY</code>
+constraints in the proper order (Nakano Yoshihisa)</p></li>
+<li><p>Fixes to allow restoring dumps that have cross-schema
+references to custom operators or operator classes (Tom)</p></li>
+<li><p>Allow <span class="application">pg_restore</span> to continue properly after a
+<code class="command">COPY</code> failure; formerly it tried to treat the remaining 
+<code class="command">COPY</code> data as SQL commands (Stephen Frost)</p></li>
+<li><p>Fix <span class="application">pg_ctl</span> <code class="literal">unregister</code> crash
+when the  data directory is not specified (Magnus)</p></li>
+<li><p>Fix <span class="application">libpq</span> <code class="function">PQprint</code> HTML tags
+(Christoph Zwerschke)</p></li>
+<li><p>Fix <span class="application">ecpg</span> crash on AMD64 and PPC
+(Neil)</p></li>
+<li><p>Allow <code class="literal">SETOF</code> and <code class="literal">%TYPE</code> to be used
+together in function result type declarations</p></li>
+<li><p>Recover properly if error occurs during argument passing
+in <span class="application">PL/python</span> (Neil)</p></li>
+<li><p>Fix memory leak in <code class="function">plperl_return_next</code>
+(Neil)</p></li>
+<li><p>Fix <span class="application">PL/perl</span>'s handling of locales on
+Win32 to match the backend (Andrew)</p></li>
+<li><p>Various optimizer fixes (Tom)</p></li>
+<li><p>Fix crash when <code class="literal">log_min_messages</code> is set to
+<code class="literal">DEBUG3</code> or above in <code class="filename">postgresql.conf</code> on Win32
+(Bruce)</p></li>
+<li><p>Fix <span class="application">pgxs</span> <code class="literal">-L</code> library path
+specification for Win32, Cygwin, OS X, AIX (Bruce)</p></li>
+<li><p>Check that SID is enabled while checking for Win32 admin
+privileges (Magnus)</p></li>
+<li><p>Properly reject out-of-range date inputs (Kris
+Jurka)</p></li>
+<li><p>Portability fix for testing presence of <code class="function">finite</code>
+and <code class="function">isinf</code> during configure (Tom)</p></li>
+<li><p>Improve speed of <code class="command">COPY IN</code> via libpq, by
+avoiding a kernel call per data line (Alon Goldshuv)</p></li>
+<li><p>Improve speed of <code class="filename">/contrib/tsearch2</code> index
+creation (Tom)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

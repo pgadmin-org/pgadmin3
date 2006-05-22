@@ -4,11 +4,12 @@
 <title>7. Defining Slony-I Replication Sets</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="cluster.html" title="6. Defining Slony-I Clusters">
 <link rel="next" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -26,12 +27,14 @@ suitable primary key</p></li>
 </ul></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id515024"></a>7.1. Primary Keys</h3></div></div></div>
+<a name="id568002"></a>7.1. Primary Keys</h3></div></div></div>
 <p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
 candidate thereof on each table that is replicated.  PK values are
 used as the primary identifier for each tuple that is modified in the
-source system.  There are three ways that you can get <span class="productname">Slony-I</span> to use
-a primary key:</p>
+source system.  Note that they can be composite keys composed of
+multiple NOT NULL columns; they don't need to consist of single
+fields.  There are three ways that you can get <span class="productname">Slony-I</span> to use a
+primary key:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> If the table has a formally identified primary key,
 <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> can be used without any need to
@@ -122,7 +125,7 @@ intrude on your applications.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id515400"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
+<a name="id568310"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
 <p> Each time a SYNC is processed, values are recorded for
 <span class="emphasis"><em>all</em></span> of the sequences in the set.  If there are a
 lot of sequences, this can cause <a href="table.sl-seqlog.html">sl_seqlog</a> to

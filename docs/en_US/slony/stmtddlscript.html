@@ -4,11 +4,12 @@
 <title>EXECUTE SCRIPT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
 <link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtfailover.html" title="FAILOVER">
 <link rel="next" href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="stmtddlscript"></a><div class="titlepage"></div>
@@ -21,7 +22,7 @@
 <div class="cmdsynopsis"><p><code class="command">EXECUTE SCRIPT (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id539164"></a><h2>Description</h2>
+<a name="id594096"></a><h2>Description</h2>
 <p> Executes a script containing arbitrary SQL statements on
      all nodes that are subscribed to a set at a common controlled
      point within the replication transaction stream.</p>
@@ -36,7 +37,8 @@
     replicated. </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal"> SET ID = ival </code></span></dt>
-<dd><p> The unique numeric ID number of the set affected by the script</p></dd>
+<dd><p> The unique numeric ID number of the set
+      affected by the script</p></dd>
 <dt><span class="term"><code class="literal"> FILENAME = '/path/to/file' </code></span></dt>
 <dd>
 <p> The name of the file containing the SQL script to
@@ -77,13 +79,10 @@
     you need to make reference to the <span class="productname">Slony-I</span> namespace, you can use
     the token <code class="command">@NAMESPACE@</code>; both will be expanded
     into the appropriate replacement tokens. </p>
-<p> It generally seems a bad idea to use quotes in DDL scripts.
-    It appears preferable to handle that sort of thing &#8220;<span class="quote">out of
-    band.</span>&#8221; </p>
 <p> This uses <a href="function.ddlscript-integer-text-integer.html">schemadocddlscript( integer, text, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id539393"></a><h2>Example</h2>
+<a name="id594317"></a><h2>Example</h2>
 <pre class="programlisting">EXECUTE SCRIPT (
    SET ID = 1,
    FILENAME = '/tmp/changes_2004-05-01.sql',
@@ -92,7 +91,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id539404"></a><h2> Locking Behaviour </h2>
+<a name="id594328"></a><h2> Locking Behaviour </h2>
 <p> Each replicated table receives an exclusive lock, on the
     origin node, in order to remove the replication triggers; after
     the DDL script completes, those locks will be cleared. </p>
@@ -103,8 +102,24 @@
     turn. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id539420"></a><h2> Version Information </h2>
-<p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
+<a name="id594344"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0. </p>
+<p> Before <span class="productname">Slony-I</span> version 1.2, the entire DDL script was
+    submitted as one <code class="function">PQexec()</code> request, with the
+    implication that the <span class="emphasis"><em>entire</em></span> script was parsed
+    based on the state of the database before invokation of the
+    script.  This means statements later in the script cannot depend
+    on DDL changes made by earlier statements in the same script.
+    Thus, you cannot add a column to a table and add constraints to
+    that column later in the same request. </p>
+<p> In <span class="productname">Slony-I</span> version 1.2, the DDL script is split into
+    statements, and each is submitted separately.  As a result, it is
+    fine for later statements to refer to objects or attributes
+    created or modified in earlier statements.  Furthermore, in
+    version 1.2, the <code class="command">slonik</code> output includes a
+    listing of each statement as it is processed, on the set origin
+    node.  Similarly, the statements processed are listed in slon logs
+    on the other nodes.</p>
 </div>
 </div></body>
 </html>

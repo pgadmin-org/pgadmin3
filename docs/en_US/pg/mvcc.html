@@ -4,11 +4,12 @@
 <title>Chapter 12. Concurrency Control</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="prev" href="indexes-examine.html" title="11.9. Examining Index Usage">
 <link rel="next" href="transaction-iso.html" title="12.2. Transaction Isolation">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="mvcc">
 <div class="titlepage"><div><div><h2 class="title">
@@ -32,7 +33,7 @@
 <dt><span class="sect1"><a href="locking-indexes.html">12.5. Locking and Indexes</a></span></dt>
 </dl>
 </div>
-<a name="id577243"></a><p>   This chapter describes the behavior of the
+<a name="id629789"></a><p>   This chapter describes the behavior of the
    <span class="productname">PostgreSQL</span> database system when two or
    more sessions try to access the same data at the same time.  The
    goals in that situation are to allow efficient access for all
@@ -43,10 +44,10 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="mvcc-intro"></a>12.1. Introduction</h2></div></div></div>
-<a name="id577272"></a><p>    Unlike traditional database systems which use locks for concurrency control,
+<a name="id629818"></a><p>    Unlike traditional database systems which use locks for concurrency control,
     <span class="productname">PostgreSQL</span>
     maintains data consistency by using a multiversion model
-    (Multiversion Concurrency Control, <span class="acronym">MVCC</span>). 
+    (Multiversion Concurrency Control, <acronym class="acronym">MVCC</acronym>). 
     This means that while querying a database each transaction sees
     a snapshot of data (a <em class="firstterm">database version</em>)
     as it was some
@@ -56,16 +57,16 @@
     data rows, providing <em class="firstterm">transaction isolation</em>
     for each database session.
    </p>
-<p>    The main advantage to using the <span class="acronym">MVCC</span> model of
+<p>    The main advantage to using the <acronym class="acronym">MVCC</acronym> model of
     concurrency control rather than locking is that in
-    <span class="acronym">MVCC</span> locks acquired for querying (reading) data
+    <acronym class="acronym">MVCC</acronym> locks acquired for querying (reading) data
     do not conflict with locks acquired for writing data, and so
     reading never blocks writing and writing never blocks reading.
    </p>
 <p>    Table- and row-level locking facilities are also available in
     <span class="productname">PostgreSQL</span> for applications that cannot
-    adapt easily to <span class="acronym">MVCC</span> behavior.  However, proper
-    use of <span class="acronym">MVCC</span> will generally provide better
+    adapt easily to <acronym class="acronym">MVCC</acronym> behavior.  However, proper
+    use of <acronym class="acronym">MVCC</acronym> will generally provide better
     performance than locks.
    </p>
 </div>

@@ -1,25 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.40. Release 7.3</title>
+<title>E.44. Release 7.3</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-3-1.html" title="E.39. Release 7.3.1">
-<link rel="next" href="release-7-2-8.html" title="E.41. Release 7.2.8">
+<link rel="prev" href="release-7-3-1.html" title="E.43. Release 7.3.1">
+<link rel="next" href="release-7-2-8.html" title="E.45. Release 7.2.8">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-3"></a>E.40. Release 7.3</h2></div></div></div>
+<a name="release-7-3"></a>E.44. Release 7.3</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2002-11-27</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id835508"></a>E.40.1. Overview</h3></div></div></div>
+<a name="id888892"></a>E.44.1. Overview</h3></div></div></div>
 <p>    Major changes in this release:
    </p>
 <div class="variablelist"><dl>
@@ -79,7 +80,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id835715"></a>E.40.2. Migration to version 7.3</h3></div></div></div>
+<a name="id889099"></a>E.44.2. Migration to version 7.3</h3></div></div></div>
 <p>    A dump/restore using <span class="application">pg_dump</span> is required for those
     wishing to migrate data from any previous release. If your
     application examines the system catalogs, additional changes will
@@ -137,10 +138,10 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id835913"></a>E.40.3. Changes</h3></div></div></div>
+<a name="id889297"></a>E.44.3. Changes</h3></div></div></div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id835917"></a>E.40.3.1. Server Operation</h4></div></div></div>
+<a name="id889301"></a>E.44.3.1. Server Operation</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add pg_locks view to show locks (Neil)</p></li>
 <li><p>Security fixes for password negotiation memory allocation (Neil)</p></li>
@@ -150,7 +151,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id835949"></a>E.40.3.2. Performance</h4></div></div></div>
+<a name="id889333"></a>E.44.3.2. Performance</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Improve startup by calling localtime() only once (Tom)</p></li>
 <li><p>Cache system catalog information in flat files for faster startup (Tom)</p></li>
@@ -174,7 +175,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836040"></a>E.40.3.3. Privileges</h4></div></div></div>
+<a name="id889424"></a>E.44.3.3. Privileges</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add privileges on functions and procedural languages (Peter)</p></li>
 <li><p>Add OWNER to CREATE DATABASE so superusers can create databases on behalf of unprivileged users (Gavin Sherry, Tom)</p></li>
@@ -185,7 +186,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836070"></a>E.40.3.4. Server Configuration</h4></div></div></div>
+<a name="id889454"></a>E.44.3.4. Server Configuration</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Server log messages now tagged with LOG, not DEBUG (Bruce)</p></li>
 <li><p>Add user column to pg_hba.conf (Bruce)</p></li>
@@ -207,7 +208,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836155"></a>E.40.3.5. Queries</h4></div></div></div>
+<a name="id889539"></a>E.44.3.5. Queries</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Make cursors insensitive, meaning their contents do not change (Tom)</p></li>
 <li><p>Disable LIMIT #,# syntax; now only LIMIT # OFFSET # supported (Bruce)</p></li>
@@ -231,7 +232,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836247"></a>E.40.3.6. Object Manipulation</h4></div></div></div>
+<a name="id889631"></a>E.44.3.6. Object Manipulation</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Make equals signs optional in CREATE DATABASE (Gavin Sherry)</p></li>
 <li><p>Make ALTER TABLE OWNER change index ownership too (Neil)</p></li>
@@ -268,7 +269,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836400"></a>E.40.3.7. Utility Commands</h4></div></div></div>
+<a name="id889784"></a>E.44.3.7. Utility Commands</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Have COPY TO output embedded carriage returns and newlines as \r and \n (Tom)</p></li>
 <li><p>Allow DELIMITER in COPY FROM to be 8-bit clean (Tatsuo)</p></li>
@@ -308,7 +309,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836594"></a>E.40.3.8. Data Types and Functions</h4></div></div></div>
+<a name="id889978"></a>E.44.3.8. Data Types and Functions</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fix factorial(0) to return 1 (Bruce)</p></li>
 <li><p>Date/time/timezone improvements (Thomas)</p></li>
@@ -354,7 +355,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836792"></a>E.40.3.9. Internationalization</h4></div></div></div>
+<a name="id890176"></a>E.44.3.9. Internationalization</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add additional encodings: Korean (JOHAB), Thai (WIN874), Vietnamese (TCVN), Arabic (WIN1256), Simplified Chinese (GBK), Korean (UHC) (Eiji Tokuya)</p></li>
 <li><p>Enable locale support by default (Peter)</p></li>
@@ -372,7 +373,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836857"></a>E.40.3.10. Server-side Languages</h4></div></div></div>
+<a name="id890241"></a>E.44.3.10. Server-side Languages</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Allow recursive SQL function (Peter)</p></li>
 <li><p>Change PL/Tcl build to use configured compiler and Makefile.shlib (Peter)</p></li>
@@ -385,7 +386,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836895"></a>E.40.3.11. psql</h4></div></div></div>
+<a name="id890279"></a>E.44.3.11. psql</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Don't lowercase psql \connect database name for 7.2.0 compatibility (Tom)</p></li>
 <li><p>Add psql \timing to time user queries (Greg Sabino Mullane)</p></li>
@@ -402,7 +403,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836951"></a>E.40.3.12. libpq</h4></div></div></div>
+<a name="id890335"></a>E.44.3.12. libpq</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add ~/.pgpass to store host/user password combinations (Alvaro Herrera)</p></li>
 <li><p>Add PQunescapeBytea() function to libpq (Patrick Welche)</p></li>
@@ -416,7 +417,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id836995"></a>E.40.3.13. JDBC</h4></div></div></div>
+<a name="id890379"></a>E.44.3.13. JDBC</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Allow JDBC to compile with JDK 1.4 (Dave)</p></li>
 <li><p>Add JDBC 3 support (Barry)</p></li>
@@ -432,7 +433,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id837046"></a>E.40.3.14. Miscellaneous Interfaces</h4></div></div></div>
+<a name="id890430"></a>E.44.3.14. Miscellaneous Interfaces</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fixed ECPG bug concerning octal numbers in single quotes (Michael)</p></li>
 <li><p>Move src/interfaces/libpgeasy to http://gborg.postgresql.org (Marc, Bruce)</p></li>
@@ -448,7 +449,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id837101"></a>E.40.3.15. Source Code</h4></div></div></div>
+<a name="id890485"></a>E.44.3.15. Source Code</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fix for parallel make (Peter)</p></li>
 <li><p>AIX fixes for linking Tcl (Andreas Zeugswetter)</p></li>
@@ -503,7 +504,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id837336"></a>E.40.3.16. Contrib</h4></div></div></div>
+<a name="id890720"></a>E.44.3.16. Contrib</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Allow inet arrays in /contrib/array (Neil)</p></li>
 <li><p>GiST fixes (Teodor Sigaev, Neil)</p></li>

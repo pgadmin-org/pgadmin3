@@ -4,11 +4,12 @@
 <title>pg_ctl</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="app-pgcontroldata.html" title="pg_controldata">
 <link rel="next" href="app-pgresetxlog.html" title="pg_resetxlog">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="app-pg-ctl"></a><div class="titlepage"></div>
@@ -16,12 +17,12 @@
 <h2>Name</h2>
 <p>pg_ctl &#8212; start, stop, or restart a <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id757549"></a><div class="refsynopsisdiv">
+<a name="id809665"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">pg_ctl</code>  start  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-l <em class="replaceable"><code>filename</code></em>] [-o <em class="replaceable"><code>options</code></em>] [-p <em class="replaceable"><code>path</code></em>]<br><code class="command">pg_ctl</code>  stop  [-W] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
-       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
+      [s[mart]] |  [f[ast]] |  [i[mmediate]] 
    ]<br><code class="command">pg_ctl</code>  restart  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
-       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
+      [s[mart]] |  [f[ast]] |  [i[mmediate]] 
    ] [-o <em class="replaceable"><code>options</code></em>]<br><code class="command">pg_ctl</code>  reload  [-s] [-D <em class="replaceable"><code>datadir</code></em>]<br><code class="command">pg_ctl</code>  status  [-D <em class="replaceable"><code>datadir</code></em>]<br><code class="command">pg_ctl</code>  kill  [<em class="replaceable"><code>signal_name</code></em>] [<em class="replaceable"><code>process_id</code></em>]<br><code class="command">pg_ctl</code>  register  [-N <em class="replaceable"><code>servicename</code></em>] [-U <em class="replaceable"><code>username</code></em>] [-P <em class="replaceable"><code>password</code></em>] [-D <em class="replaceable"><code>datadir</code></em>] [-w] [-o <em class="replaceable"><code>options</code></em>]<br><code class="command">pg_ctl</code>  unregister  [-N <em class="replaceable"><code>servicename</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
@@ -71,7 +72,7 @@
    to take effect.
   </p>
 <p>   <code class="option">status</code> mode checks whether a server is running in
-   the specified data directory. If it is, the <span class="acronym">PID</span>
+   the specified data directory. If it is, the <acronym class="acronym">PID</acronym>
    and the command line options that were used to invoke it are
    displayed.
   </p>
@@ -133,7 +134,7 @@
 <dt><span class="term"><code class="option">-w</code></span></dt>
 <dd><p>	Wait for the start or shutdown to complete.  Times out after
 	60 seconds.  This is the default for shutdowns. A successful 
-        shutdown is indicated by removal of the <span class="acronym">PID</span> 
+        shutdown is indicated by removal of the <acronym class="acronym">PID</acronym> 
         file. For starting up, a successful <code class="command">psql -l</code> 
         indicates success. <code class="command">pg_ctl</code> will attempt to 
         use the proper port for <span class="application">psql</span>. If the environment variable 
@@ -173,7 +174,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758548"></a><h2>Environment</h2>
+<a name="id810664"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGDATA</code></span></dt>
 <dd><p>      Default data directory location.
@@ -186,7 +187,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758588"></a><h2>Files</h2>
+<a name="id810705"></a><h2>Files</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="filename">postmaster.pid</code></span></dt>
 <dd><p>      The existence of this file in the data directory is used to help
@@ -216,7 +217,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758717"></a><h2>Notes</h2>
+<a name="id810834"></a><h2>Notes</h2>
 <p>   Waiting for complete start is not a well-defined operation and may
    fail if access control is set up so that a local client cannot
    connect without manual interaction (e.g., password authentication).
@@ -290,7 +291,7 @@ Command line was:
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758973"></a><h2>See Also</h2>
+<a name="id811090"></a><h2>See Also</h2>
 <p>   <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>
   </p>
 </div>

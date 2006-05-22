@@ -4,11 +4,12 @@
 <title>NOTIFY</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-move.html" title="MOVE">
 <link rel="next" href="sql-prepare.html" title="PREPARE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-notify"></a><div class="titlepage"></div>
@@ -16,12 +17,12 @@
 <h2>Name</h2>
 <p>NOTIFY &#8212; generate a notification</p>
 </div>
-<a name="id725712"></a><div class="refsynopsisdiv">
+<a name="id778889"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">NOTIFY <em class="replaceable"><code>name</code></em>        </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id725734"></a><h2>Description</h2>
+<a name="id778912"></a><h2>Description</h2>
 <p>   The <code class="command">NOTIFY</code> command sends a notification event to each
    client application that has previously executed
    <code class="command">LISTEN <em class="replaceable"><code>name</code></em></code>
@@ -35,7 +36,7 @@
    listener(s).
   </p>
 <p>   The information passed to the client for a notification event includes the notification
-   name and the notifying session's server process <span class="acronym">PID</span>.  It is up to the
+   name and the notifying session's server process <acronym class="acronym">PID</acronym>.  It is up to the
    database designer to define the notification names that will be used in a given
    database and what each one means.
   </p>
@@ -86,9 +87,9 @@
    result in useless work, for example, reading a database table to
    find the same updates that that session just wrote out.  It is
    possible to avoid such extra work by noticing whether the notifying
-   session's server process <span class="acronym">PID</span> (supplied in the
+   session's server process <acronym class="acronym">PID</acronym> (supplied in the
    notification event message) is the same as one's own session's
-   <span class="acronym">PID</span> (available from <span class="application">libpq</span>).  When they
+   <acronym class="acronym">PID</acronym> (available from <span class="application">libpq</span>).  When they
    are the same, the notification event is one's own work bouncing
    back, and can be ignored.  (Despite what was said in the preceding
    paragraph, this is a safe technique.
@@ -99,7 +100,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id725968"></a><h2>Parameters</h2>
+<a name="id779145"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      Name of the notification to be signaled (any identifier).
@@ -107,7 +108,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id725986"></a><h2>Examples</h2>
+<a name="id779163"></a><h2>Examples</h2>
 <p>   Configure and execute a listen/notify sequence from
    <span class="application">psql</span>:
 
@@ -119,13 +120,13 @@ Asynchronous notification "virtual" received from server process with PID 8448.<
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id726008"></a><h2>Compatibility</h2>
+<a name="id779185"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">NOTIFY</code> statement in the SQL
    standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id726022"></a><h2>See Also</h2>
+<a name="id779199"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-unlisten.html">UNLISTEN</a></span>
 </div>
 </div></body>

@@ -4,18 +4,19 @@
 <title>16.3. Starting the Database Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
 <link rel="next" href="kernel-resources.html" title="16.4. Managing Kernel Resources">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="postmaster-start"></a>16.3. Starting the Database Server</h2></div></div></div>
 <p>   Before anyone can access the database, you must start the database
    server. The database server program is called
-   <code class="command">postmaster</code>.<a name="id588518"></a>
+   <code class="command">postmaster</code>.<a name="id641062"></a>
    The <code class="command">postmaster</code> must know where to
    find the data it is supposed to use. This is done with the
    <code class="option">-D</code> option. Thus, the simplest way to start the
@@ -46,7 +47,7 @@
   </p>
 <p>   This shell syntax can get tedious quickly.  Therefore the wrapper
    program
-   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id588655"></a>
+   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id641199"></a>
    is provided to simplify some tasks.  For example:
 </p>
 <pre class="programlisting">pg_ctl start -l logfile</pre>
@@ -57,7 +58,7 @@
    is also capable of stopping the server.
   </p>
 <p>   Normally, you will want to start the database server when the
-   computer boots.<a name="id588694"></a> Autostart scripts are operating-system-specific.
+   computer boots.<a name="id641238"></a> Autostart scripts are operating-system-specific.
    There are a few distributed with
    <span class="productname">PostgreSQL</span> in the
    <code class="filename">contrib/start-scripts</code> directory. Installing one will require
@@ -85,12 +86,12 @@
 <li><p>      For <span class="productname">FreeBSD</span>, look at the file
       <code class="filename">contrib/start-scripts/freebsd</code> in the
       <span class="productname">PostgreSQL</span> source distribution.
-      <a name="id588805"></a>
+      <a name="id641349"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">OpenBSD</span>, add the following lines
       to the file <code class="filename">/etc/rc.local</code>:
-      <a name="id588833"></a>
+      <a name="id641378"></a>
 </p>
 <pre class="programlisting">if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postmaster ]; then
     su - -c '/usr/local/pgsql/bin/pg_ctl start -l /var/postgresql/log -s' postgres
@@ -101,7 +102,7 @@ fi</pre>
 </li>
 <li>
 <p>      On <span class="productname">Linux</span> systems either add
-      <a name="id588864"></a>
+      <a name="id641409"></a>
 </p>
 <pre class="programlisting">/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data</pre>
 <p>
@@ -113,13 +114,13 @@ fi</pre>
 <li><p>      On <span class="productname">NetBSD</span>, either use the
       <span class="productname">FreeBSD</span> or
       <span class="productname">Linux</span> start scripts, depending on
-      preference. <a name="id588928"></a>
+      preference. <a name="id641473"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">Solaris</span>, create a file called
       <code class="filename">/etc/init.d/postgresql</code> that contains
       the following line:
-      <a name="id588957"></a>
+      <a name="id641502"></a>
 </p>
 <pre class="programlisting">su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data"</pre>
 <p>
@@ -132,7 +133,7 @@ fi</pre>
 
   </p>
 <p>    While the <code class="command">postmaster</code> is running, its
-    <span class="acronym">PID</span> is stored in the file
+    <acronym class="acronym">PID</acronym> is stored in the file
     <code class="filename">postmaster.pid</code> in the data directory. This is
     used to prevent multiple <code class="command">postmaster</code> processes
     running in the same data directory and can also be used for
@@ -200,7 +201,7 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
      enable these features.
     </p>
 <p>     Details about configuring <span class="systemitem">System V</span>
-     <span class="acronym">IPC</span> facilities are given in <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a>.
+     <acronym class="acronym">IPC</acronym> facilities are given in <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a>.
     </p>
 </div>
 <div class="sect2" lang="en">

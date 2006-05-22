@@ -4,16 +4,17 @@
 <title>17.5. Write Ahead Log</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
 <link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-wal"></a>17.5. Write Ahead Log</h2></div></div></div>
-<p>    See also <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a> for details on WAL
+<p>    See also <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
     tuning.
    </p>
 <div class="sect2" lang="en">
@@ -96,34 +97,12 @@
 <p>        When this option is on, the <span class="productname">PostgreSQL</span> server
         writes the entire content of each disk page to WAL during the
         first modification of that page after a checkpoint.
-        This is needed because
-        a page write that is in process during an operating system crash might
-        be only partially completed, leading to an on-disk page
-        that contains a mix of old and new data.  The row-level change data
-        normally stored in WAL will not be enough to completely restore
-        such a page during post-crash recovery.  Storing the full page image
-        guarantees that the page can be correctly restored, but at a price
-        in increasing the amount of data that must be written to WAL.
-        (Because WAL replay always starts from a checkpoint, it is sufficient
-        to do this during the first change of each page after a checkpoint.
-        Therefore, one way to reduce the cost of full-page writes is to
-        increase the checkpoint interval parameters.)
        </p>
-<p>        Turning this option off speeds normal operation, but
-        might lead to a corrupt database after an operating system crash
-        or power failure. The risks are similar to turning off
-        <code class="varname">fsync</code>, though smaller.  It may be safe to turn off
-        this option if you have hardware (such as a battery-backed disk
-        controller) or filesystem software (e.g., Reiser4) that reduces
-        the risk of partial page writes to an acceptably low level.
-       </p>
-<p>        Turning off this option does not affect use of
-        WAL archiving for point-in-time recovery (PITR)
-        (see <a href="backup-online.html" title="23.3. On-line backup and point-in-time recovery (PITR)">Section 23.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>).
-       </p>
-<p>        This option can be set at server start or in the
-        <code class="filename">postgresql.conf</code> file.  The default is
-        <code class="literal">on</code>.
+<p>        This parameter is currently ignored (treated as always <code class="literal">on</code>)
+        because turning it off can cause failure to recover from crashes
+        even when no hardware or OS-level error occurred.  This will be
+        fixed in some future release, or else the parameter will be removed
+        entirely.
        </p>
 </dd>
 <dt>

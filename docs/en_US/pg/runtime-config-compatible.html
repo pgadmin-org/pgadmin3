@@ -4,11 +4,12 @@
 <title>17.12. Version and Platform Compatibility</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.3 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-locks.html" title="17.11. Lock Management">
 <link rel="next" href="runtime-config-preset.html" title="17.13. Preset Options">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -61,6 +62,27 @@
         use the <code class="literal">ONLY</code> key word to exclude subtables.
         See <a href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a> for more information about
         inheritance.
+       </p></dd>
+<dt>
+<a name="guc-backslash-quote"></a><span class="term"><code class="varname">backslash_quote</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        This controls whether a quote mark can be represented by
+        <code class="literal">\'</code> in a string literal.  The preferred, SQL-standard way
+        to represent a quote mark is by doubling it (<code class="literal">''</code>) but
+        <span class="productname">PostgreSQL</span> has historically also accepted
+        <code class="literal">\'</code>. However, use of <code class="literal">\'</code> creates security risks
+        because in some client character set encodings, there are multibyte
+        characters in which the last byte is numerically equivalent to ASCII
+        <code class="literal">\</code>.  If client-side code does escaping incorrectly then a
+        SQL-injection attack is possible.  This risk can be prevented by
+        making the server reject queries in which a quote mark appears to be
+        escaped by a backslash.
+        The allowed values of <code class="varname">backslash_quote</code> are
+        <code class="literal">on</code> (allow <code class="literal">\'</code> always),
+        <code class="literal">off</code> (reject always), and
+        <code class="literal">safe_encoding</code> (allow only if client encoding does not
+        allow ASCII <code class="literal">\</code> within a multibyte character).
+        <code class="literal">safe_encoding</code> is the default setting.
        </p></dd>
 <dt>
 <a name="guc-default-with-oids"></a><span class="term"><code class="varname">default_with_oids</code> (<code class="type">boolean</code>)</span>
