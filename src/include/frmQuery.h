@@ -73,6 +73,8 @@ private:
 	void OnSelectFavourite(wxCommandEvent& event);
 	void OnQuickReport(wxCommandEvent& event);
 	void OnWordWrap(wxCommandEvent& event);
+	void OnShowWhitespace(wxCommandEvent& event);
+	void OnShowLineEnds(wxCommandEvent& event);
 
     bool CheckChanged(bool canVeto);
     void OpenLastFile();

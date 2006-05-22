@@ -82,6 +82,8 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_MENU(MNU_SELECTALL,		    frmQuery::OnSelectAll)
     EVT_MENU(MNU_QUICKREPORT,       frmQuery::OnQuickReport)
 	EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
+	EVT_MENU(MNU_SHOWWHITESPACE,    frmQuery::OnShowWhitespace)
+	EVT_MENU(MNU_SHOWLINEENDS,      frmQuery::OnShowLineEnds)
 	EVT_MENU(MNU_FAVOURITES_ADD,	frmQuery::OnAddFavourite)
 	EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
 	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
@@ -142,6 +144,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->Append(MNU_REPLACE, _("&Replace\tCtrl-R"), _("Find and Replace text"), wxITEM_NORMAL);
 	editMenu->AppendSeparator();
 	editMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
+    editMenu->Append(MNU_SHOWWHITESPACE, _("&Show whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
+	editMenu->Append(MNU_SHOWLINEENDS, _("&Show line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
     menuBar->Append(editMenu, _("&Edit"));
 
     queryMenu = new wxMenu();
@@ -269,13 +273,29 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     bool bVal;
 
-    // Output format
+    // Word wrap
     settings->Read(wxT("frmQuery/WordWrap"), &bVal, false);
 	editMenu->Check(MNU_WORDWRAP, bVal);
     if (bVal)
 		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
 	else
         sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
+
+	// Whitespace
+    settings->Read(wxT("frmQuery/ShowWhitespace"), &bVal, false);
+	editMenu->Check(MNU_SHOWWHITESPACE, bVal);
+    if (bVal)
+		sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
+	else
+        sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE); 
+
+	// Line ends
+    settings->Read(wxT("frmQuery/ShowLineEnds"), &bVal, false);
+	editMenu->Check(MNU_SHOWLINEENDS, bVal);
+    if (bVal)
+		sqlQuery->SetViewEOL(1);
+	else
+        sqlQuery->SetViewEOL(0);
 
     sqlQuery->SetText(query);
     sqlQuery->Colourise(0, query.Length());
@@ -333,6 +353,31 @@ void frmQuery::OnWordWrap(wxCommandEvent &event)
 	else
 		sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
 }
+
+void frmQuery::OnShowWhitespace(wxCommandEvent& event)
+{
+	editMenu->Check(MNU_SHOWWHITESPACE, event.IsChecked());
+
+	settings->Write(wxT("frmQuery/ShowWhitespace"), editMenu->IsChecked(MNU_SHOWWHITESPACE));
+	
+	if (editMenu->IsChecked(MNU_SHOWWHITESPACE))
+		sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
+	else
+		sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE);
+}
+
+void frmQuery::OnShowLineEnds(wxCommandEvent& event)
+{
+	editMenu->Check(MNU_SHOWLINEENDS, event.IsChecked());
+
+	settings->Write(wxT("frmQuery/ShowLineEnds"), editMenu->IsChecked(MNU_SHOWLINEENDS));
+	
+	if (editMenu->IsChecked(MNU_SHOWLINEENDS))
+		sqlQuery->SetViewEOL(1);
+	else
+		sqlQuery->SetViewEOL(0);
+}
+
 
 void frmQuery::OnActivate(wxActivateEvent& event)
 {
