@@ -124,7 +124,10 @@ int dlgRole::Go(bool modal)
             wxT("   AND roleid IS NULL");
 
         // Edit Mode
-        readOnly=!role->GetServer()->GetSuperUser();
+        if (role->GetServer()->GetSuperUser() || role->GetServer()->GetCreateRole()) 
+			readOnly=false;
+		else
+			readOnly=true;
 
         chkCreateDB->SetValue(role->GetCreateDatabase());
         chkCreateRole->SetValue(role->GetCreateRole());
