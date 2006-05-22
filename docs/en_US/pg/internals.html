@@ -4,16 +4,17 @@
 <title>Part VII. Internals</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
-<link rel="up" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<link rel="up" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="prev" href="app-postmaster.html" title="postmaster">
 <link rel="next" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="internals">
 <div class="titlepage"><div><div><h1 class="title">
 <a name="internals"></a>Part VII. Internals</h1></div></div></div>
-<div class="partintro" lang="en" id="id744619">
+<div class="partintro" lang="en" id="id796386">
 <div></div>
 <p>    This part contains assorted information that can be of use to
     <span class="productname">PostgreSQL</span> developers.
@@ -27,12 +28,12 @@
 <dt><span class="sect1"><a href="connect-estab.html">40.2. How Connections are Established</a></span></dt>
 <dt><span class="sect1"><a href="parser-stage.html">40.3. The Parser Stage</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="parser-stage.html#id745060">40.3.1. Parser</a></span></dt>
-<dt><span class="sect2"><a href="parser-stage.html#id745263">40.3.2. Transformation Process</a></span></dt>
+<dt><span class="sect2"><a href="parser-stage.html#id796826">40.3.1. Parser</a></span></dt>
+<dt><span class="sect2"><a href="parser-stage.html#id797030">40.3.2. Transformation Process</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="rule-system.html">40.4. The <span class="productname">PostgreSQL</span> Rule System</a></span></dt>
 <dt><span class="sect1"><a href="planner-optimizer.html">40.5. Planner/Optimizer</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id745541">40.5.1. Generating Possible Plans</a></span></dt></dl></dd>
+<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id797308">40.5.1. Generating Possible Plans</a></span></dt></dl></dd>
 <dt><span class="sect1"><a href="executor.html">40.6. Executor</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="catalogs.html">41. System Catalogs</a></span></dt>
@@ -87,15 +88,15 @@
 </dl></dd>
 <dt><span class="sect1"><a href="protocol-flow.html">42.2. Message Flow</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="protocol-flow.html#id757724">42.2.1. Start-Up</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id757981">42.2.2. Simple Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id758239">42.2.3. Extended Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id758546">42.2.4. Function Call</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id809501">42.2.1. Start-Up</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id809759">42.2.2. Simple Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id810016">42.2.3. Extended Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id810333">42.2.4. Function Call</a></span></dt>
 <dt><span class="sect2"><a href="protocol-flow.html#protocol-copy">42.2.5. COPY Operations</a></span></dt>
 <dt><span class="sect2"><a href="protocol-flow.html#protocol-async">42.2.6. Asynchronous Operations</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id758974">42.2.7. Cancelling Requests in Progress</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id759038">42.2.8. Termination</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id759098">42.2.9. <span class="acronym">SSL</span> Session Encryption</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id810761">42.2.7. Cancelling Requests in Progress</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id810834">42.2.8. Termination</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id810894">42.2.9. <acronym class="acronym">SSL</acronym> Session Encryption</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="protocol-message-types.html">42.3. Message Data Types</a></span></dt>
 <dt><span class="sect1"><a href="protocol-message-formats.html">42.4. Message Formats</a></span></dt>
@@ -112,10 +113,10 @@
 <dd><dl>
 <dt><span class="sect1"><a href="nls.html#nls-translator">44.1. For the Translator</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="nls.html#id763637">44.1.1. Requirements</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id763711">44.1.2. Concepts</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id763847">44.1.3. Creating and maintaining message catalogs</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id764042">44.1.4. Editing the PO files</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id815434">44.1.1. Requirements</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id815507">44.1.2. Concepts</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id815643">44.1.3. Creating and maintaining message catalogs</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id815839">44.1.4. Editing the PO files</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="nls-programmer.html">44.2. For the Programmer</a></span></dt>
 <dd><dl>
@@ -128,9 +129,9 @@
 <dd><dl>
 <dt><span class="sect1"><a href="geqo.html#geqo-intro">46.1. Query Handling as a Complex Optimization Problem</a></span></dt>
 <dt><span class="sect1"><a href="geqo-intro2.html">46.2. Genetic Algorithms</a></span></dt>
-<dt><span class="sect1"><a href="geqo-pg-intro.html">46.3. Genetic Query Optimization (<span class="acronym">GEQO</span>) in PostgreSQL</a></span></dt>
+<dt><span class="sect1"><a href="geqo-pg-intro.html">46.3. Genetic Query Optimization (<acronym class="acronym">GEQO</acronym>) in PostgreSQL</a></span></dt>
 <dd><dl><dt><span class="sect2"><a href="geqo-pg-intro.html#geqo-future">46.3.1. Future Implementation Tasks for
-    <span class="productname">PostgreSQL</span> <span class="acronym">GEQO</span></a></span></dt></dl></dd>
+    <span class="productname">PostgreSQL</span> <acronym class="acronym">GEQO</acronym></a></span></dt></dl></dd>
 <dt><span class="sect1"><a href="geqo-biblio.html">46.4. Further Reading</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="indexcost.html">47. Index Cost Estimation Functions</a></span></dt>
@@ -148,10 +149,10 @@
 <dt><span class="sect1"><a href="storage-toast.html">49.2. TOAST</a></span></dt>
 <dt><span class="sect1"><a href="storage-page-layout.html">49.3. Database Page Layout</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="bki.html">50. <span class="acronym">BKI</span> Backend Interface</a></span></dt>
+<dt><span class="chapter"><a href="bki.html">50. <acronym class="acronym">BKI</acronym> Backend Interface</a></span></dt>
 <dd><dl>
-<dt><span class="sect1"><a href="bki.html#bki-format">50.1. <span class="acronym">BKI</span> File Format</a></span></dt>
-<dt><span class="sect1"><a href="bki-commands.html">50.2. <span class="acronym">BKI</span> Commands</a></span></dt>
+<dt><span class="sect1"><a href="bki.html#bki-format">50.1. <acronym class="acronym">BKI</acronym> File Format</a></span></dt>
+<dt><span class="sect1"><a href="bki-commands.html">50.2. <acronym class="acronym">BKI</acronym> Commands</a></span></dt>
 <dt><span class="sect1"><a href="bki-example.html">50.3. Example</a></span></dt>
 </dl></dd>
 </dl>

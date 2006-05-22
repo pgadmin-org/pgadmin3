@@ -4,16 +4,17 @@
 <title>23.2. The Statistics Collector</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
 <link rel="prev" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
 <link rel="next" href="monitoring-locks.html" title="23.3. Viewing Locks">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-stats"></a>23.2. The Statistics Collector</h2></div></div></div>
-<a name="id609991"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
+<a name="id662636"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
    is a subsystem that supports collection and reporting of information about
    server activity.  Presently, the collector can count accesses to tables
    and indexes in both disk-block and individual-row terms.  It also supports
@@ -95,7 +96,7 @@
   </p>
 <div class="table">
 <a name="monitoring-stats-views-table"></a><p class="title"><b>Table 23.1. Standard Statistics Views</b></p>
-<table summary="Standard Statistics Views" border="1">
+<div class="table-contents"><table summary="Standard Statistics Views" border="1">
 <colgroup>
 <col>
 <col>
@@ -108,7 +109,7 @@
 <tr>
 <td><code class="structname">pg_stat_activity</code></td>
 <td>One row per server process, showing process
-      <span class="acronym">ID</span>, database, user, current query, and the time at
+      <acronym class="acronym">ID</acronym>, database, user, current query, and the time at
       which the current query began execution. The columns that report
       data on the current query are only available if the parameter
       <code class="varname">stats_command_string</code> has been turned on.
@@ -215,9 +216,9 @@
       sequences are shown.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   The per-index statistics are particularly useful to determine which
+<br class="table-break"><p>   The per-index statistics are particularly useful to determine which
    indexes are being used and how effective they are.
   </p>
 <p>   The <code class="structname">pg_statio_</code> views are primarily useful to
@@ -248,7 +249,7 @@
   </p>
 <div class="table">
 <a name="monitoring-stats-funcs-table"></a><p class="title"><b>Table 23.2. Statistics Access Functions</b></p>
-<table summary="Statistics Access Functions" border="1">
+<div class="table-contents"><table summary="Statistics Access Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -399,9 +400,9 @@
       </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     <code class="function">pg_stat_get_db_blocks_fetched</code> minus
      <code class="function">pg_stat_get_db_blocks_hit</code> gives the number of kernel
@@ -412,7 +413,7 @@
 </div>
 <p>   The function <code class="function">pg_stat_get_backend_idset</code> provides
    a convenient way to generate one row for each active backend process.  For
-   example, to show the <span class="acronym">PID</span>s and current queries of all backend processes:
+   example, to show the <acronym class="acronym">PID</acronym>s and current queries of all backend processes:
 
 </p>
 <pre class="programlisting">SELECT pg_stat_get_backend_pid(s.backendid) AS procpid,

@@ -4,16 +4,17 @@
 <title>35.11. Porting from Oracle PL/SQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-trigger.html" title="35.10. Trigger Procedures">
 <link rel="next" href="pltcl.html" title="Chapter 36. PL/Tcl - Tcl Procedural Language">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plpgsql-porting"></a>35.11. Porting from <span class="productname">Oracle</span> PL/SQL</h2></div></div></div>
-<a name="id663702"></a><a name="id663717"></a><p>   This section explains differences between
+<a name="id716621"></a><a name="id716636"></a><p>   This section explains differences between
    <span class="productname">PostgreSQL</span>'s <span class="application">PL/pgSQL</span>
    language and Oracle's <span class="application">PL/SQL</span> language,
    to help developers who port applications from
@@ -51,12 +52,13 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id664102"></a>35.11.1. Porting Examples</h3></div></div></div>
+<a name="id717007"></a>35.11.1. Porting Examples</h3></div></div></div>
 <p>    <a href="plpgsql-porting.html#pgsql-porting-ex1" title="Example 35.5. Porting a Simple Function from PL/SQL to PL/pgSQL">Example 35.5, &#8220;Porting a Simple Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a simple
     function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>.
    </p>
 <div class="example">
 <a name="pgsql-porting-ex1"></a><p class="title"><b>Example 35.5. Porting a Simple Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span></b></p>
+<div class="example-contents">
 <p>     Here is an <span class="productname">Oracle</span> <span class="application">PL/SQL</span> function:
 </p>
 <pre class="programlisting">CREATE OR REPLACE FUNCTION cs_fmt_browser_version(v_name IN varchar,
@@ -121,12 +123,14 @@ $$ LANGUAGE plpgsql;</pre>
 <p>
     </p>
 </div>
-<p>    <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 35.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 35.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a
+</div>
+<br class="example-break"><p>    <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 35.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 35.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a
     function that creates another function and how to handle the
     ensuing quoting problems.
    </p>
 <div class="example">
 <a name="plpgsql-porting-ex2"></a><p class="title"><b>Example 35.6. Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span></b></p>
+<div class="example-contents">
 <p>     The following procedure grabs rows from a
      <code class="command">SELECT</code> statement and builds a large function
      with the results in <code class="literal">IF</code> statements, for the
@@ -211,7 +215,8 @@ $func$ LANGUAGE plpgsql;</pre>
      <code class="structfield">referrer_key.referrer_type</code> contain quote marks.
     </p>
 </div>
-<p>    <a href="plpgsql-porting.html#plpgsql-porting-ex3" title="Example 35.7. Porting a Procedure With String Manipulation and
+</div>
+<br class="example-break"><p>    <a href="plpgsql-porting.html#plpgsql-porting-ex3" title="Example 35.7. Porting a Procedure With String Manipulation and
     OUT Parameters from PL/SQL to
     PL/pgSQL">Example 35.7, &#8220;Porting a Procedure With String Manipulation and
     <code class="literal">OUT</code> Parameters from <span class="application">PL/SQL</span> to
@@ -220,7 +225,7 @@ $func$ LANGUAGE plpgsql;</pre>
     <span class="productname">PostgreSQL</span> does not have an
     <code class="function">instr</code> function, but you can work around it
     using a combination of other
-    functions.<a name="id664592"></a> In <a href="plpgsql-porting.html#plpgsql-porting-appendix" title="35.11.3. Appendix">Section 35.11.3, &#8220;Appendix&#8221;</a> there is a
+    functions.<a name="id717497"></a> In <a href="plpgsql-porting.html#plpgsql-porting-appendix" title="35.11.3. Appendix">Section 35.11.3, &#8220;Appendix&#8221;</a> there is a
     <span class="application">PL/pgSQL</span> implementation of
     <code class="function">instr</code> that you can use to make your porting
     easier.
@@ -229,6 +234,7 @@ $func$ LANGUAGE plpgsql;</pre>
 <a name="plpgsql-porting-ex3"></a><p class="title"><b>Example 35.7. Porting a Procedure With String Manipulation and
     <code class="literal">OUT</code> Parameters from <span class="application">PL/SQL</span> to
     <span class="application">PL/pgSQL</span></b></p>
+<div class="example-contents">
 <p>     The following <span class="productname">Oracle</span> PL/SQL procedure is used
      to parse a URL and return several elements (host, path, and query).
      In <span class="productname">PostgreSQL</span>, functions can return only one value.
@@ -327,11 +333,13 @@ $$ LANGUAGE plpgsql;</pre>
 <p>
     </p>
 </div>
-<p>    <a href="plpgsql-porting.html#plpgsql-porting-ex4" title="Example 35.8. Porting a Procedure from PL/SQL to PL/pgSQL">Example 35.8, &#8220;Porting a Procedure from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a procedure
+</div>
+<br class="example-break"><p>    <a href="plpgsql-porting.html#plpgsql-porting-ex4" title="Example 35.8. Porting a Procedure from PL/SQL to PL/pgSQL">Example 35.8, &#8220;Porting a Procedure from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a procedure
     that uses numerous features that are specific to Oracle.
    </p>
 <div class="example">
 <a name="plpgsql-porting-ex4"></a><p class="title"><b>Example 35.8. Porting a Procedure from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span></b></p>
+<div class="example-contents">
 <p>     The Oracle version:
 
 </p>
@@ -456,6 +464,8 @@ $$ LANGUAGE plpgsql;</pre>
    </p>
 </div>
 </div>
+<br class="example-break">
+</div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="plpgsql-porting-other"></a>35.11.2. Other Things to Watch For</h3></div></div></div>
@@ -495,7 +505,7 @@ $$ LANGUAGE plpgsql;</pre>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id665157"></a>35.11.2.2. <code class="command">EXECUTE</code></h4></div></div></div>
+<a name="id718045"></a>35.11.2.2. <code class="command">EXECUTE</code></h4></div></div></div>
 <p>     The <span class="application">PL/pgSQL</span> version of
      <code class="command">EXECUTE</code> works similarly to the
      <span class="application">PL/SQL</span> version, but you have to remember to use

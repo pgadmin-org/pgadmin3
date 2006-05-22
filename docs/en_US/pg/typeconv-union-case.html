@@ -4,16 +4,17 @@
 <title>10.5. UNION, CASE, and ARRAY Constructs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
 <link rel="prev" href="typeconv-query.html" title="10.4. Value Storage">
 <link rel="next" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="typeconv-union-case"></a>10.5. <code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> Constructs</h2></div></div></div>
-<a name="id570841"></a><a name="id570854"></a><a name="id570868"></a><p>SQL <code class="literal">UNION</code> constructs must match up possibly dissimilar
+<a name="id623458"></a><a name="id623471"></a><a name="id623484"></a><p>SQL <code class="literal">UNION</code> constructs must match up possibly dissimilar
 types to become a single result set.  The resolution algorithm is
 applied separately to each output column of a union query.  The
 <code class="literal">INTERSECT</code> and <code class="literal">EXCEPT</code> constructs resolve
@@ -22,7 +23,7 @@ dissimilar types in the same way as <code class="literal">UNION</code>.  The
 algorithm to match up their component expressions and select a result
 data type.</p>
 <div class="procedure">
-<a name="id570929"></a><p class="title"><b><code class="literal">UNION</code>, <code class="literal">CASE</code>, and
+<a name="id623546"></a><p class="title"><b><code class="literal">UNION</code>, <code class="literal">CASE</code>, and
 <code class="literal">ARRAY</code> Type Resolution</b></p>
 <ol type="1">
 <li><p>If all inputs are of type <code class="type">unknown</code>, resolve as type
@@ -37,7 +38,8 @@ converted to it.</p></li>
 </div>
 <p>Some examples follow.</p>
 <div class="example">
-<a name="id570998"></a><p class="title"><b>Example 10.7. Type Resolution with Underspecified Types in a Union</b></p>
+<a name="id623614"></a><p class="title"><b>Example 10.7. Type Resolution with Underspecified Types in a Union</b></p>
+<div class="example-contents">
 <pre class="screen">SELECT text 'a' AS "text" UNION SELECT 'b';
 
  text
@@ -48,8 +50,10 @@ converted to it.</p></li>
 <p>
 Here, the unknown-type literal <code class="literal">'b'</code> will be resolved as type <code class="type">text</code>.</p>
 </div>
-<div class="example">
-<a name="id571022"></a><p class="title"><b>Example 10.8. Type Resolution in a Simple Union</b></p>
+</div>
+<br class="example-break"><div class="example">
+<a name="id623639"></a><p class="title"><b>Example 10.8. Type Resolution in a Simple Union</b></p>
+<div class="example-contents">
 <pre class="screen">SELECT 1.2 AS "numeric" UNION SELECT 1;
 
  numeric
@@ -62,8 +66,10 @@ The literal <code class="literal">1.2</code> is of type <code class="type">numer
 and the <code class="type">integer</code> value <code class="literal">1</code> can be cast implicitly to
 <code class="type">numeric</code>, so that type is used.</p>
 </div>
-<div class="example">
-<a name="id571062"></a><p class="title"><b>Example 10.9. Type Resolution in a Transposed Union</b></p>
+</div>
+<br class="example-break"><div class="example">
+<a name="id623679"></a><p class="title"><b>Example 10.9. Type Resolution in a Transposed Union</b></p>
+<div class="example-contents">
 <pre class="screen">SELECT 1 AS "real" UNION SELECT CAST('2.2' AS REAL);
 
  real
@@ -76,5 +82,7 @@ Here, since type <code class="type">real</code> cannot be implicitly cast to <co
 but <code class="type">integer</code> can be implicitly cast to <code class="type">real</code>, the union
 result type is resolved as <code class="type">real</code>.</p>
 </div>
+</div>
+<br class="example-break">
 </div></body>
 </html>

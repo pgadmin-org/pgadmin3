@@ -4,11 +4,12 @@
 <title>DELETE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-declare.html" title="DECLARE">
 <link rel="next" href="sql-dropaggregate.html" title="DROP AGGREGATE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-delete"></a><div class="titlepage"></div>
@@ -16,12 +17,12 @@
 <h2>Name</h2>
 <p>DELETE &#8212; delete rows of a table</p>
 </div>
-<a name="id701191"></a><div class="refsynopsisdiv">
+<a name="id754099"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">DELETE FROM [ ONLY ] <em class="replaceable"><code>table</code></em> [ WHERE <em class="replaceable"><code>condition</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701222"></a><h2>Description</h2>
+<a name="id754130"></a><h2>Description</h2>
 <p>   <code class="command">DELETE</code> deletes rows that satisfy the
    <code class="literal">WHERE</code> clause from the specified table.  If the
    <code class="literal">WHERE</code> clause is absent, the effect is to delete
@@ -45,7 +46,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701319"></a><h2>Parameters</h2>
+<a name="id754227"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing table.
@@ -58,7 +59,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701354"></a><h2>Outputs</h2>
+<a name="id754262"></a><h2>Outputs</h2>
 <p>   On successful completion, a <code class="command">DELETE</code> command returns a command
    tag of the form
 </p>
@@ -71,7 +72,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701402"></a><h2>Notes</h2>
+<a name="id754310"></a><h2>Notes</h2>
 <p>   <span class="productname">PostgreSQL</span> lets you reference columns of
    other tables in the <code class="literal">WHERE</code> condition.  For example, to
    delete all films produced by a given producer, one might do
@@ -95,7 +96,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701461"></a><h2>Examples</h2>
+<a name="id754368"></a><h2>Examples</h2>
 <p>   Delete all films but musicals:
 </p>
 <pre class="programlisting">DELETE FROM films WHERE kind &lt;&gt; 'Musical';</pre>
@@ -108,7 +109,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701491"></a><h2>Compatibility</h2>
+<a name="id754399"></a><h2>Compatibility</h2>
 <p>   This command conforms to the SQL standard, except that the ability to
    reference other tables in the <code class="literal">WHERE</code> clause is a
    <span class="productname">PostgreSQL</span> extension.

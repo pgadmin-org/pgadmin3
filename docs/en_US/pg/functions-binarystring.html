@@ -4,30 +4,31 @@
 <title>9.5. Binary String Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-string.html" title="9.4. String Functions and Operators">
 <link rel="next" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-binarystring"></a>9.5. Binary String Functions and Operators</h2></div></div></div>
-<a name="id547668"></a><p>    This section describes functions and operators for examining and
+<a name="id600298"></a><p>    This section describes functions and operators for examining and
     manipulating values of type <code class="type">bytea</code>.
    </p>
-<p>    <span class="acronym">SQL</span> defines some string functions with a
+<p>    <acronym class="acronym">SQL</acronym> defines some string functions with a
     special syntax where 
     certain key words rather than commas are used to separate the
     arguments.  Details are in
-    <a href="functions-binarystring.html#functions-binarystring-sql" title="Table 9.8. SQL Binary String Functions and Operators">Table 9.8, &#8220;<span class="acronym">SQL</span> Binary String Functions and Operators&#8221;</a>.
+    <a href="functions-binarystring.html#functions-binarystring-sql" title="Table 9.8. SQL Binary String Functions and Operators">Table 9.8, &#8220;<acronym class="acronym">SQL</acronym> Binary String Functions and Operators&#8221;</a>.
     Some functions are also implemented using the regular syntax for
     function invocation.
     (See <a href="functions-binarystring.html#functions-binarystring-other" title="Table 9.9. Other Binary String Functions">Table 9.9, &#8220;Other Binary String Functions&#8221;</a>.)
    </p>
 <div class="table">
-<a name="functions-binarystring-sql"></a><p class="title"><b>Table 9.8. <span class="acronym">SQL</span> Binary String Functions and Operators</b></p>
-<table summary="SQL Binary String Functions and Operators" border="1">
+<a name="functions-binarystring-sql"></a><p class="title"><b>Table 9.8. <acronym class="acronym">SQL</acronym> Binary String Functions and Operators</b></p>
+<div class="table-contents"><table summary="SQL Binary String Functions and Operators" border="1">
 <colgroup>
 <col>
 <col>
@@ -48,7 +49,7 @@
         <em class="parameter"><code>string</code></em></code></td>
 <td> <code class="type">bytea</code> </td>
 <td>        String concatenation
-        <a name="id547783"></a>
+        <a name="id600412"></a>
        </td>
 <td><code class="literal">'\\\\Post'::bytea || '\\047gres\\000'::bytea</code></td>
 <td><code class="literal">\\Post'gres\000</code></td>
@@ -71,7 +72,7 @@
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">integer</code></span>] [<span class="optional">for <code class="type">integer</code></span>])</code></td>
 <td><code class="type">bytea</code></td>
 <td>        Extract substring
-        <a name="id547929"></a>
+        <a name="id600558"></a>
        </td>
 <td><code class="literal">substring('Th\\000omas'::bytea from 2 for 3)</code></td>
 <td><code class="literal">h\000o</code></td>
@@ -94,7 +95,7 @@
 <code class="function">get_byte</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</td>
 <td><code class="type">integer</code></td>
 <td>        Extract byte from string.
-        <a name="id548044"></a>
+        <a name="id600673"></a>
        </td>
 <td><code class="literal">get_byte('Th\\000omas'::bytea, 4)</code></td>
 <td><code class="literal">109</code></td>
@@ -105,7 +106,7 @@
        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</td>
 <td><code class="type">bytea</code></td>
 <td>        Set byte in string.
-        <a name="id548099"></a>
+        <a name="id600728"></a>
        </td>
 <td><code class="literal">set_byte('Th\\000omas'::bytea, 4, 64)</code></td>
 <td><code class="literal">Th\000o@as</code></td>
@@ -115,7 +116,7 @@
 <code class="function">get_bit</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</td>
 <td><code class="type">integer</code></td>
 <td>        Extract bit from string.
-        <a name="id548148"></a>
+        <a name="id600778"></a>
        </td>
 <td><code class="literal">get_bit('Th\\000omas'::bytea, 45)</code></td>
 <td><code class="literal">1</code></td>
@@ -126,22 +127,22 @@
        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</td>
 <td><code class="type">bytea</code></td>
 <td>        Set bit in string.
-        <a name="id548204"></a>
+        <a name="id600833"></a>
        </td>
 <td><code class="literal">set_bit('Th\\000omas'::bytea, 45, 0)</code></td>
 <td><code class="literal">Th\000omAs</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    Additional binary string manipulation functions are available and
+<br class="table-break"><p>    Additional binary string manipulation functions are available and
     are listed in <a href="functions-binarystring.html#functions-binarystring-other" title="Table 9.9. Other Binary String Functions">Table 9.9, &#8220;Other Binary String Functions&#8221;</a>.  Some
     of them are used internally to implement the
-    <span class="acronym">SQL</span>-standard string functions listed in <a href="functions-binarystring.html#functions-binarystring-sql" title="Table 9.8. SQL Binary String Functions and Operators">Table 9.8, &#8220;<span class="acronym">SQL</span> Binary String Functions and Operators&#8221;</a>.
+    <acronym class="acronym">SQL</acronym>-standard string functions listed in <a href="functions-binarystring.html#functions-binarystring-sql" title="Table 9.8. SQL Binary String Functions and Operators">Table 9.8, &#8220;<acronym class="acronym">SQL</acronym> Binary String Functions and Operators&#8221;</a>.
    </p>
 <div class="table">
 <a name="functions-binarystring-other"></a><p class="title"><b>Table 9.9. Other Binary String Functions</b></p>
-<table summary="Other Binary String Functions" border="1">
+<div class="table-contents"><table summary="Other Binary String Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -172,8 +173,8 @@
 <td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">integer</code></td>
 <td>       Length of binary string
-       <a name="id548370"></a>
-       <a name="id548380"></a>
+       <a name="id600999"></a>
+       <a name="id601009"></a>
       </td>
 <td><code class="literal">length('jo\\000se'::bytea)</code></td>
 <td><code class="literal">5</code></td>
@@ -194,14 +195,15 @@
               <em class="parameter"><code>type</code></em> <code class="type">text</code>)</code>
       </td>
 <td><code class="type">text</code></td>
-<td>       Encode binary string to <span class="acronym">ASCII</span>-only representation.  Supported
+<td>       Encode binary string to <acronym class="acronym">ASCII</acronym>-only representation.  Supported
        types are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
       </td>
 <td><code class="literal">encode('123\\000456'::bytea, 'escape')</code></td>
 <td><code class="literal">123\000456</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

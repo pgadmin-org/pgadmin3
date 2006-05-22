@@ -4,11 +4,12 @@
 <title>Chapter 19. Client Authentication</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="manage-ag-tablespaces.html" title="18.6. Tablespaces">
 <link rel="next" href="auth-methods.html" title="19.2. Authentication methods">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="client-authentication">
 <div class="titlepage"><div><div><h2 class="title">
@@ -28,7 +29,7 @@
 <dt><span class="sect1"><a href="client-authentication-problems.html">19.3. Authentication problems</a></span></dt>
 </dl>
 </div>
-<a name="id599441"></a><p>  When a client application connects to the database server, it
+<a name="id652161"></a><p>  When a client application connects to the database server, it
   specifies which <span class="productname">PostgreSQL</span> user name it
   wants to connect as, much the same way one logs into a Unix computer
   as a particular user. Within the SQL environment the active database
@@ -59,11 +60,11 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="auth-pg-hba-conf"></a>19.1. The <code class="filename">pg_hba.conf</code> file</h2></div></div></div>
-<a name="id599530"></a><p>   Client authentication is controlled by a configuration file,
+<a name="id652258"></a><p>   Client authentication is controlled by a configuration file,
    which traditionally is named
    <code class="filename">pg_hba.conf</code> and is stored in the database
    cluster's data directory.
-   (<span class="acronym">HBA</span> stands for host-based authentication.) A default
+   (<acronym class="acronym">HBA</acronym> stands for host-based authentication.) A default
    <code class="filename">pg_hba.conf</code> file is installed when the data
    directory is initialized by <code class="command">initdb</code>.  It is
    possible to place the authentication configuration file elsewhere,
@@ -109,7 +110,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <dd>
 <p>       This record matches connection attempts made using TCP/IP.
        <code class="literal">host</code> records match either
-       <span class="acronym">SSL</span> or non-<span class="acronym">SSL</span> connection
+       <acronym class="acronym">SSL</acronym> or non-<acronym class="acronym">SSL</acronym> connection
        attempts.
       </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -125,12 +126,12 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <dt><span class="term"><code class="literal">hostssl</code></span></dt>
 <dd>
 <p>       This record matches connection attempts made using TCP/IP,
-       but only when the connection is made with <span class="acronym">SSL</span>
+       but only when the connection is made with <acronym class="acronym">SSL</acronym>
        encryption.
       </p>
 <p>       To make use of this option the server must be built with
-       <span class="acronym">SSL</span> support. Furthermore,
-       <span class="acronym">SSL</span> must be enabled at server start time
+       <acronym class="acronym">SSL</acronym> support. Furthermore,
+       <acronym class="acronym">SSL</acronym> must be enabled at server start time
        by setting the <a href="runtime-config.html#guc-ssl">ssl</a> configuration parameter (see
        <a href="ssl-tcp.html" title="16.8. Secure TCP/IP Connections with SSL">Section 16.8, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> for more information).
       </p>
@@ -138,7 +139,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <dt><span class="term"><code class="literal">hostnossl</code></span></dt>
 <dd><p>       This record type has the opposite logic to <code class="literal">hostssl</code>:
        it only matches connection attempts made over
-       TCP/IP that do not use <span class="acronym">SSL</span>.
+       TCP/IP that do not use <acronym class="acronym">SSL</acronym>.
       </p></dd>
 <dt><span class="term"><em class="replaceable"><code>database</code></em></span></dt>
 <dd><p>       Specifies which databases this record matches.  The value
@@ -301,7 +302,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
   </p>
 <p>   The <code class="filename">pg_hba.conf</code> file is read on start-up and when
    the main server process (<code class="command">postmaster</code>) receives a
-   <span class="systemitem">SIGHUP</span><a name="id600540"></a>
+   <span class="systemitem">SIGHUP</span><a name="id653269"></a>
    signal. If you edit the file on an
    active system, you will need to signal the <code class="command">postmaster</code>
    (using <code class="literal">pg_ctl reload</code> or <code class="literal">kill -HUP</code>) to make it
@@ -313,7 +314,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
   </p>
 <div class="example">
 <a name="example-pg-hba.conf"></a><p class="title"><b>Example 19.1. Example <code class="filename">pg_hba.conf</code> entries</b></p>
-<pre class="programlisting"># Allow any user on the local system to connect to any database under
+<div class="example-contents"><pre class="programlisting"># Allow any user on the local system to connect to any database under
 # any user name using Unix-domain sockets (the default for local
 # connections).
 #
@@ -378,8 +379,9 @@ local   all         +support                          md5
 local   all         @admins,+support                  md5
 
 # The database column can also use lists and file names, but not groups:
-local   db1,db2,@demodbs  all                         md5</pre>
+local   db1,db2,@demodbs  all                         md5</pre></div>
 </div>
+<br class="example-break">
 </div>
 </div></body>
 </html>

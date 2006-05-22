@@ -4,16 +4,17 @@
 <title>8.12. Object Identifier Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="rowtypes.html" title="8.11. Composite Types">
 <link rel="next" href="datatype-pseudo.html" title="8.13. Pseudo-Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="datatype-oid"></a>8.12. Object Identifier Types</h2></div></div></div>
-<a name="id539012"></a><a name="id539025"></a><a name="id539035"></a><a name="id539045"></a><a name="id539055"></a><a name="id539066"></a><a name="id539076"></a><a name="id539086"></a><a name="id539096"></a><a name="id539106"></a><a name="id539117"></a><p>    Object identifiers (OIDs) are used internally by
+<a name="id591641"></a><a name="id591654"></a><a name="id591664"></a><a name="id591674"></a><a name="id591684"></a><a name="id591695"></a><a name="id591705"></a><a name="id591715"></a><a name="id591726"></a><a name="id591735"></a><a name="id591746"></a><p>    Object identifiers (OIDs) are used internally by
     <span class="productname">PostgreSQL</span> as primary keys for various
     system tables.  An OID system column is also added to user-created
     tables, unless <code class="literal">WITHOUT OIDS</code> is specified when
@@ -35,7 +36,7 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     OIDs are included by default in user-created tables in
-     <span class="productname">PostgreSQL</span> 8.0.7. However, this
+     <span class="productname">PostgreSQL</span> 8.0.8. However, this
      behavior is likely to change in a future version of
      <span class="productname">PostgreSQL</span>. Eventually, user-created
      tables will not include an OID system column unless <code class="literal">WITH
@@ -79,7 +80,7 @@
    </p>
 <div class="table">
 <a name="datatype-oid-table"></a><p class="title"><b>Table 8.19. Object Identifier Types</b></p>
-<table summary="Object Identifier Types" border="1">
+<div class="table-contents"><table summary="Object Identifier Types" border="1">
 <colgroup>
 <col>
 <col>
@@ -138,9 +139,9 @@
 <td><code class="literal">integer</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    All of the OID alias types accept schema-qualified names, and will
+<br class="table-break"><p>    All of the OID alias types accept schema-qualified names, and will
     display schema-qualified names on output if the object would not
     be found in the current search path without being qualified.
     The <code class="type">regproc</code> and <code class="type">regoper</code> alias types will only
@@ -151,7 +152,7 @@
     operand.
    </p>
 <p>    Another identifier type used by the system is <code class="type">xid</code>, or transaction
-    (abbreviated <span class="abbrev">xact</span>) identifier.  This is the data type of the system columns
+    (abbreviated <abbr class="abbrev">xact</abbr>) identifier.  This is the data type of the system columns
     <code class="structfield">xmin</code> and <code class="structfield">xmax</code>.  Transaction identifiers are 32-bit quantities.
    </p>
 <p>    A third identifier type used by the system is <code class="type">cid</code>, or

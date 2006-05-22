@@ -4,24 +4,25 @@
 <title>41.13. pg_depend</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="prev" href="catalog-pg-database.html" title="41.12. pg_database">
 <link rel="next" href="catalog-pg-description.html" title="41.14. pg_description">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-depend"></a>41.13. <code class="structname">pg_depend</code></h2></div></div></div>
-<a name="id750064"></a><p>   The catalog <code class="structname">pg_depend</code> records the dependency
+<a name="id801840"></a><p>   The catalog <code class="structname">pg_depend</code> records the dependency
    relationships between database objects.  This information allows
    <code class="command">DROP</code> commands to find which other objects must be dropped
    by <code class="command">DROP CASCADE</code> or prevent dropping in the <code class="command">DROP
    RESTRICT</code> case.
   </p>
 <div class="table">
-<a name="id750104"></a><p class="title"><b>Table 41.13. <code class="structname">pg_depend</code> Columns</b></p>
-<table summary="pg_depend Columns" border="1">
+<a name="id801880"></a><p class="title"><b>Table 41.13. <code class="structname">pg_depend</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_depend Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -87,9 +88,9 @@
       </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   In all cases, a <code class="structname">pg_depend</code> entry indicates that the
+<br class="table-break"><p>   In all cases, a <code class="structname">pg_depend</code> entry indicates that the
    referenced object may not be dropped without also dropping the dependent
    object.  However, there are several subflavors identified by
    <code class="structfield">deptype</code>:

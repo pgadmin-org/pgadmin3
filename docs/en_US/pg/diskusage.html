@@ -4,11 +4,12 @@
 <title>Chapter 24. Monitoring Disk Usage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="monitoring-locks.html" title="23.3. Viewing Locks">
 <link rel="next" href="disk-full.html" title="24.2. Disk Full Failure">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="diskusage">
 <div class="titlepage"><div><div><h2 class="title">
@@ -26,12 +27,12 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="disk-usage"></a>24.1. Determining Disk Usage</h2></div></div></div>
-<a name="id611262"></a><p>   Each table has a primary heap disk file where most of the data is
+<a name="id663883"></a><p>   Each table has a primary heap disk file where most of the data is
    stored. If the table has any columns with potentially-wide values,
-   there is also a <span class="acronym">TOAST</span> file associated with the table,
+   there is also a <acronym class="acronym">TOAST</acronym> file associated with the table,
    which is used to store values too wide to fit comfortably in the main
    table (see <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a>).  There will be one index on the
-   <span class="acronym">TOAST</span> table, if present. There may also be indexes associated
+   <acronym class="acronym">TOAST</acronym> table, if present. There may also be indexes associated
    with the base table.  Each table and index is stored in a separate disk
    file [mdash ] possibly more than one file, if the file would exceed one
    gigabyte.  Naming conventions for these files are described in <a href="storage.html#storage-file-layout" title="49.1. Database File Layout">Section 49.1, &#8220;Database File Layout&#8221;</a>.
@@ -56,7 +57,7 @@
    <code class="structfield">relfilenode</code> value is of interest if you want to examine
    the table's disk file directly.
   </p>
-<p>   To show the space used by <span class="acronym">TOAST</span> tables, use a query
+<p>   To show the space used by <acronym class="acronym">TOAST</acronym> tables, use a query
    like the following:
 </p>
 <pre class="programlisting">SELECT relname, relpages

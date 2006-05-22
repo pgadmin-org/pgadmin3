@@ -4,11 +4,12 @@
 <title>9.9. Date/Time Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="next" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -31,7 +32,7 @@
   </p>
 <div class="table">
 <a name="operators-datetime-table"></a><p class="title"><b>Table 9.25. Date/Time Operators</b></p>
-<table summary="Date/Time Operators" border="1">
+<div class="table-contents"><table summary="Date/Time Operators" border="1">
 <colgroup>
 <col>
 <col>
@@ -129,11 +130,11 @@
 <td><code class="literal">interval '00:40'</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<div class="table">
+<br class="table-break"><div class="table">
 <a name="functions-datetime-table"></a><p class="title"><b>Table 9.26. Date/Time Functions</b></p>
-<table summary="Date/Time Functions" border="1">
+<div class="table-contents"><table summary="Date/Time Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -281,9 +282,9 @@
 <td> </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    In addition to these functions, the SQL <code class="literal">OVERLAPS</code> operator is
+<br class="table-break"><p>    In addition to these functions, the SQL <code class="literal">OVERLAPS</code> operator is
     supported:
 </p>
 <pre class="synopsis">( <em class="replaceable"><code>start1</code></em>, <em class="replaceable"><code>end1</code></em> ) OVERLAPS ( <em class="replaceable"><code>start2</code></em>, <em class="replaceable"><code>end2</code></em> )
@@ -459,7 +460,7 @@ SELECT EXTRACT(MONTH FROM INTERVAL '2 years 13 months');
 <dt><span class="term"><code class="literal">second</code></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts (0 -
-        59<sup>[<a name="id558071" href="#ftn.id558071">5</a>]</sup>)
+        59<sup>[<a name="id610687" href="#ftn.id610687">5</a>]</sup>)
        </p>
 <pre class="screen">SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40');
 <em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">40</code>
@@ -481,8 +482,8 @@ SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
 <dt><span class="term"><code class="literal">week</code></span></dt>
 <dd>
 <p>        The number of the week of the year that the day is in.  By definition
-        (<span class="acronym">ISO</span> 8601), the first week of a year
-        contains January 4 of that year.  (The <span class="acronym">ISO</span>-8601
+        (<acronym class="acronym">ISO</acronym> 8601), the first week of a year
+        contains January 4 of that year.  (The <acronym class="acronym">ISO</acronym>-8601
         week starts on Monday.)  In other words, the first Thursday of
         a year is in week 1 of that year. (for <code class="type">timestamp</code> values only)
        </p>
@@ -512,7 +513,7 @@ SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
    </p>
 <p>    The <code class="function">date_part</code> function is modeled on the traditional
     <span class="productname">Ingres</span> equivalent to the
-    <span class="acronym">SQL</span>-standard function <code class="function">extract</code>:
+    <acronym class="acronym">SQL</acronym>-standard function <code class="function">extract</code>:
 </p>
 <pre class="synopsis">date_part('<em class="replaceable"><code>field</code></em>', <em class="replaceable"><code>source</code></em>)</pre>
 <p>
@@ -577,13 +578,13 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-zoneconvert"></a>9.9.3. <code class="literal">AT TIME ZONE</code></h3></div></div></div>
-<a name="id558573"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
+<a name="id611189"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
     of time stamps to different time zones.  <a href="functions-datetime.html#functions-datetime-zoneconvert-table" title="Table 9.27. AT TIME ZONE Variants">Table 9.27, &#8220;<code class="literal">AT TIME ZONE</code> Variants&#8221;</a> shows its
     variants.
    </p>
 <div class="table">
 <a name="functions-datetime-zoneconvert-table"></a><p class="title"><b>Table 9.27. <code class="literal">AT TIME ZONE</code> Variants</b></p>
-<table summary="AT TIME ZONE Variants" border="1">
+<div class="table-contents"><table summary="AT TIME ZONE Variants" border="1">
 <colgroup>
 <col>
 <col>
@@ -614,9 +615,9 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <td>Convert local time across time zones</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    In these expressions, the desired time zone <em class="replaceable"><code>zone</code></em> can be
+<br class="table-break"><p>    In these expressions, the desired time zone <em class="replaceable"><code>zone</code></em> can be
     specified either as a text string (e.g., <code class="literal">'PST'</code>)
     or as an interval (e.g., <code class="literal">INTERVAL '-08:00'</code>).
     In the text case, the available zone names are those shown in
@@ -647,7 +648,7 @@ SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-current"></a>9.9.4. Current Date/Time</h3></div></div></div>
-<a name="id558830"></a><a name="id558839"></a><p>    The following functions are available to obtain the current date and/or
+<a name="id611446"></a><a name="id611455"></a><p>    The following functions are available to obtain the current date and/or
     time:
 </p>
 <pre class="synopsis">CURRENT_DATE
@@ -751,7 +752,7 @@ SELECT TIMESTAMP 'now';</pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id558071" href="#id558071">5</a>] </sup>60 if leap seconds are
+<div class="footnote"><p><sup>[<a name="ftn.id610687" href="#id610687">5</a>] </sup>60 if leap seconds are
         implemented by the operating system</p></div>
 </div>
 </div></body>

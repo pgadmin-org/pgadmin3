@@ -4,16 +4,17 @@
 <title>31.9. C-Language Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="prev" href="xfunc-internal.html" title="31.8. Internal Functions">
 <link rel="next" href="xaggr.html" title="31.10. User-Defined Aggregates">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xfunc-c"></a>31.9. C-Language Functions</h2></div></div></div>
-<a name="id643005"></a><p>    User-defined functions can be written in C (or a language that can
+<a name="id695907"></a><p>    User-defined functions can be written in C (or a language that can
     be made compatible with C, such as C++).  Such functions are
     compiled into dynamically loadable objects (also called shared
     libraries) and are loaded by the server on demand.  The dynamic
@@ -35,7 +36,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xfunc-c-dynload"></a>31.9.1. Dynamic Loading</h3></div></div></div>
-<a name="id643087"></a><p>    The first time a user-defined function in a particular
+<a name="id695990"></a><p>    The first time a user-defined function in a particular
     loadable object file is called in a session,
     the dynamic loader loads that object file into memory so that the
     function can be called.  The <code class="command">CREATE FUNCTION</code>
@@ -56,11 +57,11 @@
 <li><p>       If the name starts with the string <code class="literal">$libdir</code>,
        that part is replaced by the <span class="productname">PostgreSQL</span> package
         library directory
-       name, which is determined at build time.<a name="id643160"></a>
+       name, which is determined at build time.<a name="id696062"></a>
       </p></li>
 <li><p>       If the name does not contain a directory part, the file is
        searched for in the path specified by the configuration variable
-       <a href="runtime-config.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id643182"></a>
+       <a href="runtime-config.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id696084"></a>
       </p></li>
 <li><p>       Otherwise (the file was not found in the path, or it contains a
        non-absolute directory part), the dynamic loader will try to
@@ -121,7 +122,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xfunc-c-basetype"></a>31.9.2. Base Types in C-Language Functions</h3></div></div></div>
-<a name="id643344"></a><p>     To know how to write C-language functions, you need to know how
+<a name="id696246"></a><p>     To know how to write C-language functions, you need to know how
      <span class="productname">PostgreSQL</span> internally represents base
      data types and how they can be passed to and from functions.
      Internally, <span class="productname">PostgreSQL</span> regards a base
@@ -204,8 +205,8 @@ typedef struct
 
      Obviously,  the  data  field declared here is not long enough to hold
      all possible strings.  Since it's impossible to declare a variable-size
-     structure in <span class="acronym">C</span>, we rely on the knowledge that the
-     <span class="acronym">C</span> compiler won't range-check array subscripts.  We
+     structure in <acronym class="acronym">C</acronym>, we rely on the knowledge that the
+     <acronym class="acronym">C</acronym> compiler won't range-check array subscripts.  We
      just allocate the necessary amount of space and then access the array as
      if it were declared the right length.  (This is a common trick, which
      you can read about in many textbooks about C.)
@@ -244,7 +245,7 @@ memcpy(destination-&gt;data, buffer, 40);
     </p>
 <div class="table">
 <a name="xfunc-c-type-table"></a><p class="title"><b>Table 31.1. Equivalent C Types for Built-In SQL Types</b></p>
-<table summary="Equivalent C Types for Built-In SQL Types" border="1">
+<div class="table-contents"><table summary="Equivalent C Types for Built-In SQL Types" border="1">
 <colgroup>
 <col>
 <col>
@@ -419,15 +420,15 @@ memcpy(destination-&gt;data, buffer, 40);
 <td><code class="filename">postgres.h</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>     Now that we've gone over all of the possible structures
+<br class="table-break"><p>     Now that we've gone over all of the possible structures
      for base types, we can show some examples of real functions.
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id644146"></a>31.9.3. Calling Conventions Version 0 for C-Language Functions</h3></div></div></div>
+<a name="id697049"></a>31.9.3. Calling Conventions Version 0 for C-Language Functions</h3></div></div></div>
 <p>     We present the &#8220;<span class="quote">old style</span>&#8221; calling convention first [mdash ] although
      this approach is now deprecated, it's easier to get a handle on
      initially.  In the version-0 method, the arguments and result
@@ -563,7 +564,7 @@ CREATE FUNCTION concat_text(text, text) RETURNS text
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id644383"></a>31.9.4. Calling Conventions Version 1 for C-Language Functions</h3></div></div></div>
+<a name="id697270"></a>31.9.4. Calling Conventions Version 1 for C-Language Functions</h3></div></div></div>
 <p>     The version-1 calling convention relies on macros to suppress most
      of the complexity of passing arguments and results.  The C declaration
      of a version-1 function is always
@@ -744,7 +745,7 @@ concat_text(PG_FUNCTION_ARGS)
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id644833"></a>31.9.5. Writing Code</h3></div></div></div>
+<a name="id697715"></a>31.9.5. Writing Code</h3></div></div></div>
 <p>     Before we turn to the more advanced topics, we should discuss
      some coding rules for <span class="productname">PostgreSQL</span>
      C-language functions.  While it may be possible to load functions
@@ -762,7 +763,7 @@ concat_text(PG_FUNCTION_ARGS)
      </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Use <code class="literal">pg_config
-        --includedir-server</code><a name="id644877"></a>
+        --includedir-server</code><a name="id697766"></a>
         to find out where the <span class="productname">PostgreSQL</span> server header
         files are installed on your system (or the system that your
         users will be running on).  This option is new with
@@ -777,7 +778,7 @@ concat_text(PG_FUNCTION_ARGS)
        </p></li>
 <li><p>        When allocating memory, use the
         <span class="productname">PostgreSQL</span> functions
-        <code class="function">palloc</code><a name="id644944"></a> and <code class="function">pfree</code><a name="id644957"></a>
+        <code class="function">palloc</code><a name="id697834"></a> and <code class="function">pfree</code><a name="id697846"></a>
         instead of the corresponding C library functions
         <code class="function">malloc</code> and <code class="function">free</code>.
         The memory allocated by <code class="function">palloc</code> will be
@@ -828,7 +829,7 @@ concat_text(PG_FUNCTION_ARGS)
   C, they must be compiled and linked in a special way to produce a
   file that can be dynamically loaded by the server.  To be precise, a
   <em class="firstterm">shared library</em> needs to be
-  created.<a name="id645136"></a>
+  created.<a name="id698026"></a>
 
  </p>
 <p>  For information beyond what is contained in this section
@@ -841,12 +842,12 @@ concat_text(PG_FUNCTION_ARGS)
   examples you will make your modules dependent on the availability
   of the <span class="productname">PostgreSQL</span> source code, however.
  </p>
-<p>  <a name="id645188"></a> Creating shared libraries is generally
+<p>  <a name="id698078"></a> Creating shared libraries is generally
   analogous to linking executables: first the source files are
   compiled into object files, then the object files are linked
   together.  The object files need to be created as
   <em class="firstterm">position-independent code</em>
-  (<span class="acronym">PIC</span>),<a name="id645207"></a> which
+  (<acronym class="acronym">PIC</acronym>),<a name="id698097"></a> which
   conceptually means that they can be placed at an arbitrary location
   in memory when they are loaded by the executable.  (Object files
   intended for executables are usually not compiled that way.)  The
@@ -864,7 +865,7 @@ concat_text(PG_FUNCTION_ARGS)
 <div class="variablelist"><dl>
 <dt><span class="term"><span class="systemitem">BSD/OS</span></span></dt>
 <dd>
-<p>      The compiler flag to create <span class="acronym">PIC</span> is
+<p>      The compiler flag to create <acronym class="acronym">PIC</acronym> is
       <code class="option">-fpic</code>.  The linker flag to create shared
       libraries is <code class="option">-shared</code>.
 </p>
@@ -877,7 +878,7 @@ ld -shared -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">FreeBSD</span></span></dt>
 <dd>
-<p>      The compiler flag to create <span class="acronym">PIC</span> is
+<p>      The compiler flag to create <acronym class="acronym">PIC</acronym> is
       <code class="option">-fpic</code>.  To create shared libraries the compiler
       flag is <code class="option">-shared</code>.
 </p>
@@ -891,7 +892,7 @@ gcc -shared -o foo.so foo.o</pre>
 <dt><span class="term"><span class="systemitem">HP-UX</span></span></dt>
 <dd>
 <p>      The compiler flag of the system compiler to create
-      <span class="acronym">PIC</span> is <code class="option">+z</code>.  When using
+      <acronym class="acronym">PIC</acronym> is <code class="option">+z</code>.  When using
       <span class="application">GCC</span> it's <code class="option">-fpic</code>. The
       linker flag for shared libraries is <code class="option">-b</code>.  So
 </p>
@@ -912,7 +913,7 @@ gcc -shared -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">IRIX</span></span></dt>
 <dd>
-<p>      <span class="acronym">PIC</span> is the default, no special compiler
+<p>      <acronym class="acronym">PIC</acronym> is the default, no special compiler
       options are necessary.  The linker option to produce shared
       libraries is <code class="option">-shared</code>.
 </p>
@@ -923,7 +924,7 @@ ld -shared -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">Linux</span></span></dt>
 <dd>
-<p>      The compiler flag to create <span class="acronym">PIC</span> is
+<p>      The compiler flag to create <acronym class="acronym">PIC</acronym> is
       <code class="option">-fpic</code>.  On some platforms in some situations
       <code class="option">-fPIC</code> must be used if <code class="option">-fpic</code>
       does not work.  Refer to the GCC manual for more information.
@@ -946,8 +947,8 @@ cc -bundle -flat_namespace -undefined suppress -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">NetBSD</span></span></dt>
 <dd>
-<p>      The compiler flag to create <span class="acronym">PIC</span> is
-      <code class="option">-fpic</code>.  For <span class="acronym">ELF</span> systems, the
+<p>      The compiler flag to create <acronym class="acronym">PIC</acronym> is
+      <code class="option">-fpic</code>.  For <acronym class="acronym">ELF</acronym> systems, the
       compiler with the flag <code class="option">-shared</code> is used to link
       shared libraries.  On the older non-ELF systems, <code class="literal">ld
       -Bshareable</code> is used.
@@ -959,7 +960,7 @@ gcc -shared -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">OpenBSD</span></span></dt>
 <dd>
-<p>      The compiler flag to create <span class="acronym">PIC</span> is
+<p>      The compiler flag to create <acronym class="acronym">PIC</acronym> is
       <code class="option">-fpic</code>.  <code class="literal">ld -Bshareable</code> is
       used to link shared libraries.
 </p>
@@ -970,7 +971,7 @@ ld -Bshareable -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">Solaris</span></span></dt>
 <dd>
-<p>      The compiler flag to create <span class="acronym">PIC</span> is
+<p>      The compiler flag to create <acronym class="acronym">PIC</acronym> is
       <code class="option">-KPIC</code> with the Sun compiler and
       <code class="option">-fpic</code> with <span class="application">GCC</span>.  To
       link shared libraries, the compiler option is
@@ -989,7 +990,7 @@ gcc -G -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">Tru64 UNIX</span></span></dt>
 <dd>
-<p>      <span class="acronym">PIC</span> is the default, so the compilation command
+<p>      <acronym class="acronym">PIC</acronym> is the default, so the compilation command
       is the usual one.  <code class="command">ld</code> with special options is
       used to do the linking:
 </p>
@@ -1002,7 +1003,7 @@ ld -shared -expect_unresolved '*' -o foo.so foo.o</pre>
 </dd>
 <dt><span class="term"><span class="systemitem">UnixWare</span></span></dt>
 <dd>
-<p>      The compiler flag to create <span class="acronym">PIC</span> is <code class="option">-K
+<p>      The compiler flag to create <acronym class="acronym">PIC</acronym> is <code class="option">-K
       PIC</code> with the SCO compiler and <code class="option">-fpic</code>
       with <span class="productname">GCC</span>.  To link shared libraries,
       the compiler option is <code class="option">-G</code> with the SCO compiler
@@ -1044,11 +1045,11 @@ gcc -shared -o foo.so foo.o</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xfunc-c-pgxs"></a>31.9.7. Extension Building Infrastructure</h3></div></div></div>
-<a name="id645943"></a><p>    If you are thinking about distributing your
+<a name="id698832"></a><p>    If you are thinking about distributing your
     <span class="productname">PostgreSQL</span> extension modules, setting up a
     portable build system for them can be fairly difficult.  Therefore
     the <span class="productname">PostgreSQL</span> installation provides a build
-    infrastructure for extensions, called <span class="acronym">PGXS</span>, so
+    infrastructure for extensions, called <acronym class="acronym">PGXS</acronym>, so
     that simple extension modules can be built simply against an
     already installed server.  Note that this infrastructure is not
     intended to be a universal build system framework that can be used
@@ -1059,7 +1060,7 @@ gcc -shared -o foo.so foo.o</pre>
    </p>
 <p>    To use the infrastructure for your extension, you must write a
     simple makefile.  In that makefile, you need to set some variables
-    and finally include the global <span class="acronym">PGXS</span> makefile.
+    and finally include the global <acronym class="acronym">PGXS</acronym> makefile.
     Here is an example that builds an extension module named
     <code class="literal">isbn_issn</code> consisting of a shared library, an
     SQL script, and a documentation text file:
@@ -1154,7 +1155,7 @@ include $(PGXS)</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id646282"></a>31.9.8. Composite-Type Arguments in C-Language Functions</h3></div></div></div>
+<a name="id699172"></a>31.9.8. Composite-Type Arguments in C-Language Functions</h3></div></div></div>
 <p>     Composite types do not have a fixed layout like C structures.
      Instances of a composite type may contain null fields.  In
      addition, composite types that are part of an inheritance
@@ -1249,7 +1250,7 @@ c_overpaid(PG_FUNCTION_ARGS)
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id646449"></a>31.9.9. Returning Rows (Composite Types) from C-Language Functions</h3></div></div></div>
+<a name="id699339"></a>31.9.9. Returning Rows (Composite Types) from C-Language Functions</h3></div></div></div>
 <p>     To return a row or composite-type value from a C-language
      function, you can use a special API that provides macros and
      functions to hide most of the complexity of building composite
@@ -1343,8 +1344,8 @@ c_overpaid(PG_FUNCTION_ARGS)
      source files must include <code class="filename">funcapi.h</code>, as
      above.
     </p>
-<p>     A set-returning function (<span class="acronym">SRF</span>) is called
-     once for each item it returns.  The <span class="acronym">SRF</span> must
+<p>     A set-returning function (<acronym class="acronym">SRF</acronym>) is called
+     once for each item it returns.  The <acronym class="acronym">SRF</acronym> must
      therefore save enough state to remember what it was doing and
      return the next item on each call.
      The structure <code class="structname">FuncCallContext</code> is provided to help
@@ -1421,7 +1422,7 @@ c_overpaid(PG_FUNCTION_ARGS)
 } FuncCallContext;</pre>
 <p>
     </p>
-<p>     An <span class="acronym">SRF</span> uses several functions and macros that
+<p>     An <acronym class="acronym">SRF</acronym> uses several functions and macros that
      automatically manipulate the <code class="structname">FuncCallContext</code>
      structure (and expect to find it via <code class="literal">fn_extra</code>).  Use
 </p>
@@ -1452,16 +1453,16 @@ c_overpaid(PG_FUNCTION_ARGS)
 </p>
 <pre class="programlisting">SRF_RETURN_DONE(funcctx)</pre>
 <p>
-     to clean up and end the <span class="acronym">SRF</span>.
+     to clean up and end the <acronym class="acronym">SRF</acronym>.
     </p>
-<p>     The memory context that is current when the <span class="acronym">SRF</span> is called is
+<p>     The memory context that is current when the <acronym class="acronym">SRF</acronym> is called is
      a transient context that will be cleared between calls.  This means
      that you do not need to call <code class="function">pfree</code> on everything
      you allocated using <code class="function">palloc</code>; it will go away anyway.  However, if you want to allocate
      any data structures to live across calls, you need to put them somewhere
      else.  The memory context referenced by
      <code class="structfield">multi_call_memory_ctx</code> is a suitable location for any
-     data that needs to survive until the <span class="acronym">SRF</span> is finished running.  In most
+     data that needs to survive until the <acronym class="acronym">SRF</acronym> is finished running.  In most
      cases, this means that you should switch into
      <code class="structfield">multi_call_memory_ctx</code> while doing the first-call setup.
     </p>
@@ -1510,7 +1511,7 @@ my_set_returning_function(PG_FUNCTION_ARGS)
 }</pre>
 <p>
     </p>
-<p>     A complete example of a simple <span class="acronym">SRF</span> returning a composite type looks like:
+<p>     A complete example of a simple <acronym class="acronym">SRF</acronym> returning a composite type looks like:
 </p>
 <pre class="programlisting">PG_FUNCTION_INFO_V1(testpassbyval);
 
@@ -1613,7 +1614,7 @@ CREATE OR REPLACE FUNCTION testpassbyval(integer, integer) RETURNS SETOF __testp
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id647136"></a>31.9.11. Polymorphic Arguments and Return Types</h3></div></div></div>
+<a name="id699984"></a>31.9.11. Polymorphic Arguments and Return Types</h3></div></div></div>
 <p>     C-language functions may be declared to accept and
      return the polymorphic types
      <code class="type">anyelement</code> and <code class="type">anyarray</code>.

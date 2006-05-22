@@ -4,16 +4,17 @@
 <title>41.33. pg_locks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="prev" href="view-pg-indexes.html" title="41.32. pg_indexes">
 <link rel="next" href="view-pg-rules.html" title="41.34. pg_rules">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="view-pg-locks"></a>41.33. <code class="structname">pg_locks</code></h2></div></div></div>
-<a name="id755695"></a><p>   The view <code class="structname">pg_locks</code> provides access to
+<a name="id807472"></a><p>   The view <code class="structname">pg_locks</code> provides access to
    information about the locks held by open transactions within the
    database server.  See <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more discussion
    of locking.
@@ -32,8 +33,8 @@
    transaction ID of the current holder of that row lock.
   </p>
 <div class="table">
-<a name="id755741"></a><p class="title"><b>Table 41.33. <code class="structname">pg_locks</code> Columns</b></p>
-<table summary="pg_locks Columns" border="1">
+<a name="id807518"></a><p class="title"><b>Table 41.33. <code class="structname">pg_locks</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_locks Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -91,9 +92,9 @@
 <td>true if lock is held, false if lock is awaited</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   <code class="structfield">granted</code> is true in a row representing a lock
+<br class="table-break"><p>   <code class="structfield">granted</code> is true in a row representing a lock
    held by the indicated session.  False indicates that this session is
    currently waiting to acquire this lock, which implies that some other
    session is holding a conflicting lock mode on the same lockable object.

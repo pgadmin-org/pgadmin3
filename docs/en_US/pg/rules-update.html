@@ -4,16 +4,17 @@
 <title>33.3. Rules on INSERT, UPDATE, and DELETE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="rules.html" title="Chapter 33. The Rule System">
 <link rel="prev" href="rules-views.html" title="33.2. Views and the Rule System">
 <link rel="next" href="rules-privileges.html" title="33.4. Rules and Privileges">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="rules-update"></a>33.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></h2></div></div></div>
-<a name="id654027"></a><a name="id654043"></a><a name="id654059"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+<a name="id706915"></a><a name="id706932"></a><a name="id706947"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
     and <code class="command">DELETE</code> are significantly different from the view rules
     described in the previous section. First, their <code class="command">CREATE
     RULE</code> command allows more:
@@ -38,7 +39,7 @@
     original one.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id654159"></a>33.3.1. How Update Rules Work</h3></div></div></div>
+<a name="id707048"></a>33.3.1. How Update Rules Work</h3></div></div></div>
 <p>    Keep the syntax
 
 </p>
@@ -125,7 +126,7 @@
     there is no need to apply update rules to the output of view rewriting.</p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id654493"></a>33.3.1.1. A First Rule Step by Step</h4></div></div></div>
+<a name="id707374"></a>33.3.1.1. A First Rule Step by Step</h4></div></div></div>
 <p>    Say we want to trace changes to the <code class="literal">sl_avail</code> column in the
     <code class="literal">shoelace_data</code> relation. So we set up a log table
     and a rule that conditionally writes a log entry when an
@@ -345,7 +346,7 @@ SELECT shoelace_data.sl_name, 0,
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="rules-update-views"></a>33.3.2. Cooperation with Views</h3></div></div></div>
-<a name="id654990"></a><p>    A simple way to protect view relations from the mentioned
+<a name="id707876"></a><p>    A simple way to protect view relations from the mentioned
     possibility that someone can try to run <code class="command">INSERT</code>,
     <code class="command">UPDATE</code>, or <code class="command">DELETE</code> on them is
     to let those query trees get thrown away.  So we create the rules
@@ -581,7 +582,7 @@ SELECT s.sl_name,
     generated query trees.
    </p>
 <p>    So we end up with two final query trees that are equivalent to the
-    <span class="acronym">SQL</span> statements
+    <acronym class="acronym">SQL</acronym> statements
 
 </p>
 <pre class="programlisting">INSERT INTO shoelace_log

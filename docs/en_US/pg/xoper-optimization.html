@@ -4,11 +4,12 @@
 <title>31.13. Operator Optimization Information</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="prev" href="xoper.html" title="31.12. User-Defined Operators">
 <link rel="next" href="xindex.html" title="31.14. Interfacing Extensions To Indexes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -26,11 +27,11 @@
    </p>
 <p>    Additional optimization clauses might be added in future versions of
     <span class="productname">PostgreSQL</span>.  The ones described here are all
-    the ones that release 8.0.7 understands.
+    the ones that release 8.0.8 understands.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id648243"></a>31.13.1. <code class="literal">COMMUTATOR</code></h3></div></div></div>
+<a name="id701084"></a>31.13.1. <code class="literal">COMMUTATOR</code></h3></div></div></div>
 <p>     The <code class="literal">COMMUTATOR</code> clause, if provided, names an operator that is the
      commutator of the operator being defined.  We say that operator A is the
      commutator of operator B if (x A y) equals (y B x) for all possible input
@@ -94,7 +95,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id648466"></a>31.13.2. <code class="literal">NEGATOR</code></h3></div></div></div>
+<a name="id701307"></a>31.13.2. <code class="literal">NEGATOR</code></h3></div></div></div>
 <p>     The <code class="literal">NEGATOR</code> clause, if provided, names an operator that is the
      negator of the operator being defined.  We say that operator A
      is the negator of operator B if both return Boolean results and
@@ -122,7 +123,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id648558"></a>31.13.3. <code class="literal">RESTRICT</code></h3></div></div></div>
+<a name="id701399"></a>31.13.3. <code class="literal">RESTRICT</code></h3></div></div></div>
 <p>    The <code class="literal">RESTRICT</code> clause, if provided, names a restriction selectivity
     estimation function for the operator.  (Note that this is a function
     name, not an operator name.)  <code class="literal">RESTRICT</code> clauses only make sense for
@@ -194,7 +195,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id648866"></a>31.13.4. <code class="literal">JOIN</code></h3></div></div></div>
+<a name="id701707"></a>31.13.4. <code class="literal">JOIN</code></h3></div></div></div>
 <p>     The <code class="literal">JOIN</code> clause, if provided, names a join selectivity
      estimation function for the operator.  (Note that this is a function
      name, not an operator name.)  <code class="literal">JOIN</code> clauses only make sense for
@@ -237,7 +238,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id649024"></a>31.13.5. <code class="literal">HASHES</code></h3></div></div></div>
+<a name="id701865"></a>31.13.5. <code class="literal">HASHES</code></h3></div></div></div>
 <p>     The <code class="literal">HASHES</code> clause, if present, tells the system that
      it is permissible to use the hash join method for a join based on this
      operator.  <code class="literal">HASHES</code> only makes sense for a binary operator that
@@ -268,7 +269,7 @@
      <code class="function">hash_any</code>.  (Unless you write your other operators and
      functions to ensure that the unused bits are always zero, which is the
      recommended strategy.)
-     Another example is that on machines that meet the <span class="acronym">IEEE</span>
+     Another example is that on machines that meet the <acronym class="acronym">IEEE</acronym>
      floating-point standard, negative zero and positive zero are different
      values (different bit patterns) but they are defined to compare equal.
      If a float value might contain negative zero then extra steps are needed
@@ -296,7 +297,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id649152"></a>31.13.6. <code class="literal">MERGES</code> (<code class="literal">SORT1</code>, <code class="literal">SORT2</code>, <code class="literal">LTCMP</code>, <code class="literal">GTCMP</code>)</h3></div></div></div>
+<a name="id701992"></a>31.13.6. <code class="literal">MERGES</code> (<code class="literal">SORT1</code>, <code class="literal">SORT2</code>, <code class="literal">LTCMP</code>, <code class="literal">GTCMP</code>)</h3></div></div></div>
 <p>     The <code class="literal">MERGES</code> clause, if present, tells the system that
      it is permissible to use the merge-join method for a join based on this
      operator.  <code class="literal">MERGES</code> only makes sense for a binary operator that

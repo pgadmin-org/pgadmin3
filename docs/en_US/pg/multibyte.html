@@ -4,19 +4,20 @@
 <title>20.2. Character Set Support</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="charset.html" title="Chapter 20. Localization">
 <link rel="prev" href="charset.html" title="Chapter 20. Localization">
 <link rel="next" href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="multibyte"></a>20.2. Character Set Support</h2></div></div></div>
-<a name="id602733"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
+<a name="id655405"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
    allows you to store text in a variety of character sets, including
    single-byte character sets such as the ISO 8859 series and
-   multiple-byte character sets such as <span class="acronym">EUC</span> (Extended Unix
+   multiple-byte character sets such as <acronym class="acronym">EUC</acronym> (Extended Unix
    Code), Unicode, and Mule internal code.  All character sets can be
    used transparently throughout the server.  (If you use extension
    functions from other sources, it depends on whether they wrote
@@ -35,7 +36,7 @@
     </p>
 <div class="table">
 <a name="charset-table"></a><p class="title"><b>Table 20.1. Server Character Sets</b></p>
-<table summary="Server Character Sets" border="1">
+<div class="table-contents"><table summary="Server Character Sets" border="1">
 <colgroup>
 <col>
 <col>
@@ -47,35 +48,35 @@
 <tbody>
 <tr>
 <td><code class="literal">SQL_ASCII</code></td>
-<td><span class="acronym">ASCII</span></td>
+<td><acronym class="acronym">ASCII</acronym></td>
 </tr>
 <tr>
 <td><code class="literal">EUC_JP</code></td>
-<td>Japanese <span class="acronym">EUC</span>
+<td>Japanese <acronym class="acronym">EUC</acronym>
 </td>
 </tr>
 <tr>
 <td><code class="literal">EUC_CN</code></td>
-<td>Chinese <span class="acronym">EUC</span>
+<td>Chinese <acronym class="acronym">EUC</acronym>
 </td>
 </tr>
 <tr>
 <td><code class="literal">EUC_KR</code></td>
-<td>Korean <span class="acronym">EUC</span>
+<td>Korean <acronym class="acronym">EUC</acronym>
 </td>
 </tr>
 <tr>
 <td><code class="literal">JOHAB</code></td>
-<td>Korean <span class="acronym">EUC</span> (Hangle base)</td>
+<td>Korean <acronym class="acronym">EUC</acronym> (Hangle base)</td>
 </tr>
 <tr>
 <td><code class="literal">EUC_TW</code></td>
-<td>Taiwan <span class="acronym">EUC</span>
+<td>Taiwan <acronym class="acronym">EUC</acronym>
 </td>
 </tr>
 <tr>
 <td><code class="literal">UNICODE</code></td>
-<td>Unicode (<span class="acronym">UTF</span>-8)</td>
+<td>Unicode (<acronym class="acronym">UTF</acronym>-8)</td>
 </tr>
 <tr>
 <td><code class="literal">MULE_INTERNAL</code></td>
@@ -83,27 +84,27 @@
 </tr>
 <tr>
 <td><code class="literal">LATIN1</code></td>
-<td>ISO 8859-1/<span class="acronym">ECMA</span> 94 (Latin alphabet no.1)</td>
+<td>ISO 8859-1/<acronym class="acronym">ECMA</acronym> 94 (Latin alphabet no.1)</td>
 </tr>
 <tr>
 <td><code class="literal">LATIN2</code></td>
-<td>ISO 8859-2/<span class="acronym">ECMA</span> 94 (Latin alphabet no.2)</td>
+<td>ISO 8859-2/<acronym class="acronym">ECMA</acronym> 94 (Latin alphabet no.2)</td>
 </tr>
 <tr>
 <td><code class="literal">LATIN3</code></td>
-<td>ISO 8859-3/<span class="acronym">ECMA</span> 94 (Latin alphabet no.3)</td>
+<td>ISO 8859-3/<acronym class="acronym">ECMA</acronym> 94 (Latin alphabet no.3)</td>
 </tr>
 <tr>
 <td><code class="literal">LATIN4</code></td>
-<td>ISO 8859-4/<span class="acronym">ECMA</span> 94 (Latin alphabet no.4)</td>
+<td>ISO 8859-4/<acronym class="acronym">ECMA</acronym> 94 (Latin alphabet no.4)</td>
 </tr>
 <tr>
 <td><code class="literal">LATIN5</code></td>
-<td>ISO 8859-9/<span class="acronym">ECMA</span> 128 (Latin alphabet no.5)</td>
+<td>ISO 8859-9/<acronym class="acronym">ECMA</acronym> 128 (Latin alphabet no.5)</td>
 </tr>
 <tr>
 <td><code class="literal">LATIN6</code></td>
-<td>ISO 8859-10/<span class="acronym">ECMA</span> 144 (Latin alphabet no.6)</td>
+<td>ISO 8859-10/<acronym class="acronym">ECMA</acronym> 144 (Latin alphabet no.6)</td>
 </tr>
 <tr>
 <td><code class="literal">LATIN7</code></td>
@@ -119,28 +120,28 @@
 </tr>
 <tr>
 <td><code class="literal">LATIN10</code></td>
-<td>ISO 8859-16/<span class="acronym">ASRO</span> SR 14111 (Latin alphabet no.10)</td>
+<td>ISO 8859-16/<acronym class="acronym">ASRO</acronym> SR 14111 (Latin alphabet no.10)</td>
 </tr>
 <tr>
 <td><code class="literal">ISO_8859_5</code></td>
-<td>ISO 8859-5/<span class="acronym">ECMA</span> 113 (Latin/Cyrillic)</td>
+<td>ISO 8859-5/<acronym class="acronym">ECMA</acronym> 113 (Latin/Cyrillic)</td>
 </tr>
 <tr>
 <td><code class="literal">ISO_8859_6</code></td>
-<td>ISO 8859-6/<span class="acronym">ECMA</span> 114 (Latin/Arabic)</td>
+<td>ISO 8859-6/<acronym class="acronym">ECMA</acronym> 114 (Latin/Arabic)</td>
 </tr>
 <tr>
 <td><code class="literal">ISO_8859_7</code></td>
-<td>ISO 8859-7/<span class="acronym">ECMA</span> 118 (Latin/Greek)</td>
+<td>ISO 8859-7/<acronym class="acronym">ECMA</acronym> 118 (Latin/Greek)</td>
 </tr>
 <tr>
 <td><code class="literal">ISO_8859_8</code></td>
-<td>ISO 8859-8/<span class="acronym">ECMA</span> 121 (Latin/Hebrew)</td>
+<td>ISO 8859-8/<acronym class="acronym">ECMA</acronym> 121 (Latin/Hebrew)</td>
 </tr>
 <tr>
 <td><code class="literal">KOI8</code></td>
 <td>
-<span class="acronym">KOI</span>8-R(U)</td>
+<acronym class="acronym">KOI</acronym>8-R(U)</td>
 </tr>
 <tr>
 <td><code class="literal">ALT</code></td>
@@ -165,12 +166,12 @@
 <tr>
 <td><code class="literal">TCVN</code></td>
 <td>
-<span class="acronym">TCVN</span>-5712/Windows CP1258 (Vietnamese)</td>
+<acronym class="acronym">TCVN</acronym>-5712/Windows CP1258 (Vietnamese)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<br class="table-break"><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Important</h3>
 <p>      Before <span class="productname">PostgreSQL</span> 7.2, <code class="literal">LATIN5</code>
       mistakenly meant ISO 8859-5.  From 7.2 on, <code class="literal">LATIN5</code>
@@ -179,7 +180,7 @@
       you should be careful about this change.
      </p>
 </div>
-<p>      Not all <span class="acronym">API</span>s support all the listed character sets. For example, the
+<p>      Not all <acronym class="acronym">API</acronym>s support all the listed character sets. For example, the
       <span class="productname">PostgreSQL</span>
       JDBC driver does not support <code class="literal">MULE_INTERNAL</code>, <code class="literal">LATIN6</code>,
       <code class="literal">LATIN8</code>, and <code class="literal">LATIN10</code>.
@@ -187,7 +188,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id603282"></a>20.2.2. Setting the Character Set</h3></div></div></div>
+<a name="id655954"></a>20.2.2. Setting the Character Set</h3></div></div></div>
 <p>     <code class="command">initdb</code> defines the default character set
      for a <span class="productname">PostgreSQL</span> cluster. For example,
 
@@ -261,7 +262,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id603489"></a>20.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
+<a name="id656161"></a>20.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
 <p>     <span class="productname">PostgreSQL</span> supports automatic
      character set conversion between server and client for certain
      character sets. The conversion information is stored in the
@@ -272,7 +273,7 @@
     </p>
 <div class="table">
 <a name="multibyte-translation-table"></a><p class="title"><b>Table 20.2. Client/Server Character Set Conversions</b></p>
-<table summary="Client/Server Character Set Conversions" border="1">
+<div class="table-contents"><table summary="Client/Server Character Set Conversions" border="1">
 <colgroup>
 <col>
 <col>
@@ -505,9 +506,9 @@
          </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>     To enable the automatic character set conversion, you have to
+<br class="table-break"><p>     To enable the automatic character set conversion, you have to
      tell <span class="productname">PostgreSQL</span> the character set
      (encoding) you would like to use in the client. There are several
      ways to accomplish this:
@@ -609,7 +610,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id604885"></a>20.2.4. Further Reading</h3></div></div></div>
+<a name="id657556"></a>20.2.4. Further Reading</h3></div></div></div>
 <p>     These are good sources to start learning about various kinds of encoding
      systems.
 
@@ -624,7 +625,7 @@
 <dd><p>         The web site of the Unicode Consortium
         </p></dd>
 <dt><span class="term">RFC 2044</span></dt>
-<dd><p>         <span class="acronym">UTF</span>-8 is defined here.
+<dd><p>         <acronym class="acronym">UTF</acronym>-8 is defined here.
         </p></dd>
 </dl></div>
 <p>

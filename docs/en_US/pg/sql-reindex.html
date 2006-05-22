@@ -4,11 +4,12 @@
 <title>REINDEX</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-prepare.html" title="PREPARE">
 <link rel="next" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-reindex"></a><div class="titlepage"></div>
@@ -16,12 +17,12 @@
 <h2>Name</h2>
 <p>REINDEX &#8212; rebuild indexes</p>
 </div>
-<a name="id710926"></a><div class="refsynopsisdiv">
+<a name="id763810"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">REINDEX { DATABASE | TABLE | INDEX } <em class="replaceable"><code>name</code></em> [ FORCE ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id710951"></a><h2>Description</h2>
+<a name="id763834"></a><h2>Description</h2>
 <p>   <code class="command">REINDEX</code> rebuilds an index based on the data
    stored in the index's table, replacing the old copy of the index. There are
    two main reasons to use <code class="command">REINDEX</code>:
@@ -46,7 +47,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id711019"></a><h2>Parameters</h2>
+<a name="id763903"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">DATABASE</code></span></dt>
 <dd><p>      Recreate all system indexes of a specified database. Indexes on
@@ -72,7 +73,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id711103"></a><h2>Notes</h2>
+<a name="id763986"></a><h2>Notes</h2>
 <p>   If you suspect corruption of an index on a user table, you can
    simply rebuild that index, or all indexes on the table, using
    <code class="command">REINDEX INDEX</code> or <code class="command">REINDEX TABLE</code>.  
@@ -147,7 +148,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id711351"></a><h2>Examples</h2>
+<a name="id764235"></a><h2>Examples</h2>
 <p>   Recreate the indexes on the table <code class="literal">my_table</code>:
 
 </p>
@@ -173,7 +174,7 @@ broken_db=&gt; \q</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id711407"></a><h2>Compatibility</h2>
+<a name="id764291"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">REINDEX</code> command in the SQL standard.
   </p>
 </div>

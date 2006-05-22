@@ -4,28 +4,29 @@
 <title>8.13. Pseudo-Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-oid.html" title="8.12. Object Identifier Types">
 <link rel="next" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="datatype-pseudo"></a>8.13. Pseudo-Types</h2></div></div></div>
-<a name="id539612"></a><a name="id539623"></a><a name="id539633"></a><a name="id539643"></a><a name="id539653"></a><a name="id539664"></a><a name="id539674"></a><a name="id539684"></a><a name="id539695"></a><a name="id539704"></a><p>    The <span class="productname">PostgreSQL</span> type system contains a
+<a name="id592241"></a><a name="id592252"></a><a name="id592262"></a><a name="id592272"></a><a name="id592282"></a><a name="id592293"></a><a name="id592303"></a><a name="id592314"></a><a name="id592324"></a><a name="id592334"></a><p>    The <span class="productname">PostgreSQL</span> type system contains a
     number of special-purpose entries that are collectively called
     <em class="firstterm">pseudo-types</em>.  A pseudo-type cannot be used as a
     column data type, but it can be used to declare a function's
     argument or result type.  Each of the available pseudo-types is
     useful in situations where a function's behavior does not
     correspond to simply taking or returning a value of a specific
-    <span class="acronym">SQL</span> data type.  <a href="datatype-pseudo.html#datatype-pseudotypes-table" title="Table 8.20. Pseudo-Types">Table 8.20, &#8220;Pseudo-Types&#8221;</a> lists the existing
+    <acronym class="acronym">SQL</acronym> data type.  <a href="datatype-pseudo.html#datatype-pseudotypes-table" title="Table 8.20. Pseudo-Types">Table 8.20, &#8220;Pseudo-Types&#8221;</a> lists the existing
     pseudo-types.
    </p>
 <div class="table">
 <a name="datatype-pseudotypes-table"></a><p class="title"><b>Table 8.20. Pseudo-Types</b></p>
-<table summary="Pseudo-Types" border="1">
+<div class="table-contents"><table summary="Pseudo-Types" border="1">
 <colgroup>
 <col>
 <col>
@@ -80,9 +81,9 @@
 <td>An obsolete type name that formerly served all the above purposes.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    Functions coded in C (whether built-in or dynamically loaded) may be
+<br class="table-break"><p>    Functions coded in C (whether built-in or dynamically loaded) may be
     declared to accept or return any of these pseudo data types.  It is up to
     the function author to ensure that the function will behave safely
     when a pseudo-type is used as an argument type.
@@ -97,9 +98,9 @@
    </p>
 <p>    The <code class="type">internal</code> pseudo-type is used to declare functions
     that are meant only to be called internally by the database
-    system, and not by direct invocation in a <span class="acronym">SQL</span>
+    system, and not by direct invocation in a <acronym class="acronym">SQL</acronym>
     query.  If a function has at least one <code class="type">internal</code>-type
-    argument then it cannot be called from <span class="acronym">SQL</span>.  To
+    argument then it cannot be called from <acronym class="acronym">SQL</acronym>.  To
     preserve the type safety of this restriction it is important to
     follow this coding rule: do not create any function that is
     declared to return <code class="type">internal</code> unless it has at least one

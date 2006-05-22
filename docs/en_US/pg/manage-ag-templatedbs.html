@@ -4,18 +4,19 @@
 <title>18.3. Template Databases</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 18. Managing Databases">
 <link rel="prev" href="manage-ag-createdb.html" title="18.2. Creating a Database">
 <link rel="next" href="manage-ag-config.html" title="18.4. Database Configuration">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="manage-ag-templatedbs"></a>18.3. Template Databases</h2></div></div></div>
 <p>   <code class="command">CREATE DATABASE</code> actually works by copying an existing
    database.  By default, it copies the standard system database named
-   <code class="literal">template1</code>.<a name="id598469"></a> Thus that
+   <code class="literal">template1</code>.<a name="id651195"></a> Thus that
    database is the &#8220;<span class="quote">template</span>&#8221; from which new databases are
    made.  If you add objects to <code class="literal">template1</code>, these objects
    will be copied into subsequently created user databases.  This
@@ -26,7 +27,7 @@
    action being taken when those databases are made.
   </p>
 <p>   There is a second standard system database named
-   <code class="literal">template0</code>.<a name="id598519"></a> This
+   <code class="literal">template0</code>.<a name="id651244"></a> This
    database contains the same data as the initial contents of
    <code class="literal">template1</code>, that is, only the standard objects
    predefined by your version of
@@ -66,7 +67,7 @@
    would result in an inconsistent copied database.  Therefore,
    we recommend that databases used as templates be treated as read-only.
   </p>
-<p>   Two useful flags exist in <code class="literal">pg_database</code><a name="id598689"></a> for each
+<p>   Two useful flags exist in <code class="literal">pg_database</code><a name="id651408"></a> for each
    database: the columns <code class="literal">datistemplate</code> and
    <code class="literal">datallowconn</code>.  <code class="literal">datistemplate</code>
    may be set to indicate that a database is intended as a template for

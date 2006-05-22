@@ -4,16 +4,17 @@
 <title>16.4. Run-time Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="prev" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div></div>
-<a name="id584090"></a><p>    There are a lot of configuration parameters that affect the
+<a name="id636707"></a><p>    There are a lot of configuration parameters that affect the
     behavior of the database system. In this subsection, we describe
     how to set configuration parameters; the following subsections
     discuss each parameter in detail.
@@ -27,7 +28,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id584170"></a>,
+    <code class="filename">postgresql.conf</code><a name="id636788"></a>,
     which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -43,7 +44,7 @@ search_path = '$user, public'</pre>
     anywhere.  Parameter values that are not simple identifiers or
     numbers must be single-quoted.
    </p>
-<p>    <a name="id584209"></a>
+<p>    <a name="id636826"></a>
     The configuration file is reread whenever the
     <code class="command">postmaster</code> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
@@ -89,7 +90,7 @@ search_path = '$user, public'</pre>
     file, and in turn are overridden by per-user settings; both are
     overridden by per-session options.
    </p>
-<p>    Some parameters can be changed in individual <span class="acronym">SQL</span>
+<p>    Some parameters can be changed in individual <acronym class="acronym">SQL</acronym>
     sessions with the <a href="sql-set.html">SET</a>
     command, for example:
 </p>
@@ -337,7 +338,7 @@ search_path = '$user, public'</pre>
 <dt>
 <a name="guc-ssl"></a><span class="term"><code class="varname">ssl</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        Enables <span class="acronym">SSL</span> connections. Please read
+<dd><p>        Enables <acronym class="acronym">SSL</acronym> connections. Please read
         <a href="ssl-tcp.html" title="16.8. Secure TCP/IP Connections with SSL">Section 16.8, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> before using this. The default
         is off.  This parameter can only be set at server start.
        </p></dd>
@@ -695,7 +696,7 @@ search_path = '$user, public'</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-wal"></a>16.4.4. Write Ahead Log</h3></div></div></div>
-<p>    See also <a href="wal-configuration.html" title="25.2. WAL Configuration">Section 25.2, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a> for details on WAL
+<p>    See also <a href="wal-configuration.html" title="25.2. WAL Configuration">Section 25.2, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
     tuning.
    </p>
 <div class="sect3" lang="en">
@@ -925,7 +926,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <dt>
 <a name="guc-enable-tidscan"></a><span class="term"><code class="varname">enable_tidscan</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        Enables or disables the query planner's use of <span class="acronym">TID</span>
+<dd><p>        Enables or disables the query planner's use of <acronym class="acronym">TID</acronym>
         scan plan types. The default is on.
        </p></dd>
 </dl></div>
@@ -1144,10 +1145,10 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-logging"></a>16.4.6. Error Reporting and Logging</h3></div></div></div>
-<a name="id588503"></a><div class="sect3" lang="en">
+<a name="id641110"></a><div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div></div>
-<a name="id588524"></a><div class="variablelist"><dl>
+<a name="id641131"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
@@ -1731,7 +1732,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         setting, either globally or per-user.
        </p>
 <p>        The current effective value of the search path can be examined
-        via the <span class="acronym">SQL</span> function
+        via the <acronym class="acronym">SQL</acronym> function
         <code class="function">current_schemas()</code>.  This is not quite the same as
         examining the value of <code class="varname">search_path</code>, since
         <code class="function">current_schemas()</code> shows how the requests
@@ -2018,6 +2019,53 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         <code class="literal">FROM</code>.
        </p></dd>
 <dt>
+<a name="guc-backslash-quote"></a><span class="term"><code class="varname">backslash_quote</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        This controls whether a quote mark can be represented by
+        <code class="literal">\'</code> in a string literal.  The preferred, SQL-standard way
+        to represent a quote mark is by doubling it (<code class="literal">''</code>) but
+        <span class="productname">PostgreSQL</span> has historically also accepted
+        <code class="literal">\'</code>. However, use of <code class="literal">\'</code> creates security risks
+        because in some client character set encodings, there are multibyte
+        characters in which the last byte is numerically equivalent to ASCII
+        <code class="literal">\</code>.  If client-side code does escaping incorrectly then a
+        SQL-injection attack is possible.  This risk can be prevented by
+        making the server reject queries in which a quote mark appears to be
+        escaped by a backslash.
+        The allowed values of <code class="varname">backslash_quote</code> are
+        <code class="literal">on</code> (allow <code class="literal">\'</code> always),
+        <code class="literal">off</code> (reject always), and
+        <code class="literal">safe_encoding</code> (allow only if client encoding does not
+        allow ASCII <code class="literal">\</code> within a multibyte character).
+        <code class="literal">safe_encoding</code> is the default setting.
+       </p></dd>
+<dt>
+<a name="guc-default-with-oids"></a><span class="term"><code class="varname">default_with_oids</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        This controls whether <code class="command">CREATE TABLE</code> and
+        <code class="command">CREATE TABLE AS</code> include an OID column in
+        newly-created tables, if neither <code class="literal">WITH OIDS</code>
+        nor <code class="literal">WITHOUT OIDS</code> is specified. It also
+        determines whether OIDs will be included in tables created by
+        <code class="command">SELECT INTO</code>. In
+        <span class="productname">PostgreSQL</span> 8.0.8
+        <code class="varname">default_with_oids</code> defaults to true. This is
+        also the behavior of previous versions of
+        <span class="productname">PostgreSQL</span>. However, assuming that
+        tables will contain OIDs by default is not encouraged. This
+        option will probably default to false in a future release of
+        <span class="productname">PostgreSQL</span>.
+       </p>
+<p>        To ease compatibility with applications that make use of OIDs,
+        this option should left enabled. To ease compatibility with
+        future versions of <span class="productname">PostgreSQL</span>, this
+        option should be disabled, and applications that require OIDs
+        on certain tables should explicitly specify <code class="literal">WITH
+        OIDS</code> when those tables are created.
+       </p>
+</dd>
+<dt>
 <a name="guc-regex-flavor"></a><span class="term"><code class="varname">regex_flavor</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        The regular expression &#8220;<span class="quote">flavor</span>&#8221; can be set to
@@ -2038,32 +2086,6 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         <code class="literal">ONLY</code> key word to exclude subtables. See
         <a href="ddl-inherit.html" title="5.5. Inheritance">Section 5.5, &#8220;Inheritance&#8221;</a> for more information about inheritance.
        </p></dd>
-<dt>
-<a name="guc-default-with-oids"></a><span class="term"><code class="varname">default_with_oids</code> (<code class="type">boolean</code>)</span>
-</dt>
-<dd>
-<p>        This controls whether <code class="command">CREATE TABLE</code> and
-        <code class="command">CREATE TABLE AS</code> include an OID column in
-        newly-created tables, if neither <code class="literal">WITH OIDS</code>
-        nor <code class="literal">WITHOUT OIDS</code> is specified. It also
-        determines whether OIDs will be included in tables created by
-        <code class="command">SELECT INTO</code>. In
-        <span class="productname">PostgreSQL</span> 8.0.7
-        <code class="varname">default_with_oids</code> defaults to true. This is
-        also the behavior of previous versions of
-        <span class="productname">PostgreSQL</span>. However, assuming that
-        tables will contain OIDs by default is not encouraged. This
-        option will probably default to false in a future release of
-        <span class="productname">PostgreSQL</span>.
-       </p>
-<p>        To ease compatibility with applications that make use of OIDs,
-        this option should left enabled. To ease compatibility with
-        future versions of <span class="productname">PostgreSQL</span>, this
-        option should be disabled, and applications that require OIDs
-        on certain tables should explicitly specify <code class="literal">WITH
-        OIDS</code> when those tables are created.
-       </p>
-</dd>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
@@ -2329,7 +2351,7 @@ plruby.bar = true        # generates error, unknown class name</pre>
    </p>
 <div class="table">
 <a name="runtime-config-short-table"></a><p class="title"><b>Table 16.1. Short option key</b></p>
-<table summary="Short option key" border="1">
+<div class="table-contents"><table summary="Short option key" border="1">
 <colgroup>
 <col>
 <col>
@@ -2418,8 +2440,9 @@ plruby.bar = true        # generates error, unknown class name</pre>
             or via <code class="envar">PGOPTIONS</code> from the client side, as
             explained above.
            </p></div></td></tr></tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div>
 </div></body>
 </html>

@@ -4,11 +4,12 @@
 <title>29.9. Error Handling</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg-descriptors.html" title="29.8. Using SQL Descriptor Areas">
 <link rel="next" href="ecpg-include.html" title="29.10. Including Files">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -19,7 +20,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id627811"></a>29.9.1. Setting Callbacks</h3></div></div></div>
+<a name="id680722"></a>29.9.1. Setting Callbacks</h3></div></div></div>
 <p>    One simple method to catch errors and warnings is to set a
     specific action to be executed whenever a particular condition
     occurs.  In general:
@@ -141,7 +142,7 @@ static void set_error_handler(void)
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id628110"></a>29.9.2. sqlca</h3></div></div></div>
+<a name="id681021"></a>29.9.2. sqlca</h3></div></div></div>
 <p>    For more powerful error handling, the embedded SQL interface
     provides a global variable with the name <code class="varname">sqlca</code>
     that has the following structure:
@@ -172,7 +173,7 @@ static void set_error_handler(void)
     statement, then <code class="varname">sqlca</code> will only contain
     information about the last one.
    </p>
-<p>    If no error occurred in the last <span class="acronym">SQL</span> statement,
+<p>    If no error occurred in the last <acronym class="acronym">SQL</acronym> statement,
     <code class="literal">sqlca.sqlcode</code> will be 0 and
     <code class="literal">sqlca.sqlstate</code> will be
     <code class="literal">"00000"</code>.  If a warning or error occurred, then
@@ -225,7 +226,7 @@ static void set_error_handler(void)
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id628380"></a>29.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></h3></div></div></div>
+<a name="id681291"></a>29.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></h3></div></div></div>
 <p>    The fields <code class="literal">sqlca.sqlstate</code> and
     <code class="literal">sqlca.sqlcode</code> are two different schemes that
     provide error codes.  Both are specified in the SQL standard, but

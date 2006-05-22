@@ -4,16 +4,17 @@
 <title>12.5. Locking and Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="prev" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
 <link rel="next" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="locking-indexes"></a>12.5. Locking and Indexes</h2></div></div></div>
-<a name="id574904"></a><p>    Though <span class="productname">PostgreSQL</span>
+<a name="id627514"></a><p>    Though <span class="productname">PostgreSQL</span>
     provides nonblocking read/write access to table
     data, nonblocking read/write access is not currently offered for every
     index access method implemented
@@ -29,7 +30,7 @@
 	index row is fetched or inserted.  B-tree indexes provide
 	the highest concurrency without deadlock conditions.
        </p></dd>
-<dt><span class="term">       <span class="acronym">GiST</span> and R-tree indexes
+<dt><span class="term">       <acronym class="acronym">GiST</acronym> and R-tree indexes
       </span></dt>
 <dd><p>	Share/exclusive index-level locks are used for read/write access.
 	Locks are released after the command is done.

@@ -4,21 +4,22 @@
 <title>25.2. WAL Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="wal.html" title="Chapter 25. Write-Ahead Logging (WAL)">
 <link rel="prev" href="wal.html" title="Chapter 25. Write-Ahead Logging (WAL)">
 <link rel="next" href="wal-internals.html" title="25.3. Internals">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="wal-configuration"></a>25.2. <span class="acronym">WAL</span> Configuration</h2></div></div></div>
-<p>   There are several <span class="acronym">WAL</span>-related configuration parameters that
+<a name="wal-configuration"></a>25.2. <acronym class="acronym">WAL</acronym> Configuration</h2></div></div></div>
+<p>   There are several <acronym class="acronym">WAL</acronym>-related configuration parameters that
    affect database performance. This section explains their use.
    Consult <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for general information about
    setting server configuration parameters.
   </p>
-<p>   <em class="firstterm">Checkpoints</em><a name="id611757"></a>
+<p>   <em class="firstterm">Checkpoints</em><a name="id664388"></a>
    are points in the sequence of transactions at which it is guaranteed
    that the data files have been updated with all information logged before
    the checkpoint.  At checkpoint time, all dirty data pages are flushed to
@@ -28,7 +29,7 @@
    REDO operation, since any changes made to data files before that point
    are already on disk. After a checkpoint has been made, any log segments
    written before the redo record are no longer needed and can be recycled
-   or removed. (When <span class="acronym">WAL</span> archiving is being done, the
+   or removed. (When <acronym class="acronym">WAL</acronym> archiving is being done, the
    log segments must be archived before being recycled or removed.)
   </p>
 <p>   The server's background writer process will automatically perform
@@ -65,7 +66,7 @@
    not be more than 2 * <code class="varname">checkpoint_segments</code> + 1
    files.  Each segment file is normally 16 MB (though this size can be
    altered when building the server).  You can use this to estimate space
-   requirements for <span class="acronym">WAL</span>.
+   requirements for <acronym class="acronym">WAL</acronym>.
    Ordinarily, when old log segment files are no longer needed, they
    are recycled (renamed to become the next segments in the numbered
    sequence). If, due to a short-term peak of log output rate, there
@@ -73,27 +74,27 @@
    segment files, the unneeded segment files will be deleted instead
    of recycled until the system gets back under this limit.
   </p>
-<p>   There are two commonly used <span class="acronym">WAL</span> functions:
+<p>   There are two commonly used <acronym class="acronym">WAL</acronym> functions:
    <code class="function">LogInsert</code> and <code class="function">LogFlush</code>.
    <code class="function">LogInsert</code> is used to place a new record into
-   the <span class="acronym">WAL</span> buffers in shared memory. If there is no
+   the <acronym class="acronym">WAL</acronym> buffers in shared memory. If there is no
    space for the new record, <code class="function">LogInsert</code> will have
-   to write (move to kernel cache) a few filled <span class="acronym">WAL</span>
+   to write (move to kernel cache) a few filled <acronym class="acronym">WAL</acronym>
    buffers. This is undesirable because <code class="function">LogInsert</code>
    is used on every database low level modification (for example, row
    insertion) at a time when an exclusive lock is held on affected
    data pages, so the operation needs to be as fast as possible.  What
-   is worse, writing <span class="acronym">WAL</span> buffers may also force the
+   is worse, writing <acronym class="acronym">WAL</acronym> buffers may also force the
    creation of a new log segment, which takes even more
-   time. Normally, <span class="acronym">WAL</span> buffers should be written
+   time. Normally, <acronym class="acronym">WAL</acronym> buffers should be written
    and flushed by a <code class="function">LogFlush</code> request, which is
    made, for the most part, at transaction commit time to ensure that
    transaction records are flushed to permanent storage. On systems
    with high log output, <code class="function">LogFlush</code> requests may
    not occur often enough to prevent <code class="function">LogInsert</code>
    from having to do writes.  On such systems
-   one should increase the number of <span class="acronym">WAL</span> buffers by
-   modifying the configuration parameter <a href="runtime-config.html#guc-wal-buffers">wal_buffers</a>.  The default number of <span class="acronym">WAL</span>
+   one should increase the number of <acronym class="acronym">WAL</acronym> buffers by
+   modifying the configuration parameter <a href="runtime-config.html#guc-wal-buffers">wal_buffers</a>.  The default number of <acronym class="acronym">WAL</acronym>
    buffers is 8.  Increasing this value will
    correspondingly increase shared memory usage.  (It should be noted
    that there is presently little evidence to suggest that increasing
@@ -117,7 +118,7 @@
   </p>
 <p>   The <a href="runtime-config.html#guc-wal-sync-method">wal_sync_method</a> parameter determines how
    <span class="productname">PostgreSQL</span> will ask the kernel to force
-    <span class="acronym">WAL</span> updates out to disk. 
+    <acronym class="acronym">WAL</acronym> updates out to disk. 
    All the options should be the same as far as reliability goes,
    but it's quite platform-specific which one will be the fastest.
    Note that this parameter is irrelevant if <code class="varname">fsync</code>
@@ -127,7 +128,7 @@
    (provided that <span class="productname">PostgreSQL</span> has been
    compiled with support for it) will result in each
    <code class="function">LogInsert</code> and <code class="function">LogFlush</code>
-   <span class="acronym">WAL</span> call being logged to the server log. This
+   <acronym class="acronym">WAL</acronym> call being logged to the server log. This
    option may be replaced by a more general mechanism in the future.
   </p>
 </div></body>

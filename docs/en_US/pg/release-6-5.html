@@ -1,18 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.57. Release 6.5</title>
+<title>E.60. Release 6.5</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-5-1.html" title="E.56. Release 6.5.1">
-<link rel="next" href="release-6-4-2.html" title="E.58. Release 6.4.2">
+<link rel="prev" href="release-6-5-1.html" title="E.59. Release 6.5.1">
+<link rel="next" href="release-6-4-2.html" title="E.61. Release 6.4.2">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-6-5"></a>E.57. Release 6.5</h2></div></div></div>
+<a name="release-6-5"></a>E.60. Release 6.5</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1999-06-09</p>
@@ -83,10 +84,10 @@
 <dt><span class="term">       Documentation
       </span></dt>
 <dd><p>        New and updated material is present throughout the
-        documentation. New <span class="acronym">FAQ</span>s have been
+        documentation. New <acronym class="acronym">FAQ</acronym>s have been
         contributed for <span class="systemitem">SGI</span> and <span class="systemitem">AIX</span> platforms.
         The <em class="citetitle">Tutorial</em> has introductory information
-        on <span class="acronym">SQL</span> from Stefan Simkovics.
+        on <acronym class="acronym">SQL</acronym> from Stefan Simkovics.
         For the <em class="citetitle">User's Guide</em>, there are
         reference pages covering the postmaster and more utility
         programs, and a new appendix
@@ -104,7 +105,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id813715"></a>E.57.1. Migration to version 6.5</h3></div></div></div>
+<a name="id866335"></a>E.60.1. Migration to version 6.5</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span>
      is required for those wishing to migrate data from any
      previous release of <span class="productname">PostgreSQL</span>.
@@ -120,7 +121,7 @@
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id813761"></a>E.57.1.1. Multiversion Concurrency Control</h4></div></div></div>
+<a name="id866381"></a>E.60.1.1. Multiversion Concurrency Control</h4></div></div></div>
 <p>      Because readers in 6.5 don't lock data, regardless of transaction
       isolation level, data read by one transaction can be overwritten by
       another. In other words, if a row is returned by
@@ -149,7 +150,7 @@
 <h3 class="title">Note</h3>
 <p>        Note that if you run a transaction in SERIALIZABLE mode then you must
         execute the <code class="command">LOCK</code> commands above before execution of any
-        <span class="acronym">DML</span> statement
+        <acronym class="acronym">DML</acronym> statement
         (<code class="command">SELECT/INSERT/DELETE/UPDATE/FETCH/COPY_TO</code>) in the
         transaction.
        </p>
@@ -165,7 +166,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id813871"></a>E.57.2. Changes</h3></div></div></div>
+<a name="id866491"></a>E.60.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
