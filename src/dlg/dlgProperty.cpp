@@ -27,6 +27,7 @@
 
 #include "frmMain.h"
 #include "frmHelp.h"
+#include "frmHint.h"
 
 // Property dialogs
 #include "dlgProperty.h"
@@ -759,6 +760,15 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
         if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
             return false;
     }
+
+	// If this is a function or view, hint that the user might want to edit the object in 
+	// the query tool.
+    if (node->GetMetaType() == PGM_FUNCTION || node->GetMetaType() == PGM_VIEW)
+	{
+	if (frmHint::ShowHint(frame, HINT_OBJECT_EDITTING) == wxID_CANCEL)
+		return false;
+	}
+
     dlgProperty *dlg=CreateDlg(frame, node, false);
 
     if (dlg)

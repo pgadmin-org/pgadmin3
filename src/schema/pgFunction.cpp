@@ -158,6 +158,12 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
     }
 }
 
+void pgFunction::ShowHint(frmMain *form, bool force)
+{
+	wxArrayString hints;
+	hints.Add(HINT_OBJECT_EDITTING);
+    frmHint::ShowHint(form, hints, GetFullIdentifier(), force);
+}
 
 wxString pgProcedure::GetSql(ctlTree *browser)
 {

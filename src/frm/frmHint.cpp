@@ -51,80 +51,87 @@ hintArray[]=
     {   HINT_CONNECTSERVER,
         __("Server not listening"),
         0,
-        wxT("runtime-config#runtime-config-connection"),
+        wxT("pg/runtime-config#runtime-config-connection"),
         HINT_CANSUPPRESS
     },
     {   HINT_MISSINGHBA,
         __("Server denies access"),
         0, 
-        wxT("client-authentication#auth-pg-hba-conf"), 
+        wxT("pg/client-authentication#auth-pg-hba-conf"), 
         HINT_CANSUPPRESS
     },
     {   HINT_MISSINGIDENT,
         __("Ident authentication failed"),
         0, 
-        wxT("auth-methods#auth-ident"), 
+        wxT("pg/auth-methods#auth-ident"), 
         HINT_CANSUPPRESS
     },
     {   HINT_PRIMARYKEY,
         __("Creation of primary key suggested"),
         0, 
-        wxT("ddl-constraints"),
+        wxT("pg/ddl-constraints"),
         HINT_CANSUPPRESS|HINT_CANABORT
     },
     {   HINT_FKINDEX,
         __("Creation of index in referencing table suggested"),
         0,
-        wxT("ddl-constraints#ddl-constraints-fk"),
+        wxT("pg/ddl-constraints#ddl-constraints-fk"),
         HINT_CANSUPPRESS|HINT_CANABORT
     },
     {   HINT_VACUUM,
         __("Running VACUUM recommended"),
         __("VACUUM"),
-        wxT("maintenance#routine-vacuuming"),
+        wxT("pg/maintenance#routine-vacuuming"),
         HINT_CANSUPPRESS | HINT_CANFIX
     },
     {
         HINT_QUERYRUNTIME,
         __("Query took a long time to complete"),
         0,
-        wxT("pgadmin/query"),
+        wxT("query"),
         HINT_CANSUPPRESS|HINT_CANABORT|HINT_YESNO
     },
     {
         HINT_INSTRUMENTATION,
         __("Server instrumentation not installed"),
         0,
-        wxT("pgadmin/instrumentation"),
+        wxT("instrumentation"),
         HINT_CANSUPPRESS
     },
     {
         HINT_ENCODING_UNICODE,
         __("Database encoding is Unicode"),
         0,
-        wxT("multibyte"),
+        wxT("pg/multibyte"),
         HINT_CANSUPPRESS
     },
     {
         HINT_ENCODING_ASCII,
         __("Database encoding is SQL_ASCII"),
         0,
-        wxT("multibyte"),
+        wxT("pg/multibyte"),
         HINT_CANSUPPRESS
     },
     {
         HINT_READONLY_NOPK,
         __("Can't edit tables without primary key"),
         0,
-        wxT("pgadmin/editgrid"),
+        wxT("editgrid"),
         HINT_CANSUPPRESS
     },
     {
         HINT_AUTOVACUUM,
         _("Enabling autovacuum recommended"),
         0,
-        wxT("maintenance#autovacuum"),
+        wxT("pg/maintenance#autovacuum"),
         HINT_CANSUPPRESS
+    },
+    {
+        HINT_OBJECT_EDITTING,
+        _("Editting views, stored procedures or functions"),
+        0,
+        wxT("query"),
+        HINT_CANSUPPRESS|HINT_CANABORT
     },
     { 0,0,0,0 }
 };

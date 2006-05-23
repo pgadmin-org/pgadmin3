@@ -205,6 +205,12 @@ pgObject *pgView::Refresh(ctlTree *browser, const wxTreeItemId item)
     return view;
 }
 
+void pgView::ShowHint(frmMain *form, bool force)
+{
+	wxArrayString hints;
+	hints.Add(HINT_OBJECT_EDITTING);
+    frmHint::ShowHint(form, hints, GetFullIdentifier(), force);
+}
 
 ///////////////////////////////////////////////////////
 

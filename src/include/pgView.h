@@ -54,6 +54,9 @@ public:
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
 
+	void ShowHint(frmMain *form, bool force);
+	bool GetCanHint() { return true; };
+
 	bool IsUpToDate();
 
 private:

@@ -85,6 +85,9 @@ public:
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createfunction"); }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+	void ShowHint(frmMain *form, bool force);
+	bool GetCanHint() { return true; };
+
     bool HasStats() { return false; }
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
