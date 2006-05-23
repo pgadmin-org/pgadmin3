@@ -1246,7 +1246,12 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     explainCanvas->Clear();
 
     bool wasChanged = changed;
+
+	// Clear markers and indicators
     sqlQuery->MarkerDeleteAll(0);
+	sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
+	sqlQuery->SetStyling(sqlQuery->GetText().Length(), 0);
+
     if (!wasChanged)
     {
         changed=false;
@@ -1340,7 +1345,20 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
                     long errPos=0;
                     errMsg.Mid(chp+atChar.Length()).ToLong(&errPos);
-                    errPos += queryOffset;  // do not count EXPLAIN or similar
+                    errPos -= queryOffset;  // do not count EXPLAIN or similar
+
+					// Set an indicator on the error word (break on any kind of bracket, a space or full stop)
+					int sPos = errPos + selStart - 1, wEnd = 1;
+					sqlQuery->StartStyling(sPos, wxSTC_INDICS_MASK);
+					while(sqlQuery->GetCharAt(sPos + wEnd) != ' ' && 
+						  sqlQuery->GetCharAt(sPos + wEnd) != '(' && 
+						  sqlQuery->GetCharAt(sPos + wEnd) != '{' && 
+						  sqlQuery->GetCharAt(sPos + wEnd) != '[' && 
+						  sqlQuery->GetCharAt(sPos + wEnd) != '.' &&
+						  (unsigned int)(sPos + wEnd) < sqlQuery->GetText().Length())
+						wEnd++;
+					sqlQuery->SetStyling(wEnd, wxSTC_INDIC0_MASK);
+
                     int line=0, maxLine = sqlQuery->GetLineCount();
                     while (line < maxLine && sqlQuery->GetLineEndPosition(line) < errPos + selStart+1)
                         line++;
