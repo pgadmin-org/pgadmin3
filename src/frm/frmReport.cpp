@@ -866,15 +866,73 @@ void frmReport::XmlAddSectionTableFromListView(const int section, ctlListView *l
 
 void frmReport::XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid)
 {
+#if USE_LISTVIEW
     // Get the column headers
-    int cols = grid->GetNumberCols();
+    int cols = grid->GetColumnCount();
+    int shift = 0;
 
     wxString data;
     wxListItem itm;
 
+    if (grid->GetRowCountSuppressed())
+        shift = 1;
+
+    // Build the columns (Skip the Row column)
+    for (int x = 1; x < cols + shift; x++)
+    {
+        itm.SetMask(wxLIST_MASK_TEXT);
+        grid->GetColumn(x - shift, itm);
+        wxString label = itm.GetText();
+        data += wxT("        <column id=\"c");
+        data += NumToStr((long)(x+1));
+        data += wxT("\" number=\"");
+        data += NumToStr((long)(x+1));
+        data += wxT("\" name=\"");
+        data += HtmlEntities(label);
+        data += wxT("\" />\n");
+    }
+    sectionTableHeader[section-1] = data;
+
+    // Build the rows
+    int rows = grid->GetItemCount();
+
+    for (int y = 0; y < rows; y++)
+    {
+        data = wxT("        <row id=\"r");
+        data += NumToStr((long)(y+1));
+	    data += wxT("\" number=\"");
+        data += NumToStr((long)(y+1));
+		data += wxT("\"");
+
+        for (int x = 1; x < cols + shift; x++)
+        {
+            data += wxT(" c");
+            data += NumToStr((long)(x+1));
+            data += wxT("=\"");
+            itm.SetId(y);
+            itm.SetColumn(x - shift);
+            itm.SetMask(wxLIST_MASK_TEXT);
+            grid->GetItem(itm);
+            data += HtmlEntities(itm.GetText());
+            data += wxT("\"");
+        }
+        data += wxT(" />\n");
+        sectionTableRows[section-1] += data;
+    }
+#else
+    // Get the column headers
+    int cols = grid->GetNumberCols();
+    int shift = 0;
+
+    wxString data;
+    wxListItem itm;
+
+    if (grid->GetRowCountSuppressed())
+        shift = 1;
+
     for (int x = 1; x <= cols; x++)
     {
-        wxString label = grid->OnGetItemText(-1, x);
+        wxString label = grid->OnGetItemText(-1, x - shift);
         data += wxT("        <column id=\"c");
         data += NumToStr((long)(x));
         data += wxT("\" number=\"");
@@ -901,12 +959,13 @@ void frmReport::XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid
             data += wxT(" c");
             data += NumToStr((long)(x));
             data += wxT("=\"");
-            data += HtmlEntities(grid->OnGetItemText(y, x));
+            data += HtmlEntities(grid->OnGetItemText(y, x - shift));
             data += wxT("\"");
         }
         data += wxT(" />\n");
         sectionTableRows[section-1] += data;
     }
+#endif
 }
 
 void frmReport::XmlAddSectionValue(const int section, const wxString &name, const wxString &value)

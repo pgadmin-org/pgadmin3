@@ -12,18 +12,34 @@
 #ifndef CTLSQLRESULT_H
 #define CTLSQLRESULT_H
 
+//////////////////////////////////////////////////////////////////////////
+// Set this define to use a wxListView control instead of a wxGrid
+// This will disable some features such as advanced cell selection and
+// copying, but the wxListView is a better designed control
+//////////////////////////////////////////////////////////////////////////
+#define USE_LISTVIEW 0
+//////////////////////////////////////////////////////////////////////////
+
 // wxWindows headers
 #include <wx/thread.h>
 
 #include "pgSet.h"
 #include "pgConn.h"
+#if USE_LISTVIEW
+#include <wx/listctrl.h>
+#else
 #include "ctlSQLGrid.h"
+#endif
 
 
 
 #define CTLSQL_RUNNING 100  // must be greater than ExecStatusType PGRES_xxx values
 
+#if USE_LISTVIEW
+class ctlSQLResult : public wxListView
+#else
 class ctlSQLResult : public ctlSQLGrid
+#endif
 {
 public:
     ctlSQLResult(wxWindow *parent, pgConn *conn, wxWindowID id, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize);
@@ -51,10 +67,16 @@ public:
 
 	void DisplayData(bool single=false);
 
+    bool GetRowCountSuppressed() { return rowcountSuppressed; };
 
+#if USE_LISTVIEW
+	void SelectAll();
+	wxString GetExportLine(int row);
+#else
     void SetMaxRows(int rows);
     void ResultsFinished();
     void OnGridSelect(wxGridRangeSelectEvent& event);
+#endif
 
     wxArrayString colNames;
     wxArrayString colTypes;
@@ -69,6 +91,7 @@ private:
 	bool rowcountSuppressed;
 };
 
+#if !USE_LISTVIEW
 class sqlResultTable : public wxGridTableBase
 {
 public:
@@ -86,5 +109,6 @@ public:
 private:
     pgQueryThread *thread;
 };
+#endif
 
 #endif

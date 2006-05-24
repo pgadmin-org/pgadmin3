@@ -21,16 +21,23 @@
 
 
 ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const wxPoint& pos, const wxSize& size)
+#if USE_LISTVIEW
+: wxListView(parent, id, pos, size, wxLC_VIRTUAL | wxLC_REPORT | wxSUNKEN_BORDER)
+#else
 : ctlSQLGrid(parent, id, pos, size)
+#endif
 {
     conn=_conn;
     thread=0;
 
+#if !USE_LISTVIEW
     SetTable(new sqlResultTable(), true);
+
     EnableEditing(false);
     SetSizer(new wxBoxSizer(wxVERTICAL));
 
     Connect(wxID_ANY, wxEVT_GRID_RANGE_SELECT, wxGridRangeSelectEventHandler(ctlSQLResult::OnGridSelect));
+#endif
 }
 
 
@@ -58,6 +65,55 @@ bool ctlSQLResult::Export()
     return false;
 }
 
+#if USE_LISTVIEW
+void ctlSQLResult::SelectAll()
+{
+	for (int i = 0; i < GetItemCount(); i++)
+		Select(i);
+}
+
+
+wxString ctlSQLResult::GetExportLine(int row)
+{
+   if (GetColumnCount() <= 1)
+        return OnGetItemText(row, 1);
+
+    wxString str;
+    int col;
+    for (col=1 ; col < GetColumnCount() ; col++)
+    {
+        if (col > 1)
+            str.Append(settings->GetCopyColSeparator());
+
+        wxString text=OnGetItemText(row, col);
+
+		bool needQuote  = false;
+		if (settings->GetCopyQuoting() == 1)
+		{
+			/* Quote strings only */
+			switch (colTypClasses.Item(col))
+			{
+			case PGTYPCLASS_NUMERIC:
+			case PGTYPCLASS_BOOL:
+				break;
+			default:
+				needQuote=true;
+				break;
+			}
+		}
+		else if (settings->GetCopyQuoting() == 2)
+			/* Quote everything */
+			needQuote = true;
+
+		if (needQuote)
+            str.Append(settings->GetCopyQuoteChar());
+        str.Append(text);
+        if (needQuote)
+            str.Append(settings->GetCopyQuoteChar());
+    }    
+    return str;
+}
+#endif
 
 bool ctlSQLResult::IsColText(int col)
 {
@@ -78,6 +134,21 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
     colHeaders.Empty();
     int i;
 
+#if USE_LISTVIEW
+    wxListItem item;
+    item.SetMask(wxLIST_MASK_TEXT|wxLIST_MASK_WIDTH);
+
+    for (i=0 ; i < GetColumnCount() ; i++)
+    {
+        GetColumn(i, item);
+        colHeaders.Add(item.GetText());
+        colSizes.Add(item.GetWidth());
+    }
+
+    ClearAll();
+
+#else
+
     for (i=0 ; i < GetNumberCols() ; i++)
     {
         colHeaders.Add(GetColLabelValue(i));
@@ -93,6 +164,8 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
     num = GetNumberCols();
     if (num)
         DeleteCols(0, num);
+#endif
+
 
     colNames.Empty();
     colTypes.Empty();
@@ -106,7 +179,9 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
         return -1;
     }
 
+#if !USE_LISTVIEW
     ((sqlResultTable *)GetTable())->SetThread(thread);
+#endif
     thread->Run();
     return RunStatus();
 }
@@ -116,7 +191,9 @@ int ctlSQLResult::Abort()
 {
     if (thread)
     {
+#if !USE_LISTVIEW
         ((sqlResultTable *)GetTable())->SetThread(0);
+#endif
         thread->Delete();
         delete thread;
     }
@@ -137,6 +214,9 @@ void ctlSQLResult::DisplayData(bool single)
 	rowcountSuppressed = single;
     Freeze();
 
+#if USE_LISTVIEW
+    SetItemCount(NumRows());
+#else
     /*
      * Resize and repopulate by informing itto delete all the rows and
      * columns, then append the correct number of them. Probably is a
@@ -156,6 +236,7 @@ void ctlSQLResult::DisplayData(bool single)
     msg = new wxGridTableMessage(table, wxGRIDTABLE_NOTIFY_COLS_APPENDED, thread->DataSet()->NumCols());
     ProcessTableMessage(*msg);
     delete msg;
+#endif
 
 	if (single)
     {
@@ -168,11 +249,27 @@ void ctlSQLResult::DisplayData(bool single)
         colNames.Add(thread->DataSet()->ColName(0));
         colTypes.Add(wxT(""));
         colTypClasses.Add(0L);
+#if USE_LISTVIEW
+        InsertColumn(0, thread->DataSet()->ColName(0), wxLIST_FORMAT_LEFT, w);
+#else
         SetColSize(0, w);
+#endif
     }
 	else
     {
         wxString colName, colType;
+#if USE_LISTVIEW
+        colTypes.Add(wxT(""));
+        colTypClasses.Add(0L);
+
+		wxString rowname=_("Row");
+    	size_t rowcolsize=NumToStr(NumRows()).Length();
+	    if (rowname.Length() > rowcolsize)
+			rowcolsize = rowname.Length();
+
+        InsertColumn(0, rowname, wxLIST_FORMAT_RIGHT, rowcolsize*8);
+        colNames.Add(wxT("Row"));
+#endif
         size_t hdrIndex=0;
 		long col, nCols=thread->DataSet()->NumCols();
 
@@ -184,7 +281,11 @@ void ctlSQLResult::DisplayData(bool single)
             colTypes.Add(colType);
             colTypClasses.Add(thread->DataSet()->ColTypClass(col));
 
+#if USE_LISTVIEW
+            wxString colHeader = colName;
+#else
             wxString colHeader = colName + wxT("\n") + colType;
+#endif
             int w;
             if (hdrIndex < colHeaders.GetCount() && colHeaders.Item(hdrIndex) == colHeader) {
                 w = colSizes.Item(hdrIndex++);
@@ -199,11 +300,17 @@ void ctlSQLResult::DisplayData(bool single)
                 else
                     w=-1;
             }
+
+#if USE_LISTVIEW
+            InsertColumn(col+1, colHeader, wxLIST_FORMAT_LEFT, w);
+#else
             SetColSize(col, w);
+#endif
         }
     }
     Thaw();
 }
+
 
 
 wxString ctlSQLResult::GetMessagesAndClear()
@@ -279,13 +386,14 @@ wxString ctlSQLResult::OnGetItemText(long item, long col) const
 	return wxEmptyString;
 }
 
-
+#if !USE_LISTVIEW
 void ctlSQLResult::OnGridSelect(wxGridRangeSelectEvent& event)
 {
     SetFocus();
 }
+#endif
 
-
+#if !USE_LISTVIEW
 wxString sqlResultTable::GetValue(int row, int col)
 {
     if (thread && thread->DataValid())
@@ -328,3 +436,4 @@ int sqlResultTable::GetNumberCols()
         return thread->DataSet()->NumCols();
     return 0;
 }
+#endif
