@@ -36,8 +36,9 @@
 
 BEGIN_EVENT_TABLE(frmGrantWizard, ExecutionDialog)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  frmGrantWizard::OnPageSelect) 
-    EVT_BUTTON(XRCID("btnChkAll"), frmGrantWizard::OnCheckAll)
-    EVT_BUTTON(XRCID("btnUnchkAll"), frmGrantWizard::OnUncheckAll)
+    EVT_BUTTON(XRCID("btnChkAll"),                  frmGrantWizard::OnCheckAll)
+    EVT_BUTTON(XRCID("btnUnchkAll"),                frmGrantWizard::OnUncheckAll)
+    EVT_CHECKLISTBOX(XRCID("chkList"),              frmGrantWizard::OnChange)
 END_EVENT_TABLE()
 
 
@@ -62,6 +63,7 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
     sqlPane = 0;
 
     Restore();
+    EnableOK(false);
 }
 
 
@@ -80,6 +82,17 @@ wxString frmGrantWizard::GetHelpPage() const
     return page;
 }
 
+void frmGrantWizard::OnChange(wxCommandEvent& event)
+{
+    sqlPane->SetReadOnly(false);
+    sqlPane->SetText(GetSql());
+    sqlPane->SetReadOnly(true);
+
+    if (sqlPane->GetText().IsEmpty())
+        EnableOK(false);
+    else
+        EnableOK(true);
+}
 
 
 void frmGrantWizard::OnUncheckAll(wxCommandEvent& event)
@@ -87,6 +100,8 @@ void frmGrantWizard::OnUncheckAll(wxCommandEvent& event)
     int i;
     for (i=0 ; i < chkList->GetCount() ; i++)
         chkList->Check(i, false);
+
+     OnChange(event);
 }
 
 
@@ -96,8 +111,9 @@ void frmGrantWizard::OnCheckAll(wxCommandEvent& event)
     int i;
     for (i=0 ; i < chkList->GetCount() ; i++)
         chkList->Check(i, true);
-}
 
+     OnChange(event);
+}
 
 void frmGrantWizard::OnPageSelect(wxNotebookEvent& event)
 {
@@ -170,6 +186,7 @@ void frmGrantWizard::Go()
 
     securityPage = new ctlSecurityPanel(nbNotebook, privList, privChar, mainForm->GetImageList());
     securityPage->SetConnection(object->GetConnection());
+    this->Connect(EVT_SECURITYPANEL_CHANGE, wxCommandEventHandler(frmGrantWizard::OnChange));
 
     sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_READONLY | wxTE_RICH2);
     nbNotebook->AddPage(sqlPane, wxT("SQL"));

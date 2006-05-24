@@ -44,7 +44,7 @@ BEGIN_EVENT_TABLE(ctlSecurityPanel, wxPanel)
     EVT_CHECKBOX(CTL_PRIVCB+16,         ctlSecurityPanel::OnPrivCheck)
 END_EVENT_TABLE();
 
-
+DEFINE_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE)
 
 
 
@@ -300,6 +300,11 @@ void ctlSecurityPanel::CheckGrantOpt(int id)
 void ctlSecurityPanel::OnDelPriv(wxCommandEvent &ev)
 {
     lbPrivileges->DeleteCurrentItem();
+    
+    wxCommandEvent event( EVT_SECURITYPANEL_CHANGE, GetId() );
+    event.SetEventObject( this );
+    GetEventHandler()->ProcessEvent( event );
+
     ev.Skip();
 }
 
@@ -333,6 +338,11 @@ void ctlSecurityPanel::OnAddPriv(wxCommandEvent &ev)
         }
     }
     lbPrivileges->SetItem(pos, 1, value);
+
+    wxCommandEvent event( EVT_SECURITYPANEL_CHANGE, GetId() );
+    event.SetEventObject( this );
+    GetEventHandler()->ProcessEvent( event );
+
     ev.Skip();
 }
 

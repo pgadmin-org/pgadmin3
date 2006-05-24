@@ -113,6 +113,9 @@ public:
     void Abort();
 
 protected:
+
+    void EnableOK(bool enable) { btnOK->Enable(enable); };
+
     pgObject *object;
     pgQueryThread *thread;
     wxTextCtrl *txtMessages;

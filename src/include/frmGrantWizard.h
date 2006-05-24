@@ -18,6 +18,7 @@
 
 class ctlSecurityPanel;
 
+DECLARE_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE, -1)
 
 class frmGrantWizard : public ExecutionDialog
 {
@@ -34,6 +35,7 @@ private:
     void OnPageSelect(wxNotebookEvent& event);
     void OnCheckAll(wxCommandEvent &event);
     void OnUncheckAll(wxCommandEvent &event);
+    void OnChange(wxCommandEvent& event);
 
     void AddObjects(pgCollection *collection);
 
