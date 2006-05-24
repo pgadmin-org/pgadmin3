@@ -1837,8 +1837,8 @@ void sqlTable::Paste()
     skipSerial = false;
 
     for (col = 0; col < nCols; col++) {
-        if (columns[col].type == PGOID_TYPE_SERIAL ||
-            columns[col].type == PGOID_TYPE_SERIAL8)
+        if ((unsigned int)columns[col].type == PGOID_TYPE_SERIAL ||
+            (unsigned int)columns[col].type == PGOID_TYPE_SERIAL8)
         {
             wxMessageDialog msg(GetView()->GetParent(),
                 _("This table contains serial columns. Do you want to use the values in the clipboard for these columns?"),
@@ -1853,8 +1853,8 @@ void sqlTable::Paste()
 
     for (col = (hasOids ? 1 : 0); col < nCols && col < (int)data.GetCount(); col++)
     {
-        if (!(skipSerial && (columns[col].type == PGOID_TYPE_SERIAL ||
-            columns[col].type == PGOID_TYPE_SERIAL8)))
+        if (!(skipSerial && ((unsigned int)columns[col].type == PGOID_TYPE_SERIAL ||
+            (unsigned int)columns[col].type == PGOID_TYPE_SERIAL8)))
         {
             SetValue(row, col, data.Item(col));
         }
