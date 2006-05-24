@@ -348,6 +348,7 @@ bool pgConnBase::ExecuteVoid(const wxString& sql)
     wxLogSql(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
     qryRes = PQexec(conn, sql.mb_str(*conv));
     lastResultStatus = PQresultStatus(qryRes);
+    SetLastResultError(qryRes);
 
     // Check for errors
     if (lastResultStatus != PGRES_TUPLES_OK &&
@@ -375,6 +376,7 @@ wxString pgConnBase::ExecuteScalar(const wxString& sql)
         wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
         qryRes = PQexec(conn, sql.mb_str(*conv));
         lastResultStatus = PQresultStatus(qryRes);
+        SetLastResultError(qryRes);
         
         // Check for errors
         if (lastResultStatus != PGRES_TUPLES_OK && lastResultStatus != PGRES_COMMAND_OK)
@@ -414,6 +416,7 @@ pgSetBase *pgConnBase::ExecuteSet(const wxString& sql)
         qryRes = PQexec(conn, sql.mb_str(*conv));
 
         lastResultStatus= PQresultStatus(qryRes);
+        SetLastResultError(qryRes);
 
         if (lastResultStatus == PGRES_TUPLES_OK || lastResultStatus == PGRES_COMMAND_OK)
         {
@@ -523,3 +526,56 @@ wxString pgConnBase::GetVersionString()
 	return ExecuteScalar(wxT("SELECT version();"));
 }
 
+void pgConnBase::SetLastResultError(PGresult *res)
+{
+    lastResultError.severity = wxString(PQresultErrorField(res, PG_DIAG_SEVERITY), *conv);
+    lastResultError.sql_state = wxString(PQresultErrorField(res, PG_DIAG_SQLSTATE), *conv);
+    lastResultError.msg_primary = wxString(PQresultErrorField(res, PG_DIAG_MESSAGE_PRIMARY), *conv);
+    lastResultError.msg_detail = wxString(PQresultErrorField(res, PG_DIAG_MESSAGE_DETAIL), *conv);
+    lastResultError.msg_hint = wxString(PQresultErrorField(res, PG_DIAG_MESSAGE_HINT), *conv);
+    lastResultError.statement_pos = wxString(PQresultErrorField(res, PG_DIAG_STATEMENT_POSITION), *conv);
+    lastResultError.internal_pos = wxString(PQresultErrorField(res, PG_DIAG_INTERNAL_POSITION), *conv);
+    lastResultError.internal_query = wxString(PQresultErrorField(res, PG_DIAG_INTERNAL_QUERY), *conv);
+    lastResultError.context = wxString(PQresultErrorField(res, PG_DIAG_CONTEXT), *conv);
+    lastResultError.source_file = wxString(PQresultErrorField(res, PG_DIAG_SOURCE_FILE), *conv);
+    lastResultError.source_line = wxString(PQresultErrorField(res, PG_DIAG_SOURCE_LINE), *conv);
+    lastResultError.source_function = wxString(PQresultErrorField(res, PG_DIAG_SOURCE_FUNCTION), *conv);
+
+    wxString errMsg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary;
+
+    if (!lastResultError.sql_state.IsEmpty())
+    {
+        errMsg += wxT("\n");
+        errMsg += _("SQL state: ");
+        errMsg += lastResultError.sql_state;
+    }
+
+    if (!lastResultError.msg_detail.IsEmpty())
+    {
+        errMsg += wxT("\n");
+        errMsg += _("Detail: ");
+        errMsg += lastResultError.msg_detail;
+    }
+
+    if (!lastResultError.msg_hint.IsEmpty())
+    {
+        errMsg += wxT("\n");
+        errMsg += _("Hint: ");
+        errMsg += lastResultError.msg_hint;
+    }
+
+    if (!lastResultError.statement_pos.IsEmpty())
+    {
+        errMsg += wxT("\n");
+        errMsg += _("Character: ");
+        errMsg += lastResultError.statement_pos;
+    }
+
+    if (!lastResultError.context.IsEmpty())
+    {
+        errMsg += wxT("\n");
+        errMsg += _("Context: ");
+        errMsg += lastResultError.context;
+    }
+    lastResultError.formatted_msg = errMsg;
+}

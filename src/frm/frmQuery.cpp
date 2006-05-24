@@ -20,6 +20,7 @@
 #include "frmHelp.h"
 #include "menu.h"
 #include "explainCanvas.h"
+#include "base/pgConnBase.h"
 
 #include "ctl/ctlSQLResult.h"
 #include "pgDatabase.h"
@@ -1359,20 +1360,20 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             }
             else
             {
-                wxString errMsg = sqlResult->GetErrorMessage();
+                pgError err = sqlResult->GetResultError();
+                wxString errMsg = err.formatted_msg;
+
+                long errPos;
+                err.statement_pos.ToLong(&errPos);
+                
                 showMessage(errMsg);
 
-                wxString atChar=wxT(" at character ");
-                int chp=errMsg.Find(atChar);
-
-                if (chp > 0)
+                if (errPos > 0)
                 {
                     int selStart=sqlQuery->GetSelectionStart(), selEnd=sqlQuery->GetSelectionEnd();
                     if (selStart == selEnd)
                         selStart=0;
 
-                    long errPos=0;
-                    errMsg.Mid(chp+atChar.Length()).ToLong(&errPos);
                     errPos -= queryOffset;  // do not count EXPLAIN or similar
 
 					// Set an indicator on the error word (break on any kind of bracket, a space or full stop)

@@ -61,6 +61,23 @@ typedef struct pgNotification {
     wxString data;
 } pgNotification;
 
+// An error record
+typedef struct pgError {
+    wxString severity;
+    wxString sql_state;
+    wxString msg_primary;
+    wxString msg_detail;
+    wxString msg_hint;
+    wxString statement_pos;
+    wxString internal_pos;
+    wxString internal_query;
+    wxString context;
+    wxString source_file;
+    wxString source_line;
+    wxString source_function;
+    wxString formatted_msg;
+} pgError;
+
 // Class declarations
 class pgConnBase
 {
@@ -89,6 +106,7 @@ public:
     int GetLastResultStatus() const { return lastResultStatus; }
     bool IsAlive();
     wxString GetLastError() const;
+    pgError GetLastResultError() const { return lastResultError; }
     wxString GetVersionString();
     OID GetLastSystemOID() const { return lastSystemOID; }
     OID GetDbOid() const { return dbOid; }
@@ -108,6 +126,10 @@ protected:
     int lastResultStatus;
 
     int connStatus;
+
+    void SetLastResultError(PGresult *res);
+    pgError lastResultError;
+
     wxMBConv *conv;
     bool needColQuoting, utfConnectString;
     wxString dbHost, dbname;

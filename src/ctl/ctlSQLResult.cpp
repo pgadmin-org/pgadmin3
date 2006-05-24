@@ -326,7 +326,10 @@ wxString ctlSQLResult::GetErrorMessage()
     return conn->GetLastError();
 }
 
-
+pgError ctlSQLResult::GetResultError()
+{
+    return conn->GetLastResultError();
+}
 
 long ctlSQLResult::NumRows() const
 {

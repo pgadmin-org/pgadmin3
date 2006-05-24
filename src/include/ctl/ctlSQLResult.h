@@ -24,6 +24,7 @@
 #include <wx/thread.h>
 
 #include "pgSet.h"
+#include "base/pgConnBase.h"
 #include "pgConn.h"
 #if USE_LISTVIEW
 #include <wx/listctrl.h>
@@ -64,6 +65,7 @@ public:
     int RunStatus();
     wxString GetMessagesAndClear();
     wxString GetErrorMessage();
+    pgError ctlSQLResult::GetResultError();
 
 	void DisplayData(bool single=false);
 

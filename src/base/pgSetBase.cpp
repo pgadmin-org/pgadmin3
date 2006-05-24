@@ -473,6 +473,8 @@ int pgQueryThreadBase::execute()
     if (!result)
         result = lastResult;
 
+    conn->SetLastResultError(result);
+
     appendMessage(wxT("\n"));
     rc=PQresultStatus(result);
     insertedOid=PQoidValue(result);
