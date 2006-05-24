@@ -397,6 +397,12 @@ ExecutionDialog::ExecutionDialog(frmMain *frame, pgObject *_object) : DialogWith
     txtMessages = 0;
 }
 
+void ExecutionDialog::EnableOK(const bool enable) 
+{ 
+    btnOK->Enable(enable); 
+}
+
+
 void ExecutionDialog::OnClose(wxCloseEvent& event)
 {
     Abort();

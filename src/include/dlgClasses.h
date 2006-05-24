@@ -114,7 +114,7 @@ public:
 
 protected:
 
-    void EnableOK(bool enable) { btnOK->Enable(enable); };
+    void EnableOK(const bool enable);
 
     pgObject *object;
     pgQueryThread *thread;
