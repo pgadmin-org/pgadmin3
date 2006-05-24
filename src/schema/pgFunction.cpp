@@ -18,6 +18,7 @@
 #include "misc.h"
 #include "pgFunction.h"
 #include "frmReport.h"
+#include "frmHint.h"
 
 
 pgFunction::pgFunction(pgSchema *newSchema, const wxString& newName)

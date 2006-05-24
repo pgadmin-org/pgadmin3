@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgView.h"
+#include "frmHint.h"
 
 
 pgView::pgView(pgSchema *newSchema, const wxString& newName)
