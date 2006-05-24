@@ -44,8 +44,6 @@ BEGIN_EVENT_TABLE(ctlSecurityPanel, wxPanel)
     EVT_CHECKBOX(CTL_PRIVCB+16,         ctlSecurityPanel::OnPrivCheck)
 END_EVENT_TABLE();
 
-DEFINE_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE)
-
 
 
 ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, char *privChars, wxImageList *imgList)
