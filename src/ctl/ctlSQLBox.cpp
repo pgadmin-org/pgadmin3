@@ -562,6 +562,7 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
 {
 	AutoCompCancel();
+    event.Skip();
 }
 
 void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
