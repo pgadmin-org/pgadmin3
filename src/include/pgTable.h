@@ -72,6 +72,8 @@ public:
     wxString GetQuotedInheritedTables() { GetInheritedTableCount(); return quotedInheritedTables; }
     wxArrayString GetQuotedInheritedTablesList() { GetInheritedTableCount(); return quotedInheritedTablesList; }
     wxString GetCoveringIndex(ctlTree *browser, const wxString &collist);
+    pgCollection *GetColumnCollection(ctlTree *browser);
+    pgCollection *GetConstraintCollection(ctlTree *browser);
     bool GetHasSubclass() const { return hasSubclass; }
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void iSetIsReplicated(bool b) { isReplicated = b; }

@@ -274,7 +274,6 @@ wxString pgTable::GetSql(ctlTree *browser)
     return sql;
 }
 
-
 wxString pgTable::GetCoveringIndex(ctlTree *browser, const wxString &collist)
 {
     // delivers the name of the index which covers the named columns
@@ -359,6 +358,17 @@ wxString pgTable::GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool w
 	return sql;
 }
 
+pgCollection *pgTable::GetColumnCollection(ctlTree *browser)
+{
+    pgCollection *columns=browser->FindCollection(columnFactory, GetId());
+    return columns;
+}
+
+pgCollection *pgTable::GetConstraintCollection(ctlTree *browser)
+{
+    pgCollection *constraints=browser->FindCollection(constraintFactory, GetId());
+    return constraints;
+}
 
 wxString pgTable::GetSelectSql(ctlTree *browser)
 {

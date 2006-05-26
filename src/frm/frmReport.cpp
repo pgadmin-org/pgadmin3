@@ -26,6 +26,8 @@
 #include "pgDatabase.h"
 #include "pgSchema.h"
 #include "pgTable.h"
+#include "pgColumn.h"
+#include "pgConstraints.h"
 #include "pgaJob.h"
 
 // XML2/XSLT headers
@@ -527,8 +529,8 @@ const wxString frmReport::GetDefaultCss()
            wxT("      #ReportDetails th { border-bottom-color: #777777; border-bottom-style: solid; border-bottom-width: 2px; }\n")
            wxT("      .ReportDetailsOddDataRow { background-color: #dddddd; }\n")
            wxT("      .ReportDetailsEvenDataRow { background-color: #eeeeee; }\n")
-           wxT("      .ReportTableHeaderCell { background-color: #dddddd; color: #009ace; vertical-align: top; font-size: 80%; }\n")
-           wxT("      .ReportTableValueCell { vertical-align: top; font-size: 80%; }\n")
+           wxT("      .ReportTableHeaderCell { background-color: #dddddd; color: #009ace; vertical-align: top; font-size: 80%; white-space: nowrap; }\n")
+           wxT("      .ReportTableValueCell { vertical-align: top; font-size: 80%; white-space: nowrap; }\n")
            wxT("      .ReportTableInfo { font-size: 80%; font-style: italic; }\n")
            wxT("      #ReportFooter { font-weight: bold; font-size: 80%; text-align: right; background-color: #009ace; color: #eeeeee; margin-top: 10px; padding: 2px; border-bottom-style: solid; border-bottom-width: 2px; border-top-style: solid; border-top-width: 2px; border-color: #999999; }\n")
            wxT("      #ReportFooter a { color: #ffffff; text-decoration: none; }\n");
@@ -633,9 +635,6 @@ wxString frmReport::GetDefaultXsl(const wxString &css)
             wxT("  </xsl:if>\n")
             wxT("\n")
             wxT("  <xsl:if test=\"count(../section[@id = current()/@id]/table/columns/column) > 0\">\n")
-            wxT("    <h3>");
-    data +=   _("Data");
-    data += wxT("</h3>\n")
             wxT("    <table>\n")
             wxT("      <tr>\n")
             wxT("        <xsl:apply-templates select=\"../section[@id = current()/@id]/table/columns/column\">\n")
@@ -655,9 +654,6 @@ wxString frmReport::GetDefaultXsl(const wxString &css)
             wxT("  </xsl:if>\n")
             wxT("\n")
             wxT("  <xsl:if test=\"../section[@id = current()/@id]/sql != ''\">\n")
-            wxT("    <h3>");
-    data +=   _("SQL");
-    data += wxT("</h3>\n")
             wxT("    <pre class=\"ReportSQL\">\n")
             wxT("      <xsl:call-template name=\"substitute\">\n")
             wxT("         <xsl:with-param name=\"string\" select=\"../section[@id = current()/@id]/sql\" />\n")
@@ -703,7 +699,7 @@ wxString frmReport::GetDefaultXsl(const wxString &css)
             wxT("        </xsl:call-template>\n")
             wxT("      </xsl:when>\n")
             wxT("      <xsl:otherwise>\n")
-            wxT("        <xsl:text>&#0160;</xsl:text>\n")
+            wxT("        <xsl:text> </xsl:text>\n")
             wxT("      </xsl:otherwise>\n")
             wxT("    </xsl:choose>\n")
             wxT("  </td>\n")
@@ -1267,6 +1263,129 @@ void reportObjectDdlFactory::GenerateReport(frmReport *report, pgObject *object)
     int section = report->XmlCreateSection(object->GetTypeName() + _(" DDL"));
 
     report->XmlSetSectionSql(section, object->GetSql(NULL));
+}
+
+///////////////////////////////////////////////////////
+// Data dictionary report
+///////////////////////////////////////////////////////
+reportObjectDataDictionaryFactory::reportObjectDataDictionaryFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+: reportBaseFactory(list)
+{
+    mnu->Append(id, _("&Data dictionary report"), _("Generate a data dictionary report for this object."));
+}
+
+bool reportObjectDataDictionaryFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (obj->GetMetaType() == PGM_TABLE && !obj->IsCollection())
+            return true;
+        else
+            return false;
+    }
+    return false;
+}
+
+void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObject *object)
+{
+
+    pgTable *table = (pgTable *)object;
+
+    wxString title = object->GetTypeName();
+    title += _(" Data dictionary report - ");
+    title += object->GetIdentifier();
+    report->SetReportTitle(title);
+
+    // Columns
+    int section = report->XmlCreateSection(_("Columns"));
+
+    report->XmlSetSectionTableHeader(section, 6, _("Name"), _("Data type"), _("Not Null?"), _("Primary key?"), _("Default"), _("Comment"));
+
+    ctlTree *browser = GetFrmMain()->GetBrowser();
+    pgCollection *columns = table->GetColumnCollection(browser);
+
+    treeObjectIterator colIt(browser, columns);
+
+    pgColumn *column;
+    bool haveInherit = false;
+    wxString colName;
+    while ((column = (pgColumn*)colIt.GetNextObject()) != 0)
+    {
+        column->ShowTreeDetail(browser);
+        if (column->GetColNumber() > 0)
+        {
+            colName = column->GetName();
+            if (column->GetInheritedCount() > 0)
+            {
+                colName += _("*");
+                haveInherit = true;
+            }
+
+            report->XmlAddSectionTableRow(section, 
+                                          column->GetColNumber(), 
+                                          6,
+                                          colName,
+                                          column->GetVarTypename(),
+                                          BoolToYesNo(column->GetNotNull()),
+                                          BoolToYesNo(column->GetIsPK()),
+                                          column->GetDefault(),
+                                          column->GetComment());
+        }
+    }
+    if (haveInherit)
+    {
+        wxString info;
+        info.Printf(_("* Inherited columns from %s."), table->GetInheritedTables());
+        report->XmlSetSectionTableInfo(section, info);
+    }
+
+    // Constraints
+    pgCollection *constraints = table->GetConstraintCollection(browser);
+
+    treeObjectIterator conIt(browser, constraints);
+
+    pgObject *constraint;
+    long x = 1;
+    wxString definition, type;
+    while ((constraint = (pgObject*)conIt.GetNextObject()) != 0)
+    {
+        if (x == 1)
+        {
+            section = report->XmlCreateSection(_("Constraints"));
+            report->XmlSetSectionTableHeader(section, 4, _("Name"), _("Type"), _("Definition"), _("Comment"));
+        }
+
+        constraint->ShowTreeDetail(browser);
+
+        switch (constraint->GetMetaType())
+        {
+            case PGM_PRIMARYKEY:
+                type = _("Primary key");
+                definition = ((pgIndexConstraint*)constraint)->GetDefinition();
+                break;
+            case PGM_UNIQUE:
+                type = _("Unique");
+                definition = ((pgIndexConstraint*)constraint)->GetDefinition();
+                break;
+            case PGM_FOREIGNKEY:
+                type = _("Foreign key");
+                definition = ((pgForeignKey*)constraint)->GetDefinition();
+                break;
+            case PGM_CHECK:
+                type = _("Check");
+		        definition = wxT("(") + ((pgCheck*)constraint)->GetDefinition() + wxT(")");
+                break;
+        }
+
+        report->XmlAddSectionTableRow(section, 
+                                      x,
+                                      4,
+                                      constraint->GetName(),
+                                      type,
+                                      definition,
+                                      constraint->GetComment());
+        x++;
+    }
 }
 
 ///////////////////////////////////////////////////////

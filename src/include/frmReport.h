@@ -104,6 +104,17 @@ public:
 };
 
 ///////////////////////////////////////////////////////
+// Object Data dictionary report
+///////////////////////////////////////////////////////
+class reportObjectDataDictionaryFactory : public reportBaseFactory
+{
+public:
+    reportObjectDataDictionaryFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bool CheckEnable(pgObject *obj);
+    void GenerateReport(frmReport *report, pgObject *object);
+};
+
+///////////////////////////////////////////////////////
 // Object statistics report
 ///////////////////////////////////////////////////////
 class reportObjectStatisticsFactory : public reportBaseFactory

@@ -313,6 +313,7 @@ void frmMain::CreateMenus()
     toolsMenu->Append(reportMenuFactory->GetId(), _("&Reports"), reportMenu,    _("Create reports about the selected item."));
     new reportObjectPropertiesFactory(menuFactories, reportMenu, 0);
 	new reportObjectDdlFactory(menuFactories, reportMenu, 0);
+	new reportObjectDataDictionaryFactory(menuFactories, reportMenu, 0);
     new reportObjectStatisticsFactory(menuFactories, reportMenu, 0);
     new reportObjectDependenciesFactory(menuFactories, reportMenu, 0);
     new reportObjectDependeesFactory(menuFactories, reportMenu, 0);
