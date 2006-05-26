@@ -1418,7 +1418,11 @@ refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *to
 
 wxWindow *refreshFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    form->Refresh(obj);
+	if (form)
+		obj = form->GetBrowser()->GetObject(form->GetBrowser()->GetSelection());
+
+	if (obj)
+		form->Refresh(obj);
     return 0;
 }
 
