@@ -29,6 +29,9 @@
 #include "pgColumn.h"
 #include "pgConstraints.h"
 #include "pgaJob.h"
+#include "pgForeignKey.h"
+#include "pgIndexConstraint.h"
+#include "pgCheck.h"
 
 // XML2/XSLT headers
 #include <libxml/xmlmemory.h>
@@ -1324,12 +1327,12 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
             report->XmlAddSectionTableRow(section, 
                                           column->GetColNumber(), 
                                           6,
-                                          colName,
-                                          column->GetVarTypename(),
-                                          BoolToYesNo(column->GetNotNull()),
-                                          BoolToYesNo(column->GetIsPK()),
-                                          column->GetDefault(),
-                                          column->GetComment());
+                                          colName.c_str(),
+                                          column->GetVarTypename().c_str(),
+                                          BoolToYesNo(column->GetNotNull()).c_str(),
+                                          BoolToYesNo(column->GetIsPK()).c_str(),
+                                          column->GetDefault().c_str(),
+                                          column->GetComment().c_str());
         }
     }
     if (haveInherit)
@@ -1380,10 +1383,10 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
         report->XmlAddSectionTableRow(section, 
                                       x,
                                       4,
-                                      constraint->GetName(),
-                                      type,
-                                      definition,
-                                      constraint->GetComment());
+                                      constraint->GetName().c_str(),
+                                      type.c_str(),
+                                      definition.c_str(),
+                                      constraint->GetComment().c_str());
         x++;
     }
 }

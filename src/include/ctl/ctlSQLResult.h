@@ -65,7 +65,7 @@ public:
     int RunStatus();
     wxString GetMessagesAndClear();
     wxString GetErrorMessage();
-    pgError ctlSQLResult::GetResultError();
+    pgError GetResultError();
 
 	void DisplayData(bool single=false);
 

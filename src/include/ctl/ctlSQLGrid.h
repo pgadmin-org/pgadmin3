@@ -28,8 +28,8 @@ public:
     int Copy();
 
     virtual bool CheckRowPresent(int row) { return true; }
-    wxSize ctlSQLGrid::GetBestSize(int row, int col);
-    void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent& event);
+    wxSize GetBestSize(int row, int col);
+    void OnLabelDoubleClick(wxGridEvent& event);
 };
 
 #endif
