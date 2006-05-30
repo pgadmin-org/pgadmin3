@@ -1248,7 +1248,7 @@ bool reportObjectDdlFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
-        if (obj->GetSql(NULL) == wxEmptyString)
+        if (obj->GetMetaType() == PGM_SERVER || obj->IsCollection())
             return false;
         else
             return true;
