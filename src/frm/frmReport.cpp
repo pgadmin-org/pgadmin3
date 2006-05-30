@@ -1338,7 +1338,7 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
     if (haveInherit)
     {
         wxString info;
-        info.Printf(_("* Inherited columns from %s."), table->GetInheritedTables());
+        info.Printf(_("* Inherited columns from %s."), table->GetInheritedTables().c_str());
         report->XmlSetSectionTableInfo(section, info);
     }
 
