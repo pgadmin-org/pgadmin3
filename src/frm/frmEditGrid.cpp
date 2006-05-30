@@ -1761,8 +1761,7 @@ void sqlTable::StoreLine()
                         colList += wxT(", ");
                     }
                     colList += qtIdent(columns[i].name);
-                    if (columns[i].type == PGOID_TYPE_BOOL)
-                        line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
+
                     valList += columns[i].Quote(connection, line->cols[i]);
                 }
             }
