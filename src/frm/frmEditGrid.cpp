@@ -1084,6 +1084,276 @@ void sqlGridNumericEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler*
 }
 
 
+//////////////////////////////////////////////////////////////////////
+// Bool editor
+//////////////////////////////////////////////////////////////////////
+
+class sqlGridBoolEditor : public wxGridCellEditor
+{
+public:
+    sqlGridBoolEditor() { }
+
+    virtual void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
+
+    virtual void SetSize(const wxRect& rect);
+    virtual void Show(bool show, wxGridCellAttr *attr = (wxGridCellAttr *)NULL);
+
+    virtual bool IsAcceptedKey(wxKeyEvent& event);
+    virtual void BeginEdit(int row, int col, wxGrid* grid);
+    virtual bool EndEdit(int row, int col, wxGrid* grid);
+
+    virtual void Reset();
+    virtual void StartingClick();
+    virtual void StartingKey(wxKeyEvent& event);
+
+    virtual wxGridCellEditor *Clone() const
+        { return new sqlGridBoolEditor; }
+
+    virtual wxString GetValue() const;
+
+protected:
+    wxCheckBox *CBox() const { return (wxCheckBox *)m_control; }
+
+private:
+    wxCheckBoxState m_startValue;
+
+    DECLARE_NO_COPY_CLASS(sqlGridBoolEditor)
+};
+
+
+void sqlGridBoolEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler)
+{
+    m_control = new wxCheckBox(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
+
+    wxGridCellEditor::Create(parent, id, evtHandler);
+}
+
+void sqlGridBoolEditor::SetSize(const wxRect& r)
+{
+    bool resize = false;
+    wxSize size = m_control->GetSize();
+    wxCoord minSize = wxMin(r.width, r.height);
+
+    // check if the checkbox is not too big/small for this cell
+    wxSize sizeBest = m_control->GetBestSize();
+    if ( !(size == sizeBest) )
+    {
+        // reset to default size if it had been made smaller
+        size = sizeBest;
+
+        resize = true;
+    }
+
+    if ( size.x >= minSize || size.y >= minSize )
+    {
+        // leave 1 pixel margin
+        size.x = size.y = minSize - 2;
+
+        resize = true;
+    }
+
+    if ( resize )
+    {
+        m_control->SetSize(size);
+    }
+
+    // position it in the centre of the rectangle (TODO: support alignment?)
+
+#if defined(__WXGTK__)
+    // the checkbox without label still has some space to the right in wxGTK,
+    // so shift it to the right
+    size.x -= 8;
+#elif defined(__WXMSW__)
+    // here too, but in other way
+    size.x += 1;
+    size.y -= 2;
+#endif
+
+    int hAlign = wxALIGN_CENTRE;
+    int vAlign = wxALIGN_CENTRE;
+    if (GetCellAttr())
+        GetCellAttr()->GetAlignment(& hAlign, & vAlign);
+
+    int x = 0, y = 0;
+    if (hAlign == wxALIGN_LEFT)
+    {
+        x = r.x + 2;
+#ifdef __WXMSW__
+        x += 2;
+#endif
+        y = r.y + r.height/2 - size.y/2;
+    }
+    else if (hAlign == wxALIGN_RIGHT)
+    {
+        x = r.x + r.width - size.x - 2;
+        y = r.y + r.height/2 - size.y/2;
+    }
+    else if (hAlign == wxALIGN_CENTRE)
+    {
+        x = r.x + r.width/2 - size.x/2;
+        y = r.y + r.height/2 - size.y/2;
+    }
+
+    m_control->Move(x, y);
+}
+
+void sqlGridBoolEditor::Show(bool show, wxGridCellAttr *attr)
+{
+    m_control->Show(show);
+
+    if ( show )
+    {
+        wxColour colBg = attr ? attr->GetBackgroundColour() : *wxLIGHT_GREY;
+        CBox()->SetBackgroundColour(colBg);
+    }
+}
+
+void sqlGridBoolEditor::BeginEdit(int row, int col, wxGrid* grid)
+{
+    wxASSERT_MSG(m_control, wxT("The sqlGridBoolEditor must be Created first!"));
+
+    wxString value = grid->GetTable()->GetValue(row, col);
+    if (value == wxT("TRUE"))
+        m_startValue = wxCHK_CHECKED;
+    else if (value == wxT("FALSE"))
+        m_startValue = wxCHK_UNCHECKED;
+    else
+        m_startValue = wxCHK_UNDETERMINED;
+
+    CBox()->Set3StateValue(m_startValue);
+    CBox()->SetFocus();
+}
+
+bool sqlGridBoolEditor::EndEdit(int row, int col, wxGrid* grid)
+{
+    wxASSERT_MSG(m_control, wxT("The sqlGridBoolEditor must be Created first!"));
+
+    bool changed = false;
+    wxCheckBoxState value = CBox()->Get3StateValue();
+    if ( value != m_startValue )
+        changed = true;
+
+    if ( changed )
+    {
+        switch (value)
+        {
+            case wxCHK_UNCHECKED:
+                grid->GetTable()->SetValue(row, col, wxT("FALSE"));
+                break;
+            case wxCHK_CHECKED:
+                grid->GetTable()->SetValue(row, col, wxT("TRUE"));
+                break;
+            case wxCHK_UNDETERMINED:
+                grid->GetTable()->SetValue(row, col, wxEmptyString);
+                break;
+        }
+    }
+
+    return changed;
+}
+
+void sqlGridBoolEditor::Reset()
+{
+    wxASSERT_MSG(m_control, wxT("The wxGridCellEditor must be Created first!"));
+
+    CBox()->Set3StateValue(m_startValue);
+}
+
+void sqlGridBoolEditor::StartingClick()
+{
+    wxCheckBoxState value = CBox()->Get3StateValue();
+
+    switch (value)
+    {
+        case wxCHK_UNCHECKED:
+        case wxCHK_UNDETERMINED:
+            CBox()->Set3StateValue(wxCHK_CHECKED);
+            break;
+        case wxCHK_CHECKED:
+            CBox()->Set3StateValue(wxCHK_UNCHECKED);
+            break;
+    }
+}
+
+bool sqlGridBoolEditor::IsAcceptedKey(wxKeyEvent& event)
+{
+    if ( wxGridCellEditor::IsAcceptedKey(event) )
+    {
+        int keycode = event.GetKeyCode();
+        switch ( keycode )
+        {
+            case WXK_SPACE:
+            case '+':
+            case '-':
+            case 'n':
+            case 'N':
+                return true;
+        }
+    }
+
+    return false;
+}
+
+void sqlGridBoolEditor::StartingKey(wxKeyEvent& event)
+{
+    int keycode = event.GetKeyCode();
+    wxCheckBoxState value = CBox()->Get3StateValue();
+
+    switch ( keycode )
+    {
+        case WXK_SPACE:
+            switch (value)
+            {
+                case wxCHK_UNCHECKED:
+                case wxCHK_UNDETERMINED:
+                    CBox()->Set3StateValue(wxCHK_CHECKED);
+                    break;
+                case wxCHK_CHECKED:
+                    CBox()->Set3StateValue(wxCHK_UNCHECKED);
+                    break;
+            }
+            break;
+
+        case '+':
+            CBox()->Set3StateValue(wxCHK_CHECKED);
+            break;
+
+        case '-':
+            CBox()->Set3StateValue(wxCHK_UNCHECKED);
+            break;
+
+        case 'n':
+        case 'N':
+            CBox()->Set3StateValue(wxCHK_UNDETERMINED);
+            break;
+    }
+}
+
+
+// return the value as "1" for true and the empty string for false
+wxString sqlGridBoolEditor::GetValue() const
+{
+
+    wxCheckBoxState value = CBox()->Get3StateValue();
+
+    switch (value)
+    {
+        case wxCHK_UNCHECKED:
+            return wxT("FALSE");
+            break;
+        case wxCHK_CHECKED:
+            return wxT("TRUE");
+            break;
+        case wxCHK_UNDETERMINED:
+            return wxEmptyString;
+            break;
+    }
+    return wxEmptyString;
+}
+
+//////////////////////////////////////////////////////////////////////
+// End Bool editor
+//////////////////////////////////////////////////////////////////////
 
 
 sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName, const OID _relid, bool _hasOid, const wxString& _pkCols, char _relkind)
@@ -1173,7 +1443,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                 case PGOID_TYPE_BOOL:
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
-                    editor = new wxGridCellBoolEditor();
+                    editor = new sqlGridBoolEditor();
                     break;
                 case PGOID_TYPE_INT8:
                 case PGOID_TYPE_SERIAL8:
@@ -1457,9 +1727,6 @@ void sqlTable::StoreLine()
 
             for (i=(hasOids? 1 : 0) ; i<nCols ; i++)
             {
-                if (columns[i].type == PGOID_TYPE_BOOL)  // bool
-                    line->cols[i] = (StrToBool(line->cols[i]) ? wxT("t") : wxT("f"));
-
                 if (savedLine.cols[i] != line->cols[i])
                 {
                     if (!valList.IsNull())
@@ -1650,46 +1917,14 @@ wxString sqlTable::GetValue(int row, int col)
         }
     }
     if (columns[col].type == PGOID_TYPE_BOOL)
-        line->cols[col] = (StrToBool(line->cols[col]) ? wxT("TRUE") : wxT("FALSE"));
+    {
+        if (line->cols[col] != wxEmptyString)
+            line->cols[col] = (StrToBool(line->cols[col]) ? wxT("TRUE") : wxT("FALSE"));
+    }
 
     val = line->cols[col];
     return val;
 }
-
-
-
-bool sqlTable::CanGetValueAs(int row, int col, const wxString& typeName)
-{
-    return CanSetValueAs(row, col, typeName);
-}
-
-
-bool sqlTable::CanSetValueAs(int row, int col, const wxString& typeName)
-{
-    if (typeName == wxGRID_VALUE_STRING)
-        return true;
-
-    switch (columns[col].type)
-    {
-        case PGOID_TYPE_BOOL:
-            return typeName == wxGRID_VALUE_BOOL;
-        default:
-            return false;
-    }
-}
-
-    
-bool sqlTable::GetValueAsBool(int row, int col)
-{
-    return StrToBool(GetValue(row, col));
-}
-
-
-void sqlTable::SetValueAsBool(int row, int col, bool b)
-{
-    SetValue(row, col, (b ? wxT("TRUE") : wxT("FALSE")));
-}
-
 
 bool sqlTable::AppendRows(size_t rows)
 {
@@ -1894,9 +2129,11 @@ wxString sqlCellAttr::Quote(pgConn *conn, const wxString& value)
         str = conn->qtDbString(wxT("''"));
     else if (value == wxT("''"))
         str = wxT("''");
+    else if (type == PGOID_TYPE_BOOL)
+        str = value;
     else
-        str=conn->qtDbString(value);
-
+        str = conn->qtDbString(value);
+   
     return str + wxT("::") + qtIdent(typeNspName) + wxT(".") + qtIdent(typeName);
 }
 

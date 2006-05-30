@@ -102,13 +102,8 @@ public:
     wxString GetRowLabelValue(int row);
     wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
 
-    bool CanGetValueAs(int row, int col, const wxString& typeName);
-    bool CanSetValueAs(int row, int col, const wxString& typeName);
-    
     wxString GetValue(int row, int col);
     void SetValue(int row, int col, const wxString &value);
-    bool GetValueAsBool(int row, int col);
-    void SetValueAsBool(int row, int col, bool b);
 
     bool IsEmptyCell(int row, int col) { return false; }
     bool needsResizing(int col) { return columns[col].needResize; }
