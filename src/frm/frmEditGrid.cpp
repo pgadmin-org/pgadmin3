@@ -212,14 +212,15 @@ void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
 void frmEditGrid::OnCellChange(wxGridEvent& event)
 {
     sqlTable *table=sqlGrid->GetTable();
+    bool doSkip = true;
+
     if (table)
     {
         if (table->LastRow() >= 0)
         {
             if (table->LastRow() != event.GetRow())
             {
-                wxCommandEvent ev;
-                OnSave(ev);
+                doSkip = DoSave();
             }
         }
         else
@@ -229,7 +230,8 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
         }
     }
 
-    event.Skip();
+    if (doSkip)
+        event.Skip();
 }
 
 
@@ -386,8 +388,11 @@ void frmEditGrid::OnClose(wxCloseEvent& event)
         {
             case wxID_YES:
             {
-                wxCommandEvent ev;
-                OnSave(ev);
+                if (!DoSave())
+                {
+                    event.Veto();
+                    return;
+                }
                 break;
             }
             case wxID_CANCEL:
@@ -410,6 +415,23 @@ void frmEditGrid::OnUndo(wxCommandEvent& event)
 
 void frmEditGrid::OnRefresh(wxCommandEvent& event)
 {
+    if (toolBar->GetToolEnabled(MNU_SAVE))
+    {
+        wxMessageDialog msg(this, _("There is unsaved data in a row.\nDo you want to store to the database?"), _("Unsaved data"),
+            wxYES_NO | wxICON_QUESTION | wxCANCEL);
+        switch (msg.ShowModal())
+        {
+            case wxID_YES:
+            {
+                if (!DoSave())
+                    return;
+                break;
+            }
+            case wxID_CANCEL:
+                return;
+        }
+    }
+
     sqlGrid->DisableCellEditControl();
     Go();
 }
@@ -417,13 +439,23 @@ void frmEditGrid::OnRefresh(wxCommandEvent& event)
 
 void frmEditGrid::OnSave(wxCommandEvent& event)
 {
+    if (sqlGrid->GetBatchCount() == 0)
+        DoSave();
+}
+
+bool frmEditGrid::DoSave()
+{
     sqlGrid->HideCellEditControl();
     sqlGrid->SaveEditControlValue();
     sqlGrid->DisableCellEditControl();
-    sqlGrid->GetTable()->StoreLine();
+    
+    if (!sqlGrid->GetTable()->StoreLine())
+        return false;
 
     toolBar->EnableTool(MNU_SAVE, false);
     toolBar->EnableTool(MNU_UNDO, false);
+
+    return true;
 }
 
 void frmEditGrid::OnOptions(wxCommandEvent& event)
@@ -1709,13 +1741,13 @@ void sqlTable::UndoLine(int row)
 }
 
     
-void sqlTable::StoreLine()
+bool sqlTable::StoreLine()
 {
+    bool done=false;
+
     GetView()->BeginBatch();
     if (lastRow >= 0)
     {
-        bool done=false;
-
         cacheLine *line=GetLine(lastRow);
 
         int i;
@@ -1820,10 +1852,12 @@ void sqlTable::StoreLine()
             lastRow = -1;
         }
         else
-            UndoLine(lastRow);
+            GetView()->SelectRow(lastRow);
     }
 
     GetView()->EndBatch();
+
+    return done;
 }
 
 

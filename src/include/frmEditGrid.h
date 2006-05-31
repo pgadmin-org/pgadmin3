@@ -92,7 +92,7 @@ class sqlTable : public wxGridTableBase
 public:
     sqlTable(pgConn *conn, pgQueryThread *thread, const wxString& tabName, const OID relid, bool _hasOid, const wxString& _pkCols, char _relkind);
     ~sqlTable();
-    void StoreLine();
+    bool StoreLine();
     void UndoLine(int row);
 
     int GetNumberRows();
@@ -172,6 +172,7 @@ private:
     void OnDelete(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
+    bool DoSave();
     void OnUndo(wxCommandEvent& event);
     void OnCellChange(wxGridEvent& event);
     void OnGridSelectCells(wxGridRangeSelectEvent& event);
