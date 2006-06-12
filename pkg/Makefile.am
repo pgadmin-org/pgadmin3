@@ -7,7 +7,7 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
-SUBDIRS = debian fc1 mac mandrake redhat slackware src suse win32
+SUBDIRS = debian mac mandrake redhat slackware src suse win32
 
 EXTRA_DIST = \
 		$(srcdir)/pgadmin3.desktop
