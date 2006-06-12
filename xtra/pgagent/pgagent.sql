@@ -8,6 +8,10 @@
 //
 */
 
+BEGIN TRANSACTION;
+
+
+
 CREATE SCHEMA pgagent;
 COMMENT ON SCHEMA pgagent IS 'pgAgent system tables';
 
@@ -639,3 +643,7 @@ CREATE TRIGGER pga_exception_trigger AFTER INSERT OR UPDATE OR DELETE
   ON pgagent.pga_exception FOR EACH ROW
   EXECUTE PROCEDURE pgagent.pga_exception_trigger();
 COMMENT ON TRIGGER pga_exception_trigger ON pgagent.pga_exception IS 'Update the job''s next run time whenever an exception changes';
+
+
+
+COMMIT TRANSACTION;
