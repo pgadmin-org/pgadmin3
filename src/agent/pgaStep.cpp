@@ -225,6 +225,7 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 pgaStepFactory::pgaStepFactory() 
 : pgaJobObjFactory(__("Step"), __("New Step"), __("Create a new Step."), step_xpm)
 {
+    metaType = PGM_STEP;
 }
 
 

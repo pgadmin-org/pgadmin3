@@ -152,7 +152,10 @@ void dlgStep::CheckChange()
         cbDatabase->Enable(false);
     }
     else
+    {
         cbDatabase->Enable(true);
+        CheckValid(enable, !cbDatabase->GetValue().Trim().IsEmpty(), _("Please select a database."));
+    }
 
     EnableOK(enable);
 }

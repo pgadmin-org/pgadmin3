@@ -466,7 +466,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             size_t pos=0;
             wxTreeItemId newItem;
 
-            if (data->IsCreatedBy(columnFactory))
+            if (!data->IsCreatedBy(columnFactory))
             {
                 // columns should be appended, not inserted alphabetically
 
@@ -494,7 +494,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             else
                 collection->UpdateChildCount(browser);
         }
-        else if (GetName().IsEmpty())
+        else
         {
             // CreateObject didn't return a new pgObject; refresh the complete collection
             mainForm->Refresh(collection);
@@ -1269,16 +1269,26 @@ bool dlgAgentProperty::executeSql()
         
         if (sql.Contains(wxT("<SchId>")))
         {
+            // Each schedule ID should be unique. This'll need work if a schedule hits more than
+            // one table or anything.
             recId = schId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
             while ((pos=sql.Find(wxT("<SchId>"))) >= 0)
+            {
                 sql = sql.Left(pos) + NumToStr(schId) + sql.Mid(pos+7);
+                recId = schId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
+            }
         }
 
         if (sql.Contains(wxT("<StpId>")))
         {
+            // Each step ID should be unique. This'll need work if a step hits more than
+            // one table or anything.
             recId = stpId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
             while ((pos=sql.Find(wxT("<StpId>"))) >= 0)
+            {
                 sql = sql.Left(pos) + NumToStr(stpId) + sql.Mid(pos+7);
+                recId = stpId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
+            }
         }
 
         pgSet *set=connection->ExecuteSet(sql);
@@ -1303,16 +1313,26 @@ bool dlgAgentProperty::executeSql()
         long newId;
         if (sql.Contains(wxT("<SchId>")))
         {
+            // Each schedule ID should be unique. This'll need work if a schedule hits more than
+            // one table or anything.
             newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
             while ((pos=sql.Find(wxT("<SchId>"))) >= 0)
+            {
                 sql = sql.Left(pos) + NumToStr(newId) + sql.Mid(pos+7);
+                newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_schedule_jscid_seq');")));
+            }
         }
 
         if (sql.Contains(wxT("<StpId>")))
         {
+            // Each step ID should be unique. This'll need work if a step hits more than
+            // one table or anything.
             newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
             while ((pos=sql.Find(wxT("<StpId>"))) >= 0)
+            {
                 sql = sql.Left(pos) + NumToStr(newId) + sql.Mid(pos+7);
+                newId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_jobstep_jstid_seq');")));
+            }
         }
 
         if (!connection->ExecuteVoid(sql))
