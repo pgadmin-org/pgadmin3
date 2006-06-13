@@ -104,9 +104,19 @@ void pgIndexBase::ReadColumnDetails()
                     columns += wxT(", ");
                     quotedColumns += wxT(", ");
                 }
+
                 wxString str=ExecuteScalar(
-                    wxT("SELECT pg_get_indexdef(") + GetOidStr() + wxT(", ")
-                    + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")"));
+                    wxT("SELECT\n")
+                    wxT("  CASE WHEN (o.opcdefault = FALSE AND o.opcintype != a.atttypid) THEN\n")
+                    wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
+                    wxT("  ELSE\n") +
+                    wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
+                    wxT("  END\n") +
+                    wxT("FROM pg_index i\n") +
+                    wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
+                    wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr(i-1) + wxT("])\n") +
+                    wxT("WHERE i.indexrelid = ") + GetOidStr());
+
                 columns += str;
                 quotedColumns += str;
             }
