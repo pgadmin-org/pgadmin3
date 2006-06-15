@@ -11,7 +11,7 @@
 
 #include "pgAgent.h"
 
-#ifndef WIN32
+#ifndef __WXMSW__
 #include <unistd.h>
 #endif
 
@@ -22,8 +22,9 @@ long longWait=30;
 long shortWait=10;
 long minLogLevel=LOG_ERROR;
 
-#ifndef WIN32
+#ifndef __WXMSW__
 bool runInForeground = false;
+wxString logFile = wxEmptyString;
 #endif
 
 int MainRestartLoop(DBconn *serviceConn)

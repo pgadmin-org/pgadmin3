@@ -11,7 +11,7 @@
 
 #include "pgAgent.h"
 
-#ifndef WIN32
+#ifndef __WXMSW__
 #include <unistd.h>
 #endif
 
@@ -71,10 +71,15 @@ void setOptions(int argc, char **argv, const wxString& executable)
                         minLogLevel = val;
                     break;
                 }
-#ifndef WIN32
+#ifndef __WXMSW__
                 case 'f':
                 {
                     runInForeground = true;
+                    break;
+                }
+                case 's':
+                {
+                    logFile = getArg(argc, argv);
                     break;
                 }
 #endif

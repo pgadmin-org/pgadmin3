@@ -26,8 +26,9 @@ extern wxString connectString;
 extern wxString serviceDBname;
 extern wxString backendPid;
 
-#ifndef _WIN32_
+#ifndef __WXMSW__
 extern bool runInForeground;
+extern wxString logFile;
 #endif
 
 // Log levels

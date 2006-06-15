@@ -11,11 +11,12 @@
 
 #include "pgAgent.h"
 
-#ifdef WIN32
+#ifdef __WXMSW__
 #error this file is for unix only!
 #endif
 
 #include <wx/filename.h>
+#include <wx/ffile.h>
 #include <fcntl.h>
 
 void usage(const wxString &executable)
@@ -28,27 +29,52 @@ void usage(const wxString &executable)
     wxPrintf(_("-f run in the foreground (do not detach from the terminal)\n"));
     wxPrintf(_("-t <poll time interval in seconds (default 10)>\n"));
     wxPrintf(_("-r <retry period after connection abort in seconds (>=10, default 30)>\n"));
+    wxPrintf(_("-s <log file (messages are logged to STDOUT if not specified>\n"));
     wxPrintf(_("-l <logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)>\n"));
 }
 
 void LogMessage(wxString msg, int level)
 {
-    switch (level)
+    wxFFile file;
+    if (logFile.IsEmpty()) 
     {
-        case LOG_DEBUG:
-            if (minLogLevel >= LOG_DEBUG)
-                wxPrintf(_("DEBUG: %s\n"), msg.c_str());
-            break;
-        case LOG_WARNING:
-            if (minLogLevel >= LOG_WARNING)
-                wxPrintf(_("WARNING: %s\n"), msg.c_str());
-            break;
-        case LOG_ERROR:
-            wxPrintf(_("ERROR: %s\n"), msg.c_str());
-            exit(1);
-            break;
+        file.Attach(stdout);
+    }
+    else 
+    {
+        file.Open(logFile.c_str(), wxT("a"));
     }
 
+    if (!file.IsOpened()) 
+    {
+        wxFprintf(stderr, _("Can not open the logfile!"));
+        return;
+    }
+
+    switch (level)
+    {
+    case LOG_DEBUG:
+        if (minLogLevel >= LOG_DEBUG)
+            file.Write(_("DEBUG: ") + msg + wxT("\n"));
+        break;
+    case LOG_WARNING:
+        if (minLogLevel >= LOG_WARNING)
+            file.Write(_("WARNING: ") + msg + wxT("\n"));
+        break;
+    case LOG_ERROR:
+        file.Write(_("ERROR: ") + msg + wxT("\n"));
+        exit(1);
+        break;
+    }
+
+    if (logFile.IsEmpty())
+    {
+        file.Detach();
+    }
+    else
+    {
+        file.Close();
+    }
 }
 
 // Shamelessly lifted from pg_autovacuum...
