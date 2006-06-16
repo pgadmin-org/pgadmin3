@@ -45,7 +45,7 @@ start() {
 	fi
 	
  	echo -n $"Starting agent: "
-	$SU -l postgres -c "pgagent -l 2 '$CSTRING' >> $LOG" 2>&1 < /dev/null
+	$SU -l postgres -c "pgagent -l 1 -s $LOG '$CSTRING'"
 	RETVAL=$?
 	echo
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/pgagent
