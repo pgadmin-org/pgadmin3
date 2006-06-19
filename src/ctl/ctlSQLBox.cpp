@@ -143,19 +143,19 @@ void ctlSQLBox::OnSearchReplace(wxCommandEvent& ev)
     }
 }
 
-void ctlSQLBox::Find(wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
+void ctlSQLBox::Find(const wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
 {
     if (!DoFind(find, wxString(wxEmptyString), false, wholeWord, matchCase, useRegexps, startAtTop, reverse))
          wxMessageBox(_("Reached the end of the document"), _("Find text"), wxICON_EXCLAMATION | wxOK, this);
 }
 
-void ctlSQLBox::Replace(wxString &find, wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
+void ctlSQLBox::Replace(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
 {
     if (!DoFind(find, replace, true, wholeWord, matchCase, useRegexps, startAtTop, reverse))
          wxMessageBox(_("Reached the end of the document"), _("Replace text"), wxICON_EXCLAMATION | wxOK, this);
 }
 
-void ctlSQLBox::ReplaceAll(wxString &find, wxString &replace, bool wholeWord, bool matchCase, bool useRegexps)
+void ctlSQLBox::ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps)
 {
     // Use DoFind to repeatedly replace text
     int count = 0;
@@ -171,7 +171,7 @@ void ctlSQLBox::ReplaceAll(wxString &find, wxString &replace, bool wholeWord, bo
     wxMessageBox(msg, _("Replace all"));
 }
 
-bool ctlSQLBox::DoFind(wxString &find, wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
+bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
 {
     int flags = 0;
     int startPos = GetSelectionStart();

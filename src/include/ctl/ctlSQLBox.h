@@ -39,10 +39,10 @@ public:
     void OnSearchReplace(wxCommandEvent& event);
 	void OnKillFocus(wxFocusEvent& event);
 
-    void Find(wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
-    void Replace(wxString &find, wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
-    void ReplaceAll(wxString &find, wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
-    bool DoFind(wxString &find, wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+    void Find(const wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+    void Replace(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+    void ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
+    bool DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
     
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
     DECLARE_EVENT_TABLE()
