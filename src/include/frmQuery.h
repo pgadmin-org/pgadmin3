@@ -58,8 +58,7 @@ private:
     void OnCopy(wxCommandEvent& event);
     void OnPaste(wxCommandEvent& event);
     void OnClear(wxCommandEvent& event);
-    void OnFind(wxCommandEvent& event);
-    void OnReplace(wxCommandEvent& event);
+    void OnSearchReplace(wxCommandEvent& event);
     void OnUndo(wxCommandEvent& event);
     void OnRedo(wxCommandEvent& event);
     void OnSaveHistory(wxCommandEvent& event);

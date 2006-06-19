@@ -67,8 +67,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_COPY,              frmQuery::OnCopy)
     EVT_MENU(MNU_PASTE,             frmQuery::OnPaste)
     EVT_MENU(MNU_CLEAR,             frmQuery::OnClear)
-    EVT_MENU(MNU_FIND,              frmQuery::OnFind)
-    EVT_MENU(MNU_REPLACE,           frmQuery::OnReplace)
+    EVT_MENU(MNU_FIND,              frmQuery::OnSearchReplace)
     EVT_MENU(MNU_UNDO,              frmQuery::OnUndo)
     EVT_MENU(MNU_REDO,              frmQuery::OnRedo)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
@@ -141,8 +140,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->Append(MNU_PASTE, _("&Paste\tCtrl-V"), _("Paste selected text from clipboard"), wxITEM_NORMAL);
     editMenu->Append(MNU_CLEAR, _("C&lear window"), _("Clear edit window"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
-    editMenu->Append(MNU_FIND, _("&Find\tCtrl-F"), _("Find text"), wxITEM_NORMAL);
-    editMenu->Append(MNU_REPLACE, _("&Replace\tCtrl-R"), _("Find and Replace text"), wxITEM_NORMAL);
+    editMenu->Append(MNU_FIND, _("&Find and Replace\tCtrl-F"), _("Find and replace text"), wxITEM_NORMAL);
 	editMenu->AppendSeparator();
 	editMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
     editMenu->Append(MNU_SHOWWHITESPACE, _("&Show whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
@@ -226,7 +224,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_REDO, _("Redo"), wxBitmap(edit_redo_xpm), _("Redo last action"), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find text"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find and replace text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
 
     cbConnection = new ctlComboBoxFix(toolBar, CTRLID_CONNECTION, wxDefaultPosition, wxSize(GetCharWidth()*30, -1), wxCB_READONLY|wxCB_DROPDOWN);
@@ -760,16 +758,10 @@ void frmQuery::OnSelectAll(wxCommandEvent& ev)
         sqlResult->SelectAll();
 }
 
-void frmQuery::OnFind(wxCommandEvent& ev)
+void frmQuery::OnSearchReplace(wxCommandEvent& ev)
 {
-      sqlQuery->OnFind(ev);
+      sqlQuery->OnSearchReplace(ev);
 }
-
-void frmQuery::OnReplace(wxCommandEvent& ev)
-{
-      sqlQuery->OnReplace(ev);
-}
-
 
 void frmQuery::OnUndo(wxCommandEvent& ev)
 {

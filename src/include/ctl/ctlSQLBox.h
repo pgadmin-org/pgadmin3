@@ -18,6 +18,7 @@
 #include <wx/fdrepdlg.h>
 
 #include "pgConn.h"
+#include "dlgFindReplace.h"
 
 // Class declarations
 class ctlSQLBox : public wxStyledTextCtrl
@@ -35,10 +36,13 @@ public:
 
     void OnKeyDown(wxKeyEvent& event);
 	void OnAutoComplete(wxCommandEvent& event);
-    void OnFind(wxCommandEvent& event);
-    void OnReplace(wxCommandEvent& event);
-    void OnFindDialog(wxFindDialogEvent& event);
+    void OnSearchReplace(wxCommandEvent& event);
 	void OnKillFocus(wxFocusEvent& event);
+
+    void Find(wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+    void Replace(wxString &find, wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+    void ReplaceAll(wxString &find, wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
+    bool DoFind(wxString &find, wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
     
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
     DECLARE_EVENT_TABLE()
@@ -47,13 +51,9 @@ private:
 
     void OnPositionStc(wxStyledTextEvent& event);
 
-	wxFindReplaceData m_findData;
-    wxFindReplaceDialog* m_dlgFind;
+    dlgFindReplace* m_dlgFindReplace;
 	pgConn *m_database;
-#ifndef __WXMSW__
-	bool findDlgLast;
-#endif
-		
+	
 };
 
 

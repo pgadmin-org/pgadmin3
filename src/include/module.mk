@@ -23,6 +23,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlgDatabase.h \
 	$(srcdir)/include/dlgDomain.h \
 	$(srcdir)/include/dlgEditGridOptions.h \
+	$(srcdir)/include/dlgFindReplace.h \
 	$(srcdir)/include/dlgForeignKey.h \
 	$(srcdir)/include/dlgFunction.h \
 	$(srcdir)/include/dlgGroup.h \
