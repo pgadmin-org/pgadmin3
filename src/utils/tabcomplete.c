@@ -197,7 +197,7 @@ static char *_complete_from_list(const char *text, const char * const *list, int
 	 if (size == 0)
 		 return NULL;
 
-	 r = calloc(size + i*2, 1);
+	 r = calloc(size + i*2 + 1, 1);
 	 for (i = 0; list[i] != NULL; i++)
 	 {
 		 if ((casesensitive && strncmp(text, list[i], string_length) == 0)
@@ -382,7 +382,7 @@ static char *complete_create_command(char *text)
 			 size += strlen(words_after_create[i].name);
 	 }
 
-	 r = calloc(size + i*2, 1);
+	 r = calloc(size + i*2 + 1, 1);
 	 for (i = 0; words_after_create[i].name != NULL; i++)
 	 {
 		 if (pg_strncasecmp(text, words_after_create[i].name, string_length) == 0)
