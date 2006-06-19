@@ -246,7 +246,6 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 #ifdef __WXGTK__
 	event.m_metaDown=false;
 #endif
-    event.Skip();
 
 	if (!AutoCompActive() &&
 		 ( settings->GetTabForCompletion() && /* autocomplete on tab only if specifically configured */
@@ -256,6 +255,8 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 		wxCommandEvent e;
 		OnAutoComplete(e);
 	}
+	else 
+		event.Skip();
 }
 
 void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
