@@ -39,8 +39,7 @@ private:
     void OnClose(wxCloseEvent &event);
     void OnRefresh(wxCommandEvent &event);
     void OnRefreshTimer(wxTimerEvent &event);
-    void OnRateChange(wxCommandEvent &event);
-    void OnRateChangeSpin(wxSpinEvent &event);
+    void OnRateChange(wxScrollEvent &event);
 	void OnNotebookPageChanged(wxNotebookEvent& event);
     void OnTerminateBtn(wxCommandEvent &event);
     void OnCancelBtn(wxCommandEvent &event);
