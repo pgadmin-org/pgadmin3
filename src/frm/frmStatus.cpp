@@ -34,8 +34,7 @@ BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_BUTTON(XRCID("btnCommit"),                  frmStatus::OnCommit)
     EVT_BUTTON(XRCID("btnRollback"),                frmStatus::OnRollback)
     EVT_CLOSE(										frmStatus::OnClose)
-    EVT_SPINCTRL(XRCID("spnRefreshRate"),			frmStatus::OnRateChangeSpin)
-    EVT_TEXT(XRCID("spnRefreshRate"),				frmStatus::OnRateChange)
+    EVT_COMMAND_SCROLL(XRCID("slRate"),             frmStatus::OnRateChange)
 	EVT_NOTEBOOK_PAGE_CHANGING(XRCID("nbStatus"),	frmStatus::OnNotebookPageChanged)
     EVT_TIMER(TIMER_ID,								frmStatus::OnRefreshTimer)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstStatus"),		frmStatus::OnSelStatusItem)
@@ -51,7 +50,8 @@ END_EVENT_TABLE();
 #define lockList        CTRL_LISTVIEW("lstLocks")
 #define xactList        CTRL_LISTVIEW("lstXacts")
 #define logList         CTRL_LISTVIEW("lstLog")
-#define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
+#define slRate          CTRL_SLIDER("slRate")
+#define stRate          CTRL_STATIC("stRate")
 #define nbStatus		CTRL_NOTEBOOK("nbStatus")
 #define cbLogfiles      CTRL_COMBOBOX("cbLogfiles")
 #define btnRotateLog    CTRL_BUTTON("btnRotateLog")
@@ -179,7 +179,23 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     }
     long rate;
     settings->Read(wxT("frmStatus/Refreshrate"), &rate, 1);
-    spnRefreshRate->SetValue(rate);
+    slRate->SetValue(rate);
+
+    wxString msg;
+    switch (rate)
+    {
+    case 0:
+        msg.Printf(_("Stopped"));
+        break;
+    case 1:
+        msg.Printf(_("1 second"));
+        break;
+    default:
+        msg.Printf(_("%d seconds"), rate);
+        break;
+    }
+    stRate->SetLabel(msg);
+
     timer=new wxTimer(this, TIMER_ID);
 
 	btnCancelSt->Enable(false);
@@ -197,7 +213,7 @@ frmStatus::~frmStatus()
     mainForm->RemoveFrame(this);
 
     SavePosition();
-    settings->Write(wxT("frmStatus/Refreshrate"), spnRefreshRate->GetValue());
+    settings->Write(wxT("frmStatus/Refreshrate"), slRate->GetValue());
 
     delete timer;
     if (connection)
@@ -213,7 +229,23 @@ void frmStatus::Go()
     Show(true);
     wxCommandEvent nullEvent;
 
-    long rate=spnRefreshRate->GetValue();
+    long rate = slRate->GetValue();
+    
+    wxString msg;
+    switch (rate)
+    {
+    case 0:
+        msg.Printf(_("Stopped"));
+        break;
+    case 1:
+        msg.Printf(_("1 second"));
+        break;
+    default:
+        msg.Printf(_("%d seconds"), rate);
+        break;
+    }
+    stRate->SetLabel(msg);
+
     if (rate)
         timer->Start(rate*1000L);
 
@@ -235,18 +267,29 @@ void frmStatus::OnNotebookPageChanged(wxNotebookEvent& event)
 }
 
 
-void frmStatus::OnRateChangeSpin(wxSpinEvent &event)
-{
-	OnRateChange(*(wxCommandEvent*)&event);
-}
-
-
-void frmStatus::OnRateChange(wxCommandEvent &event)
+void frmStatus::OnRateChange(wxScrollEvent &event)
 {
     if (timer)
     {
         timer->Stop();
-        long rate=spnRefreshRate->GetValue();
+
+        long rate = slRate->GetValue();
+        
+        wxString msg;
+        switch (rate)
+        {
+        case 0:
+            msg.Printf(_("Stopped"));
+            break;
+        case 1:
+            msg.Printf(_("1 second"));
+            break;
+        default:
+            msg.Printf(_("%d seconds"), rate);
+            break;
+        }
+        stRate->SetLabel(msg);
+
         if (rate)
         {
             timer->Start(rate*1000L);
