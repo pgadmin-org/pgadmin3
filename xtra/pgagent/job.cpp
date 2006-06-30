@@ -256,6 +256,7 @@ int Job::Execute()
 
 
                 CloseHandle(h_script);
+                rc=1;
 
 #else
 				// The *nix way.
@@ -278,7 +279,7 @@ int Job::Execute()
                         output += wxString::FromAscii(buf);
                 }
 
-                pclose(fp_script);
+                rc=pclose(fp_script);
 #endif
 
                 // Delete the file/directory. If we fail, don't overwrite the script output in the log, just throw warnings.
@@ -295,7 +296,6 @@ int Job::Execute()
                     break;
                 }
 
-                rc=1;
                 break;
             }
             default:
