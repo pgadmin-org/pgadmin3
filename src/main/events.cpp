@@ -14,7 +14,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/splitter.h>
 #include <wx/settings.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
@@ -51,6 +50,9 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
+    EVT_MENU(MNU_SQLPANE,                   frmMain::OnToggleSqlPane)
+    EVT_MENU(MNU_OBJECTBROWSER,             frmMain::OnToggleObjectBrowser)
+    EVT_MENU(MNU_TOOLBAR,                   frmMain::OnToggleToolBar)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
 
@@ -65,6 +67,8 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
     EVT_STC_UPDATEUI(CTL_SQLPANE,           frmMain::OnPositionStc)
     EVT_CLOSE(                              frmMain::OnClose)
+
+    EVT_AUI_PANEBUTTON(                     frmMain::OnAuiUpdate)
 #ifdef __WXGTK__
     EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
 #endif
@@ -786,6 +790,51 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 #endif
     }
 }
+
+void frmMain::OnToggleSqlPane(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_SQLPANE))
+        manager.GetPane(wxT("sqlPane")).Show(true);
+    else
+        manager.GetPane(wxT("sqlPane")).Show(false);
+    manager.Update();
+}
+
+void frmMain::OnToggleObjectBrowser(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_OBJECTBROWSER))
+        manager.GetPane(wxT("objectBrowser")).Show(true);
+    else
+        manager.GetPane(wxT("objectBrowser")).Show(false);
+    manager.Update();
+}
+
+void frmMain::OnToggleToolBar(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_TOOLBAR))
+        manager.GetPane(wxT("toolBar")).Show(true);
+    else
+        manager.GetPane(wxT("toolBar")).Show(false);
+    manager.Update();
+}
+
+void frmMain::OnAuiUpdate(wxFrameManagerEvent& event)
+{
+    if(event.pane->name == wxT("objectBrowser"))
+    {
+        viewMenu->Check(MNU_OBJECTBROWSER, false);
+    }
+    else if(event.pane->name == wxT("sqlPane"))
+    {
+        viewMenu->Check(MNU_SQLPANE, false);
+    }
+    else if(event.pane->name == wxT("toolBar"))
+    {
+        viewMenu->Check(MNU_TOOLBAR, false);
+    }
+    event.Skip();
+}
+
 
 void frmMain::OnPositionStc(wxStyledTextEvent& event)
 {

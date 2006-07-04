@@ -20,15 +20,16 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/splitter.h>
 #include <wx/settings.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
-#include <wx/splitter.h>
 #include <wx/toolbar.h>
 #include <wx/imaglist.h>
 #include <wx/busyinfo.h>
+
+// wxAUI
+#include "manager.h"
 
 // App headers
 #include "misc.h"
@@ -87,6 +88,7 @@ frmMain::frmMain(const wxString& title)
     msgLevel=0;
 
     dlgName = wxT("frmMain");
+    SetMinSize(wxSize(400,300));
     RestorePosition(50, 50, 750, 550, 300, 200);
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -115,51 +117,36 @@ frmMain::frmMain(const wxString& title)
 
     appearanceFactory->SetIcons(this);
 
+    // notify wxAUI which frame to use
+    manager.SetFrame(this);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+
     // wxGTK needs this deferred
     pgaFactory::RealizeImages();
 
 	CreateMenus();
     
-    // Setup the vertical splitter & treeview
-    vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    horizontal = new wxSplitterWindow(vertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    browser = new ctlTree(vertical, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
-    int splitpos=settings->Read(wxT("frmMain/SplitVertical"), 200);
-    if (splitpos < 50)
-        splitpos = 50;
-    if (splitpos > GetSize().x-50)
-        splitpos = GetSize().x-50;
-    vertical->SplitVertically(browser, horizontal, splitpos);
-    vertical->SetMinimumPaneSize(50);
+    // Setup the object browser
+    browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxSize(200, 500), wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
+    browser->SetImageList(imageList);
 
-    // Setup the horizontal splitter for the listview & sql pane
-    listViews = new wxNotebook(horizontal, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
+    // Setup the listview
+    listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxSize(400, 400), wxNB_TOP);
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     dependsOn = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     referencedBy = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+
     listViews->AddPage(properties, _("Properties"));        // NBP_PROPERTIES
     listViews->AddPage(statistics, _("Statistics"));        // NBP_STATISTICS
     listViews->AddPage(dependsOn, _("Depends on"));         // NBP_DEPENDSON
     listViews->AddPage(referencedBy, _("Referenced by"));   // NBP_REFERENCEDBY
-    sqlPane = new ctlSQLBox(horizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
-
-    splitpos=settings->Read(wxT("frmMain/SplitHorizontal"), 300);
-    if (splitpos < 50)
-        splitpos = 50;
-    if (splitpos > GetSize().y-50)
-        splitpos = GetSize().y-50;
-    horizontal->SplitHorizontally(listViews, sqlPane, splitpos);
-    horizontal->SetMinimumPaneSize(50);
-
-    browser->SetImageList(imageList);
 
     properties->SetImageList(imageList, wxIMAGE_LIST_SMALL);
     statistics->SetImageList(imageList, wxIMAGE_LIST_SMALL);
     dependsOn->SetImageList(imageList, wxIMAGE_LIST_SMALL);
     referencedBy->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 
-        // Add the property view columns
     properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
 
@@ -168,11 +155,34 @@ frmMain::frmMain(const wxString& title)
     statistics->SetBackgroundColour(background);
     dependsOn->SetBackgroundColour(background);
     referencedBy->SetBackgroundColour(background);
+
+    // Setup the SQL pane
+    sqlPane = new ctlSQLBox(this, CTL_SQLPANE, wxDefaultPosition, wxSize(400, 400), wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
     sqlPane->SetBackgroundColour(background);
 
+    // Setup menus
     pgaFactory::RegisterMenu(this, wxCommandEventHandler(frmMain::OnNew));
     menuFactories->RegisterMenu(this, wxCommandEventHandler(frmMain::OnAction));
     menuFactories->CheckMenu(0, menuBar, toolBar);
+
+    // Kickstart wxAUI
+    manager.AddPane(browser, wxPaneInfo().Name(wxT("browser")).Caption(_("Object browser")).Left());
+    manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CloseButton(false));
+    manager.AddPane(sqlPane, wxPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom());
+    manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+                              
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
+
+    // Now load the layout
+    wxString perspective;
+    settings->Read(wxT("frmMain/Perspective"), &perspective, wxT("layout1|name=browser;caption=Object browser;state=251660284;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=98;besth=78;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=353;floaty=126;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=1;besth=1;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=198;besth=81;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=453;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=10|dock_size(3,0,0)=285|dock_size(1,10,0)=41|dock_size(4,1,0)=258|"));
+    manager.LoadPerspective(perspective, true);
+
+    // Sync the View menu options
+    viewMenu->Check(MNU_SQLPANE, manager.GetPane(wxT("sqlPane")).IsShown());
+    viewMenu->Check(MNU_OBJECTBROWSER, manager.GetPane(wxT("objectBrowser")).IsShown());
+    viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 
     // Add the root node
     serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());
@@ -189,8 +199,8 @@ frmMain::~frmMain()
 {
     StoreServers();
 
-    settings->Write(wxT("frmMain/SplitHorizontal"), horizontal->GetSashPosition());
-    settings->Write(wxT("frmMain/SplitVertical"), vertical->GetSashPosition());
+    settings->Write(wxT("frmMain/Perspective"), manager.SavePerspective());
+    manager.UnInit();
 
     // Clear the treeview
     browser->DeleteAllItems();
@@ -223,7 +233,7 @@ void frmMain::CreateMenus()
     newContextMenu = new wxMenu();
 
 
-    toolBar=CreateToolBar();
+    toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER );
     toolBar->SetToolBitmapSize(wxSize(32, 32));
     menuFactories = new menuFactoryList();
 
@@ -232,6 +242,10 @@ void frmMain::CreateMenus()
     fileMenu->AppendSeparator();
     new addServerFactory(menuFactories, fileMenu, toolBar);
 
+    viewMenu->Append(MNU_OBJECTBROWSER, _("&Object browser"),     _("Show or hide the object browser."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SQLPANE, _("&SQL pane"),     _("Show or hide the SQL pane."), wxITEM_CHECK);
+    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"),     _("Show or hide the tool bar."), wxITEM_CHECK);
+    viewMenu->AppendSeparator();
     actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
     new countRowsFactory(menuFactories, viewMenu, 0);
 
@@ -370,8 +384,8 @@ void frmMain::CreateMenus()
     menuBar = new wxMenuBar();
     menuBar->Append(fileMenu, _("&File"));
     menuBar->Append(editMenu, _("&Edit"));
+    menuBar->Append(viewMenu, _("&View"));
     menuBar->Append(toolsMenu, _("&Tools"));
-    menuBar->Append(viewMenu, _("&Display"));
     menuBar->Append(helpMenu, _("&Help"));
     SetMenuBar(menuBar);
 

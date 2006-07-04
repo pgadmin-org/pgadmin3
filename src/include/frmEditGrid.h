@@ -14,6 +14,9 @@
 
 #include <wx/grid.h>
 
+// wxAUI
+#include "manager.h"
+
 #define CTL_EDITGRID 357
 #include "dlgClasses.h"
 #include "ctl/ctlSQLGrid.h"
@@ -164,10 +167,14 @@ public:
 	void SetFilter(const wxString &filter);
 	int GetLimit() const { return limit; } ;
 	void SetLimit(const int rowlimit);
+    wxMenu *GetFileMenu() { return fileMenu; };
+    wxMenu *GetEditMenu() { return editMenu; };
 
 private:
     void OnClose(wxCloseEvent& event);
+    void OnClose(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
+    void OnContents(wxCommandEvent& event);
     void OnRefresh(wxCommandEvent& event);
     void OnDelete(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
@@ -184,14 +191,21 @@ private:
     void OnLabelDoubleClick(wxGridEvent& event);
     void OnLabelRightClick(wxGridEvent& event);
     void Abort();
+    void OnToggleScratchPad(wxCommandEvent& event);
+    void OnToggleLimitBar(wxCommandEvent& event);
+    void OnToggleToolBar(wxCommandEvent& event);
+    void OnAuiUpdate(wxFrameManagerEvent& event);
 
+    wxFrameManager manager;
     ctlSQLEditGrid *sqlGrid;
 
     frmMain *mainForm;
     pgConn *connection;
     pgQueryThread *thread;
+    wxMenu *fileMenu, *editMenu, *viewMenu, *helpMenu;
     wxToolBar *toolBar;
     ctlComboBoxFix *cbLimit;
+    wxTextCtrl *scratchPad;
 
     char relkind;
     OID relid;

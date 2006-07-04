@@ -76,7 +76,7 @@ protected:
     wxString dlgName;
     wxString lastFilename, lastDir, lastPath;
     wxString recentKey;
-    wxMenu *fileMenu, *editMenu, *recentFileMenu, *helpMenu;
+    wxMenu *fileMenu, *editMenu, *viewMenu, *recentFileMenu, *helpMenu;
     wxStatusBar *statusBar;
     wxMenuBar *menuBar;
     wxToolBar *toolBar;

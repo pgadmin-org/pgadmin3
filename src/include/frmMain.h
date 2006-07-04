@@ -18,6 +18,9 @@
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 
+// wxAUI
+#include "manager.h"
+
 #include "dlgClasses.h"
 #include "base/factory.h"
 
@@ -25,7 +28,6 @@ class pgServer;
 class pgServerCollection;
 class ctlSQLBox;
 class ctlTree;
-class wxSplitterWindow;
 class dlgProperty;
 class serverCollection;
 
@@ -69,6 +71,7 @@ public:
 	pgServer *ConnectToServer(const wxString& servername, bool restore = false);
 
 private:
+    wxFrameManager manager;
     ctlTree *browser;
     ctlListView *properties;
     ctlListView *statistics;
@@ -78,7 +81,6 @@ private:
     wxMenu *newMenu, *reportMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, 
 		*scriptingMenu, *viewDataMenu;
     pgServerCollection *serversObj;
-    wxSplitterWindow *horizontal, *vertical;
 
     propertyFactory *propFactory;
     actionFactory *newMenuFactory;
@@ -99,6 +101,10 @@ private:
 	void ViewData(bool filter = false);
     void OnSaveDefinition(wxCommandEvent& event);
     void OnShowSystemObjects(wxCommandEvent& event);
+    void OnToggleSqlPane(wxCommandEvent& event);
+    void OnToggleObjectBrowser(wxCommandEvent& event);
+    void OnToggleToolBar(wxCommandEvent& event);
+    void OnAuiUpdate(wxFrameManagerEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
     void OnPageChange(wxNotebookEvent& event);

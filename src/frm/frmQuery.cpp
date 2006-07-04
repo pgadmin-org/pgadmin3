@@ -11,7 +11,9 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/splitter.h>
+
+// wxAUI
+#include "manager.h"
 
 // App headers
 #include "pgAdmin3.h"
@@ -54,6 +56,7 @@
 
 
 #define CTRLID_CONNECTION       4200
+#define CTRLID_DATABASELABEL    4201
 
 BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_COMBOBOX(CTRLID_CONNECTION, frmQuery::OnChangeConnection)
@@ -86,21 +89,17 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_MENU(MNU_SHOWLINEENDS,      frmQuery::OnShowLineEnds)
 	EVT_MENU(MNU_FAVOURITES_ADD,	frmQuery::OnAddFavourite)
 	EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
+    EVT_MENU(MNU_DATABASEBAR,       frmQuery::OnToggleDatabaseBar)
+    EVT_MENU(MNU_TOOLBAR,           frmQuery::OnToggleToolBar)
+    EVT_MENU(MNU_SCRATCHPAD,        frmQuery::OnToggleScratchPad)
+    EVT_MENU(MNU_RESULTSPANE,       frmQuery::OnToggleResultsPane)
+    EVT_MENU(MNU_MESSAGEPANE,       frmQuery::OnToggleMessagePane)
 	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
     EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
+    EVT_AUI_PANEBUTTON(             frmQuery::OnAuiUpdate)
 END_EVENT_TABLE()
-
-
-
-enum
-{
-    RESULT_PAGE=0,
-    EXPLAIN_PAGE,
-    MSG_PAGE,
-    HISTORY_PAGE
-};
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query)
 : pgFrame(NULL, _title)
@@ -111,6 +110,10 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     dlgName = wxT("frmQuery");
     recentKey = wxT("RecentFiles");
     RestorePosition(100, 100, 600, 500, 200, 150);
+
+    // notify wxAUI which frame to use
+    manager.SetFrame(this);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -146,6 +149,15 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->Append(MNU_SHOWWHITESPACE, _("&Show whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
 	editMenu->Append(MNU_SHOWLINEENDS, _("&Show line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
     menuBar->Append(editMenu, _("&Edit"));
+
+    // View menu
+    viewMenu = new wxMenu();
+    viewMenu->Append(MNU_DATABASEBAR, _("&Database bar"), _("Show or hide the database selection bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_MESSAGEPANE, _("&Message pane"), _("Show or hide the message pane."), wxITEM_CHECK);
+    viewMenu->Append(MNU_RESULTSPANE, _("&Result pane"), _("Show or hide the results pane."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
+    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
+    menuBar->Append(viewMenu, _("&View"));
 
     queryMenu = new wxMenu();
     queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
@@ -209,7 +221,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     SetStatusWidths(5, iWidths);
     SetStatusText(_("ready"), STATUSPOS_MSGS);
 
-    toolBar = CreateToolBar();
+    toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
@@ -227,10 +239,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find and replace text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
 
-    cbConnection = new ctlComboBoxFix(toolBar, CTRLID_CONNECTION, wxDefaultPosition, wxSize(GetCharWidth()*30, -1), wxCB_READONLY|wxCB_DROPDOWN);
-    cbConnection->Append(conn->GetName(), (void*)conn);
-    cbConnection->Append(_("<new connection>"), (void*)0);
-    toolBar->AddControl(cbConnection);
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), wxBitmap(query_execfile_xpm), _("Execute query, write result to file"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
@@ -240,35 +248,66 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."), wxITEM_NORMAL);
     toolBar->Realize();
 
-    horizontal = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    horizontal->SetMinimumPaneSize(50);
+    // Add the database selection bar
+    wxPanel *databaseBar = new wxPanel(this, 0, 0, 5, wxDefaultSize.GetHeight());
 
-    sqlQuery = new ctlSQLBox(horizontal, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
+    wxStaticText *txtDatabase = new wxStaticText(databaseBar, CTRLID_DATABASELABEL, _("Database"), wxPoint(0, 0));
+    cbConnection = new ctlComboBoxFix(databaseBar, CTRLID_CONNECTION, wxPoint(1, 1), wxSize(GetCharWidth()*30, -1), wxCB_READONLY|wxCB_DROPDOWN);
+    txtDatabase->SetPosition(wxPoint(1, (databaseBar->GetSize().GetHeight() / 2) - (txtDatabase->GetSize().GetHeight() / 2) + 1));
+    cbConnection->SetPosition(wxPoint(txtDatabase->GetSize().GetWidth() + 10, 1));
+    databaseBar->SetSize(cbConnection->GetPosition().x + cbConnection->GetSize().GetWidth() + 5, cbConnection->GetPosition().y + cbConnection->GetSize().GetHeight() + 1); 
+    cbConnection->Append(conn->GetName(), (void*)conn);
+    cbConnection->Append(_("<new connection>"), (void*)0);
+
+    // Query box
+    sqlQuery = new ctlSQLBox(this, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
 	sqlQuery->SetDatabase(conn);
     sqlQuery->SetMarginWidth(1, 16);
 
-    output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
-    sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
-    explainCanvas = new ExplainCanvas(output);
-    msgResult = new wxTextCtrl(output, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
-    msgHistory = new wxTextCtrl(output, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    // Results pane
+    resultsPane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 300), wxNB_BOTTOM);
+    sqlResult = new ctlSQLResult(resultsPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
+    explainCanvas = new ExplainCanvas(resultsPane);
+    resultsPane->AddPage(sqlResult, _("Data Output"));
+    resultsPane->AddPage(explainCanvas, _("Explain"));
 
-    output->AddPage(sqlResult, _("Data Output"));
-    output->AddPage(explainCanvas, _("Explain"));
-    output->AddPage(msgResult, _("Messages"));
-    output->AddPage(msgHistory, _("History"));
+    // Message pane
+    messagePane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 200), wxNB_BOTTOM);
+    msgResult = new wxTextCtrl(messagePane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    msgHistory = new wxTextCtrl(messagePane, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    messagePane->AddPage(msgResult, _("Messages"));
+    messagePane->AddPage(msgHistory, _("History"));
 
     sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 
-    int splitpos=settings->Read(wxT("frmQuery/Split"), 250);
-    if (splitpos < 50)
-        splitpos = 50;
-    if (splitpos > GetSize().y-50)
-        splitpos = GetSize().y-50;
-    horizontal->SplitHorizontally(sqlQuery, output, splitpos);
+    // Finally, the scratchpad
+    scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxSize(300, 200), wxTE_MULTILINE | wxHSCROLL);
+
+    // Kickstart wxAUI
+    manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(databaseBar, wxPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(sqlQuery, wxPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CloseButton(false));
+    manager.AddPane(resultsPane, wxPaneInfo().Name(wxT("resultsPane")).Caption(_("Results pane")).Bottom());
+    manager.AddPane(messagePane, wxPaneInfo().Name(wxT("messagePane")).Caption(_("Message pane")).Bottom());
+    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom());
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
+
+    // Now load the layout
+    wxString perspective;
+    settings->Read(wxT("frmQuery/Perspective"), &perspective, wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=362;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=373;prop=100000;bestw=241;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=198;besth=81;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=resultsPane;caption=Results pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=134664;bestw=400;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=messagePane;caption=Message pane;state=16779260;dir=3;layer=0;row=0;pos=1;prop=65336;bestw=400;besth=100;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=3;layer=0;row=0;pos=2;prop=100000;bestw=279;besth=179;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=240|"));
+    manager.LoadPerspective(perspective, true);
+
+    // Sync the View menu options
+    viewMenu->Check(MNU_DATABASEBAR, manager.GetPane(wxT("databaseBar")).IsShown());
+    viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    viewMenu->Check(MNU_RESULTSPANE, manager.GetPane(wxT("resultsPane")).IsShown());
+    viewMenu->Check(MNU_MESSAGEPANE, manager.GetPane(wxT("messagePane")).IsShown());
+    viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
 
     bool bVal;
 
@@ -324,8 +363,9 @@ frmQuery::~frmQuery()
 
     mainForm->RemoveFrame(this);
 
-    if (!IsIconized())
-        settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
+    settings->Write(wxT("frmQuery/Perspective"), manager.SavePerspective());
+    manager.UnInit();
+
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
 
@@ -339,6 +379,76 @@ frmQuery::~frmQuery()
 
 	if (favourites)
 		delete favourites;
+}
+
+void frmQuery::OnToggleScratchPad(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_SCRATCHPAD))
+        manager.GetPane(wxT("scratchPad")).Show(true);
+    else
+        manager.GetPane(wxT("scratchPad")).Show(false);
+    manager.Update();
+}
+
+void frmQuery::OnToggleDatabaseBar(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_DATABASEBAR))
+        manager.GetPane(wxT("databaseBar")).Show(true);
+    else
+        manager.GetPane(wxT("databaseBar")).Show(false);
+    manager.Update();
+}
+
+void frmQuery::OnToggleToolBar(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_TOOLBAR))
+        manager.GetPane(wxT("toolBar")).Show(true);
+    else
+        manager.GetPane(wxT("toolBar")).Show(false);
+    manager.Update();
+}
+
+void frmQuery::OnToggleResultsPane(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_RESULTSPANE))
+        manager.GetPane(wxT("resultsPane")).Show(true);
+    else
+        manager.GetPane(wxT("resultsPane")).Show(false);
+    manager.Update();
+}
+
+void frmQuery::OnToggleMessagePane(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_MESSAGEPANE))
+        manager.GetPane(wxT("messagePane")).Show(true);
+    else
+        manager.GetPane(wxT("messagePane")).Show(false);
+    manager.Update();
+}
+
+void frmQuery::OnAuiUpdate(wxFrameManagerEvent& event)
+{
+    if(event.pane->name == wxT("databaseBar"))
+    {
+        viewMenu->Check(MNU_DATABASEBAR, false);
+    }
+    else if(event.pane->name == wxT("toolBar"))
+    {
+        viewMenu->Check(MNU_TOOLBAR, false);
+    }
+    else if(event.pane->name == wxT("resultsPane"))
+    {
+        viewMenu->Check(MNU_RESULTSPANE, false);
+    }
+    else if(event.pane->name == wxT("messagePane"))
+    {
+        viewMenu->Check(MNU_MESSAGEPANE, false);
+    }
+    else if(event.pane->name == wxT("scratchPad"))
+    {
+        viewMenu->Check(MNU_SCRATCHPAD, false);
+    }
+    event.Skip();
 }
 
 void frmQuery::OnWordWrap(wxCommandEvent &event)
@@ -662,13 +772,20 @@ void frmQuery::OnCut(wxCommandEvent& ev)
 wxWindow *frmQuery::currentControl()
 {
     wxWindow *wnd=FindFocus();
-    if (wnd == output)
+    if (wnd == resultsPane)
     {
-        switch (output->GetSelection())
+        switch (resultsPane->GetSelection())
         {
-            case 0: wnd = sqlResult;    break;
-            case 1: wnd = msgResult;    break;
-            case 2: wnd = msgHistory;   break;
+            case 0: wnd = sqlResult;     break;
+            case 1: wnd = explainCanvas; break;
+        }
+    }
+    else if (wnd == messagePane)
+    {
+        switch (messagePane->GetSelection())
+        {
+            case 0: wnd = msgResult;     break;
+            case 1: wnd = msgHistory;    break;
         }
     }
     return wnd;
@@ -685,6 +802,8 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
         msgResult->Copy();
     else if (wnd == msgHistory)
         msgHistory->Copy();
+    else if (wnd == scratchPad)
+        scratchPad->Copy();
 #if USE_LISTVIEW
     else if (wnd == sqlResult && sqlResult->GetSelectedItemCount() > 0)
     {
@@ -728,6 +847,8 @@ void frmQuery::OnPaste(wxCommandEvent& ev)
 {
 	if (currentControl() == sqlQuery)
 	  sqlQuery->Paste();
+    else if (currentControl() == scratchPad)
+	  scratchPad->Paste();
 }
 
 void frmQuery::OnClear(wxCommandEvent& ev)
@@ -740,6 +861,8 @@ void frmQuery::OnClear(wxCommandEvent& ev)
         msgResult->Clear();
     else if (wnd == msgHistory)
         msgHistory->Clear();
+    else if (wnd == scratchPad)
+        scratchPad->Clear();
 }
 
 void frmQuery::OnSelectAll(wxCommandEvent& ev)
@@ -754,6 +877,8 @@ void frmQuery::OnSelectAll(wxCommandEvent& ev)
 		msgHistory->SelectAll();
 	else if (wnd == sqlResult)
 		sqlResult->SelectAll();
+	else if (wnd == scratchPad)
+		scratchPad->SelectAll();
     else if (wnd->GetParent() == sqlResult)
         sqlResult->SelectAll();
 }
@@ -1180,7 +1305,7 @@ void frmQuery::OnExplain(wxCommandEvent& event)
                 }
             }
             explainCanvas->SetExplainString(str);
-            output->SetSelection(EXPLAIN_PAGE);
+            resultsPane->SetSelection(1);
         }
     }
 
@@ -1197,7 +1322,7 @@ void frmQuery::OnExplainText(wxCommandEvent& event)
         return;
 
     explainCanvas->SetExplainString(str);
-    output->SetSelection(EXPLAIN_PAGE);
+    resultsPane->SetSelection(1);
     sqlQuery->SetFocus();
 }
 
@@ -1325,7 +1450,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
         if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
         {
-            output->SetSelection(MSG_PAGE);
+            messagePane->SetSelection(0);
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
                 done = true;
@@ -1400,7 +1525,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         else
         {
             done = true;
-            output->SetSelection(RESULT_PAGE);
+            resultsPane->SetSelection(0);
             long rowsTotal=sqlResult->NumRows();
 
             if (toFile)

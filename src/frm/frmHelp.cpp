@@ -217,7 +217,7 @@ void ctlHelpWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
 
 contentsFactory::contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("&Help"), _("Open the pgAdmin III helpfile."));
+    mnu->Append(id, _("&Help contents"), _("Open the pgAdmin III helpfile."));
 }
 
 

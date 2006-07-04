@@ -34,6 +34,9 @@
 #include "pgTable.h"
 #include "pgView.h"
 
+// wxAUI
+#include "manager.h"
+
 
 // Icons
 #include "images/viewdata.xpm"
@@ -52,21 +55,27 @@
 
 
 BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
-    EVT_MENU(MNU_REFRESH,   frmEditGrid::OnRefresh)
-    EVT_MENU(MNU_DELETE,    frmEditGrid::OnDelete)
-    EVT_MENU(MNU_SAVE,      frmEditGrid::OnSave)
-    EVT_MENU(MNU_UNDO,      frmEditGrid::OnUndo)
-    EVT_MENU(MNU_OPTIONS,   frmEditGrid::OnOptions)
-    EVT_MENU(MNU_HELP,      frmEditGrid::OnHelp)
-    EVT_MENU(MNU_COPY,      frmEditGrid::OnCopy)
-    EVT_MENU(MNU_PASTE,     frmEditGrid::OnPaste)
-    EVT_CLOSE(              frmEditGrid::OnClose)
-    EVT_KEY_DOWN(           frmEditGrid::OnKey)
-    EVT_GRID_RANGE_SELECT(frmEditGrid::OnGridSelectCells)
-    EVT_GRID_SELECT_CELL(frmEditGrid::OnCellChange)
-    EVT_GRID_EDITOR_SHOWN(frmEditGrid::OnEditorShown)
-    EVT_GRID_EDITOR_HIDDEN(frmEditGrid::OnEditorHidden)
-    EVT_GRID_LABEL_RIGHT_CLICK(frmEditGrid::OnLabelRightClick)
+    EVT_MENU(MNU_REFRESH,       frmEditGrid::OnRefresh)
+    EVT_MENU(MNU_DELETE,        frmEditGrid::OnDelete)
+    EVT_MENU(MNU_SAVE,          frmEditGrid::OnSave)
+    EVT_MENU(MNU_UNDO,          frmEditGrid::OnUndo)
+    EVT_MENU(MNU_OPTIONS,       frmEditGrid::OnOptions)
+    EVT_MENU(MNU_HELP,          frmEditGrid::OnHelp)
+    EVT_MENU(MNU_CONTENTS,      frmEditGrid::OnContents)
+    EVT_MENU(MNU_COPY,          frmEditGrid::OnCopy)
+    EVT_MENU(MNU_PASTE,         frmEditGrid::OnPaste)
+    EVT_MENU(MNU_LIMITBAR,      frmEditGrid::OnToggleLimitBar)
+    EVT_MENU(MNU_TOOLBAR,       frmEditGrid::OnToggleToolBar)
+    EVT_MENU(MNU_SCRATCHPAD,    frmEditGrid::OnToggleScratchPad)
+    EVT_MENU(MNU_CLOSE,         frmEditGrid::OnClose)
+    EVT_CLOSE(                  frmEditGrid::OnClose)
+    EVT_KEY_DOWN(               frmEditGrid::OnKey)
+    EVT_GRID_RANGE_SELECT(      frmEditGrid::OnGridSelectCells)
+    EVT_GRID_SELECT_CELL(       frmEditGrid::OnCellChange)
+    EVT_GRID_EDITOR_SHOWN(      frmEditGrid::OnEditorShown)
+    EVT_GRID_EDITOR_HIDDEN(     frmEditGrid::OnEditorHidden)
+    EVT_GRID_LABEL_RIGHT_CLICK( frmEditGrid::OnLabelRightClick)
+    EVT_AUI_PANEBUTTON(         frmEditGrid::OnAuiUpdate)
 END_EVENT_TABLE()
 
 
@@ -86,54 +95,101 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     relid=(Oid)obj->GetOid();
     editorShown = false;
 
+    // notify wxAUI which frame to use
+    manager.SetFrame(this);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
     CreateStatusBar();
     SetStatusBarPane(-1);
 
     sqlGrid = new ctlSQLEditGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
     sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
-   
-    toolBar = CreateToolBar();
 
     // Set up toolbar
+    toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
     toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(storedata_xpm), _("Saved the changed row."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo change of data."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected lines to clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected lines to clipboard."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_PASTE, _("Paste"), wxBitmap(clip_paste_xpm), _("Paste text from the clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_PASTE, _("Paste"), wxBitmap(clip_paste_xpm), _("Paste data from the clipboard."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected lines."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected rows."), wxITEM_NORMAL);
     toolBar->AddSeparator();
 
-    wxStaticText *txtLimit = new wxStaticText(toolBar, CTRLID_LIMITLABEL, _("Row limit"), wxDefaultPosition);
-    toolBar->AddControl(txtLimit);
-    wxStaticText *txtSpacer = new wxStaticText(toolBar, CTRLID_LIMITSPACER, wxT("  "), wxDefaultPosition);
-    toolBar->AddControl(txtSpacer);
+    toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(sortfilter_xpm), _("Sort/filter options."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_HELP, _("Edit grid help"), wxBitmap(help_xpm), _("Display help on this window."));
 
-    cbLimit = new ctlComboBoxFix(toolBar, CTRLID_LIMITCOMBO, wxDefaultPosition, wxSize(GetCharWidth()*12, -1), wxCB_DROPDOWN);
+    toolBar->Realize();
+    toolBar->EnableTool(MNU_SAVE, false);
+    toolBar->EnableTool(MNU_UNDO, false);
+    toolBar->EnableTool(MNU_DELETE, false);
+
+    // Setup the limit bar
+    wxPanel *limitBar = new wxPanel(this, 0, 0, 5, wxDefaultSize.GetHeight());
+
+    wxStaticText *txtLimit = new wxStaticText(limitBar, CTRLID_LIMITLABEL, _("Row limit"), wxPoint(0, 0));
+    cbLimit = new ctlComboBoxFix(limitBar, CTRLID_LIMITCOMBO, wxPoint(0, 0), wxSize(GetCharWidth()*12, -1), wxCB_DROPDOWN);
+    txtLimit->SetPosition(wxPoint(1, (limitBar->GetSize().GetHeight() / 2) - (txtLimit->GetSize().GetHeight() / 2) + 1));
+    cbLimit->SetPosition(wxPoint(txtLimit->GetSize().GetWidth() + 10, 1));
+    limitBar->SetSize(cbLimit->GetPosition().x + cbLimit->GetSize().GetWidth() + 5, cbLimit->GetPosition().y + cbLimit->GetSize().GetHeight() + 1); 
     cbLimit->Append(_("No limit"));
     cbLimit->Append(wxT("1000"));
     cbLimit->Append(wxT("500"));
     cbLimit->Append(wxT("100"));
     cbLimit->SetValue(_("No limit"));
-    toolBar->AddControl(cbLimit);
-    toolBar->AddSeparator();
 
-    toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(sortfilter_xpm), _("Sort/filter options."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
+    // Finally, the scratchpad
+    scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxSize(300, 200), wxTE_MULTILINE | wxHSCROLL);
 
-    toolBar->Realize();
-    toolBar->EnableTool(MNU_SAVE, false);
-    toolBar->EnableTool(MNU_UNDO, false);
-    toolBar->EnableTool(MNU_COPY, true);
-    toolBar->EnableTool(MNU_DELETE, false);
+    // Menus
 
+    // File menu
+    fileMenu = new wxMenu();
+    fileMenu->Append(MNU_SAVE, _("&Save"),_("Saved the changed row."));
+    fileMenu->AppendSeparator();
+    fileMenu->Append(MNU_CLOSE, _("&Close"), _("Close this window."));
+    fileMenu->Enable(MNU_SAVE, false);
+
+    // Edit menu
+    editMenu = new wxMenu();
+    editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"),_("Undo change of data."));
+    editMenu->AppendSeparator();
+    editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"),_("Copy selected cells to clipboard."));
+    editMenu->Append(MNU_PASTE, _("&Paste\tCtrl-V"),_("Paste data from the clipboard."));
+    editMenu->Append(MNU_DELETE, _("&Delete\tDel"),_("Delete selected rows."));
+    editMenu->Enable(MNU_UNDO, false);
+    editMenu->Enable(MNU_DELETE, false);
+
+
+    // View menu
+    viewMenu = new wxMenu();
+    viewMenu->Append(MNU_REFRESH, _("&Refresh\tF5"),_("Refresh."));
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_OPTIONS, _("&Sort/filter..."),_("Sort/filter options."));
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_LIMITBAR, _("&Limit bar"), _("Show or hide the row limit options bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
+    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
+
+    // Help menu
+    helpMenu = new wxMenu();
+    helpMenu->Append(MNU_CONTENTS, _("&Help contents"),_("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_HELP, _("&Edit grid help"),_("Display help on this window."));
+
+    menuBar = new wxMenuBar();
+    menuBar->Append(fileMenu, _("&File"));
+    menuBar->Append(editMenu, _("&Edit"));
+    menuBar->Append(viewMenu, _("&View"));
+    menuBar->Append(helpMenu, _("&Help"));
+    SetMenuBar(menuBar);
+
+    // Accelerators
     wxAcceleratorEntry entries[7];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
@@ -147,6 +203,24 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     wxAcceleratorTable accel(6, entries);
     SetAcceleratorTable(accel);
 
+    // Kickstart wxAUI
+    manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(limitBar, wxPaneInfo().Name(wxT("limitBar")).Caption(_("Limit bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CloseButton(false));
+    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom());
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
+
+    // Now load the layout
+    wxString perspective;
+    settings->Read(wxT("frmEditGrid/Perspective"), &perspective, wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=232;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=limitBar;caption=Row limit;state=16788208;dir=1;layer=10;row=0;pos=243;prop=100000;bestw=129;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlGrid;caption=Data grid;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=82;besth=32;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=279;besth=179;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=84|"));
+    manager.LoadPerspective(perspective, true);
+
+    // Sync the View menu options
+    viewMenu->Check(MNU_LIMITBAR, manager.GetPane(wxT("limitBar")).IsShown());
+    viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
 
     if (obj->GetMetaType() == PGM_TABLE)
     {
@@ -170,6 +244,50 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
         hasOids=false;
         tableName=view->GetQuotedFullIdentifier();
     }
+}
+
+void frmEditGrid::OnToggleLimitBar(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_LIMITBAR))
+        manager.GetPane(wxT("limitBar")).Show(true);
+    else
+        manager.GetPane(wxT("limitBar")).Show(false);
+    manager.Update();
+}
+
+void frmEditGrid::OnToggleToolBar(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_TOOLBAR))
+        manager.GetPane(wxT("toolBar")).Show(true);
+    else
+        manager.GetPane(wxT("toolBar")).Show(false);
+    manager.Update();
+}
+
+void frmEditGrid::OnToggleScratchPad(wxCommandEvent& event)
+{
+    if (viewMenu->IsChecked(MNU_SCRATCHPAD))
+        manager.GetPane(wxT("scratchPad")).Show(true);
+    else
+        manager.GetPane(wxT("scratchPad")).Show(false);
+    manager.Update();
+}
+
+void frmEditGrid::OnAuiUpdate(wxFrameManagerEvent& event)
+{
+    if(event.pane->name == wxT("limitBar"))
+    {
+        viewMenu->Check(MNU_LIMITBAR, false);
+    }
+    else if(event.pane->name == wxT("toolBar"))
+    {
+        viewMenu->Check(MNU_TOOLBAR, false);
+    }
+    else if(event.pane->name == wxT("scratchPad"))
+    {
+        viewMenu->Check(MNU_SCRATCHPAD, false);
+    }
+    event.Skip();
 }
 
 void frmEditGrid::SetSortCols(const wxString &cols) 
@@ -227,6 +345,8 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
         {
             toolBar->EnableTool(MNU_SAVE, false);
             toolBar->EnableTool(MNU_UNDO, false);
+            fileMenu->Enable(MNU_SAVE, false);
+            editMenu->Enable(MNU_UNDO, false);
         }
     }
 
@@ -237,17 +357,28 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
 void frmEditGrid::OnCopy(wxCommandEvent &ev)
 {
-    int copied;
-
-    copied = sqlGrid->Copy();
-
-    SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
+    wxWindow *wnd=FindFocus();
+    if (wnd == scratchPad)
+    {
+        scratchPad->Copy();
+    }
+    else
+    {
+        int copied;
+        copied = sqlGrid->Copy();
+        SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
+    }
 }
 
 
 void frmEditGrid::OnPaste(wxCommandEvent &ev)
 {
-    if (editorShown)
+    wxWindow *wnd=FindFocus();
+    if (wnd == scratchPad)
+    {
+        scratchPad->Paste();
+    }
+    else if (editorShown)
     {
         ev.Skip();
     }
@@ -262,6 +393,10 @@ void frmEditGrid::OnHelp(wxCommandEvent &ev)
     DisplayHelp(this, wxT("editgrid"), viewdata_xpm);
 }
 
+void frmEditGrid::OnContents(wxCommandEvent &ev)
+{
+    DisplayHelp(this, wxT("index"));
+}
 
 void frmEditGrid::OnKey(wxKeyEvent &event)
 {
@@ -367,12 +502,18 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
 
                 toolBar->EnableTool(MNU_SAVE, true);
                 toolBar->EnableTool(MNU_UNDO, true);
+                fileMenu->Enable(MNU_SAVE, true);
+                editMenu->Enable(MNU_UNDO, true);
             }
             break;
     }
     event.Skip();
 }
 
+void frmEditGrid::OnClose(wxCommandEvent& event)
+{
+    this->Close();
+}
 
 void frmEditGrid::OnClose(wxCloseEvent& event)
 {
@@ -454,6 +595,8 @@ bool frmEditGrid::DoSave()
 
     toolBar->EnableTool(MNU_SAVE, false);
     toolBar->EnableTool(MNU_UNDO, false);
+    fileMenu->Enable(MNU_SAVE, false);
+    editMenu->Enable(MNU_UNDO, false);
 
     return true;
 }
@@ -511,6 +654,8 @@ void frmEditGrid::OnEditorShown(wxGridEvent& event)
 {
     toolBar->EnableTool(MNU_SAVE, true);
     toolBar->EnableTool(MNU_UNDO, true);
+    fileMenu->Enable(MNU_SAVE, true);
+    editMenu->Enable(MNU_UNDO, true);
     editorShown = true;
 
     event.Skip();
@@ -567,6 +712,7 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
             }
         }
         toolBar->EnableTool(MNU_DELETE, enable);
+        editMenu->Enable(MNU_DELETE, enable);
     }
     event.Skip();
 }
@@ -673,6 +819,7 @@ void frmEditGrid::Go()
     wxSizeEvent event;
     event.m_size = GetSize();
     OnSize(event);
+    manager.Update();
 
     if (!hasOids && primaryKeyColNumbers.IsEmpty() && relkind == 'r')
         frmHint::ShowHint(this, HINT_READONLY_NOPK, tableName);
@@ -683,6 +830,9 @@ frmEditGrid::~frmEditGrid()
 {
     wxLogInfo(wxT("Destroying SQL EditGrid"));
     mainForm->RemoveFrame(this);
+
+    settings->Write(wxT("frmEditGrid/Perspective"), manager.SavePerspective());
+    manager.UnInit();
 
     if (connection)
         delete connection;
@@ -1735,6 +1885,12 @@ void sqlTable::UndoLine(int row)
                 tb->EnableTool(MNU_SAVE, false);
                 tb->EnableTool(MNU_UNDO, false);
             }
+            wxMenu *fm=((frmEditGrid*)GetView()->GetParent())->GetFileMenu();
+            if (fm)
+                fm->Enable(MNU_SAVE, false);
+            wxMenu *em=((frmEditGrid*)GetView()->GetParent())->GetEditMenu();
+            if (em)
+                em->Enable(MNU_UNDO, false);
         }
     }
     lastRow = -1;
@@ -1892,6 +2048,12 @@ void sqlTable::SetValue(int row, int col, const wxString &value)
         tb->EnableTool(MNU_SAVE, true);
         tb->EnableTool(MNU_UNDO, true);
     }
+    wxMenu *fm=((frmEditGrid*)GetView()->GetParent())->GetFileMenu();
+    if (fm)
+        fm->Enable(MNU_SAVE, true);
+    wxMenu *em=((frmEditGrid*)GetView()->GetParent())->GetEditMenu();
+    if (em)
+        em->Enable(MNU_UNDO, true);
     line->cols[col] = value;
 }
 

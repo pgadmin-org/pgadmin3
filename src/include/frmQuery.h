@@ -16,6 +16,9 @@
 #include "base/factory.h"
 #include "favourites.h"
 
+// wxAUI
+#include "manager.h"
+
 class ExplainCanvas;
 class ctlSQLResult;
 
@@ -28,13 +31,14 @@ public:
 
 private:
     frmMain *mainForm;
-    wxSplitterWindow* horizontal;
+    wxFrameManager manager;
     ctlSQLBox *sqlQuery;
-    wxNotebook *output;
+    wxNotebook *resultsPane, *messagePane;
     ctlSQLResult *sqlResult;
     ExplainCanvas *explainCanvas;
     wxTextCtrl *msgResult, *msgHistory;
     ctlComboBoxFix *cbConnection;
+    wxTextCtrl *scratchPad;
 
     pgConn *conn;
     wxLongLong elapsedQuery, elapsedRetrieve;
@@ -74,6 +78,13 @@ private:
 	void OnWordWrap(wxCommandEvent& event);
 	void OnShowWhitespace(wxCommandEvent& event);
 	void OnShowLineEnds(wxCommandEvent& event);
+
+    void OnToggleScratchPad(wxCommandEvent& event);
+    void OnToggleDatabaseBar(wxCommandEvent& event);
+    void OnToggleToolBar(wxCommandEvent& event);
+    void OnToggleResultsPane(wxCommandEvent& event);
+    void OnToggleMessagePane(wxCommandEvent& event);
+    void OnAuiUpdate(wxFrameManagerEvent& event);
 
     bool CheckChanged(bool canVeto);
     void OpenLastFile();
