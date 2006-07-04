@@ -171,7 +171,7 @@ public:
     wxMenu *GetEditMenu() { return editMenu; };
 
 private:
-    void OnClose(wxCloseEvent& event);
+    void OnCloseWindow(wxCloseEvent& event);
     void OnClose(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
     void OnContents(wxCommandEvent& event);

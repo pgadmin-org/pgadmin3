@@ -68,7 +68,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_MENU(MNU_TOOLBAR,       frmEditGrid::OnToggleToolBar)
     EVT_MENU(MNU_SCRATCHPAD,    frmEditGrid::OnToggleScratchPad)
     EVT_MENU(MNU_CLOSE,         frmEditGrid::OnClose)
-    EVT_CLOSE(                  frmEditGrid::OnClose)
+    EVT_CLOSE(                  frmEditGrid::OnCloseWindow)
     EVT_KEY_DOWN(               frmEditGrid::OnKey)
     EVT_GRID_RANGE_SELECT(      frmEditGrid::OnGridSelectCells)
     EVT_GRID_SELECT_CELL(       frmEditGrid::OnCellChange)
@@ -515,7 +515,7 @@ void frmEditGrid::OnClose(wxCommandEvent& event)
     this->Close();
 }
 
-void frmEditGrid::OnClose(wxCloseEvent& event)
+void frmEditGrid::OnCloseWindow(wxCloseEvent& event)
 {
     if (toolBar->GetToolEnabled(MNU_SAVE))
     {
