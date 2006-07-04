@@ -265,14 +265,14 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     sqlQuery->SetMarginWidth(1, 16);
 
     // Results pane
-    resultsPane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 300), wxNB_BOTTOM);
+    resultsPane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 300));
     sqlResult = new ctlSQLResult(resultsPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     explainCanvas = new ExplainCanvas(resultsPane);
     resultsPane->AddPage(sqlResult, _("Data Output"));
     resultsPane->AddPage(explainCanvas, _("Explain"));
 
     // Message pane
-    messagePane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 200), wxNB_BOTTOM);
+    messagePane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 200));
     msgResult = new wxTextCtrl(messagePane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
     msgHistory = new wxTextCtrl(messagePane, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
     messagePane->AddPage(msgResult, _("Messages"));
