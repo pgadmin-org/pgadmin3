@@ -516,7 +516,7 @@ AC_SUBST(pgagent_LDADD)
 #######################
 AC_DEFUN([SETUP_WXAUI],
 [
-	CPPFLAGS="$CPPFLAGS -I${WXAUI_HOME}"
+	CPPFLAGS="$CPPFLAGS -I${WXAUI_HOME}/include"
 ])
 
 ###########
