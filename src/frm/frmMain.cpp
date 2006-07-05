@@ -166,7 +166,7 @@ frmMain::frmMain(const wxString& title)
     menuFactories->CheckMenu(0, menuBar, toolBar);
 
     // Kickstart wxAUI
-    manager.AddPane(browser, wxPaneInfo().Name(wxT("browser")).Caption(_("Object browser")).Left());
+    manager.AddPane(browser, wxPaneInfo().Name(wxT("objectBrowser")).Caption(_("Object browser")).Left());
     manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CloseButton(false));
     manager.AddPane(sqlPane, wxPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom());
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
@@ -176,7 +176,7 @@ frmMain::frmMain(const wxString& title)
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("frmMain/Perspective"), &perspective, wxT("layout1|name=browser;caption=Object browser;state=251660284;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=98;besth=78;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=353;floaty=126;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=1;besth=1;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=198;besth=81;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=453;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=10|dock_size(3,0,0)=285|dock_size(1,10,0)=41|dock_size(4,1,0)=258|"));
+    settings->Read(wxT("frmMain/Perspective"), &perspective, wxT("layout1|name=objectBrowser;caption=Object browser;state=251660284;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=98;besth=78;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=353;floaty=126;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=1;besth=1;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=198;besth=81;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=453;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=10|dock_size(3,0,0)=285|dock_size(1,10,0)=41|dock_size(4,1,0)=258|"));
     manager.LoadPerspective(perspective, true);
 
     // Sync the View menu options
