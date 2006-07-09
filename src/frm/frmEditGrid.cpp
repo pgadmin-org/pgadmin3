@@ -67,6 +67,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_MENU(MNU_LIMITBAR,      frmEditGrid::OnToggleLimitBar)
     EVT_MENU(MNU_TOOLBAR,       frmEditGrid::OnToggleToolBar)
     EVT_MENU(MNU_SCRATCHPAD,    frmEditGrid::OnToggleScratchPad)
+    EVT_MENU(MNU_DEFAULTVIEW,   frmEditGrid::OnDefaultView)
     EVT_MENU(MNU_CLOSE,         frmEditGrid::OnClose)
     EVT_CLOSE(                  frmEditGrid::OnCloseWindow)
     EVT_KEY_DOWN(               frmEditGrid::OnKey)
@@ -176,6 +177,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     viewMenu->Append(MNU_LIMITBAR, _("&Limit bar"), _("Show or hide the row limit options bar."), wxITEM_CHECK);
     viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
     viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
 
     // Help menu
     helpMenu = new wxMenu();
@@ -214,7 +217,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("frmEditGrid/Perspective"), &perspective, wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=232;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=limitBar;caption=Row limit;state=16788208;dir=1;layer=10;row=0;pos=243;prop=100000;bestw=129;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlGrid;caption=Data grid;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=82;besth=32;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=279;besth=179;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=84|"));
+    settings->Read(wxT("frmEditGrid/Perspective"), &perspective, FRMEDITGRID_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
     // Sync the View menu options
@@ -288,6 +291,11 @@ void frmEditGrid::OnAuiUpdate(wxFrameManagerEvent& event)
         viewMenu->Check(MNU_SCRATCHPAD, false);
     }
     event.Skip();
+}
+
+void frmEditGrid::OnDefaultView(wxCommandEvent& event)
+{
+    manager.LoadPerspective(FRMEDITGRID_DEFAULT_PERSPECTIVE, true);
 }
 
 void frmEditGrid::SetSortCols(const wxString &cols) 

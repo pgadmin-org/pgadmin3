@@ -25,7 +25,6 @@
 #include "misc.h"
 #include "menu.h"
 #include "frmMain.h"
-//#include "dlgServer.h"
 #include "frmOptions.h"
 #include "ctl/ctlSQLBox.h"
 #include "pgConn.h"
@@ -53,6 +52,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_SQLPANE,                   frmMain::OnToggleSqlPane)
     EVT_MENU(MNU_OBJECTBROWSER,             frmMain::OnToggleObjectBrowser)
     EVT_MENU(MNU_TOOLBAR,                   frmMain::OnToggleToolBar)
+    EVT_MENU(MNU_DEFAULTVIEW,               frmMain::OnDefaultView)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
 
@@ -835,6 +835,10 @@ void frmMain::OnAuiUpdate(wxFrameManagerEvent& event)
     event.Skip();
 }
 
+void frmMain::OnDefaultView(wxCommandEvent& event)
+{
+    manager.LoadPerspective(FRMMAIN_DEFAULT_PERSPECTIVE, true);
+}
 
 void frmMain::OnPositionStc(wxStyledTextEvent& event)
 {

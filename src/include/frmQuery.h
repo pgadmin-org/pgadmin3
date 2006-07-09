@@ -19,6 +19,8 @@
 // wxAUI
 #include "manager.h"
 
+#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=362;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=373;prop=100000;bestw=241;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=198;besth=81;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=resultsPane;caption=Results pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=134664;bestw=400;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=messagePane;caption=Message pane;state=16779260;dir=3;layer=0;row=0;pos=1;prop=65336;bestw=400;besth=100;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=3;layer=0;row=0;pos=2;prop=100000;bestw=279;besth=179;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=240|")
+
 class ExplainCanvas;
 class ctlSQLResult;
 
@@ -85,6 +87,7 @@ private:
     void OnToggleResultsPane(wxCommandEvent& event);
     void OnToggleMessagePane(wxCommandEvent& event);
     void OnAuiUpdate(wxFrameManagerEvent& event);
+    void OnDefaultView(wxCommandEvent& event);
 
     bool CheckChanged(bool canVeto);
     void OpenLastFile();

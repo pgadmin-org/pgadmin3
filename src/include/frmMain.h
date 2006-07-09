@@ -24,6 +24,8 @@
 #include "dlgClasses.h"
 #include "base/factory.h"
 
+#define FRMMAIN_DEFAULT_PERSPECTIVE wxT("layout1|name=objectBrowser;caption=Object browser;state=251660284;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=98;besth=78;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=353;floaty=126;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=1;besth=1;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=198;besth=81;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=453;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=10|dock_size(3,0,0)=285|dock_size(1,10,0)=41|dock_size(4,1,0)=258|")
+
 class pgServer;
 class pgServerCollection;
 class ctlSQLBox;
@@ -104,6 +106,7 @@ private:
     void OnToggleSqlPane(wxCommandEvent& event);
     void OnToggleObjectBrowser(wxCommandEvent& event);
     void OnToggleToolBar(wxCommandEvent& event);
+    void OnDefaultView(wxCommandEvent& event);
     void OnAuiUpdate(wxFrameManagerEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 

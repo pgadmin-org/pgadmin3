@@ -94,6 +94,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_SCRATCHPAD,        frmQuery::OnToggleScratchPad)
     EVT_MENU(MNU_RESULTSPANE,       frmQuery::OnToggleResultsPane)
     EVT_MENU(MNU_MESSAGEPANE,       frmQuery::OnToggleMessagePane)
+    EVT_MENU(MNU_DEFAULTVIEW,       frmQuery::OnDefaultView)
 	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
@@ -299,7 +300,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("frmQuery/Perspective"), &perspective, wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=362;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=373;prop=100000;bestw=241;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=198;besth=81;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=resultsPane;caption=Results pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=134664;bestw=400;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=messagePane;caption=Message pane;state=16779260;dir=3;layer=0;row=0;pos=1;prop=65336;bestw=400;besth=100;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=3;layer=0;row=0;pos=2;prop=100000;bestw=279;besth=179;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=240|"));
+    settings->Read(wxT("frmQuery/Perspective"), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
     // Sync the View menu options
@@ -308,6 +309,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     viewMenu->Check(MNU_RESULTSPANE, manager.GetPane(wxT("resultsPane")).IsShown());
     viewMenu->Check(MNU_MESSAGEPANE, manager.GetPane(wxT("messagePane")).IsShown());
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
 
     bool bVal;
 
@@ -449,6 +452,11 @@ void frmQuery::OnAuiUpdate(wxFrameManagerEvent& event)
         viewMenu->Check(MNU_SCRATCHPAD, false);
     }
     event.Skip();
+}
+
+void frmQuery::OnDefaultView(wxCommandEvent& event)
+{
+    manager.LoadPerspective(FRMQUERY_DEFAULT_PERSPECTIVE, true);
 }
 
 void frmQuery::OnWordWrap(wxCommandEvent &event)
