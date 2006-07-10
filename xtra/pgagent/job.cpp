@@ -280,6 +280,7 @@ int Job::Execute()
                 }
 
                 rc=pclose(fp_script);
+		rc = rc / 256; // The exit code is in the top 8 bits
 #endif
 
                 // Delete the file/directory. If we fail, don't overwrite the script output in the log, just throw warnings.
