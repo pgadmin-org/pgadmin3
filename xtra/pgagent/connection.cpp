@@ -72,7 +72,7 @@ DBconn *DBconn::InitConnection(const wxString &connectString)
 
     int pos=basicConnectString.find(wxT("dbname="));
     if (pos == -1)
-        dbname = wxT("pgadmin");
+        dbname = wxT("postgres");
     else
     {
         dbname = basicConnectString.substr(pos+7);
