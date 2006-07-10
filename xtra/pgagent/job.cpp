@@ -263,7 +263,7 @@ int Job::Execute()
 				FILE *fp_script;
 				char buf[4096];
 
-                fp_script = popen(filename.mb_str(wxConvUTF8), "rt");
+                fp_script = popen(filename.mb_str(wxConvUTF8), "r");
                 if (!fp_script)
                 {
                     output.Printf(_("Couldn't execute script: %s, errno = %d"), filename.c_str(), errno);
