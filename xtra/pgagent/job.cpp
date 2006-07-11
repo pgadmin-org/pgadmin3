@@ -248,7 +248,8 @@ int Job::Execute()
                }
 
                rc=pclose(fp_script);
-		rc = rc / 256; // Get the return value out of the top 8 bits
+                rc = (unsigned char)(rc >> 8); // The exit code is in the top 8 bits
+                rc = (signed char)rc;
 
                 // Delete the file/directory. If we fail, don't overwrite the script output in the log, just throw warnings.
                 if (!wxRemoveFile(filename))
