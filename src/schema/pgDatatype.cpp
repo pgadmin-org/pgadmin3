@@ -53,10 +53,16 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
         }
         else if (name == wxT("time") || name == wxT("timetz")
               || name == wxT("timestamp") || name == wxT("timestamptz")
-              || name == wxT("interval")  || name == wxT("bit"))
+              || name == wxT("bit"))
         {
             prec=0;
             len=typmod;
+            length += NumToStr(len);
+        }
+        else if (name == wxT("interval"))
+        {
+            prec=0;
+            len=(typmod & 0xffff);
             length += NumToStr(len);
         }
         else
