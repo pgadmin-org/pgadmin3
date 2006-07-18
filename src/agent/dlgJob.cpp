@@ -176,7 +176,7 @@ int dlgJob::Go(bool modal)
             while (item)
             {
 				data=mainForm->GetBrowser()->GetObject(item);
-				if (data->IsCollection())
+				if (data->IsCreatedBy(scheduleFactory))
 				{
 					pgaSchedule *schedule=(pgaSchedule*)data;
 					int pos = lstSchedules->AppendItem(scheduleFactory.GetIconId(), schedule->GetName(), schedule->GetComment());
