@@ -489,6 +489,7 @@ wxString pgaSchedule::GetExceptionsString()
 pgaScheduleFactory::pgaScheduleFactory() 
 : pgaJobObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_xpm)
 {
+    metaType = PGM_SCHEDULE;
 }
 
 
