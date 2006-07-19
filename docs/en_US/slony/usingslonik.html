@@ -4,8 +4,8 @@
 <title>15. Using Slonik</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="ddlchanges.html" title="14. Database Schema Changes (DDL)">
 <link rel="next" href="slonikshell.html" title="16.  Embedding Slonik in Shell Scripts ">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="usingslonik"></a>15. Using Slonik</h2></div></div></div>
-<p> It's a bit of a pain writing <span class="application">Slonik</span>
+<a name="id576065"></a><p> It's a bit of a pain writing <span class="application">Slonik</span>
 scripts by hand, particularly as you start working with <span class="productname">Slony-I</span>
 clusters that may be comprised of increasing numbers of nodes and
 sets.  Some problems that have been noticed include the following:
@@ -56,6 +56,11 @@ as:
 <li>
 <p> Named nodes, named sets</p>
 <p> This is supported in <span class="productname">Slony-I</span> 1.1 by the <a href="stmtdefine.html" title="DEFINE"><span class="refentrytitle">DEFINE</span></a> and <a href="stmtinclude.html" title="INCLUDE"><span class="refentrytitle">INCLUDE</span></a> statements.</p>
+<p> The use of <a href="stmtinclude.html" title="INCLUDE"><span class="refentrytitle">INCLUDE</span></a> to allow creating
+&#8220;<span class="quote">preamble files</span>&#8221; has proven an invaluable tool to reduce
+errors.  The preamble file is set up <span class="emphasis"><em>once</em></span>,
+verified <span class="emphasis"><em>once</em></span>, and then that verified script may
+be used with confidence for each slonik script.</p>
 </li>
 <li>
 <p> Looping and control constructs</p>

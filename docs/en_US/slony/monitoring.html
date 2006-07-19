@@ -4,8 +4,8 @@
 <title>4. Monitoring</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="subscribenodes.html" title="3. Subscribing Nodes">
 <link rel="next" href="maintenance.html" title="5. Slony-I Maintenance">
@@ -14,11 +14,11 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring"></a>4. Monitoring</h2></div></div></div>
-<p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+<a name="id569137"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id569741"></a>4.1. CONFIG notices</h3></div></div></div>
+<a name="id569158"></a>4.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -35,7 +35,7 @@ CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id569765"></a>4.2. DEBUG Notices</h3></div></div></div>
+<a name="id569183"></a>4.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -64,9 +64,10 @@ events.</p></dd>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id569822"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<p> Note that as far as slon is concerned, there is no "master" or
-"slave."  They are just nodes. </p>
+<a name="id569239"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<p> Note that as far as slon is concerned, there is no
+&#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
+nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
 events propagating back and forth.  Firstly, there should be some
 events published to indicate creation of the nodes and paths.  If you
@@ -75,17 +76,23 @@ communicate with one another, and nothing else will happen... </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>Create the two nodes.</p>
-<p> No slons are running yet, so there are no logs to look at.</p>
+<p> No slons are running yet, so there are no logs to look
+at.</p>
 </li>
 <li>
 <p> Start the two slons</p>
 <p> The logs for each will start out very quiet, as neither node
-has much to say, and neither node knows how to talk to any other node.</p>
+has much to say, and neither node knows how to talk to another
+node. </p>
 </li>
 <li>
-<p> Do the <code class="command">STORE PATH</code> for the
+<p> Do the <a href="stmtstorepath.html" title="STORE
+     PATH"><span class="refentrytitle">STORE
+     PATH</span></a> to set up
 communications paths.  That will allow the nodes to start to become
 aware of one another.</p>
+<p> The slon logs should now start to receive events from
+&#8220;<span class="quote">foreign</span>&#8221; nodes.</p>
 <p> In version 1.0, <a href="table.sl-listen.html">sl_listen</a> is not set up
 automatically, so things still remain quiet until you explicitly
 submit <code class="command">STORE LISTEN</code> requests. In version 1.1, the
@@ -101,19 +108,17 @@ missing.</p>
 </li>
 <li>
 <p> If needed (<span class="emphasis"><em>e.g.</em></span> - before version
-1.1), submit <code class="command">STORE LISTEN</code> requests to indicate how
+1.1), submit <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> requests to indicate how
 the nodes will use the communications paths. </p>
 <p> Once this has been done, the nodes' logs should show a greater
 level of activity, with events periodically being initiated on one
 node or the other, and propagating to the other. </p>
 </li>
-<li><p> You'll set up the set (<code class="command">CREATE
-SET</code>), add tables (<code class="command">SET ADD TABLE</code>), and
-sequences (<code class="command">SET ADD SEQUENCE</code>), and will see relevant
-events only on the origin node for the set. </p></li>
+<li><p> You'll set up the set (<a href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a>), add tables (<a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>), and sequences (<a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>), and will see relevant events only on
+the origin node for the set. </p></li>
 <li>
-<p> Then, when you submit the <code class="command">SUBSCRIBE SET</code>
-request, the event should go to both nodes. </p>
+<p> Then, when you submit the <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> request, the event should go to both
+nodes. </p>
 <p> The origin node has little more to do, after that...  The
 subscriber will then have a <code class="command">COPY_SET</code> event, which
 will lead to logging information about adding each table and copying
@@ -122,9 +127,9 @@ its data.</p>
 </ul></div>
 <p>After that, you'll mainly see two sorts of behaviour:</p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> On the origin, there won't be much logged, just
-indication that some <code class="command">SYNC</code> events are being
-generated and confirmed by other nodes.</p></li>
+<li><p> On the origin, there won't be too terribly much
+logged, just indication that some <code class="command">SYNC</code> events are
+being generated and confirmed by other nodes.</p></li>
 <li><p> On the subscriber, there will be reports of
 <code class="command">SYNC</code> events, and that the subscriber pulls data
 from the provider for the relevant set(s).  This will happen
@@ -137,8 +142,8 @@ about how the threads work, what to expect in the logs after you run a</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id570040"></a>4.4.  <span class="productname">Nagios</span>&amp; Replication Checks </h3></div></div></div>
-<p> The script in the <code class="filename">tools</code> directory called
+<a name="id569473"></a>4.4.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
+<a name="id569483"></a><p> The script in the <code class="filename">tools</code> directory called
 <code class="command"> pgsql_replication_check.pl </code> represents some of the
 best answers arrived at in attempts to build replication tests to plug
 into the <a href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span> </a> system
@@ -178,26 +183,18 @@ that is to be monitored; that is the way <span class="productname">Nagios</span>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="slonymrtg"></a>4.5.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
-<p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
+<a name="id569656"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
 <a href="http://people.ee.ethz.ch/~oetiker/webtools/mrtg/" target="_top"><span class="application"> mrtg - Multi Router Traffic Grapher </span></a> to monitor <span class="productname">Slony-I</span> replication.</p>
 <p> ... Since I use <span class="application">mrtg</span> to graph data
 from multiple servers I use snmp (<span class="application">net-snmp</span>
 to be exact).  On database server, I added the following line to
-<span class="application">snmpd</span> configuration:
-
-</p>
-<pre class="programlisting">exec replicationLagTime  /cvs/scripts/snmpReplicationLagTime.sh 2</pre>
-<p>
-
-where <code class="filename"> /cvs/scripts/snmpReplicationLagTime.sh</code> looks like this:
-
-</p>
+<span class="application">snmpd</span> configuration:</p>
+<pre class="programlisting">exec replicationLagTime  /cvs/scripts/snmpReplicationLagTime.sh 2
+where <code class="filename"> /cvs/scripts/snmpReplicationLagTime.sh</code> looks like this:</pre>
 <pre class="programlisting">#!/bin/bash
 /home/pgdba/work/bin/psql -U pgdba -h 127.0.0.1 -p 5800 -d _DBNAME_ -qAt -c
 "select cast(extract(epoch from st_lag_time) as int8) FROM _irr.sl_status
 WHERE st_received = $1"</pre>
-<p>
-</p>
 <p> Then, in mrtg configuration,  add this target:</p>
 <pre class="programlisting">Target[db_replication_lagtime]:extOutput.3&amp;extOutput.3:public at db::30:::
 MaxBytes[db_replication_lagtime]: 400000000

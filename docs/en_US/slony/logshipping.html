@@ -4,8 +4,8 @@
 <title>13. Log Shipping - Slony-I with Files</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="dropthings.html" title="12. Dropping things from Slony-I Replication">
 <link rel="next" href="ddlchanges.html" title="14. Database Schema Changes (DDL)">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="logshipping"></a>13. Log Shipping - <span class="productname">Slony-I</span> with Files</h2></div></div></div>
-<a name="id574797"></a><p> One of the new features for 1.1 is the ability to serialize the
+<a name="id574503"></a><p> One of the new features for 1.1 is the ability to serialize the
 updates to go out into log files that can be kept in a spool
 directory.</p>
 <p> The spool files could then be transferred via whatever means
@@ -56,18 +56,18 @@ in this form, including:
 </ul></div>
 <div class="qandaset">
 <dl>
-<dt>13.1. <a href="logshipping.html#id574916"> Where are the &#8220;spool files&#8221; for a
+<dt>13.1. <a href="logshipping.html#id574622"> Where are the &#8220;spool files&#8221; for a
 subscription set generated?</a>
 </dt>
-<dt>13.2. <a href="logshipping.html#id574948"> What takes place when a FAILOVER/ MOVE SET takes
+<dt>13.2. <a href="logshipping.html#id574654"> What takes place when a FAILOVER/ MOVE SET takes
 place?</a>
 </dt>
-<dt>13.3. <a href="logshipping.html#id574972"> What if we run out of &#8220;spool
+<dt>13.3. <a href="logshipping.html#id574679"> What if we run out of &#8220;spool
 space&#8221;?  </a>
 </dt>
-<dt>13.4. <a href="logshipping.html#id574994"> How do we set up a subscription?  </a>
+<dt>13.4. <a href="logshipping.html#id574700"> How do we set up a subscription?  </a>
 </dt>
-<dt>13.5. <a href="logshipping.html#id575067"> What are the limitations of log
+<dt>13.5. <a href="logshipping.html#id574774"> What are the limitations of log
 shipping? </a>
 </dt>
 </dl>
@@ -76,7 +76,7 @@ shipping? </a>
 <tbody>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id574916"></a><a name="id574917"></a><b>13.1.</b>
+<a name="id574622"></a><a name="id574624"></a><b>13.1.</b>
 </td>
 <td align="left" valign="top"><p> Where are the &#8220;<span class="quote">spool files</span>&#8221; for a
 subscription set generated?</p></td>
@@ -95,7 +95,7 @@ shipping, you must have at least one subscriber node. </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id574948"></a><a name="id574949"></a><b>13.2.</b>
+<a name="id574654"></a><a name="id574656"></a><b>13.2.</b>
 </td>
 <td align="left" valign="top"><p> What takes place when a <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a>/ <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> takes
 place?</p></td>
@@ -107,7 +107,7 @@ a subscriber, it will continue to generate logs.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id574972"></a><a name="id574973"></a><b>13.3.</b>
+<a name="id574679"></a><a name="id574680"></a><b>13.3.</b>
 </td>
 <td align="left" valign="top"><p> What if we run out of &#8220;<span class="quote">spool
 space</span>&#8221;?  </p></td>
@@ -120,7 +120,7 @@ will also fall behind.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id574994"></a><a name="id574995"></a><b>13.4.</b>
+<a name="id574700"></a><a name="id574702"></a><b>13.4.</b>
 </td>
 <td align="left" valign="top"><p> How do we set up a subscription?  </p></td>
 </tr>
@@ -141,7 +141,7 @@ dump in order to get a &#8220;<span class="quote">log shipping subscriber.</span
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id575067"></a><a name="id575068"></a><b>13.5.</b>
+<a name="id574774"></a><a name="id574775"></a><b>13.5.</b>
 </td>
 <td align="left" valign="top"><p> What are the limitations of log
 shipping? </p></td>
@@ -255,7 +255,7 @@ necessarily be all that simple)... </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id575434"></a>13.1.  Usage Hints </h3></div></div></div>
+<a name="id575141"></a>13.1.  Usage Hints </h3></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> Here are some more-or-less disorganized notes about how

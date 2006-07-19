@@ -4,8 +4,8 @@
 <title>SET ADD TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtmergeset.html" title="MERGE
      SET">
@@ -24,7 +24,7 @@
 <div class="cmdsynopsis"><p><code class="command">SET ADD TABLE (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id591817"></a><h2>Description</h2>
+<a name="id592766"></a><h2>Description</h2>
 <p> Add an existing user table to a replication set. The set
     cannot currently be subscribed by any other node - that
     functionality is supported by the <a href="stmtmergeset.html" title="MERGE
@@ -59,7 +59,7 @@
 <dt><span class="term"><code class="literal"> KEY = { 'string' | SERIAL }
 	</code></span></dt>
 <dd><p>	 <span class="emphasis"><em>(Optional)</em></span> The index name that covers the
-	 unique and not null column set to be used as the row identifier
+	 unique and not null set of columns to be used as the row identifier
 	 for replication purposes. Or the keyword SERIAL to use the
 	 special column added with a previous <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> command. Default
 	 is to use the table's primary key.  The index name is <span class="emphasis"><em>	  not </em></span> fully qualified; you must omit the
@@ -72,7 +72,7 @@
 <p> This uses <a href="function.setaddtable-integer-integer-text-name-text.html">schemadocsetaddtable( integer, integer, text, name, text )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id591978"></a><h2>Example</h2>
+<a name="id592928"></a><h2>Example</h2>
 <pre class="programlisting">SET ADD TABLE (
     SET ID = 1,
     ORIGIN = 1,
@@ -83,7 +83,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id591990"></a><h2> Locking Behaviour </h2>
+<a name="id592939"></a><h2> Locking Behaviour </h2>
 <p> On the origin node, this operation requires a brief
     exclusive lock on the table in order to alter it to add the
     replication trigger.  On subscriber nodes, corresponding locking
@@ -91,7 +91,7 @@
     event.  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id592007"></a><h2> Version Information </h2>
+<a name="id592956"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

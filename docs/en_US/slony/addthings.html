@@ -1,11 +1,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>11. Adding Things to Replication</title>
+<title>11. A Task-Oriented View of Slony-I</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="locking.html" title="10. Locking Issues">
 <link rel="next" href="dropthings.html" title="12. Dropping things from Slony-I Replication">
@@ -13,10 +13,14 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="addthings"></a>11. Adding Things to Replication</h2></div></div></div>
-<p>You may discover that you have missed replicating things that
+<a name="addthings"></a>11. A Task-Oriented View of <span class="productname">Slony-I</span></h2></div></div></div>
+<a name="id573006"></a><p>You may discover that you have missed replicating things that
 you wish you were replicating.</p>
-<p>This can generally be fairly easily remedied.</p>
+<p>This can generally be fairly easily remedied.  This section
+attempts to provide a &#8220;<span class="quote">task-oriented</span>&#8221; view of how to use
+<span class="productname">Slony-I</span>; in effect, to answer the question &#8220;<span class="quote">How do I do
+<span class="emphasis"><em>X</em></span> with <span class="productname">Slony-I</span>?</span>&#8221;, for various values of
+<span class="emphasis"><em>X</em></span>.</p>
 <p>You cannot directly use <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> or <a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a> in
 order to add tables and sequences to a replication set that is
 presently replicating; you must instead create a new replication set.
@@ -77,7 +81,7 @@ in some existing replication set, on <span class="emphasis"><em>all</em></span> 
 makes <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> an unattractive approach on a
 busy system.  This breaks the <span class="productname">Slony-I</span> feature that you &#8220;<span class="quote">don't
 have to interrupt normal activity to introduce replication.</span>&#8221;</p>
-<p> Instead, you can add the table via
+<p> Instead, you may add the table via
 <span class="application">psql</span> on each node.
 </p>
 </li>
@@ -90,22 +94,41 @@ Request subscription <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span
 Once the subscriptions have all been set up so that the new set has an identical set of subscriptions to the old set, you can merge the new set in alongside the old one via <a href="stmtmergeset.html" title="MERGE
      SET"><span class="refentrytitle">MERGE
      SET</span></a></p></li>
+<li><p> How to add columns to a replicated table </p></li>
 </ul></div>
-</li>
-<li>
-<p> How to add columns to a replicated table </p>
-<p> This also answers the question &#8220;<span class="quote">How do I rename columns
+<p>
+
+</p>
+<div class="itemizedlist"><ul type="circle">
+<li><p> This also answers the question &#8220;<span class="quote">How do I rename columns
 on a replicated table?</span>&#8221;, and, more generally, other questions
 to the effect of &#8220;<span class="quote">How do I modify the definitions of replicated
-tables?</span>&#8221;</p>
-<p>If you change the &#8220;<span class="quote">shape</span>&#8221; of a replicated table, this needs to take place at exactly the same point in all of the &#8220;<span class="quote">transaction streams</span>&#8221; on all nodes that are subscribed to the set containing the table.</p>
-<p> Thus, the way to do this is to construct an SQL script consisting of the DDL changes, and then submit that script to all of the nodes via the Slonik command <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>.
-</p>
-<p> There are a number of &#8220;<span class="quote">sharp edges</span>&#8221; to note...
+tables?</span>&#8221;</p></li>
+<li><p>If you change the &#8220;<span class="quote">shape</span>&#8221; of a replicated table, this needs to take place at exactly the same point in all of the &#8220;<span class="quote">transaction streams</span>&#8221; on all nodes that are subscribed to the set containing the table.</p></li>
+<li><p> Thus, the way to do this is to construct an SQL script consisting of the DDL changes, and then submit that script to all of the nodes via the Slonik command <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>.</p></li>
+<li><p> There are a number of &#8220;<span class="quote">sharp edges</span>&#8221; to note...</p></li>
+</ul></div>
+<p>
 </p>
 <div class="itemizedlist"><ul type="circle">
 <li><p> You absolutely <span class="emphasis"><em>must not</em></span> include transaction control commands, particularly <code class="command">BEGIN</code> and <code class="command">COMMIT</code>, inside these DDL scripts. <span class="productname">Slony-I</span> wraps DDL scripts with a <code class="command">BEGIN</code>/<code class="command">COMMIT</code> pair; adding extra transaction control will mean that parts of the DDL will commit outside the control of <span class="productname">Slony-I</span> </p></li>
-<li><p> Avoid, if possible, having quotes in the DDL script </p></li>
+<li>
+<p> Before version 1.2, it was necessary to be
+exceedingly restrictive about what you tried to process using
+<a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>. </p>
+<p> You could not have anything <code class="command">'quoted'</code> in the
+script, as this would not be stored and forwarded properly.  As of
+1.2, quoting is now handled properly. </p>
+<p> If you submitted a series of DDL statements, the later ones
+could not make reference to objects created in the earlier ones, as
+the entire set of statements was submitted as a single query, where
+the query plan was based on the state of the database at
+the <span class="emphasis"><em>beginning,</em></span> before any modifications had been
+made.  As of 1.2, if there are 12 SQL statements, they are each
+submitted individually, so that <code class="command"> alter table x add column c1
+integer; </code> may now be followed by <code class="command"> alter table x
+alter column c1 set not null; </code>.</p>
+</li>
 </ul></div>
 <p>
 </p>
@@ -113,10 +136,12 @@ tables?</span>&#8221;</p>
 <li>
 <p> How to remove replication for a node</p>
 <p> You will want to remove the various <span class="productname">Slony-I</span> components connected to the database(s).</p>
-<p> We will just consider, for now, doing this to one node. If you have multiple nodes, you will have to repeat this as many times as necessary.</p>
+<p> We will just consider, for now, doing this to one node. If you
+have multiple nodes, you will have to repeat this as many times as
+necessary.</p>
 <p> Components to be Removed: </p>
 <div class="itemizedlist"><ul type="circle">
-<li><p>    Log Triggers / Update Denial Triggers 
+<li><p> Log Triggers / Update Denial Triggers
 </p></li>
 <li><p>    The "cluster" schema containing <span class="productname">Slony-I</span> tables indicating the state of the node as well as various stored functions </p></li>
 <li><p>    <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process that manages the node </p></li>
@@ -124,31 +149,84 @@ tables?</span>&#8221;</p>
 </ul></div>
 <p> How To Conveniently Handle Removal</p>
 <div class="itemizedlist"><ul type="circle">
-<li><p>    You may use the Slonik <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> command to remove the node from the cluster. This will lead to the triggers and everything in the cluster schema being dropped from the node. The <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process will automatically die off. </p></li>
-<li><p>
-    In the case of a failed node (where you used <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to switch to another node), you may need to use <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> to drop out the triggers and schema and functions. </p></li>
-<li><p>
-    If the above things work out particularly badly, you could submit the SQL command <code class="command">DROP SCHEMA "_ClusterName" CASCADE;</code>, which will drop out <span class="productname">Slony-I</span> functions, tables, and triggers alike. </p></li>
+<li><p> You may use the Slonik <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>
+command to remove the node from the cluster. This will lead to the
+triggers and everything in the cluster schema being dropped from the
+node. The <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process will automatically die
+off.</p></li>
+<li>
+<p> In the case of a failed node (where you
+used <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to switch to another node), you may
+need to use <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> to drop out the
+triggers and schema and functions.</p>
+<p> If the node failed due to some dramatic hardware failure
+(<span class="emphasis"><em>e.g.</em></span> disk drives caught fire), there may not be
+a database left on the failed node; it would only be expected to
+survive if the failure was one involving a network failure where
+the <span class="emphasis"><em>database</em></span> was fine, but you were forced to
+drop it from replication due to (say) some persistent network outage.</p>
+</li>
+<li><p> If the above things work out particularly badly, you
+could submit the SQL command <code class="command">DROP SCHEMA "_ClusterName"
+CASCADE;</code>, which will drop out <span class="productname">Slony-I</span> functions, tables,
+and triggers alike.  That is generally less suitable
+than <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a>, because that command not only
+drops the schema and its contents, but also removes any columns added
+in using <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>.</p></li>
 </ul></div>
 </li>
 <li>
 <p> Adding A Node To Replication</p>
-<p>Things are not fundamentally different whether you are adding a brand new, fresh node, or if you had previously dropped a node and are recreating it. In either case, you are adding a node to replication. </p>
+<p>Things are not fundamentally different whether you are adding a
+brand new, fresh node, or if you had previously dropped a node and are
+recreating it. In either case, you are adding a node to
+replication. </p>
 <p>The needful steps are thus... </p>
 <div class="itemizedlist"><ul type="circle">
-<li><p>   Determine the node number and any relevant DSNs for the new node.  Use <span class="productname">PostgreSQL</span> command <code class="command">createdb</code> to create the database; add the table definitions for the tables that are to be replicated, as <span class="productname">Slony-I</span> does not automatically propagate that information.</p></li>
-<li><p>   If the node had been a failed node, you may need to issue the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> in order to get rid of its vestiges in the cluster, and to drop out the schema that <span class="productname">Slony-I</span> creates.</p></li>
-<li><p>    Issue the slonik command <a href="stmtstorenode.html" title="STORE NODE"><span class="refentrytitle">STORE NODE</span></a> to establish the new node.</p></li>
-<li><p>    At this point, you may start a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>  daemon against the new node. It may not know much about the other nodes yet, so the logs for this node may be pretty quiet.</p></li>
-<li><p>    Issue the slonik command <a href="stmtstorepath.html" title="STORE
+<li>
+<p> Determine the node number and any relevant DSNs for
+the new node.  Use <span class="productname">PostgreSQL</span> command <code class="command">createdb</code> to
+create the database; add the table definitions for the tables that are
+to be replicated, as <span class="productname">Slony-I</span> does not automatically propagate that
+information.</p>
+<p> If you do not have a perfectly clean SQL script to add in the
+tables, then run the tool <code class="command"> slony1_extract_schema.sh</code>
+from the <code class="filename">tools</code> directory to get the user schema
+from the origin node with all <span class="productname">Slony-I</span> &#8220;<span class="quote">cruft</span>&#8221;
+removed.  </p>
+</li>
+<li><p> If the node had been a failed node, you may need to
+issue the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> in order to get rid of its
+vestiges in the cluster, and to drop out the schema that <span class="productname">Slony-I</span>
+creates.</p></li>
+<li><p> Issue the slonik
+command <a href="stmtstorenode.html" title="STORE NODE"><span class="refentrytitle">STORE NODE</span></a> to establish the new node.</p></li>
+<li><p> At this point, you may start a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon against
+the new node. It may not know much about the other nodes yet, so the
+logs for this node may be pretty quiet.</p></li>
+<li><p> Issue the slonik
+command <a href="stmtstorepath.html" title="STORE
      PATH"><span class="refentrytitle">STORE
-     PATH</span></a> to indicate how <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes are to communicate with the new node.  In <span class="productname">Slony-I</span> version 1.1 and later, this will then automatically generate <a href="listenpaths.html" title="8. Slony-I listen paths"> listen path </a> entries; in earlier versions, you will need to use <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> to generate them manually.</p></li>
-<li><p>   Issue the slonik command <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> to subscribe the node to some replication set. </p></li>
+     PATH</span></a> to indicate
+how <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes are to communicate with the new
+node.  In <span class="productname">Slony-I</span> version 1.1 and later, this will then automatically
+generate <a href="listenpaths.html" title="8. Slony-I listen paths"> listen path </a> entries; in
+earlier versions, you will need to
+use <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> to generate them manually.</p></li>
+<li><p> At this point, it is an excellent idea to run
+the <code class="filename">tools</code>
+script <code class="command">test_slony_state-dbi.pl</code>, which rummages
+through the state of the entire cluster, pointing out any anomalies
+that it finds.  This includes a variety of sorts of communications
+problems.</p></li>
+<li><p> Issue the slonik
+command <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> to subscribe the node to
+some replication set.</p></li>
 </ul></div>
 </li>
 <li>
-<p> How do I reshape the subscriptions?
-</p>
+<p> How do I reshape subscriptions?</p>
 <p> For instance, I want subscriber node 3 to draw data from node
 1, when it is presently drawing data from node 2. </p>
 <p> This isn't a case for <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; we're not
@@ -156,6 +234,47 @@ shifting the origin, just reshaping the subscribers. </p>
 <p> For this purpose, you can simply submit <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> requests to <span class="emphasis"><em>revise</em></span>
 the subscriptions.  Subscriptions will not be started from scratch;
 they will merely be reconfigured.  </p>
+</li>
+<li><p> How do I use <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">Section 13, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> </p></li>
+<li>
+<p> How do I know replication is working?</p>
+<p> The ultimate proof is in looking at whether data added at the
+origin makes it to the subscribers.  That's a &#8220;<span class="quote">simply matter of
+querying</span>&#8221;.</p>
+<p> There are several ways of examining replication status, however: </p>
+<div class="itemizedlist"><ul type="circle">
+<li>
+<p> Look in the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> logs.</p>
+<p> They won't say too much, even at very high debugging levels, on
+an origin node; at debugging level 2, you should see, on subscribers,
+that SYNCs are being processed.  As of version 1.2, the information
+reported for SYNC processing includes counts of the numbers of tables
+processed, as well as numbers of tuples inserted, deleted, and
+updated.</p>
+</li>
+<li>
+<p> Look in the view <code class="command"> sl_status </code>, on
+the origin node. </p>
+<p> This view will tell how far behind the various subscribing
+nodes are in processing events from the node where you run the query.
+It will only be <span class="emphasis"><em>very</em></span> informative on a node that
+originates a replication set.</p>
+</li>
+<li><p> Run the <code class="filename">tools</code>
+script <code class="command">test_slony_state-dbi.pl</code>, which rummages
+through the state of the entire cluster, pointing out any anomalies
+that it notices, as well as some information on the status of each
+node. </p></li>
+</ul></div>
+</li>
+<li>
+<p> What happens when I fail over?</p>
+<p> To be written...</p>
+</li>
+<li>
+<p> How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </p>
+<p> Obviously, use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; more details
+should be added...</p>
 </li>
 </ul></div>
 </div></body>

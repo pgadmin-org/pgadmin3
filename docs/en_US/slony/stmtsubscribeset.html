@@ -4,8 +4,8 @@
 <title>SUBSCRIBE SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtdroptrigger.html" title="DROP TRIGGER">
 <link rel="next" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET">
@@ -22,7 +22,7 @@
 <div class="cmdsynopsis"><p><code class="command">SUBSCRIBE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id593044"></a><h2>Description</h2>
+<a name="id594000"></a><h2>Description</h2>
 <p> Causes a node (subscriber) to start replicating a set of
     tables either from the origin or from another provider node, which
     must itself already be be an active, forwarding subscriber.</p>
@@ -111,7 +111,7 @@
 <p> This uses <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id593269"></a><h2>Example</h2>
+<a name="id594225"></a><h2>Example</h2>
 <pre class="programlisting">SUBSCRIBE SET (
    ID = 1,
    PROVIDER = 1,
@@ -121,7 +121,42 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id593280"></a><h2> Locking Behaviour </h2>
+<a name="id594236"></a><h2> Forwarding Behaviour </h2>
+<p> The <code class="command">FORWARD=boolean</code> flag indicates
+    whether the subscriber will store log information in tables
+    <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a>.  Several implications fall from
+    this...</p>
+<p> By storing the data in these tables on the subscriber,
+    there is some additional processing burden.  If you are certain
+    that you would never want to <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> or <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a particular subscriber, it is worth
+    considering turning off forwarding on that node.  </p>
+<p> There is, however, a case where having forwarding turned
+    off opens up a perhaps-unexpected failure condition; a rule of
+    thumb should be that <span class="emphasis"><em>all nodes that connect directly to
+    the origin</em></span> should have forwarding turned on.  Supposing
+    one such &#8220;<span class="quote">direct subscriber</span>&#8221; has forwarding turned
+    off, it is possible for that node to be forcibly lost in a case of
+    failover.  The problem comes if that node gets ahead of other
+    nodes.</p>
+<p> Let's suppose that the origin, node 1 is at SYNC number
+    88901, a non-forwarding node, node 2 has processed up to SYNC
+    88897, and other forwarding nodes, 3, 4, and 5, have only
+    processed data up to SYNC 88895.  At that moment, the disk system
+    on the origin node catches fire.  Node 2 has the
+    <span class="emphasis"><em>data</em></span> up to SYNC 88897, but there is no
+    remaining node that contains, in <a href="table.sl-log-1.html">sl_log_1</a> or <a href="table.sl-log-2.html">sl_log_2</a>, the data
+    for SYNCs 88896 and 88897, so there is no way to bring nodes 3-5
+    up to that point.</p>
+<p> At that point, there are only two choices: To drop node 2,
+    because there is no way to continue managing it, or to drop all
+    nodes <span class="emphasis"><em>but</em></span> 2, because there is no way to bring
+    them up to SYNC 88897.</p>
+<p> That dilemma may be avoided by making sure that all nodes
+    directly subscribing to the origin have forwarding turned
+    on. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id594344"></a><h2> Locking Behaviour </h2>
 <p> This operation does <span class="emphasis"><em>not</em></span> require
     acquiring any locks on the provider node.</p>
 <p> On the subscriber node, it will have the effect of locking
@@ -133,7 +168,7 @@
     </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id593299"></a><h2> Version Information </h2>
+<a name="id594365"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>
