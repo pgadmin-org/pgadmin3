@@ -41,7 +41,7 @@ while test "$todo" != ""; do
 				install_name_tool \
 					-id "$lib_bn" \
 					"Contents/Frameworks/$lib_bn" || exit 1
-				todo="$todo Contents/Frameworks/$lib_bn"
+				todo="$todo .//Contents/Frameworks/$lib_bn"
 			fi
 			install_name_tool -change \
 				"$lib" \
