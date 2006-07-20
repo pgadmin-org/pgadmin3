@@ -161,18 +161,21 @@ public:
     frmEditGrid(frmMain *form, const wxString& _title, pgConn *conn, pgSchemaObject *obj);
     ~frmEditGrid();
 
-	void ShowForm(bool filter = false);
-	void Go();
-	wxString GetSortCols() const { return orderBy; } ;
-	void SetSortCols(const wxString &cols);
-	wxString GetFilter() const { return rowFilter; } ;
-	void SetFilter(const wxString &filter);
-	int GetLimit() const { return limit; } ;
-	void SetLimit(const int rowlimit);
+    void ShowForm(bool filter = false);
+    void Go();
+    wxString GetSortCols() const { return orderBy; } ;
+    void SetSortCols(const wxString &cols);
+    wxString GetFilter() const { return rowFilter; } ;
+    void SetFilter(const wxString &filter);
+    int GetLimit() const { return limit; } ;
+    void SetLimit(const int rowlimit);
     wxMenu *GetFileMenu() { return fileMenu; };
     wxMenu *GetEditMenu() { return editMenu; };
 
 private:
+    void OnEraseBackground(wxEraseEvent& event);
+    void OnSize(wxSizeEvent& event);
+    
     void OnCloseWindow(wxCloseEvent& event);
     void OnClose(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);

@@ -55,6 +55,8 @@
 
 
 BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
+    EVT_ERASE_BACKGROUND(       frmEditGrid::OnEraseBackground)
+    EVT_SIZE(                   frmEditGrid::OnSize)
     EVT_MENU(MNU_REFRESH,       frmEditGrid::OnRefresh)
     EVT_MENU(MNU_DELETE,        frmEditGrid::OnDelete)
     EVT_MENU(MNU_SAVE,          frmEditGrid::OnSave)
@@ -98,7 +100,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
     // notify wxAUI which frame to use
     manager.SetFrame(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
 
     CreateStatusBar();
     SetStatusBarPane(-1);
@@ -247,6 +249,16 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
         hasOids=false;
         tableName=view->GetQuotedFullIdentifier();
     }
+}
+
+void frmEditGrid::OnEraseBackground(wxEraseEvent& event)
+{
+    event.Skip();
+}
+
+void frmEditGrid::OnSize(wxSizeEvent& event)
+{
+    event.Skip();
 }
 
 void frmEditGrid::OnToggleLimitBar(wxCommandEvent& event)

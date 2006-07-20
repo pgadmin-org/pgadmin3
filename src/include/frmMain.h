@@ -41,6 +41,7 @@ class frmMain : public pgFrame
 public:
     frmMain(const wxString& title);
     ~frmMain();
+    
     void OnAction(wxCommandEvent &ev);
     void OnReport(wxCommandEvent &ev);
     wxString GetHelpPage() const;
@@ -97,10 +98,13 @@ private:
     wxTreeItemId denyCollapseItem;
     pgObject *currentObject;
 
-	void CreateMenus();
+    void OnEraseBackground(wxEraseEvent& event);
+    void OnSize(wxSizeEvent& event);
+    
+    void CreateMenus();
     void OnContents(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
-	void ViewData(bool filter = false);
+    void ViewData(bool filter = false);
     void OnSaveDefinition(wxCommandEvent& event);
     void OnShowSystemObjects(wxCommandEvent& event);
     void OnToggleSqlPane(wxCommandEvent& event);
@@ -124,7 +128,7 @@ private:
 
     void OnNew(wxCommandEvent& event);
     void OnDelete(wxCommandEvent &ev);
-	void OnCopy(wxCommandEvent &ev) { sqlPane->Copy(); };
+    void OnCopy(wxCommandEvent &ev) { sqlPane->Copy(); };
 
     void OnCheckAlive(wxCommandEvent& event);
     void OnOnlineUpdate(wxCommandEvent& event);

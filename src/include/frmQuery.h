@@ -44,6 +44,9 @@ private:
 
     pgConn *conn;
     wxLongLong elapsedQuery, elapsedRetrieve;
+    
+    void OnEraseBackground(wxEraseEvent& event);
+    void OnSize(wxSizeEvent& event);
 
     void OnChangeStc(wxStyledTextEvent& event);
     void OnPositionStc(wxStyledTextEvent& event);

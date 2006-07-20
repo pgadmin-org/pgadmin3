@@ -59,6 +59,8 @@
 #define CTRLID_DATABASELABEL    4201
 
 BEGIN_EVENT_TABLE(frmQuery, pgFrame)
+    EVT_ERASE_BACKGROUND(           frmQuery::OnEraseBackground)
+    EVT_SIZE(                       frmQuery::OnSize)
     EVT_COMBOBOX(CTRLID_CONNECTION, frmQuery::OnChangeConnection)
     EVT_CLOSE(                      frmQuery::OnClose)
     EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
@@ -114,7 +116,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // notify wxAUI which frame to use
     manager.SetFrame(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -382,6 +384,16 @@ frmQuery::~frmQuery()
 
 	if (favourites)
 		delete favourites;
+}
+
+void frmQuery::OnEraseBackground(wxEraseEvent& event)
+{
+    event.Skip();
+}
+
+void frmQuery::OnSize(wxSizeEvent& event)
+{
+    event.Skip();
 }
 
 void frmQuery::OnToggleScratchPad(wxCommandEvent& event)

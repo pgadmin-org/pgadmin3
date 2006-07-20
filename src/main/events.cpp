@@ -42,10 +42,12 @@ extern wxString loadPath;
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
+    EVT_ERASE_BACKGROUND(                   frmMain::OnEraseBackground)
+    EVT_SIZE(                               frmMain::OnSize)
     EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
     EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
 
-	EVT_MENU(MNU_COPY,						frmMain::OnCopy)
+    EVT_MENU(MNU_COPY,						frmMain::OnCopy)
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
@@ -74,7 +76,15 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
 #endif
 END_EVENT_TABLE()
 
+void frmMain::OnEraseBackground(wxEraseEvent& event)
+{
+    event.Skip();
+}
 
+void frmMain::OnSize(wxSizeEvent& event)
+{
+    event.Skip();
+}
 
 
 // unfortunately, under GTK we won't get the original wxKeyEvent
