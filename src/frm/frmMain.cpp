@@ -179,6 +179,9 @@ frmMain::frmMain(const wxString& title)
     settings->Read(wxT("frmMain/Perspective"), &perspective, FRMMAIN_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
+    // Hack to force the toolbar to redraw to the correct size
+    this->SetSize(GetSize());
+
     // Sync the View menu options
     viewMenu->Check(MNU_SQLPANE, manager.GetPane(wxT("sqlPane")).IsShown());
     viewMenu->Check(MNU_OBJECTBROWSER, manager.GetPane(wxT("objectBrowser")).IsShown());

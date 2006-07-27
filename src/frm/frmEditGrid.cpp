@@ -214,6 +214,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     settings->Read(wxT("frmEditGrid/Perspective"), &perspective, FRMEDITGRID_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
+    // Hack to force the toolbar to redraw to the correct size
+    this->SetSize(GetSize());
+
     // Sync the View menu options
     viewMenu->Check(MNU_LIMITBAR, manager.GetPane(wxT("limitBar")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());

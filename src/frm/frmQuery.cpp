@@ -299,6 +299,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     settings->Read(wxT("frmQuery/Perspective"), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
+    // Hack to force the toolbar to redraw to the correct size
+    this->SetSize(GetSize());
+
     // Sync the View menu options
     viewMenu->Check(MNU_DATABASEBAR, manager.GetPane(wxT("databaseBar")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
