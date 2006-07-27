@@ -49,8 +49,6 @@
 #include "images/clip_copy.xpm"
 #include "images/clip_paste.xpm"
 
-#define CTRLID_LIMITLABEL       4224
-#define CTRLID_LIMITSPACER      4225
 #define CTRLID_LIMITCOMBO       4226
 
 
@@ -134,17 +132,11 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar->EnableTool(MNU_DELETE, false);
 
     // Setup the limit bar
-    wxPanel *limitBar = new wxPanel(this, 0, 0, 5, wxDefaultSize.GetHeight());
-
-    wxStaticText *txtLimit = new wxStaticText(limitBar, CTRLID_LIMITLABEL, _("Row limit"), wxPoint(0, 0));
-    cbLimit = new ctlComboBoxFix(limitBar, CTRLID_LIMITCOMBO, wxPoint(0, 0), wxSize(GetCharWidth()*12, -1), wxCB_DROPDOWN);
-    txtLimit->SetPosition(wxPoint(1, (limitBar->GetSize().GetHeight() / 2) - (txtLimit->GetSize().GetHeight() / 2) + 1));
-    cbLimit->SetPosition(wxPoint(txtLimit->GetSize().GetWidth() + 10, 1));
-    limitBar->SetSize(cbLimit->GetPosition().x + cbLimit->GetSize().GetWidth() + 5, cbLimit->GetPosition().y + cbLimit->GetSize().GetHeight() + 1); 
+    cbLimit = new ctlComboBoxFix(this, CTRLID_LIMITCOMBO, wxPoint(0, 0), wxSize(GetCharWidth()*12, -1), wxCB_DROPDOWN);
     cbLimit->Append(_("No limit"));
-    cbLimit->Append(wxT("1000"));
-    cbLimit->Append(wxT("500"));
-    cbLimit->Append(wxT("100"));
+    cbLimit->Append(wxT("1000 rows"));
+    cbLimit->Append(wxT("500 rows"));
+    cbLimit->Append(wxT("100 rows"));
     cbLimit->SetValue(_("No limit"));
 
     // Finally, the scratchpad
@@ -210,7 +202,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(limitBar, wxPaneInfo().Name(wxT("limitBar")).Caption(_("Limit bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(cbLimit, wxPaneInfo().Name(wxT("limitBar")).Caption(_("Limit bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CloseButton(false));
     manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom());
 
@@ -334,7 +326,7 @@ void frmEditGrid::SetLimit(const int rowlimit)
     	if (limit <= 0)
 	    	cbLimit->SetValue(_("No limit"));
 	    else
-		    cbLimit->SetValue(wxString::Format(wxT("%i"), limit));
+                cbLimit->SetValue(wxString::Format(_("%i rows"), limit));
 	}
 }
 
@@ -769,20 +761,20 @@ void frmEditGrid::Go()
 {
     long templong;
 
-	if (cbLimit->GetValue() != wxT("") &&
-        cbLimit->GetValue() != _("No limit") &&
-		!cbLimit->GetValue().ToLong(&templong))
-	{
-		wxLogError(_("The row limit must be an integer number or 'No limit'"));
-		return;
+    if (cbLimit->GetValue() != wxT("") &&
+        cbLimit->GetValue() != _("No limit") && 
+        !cbLimit->GetValue().BeforeFirst(' ').ToLong(&templong))
+    {
+        wxLogError(_("The row limit must be an integer number or 'No limit'"));
+	return;
     }
 
-	if (cbLimit->GetValue() == _("No limit"))
-		SetLimit(0);
-	else
+    if (cbLimit->GetValue() == _("No limit"))
+        SetLimit(0);
+    else
     {
-		cbLimit->GetValue().ToLong(&templong);
-	    SetLimit(templong);
+        cbLimit->GetValue().BeforeFirst(' ').ToLong(&templong);
+        SetLimit(templong);
     }
 
     SetStatusText(_("Refreshing data, please wait."), 0);

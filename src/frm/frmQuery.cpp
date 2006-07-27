@@ -252,13 +252,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->Realize();
 
     // Add the database selection bar
-    wxPanel *databaseBar = new wxPanel(this, 0, 0, 5, wxDefaultSize.GetHeight());
-
-    wxStaticText *txtDatabase = new wxStaticText(databaseBar, CTRLID_DATABASELABEL, _("Database"), wxPoint(0, 0));
-    cbConnection = new ctlComboBoxFix(databaseBar, CTRLID_CONNECTION, wxPoint(1, 1), wxSize(GetCharWidth()*30, -1), wxCB_READONLY|wxCB_DROPDOWN);
-    txtDatabase->SetPosition(wxPoint(1, (databaseBar->GetSize().GetHeight() / 2) - (txtDatabase->GetSize().GetHeight() / 2) + 1));
-    cbConnection->SetPosition(wxPoint(txtDatabase->GetSize().GetWidth() + 10, 1));
-    databaseBar->SetSize(cbConnection->GetPosition().x + cbConnection->GetSize().GetWidth() + 5, cbConnection->GetPosition().y + cbConnection->GetSize().GetHeight() + 1); 
+    cbConnection = new ctlComboBoxFix(this, CTRLID_CONNECTION, wxDefaultPosition, wxSize(GetCharWidth()*30, -1), wxCB_READONLY|wxCB_DROPDOWN);
     cbConnection->Append(conn->GetName(), (void*)conn);
     cbConnection->Append(_("<new connection>"), (void*)0);
 
@@ -291,7 +285,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(databaseBar, wxPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(cbConnection, wxPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(sqlQuery, wxPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CloseButton(false));
     manager.AddPane(resultsPane, wxPaneInfo().Name(wxT("resultsPane")).Caption(_("Results pane")).Bottom());
     manager.AddPane(messagePane, wxPaneInfo().Name(wxT("messagePane")).Caption(_("Message pane")).Bottom());
