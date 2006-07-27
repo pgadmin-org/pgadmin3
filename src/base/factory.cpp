@@ -306,7 +306,7 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 
 						size_t i;
 						int itemCount=0;
-						wxMenuItem *singleMenuItem;
+						wxMenuItem *singleMenuItem=0;
 						for (i=0; i < oldSubMenu->GetMenuItemCount(); i++)
 						{
 							wxMenuItem *oldMenuItem = oldSubMenu->FindItemByPosition(i);
