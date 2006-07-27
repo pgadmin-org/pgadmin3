@@ -83,7 +83,7 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 ####################
 AC_DEFUN([LOCATE_WXAUI],
 [
-	AC_ARG_WITH(wxaui, [  --with-wxaui=DIR	   wxAUI source directory],
+	AC_ARG_WITH(wxaui, [  --with-wxaui=DIR	   wxAUI (pgAdmin) source directory],
 	[
 		if test "$withval" != no
 		then
@@ -96,17 +96,13 @@ AC_DEFUN([LOCATE_WXAUI],
 		fi
 	],
 	[
-		WXAUI_HOME=/usr/local/wxaui
+		WXAUI_HOME=/usr/local/wxaui-pgadmin
 		if test ! -f "${WXAUI_HOME}/src/manager.cpp"
 		then
-			WXAUI_HOME=/usr/local/src/wxaui
+			WXAUI_HOME=/usr/local/src/wxaui-pgadmin
 			if test ! -f "${WXAUI_HOME}/src/manager.cpp"
 			then
-				WXAUI_HOME=/usr/local/src/wxaui-0.9.2
-				if test ! -f "${WXAUI_HOME}/src/manager.cpp"
-				then
-					AC_MSG_ERROR([Could not find your wxAUI source code. You might need to use the --with-wxaui=DIR configure option])
-				fi
+				AC_MSG_ERROR([Could not find your wxAUI (pgAdmin) source code. You might need to use the --with-wxaui=DIR configure option])
 			fi
 		fi
 	])

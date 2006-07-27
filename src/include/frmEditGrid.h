@@ -21,7 +21,7 @@
 #include "dlgClasses.h"
 #include "ctl/ctlSQLGrid.h"
 
-#define FRMEDITGRID_DEFAULT_PERSPECTIVE wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=232;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=limitBar;caption=Row limit;state=16788208;dir=1;layer=10;row=0;pos=243;prop=100000;bestw=129;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlGrid;caption=Data grid;state=2044;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=82;besth=32;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=279;besth=179;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=84|")
+#define FRMEDITGRID_DEFAULT_PERSPECTIVE wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=232;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=limitBar;caption=Row limit;state=16788208;dir=1;layer=10;row=0;pos=243;prop=100000;bestw=129;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlGrid;caption=Data grid;state=18428;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=82;besth=32;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=279;besth=179;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=9;floaty=214;floatw=300;floath=205|dock_size(1,10,0)=25|dock_size(5,0,0)=84|")
 
 class cacheLine
 {

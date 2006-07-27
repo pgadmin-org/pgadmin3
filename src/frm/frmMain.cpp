@@ -127,11 +127,11 @@ frmMain::frmMain(const wxString& title)
 	CreateMenus();
     
     // Setup the object browser
-    browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxSize(200, 500), wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
+    browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
     browser->SetImageList(imageList);
 
     // Setup the listview
-    listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxSize(400, 400), wxNB_TOP);
+    listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     dependsOn = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
@@ -157,7 +157,7 @@ frmMain::frmMain(const wxString& title)
     referencedBy->SetBackgroundColour(background);
 
     // Setup the SQL pane
-    sqlPane = new ctlSQLBox(this, CTL_SQLPANE, wxDefaultPosition, wxSize(400, 400), wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
+    sqlPane = new ctlSQLBox(this, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
     sqlPane->SetBackgroundColour(background);
 
     // Setup menus

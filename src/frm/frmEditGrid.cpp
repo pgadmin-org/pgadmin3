@@ -148,7 +148,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     cbLimit->SetValue(_("No limit"));
 
     // Finally, the scratchpad
-    scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxSize(300, 200), wxTE_MULTILINE | wxHSCROLL);
+    scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
     // Menus
 

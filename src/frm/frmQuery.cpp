@@ -275,7 +275,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     resultsPane->AddPage(explainCanvas, _("Explain"));
 
     // Message pane
-    messagePane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 200));
+    messagePane = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize);
     msgResult = new wxTextCtrl(messagePane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
     msgHistory = new wxTextCtrl(messagePane, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
     messagePane->AddPage(msgResult, _("Messages"));
@@ -287,7 +287,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 
     // Finally, the scratchpad
-    scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxSize(300, 200), wxTE_MULTILINE | wxHSCROLL);
+    scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
