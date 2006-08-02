@@ -41,7 +41,7 @@ private:
     void OnChangeTryConnect(wxCommandEvent &ev);
     void OnPageSelect(wxNotebookEvent &event);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

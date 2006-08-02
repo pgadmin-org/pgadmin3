@@ -35,7 +35,7 @@ private:
     pgSchema *schema;
     pgDomain *domain;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

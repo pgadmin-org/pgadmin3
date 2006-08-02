@@ -31,7 +31,7 @@ public:
 private:
     pgLanguage *language;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

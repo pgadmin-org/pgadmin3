@@ -197,7 +197,7 @@ private:
     wxString orderBy;
 	wxString rowFilter;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

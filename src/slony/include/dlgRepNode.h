@@ -34,7 +34,7 @@ public:
 private:
     slNode *node;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

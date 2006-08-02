@@ -37,7 +37,7 @@ private:
     void OnChangeTypeBase(wxCommandEvent &ev);
     void OnChangeTypeState(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

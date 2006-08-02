@@ -53,7 +53,7 @@ private:
 	const wxString ChkListBox2PgArray(wxCheckListBox *lb);
 	const wxString ChkListBox2StrArray(wxCheckListBox *lb);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

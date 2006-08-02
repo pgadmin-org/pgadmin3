@@ -37,7 +37,7 @@ private:
 
     bool didChange();
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

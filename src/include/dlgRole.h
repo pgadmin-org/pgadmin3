@@ -53,7 +53,7 @@ private:
 
     wxArrayString groupsIn;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

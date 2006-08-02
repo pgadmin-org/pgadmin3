@@ -36,7 +36,7 @@ private:
 
     wxArrayString usersIn;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

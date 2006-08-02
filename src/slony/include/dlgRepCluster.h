@@ -43,7 +43,7 @@ protected:
     wxString remoteVersion;
     wxString createScript;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -71,7 +71,7 @@ private:
     wxString clusterBackup;
 
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -93,7 +93,7 @@ private:
 
     wxString version;
     wxString sql;
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

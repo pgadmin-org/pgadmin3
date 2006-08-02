@@ -32,7 +32,7 @@ public:
 private:
     pgTablespace *tablespace;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

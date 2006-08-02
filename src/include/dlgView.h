@@ -35,7 +35,7 @@ private:
     pgView *view;
     wxString oldDefinition;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

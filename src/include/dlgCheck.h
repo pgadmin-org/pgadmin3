@@ -37,7 +37,7 @@ private:
     pgTable *table;
     void OnCheckDeferrable(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

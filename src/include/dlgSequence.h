@@ -33,7 +33,7 @@ private:
     pgSchema *schema;
     pgSequence *sequence;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

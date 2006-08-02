@@ -47,7 +47,7 @@ private:
     void OnAddSchedule(wxCommandEvent &ev);
     void OnRemoveSchedule(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

@@ -109,7 +109,7 @@ private:
     bool tryUpdate(wxTreeItemId collectionItem);
     bool apply(const wxString &sql);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -178,7 +178,7 @@ private:
     ctlSecurityPanel *securityPage;
     wxArrayString currentAcl;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -196,7 +196,7 @@ protected:
     wxString GetSql();
     long GetRecId() { return recId; }
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 
     long recId;
 };

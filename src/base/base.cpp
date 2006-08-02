@@ -136,7 +136,7 @@ wxString NumToStr(wxLongLong value)
 double StrToDouble(const wxString& value)
 {
     wxCharBuffer buf = value.ToAscii();
-    char *p=strchr(buf, '.');
+    char *p=(char*)strchr(buf, '.');
     if (p)
         *p = localeconv()->decimal_point[0];
 

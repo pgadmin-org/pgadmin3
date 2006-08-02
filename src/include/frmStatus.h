@@ -77,7 +77,7 @@ private:
     long logfileLength;
     int xactPage, logPage;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
