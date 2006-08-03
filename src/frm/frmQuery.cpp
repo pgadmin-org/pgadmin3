@@ -116,7 +116,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // notify wxAUI which frame to use
     manager.SetFrame(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
