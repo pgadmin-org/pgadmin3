@@ -104,7 +104,6 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     SetStatusBarPane(-1);
 
     sqlGrid = new ctlSQLEditGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
-    sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
 
     // Set up toolbar
     toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
@@ -197,8 +196,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     entries[5].Set(wxACCEL_CTRL,                (int)'V',      MNU_PASTE);
     entries[6].Set(wxACCEL_NORMAL,              WXK_DELETE,    MNU_DELETE);
     
-    wxAcceleratorTable accel(6, entries);
+    wxAcceleratorTable accel(7, entries);
     SetAcceleratorTable(accel);
+    sqlGrid->SetAcceleratorTable(accel);
 
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
@@ -475,8 +475,7 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
                     if (ctl)
                     {
                         wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
-//                        if (txt && txt->IsMultiLine())
-                        if (txt) // && txt->IsMultiLine())
+                        if (txt)
                         {
                             long from, to;
                             txt->GetSelection(&from, &to);
@@ -509,6 +508,18 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
     
                 return;
             }
+
+        case WXK_TAB:
+            if (event.ControlDown())
+            {
+                wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+                text->WriteText(wxT("\t"));
+                // event.Skip();
+                return;
+            }
+
+            break;
+
         default:
             if (sqlGrid->IsEditable() && keycode >= WXK_SPACE && keycode < WXK_START)
             {
@@ -639,13 +650,31 @@ int ArrayCmp(T *a, T *b)
 
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
-	wxMessageDialog msg(this, _("Are you sure you wish to delete the selected row(s)?"), _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
+    if (editorShown)
+    {
+        wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+        if (text->GetInsertionPoint() <= text->GetLastPosition())
+            text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + 1);
+        return;
+    }
+
+    wxArrayInt delrows=sqlGrid->GetSelectedRows();
+    int i=delrows.GetCount();
+
+    if (i == 0)
+        return;
+
+    wxString prompt;
+    if (i == 1)
+        prompt.Printf(_("Are you sure you wish to delete the selected row?"));
+    else
+        prompt.Printf(_("Are you sure you wish to delete the %d selected rows?"), i);
+
+	wxMessageDialog msg(this, prompt, _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
     if (msg.ShowModal() != wxID_YES)
         return;
 
     sqlGrid->BeginBatch();
-    wxArrayInt delrows=sqlGrid->GetSelectedRows();
-    int i=delrows.GetCount();
 
 	// Sort the grid so we always delete last->first, otherwise we 
 	// could end up deleting anything because the array returned by 
