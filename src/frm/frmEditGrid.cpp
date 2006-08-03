@@ -514,7 +514,6 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
             {
                 wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
                 text->WriteText(wxT("\t"));
-                // event.Skip();
                 return;
             }
 
