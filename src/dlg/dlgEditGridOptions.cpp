@@ -162,6 +162,8 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
     // doing a View Filtered Data.
     if (!parent->IsShown())
         nbOptions->DeletePage(0);
+
+    filter->SetFocus();
 }
 
 void dlgEditGridOptions::OnRemove(wxCommandEvent &ev)
@@ -170,6 +172,15 @@ void dlgEditGridOptions::OnRemove(wxCommandEvent &ev)
     itm = lstSortCols->GetNextItem(itm, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     cboColumns->Append(lstSortCols->GetItemText(itm));
     lstSortCols->DeleteItem(itm);
+    if (lstSortCols->GetItemCount() > 0)
+    {
+        if (lstSortCols->GetItemCount() < itm+1)
+            lstSortCols->SetItemState(lstSortCols->GetItemCount()-1, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+        else
+            lstSortCols->SetItemState(itm, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+    }
+    wxListEvent nullLstEvent;
+    OnLstSortColsChange(nullLstEvent);
 }
 
 void dlgEditGridOptions::OnAsc(wxCommandEvent &ev)
