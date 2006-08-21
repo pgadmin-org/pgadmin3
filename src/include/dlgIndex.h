@@ -37,7 +37,7 @@ private:
     void OnAddCol(wxCommandEvent &ev);
     void OnRemoveCol(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -52,7 +52,7 @@ public:
     pgObject *CreateObject(pgCollection *collection);
 
 private:
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

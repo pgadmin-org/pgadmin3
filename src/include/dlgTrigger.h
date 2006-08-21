@@ -35,7 +35,7 @@ private:
 
     void OnChangeFunc(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

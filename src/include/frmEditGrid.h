@@ -224,7 +224,7 @@ private:
 	int limit;
     bool editorShown;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

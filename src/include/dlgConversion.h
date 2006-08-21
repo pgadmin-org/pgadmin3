@@ -34,7 +34,7 @@ private:
     pgSchema *schema;
     wxArrayString functions;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

@@ -34,7 +34,7 @@ private:
     slSubscription *subscription;
     slSet *set;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

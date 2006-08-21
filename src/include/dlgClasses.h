@@ -42,7 +42,7 @@ protected:
     wxString dlgName;
     wxStatusBar *statusBar;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -82,7 +82,7 @@ protected:
     wxToolBar *toolBar;
     bool changed;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -97,7 +97,7 @@ protected:
 
 private:
     virtual wxString GetHelpPage() const = 0;
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 class ExecutionDialog : public DialogWithHelp
@@ -121,7 +121,7 @@ protected:
     wxTextCtrl *txtMessages;
 
 private:
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -159,7 +159,7 @@ protected:
     void checkStreams();
 
     wxTimer *timer;
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

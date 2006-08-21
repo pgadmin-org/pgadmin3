@@ -41,7 +41,7 @@ private:
     void OnChangeTable(wxCommandEvent &ev);
     void OnChangeTableSel(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

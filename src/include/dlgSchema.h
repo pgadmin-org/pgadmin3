@@ -31,7 +31,7 @@ public:
 private:
     pgSchema *schema;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

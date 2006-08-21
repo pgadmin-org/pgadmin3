@@ -90,7 +90,7 @@ enum
     SLM_SEQUENCE,
     SLM_SET,
     SLM_SUBSCRIPTION,
-    SLM_TABLE,
+    SLM_TABLE
 };
 
 
@@ -98,7 +98,7 @@ enum        // depends on pgaFactory::addImage order!
 {
     PGICON_PROPERTY,
     PGICON_STATISTICS,
-    PGICON_PUBLIC,
+    PGICON_PUBLIC
 };
 
 

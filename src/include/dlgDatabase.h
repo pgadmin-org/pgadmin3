@@ -45,7 +45,7 @@ private:
     void OnVarnameSelChange(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 
     friend class pgDatabaseFactory;
 };

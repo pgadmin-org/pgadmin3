@@ -33,7 +33,7 @@ public:
 private:
     slSet *set;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
@@ -52,7 +52,7 @@ public:
 private:
     slSet *set;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 class dlgRepSetMove : public dlgRepProperty
@@ -70,7 +70,7 @@ public:
 private:
     slSet *set;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

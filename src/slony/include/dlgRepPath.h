@@ -35,7 +35,7 @@ private:
     slPath *path;
     slNode *node;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

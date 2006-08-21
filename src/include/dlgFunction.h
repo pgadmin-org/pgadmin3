@@ -59,7 +59,7 @@ private:
 protected:
     bool isProcedure;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

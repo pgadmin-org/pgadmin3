@@ -41,7 +41,7 @@ private:
     pgOperator *oper;
     wxArrayString procedures;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

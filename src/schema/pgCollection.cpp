@@ -111,7 +111,7 @@ int pgCollection::GetIconId()
 }
 
 
-pgObject *pgCollection::FindChild(ctlTree *browser, int index)
+pgObject *pgCollection::FindChild(ctlTree *browser, const int index)
 {
     wxCookieType cookie;
     pgObject *data;

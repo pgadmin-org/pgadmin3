@@ -123,7 +123,7 @@ public:
 private:
     void OnSelect(wxCommandEvent &ev);
     wxListBox *dlgList;
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

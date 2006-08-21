@@ -70,7 +70,7 @@ protected:
     bool GrantAllowed() const;
 
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 

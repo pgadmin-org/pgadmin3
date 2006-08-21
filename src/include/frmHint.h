@@ -55,7 +55,7 @@ private:
     wxString GetPage(const wxChar *hintpage);
     wxString GetHelpPage() const;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 
     wxArrayInt hintnos;
     int currentHint;

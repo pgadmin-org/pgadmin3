@@ -41,7 +41,7 @@ private:
     ctlHelpWindow *htmlWindow;
     wxString currentPage;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 class ctlHelpWindow : public wxHtmlWindow 

@@ -47,7 +47,7 @@ private:
     pgaStep *step;
     pgaJob *job;
 
-    DECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 
