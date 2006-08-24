@@ -836,7 +836,7 @@ void frmEditGrid::Go()
 
     while (thread && thread->IsRunning())
     {
-        wxYield();
+        wxTheApp->Yield(true);
         wxMilliSleep(10);
     }
     if (!thread)

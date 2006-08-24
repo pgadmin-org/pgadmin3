@@ -329,7 +329,7 @@ bool pgAdmin3::OnInit()
         SetTopWindow(winSplash);
         winSplash->Show();
 	    winSplash->Update();
-        wxYield();
+        wxTheApp->Yield(true);
     }
 
 	
@@ -360,7 +360,7 @@ bool pgAdmin3::OnInit()
     SetAppName(APPNAME_L);
 
 #ifndef __WXDEBUG__
-    wxYield();
+    wxTheApp->Yield(true);
     wxSleep(2);
 #endif
 

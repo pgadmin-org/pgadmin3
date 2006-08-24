@@ -1434,7 +1434,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         msgHistory->AppendText(query);
         msgHistory->AppendText(wxT("\n"));
         Update();
-        wxYield();
+        wxTheApp->Yield(true);
 
         wxString str;
         wxLongLong elapsedQuery;
@@ -1443,7 +1443,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         {
             elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
-			wxYield();
+			wxTheApp->Yield(true);
             if (elapsedQuery < 200)
                 wxMilliSleep(10);
             else
@@ -1455,7 +1455,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                 msgResult->AppendText(str);
                 msgHistory->AppendText(str);
             }
-            wxYield();
+            wxTheApp->Yield(true);
         }
 
         str=sqlResult->GetMessagesAndClear();
@@ -1577,7 +1577,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                 else
                 {
                     SetStatusText(wxString::Format(_("Retrieving data: %d rows."), rowsTotal), STATUSPOS_MSGS);
-                    wxYield();
+                    wxTheApp->Yield(true);
 
 					sqlResult->DisplayData();
 

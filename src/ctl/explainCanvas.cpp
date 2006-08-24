@@ -304,7 +304,7 @@ void ExplainPopup::SetShape(ExplainShape *s)
 void ExplainPopup::Popup()
 {
     Show();
-    wxYield();
+    wxTheApp->Yield(true);
 
     popupPoint = wxDefaultPosition;
     CaptureMouse();

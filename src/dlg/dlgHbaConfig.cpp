@@ -188,7 +188,7 @@ void dlgHbaConfig::OnAddDatabase(wxCommandEvent& ev)
             newDatabase = database;
     }
 
-    wxYield();
+    wxTheApp->Yield(true);
 
     database = newDatabase;
     databaseAdding = true;
@@ -242,7 +242,7 @@ void dlgHbaConfig::OnAddUser(wxCommandEvent& ev)
             newUser = user;
     }
 
-    wxYield();
+    wxTheApp->Yield(true);
 
     user = newUser;
     userAdding = true;

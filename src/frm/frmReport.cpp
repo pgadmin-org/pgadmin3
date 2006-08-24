@@ -291,7 +291,7 @@ void frmReport::OnOK(wxCommandEvent &ev)
     }
 
     // Yield, to allow the messagebox to go
-    wxYield();
+    wxTheApp->Yield(true);
 
     // Add the title, notes and SQL
     if (txtTitle->GetValue() != wxT(""))

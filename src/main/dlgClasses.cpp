@@ -476,7 +476,7 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
             // here could be the animation
             if (txtMessages)
                 txtMessages->AppendText(thread->GetMessagesAndClear());
-            wxYield();
+            wxTheApp->Yield(true);
         }
 
         if (thread)
