@@ -12,6 +12,7 @@
 bin_PROGRAMS = pgadmin3
 
 pgadmin3_SOURCES = \
+	$(srcdir)/include/svnversion.cpp \
 	$(srcdir)/pgAdmin3.cpp 
 
 nodist_pgadmin3_SOURCES = \
@@ -19,6 +20,12 @@ nodist_pgadmin3_SOURCES = \
 
 EXTRA_DIST = \
 	$(srcdir)/pgAdmin3.vcproj
+
+# Generate svnversion.h every time, but only if repo version has changed.
+.PHONY: $(srcdir)/include/svnversion.cpp
+$(srcdir)/include/svnversion.cpp:
+	test -f $(srcdir)/include/svnversion.cpp || touch $(srcdir)/include/svnversion.cpp
+	test -d $(srcdir)/.svn && ( V=`svnversion $(srcdir)/..` && OV=`cat $(srcdir)/include/svnversion.h | cut -d' ' -f3|tr -d '"'` ; if [ "$$V" != "$$OV" ]; then echo "#define VERSION_SVN \"$$V\"" > $(srcdir)/include/svnversion.h ; fi ) || true
 
 TMP_ui = 
 

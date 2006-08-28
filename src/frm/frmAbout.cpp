@@ -20,6 +20,9 @@
 // Copyright text
 #include "copyright.h"
 #include "version.h"
+#include "svnversion.h"
+
+#define VERSION_WITH_DATE_AND_SVN       wxT("Version ") VERSION_STR wxT(" (") __TDATE__ wxT(", rev:") wxT(VERSION_SVN) wxT(")")
 
 
 BEGIN_EVENT_TABLE(frmAbout, wxDialog)
@@ -56,7 +59,7 @@ void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
     dc.SetTextForeground(appearanceFactory->GetSplashTextColour());
     dc.SetFont(appearanceFactory->GetSplashTextFont());
 
-    dc.DrawText(VERSION_WITH_DATE, pos);
+    dc.DrawText(VERSION_WITH_DATE_AND_SVN, pos);
     pos.y += appearanceFactory->GetSplashTextOffset();
     dc.DrawText(COPYRIGHT, pos);
     pos.y += appearanceFactory->GetSplashTextOffset();

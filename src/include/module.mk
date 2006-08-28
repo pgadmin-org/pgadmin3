@@ -113,6 +113,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/pgfeatures.h \
 	$(srcdir)/include/postgres.h \
 	$(srcdir)/include/precomp.h \
+    $(srcdir)/include/svnversion.h \
 	$(srcdir)/include/sysLogger.h \
 	$(srcdir)/include/sysProcess.h \
 	$(srcdir)/include/sysSettings.h \
