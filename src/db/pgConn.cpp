@@ -45,10 +45,22 @@
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid)
 : pgConnBase(server, database, username, password, port, sslmode, oid)
 {
+	save_server = server;
+	save_database = database;
+	save_username = username;
+	save_password = password;
+	save_port = port;
+	save_sslmode = sslmode;
+	save_oid = oid;
+
     memset(features, 0, sizeof(features));
     majorVersion=0;
 }
 
+pgConn *pgConn::Duplicate()
+{
+	return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_oid);
+}
 
 bool pgConn::GetIsEdb()
 {

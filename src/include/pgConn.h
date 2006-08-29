@@ -34,6 +34,7 @@ public:
     bool GetIsEdb();
     wxString EncryptPassword(const wxString &user, const wxString &password);
 	wxString qtDbString(const wxString& value);
+	pgConn *Duplicate();
 
 private:
     bool features[32];
@@ -41,6 +42,10 @@ private:
     bool isEdb;
 
     wxString reservedNamespaces;
+
+	wxString save_server, save_database, save_username, save_password;
+	int save_port, save_sslmode;
+	OID save_oid;
 };
 
 #endif

@@ -39,6 +39,7 @@
 // Icons
 #include "images/sql.xpm"
 // Bitmaps
+#include "images/file_new.xpm"
 #include "images/file_open.xpm"
 #include "images/file_save.xpm"
 #include "images/clip_cut.xpm"
@@ -64,6 +65,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_COMBOBOX(CTRLID_CONNECTION, frmQuery::OnChangeConnection)
     EVT_CLOSE(                      frmQuery::OnClose)
     EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
+	EVT_MENU(MNU_NEW,				frmQuery::OnNew)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
@@ -125,6 +127,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     fileMenu = new wxMenu();
     recentFileMenu = new wxMenu();
+	fileMenu->Append(MNU_NEW, _("&New window\tCtrl-N"), _("Open a new query window"));
     fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
     fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
@@ -200,7 +203,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     UpdateRecentFiles();
 
-    wxAcceleratorEntry entries[10];
+    wxAcceleratorEntry entries[11];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
     entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
@@ -212,8 +215,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     entries[7].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
 	entries[8].Set(wxACCEL_CTRL,				(int)'A',	   MNU_SELECTALL);
     entries[9].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+	entries[10].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
 
-    wxAcceleratorTable accel(10, entries);
+    wxAcceleratorTable accel(11, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
@@ -228,6 +232,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
+	toolBar->AddTool(MNU_NEW, _("New"), wxBitmap(file_new_xpm), _("New window"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
     toolBar->AddSeparator();
@@ -363,7 +368,8 @@ frmQuery::~frmQuery()
     msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgHistory->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 
-    mainForm->RemoveFrame(this);
+	if (mainForm)
+		mainForm->RemoveFrame(this);
 
     settings->Write(wxT("frmQuery/Perspective"), manager.SavePerspective());
     manager.UnInit();
@@ -1145,6 +1151,12 @@ void frmQuery::OpenLastFile()
     }
 }
         
+void frmQuery::OnNew(wxCommandEvent& event)
+{
+	frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn->Duplicate(), wxEmptyString);
+	fq->Go();
+}
+
 void frmQuery::OnOpen(wxCommandEvent& event)
 {
     if (CheckChanged(false))

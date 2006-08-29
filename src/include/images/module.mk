@@ -73,6 +73,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/ex_unique.xpm \
 	$(srcdir)/include/images/ex_unknown.xpm \
 	$(srcdir)/include/images/favourite.xpm \
+	$(srcdir)/include/images/file_new.xpm \
 	$(srcdir)/include/images/file_open.xpm \
 	$(srcdir)/include/images/file_save.xpm \
 	$(srcdir)/include/images/folder.xpm \
