@@ -54,6 +54,7 @@ public:
     pgFrame(wxFrame *parent, const wxString &title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long flags=wxDEFAULT_FRAME_STYLE) ;
     ~pgFrame();
     void RemoveFrame(wxWindow *frame);
+    void AddFrame(wxWindow *wnd) { frames.Append(wnd); }
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
     void SavePosition();
     void OnAction(wxCommandEvent& event);
@@ -69,7 +70,6 @@ protected:
     virtual wxString GetHelpPage() const { return wxEmptyString; }
 
     void UpdateRecentFiles();
-    void AddFrame(wxWindow *wnd) { frames.Append(wnd); }
 
     windowList frames;
     menuFactoryList *menuFactories;

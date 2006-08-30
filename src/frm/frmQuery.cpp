@@ -1154,6 +1154,8 @@ void frmQuery::OpenLastFile()
 void frmQuery::OnNew(wxCommandEvent& event)
 {
 	frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn->Duplicate(), wxEmptyString);
+	if (mainForm)
+		mainForm->AddFrame(fq);
 	fq->Go();
 }
 
