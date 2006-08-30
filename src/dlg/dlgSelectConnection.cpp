@@ -176,7 +176,13 @@ pgConn *dlgSelectConnection::CreateConn()
 	if (GetServer())	/* Running with access to the main form with the object tree */
 		return GetServer()->CreateConn(GetDatabase());
 	else
-		return CreateConn(GetServerName(), GetDatabase(), txtUsername->GetValue(), 0, 0, true);
+    {
+        /* gcc requires that we store this in temporary variables for some reason... */
+        wxString serv = cbServer->GetValue();
+        wxString db = cbServer->GetValue();
+        wxString user = txtUsername->GetValue();
+		return CreateConn(serv, db, user, 0, 0, true);
+    }
 }
 
 pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, bool writeMRU)
@@ -191,7 +197,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 		newconn = NULL;
 
         wxString txt;
-        txt.Printf(_("Please enter password for user %s\non server %s"), username, server);
+        txt.Printf(_("Please enter password for user %s\non server %s"), username.c_str(), server.c_str());
 		dlgConnect dlg(NULL, txt, false);
 		if (dlg.Go() != wxID_OK)
 			return NULL;
