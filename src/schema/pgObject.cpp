@@ -388,12 +388,14 @@ void pgObject::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxStri
 
 void pgObject::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &wh)
 {
+    if (this->IsCollection())
+        return;
+
     wxString where;
     if (wh.IsEmpty())
         where = wxT(" WHERE dep.refobjid=") + GetOidStr();
     else
         where = wh;
-
     ShowDependency(GetDatabase(), referencedBy,
         wxT("SELECT DISTINCT deptype, classid, cl.relkind,\n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind || COALESCE(dep.objsubid::text, '')\n")

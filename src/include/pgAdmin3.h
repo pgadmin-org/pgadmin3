@@ -38,6 +38,9 @@
 #undef VERSION
 #endif
 
+#if !wxCHECK_VERSION(2, 7, 0)
+#error wxWidgets 2.7.0 or higher is required to compile this version of pgAdmin.
+#endif
 
 const float SERVER_MIN_VERSION = 7.3f;
 

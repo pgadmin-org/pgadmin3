@@ -624,7 +624,7 @@ wxString dlgTable::GetSql()
         {
             sql += wxT("\nINHERITS (");
 
-            int i;
+            unsigned int i;
             for (i=0 ; i < lbTables->GetCount() ; i++)
             {
                 if (i)

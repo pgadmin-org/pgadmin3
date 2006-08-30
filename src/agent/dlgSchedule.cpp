@@ -601,7 +601,7 @@ const wxString dlgSchedule::ChkListBox2PgArray(wxCheckListBox *lb)
 {
 	wxString res = wxT("{");
 
-	for (int x=0; x < lb->GetCount(); x++)
+	for (unsigned int x=0; x < lb->GetCount(); x++)
 	{
 		if (lb->IsChecked(x))
 			res += wxT("t,");
@@ -620,7 +620,7 @@ const wxString dlgSchedule::ChkListBox2StrArray(wxCheckListBox *lb)
 {
 	wxString res;
 
-	for (int x=0; x < lb->GetCount(); x++)
+	for (unsigned int x=0; x < lb->GetCount(); x++)
 	{
 		if (lb->IsChecked(x))
 			res += wxT("t");

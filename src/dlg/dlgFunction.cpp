@@ -509,7 +509,7 @@ void dlgFunction::OnRemoveArg(wxCommandEvent &ev)
 
 int dlgFunction::GetDirection(const wxString &colName)
 {
-    int i;
+    unsigned int i;
     wxString sel;
     for (i=0 ; i < rdbDirection->GetCount() ; i++)
     {

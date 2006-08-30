@@ -97,7 +97,7 @@ void frmGrantWizard::OnChange(wxCommandEvent& event)
 
 void frmGrantWizard::OnUncheckAll(wxCommandEvent& event)
 {
-    int i;
+    unsigned int i;
     for (i=0 ; i < chkList->GetCount() ; i++)
         chkList->Check(i, false);
 
@@ -108,7 +108,7 @@ void frmGrantWizard::OnUncheckAll(wxCommandEvent& event)
 
 void frmGrantWizard::OnCheckAll(wxCommandEvent& event)
 {
-    int i;
+    unsigned int i;
     for (i=0 ; i < chkList->GetCount() ; i++)
         chkList->Check(i, true);
 
@@ -237,7 +237,7 @@ wxString frmGrantWizard::GetSql()
 {
     wxString sql;
 
-    int i;
+    unsigned int i;
     for (i=0 ; i < chkList->GetCount() ; i++)
     {
         if (chkList->IsChecked(i))

@@ -15,9 +15,6 @@ pgadmin3_SOURCES = \
 	$(srcdir)/include/svnversion.cpp \
 	$(srcdir)/pgAdmin3.cpp 
 
-nodist_pgadmin3_SOURCES = \
-	$(WXAUI_HOME)/src/manager.cpp
-
 EXTRA_DIST = \
 	$(srcdir)/pgAdmin3.vcproj
 

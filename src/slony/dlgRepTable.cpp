@@ -202,7 +202,7 @@ void dlgRepTable::CheckChange()
     {
         bool tgChanged=false;
 
-        int i;
+        unsigned int i;
         int cnt=0;
 
         for (i=0 ; !tgChanged && i < chkTrigger->GetCount() ; i++)
@@ -239,7 +239,7 @@ wxString dlgRepTable::GetSql()
 
     wxArrayString newTriggers;
 
-    int i;
+    unsigned int i;
     for (i=0 ; i < chkTrigger->GetCount() ; i++)
     {
         if (chkTrigger->IsChecked(i))

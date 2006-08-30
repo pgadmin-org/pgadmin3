@@ -185,7 +185,7 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                 wxT(" ORDER BY conname"));
             if (set)
             {
-                wxString conkey, str;
+                wxString str;
                 while (!isFK && !set->Eof())
                 {
                     wxStringTokenizer conkey(set->GetVal(0));

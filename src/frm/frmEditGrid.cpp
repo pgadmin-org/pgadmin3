@@ -35,8 +35,7 @@
 #include "pgView.h"
 
 // wxAUI
-#include "manager.h"
-
+#include <wx/aui/aui.h>
 
 // Icons
 #include "images/viewdata.xpm"
@@ -97,8 +96,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     editorShown = false;
 
     // notify wxAUI which frame to use
-    manager.SetFrame(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+    manager.SetManagedWindow(this);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
 
     CreateStatusBar();
     SetStatusBarPane(-1);
@@ -203,7 +202,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(cbLimit, wxPaneInfo().Name(wxT("limitBar")).Caption(_("Limit bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CloseButton(false));
+    manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CaptionVisible(false).CloseButton(false));
     manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom());
 
     // tell the manager to "commit" all the changes just made
@@ -213,6 +212,12 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     wxString perspective;
     settings->Read(wxT("frmEditGrid/Perspective"), &perspective, FRMEDITGRID_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
+
+    // and reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("limitBar")).Caption(_("Limit bar"));
+    manager.GetPane(wxT("sqlGrid")).Caption(_("Data grid"));
+    manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
 
     // Hack to force the toolbar to redraw to the correct size
     this->SetSize(GetSize());
@@ -303,6 +308,12 @@ void frmEditGrid::OnAuiUpdate(wxFrameManagerEvent& event)
 void frmEditGrid::OnDefaultView(wxCommandEvent& event)
 {
     manager.LoadPerspective(FRMEDITGRID_DEFAULT_PERSPECTIVE, true);
+
+    // Reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("limitBar")).Caption(_("Limit bar"));
+    manager.GetPane(wxT("sqlGrid")).Caption(_("Data grid"));
+    manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
 }
 
 void frmEditGrid::SetSortCols(const wxString &cols) 

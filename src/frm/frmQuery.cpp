@@ -13,7 +13,7 @@
 #include <wx/wx.h>
 
 // wxAUI
-#include "manager.h"
+#include <wx/aui/aui.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -103,7 +103,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
     EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
-    EVT_AUI_PANEBUTTON(             frmQuery::OnAuiUpdate)
+    EVT_AUI_PANECLOSE(              frmQuery::OnAuiUpdate)
 END_EVENT_TABLE()
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query)
@@ -117,8 +117,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     RestorePosition(100, 100, 600, 500, 200, 150);
 
     // notify wxAUI which frame to use
-    manager.SetFrame(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+    manager.SetManagedWindow(this);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -280,6 +280,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     messagePane->AddPage(msgResult, _("Messages"));
     messagePane->AddPage(msgHistory, _("History"));
 
+    explainCanvas->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -291,10 +292,10 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(cbConnection, wxPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(sqlQuery, wxPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CloseButton(false));
+    manager.AddPane(sqlQuery, wxPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CaptionVisible(false).CloseButton(false));
     manager.AddPane(resultsPane, wxPaneInfo().Name(wxT("resultsPane")).Caption(_("Results pane")).Bottom());
     manager.AddPane(messagePane, wxPaneInfo().Name(wxT("messagePane")).Caption(_("Message pane")).Bottom());
-    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom());
+    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right());
 
     // tell the manager to "commit" all the changes just made
     manager.Update();
@@ -303,6 +304,14 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     wxString perspective;
     settings->Read(wxT("frmQuery/Perspective"), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
+
+    // and reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
+    manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
+    manager.GetPane(wxT("resultsPane")).Caption(_("Results pane"));
+    manager.GetPane(wxT("messagePane")).Caption(_("Message pane"));
+    manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
 
     // Hack to force the toolbar to redraw to the correct size
     this->SetSize(GetSize());
@@ -363,6 +372,7 @@ frmQuery::~frmQuery()
 {
     wxLogInfo(wxT("Destroying SQL Query box"));
 
+    explainCanvas->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -472,6 +482,14 @@ void frmQuery::OnAuiUpdate(wxFrameManagerEvent& event)
 void frmQuery::OnDefaultView(wxCommandEvent& event)
 {
     manager.LoadPerspective(FRMQUERY_DEFAULT_PERSPECTIVE, true);
+
+    // Reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
+    manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
+    manager.GetPane(wxT("resultsPane")).Caption(_("Results pane"));
+    manager.GetPane(wxT("messagePane")).Caption(_("Message pane"));
+    manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
 }
 
 void frmQuery::OnWordWrap(wxCommandEvent &event)
@@ -531,7 +549,7 @@ void frmQuery::Go()
     wxCommandEvent ev;
     OnChangeConnection(ev);
 
-    Show(TRUE);
+    Show(true);
     sqlQuery->SetFocus();
 }
 
@@ -774,10 +792,20 @@ void frmQuery::OnFocus(wxFocusEvent& ev)
         updateMenu(ev.GetEventObject());
     else
     {
-        frmQuery *wnd=(frmQuery*)GetParent();
+        frmQuery *wnd = (frmQuery*)GetParent();
+
         if (wnd)
             wnd->OnFocus(ev);
     }
+
+    // Set the active pane - needed to catch hits on child controls on tabs
+    wxWindow *curr=FindFocus();
+
+    if (curr == sqlResult || curr->GetParent() == sqlResult || curr == explainCanvas || curr->GetParent() == explainCanvas)
+        resultsPane->SetFocus();
+    else if (curr == msgResult || curr == msgHistory)
+        messagePane->SetFocus();
+
     ev.Skip();
 }
 
@@ -812,6 +840,7 @@ wxWindow *frmQuery::currentControl()
         }
     }
     return wnd;
+
 }
 
 

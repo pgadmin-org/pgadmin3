@@ -25,7 +25,7 @@ AC_DEFUN([CHECK_CPP_COMPILER],
 #############################
 AC_DEFUN([SET_WX_VERSION],
 [
-	AC_ARG_WITH(wx-version, [  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.6)],
+	AC_ARG_WITH(wx-version, [  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.7)],
 	[
 		if test "$withval" == yes; then
 			AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
@@ -38,7 +38,7 @@ AC_DEFUN([SET_WX_VERSION],
 		fi
 	],
 	[
-		WX_VERSION="2.6"
+		WX_VERSION="2.7"
 	])
 ])
 
@@ -77,37 +77,6 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 		WX_CONFIG=${WX_HOME}/bin/wx-config
 	])
 ])
-
-####################
-# Locate wxAUI #
-####################
-AC_DEFUN([LOCATE_WXAUI],
-[
-	AC_ARG_WITH(wxaui, [  --with-wxaui=DIR	   wxAUI (pgAdmin) source directory],
-	[
-		if test "$withval" != no
-		then
-			WXAUI_HOME="$withval"
-						if test ! -f "${WXAUI_HOME}/src/manager.cpp"
-						then
-								AC_MSG_ERROR([Could not find your wxAUI source code in ${WXAUI_HOME}])
-						fi
-
-		fi
-	],
-	[
-		WXAUI_HOME=/usr/local/wxaui-pgadmin
-		if test ! -f "${WXAUI_HOME}/src/manager.cpp"
-		then
-			WXAUI_HOME=/usr/local/src/wxaui-pgadmin
-			if test ! -f "${WXAUI_HOME}/src/manager.cpp"
-			then
-				AC_MSG_ERROR([Could not find your wxAUI (pgAdmin) source code. You might need to use the --with-wxaui=DIR configure option])
-			fi
-		fi
-	])
-])
-AC_SUBST(WXAUI_HOME)
 
 #####################
 # Locate libxml	#
@@ -507,14 +476,6 @@ AC_DEFUN([SETUP_LIBXSLT],
 AC_SUBST(XSLT_CONFIG)
 AC_SUBST(pgagent_LDADD)
 
-#######################
-# Setup wxAUI headers #
-#######################
-AC_DEFUN([SETUP_WXAUI],
-[
-	CPPFLAGS="$CPPFLAGS -I${WXAUI_HOME}/include"
-])
-
 ###########
 # Cleanup #
 ###########
@@ -545,8 +506,6 @@ AC_DEFUN([SUMMARY],
 	echo "wxWidgets directory:			$WX_HOME"
 	echo "wxWidgets wx-config binary:		$WX_CONFIG"
 	echo "wxWidgets version:			wxWidgets "`$WX_CONFIG --version --version=$WX_VERSION`
-	echo
-	echo "wxAUI source directory:			$WXAUI_HOME"
 	echo
 	if test "$BUILD_DEBUG" == yes
 	then

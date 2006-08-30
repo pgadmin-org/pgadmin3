@@ -29,7 +29,7 @@
 #include <wx/busyinfo.h>
 
 // wxAUI
-#include "manager.h"
+#include <wx/aui/aui.h>
 
 // App headers
 #include "misc.h"
@@ -81,7 +81,6 @@ enum
 #error wxWindows must be compiled with wxDIALOG_UNIT_COMPATIBILITY=0!
 #endif
 
-
 frmMain::frmMain(const wxString& title)
 : pgFrame((wxFrame *)NULL, title)
 {
@@ -118,8 +117,8 @@ frmMain::frmMain(const wxString& title)
     appearanceFactory->SetIcons(this);
 
     // notify wxAUI which frame to use
-    manager.SetFrame(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+    manager.SetManagedWindow(this);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
 
     // wxGTK needs this deferred
     pgaFactory::RealizeImages();
@@ -131,7 +130,7 @@ frmMain::frmMain(const wxString& title)
     browser->SetImageList(imageList);
 
     // Setup the listview
-    listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
+    listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize);
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     dependsOn = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
@@ -167,7 +166,7 @@ frmMain::frmMain(const wxString& title)
 
     // Kickstart wxAUI
     manager.AddPane(browser, wxPaneInfo().Name(wxT("objectBrowser")).Caption(_("Object browser")).Left());
-    manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CloseButton(false));
+    manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CaptionVisible(false).CloseButton(false));
     manager.AddPane(sqlPane, wxPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom());
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
                               
@@ -179,6 +178,12 @@ frmMain::frmMain(const wxString& title)
     settings->Read(wxT("frmMain/Perspective"), &perspective, FRMMAIN_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
+    // and reset the captions for the current language
+    manager.GetPane(wxT("objectBrowser")).Caption(_("Object browser"));
+    manager.GetPane(wxT("listViews")).Caption(_("Info pane"));
+    manager.GetPane(wxT("sqlPane")).Caption(_("SQL pane"));
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+
     // Hack to force the toolbar to redraw to the correct size
     this->SetSize(GetSize());
 
@@ -186,6 +191,12 @@ frmMain::frmMain(const wxString& title)
     viewMenu->Check(MNU_SQLPANE, manager.GetPane(wxT("sqlPane")).IsShown());
     viewMenu->Check(MNU_OBJECTBROWSER, manager.GetPane(wxT("objectBrowser")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+
+    // Focus events
+    properties->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmMain::OnFocus));
+    statistics->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
+    dependsOn->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
+    referencedBy->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
 
     // Add the root node
     serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());
@@ -200,6 +211,12 @@ frmMain::frmMain(const wxString& title)
 
 frmMain::~frmMain()
 {
+    // Focus events
+    properties->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmMain::OnFocus));
+    statistics->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
+    dependsOn->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
+    referencedBy->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
+
     StoreServers();
 
     settings->Write(wxT("frmMain/Perspective"), manager.SavePerspective());

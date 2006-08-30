@@ -93,7 +93,7 @@ wxString frmIndexcheck::GetSql()
 
 void frmIndexcheck::OnUncheckAll(wxCommandEvent& event)
 {
-    int i;
+    unsigned int i;
     for (i=0 ; i < chkList->GetCount() ; i++)
         chkList->Check(i, false);
 }
@@ -101,7 +101,7 @@ void frmIndexcheck::OnUncheckAll(wxCommandEvent& event)
 
 void frmIndexcheck::OnCheckAll(wxCommandEvent& event)
 {
-    int i;
+    unsigned int i;
     for (i=0 ; i < chkList->GetCount() ; i++)
         chkList->Check(i, true);
 }

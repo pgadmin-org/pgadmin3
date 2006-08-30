@@ -14,7 +14,7 @@
 
 #include "wx/calctrl.h"
 
-#if wxUSE_DATEPICKCTRL
+#if !wxCHECK_VERSION(2, 7, 0) && defined(wxUSE_DATEPICKCTRL)
 #define pgUSE_WX_CAL  1
 #else
 #define pgUSE_WX_CAL  0

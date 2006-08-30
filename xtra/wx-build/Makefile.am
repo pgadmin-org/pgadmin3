@@ -9,5 +9,4 @@
 
 EXTRA_DIST = \
 	$(srcdir)/readme.txt
-	$(srcdir)/setup0-msw-2.6.0.h \
-	$(srcdir)/wx-pgadmin.dsw
+	$(srcdir)/setup0-msw-2.7.0.h

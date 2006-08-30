@@ -20,6 +20,7 @@
 #include <wx/imaglist.h>
 #include <wx/stc/stc.h>
 #include <wx/busyinfo.h>
+#include <wx/aui/aui.h>
 
 // App headers
 #include "misc.h"
@@ -70,7 +71,8 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_STC_UPDATEUI(CTL_SQLPANE,           frmMain::OnPositionStc)
     EVT_CLOSE(                              frmMain::OnClose)
 
-    EVT_AUI_PANEBUTTON(                     frmMain::OnAuiUpdate)
+    EVT_AUI_PANECLOSE(                      frmMain::OnAuiUpdate)
+
 #ifdef __WXGTK__
     EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
 #endif
@@ -108,6 +110,16 @@ void frmMain::OnTreeKeyDown(wxTreeEvent& event)
     }
 }
 
+void frmMain::OnFocus(wxFocusEvent& ev)
+{
+    // Set the active pane - needed to catch hits on child controls on tabs
+    wxWindow *curr=FindFocus();
+
+    if (curr == this)
+        GetParent()->SetFocus();
+
+    ev.Skip();
+}
 
 void frmMain::OnExit(wxCommandEvent& event)
 {
@@ -727,8 +739,7 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
         return;
     }
 
-    wxFileDialog filename(this, _("Select output file"), wxT(""), wxT(""), _("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"));
-    filename.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
+    wxFileDialog filename(this, _("Select output file"), wxT(""), wxT(""), _("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE | wxOVERWRITE_PROMPT);
 
     // Show the dialogue
     if (filename.ShowModal() == wxID_OK)
@@ -845,9 +856,21 @@ void frmMain::OnAuiUpdate(wxFrameManagerEvent& event)
     event.Skip();
 }
 
+void frmMain::OnNotebookButton(wxAuiNotebookEvent& event)
+{
+    wxMessageBox(_("This tab cannot be closed."));
+    event.Veto();
+}
+
 void frmMain::OnDefaultView(wxCommandEvent& event)
 {
     manager.LoadPerspective(FRMMAIN_DEFAULT_PERSPECTIVE, true);
+
+    // Reset the captions for the current language
+    manager.GetPane(wxT("objectBrowser")).Caption(_("Object browser"));
+    manager.GetPane(wxT("listViews")).Caption(_("Info pane"));
+    manager.GetPane(wxT("sqlPane")).Caption(_("SQL pane"));
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
 }
 
 void frmMain::OnPositionStc(wxStyledTextEvent& event)

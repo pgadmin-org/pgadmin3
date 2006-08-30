@@ -122,7 +122,7 @@ ctlComboBoxFix::ctlComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, l
 
 bool ctlComboBoxFix::SetKey(long val)
 {
-    int i;
+    unsigned int i;
     for (i=0 ; i < GetCount() ; i++)
     {
         if (GetLongKey(i) == val)
@@ -138,7 +138,7 @@ bool ctlComboBoxFix::SetKey(long val)
 
 bool ctlComboBoxFix::SetKey(OID val)
 {
-    int i;
+    unsigned int i;
     for (i=0 ; i < GetCount() ; i++)
     {
         if (GetOIDKey(i) == val)
@@ -154,7 +154,7 @@ bool ctlComboBoxFix::SetKey(OID val)
 
 bool ctlComboBoxFix::SetKey(const wxString &val)
 {
-    int i;
+    unsigned int i;
     for (i=0 ; i < GetCount() ; i++)
     {
         if (GetStringKey(i) == val)

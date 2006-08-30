@@ -113,7 +113,7 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
 
                 if (cbConnection)
                 {
-                    int i;
+                    unsigned int i;
 
                     for (i=0 ; i < cbConnection->GetCount()-1 ; i++)
                     {
