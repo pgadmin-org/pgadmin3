@@ -1895,10 +1895,8 @@ cacheLine *sqlTable::GetLine(int row)
 
 wxString sqlTable::MakeKey(cacheLine *line)
 {
-    wxString where;
-    if (hasOids)
-        where = wxT("OID = ") + line->cols[0];
-    else
+    wxString whereClause;
+    if (!primaryKeyColNumbers.IsEmpty())
     {
         wxStringTokenizer collist(primaryKeyColNumbers, wxT(","));
         long cn;
@@ -1911,14 +1909,17 @@ wxString sqlTable::MakeKey(cacheLine *line)
             if (colval.IsEmpty())
                 return wxEmptyString;
 
-            if (!where.IsEmpty())
-                where += wxT(" AND ");
-            where += qtIdent(columns[cn-1].name) + wxT(" = ") 
-                  + connection->qtDbString(colval) + wxT("::") + qtIdent(columns[cn-1].typeNspName)
-                                     + wxT(".") + qtIdent(columns[cn-1].typeName);
+            if (!whereClause.IsEmpty())
+                whereClause += wxT(" AND ");
+            whereClause += qtIdent(columns[cn-1].name) + wxT(" = ") 
+                        + connection->qtDbString(colval) + wxT("::") + qtIdent(columns[cn-1].typeNspName)
+                        + wxT(".") + qtIdent(columns[cn-1].typeName);
         }
     }
-    return where;
+    else if (hasOids)
+        whereClause = wxT("oid = ") + line->cols[0];
+
+    return whereClause;
 }
 
 
