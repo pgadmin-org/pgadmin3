@@ -24,7 +24,7 @@ if APPBUNDLE
 	$(install_sh_DATA) Info.plist $(bundledir)/Contents/Info.plist
 	$(install_sh_DATA) "pgadmin3.icns" "$(bundledir)/Contents/Resources/pgAdmin3.icns"
 	$(install_sh_DATA) "sql.icns" "$(bundledir)/Contents/Resources/sql.icns"
-	$$($(WX_CONFIG) --rezflags | sed 's/-t[[:space:]]*APPL//') \
+	$$($(WX_CONFIG) --rescomp | sed 's/-t[[:space:]]*APPL//') \
 		 "$(bundledir)/Contents/Resources/pgAdmin3.rsrc" -useDF
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_dump" "$(bundledir)/Contents/SharedSupport/helper/pg_dump"
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_restore" "$(bundledir)/Contents/SharedSupport/helper/pg_restore"
