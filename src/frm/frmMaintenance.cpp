@@ -65,7 +65,7 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
 
     txtMessages->SetMaxLength(0L);
 
-    if (object->GetMetaType() == PGM_INDEX)
+    if (object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE)
     {
         rbxAction->SetSelection(2);
         rbxAction->Enable(0, false);
@@ -108,7 +108,7 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
     chkAnalyze->Enable(isVacuum);
 
     bool isReindex = (rbxAction->GetSelection() == 2);
-    sbxReindexOptions->Enable(isReindex && object->GetMetaType() == PGM_DATABASE || object->GetMetaType() == PGM_INDEX);
+    sbxReindexOptions->Enable(isReindex && object->GetMetaType() == PGM_DATABASE || object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE);
     chkForce->Enable(isReindex && object->GetMetaType() == PGM_DATABASE);
     chkRecreate->Enable(isReindex && object->GetMetaType() == PGM_INDEX);
 }
@@ -152,18 +152,25 @@ wxString frmMaintenance::GetSql()
         }
         case 2:
         {
-            if (chkRecreate->GetValue())
+            if (object->GetMetaType() == PGM_UNIQUE || object->GetMetaType() == PGM_PRIMARYKEY)
             {
-                sql = wxT("DROP INDEX ") + object->GetQuotedFullIdentifier() + wxT(";\n")
-                    + ((pgIndex*)object)->GetCreate()
-                    + object->GetCommentSql();
+                sql = wxT("REINDEX INDEX ") + object->GetQuotedFullIdentifier();
             }
             else
             {
-                sql = wxT("REINDEX ") + object->GetTypeName().Upper()
-                    + wxT(" ") + object->GetQuotedFullIdentifier();
-                if (chkForce->GetValue())
-                    sql += wxT(" FORCE");
+                if (chkRecreate->GetValue())
+                {
+                    sql = wxT("DROP INDEX ") + object->GetQuotedFullIdentifier() + wxT(";\n")
+                        + ((pgIndex*)object)->GetCreate()
+                        + object->GetCommentSql();
+                }
+                else
+                {
+                    sql = wxT("REINDEX ") + object->GetTypeName().Upper()
+                        + wxT(" ") + object->GetQuotedFullIdentifier();
+                    if (chkForce->GetValue())
+                        sql += wxT(" FORCE");
+                }
             }
             break;
         }
