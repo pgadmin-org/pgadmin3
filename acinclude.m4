@@ -389,22 +389,18 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION}`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
 			
-			WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=yes --version=${WX_VERSION}`
-			WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION}`
-			pgadmin3_LDADD="$WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION}`
 			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=yes --version=${WX_VERSION}`
 		else
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION}`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
 		
-			WX_NEW_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs --unicode=yes --debug=no --version=${WX_VERSION}`
-			WX_NEW_CONTRIB_LIBS=`${WX_CONFIG} ${WX_STATIC} --libs stc,ogl --unicode=yes --debug=no --version=${WX_VERSION}`
-			pgadmin3_LDADD="$WX_NEW_LIBS $WX_NEW_CONTRIB_LIBS"
+			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION}`
 			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=no --version=${WX_VERSION}`
 		fi
 
 		AC_MSG_CHECKING(wxWidgets in ${WX_HOME})
-		if test "$WX_NEW_CPPFLAGS" = "" -o "$WX_NEW_LIBS" = "" -o "$WX_NEW_CONTRIB_LIBS" = ""
+		if test "$WX_NEW_CPPFLAGS" = "" -o "$pgadmin3_LDADD" = ""
 		then
 			AC_MSG_RESULT(failed)
 			AC_MSG_ERROR([Your wxWidgets installation cannot support pgAdmin in the selected configuration. This may be because it was configured without the --enable-unicode option, or the combination of dynamic/static linking and debug/non-debug libraries selected did not match any installed wxWidgets libraries.])
