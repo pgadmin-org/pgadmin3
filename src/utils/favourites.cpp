@@ -74,7 +74,6 @@ queryFavouriteFolder::queryFavouriteFolder(xmlTextReaderPtr reader, wxString tit
 
 	while (xmlTextReaderRead(reader))
 	{
-		const char *name = (const char *)xmlTextReaderConstName(reader);
 		int type = xmlTextReaderNodeType(reader);
 
 		if (type == 15)

@@ -264,7 +264,7 @@ wxString dlgRepTable::GetSql()
         }
 
         // these triggers have been deleted
-        for (i=0 ; i < (int)oldTriggers.GetCount() ; i++)
+        for (i=0 ; i < (unsigned int)oldTriggers.GetCount() ; i++)
         {
             sql += wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("droptrigger(")
                 +  id + wxT(", ")
@@ -302,7 +302,7 @@ wxString dlgRepTable::GetSql()
 
     
     // these triggers have been added
-    for (i=0 ; i < (int)newTriggers.GetCount() ; i++)
+    for (i=0 ; i < (unsigned int)newTriggers.GetCount() ; i++)
     {
         sql += wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storetrigger(")
             +  id + wxT(", ")
