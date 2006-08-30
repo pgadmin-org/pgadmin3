@@ -51,6 +51,8 @@ DialogWithHelp(form)
     chkStorePwd->SetValue(storePwd);
     txtPassword->Enable(true);
 
+	if (form == NULL)
+		chkStorePwd->Hide();
 }
 
 dlgConnect::~dlgConnect()

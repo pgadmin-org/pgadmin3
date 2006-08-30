@@ -23,6 +23,9 @@ public:
     ~dlgSelectConnection();
     wxString GetHelpPage() const;
     pgServer *GetServer() { return remoteServer; }
+	pgConn *CreateConn();
+	pgConn *CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, bool writeMRU = false);
+	wxString GetServerName();
     wxString GetDatabase();
 
     int Go(pgConn *conn, ctlComboBoxFix *cb);
@@ -30,6 +33,7 @@ public:
 private:
     void OnChangeServer(wxCommandEvent& ev);
     void OnChangeDatabase(wxCommandEvent& ev);
+	void OnTextChange(wxCommandEvent& ev);
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
 

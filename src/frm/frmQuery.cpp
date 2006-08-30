@@ -630,11 +630,11 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         int rc=dlg.Go(conn, cbConnection);
         if (rc == wxID_OK)
         {
-            conn = dlg.GetServer()->CreateConn(dlg.GetDatabase());
-            if (conn)
+			conn = dlg.CreateConn();
+			if (conn)
             {
-                cbConnection->Insert(conn->GetName(), sel, (void*)conn);
-                cbConnection->SetSelection(sel);
+				cbConnection->Insert(conn->GetName(), sel, (void*)conn);
+				cbConnection->SetSelection(sel);
 				OnChangeConnection(ev);
             }
             else

@@ -51,6 +51,7 @@
 #include "frmConfig.h"
 #include "frmQuery.h"
 #include "frmSplash.h"
+#include "dlgSelectConnection.h"
 #include <wx/dir.h>
 #include <wx/fs_zip.h>
 #include "ctl/xh_calb.h"
@@ -178,7 +179,8 @@ bool pgAdmin3::OnInit()
 	{
 		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
 		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
-		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool to auto-connected server"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("c"), NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
@@ -197,12 +199,12 @@ bool pgAdmin3::OnInit()
 	if (cmdParser.Parse() != 0) 
 		return false;
 
-	if (cmdParser.Found(wxT("q")) && !cmdParser.Found(wxT("s")))
+	if (cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc")))
 	{
 		cmdParser.Usage();
 		return false;
 	}
-	
+
 	if (cmdParser.Found(wxT("cm"), &configFile)) 
 		configMode = frmConfig::MAINFILE;
 	else if (cmdParser.Found(wxT("ch"), &configFile))
@@ -320,6 +322,7 @@ bool pgAdmin3::OnInit()
     }
 
 
+#ifndef __WXDEBUG__
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
@@ -331,6 +334,9 @@ bool pgAdmin3::OnInit()
 	    winSplash->Update();
         wxTheApp->Yield(true);
     }
+#else
+	frmSplash *winSplash = NULL;
+#endif
 
 	
     // Startup the windows sockets if required
@@ -392,8 +398,74 @@ bool pgAdmin3::OnInit()
             dtf->Show();
             SetTopWindow(dtf);
         }
-        else
+        else if ((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) &&!cmdParser.Found(wxT("s")))
         {
+			// -q specified, but not -s. Open a query tool but do *not* open the main window
+			pgConn *conn = NULL;
+			wxString connstr;
+
+			if (cmdParser.Found(wxT("q")))
+			{
+				dlgSelectConnection dlg(NULL, NULL);
+		        int rc=dlg.Go(conn, NULL);
+				if (rc != wxID_OK)
+					return false;
+				conn = dlg.CreateConn();
+			}
+			else if (cmdParser.Found(wxT("qc"), &connstr))
+			{
+				wxString host, database, username, tmps;
+				int sslmode=0,port=0;
+				wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
+				while (tkn.HasMoreTokens())
+				{
+					wxString str = tkn.GetNextToken();
+					if (str.StartsWith(wxT("host="), &host))
+						continue;
+					if (str.StartsWith(wxT("dbname="), &database))
+						continue;
+					if (str.StartsWith(wxT("user="), &username))
+						continue;
+					if (str.StartsWith(wxT("port="), &tmps))
+					{
+						port = StrToLong(tmps);
+						continue;
+					}
+					if (str.StartsWith(wxT("sslmode="), &tmps))
+					{
+						if (!tmps.Cmp(wxT("require")))
+							sslmode = 1;
+						else if (!tmps.Cmp(wxT("prefer")))
+							sslmode = 2;
+						else if (!tmps.Cmp(wxT("allow")))
+							sslmode = 3;
+						else if (!tmps.Cmp(wxT("disable")))
+							sslmode = 4;
+						else
+						{
+							wxMessageBox(_("Unknown SSL mode: ") + tmps);
+							return false;
+						}
+						continue;
+					}
+					wxMessageBox(_("Unknown token in connection string: ") + str);
+					return false;
+				}
+				dlgSelectConnection dlg(NULL, NULL);
+				conn = dlg.CreateConn(host, database, username, port, sslmode);
+			}
+			else
+			{
+				/* Can't happen.. */
+				return false;
+			}
+			if (!conn)
+				return false;
+			frmQuery *fq = new frmQuery(NULL, wxEmptyString, conn, wxEmptyString);
+			fq->Go();
+		}
+		else
+		{
             // Create & show the main form
             winMain = new frmMain(APPNAME_L);
 
@@ -404,8 +476,32 @@ bool pgAdmin3::OnInit()
 
             winMain->Show();
             SetTopWindow(winMain);
-        }
 
+	        // Display a Tip if required.
+			extern sysSettings *settings;
+			wxCommandEvent evt = wxCommandEvent();
+			if (winMain && settings->GetShowTipOfTheDay())
+			{
+				tipOfDayFactory tip(0, 0, 0);
+				tip.StartDialog(winMain, 0);
+			}
+
+			wxString str;
+			if (cmdParser.Found(wxT("s"), &str))
+			{
+				pgServer *srv = winMain->ConnectToServer(str, !cmdParser.Found(wxT("q")));
+				if (srv && cmdParser.Found(wxT("q")))
+				{
+					pgConn *conn;
+					conn = srv->CreateConn();
+					if (conn)
+					{
+						frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString);
+						fq->Go();
+					}
+				}
+			}
+		}
 
         SetExitOnFrameDelete(true);
 
@@ -413,31 +509,6 @@ bool pgAdmin3::OnInit()
         {
             winSplash->Close();
             delete winSplash;
-        }
-
-		wxString str;
-		if (cmdParser.Found(wxT("s"), &str))
-		{
-			pgServer *srv = winMain->ConnectToServer(str, !cmdParser.Found(wxT("q")));
-			if (srv && cmdParser.Found(wxT("q")))
-			{
-				pgConn *conn;
-				conn = srv->CreateConn();
-				if (conn)
-				{
-					frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString);
-					fq->Go();
-				}
-			}
-		}
-
-        // Display a Tip if required.
-        extern sysSettings *settings;
-        wxCommandEvent evt = wxCommandEvent();
-        if (winMain && settings->GetShowTipOfTheDay())
-        {
-            tipOfDayFactory tip(0, 0, 0);
-            tip.StartDialog(winMain, 0);
         }
     }
 
