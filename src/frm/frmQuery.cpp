@@ -640,7 +640,7 @@ void frmQuery::OnContents(wxCommandEvent& event)
 
 void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 {
-    int sel=cbConnection->GetCurrentSelection();
+    unsigned int sel=cbConnection->GetCurrentSelection();
     if (sel == cbConnection->GetCount()-1)
     {
         // new Connection
@@ -660,7 +660,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         }
         if (rc != wxID_OK)
         {
-            int i;
+            unsigned int i;
             for (i=0 ; i < sel ; i++)
             {
                 if (cbConnection->GetClientData(i) == conn)
