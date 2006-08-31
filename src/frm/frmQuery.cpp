@@ -96,8 +96,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_DATABASEBAR,       frmQuery::OnToggleDatabaseBar)
     EVT_MENU(MNU_TOOLBAR,           frmQuery::OnToggleToolBar)
     EVT_MENU(MNU_SCRATCHPAD,        frmQuery::OnToggleScratchPad)
-    EVT_MENU(MNU_RESULTSPANE,       frmQuery::OnToggleResultsPane)
-    EVT_MENU(MNU_MESSAGEPANE,       frmQuery::OnToggleMessagePane)
+    EVT_MENU(MNU_OUTPUTPANE,        frmQuery::OnToggleOutputPane)
     EVT_MENU(MNU_DEFAULTVIEW,       frmQuery::OnDefaultView)
 	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
@@ -159,8 +158,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     // View menu
     viewMenu = new wxMenu();
     viewMenu->Append(MNU_DATABASEBAR, _("&Database bar"), _("Show or hide the database selection bar."), wxITEM_CHECK);
-    viewMenu->Append(MNU_MESSAGEPANE, _("&Message pane"), _("Show or hide the message pane."), wxITEM_CHECK);
-    viewMenu->Append(MNU_RESULTSPANE, _("&Result pane"), _("Show or hide the results pane."), wxITEM_CHECK);
+    viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
     viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
     viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
     menuBar->Append(viewMenu, _("&View"));
@@ -267,18 +265,15 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     sqlQuery->SetMarginWidth(1, 16);
 
     // Results pane
-    resultsPane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 300));
-    sqlResult = new ctlSQLResult(resultsPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
-    explainCanvas = new ExplainCanvas(resultsPane);
-    resultsPane->AddPage(sqlResult, _("Data Output"));
-    resultsPane->AddPage(explainCanvas, _("Explain"));
-
-    // Message pane
-    messagePane = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize);
-    msgResult = new wxTextCtrl(messagePane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
-    msgHistory = new wxTextCtrl(messagePane, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
-    messagePane->AddPage(msgResult, _("Messages"));
-    messagePane->AddPage(msgHistory, _("History"));
+    outputPane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 300));
+    sqlResult = new ctlSQLResult(outputPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
+    explainCanvas = new ExplainCanvas(outputPane);
+    msgResult = new wxTextCtrl(outputPane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    msgHistory = new wxTextCtrl(outputPane, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    outputPane->AddPage(sqlResult, _("Data Output"));
+    outputPane->AddPage(explainCanvas, _("Explain"));
+    outputPane->AddPage(msgResult, _("Messages"));
+    outputPane->AddPage(msgHistory, _("History"));
 
     explainCanvas->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
@@ -293,8 +288,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(cbConnection, wxPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(sqlQuery, wxPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CaptionVisible(false).CloseButton(false));
-    manager.AddPane(resultsPane, wxPaneInfo().Name(wxT("resultsPane")).Caption(_("Results pane")).Bottom());
-    manager.AddPane(messagePane, wxPaneInfo().Name(wxT("messagePane")).Caption(_("Message pane")).Bottom());
+    manager.AddPane(outputPane, wxPaneInfo().Name(wxT("outputPane")).Caption(_("Output pane")).Bottom());
     manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right());
 
     // tell the manager to "commit" all the changes just made
@@ -309,8 +303,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
     manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
     manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
-    manager.GetPane(wxT("resultsPane")).Caption(_("Results pane"));
-    manager.GetPane(wxT("messagePane")).Caption(_("Message pane"));
+    manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
     manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
 
     // Hack to force the toolbar to redraw to the correct size
@@ -319,8 +312,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     // Sync the View menu options
     viewMenu->Check(MNU_DATABASEBAR, manager.GetPane(wxT("databaseBar")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
-    viewMenu->Check(MNU_RESULTSPANE, manager.GetPane(wxT("resultsPane")).IsShown());
-    viewMenu->Check(MNU_MESSAGEPANE, manager.GetPane(wxT("messagePane")).IsShown());
+    viewMenu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
@@ -436,21 +428,12 @@ void frmQuery::OnToggleToolBar(wxCommandEvent& event)
     manager.Update();
 }
 
-void frmQuery::OnToggleResultsPane(wxCommandEvent& event)
+void frmQuery::OnToggleOutputPane(wxCommandEvent& event)
 {
-    if (viewMenu->IsChecked(MNU_RESULTSPANE))
-        manager.GetPane(wxT("resultsPane")).Show(true);
+    if (viewMenu->IsChecked(MNU_OUTPUTPANE))
+        manager.GetPane(wxT("outputPane")).Show(true);
     else
-        manager.GetPane(wxT("resultsPane")).Show(false);
-    manager.Update();
-}
-
-void frmQuery::OnToggleMessagePane(wxCommandEvent& event)
-{
-    if (viewMenu->IsChecked(MNU_MESSAGEPANE))
-        manager.GetPane(wxT("messagePane")).Show(true);
-    else
-        manager.GetPane(wxT("messagePane")).Show(false);
+        manager.GetPane(wxT("outputPane")).Show(false);
     manager.Update();
 }
 
@@ -464,13 +447,9 @@ void frmQuery::OnAuiUpdate(wxFrameManagerEvent& event)
     {
         viewMenu->Check(MNU_TOOLBAR, false);
     }
-    else if(event.pane->name == wxT("resultsPane"))
+    else if(event.pane->name == wxT("outputPane"))
     {
-        viewMenu->Check(MNU_RESULTSPANE, false);
-    }
-    else if(event.pane->name == wxT("messagePane"))
-    {
-        viewMenu->Check(MNU_MESSAGEPANE, false);
+        viewMenu->Check(MNU_OUTPUTPANE, false);
     }
     else if(event.pane->name == wxT("scratchPad"))
     {
@@ -487,8 +466,7 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
     manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
     manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
     manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
-    manager.GetPane(wxT("resultsPane")).Caption(_("Results pane"));
-    manager.GetPane(wxT("messagePane")).Caption(_("Message pane"));
+    manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
     manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
 }
 
@@ -801,10 +779,14 @@ void frmQuery::OnFocus(wxFocusEvent& ev)
     // Set the active pane - needed to catch hits on child controls on tabs
     wxWindow *curr=FindFocus();
 
-    if (curr == sqlResult || curr->GetParent() == sqlResult || curr == explainCanvas || curr->GetParent() == explainCanvas)
-        resultsPane->SetFocus();
-    else if (curr == msgResult || curr == msgHistory)
-        messagePane->SetFocus();
+    // If the current object is a child of the results grid
+    if (curr)
+    {
+        if (this->IsKindOf(CLASSINFO(ctlSQLResult)))
+            this->GetParent()->SetFocus();
+        else if (curr == this)
+            GetParent()->SetFocus();
+    }
 
     ev.Skip();
 }
@@ -823,20 +805,14 @@ void frmQuery::OnCut(wxCommandEvent& ev)
 wxWindow *frmQuery::currentControl()
 {
     wxWindow *wnd=FindFocus();
-    if (wnd == resultsPane)
+    if (wnd == outputPane)
     {
-        switch (resultsPane->GetSelection())
+        switch (outputPane->GetSelection())
         {
             case 0: wnd = sqlResult;     break;
             case 1: wnd = explainCanvas; break;
-        }
-    }
-    else if (wnd == messagePane)
-    {
-        switch (messagePane->GetSelection())
-        {
-            case 0: wnd = msgResult;     break;
-            case 1: wnd = msgHistory;    break;
+            case 2: wnd = msgResult;     break;
+            case 3: wnd = msgHistory;    break;
         }
     }
     return wnd;
@@ -1365,7 +1341,7 @@ void frmQuery::OnExplain(wxCommandEvent& event)
                 }
             }
             explainCanvas->SetExplainString(str);
-            resultsPane->SetSelection(1);
+            outputPane->SetSelection(1);
         }
     }
 
@@ -1382,7 +1358,7 @@ void frmQuery::OnExplainText(wxCommandEvent& event)
         return;
 
     explainCanvas->SetExplainString(str);
-    resultsPane->SetSelection(1);
+    outputPane->SetSelection(1);
     sqlQuery->SetFocus();
 }
 
@@ -1510,7 +1486,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
         if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
         {
-            messagePane->SetSelection(0);
+            outputPane->SetSelection(2);
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
                 done = true;
@@ -1585,7 +1561,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         else
         {
             done = true;
-            resultsPane->SetSelection(0);
+            outputPane->SetSelection(0);
             long rowsTotal=sqlResult->NumRows();
 
             if (toFile)

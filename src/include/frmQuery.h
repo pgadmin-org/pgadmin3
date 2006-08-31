@@ -19,7 +19,7 @@
 // wxAUI
 #include <wx/aui/aui.h>
 
-#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=362;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=373;prop=100000;bestw=180;besth=21;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=600;besth=400;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=resultsPane;caption=RRRRResults pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=500;besth=300;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=messagePane;caption=Message pane;state=16779260;dir=3;layer=0;row=0;pos=1;prop=100000;bestw=500;besth=300;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779262;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=400;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=72;floaty=179;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=231|")
+#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=385;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=396;prop=100000;bestw=180;besth=21;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=17404;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779260;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=290|dock_size(2,0,0)=255|")
 
 class ExplainCanvas;
 class ctlSQLResult;
@@ -35,7 +35,7 @@ private:
     frmMain *mainForm;
     wxFrameManager manager;
     ctlSQLBox *sqlQuery;
-    wxNotebook *resultsPane, *messagePane;
+    wxNotebook *outputPane;
     ctlSQLResult *sqlResult;
     ExplainCanvas *explainCanvas;
     wxTextCtrl *msgResult, *msgHistory;
@@ -88,8 +88,7 @@ private:
     void OnToggleScratchPad(wxCommandEvent& event);
     void OnToggleDatabaseBar(wxCommandEvent& event);
     void OnToggleToolBar(wxCommandEvent& event);
-    void OnToggleResultsPane(wxCommandEvent& event);
-    void OnToggleMessagePane(wxCommandEvent& event);
+    void OnToggleOutputPane(wxCommandEvent& event);
     void OnAuiUpdate(wxFrameManagerEvent& event);
     void OnDefaultView(wxCommandEvent& event);
 

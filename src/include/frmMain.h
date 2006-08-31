@@ -112,7 +112,6 @@ private:
     void OnToggleToolBar(wxCommandEvent& event);
     void OnDefaultView(wxCommandEvent& event);
     void OnAuiUpdate(wxFrameManagerEvent& event);
-    void OnNotebookButton(wxAuiNotebookEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
     void OnPageChange(wxNotebookEvent& event);

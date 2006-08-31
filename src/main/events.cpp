@@ -856,12 +856,6 @@ void frmMain::OnAuiUpdate(wxFrameManagerEvent& event)
     event.Skip();
 }
 
-void frmMain::OnNotebookButton(wxAuiNotebookEvent& event)
-{
-    wxMessageBox(_("This tab cannot be closed."));
-    event.Veto();
-}
-
 void frmMain::OnDefaultView(wxCommandEvent& event)
 {
     manager.LoadPerspective(FRMMAIN_DEFAULT_PERSPECTIVE, true);
