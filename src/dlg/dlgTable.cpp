@@ -112,7 +112,11 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 
     lstColumns->AddColumn(_("Column name"), 90);
     lstColumns->AddColumn(_("Definition"), 135);
+#ifndef __WXMAC__
     lstColumns->AddColumn(wxT("Inherited from table"), 40);
+#else
+    lstColumns->AddColumn(wxT("Inherited from table"), 80);
+#endif
     lstColumns->AddColumn(wxT("Column definition"), 0);
     lstColumns->AddColumn(wxT("Column comment"), 0);
     lstColumns->AddColumn(wxT("Column statistics"), 0);
