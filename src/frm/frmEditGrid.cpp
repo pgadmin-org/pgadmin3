@@ -1728,12 +1728,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
                     columns[i].needResize = true;
-// Temorary fix for 1.4.0 - FIXME properly!!
-#ifdef __WXMAC__
-                    editor = new wxGridCellAutoWrapStringEditor();
-#else
                     editor = new sqlGridTextEditor(true);
-#endif
                     break;
             }
             if (editor)
