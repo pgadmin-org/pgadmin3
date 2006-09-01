@@ -410,7 +410,17 @@ AC_DEFUN([SETUP_WXWIDGETS],
 
 		case "${host}" in
 			*-apple-darwin*)
+				MAC_PPC=`${WX_CONFIG} --libs | grep -c "arch ppc"`
+				MAC_I386=`${WX_CONFIG} --libs | grep -c "arch i386"`
 				CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
+				if test "$MAC_PPC" != "0"
+				then
+					CPPFLAGS="$CPPFLAGS -arch ppc"
+				fi
+                                if test "$MAC_I386" != "0"
+                                then
+                                        CPPFLAGS="$CPPFLAGS -arch i386"
+                                fi
 				;;
 			*solaris*)
 				LDFLAGS="$LDFLAGS -lnsl"
