@@ -118,7 +118,7 @@ frmMain::frmMain(const wxString& title)
 
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
     // wxGTK needs this deferred
     pgaFactory::RealizeImages();
@@ -192,12 +192,6 @@ frmMain::frmMain(const wxString& title)
     viewMenu->Check(MNU_OBJECTBROWSER, manager.GetPane(wxT("objectBrowser")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 
-    // Focus events
-    properties->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmMain::OnFocus));
-    statistics->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
-    dependsOn->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
-    referencedBy->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
-
     // Add the root node
     serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());
     wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
@@ -211,12 +205,6 @@ frmMain::frmMain(const wxString& title)
 
 frmMain::~frmMain()
 {
-    // Focus events
-    properties->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmMain::OnFocus));
-    statistics->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
-    dependsOn->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
-    referencedBy->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmMain::OnFocus));
-
     StoreServers();
 
     settings->Write(wxT("frmMain/Perspective"), manager.SavePerspective());

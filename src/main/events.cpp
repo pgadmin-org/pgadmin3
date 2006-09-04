@@ -110,17 +110,6 @@ void frmMain::OnTreeKeyDown(wxTreeEvent& event)
     }
 }
 
-void frmMain::OnFocus(wxFocusEvent& ev)
-{
-    // Set the active pane - needed to catch hits on child controls on tabs
-    wxWindow *curr=FindFocus();
-
-    if (curr == this)
-        GetParent()->SetFocus();
-
-    ev.Skip();
-}
-
 void frmMain::OnExit(wxCommandEvent& event)
 {
     Close(false);   // Allow sub windows to stop us

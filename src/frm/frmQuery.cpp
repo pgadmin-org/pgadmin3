@@ -117,7 +117,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -275,7 +275,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     outputPane->AddPage(msgResult, _("Messages"));
     outputPane->AddPage(msgHistory, _("History"));
 
-    explainCanvas->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -364,7 +363,6 @@ frmQuery::~frmQuery()
 {
     wxLogInfo(wxT("Destroying SQL Query box"));
 
-    explainCanvas->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -775,19 +773,6 @@ void frmQuery::OnFocus(wxFocusEvent& ev)
         if (wnd)
             wnd->OnFocus(ev);
     }
-
-    // Set the active pane - needed to catch hits on child controls on tabs
-    wxWindow *curr=FindFocus();
-
-    // If the current object is a child of the results grid
-    if (curr)
-    {
-        if (this->IsKindOf(CLASSINFO(ctlSQLResult)))
-            this->GetParent()->SetFocus();
-        else if (curr == this)
-            GetParent()->SetFocus();
-    }
-
     ev.Skip();
 }
 

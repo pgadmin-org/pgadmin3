@@ -125,7 +125,6 @@ private:
     void OnCollapse(wxTreeEvent& event);
     void OnExpand(wxTreeEvent& event);
     void OnClose(wxCloseEvent& event);
-    void OnFocus(wxFocusEvent& event);
 
     void OnNew(wxCommandEvent& event);
     void OnDelete(wxCommandEvent &ev);
