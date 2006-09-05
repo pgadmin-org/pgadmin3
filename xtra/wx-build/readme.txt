@@ -2,11 +2,9 @@ These files are used to create the wx library.
 
 Download wxWidgets to ..\..\..\pgadmin3-deps\wxWidgets
 
-Copy setup-msw-xxx to ..\..\..\pgadmin3-deps\wxWidgets\include\wx\setup0.h (and
-to wx\setup.h and wx\msw\setup.h)
+Run "build-wx.bat" to from a Visual Studio 2005 commandprompt to build the required
+parts of wxWidgets in both release and debug builds (unicode, non-DLL).
 
-Build all Unicode, non-DLL, non-Universal targets for the main wxWidgets project,
-and the stc and ogl contrib modules.
 
 Additional tips
 ===============
