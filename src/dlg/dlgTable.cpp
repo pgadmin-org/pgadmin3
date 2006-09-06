@@ -403,6 +403,14 @@ int dlgTable::Go(bool modal)
         nbNotebook->DeletePage(3);
     }
 
+    // Find, and disable the RULE ACL option if we're 8.2
+    if (connection->BackendMinimumVersion(8, 2))
+    {
+        // Disable the checkbox
+        if (!DisablePrivilege(wxT("RULE")))
+            wxLogError(_("Failed to disable the RULE privilege checkbox!"));
+    }
+
     return dlgSecurityProperty::Go();
 }
 
@@ -671,7 +679,11 @@ wxString dlgTable::GetSql()
 
 
     AppendComment(sql, wxT("TABLE"), schema, table);
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
+
+    if (connection->BackendMinimumVersion(8, 2))
+        sql += GetGrant(wxT("arwdxt"), wxT("TABLE ") + tabname);
+    else
+        sql += GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
 
     return sql;
 }
