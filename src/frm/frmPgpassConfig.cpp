@@ -154,7 +154,7 @@ void frmPgpassConfig::DisplayFile(const wxString &str)
 		listEdit->SetItem(pos, 1, line.port);
 		listEdit->SetItem(pos, 2, line.database);
 		listEdit->SetItem(pos, 3, line.username);
-		listEdit->SetItem(pos, 4, line.password);
+		listEdit->SetItem(pos, 4, line.password.IsEmpty() ? wxT(""):wxT("*********"));
 		line.item = pos;
     }
     if (!i || !lines.Item(i-1).text.IsEmpty())
@@ -273,7 +273,7 @@ void frmPgpassConfig::UpdateDisplay(pgPassConfigLine &line)
 	listEdit->SetItem(pos, 1, line.port);
 	listEdit->SetItem(pos, 2, line.database);
 	listEdit->SetItem(pos, 3, line.username);
-	listEdit->SetItem(pos, 4, line.password);
+	listEdit->SetItem(pos, 4, line.password.IsEmpty() ? wxT(""):wxT("*********"));
 }
 
 

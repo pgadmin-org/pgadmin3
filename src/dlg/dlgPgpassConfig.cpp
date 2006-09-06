@@ -34,6 +34,7 @@ BEGIN_EVENT_TABLE(dlgPgpassConfig, DialogWithHelp)
     EVT_TEXT(XRCID("txtDatabase"),      dlgPgpassConfig::OnChange)
     EVT_TEXT(XRCID("txtUsername"),      dlgPgpassConfig::OnChange)
     EVT_TEXT(XRCID("txtPassword"),      dlgPgpassConfig::OnChange)
+    EVT_TEXT(XRCID("txtRePassword"),    dlgPgpassConfig::OnChange)
 END_EVENT_TABLE()
 
 
@@ -43,7 +44,7 @@ END_EVENT_TABLE()
 #define txtDatabase         CTRL_TEXT("txtDatabase")
 #define txtUsername         CTRL_TEXT("txtUsername")
 #define txtPassword         CTRL_TEXT("txtPassword")
-
+#define txtRePassword       CTRL_TEXT("txtRePassword")
 
 dlgPgpassConfig::dlgPgpassConfig(pgFrame *parent, pgPassConfigLine *_line) : 
 DialogWithHelp((frmMain*)parent)
@@ -67,6 +68,9 @@ DialogWithHelp((frmMain*)parent)
 	txtDatabase->SetValue(line->database);
 	txtUsername->SetValue(line->username);
 	txtPassword->SetValue(line->password);
+	txtRePassword->SetValue(line->password);
+    btnOK->Disable();
+
 }
 
 
@@ -85,6 +89,13 @@ wxString dlgPgpassConfig::GetHelpPage() const
 void dlgPgpassConfig::OnChange(wxCommandEvent& ev)
 {
 	/* Add any required validation rules here */
+        wxString passwd=txtPassword->GetValue();
+        wxString repasswd=txtRePassword->GetValue();
+        if (passwd.IsEmpty()||(passwd.Length() >1))
+        {
+            if (!passwd.compare(repasswd))
+               btnOK->Enable();
+        }
 }
 
 
