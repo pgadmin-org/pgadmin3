@@ -21,7 +21,6 @@ EXTRA_DIST = \
 	$(top_srcdir)/configure.ac.in \
 	$(top_srcdir)/languages.hwx \
 	$(top_srcdir)/languages.po \
-	$(top_srcdir)/pgadmin3-release.pot \
 	$(top_srcdir)/pgadmin3.pot \
 	$(top_srcdir)/pgAdmin3.sln \
 	$(top_srcdir)/stringextract \
