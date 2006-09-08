@@ -80,7 +80,7 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         if (isComposite)
         {
             pgSet *set=ExecuteSet(
-                wxT("SELECT attname, t.typname, attndims, atttypmod, nspname,\n")
+                wxT("SELECT attname, format_type(t.oid,NULL) AS typname, attndims, atttypmod, nspname,\n")
                 wxT("       (SELECT COUNT(1) from pg_type t2 WHERE t2.typname=t.typname) > 1 AS isdup\n")
                 wxT("  FROM pg_attribute att\n")
                 wxT("  JOIN pg_type t ON t.oid=atttypid\n")
@@ -127,6 +127,7 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("Alias"), GetAlias());
         if (isComposite)
         {
             properties->AppendItem(_("Members"), GetTypesList());
@@ -179,7 +180,7 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     if (!settings->GetShowSystemObjects())
         systemRestriction = wxT("   AND ct.oid IS NULL\n");
 
-	wxString sql =	wxT("SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n")
+	wxString sql =	wxT("SELECT t.oid, t.*, format_type(t.oid, null) AS alias, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n")
 			        wxT("  FROM pg_type t\n")
 					wxT("  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n")
 					wxT("  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n")
@@ -203,6 +204,7 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
             type->iSetOid(types->GetOid(wxT("oid")));
             type->iSetOwner(types->GetVal(wxT("typeowner")));
+            type->iSetAlias(types->GetVal(wxT("alias")));
             type->iSetComment(types->GetVal(wxT("description")));
             type->iSetPassedByValue(types->GetBool(wxT("typbyval")));
             type->iSetIsComposite(types->GetVal(wxT("typtype")) == wxT("c"));

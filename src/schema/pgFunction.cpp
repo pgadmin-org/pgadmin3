@@ -220,7 +220,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
         argNamesCol = wxT("proargnames, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.xmin, pr.*, TYP.typname, TYPNS.nspname AS typnsp, lanname, ") + argNamesCol + 
+            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, TYPNS.nspname AS typnsp, lanname, ") + argNamesCol + 
                         wxT("pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type TYP ON TYP.oid=prorettype\n")
@@ -231,7 +231,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             wxT(" ORDER BY proname"));
 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
-                    "SELECT t.oid, t.typname, n.nspname FROM pg_type t, pg_namespace n WHERE t.typnamespace = n.oid"));
+                    "SELECT t.oid, format_type(t.oid, t.typtypmod) AS typname, n.nspname FROM pg_type t, pg_namespace n WHERE t.typnamespace = n.oid"));
 
     if (functions)
     {
@@ -335,9 +335,9 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                     }
 
     				argTypeNames += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
-					quotedArgTypeNames += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtIdent(types->GetVal(wxT("typname")));
+					quotedArgTypeNames += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtTypeIdent(types->GetVal(wxT("typname")));
     				argTypes += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
-					quotedArgTypes += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtIdent(types->GetVal(wxT("typname")));
+					quotedArgTypes += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtTypeIdent(types->GetVal(wxT("typname")));
                 }
             }
 
@@ -348,7 +348,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             function->iSetAcl(functions->GetVal(wxT("proacl")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
             function->iSetReturnType(obj->GetDatabase()->GetSchemaPrefix(functions->GetVal(wxT("typnsp"))) + functions->GetVal(wxT("typname")));
-			function->iSetQuotedReturnType(obj->GetDatabase()->GetQuotedSchemaPrefix(functions->GetVal(wxT("typnsp"))) + qtIdent(functions->GetVal(wxT("typname"))));
+			function->iSetQuotedReturnType(obj->GetDatabase()->GetQuotedSchemaPrefix(functions->GetVal(wxT("typnsp"))) + qtTypeIdent(functions->GetVal(wxT("typname"))));
             function->iSetComment(functions->GetVal(wxT("description")));
             function->iSetArgTypeOids(oids);
 

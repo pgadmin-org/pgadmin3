@@ -1624,7 +1624,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
 
     pgSet *colSet=connection->ExecuteSet(
-        wxT("SELECT n.nspname AS nspname, relname, t.typname, nt.nspname AS typnspname, ")
+        wxT("SELECT n.nspname AS nspname, relname, format_type(t.oid,NULL) AS typname, nt.nspname AS typnspname, ")
                wxT("attname, attnum, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n")

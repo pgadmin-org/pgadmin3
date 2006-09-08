@@ -171,7 +171,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     wxMenu *eo=new wxMenu();
     eo->Append(MNU_VERBOSE, _("Verbose"), _("Explain verbose query"), wxITEM_CHECK);
-    eo->Append(MNU_ANALYZE, _("Analyze"), _("Explain analyse query"), wxITEM_CHECK);
+    eo->Append(MNU_ANALYZE, _("Analyze"), _("Explain analyze query"), wxITEM_CHECK);
     queryMenu->Append(MNU_EXPLAINOPTIONS, _("Explain &options"), eo, _("Options modifying Explain output"));
     queryMenu->AppendSeparator();
     queryMenu->Append(MNU_SAVEHISTORY, _("Save history"), _("Save history of executed commands."));

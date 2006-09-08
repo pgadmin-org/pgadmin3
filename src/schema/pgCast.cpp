@@ -99,7 +99,7 @@ pgObject *pgCastFactory::CreateObjects(pgCollection *collection, ctlTree *browse
         systemRestriction = wxT(" WHERE ca.oid > ") + NumToStr(collection->GetConnection()->GetLastSystemOID()) + wxT("\n");
 
     pgSet *casts= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp,")
+        wxT("SELECT ca.oid, ca.*, format_type(st.oid,NULL) AS srctyp, format_type(tt.oid,tt.typtypmod) AS trgtyp,")
         wxT(      " ns.nspname AS srcnspname, nt.nspname AS trgnspname,\n")
         wxT(      " proname, np.nspname AS pronspname, description\n")
         wxT("  FROM pg_cast ca\n")

@@ -33,6 +33,8 @@ public:
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return true; }
 
+    wxString GetAlias() const { return alias; }
+    void iSetAlias(const wxString& s) { alias=s; }
     wxString GetInputFunction() const { return inputFunction; }
     void iSetInputFunction(const wxString& s) { inputFunction=s; }
     wxString GetOutputFunction() const { return outputFunction; }
@@ -74,7 +76,7 @@ public:
     bool HasReferences() { return true; }
 
 private:
-    wxString inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
+    wxString alias, inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
         typesList, quotedTypesList, sendFunction, receiveFunction;
 	wxArrayString typesArray;
     long internalLength;

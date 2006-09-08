@@ -381,6 +381,17 @@ void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
         sql += qtIdent(name);
 }
 
+void dlgProperty::AppendQuotedType(wxString &sql, const wxString &name)
+{
+	// see AppendQuoted()
+    if (name.First('.') >= 0)
+    {
+        sql += qtIdent(name.BeforeFirst('.')) + wxT(".") + qtTypeIdent(name.AfterFirst('.'));
+    }
+    else
+        sql += qtTypeIdent(name);
+}
+
 
 void dlgProperty::FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
 {
@@ -877,8 +888,6 @@ void dlgTypeProperty::AddType(const wxString &typ, const OID oid, const wxString
         {
             case PGOID_TYPE_BIT:
             case PGOID_TYPE_BIT_ARRAY:
-            case PGOID_TYPE_CHAR:
-            case PGOID_TYPE_CHAR_ARRAY:
             case PGOID_TYPE_BPCHAR:
             case PGOID_TYPE_BPCHAR_ARRAY:
             case PGOID_TYPE_VARCHAR:
@@ -941,10 +950,16 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
     if (sel >= 0)
     {
         sql = types.Item(sel).AfterFirst(':');
-        if (sql.Contains(wxT("[]"))) {
-            sql = sql.BeforeFirst('[');
-            isArray = true;
-        }
+		if (sql.Right(2) == wxT("[]"))
+		{
+			sql = sql.SubString(0,sql.Len()-3);
+			isArray = true;
+		}
+		else if (sql.Right(3) == wxT("[]\""))
+		{
+			sql = sql.SubString(1,sql.Len()-4);
+			isArray = true;
+		}
 
         if (isVarLen && txtLength)
         {

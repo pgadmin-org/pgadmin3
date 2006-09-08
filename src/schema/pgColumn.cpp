@@ -135,11 +135,11 @@ wxString pgColumn::GetDefinition()
                    + schema->GetName() + wxT(".") + GetTableName()
                    + wxT("_") + GetName() + wxT("_seq'::text)");
 
-    if ((sql == wxT("int4") || sql == wxT("int8") || 
-         sql == wxT("pg_catalog.int4") || sql == wxT("pg_catalog.int8"))
+    if ((sql == wxT("integer") || sql == wxT("bigint") || 
+         sql == wxT("pg_catalog.integer") || sql == wxT("pg_catalog.bigint"))
         && GetDefault() == seqDefault)
     {
-        if (sql.Right(4) == wxT("int8"))
+        if (sql.Right(6) == wxT("bigint"))
             sql = wxT("bigserial");
         else
             sql = wxT("serial");
@@ -270,7 +270,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         systemRestriction = wxT("\n   AND attnum > 0");
         
     wxString sql=
-        wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
+        wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
         wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
         wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey");
 

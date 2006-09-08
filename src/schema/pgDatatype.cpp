@@ -25,14 +25,20 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
     needSchema = isDup;
     schema = nsp;
 
-    if (typname.StartsWith(wxT("_")))
+	name = typname;
+
+    if (name.StartsWith(wxT("_")))
     {
         if (!numdims)
            numdims=1;
-        name=typname.Mid(1);
+        name=name.Mid(1);
     }
-    else
-        name=typname;
+	if (name.Right(2) == wxT("[]"))
+	{
+		if (!numdims)
+			numdims=1;
+		name=name.Left(typname.Len()-2);
+	}
 
     if (numdims > 0)
     {
@@ -143,12 +149,12 @@ void DatatypeReader::init(pgDatabase *db, const wxString &condition)
 {
     database=db;
     set=db->GetConnection()->ExecuteSet(
-        wxT("SELECT typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname,\n")
+        wxT("SELECT format_type(t.oid,NULL) AS typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname,\n")
         wxT("       (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname = t.typname) > 1 AS isdup\n")
         wxT("  FROM pg_type t\n")
         wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
         wxT(" WHERE ") + condition + wxT("\n")
-        wxT(" ORDER BY CASE WHEN typtype='d' THEN 0 ELSE 1 END, (t.typelem>0)::bool, t.typname"));
+        wxT(" ORDER BY CASE WHEN typtype='d' THEN 0 ELSE 1 END, (t.typelem>0)::bool, 1"));
 }
 
 

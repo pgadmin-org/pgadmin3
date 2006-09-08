@@ -114,7 +114,7 @@ pgTypClass pgSetBase::ColTypClass(int col) const
 wxString pgSetBase::ColType(int col) const
 {
     wxString szSQL, szResult;
-    szSQL.Printf(wxT("SELECT typname FROM pg_type WHERE oid = %d"), ColTypeOid(col));
+    szSQL.Printf(wxT("SELECT format_type(oid,NULL) as typname FROM pg_type WHERE oid = %d"), ColTypeOid(col));
     szResult = ExecuteScalar(szSQL);
     return szResult;
 }

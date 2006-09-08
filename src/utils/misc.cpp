@@ -96,19 +96,32 @@ void FillKeywords(wxString &str)
 
 static bool needsQuoting(wxString& value, bool forTypes)
 {
-    // Replace Double Quotes
-    if (value.Replace(wxT("\""), wxT("\"\"")) > 0)
-        return true;
-
     // Is it a number?
     if (value.IsNumber()) 
         return true;
     else
     {
+		// certain types should not be quoted even though it contains a space. Evilness.
+		wxString valNoArray;
+		if (value.Right(2) == wxT("[]"))
+			valNoArray = value.Mid(0, value.Len()-2);
+		else
+			valNoArray = value;
+		if (!valNoArray.CmpNoCase(wxT("character varying")) ||
+            !valNoArray.CmpNoCase(wxT("\"char\"")) ||
+			!valNoArray.CmpNoCase(wxT("bit varying")) ||
+			!valNoArray.CmpNoCase(wxT("double precision")) ||
+			!valNoArray.CmpNoCase(wxT("timestamp without time zone")) ||
+			!valNoArray.CmpNoCase(wxT("timestamp with time zone")) ||
+			!valNoArray.CmpNoCase(wxT("time without time zone")) ||
+			!valNoArray.CmpNoCase(wxT("time with time zone")) ||
+            !valNoArray.CmpNoCase(wxT("\"trigger\"")) ||
+            !valNoArray.CmpNoCase(wxT("\"unknown\"")))
+			return false;
         int pos = 0;
-        while (pos < (int)value.length())
+        while (pos < (int)valNoArray.length())
         {
-            wxChar c=value.GetChar(pos);
+            wxChar c=valNoArray.GetChar(pos);
             if (!((pos > 0) && (c >= '0' && c <= '9')) && 
                 !(c >= 'a' && c  <= 'z') && 
                 !(c == '_'))
@@ -140,6 +153,7 @@ static bool needsQuoting(wxString& value, bool forTypes)
                 case INTEGER:
                 case INTERVAL:
                 case NUMERIC:
+                case REAL:
                 case SET:
                 case SMALLINT:
                 case TIME:

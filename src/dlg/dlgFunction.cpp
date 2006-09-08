@@ -190,12 +190,22 @@ int dlgFunction::Go(bool modal)
 
         if (factory != &triggerFunctionFactory)
         {
-            wxStringTokenizer argtypes(function->GetArgTypes(), wxT(", "));
+			wxString args = function->GetArgTypes();
             size_t cnt=0;
-
-            while (argtypes.HasMoreTokens())
-            {
-                wxString str=argtypes.GetNextToken();
+			while (args.Len() > 0)
+			{
+				wxString str;
+				int ofs = args.Find(wxT(", "));
+				if (ofs == -1)
+				{
+					str = args;
+					args = wxT("");
+				}
+				else
+				{
+					str = args.Left(ofs);
+					args = args.Mid(ofs+2);
+				}
                 if (str.IsEmpty())
                     continue;
                 if (typeColNo)
@@ -566,7 +576,7 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
             typname = typname.Left(typname.Length()-2);
         }
         if (quoted)
-            AppendQuoted(args, typname);
+            AppendQuotedType(args, typname);
         else
             args += typname;
         args += braces;
@@ -671,11 +681,11 @@ wxString dlgFunction::GetSql()
             wxString rt=cbReturntype->GetValue();
             if (rt.Right(2) == wxT("[]"))
             {
-                AppendQuoted(sql, rt.Left(rt.Length()-2));
+                AppendQuotedType(sql, rt.Left(rt.Length()-2));
                 sql += wxT("[]");
             }
             else
-                AppendQuoted(sql, rt);
+                AppendQuotedType(sql, rt);
         }
 
         sql += wxT(" AS\n");
