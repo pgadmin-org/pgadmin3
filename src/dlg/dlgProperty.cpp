@@ -776,7 +776,7 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 	// the query tool.
     if (node->GetMetaType() == PGM_FUNCTION || node->GetMetaType() == PGM_VIEW)
 	{
-	if (frmHint::ShowHint(frame, HINT_OBJECT_EDITTING) == wxID_CANCEL)
+	if (frmHint::ShowHint(frame, HINT_OBJECT_EDITING) == wxID_CANCEL)
 		return false;
 	}
 
