@@ -162,7 +162,7 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 void pgFunction::ShowHint(frmMain *form, bool force)
 {
 	wxArrayString hints;
-	hints.Add(HINT_OBJECT_EDITTING);
+	hints.Add(HINT_OBJECT_EDITING);
     frmHint::ShowHint((wxWindow *)form, hints, GetFullIdentifier(), force);
 }
 

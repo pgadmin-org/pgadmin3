@@ -34,8 +34,8 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where=wxEmptyString);
-    void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
+    void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where=wxEmptyString);
+    void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
 
     wxString GetDefinition();
 

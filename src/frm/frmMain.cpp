@@ -72,8 +72,8 @@ enum
 {
     NBP_PROPERTIES=0,
     NBP_STATISTICS,
-    NBP_DEPENDSON,
-    NBP_REFERENCEDBY
+    NBP_DEPENDENCIES,
+    NBP_DEPENDENTS
 };
 
 
@@ -133,18 +133,18 @@ frmMain::frmMain(const wxString& title)
     listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize);
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    dependsOn = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    referencedBy = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
 
     listViews->AddPage(properties, _("Properties"));        // NBP_PROPERTIES
     listViews->AddPage(statistics, _("Statistics"));        // NBP_STATISTICS
-    listViews->AddPage(dependsOn, _("Depends on"));         // NBP_DEPENDSON
-    listViews->AddPage(referencedBy, _("Referenced by"));   // NBP_REFERENCEDBY
+    listViews->AddPage(dependencies, _("Dependencies"));    // NBP_DEPENDENCIES
+    listViews->AddPage(dependents, _("Dependents"));        // NBP_DEPENDENTS
 
     properties->SetImageList(imageList, wxIMAGE_LIST_SMALL);
     statistics->SetImageList(imageList, wxIMAGE_LIST_SMALL);
-    dependsOn->SetImageList(imageList, wxIMAGE_LIST_SMALL);
-    referencedBy->SetImageList(imageList, wxIMAGE_LIST_SMALL);
+    dependencies->SetImageList(imageList, wxIMAGE_LIST_SMALL);
+    dependents->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 
     properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
@@ -152,8 +152,8 @@ frmMain::frmMain(const wxString& title)
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
     statistics->SetBackgroundColour(background);
-    dependsOn->SetBackgroundColour(background);
-    referencedBy->SetBackgroundColour(background);
+    dependencies->SetBackgroundColour(background);
+    dependents->SetBackgroundColour(background);
 
     // Setup the SQL pane
     sqlPane = new ctlSQLBox(this, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
@@ -340,7 +340,7 @@ void frmMain::CreateMenus()
 	new reportObjectDataDictionaryFactory(menuFactories, reportMenu, 0);
     new reportObjectStatisticsFactory(menuFactories, reportMenu, 0);
     new reportObjectDependenciesFactory(menuFactories, reportMenu, 0);
-    new reportObjectDependeesFactory(menuFactories, reportMenu, 0);
+    new reportObjectDependentsFactory(menuFactories, reportMenu, 0);
     new reportObjectListFactory(menuFactories, reportMenu, 0);
 
 
@@ -489,20 +489,20 @@ void frmMain::ShowObjStatistics(pgObject *data, int sel)
             statistics->Thaw();
             break;
         }
-        case NBP_DEPENDSON:
+        case NBP_DEPENDENCIES:
         {
-            dependsOn->Freeze();
-            dependsOn->DeleteAllItems();
-            data->ShowDependsOn(this, dependsOn);
-            dependsOn->Thaw();
+            dependencies->Freeze();
+            dependencies->DeleteAllItems();
+            data->ShowDependencies(this, dependencies);
+            dependencies->Thaw();
             break;
         }
-        case NBP_REFERENCEDBY:
+        case NBP_DEPENDENTS:
         {
-            referencedBy->Freeze();
-            referencedBy->DeleteAllItems();
-            data->ShowReferencedBy(this, referencedBy);
-            referencedBy->Thaw();
+            dependents->Freeze();
+            dependents->DeleteAllItems();
+            data->ShowDependents(this, dependents);
+            dependents->Thaw();
             break;
         }
         default:
@@ -534,28 +534,28 @@ ctlListView *frmMain::GetStatisticsCtl()
     return statistics;
 }
 
-ctlListView *frmMain::GetDependsOn()
+ctlListView *frmMain::GetDependencies()
 {
-    if (listViews->GetSelection() == NBP_DEPENDSON)
-        return dependsOn;
+    if (listViews->GetSelection() == NBP_DEPENDENCIES)
+        return dependencies;
     return 0;
 }
 
-ctlListView *frmMain::GetDependsOnCtl()
+ctlListView *frmMain::GetDependenciesCtl()
 {
-    return dependsOn;
+    return dependencies;
 }
 
 ctlListView *frmMain::GetReferencedBy()
 {
-    if (listViews->GetSelection() == NBP_REFERENCEDBY)
-        return referencedBy;
+    if (listViews->GetSelection() == NBP_DEPENDENTS)
+        return dependents;
     return 0;
 }
 
 ctlListView *frmMain::GetReferencedByCtl()
 {
-    return referencedBy;
+    return dependents;
 }
 
 

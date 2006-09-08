@@ -34,7 +34,7 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
+    void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
     
     wxString GetLocation() const { return location; };
     void iSetLocation(const wxString& newVal) { location = newVal; }

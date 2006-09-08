@@ -63,8 +63,8 @@ public:
     ctlListView *GetProperties() { return properties; }
     ctlListView *GetStatistics();
     ctlListView *GetStatisticsCtl();
-    ctlListView *GetDependsOn();
-    ctlListView *GetDependsOnCtl();
+    ctlListView *GetDependencies();
+    ctlListView *GetDependenciesCtl();
     ctlListView *GetReferencedBy();
     ctlListView *GetReferencedByCtl();
     void StoreServers();
@@ -78,7 +78,7 @@ private:
     ctlTree *browser;
     ctlListView *properties;
     ctlListView *statistics;
-    ctlListView *referencedBy, *dependsOn;
+    ctlListView *dependents, *dependencies;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenu *newMenu, *reportMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, 

@@ -129,7 +129,7 @@ wxString pgRole::GetSql(ctlTree *browser)
 
 
 
-void pgRole::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where)
+void pgRole::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {
     form->StartMsg(_(" Retrieving Role owned objects"));
 

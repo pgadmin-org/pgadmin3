@@ -318,14 +318,14 @@ void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const 
 }
 
 
-void pgObject::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &wh)
+void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &wh)
 {
     wxString where;
     if (wh.IsEmpty())
         where = wxT(" WHERE dep.objid=") + GetOidStr();
     else
         where = wh;
-    ShowDependency(GetDatabase(), dependsOn,
+    ShowDependency(GetDatabase(), Dependencies,
         wxT("SELECT DISTINCT deptype, refclassid, cl.relkind,\n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind || COALESCE(dep.refobjsubid::text, '')\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
@@ -380,13 +380,13 @@ void pgObject::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxStri
                 deptype = _("Owner");
 
             if (set.GetOid(wxT("refclassid")) == PGOID_CLASS_PG_AUTHID)
-                    dependsOn->AppendItem(iconId, wxT("Role"), refname, deptype);
+                    Dependencies->AppendItem(iconId, wxT("Role"), refname, deptype);
         }
     }
 }
 
 
-void pgObject::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &wh)
+void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &wh)
 {
     if (this->IsCollection())
         return;
@@ -455,19 +455,19 @@ void pgObject::ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties
         if (statistics)
             ShowStatistics(form, statistics);
 
-        ctlListView *dependsOn=form->GetDependsOn();
-        if (dependsOn)
+        ctlListView *Dependencies=form->GetDependencies();
+        if (Dependencies)
         {
-            dependsOn->ClearAll();
+            Dependencies->ClearAll();
             if (!IsCollection())
-                ShowDependsOn(form, dependsOn);
+                ShowDependencies(form, Dependencies);
         }
         ctlListView *referencedBy=form->GetReferencedBy();
         if (referencedBy)
         {
             referencedBy->ClearAll();
             if (!IsCollection())
-                ShowReferencedBy(form, referencedBy);
+                ShowDependents(form, referencedBy);
         }
     }
 

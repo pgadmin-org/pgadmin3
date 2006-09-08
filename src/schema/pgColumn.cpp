@@ -57,17 +57,17 @@ bool pgColumn::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
-void pgColumn::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &where)
+void pgColumn::ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where)
 {
-    pgObject::ShowDependsOn(form, dependsOn, 
+    pgObject::ShowDependencies(form, Dependencies, 
         wxT("\n WHERE dep.objid=") + table->GetOidStr() +
         wxT(" AND dep.objsubid=") + NumToStr(colNumber));
 }
 
 
-void pgColumn::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where)
+void pgColumn::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {
-    pgObject::ShowReferencedBy(form, referencedBy, 
+    pgObject::ShowDependents(form, referencedBy, 
         wxT("\n WHERE dep.refobjid=") + table->GetOidStr() +
         wxT(" AND dep.refobjsubid=") + NumToStr(colNumber));
 }

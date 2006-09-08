@@ -58,8 +58,8 @@ public:
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
-    void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &wh);
-    void ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxString &wh);
+    void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &wh);
+    void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &wh);
     void ShowStatistics(pgCollection *collection, ctlListView *statistics);
 
 private:

@@ -1472,22 +1472,22 @@ void reportObjectDependenciesFactory::GenerateReport(frmReport *report, pgObject
     report->SetReportTitle(title);
 
     int section = report->XmlCreateSection(object->GetTypeName() + _(" dependencies"));
-    ctlListView *list = GetFrmMain()->GetDependsOnCtl();
-    object->ShowDependsOn(parent, list);
+    ctlListView *list = GetFrmMain()->GetDependenciesCtl();
+    object->ShowDependencies(parent, list);
 
     report->XmlAddSectionTableFromListView(section, list);
 }
 
 ///////////////////////////////////////////////////////
-// Dependees report
+// Dependents report
 ///////////////////////////////////////////////////////
-reportObjectDependeesFactory::reportObjectDependeesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectDependentsFactory::reportObjectDependentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
 : reportBaseFactory(list)
 {
-    mnu->Append(id, _("&Dependees report"), _("Generate a dependees report for this object."));
+    mnu->Append(id, _("&Dependents report"), _("Generate a dependents report for this object."));
 }
 
-bool reportObjectDependeesFactory::CheckEnable(pgObject *obj)
+bool reportObjectDependentsFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
@@ -1499,17 +1499,17 @@ bool reportObjectDependeesFactory::CheckEnable(pgObject *obj)
     return false;
 }
 
-void reportObjectDependeesFactory::GenerateReport(frmReport *report, pgObject *object)
+void reportObjectDependentsFactory::GenerateReport(frmReport *report, pgObject *object)
 {
     wxString title = object->GetTypeName();
-    title += _(" dependees report - ");
+    title += _(" dependents report - ");
     title += object->GetIdentifier();
     report->SetReportTitle(title);
 
-    int section = report->XmlCreateSection(object->GetTypeName() + _(" dependees"));
+    int section = report->XmlCreateSection(object->GetTypeName() + _(" dependents"));
 
     ctlListView *list = GetFrmMain()->GetReferencedByCtl();
-    object->ShowReferencedBy(parent, list);
+    object->ShowDependents(parent, list);
 
     report->XmlAddSectionTableFromListView(section, list);
 }

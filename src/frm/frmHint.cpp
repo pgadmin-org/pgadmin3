@@ -127,8 +127,8 @@ hintArray[]=
         HINT_CANSUPPRESS
     },
     {
-        HINT_OBJECT_EDITTING,
-        _("Editting views, stored procedures or functions"),
+        HINT_OBJECT_EDITING,
+        _("Editing views, stored procedures or functions"),
         0,
         wxT("query"),
         HINT_CANSUPPRESS|HINT_CANABORT

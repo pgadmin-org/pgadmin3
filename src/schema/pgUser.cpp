@@ -84,7 +84,7 @@ wxString pgUser::GetSql(ctlTree *browser)
 
 
 
-void pgUser::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where)
+void pgUser::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {
     form->StartMsg(_(" Retrieving user owned objects"));
 

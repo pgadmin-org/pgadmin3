@@ -34,7 +34,7 @@ pgTablespace::~pgTablespace()
 }
 
 
-void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where)
+void pgTablespace::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {
     form->StartMsg(_(" Retrieving tablespace usage"));
 

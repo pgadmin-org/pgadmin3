@@ -87,7 +87,7 @@ wxString slSet::GetSql(ctlTree *browser)
     return sql;
 }
 
-void slSet::ShowDependsOn(frmMain *form, ctlListView *list, const wxString &wh)
+void slSet::ShowDependencies(frmMain *form, ctlListView *list, const wxString &wh)
 {
     list->ClearAll();
     list->AddColumn(_("Type"), 60);
@@ -167,7 +167,7 @@ bool slSet::CanDrop()
 }
 
 
-void slSet::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &wh)
+void slSet::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &wh)
 {
 }
 

@@ -52,7 +52,7 @@ public:
 
     // Tree object creation
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where);
+    void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where);
     
     // virtual methods
     wxString GetSql(ctlTree *browser);

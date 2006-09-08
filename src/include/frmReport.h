@@ -137,12 +137,12 @@ public:
 };
 
 ///////////////////////////////////////////////////////
-// Object dependees report
+// Object Dependents report
 ///////////////////////////////////////////////////////
-class reportObjectDependeesFactory : public reportBaseFactory
+class reportObjectDependentsFactory : public reportBaseFactory
 {
 public:
-    reportObjectDependeesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectDependentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
