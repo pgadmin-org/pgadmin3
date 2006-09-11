@@ -473,7 +473,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
         pgObject *data = CreateObject(collection);
         if (data)
         {
-            wxString nodeName=data->GetFullName();
+            wxString nodeName=this->GetName();
             size_t pos=0;
             wxTreeItemId newItem;
 
