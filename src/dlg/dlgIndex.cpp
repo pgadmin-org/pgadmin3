@@ -26,6 +26,7 @@
 #define cbType          CTRL_COMBOBOX("cbType")
 #define chkUnique       CTRL_CHECKBOX("chkUnique")
 #define chkClustered    CTRL_CHECKBOX("chkClustered")
+#define chkConcurrent   CTRL_CHECKBOX("chkConcurrent")
 #define txtWhere        CTRL_TEXT("txtWhere")
 
 #define btnAddCol       CTRL_BUTTON("btnAddCol")
@@ -210,6 +211,7 @@ int dlgIndex::Go(bool modal)
         cbType->Disable();
         txtWhere->Disable();
         chkUnique->Disable();
+        chkConcurrent->Disable();
         PrepareTablespace(cbTablespace, index->GetTablespace());
     }
     else
@@ -228,7 +230,9 @@ int dlgIndex::Go(bool modal)
             }
             delete set;
         }
-        txtComment->Disable();
+
+        if (!this->database->BackendMinimumVersion(8, 2))
+            chkConcurrent->Disable();
     }
     return dlgIndexBase::Go(modal);
 }
@@ -246,7 +250,14 @@ wxString dlgIndex::GetSql()
             sql = wxT("CREATE ");
             if (chkUnique->GetValue())
                 sql += wxT("UNIQUE ");
-            sql += wxT("INDEX ") + qtIdent(name);
+
+            sql += wxT("INDEX ");
+
+            if (chkConcurrent->GetValue())
+                sql += wxT("CONCURRENTLY ");
+
+            sql += qtIdent(name);
+
             sql += wxT("\n   ON ") + table->GetQuotedFullIdentifier();
             AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
             sql += wxT(" (") + GetColumns()
