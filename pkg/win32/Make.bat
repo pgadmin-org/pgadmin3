@@ -17,11 +17,11 @@ if NOT "%1"=="REGENGUIDS" GOTO BUILD_PACKAGE
 echo.
 
 echo Regenerating GUIDs in src/pgadmin3.wxs...
-utils\regenguids.pl src\pgadmin3.wxs
+perl utils\regenguids.pl src/pgadmin3.wxs
 move src\pgadmin3.wxs.out src\pgadmin3.wxs
 
 echo Regenerating GUIDs in src/i18ndata.wxs...
-utils\regenguids.pl src\i18ndata.wxs
+perl utils\regenguids.pl ./src/i18ndata.wxs
 move src\i18ndata.wxs.out src\i18ndata.wxs
 
 echo.
