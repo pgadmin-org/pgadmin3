@@ -413,6 +413,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 				MAC_PPC=`${WX_CONFIG} --libs | grep -c "arch ppc"`
 				MAC_I386=`${WX_CONFIG} --libs | grep -c "arch i386"`
 				CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti"
+                                LDFLAGS="$LDFLAGS -headerpad_max_install_names"
 				if test "$MAC_PPC" != "0"
 				then
 					CPPFLAGS="$CPPFLAGS -arch ppc"
