@@ -1399,7 +1399,7 @@ bool reportObjectStatisticsFactory::CheckEnable(pgObject *obj)
         {
             if (obj->IsCollection())
             {
-                pgaFactory *f = ((pgCollection *)obj)->GetItemFactory();
+                pgaFactory *f = obj->GetFactory();
 
                 if (f)
                 {
@@ -1533,7 +1533,7 @@ bool reportObjectListFactory::CheckEnable(pgObject *obj)
         }
         else
         {
-            pgaFactory *f = ((pgCollection *)obj)->GetItemFactory();
+            pgaFactory *f = obj->GetFactory();
             if (obj)
             {
                 if (f->GetMetaType() == PGM_SERVER)
