@@ -338,8 +338,8 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             column->iSetPrecision(dt.Precision());
             column->iSetRawTypename(dt.Name());
 
-            column->iSetVarTypename(dt.GetSchemaPrefix(database) + dt.FullName());
-            column->iSetQuotedTypename(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
+            column->iSetVarTypename(dt.FullName());
+            column->iSetQuotedTypename(dt.FullName());
 
             column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
             column->iSetQuotedFullTable(database->GetQuotedSchemaPrefix(columns->GetVal(wxT("nspname")))

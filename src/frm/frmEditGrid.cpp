@@ -1657,7 +1657,6 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
             columns[i].name = colSet->GetVal(wxT("attname"));
             columns[i].typeName = colSet->GetVal(wxT("typname"));
-            columns[i].typeNspName = colSet->GetVal(wxT("typnspname"));
 
             columns[i].type = (Oid)colSet->GetOid(wxT("basetype"));
             if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8)
@@ -1915,11 +1914,7 @@ wxString sqlTable::MakeKey(cacheLine *line)
             if (columns[cn-1].typeName != wxT(""))
             {
                 whereClause += wxT("::");
-            
-                if (columns[cn-1].typeNspName != wxT(""))
-                    whereClause += qtIdent(columns[cn-1].typeNspName) + wxT(".");
-            
-                whereClause += qtIdent(columns[cn-1].typeName);
+                whereClause += columns[cn-1].typeName;
             }
         }
     }
@@ -2391,7 +2386,7 @@ wxString sqlCellAttr::Quote(pgConn *conn, const wxString& value)
     else
         str = conn->qtDbString(value);
    
-    return str + wxT("::") + qtIdent(typeNspName) + wxT(".") + qtIdent(typeName);
+    return str + wxT("::") + typeName;
 }
 
 

@@ -856,10 +856,10 @@ void dlgTypeProperty::FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withD
     {
         pgDatatype dt=tr.GetDatatype();
 
-        AddType(wxT("?"), tr.GetOid(), tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
-        cb->Append(tr.GetSchemaPrefix() + dt.FullName());
+        AddType(wxT("?"), tr.GetOid(), dt.FullName());
+        cb->Append(dt.FullName());
         if (cb2)
-            cb2->Append(tr.GetSchemaPrefix() + dt.FullName());
+            cb2->Append(dt.FullName());
         tr.MoveNext();
     }
 }
