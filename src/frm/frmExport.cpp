@@ -144,6 +144,8 @@ bool frmExport::Export(pgSet *set)
     }
 
     wxString line;
+    long skipped = 0;
+    wxWX2MBbuf buf;
 
     int colCount, rowCount;
 
@@ -170,7 +172,13 @@ bool frmExport::Export(pgSet *set)
         if (rbUnicode->GetValue())
             file.Write(line, wxConvUTF8);
         else
-            file.Write(line, wxConvLibc);
+        {
+            buf = line.mb_str(wxConvLibc);
+            if (!buf)
+                skipped++;
+            else
+                file.Write(line, wxConvLibc);
+        }
     }
 
 
@@ -222,11 +230,20 @@ bool frmExport::Export(pgSet *set)
         if (rbUnicode->GetValue())
             file.Write(line, wxConvUTF8);
         else
-            file.Write(line, wxConvLibc);
+        {
+            buf = line.mb_str(wxConvLibc);
+            if (!buf)
+                skipped++;
+            else
+                file.Write(line, wxConvLibc);
+        }
 
         set->MoveNext();
     }
     file.Close();
+
+    if (skipped)
+        wxLogError(_("Data export incomplete.\n\n%d row(s) contained characters that could not be converted to the local charset.\n\nPlease correct the data or try using UTF8 instead."), skipped);
 
     return true;
 }
