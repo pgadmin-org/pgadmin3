@@ -1910,9 +1910,17 @@ wxString sqlTable::MakeKey(cacheLine *line)
 
             if (!whereClause.IsEmpty())
                 whereClause += wxT(" AND ");
-            whereClause += qtIdent(columns[cn-1].name) + wxT(" = ") 
-                        + connection->qtDbString(colval) + wxT("::") + qtIdent(columns[cn-1].typeNspName)
-                        + wxT(".") + qtIdent(columns[cn-1].typeName);
+            whereClause += qtIdent(columns[cn-1].name) + wxT(" = ") + connection->qtDbString(colval);
+            
+            if (columns[cn-1].typeName != wxT(""))
+            {
+                whereClause += wxT("::");
+            
+                if (columns[cn-1].typeNspName != wxT(""))
+                    whereClause += qtIdent(columns[cn-1].typeNspName) + wxT(".");
+            
+                whereClause += qtIdent(columns[cn-1].typeName);
+            }
         }
     }
     else if (hasOids)
