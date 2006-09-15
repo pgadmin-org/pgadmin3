@@ -34,11 +34,16 @@ pgSetBase::pgSetBase(PGresult *newRes, pgConnBase *newConn, wxMBConv &cnv, bool 
     // Make sure we have tuples
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
+        nCols = 0;
         nRows = 0;
         pos = 0;
     }
     else
     {
+        nCols = PQnfields(res);
+        for (int x = 0; x < nCols+1; x++)
+            colTypes.Add(wxT(""));
+
         nRows = PQntuples(res);
         MoveFirst();
     }
@@ -113,9 +118,14 @@ pgTypClass pgSetBase::ColTypClass(int col) const
 
 wxString pgSetBase::ColType(int col) const
 {
+    if (!colTypes[col].IsEmpty())
+        return colTypes[col];
+
     wxString szSQL, szResult;
     szSQL.Printf(wxT("SELECT format_type(oid,NULL) as typname FROM pg_type WHERE oid = %d"), ColTypeOid(col));
     szResult = ExecuteScalar(szSQL);
+    colTypes[col] = szResult;
+
     return szResult;
 }
 

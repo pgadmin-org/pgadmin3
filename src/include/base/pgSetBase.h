@@ -40,7 +40,7 @@ public:
     pgSetBase(PGresult *newRes, pgConnBase *newConn, wxMBConv &cnv, bool needColQt);
     ~pgSetBase();
     long NumRows() const { return nRows; }
-    long NumCols() const { return PQnfields(res); }
+    long NumCols() const { return nCols; }
 
     void MoveNext() { if (pos <= nRows) pos++; }
     void MovePrevious() { if (pos > 0) pos--; }
@@ -89,10 +89,11 @@ public:
 protected:
     pgConnBase *conn;
     PGresult *res;
-    long pos, nRows;
+    long pos, nRows, nCols;
     wxString ExecuteScalar(const wxString& sql) const;
     wxMBConv &conv;
     bool needColQuoting;
+    wxArrayString colTypes;
 };
 
 
