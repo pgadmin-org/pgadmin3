@@ -244,6 +244,8 @@ bool frmExport::Export(pgSet *set)
 
     if (skipped)
         wxLogError(_("Data export incomplete.\n\n%d row(s) contained characters that could not be converted to the local charset.\n\nPlease correct the data or try using UTF8 instead."), skipped);
+    else
+        wxMessageBox(_("Data export completed successfully."), _("Export data"), wxICON_INFORMATION | wxOK);
 
     return true;
 }
