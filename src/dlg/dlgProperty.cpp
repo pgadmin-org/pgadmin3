@@ -1238,7 +1238,13 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
     return wxString();
 }
 
-
+bool dlgSecurityProperty::DisablePrivilege(const wxString &priv) 
+{ 
+    if (securityPage) 
+        return securityPage->DisablePrivilege(priv); 
+    else 
+        return true; 
+}
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -171,7 +171,7 @@ protected:
     void EnableOK(bool enable);
     virtual wxString GetHelpPage() const;
     virtual int Go(bool modal=false);
-    bool DisablePrivilege(const wxString &priv) { return securityPage->DisablePrivilege(priv); };
+    bool DisablePrivilege(const wxString &priv);
 
 private:
 
