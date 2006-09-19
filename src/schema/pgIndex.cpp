@@ -114,7 +114,7 @@ void pgIndexBase::ReadColumnDetails()
                     wxT("  END\n") +
                     wxT("FROM pg_index i\n") +
                     wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
-                    wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr(i-1) + wxT("])\n") +
+                    wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i-1)) + wxT("])\n") +
                     wxT("WHERE i.indexrelid = ") + GetOidStr());
 
                 columns += str;
