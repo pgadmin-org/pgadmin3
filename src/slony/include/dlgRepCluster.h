@@ -69,6 +69,7 @@ private:
 
     wxArrayLong usedNodes;
     wxString clusterBackup;
+    wxString slonyVersion;
 
 
     DECLARE_EVENT_TABLE()

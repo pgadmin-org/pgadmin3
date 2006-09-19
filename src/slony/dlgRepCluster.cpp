@@ -824,6 +824,23 @@ wxString dlgRepCluster::GetSql()
                 + ReplaceString(createScript, wxT("@NAMESPACE@"), quotedName);
 
             sql = ReplaceString(sql, wxT("@CLUSTERNAME@"), txtClusterName->GetValue());
+
+            // From Slony 1.2 onwards, the scripts include the module version.
+            // To figure it out, temporarily load and use _Slony_I_getModuleVersion.
+            // We'll cache the result to save doing it again.
+            if (sql.Contains(wxT("@MODULEVERSION@")) && slonyVersion.IsEmpty())
+            {
+                this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs', '_Slony_I_getModuleVersion' LANGUAGE C"));
+                slonyVersion = this->database->ExecuteScalar(wxT("SELECT pgadmin_slony_version();"));
+                this->database->ExecuteVoid(wxT("DROP FUNCTION pgadmin_slony_version()"));
+
+                if (slonyVersion.IsEmpty())
+                {
+                    wxLogError(_("Couldn't test for the Slony version. Assuming 1.2.0"));
+                    slonyVersion = wxT("1.2.0");
+                }
+            }
+            sql = ReplaceString(sql, wxT("@MODULEVERSION@"), slonyVersion);
         }
 
         sql += wxT("\n")
