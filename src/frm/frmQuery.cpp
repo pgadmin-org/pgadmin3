@@ -1049,7 +1049,7 @@ bool frmQuery::CheckChanged(bool canVeto)
         if (!lastPath.IsNull())
             fn = wxT(" in file ") + lastPath;
         wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
-                    wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
+                    wxYES_NO|wxICON_EXCLAMATION|
                     (canVeto ? wxCANCEL : 0));
 
     	wxCommandEvent noEvent;
