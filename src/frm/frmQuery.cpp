@@ -1639,7 +1639,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     setTools(false);
     fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
 
-    if (IsActive())
+    if (!IsActive())
         RequestUserAttention();
     return done;
 }
