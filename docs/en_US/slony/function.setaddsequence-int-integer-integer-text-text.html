@@ -1,21 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.75.        setaddsequence_int( integer, integer, text, text )
-      </title>
+<title>1.93.  setaddsequence_int( integer, integer, text, text )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.setaddsequence-integer-integer-text-text.html" title="1.74.        setaddsequence( integer, integer, text, text )
-      ">
-<link rel="next" href="function.setaddtable-integer-integer-text-name-text.html" title="1.76.        setaddtable( integer, integer, text, name, text )
-      ">
+<link rel="prev" href="function.setaddsequence-integer-integer-text-text.html" title="1.92.  setaddsequence( integer, integer, text, text )">
+<link rel="next" href="function.setaddtable-integer-integer-text-name-text.html" title="1.94.  setaddtable( integer, integer, text, name, text )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.setaddsequence-int-integer-integer-text-text"></a>1.75.        setaddsequence_int( integer, integer, text, text )
+<a name="function.setaddsequence-int-integer-integer-text-text"></a>1.93.        setaddsequence_int( integer, integer, text, text )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -93,6 +91,13 @@ begin
 		raise exception 'Slony-I: setAddSequence_int(): % is not a sequence',
 				p_fqname;
 	end if;
+
+        select 1 into v_sync_row from sl_sequence where seq_id = p_seq_id;
+	if not found then
+               v_relkind := 'o';   -- all is OK
+        else
+                raise exception 'Slony-I: setAddSequence_int(): sequence ID % has already been assigned', p_seq_id;
+        end if;
 
 	-- ----
 	-- Add the sequence to sl_sequence

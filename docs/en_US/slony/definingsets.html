@@ -4,16 +4,17 @@
 <title>7. Defining Slony-I Replication Sets</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="cluster.html" title="6. Defining Slony-I Clusters">
-<link rel="next" href="slonyadmin.html" title=" Slony-I Administration ">
+<link rel="next" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="definingsets"></a>7. Defining <span class="productname">Slony-I</span> Replication Sets</h2></div></div></div>
-<p>Defining the nodes indicated the shape of the cluster of
+<a name="id2550679"></a><p>Defining the nodes indicated the shape of the cluster of
 database servers; it is now time to determine what data is to be
 copied between them.  The groups of data that are copied are defined
 as &#8220;<span class="quote">replication sets.</span>&#8221;</p>
@@ -26,12 +27,14 @@ suitable primary key</p></li>
 </ul></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514692"></a>7.1. Primary Keys</h3></div></div></div>
-<p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
+<a name="id2550710"></a>7.1. Primary Keys</h3></div></div></div>
+<a name="id2550713"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
 candidate thereof on each table that is replicated.  PK values are
 used as the primary identifier for each tuple that is modified in the
-source system.  There are three ways that you can get <span class="productname">Slony-I</span> to use
-a primary key:</p>
+source system.  Note that they can be composite keys composed of
+multiple NOT NULL columns; they don't need to consist of single
+fields.  There are three ways that you can get <span class="productname">Slony-I</span> to use a
+primary key:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> If the table has a formally identified primary key,
 <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> can be used without any need to
@@ -90,15 +93,18 @@ transaction </a> on the provider node.  The <a href="faq.html">FAQ </a> outlines
 running transactions that will injure system performance.</p>
 <p> If you can split such a large set into several smaller pieces,
 that will shorten the length of each of the transactions, lessening
-the degree of &#8220;<span class="quote">injury</span>&#8221; to performance.</p>
+the degree of the &#8220;<span class="quote">injury</span>&#8221; to performance.</p>
 <p> These &#8220;<span class="quote">negative effects</span>&#8221; tend to emerge when the
-database being subscribed to is tens of gigabytes in size.  For
-relatively small databases, this shouldn't be a material factor.</p>
+database being subscribed to is many gigabytes in size and where it
+takes many hours or even days for the subscriber to complete the
+initial data copy.  For relatively small databases, this shouldn't be
+a material factor.</p>
 </li>
 <li>
 <p> Any time you invoke <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>,
 this requests a lock on <span class="emphasis"><em> every single table in the
-replication set. </em></span></p>
+replication set, first, on the origin node, and then, as the event
+propagates to other nodes, to each subscriber node. </em></span></p>
 <p> There have been reports &#8220;<span class="quote">in the field</span>&#8221; of this
 leading to deadlocks such that the <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>
 request had to be submitted many times in order for it to actually
@@ -111,13 +117,16 @@ affect a couple of tables, you might use <a href="stmtsetmovetable.html" title="
      TABLE</span></a> to move them temporarily to a new
 replication set.  By diminishing the number of locks needed, this
 should ease the ability to get the DDL change into place.</p>
+<p> There is a further <a href="locking.html" title="11. Locking Issues"> discussion of
+locking </a> which outlines where <span class="productname">Slony-I</span> requires locks likely to
+intrude on your applications.</p>
 </li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id514982"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
-<p> Each time a SYNC is processed, values are recorded for
+<a name="id2551004"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
+<a name="id2551008"></a><p> Each time a SYNC is processed, values are recorded for
 <span class="emphasis"><em>all</em></span> of the sequences in the set.  If there are a
 lot of sequences, this can cause <a href="table.sl-seqlog.html">sl_seqlog</a> to
 grow rather large.</p>

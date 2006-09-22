@@ -1,31 +1,32 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2. Slon daemons</title>
+<title>3. Slon daemons</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
-<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
-<link rel="prev" href="slonyadmin.html" title=" Slony-I Administration ">
-<link rel="next" href="subscribenodes.html" title="3. Subscribing Nodes">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="firstdb.html" title="2. Replicating Your First Database">
+<link rel="next" href="subscribenodes.html" title="4. Subscribing Nodes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="slonstart"></a>2. Slon daemons</h2></div></div></div>
-<p>The programs that actually perform <span class="productname">Slony-I</span> replication are the
+<a name="slonstart"></a>3. Slon daemons</h2></div></div></div>
+<a name="id2553562"></a><p>The programs that actually perform <span class="productname">Slony-I</span> replication are the
 <span class="application">slon</span> daemons.</p>
 <p>You need to run one <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> instance for each node
 in a <span class="productname">Slony-I</span> cluster, whether you consider that node a
-&#8220;<span class="quote">master</span>&#8221; or a &#8220;<span class="quote">slave</span>&#8221;. On Windows when 
+&#8220;<span class="quote">master</span>&#8221; or a &#8220;<span class="quote">slave</span>&#8221;. On <span class="trademark">Windows</span>&#8482; when
 running as a service things are slightly different. One slon service
 is installed, and a seperate configuration file registered for each
-node to be serviced by that machine. The main service then manages 
-the individual slons itself. Since a <code class="command">MOVE
-SET</code> or <code class="command">FAILOVER</code> can switch the roles of
-nodes, slon needs to be able to function for both providers and
-subscribers.  It is not essential that these daemons run on any
-particular host, but there are some principles worth considering:
+node to be serviced by that machine. The main service then manages the
+individual slons itself. Since a <code class="command">MOVE SET</code> or
+<code class="command">FAILOVER</code> can switch the roles of nodes, slon needs
+to be able to function for both providers and subscribers.  It is not
+essential that these daemons run on any particular host, but there are
+some principles worth considering:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
@@ -49,7 +50,24 @@ files and process tables from one location.  This also eliminates the
 need to login to several hosts in order to look at log files or to
 restart <span class="application">slon</span> instances.</p></li>
 </ul></div>
-<p>There are two &#8220;<span class="quote">watchdog</span>&#8221; scripts currently available:
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p> Do <span class="emphasis"><em>not</em></span> run a slon that is
+responsible to service a particular node across a WAN link if at all
+possible.  Any problems with that connection can kill the connection
+whilst leaving &#8220;<span class="quote">zombied</span>&#8221; database connections on the node
+that (typically) will not die off for around two hours.  This prevents
+starting up another slon, as described in the <a href="faq.html"> FAQ</a> under <a href="faq.html#multipleslonconnections"> multiple slon
+connections</a>. </p>
+</div>
+<p> Historically, <span class="application">slon</span> processes have
+been fairly fragile, dying if they encounter just about any
+significant error.  This behaviour mandated running some form of
+&#8220;<span class="quote">watchdog</span>&#8221; which would watch to make sure that if one
+<span class="application">slon</span> fell over, it would be replaced by
+another. </p>
+<p>There are two &#8220;<span class="quote">watchdog</span>&#8221; scripts currently
+available in the <span class="productname">Slony-I</span> source tree:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
@@ -75,5 +93,12 @@ case was that it figured that since it hasn't done a
 restarting slon, thereby restarting the <code class="command">COPY SET</code>
 event.  More recently, the script has been changed to detect
 <code class="command">COPY SET</code> in progress.</p>
+<p>In <span class="productname">Slony-I</span> version 1.2, the structure of the
+<span class="application">slon</span> has been revised fairly substantially
+to make it much less fragile.  The main process should only die off if
+you expressly signal it asking it to be killed. </p>
+<p> A new approach is available in the <a href="altperl.html#launchclusters" title="19.28.  launch_clusters.sh ">Section 19.28, &#8220; launch_clusters.sh &#8221;</a> script which uses
+<span class="application">slon</span> configuration files and which may be
+invoked as part of your system startup process.</p>
 </div></body>
 </html>

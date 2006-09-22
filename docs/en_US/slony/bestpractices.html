@@ -4,16 +4,17 @@
 <title>20.  Slony-I &#8220;Best Practices&#8221; </title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="versionupgrade.html" title="19. Using Slony-I for PostgreSQL Upgrades">
-<link rel="next" href="help.html" title="21. More Slony-I Help">
+<link rel="next" href="testbed.html" title="21.  Slony-I Test Bed Framework ">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bestpractices"></a>20.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </h2></div></div></div>
-<a name="id523350"></a><p> It is common for managers to have a desire to operate systems
+<a name="id2565148"></a><p> It is common for managers to have a desire to operate systems
 using some available, documented set of &#8220;<span class="quote">best practices.</span>&#8221;
 Documenting that sort of thing is essential to ISO 9000, ISO 9001, and
 other sorts of organizational certifications. </p>
@@ -54,16 +55,26 @@ not shift around due to Daylight Savings Time. </p>
 <p> The &#8220;<span class="quote">geographically unbiased</span>&#8221; choice seems to be
 <code class="command"><code class="envar">TZ</code>=UTC</code> or
 <code class="command"><code class="envar">TZ</code>=GMT</code>. </p>
-<p> See also <a href="requirements.html#times" title="3.3.  Time Synchronization">Section 3.3, &#8220; Time Synchronization&#8221;</a>.</p>
+<p> See also <a href="requirements.html#times" title="3.4.  Time Synchronization">Section 3.4, &#8220; Time Synchronization&#8221;</a>.</p>
 </li>
 <li>
 <p> Principle: Long running transactions are Evil </p>
 <p> The FAQ has an entry on <a href="faq.html#pglistenerfull"> growth
-of <code class="envar">pg_listener</code> </a> which discusses this in a fair
-bit of detail; the long and short is that long running transactions
-have numerous ill effects.  They are particularly troublesome on an
+of <code class="envar">pg_listener</code> </a> which discusses this in a fair bit of detail;
+the long and short is that long running transactions have numerous ill
+effects.  They are particularly troublesome on an
 &#8220;<span class="quote">origin</span>&#8221; node, holding onto locks, preventing vacuums
 from taking effect, and the like.</p>
+<p> In version 1.2, some of the &#8220;<span class="quote">evils</span>&#8221; should be
+lessened, because:</p>
+<div class="itemizedlist"><ul type="circle">
+<li><p> Events in <code class="envar">pg_listener</code> are only generated when
+replication updates are relatively infrequent, which should mean that
+busy systems won't generate many dead tuples in that table</p></li>
+<li><p> The system will periodically rotate (using
+<code class="command">TRUNCATE</code> to clean out the old table) between the
+two log tables, <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a>.  </p></li>
+</ul></div>
 </li>
 <li>
 <p> <a href="failover.html" title="7. Doing switchover and failover with Slony-I"> Failover </a> policies
@@ -120,10 +131,11 @@ useful for handling changes to database schemas. </p></li>
 replicated table has a true primary key constraint; it is
 <span class="emphasis"><em>acceptable</em></span> to use a &#8220;<span class="quote">candidate primary key.</span>&#8221;</p>
 <p> It is <span class="emphasis"><em>not recommended</em></span> that a
-<span class="productname">Slony-I</span>-defined key be used to introduce a candidate primary key, as
-this introduces the possibility that updates to this table can fail
-due to the introduced unique index, which means that <span class="productname">Slony-I</span> has
-introduced a new failure mode for your application.</p>
+<span class="productname">Slony-I</span>-defined key (created via <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>) be
+used to introduce a candidate primary key, as this introduces the
+possibility that updates to this table can fail due to the introduced
+unique index, which means that <span class="productname">Slony-I</span> has introduced a new failure
+mode for your application.</p>
 </li>
 <li><p> <a href="definingsets.html#definesets" title="7.2. Grouping tables into sets"> Grouping tables into sets</a> suggests strategies for determining how to group tables and
 sequences into replication sets. </p></li>
@@ -195,8 +207,9 @@ options:</p>
 active are visible in the process environment.  (And if there are a
 lot of them, they may be a nuisance to read.)</p>
 <p> Unfortunately, if you invoke <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> from the
-command line, you could <span class="emphasis"><em>forget</em></span> to include <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files"> log shipping </a> configuration and thereby
-destroy the sequence of logs for a log shipping node. </p>
+command line, you could <span class="emphasis"><em>forget</em></span> to include
+<a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping</a> configuration and thereby destroy the sequence of logs
+for a log shipping node. </p>
 </li>
 <li>
 <p> Unlike when command line options are used, the
@@ -205,8 +218,7 @@ inferred from the name and/or contents of the <a href="slon.html" title="slon"><
 configuration file, and will not reflect subsequent changes to the
 configuration file.  </p>
 <p> By putting the options in a file, you won't forget including
-any of them, so this is safer for <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files"> log
-shipping. </a> </p>
+any of them, so this is safer for <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">log shipping</a>. </p>
 </li>
 </ul></div>
 <div class="itemizedlist"><ul type="disc"><li>

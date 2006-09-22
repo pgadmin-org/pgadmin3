@@ -1,0 +1,159 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>22.  Slony-I Test Bed Framework</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="versionupgrade.html" title="21. Using Slony-I for PostgreSQL Upgrades">
+<link rel="next" href="loganalysis.html" title="23. Log Analysis">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="testbed"></a>22.  <span class="productname">Slony-I</span> Test Bed Framework </h2></div></div></div>
+<a name="id2562881"></a><p> As of version 1.1.5, <span class="productname">Slony-I</span> has a common test bed framework
+intended to better support running a comprehensive set of tests at
+least somewhat automatically.  Older tests
+used <span class="application">pgbench</span> (not
+a <span class="emphasis"><em>bad</em></span> thing) but were troublesome to automate
+because they were set up to spawn each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> in
+an <span class="application">xterm</span> for the user
+to <span class="emphasis"><em>watch</em></span>.</p>
+<p> The new test framework is mostly written in Bourne shell, and
+is intended to be portable to both Bash (widely used on Linux) and
+Korn shell (widely found on commercial UNIX systems).  The code lives
+in the source tree under the <code class="filename"> tests</code> directory.</p>
+<p> At present, nearly all of the tests make use of only two
+databases that, by default, are on a single <span class="productname">PostgreSQL</span> postmaster on
+one host.  This is perfectly fine for those tests that involve
+verifying that <span class="productname">Slony-I</span> functions properly on various sorts of data.
+Those tests do things like varying date styles, and creating tables
+and sequences that involve unusual names to verify that quoting is
+being handled properly. </p>
+<p> It is also possible to configure environment variables so that
+the replicated nodes will be placed on different database backends,
+optionally on remote hosts, running varying versions of
+<span class="productname">PostgreSQL</span>.</p>
+<p>Here are some of the vital files...</p>
+<div class="itemizedlist"><ul type="disc"><li><p> <code class="filename">run_test.sh</code> </p></li></ul></div>
+<p> This is the central script for running tests.  Typical usage is
+thus:</p>
+<p> <code class="command"> ./run_test.sh </code></p>
+<pre class="screen">usage ./run_test.sh testname</pre>
+<p> You need to specify the subdirectory name of the test set to be
+run; each such set is stored in a subdirectory of
+<code class="filename">tests</code>.</p>
+<p> You may need to set one or more of the following environment
+variables to reflect your local configuration.  For instance, the
+writer runs &#8220;<span class="quote">test1</span>&#8221; against <span class="productname">PostgreSQL</span> 8.0.x using the
+following command line:</p>
+<pre class="screen"> PGBINDIR=/opt/OXRS/dbs/pgsql8/bin PGPORT=5532 PGUSER=cbbrowne ./run_test.sh test1 </pre>
+<div class="glosslist"><dl>
+<dt> <code class="envar">PGBINDIR</code> </dt>
+<dd>
+<p> This determines where the test scripts look for
+<span class="productname">PostgreSQL</span> and <span class="productname">Slony-I</span> binaries.  The default is <code class="filename">/usr/local/pgsql/bin</code>.</p>
+<p> There are also variables <code class="envar">PGBINDIR1</code> thru
+<code class="envar">PGBINDIR13</code> which allows you to specify a separate path
+for each database instance.  That will be particularly useful when
+testing interoperability of <span class="productname">Slony-I</span> across different versions of
+<span class="productname">PostgreSQL</span> on different platforms. In order to create a database of
+each respective version, you need to point to
+an <span class="application">initdb</span> of the appropriate
+version.</p>
+</dd>
+<dt> <code class="envar">PGPORT</code> </dt>
+<dd>
+<p> This indicates what port the backend is on.  By
+default, 5432 is used. </p>
+<p> There are also variables <code class="envar">PORT1</code> thru
+<code class="envar">PORT13</code> which allow you to specify a separate port
+number for each database instance.  That will be particularly useful
+when testing interoperability of <span class="productname">Slony-I</span> across different versions of
+<span class="productname">PostgreSQL</span>. </p>
+</dd>
+<dt> <code class="envar">PGUSER</code> </dt>
+<dd>
+<p> By default, the user <code class="filename">postgres</code> is
+used; this is taken as the default user ID to use for all of the
+databases. </p>
+<p> There are also variables <code class="envar">USER1</code> thru
+<code class="envar">USER13</code> which allow specifying a separate user name for
+each database instance.  As always, with <span class="productname">Slony-I</span>, this needs
+to be a <span class="productname">PostgreSQL</span> &#8220;<span class="quote">superuser.</span>&#8221; </p>
+</dd>
+<dt> <code class="envar">HOST</code> </dt>
+<dd>
+<p> By default, <code class="filename">localhost</code> is used.</p>
+<p> There are also variables <code class="envar">HOST1</code> thru
+<code class="envar">HOST13</code> which allow specifying a separate host for
+each database instance.</p>
+</dd>
+<dt> <code class="envar">DB1</code> thru <code class="envar">DB13 </code> </dt>
+<dd>
+<p> By default, <code class="filename">slonyregress1</code> thru
+<code class="filename">slonyregress13</code> are used.</p>
+<p> You may override these from the environment if you have some
+reason to use different names. </p>
+</dd>
+<dt><code class="envar">ENCODING</code></dt>
+<dd><p> By default, <code class="filename">UNICODE</code> is used, so
+that tests can create UTF8 tables and test the multibyte capabilities.</p></dd>
+<dt><code class="envar">MY_MKTEMP_IS_DECREPIT</code></dt>
+<dd><p> If your version of Linux uses a variation of
+<span class="application">mktemp</span> that does not generate a full path
+to the location of the desired temporary file/directory, then set this
+value.  </p></dd>
+</dl></div>
+<p> Within each test, you will find the following files: </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> <code class="filename">README</code> </p>
+<p> This file contains a description of the test, and is displayed
+to the reader when the test is invoked. </p>
+</li>
+<li>
+<p> <code class="filename">generate_dml.sh</code> </p>
+<p> This contains script code that generates SQL to perform updates. </p>
+</li>
+<li>
+<p> <code class="filename">init_add_tables.ik</code> </p>
+<p>  This is a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script for adding the tables for the test to repliation. </p>
+</li>
+<li>
+<p> <code class="filename">init_cluster.ik</code> </p>
+<p> <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to initialize the cluster for the test.</p>
+</li>
+<li>
+<p> <code class="filename">init_create_set.ik</code> </p>
+<p> <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to initialize additional nodes to be used in the test. </p>
+</li>
+<li>
+<p> <code class="filename">init_schema.sql</code> </p>
+<p> An SQL script to create the tables and sequences required at the start of the test.</p>
+</li>
+<li>
+<p> <code class="filename">init_data.sql</code> </p>
+<p> An SQL script to initialize the schema with whatever state is required for the &#8220;<span class="quote">master</span>&#8221; node.  </p>
+</li>
+<li>
+<p> <code class="filename">init_subscribe_set.ik</code> </p>
+<p> A <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script to set up subscriptions.</p>
+</li>
+<li>
+<p> <code class="filename">settings.ik</code> </p>
+<p> A shell script that is used to control the size of the cluster, how many nodes are to be created, and where the origin is.</p>
+</li>
+<li>
+<p> <code class="filename">schema.diff</code> </p>
+<p> A series of SQL queries, one per line, that are to be used to validate that the data matches across all the nodes.  Note that in order to avoid spurious failures, the queries must use unambiguous <code class="command">ORDER BY</code> clauses.</p>
+</li>
+</ul></div>
+<p> If there are additional test steps, such as
+running <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>,
+additional <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> and SQL scripts may be necessary.</p>
+</div></body>
+</html>

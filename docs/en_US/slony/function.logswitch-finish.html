@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.73.  logswitch_finish( )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.lockset-integer.html" title="1.72.  lockset( integer )">
+<link rel="next" href="function.logswitch-start.html" title="1.74.  logswitch_start( )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.logswitch-finish"></a>1.73.        logswitch_finish(  )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       logswitch_finish()
+
+Attempt to finalize a log table switch in progress
+        </p>
+<pre class="programlisting">DECLARE
+	v_current_status	int4;
+	v_dummy				record;
+BEGIN
+	-- ----
+	-- Grab the central configuration lock to prevent race conditions
+	-- while changing the sl_log_status sequence value.
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Get the current log status.
+	-- ----
+	select last_value into v_current_status from sl_log_status;
+
+	-- ----
+	-- status value 0 or 1 means that there is no log switch in progress
+	-- ----
+	if v_current_status = 0 or v_current_status = 1 then
+		return 0;
+	end if;
+
+	-- ----
+	-- status = 2: sl_log_1 active, cleanup sl_log_2
+	-- ----
+	if v_current_status = 2 then
+		-- ----
+		-- The cleanup thread calls us after it did the delete and
+		-- vacuum of both log tables. If sl_log_2 is empty now, we
+		-- can truncate it and the log switch is done.
+		-- ----
+		for v_dummy in select 1 from sl_log_2 loop
+			-- ----
+			-- Found a row ... log switch is still in progress.
+			-- ----
+			raise notice 'Slony-I: log switch to sl_log_1 still in progress - sl_log_2 not truncated';
+			return -1;
+		end loop;
+
+		raise notice 'Slony-I: log switch to sl_log_1 complete - truncate sl_log_2';
+		truncate sl_log_2;
+		perform "pg_catalog".setval('sl_log_status', 0);
+		-- Run addPartialLogIndices() to try to add indices to unused sl_log_? table
+		perform addPartialLogIndices();
+
+		return 1;
+	end if;
+
+	-- ----
+	-- status = 3: sl_log_2 active, cleanup sl_log_1
+	-- ----
+	if v_current_status = 3 then
+		-- ----
+		-- The cleanup thread calls us after it did the delete and
+		-- vacuum of both log tables. If sl_log_2 is empty now, we
+		-- can truncate it and the log switch is done.
+		-- ----
+		for v_dummy in select 1 from sl_log_1 loop
+			-- ----
+			-- Found a row ... log switch is still in progress.
+			-- ----
+			raise notice 'Slony-I: log switch to sl_log_2 still in progress - sl_log_1 not truncated';
+			return -1;
+		end loop;
+
+		raise notice 'Slony-I: log switch to sl_log_2 complete - truncate sl_log_1';
+		truncate sl_log_1;
+		perform "pg_catalog".setval('sl_log_status', 1);
+		-- Run addPartialLogIndices() to try to add indices to unused sl_log_? table
+		perform addPartialLogIndices();
+		return 2;
+	end if;
+END;</pre>
+<p>
+      </p>
+</div></body>
+</html>

@@ -4,11 +4,12 @@
 <title>UPDATE FUNCTIONS</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtddlscript.html" title="EXECUTE SCRIPT">
 <link rel="next" href="stmtwaitevent.html" title="WAIT FOR EVENT">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="stmtupdatefunctions"></a><div class="titlepage"></div>
@@ -21,7 +22,7 @@
 <div class="cmdsynopsis"><p><code class="command">UPDATE FUNCTIONS (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536528"></a><h2>Description</h2>
+<a name="id2579958"></a><h2>Description</h2>
 <p> Reloads stored functions for a node.</p>
 <p>Reloads all stored procedure and function definitions in the
     <span class="productname">Slony-I</span> schema for the specified node. This command is usually
@@ -33,11 +34,38 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id536565"></a><h2>Example</h2>
+<a name="id2579993"></a><h2>Example</h2>
 <pre class="programlisting">UPDATE FUNCTIONS (
     ID = 3        # Update functions on node 3
 );
     </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2580002"></a><h2> Locking Behaviour </h2>
+<p> No application-visible locking should take place. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2580009"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2580021"></a><h2> Oddities </h2>
+<p> Any mismatch between <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> and the C
+    libraries &#8220;<span class="quote">living</span>&#8221; in the <span class="productname">PostgreSQL</span> installation
+    will result in this failing to do what is expected, and, more than
+    likely, failing to run at all.  You may <span class="emphasis"><em>think</em></span>
+    you are upgrading to version 1.1.5, but if you are running <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> from version 1.1.2, or if you didn't restart the
+    database with a version that has 1.1.5 libraries, and instead are
+    referencing C stored functions from version 1.1.1, the attempt to
+    upgrade will fail, because the sets of C functions have regularly
+    changed between major versions.</p>
+<p> Before <span class="productname">Slony-I</span> 1.2, the error messages that would result
+    would be not terribly informative; what you'd find, in <span class="productname">PostgreSQL</span>
+    logs, is some error message about being unable to load some stored
+    function that happens to be implemented in C.  As of 1.2, one of
+    the first things done is to load a stored function to verify
+    version numbers; it complains in a much more direct fashion if you
+    have some versioning mismatch.  </p>
 </div>
 </div></body>
 </html>

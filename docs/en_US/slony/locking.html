@@ -1,25 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>10. Locking Issues</title>
+<title>11. Locking Issues</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
-<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
-<link rel="prev" href="plainpaths.html" title="9.  Slony-I Path Communications">
-<link rel="next" href="addthings.html" title="11. Adding Things to Replication">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="plainpaths.html" title="10.  Slony-I Path Communications">
+<link rel="next" href="addthings.html" title="12. A Task-Oriented View of Slony-I">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="locking"></a>10. Locking Issues</h2></div></div></div>
-<a name="id519025"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
-Multi-Version Concurrency Control (<span class="acronym">MVCC</span>) is that
+<a name="locking"></a>11. Locking Issues</h2></div></div></div>
+<a name="id2556917"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+Multi-Version Concurrency Control (<acronym class="acronym">MVCC</acronym>) is that
 this eliminates a whole host of reasons to need to lock database
 objects.  On some other database systems, you need to acquire a table
 lock in order to insert data into the table; that can
 <span class="emphasis"><em>severely</em></span> hinder performance.  On other systems,
-read locks can impede writes; with <span class="acronym">MVCC</span>, <span class="productname">PostgreSQL</span>
+read locks can impede writes; with <acronym class="acronym">MVCC</acronym>, <span class="productname">PostgreSQL</span>
 eliminates that whole class of locks in that &#8220;<span class="quote">old reads</span>&#8221;
 can access &#8220;<span class="quote">old tuples.</span>&#8221; Most of the time, this allows
 the gentle user of <span class="productname">PostgreSQL</span> to not need to worry very much about
@@ -32,7 +33,7 @@ modifying <span class="productname">Slony-I</span> configuration can bring back 
 <li>
 <p><a href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add
 table</code> </a></p>
-<p> A momentary table lock must be acquired on the
+<p> A momentary exclusive table lock must be acquired on the
 &#8220;<span class="quote">origin</span>&#8221; node in order to add the trigger that collects
 updates for that table.  It only needs to be acquired long enough to
 establish the new trigger.</p>
@@ -40,9 +41,10 @@ establish the new trigger.</p>
 <li>
 <p><a href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move
 set</code> </a></p>
-<p> When a set origin is shifted from one node to another, locks
-must be acquired on each of the tables on both the old origin and the
-new origin in order to change the triggers on the tables.</p>
+<p> When a set origin is shifted from one node to another,
+exclusive locks must be acquired on each replicated table on both the
+old origin and the new origin in order to change the triggers on the
+tables.  </p>
 </li>
 <li>
 <p><a href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set</code> </a> </p>
@@ -59,13 +61,30 @@ being restored.  The operation therefore must acquire table locks on
 all replicated tables on each node. </p>
 </li>
 <li>
-<p> During the <code class="command">COPY_SET</code> event on a new
-subscriber </p>
+<p> During the <code class="command">SUBSCRIBE_SET</code> event on
+a new subscriber </p>
 <p> In a sense, this is the least provocative scenario, since,
 before the replication set has been populated, it is pretty reasonable
 to say that the node is &#8220;<span class="quote">unusable</span>&#8221; and that <span class="productname">Slony-I</span>
 could reasonably demand exclusive access to the node. </p>
+<p> A change in version 1.2 is that an express <code class="command">LOCK
+TABLE</code> SQL request is submitted in the loop that validates
+that all of the tables are there.  This means that
+<span class="emphasis"><em>all</em></span> tables in the replication set will be locked
+via an exclusive lock for the entire duration of the process of
+subscription.  By locking the tables early, this means that the
+subscription cannot fail after copying some of the data due to some
+other process having held on to a table. </p>
+<p> In any case, note that this one began with the wording
+&#8220;<span class="quote">on a new subscriber.</span>&#8221; The locks are applied <span class="emphasis"><em>on
+the new subscriber.</em></span> They are <span class="emphasis"><em>not</em></span>
+applied on the provider or on the origin. </p>
 </li>
+<li><p> <span class="application">pg_autovacuum</span> may not be
+part of <span class="productname">Slony-I</span>, but those that run it find that it wakes up roughly
+once per minute and may, at any time, start vacuuming a table, thereby
+taking out a <code class="envar">ShareUpdateExclusiveLock</code> lock.  This may
+block the other events for an unpredictable period of time.</p></li>
 </ul></div>
 <p> Each of these actions requires, at some point, modifying each
 of the tables in the affected replication set, which requires
@@ -108,7 +127,7 @@ period where things were running slowly.  </p>
 </p>
 <div class="itemizedlist"><ul type="circle">
 <li><p> Modify <code class="filename">pg_hba.conf</code> so that only
-the <a href="bestpractices.html#slonyuser"> <code class="command">slony</code> user </a>
+the <a href="slonyadmin.html#slonyuser"> <code class="command">slony</code> user </a>
 will have access to the database. </p></li>
 <li>
 <p> Issue a <code class="command">kill -SIGHUP</code> to the
@@ -136,11 +155,10 @@ it reload the security configuration. </p></li>
 <p>
 </p>
 </li>
-<li><p> The section on <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)"> DDL
-Changes </a> suggests some additional techniques that may be
-useful, such as moving tables between replication sets in such a way
-that you minimize the set of tables that need to be
-locked. </p></li>
+<li><p> The section  <a href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a> suggests some additional
+techniques that may be useful, such as moving tables between
+replication sets in such a way that you minimize the set of tables
+that need to be locked. </p></li>
 </ul></div>
 <p> Regrettably, there is no perfect answer to this.  If it is
 <span class="emphasis"><em>necessary</em></span> to submit a <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> request, then it is presumably

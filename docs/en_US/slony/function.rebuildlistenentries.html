@@ -1,21 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.70.        rebuildlistenentries(  )
-      </title>
+<title>1.82.  rebuildlistenentries( )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.moveset-int-integer-integer-integer.html" title="1.69.        moveset_int( integer, integer, integer )
-      ">
-<link rel="next" href="function.rebuildlistenentriesone-integer-integer.html" title="1.71.        rebuildlistenentriesone( integer, integer )
-      ">
+<link rel="prev" href="function.reachablefromnode-integer-integerarray.html" title="1.81.  reachablefromnode( integer, integer[] )">
+<link rel="next" href="function.registernodeconnection-integer.html" title="1.83.  registernodeconnection( integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.rebuildlistenentries"></a>1.70.        rebuildlistenentries(  )
+<a name="function.rebuildlistenentries"></a>1.82.        rebuildlistenentries(  )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -29,28 +27,49 @@
 </div>
 <p>
  
-       RebuildListenEntries(p_provider, p_receiver)
+       RebuildListenEntries()
 
 Invoked by various subscription and path modifying functions, this
 rewrites the sl_listen entries, adding in all the ones required to
 allow communications between nodes in the Slony-I cluster.
         </p>
 <pre class="programlisting">declare
-	v_row			record;
+	v_receiver record ;
+	v_provider record ;
+	v_origin record ;
+	v_reachable int4[] ;
 begin
 	-- First remove the entire configuration
 	delete from sl_listen;
 
-	-- The loop over every possible pair of origin, receiver
-	for v_row in select N1.no_id as origin, N2.no_id as receiver
-			from sl_node N1, sl_node N2
-			where N1.no_id &lt;&gt; N2.no_id
-	loop
-		perform RebuildListenEntriesOne(v_row.origin, v_row.receiver);
-	end loop;
+	-- Loop over every possible pair of receiver and provider
+	for v_receiver in select no_id from sl_node loop
+		for v_provider in select pa_server as no_id from sl_path where pa_client = v_receiver.no_id loop
 
-	return 0;
-end;</pre>
+			-- Find all nodes that v_provider.no_id can receiver events from without using v_receiver.no_id			
+			for v_origin in select * from ReachableFromNode(v_provider.no_id, array[v_receiver.no_id]) as r(no_id) loop
+
+				-- If v_receiver.no_id subscribes a set from v_provider.no_id, events have to travel the same
+				-- path as the data. Ignore possible sl_listen that would break that rule.
+				perform 1 from sl_subscribe
+					join sl_set on sl_set.set_id = sl_subscribe.sub_set
+		 			where
+						sub_receiver = v_receiver.no_id and
+						sub_provider != v_provider.no_id and
+						set_origin = v_origin.no_id ;
+				if not found then
+					insert into sl_listen (li_receiver, li_provider, li_origin)
+						values (v_receiver.no_id, v_provider.no_id, v_origin.no_id) ;
+				end if ;
+
+
+			end loop ;
+
+		end loop ;
+	end loop ;
+
+	return null ;
+end ;</pre>
 <p>
       </p>
 </div></body>

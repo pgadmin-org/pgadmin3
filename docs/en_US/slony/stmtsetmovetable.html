@@ -1,15 +1,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SET MOVE
-     TABLE</title>
+<title>SET MOVE TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtsetdropsequence.html" title="SET DROP SEQUENCE">
 <link rel="next" href="stmtsetmovesequence.html" title="SET MOVE SEQUENCE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="stmtsetmovetable"></a><div class="titlepage"></div>
@@ -24,7 +24,7 @@
 <div class="cmdsynopsis"><p><code class="command">SET MOVE TABLE (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id535038"></a><h2>Description</h2>
+<a name="id2578056"></a><h2>Description</h2>
 <p>     Change the set a table belongs to. The current set and the new
      set must origin on the same node and subscribed by the same
      nodes.  </p>
@@ -55,13 +55,21 @@
 <p> This uses <a href="function.setmovetable-integer-integer.html">schemadocsetmovetable( integer, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id535111"></a><h2>Example</h2>
+<a name="id2578128"></a><h2>Example</h2>
 <pre class="programlisting">SET MOVE TABLE (
     ORIGIN = 1,
     ID = 20,
     NEW SET = 3
 );
     </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2578137"></a><h2> Locking Behaviour </h2>
+<p> No application-visible locking should take place. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2578144"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0.5 </p>
 </div>
 </div></body>
 </html>

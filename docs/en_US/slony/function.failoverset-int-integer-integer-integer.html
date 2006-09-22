@@ -1,21 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.56.        failoverset_int( integer, integer, integer )
-      </title>
+<title>1.63.  failoverset_int( integer, integer, integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.55.        failednode2( integer, integer, integer, bigint, bigint )
-      ">
-<link rel="next" href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html" title="1.57.        forwardconfirm( integer, integer, bigint, timestamp without time zone )
-      ">
+<link rel="prev" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.62.  failednode2( integer, integer, integer, bigint, bigint )">
+<link rel="next" href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html" title="1.64.  forwardconfirm( integer, integer, bigint, timestamp without time zone )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.failoverset-int-integer-integer-integer"></a>1.56.        failoverset_int( integer, integer, integer )
+<a name="function.failoverset-int-integer-integer-integer"></a>1.63.        failoverset_int( integer, integer, integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -71,6 +69,15 @@ begin
 		loop
 			perform alterTableForReplication(v_row.tab_id);
 		end loop;
+		insert into sl_event
+				(ev_origin, ev_seqno, ev_timestamp,
+				ev_minxid, ev_maxxid, ev_xip,
+				ev_type, ev_data1, ev_data2, ev_data3)
+				values
+				(p_backup_node, "pg_catalog".nextval('sl_event_seq'), CURRENT_TIMESTAMP,
+				'0', '0', '',
+				'ACCEPT_SET', p_set_id::text,
+				p_failed_node::text, p_backup_node::text);
 	else
 		delete from sl_subscribe
 				where sub_set = p_set_id

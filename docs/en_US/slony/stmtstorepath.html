@@ -1,15 +1,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>STORE
-     PATH</title>
+<title>STORE PATH</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtrestartnode.html" title="RESTART NODE">
 <link rel="next" href="stmtdroppath.html" title="DROP PATH">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="stmtstorepath"></a><div class="titlepage"></div>
@@ -22,7 +22,7 @@
 <div class="cmdsynopsis"><p><code class="command">STORE PATH (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id533435"></a><h2>Description</h2>
+<a name="id2576062"></a><h2>Description</h2>
 <p> Configures how the replication daemon of one node connects
      to the database of another node. If the replication system is
      supposed to use a special backbone network segment, this is the
@@ -62,11 +62,19 @@
 <p> This uses <a href="function.storepath-integer-integer-text-integer.html">schemadocstorepath( integer, integer, text, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id533560"></a><h2>Example</h2>
+<a name="id2576176"></a><h2>Example</h2>
 <pre class="programlisting">STORE PATH ( SERVER = 1, CLIENT = 2, 
              CONNINFO = 'dbname=testdb host=server1 user=slony'
            );
     </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576186"></a><h2> Locking Behaviour </h2>
+<p> No application-visible locking should take place. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576192"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>
 </html>

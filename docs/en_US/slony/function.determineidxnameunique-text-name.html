@@ -1,21 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.37.        determineidxnameunique( text, name )
-      </title>
+<title>1.44.  determineidxnameunique( text, name )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.determineidxnameserial-text.html" title="1.36.        determineidxnameserial( text )
-      ">
-<link rel="next" href="function.disablenode-integer.html" title="1.38.        disablenode( integer )
-      ">
+<link rel="prev" href="function.determineidxnameserial-text.html" title="1.43.  determineidxnameserial( text )">
+<link rel="next" href="function.disablenode-integer.html" title="1.45.  disablenode( integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.determineidxnameunique-text-name"></a>1.37.        determineidxnameunique( text, name )
+<a name="function.determineidxnameunique-text-name"></a>1.44.        determineidxnameunique( text, name )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -51,7 +49,7 @@ begin
 				where slon_quote_brute(PGN.nspname) || '.' ||
 					slon_quote_brute(PGC.relname) = v_tab_fqname_quoted
 					and PGN.oid = PGC.relnamespace) is null then
-		raise exception 'Slony-I: table % not found', v_tab_fqname_quoted;
+		raise exception 'Slony-I: determineIdxnameUnique(): table % not found', v_tab_fqname_quoted;
 	end if;
 
 	--

@@ -1,18 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>3. Event Tuning</title>
+<title>4. Event Tuning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20051102 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="runtime-config.html" title="Run-time Configuration">
-<link rel="prev" href="slon-config-connection.html" title="2. Connection settings">
+<link rel="prev" href="slon-archive-logging.html" title="3.  Archive Logging Options">
 <link rel="next" href="slonik.html" title="slonik">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="slon-config-interval"></a>3. Event Tuning</h2></div></div></div>
+<a name="slon-config-interval"></a>4. Event Tuning</h2></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="slon-config-sync-interval"></a><span class="term"><code class="varname">sync_interval</code> (<code class="type">integer</code>)</span>
@@ -107,6 +108,35 @@
         </code> are left out, to be processed later.  </p>
 <p>If the value is left empty, this logic will be ignored.
         </p>
+</dd>
+<dt>
+<a name="slon-config-max-rowsize"></a><span class="term"><code class="varname">sync_max_rowsize</code>  (<code class="type">integer</code>)</span>
+</dt>
+<dd>
+<p>Size above which an sl_log_?  row's
+        <code class="envar">log_cmddata</code> is considered large.  Up to 500
+        rows of this size are allowed in memory at once. Rows larger
+        than that count into the <code class="envar">sync_max_largemem</code>
+        space allocated and <code class="function">free()</code>'ed on demand.
+        </p>
+<p>The default value is 8192, meaning that your expected
+	memory consumption (for the LOG cursor) should not exceed 8MB.
+        </p>
+</dd>
+<dt>
+<a name="slon-config-max-largemem"></a><span class="term"><code class="varname">sync_max_largemem</code>  (<code class="type">integer</code>)</span>
+</dt>
+<dd>
+<p>Maximum memory allocated for large rows, where
+        <code class="envar">log_cmddata</code> are larger than
+        <code class="envar">sync_max_rowsize</code>.  </p>
+<p>Note that the algorithm reads rows until
+	<span class="emphasis"><em>after</em></span> this value is exceeded.  Otherwise,
+	a tuple larger than this value would stall replication.  As a
+	result, don't assume that memory consumption will remain
+	smaller than this value.
+        </p>
+<p> The default value is 5242880.</p>
 </dd>
 </dl></div>
 </div></body>
