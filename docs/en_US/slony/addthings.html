@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>11. A Task-Oriented View of Slony-I</title>
+<title>12. A Task-Oriented View of Slony-I</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
-<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
-<link rel="prev" href="locking.html" title="10. Locking Issues">
-<link rel="next" href="dropthings.html" title="12. Dropping things from Slony-I Replication">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="locking.html" title="11. Locking Issues">
+<link rel="next" href="dropthings.html" title="13. Dropping things from Slony-I Replication">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="addthings"></a>11. A Task-Oriented View of <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id573006"></a><p>You may discover that you have missed replicating things that
+<a name="addthings"></a>12. A Task-Oriented View of <span class="productname">Slony-I</span></h2></div></div></div>
+<a name="id2557409"></a><p>You may discover that you have missed replicating things that
 you wish you were replicating.</p>
 <p>This can generally be fairly easily remedied.  This section
 attempts to provide a &#8220;<span class="quote">task-oriented</span>&#8221; view of how to use
@@ -41,14 +41,15 @@ This problem was resolved in 1.0.5.</p>
      PATH</span></a> statements to indicate how nodes communicate
 with one another, and <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> statements to
 configuration the &#8220;<span class="quote">communications network</span>&#8221; that results
-from that.  See <a href="listenpaths.html" title="8. Slony-I listen paths">Section 8, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a> for more details on the
+from that.  See <a href="listenpaths.html" title="9. Slony-I listen paths">Section 9, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a> for more details on the
 latter.</p>
 <p>It is suggested that you be very deliberate when adding such
 things.  For instance, submitting multiple subscription requests for a
 particular set in one <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script often turns out
 quite badly.  If it is <span class="emphasis"><em>truly</em></span> necessary to
-automate this, you'll probably want to submit <a href="stmtwaitevent.html" title="WAIT FOR EVENT"><span class="refentrytitle">WAIT FOR EVENT</span></a> requests in between subscription requests in
-order that the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script wait for one
+automate this, you'll probably want to
+submit <a href="stmtwaitevent.html" title="WAIT FOR EVENT"><span class="refentrytitle">WAIT FOR EVENT</span></a> requests in between subscription
+requests in order that the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script wait for one
 subscription to complete processing before requesting the next
 one.</p>
 <p>But in general, it is likely to be easier to cope with complex
@@ -58,9 +59,9 @@ to fix one thing that has broken than to piece things together after
 the interaction of five things that have all broken.</p>
 <p> Here are a set of &#8220;<span class="quote">recipes</span>&#8221; for how to do various
 sorts of modifications to replication configuration:</p>
-<div class="itemizedlist"><ul type="disc">
-<li>
-<p> Adding a table to replication </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2557570"></a>12.1.  Adding a table to replication </h3></div></div></div>
 <p> <span class="productname">Slony-I</span> does not allow you to add a table to a replication set
 that is already being replicated. In principle, it would certainly be
 <span class="emphasis"><em>possible;</em></span> what would happen is that the
@@ -68,14 +69,12 @@ SET_ADD_TABLE event would lead to the relevant code from the
 SUBSCRIBE_SET event being invoked to initialize the table. That would,
 regrettably, significantly complicate the logic of all of these
 components, so this is not permitted. </p>
-<p>Instead, what you must do is thus:
-
-</p>
-<div class="itemizedlist"><ul type="circle">
+<p>Instead, what you must do is thus:</p>
+<div class="itemizedlist"><ul type="disc">
 <li>
 <p> Add the new table on each node. </p>
 <p> In principle, <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> could be used for
-this, but the fact that this leads to <a href="locking.html" title="10. Locking Issues"> Locking
+this, but the fact that this leads to <a href="locking.html" title="11. Locking Issues"> Locking
 Issues </a> and requires altering <span class="emphasis"><em>all</em></span> tables
 in some existing replication set, on <span class="emphasis"><em>all</em></span> nodes,
 makes <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> an unattractive approach on a
@@ -94,24 +93,25 @@ Request subscription <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span
 Once the subscriptions have all been set up so that the new set has an identical set of subscriptions to the old set, you can merge the new set in alongside the old one via <a href="stmtmergeset.html" title="MERGE
      SET"><span class="refentrytitle">MERGE
      SET</span></a></p></li>
-<li><p> How to add columns to a replicated table </p></li>
 </ul></div>
-<p>
-
-</p>
-<div class="itemizedlist"><ul type="circle">
-<li><p> This also answers the question &#8220;<span class="quote">How do I rename columns
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2557696"></a>12.2.  How to add columns to a replicated table </h3></div></div></div>
+<p> This also answers the question &#8220;<span class="quote">How do I rename columns
 on a replicated table?</span>&#8221;, and, more generally, other questions
 to the effect of &#8220;<span class="quote">How do I modify the definitions of replicated
-tables?</span>&#8221;</p></li>
-<li><p>If you change the &#8220;<span class="quote">shape</span>&#8221; of a replicated table, this needs to take place at exactly the same point in all of the &#8220;<span class="quote">transaction streams</span>&#8221; on all nodes that are subscribed to the set containing the table.</p></li>
-<li><p> Thus, the way to do this is to construct an SQL script consisting of the DDL changes, and then submit that script to all of the nodes via the Slonik command <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>.</p></li>
-<li><p> There are a number of &#8220;<span class="quote">sharp edges</span>&#8221; to note...</p></li>
-</ul></div>
-<p>
-</p>
-<div class="itemizedlist"><ul type="circle">
-<li><p> You absolutely <span class="emphasis"><em>must not</em></span> include transaction control commands, particularly <code class="command">BEGIN</code> and <code class="command">COMMIT</code>, inside these DDL scripts. <span class="productname">Slony-I</span> wraps DDL scripts with a <code class="command">BEGIN</code>/<code class="command">COMMIT</code> pair; adding extra transaction control will mean that parts of the DDL will commit outside the control of <span class="productname">Slony-I</span> </p></li>
+tables?</span>&#8221;</p>
+<p>If you change the &#8220;<span class="quote">shape</span>&#8221; of a replicated table, this needs to take place at exactly the same point in all of the &#8220;<span class="quote">transaction streams</span>&#8221; on all nodes that are subscribed to the set containing the table.</p>
+<p> Thus, the way to do this is to construct an SQL script consisting of the DDL changes, and then submit that script to all of the nodes via the Slonik command <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>.</p>
+<p> There are a number of &#8220;<span class="quote">sharp edges</span>&#8221; to note...</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> You absolutely <span class="emphasis"><em>must not</em></span> include
+transaction control commands, particularly <code class="command">BEGIN</code>
+and <code class="command">COMMIT</code>, inside these DDL scripts. <span class="productname">Slony-I</span>
+wraps DDL scripts with a <code class="command">BEGIN</code>/<code class="command">COMMIT</code> 
+pair; adding extra transaction control will mean that parts of the DDL
+will commit outside the control of <span class="productname">Slony-I</span> </p></li>
 <li>
 <p> Before version 1.2, it was necessary to be
 exceedingly restrictive about what you tried to process using
@@ -130,25 +130,30 @@ integer; </code> may now be followed by <code class="command"> alter table x
 alter column c1 set not null; </code>.</p>
 </li>
 </ul></div>
-<p>
-</p>
-</li>
-<li>
-<p> How to remove replication for a node</p>
-<p> You will want to remove the various <span class="productname">Slony-I</span> components connected to the database(s).</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2557834"></a>12.3.  How to remove replication for a node</h3></div></div></div>
+<p> You will want to remove the various <span class="productname">Slony-I</span> components
+connected to the database(s).</p>
 <p> We will just consider, for now, doing this to one node. If you
 have multiple nodes, you will have to repeat this as many times as
 necessary.</p>
 <p> Components to be Removed: </p>
-<div class="itemizedlist"><ul type="circle">
+<div class="itemizedlist"><ul type="disc">
 <li><p> Log Triggers / Update Denial Triggers
 </p></li>
-<li><p>    The "cluster" schema containing <span class="productname">Slony-I</span> tables indicating the state of the node as well as various stored functions </p></li>
-<li><p>    <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process that manages the node </p></li>
-<li><p>    Optionally, the SQL and pl/pgsql scripts and <span class="productname">Slony-I</span> binaries that are part of the <span class="productname">PostgreSQL</span> build. (Of course, this would make it challenging to restart replication; it is unlikely that you truly need to do this...) </p></li>
+<li><p> The &#8220;<span class="quote">cluster</span>&#8221; schema containing <span class="productname">Slony-I</span>
+tables indicating the state of the node as well as various stored
+functions</p></li>
+<li><p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process that manages the node </p></li>
+<li><p> Optionally, the SQL and pl/pgsql scripts and <span class="productname">Slony-I</span>
+binaries that are part of the <span class="productname">PostgreSQL</span> build. (Of course, this would
+make it challenging to restart replication; it is unlikely that you
+truly need to do this...)</p></li>
 </ul></div>
 <p> How To Conveniently Handle Removal</p>
-<div class="itemizedlist"><ul type="circle">
+<div class="itemizedlist"><ul type="disc">
 <li><p> You may use the Slonik <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>
 command to remove the node from the cluster. This will lead to the
 triggers and everything in the cluster schema being dropped from the
@@ -171,18 +176,19 @@ could submit the SQL command <code class="command">DROP SCHEMA "_ClusterName"
 CASCADE;</code>, which will drop out <span class="productname">Slony-I</span> functions, tables,
 and triggers alike.  That is generally less suitable
 than <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a>, because that command not only
-drops the schema and its contents, but also removes any columns added
-in using <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>.</p></li>
+drops the schema and its contents, but also removes any columns
+previously added in using <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>.</p></li>
 </ul></div>
-</li>
-<li>
-<p> Adding A Node To Replication</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2557989"></a>12.4.  Adding A Node To Replication</h3></div></div></div>
 <p>Things are not fundamentally different whether you are adding a
 brand new, fresh node, or if you had previously dropped a node and are
 recreating it. In either case, you are adding a node to
 replication. </p>
 <p>The needful steps are thus... </p>
-<div class="itemizedlist"><ul type="circle">
+<div class="itemizedlist"><ul type="disc">
 <li>
 <p> Determine the node number and any relevant DSNs for
 the new node.  Use <span class="productname">PostgreSQL</span> command <code class="command">createdb</code> to
@@ -211,7 +217,7 @@ command <a href="stmtstorepath.html" title="STORE
      PATH</span></a> to indicate
 how <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes are to communicate with the new
 node.  In <span class="productname">Slony-I</span> version 1.1 and later, this will then automatically
-generate <a href="listenpaths.html" title="8. Slony-I listen paths"> listen path </a> entries; in
+generate <a href="listenpaths.html" title="9. Slony-I listen paths"> listen path </a> entries; in
 earlier versions, you will need to
 use <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> to generate them manually.</p></li>
 <li><p> At this point, it is an excellent idea to run
@@ -224,9 +230,10 @@ problems.</p></li>
 command <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> to subscribe the node to
 some replication set.</p></li>
 </ul></div>
-</li>
-<li>
-<p> How do I reshape subscriptions?</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2558166"></a>12.5.  How do I reshape subscriptions?</h3></div></div></div>
 <p> For instance, I want subscriber node 3 to draw data from node
 1, when it is presently drawing data from node 2. </p>
 <p> This isn't a case for <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; we're not
@@ -234,15 +241,20 @@ shifting the origin, just reshaping the subscribers. </p>
 <p> For this purpose, you can simply submit <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> requests to <span class="emphasis"><em>revise</em></span>
 the subscriptions.  Subscriptions will not be started from scratch;
 they will merely be reconfigured.  </p>
-</li>
-<li><p> How do I use <a href="logshipping.html" title="13. Log Shipping - Slony-I with Files">Section 13, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> </p></li>
-<li>
-<p> How do I know replication is working?</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2558197"></a>12.6.  How do I use <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> </h3></div></div></div>
+<p> Discussed in the <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> section... </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2558214"></a>12.7.  How do I know replication is working?</h3></div></div></div>
 <p> The ultimate proof is in looking at whether data added at the
 origin makes it to the subscribers.  That's a &#8220;<span class="quote">simply matter of
 querying</span>&#8221;.</p>
 <p> There are several ways of examining replication status, however: </p>
-<div class="itemizedlist"><ul type="circle">
+<div class="itemizedlist"><ul type="disc">
 <li>
 <p> Look in the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> logs.</p>
 <p> They won't say too much, even at very high debugging levels, on
@@ -266,16 +278,34 @@ through the state of the entire cluster, pointing out any anomalies
 that it notices, as well as some information on the status of each
 node. </p></li>
 </ul></div>
-</li>
-<li>
-<p> What happens when I fail over?</p>
-<p> To be written...</p>
-</li>
-<li>
-<p> How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </p>
-<p> Obviously, use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; more details
-should be added...</p>
-</li>
-</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2558285"></a>12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </h3></div></div></div>
+<p> Discussed  <a href="slonyupgrade.html" title="20.  Slony-I Upgrade"> here </a> </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2558305"></a>12.9.  What happens when I fail over?</h3></div></div></div>
+<p> Some of this is described under <a href="failover.html" title="8. Doing switchover and failover with Slony-I">Section 8, &#8220;Doing switchover and failover with <span class="productname">Slony-I</span>&#8221;</a> but
+more of a procedure should be written...</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2558318"></a>12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </h3></div></div></div>
+<p> You must first pick a node that is connected to the former
+origin (otherwise it is not straightforward to reverse connections in
+the move to keep everything connected). </p>
+<p> Second, you must run a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script with the
+command <a href="stmtlockset.html" title="LOCK SET"><span class="refentrytitle">LOCK SET</span></a> to lock the set on the origin
+node.  Note that at this point you have an application outage under
+way, as what this does is to put triggers on the origin that rejects
+updates. </p>
+<p> Now, submit the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> request.
+It's perfectly reasonable to submit both requests in the same
+<a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script.  Now, the origin gets switched over to the new
+origin node.  If the new node is a few events behind, it may take a
+little while for this to take place. </p>
+</div>
 </div></body>
 </html>

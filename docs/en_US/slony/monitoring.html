@@ -1,149 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>4. Monitoring</title>
+<title>5. Monitoring</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
-<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
-<link rel="prev" href="subscribenodes.html" title="3. Subscribing Nodes">
-<link rel="next" href="maintenance.html" title="5. Slony-I Maintenance">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="subscribenodes.html" title="4. Subscribing Nodes">
+<link rel="next" href="maintenance.html" title="6. Slony-I Maintenance">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring"></a>4. Monitoring</h2></div></div></div>
-<a name="id569137"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
-and explanations of what they mean.</p>
-<div class="sect2" lang="en">
+<a name="monitoring"></a>5. Monitoring</h2></div></div></div>
+<a name="id2554130"></a><div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id569158"></a>4.1. CONFIG notices</h3></div></div></div>
-<p>These entries are pretty straightforward. They are informative
-messages about your configuration.</p>
-<p>Here are some typical entries that you will probably run into in
-your logs:
-
-</p>
-<pre class="screen">CONFIG main: local node id = 1
-CONFIG main: loading current cluster configuration
-CONFIG storeNode: no_id=3 no_comment='Node 3'
-CONFIG storePath: pa_server=5 pa_client=1 pa_conninfo="host=127.0.0.1 dbname=foo user=postgres port=6132" pa_connretry=10
-CONFIG storeListen: li_origin=3 li_receiver=1 li_provider=3
-CONFIG storeSet: set_id=1 set_origin=1 set_comment='Set 1'
-CONFIG main: configuration complete - starting threads</pre>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id569183"></a>4.2. DEBUG Notices</h3></div></div></div>
-<p>Debug notices are always prefaced by the name of the thread that
-the notice originates from. You will see messages from the following
-threads:
-
-</p>
-<div class="variablelist"><dl>
-<dt><span class="term">localListenThread</span></dt>
-<dd><p> This is the local thread that listens for events on
-the local node.</p></dd>
-<dt><span class="term">remoteWorkerThread-X</span></dt>
-<dd><p> The thread processing remote events.  You can expect
-to see one of these for each node that this node communicates
-with.</p></dd>
-<dt><span class="term">remoteListenThread-X</span></dt>
-<dd><p>Listens for events on a remote node database.  You may
-expect to see one of these for each node in the
-cluster.</p></dd>
-<dt><span class="term">cleanupThread</span></dt>
-<dd><p> Takes care
-of things like vacuuming, cleaning out the confirm and event tables,
-and deleting old data.</p></dd>
-<dt><span class="term">syncThread</span></dt>
-<dd><p> Generates SYNC
-events.</p></dd>
-</dl></div>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id569239"></a>4.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<p> Note that as far as slon is concerned, there is no
-&#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
-nodes. </p>
-<p>What you can expect, initially, is to see, on both nodes, some
-events propagating back and forth.  Firstly, there should be some
-events published to indicate creation of the nodes and paths.  If you
-don't see those, then the nodes aren't likely to be able to
-communicate with one another, and nothing else will happen... </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
-<p>Create the two nodes.</p>
-<p> No slons are running yet, so there are no logs to look
-at.</p>
-</li>
-<li>
-<p> Start the two slons</p>
-<p> The logs for each will start out very quiet, as neither node
-has much to say, and neither node knows how to talk to another
-node. </p>
-</li>
-<li>
-<p> Do the <a href="stmtstorepath.html" title="STORE
-     PATH"><span class="refentrytitle">STORE
-     PATH</span></a> to set up
-communications paths.  That will allow the nodes to start to become
-aware of one another.</p>
-<p> The slon logs should now start to receive events from
-&#8220;<span class="quote">foreign</span>&#8221; nodes.</p>
-<p> In version 1.0, <a href="table.sl-listen.html">sl_listen</a> is not set up
-automatically, so things still remain quiet until you explicitly
-submit <code class="command">STORE LISTEN</code> requests. In version 1.1, the
-&#8220;<span class="quote">listen paths</span>&#8221; are set up automatically, which will much
-more quickly get the communications network up and running.  </p>
-<p> If you look at the contents of the tables <a href="table.sl-node.html">sl_node</a> and <a href="table.sl-path.html">sl_path</a> and <a href="table.sl-listen.html">sl_listen</a>, on each node, that should give a good idea
-as to where things stand.  Until the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts,
-each node may only be partly configured.  If there are two nodes,
-there should be two entries in all three of these tables once the
-communications configuration is set up properly.  If there are fewer
-entries than that, well, that should give you some idea of what is
-missing.</p>
-</li>
-<li>
-<p> If needed (<span class="emphasis"><em>e.g.</em></span> - before version
-1.1), submit <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> requests to indicate how
-the nodes will use the communications paths. </p>
-<p> Once this has been done, the nodes' logs should show a greater
-level of activity, with events periodically being initiated on one
-node or the other, and propagating to the other. </p>
-</li>
-<li><p> You'll set up the set (<a href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a>), add tables (<a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>), and sequences (<a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>), and will see relevant events only on
-the origin node for the set. </p></li>
-<li>
-<p> Then, when you submit the <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> request, the event should go to both
-nodes. </p>
-<p> The origin node has little more to do, after that...  The
-subscriber will then have a <code class="command">COPY_SET</code> event, which
-will lead to logging information about adding each table and copying
-its data.</p>
-</li>
-</ul></div>
-<p>After that, you'll mainly see two sorts of behaviour:</p>
-<div class="itemizedlist"><ul type="disc">
-<li><p> On the origin, there won't be too terribly much
-logged, just indication that some <code class="command">SYNC</code> events are
-being generated and confirmed by other nodes.</p></li>
-<li><p> On the subscriber, there will be reports of
-<code class="command">SYNC</code> events, and that the subscriber pulls data
-from the provider for the relevant set(s).  This will happen
-infrequently if there are no updates going to the origin node; it will
-happen frequently when the origin sees heavy updates. </p></li>
-</ul></div>
-<p> WriteMe: I can't decide the format for the rest of this. I
-think maybe there should be a "how it works" page, explaining more
-about how the threads work, what to expect in the logs after you run a</p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id569473"></a>4.4.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
-<a name="id569483"></a><p> The script in the <code class="filename">tools</code> directory called
+<a name="id2554140"></a>5.1.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
+<a name="id2554149"></a><p> The script in the <code class="filename">tools</code> directory called
 <code class="command"> pgsql_replication_check.pl </code> represents some of the
 best answers arrived at in attempts to build replication tests to plug
 into the <a href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span> </a> system
@@ -182,8 +56,8 @@ that is to be monitored; that is the way <span class="productname">Nagios</span>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="slonymrtg"></a>4.5.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
-<a name="id569656"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
+<a name="slonymrtg"></a>5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
+<a name="id2554306"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
 <a href="http://people.ee.ethz.ch/~oetiker/webtools/mrtg/" target="_top"><span class="application"> mrtg - Multi Router Traffic Grapher </span></a> to monitor <span class="productname">Slony-I</span> replication.</p>
 <p> ... Since I use <span class="application">mrtg</span> to graph data
 from multiple servers I use snmp (<span class="application">net-snmp</span>
@@ -204,8 +78,8 @@ Options[db_replication_lagtime]: gauge,nopercent,growright</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="testslonystate"></a>4.6.  test_slony_state</h3></div></div></div>
-<p> This script is in preliminary stages, and may be used to do
+<a name="testslonystate"></a>5.3.  test_slony_state</h3></div></div></div>
+<a name="id2554404"></a><p> This script is in preliminary stages, and may be used to do
 some analysis of the state of a <span class="productname">Slony-I</span> cluster.</p>
 <p> You specify arguments including <code class="option">database</code>,
 <code class="option">host</code>, <code class="option">user</code>,

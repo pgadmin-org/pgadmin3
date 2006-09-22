@@ -4,8 +4,8 @@
 <title>SUBSCRIBE SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtdroptrigger.html" title="DROP TRIGGER">
 <link rel="next" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET">
@@ -22,7 +22,11 @@
 <div class="cmdsynopsis"><p><code class="command">SUBSCRIBE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594000"></a><h2>Description</h2>
+<a name="id2578560"></a><h2>Description</h2>
+<p> This performs one of two actions: </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Initiates replication for a replication set </p>
 <p> Causes a node (subscriber) to start replicating a set of
     tables either from the origin or from another provider node, which
     must itself already be be an active, forwarding subscriber.</p>
@@ -38,9 +42,8 @@
     </p>
 <p> If the tables on the subscriber are <span class="emphasis"><em>not</em></span> empty, then
      the <code class="command">COPY SET</code> process winds up doing more work than should be
-     strictly necessary:
-     </p>
-<div class="itemizedlist"><ul type="disc">
+     strictly necessary:</p>
+<div class="itemizedlist"><ul type="circle">
 <li><p> It deletes all &#8220;<span class="quote">old</span>&#8221; entries in
       the table</p></li>
 <li><p> Those old entries
@@ -51,9 +54,6 @@
 	for the old, deleted entries, which will slow the process of
 	inserting new entries into the index.</p></li>
 </ul></div>
-<p>
-
-     </p>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p> This operation can take a (potentially distinctly)
@@ -75,11 +75,9 @@
 <p> In effect, such subscription requests will be ignored
      until the provider is ready.</p>
 </div>
-<p>
-
-     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+</li>
+<li>
+<p> Revising subscription information for already-subscribed nodes. </p>
 <p> If you need to revise subscription information for a
        node, you <span class="emphasis"><em>also</em></span> submit the new information
        using this command, and the new configuration will be propagated
@@ -88,10 +86,8 @@
        <span class="emphasis"><em> different </em></span> provider node, or for a node to
        become a &#8220;<span class="quote">forwarding</span>&#8221; subscriber so it may later
        become the provider for a later subscriber.</p>
-</div>
-<p>
-
-     </p>
+</li>
+</ul></div>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
 <dd><p> ID of the set to subscribe</p></dd>
@@ -106,12 +102,10 @@
 	 possible candidate for the provider role for future
 	 nodes.</p></dd>
 </dl></div>
-<p>
-    </p>
 <p> This uses <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594225"></a><h2>Example</h2>
+<a name="id2578771"></a><h2>Example</h2>
 <pre class="programlisting">SUBSCRIBE SET (
    ID = 1,
    PROVIDER = 1,
@@ -121,7 +115,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594236"></a><h2> Forwarding Behaviour </h2>
+<a name="id2578781"></a><h2> Forwarding Behaviour </h2>
 <p> The <code class="command">FORWARD=boolean</code> flag indicates
     whether the subscriber will store log information in tables
     <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a>.  Several implications fall from
@@ -156,7 +150,7 @@
     on. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594344"></a><h2> Locking Behaviour </h2>
+<a name="id2578886"></a><h2> Locking Behaviour </h2>
 <p> This operation does <span class="emphasis"><em>not</em></span> require
     acquiring any locks on the provider node.</p>
 <p> On the subscriber node, it will have the effect of locking
@@ -168,7 +162,7 @@
     </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594365"></a><h2> Version Information </h2>
+<a name="id2578904"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

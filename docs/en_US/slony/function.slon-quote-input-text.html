@@ -1,22 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.88.        slon_quote_input( text )
-      </title>
+<title>1.106.  slon_quote_input( text )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.slon-quote-brute-text.html" title="1.87.        slon_quote_brute( text )
-      ">
-<link rel="next" href="function.slonyversion.html" title="1.89.        slonyversion(  )
-      ">
+<link rel="prev" href="function.slon-quote-brute-text.html" title="1.105.  slon_quote_brute( text )">
+<link rel="next" href="function.slonyversion.html" title="1.107.  slonyversion( )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.slon-quote-input-text"></a>1.88.        slon_quote_input( text )
+<a name="function.slon-quote-input-text"></a>1.106.        slon_quote_input( text )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -32,48 +29,69 @@
  
        quote all words that aren[apos  ]t quoted yet
         </p>
-<pre class="programlisting">declare
-    p_tab_fqname alias for $1;
-    v_temp_fqname text default '';
-    v_pre_quoted text[] default '{}';
-    v_pre_quote_counter smallint default 0;
-    v_count_fqname smallint default 0;
-    v_fqname_split text[];
-    v_quoted_fqname text default '';
+<pre class="programlisting">  declare
+     p_tab_fqname alias for $1;
+     v_nsp_name text;
+     v_tab_name text;
+	 v_i integer;
+	 v_l integer;
+     v_pq2 integer;
 begin
-    v_temp_fqname := p_tab_fqname;
+	v_l := length(p_tab_fqname);
 
-    LOOP
-	v_pre_quote_counter := v_pre_quote_counter + 1;
-	v_pre_quoted[v_pre_quote_counter] := 
-	    substring(v_temp_fqname from '%#""%"#"%' for '#');
-	IF v_pre_quoted[v_pre_quote_counter] &lt;&gt; '' THEN
-	    v_temp_fqname := replace(v_temp_fqname,
-	        v_pre_quoted[v_pre_quote_counter], '@' ||
-		v_pre_quote_counter);
-	ELSE
-	    EXIT;
-	END IF;
-    END LOOP;
+	-- Let us search for the dot
+	if p_tab_fqname like '"%' then
+		-- if the first part of the ident starts with a double quote, search
+		-- for the closing double quote, skipping over double double quotes.
+		v_i := 2;
+		while v_i &lt;= v_l loop
+			if substr(p_tab_fqname, v_i, 1) != '"' then
+				v_i := v_i + 1;
+			else
+				v_i := v_i + 1;
+				if substr(p_tab_fqname, v_i, 1) != '"' then
+					exit;
+				end if;
+				v_i := v_i + 1;
+			end if;
+		end loop;
+	else
+		-- first part of ident is not quoted, search for the dot directly
+		v_i := 1;
+		while v_i &lt;= v_l loop
+			if substr(p_tab_fqname, v_i, 1) = '.' then
+				exit;
+			end if;
+			v_i := v_i + 1;
+		end loop;
+	end if;
 
-    v_fqname_split := string_to_array(v_temp_fqname , '.');
-    v_count_fqname := array_upper (v_fqname_split, 1);
+	-- v_i now points at the dot or behind the string.
 
-    FOR i in 1..v_count_fqname LOOP
-        IF substring(v_fqname_split[i],1,1) = '@' THEN
-            v_quoted_fqname := v_quoted_fqname || 
-		v_pre_quoted[substring (v_fqname_split[i] from 2)::int];
-        ELSE
-            v_quoted_fqname := v_quoted_fqname || '"' || 
-		v_fqname_split[i] || '"';
-        END IF;
+	if substr(p_tab_fqname, v_i, 1) = '.' then
+		-- There is a dot now, so split the ident into its namespace
+		-- and objname parts and make sure each is quoted
+		v_nsp_name := substr(p_tab_fqname, 1, v_i - 1);
+		v_tab_name := substr(p_tab_fqname, v_i + 1);
+		if v_nsp_name not like '"%' then
+			v_nsp_name := '"' || replace(v_nsp_name, '"', '""') ||
+						  '"';
+		end if;
+		if v_tab_name not like '"%' then
+			v_tab_name := '"' || replace(v_tab_name, '"', '""') ||
+						  '"';
+		end if;
 
-        IF i &lt; v_count_fqname THEN
-            v_quoted_fqname := v_quoted_fqname || '.' ;
-        END IF;
-    END LOOP;
-	
-    return v_quoted_fqname;
+		return v_nsp_name || '.' || v_tab_name;
+	else
+		-- No dot ... must be just an ident without schema
+		if p_tab_fqname like '"%' then
+			return p_tab_fqname;
+		else
+			return '"' || replace(p_tab_fqname, '"', '""') || '"';
+		end if;
+	end if;
+
 end;</pre>
 <p>
       </p>

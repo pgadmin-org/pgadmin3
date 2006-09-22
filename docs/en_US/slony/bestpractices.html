@@ -4,8 +4,8 @@
 <title>20.  Slony-I &#8220;Best Practices&#8221; </title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20051214 Documentation">
 <link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
 <link rel="prev" href="versionupgrade.html" title="19. Using Slony-I for PostgreSQL Upgrades">
 <link rel="next" href="testbed.html" title="21.  Slony-I Test Bed Framework ">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="bestpractices"></a>20.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </h2></div></div></div>
-<a name="id578669"></a><p> It is common for managers to have a desire to operate systems
+<a name="id2565148"></a><p> It is common for managers to have a desire to operate systems
 using some available, documented set of &#8220;<span class="quote">best practices.</span>&#8221;
 Documenting that sort of thing is essential to ISO 9000, ISO 9001, and
 other sorts of organizational certifications. </p>
@@ -41,43 +41,20 @@ either cause unexpected problems or mask the real problem. </p>
 <p> Numerous users have reported problems resulting from mismatches
 between <span class="productname">Slony-I</span> versions, local libraries, and <span class="productname">PostgreSQL</span> libraries.
 Details count; you need to be clear on what hosts are running what
-versions of what software. </p>
-<p> This is normally a matter of being meticulous about checking
-what versions of software are in place everywhere, and is the natural
-result of having a distributed system comprised of a large number of
-components that need to match. </p>
-</li>
-<li>
-<p> If a slonik script does not run as expected in a
-first attempt, it would be foolhardy to attempt to run it again until
-a problem has been found and resolved.  </p>
-<p> There are a very few slonik commands such as <a href="stmtstorepath.html" title="STORE
-     PATH"><span class="refentrytitle">STORE
-     PATH</span></a> that behave in a nearly idempotent manner; if
-you run <a href="stmtstorepath.html" title="STORE
-     PATH"><span class="refentrytitle">STORE
-     PATH</span></a> again, that merely updates
-table <code class="envar">sl_path</code> with the same value.  </p>
-<p> In contrast <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> behaves in two
-<span class="emphasis"><em>very</em></span> different ways depending on whether the
-subscription has been activated yet or not; if initiating the
-subscription didn't work at a first attempt, submitting the request
-again <span class="emphasis"><em>won't</em></span> help make it happen. </p>
+versions of what software.</p>
 </li>
 <li>
 <p> Principle: Use an unambiguous, stable time zone such
 as UTC or GMT.</p>
-<p> Users have run into problems with <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> functioning properly
-when their system uses a time zone that <span class="productname">PostgreSQL</span> was unable to
-recognize such as CUT0 or WST.  It is necessary that you use a
-timezone that <span class="productname">PostgreSQL</span> can recognize correctly.  It is furthermore
-preferable to use a time zone where times do not shift around due to
-Daylight Savings Time. </p>
+<p> Users have run into problems when their system uses a time zone
+that <span class="productname">PostgreSQL</span> was unable to recognize such as CUT0 or WST.  It is
+necessary that you use a timezone that <span class="productname">PostgreSQL</span> can recognize
+correctly.</p>
+<p> It is furthermore preferable to use a time zone where times do
+not shift around due to Daylight Savings Time. </p>
 <p> The &#8220;<span class="quote">geographically unbiased</span>&#8221; choice seems to be
 <code class="command"><code class="envar">TZ</code>=UTC</code> or
-<code class="command"><code class="envar">TZ</code>=GMT</code>, and to make sure that
-systems are &#8220;<span class="quote">in sync</span>&#8221; by using NTP to syncchronize clocks
-throughout the environment. </p>
+<code class="command"><code class="envar">TZ</code>=GMT</code>. </p>
 <p> See also <a href="requirements.html#times" title="3.4.  Time Synchronization">Section 3.4, &#8220; Time Synchronization&#8221;</a>.</p>
 </li>
 <li>
@@ -96,8 +73,7 @@ replication updates are relatively infrequent, which should mean that
 busy systems won't generate many dead tuples in that table</p></li>
 <li><p> The system will periodically rotate (using
 <code class="command">TRUNCATE</code> to clean out the old table) between the
-two log tables, <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a>, preventing unbounded growth of dead space
-there.  </p></li>
+two log tables, <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a>.  </p></li>
 </ul></div>
 </li>
 <li>
@@ -125,41 +101,35 @@ Evil.</span>&#8221; <code class="command">VACUUM</code>s are no exception in thi
 transaction with all the known ill effects.</p>
 </li>
 <li>
-<p> Running all of the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons on a central
-server for each network has proven preferable. </p>
-<p> Each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> should run on a host on the same local network as
-the node that it is servicing, as it does a <span class="emphasis"><em>lot</em></span>
-of communications with its database, and that connection needs to be
-as reliable as possible.  </p>
-<p> In theory, the &#8220;<span class="quote">best</span>&#8221; speed might be expected to
-come from running the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> on the database server that it is
+<p> Running all of the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons on a
+central server for each network has proven preferable. </p>
+<p> Each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> should run on a host on the same
+local network as the node that it is servicing, as it does a
+<span class="emphasis"><em>lot</em></span> of communications with its database.  </p>
+<p> In theory, the &#8220;<span class="quote">best</span>&#8221; speed would come from
+running the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> on the database server that it is
 servicing. </p>
-<p> In practice, strewing <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes and configuration
-across a dozen servers turns out to be inconvenient to manage.</p>
+<p> In practice, having the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes strewn
+across a dozen servers turns out to be really inconvenient to manage,
+as making changes to their configuration requires logging onto a whole
+bunch of servers.  In environments where it is necessary to use
+<span class="application">sudo</span> for users to switch to application
+users, this turns out to be seriously inconvenient.  It turns out to
+be <span class="emphasis"><em>much</em></span> easier to manage to group the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes on one server per local network, so that
+<span class="emphasis"><em>one</em></span> script can start, monitor, terminate, and
+otherwise maintain <span class="emphasis"><em>all</em></span> of the nearby nodes.</p>
+<p> That also has the implication that configuration data and
+configuration scripts only need to be maintained in one place,
+eliminating duplication of configuration efforts.</p>
 </li>
-<li>
-<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes should run in the same
-&#8220;<span class="quote">network context</span>&#8221; as the node that each is responsible
-for managing so that the connection to that node is a
-&#8220;<span class="quote">local</span>&#8221; one.  Do <span class="emphasis"><em>not</em></span> run such links
-across a WAN. </p>
-<p> A WAN outage can leave database connections
-&#8220;<span class="quote">zombied</span>&#8221;, and typical TCP/IP behaviour <a href="faq.html#multipleslonconnections"> will allow those connections to
-persist, preventing a slon restart for around two hours. </a></p>
-<p> It is not difficult to remedy this; you need only <code class="command">kill
-SIGINT</code> the offending backend connection.  But by running the
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> locally, you will generally not be vulnerable to this
-condition. </p>
-</li>
-<li><p>The <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)"> Database Schema Changes </a>
-section outlines some practices that have been found useful for
-handling changes to database schemas. </p></li>
+<li><p>The <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)"> Database Schema
+Changes </a> section outlines some practices that have been found
+useful for handling changes to database schemas. </p></li>
 <li>
 <p> Handling of Primary Keys </p>
 <p> Discussed in the section on <a href="definingsets.html" title="7. Defining Slony-I Replication Sets">Replication Sets, </a> it is <span class="emphasis"><em>ideal</em></span> if each
 replicated table has a true primary key constraint; it is
-<span class="emphasis"><em>acceptable</em></span> to use a &#8220;<span class="quote">candidate primary
-key.</span>&#8221;</p>
+<span class="emphasis"><em>acceptable</em></span> to use a &#8220;<span class="quote">candidate primary key.</span>&#8221;</p>
 <p> It is <span class="emphasis"><em>not recommended</em></span> that a
 <span class="productname">Slony-I</span>-defined key (created via <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>) be
 used to introduce a candidate primary key, as this introduces the
@@ -183,77 +153,6 @@ tables being replicated. </p>
 <p> Depending on the kind of activity on the databases, this may or
 may not have the effect of requiring a (hopefully brief) database
 outage. </p>
-</li>
-<li>
-<p> What to do about DDL. </p>
-<p> <span class="productname">Slony-I</span> operates via detecting updates to table data via
-triggers that are attached to those tables.  That means that updates
-that take place via methods that do not fire triggers will not notice
-those updates.  <code class="command">ALTER TABLE</code>, <code class="command">CREATE OR
-REPLACE FUNCTION</code>, <code class="command">CREATE TABLE</code>, all
-represent SQL requests that <span class="productname">Slony-I</span> has no way to notice. </p>
-<p> A philosophy underlying <span class="productname">Slony-I</span>'s handling of this is that
-competent system designers do not write self-modifying code, and
-database schemas that get modified by the application are an instance
-of this.  It does not try hard to make it convenient to modify
-database schemas. </p>
-<p> There will be cases where that is necessary, so the <a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute script</code> is provided
-which will apply DDL changes at the same location in the transaction
-stream on all servers.  </a> </p>
-<p> Unfortunately, this introduces a great deal of locking of
-database objects.  Altering tables requires taking out an exclusive
-lock on them; doing so via <code class="command">execute script</code> requires
-that <span class="productname">Slony-I</span> take out an exclusive lock on <span class="emphasis"><em>all</em></span>
-replicated tables.  This can prove quite inconvenient when
-applications are running; you run into deadlocks and such. </p>
-<p> One particularly dogmatic position that some hold is that
-<span class="emphasis"><em>all</em></span> schema changes should
-<span class="emphasis"><em>always</em></span> be propagated using <code class="command">execute
-script</code>.  This guarantees that nodes will be consistent, but
-the costs of locking and deadlocking may be too high for some
-users.</p>
-<p> At Afilias, our approach has been less dogmatic; there
-<span class="emphasis"><em>are</em></span> sorts of changes that
-<span class="emphasis"><em>must</em></span> be applied using <code class="command">execute
-script</code>, but we apply others independently.</p>
-<div class="itemizedlist"><ul type="circle">
-<li>
-<p> Changes that must be applied using <code class="command">execute script</code> </p>
-<div class="itemizedlist"><ul type="square"><li><p> All instances of <code class="command">ALTER TABLE</code></p></li></ul></div>
-</li>
-<li>
-<p> Changes that are not normally applied using <code class="command">execute script</code> </p>
-<div class="itemizedlist"><ul type="square">
-<li><p> <code class="command">CREATE INDEX</code> </p></li>
-<li>
-<p> <code class="command">CREATE TABLE</code> </p>
-<p> Tables that are not being replicated do not require <span class="productname">Slony-I</span> &#8220;<span class="quote">permission</span>&#8221;. </p>
-</li>
-<li>
-<p> <code class="command">CREATE OR REPLACE FUNCTION </code> </p>
-<p> Typically, new versions of functions may be done without
-<span class="productname">Slony-I</span> being &#8220;<span class="quote">aware</span>&#8221; of them.  The obvious exception is
-when a new function is being deployed to accomodate a table
-alteration; in that case, the new version must be added in in a manner
-synchronized with the <code class="command">execute script</code> for the table
-alteration. </p>
-<p> Similarly, <code class="command">CREATE TYPE</code>, <code class="command"> CREATE
-AGGREGATE </code>,  and such will
-commonly not need to be forcibly applied in &#8220;<span class="quote">perfectly
-synchronized</span>&#8221; manner across nodes. </p>
-</li>
-<li>
-<p> Security management, such as <code class="command"> CREATE USER</code>, <code class="command"> CREATE ROLE </code>, <code class="command">GRANT</code>, and such are largely irrelevant to <span class="productname">Slony-I</span> as it runs as
-a &#8220;<span class="quote">superuser</span>&#8221;. </p>
-<p> Indeed, we have frequently found it useful to have different
-security arrangements on different nodes.  Access to the
-&#8220;<span class="quote">master</span>&#8221; node should be restricted to applications that
-truly need access to it; &#8220;<span class="quote">reporting</span>&#8221; users commonly are
-restricted much more there than on subscriber nodes.</p>
-</li>
-</ul></div>
-</li>
-</ul></div>
 </li>
 <li>
 <p><a name="slonyuser"></a> <span class="productname">Slony-I</span>-specific user names. </p>
@@ -292,21 +191,6 @@ to be configured by hand.  Many seemingly inexplicable communications
 failures, where nodes failed to talk to one another even though they
 technically could, were a result of incorrect listen path
 configuration. </p>
-</li>
-<li>
-<p> Use <code class="filename">test_slony_state.pl</code> to look
-for configuration problems.</p>
-<p>This is a Perl script which connects to a <span class="productname">Slony-I</span> node and then
-rummages through <span class="productname">Slony-I</span> configuration looking for quite a variety of
-conditions that tend to indicate problems, including:
-</p>
-<div class="itemizedlist"><ul type="circle">
-<li><p>Bloating of some config tables</p></li>
-<li><p>Analysis of listen paths</p></li>
-<li><p>Analysis of event propagation and confirmation</p></li>
-</ul></div>
-<p> If replication mysteriously &#8220;<span class="quote">isn't working</span>&#8221;, this
-tool can run through many of the possible problems for you. </p>
 </li>
 <li>
 <p> Configuring <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> </p>
@@ -366,19 +250,6 @@ set.</p>
 <p> The notes on <a href="usingslonik.html" title="15. Using Slonik"> Using Slonik </a>
 describe some of the lessons learned from managing large numbers of
 <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> scripts.</p>
-<p> Notable principles that have fallen out of generating many
-slonik scripts are that:
-
-</p>
-<div class="itemizedlist"><ul type="circle">
-<li><p>Using &#8220;<span class="quote">preamble</span>&#8221; files is
-<span class="emphasis"><em>highly recommended</em></span> as it means that you use
-heavily-verified preambles over and over.</p></li>
-<li><p>Any opportunity that you have to automatically
-generate configuration whether by drawing it from a database or by
-using a script that generates repetitively similar elements will help
-prevent human error.</p></li>
-</ul></div>
 </li>
 <li>
 <p> Handling Very Large Replication Sets </p>
@@ -387,7 +258,7 @@ tens to hundreds of gigabytes in size, which puts some added
 &#8220;<span class="quote">strain</span>&#8221; on the system, in particular where it may take
 several days for the <code class="command">COPY_SET</code> event to complete.
 Here are some principles that have been observed for dealing with
-these sorts of situations.</p>
+these sorts of situtations.</p>
 </li>
 </ul></div>
 <div class="itemizedlist"><ul type="disc">
@@ -399,9 +270,8 @@ while the <code class="command">COPY_SET</code> event is run. </p>
 slower than simply copying the data into the table, and then
 recreating each index &#8220;<span class="quote">ex nihilo</span>&#8221;, as the latter can take
 substantial advantage of sort memory. </p>
-<p> In <span class="productname">Slony-I</span> version 1.1.5 and later versions, indices are
-dropped and recreated automatically, which mostly eliminates the need
-for this.</p>
+<p> In a future release, it is hopeful that indices will be dropped
+and recreated automatically, which would eliminate this.</p>
 </li>
 <li>
 <p> If there are large numbers of updates taking place as

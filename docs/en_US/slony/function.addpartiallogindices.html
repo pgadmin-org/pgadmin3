@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.20.  addpartiallogindices( )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.add-missing-table-field-text-text-text-text.html" title="1.19.  add_missing_table_field( text, text, text, text )">
+<link rel="next" href="function.altertableforreplication-integer.html" title="1.21.  altertableforreplication( integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.addpartiallogindices"></a>1.20.        addpartiallogindices(  )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       Add partial indexes, if possible, to the unused sl_log_? table for
+all origin nodes, and drop any that are no longer needed.
+
+This function presently gets run any time set origins are manipulated
+(FAILOVER, STORE SET, MOVE SET, DROP SET), as well as each time the
+system switches between sl_log_1 and sl_log_2.
+        </p>
+<pre class="programlisting">DECLARE
+	v_current_status	int4;
+	v_log			int4;
+	v_dummy		record;
+	idef 		text;
+	v_count		int4;
+BEGIN
+	v_count := 0;
+	select last_value into v_current_status from sl_log_status;
+
+	-- If status is 2 or 3 --&gt; in process of cleanup --&gt; unsafe to create indices
+	if v_current_status in (2, 3) then
+		return 0;
+	end if;
+
+	if v_current_status = 0 then   -- Which log should get indices?
+		v_log := 2;
+	else
+		v_log := 1;
+	end if;
+
+	-- Add missing indices...
+	for v_dummy in select distinct set_origin from sl_set
+		where not exists 
+                     (select * from pg_catalog.pg_indexes where schemaname = 'schemadoc'
+                      and tablename = 'sl_log_' || v_log and 
+                      indexname = 'PartInd_schemadoc_sl_log_' || v_log || '-node-' || set_origin) loop	   
+		idef := 'create index "PartInd_schemadoc_sl_log_' || v_log || '-node-' || v_dummy.set_origin ||
+                        '" on sl_log_' || v_log || ' USING btree(log_xid xxid_ops) where (log_origin = ' || v_dummy.set_origin || ');';
+		execute idef;
+		v_count := v_count + 1;
+	end loop;
+
+	-- Remove unneeded indices...
+	for v_dummy in select indexname from pg_catalog.pg_indexes i where i.schemaname = '@NAMESPACE'
+                       and i.tablename = 'sl_log_' || v_log and
+                       not exists (select 1 from sl_set where
+				i.indexname = 'PartInd_schemadoc_sl_log_' || v_log || '-node-' || set_origin)
+	loop
+		idef := 'drop index "schemadoc"."' || v_dummy.indexname || '";';
+		execute idef;
+		v_count := v_count - 1;
+	end loop;
+	return v_count;
+END</pre>
+<p>
+      </p>
+</div></body>
+</html>

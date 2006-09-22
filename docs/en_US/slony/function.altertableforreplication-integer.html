@@ -1,22 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.18.        altertableforreplication( integer )
-      </title>
+<title>1.21.  altertableforreplication( integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.add-missing-table-field-text-text-text-text.html" title="1.17.        add_missing_table_field( text, text, text, text )
-      ">
-<link rel="next" href="function.altertablerestore-integer.html" title="1.19.        altertablerestore( integer )
-      ">
+<link rel="prev" href="function.addpartiallogindices.html" title="1.20.  addpartiallogindices( )">
+<link rel="next" href="function.altertablerestore-integer.html" title="1.22.  altertablerestore( integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.altertableforreplication-integer"></a>1.18.        altertableforreplication( integer )
+<a name="function.altertableforreplication-integer"></a>1.21.        altertableforreplication( integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -46,6 +43,8 @@ adding in the trigger that denies write access to replicated tables.
 	v_tab_fqname		text;
 	v_tab_attkind		text;
 	v_n					int4;
+	v_trec	record;
+	v_tgbad	boolean;
 begin
 	-- ----
 	-- Grab the central configuration lock
@@ -78,11 +77,11 @@ begin
 				and PGXC.relname = T.tab_idxname
 				for update;
 	if not found then
-		raise exception 'Slony-I: Table with id % not found', p_tab_id;
+		raise exception 'Slony-I: alterTableForReplication(): Table with id % not found', p_tab_id;
 	end if;
 	v_tab_fqname = v_tab_row.tab_fqname;
 	if v_tab_row.tab_altered then
-		raise exception 'Slony-I: Table % is already in altered state',
+		raise exception 'Slony-I: alterTableForReplication(): Table % is already in altered state',
 				v_tab_fqname;
 	end if;
 
@@ -110,6 +109,32 @@ begin
 		-- to disable all user- and foreign key triggers and rules.
 		-- ----
 
+
+		-- ----
+		-- Check to see if there are any trigger conflicts...
+		-- ----
+		v_tgbad := 'false';
+		for v_trec in 
+			select pc.relname, tg1.tgname from
+			"pg_catalog".pg_trigger tg1, 
+			"pg_catalog".pg_trigger tg2,
+			"pg_catalog".pg_class pc,
+			"pg_catalog".pg_index pi,
+			sl_table tab
+			where 
+			 tg1.tgname = tg2.tgname and        -- Trigger names match
+			 tg1.tgrelid = tab.tab_reloid and   -- trigger 1 is on the table
+			 pi.indexrelid = tg2.tgrelid and    -- trigger 2 is on the index
+			 pi.indrelid = tab.tab_reloid and   -- indexes table is this table
+			 pc.oid = tab.tab_reloid
+                loop
+			raise notice 'Slony-I: alterTableForReplication(): multiple instances of trigger % on table %',
+				v_trec.tgname, v_trec.relname;
+			v_tgbad := 'true';
+		end loop;
+		if v_tgbad then
+			raise exception 'Slony-I: Unable to disable triggers';
+		end if;  		
 
 		-- ----
 		-- Disable all existing triggers

@@ -4,10 +4,10 @@
 <title>Slony-I FAQ</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
-<link rel="up" href="index.html" title="Slony-I HEAD_20060719 Documentation">
-<link rel="prev" href="help.html" title="22. More Slony-I Help">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="prev" href="help.html" title="24. More Slony-I Help">
 <link rel="next" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
@@ -31,7 +31,7 @@ worth documenting</em></span>.</p>
 <dt>1.  <a href="faq.html#faqcompiling"> <span class="productname">Slony-I</span> FAQ: Building and Installing <span class="productname">Slony-I</span> </a>
 </dt>
 <dd><dl>
-<dt>1.1. <a href="faq.html#id581410"> I am using  Frotznik Freenix
+<dt>1.1. <a href="faq.html#id2566618"> I am using  Frotznik Freenix
 4.5, with its FFPM (Frotznik Freenix
 Package Manager) package management system.  It comes with
 FFPM packages for PostgreSQL 7.4.7, which are what
@@ -52,7 +52,7 @@ replication is taking place.</a>
 <dt>2.  <a href="faq.html#faqconnections"> <span class="productname">Slony-I</span> FAQ: Connection Issues </a>
 </dt>
 <dd><dl>
-<dt>2.1. <a href="faq.html#id582038">I looked for the _clustername namespace, and
+<dt>2.1. <a href="faq.html#id2567188">I looked for the _clustername namespace, and
 it wasn't there.</a>
 </dt>
 <dt>2.2. <a href="faq.html#morethansuper"> I created a &#8220;superuser&#8221; account,
@@ -63,7 +63,7 @@ update pg_shadow set usesuper = 't' where usename in ('slony',
 (that command also deals with other users I set up to run vacuums and
 backups).</a>
 </dt>
-<dt>2.3. <a href="faq.html#id582184"> I'm trying to get a slave subscribed, and get the
+<dt>2.3. <a href="faq.html#id2567322"> I'm trying to get a slave subscribed, and get the
 following messages in the logs:
 
 DEBUG1 copy_set 1
@@ -75,36 +75,41 @@ WARN	remoteWorkerThread_1: data copy for set 1 failed - sleep 60 seconds</a>
 something we didn't foresee when completely uninstalling a slony
 replication cluster from the master and slave...</a>
 </dt>
-<dt>2.5. <a href="faq.html#id582402">I pointed a subscribing node to a different provider
+<dt>2.5. <a href="faq.html#id2567534">I pointed a subscribing node to a different provider
 and it stopped replicating</a>
 </dt>
 <dt>2.6. <a href="faq.html#multipleslonconnections"> I was starting a slon, and got the
 following &#8220;FATAL&#8221; messages in its logs.  What's up??? </a>
 </dt>
+<dt>2.7. <a href="faq.html#id2567840"> When can I shut down slon processes?</a>
+</dt>
+<dt>2.8. <a href="faq.html#id2568025"> Are there risks to doing so?  How about
+benefits?</a>
+</dt>
 </dl></dd>
 <dt>3.  <a href="faq.html#faqconfiguration"> <span class="productname">Slony-I</span> FAQ: Configuration Issues </a>
 </dt>
 <dd><dl>
-<dt>3.1. <a href="faq.html#id582738">Slonik fails - cannot load PostgreSQL library -
+<dt>3.1. <a href="faq.html#id2568071">Slonik fails - cannot load PostgreSQL library -
 PGRES_FATAL_ERROR load '$libdir/xxid';</a>
 </dt>
-<dt>3.2. <a href="faq.html#id582923">I tried creating a CLUSTER NAME with a "-" in it.
+<dt>3.2. <a href="faq.html#id2568238">I tried creating a CLUSTER NAME with a "-" in it.
 That didn't work.</a>
 </dt>
-<dt>3.3. <a href="faq.html#id582958">ps finds passwords on command line</a>
+<dt>3.3. <a href="faq.html#id2568269">ps finds passwords on command line</a>
 </dt>
-<dt>3.4. <a href="faq.html#id582984">Table indexes with FQ namespace names
+<dt>3.4. <a href="faq.html#id2568293">Table indexes with FQ namespace names
 
 set add table (set id = 1, origin = 1, id = 27, 
                full qualified name = 'nspace.some_table', 
                key = 'key_on_whatever', 
                comment = 'Table some_table in namespace nspace with a candidate primary key');</a>
 </dt>
-<dt>3.5. <a href="faq.html#id583014"> Replication has fallen behind, and it appears that the
+<dt>3.5. <a href="faq.html#id2568321"> Replication has fallen behind, and it appears that the
 queries to draw data from sl_log_1/sl_log_2 are taking a long time to pull just a few
 SYNCs. </a>
 </dt>
-<dt>3.6. <a href="faq.html#id583075"> I need to rename a column that is in the
+<dt>3.6. <a href="faq.html#id2568375"> I need to rename a column that is in the
 primary key for one of my replicated tables.  That seems pretty
 dangerous, doesn't it?  I have to drop the table out of replication
 and recreate it, right?</a>
@@ -114,37 +119,37 @@ really, really want to use Slony-I to help me
 upgrade it to 8.0.  What is involved in getting Slony-I to work for
 that?</a>
 </dt>
-<dt>3.8. <a href="faq.html#id583332"> I had a network &#8220;glitch&#8221; that led to my
+<dt>3.8. <a href="faq.html#id2498660"> I had a network &#8220;glitch&#8221; that led to my
 using FAILOVER to fail over to an alternate node.
 The failure wasn't a disk problem that would corrupt databases; why do
 I need to rebuild the failed node from scratch? </a>
 </dt>
-<dt>3.9. <a href="faq.html#id583418"> After notification of a subscription on
+<dt>3.9. <a href="faq.html#id2498738"> After notification of a subscription on
 another node, replication falls over on one of
 the subscribers, with the following error message:</a>
 </dt>
-<dt>3.10. <a href="faq.html#id583515">I just used MOVE SET to move the
+<dt>3.10. <a href="faq.html#id2568933">I just used MOVE SET to move the
 origin to a new node.  Unfortunately, some subscribers are still
 pointing to the former origin node, so I can't take it out of service
 for maintenance without stopping them from getting updates.  What do I
 do?  </a>
 </dt>
-<dt>3.11. <a href="faq.html#id583564"> After notification of a subscription on
+<dt>3.11. <a href="faq.html#id2568976"> After notification of a subscription on
 another node, replication falls over, starting
 with the following error message:</a>
 </dt>
-<dt>3.12. <a href="faq.html#id583671"> Is the ordering of tables in a set significant?</a>
+<dt>3.12. <a href="faq.html#id2569075"> Is the ordering of tables in a set significant?</a>
 </dt>
-<dt>3.13. <a href="faq.html#id583749"> If you have a slonik script
+<dt>3.13. <a href="faq.html#id2569145"> If you have a slonik script
 something like this, it will hang on you and never complete, because
 you can't have wait for event inside a
 try block. A try block is
 executed as one transaction, and the event that you are waiting for
 can never arrive inside the scope of the transaction.</a>
 </dt>
-<dt>3.14. <a href="faq.html#id583804">Slony-I: cannot add table to currently subscribed set 1</a>
+<dt>3.14. <a href="faq.html#id2569203">Slony-I: cannot add table to currently subscribed set 1</a>
 </dt>
-<dt>3.15. <a href="faq.html#id583834">ERROR: duplicate key violates unique constraint "sl_table-pkey"</a>
+<dt>3.15. <a href="faq.html#id2569230">ERROR: duplicate key violates unique constraint "sl_table-pkey"</a>
 </dt>
 </dl></dd>
 <dt>4.  <a href="faq.html#faqperformance"> <span class="productname">Slony-I</span> FAQ: Performance Issues </a>
@@ -158,17 +163,21 @@ well, generally getting steadily worse. </a>
 <dt>4.2. <a href="faq.html#faq17">After dropping a node, sl_log_1
 isn't getting purged out anymore.</a>
 </dt>
-<dt>4.3. <a href="faq.html#id584302">The slon spent the weekend out of
+<dt>4.3. <a href="faq.html#id2569650">The slon spent the weekend out of
 commission [for some reason], and it's taking a long time to get a
 sync through.</a>
 </dt>
 <dt>4.4. <a href="faq.html#pglistenerfull">Some nodes start consistently falling behind</a>
 </dt>
+<dt>4.5. <a href="faq.html#id2569858"> I have submitted a MOVE SET / EXECUTE SCRIPT request, and
+it seems to be stuck on one of my nodes.  Slony-I logs aren't
+displaying any errors or warnings </a>
+</dt>
 </dl></dd>
 <dt>5.  <a href="faq.html#faqbugs"> <span class="productname">Slony-I</span> FAQ: <span class="productname">Slony-I</span> Bugs in Elder Versions </a>
 </dt>
 <dd><dl>
-<dt>5.1. <a href="faq.html#id584552">The slon processes servicing my
+<dt>5.1. <a href="faq.html#id2569948">The slon processes servicing my
 subscribers are growing to enormous size, challenging system resources
 both in terms of swap space as well as moving towards breaking past
 the 2GB maximum process size on my system. </a>
@@ -177,39 +186,39 @@ the 2GB maximum process size on my system. </a>
 UNICODE data from PostgreSQL 8.0 to PostgreSQL 8.1, and
 am experiencing problems. </a>
 </dt>
-<dt>5.3. <a href="faq.html#id584876"> I am running Slony-I 1.1 and have a 4+ node setup
+<dt>5.3. <a href="faq.html#id2570243"> I am running Slony-I 1.1 and have a 4+ node setup
 where there are two subscription sets, 1 and 2, that do not share any
 nodes.  I am discovering that confirmations for set 1 never get to the
 nodes subscribing to set 2, and that confirmations for set 2 never get
 to nodes subscribing to set 1.  As a result, sl_log_1 grows and grows and is never purged.  This
 was reported as Slony-I bug 1485 .</a>
 </dt>
-<dt>5.4. <a href="faq.html#id584973"> I am finding some multibyte columns (Unicode, Big5)
+<dt>5.4. <a href="faq.html#id2570331"> I am finding some multibyte columns (Unicode, Big5)
 are being truncated a bit, clipping off the last character.  Why?</a>
 </dt>
 <dt>5.5. <a href="faq.html#sequenceset"> Bug #1226  indicates an error condition that can come up if
 you have a replication set that consists solely of sequences. </a>
 </dt>
-<dt>5.6. <a href="faq.html#id585081">I need to drop a table from a replication set</a>
+<dt>5.6. <a href="faq.html#id2570429">I need to drop a table from a replication set</a>
 </dt>
-<dt>5.7. <a href="faq.html#id585185">I need to drop a sequence from a replication set</a>
+<dt>5.7. <a href="faq.html#id2570524">I need to drop a sequence from a replication set</a>
 </dt>
 </dl></dd>
 <dt>6.  <a href="faq.html#faqobsolete"> <span class="productname">Slony-I</span> FAQ: Hopefully Obsolete Issues </a>
 </dt>
 <dd><dl>
-<dt>6.1. <a href="faq.html#id585315"> slon does not restart after
+<dt>6.1. <a href="faq.html#id2570641"> slon does not restart after
 crash</a>
 </dt>
-<dt>6.2. <a href="faq.html#id585464"> I tried the following query which did not work:</a>
+<dt>6.2. <a href="faq.html#id2570784"> I tried the following query which did not work:</a>
 </dt>
-<dt>6.3. <a href="faq.html#id585620"> I can do a pg_dump
+<dt>6.3. <a href="faq.html#id2570916"> I can do a pg_dump
 and load the data back in much faster than the SUBSCRIBE
 SET runs.  Why is that?  </a>
 </dt>
 <dt>6.4. <a href="faq.html#dupkey">Replication Fails - Unique Constraint Violation</a>
 </dt>
-<dt>6.5. <a href="faq.html#id586058">I started doing a backup using
+<dt>6.5. <a href="faq.html#id2571325">I started doing a backup using
 pg_dump, and suddenly Slony
 stops</a>
 </dt>
@@ -217,10 +226,10 @@ stops</a>
 <dt>7.  <a href="faq.html#faqoddities"> <span class="productname">Slony-I</span> FAQ: Oddities and Heavy Slony-I Hacking </a>
 </dt>
 <dd><dl>
-<dt>7.1. <a href="faq.html#id586280"> What happens with rules and triggers on
+<dt>7.1. <a href="faq.html#id2571525"> What happens with rules and triggers on
 Slony-I-replicated tables?</a>
 </dt>
-<dt>7.2. <a href="faq.html#id586477"> I was trying to request EXECUTE SCRIPT or MOVE SET, and found
+<dt>7.2. <a href="faq.html#id2571701"> I was trying to request EXECUTE SCRIPT or MOVE SET, and found
 messages as follows on one of the subscribers:</a>
 </dt>
 <dt>7.3. <a href="faq.html#neededexecddl"> Behaviour - all the subscriber nodes start to fall
@@ -228,18 +237,18 @@ behind the origin, and all the logs on the subscriber nodes have the
 following error message repeating in them (when I encountered it,
 there was a nice long SQL statement above each entry):</a>
 </dt>
-<dt>7.4. <a href="faq.html#id586729"> Node #1 was dropped via DROP NODE, and the slon one of the
+<dt>7.4. <a href="faq.html#id2571955"> Node #1 was dropped via DROP NODE, and the slon one of the
 other nodes is repeatedly failing with the error message:</a>
 </dt>
 </dl></dd>
 </dl>
-<a name="id581377"></a><table border="0" summary="Q and A Set">
+<a name="id2566588"></a><table border="0" summary="Q and A Set">
 <col align="left" width="1%">
 <tbody>
 <tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title">
 <a name="faqcompiling"></a>1.  <span class="productname">Slony-I</span> FAQ: Building and Installing <span class="productname">Slony-I</span> </h3></td></tr>
 <tr class="toc"><td align="left" valign="top" colspan="2"><dl>
-<dt>1.1. <a href="faq.html#id581410"> I am using  Frotznik Freenix
+<dt>1.1. <a href="faq.html#id2566618"> I am using  Frotznik Freenix
 4.5, with its FFPM (Frotznik Freenix
 Package Manager) package management system.  It comes with
 FFPM packages for PostgreSQL 7.4.7, which are what
@@ -259,7 +268,7 @@ replication is taking place.</a>
 </dl></td></tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id581410"></a><a name="id581411"></a><b>1.1.</b>
+<a name="id2566618"></a><a name="id2566619"></a><b>1.1.</b>
 </td>
 <td align="left" valign="top"><p> I am using <span class="productname"> Frotznik Freenix
 4.5</span>, with its <acronym class="acronym">FFPM</acronym> (Frotznik Freenix
@@ -327,7 +336,7 @@ hope to avoid compiling <span class="productname">Slony-I</span>.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="missingheaders"></a><a name="id581760"></a><b>1.2.</b>
+<a name="missingheaders"></a><a name="id2566934"></a><b>1.2.</b>
 </td>
 <td align="left" valign="top">
 <p> I tried building <span class="productname">Slony-I</span> 1.1 and got the following
@@ -351,7 +360,7 @@ via the command <code class="command">make install-all-headers</code>.
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="threadsafety"></a><a name="id581830"></a><b>1.3.</b>
+<a name="threadsafety"></a><a name="id2566998"></a><b>1.3.</b>
 </td>
 <td align="left" valign="top">
 <p> <span class="productname">Slony-I</span> seemed to compile fine; now, when I run a
@@ -416,7 +425,7 @@ required; similar is also required for <span class="productname">PostgreSQL</spa
 <tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title">
 <a name="faqconnections"></a>2.  <span class="productname">Slony-I</span> FAQ: Connection Issues </h3></td></tr>
 <tr class="toc"><td align="left" valign="top" colspan="2"><dl>
-<dt>2.1. <a href="faq.html#id582038">I looked for the _clustername namespace, and
+<dt>2.1. <a href="faq.html#id2567188">I looked for the _clustername namespace, and
 it wasn't there.</a>
 </dt>
 <dt>2.2. <a href="faq.html#morethansuper"> I created a &#8220;superuser&#8221; account,
@@ -427,7 +436,7 @@ update pg_shadow set usesuper = 't' where usename in ('slony',
 (that command also deals with other users I set up to run vacuums and
 backups).</a>
 </dt>
-<dt>2.3. <a href="faq.html#id582184"> I'm trying to get a slave subscribed, and get the
+<dt>2.3. <a href="faq.html#id2567322"> I'm trying to get a slave subscribed, and get the
 following messages in the logs:
 
 DEBUG1 copy_set 1
@@ -439,16 +448,21 @@ WARN	remoteWorkerThread_1: data copy for set 1 failed - sleep 60 seconds</a>
 something we didn't foresee when completely uninstalling a slony
 replication cluster from the master and slave...</a>
 </dt>
-<dt>2.5. <a href="faq.html#id582402">I pointed a subscribing node to a different provider
+<dt>2.5. <a href="faq.html#id2567534">I pointed a subscribing node to a different provider
 and it stopped replicating</a>
 </dt>
 <dt>2.6. <a href="faq.html#multipleslonconnections"> I was starting a slon, and got the
 following &#8220;FATAL&#8221; messages in its logs.  What's up??? </a>
 </dt>
+<dt>2.7. <a href="faq.html#id2567840"> When can I shut down slon processes?</a>
+</dt>
+<dt>2.8. <a href="faq.html#id2568025"> Are there risks to doing so?  How about
+benefits?</a>
+</dt>
 </dl></td></tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id582038"></a><a name="id582040"></a><b>2.1.</b>
+<a name="id2567188"></a><a name="id2567190"></a><b>2.1.</b>
 </td>
 <td align="left" valign="top"><p>I looked for the <code class="envar">_clustername</code> namespace, and
 it wasn't there.</p></td>
@@ -466,7 +480,7 @@ right/wrong authentication information there.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="morethansuper"></a><a name="id582086"></a><b>2.2.</b>
+<a name="morethansuper"></a><a name="id2567232"></a><b>2.2.</b>
 </td>
 <td align="left" valign="top">
 <p> I created a &#8220;<span class="quote">superuser</span>&#8221; account,
@@ -512,7 +526,7 @@ denied on the system table, <code class="envar">pg_class</code>.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id582184"></a><a name="id582186"></a><b>2.3.</b>
+<a name="id2567322"></a><a name="id2567323"></a><b>2.3.</b>
 </td>
 <td align="left" valign="top">
 <p> I'm trying to get a slave subscribed, and get the
@@ -569,7 +583,7 @@ wait until those old transactions terminate.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="missingoids"></a><a name="id582319"></a><b>2.4.</b>
+<a name="missingoids"></a><a name="id2567451"></a><b>2.4.</b>
 </td>
 <td align="left" valign="top">
 <p> We got bitten by
@@ -625,7 +639,7 @@ could also announce an admin to take a look...  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id582402"></a><a name="id582403"></a><b>2.5.</b>
+<a name="id2567534"></a><a name="id2567535"></a><b>2.5.</b>
 </td>
 <td align="left" valign="top"><p>I pointed a subscribing node to a different provider
 and it stopped replicating</p></td>
@@ -680,12 +694,12 @@ changes.</p></li>
 this.</p></li>
 </ul></div>
 <p>The issues of &#8220;<span class="quote">listener paths</span>&#8221; are discussed
-further at <a href="listenpaths.html" title="8. Slony-I listen paths">Section 8, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a> </p>
+further at <a href="listenpaths.html" title="9. Slony-I listen paths">Section 9, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a> </p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="multipleslonconnections"></a><a name="id582537"></a><b>2.6.</b>
+<a name="multipleslonconnections"></a><a name="id2567666"></a><b>2.6.</b>
 </td>
 <td align="left" valign="top">
 <p> I was starting a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, and got the
@@ -749,29 +763,93 @@ interrupt local connections would be likely to be serious enough to
 threaten the entire server.  </p>
 </td>
 </tr>
+<tr class="question">
+<td align="left" valign="top">
+<a name="id2567840"></a><a name="id2567841"></a><b>2.7.</b>
+</td>
+<td align="left" valign="top"><p> When can I shut down <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes?</p></td>
+</tr>
+<tr class="answer">
+<td align="left" valign="top"></td>
+<td align="left" valign="top">
+<p> Generally, it's no big deal to shut down a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
+process.  Each one is &#8220;<span class="quote">merely</span>&#8221; a <span class="productname">PostgreSQL</span> client,
+managing one node, which spawns threads to manage receiving events
+from other nodes.  </p>
+<p>The &#8220;<span class="quote">event listening</span>&#8221; threads are no big deal; they
+are doing nothing fancier than periodically checking remote nodes to
+see if they have work to be done on this node.  If you kill off the
+<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> these threads will be closed, which should have little or no
+impact on much of anything.  Events generated while the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is
+down will be picked up when it is restarted.</p>
+<p> The &#8220;<span class="quote">node managing</span>&#8221; thread is a bit more
+interesting; most of the time, you can expect, on a subscriber, for
+this thread to be processing <code class="command">SYNC</code> events.  If you
+shut off the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> during an event, the transaction
+will fail, and be rolled back, so that when the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> restarts, it
+will have to go back and reprocess the event.</p>
+<p> The only situation where this will
+cause <span class="emphasis"><em>particular</em></span> &#8220;<span class="quote">heartburn</span>&#8221; is if
+the event being processed was one which takes a long time to process,
+such as <code class="command">COPY_SET</code> for a large replication
+set. </p>
+<p> The other thing that <span class="emphasis"><em>might</em></span> cause trouble
+is if the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> runs fairly distant from nodes that it connects to;
+you could discover that database connections are left <code class="command">idle in
+transaction</code>.  This would normally only occur if the network
+connection is destroyed without either <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> or database being made
+aware of it.  In that case, you may discover
+that &#8220;<span class="quote">zombied</span>&#8221; connections are left around for as long as
+two hours if you don't go in by hand and kill off the <span class="productname">PostgreSQL</span>
+backends.</p>
+<p> There is one other case that could cause trouble; when the
+<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> managing the origin node is not running,
+no <code class="command">SYNC</code> events run against that node.  If the
+<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> stays down for an extended period of time, and something
+like <a href="maintenance.html#gensync" title="6.2. Parallel to Watchdog: generate_syncs.sh">Section 6.2, &#8220;Parallel to Watchdog: generate_syncs.sh&#8221;</a> isn't running, you could be left
+with <span class="emphasis"><em>one big <code class="command">SYNC</code></em></span> to process
+when it comes back up.  But that is only a concern if that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is
+down for an extended period of time; shutting it down for a few
+seconds shouldn't cause any great problem. </p>
+</td>
+</tr>
+<tr class="question">
+<td align="left" valign="top">
+<a name="id2568025"></a><a name="id2568026"></a><b>2.8.</b>
+</td>
+<td align="left" valign="top"><p> Are there risks to doing so?  How about
+benefits?</p></td>
+</tr>
+<tr class="answer">
+<td align="left" valign="top"></td>
+<td align="left" valign="top"><p> In short, if you don't have something like an 18
+hour <code class="command">COPY_SET</code> under way, it's normally not at all a
+big deal to take a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> down for a little while, or perhaps even
+cycle <span class="emphasis"><em>all</em></span> the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s. </p></td>
+</tr>
 <tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title">
 <a name="faqconfiguration"></a>3.  <span class="productname">Slony-I</span> FAQ: Configuration Issues </h3></td></tr>
 <tr class="toc"><td align="left" valign="top" colspan="2"><dl>
-<dt>3.1. <a href="faq.html#id582738">Slonik fails - cannot load PostgreSQL library -
+<dt>3.1. <a href="faq.html#id2568071">Slonik fails - cannot load PostgreSQL library -
 PGRES_FATAL_ERROR load '$libdir/xxid';</a>
 </dt>
-<dt>3.2. <a href="faq.html#id582923">I tried creating a CLUSTER NAME with a "-" in it.
+<dt>3.2. <a href="faq.html#id2568238">I tried creating a CLUSTER NAME with a "-" in it.
 That didn't work.</a>
 </dt>
-<dt>3.3. <a href="faq.html#id582958">ps finds passwords on command line</a>
+<dt>3.3. <a href="faq.html#id2568269">ps finds passwords on command line</a>
 </dt>
-<dt>3.4. <a href="faq.html#id582984">Table indexes with FQ namespace names
+<dt>3.4. <a href="faq.html#id2568293">Table indexes with FQ namespace names
 
 set add table (set id = 1, origin = 1, id = 27, 
                full qualified name = 'nspace.some_table', 
                key = 'key_on_whatever', 
                comment = 'Table some_table in namespace nspace with a candidate primary key');</a>
 </dt>
-<dt>3.5. <a href="faq.html#id583014"> Replication has fallen behind, and it appears that the
+<dt>3.5. <a href="faq.html#id2568321"> Replication has fallen behind, and it appears that the
 queries to draw data from sl_log_1/sl_log_2 are taking a long time to pull just a few
 SYNCs. </a>
 </dt>
-<dt>3.6. <a href="faq.html#id583075"> I need to rename a column that is in the
+<dt>3.6. <a href="faq.html#id2568375"> I need to rename a column that is in the
 primary key for one of my replicated tables.  That seems pretty
 dangerous, doesn't it?  I have to drop the table out of replication
 and recreate it, right?</a>
@@ -781,42 +859,42 @@ really, really want to use Slony-I to help me
 upgrade it to 8.0.  What is involved in getting Slony-I to work for
 that?</a>
 </dt>
-<dt>3.8. <a href="faq.html#id583332"> I had a network &#8220;glitch&#8221; that led to my
+<dt>3.8. <a href="faq.html#id2498660"> I had a network &#8220;glitch&#8221; that led to my
 using FAILOVER to fail over to an alternate node.
 The failure wasn't a disk problem that would corrupt databases; why do
 I need to rebuild the failed node from scratch? </a>
 </dt>
-<dt>3.9. <a href="faq.html#id583418"> After notification of a subscription on
+<dt>3.9. <a href="faq.html#id2498738"> After notification of a subscription on
 another node, replication falls over on one of
 the subscribers, with the following error message:</a>
 </dt>
-<dt>3.10. <a href="faq.html#id583515">I just used MOVE SET to move the
+<dt>3.10. <a href="faq.html#id2568933">I just used MOVE SET to move the
 origin to a new node.  Unfortunately, some subscribers are still
 pointing to the former origin node, so I can't take it out of service
 for maintenance without stopping them from getting updates.  What do I
 do?  </a>
 </dt>
-<dt>3.11. <a href="faq.html#id583564"> After notification of a subscription on
+<dt>3.11. <a href="faq.html#id2568976"> After notification of a subscription on
 another node, replication falls over, starting
 with the following error message:</a>
 </dt>
-<dt>3.12. <a href="faq.html#id583671"> Is the ordering of tables in a set significant?</a>
+<dt>3.12. <a href="faq.html#id2569075"> Is the ordering of tables in a set significant?</a>
 </dt>
-<dt>3.13. <a href="faq.html#id583749"> If you have a slonik script
+<dt>3.13. <a href="faq.html#id2569145"> If you have a slonik script
 something like this, it will hang on you and never complete, because
 you can't have wait for event inside a
 try block. A try block is
 executed as one transaction, and the event that you are waiting for
 can never arrive inside the scope of the transaction.</a>
 </dt>
-<dt>3.14. <a href="faq.html#id583804">Slony-I: cannot add table to currently subscribed set 1</a>
+<dt>3.14. <a href="faq.html#id2569203">Slony-I: cannot add table to currently subscribed set 1</a>
 </dt>
-<dt>3.15. <a href="faq.html#id583834">ERROR: duplicate key violates unique constraint "sl_table-pkey"</a>
+<dt>3.15. <a href="faq.html#id2569230">ERROR: duplicate key violates unique constraint "sl_table-pkey"</a>
 </dt>
 </dl></td></tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id582738"></a><a name="id582739"></a><b>3.1.</b>
+<a name="id2568071"></a><a name="id2568072"></a><b>3.1.</b>
 </td>
 <td align="left" valign="top">
 <p>Slonik fails - cannot load <span class="productname">PostgreSQL</span> library -
@@ -860,7 +938,7 @@ right versions of <span class="productname">Slony-I</span> components are associ
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id582923"></a><a name="id582925"></a><b>3.2.</b>
+<a name="id2568238"></a><a name="id2568239"></a><b>3.2.</b>
 </td>
 <td align="left" valign="top"><p>I tried creating a CLUSTER NAME with a "-" in it.
 That didn't work.</p></td>
@@ -878,7 +956,7 @@ something that is probably not worth working around.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id582958"></a><a name="id582959"></a><b>3.3.</b>
+<a name="id2568269"></a><a name="id2568270"></a><b>3.3.</b>
 </td>
 <td align="left" valign="top">
 <p>ps finds passwords on command line</p>
@@ -893,7 +971,7 @@ put them into <code class="filename">$(HOME)/.pgpass.</code></p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id582984"></a><a name="id582986"></a><b>3.4.</b>
+<a name="id2568293"></a><a name="id2568294"></a><b>3.4.</b>
 </td>
 <td align="left" valign="top">
 <p>Table indexes with FQ namespace names
@@ -913,7 +991,7 @@ put them into <code class="filename">$(HOME)/.pgpass.</code></p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583014"></a><a name="id583015"></a><b>3.5.</b>
+<a name="id2568321"></a><a name="id2568322"></a><b>3.5.</b>
 </td>
 <td align="left" valign="top"><p> Replication has fallen behind, and it appears that the
 queries to draw data from <a href="table.sl-log-1.html">sl_log_1</a>/<a href="table.sl-log-2.html">sl_log_2</a> are taking a long time to pull just a few
@@ -930,7 +1008,7 @@ the index.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583075"></a><a name="id583076"></a><b>3.6.</b>
+<a name="id2568375"></a><a name="id2568376"></a><b>3.6.</b>
 </td>
 <td align="left" valign="top"><p> I need to rename a column that is in the
 primary key for one of my replicated tables.  That seems pretty
@@ -971,7 +1049,7 @@ the alteration to the subscriber, it can retry the
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="v72upgrade"></a><a name="id583186"></a><b>3.7.</b>
+<a name="v72upgrade"></a><a name="id2568478"></a><b>3.7.</b>
 </td>
 <td align="left" valign="top"><p> I have a <span class="productname">PostgreSQL</span> 7.2-based system that I
 <span class="emphasis"><em>really, really</em></span> want to use <span class="productname">Slony-I</span> to help me
@@ -1031,7 +1109,7 @@ pretty heavily with the code.  </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583332"></a><a name="id583333"></a><b>3.8.</b>
+<a name="id2498660"></a><a name="id2498661"></a><b>3.8.</b>
 </td>
 <td align="left" valign="top"><p> I had a network &#8220;<span class="quote">glitch</span>&#8221; that led to my
 using <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to fail over to an alternate node.
@@ -1056,13 +1134,13 @@ never was a disk failure making it &#8220;<span class="quote">physical.</span>&#
 </tr>
 <tr class="answer">
 <td align="left" valign="top"></td>
-<td align="left" valign="top"><p> As discusssed in <a href="failover.html" title="7. Doing switchover and failover with Slony-I">Section 7, &#8220;Doing switchover and failover with <span class="productname">Slony-I</span>&#8221;</a>, using <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> should be considered a <span class="emphasis"><em>last
+<td align="left" valign="top"><p> As discusssed in <a href="failover.html" title="8. Doing switchover and failover with Slony-I">Section 8, &#8220;Doing switchover and failover with <span class="productname">Slony-I</span>&#8221;</a>, using <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> should be considered a <span class="emphasis"><em>last
 resort</em></span> as it implies that you are abandoning the origin
 node as being corrupted.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583418"></a><a name="id583419"></a><b>3.9.</b>
+<a name="id2498738"></a><a name="id2498739"></a><b>3.9.</b>
 </td>
 <td align="left" valign="top">
 <p> After notification of a subscription on
@@ -1107,7 +1185,7 @@ things in a rush; you need to be sure things are working right
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583515"></a><a name="id583516"></a><b>3.10.</b>
+<a name="id2568933"></a><a name="id2568934"></a><b>3.10.</b>
 </td>
 <td align="left" valign="top"><p>I just used <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to move the
 origin to a new node.  Unfortunately, some subscribers are still
@@ -1132,7 +1210,7 @@ for the nodes from scratch later.
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583564"></a><a name="id583565"></a><b>3.11.</b>
+<a name="id2568976"></a><a name="id2568977"></a><b>3.11.</b>
 </td>
 <td align="left" valign="top">
 <p> After notification of a subscription on
@@ -1181,7 +1259,7 @@ terribly quickly; you need to be sure things are working right
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583671"></a><a name="id583672"></a><b>3.12.</b>
+<a name="id2569075"></a><a name="id2569076"></a><b>3.12.</b>
 </td>
 <td align="left" valign="top"><p> Is the ordering of tables in a set significant?</p></td>
 </tr>
@@ -1214,7 +1292,7 @@ delete the new rows in the child as well.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583749"></a><a name="id583750"></a><b>3.13.</b>
+<a name="id2569145"></a><a name="id2569146"></a><b>3.13.</b>
 </td>
 <td align="left" valign="top">
 <p> If you have a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script
@@ -1247,7 +1325,7 @@ inside a &#8220;<span class="quote">try</span>&#8221; block.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583804"></a><a name="id583805"></a><b>3.14.</b>
+<a name="id2569203"></a><a name="id2569204"></a><b>3.14.</b>
 </td>
 <td align="left" valign="top">
 <p>Slony-I: cannot add table to currently subscribed set 1</p>
@@ -1270,7 +1348,7 @@ together.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id583834"></a><a name="id583835"></a><b>3.15.</b>
+<a name="id2569230"></a><a name="id2569231"></a><b>3.15.</b>
 </td>
 <td align="left" valign="top">
 <p>ERROR: duplicate key violates unique constraint "sl_table-pkey"</p>
@@ -1301,16 +1379,20 @@ well, generally getting steadily worse. </a>
 <dt>4.2. <a href="faq.html#faq17">After dropping a node, sl_log_1
 isn't getting purged out anymore.</a>
 </dt>
-<dt>4.3. <a href="faq.html#id584302">The slon spent the weekend out of
+<dt>4.3. <a href="faq.html#id2569650">The slon spent the weekend out of
 commission [for some reason], and it's taking a long time to get a
 sync through.</a>
 </dt>
 <dt>4.4. <a href="faq.html#pglistenerfull">Some nodes start consistently falling behind</a>
 </dt>
+<dt>4.5. <a href="faq.html#id2569858"> I have submitted a MOVE SET / EXECUTE SCRIPT request, and
+it seems to be stuck on one of my nodes.  Slony-I logs aren't
+displaying any errors or warnings </a>
+</dt>
 </dl></td></tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="longtxnsareevil"></a><a name="id583892"></a><b>4.1.</b>
+<a name="longtxnsareevil"></a><a name="id2569291"></a><b>4.1.</b>
 </td>
 <td align="left" valign="top"><p> Replication has been slowing down, I'm seeing
 <code class="command"> FETCH 100 FROM LOG </code> queries running for a long
@@ -1375,7 +1457,7 @@ numerous of them are left idle in transaction for hours at a time.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="faq17"></a><a name="id584093"></a><b>4.2.</b>
+<a name="faq17"></a><a name="id2569472"></a><b>4.2.</b>
 </td>
 <td align="left" valign="top"><p>After dropping a node, <a href="table.sl-log-1.html">sl_log_1</a>
 isn't getting purged out anymore.</p></td>
@@ -1440,7 +1522,7 @@ data is purged from <a href="table.sl-log-1.html">sl_log_1</a> and <a href="tabl
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id584302"></a><a name="id584304"></a><b>4.3.</b>
+<a name="id2569650"></a><a name="id2569651"></a><b>4.3.</b>
 </td>
 <td align="left" valign="top"><p>The <span class="application">slon</span> spent the weekend out of
 commission [for some reason], and it's taking a long time to get a
@@ -1468,7 +1550,7 @@ node.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="pglistenerfull"></a><a name="id584416"></a><b>4.4.</b>
+<a name="pglistenerfull"></a><a name="id2569754"></a><b>4.4.</b>
 </td>
 <td align="left" valign="top">
 <p>Some nodes start consistently falling behind</p>
@@ -1507,10 +1589,33 @@ will cause trouble, and should be avoided, even on subscriber
 nodes.</p>
 </td>
 </tr>
+<tr class="question">
+<td align="left" valign="top">
+<a name="id2569858"></a><a name="id2569859"></a><b>4.5.</b>
+</td>
+<td align="left" valign="top"><p> I have submitted a <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> / <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> request, and
+it seems to be stuck on one of my nodes.  <span class="productname">Slony-I</span> logs aren't
+displaying any errors or warnings </p></td>
+</tr>
+<tr class="answer">
+<td align="left" valign="top"></td>
+<td align="left" valign="top">
+<p> Is it possible that you are running
+<span class="application">pg_autovacuum</span>, and it has taken out locks
+on some tables in the replication set?  That would somewhat-invisibly
+block <span class="productname">Slony-I</span> from performing operations that require <a href="locking.html" title="11. Locking Issues"> acquisition of exclusive locks. </a> </p>
+<p> You might check for these sorts of locks using the following
+query: <code class="command"> select l.*, c.relname from pg_locks l, pg_class c
+where c.oid = l.relation ; </code> A
+<code class="envar">ShareUpdateExclusiveLock</code> lock will block the <span class="productname">Slony-I</span>
+operations that need their own exclusive locks, which are likely
+queued up, marked as not being granted. </p>
+</td>
+</tr>
 <tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title">
 <a name="faqbugs"></a>5.  <span class="productname">Slony-I</span> FAQ: <span class="productname">Slony-I</span> Bugs in Elder Versions </h3></td></tr>
 <tr class="toc"><td align="left" valign="top" colspan="2"><dl>
-<dt>5.1. <a href="faq.html#id584552">The slon processes servicing my
+<dt>5.1. <a href="faq.html#id2569948">The slon processes servicing my
 subscribers are growing to enormous size, challenging system resources
 both in terms of swap space as well as moving towards breaking past
 the 2GB maximum process size on my system. </a>
@@ -1519,27 +1624,27 @@ the 2GB maximum process size on my system. </a>
 UNICODE data from PostgreSQL 8.0 to PostgreSQL 8.1, and
 am experiencing problems. </a>
 </dt>
-<dt>5.3. <a href="faq.html#id584876"> I am running Slony-I 1.1 and have a 4+ node setup
+<dt>5.3. <a href="faq.html#id2570243"> I am running Slony-I 1.1 and have a 4+ node setup
 where there are two subscription sets, 1 and 2, that do not share any
 nodes.  I am discovering that confirmations for set 1 never get to the
 nodes subscribing to set 2, and that confirmations for set 2 never get
 to nodes subscribing to set 1.  As a result, sl_log_1 grows and grows and is never purged.  This
 was reported as Slony-I bug 1485 .</a>
 </dt>
-<dt>5.4. <a href="faq.html#id584973"> I am finding some multibyte columns (Unicode, Big5)
+<dt>5.4. <a href="faq.html#id2570331"> I am finding some multibyte columns (Unicode, Big5)
 are being truncated a bit, clipping off the last character.  Why?</a>
 </dt>
 <dt>5.5. <a href="faq.html#sequenceset"> Bug #1226  indicates an error condition that can come up if
 you have a replication set that consists solely of sequences. </a>
 </dt>
-<dt>5.6. <a href="faq.html#id585081">I need to drop a table from a replication set</a>
+<dt>5.6. <a href="faq.html#id2570429">I need to drop a table from a replication set</a>
 </dt>
-<dt>5.7. <a href="faq.html#id585185">I need to drop a sequence from a replication set</a>
+<dt>5.7. <a href="faq.html#id2570524">I need to drop a sequence from a replication set</a>
 </dt>
 </dl></td></tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id584552"></a><a name="id584553"></a><b>5.1.</b>
+<a name="id2569948"></a><a name="id2569949"></a><b>5.1.</b>
 </td>
 <td align="left" valign="top">
 <p>The <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes servicing my
@@ -1612,7 +1717,7 @@ when they sporadically have series' of very large tuples. </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="faqunicode"></a><a name="id584755"></a><b>5.2.</b>
+<a name="faqunicode"></a><a name="id2570132"></a><b>5.2.</b>
 </td>
 <td align="left" valign="top"><p> I am trying to replicate
 <code class="envar">UNICODE</code> data from <span class="productname">PostgreSQL</span> 8.0 to <span class="productname">PostgreSQL</span> 8.1, and
@@ -1653,7 +1758,7 @@ migrate to 8.1. </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id584876"></a><a name="id584877"></a><b>5.3.</b>
+<a name="id2570243"></a><a name="id2570244"></a><b>5.3.</b>
 </td>
 <td align="left" valign="top"><p> I am running <span class="productname">Slony-I</span> 1.1 and have a 4+ node setup
 where there are two subscription sets, 1 and 2, that do not share any
@@ -1672,13 +1777,13 @@ case.</p>
 in <span class="productname">Slony-I</span> version 1.2 with an algorithm that covers this case. </p>
 <p> In the interim, you'll want to manually add some <a href="table.sl-listen.html">sl_listen</a> entries using <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> or <code class="function">storeListen()</code>,
 based on the (apparently not as obsolete as we thought) principles
-described in <a href="listenpaths.html" title="8. Slony-I listen paths">Section 8, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a>.
+described in <a href="listenpaths.html" title="9. Slony-I listen paths">Section 9, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a>.
 </p>
 </td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id584973"></a><a name="id584974"></a><b>5.4.</b>
+<a name="id2570331"></a><a name="id2570332"></a><b>5.4.</b>
 </td>
 <td align="left" valign="top"><p> I am finding some multibyte columns (Unicode, Big5)
 are being truncated a bit, clipping off the last character.  Why?</p></td>
@@ -1695,7 +1800,7 @@ file.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="sequenceset"></a><a name="id585014"></a><b>5.5.</b>
+<a name="sequenceset"></a><a name="id2570368"></a><b>5.5.</b>
 </td>
 <td align="left" valign="top"><p> <a href="http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226" target="_top">Bug #1226 </a> indicates an error condition that can come up if
 you have a replication set that consists solely of sequences. </p></td>
@@ -1703,7 +1808,7 @@ you have a replication set that consists solely of sequences. </p></td>
 <tr class="answer">
 <td align="left" valign="top"></td>
 <td align="left" valign="top"><p> The  short answer is that having a replication set
-consisting only of sequences is not a <a href="bestpractices.html" title="20.  Slony-I &#8220;Best Practices&#8221; ">best practice.</a> </p></td>
+consisting only of sequences is not a <a href="slonyadmin.html#bestpractices" title="1.  Slony-I &#8220;Best Practices&#8221;">best practice.</a> </p></td>
 </tr>
 <tr class="answer">
 <td align="left" valign="top"></td>
@@ -1722,7 +1827,7 @@ just <span class="emphasis"><em>seems</em></span> scary.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id585081"></a><a name="id585082"></a><b>5.6.</b>
+<a name="id2570429"></a><a name="id2570430"></a><b>5.6.</b>
 </td>
 <td align="left" valign="top"><p>I need to drop a table from a replication set</p></td>
 </tr>
@@ -1767,7 +1872,7 @@ queries by hand.</p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id585185"></a><a name="id585187"></a><b>5.7.</b>
+<a name="id2570524"></a><a name="id2570525"></a><b>5.7.</b>
 </td>
 <td align="left" valign="top"><p>I need to drop a sequence from a replication set</p></td>
 </tr>
@@ -1798,7 +1903,7 @@ replicate these are thus:
 <pre class="programlisting">delete from _oxrsorg.sl_seqlog where seql_seqid in (93, 59);
 delete from _oxrsorg.sl_sequence where seq_id in (93,59);</pre>
 <p>Those two queries could be submitted to all of the nodes via
-<a href="function.ddlscript-integer-text-integer.html">schemadocddlscript( integer, text, integer )</a> / <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, thus eliminating the sequence everywhere
+<a href="function.ddlscript-complete-integer-text-integer.html">schemadocddlscript_complete( integer, text, integer )</a> / <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, thus eliminating the sequence everywhere
 &#8220;<span class="quote">at once.</span>&#8221; Or they may be applied by hand to each of the
 nodes.</p>
 <p>Similarly to <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>, this is
@@ -1808,25 +1913,25 @@ implemented <span class="productname">Slony-I</span> version 1.0.5 as <a href="s
 <tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title">
 <a name="faqobsolete"></a>6.  <span class="productname">Slony-I</span> FAQ: Hopefully Obsolete Issues </h3></td></tr>
 <tr class="toc"><td align="left" valign="top" colspan="2"><dl>
-<dt>6.1. <a href="faq.html#id585315"> slon does not restart after
+<dt>6.1. <a href="faq.html#id2570641"> slon does not restart after
 crash</a>
 </dt>
-<dt>6.2. <a href="faq.html#id585464"> I tried the following query which did not work:</a>
+<dt>6.2. <a href="faq.html#id2570784"> I tried the following query which did not work:</a>
 </dt>
-<dt>6.3. <a href="faq.html#id585620"> I can do a pg_dump
+<dt>6.3. <a href="faq.html#id2570916"> I can do a pg_dump
 and load the data back in much faster than the SUBSCRIBE
 SET runs.  Why is that?  </a>
 </dt>
 <dt>6.4. <a href="faq.html#dupkey">Replication Fails - Unique Constraint Violation</a>
 </dt>
-<dt>6.5. <a href="faq.html#id586058">I started doing a backup using
+<dt>6.5. <a href="faq.html#id2571325">I started doing a backup using
 pg_dump, and suddenly Slony
 stops</a>
 </dt>
 </dl></td></tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id585315"></a><a name="id585316"></a><b>6.1.</b>
+<a name="id2570641"></a><a name="id2570642"></a><b>6.1.</b>
 </td>
 <td align="left" valign="top">
 <p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> does not restart after
@@ -1879,7 +1984,7 @@ issue should be transparently &#8220;<span class="quote">gone.</span>&#8221; </p
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id585464"></a><a name="id585465"></a><b>6.2.</b>
+<a name="id2570784"></a><a name="id2570785"></a><b>6.2.</b>
 </td>
 <td align="left" valign="top">
 <p> I tried the following query which did not work:</p>
@@ -1957,7 +2062,7 @@ UPDATE 1</pre>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id585620"></a><a name="id585621"></a><b>6.3.</b>
+<a name="id2570916"></a><a name="id2570917"></a><b>6.3.</b>
 </td>
 <td align="left" valign="top"><p> I can do a <code class="command">pg_dump</code>
 and load the data back in much faster than the <code class="command">SUBSCRIBE
@@ -1998,7 +2103,7 @@ the table. </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="dupkey"></a><a name="id585749"></a><b>6.4.</b>
+<a name="dupkey"></a><a name="id2571033"></a><b>6.4.</b>
 </td>
 <td align="left" valign="top">
 <p>Replication Fails - Unique Constraint Violation</p>
@@ -2079,7 +2184,7 @@ you should consider upgrading to resolve this.</p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id586058"></a><a name="id586059"></a><b>6.5.</b>
+<a name="id2571325"></a><a name="id2571326"></a><b>6.5.</b>
 </td>
 <td align="left" valign="top"><p>I started doing a backup using
 <span class="application">pg_dump</span>, and suddenly Slony
@@ -2138,10 +2243,10 @@ exclusive that alleviates this problem.</p></li>
 <tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title">
 <a name="faqoddities"></a>7.  <span class="productname">Slony-I</span> FAQ: Oddities and Heavy Slony-I Hacking </h3></td></tr>
 <tr class="toc"><td align="left" valign="top" colspan="2"><dl>
-<dt>7.1. <a href="faq.html#id586280"> What happens with rules and triggers on
+<dt>7.1. <a href="faq.html#id2571525"> What happens with rules and triggers on
 Slony-I-replicated tables?</a>
 </dt>
-<dt>7.2. <a href="faq.html#id586477"> I was trying to request EXECUTE SCRIPT or MOVE SET, and found
+<dt>7.2. <a href="faq.html#id2571701"> I was trying to request EXECUTE SCRIPT or MOVE SET, and found
 messages as follows on one of the subscribers:</a>
 </dt>
 <dt>7.3. <a href="faq.html#neededexecddl"> Behaviour - all the subscriber nodes start to fall
@@ -2149,13 +2254,13 @@ behind the origin, and all the logs on the subscriber nodes have the
 following error message repeating in them (when I encountered it,
 there was a nice long SQL statement above each entry):</a>
 </dt>
-<dt>7.4. <a href="faq.html#id586729"> Node #1 was dropped via DROP NODE, and the slon one of the
+<dt>7.4. <a href="faq.html#id2571955"> Node #1 was dropped via DROP NODE, and the slon one of the
 other nodes is repeatedly failing with the error message:</a>
 </dt>
 </dl></td></tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id586280"></a><a name="id586282"></a><b>7.1.</b>
+<a name="id2571525"></a><a name="id2571526"></a><b>7.1.</b>
 </td>
 <td align="left" valign="top"><p> What happens with rules and triggers on
 <span class="productname">Slony-I</span>-replicated tables?</p></td>
@@ -2222,7 +2327,7 @@ node.  It is straightforward to do this: </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id586477"></a><a name="id586478"></a><b>7.2.</b>
+<a name="id2571701"></a><a name="id2571702"></a><b>7.2.</b>
 </td>
 <td align="left" valign="top">
 <p> I was trying to request <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> or <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>, and found
@@ -2275,7 +2380,7 @@ using <a href="stmtstoretrigger.html" title="STORE TRIGGER"><span class="refentr
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="neededexecddl"></a><a name="id586636"></a><b>7.3.</b>
+<a name="neededexecddl"></a><a name="id2571846"></a><b>7.3.</b>
 </td>
 <td align="left" valign="top">
 <p> Behaviour - all the subscriber nodes start to fall
@@ -2348,7 +2453,7 @@ update _app1.sl_log_1 SET log_cmddata = 'balance=''125192.00'' where pkey=''60''
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id586729"></a><a name="id586730"></a><b>7.4.</b>
+<a name="id2571955"></a><a name="id2571956"></a><b>7.4.</b>
 </td>
 <td align="left" valign="top">
 <p> Node #1 was dropped via <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>, and the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> one of the

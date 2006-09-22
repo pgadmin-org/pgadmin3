@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.81.  reachablefromnode( integer, integer[] )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.moveset-int-integer-integer-integer.html" title="1.80.  moveset_int( integer, integer, integer )">
+<link rel="next" href="function.rebuildlistenentries.html" title="1.82.  rebuildlistenentries( )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.reachablefromnode-integer-integerarray"></a>1.81.        reachablefromnode( integer, integer[] )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>SET OF integer</div>
+</div>
+</div>
+<p>
+ 
+       ReachableFromNode(receiver, blacklist)
+
+Find all nodes that &lt;receiver&gt; can receive events from without
+using nodes in &lt;blacklist&gt; as a relay.
+        </p>
+<pre class="programlisting">declare
+	v_node alias for $1 ;
+	v_blacklist alias for $2 ;
+	v_ignore int4[] ;
+	v_reachable_edge_last int4[] ;
+	v_reachable_edge_new int4[] default '{}' ;
+	v_server record ;
+begin
+	v_reachable_edge_last := array[v_node] ;
+	v_ignore := v_blacklist || array[v_node] ;
+	return next v_node ;
+	while v_reachable_edge_last != '{}' loop
+		v_reachable_edge_new := '{}' ;
+		for v_server in select pa_server as no_id
+			from sl_path
+			where pa_client = ANY(v_reachable_edge_last) and pa_server != ALL(v_ignore)
+		loop
+			if v_server.no_id != ALL(v_ignore) then
+				v_ignore := v_ignore || array[v_server.no_id] ;
+				v_reachable_edge_new := v_reachable_edge_new || array[v_server.no_id] ;
+				return next v_server.no_id ;
+			end if ;
+		end loop ;
+		v_reachable_edge_last := v_reachable_edge_new ;
+	end loop ;
+	return ;
+end ;</pre>
+<p>
+      </p>
+</div></body>
+</html>

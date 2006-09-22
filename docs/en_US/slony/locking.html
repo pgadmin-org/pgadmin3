@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>10. Locking Issues</title>
+<title>11. Locking Issues</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
-<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
-<link rel="prev" href="plainpaths.html" title="9.  Slony-I Path Communications">
-<link rel="next" href="addthings.html" title="11. A Task-Oriented View of Slony-I">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="plainpaths.html" title="10.  Slony-I Path Communications">
+<link rel="next" href="addthings.html" title="12. A Task-Oriented View of Slony-I">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="locking"></a>10. Locking Issues</h2></div></div></div>
-<a name="id572484"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+<a name="locking"></a>11. Locking Issues</h2></div></div></div>
+<a name="id2556917"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
 Multi-Version Concurrency Control (<acronym class="acronym">MVCC</acronym>) is that
 this eliminates a whole host of reasons to need to lock database
 objects.  On some other database systems, you need to acquire a table
@@ -80,6 +80,11 @@ other process having held on to a table. </p>
 the new subscriber.</em></span> They are <span class="emphasis"><em>not</em></span>
 applied on the provider or on the origin. </p>
 </li>
+<li><p> <span class="application">pg_autovacuum</span> may not be
+part of <span class="productname">Slony-I</span>, but those that run it find that it wakes up roughly
+once per minute and may, at any time, start vacuuming a table, thereby
+taking out a <code class="envar">ShareUpdateExclusiveLock</code> lock.  This may
+block the other events for an unpredictable period of time.</p></li>
 </ul></div>
 <p> Each of these actions requires, at some point, modifying each
 of the tables in the affected replication set, which requires
@@ -122,7 +127,7 @@ period where things were running slowly.  </p>
 </p>
 <div class="itemizedlist"><ul type="circle">
 <li><p> Modify <code class="filename">pg_hba.conf</code> so that only
-the <a href="bestpractices.html#slonyuser"> <code class="command">slony</code> user </a>
+the <a href="slonyadmin.html#slonyuser"> <code class="command">slony</code> user </a>
 will have access to the database. </p></li>
 <li>
 <p> Issue a <code class="command">kill -SIGHUP</code> to the
@@ -150,7 +155,7 @@ it reload the security configuration. </p></li>
 <p>
 </p>
 </li>
-<li><p> The section  <a href="ddlchanges.html" title="14. Database Schema Changes (DDL)">Section 14, &#8220;Database Schema Changes (DDL)&#8221;</a> suggests some additional
+<li><p> The section  <a href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a> suggests some additional
 techniques that may be useful, such as moving tables between
 replication sets in such a way that you minimize the set of tables
 that need to be locked. </p></li>

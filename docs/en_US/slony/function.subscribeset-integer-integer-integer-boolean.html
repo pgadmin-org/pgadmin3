@@ -1,22 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.103.        subscribeset( integer, integer, integer, boolean )
-      </title>
+<title>1.121.  subscribeset( integer, integer, integer, boolean )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.storetrigger-int-integer-name.html" title="1.102.        storetrigger_int( integer, name )
-      ">
-<link rel="next" href="function.subscribeset-int-integer-integer-integer-boolean.html" title="1.104.        subscribeset_int( integer, integer, integer, boolean )
-      ">
+<link rel="prev" href="function.storetrigger-int-integer-name.html" title="1.120.  storetrigger_int( integer, name )">
+<link rel="next" href="function.subscribeset-int-integer-integer-integer-boolean.html" title="1.122.  subscribeset_int( integer, integer, integer, boolean )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.subscribeset-integer-integer-integer-boolean"></a>1.103.        subscribeset( integer, integer, integer, boolean )
+<a name="function.subscribeset-integer-integer-integer-boolean"></a>1.121.        subscribeset( integer, integer, integer, boolean )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -42,6 +39,7 @@ subscription, and publishes the SUBSCRIBE_SET event to other nodes.
 	p_sub_forward		alias for $4;
 	v_set_origin		int4;
 	v_ev_seqno			int8;
+	v_rec			record;
 begin
 	-- ----
 	-- Grab the central configuration lock
@@ -49,7 +47,7 @@ begin
 	lock table sl_config_lock;
 
 	-- ----
-	-- Check that this is called on the receiver node
+	-- Check that this is called on the provider node
 	-- ----
 	if p_sub_provider != getLocalNodeId('_schemadoc') then
 		raise exception 'Slony-I: subscribeSet() must be called on provider';
@@ -62,26 +60,28 @@ begin
 			from sl_set
 			where set_id = p_sub_set;
 	if not found then
-		raise exception 'Slony-I: set % not found', p_sub_set;
+		raise exception 'Slony-I: subscribeSet(): set % not found', p_sub_set;
 	end if;
 	if v_set_origin = p_sub_receiver then
 		raise exception 
-				'Slony-I: set origin and receiver cannot be identical';
+				'Slony-I: subscribeSet(): set origin and receiver cannot be identical';
 	end if;
 	if p_sub_receiver = p_sub_provider then
 		raise exception 
-				'Slony-I: set provider and receiver cannot be identical';
+				'Slony-I: subscribeSet(): set provider and receiver cannot be identical';
 	end if;
 
-
 	-- ---
-	-- Check to see if the set contains any tables - gripe if not - bug #1226
+	-- Verify that the provider is either the origin or an active subscriber
+	-- Bug report #1362
 	-- ---
-	if not exists (select true 
-		from sl_table
-		where tab_set = p_sub_set) then
-		raise notice 'subscribeSet:: set % has no tables - risk of problems - see bug 1226', p_sub_set;
-		raise notice 'http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226';
+	if v_set_origin &lt;&gt; p_sub_provider then
+		if not exists (select 1 from sl_subscribe
+			where sub_set = p_sub_set and 
+                              sub_receiver = p_sub_provider and
+			      sub_forward and sub_active) then
+			raise exception 'Slony-I: subscribeSet(): provider % is not an active forwarding node for replication set %', p_sub_provider, p_sub_set;
+		end if;
 	end if;
 
 	-- ----
@@ -96,11 +96,6 @@ begin
 	-- ----
 	perform subscribeSet_int(p_sub_set, p_sub_provider,
 			p_sub_receiver, p_sub_forward);
-
-	-- ----
-	-- Submit listen management events
-	-- ----
-	perform RebuildListenEntries();
 
 	return v_ev_seqno;
 end;</pre>

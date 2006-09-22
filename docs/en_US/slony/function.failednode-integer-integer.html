@@ -1,22 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.54.        failednode( integer, integer )
-      </title>
+<title>1.61.  failednode( integer, integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.enablesubscription-int-integer-integer-integer.html" title="1.53.        enablesubscription_int( integer, integer, integer )
-      ">
-<link rel="next" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.55.        failednode2( integer, integer, integer, bigint, bigint )
-      ">
+<link rel="prev" href="function.enablesubscription-int-integer-integer-integer.html" title="1.60.  enablesubscription_int( integer, integer, integer )">
+<link rel="next" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.62.  failednode2( integer, integer, integer, bigint, bigint )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.failednode-integer-integer"></a>1.54.        failednode( integer, integer )
+<a name="function.failednode-integer-integer"></a>1.61.        failednode( integer, integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -47,7 +44,7 @@ begin
 
 	-- ----
 	-- All consistency checks first
-	-- Check that every system that has a path to the failed node
+	-- Check that every node that has a path to the failed node
 	-- also has a path to the backup node.
 	-- ----
 	for v_row in select P.pa_client
@@ -71,7 +68,7 @@ begin
 	loop
 		-- ----
 		-- Check that the backup node is subscribed to all sets
-		-- that origin on the failed node
+		-- that originate on the failed node
 		-- ----
 		select into v_row2 sub_forward, sub_active
 				from sl_subscribe
@@ -107,46 +104,7 @@ begin
 	-- ----
 	-- Terminate all connections of the failed node the hard way
 	-- ----
-	perform terminateNodeConnections(
-			'_schemadoc_Node_' || p_failed_node);
-
--- Note that the following code should all become obsolete in the wake
--- of the availability of RebuildListenEntries()...
-
-if false then
-	-- ----
-	-- Let every node that listens for something on the failed node
-	-- listen for that on the backup node instead.
-	-- ----
-	for v_row in select * from sl_listen
-			where li_provider = p_failed_node
-				and li_receiver &lt;&gt; p_backup_node
-	loop
-		perform storeListen_int(v_row.li_origin,
-				p_backup_node, v_row.li_receiver);
-	end loop;
-
-	-- ----
-	-- Let the backup node listen for all events where the
-	-- failed node did listen for it.
-	-- ----
-	for v_row in select li_origin, li_provider
-			from sl_listen
-			where li_receiver = p_failed_node
-				and li_provider &lt;&gt; p_backup_node
-	loop
-		perform storeListen_int(v_row.li_origin,
-				v_row.li_provider, p_backup_node);
-	end loop;
-
-	-- ----
-	-- Remove all sl_listen entries that receive anything from the
-	-- failed node.
-	-- ----
-	delete from sl_listen
-			where li_provider = p_failed_node
-				or li_receiver = p_failed_node;
-end if;
+	perform terminateNodeConnections(p_failed_node);
 
 	-- ----
 	-- Move the sets
@@ -165,7 +123,7 @@ end if;
 		-- If the backup node is the only direct subscriber ...
 		-- ----
 		if v_row.num_direct_receivers = 0 then
-raise notice 'failedNode: set % has no other direct receivers - move now', v_row.set_id;
+		        raise notice 'failedNode: set % has no other direct receivers - move now', v_row.set_id;
 			-- ----
 			-- backup_node is the only direct subscriber, move the set
 			-- right now. On the backup node itself that includes restoring
@@ -179,12 +137,10 @@ raise notice 'failedNode: set % has no other direct receivers - move now', v_row
 				loop
 					perform alterTableRestore(v_row2.tab_id);
 				end loop;
-			end if;
 
-			update sl_set set set_origin = p_backup_node
-					where set_id = v_row.set_id;
+				update sl_set set set_origin = p_backup_node
+						where set_id = v_row.set_id;
 
-			if p_backup_node = getLocalNodeId('_schemadoc') then
 				delete from sl_setsync
 						where ssy_setid = v_row.set_id;
 
@@ -199,7 +155,7 @@ raise notice 'failedNode: set % has no other direct receivers - move now', v_row
 					where sub_set = v_row.set_id
 						and sub_receiver = p_backup_node;
 		else
-raise notice 'failedNode: set % has other direct receivers - change providers only', v_row.set_id;
+			raise notice 'failedNode: set % has other direct receivers - change providers only', v_row.set_id;
 			-- ----
 			-- Backup node is not the only direct subscriber. This
 			-- means that at this moment, we redirect all direct
@@ -229,6 +185,9 @@ raise notice 'failedNode: set % has other direct receivers - change providers on
 
 	-- Rewrite sl_listen table
 	perform RebuildListenEntries();
+
+	-- Run addPartialLogIndices() to try to add indices to unused sl_log_? table
+	perform addPartialLogIndices();
 
 	-- ----
 	-- Make sure the node daemon will restart

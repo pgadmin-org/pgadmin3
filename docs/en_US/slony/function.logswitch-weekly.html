@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.75.  logswitch_weekly( )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.logswitch-start.html" title="1.74.  logswitch_start( )">
+<link rel="next" href="function.logtrigger.html" title="1.76.  logtrigger( )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.logswitch-weekly"></a>1.75.        logswitch_weekly(  )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       logswitch_weekly()
+
+Ensure a logswitch is done at least weekly
+        </p>
+<pre class="programlisting">DECLARE
+	v_now			timestamp;
+	v_now_dow		int4;
+	v_auto_dow		int4;
+	v_auto_time		time;
+	v_auto_ts		timestamp;
+	v_lastrun		timestamp;
+	v_laststart		timestamp;
+	v_days_since	int4;
+BEGIN
+	-- ----
+	-- Check that today is the day to run at all
+	-- ----
+	v_auto_dow := registry_get_int4(
+			'logswitch_weekly.dow', 0);
+	v_now := "pg_catalog".now();
+	v_now_dow := extract (DOW from v_now);
+	if v_now_dow &lt;&gt; v_auto_dow then
+		perform registry_set_timestamp(
+				'logswitch_weekly.lastrun', v_now);
+		return 0;
+	end if;
+
+	-- ----
+	-- Check that the last run of this procedure was before and now is
+	-- after the time we should automatically switch logs.
+	-- ----
+	v_auto_time := registry_get_text(
+			'logswitch_weekly.time', '02:00');
+	v_auto_ts := current_date + v_auto_time;
+	v_lastrun := registry_get_timestamp(
+			'logswitch_weekly.lastrun', 'epoch');
+	if v_lastrun &gt;= v_auto_ts or v_now &lt; v_auto_ts then
+		perform registry_set_timestamp(
+				'logswitch_weekly.lastrun', v_now);
+		return 0;
+	end if;
+
+	-- ----
+	-- This is the moment configured in dow+time. Check that the
+	-- last logswitch was done more than 2 days ago.
+	-- ----
+	v_laststart := registry_get_timestamp(
+			'logswitch.laststart', 'epoch');
+	v_days_since := extract (days from (v_now - v_laststart));
+	if v_days_since &lt; 2 then
+		perform registry_set_timestamp(
+				'logswitch_weekly.lastrun', v_now);
+		return 0;
+	end if;
+
+	-- ----
+	-- Fire off an automatic logswitch
+	-- ----
+	perform logswitch_start();
+	perform registry_set_timestamp(
+			'logswitch_weekly.lastrun', v_now);
+	return 1;
+END;</pre>
+<p>
+      </p>
+</div></body>
+</html>

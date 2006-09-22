@@ -1,22 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.82.        setmovesequence( integer, integer )
-      </title>
+<title>1.100.  setmovesequence( integer, integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.setdroptable-int-integer.html" title="1.81.        setdroptable_int( integer )
-      ">
-<link rel="next" href="function.setmovesequence-int-integer-integer.html" title="1.83.        setmovesequence_int( integer, integer )
-      ">
+<link rel="prev" href="function.setdroptable-int-integer.html" title="1.99.  setdroptable_int( integer )">
+<link rel="next" href="function.setmovesequence-int-integer-integer.html" title="1.101.  setmovesequence_int( integer, integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.setmovesequence-integer-integer"></a>1.82.        setmovesequence( integer, integer )
+<a name="function.setmovesequence-integer-integer"></a>1.100.        setmovesequence( integer, integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -30,7 +27,9 @@
 </div>
 <p>
  
-       
+       setMoveSequence(p_seq_id, p_new_set_id) - This generates the
+SET_MOVE_SEQUENCE event, after validation, notably that both sets
+exist, are distinct, and have exactly the same subscription lists
         </p>
 <pre class="programlisting">declare
 	p_seq_id			alias for $1;
@@ -49,22 +48,22 @@ begin
 	select seq_set into v_old_set_id from sl_sequence
 			where seq_id = p_seq_id;
 	if not found then
-		raise exception 'Slony-I: sequence %d not found', p_seq_id;
+		raise exception 'Slony-I: setMoveSequence(): sequence %d not found', p_seq_id;
 	end if;
 	
 	-- ----
 	-- Check that both sets exist and originate here
 	-- ----
 	if p_new_set_id = v_old_set_id then
-		raise exception 'Slony-I: set ids cannot be identical';
+		raise exception 'Slony-I: setMoveSequence(): set ids cannot be identical';
 	end if;
 	select set_origin into v_origin from sl_set
 			where set_id = p_new_set_id;
 	if not found then
-		raise exception 'Slony-I: set % not found', p_new_set_id;
+		raise exception 'Slony-I: setMoveSequence(): set % not found', p_new_set_id;
 	end if;
 	if v_origin != getLocalNodeId('_schemadoc') then
-		raise exception 'Slony-I: set % does not originate on local node',
+		raise exception 'Slony-I: setMoveSequence(): set % does not originate on local node',
 				p_new_set_id;
 	end if;
 

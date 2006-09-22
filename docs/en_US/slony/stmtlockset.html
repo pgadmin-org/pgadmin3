@@ -4,8 +4,8 @@
 <title>LOCK SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET">
 <link rel="next" href="stmtunlockset.html" title="UNLOCK SET">
@@ -24,7 +24,7 @@
 <div class="cmdsynopsis"><p><code class="command">LOCK SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594549"></a><h2>Description</h2>
+<a name="id2579071"></a><h2>Description</h2>
 <p> Guards a replication set against client application updates
     in preparation for a <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> command.
     </p>
@@ -35,7 +35,7 @@
     transaction to finish. At the same time it cannot hold an open
     transaction to the same database itself since this would result in
     blocking itself forever.</p>
-<p> Note that this is a <a href="locking.html" title="10. Locking Issues"> locking </a> operation, which means that
+<p> Note that this is a <a href="locking.html" title="11. Locking Issues"> locking </a> operation, which means that
     it can get stuck behind other database activity.</p>
 <p> The operation waits for transaction IDs to advance in order
     that data is not missed on the new origin.  Thus, if you have
@@ -58,21 +58,21 @@
 <p> This uses <a href="function.lockset-integer.html">schemadoclockset( integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594634"></a><h2>Example</h2>
+<a name="id2579153"></a><h2>Example</h2>
 <pre class="programlisting">LOCK SET (
    ID = 1,
-   RECEIVER = 3
+   ORIGIN = 3
 );
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594644"></a><h2> Locking Behaviour </h2>
+<a name="id2579162"></a><h2> Locking Behaviour </h2>
 <p> Exclusive locks on each replicated table will be taken out
     on the origin node, and triggers are added to each such table that
     reject table updates. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id594653"></a><h2> Version Information </h2>
+<a name="id2579170"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

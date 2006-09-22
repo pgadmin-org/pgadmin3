@@ -1,25 +1,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>12. Dropping things from Slony-I Replication</title>
+<title>13. Dropping things from Slony-I Replication</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.1">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060719 Documentation">
-<link rel="up" href="slonyadmin.html" title=" Slony-I Administration ">
-<link rel="prev" href="addthings.html" title="11. A Task-Oriented View of Slony-I">
-<link rel="next" href="logshipping.html" title="13. Log Shipping - Slony-I with Files">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="addthings.html" title="12. A Task-Oriented View of Slony-I">
+<link rel="next" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dropthings"></a>12. Dropping things from <span class="productname">Slony-I</span> Replication</h2></div></div></div>
-<a name="id574009"></a><p>There are several things you might want to do involving dropping
+<a name="dropthings"></a>13. Dropping things from <span class="productname">Slony-I</span> Replication</h2></div></div></div>
+<a name="id2558383"></a><p>There are several things you might want to do involving dropping
 things from <span class="productname">Slony-I</span> replication.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id574026"></a>12.1. Dropping A Whole Node</h3></div></div></div>
-<a name="id574030"></a><p>If you wish to drop an entire node from replication, the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> should do the
+<a name="id2558399"></a>13.1. Dropping A Whole Node</h3></div></div></div>
+<a name="id2558402"></a><p>If you wish to drop an entire node from replication, the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> should do the
 trick.</p>
 <p>This will lead to <span class="productname">Slony-I</span> dropping the triggers (generally that
 deny the ability to update data), restoring the &#8220;<span class="quote">native</span>&#8221;
@@ -38,8 +38,8 @@ prior to 1.0.5.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id574120"></a>12.2. Dropping An Entire Set</h3></div></div></div>
-<a name="id574124"></a><p>If you wish to stop replicating a particular replication set,
+<a name="id2558483"></a>13.2. Dropping An Entire Set</h3></div></div></div>
+<a name="id2558487"></a><p>If you wish to stop replicating a particular replication set,
 the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropset.html" title="DROP SET"><span class="refentrytitle">DROP SET</span></a> is
 what you need to use.</p>
 <p>Much as with <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>, this leads to
@@ -56,8 +56,8 @@ there isn't anything to prevent potentially career-limiting
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id574226"></a>12.3. Unsubscribing One Node From One Set</h3></div></div></div>
-<a name="id574230"></a><p>The <a href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET"><span class="refentrytitle">UNSUBSCRIBE SET</span></a> operation is a little
+<a name="id2558578"></a>13.3. Unsubscribing One Node From One Set</h3></div></div></div>
+<a name="id2558581"></a><p>The <a href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET"><span class="refentrytitle">UNSUBSCRIBE SET</span></a> operation is a little
 less invasive than either <a href="stmtdropset.html" title="DROP SET"><span class="refentrytitle">DROP SET</span></a> or <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>; it involves dropping <span class="productname">Slony-I</span> triggers and
 restoring &#8220;<span class="quote">native</span>&#8221; triggers on one node, for one
 replication set.</p>
@@ -76,8 +76,8 @@ fact that the data was recently being replicated isn't good enough;
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id574307"></a>12.4.  Dropping A Table From Replication</h3></div></div></div>
-<a name="id574311"></a><p>In <span class="productname">Slony-I</span> 1.0.5 and above, there is a Slonik command <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a> that allows dropping a single table from
+<a name="id2558650"></a>13.4.  Dropping A Table From Replication</h3></div></div></div>
+<a name="id2558653"></a><p>In <span class="productname">Slony-I</span> 1.0.5 and above, there is a Slonik command <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a> that allows dropping a single table from
 replication without forcing the user to drop the entire replication
 set.</p>
 <p>If you are running an earlier version, there is a &#8220;<span class="quote">hack</span>&#8221;
@@ -97,13 +97,13 @@ preferably firstly on the origin node, so that the dropping of this
 propagates properly.  Implementing this via a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 statement with a new <span class="productname">Slony-I</span> event would do that.  Submitting the
 three queries using <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> could do that; see
-<a href="ddlchanges.html" title="14. Database Schema Changes (DDL)">Section 14, &#8220;Database Schema Changes (DDL)&#8221;</a> for more details.  Also possible would be
+<a href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a> for more details.  Also possible would be
 to connect to each database and submit the queries by hand.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id574412"></a>12.5. Dropping A Sequence From Replication</h3></div></div></div>
-<a name="id574417"></a><p>Just as with <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>, version 1.0.5
+<a name="id2558744"></a>13.5. Dropping A Sequence From Replication</h3></div></div></div>
+<a name="id2558748"></a><p>Just as with <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>, version 1.0.5
 introduces the operation <a href="stmtsetdropsequence.html" title="SET DROP SEQUENCE"><span class="refentrytitle">SET DROP SEQUENCE</span></a>.</p>
 <p>If you are running an earlier version, here are instructions as
 to how to drop sequences:</p>
@@ -115,7 +115,7 @@ continuing to replicate the two sequences identified with Sequence IDs
 <pre class="programlisting">delete from _oxrsorg.sl_seqlog where seql_seqid in (93, 59);
 delete from _oxrsorg.sl_sequence where seq_id in (93,59);</pre>
 <p> Those two queries could be submitted to all of the nodes via
-<a href="function.ddlscript-integer-text-integer.html">schemadocddlscript( integer, text, integer )</a> / <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, thus eliminating the sequence everywhere
+<a href="function.ddlscript-complete-integer-text-integer.html">schemadocddlscript_complete( integer, text, integer )</a> / <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, thus eliminating the sequence everywhere
 &#8220;<span class="quote">at once.</span>&#8221; Or they may be applied by hand to each of the
 nodes.</p>
 </div>
