@@ -4,11 +4,12 @@
 <title>Appendix B. Date/Time Support</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
 <link rel="prev" href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">
 <link rel="next" href="datetime-keywords.html" title="B.2. Date/Time Key Words">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="datetime-appendix">
 <div class="titlepage"><div><div><h2 class="title">
@@ -16,9 +17,10 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="datetime-appendix.html#id797579">B.1. Date/Time Input Interpretation</a></span></dt>
+<dt><span class="sect1"><a href="datetime-appendix.html#id2826716">B.1. Date/Time Input Interpretation</a></span></dt>
 <dt><span class="sect1"><a href="datetime-keywords.html">B.2. Date/Time Key Words</a></span></dt>
-<dt><span class="sect1"><a href="datetime-units-history.html">B.3. History of Units</a></span></dt>
+<dt><span class="sect1"><a href="datetime-config-files.html">B.3. Date/Time Configuration Files</a></span></dt>
+<dt><span class="sect1"><a href="datetime-units-history.html">B.4. History of Units</a></span></dt>
 </dl>
 </div>
 <p>   <span class="productname">PostgreSQL</span> uses an internal heuristic
@@ -36,7 +38,7 @@
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="id797579"></a>B.1. Date/Time Input Interpretation</h2></div></div></div>
+<a name="id2826716"></a>B.1. Date/Time Input Interpretation</h2></div></div></div>
 <p>    The date/time type inputs are all decoded using the following procedure.
    </p>
 <div class="procedure"><ol type="1">
@@ -50,7 +52,9 @@
        </p></li>
 <li><p>        If the numeric token contains a dash (<code class="literal">-</code>), slash
         (<code class="literal">/</code>), or two or more dots (<code class="literal">.</code>), this is
-        a date string which may have a text month.
+        a date string which may have a text month. In case of a slash
+        (<code class="literal">/</code>) it can also be a full time zone name like
+        <code class="literal">America/New_York</code>.
        </p></li>
 <li><p>        If the token is numeric only, then it is either a single field
         or an ISO 8601 concatenated date (e.g.,
@@ -125,10 +129,7 @@
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>        Gregorian years AD 1-99 may be entered by using 4 digits with leading
-        zeros (e.g., <code class="literal">0099</code> is AD 99). Previous versions of
-        <span class="productname">PostgreSQL</span> accepted years with three
-        digits and with single digits, but as of version 7.0 the rules have
-        been tightened up to reduce the possibility of ambiguity.
+        zeros (e.g., <code class="literal">0099</code> is AD 99).
        </p>
 </div>
 <p>

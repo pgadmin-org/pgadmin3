@@ -4,16 +4,17 @@
 <title>11.7. Partial Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes-expressional.html" title="11.6. Indexes on Expressions">
 <link rel="next" href="indexes-opclass.html" title="11.8. Operator Classes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="indexes-partial"></a>11.7. Partial Indexes</h2></div></div></div>
-<a name="id576264"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
+<a name="id2610441"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
    subset of a table; the subset is defined by a conditional
    expression (called the <em class="firstterm">predicate</em> of the
    partial index).  The index contains entries for only those table
@@ -32,6 +33,7 @@
   </p>
 <div class="example">
 <a name="indexes-partial-ex1"></a><p class="title"><b>Example 11.1. Setting up a Partial Index to Exclude Common Values</b></p>
+<div class="example-contents">
 <p>    Suppose you are storing web server access logs in a database.
     Most accesses originate from the IP address range of your organization but
     some are from elsewhere (say, employees on dial-up connections).
@@ -72,7 +74,8 @@
     maintenance work to change the index definition from time to time.
    </p>
 </div>
-<p>   Another possible use for a partial index is to exclude values from the
+</div>
+<br class="example-break"><p>   Another possible use for a partial index is to exclude values from the
    index that the
    typical query workload is not interested in; this is shown in <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a>.  This results in the same
    advantages as listed above, but it prevents the
@@ -83,6 +86,7 @@
   </p>
 <div class="example">
 <a name="indexes-partial-ex2"></a><p class="title"><b>Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values</b></p>
+<div class="example-contents">
 <p>    If you have a table that contains both billed and unbilled orders,
     where the unbilled orders take up a small fraction of the total
     table and yet those are the most-accessed rows, you can improve
@@ -116,7 +120,8 @@
     orders.
    </p>
 </div>
-<p>   <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a> also illustrates that the
+</div>
+<br class="example-break"><p>   <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a> also illustrates that the
    indexed column and the column used in the predicate do not need to
    match.  <span class="productname">PostgreSQL</span> supports partial
    indexes with arbitrary predicates, so long as only columns of the
@@ -135,7 +140,12 @@
    &#8220;<span class="quote">x &lt; 1</span>&#8221; implies &#8220;<span class="quote">x &lt; 2</span>&#8221;; otherwise
    the predicate condition must exactly match part of the query's
    <code class="literal">WHERE</code> condition
-   or the index will not be recognized to be usable.
+   or the index will not be recognized to be usable. Matching takes
+   place at query planning time, not at run time. As a result,
+   parameterized query clauses will not work with a partial index. For
+   example a prepared query with a parameter might specify 
+   &#8220;<span class="quote">x &lt; ?</span>&#8221; which will never imply 
+   &#8220;<span class="quote">x &lt; 2</span>&#8221; for all possible values of the parameter. 
   </p>
 <p>   A third possible use for partial indexes does not require the
    index to be used in queries at all.  The idea here is to create
@@ -145,6 +155,7 @@
   </p>
 <div class="example">
 <a name="indexes-partial-ex3"></a><p class="title"><b>Example 11.3. Setting up a Partial Unique Index</b></p>
+<div class="example-contents">
 <p>    Suppose that we have a table describing test outcomes.  We wish
     to ensure that there is only one &#8220;<span class="quote">successful</span>&#8221; entry for
     a given subject and target combination, but there might be any number of
@@ -164,7 +175,8 @@ CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
     successful tests and many unsuccessful ones.
    </p>
 </div>
-<p>   Finally, a partial index can also be used to override the system's
+</div>
+<br class="example-break"><p>   Finally, a partial index can also be used to override the system's
    query plan choices.  It may occur that data sets with peculiar
    distributions will cause the system to use an index when it really
    should not.  In that case the index can be set up so that it is not

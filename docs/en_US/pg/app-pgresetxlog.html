@@ -4,11 +4,12 @@
 <title>pg_resetxlog</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="app-pg-ctl.html" title="pg_ctl">
 <link rel="next" href="app-postgres.html" title="postgres">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="app-pgresetxlog"></a><div class="titlepage"></div>
@@ -18,7 +19,7 @@
 </div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<div class="cmdsynopsis"><p><code class="command">pg_resetxlog</code> [ -f ] [ -n ] [ -o <em class="replaceable"><code>oid</code></em> ] [ -x <em class="replaceable"><code>xid</code></em> ] [ -m <em class="replaceable"><code>mxid</code></em> ] [ -O <em class="replaceable"><code>mxoff</code></em> ] [ -l <em class="replaceable"><code>timelineid</code></em>,<em class="replaceable"><code>fileid</code></em>,<em class="replaceable"><code>seg</code></em> ]  <em class="replaceable"><code>datadir</code></em> </p></div>
+<div class="cmdsynopsis"><p><code class="command">pg_resetxlog</code> [-f] [-n] [-o<em class="replaceable"><code>oid</code></em> ] [-x <em class="replaceable"><code>xid</code></em> ] [-e <em class="replaceable"><code>xid_epoch</code></em> ] [-m <em class="replaceable"><code>mxid</code></em> ] [-O <em class="replaceable"><code>mxoff</code></em> ] [-l <em class="replaceable"><code>timelineid</code></em>,<em class="replaceable"><code>fileid</code></em>,<em class="replaceable"><code>seg</code></em> ]  <em class="replaceable"><code>datadir</code></em> </p></div>
 </div>
 <div class="refsect1" lang="en">
 <a name="r1-app-pgresetxlog-1"></a><h2>Description</h2>
@@ -45,9 +46,9 @@
    by specifying the <code class="literal">-f</code> (force) switch.  In this case plausible
    values will be substituted for the missing data.  Most of the fields can be
    expected to match, but manual assistance may be needed for the next OID,
-   next transaction ID, next multitransaction ID and offset,
+   next transaction ID and epoch, next multitransaction ID and offset,
    WAL starting address, and database locale fields.
-   The first five of these can be set using the switches discussed below.
+   The first six of these can be set using the switches discussed below.
    <code class="command">pg_resetxlog</code>'s own environment is the source for its
    guess at the locale fields; take care that <code class="envar">LANG</code> and so forth
    match the environment that <code class="command">initdb</code> was run in.
@@ -58,11 +59,12 @@
    execute any data-modifying operations in the database before you dump;
    as any such action is likely to make the corruption worse.
   </p>
-<p>   The <code class="literal">-o</code>, <code class="literal">-x</code>, <code class="literal">-m</code>, <code class="literal">-O</code>,
+<p>   The <code class="literal">-o</code>, <code class="literal">-x</code>, <code class="literal">-e</code>,
+   <code class="literal">-m</code>, <code class="literal">-O</code>,
    and <code class="literal">-l</code>
-   switches allow the next OID, next transaction ID, next multitransaction
-   ID, next multitransaction offset, and WAL starting address values to
-   be set manually.  These are only needed when
+   switches allow the next OID, next transaction ID, next transaction ID's
+   epoch, next multitransaction ID, next multitransaction offset, and WAL
+   starting address values to be set manually.  These are only needed when
    <code class="command">pg_resetxlog</code> is unable to determine appropriate values
    by reading <code class="filename">pg_control</code>.  Safe values may be determined as
    follows:
@@ -110,6 +112,14 @@
       the largest one in the database, but fortunately it is not critical to
       get the next-OID setting right.
      </p></li>
+<li><p>      The transaction ID epoch is not actually stored anywhere in the database
+      except in the field that is set by <code class="command">pg_resetxlog</code>,
+      so any value will work so far as the database itself is concerned.
+      You might need to adjust this value to ensure that replication
+      systems such as <span class="application">Slony-I</span> work correctly [mdash ]
+      if so, an appropriate value should be obtainable from the state of
+      the downstream replicated database.
+     </p></li>
 </ul></div>
 <p>
   </p>
@@ -121,15 +131,14 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id759164"></a><h2>Notes</h2>
+<a name="id2794467"></a><h2>Notes</h2>
 <p>   This command must not be used when the server is 
    running.  <code class="command">pg_resetxlog</code> will refuse to start up if
    it finds a server lock file in the data directory.  If the
    server crashed then a lock file may have been left
    behind; in that case you can remove the lock file to allow
    <code class="command">pg_resetxlog</code> to run.  But before you do
-   so, make doubly certain that there
-   is no <code class="command">postmaster</code> nor any backend server process still alive.
+   so, make doubly certain that there is no server process still alive.
   </p>
 </div>
 </div></body>

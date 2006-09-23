@@ -4,11 +4,12 @@
 <title>40.5. Examples</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="spi.html" title="Chapter 40. Server Programming Interface">
 <link rel="prev" href="spi-visibility.html" title="40.4. Visibility of Data Changes">
 <link rel="next" href="reference.html" title="Part VI. Reference">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -43,10 +44,9 @@ execq(text *sql, int cnt)
     
     proc = SPI_processed;
     /*
-     * If this is a SELECT and some rows were fetched,
-     * then the rows are printed via elog(INFO).
+     * If some rows were fetched, print them via elog(INFO).
      */
-    if (ret == SPI_OK_SELECT &amp;&amp; SPI_processed &gt; 0)
+    if (ret &gt; 0 &amp;&amp; SPI_tuptable != NULL)
     {
         TupleDesc tupdesc = SPI_tuptable-&gt;tupdesc;
         SPITupleTable *tuptable = SPI_tuptable;
@@ -61,7 +61,7 @@ execq(text *sql, int cnt)
                 snprintf(buf + strlen (buf), sizeof(buf) - strlen(buf), " %s%s",
                         SPI_getvalue(tuple, tupdesc, i),
                         (i == tupdesc-&gt;natts) ? " " : " |");
-            elog (INFO, "EXECQ: %s", buf);
+            elog(INFO, "EXECQ: %s", buf);
         }
     }
 
@@ -93,7 +93,7 @@ execq(text *sql, int cnt)
 (1 row)
 
 =&gt; INSERT INTO a VALUES (execq('INSERT INTO a VALUES (0)', 0));
-INSERT 167631 1
+INSERT 0 1
 =&gt; SELECT execq('SELECT * FROM a', 0);
 INFO:  EXECQ:  0    -- inserted by execq
 INFO:  EXECQ:  1    -- returned by execq and inserted by upper INSERT
@@ -122,7 +122,7 @@ INFO:  EXECQ:  2    -- 0 + 2, only one row inserted - as specified
 =&gt; DELETE FROM a;
 DELETE 3
 =&gt; INSERT INTO a VALUES (execq('SELECT * FROM a', 0) + 1);
-INSERT 167712 1
+INSERT 0 1
 =&gt; SELECT * FROM a;
  x
 ---
@@ -130,8 +130,8 @@ INSERT 167712 1
 (1 row)
 
 =&gt; INSERT INTO a VALUES (execq('SELECT * FROM a', 0) + 1);
-INFO:  EXECQ:  0
-INSERT 167713 1
+INFO:  EXECQ:  1
+INSERT 0 1
 =&gt; SELECT * FROM a;
  x
 ---

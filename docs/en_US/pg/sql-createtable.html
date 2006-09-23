@@ -4,11 +4,12 @@
 <title>CREATE TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createsequence.html" title="CREATE SEQUENCE">
 <link rel="next" href="sql-createtableas.html" title="CREATE TABLE AS">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-createtable"></a><div class="titlepage"></div>
@@ -16,16 +17,16 @@
 <h2>Name</h2>
 <p>CREATE TABLE &#8212; define a new table</p>
 </div>
-<a name="id708773"></a><div class="refsynopsisdiv">
+<a name="id2746840"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> ( [
   { <em class="replaceable"><code>column_name</code></em> <em class="replaceable"><code>data_type</code></em> [ DEFAULT <em class="replaceable"><code>default_expr</code></em> ] [ <em class="replaceable"><code>column_constraint</code></em> [ ... ] ]
     | <em class="replaceable"><code>table_constraint</code></em>
-    | LIKE <em class="replaceable"><code>parent_table</code></em> [ { INCLUDING | EXCLUDING } DEFAULTS ] }
+    | LIKE <em class="replaceable"><code>parent_table</code></em> [ { INCLUDING | EXCLUDING } { DEFAULTS | CONSTRAINTS } ] ... }
     [, ... ]
 ] )
 [ INHERITS ( <em class="replaceable"><code>parent_table</code></em> [, ... ] ) ]
-[ WITH OIDS | WITHOUT OIDS ]
+[ WITH ( <em class="replaceable"><code>storage_parameter</code></em> [= <em class="replaceable"><code>value</code></em>] [, ... ] ) | WITH OIDS | WITHOUT OIDS ]
 [ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
 [ TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]
 
@@ -34,9 +35,9 @@ where <em class="replaceable"><code>column_constraint</code></em> is:
 [ CONSTRAINT <em class="replaceable"><code>constraint_name</code></em> ]
 { NOT NULL | 
   NULL | 
-  UNIQUE [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
-  PRIMARY KEY [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
-  CHECK (<em class="replaceable"><code>expression</code></em>) |
+  UNIQUE <em class="replaceable"><code>index_parameters</code></em> |
+  PRIMARY KEY <em class="replaceable"><code>index_parameters</code></em> |
+  CHECK ( <em class="replaceable"><code>expression</code></em> ) |
   REFERENCES <em class="replaceable"><code>reftable</code></em> [ ( <em class="replaceable"><code>refcolumn</code></em> ) ] [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ]
     [ ON DELETE <em class="replaceable"><code>action</code></em> ] [ ON UPDATE <em class="replaceable"><code>action</code></em> ] }
 [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
@@ -44,12 +45,17 @@ where <em class="replaceable"><code>column_constraint</code></em> is:
 and <em class="replaceable"><code>table_constraint</code></em> is:
 
 [ CONSTRAINT <em class="replaceable"><code>constraint_name</code></em> ]
-{ UNIQUE ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
-  PRIMARY KEY ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ] |
+{ UNIQUE ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) <em class="replaceable"><code>index_parameters</code></em> |
+  PRIMARY KEY ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) <em class="replaceable"><code>index_parameters</code></em> |
   CHECK ( <em class="replaceable"><code>expression</code></em> ) |
   FOREIGN KEY ( <em class="replaceable"><code>column_name</code></em> [, ... ] ) REFERENCES <em class="replaceable"><code>reftable</code></em> [ ( <em class="replaceable"><code>refcolumn</code></em> [, ... ] ) ]
     [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ] [ ON DELETE <em class="replaceable"><code>action</code></em> ] [ ON UPDATE <em class="replaceable"><code>action</code></em> ] }
-[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]</pre>
+[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+
+<em class="replaceable"><code>index_parameters</code></em> in <code class="literal">UNIQUE</code> and <code class="literal">PRIMARY KEY</code> constraints are:
+
+[ WITH ( <em class="replaceable"><code>storage_parameter</code></em> [= <em class="replaceable"><code>value</code></em>] [, ... ] ) ]
+[ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-description"></a><h2>Description</h2>
@@ -85,7 +91,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id709064"></a><h2>Parameters</h2>
+<a name="id2747150"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd>
@@ -160,7 +166,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       error will be reported.
      </p>
 </dd>
-<dt><span class="term"><code class="literal">LIKE <em class="replaceable"><code>parent_table</code></em> [ { INCLUDING | EXCLUDING } DEFAULTS ]</code></span></dt>
+<dt><span class="term"><code class="literal">LIKE <em class="replaceable"><code>parent_table</code></em> [ { INCLUDING | EXCLUDING } { DEFAULTS | CONSTRAINTS } ]</code></span></dt>
 <dd>
 <p>      The <code class="literal">LIKE</code> clause specifies a table from which
       the new table automatically copies all column names, their data types,
@@ -174,39 +180,29 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
      </p>
 <p>      Default expressions for the copied column definitions will only be
       copied if <code class="literal">INCLUDING DEFAULTS</code> is specified.  The
-      default behavior is to exclude default expressions, resulting in
-      all columns of the new table having null defaults.
+      default behavior is to exclude default expressions, resulting in the
+      copied columns in the new table having null defaults.
      </p>
-</dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WITH OIDS</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">WITHOUT OIDS</code></span>
-</dt>
-<dd>
-<p>      This optional clause specifies whether rows of the new table
-      should have OIDs (object identifiers) assigned to them.  If
-      neither <code class="literal">WITH OIDS</code> nor <code class="literal">WITHOUT
-      OIDS</code> is specified, the default value depends upon the
-      <a href="runtime-config-compatible.html#guc-default-with-oids">default_with_oids</a> configuration parameter. (If
-      the new table inherits from any tables that have OIDs, then
-      <code class="literal">WITH OIDS</code> is forced even if the command says
-      <code class="literal">WITHOUT OIDS</code>.)
+<p>      Not-null constraints are always copied to the new table.
+      <code class="literal">CHECK</code> constraints will only be copied if
+      <code class="literal">INCLUDING CONSTRAINTS</code> is specified; other types of
+      constraints will never be copied. Also, no distinction is made between
+      column constraints and table constraints [mdash ] when constraints are
+      requested, all check constraints are copied.
      </p>
-<p>      If <code class="literal">WITHOUT OIDS</code> is specified or implied, the new
-      table does not store OIDs and no OID will be assigned for a row inserted
-      into it. This is generally considered worthwhile, since it
-      will reduce OID consumption and thereby postpone the wraparound
-      of the 32-bit OID counter. Once the counter wraps around, OIDs
-      can no longer be assumed to be unique, which makes them
-      considerably less useful. In addition, excluding OIDs from a
-      table reduces the space required to store the table on disk by
-      4 bytes per row (on most machines), slightly improving performance.
-     </p>
-<p>      To remove OIDs from a table after it has been created, use <a href="sql-altertable.html">ALTER TABLE</a>.
+<p>      Note also that unlike <code class="literal">INHERITS</code>, copied columns and
+      constraints are not merged with similarly named columns and constraints.
+      If the same name is specified explicitly or in another
+      <code class="literal">LIKE</code> clause an error is signalled.
      </p>
 </dd>
 <dt><span class="term"><code class="literal">CONSTRAINT <em class="replaceable"><code>constraint_name</code></em></code></span></dt>
-<dd><p>      An optional name for a column or table constraint.  If not specified,
-      the system generates a name.
+<dd><p>      An optional name for a column or table constraint.  If the
+      constraint is violated, the constraint name is present in error messages,
+      so constraint names like <code class="literal">col must be positive</code> can be used
+      to communicate helpful constraint information to client applications.
+      (Double-quotes are needed to specify constraint names that contain spaces.)
+      If a constraint name is not specified, the system generates a name.
      </p></dd>
 <dt><span class="term"><code class="literal">NOT NULL</code></span></dt>
 <dd><p>      The column is not allowed to contain null values.
@@ -260,7 +256,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       constraint defined for the same table.
      </p>
 </dd>
-<dt><span class="term"><code class="literal">CHECK (<em class="replaceable"><code>expression</code></em>)</code></span></dt>
+<dt><span class="term"><code class="literal">CHECK ( <em class="replaceable"><code>expression</code></em> )</code></span></dt>
 <dd>
 <p>      The <code class="literal">CHECK</code> clause specifies an expression producing a
       Boolean result which new or updated rows must satisfy for an
@@ -378,6 +374,42 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       end of the transaction.  The constraint check time can be
       altered with the <a href="sql-set-constraints.html">SET CONSTRAINTS</a> command.
      </p></dd>
+<dt><span class="term"><code class="literal">WITH ( <em class="replaceable"><code>storage_parameter</code></em> [= <em class="replaceable"><code>value</code></em>] [, ... ] )</code></span></dt>
+<dd>
+<p>      This clause specifies optional storage parameters for a table or index;
+      see <a href="sql-createtable.html#sql-createtable-storage-parameters">Storage Parameters</a> for more
+      information.  The <code class="literal">WITH</code> clause for a
+      table can also include <code class="literal">OIDS=TRUE</code> (or just <code class="literal">OIDS</code>)
+      to specify that rows of the new table
+      should have OIDs (object identifiers) assigned to them, or
+      <code class="literal">OIDS=FALSE</code> to specify that the rows should not have OIDs.
+      If <code class="literal">OIDS</code> is not specified, the default setting depends upon
+      the <a href="runtime-config-compatible.html#guc-default-with-oids">default_with_oids</a> configuration parameter.
+      (If the new table inherits from any tables that have OIDs, then
+      <code class="literal">OIDS=TRUE</code> is forced even if the command says
+      <code class="literal">OIDS=FALSE</code>.)
+     </p>
+<p>      If <code class="literal">OIDS=FALSE</code> is specified or implied, the new
+      table does not store OIDs and no OID will be assigned for a row inserted
+      into it. This is generally considered worthwhile, since it
+      will reduce OID consumption and thereby postpone the wraparound
+      of the 32-bit OID counter. Once the counter wraps around, OIDs
+      can no longer be assumed to be unique, which makes them
+      considerably less useful. In addition, excluding OIDs from a
+      table reduces the space required to store the table on disk by
+      4 bytes per row (on most machines), slightly improving performance.
+     </p>
+<p>      To remove OIDs from a table after it has been created, use <a href="sql-altertable.html">ALTER TABLE</a>.
+     </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WITH OIDS</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">WITHOUT OIDS</code></span>
+</dt>
+<dd><p>      These are obsolescent syntaxes equivalent to <code class="literal">WITH (OIDS)</code>
+      and <code class="literal">WITH (OIDS=FALSE)</code>, respectively.  If you wish to give
+      both an <code class="literal">OIDS</code> setting and storage parameters, you must use
+      the <code class="literal">WITH ( ... )</code> syntax; see above.
+     </p></dd>
 <dt><span class="term"><code class="literal">ON COMMIT</code></span></dt>
 <dd>
 <p>      The behavior of temporary tables at the end of a transaction
@@ -391,9 +423,9 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
           This is the default behavior.
          </p></dd>
 <dt><span class="term"><code class="literal">DELETE ROWS</code></span></dt>
-<dd><p>          All rows in the temporary table will be deleted at the
-          end of each transaction block.  Essentially, an automatic
-          <a href="sql-truncate.html" title="TRUNCATE"><span class="refentrytitle"><a name="sql-truncate-title"></a>TRUNCATE</span></a> is done at each commit.
+<dd><p>          All rows in the temporary table will be deleted at the end
+          of each transaction block.  Essentially, an automatic <a href="sql-truncate.html">TRUNCATE</a> is done
+          at each commit.
          </p></dd>
 <dt><span class="term"><code class="literal">DROP</code></span></dt>
 <dd><p>          The temporary table will be dropped at the end of the current
@@ -421,6 +453,29 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       string.
      </p></dd>
 </dl></div>
+<div class="refsect2" lang="en">
+<a name="sql-createtable-storage-parameters"></a><h3>Storage Parameters</h3>
+<p>    The <code class="literal">WITH</code> clause can specify <em class="firstterm">storage parameters</em>
+    for tables, and for indexes associated with a <code class="literal">UNIQUE</code> or
+    <code class="literal">PRIMARY KEY</code> constraint.  Storage parameters for
+    indexes are documented in <a href="sql-createindex.html">CREATE INDEX</a>.  The only storage parameter currently
+    available for tables is:
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">FILLFACTOR</code></span></dt>
+<dd><p>      The fillfactor for a table is a percentage between 10 and 100.
+      100 (complete packing) is the default.  When a smaller fillfactor
+      is specified, <code class="command">INSERT</code> operations pack table pages only
+      to the indicated percentage; the remaining space on each page is
+      reserved for updating rows on that page.  This gives <code class="command">UPDATE</code>
+      a chance to place the updated copy of a row on the same page as the
+      original, which is more efficient than placing it on a different page.
+      For a table whose entries are never updated, complete packing is the
+      best choice, but in heavily updated tables smaller fillfactors are
+      appropriate.
+     </p></dd>
+</dl></div>
+</div>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-notes"></a><h2>Notes</h2>
@@ -438,7 +493,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
     </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>      The use of <code class="literal">WITHOUT OIDS</code> is not recommended
+<p>      The use of <code class="literal">OIDS=FALSE</code> is not recommended
       for tables with no primary key, since without either an OID or a
       unique data key, it is difficult to identify specific rows.
      </p>
@@ -452,9 +507,9 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
      current implementation.  This makes the combination of
      inheritance and unique constraints rather dysfunctional.
     </p>
-<p>   A table cannot have more than 1600 columns.  (In practice, the
-   effective limit is lower because of tuple-length constraints.)
-  </p>
+<p>     A table cannot have more than 1600 columns.  (In practice, the
+     effective limit is usually lower because of tuple-length constraints.)
+    </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-examples"></a><h2>Examples</h2>
@@ -523,8 +578,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 <p>
   </p>
 <p>   Define a primary key table constraint for the table
-   <code class="structname">films</code>.  Primary key table constraints can be defined
-   on one or more columns of the table.
+   <code class="structname">films</code>:
 
 </p>
 <pre class="programlisting">CREATE TABLE films (
@@ -541,7 +595,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 <p>   Define a primary key constraint for table
    <code class="structname">distributors</code>.  The following two examples are
    equivalent, the first using the table constraint syntax, the second
-   the column constraint syntax.
+   the column constraint syntax:
 
 </p>
 <pre class="programlisting">CREATE TABLE distributors (
@@ -558,12 +612,12 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 );</pre>
 <p>
   </p>
-<p>   This assigns a literal constant default value for the column
-   <code class="literal">name</code>, arranges for the default value of column
+<p>   Assign a literal constant default value for the column
+   <code class="literal">name</code>, arrange for the default value of column
    <code class="literal">did</code> to be generated by selecting the next value
-   of a sequence object, and makes the default value of
+   of a sequence object, and make the default value of
    <code class="literal">modtime</code> be the time at which the row is
-   inserted.
+   inserted:
 
 </p>
 <pre class="programlisting">CREATE TABLE distributors (
@@ -593,7 +647,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 );</pre>
 <p>
 
-     The above is equivalent to the following specified as a table constraint:
+     The same, specified as a table constraint:
 
 </p>
 <pre class="programlisting">CREATE TABLE distributors (
@@ -601,6 +655,18 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
     name    varchar(40),
     UNIQUE(name)
 );</pre>
+<p>
+  </p>
+<p>   Create the same table, specifying 70% fill factor for both the table
+   and its unique index:
+
+</p>
+<pre class="programlisting">CREATE TABLE distributors (
+    did     integer,
+    name    varchar(40),
+    UNIQUE(name) WITH (fillfactor=70)
+)
+WITH (fillfactor=70);</pre>
 <p>
   </p>
 <p>   Create table <code class="structname">cinemas</code> in tablespace <code class="structname">diskvol1</code>:
@@ -617,10 +683,10 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 <div class="refsect1" lang="en">
 <a name="sql-createtable-compatibility"></a><h2>Compatibility</h2>
 <p>   The <code class="command">CREATE TABLE</code> command conforms to the
-   <span class="acronym">SQL</span> standard, with exceptions listed below.
+   <acronym class="acronym">SQL</acronym> standard, with exceptions listed below.
   </p>
 <div class="refsect2" lang="en">
-<a name="id710574"></a><h3>Temporary Tables</h3>
+<a name="id2748735"></a><h3>Temporary Tables</h3>
 <p>    Although the syntax of <code class="literal">CREATE TEMPORARY TABLE</code>
     resembles that of the SQL standard, the effect is not the same.  In the
     standard,
@@ -655,7 +721,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id710709"></a><h3>Column Check Constraints</h3>
+<a name="id2748860"></a><h3>Column Check Constraints</h3>
 <p>    The SQL standard says that <code class="literal">CHECK</code> column constraints
     may only refer to the column they apply to; only <code class="literal">CHECK</code>
     table constraints may refer to multiple columns.
@@ -664,7 +730,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id710740"></a><h3>
+<a name="id2748887"></a><h3>
 <code class="literal">NULL</code> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
 <p>    The <code class="literal">NULL</code> &#8220;<span class="quote">constraint</span>&#8221; (actually a
     non-constraint) is a <span class="productname">PostgreSQL</span>
@@ -675,7 +741,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id710782"></a><h3>Inheritance</h3>
+<a name="id2748926"></a><h3>Inheritance</h3>
 <p>    Multiple inheritance via the <code class="literal">INHERITS</code> clause is
     a <span class="productname">PostgreSQL</span> language extension.
     SQL:1999 and later define single inheritance using a
@@ -685,13 +751,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id710813"></a><h3>Object IDs</h3>
-<p>    The <span class="productname">PostgreSQL</span> concept of OIDs is not
-    standard.
-   </p>
-</div>
-<div class="refsect2" lang="en">
-<a name="id710827"></a><h3>Zero-column tables</h3>
+<a name="id2748953"></a><h3>Zero-column tables</h3>
 <p>    <span class="productname">PostgreSQL</span> allows a table of no columns
     to be created (for example, <code class="literal">CREATE TABLE foo();</code>).  This
     is an extension from the SQL standard, which does not allow zero-column
@@ -701,7 +761,14 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id710859"></a><h3>Tablespaces</h3>
+<a name="id2748982"></a><h3>
+<code class="literal">WITH</code> clause</h3>
+<p>    The <code class="literal">WITH</code> clause is a <span class="productname">PostgreSQL</span>
+    extension; neither storage parameters nor OIDs are in the standard.
+   </p>
+</div>
+<div class="refsect2" lang="en">
+<a name="id2749006"></a><h3>Tablespaces</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of tablespaces is not
     part of the standard.  Hence, the clauses <code class="literal">TABLESPACE</code>
     and <code class="literal">USING INDEX TABLESPACE</code> are extensions.
@@ -709,7 +776,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id710888"></a><h2>See Also</h2>
+<a name="id2749032"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-droptable.html">DROP TABLE</a>, <a href="sql-createtablespace.html">CREATE TABLESPACE</a></span>
 </div>
 </div></body>

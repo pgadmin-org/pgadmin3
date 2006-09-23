@@ -4,11 +4,12 @@
 <title>psql</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="prev" href="app-pgrestore.html" title="pg_restore">
 <link rel="next" href="app-reindexdb.html" title="reindexdb">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="app-psql"></a><div class="titlepage"></div>
@@ -17,13 +18,13 @@
 <p><span class="application">psql</span> &#8212;       <span class="productname">PostgreSQL</span> interactive terminal
     </p>
 </div>
-<a name="id747672"></a><div class="refsynopsisdiv">
+<a name="id2783935"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">psql</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>
     [<em class="replaceable"><code>username</code></em>]]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id747726"></a><h2>Description</h2>
+<a name="id2783983"></a><h2>Description</h2>
 <p>     <span class="application">psql</span> is a terminal-based front-end to
      <span class="productname">PostgreSQL</span>. It enables you to type in
      queries interactively, issue them to
@@ -62,7 +63,7 @@
       a command string that is completely parsable by the server (i.e.,
       it contains no <span class="application">psql</span> specific features),
       or a single backslash command. Thus you cannot mix
-      <span class="acronym">SQL</span> and <span class="application">psql</span>
+      <acronym class="acronym">SQL</acronym> and <span class="application">psql</span>
       meta-commands. To achieve that, you could pipe the string into
       <span class="application">psql</span>, like this: <code class="literal">echo "\x \\
       select * from foo;" | psql</code>.
@@ -140,7 +141,7 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-H</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--html</code></span>
 </dt>
-<dd><p>      Turn on <span class="acronym">HTML</span> tabular output. This is
+<dd><p>      Turn on <acronym class="acronym">HTML</acronym> tabular output. This is
       equivalent to <code class="literal">\pset format html</code> or the
       <code class="command">\H</code> command.
       </p></dd>
@@ -216,7 +217,7 @@
 <h3 class="title">Note</h3>
 <p>      This mode is provided for those who insist on it, but you are not
       necessarily encouraged to use it. In particular, if you mix
-      <span class="acronym">SQL</span> and meta-commands on a line the order of
+      <acronym class="acronym">SQL</acronym> and meta-commands on a line the order of
       execution might not always be clear to the inexperienced user.
       </p>
 </div>
@@ -231,7 +232,7 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-T <em class="replaceable"><code>table_options</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--table-attr <em class="replaceable"><code>table_options</code></em></code></span>
 </dt>
 <dd><p>      Allows you to specify options to be placed within the
-      <span class="acronym">HTML</span> <code class="sgmltag-element">table</code> tag. See
+      <acronym class="acronym">HTML</acronym> <code class="sgmltag-element">table</code> tag. See
       <code class="command">\pset</code> for details.
       </p></dd>
 <dt><span class="term"><code class="option">-u</code></span></dt>
@@ -301,6 +302,17 @@
       <code class="filename">~/.psqlrc</code> file).
       </p></dd>
 <dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-1</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--single-transaction</code></span>
+</dt>
+<dd><p>        When <span class="application">psql</span> executes a script with the
+        <code class="option">-f</code> option, adding this option wraps
+        <code class="command">BEGIN</code>/<code class="command">COMMIT</code> around the script to execute it
+        as a single transaction.  This ensures that either all the commands
+        complete successfully, or no changes are applied.  (However, if the
+        script itself uses <code class="command">BEGIN</code> or <code class="command">COMMIT</code>, this
+        option will not have the desired effect!)
+       </p></dd>
+<dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-?</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--help</code></span>
 </dt>
 <dd><p>      Show help about <span class="application">psql</span> command line
@@ -309,7 +321,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id748784"></a><h2>Exit Status</h2>
+<a name="id2784986"></a><h2>Exit Status</h2>
 <p>   <span class="application">psql</span> returns 0 to the shell if it
    finished normally, 1 if a fatal error of its own (out of memory,
    file not found) occurs, 2 if the connection to the server went bad
@@ -318,7 +330,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id748806"></a><h2>Usage</h2>
+<a name="id2785006"></a><h2>Usage</h2>
 <div class="refsect2" lang="en">
 <a name="r2-app-psql-connecting"></a><h3>Connecting To A Database</h3>
 <p>    <span class="application">psql</span> is a regular
@@ -346,9 +358,9 @@
     some typing by setting the environment variables
     <code class="envar">PGDATABASE</code>, <code class="envar">PGHOST</code>,
     <code class="envar">PGPORT</code> and/or <code class="envar">PGUSER</code> to appropriate
-    values. (For additional environment variables, see <a href="libpq-envars.html" title="28.11. Environment Variables">Section 28.11, &#8220;Environment Variables&#8221;</a>.) It is also convenient to have a
+    values. (For additional environment variables, see <a href="libpq-envars.html" title="28.12. Environment Variables">Section 28.12, &#8220;Environment Variables&#8221;</a>.) It is also convenient to have a
     <code class="filename">~/.pgpass</code> file to avoid regularly having to type in
-    passwords. See <a href="libpq-pgpass.html" title="28.12. The Password File">Section 28.12, &#8220;The Password File&#8221;</a> for more information.
+    passwords. See <a href="libpq-pgpass.html" title="28.13. The Password File">Section 28.13, &#8220;The Password File&#8221;</a> for more information.
     </p>
 <p>    If the connection could not be made for any reason (e.g., insufficient
     privileges, server is not running on the targeted host, etc.),
@@ -363,7 +375,7 @@
     the string <code class="literal">=&gt;</code>. For example,
 </p>
 <pre class="programlisting">$ <strong class="userinput"><code>psql testdb</code></strong>
-Welcome to psql 8.1.0, the PostgreSQL interactive terminal.
+Welcome to psql 8.2beta1, the PostgreSQL interactive terminal.
 
 Type:  \copyright for distribution terms
        \h for help with SQL commands
@@ -374,7 +386,7 @@ Type:  \copyright for distribution terms
 testdb=&gt;</pre>
 <p>
     </p>
-<p>    At the prompt, the user may type in <span class="acronym">SQL</span> commands.
+<p>    At the prompt, the user may type in <acronym class="acronym">SQL</acronym> commands.
     Ordinarily, input lines are sent to the server when a
     command-terminating semicolon is reached. An end of line does not
     terminate a command.  Thus commands can be spread over several lines for
@@ -388,7 +400,7 @@ testdb=&gt;</pre>
     </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id749044"></a><h3>Meta-Commands</h3>
+<a name="id2785223"></a><h3>Meta-Commands</h3>
 <p>    Anything you enter in <span class="application">psql</span> that begins
     with an unquoted backslash is a <span class="application">psql</span>
     meta-command that is processed by <span class="application">psql</span>
@@ -404,7 +416,7 @@ testdb=&gt;</pre>
     </p>
 <p>    To include whitespace into an argument you may quote it with a
     single quote. To include a single quote into such an argument,
-    precede it by a backslash. Anything contained in single quotes is
+    use two single quotes. Anything contained in single quotes is
     furthermore subject to C-like substitutions for
     <code class="literal">\n</code> (new line), <code class="literal">\t</code> (tab),
     <code class="literal">\</code><em class="replaceable"><code>digits</code></em> (octal), and
@@ -420,9 +432,9 @@ testdb=&gt;</pre>
     as the argument value. The above escape sequences also apply in
     backquotes.
     </p>
-<p>    Some commands take an <span class="acronym">SQL</span> identifier (such as a
+<p>    Some commands take an <acronym class="acronym">SQL</acronym> identifier (such as a
     table name) as argument. These arguments follow the syntax rules
-    of <span class="acronym">SQL</span>: Unquoted letters are forced to
+    of <acronym class="acronym">SQL</acronym>: Unquoted letters are forced to
     lowercase, while double quotes (<code class="literal">"</code>) protect letters
     from case conversion and allow incorporation of whitespace into
     the identifier.  Within double quotes, paired double quotes reduce
@@ -434,8 +446,8 @@ testdb=&gt;</pre>
 <p>    Parsing for arguments stops when another unquoted backslash occurs.
     This is taken as the beginning of a new meta-command. The special
     sequence <code class="literal">\\</code> (two backslashes) marks the end of
-    arguments and continues parsing <span class="acronym">SQL</span> commands, if
-    any. That way <span class="acronym">SQL</span> and
+    arguments and continues parsing <acronym class="acronym">SQL</acronym> commands, if
+    any. That way <acronym class="acronym">SQL</acronym> and
     <span class="application">psql</span> commands can be freely mixed on a
     line. But in any case, the arguments of a meta-command cannot
     continue beyond the end of the line.
@@ -468,47 +480,46 @@ testdb=&gt;</pre>
         <code class="literal">\pset title <em class="replaceable"><code>title</code></em></code>. (The name of
         this command derives from &#8220;<span class="quote">caption</span>&#8221;, as it was
         previously only used to set the caption in an
-        <span class="acronym">HTML</span> table.)
+        <acronym class="acronym">HTML</acronym> table.)
         </p></dd>
-<dt><span class="term"><code class="literal">\connect</code> (or <code class="literal">\c</code>) <code class="literal">[ <em class="replaceable"><code>dbname</code></em> [ <em class="replaceable"><code>username</code></em> ] ]</code></span></dt>
+<dt><span class="term"><code class="literal">\connect</code> (or <code class="literal">\c</code>) <code class="literal">[ <em class="replaceable"><code>dbname</code></em> [ <em class="replaceable"><code>username</code></em> ] [ <em class="replaceable"><code>host</code></em> ] [ <em class="replaceable"><code>port</code></em> ] ]</code></span></dt>
 <dd>
-<p>        Establishes a connection to a new database and/or under a user
-        name. The previous connection is closed. If <em class="replaceable"><code>dbname</code></em> is <code class="literal">-</code>
-        the current database name is assumed.
-        </p>
-<p>        If <em class="replaceable"><code>username</code></em> is
-        omitted the current user name is assumed. </p>
-<p>        As a special rule, <code class="command">\connect</code> without any
-        arguments will connect to the default database as the default
-        user (as you would have gotten by starting
-        <span class="application">psql</span> without any arguments).
+<p>        Establishes a new connection to a <span class="productname">PostgreSQL</span>
+        server. If the new connection is successfully made, the
+        previous connection is closed. If any of <em class="replaceable"><code>dbname</code></em>, <em class="replaceable"><code>username</code></em>, <em class="replaceable"><code>host</code></em> or <em class="replaceable"><code>port</code></em> are omitted or specified
+        as <code class="literal">-</code>, the value of that parameter from the
+        previous connection is used. If there is no previous
+        connection, the <span class="application">libpq</span> default for
+        the parameter's value is used.
         </p>
 <p>        If the connection attempt failed (wrong user name, access
-        denied, etc.), the previous connection will be kept if and only
-        if <span class="application">psql</span> is in interactive mode. When
-        executing a non-interactive script, processing will immediately
-        stop with an error. This distinction was chosen as a user
-        convenience against typos on the one hand, and a safety
-        mechanism that scripts are not accidentally acting on the wrong
-        database on the other hand.
+        denied, etc.), the previous connection will only be kept if
+        <span class="application">psql</span> is in interactive mode. When
+        executing a non-interactive script, processing will
+        immediately stop with an error. This distinction was chosen as
+        a user convenience against typos on the one hand, and a safety
+        mechanism that scripts are not accidentally acting on the
+        wrong database on the other hand.
         </p>
 </dd>
-<dt><span class="term"><code class="literal">\copy <em class="replaceable"><code>table</code></em>
-        [ ( <em class="replaceable"><code>column_list</code></em> ) ]
+<dt><span class="term"><code class="literal">\copy { <em class="replaceable"><code>table</code></em> [ ( <em class="replaceable"><code>column_list</code></em> ) ] | ( <em class="replaceable"><code>query</code></em> ) }
         { <code class="literal">from</code> | <code class="literal">to</code> }
         { <em class="replaceable"><code>filename</code></em> | stdin | stdout | pstdin | pstdout }
         [ with ]
+            [ binary ]
             [ oids ]
             [ delimiter [ as ] '<em class="replaceable"><code>character</code></em>' ]
             [ null [ as ] '<em class="replaceable"><code>string</code></em>' ]
-            [ csv [ quote [ as ] '<em class="replaceable"><code>character</code></em>' ]
-            [ escape [ as ] '<em class="replaceable"><code>character</code></em>' ]
-            [ force quote <em class="replaceable"><code>column_list</code></em> ]
-            [ force not null <em class="replaceable"><code>column_list</code></em> ] ]</code>
+            [ csv
+              [ header ]
+              [ quote [ as ] '<em class="replaceable"><code>character</code></em>' ]
+              [ escape [ as ] '<em class="replaceable"><code>character</code></em>' ]
+              [ force quote <em class="replaceable"><code>column_list</code></em> ]
+              [ force not null <em class="replaceable"><code>column_list</code></em> ] ]</code>
         </span></dt>
 <dd>
 <p>        Performs a frontend (client) copy. This is an operation that
-        runs an <span class="acronym">SQL</span> <a href="sql-copy.html">COPY</a> command, but instead of the server
+        runs an <acronym class="acronym">SQL</acronym> <a href="sql-copy.html">COPY</a> command, but instead of the server
         reading or writing the specified file,
         <span class="application">psql</span> reads or writes the file and
         routes the data between the server and the local file system.
@@ -517,16 +528,16 @@ testdb=&gt;</pre>
         privileges are required.
         </p>
 <p>        The syntax of the command is similar to that of the
-        <span class="acronym">SQL</span> <a href="sql-copy.html">COPY</a> command.  Note that, because of this,
+        <acronym class="acronym">SQL</acronym> <a href="sql-copy.html">COPY</a> command.  Note that, because of this,
         special parsing rules apply to the <code class="command">\copy</code>
         command. In particular, the variable substitution rules and
         backslash escapes do not apply.
         </p>
-<p>        <code class="literal">\copy <em class="replaceable"><code>table</code></em> from <em class="replaceable"><code>stdin | stdout</code></em></code>
+<p>        <code class="literal">\copy ... from stdin | to stdout</code>
         reads/writes based on the command input and output respectively.
         All rows are read from the same source that issued the command,
         continuing until <code class="literal">\.</code> is read or the stream
-        reaches <span class="acronym">EOF</span>. Output is sent to the same place as
+        reaches <acronym class="acronym">EOF</acronym>. Output is sent to the same place as
         command output. To read/write from
         <span class="application">psql</span>'s standard input or output, use
         <code class="literal">pstdin</code> or <code class="literal">pstdout</code>. This option is useful
@@ -534,10 +545,10 @@ testdb=&gt;</pre>
         </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>        This operation is not as efficient as the <span class="acronym">SQL</span>
+<p>        This operation is not as efficient as the <acronym class="acronym">SQL</acronym>
         <code class="command">COPY</code> command because all data must pass
         through the client/server connection. For large
-        amounts of data the <span class="acronym">SQL</span> command may be preferable.
+        amounts of data the <acronym class="acronym">SQL</acronym> command may be preferable.
         </p>
 </div>
 </dd>
@@ -574,7 +585,7 @@ testdb=&gt;</pre>
 </dd>
 <dt><span class="term"><code class="literal">\da [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
 <dd><p>        Lists all available aggregate functions, together with the data
-        type they operate on. If <em class="replaceable"><code>pattern</code></em>
+        types they operate on. If <em class="replaceable"><code>pattern</code></em>
         is specified, only aggregates whose names match the pattern are shown.
         </p></dd>
 <dt>
@@ -612,7 +623,7 @@ testdb=&gt;</pre>
 <p>
         </p>
 <p>        Descriptions for objects can be created with the <a href="sql-comment.html">COMMENT</a>
-        <span class="acronym">SQL</span> command.
+        <acronym class="acronym">SQL</acronym> command.
        </p>
 </dd>
 <dt><span class="term"><code class="literal">\dD [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
@@ -649,15 +660,16 @@ testdb=&gt;</pre>
 <dt><span class="term"><code class="literal">\distvS [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
 <dd>
 <p>        This is not the actual command name: the letters
-        <code class="literal">i</code>, <code class="literal">s</code>, <code class="literal">t</code>,
-        <code class="literal">v</code>, <code class="literal">S</code> stand for index,
-        sequence, table, view, and system table, respectively. You can
-        specify any or all of these letters, in any order, to obtain a
-        listing of all the matching objects.  The letter S restricts the
-        listing to system objects; without <code class="literal">S</code>, only
-        non-system objects are shown.  If <code class="literal">+</code> is appended
-        to the command name, each object is listed with its associated
-        description, if any.
+        <code class="literal">i</code>, <code class="literal">s</code>,
+        <code class="literal">t</code>, <code class="literal">v</code>,
+        <code class="literal">S</code> stand for index, sequence, table, view,
+        and system table, respectively. You can specify any or all of
+        these letters, in any order, to obtain a listing of all the
+        matching objects.  The letter <code class="literal">S</code> restricts
+        the listing to system objects; without <code class="literal">S</code>,
+        only non-system objects are shown.  If <code class="literal">+</code> is
+        appended to the command name, each object is listed with its
+        associated description, if any.
         </p>
 <p>        If <em class="replaceable"><code>pattern</code></em> is
         specified, only objects whose names match the pattern are listed.
@@ -688,10 +700,9 @@ testdb=&gt;</pre>
         If <em class="replaceable"><code>pattern</code></em> is
         specified, only tables, views and sequences whose names match the pattern are listed.
         </p>
-<p>        The commands <code class="command">GRANT</code> and
-        <code class="command">REVOKE</code> are used to set access privileges.
-        See <a href="sql-grant.html">GRANT</a>
-        for more information.
+<p>        The <a href="sql-grant.html">GRANT</a> and
+        <a href="sql-revoke.html">REVOKE</a>
+        commands are used to set access privileges.
         </p>
 </dd>
 <dt>
@@ -769,13 +780,13 @@ Tue Oct 26 21:40:57 CEST 1999</pre>
         </p></dd>
 <dt><span class="term"><code class="literal">\help</code> (or <code class="literal">\h</code>) <code class="literal">[ <em class="replaceable"><code>command</code></em> ]</code></span></dt>
 <dd>
-<p>        Gives syntax help on the specified <span class="acronym">SQL</span>
+<p>        Gives syntax help on the specified <acronym class="acronym">SQL</acronym>
         command. If <em class="replaceable"><code>command</code></em>
         is not specified, then <span class="application">psql</span> will list
         all the commands for which syntax help is available. If
         <em class="replaceable"><code>command</code></em> is an
         asterisk (<code class="literal">*</code>), then syntax help on all
-        <span class="acronym">SQL</span> commands is shown.
+        <acronym class="acronym">SQL</acronym> commands is shown.
         </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -786,8 +797,8 @@ Tue Oct 26 21:40:57 CEST 1999</pre>
 </div>
 </dd>
 <dt><span class="term"><code class="literal">\H</code></span></dt>
-<dd><p>        Turns on <span class="acronym">HTML</span> query output format. If the
-        <span class="acronym">HTML</span> format is already on, it is switched
+<dd><p>        Turns on <acronym class="acronym">HTML</acronym> query output format. If the
+        <acronym class="acronym">HTML</acronym> format is already on, it is switched
         back to the default aligned text format. This command is for
         compatibility and convenience, but see <code class="command">\pset</code>
         about setting other output options.
@@ -814,7 +825,7 @@ Tue Oct 26 21:40:57 CEST 1999</pre>
         </p></dd>
 <dt><span class="term"><code class="literal">\lo_export <em class="replaceable"><code>loid</code></em> <em class="replaceable"><code>filename</code></em></code></span></dt>
 <dd>
-<p>        Reads the large object with <span class="acronym">OID</span> <em class="replaceable"><code>loid</code></em> from the database and
+<p>        Reads the large object with <acronym class="acronym">OID</acronym> <em class="replaceable"><code>loid</code></em> from the database and
         writes it to <em class="replaceable"><code>filename</code></em>. Note that this is
         subtly different from the server function
         <code class="function">lo_export</code>, which acts with the permissions
@@ -824,7 +835,7 @@ Tue Oct 26 21:40:57 CEST 1999</pre>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>        Use <code class="command">\lo_list</code> to find out the large object's
-        <span class="acronym">OID</span>.
+        <acronym class="acronym">OID</acronym>.
         </p>
 </div>
 </dd>
@@ -856,14 +867,14 @@ lo_import 152801</pre>
         </p></dd>
 <dt><span class="term"><code class="literal">\lo_unlink <em class="replaceable"><code>loid</code></em></code></span></dt>
 <dd>
-<p>        Deletes the large object with <span class="acronym">OID</span>
+<p>        Deletes the large object with <acronym class="acronym">OID</acronym>
         <em class="replaceable"><code>loid</code></em> from the
         database.
         </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>        Use <code class="command">\lo_list</code> to find out the large object's
-        <span class="acronym">OID</span>.
+        <acronym class="acronym">OID</acronym>.
         </p>
 </div>
 </dd>
@@ -888,6 +899,13 @@ lo_import 152801</pre>
 </dd>
 <dt><span class="term"><code class="literal">\p</code></span></dt>
 <dd><p>        Print the current query buffer to the standard output.
+        </p></dd>
+<dt><span class="term"><code class="literal">\password [ <em class="replaceable"><code>username</code></em> ]</code></span></dt>
+<dd><p>        Changes the password of the specified user (by default, the current
+        user).  This command prompts for the new password, encrypts it, and
+        sends it to the server as an <code class="command">ALTER ROLE</code> command.  This
+        makes sure that the new password does not appear in cleartext in the
+        command history, the server log, or elsewhere.
         </p></dd>
 <dt><span class="term"><code class="literal">\pset <em class="replaceable"><code>parameter</code></em> [ <em class="replaceable"><code>value</code></em> ]</code></span></dt>
 <dd>
@@ -914,11 +932,11 @@ lo_import 152801</pre>
           in by other programs (tab-separated, comma-separated).
           &#8220;<span class="quote">Aligned</span>&#8221; mode is the standard, human-readable,
           nicely formatted text output that is default. The
-          &#8220;<span class="quote"><span class="acronym">HTML</span></span>&#8221; and
+          &#8220;<span class="quote"><acronym class="acronym">HTML</acronym></span>&#8221; and
           &#8220;<span class="quote">LaTeX</span>&#8221; modes put out tables that are intended to
           be included in documents using the respective mark-up
           language. They are not complete documents! (This might not be
-          so dramatic in <span class="acronym">HTML</span>, but in LaTeX you must
+          so dramatic in <acronym class="acronym">HTML</acronym>, but in LaTeX you must
           have a complete document wrapper.)
           </p>
 </dd>
@@ -926,7 +944,7 @@ lo_import 152801</pre>
 <dd><p>          The second argument must be a number. In general, the higher
           the number the more borders and lines the tables will have,
           but this depends on the particular format. In
-          <span class="acronym">HTML</span> mode, this will translate directly
+          <acronym class="acronym">HTML</acronym> mode, this will translate directly
           into the <code class="literal">border=...</code> attribute, in the
           others only values 0 (no border), 1 (internal dividing lines),
           and 2 (table frame) make sense.
@@ -983,7 +1001,7 @@ lo_import 152801</pre>
           </p></dd>
 <dt><span class="term"><code class="literal">tableattr</code> (or <code class="literal">T</code>) <code class="literal">[ <em class="replaceable"><code>text</code></em> ]</code></span></dt>
 <dd><p>          Allows you to specify any attributes to be placed inside the
-          <span class="acronym">HTML</span> <code class="sgmltag-element">table</code> tag. This
+          <acronym class="acronym">HTML</acronym> <code class="sgmltag-element">table</code> tag. This
           could for example be <code class="literal">cellpadding</code> or
           <code class="literal">bgcolor</code>. Note that you probably don't want
           to specify <code class="literal">border</code> here, as that is already
@@ -1039,21 +1057,11 @@ lo_import 152801</pre>
 <dd><p>        Resets (clears) the query buffer.
         </p></dd>
 <dt><span class="term"><code class="literal">\s [ <em class="replaceable"><code>filename</code></em> ]</code></span></dt>
-<dd>
-<p>        Print or save the command line history to <em class="replaceable"><code>filename</code></em>. If <em class="replaceable"><code>filename</code></em> is omitted, the history
+<dd><p>        Print or save the command line history to <em class="replaceable"><code>filename</code></em>. If <em class="replaceable"><code>filename</code></em> is omitted, the history
         is written to the standard output. This option is only available
         if <span class="application">psql</span> is configured to use the
-        <span class="acronym">GNU</span> <span class="application">Readline</span> library.
-        </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>        In the current version, it is no longer necessary to save the
-        command history, since that will be done automatically on
-        program termination. The history is also loaded automatically
-        every time <span class="application">psql</span> starts up.
-        </p>
-</div>
-</dd>
+        <acronym class="acronym">GNU</acronym> <span class="application">Readline</span> library.
+        </p></dd>
 <dt><span class="term"><code class="literal">\set [ <em class="replaceable"><code>name</code></em> [ <em class="replaceable"><code>value</code></em> [ ... ] ] ]</code></span></dt>
 <dd>
 <p>        Sets the internal variable <em class="replaceable"><code>name</code></em> to <em class="replaceable"><code>value</code></em> or, if more than one value
@@ -1071,7 +1079,7 @@ lo_import 152801</pre>
         </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>        This command is totally separate from the <span class="acronym">SQL</span>
+<p>        This command is totally separate from the <acronym class="acronym">SQL</acronym>
         command <a href="sql-set.html">SET</a>.
         </p>
 </div>
@@ -1083,7 +1091,7 @@ lo_import 152801</pre>
         </p></dd>
 <dt><span class="term"><code class="literal">\T <em class="replaceable"><code>table_options</code></em></code></span></dt>
 <dd><p>        Allows you to specify attributes to be placed within the
-        <code class="sgmltag-element">table</code> tag in <span class="acronym">HTML</span> tabular
+        <code class="sgmltag-element">table</code> tag in <acronym class="acronym">HTML</acronym> tabular
         output mode. This command is equivalent to <code class="literal">\pset
         tableattr <em class="replaceable"><code>table_options</code></em></code>.
         </p></dd>
@@ -1105,10 +1113,9 @@ lo_import 152801</pre>
         If a <em class="replaceable"><code>pattern</code></em> is
         specified, only tables,views and sequences whose names match the pattern are listed.
         </p>
-<p>        The commands <code class="command">GRANT</code> and
-        <code class="command">REVOKE</code> are used to set access privileges.
-        See <a href="sql-grant.html">GRANT</a> for
-        more information.
+<p>        The <a href="sql-grant.html">GRANT</a> and
+        <a href="sql-revoke.html">REVOKE</a>
+        commands are used to set access privileges.
         </p>
 <p>        This is an alias for <code class="command">\dp</code> (&#8220;<span class="quote">display
         privileges</span>&#8221;).
@@ -1150,7 +1157,7 @@ lo_import 152801</pre>
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id752306"></a><h3>Advanced features</h3>
+<a name="id2788206"></a><h3>Advanced features</h3>
 <div class="refsect3" lang="en">
 <a name="app-psql-variables"></a><h4>Variables</h4>
 <p>    <span class="application">psql</span> provides variable substitution
@@ -1178,7 +1185,7 @@ bar</pre>
     interesting references such as <code class="literal">\set :foo
     'something'</code> and get &#8220;<span class="quote">soft links</span>&#8221; or
     &#8220;<span class="quote">variable variables</span>&#8221; of <span class="productname">Perl</span>
-    or <span class="productname"><span class="acronym">PHP</span></span> fame,
+    or <span class="productname"><acronym class="acronym">PHP</acronym></span> fame,
     respectively. Unfortunately (or fortunately?), there is no way to do
     anything useful with these constructs. On the other hand,
     <code class="literal">\set bar :foo</code> is a perfectly valid way to copy a
@@ -1263,6 +1270,29 @@ bar</pre>
 <dt><span class="term"><code class="varname">ENCODING</code></span></dt>
 <dd><p>        The current client character set encoding.
         </p></dd>
+<dt><span class="term"><code class="varname">FETCH_COUNT</code></span></dt>
+<dd>
+<p>        If this variable is set to an integer value &gt; 0,
+        the results of <code class="command">SELECT</code> queries are fetched
+        and displayed in groups of that many rows, rather than the
+        default behavior of collecting the entire result set before
+        display.  Therefore only a
+        limited amount of memory is used, regardless of the size of
+        the result set.  Settings of 100 to 1000 are commonly used
+        when enabling this feature.
+        Keep in mind that when using this feature, a query may
+        fail after having already displayed some rows.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        Although you can use any output format with this feature,
+        the default <code class="literal">aligned</code> format tends to look bad
+        because each group of <code class="varname">FETCH_COUNT</code> rows
+        will be formatted separately, leading to varying column
+        widths across the row groups.  The other output formats work better.
+        </p>
+</div>
+</dd>
 <dt><span class="term"><code class="varname">HISTCONTROL</code></span></dt>
 <dd>
 <p>         If this variable is set to <code class="literal">ignorespace</code>,
@@ -1317,11 +1347,11 @@ bar</pre>
         </p></dd>
 <dt><span class="term"><code class="varname">IGNOREEOF</code></span></dt>
 <dd>
-<p>         If unset, sending an <span class="acronym">EOF</span> character (usually
+<p>         If unset, sending an <acronym class="acronym">EOF</acronym> character (usually
          <span><strong class="keycap">Control</strong></span>+<span><strong class="keycap">D</strong></span>)
          to an interactive session of <span class="application">psql</span>
          will terminate the application. If set to a numeric value,
-         that many <span class="acronym">EOF</span> characters are ignored before the
+         that many <acronym class="acronym">EOF</acronym> characters are ignored before the
          application terminates.  If the variable is set but has no
          numeric value, the default is 10.
         </p>
@@ -1336,7 +1366,7 @@ bar</pre>
 <dd><p>        The value of the last affected OID, as returned from an
         <code class="command">INSERT</code> or <code class="command">lo_insert</code>
         command. This variable is only guaranteed to be valid until
-        after the result of the next <span class="acronym">SQL</span> command has
+        after the result of the next <acronym class="acronym">SQL</acronym> command has
         been displayed.
         </p></dd>
 <dt><span class="term"><code class="varname">ON_ERROR_ROLLBACK</code></span></dt>
@@ -1353,7 +1383,7 @@ bar</pre>
         </p></dd>
 <dt><span class="term"><code class="varname">ON_ERROR_STOP</code></span></dt>
 <dd><p>        By default, if non-interactive scripts encounter an error, such
-        as a malformed <span class="acronym">SQL</span> command or internal
+        as a malformed <acronym class="acronym">SQL</acronym> command or internal
         meta-command, processing continues. This has been the
         traditional behavior of <span class="application">psql</span> but it
         is sometimes not desirable. If this variable is set, script
@@ -1402,11 +1432,11 @@ bar</pre>
 </dl></div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id753180"></a><h4>
-<span class="acronym">SQL</span> Interpolation</h4>
+<a name="id2789040"></a><h4>
+<acronym class="acronym">SQL</acronym> Interpolation</h4>
 <p>    An additional useful feature of <span class="application">psql</span>
     variables is that you can substitute (&#8220;<span class="quote">interpolate</span>&#8221;)
-    them into regular <span class="acronym">SQL</span> statements. The syntax for
+    them into regular <acronym class="acronym">SQL</acronym> statements. The syntax for
     this is again to prepend the variable name with a colon
     (<code class="literal">:</code>).
 </p>
@@ -1417,45 +1447,42 @@ testdb=&gt; <strong class="userinput"><code>SELECT * FROM :foo;</code></strong><
     the variable is copied literally, so it can even contain unbalanced
     quotes or backslash commands. You must make sure that it makes sense
     where you put it. Variable interpolation will not be performed into
-    quoted <span class="acronym">SQL</span> entities.
+    quoted <acronym class="acronym">SQL</acronym> entities.
     </p>
 <p>    A popular application of this facility is to refer to the last
-    inserted <span class="acronym">OID</span> in subsequent statements to build a
+    inserted <acronym class="acronym">OID</acronym> in subsequent statements to build a
     foreign key scenario. Another possible use of this mechanism is to
     copy the contents of a file into a table column. First load the file into a
     variable and then proceed as above.
 </p>
-<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '\'' `cat my_file.txt` '\''</code></strong>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '''' `cat my_file.txt` ''''</code></strong>
 testdb=&gt; <strong class="userinput"><code>INSERT INTO my_table VALUES (:content);</code></strong></pre>
 <p>
-    One possible problem with this approach is that <code class="filename">my_file.txt</code>
+    One problem with this approach is that <code class="filename">my_file.txt</code>
     might contain single quotes. These need to be escaped so that
     they don't cause a syntax error when the second line is processed. This
     could be done with the program <code class="command">sed</code>:
 </p>
-<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '\'' `sed -e "s/'/\\\\\\'/g" &lt; my_file.txt` '\''</code></strong></pre>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '''' `sed -e "s/'/''/g" &lt; my_file.txt` ''''</code></strong></pre>
 <p>
-    Observe the correct number of backslashes (6)! It works
-    this way: After <span class="application">psql</span> has parsed this
-    line, it passes <code class="literal">sed -e "s/'/\\\'/g" &lt; my_file.txt</code>
-    to the shell. The shell will do its own thing inside the double
-    quotes and execute <code class="command">sed</code> with the arguments
-    <code class="literal">-e</code> and <code class="literal">s/'/\\'/g</code>. When
-    <code class="command">sed</code> parses this it will replace the two
-    backslashes with a single one and then do the substitution. Perhaps
+    If you are using non-standard-conforming strings then you'll also need
+    to double backslashes.  This is a bit tricky:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '''' `sed -e "s/'/''/g" -e 's/\\/\\\\/g' &lt; my_file.txt` ''''</code></strong></pre>
+<p>
+    Note the use of different shell quoting conventions so that neither
+    the single quote marks nor the backslashes are special to the shell.
+    Backslashes are still special to <code class="command">sed</code>, however, so
+    we need to double them.  (Perhaps
     at one point you thought it was great that all Unix commands use the
-    same escape character. And this is ignoring the fact that you might
-    have to escape all backslashes as well because
-    <span class="acronym">SQL</span> text constants are also subject to certain
-    interpretations. In that case you might be better off preparing the
-    file externally.
+    same escape character.)
     </p>
 <p>    Since colons may legally appear in SQL commands, the following rule
     applies: the character sequence
     &#8220;<span class="quote">:name</span>&#8221; is not changed unless &#8220;<span class="quote">name</span>&#8221; is the name
     of a variable that is currently set. In any case you can escape
     a colon with a backslash to protect it from substitution. (The
-    colon syntax for variables is standard <span class="acronym">SQL</span> for
+    colon syntax for variables is standard <acronym class="acronym">SQL</acronym> for
     embedded query languages, such as <span class="application">ECPG</span>.
     The colon syntax for array slices and type casts are
     <span class="productname">PostgreSQL</span> extensions, hence the
@@ -1472,7 +1499,7 @@ testdb=&gt; <strong class="userinput"><code>INSERT INTO my_table VALUES (:conten
     <span class="application">psql</span> requests a new command. Prompt 2 is
     issued when more input is expected during command input because the
     command was not terminated with a semicolon or a quote was not closed.
-    Prompt 3 is issued when you run an <span class="acronym">SQL</span>
+    Prompt 3 is issued when you run an <acronym class="acronym">SQL</acronym>
     <code class="command">COPY</code> command and you are expected to type in the
     row values on the terminal.
     </p>
@@ -1582,14 +1609,14 @@ testdb=&gt; <strong class="userinput"><code>INSERT INTO my_table VALUES (:conten
 </div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id753932"></a><h4>Command-Line Editing</h4>
+<a name="id2789701"></a><h4>Command-Line Editing</h4>
 <p>    <span class="application">psql</span> supports the <span class="application">Readline</span>
     library for convenient line editing and retrieval. The command
     history is automatically saved when <span class="application">psql</span>
     exits and is reloaded when
     <span class="application">psql</span> starts up. Tab-completion is also
     supported, although the completion logic makes no claim to be an
-    <span class="acronym">SQL</span> parser.  If for some reason you do not like the tab completion, you
+    <acronym class="acronym">SQL</acronym> parser.  If for some reason you do not like the tab completion, you
     can turn it off by putting this in a file named
     <code class="filename">.inputrc</code> in your home directory:
 </p>
@@ -1605,7 +1632,7 @@ $endif</pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id754004"></a><h2>Environment</h2>
+<a name="id2789767"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PAGER</code></span></dt>
 <dd><p>      If the query results do not fit on the screen, they are piped
@@ -1638,7 +1665,7 @@ $endif</pre>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id754126"></a><h2>Files</h2>
+<a name="id2789877"></a><h2>Files</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><p>     Before starting up, <span class="application">psql</span> attempts to
      read and execute commands from the system-wide
@@ -1654,7 +1681,7 @@ $endif</pre>
 <li><p>     Both the system-wide <code class="filename">psqlrc</code> file and the user's
      <code class="filename">~/.psqlrc</code> file can be made version-specific
      by appending a dash and the <span class="productname">PostgreSQL</span>
-     release number, for example <code class="filename">~/.psqlrc-8.1.0</code>.
+     release number, for example <code class="filename">~/.psqlrc-8.2beta1</code>.
      A matching version-specific file will be read in preference to a
      non-version-specific file.
     </p></li>
@@ -1665,7 +1692,7 @@ $endif</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id754243"></a><h2>Notes</h2>
+<a name="id2789983"></a><h2>Notes</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>      In an earlier life <span class="application">psql</span> allowed the
@@ -1691,7 +1718,7 @@ Field separator is "oo".</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id754295"></a><h2>Notes for Windows users</h2>
+<a name="id2790031"></a><h2>Notes for Windows users</h2>
 <p>  <span class="application">psql</span> is built as a &#8220;<span class="quote">console
   application</span>&#8221;.  Since the Windows console windows use a different
   encoding than the rest of the system, you must take special care
@@ -1817,8 +1844,8 @@ second | four</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id754583"></a><h2>See Also</h2>
-<span class="simplelist">Environment Variables (<a href="libpq-envars.html" title="28.11. Environment Variables">Section 28.11, &#8220;Environment Variables&#8221;</a>)</span>
+<a name="id2790296"></a><h2>See Also</h2>
+<span class="simplelist">Environment Variables (<a href="libpq-envars.html" title="28.12. Environment Variables">Section 28.12, &#8220;Environment Variables&#8221;</a>)</span>
 </div>
 </div></body>
 </html>

@@ -1,0 +1,118 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.36. pg_cursors</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="views-overview.html" title="42.35. System Views">
+<link rel="next" href="view-pg-group.html" title="42.37. pg_group">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-cursors"></a>42.36. <code class="structname">pg_cursors</code></h2></div></div></div>
+<a name="id2807466"></a><p>   The <code class="structname">pg_cursors</code> view lists the cursors that
+   are currently available. Cursors can be defined in several ways:
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      via the <a href="sql-declare.html">DECLARE</a>
+      statement in SQL
+     </p></li>
+<li><p>      via the Bind message in the frontend/backend protocol, as
+      described in <a href="protocol-flow.html#protocol-flow-ext-query" title="43.2.3. Extended Query">Section 43.2.3, &#8220;Extended Query&#8221;</a>
+     </p></li>
+<li><p>      via the Server Programming Interface (SPI), as described in
+      <a href="spi.html#spi-interface" title="40.1. Interface Functions">Section 40.1, &#8220;Interface Functions&#8221;</a>
+     </p></li>
+</ul></div>
+<p>
+
+   The <code class="structname">pg_cursors</code> view displays cursors
+   created by any of these means. Cursors only exist for the duration
+   of the transaction that defines them, unless they have been
+   declared <code class="literal">WITH HOLD</code>. Therefore non-holdable
+   cursors are only present in the view until the end of their
+   creating transaction.
+
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Cursors are used internally to implement some of the components
+     of <span class="productname">PostgreSQL</span>, such as procedural languages.
+     Therefore, the <code class="structname">pg_cursors</code> view may include cursors
+     that have not been explicitly created by the user.
+    </p>
+</div>
+<p>
+  </p>
+<div class="table">
+<a name="id2807552"></a><p class="title"><b>Table 42.36. <code class="structname">pg_cursors</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_cursors Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">name</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>The name of the cursor</td>
+</tr>
+<tr>
+<td><code class="structfield">statement</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>The verbatim query string submitted to declare this cursor</td>
+</tr>
+<tr>
+<td><code class="structfield">is_holdable</code></td>
+<td><code class="type">boolean</code></td>
+<td> </td>
+<td>       <code class="literal">true</code> if the cursor is holdable (that is, it
+       can be accessed after the transaction that declared the cursor
+       has committed); <code class="literal">false</code> otherwise
+       </td>
+</tr>
+<tr>
+<td><code class="structfield">is_binary</code></td>
+<td><code class="type">boolean</code></td>
+<td> </td>
+<td>       <code class="literal">true</code> if the cursor was declared
+       <code class="literal">BINARY</code>; <code class="literal">false</code>
+       otherwise
+       </td>
+</tr>
+<tr>
+<td><code class="structfield">is_scrollable</code></td>
+<td><code class="type">boolean</code></td>
+<td> </td>
+<td>       <code class="literal">true</code> if the cursor is scrollable (that is, it
+       allows rows to be retrieved in a nonsequential manner);
+       <code class="literal">false</code> otherwise
+       </td>
+</tr>
+<tr>
+<td><code class="structfield">creation_time</code></td>
+<td><code class="type">timestamptz</code></td>
+<td> </td>
+<td>The time at which the cursor was declared</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>   The <code class="structname">pg_cursors</code> view is read only.
+  </p>
+</div></body>
+</html>

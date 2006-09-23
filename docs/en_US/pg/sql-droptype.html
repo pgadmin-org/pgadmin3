@@ -4,11 +4,12 @@
 <title>DROP TYPE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-droptrigger.html" title="DROP TRIGGER">
 <link rel="next" href="sql-dropuser.html" title="DROP USER">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-droptype"></a><div class="titlepage"></div>
@@ -16,19 +17,23 @@
 <h2>Name</h2>
 <p>DROP TYPE &#8212; remove a data type</p>
 </div>
-<a name="id719323"></a><div class="refsynopsisdiv">
+<a name="id2757701"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">DROP TYPE <em class="replaceable"><code>name</code></em> [, ...] [ CASCADE | RESTRICT ]</pre>
+<pre class="synopsis">DROP TYPE [ IF EXISTS ] <em class="replaceable"><code>name</code></em> [, ...] [ CASCADE | RESTRICT ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id719347"></a><h2>Description</h2>
+<a name="id2757722"></a><h2>Description</h2>
 <p>   <code class="command">DROP TYPE</code> will remove a user-defined data type.
    Only the owner of a type can remove it.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id719361"></a><h2>Parameters</h2>
+<a name="id2757735"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">IF EXISTS</code></span></dt>
+<dd><p>      Do not throw an error if the type does not exist. A notice is issued 
+      in this case.
+     </p></dd>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the data type to remove.
      </p></dd>
@@ -53,7 +58,9 @@
 <div class="refsect1" lang="en">
 <a name="sql-droptype-compatibility"></a><h2>Compatibility</h2>
 <p>   This command is similar to the corresponding command in the SQL
-   standard, but note that the <code class="command">CREATE TYPE</code> command
+   standard, aapart from the <code class="literal">IF EXISTS</code>
+   option, which is a <span class="productname">PostgreSQL</span> extension.
+   But note that the <code class="command">CREATE TYPE</code> command
    and the data type extension mechanisms in
    <span class="productname">PostgreSQL</span> differ from the SQL standard.
   </p>

@@ -1,30 +1,32 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.24. role_usage_grants</title>
+<title>31.27. role_usage_grants</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
-<link rel="prev" href="infoschema-role-table-grants.html" title="31.23. role_table_grants">
-<link rel="next" href="infoschema-routine-privileges.html" title="31.25. routine_privileges">
+<link rel="prev" href="infoschema-role-table-grants.html" title="31.26. role_table_grants">
+<link rel="next" href="infoschema-routine-privileges.html" title="31.28. routine_privileges">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="infoschema-role-usage-grants"></a>31.24. <code class="literal">role_usage_grants</code></h2></div></div></div>
+<a name="infoschema-role-usage-grants"></a>31.27. <code class="literal">role_usage_grants</code></h2></div></div></div>
 <p>   The view <code class="literal">role_usage_grants</code> is meant to identify
    <code class="literal">USAGE</code> privileges granted on various kinds of
-   objects to a group that the current user is a member of.  In
-   <span class="productname">PostgreSQL</span>, this currently only applies
-   to domains, and since domains do not have real privileges in
-   <span class="productname">PostgreSQL</span>, this view is empty.  Further
-   information can be found under <code class="literal">usage_privileges</code>.
-   In the future, this view may contain more useful information.
+   objects to a currently enabled role or by a currently enabled role.
+   In <span class="productname">PostgreSQL</span>, this currently only
+   applies to domains, and since domains do not have real privileges
+   in <span class="productname">PostgreSQL</span>, this view is empty.
+   Further information can be found under
+   <code class="literal">usage_privileges</code>.  In the future, this view may
+   contain more useful information.
   </p>
 <div class="table">
-<a name="id645465"></a><p class="title"><b>Table 31.22. <code class="literal">role_usage_grants</code> Columns</b></p>
-<table summary="role_usage_grants Columns" border="1">
+<a name="id2684647"></a><p class="title"><b>Table 31.25. <code class="literal">role_usage_grants</code> Columns</b></p>
+<div class="table-contents"><table summary="role_usage_grants Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -39,12 +41,12 @@
 <tr>
 <td><code class="literal">grantor</code></td>
 <td><code class="type">sql_identifier</code></td>
-<td>In the future, the name of the user that granted the privilege</td>
+<td>In the future, the name of the role that granted the privilege</td>
 </tr>
 <tr>
 <td><code class="literal">grantee</code></td>
 <td><code class="type">sql_identifier</code></td>
-<td>In the future, the name of the group that the privilege was granted to</td>
+<td>In the future, the name of the role that the privilege was granted to</td>
 </tr>
 <tr>
 <td><code class="literal">object_catalog</code></td>
@@ -79,7 +81,8 @@
 <code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

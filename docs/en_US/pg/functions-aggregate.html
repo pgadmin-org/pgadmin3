@@ -4,25 +4,29 @@
 <title>9.15. Aggregate Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-array.html" title="9.14. Array Functions and Operators">
 <link rel="next" href="functions-subquery.html" title="9.16. Subquery Expressions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-aggregate"></a>9.15. Aggregate Functions</h2></div></div></div>
-<a name="id566268"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
-   value from a set of input values.  <a href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. Aggregate Functions">Table 9.37, &#8220;Aggregate Functions&#8221;</a> shows the built-in aggregate
-   functions.  The special syntax considerations for aggregate
+<a name="id2598911"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
+   value from a set of input values.  The built-in aggregate functions
+   are listed in
+   <a href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. General-Purpose Aggregate Functions">Table 9.37, &#8220;General-Purpose Aggregate Functions&#8221;</a> and
+   <a href="functions-aggregate.html#functions-aggregate-statistics-table" title="Table 9.38. Aggregate Functions for Statistics">Table 9.38, &#8220;Aggregate Functions for Statistics&#8221;</a>.
+   The special syntax considerations for aggregate
    functions are explained in <a href="sql-expressions.html#syntax-aggregates" title="4.2.7. Aggregate Expressions">Section 4.2.7, &#8220;Aggregate Expressions&#8221;</a>.
    Consult <a href="tutorial-agg.html" title="2.7. Aggregate Functions">Section 2.7, &#8220;Aggregate Functions&#8221;</a> for additional introductory
    information.
   </p>
 <div class="table">
-<a name="functions-aggregate-table"></a><p class="title"><b>Table 9.37. Aggregate Functions</b></p>
-<table summary="Aggregate Functions" border="1">
+<a name="functions-aggregate-table"></a><p class="title"><b>Table 9.37. General-Purpose Aggregate Functions</b></p>
+<div class="table-contents"><table summary="General-Purpose Aggregate Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -37,7 +41,7 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>       <a name="id566345"></a>
+<td>       <a name="id2598988"></a>
        <code class="function">avg(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
@@ -51,7 +55,7 @@
 <td>the average (arithmetic mean) of all input values</td>
 </tr>
 <tr>
-<td>       <a name="id566415"></a>
+<td>       <a name="id2599050"></a>
        <code class="function">bit_and(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>, <code class="type">bigint</code>, or
@@ -62,7 +66,7 @@
 <td>the bitwise AND of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>       <a name="id566464"></a>
+<td>       <a name="id2599093"></a>
        <code class="function">bit_or(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>, <code class="type">bigint</code>, or
@@ -73,7 +77,7 @@
 <td>the bitwise OR of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>       <a name="id566513"></a>
+<td>       <a name="id2599137"></a>
        <code class="function">bool_and(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -83,7 +87,7 @@
 <td>true if all input values are true, otherwise false</td>
 </tr>
 <tr>
-<td>       <a name="id566553"></a>
+<td>       <a name="id2599172"></a>
        <code class="function">bool_or(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -96,17 +100,17 @@
 <td><code class="function">count(*)</code></td>
 <td> </td>
 <td><code class="type">bigint</code></td>
-<td>number of input values</td>
+<td>number of input rows</td>
 </tr>
 <tr>
 <td><code class="function">count(<em class="replaceable"><code>expression</code></em>)</code></td>
 <td>any</td>
 <td><code class="type">bigint</code></td>
-<td>       number of input values for which the value of <em class="replaceable"><code>expression</code></em> is not null
+<td>       number of input rows for which the value of <em class="replaceable"><code>expression</code></em> is not null
       </td>
 </tr>
 <tr>
-<td>       <a name="id566640"></a>
+<td>       <a name="id2599250"></a>
        <code class="function">every(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -133,19 +137,6 @@
       </td>
 </tr>
 <tr>
-<td>       <a name="id566745"></a>
-       <code class="function">stddev(<em class="replaceable"><code>expression</code></em>)</code>
-      </td>
-<td>       <code class="type">smallint</code>, <code class="type">int</code>,
-       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
-       precision</code>, or <code class="type">numeric</code>
-      </td>
-<td>       <code class="type">double precision</code> for floating-point arguments,
-       otherwise <code class="type">numeric</code>
-      </td>
-<td>sample standard deviation of the input values</td>
-</tr>
-<tr>
 <td><code class="function">sum(<em class="replaceable"><code>expression</code></em>)</code></td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
        <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
@@ -160,23 +151,10 @@
       </td>
 <td>sum of <em class="replaceable"><code>expression</code></em> across all input values</td>
 </tr>
-<tr>
-<td>       <a name="id566894"></a>
-       <code class="function">variance</code>(<em class="replaceable"><code>expression</code></em>)
-      </td>
-<td>       <code class="type">smallint</code>, <code class="type">int</code>,
-       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
-       precision</code>, or <code class="type">numeric</code>
-      </td>
-<td>       <code class="type">double precision</code> for floating-point arguments,
-       otherwise <code class="type">numeric</code>
-      </td>
-<td>sample variance of the input values (square of the sample standard deviation)</td>
-</tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   It should be noted that except for <code class="function">count</code>,
+<br class="table-break"><p>   It should be noted that except for <code class="function">count</code>,
    these functions return a null value when no rows are selected.  In
    particular, <code class="function">sum</code> of no rows returns null, not
    zero as one might expect.  The <code class="function">coalesce</code> function may be
@@ -184,7 +162,7 @@
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<a name="id566984"></a><a name="id566990"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
+<a name="id2599441"></a><a name="id2599446"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
       <code class="function">bool_or</code> correspond to standard SQL aggregates
       <code class="function">every</code> and <code class="function">any</code> or
       <code class="function">some</code>. 
@@ -211,5 +189,241 @@
     sequential scan of the entire table.
    </p>
 </div>
+<p>   <a href="functions-aggregate.html#functions-aggregate-statistics-table" title="Table 9.38. Aggregate Functions for Statistics">Table 9.38, &#8220;Aggregate Functions for Statistics&#8221;</a> shows
+   aggregate functions typically used in statistical analysis.
+   (These are separated out merely to avoid cluttering the listing
+   of more-commonly-used aggregates.)  Where the description mentions
+   <em class="replaceable"><code>N</code></em>, it means the
+   number of input rows for which all the input expressions are non-null.
+   In all cases, null is returned if the computation is meaningless,
+   for example when <em class="replaceable"><code>N</code></em> is zero.
+  </p>
+<a name="id2599568"></a><a name="id2599573"></a><div class="table">
+<a name="functions-aggregate-statistics-table"></a><p class="title"><b>Table 9.38. Aggregate Functions for Statistics</b></p>
+<div class="table-contents"><table summary="Aggregate Functions for Statistics" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Argument Type</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>       <a name="id2599606"></a>
+       <code class="function">corr(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>sqrt((<em class="replaceable"><code>N</code></em> *
+      sum(<em class="replaceable"><code>X</code></em>*<em class="replaceable"><code>Y</code></em>) - sum(<em class="replaceable"><code>X</code></em>) * sum(<em class="replaceable"><code>Y</code></em>))^2 / ((<em class="replaceable"><code>N</code></em> * sum(<em class="replaceable"><code>X</code></em>^2) - sum(<em class="replaceable"><code>X</code></em>)^2) * (<em class="replaceable"><code>N</code></em> * sum(<em class="replaceable"><code>Y</code></em>^2) - sum(<em class="replaceable"><code>Y</code></em>)^2)))</td>
+</tr>
+<tr>
+<td>       <a name="id2599710"></a>
+       <code class="function">covar_pop(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>(sum(<em class="replaceable"><code>X</code></em>*<em class="replaceable"><code>Y</code></em>) - sum(<em class="replaceable"><code>X</code></em>) * sum(<em class="replaceable"><code>Y</code></em>) / <em class="replaceable"><code>N</code></em>) / <em class="replaceable"><code>N</code></em>
+</td>
+</tr>
+<tr>
+<td>       <a name="id2599786"></a>
+       <code class="function">covar_samp(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>(sum(<em class="replaceable"><code>X</code></em>*<em class="replaceable"><code>Y</code></em>) - sum(<em class="replaceable"><code>X</code></em>) * sum(<em class="replaceable"><code>Y</code></em>) / <em class="replaceable"><code>N</code></em>) / (<em class="replaceable"><code>N</code></em> - 1)</td>
+</tr>
+<tr>
+<td>       <code class="function">regr_avgx(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>sum(<em class="replaceable"><code>X</code></em>) /
+      <em class="replaceable"><code>N</code></em>
+</td>
+</tr>
+<tr>
+<td>       <code class="function">regr_avgy(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>sum(<em class="replaceable"><code>Y</code></em>) /
+      <em class="replaceable"><code>N</code></em>
+</td>
+</tr>
+<tr>
+<td>       <code class="function">regr_count(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">bigint</code>
+      </td>
+<td>number of input rows in which both expressions are non-null</td>
+</tr>
+<tr>
+<td>       <a name="id2599985"></a>
+       <code class="function">regr_intercept(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>(sum(<em class="replaceable"><code>Y</code></em>) *
+      sum(<em class="replaceable"><code>X</code></em>^2) - sum(<em class="replaceable"><code>X</code></em>) * sum(<em class="replaceable"><code>X</code></em>*<em class="replaceable"><code>Y</code></em>)) / (<em class="replaceable"><code>N</code></em> * sum(<em class="replaceable"><code>X</code></em>^2) - sum(<em class="replaceable"><code>X</code></em>)^2)</td>
+</tr>
+<tr>
+<td>       <code class="function">regr_r2(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>(<em class="replaceable"><code>N</code></em> *
+      sum(<em class="replaceable"><code>X</code></em>*<em class="replaceable"><code>Y</code></em>) - sum(<em class="replaceable"><code>X</code></em>) * sum(<em class="replaceable"><code>Y</code></em>))^2 / ((<em class="replaceable"><code>N</code></em> * sum(<em class="replaceable"><code>X</code></em>^2) - sum(<em class="replaceable"><code>X</code></em>)^2) * (<em class="replaceable"><code>N</code></em> * sum(<em class="replaceable"><code>Y</code></em>^2) - sum(<em class="replaceable"><code>Y</code></em>)^2))</td>
+</tr>
+<tr>
+<td>       <a name="id2600168"></a>
+       <code class="function">regr_slope(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>(<em class="replaceable"><code>N</code></em> *
+      sum(<em class="replaceable"><code>X</code></em>*<em class="replaceable"><code>Y</code></em>) - sum(<em class="replaceable"><code>X</code></em>) * sum(<em class="replaceable"><code>Y</code></em>)) / (<em class="replaceable"><code>N</code></em> * sum(<em class="replaceable"><code>X</code></em>^2) - sum(<em class="replaceable"><code>X</code></em>)^2)</td>
+</tr>
+<tr>
+<td>       <code class="function">regr_sxx(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>sum(<em class="replaceable"><code>X</code></em>^2) -
+      sum(<em class="replaceable"><code>X</code></em>)^2 / <em class="replaceable"><code>N</code></em>
+</td>
+</tr>
+<tr>
+<td>       <code class="function">regr_sxy(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>sum(<em class="replaceable"><code>X</code></em>*<em class="replaceable"><code>Y</code></em>) - sum(<em class="replaceable"><code>X</code></em>) * sum(<em class="replaceable"><code>Y</code></em>) / <em class="replaceable"><code>N</code></em>
+</td>
+</tr>
+<tr>
+<td>       <code class="function">regr_syy(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>       <code class="type">double precision</code>
+      </td>
+<td>sum(<em class="replaceable"><code>Y</code></em>^2) -
+      sum(<em class="replaceable"><code>Y</code></em>)^2 / <em class="replaceable"><code>N</code></em>
+</td>
+</tr>
+<tr>
+<td>       <a name="id2600414"></a>
+       <code class="function">stddev(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>historical alias for <code class="function">stddev_samp</code>
+</td>
+</tr>
+<tr>
+<td>       <a name="id2600477"></a>
+       <code class="function">stddev_pop(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>population standard deviation of the input values</td>
+</tr>
+<tr>
+<td>       <a name="id2600537"></a>
+       <code class="function">stddev_samp(<em class="replaceable"><code>expression</code></em>)</code>
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>sample standard deviation of the input values</td>
+</tr>
+<tr>
+<td>       <a name="id2600598"></a>
+       <code class="function">variance</code>(<em class="replaceable"><code>expression</code></em>)
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>historical alias for <code class="function">var_samp</code>
+</td>
+</tr>
+<tr>
+<td>       <a name="id2600660"></a>
+       <code class="function">var_pop</code>(<em class="replaceable"><code>expression</code></em>)
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>population variance of the input values (square of the population standard deviation)</td>
+</tr>
+<tr>
+<td>       <a name="id2600722"></a>
+       <code class="function">var_samp</code>(<em class="replaceable"><code>expression</code></em>)
+      </td>
+<td>       <code class="type">smallint</code>, <code class="type">int</code>,
+       <code class="type">bigint</code>, <code class="type">real</code>, <code class="type">double
+       precision</code>, or <code class="type">numeric</code>
+      </td>
+<td>       <code class="type">double precision</code> for floating-point arguments,
+       otherwise <code class="type">numeric</code>
+      </td>
+<td>sample variance of the input values (square of the sample standard deviation)</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
 </div></body>
 </html>

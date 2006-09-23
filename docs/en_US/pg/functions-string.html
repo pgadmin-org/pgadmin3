@@ -4,11 +4,12 @@
 <title>9.4. String Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 <link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -24,15 +25,15 @@
     to a string representation first.  Some functions also exist
     natively for the bit-string types.
    </p>
-<p>    <span class="acronym">SQL</span> defines some string functions with a special syntax where
+<p>    <acronym class="acronym">SQL</acronym> defines some string functions with a special syntax where
     certain key words rather than commas are used to separate the
-    arguments.  Details are in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<span class="acronym">SQL</span> String Functions and Operators&#8221;</a>.
+    arguments.  Details are in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<acronym class="acronym">SQL</acronym> String Functions and Operators&#8221;</a>.
     These functions are also implemented using the regular syntax for
     function invocation.  (See <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.)
    </p>
-<a name="id544392"></a><a name="id544398"></a><a name="id544405"></a><a name="id544411"></a><a name="id544417"></a><a name="id544424"></a><a name="id544430"></a><a name="id544436"></a><a name="id544443"></a><a name="id544449"></a><div class="table">
-<a name="functions-string-sql"></a><p class="title"><b>Table 9.5. <span class="acronym">SQL</span> String Functions and Operators</b></p>
-<table summary="SQL String Functions and Operators" border="1">
+<a name="id2578282"></a><a name="id2578288"></a><a name="id2578294"></a><a name="id2578300"></a><a name="id2578305"></a><a name="id2578311"></a><a name="id2578317"></a><a name="id2578323"></a><a name="id2578328"></a><a name="id2578334"></a><div class="table">
+<a name="functions-string-sql"></a><p class="title"><b>Table 9.5. <acronym class="acronym">SQL</acronym> String Functions and Operators</b></p>
+<div class="table-contents"><table summary="SQL String Functions and Operators" border="1">
 <colgroup>
 <col>
 <col>
@@ -53,7 +54,7 @@
         <em class="parameter"><code>string</code></em></code></td>
 <td> <code class="type">text</code> </td>
 <td>        String concatenation
-        <a name="id544520"></a>
+        <a name="id2578398"></a>
        </td>
 <td><code class="literal">'Post' || 'greSQL'</code></td>
 <td><code class="literal">PostgreSQL</code></td>
@@ -71,8 +72,8 @@
 </td>
 <td><code class="type">int</code></td>
 <td>        Number of characters in string
-        <a name="id544624"></a>
-        <a name="id544634"></a>
+        <a name="id2578492"></a>
+        <a name="id2578502"></a>
        </td>
 <td><code class="literal">char_length('jose')</code></td>
 <td><code class="literal">4</code></td>
@@ -130,7 +131,9 @@
 <tr>
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em>)</code></td>
 <td><code class="type">text</code></td>
-<td>        Extract substring matching POSIX regular expression
+<td>        Extract substring matching POSIX regular expression. See
+        <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on pattern
+        matching.
        </td>
 <td><code class="literal">substring('Thomas' from '...$')</code></td>
 <td><code class="literal">mas</code></td>
@@ -138,8 +141,9 @@
 <tr>
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em> for <em class="replaceable"><code>escape</code></em>)</code></td>
 <td><code class="type">text</code></td>
-<td>        Extract substring matching <span class="acronym">SQL</span> regular
-        expression
+<td>        Extract substring matching <acronym class="acronym">SQL</acronym> regular expression.
+        See <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on
+        pattern matching.
        </td>
 <td><code class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</code></td>
 <td><code class="literal">oma</code></td>
@@ -165,15 +169,15 @@
 <td><code class="literal">TOM</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    Additional string manipulation functions are available and are
+<br class="table-break"><p>    Additional string manipulation functions are available and are
     listed in <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.  Some of them are used internally to implement the
-    <span class="acronym">SQL</span>-standard string functions listed in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<span class="acronym">SQL</span> String Functions and Operators&#8221;</a>.
+    <acronym class="acronym">SQL</acronym>-standard string functions listed in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<acronym class="acronym">SQL</acronym> String Functions and Operators&#8221;</a>.
    </p>
-<a name="id545181"></a><a name="id545187"></a><a name="id545193"></a><a name="id545199"></a><a name="id545206"></a><a name="id545212"></a><a name="id545218"></a><a name="id545224"></a><a name="id545231"></a><a name="id545237"></a><a name="id545243"></a><a name="id545249"></a><a name="id545256"></a><a name="id545262"></a><a name="id545268"></a><a name="id545275"></a><a name="id545281"></a><a name="id545287"></a><a name="id545294"></a><a name="id545300"></a><a name="id545306"></a><a name="id545312"></a><div class="table">
+<a name="id2579010"></a><a name="id2579016"></a><a name="id2579021"></a><a name="id2579027"></a><a name="id2579033"></a><a name="id2579038"></a><a name="id2579044"></a><a name="id2579050"></a><a name="id2579056"></a><a name="id2579061"></a><a name="id2579067"></a><a name="id2579073"></a><a name="id2579079"></a><a name="id2579085"></a><a name="id2579090"></a><a name="id2579096"></a><a name="id2579102"></a><a name="id2579108"></a><a name="id2579113"></a><a name="id2579119"></a><a name="id2579125"></a><a name="id2579130"></a><div class="table">
 <a name="functions-string-other"></a><p class="title"><b>Table 9.6. Other String Functions</b></p>
-<table summary="Other String Functions" border="1">
+<div class="table-contents"><table summary="Other String Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -190,10 +194,10 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><code class="literal"><code class="function">ascii</code>(<code class="type">text</code>)</code></td>
+<td><code class="literal"><code class="function">ascii</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">int</code></td>
 <td>
-<span class="acronym">ASCII</span> code of the first character of the argument</td>
+<acronym class="acronym">ASCII</acronym> code of the first byte of the argument</td>
 <td><code class="literal">ascii('x')</code></td>
 <td><code class="literal">120</code></td>
 </tr>
@@ -211,13 +215,12 @@
 <tr>
 <td><code class="literal"><code class="function">chr</code>(<code class="type">int</code>)</code></td>
 <td><code class="type">text</code></td>
-<td>Character with the given <span class="acronym">ASCII</span> code</td>
+<td>Character with the given <acronym class="acronym">ASCII</acronym> code</td>
 <td><code class="literal">chr(65)</code></td>
 <td><code class="literal">A</code></td>
 </tr>
 <tr>
-<td>        <code class="literal"><code class="function">convert</code>(<em class="parameter"><code>string</code></em>
-        <code class="type">text</code>,
+<td>        <code class="literal"><code class="function">convert</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
         [<span class="optional"><em class="parameter"><code>src_encoding</code></em> <code class="type">name</code>,</span>]
         <em class="parameter"><code>dest_encoding</code></em> <code class="type">name</code>)</code>
        </td>
@@ -248,14 +251,14 @@
         <em class="parameter"><code>type</code></em> <code class="type">text</code>)</code>
        </td>
 <td><code class="type">text</code></td>
-<td>        Encode binary data to <span class="acronym">ASCII</span>-only representation.  Supported
+<td>        Encode binary data to <acronym class="acronym">ASCII</acronym>-only representation.  Supported
         types are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
        </td>
 <td><code class="literal">encode( '123\\000\\001', 'base64')</code></td>
 <td><code class="literal">MTIzAAE=</code></td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">initcap</code>(<code class="type">text</code>)</code></td>
+<td><code class="literal"><code class="function">initcap</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>        Convert the first letter of each word to uppercase and the
         rest to lowercase. Words are sequences of alphanumeric
@@ -265,7 +268,7 @@
 <td><code class="literal">Hi Thomas</code></td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></td>
+<td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">int</code></td>
 <td>        Number of characters in <em class="parameter"><code>string</code></em>
        </td>
@@ -302,7 +305,7 @@
 <td><code class="literal">trim</code></td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">md5</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></td>
+<td><code class="literal"><code class="function">md5</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>        Calculates the MD5 hash of <em class="parameter"><code>string</code></em>,
         returning the result in hexadecimal
@@ -319,10 +322,10 @@
 <td><code class="literal">SQL_ASCII</code></td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">quote_ident</code>(<em class="parameter"><code>string</code></em> text)</code></td>
+<td><code class="literal"><code class="function">quote_ident</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>        Return the given string suitably quoted to be used as an identifier
-        in an <span class="acronym">SQL</span> statement string.
+        in an <acronym class="acronym">SQL</acronym> statement string.
         Quotes are added only if necessary (i.e., if the string contains
         non-identifier characters or would be case-folded).
         Embedded quotes are properly doubled.
@@ -331,14 +334,24 @@
 <td><code class="literal">"Foo bar"</code></td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">quote_literal</code>(<em class="parameter"><code>string</code></em> text)</code></td>
+<td><code class="literal"><code class="function">quote_literal</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>        Return the given string suitably quoted to be used as a string literal
-        in an <span class="acronym">SQL</span> statement string.
+        in an <acronym class="acronym">SQL</acronym> statement string.
         Embedded quotes and backslashes are properly doubled.
        </td>
 <td><code class="literal">quote_literal( 'O\'Reilly')</code></td>
 <td><code class="literal">'O''Reilly'</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">regexp_replace</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>pattern</code></em> <code class="type">text</code>, <em class="parameter"><code>replacement</code></em> <code class="type">text</code> [,<em class="parameter"><code>flags</code></em> <code class="type">text</code>])</code></td>
+<td><code class="type">text</code></td>
+<td>        Replace substring matching POSIX regular expression. See
+        <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on pattern
+        matching.
+       </td>
+<td><code class="literal">regexp_replace('Thomas', '.[mN]a.', 'M')</code></td>
+<td><code class="literal">ThM</code></td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">repeat</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>number</code></em> <code class="type">int</code>)</code></td>
@@ -400,7 +413,7 @@
 </tr>
 <tr>
 <td><code class="literal"><code class="function">strpos</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>substring</code></em>)</code></td>
-<td><code class="type">text</code></td>
+<td><code class="type">int</code></td>
 <td>        Location of specified substring (same as
         <code class="literal">position(<em class="parameter"><code>substring</code></em> in
          <em class="parameter"><code>string</code></em>)</code>, but note the reversed
@@ -419,11 +432,12 @@
 <td><code class="literal">ph</code></td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">to_ascii</code>(<code class="type">text</code>
-        [<span class="optional">, <em class="parameter"><code>encoding</code></em></span>])</code></td>
+<td><code class="literal"><code class="function">to_ascii</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>encoding</code></em> <code class="type">text</code></span>])</code></td>
 <td><code class="type">text</code></td>
-<td>       Convert <em class="parameter"><code>text</code></em> to <span class="acronym">ASCII</span> from another encoding
-       <sup>[<a name="id546764" href="#ftn.id546764">a</a>]</sup>
+<td>       Convert <em class="parameter"><code>string</code></em> to <acronym class="acronym">ASCII</acronym> from another encoding
+       (only supports conversion from  <code class="literal">LATIN1</code>, <code class="literal">LATIN2</code>, <code class="literal">LATIN9</code>,
+       and <code class="literal">WIN1250</code> encodings)
        </td>
 <td><code class="literal">to_ascii('Karel')</code></td>
 <td><code class="literal">Karel</code></td>
@@ -439,8 +453,7 @@
 <td><code class="literal">7fffffff</code></td>
 </tr>
 <tr>
-<td>        <code class="literal"><code class="function">translate</code>(<em class="parameter"><code>string</code></em>
-        <code class="type">text</code>,
+<td>        <code class="literal"><code class="function">translate</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
         <em class="parameter"><code>from</code></em> <code class="type">text</code>,
         <em class="parameter"><code>to</code></em> <code class="type">text</code>)</code>
        </td>
@@ -454,15 +467,11 @@
 <td><code class="literal">a23x5</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id546764" href="#id546764">a</a>] </sup>         The <code class="function">to_ascii</code> function supports conversion from
-         <code class="literal">LATIN1</code>, <code class="literal">LATIN2</code>, <code class="literal">LATIN9</code>,
-         and <code class="literal">WIN1250</code> encodings only.
-        </p></div></td></tr></tbody>
-</table>
+</table></div>
 </div>
-<div class="table">
+<br class="table-break"><div class="table">
 <a name="conversion-names"></a><p class="title"><b>Table 9.7. Built-in Conversions</b></p>
-<table summary="Built-in Conversions" border="1">
+<div class="table-contents"><table summary="Built-in Conversions" border="1">
 <colgroup>
 <col>
 <col>
@@ -470,7 +479,7 @@
 </colgroup>
 <thead><tr>
 <th>Conversion Name
-        <sup>[<a name="id546972" href="#ftn.id546972">a</a>]</sup>
+        <sup>[<a name="id2580703" href="#ftn.id2580703">a</a>]</sup>
        </th>
 <th>Source Encoding</th>
 <th>Destination Encoding</th>
@@ -962,9 +971,29 @@
 <td><code class="literal">WIN1252</code></td>
 </tr>
 <tr>
+<td><code class="literal">utf8_to_windows_1253</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1253</code></td>
+</tr>
+<tr>
+<td><code class="literal">utf8_to_windows_1254</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1254</code></td>
+</tr>
+<tr>
+<td><code class="literal">utf8_to_windows_1255</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1255</code></td>
+</tr>
+<tr>
 <td><code class="literal">utf8_to_windows_1256</code></td>
 <td><code class="literal">UTF8</code></td>
 <td><code class="literal">WIN1256</code></td>
+</tr>
+<tr>
+<td><code class="literal">utf8_to_windows_1257</code></td>
+<td><code class="literal">UTF8</code></td>
+<td><code class="literal">WIN1257</code></td>
 </tr>
 <tr>
 <td><code class="literal">utf8_to_windows_866</code></td>
@@ -1057,14 +1086,15 @@
 <td><code class="literal">UTF8</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id546972" href="#id546972">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2580703" href="#id2580703">a</a>] </sup>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
           by <code class="literal">_to_</code> followed by the equally processed
           destination encoding name. Therefore the names might deviate
           from the customary encoding names.
          </p></div></td></tr></tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

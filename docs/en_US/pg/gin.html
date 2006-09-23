@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 50. GIN Indexes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="gist-recovery.html" title="49.5. Crash Recovery">
+<link rel="next" href="gin-extensibility.html" title="50.2. Extensibility">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="gin">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="gin"></a>Chapter 50. GIN Indexes</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="gin.html#gin-intro">50.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="gin-extensibility.html">50.2. Extensibility</a></span></dt>
+<dt><span class="sect1"><a href="gin-implementation.html">50.3. Implementation</a></span></dt>
+<dt><span class="sect1"><a href="gin-tips.html">50.4. GIN tips and trics</a></span></dt>
+<dt><span class="sect1"><a href="gin-limit.html">50.5. Limitations</a></span></dt>
+<dt><span class="sect1"><a href="gin-examples.html">50.6. Examples</a></span></dt>
+</dl>
+</div>
+<a name="id2820548"></a><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="gin-intro"></a>50.1. Introduction</h2></div></div></div>
+<p>   <acronym class="acronym">GIN</acronym> stands for Generalized Inverted Index.  It is
+   an index structure storing a set of (key, posting list) pairs, where
+   'posting list' is a set of rows in which the key occurs. Each
+   row may contain many keys.
+ </p>
+<p>   It is generalized in the sense that a <acronym class="acronym">GIN</acronym> index
+   does not need to be aware of the operation that it accelerates.
+   Instead, it uses custom strategies defined for particular data types.
+ </p>
+<p>  One advantage of <acronym class="acronym">GIN</acronym> is that it allows the development
+  of custom data types with the appropriate access methods, by
+  an expert in the domain of the data type, rather than a database expert.
+  This is much the same advantage as using <acronym class="acronym">GiST</acronym>.
+ </p>
+<p>   The <acronym class="acronym">GIN</acronym>
+    implementation in <span class="productname">PostgreSQL</span> is primarily
+    maintained by Teodor Sigaev and Oleg Bartunov, and there is more
+    information on their
+    <a href="http://www.sai.msu.su/~megera/oddmuse/index.cgi/Gin" target="_top">website</a>.
+  </p>
+</div>
+</div></body>
+</html>

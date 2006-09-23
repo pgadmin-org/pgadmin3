@@ -4,16 +4,17 @@
 <title>32.14. Interfacing Extensions To Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
 <link rel="prev" href="xoper-optimization.html" title="32.13. Operator Optimization Information">
 <link rel="next" href="triggers.html" title="Chapter 33. Triggers">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xindex"></a>32.14. Interfacing Extensions To Indexes</h2></div></div></div>
-<a name="id659528"></a><p>   The procedures described thus far let you define new types, new
+<a name="id2698802"></a><p>   The procedures described thus far let you define new types, new
    functions, and new operators. However, we cannot yet define an
    index on a column of a new data type.  To do this, we must define an
    <em class="firstterm">operator class</em> for the new data type.  Later in this
@@ -48,7 +49,7 @@
 <p>   The routines for an index method do not directly know anything
    about the data types that the index method will operate on.
    Instead, an <em class="firstterm">operator
-   class</em><a name="id659650"></a>
+   class</em><a name="id2698912"></a>
    identifies the set of operations that the index method needs to use
    to work with a particular data type.  Operator classes are so
    called because one thing they specify is the set of
@@ -101,7 +102,7 @@
   </p>
 <div class="table">
 <a name="xindex-btree-strat-table"></a><p class="title"><b>Table 32.2. B-tree Strategies</b></p>
-<table summary="B-tree Strategies" border="1">
+<div class="table-contents"><table summary="B-tree Strategies" border="1">
 <colgroup>
 <col>
 <col>
@@ -132,14 +133,14 @@
 <td>5</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   Hash indexes express only bitwise equality, and so they use only one
+<br class="table-break"><p>   Hash indexes express only bitwise equality, and so they use only one
    strategy, shown in <a href="xindex.html#xindex-hash-strat-table" title="Table 32.3. Hash Strategies">Table 32.3, &#8220;Hash Strategies&#8221;</a>.
   </p>
 <div class="table">
 <a name="xindex-hash-strat-table"></a><p class="title"><b>Table 32.3. Hash Strategies</b></p>
-<table summary="Hash Strategies" border="1">
+<div class="table-contents"><table summary="Hash Strategies" border="1">
 <colgroup>
 <col>
 <col>
@@ -152,18 +153,22 @@
 <td>equal</td>
 <td>1</td>
 </tr></tbody>
-</table>
+</table></div>
 </div>
-<p>   R-tree indexes express relationships in two-dimensional space.
-   They use twelve strategies, shown in
-   <a href="xindex.html#xindex-rtree-strat-table" title="Table 32.4. R-tree Strategies">Table 32.4, &#8220;R-tree Strategies&#8221;</a>.  Four of these are true
+<br class="table-break"><p>   GiST indexes are even more flexible: they do not have a fixed set of
+   strategies at all.  Instead, the &#8220;<span class="quote">consistency</span>&#8221; support routine
+   of each particular GiST operator class interprets the strategy numbers
+   however it likes.  As an example, several of the built-in GiST index
+   operator classes index two-dimensional geometric objects, providing
+   the &#8220;<span class="quote">R-tree</span>&#8221; strategies shown in
+   <a href="xindex.html#xindex-rtree-strat-table" title="Table 32.4. GiST Two-Dimensional &#8220;R-tree&#8221; Strategies">Table 32.4, &#8220;GiST Two-Dimensional &#8220;<span class="quote">R-tree</span>&#8221; Strategies&#8221;</a>.  Four of these are true
    two-dimensional tests (overlaps, same, contains, contained by);
    four of them consider only the X direction; and the other four
    provide the same tests in the Y direction.
   </p>
 <div class="table">
-<a name="xindex-rtree-strat-table"></a><p class="title"><b>Table 32.4. R-tree Strategies</b></p>
-<table summary="R-tree Strategies" border="1">
+<a name="xindex-rtree-strat-table"></a><p class="title"><b>Table 32.4. GiST Two-Dimensional &#8220;<span class="quote">R-tree</span>&#8221; Strategies</b></p>
+<div class="table-contents"><table summary="GiST Two-Dimensional R-tree Strategies" border="1">
 <colgroup>
 <col>
 <col>
@@ -222,14 +227,46 @@
 <td>12</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   GiST indexes are even more flexible: they do not have a fixed set of
-   strategies at all.  Instead, the &#8220;<span class="quote">consistency</span>&#8221; support routine
-   of each particular GiST operator class interprets the strategy numbers
-   however it likes.
+<br class="table-break"><p>   GIN indexes are similar to GiST's in flexibility: they don't have a fixed
+   et of strategies. Instead, the &#8220;<span class="quote">consistency</span>&#8221; support routine
+   interprets the strategy numbers accordingly with operator class
+   definition. As an example, strategies of operator class over arrays
+   is shown in <a href="xindex.html#xindex-gin-array-strat-table" title="Table 32.5. GIN Array's Strategies">Table 32.5, &#8220;GIN Array's Strategies&#8221;</a>.
   </p>
-<p>   Note that all strategy operators return Boolean values.  In
+<div class="table">
+<a name="xindex-gin-array-strat-table"></a><p class="title"><b>Table 32.5. GIN Array's Strategies</b></p>
+<div class="table-contents"><table summary="GIN Array's Strategies" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Operation</th>
+<th>Strategy Number</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>overlap</td>
+<td>1</td>
+</tr>
+<tr>
+<td>contains</td>
+<td>2</td>
+</tr>
+<tr>
+<td>is contained by</td>
+<td>3</td>
+</tr>
+<tr>
+<td>equal</td>
+<td>4</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>   Note that all strategy operators return Boolean values.  In
    practice, all operators defined as index method strategies must
    return type <code class="type">boolean</code>, since they must appear at the top
    level of a <code class="literal">WHERE</code> clause to be used with an index.
@@ -251,9 +288,8 @@
    additional support routines in order to work. For example, the B-tree
    index method must be able to compare two keys and determine whether one
    is greater than, equal to, or less than the other.  Similarly, the
-   R-tree index method must be able to compute
-   intersections,  unions, and sizes of rectangles.  These
-   operations do not correspond to operators used in qualifications in
+   hash index method must be able to compute hash codes for key values.
+   These operations do not correspond to operators used in qualifications in
    SQL commands;  they are administrative routines used by
    the index methods, internally.
   </p>
@@ -263,11 +299,11 @@
    of functions it needs, and the operator class identifies the correct
    functions to use by assigning them to the &#8220;<span class="quote">support function numbers</span>&#8221;.
   </p>
-<p>   B-trees require a single support function, shown in <a href="xindex.html#xindex-btree-support-table" title="Table 32.5. B-tree Support Functions">Table 32.5, &#8220;B-tree Support Functions&#8221;</a>.
+<p>   B-trees require a single support function, shown in <a href="xindex.html#xindex-btree-support-table" title="Table 32.6. B-tree Support Functions">Table 32.6, &#8220;B-tree Support Functions&#8221;</a>.
   </p>
 <div class="table">
-<a name="xindex-btree-support-table"></a><p class="title"><b>Table 32.5. B-tree Support Functions</b></p>
-<table summary="B-tree Support Functions" border="1">
+<a name="xindex-btree-support-table"></a><p class="title"><b>Table 32.6. B-tree Support Functions</b></p>
+<div class="table-contents"><table summary="B-tree Support Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -283,13 +319,13 @@
        </td>
 <td>1</td>
 </tr></tbody>
-</table>
+</table></div>
 </div>
-<p>   Hash indexes likewise require one support function, shown in <a href="xindex.html#xindex-hash-support-table" title="Table 32.6. Hash Support Functions">Table 32.6, &#8220;Hash Support Functions&#8221;</a>.
+<br class="table-break"><p>   Hash indexes likewise require one support function, shown in <a href="xindex.html#xindex-hash-support-table" title="Table 32.7. Hash Support Functions">Table 32.7, &#8220;Hash Support Functions&#8221;</a>.
   </p>
 <div class="table">
-<a name="xindex-hash-support-table"></a><p class="title"><b>Table 32.6. Hash Support Functions</b></p>
-<table summary="Hash Support Functions" border="1">
+<a name="xindex-hash-support-table"></a><p class="title"><b>Table 32.7. Hash Support Functions</b></p>
+<div class="table-contents"><table summary="Hash Support Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -302,44 +338,14 @@
 <td>Compute the hash value for a key</td>
 <td>1</td>
 </tr></tbody>
-</table>
+</table></div>
 </div>
-<p>   R-tree indexes require three support functions,
-   shown in <a href="xindex.html#xindex-rtree-support-table" title="Table 32.7. R-tree Support Functions">Table 32.7, &#8220;R-tree Support Functions&#8221;</a>.
-  </p>
-<div class="table">
-<a name="xindex-rtree-support-table"></a><p class="title"><b>Table 32.7. R-tree Support Functions</b></p>
-<table summary="R-tree Support Functions" border="1">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>Function</th>
-<th>Support Number</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>union</td>
-<td>1</td>
-</tr>
-<tr>
-<td>intersection</td>
-<td>2</td>
-</tr>
-<tr>
-<td>size</td>
-<td>3</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>   GiST indexes require seven support functions,
+<br class="table-break"><p>   GiST indexes require seven support functions,
    shown in <a href="xindex.html#xindex-gist-support-table" title="Table 32.8. GiST Support Functions">Table 32.8, &#8220;GiST Support Functions&#8221;</a>.
   </p>
 <div class="table">
 <a name="xindex-gist-support-table"></a><p class="title"><b>Table 32.8. GiST Support Functions</b></p>
-<table summary="GiST Support Functions" border="1">
+<div class="table-contents"><table summary="GiST Support Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -350,37 +356,81 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>consistent</td>
+<td>consistent - determine whether key satifies the 
+		query qualifier</td>
 <td>1</td>
 </tr>
 <tr>
-<td>union</td>
+<td>union - compute union of of a set of given keys</td>
 <td>2</td>
 </tr>
 <tr>
-<td>compress</td>
+<td>compress - computes a compressed representation of a key or value
+		to be indexed</td>
 <td>3</td>
 </tr>
 <tr>
-<td>decompress</td>
+<td>decompress - computes a decompressed representation of a 
+	   compressed key </td>
 <td>4</td>
 </tr>
 <tr>
-<td>penalty</td>
+<td>penalty - compute penalty for inserting new key into subtree 
+	   with given subtree's key</td>
 <td>5</td>
 </tr>
 <tr>
-<td>picksplit</td>
+<td>picksplit - determine which entries of a page are to be moved
+	   to the new page and compute the union keys for resulting pages </td>
 <td>6</td>
 </tr>
 <tr>
-<td>equal</td>
+<td>equal - compare two keys and returns true if they are equal 
+		</td>
 <td>7</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   Unlike strategy operators, support functions return whichever data
+<br class="table-break"><p>   GIN indexes require four support functions,
+   shown in <a href="xindex.html#xindex-gin-support-table" title="Table 32.9. GIN Support Functions">Table 32.9, &#8220;GIN Support Functions&#8221;</a>.
+  </p>
+<div class="table">
+<a name="xindex-gin-support-table"></a><p class="title"><b>Table 32.9. GIN Support Functions</b></p>
+<div class="table-contents"><table summary="GIN Support Functions" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Support Number</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>   compare - Compare two keys and return an integer less than zero, zero, or
+   greater than zero, indicating whether the first key is less than, equal to,
+   or greater than the second.
+	   </td>
+<td>1</td>
+</tr>
+<tr>
+<td>extractValue - extract keys from value to be indexed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>extractQuery - extract keys from query</td>
+<td>3</td>
+</tr>
+<tr>
+<td>consistent - determine whether value matches by the
+			   query</td>
+<td>4</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>   Unlike strategy operators, support functions return whichever data
    type the particular index method expects; for example in the case
    of the comparison function for B-trees, a signed integer.
   </p>
@@ -606,7 +656,7 @@ DEFAULT FOR TYPE int8 USING btree AS
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xindex-opclass-dependencies"></a>32.14.6. System Dependencies on Operator Classes</h3></div></div></div>
-<a name="id660741"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
+<a name="id2699994"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
    properties of operators in more ways than just whether they can be used
    with indexes.  Therefore, you might want to create operator classes
    even if you have no intention of indexing any columns of your data type.
@@ -658,7 +708,7 @@ DEFAULT FOR TYPE int8 USING btree AS
 <p>
    can be satisfied exactly by a B-tree index on the integer column.
    But there are cases where an index is useful as an inexact guide to
-   the matching rows.  For example, if an R-tree index stores only
+   the matching rows.  For example, if a GiST index stores only
    bounding boxes for objects, then it cannot exactly satisfy a <code class="literal">WHERE</code>
    condition that tests overlap between nonrectangular objects such as
    polygons.  Yet we could use the index to find objects whose bounding
@@ -685,11 +735,12 @@ DEFAULT FOR TYPE int8 USING btree AS
         STORAGE box;</pre>
 <p>
 
-   At present, only the GiST index method supports a
+   At present, only the GiST and GIN index method supports a
    <code class="literal">STORAGE</code> type that's different from the column data type.
    The GiST <code class="literal">compress</code> and <code class="literal">decompress</code> support
    routines must deal with data-type conversion when <code class="literal">STORAGE</code>
-   is used.
+   is used. Functions named <code class="literal">extractValue</code> and <code class="literal">extractQuery</code>
+   do conversation into internally used types for GIN.
   </p>
 </div>
 </div></body>

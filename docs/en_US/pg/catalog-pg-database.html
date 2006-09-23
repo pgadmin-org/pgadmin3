@@ -4,16 +4,17 @@
 <title>42.15. pg_database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="catalog-pg-conversion.html" title="42.14. pg_conversion">
 <link rel="next" href="catalog-pg-depend.html" title="42.16. pg_depend">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-database"></a>42.15. <code class="structname">pg_database</code></h2></div></div></div>
-<a name="id772441"></a><p>   The catalog <code class="structname">pg_database</code> stores information
+<a name="id2801729"></a><p>   The catalog <code class="structname">pg_database</code> stores information
    about the available databases.  Databases are created with the
    <code class="command">CREATE DATABASE</code> command.  Consult
    <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for details about the meaning of some of the
@@ -25,8 +26,8 @@
    one per database.
   </p>
 <div class="table">
-<a name="id772488"></a><p class="title"><b>Table 42.15. <code class="structname">pg_database</code> Columns</b></p>
-<table summary="pg_database Columns" border="1">
+<a name="id2801771"></a><p class="title"><b>Table 42.15. <code class="structname">pg_database</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_database Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -56,7 +57,9 @@
 <td><code class="structfield">encoding</code></td>
 <td><code class="type">int4</code></td>
 <td> </td>
-<td>Character encoding for this database</td>
+<td>Character encoding for this database
+          (<code class="function">pg_encoding_to_char()</code> can translate
+           this number to the encoding name)</td>
 </tr>
 <tr>
 <td><code class="structfield">datistemplate</code></td>
@@ -96,25 +99,31 @@
 <td><code class="structfield">datvacuumxid</code></td>
 <td><code class="type">xid</code></td>
 <td> </td>
-<td>       All rows inserted or deleted by transaction IDs before this one
-       have been marked as known committed or known aborted in this database.
-       This is used to determine when commit-log space can be recycled.
+<td>       The transaction ID that was used as cleaning point as of the last vacuum
+       operation.  All rows inserted or deleted by transaction IDs before this one
+       have been marked as known good or deleted.  This
+       is used to determine when commit-log space can be recycled.
+       If InvalidTransactionId, then the minimum is unknown and can be
+       determined by scanning <code class="structname">pg_class</code>.<code class="structfield">relvacuumxid</code>.
       </td>
 </tr>
 <tr>
-<td><code class="structfield">datfrozenxid</code></td>
+<td><code class="structfield">datminxid</code></td>
 <td><code class="type">xid</code></td>
 <td> </td>
-<td>       All rows inserted by transaction IDs before this one have been
+<td>       The minimum transaction ID present in all tables in this database.
+       All rows inserted by transaction IDs before this one have been
        relabeled with a permanent (&#8220;<span class="quote">frozen</span>&#8221;) transaction ID in this
-       database.  This is useful to check whether a database must be vacuumed
-       soon to avoid transaction ID wrap-around problems.
+       database.  This is useful to check whether a database must be
+       vacuumed soon to avoid transaction ID wrap-around problems.
+       If InvalidTransactionId, then the minimum is unknown and can be
+       determined by scanning <code class="structname">pg_class</code>.<code class="structfield">relminxid</code>.
       </td>
 </tr>
 <tr>
 <td><code class="structfield">dattablespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-tablespace.html" title="42.31. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="42.32. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
 <td>       The default tablespace for the database.
        Within this database, all tables for which
        <code class="structname">pg_class</code>.<code class="structfield">reltablespace</code> is zero
@@ -135,11 +144,12 @@
 <td>       Access privileges; see
        <a href="sql-grant.html">GRANT</a> and
        <a href="sql-revoke.html">REVOKE</a>
-       for details.
+       for details
       </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

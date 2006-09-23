@@ -4,11 +4,12 @@
 <title>ALTER SEQUENCE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterschema.html" title="ALTER SCHEMA">
 <link rel="next" href="sql-altertable.html" title="ALTER TABLE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-altersequence"></a><div class="titlepage"></div>
@@ -18,16 +19,17 @@
    &#8212;    change the definition of a sequence generator
   </p>
 </div>
-<a name="id691328"></a><div class="refsynopsisdiv">
+<a name="id2729282"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
     [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
     [ RESTART [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]
+    [ OWNED BY { <em class="replaceable"><code>table</code></em>.<em class="replaceable"><code>column</code></em> | NONE } ]
 ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em class="replaceable"><code>new_schema</code></em>
   </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691402"></a><h2>Description</h2>
+<a name="id2729360"></a><h2>Description</h2>
 <p>   <code class="command">ALTER SEQUENCE</code> changes the parameters of an existing
    sequence generator.  Any parameters not specifically set in the
    <code class="command">ALTER SEQUENCE</code> command retain their prior settings.
@@ -38,7 +40,7 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691442"></a><h2>Parameters</h2>
+<a name="id2729396"></a><h2>Parameters</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
@@ -101,6 +103,19 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
         CYCLE</code> are specified, the old cycle behavior will be
         maintained.
        </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">OWNED BY</code> <em xmlns="" class="replaceable"><code>table</code></em>.<em xmlns="" class="replaceable"><code>column</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">OWNED BY NONE</code></span>
+</dt>
+<dd><p>      The <code class="literal">OWNED BY</code> option causes the sequence to be
+      associated with a specific table column, such that if that column
+      (or its whole table) is dropped, the sequence will be automatically
+      dropped as well.  If specified, this association replaces any
+      previously specified association for the sequence.  The specified
+      table must have the same owner and be in the same schema as the
+      sequence.
+      Specifying <code class="literal">OWNED BY NONE</code> removes any existing
+      association, making the sequence &#8220;<span class="quote">free-standing</span>&#8221;.
+     </p></dd>
 <dt><span class="term"><em class="replaceable"><code>new_schema</code></em></span></dt>
 <dd><p>        The new schema for the sequence.
        </p></dd>
@@ -109,7 +124,7 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691739"></a><h2>Examples</h2>
+<a name="id2729715"></a><h2>Examples</h2>
 <p>   Restart a sequence called <code class="literal">serial</code>, at 105:
 </p>
 <pre class="programlisting">ALTER SEQUENCE serial RESTART WITH 105;</pre>
@@ -117,16 +132,20 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691760"></a><h2>Notes</h2>
+<a name="id2729734"></a><h2>Notes</h2>
 <p>   To avoid blocking of concurrent transactions that obtain numbers from the
-   same sequence, <code class="command">ALTER SEQUENCE</code> is never rolled back;
-   the changes take effect immediately and are not reversible.
+   same sequence, <code class="command">ALTER SEQUENCE</code>'s effects on the sequence
+   generation parameters are never rolled back;
+   those changes take effect immediately and are not reversible.  However,
+   the <code class="literal">OWNED BY</code> and <code class="literal">SET SCHEMA</code> clauses are ordinary
+   catalog updates and can be rolled back.
   </p>
 <p>   <code class="command">ALTER SEQUENCE</code> will not immediately affect
    <code class="function">nextval</code> results in backends,
    other than the current one, that have preallocated (cached) sequence
    values. They will use up all cached values prior to noticing the changed
-   sequence parameters.  The current backend will be affected immediately.
+   sequence generation parameters.  The current backend will be affected
+   immediately.
   </p>
 <p>   Some variants of <code class="command">ALTER TABLE</code> can be used with
    sequences as well; for example, to rename a sequence use <code class="command">ALTER
@@ -134,12 +153,16 @@ ALTER SEQUENCE <em class="replaceable"><code>name</code></em> SET SCHEMA <em cla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id691814"></a><h2>Compatibility</h2>
-<p>   <code class="command">ALTER SEQUENCE</code> conforms to the <span class="acronym">SQL</span>
+<a name="id2729798"></a><h2>Compatibility</h2>
+<p>   <code class="command">ALTER SEQUENCE</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard,
-   except for the <code class="literal">SET SCHEMA</code> variant, which is a
-   <span class="productname">PostgreSQL</span> extension.
+   except for the <code class="literal">OWNED BY</code> and <code class="literal">SET SCHEMA</code>
+   clauses, which are <span class="productname">PostgreSQL</span> extensions.
   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2729832"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createsequence.html">CREATE SEQUENCE</a>, <a href="sql-dropsequence.html">DROP SEQUENCE</a></span>
 </div>
 </div></body>
 </html>

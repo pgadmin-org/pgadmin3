@@ -4,11 +4,12 @@
 <title>17.13. Preset Options</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-compatible.html" title="17.12. Version and Platform Compatibility">
 <link rel="next" href="runtime-config-custom.html" title="17.14. Customized Options">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -93,18 +94,10 @@
         value of <code class="literal">PG_VERSION</code> when building the server.
        </p></dd>
 <dt>
-<a name="guc-standard-conforming-strings"></a><span class="term"><code class="varname">standard_conforming_strings</code> (<code class="type">boolean</code>)</span>
+<a name="guc-server-version-num"></a><span class="term"><code class="varname">server_version_num</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        Reports whether ordinary string literals
-        (<code class="literal">'...'</code>) treat backslashes literally, as specified in
-        the SQL standard.  The value is currently always <code class="literal">off</code>,
-        indicating that backslashes are treated as escapes.  It is planned
-        that this will change to <code class="literal">on</code> in a future
-        <span class="productname">PostgreSQL</span> release when string literal
-        syntax changes to meet the standard.  Applications may check this
-        parameter to determine how string literals will be processed.
-        The presence of this parameter can also be taken as an indication
-        that the escape string syntax (<code class="literal">E'...'</code>) is supported.
+<dd><p>        Reports the version number of the server as an integer. It is determined 
+        by the value of <code class="literal">PG_VERSION_NUM</code> when building the server.
        </p></dd>
 </dl></div>
 </div></body>

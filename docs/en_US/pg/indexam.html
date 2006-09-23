@@ -4,11 +4,12 @@
 <title>Chapter 48. Index Access Method Interface Definition</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="geqo-biblio.html" title="47.4. Further Reading">
 <link rel="next" href="index-functions.html" title="48.2. Index Access Method Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="indexam">
 <div class="titlepage"><div><div><h2 class="title">
@@ -39,13 +40,13 @@
    practice, all index access methods divide indexes into standard-size
    pages so that they can use the regular storage manager and buffer manager
    to access the index contents.  (All the existing index access methods
-   furthermore use the standard page layout described in <a href="storage-page-layout.html" title="50.3. Database Page Layout">Section 50.3, &#8220;Database Page Layout&#8221;</a>, and they all use the same format for index
+   furthermore use the standard page layout described in <a href="storage-page-layout.html" title="51.3. Database Page Layout">Section 51.3, &#8220;Database Page Layout&#8221;</a>, and they all use the same format for index
    tuple headers; but these decisions are not forced on an access method.)
   </p>
 <p>   An index is effectively a mapping from some data key values to
-   <em class="firstterm">tuple identifiers</em>, or <span class="acronym">TIDs</span>, of row versions
+   <em class="firstterm">tuple identifiers</em>, or <acronym class="acronym">TIDs</acronym>, of row versions
    (tuples) in the index's parent table.  A TID consists of a
-   block number and an item number within that block (see <a href="storage-page-layout.html" title="50.3. Database Page Layout">Section 50.3, &#8220;Database Page Layout&#8221;</a>).  This is sufficient
+   block number and an item number within that block (see <a href="storage-page-layout.html" title="51.3. Database Page Layout">Section 51.3, &#8220;Database Page Layout&#8221;</a>).  This is sufficient
    information to fetch a particular row version from the table.
    Indexes are not directly aware that under MVCC, there may be multiple
    extant versions of the same logical row; to an index, each tuple is
@@ -100,8 +101,7 @@
   </p>
 <p>   Some of the flag columns of <code class="structname">pg_am</code> have nonobvious
    implications.  The requirements of <code class="structfield">amcanunique</code>
-   are discussed in <a href="index-unique-checks.html" title="48.5. Index Uniqueness Checks">Section 48.5, &#8220;Index Uniqueness Checks&#8221;</a>, and those of
-   <code class="structfield">amconcurrent</code> in <a href="index-locking.html" title="48.4. Index Locking Considerations">Section 48.4, &#8220;Index Locking Considerations&#8221;</a>.
+   are discussed in <a href="index-unique-checks.html" title="48.5. Index Uniqueness Checks">Section 48.5, &#8220;Index Uniqueness Checks&#8221;</a>.
    The <code class="structfield">amcanmulticol</code> flag asserts that the
    access method supports multicolumn indexes, while
    <code class="structfield">amoptionalkey</code> asserts that it allows scans
@@ -132,8 +132,7 @@
    used to scan for rows with <code class="literal">a = 4</code>, which is wrong if the
    index omits rows where <code class="literal">b</code> is null.
    It is, however, OK to omit rows where the first indexed column is null.
-   (GiST currently does so.)  Thus,
-   <code class="structfield">amindexnulls</code> should be set true only if the
+   Thus, <code class="structfield">amindexnulls</code> should be set true only if the
    index access method indexes all rows, including arbitrary combinations of
    null values.
   </p>

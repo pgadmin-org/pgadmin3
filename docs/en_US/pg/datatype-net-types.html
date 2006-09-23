@@ -4,16 +4,17 @@
 <title>8.8. Network Address Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-geometric.html" title="8.7. Geometric Types">
 <link rel="next" href="datatype-bit.html" title="8.9. Bit String Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="datatype-net-types"></a>8.8. Network Address Types</h2></div></div></div>
-<a name="id537836"></a><p>    <span class="productname">PostgreSQL</span> offers data types to store IPv4, IPv6, and MAC
+<a name="id2571969"></a><p>    <span class="productname">PostgreSQL</span> offers data types to store IPv4, IPv6, and MAC
     addresses, as shown in <a href="datatype-net-types.html#datatype-net-types-table" title="Table 8.17. Network Address Types">Table 8.17, &#8220;Network Address Types&#8221;</a>.  It
     is preferable to use these types instead of plain text types to store
     network addresses, because
@@ -22,7 +23,7 @@
    </p>
 <div class="table">
 <a name="datatype-net-types-table"></a><p class="title"><b>Table 8.17. Network Address Types</b></p>
-<table summary="Network Address Types" border="1">
+<div class="table-contents"><table summary="Network Address Types" border="1">
 <colgroup>
 <col>
 <col>
@@ -50,9 +51,9 @@
 <td>MAC addresses</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    When sorting <code class="type">inet</code> or <code class="type">cidr</code> data types,
+<br class="table-break"><p>    When sorting <code class="type">inet</code> or <code class="type">cidr</code> data types,
     IPv4 addresses will always sort before IPv6 addresses, including
     IPv4 addresses encapsulated or mapped into IPv6 addresses, such as
     ::10.2.3.4 or ::ffff::10.4.3.2.
@@ -60,7 +61,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="datatype-inet"></a>8.8.1. <code class="type">inet</code></h3></div></div></div>
-<a name="id537963"></a><p>     The <code class="type">inet</code> type holds an IPv4 or IPv6 host address, and
+<a name="id2572082"></a><p>     The <code class="type">inet</code> type holds an IPv4 or IPv6 host address, and
      optionally the identity of the subnet it is in, all in one field.
      The subnet identity is represented by stating how many bits of
      the host address represent the network address (the
@@ -89,7 +90,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="datatype-cidr"></a>8.8.2. <code class="type">cidr</code></h3></div></div></div>
-<a name="id538049"></a><p>     The <code class="type">cidr</code> type holds an IPv4 or IPv6 network specification.
+<a name="id2572160"></a><p>     The <code class="type">cidr</code> type holds an IPv4 or IPv6 network specification.
      Input and output formats follow Classless Internet Domain Routing
      conventions.
      The format for specifying networks is <em class="replaceable"><code>address/y</code></em> where <em class="replaceable"><code>address</code></em> is the network represented as an
@@ -104,7 +105,7 @@
     </p>
 <div class="table">
 <a name="datatype-net-cidr-table"></a><p class="title"><b>Table 8.18. <code class="type">cidr</code> Type Input Examples</b></p>
-<table summary="cidr Type Input Examples" border="1">
+<div class="table-contents"><table summary="cidr Type Input Examples" border="1">
 <colgroup>
 <col>
 <col>
@@ -199,8 +200,9 @@
 <td>::ffff:1.2.3.0/128</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
@@ -220,7 +222,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="datatype-macaddr"></a>8.8.4. <code class="type">macaddr</code></h3></div></div></div>
-<a name="id538385"></a><a name="id538391"></a><p>     The <code class="type">macaddr</code> type stores MAC addresses, i.e., Ethernet
+<a name="id2572461"></a><a name="id2572466"></a><p>     The <code class="type">macaddr</code> type stores MAC addresses, i.e., Ethernet
      card hardware addresses (although MAC addresses are used for
      other purposes as well).  Input is accepted in various customary
      formats, including
@@ -239,11 +241,6 @@
      address.  Upper and lower case is accepted for the digits
      <code class="literal">a</code> through <code class="literal">f</code>.  Output is always in the
      last of the forms shown.
-    </p>
-<p>     The directory <code class="filename">contrib/mac</code>
-     in the <span class="productname">PostgreSQL</span> source distribution
-     contains tools that can be used to map MAC addresses to hardware
-     manufacturer names.
     </p>
 </div>
 </div></body>

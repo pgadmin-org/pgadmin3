@@ -4,21 +4,26 @@
 <title>17.16. Short Options</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-developer.html" title="17.15. Developer Options">
 <link rel="next" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-short"></a>17.16. Short Options</h2></div></div></div>
-<p>    For convenience there are also single letter command-line option switches
-    available for some parameters. They are described in <a href="runtime-config-short.html#runtime-config-short-table" title="Table 17.1. Short option key">Table 17.1, &#8220;Short option key&#8221;</a>.
+<p>    For convenience there are also single letter command-line option
+    switches available for some parameters.  They are described in
+    <a href="runtime-config-short.html#runtime-config-short-table" title="Table 17.1. Short option key">Table 17.1, &#8220;Short option key&#8221;</a>.  Some of these
+    options exist for historical reasons, and their presence as a
+    single-letter option does not necessarily indicate an endorsement
+    to use the option heavily.
    </p>
 <div class="table">
 <a name="runtime-config-short-table"></a><p class="title"><b>Table 17.1. Short option key</b></p>
-<table summary="Short option key" border="1">
+<div class="table-contents"><table summary="Short option key" border="1">
 <colgroup>
 <col>
 <col>
@@ -29,12 +34,34 @@
 </tr></thead>
 <tbody>
 <tr>
+<td><code class="option">-A <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">debug_assertions = <em class="replaceable"><code>x</code></em></code></td>
+</tr>
+<tr>
 <td><code class="option">-B <em class="replaceable"><code>x</code></em></code></td>
 <td><code class="literal">shared_buffers = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
 <td><code class="option">-d <em class="replaceable"><code>x</code></em></code></td>
 <td><code class="literal">log_min_messages = DEBUG<em class="replaceable"><code>x</code></em></code></td>
+</tr>
+<tr>
+<td><code class="option">-e</code></td>
+<td><code class="literal">datestyle = euro</code></td>
+</tr>
+<tr>
+<td>          <code class="option">-fb</code>, <code class="option">-fh</code>, <code class="option">-fi</code>,
+          <code class="option">-fm</code>, <code class="option">-fn</code>,
+          <code class="option">-fs</code>, <code class="option">-ft</code>
+         </td>
+<td>          <code class="literal">enable_bitmapscan = off</code>,
+          <code class="literal">enable_hashjoin = off</code>,
+          <code class="literal">enable_indexscan = off</code>,
+          <code class="literal">enable_mergejoin = off</code>,
+          <code class="literal">enable_nestloop = off</code>,
+          <code class="literal">enable_seqscan = off</code>,
+          <code class="literal">enable_tidscan = off</code>
+         </td>
 </tr>
 <tr>
 <td><code class="option">-F</code></td>
@@ -61,38 +88,28 @@
 <td><code class="literal">max_connections = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
+<td><code class="option">-O</code></td>
+<td><code class="literal">allow_system_table_mods = on</code></td>
+</tr>
+<tr>
 <td><code class="option">-p <em class="replaceable"><code>x</code></em></code></td>
 <td><code class="literal">port = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
-<td>          <code class="option">-fb</code>, <code class="option">-fh</code>, <code class="option">-fi</code>,
-          <code class="option">-fm</code>, <code class="option">-fn</code>,
-          <code class="option">-fs</code>, <code class="option">-ft</code><sup>[<a name="fn.runtime-config-short" href="#ftn.fn.runtime-config-short">a</a>]</sup>
-         </td>
-<td>          <code class="literal">enable_bitmapscan = off</code>,
-          <code class="literal">enable_hashjoin = off</code>,
-          <code class="literal">enable_indexscan = off</code>,
-          <code class="literal">enable_mergejoin = off</code>,
-          <code class="literal">enable_nestloop = off</code>,
-          <code class="literal">enable_seqscan = off</code>,
-          <code class="literal">enable_tidscan = off</code>
-         </td>
+<td><code class="option">-P</code></td>
+<td><code class="literal">ignore_system_indexes = on</code></td>
 </tr>
 <tr>
-<td>
-<code class="option">-s</code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
-</td>
+<td><code class="option">-s</code></td>
 <td><code class="literal">log_statement_stats = on</code></td>
 </tr>
 <tr>
-<td>
-<code class="option">-S <em class="replaceable"><code>x</code></em></code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
-        </td>
+<td><code class="option">-S <em class="replaceable"><code>x</code></em></code></td>
 <td><code class="literal">work_mem = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
 <td>
-<code class="option">-tpa</code>, <code class="option">-tpl</code>, <code class="option">-te</code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
+<code class="option">-tpa</code>, <code class="option">-tpl</code>, <code class="option">-te</code>
 </td>
 <td>
 <code class="literal">log_parser_stats = on</code>,
@@ -100,15 +117,13 @@
         <code class="literal">log_executor_stats = on</code>
 </td>
 </tr>
+<tr>
+<td><code class="option">-W <em class="replaceable"><code>x</code></em></code></td>
+<td><code class="literal">post_auth_delay = <em class="replaceable"><code>x</code></em></code></td>
+</tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="2"><div class="footnote"><p><sup>[<a name="ftn.fn.runtime-config-short" href="#fn.runtime-config-short">a</a>] </sup>            For historical reasons, these options must be passed to
-            the individual server process via the <code class="option">-o</code>
-            <code class="command">postmaster</code> option, for example,
-<pre class="screen">$ <strong class="userinput"><code>postmaster -o '-S 1024 -s'</code></strong></pre>
-            or via <code class="envar">PGOPTIONS</code> from the client side, as
-            explained above.
-           </p></div></td></tr></tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

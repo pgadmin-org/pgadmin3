@@ -4,11 +4,12 @@
 <title>9.10. Geometric Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">
 <link rel="next" href="functions-net.html" title="9.11. Network Address Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -31,7 +32,7 @@
 </div>
 <div class="table">
 <a name="functions-geometry-op-table"></a><p class="title"><b>Table 9.28. Geometric Operators</b></p>
-<table summary="Geometric Operators" border="1">
+<div class="table-contents"><table summary="Geometric Operators" border="1">
 <colgroup>
 <col>
 <col>
@@ -184,14 +185,14 @@
 <td><code class="literal">lseg '((-1,0),(1,0))' ?|| lseg '((-1,2),(1,2))'</code></td>
 </tr>
 <tr>
-<td> <code class="literal">~</code> </td>
+<td> <code class="literal">@&gt;</code> </td>
 <td>Contains?</td>
-<td><code class="literal">circle '((0,0),2)' ~ point '(1,1)'</code></td>
+<td><code class="literal">circle '((0,0),2)' @&gt; point '(1,1)'</code></td>
 </tr>
 <tr>
-<td> <code class="literal">@</code> </td>
+<td> <code class="literal">&lt;@</code> </td>
 <td>Contained in or on?</td>
-<td><code class="literal">point '(1,1)' @ circle '((0,0),2)'</code></td>
+<td><code class="literal">point '(1,1)' &lt;@ circle '((0,0),2)'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">~=</code> </td>
@@ -199,11 +200,19 @@
 <td><code class="literal">polygon '((0,0),(1,1))' ~= polygon '((1,1),(0,0))'</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<a name="id562176"></a><a name="id562182"></a><a name="id562188"></a><a name="id562195"></a><a name="id562201"></a><a name="id562207"></a><a name="id562214"></a><a name="id562220"></a><a name="id562226"></a><a name="id562232"></a><a name="id562239"></a><a name="id562245"></a><div class="table">
+<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Before <span class="productname">PostgreSQL</span> 8.2, the containment
+     operators <code class="literal">@&gt;</code> and <code class="literal">&lt;@</code> were respectively
+     called <code class="literal">~</code> and <code class="literal">@</code>.  These names are still
+     available, but are deprecated and will eventually be retired.
+    </p>
+</div>
+<a name="id2594894"></a><a name="id2594900"></a><a name="id2594906"></a><a name="id2594911"></a><a name="id2594917"></a><a name="id2594923"></a><a name="id2594928"></a><a name="id2594934"></a><a name="id2594940"></a><a name="id2594946"></a><a name="id2594951"></a><a name="id2594957"></a><div class="table">
 <a name="functions-geometry-func-table"></a><p class="title"><b>Table 9.29. Geometric Functions</b></p>
-<table summary="Geometric Functions" border="1">
+<div class="table-contents"><table summary="Geometric Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -296,11 +305,11 @@
 <td><code class="literal">width(box '((0,0),(1,1))')</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<div class="table">
+<br class="table-break"><div class="table">
 <a name="functions-geometry-conv-table"></a><p class="title"><b>Table 9.30. Geometric Type Conversion Functions</b></p>
-<table summary="Geometric Type Conversion Functions" border="1">
+<div class="table-contents"><table summary="Geometric Type Conversion Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -424,9 +433,9 @@
 <td><code class="literal">polygon(path '((0,0),(1,1),(2,0))')</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>     It is possible to access the two component numbers of a <code class="type">point</code>
+<br class="table-break"><p>     It is possible to access the two component numbers of a <code class="type">point</code>
      as though it were an array with indices 0 and 1.  For example, if
      <code class="literal">t.p</code> is a <code class="type">point</code> column then
      <code class="literal">SELECT p[0] FROM t</code> retrieves the X coordinate and

@@ -4,11 +4,12 @@
 <title>CREATE SEQUENCE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createschema.html" title="CREATE SCHEMA">
 <link rel="next" href="sql-createtable.html" title="CREATE TABLE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-createsequence"></a><div class="titlepage"></div>
@@ -16,14 +17,15 @@
 <h2>Name</h2>
 <p>CREATE SEQUENCE &#8212; define a new sequence generator</p>
 </div>
-<a name="id707997"></a><div class="refsynopsisdiv">
+<a name="id2746102"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ TEMPORARY | TEMP ] SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
     [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
-    [ START [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]</pre>
+    [ START [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]
+    [ OWNED BY { <em class="replaceable"><code>table</code></em>.<em class="replaceable"><code>column</code></em> | NONE } ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id708056"></a><h2>Description</h2>
+<a name="id2746160"></a><h2>Description</h2>
 <p>   <code class="command">CREATE SEQUENCE</code> creates a new sequence number
    generator.  This involves creating and initializing a new special
    single-row table with the name <em class="replaceable"><code>name</code></em>.  The generator will be
@@ -57,7 +59,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id708152"></a><h2>Parameters</h2>
+<a name="id2746239"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>      If specified, the sequence object is created only for this
@@ -124,10 +126,21 @@
       specified, <code class="literal">NO CYCLE</code> is the default.
      </p>
 </dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">OWNED BY</code> <em xmlns="" class="replaceable"><code>table</code></em>.<em xmlns="" class="replaceable"><code>column</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">OWNED BY NONE</code></span>
+</dt>
+<dd><p>      The <code class="literal">OWNED BY</code> option causes the sequence to be
+      associated with a specific table column, such that if that column
+      (or its whole table) is dropped, the sequence will be automatically
+      dropped as well.  The specified table must have the same owner and be in
+      the same schema as the sequence.
+      <code class="literal">OWNED BY NONE</code>, the default, specifies that there
+      is no such association.
+     </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id708468"></a><h2>Notes</h2>
+<a name="id2746545"></a><h2>Notes</h2>
 <p>   Use <code class="command">DROP SEQUENCE</code> to remove a sequence.
   </p>
 <p>   Sequences are based on <code class="type">bigint</code> arithmetic, so the range
@@ -172,7 +185,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id708633"></a><h2>Examples</h2>
+<a name="id2746683"></a><h2>Examples</h2>
 <p>   Create an ascending sequence called <code class="literal">serial</code>, starting at 101:
 </p>
 <pre class="programlisting">CREATE SEQUENCE serial START 101;</pre>
@@ -202,16 +215,28 @@ END;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id708699"></a><h2>Compatibility</h2>
-<p>   <code class="command">CREATE SEQUENCE</code> conforms to the <span class="acronym">SQL</span>
+<a name="id2746739"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE SEQUENCE</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard, with the following exceptions:
    </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>The standard's <code class="literal">AS &lt;data type&gt;</code> expression is not supported.</p></li>
-<li><p>Obtaining the next value is done using the <code class="function">nextval()</code> function instead of the standard's <code class="command">NEXT VALUE FOR</code> expression.</p></li>
+<li><p>      The standard's <code class="literal">AS &lt;data type&gt;</code> expression is not
+      supported.
+     </p></li>
+<li><p>      Obtaining the next value is done using the <code class="function">nextval()</code>
+      function instead of the standard's <code class="command">NEXT VALUE FOR</code>
+      expression.
+     </p></li>
+<li><p>      The <code class="literal">OWNED BY</code> clause is a <span class="productname">PostgreSQL</span>
+      extension. 
+     </p></li>
 </ul></div>
 <p>
   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2746794"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-altersequence.html">ALTER SEQUENCE</a>, <a href="sql-dropsequence.html">DROP SEQUENCE</a></span>
 </div>
 </div></body>
 </html>

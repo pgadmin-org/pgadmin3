@@ -4,16 +4,17 @@
 <title>7.5. Sorting Rows</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="queries.html" title="Chapter 7. Queries">
 <link rel="prev" href="queries-union.html" title="7.4. Combining Queries">
 <link rel="next" href="queries-limit.html" title="7.6. LIMIT and OFFSET">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="queries-order"></a>7.5. Sorting Rows</h2></div></div></div>
-<a name="id530533"></a><a name="id530544"></a><p>   After a query has produced an output table (after the select list
+<a name="id2564971"></a><a name="id2564981"></a><p>   After a query has produced an output table (after the select list
    has been processed) it can optionally be sorted.  If sorting is not
    chosen, the rows will be returned in an unspecified order.  The actual
    order in that case will depend on the scan and join plan types and
@@ -58,7 +59,7 @@ SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
    &#8220;<span class="quote">smaller</span>&#8221; is defined in terms of the
    <code class="literal">&lt;</code> operator.  Similarly, descending order is
    determined with the <code class="literal">&gt;</code> operator.
-    <sup>[<a name="id530721" href="#ftn.id530721">4</a>]</sup>
+    <sup>[<a name="id2565149" href="#ftn.id2565149">4</a>]</sup>
   </p>
 <p>   If more than one sort column is specified, the later entries are
    used to sort rows that are equal under the order imposed by the
@@ -66,7 +67,7 @@ SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
   </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id530721" href="#id530721">4</a>] </sup>      Actually, <span class="productname">PostgreSQL</span> uses the <em class="firstterm">default B-tree
+<div class="footnote"><p><sup>[<a name="ftn.id2565149" href="#id2565149">4</a>] </sup>      Actually, <span class="productname">PostgreSQL</span> uses the <em class="firstterm">default B-tree
       operator class</em> for the column's data type to determine the sort
       ordering for <code class="literal">ASC</code> and <code class="literal">DESC</code>.  Conventionally,
       data types will be set up so that the <code class="literal">&lt;</code> and

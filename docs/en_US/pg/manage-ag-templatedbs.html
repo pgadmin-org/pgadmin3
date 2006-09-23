@@ -4,18 +4,19 @@
 <title>19.3. Template Databases</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 19. Managing Databases">
 <link rel="prev" href="manage-ag-createdb.html" title="19.2. Creating a Database">
 <link rel="next" href="manage-ag-config.html" title="19.4. Database Configuration">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="manage-ag-templatedbs"></a>19.3. Template Databases</h2></div></div></div>
 <p>   <code class="command">CREATE DATABASE</code> actually works by copying an existing
    database.  By default, it copies the standard system database named
-   <code class="literal">template1</code>.<a name="id606385"></a> Thus that
+   <code class="literal">template1</code>.<a name="id2639581"></a> Thus that
    database is the &#8220;<span class="quote">template</span>&#8221; from which new databases are
    made.  If you add objects to <code class="literal">template1</code>, these objects
    will be copied into subsequently created user databases.  This
@@ -26,7 +27,7 @@
    action being taken when those databases are made.
   </p>
 <p>   There is a second standard system database named
-   <code class="literal">template0</code>.<a name="id606434"></a> This
+   <code class="literal">template0</code>.<a name="id2639625"></a> This
    database contains the same data as the initial contents of
    <code class="literal">template1</code>, that is, only the standard objects
    predefined by your version of
@@ -52,21 +53,17 @@
    from the shell.
   </p>
 <p>   It is possible to create additional template databases, and indeed
-   one might copy any database in a cluster by specifying its name
+   one may copy any database in a cluster by specifying its name
    as the template for <code class="command">CREATE DATABASE</code>.  It is important to
    understand, however, that this is not (yet) intended as
-   a general-purpose &#8220;<span class="quote"><code class="command">COPY DATABASE</code></span>&#8221; facility.  In particular, it is
-   essential that the source database be idle (no data-altering transactions
-   in progress)
-   for the duration of the copying operation.  <code class="command">CREATE DATABASE</code>
-   will check
-   that no session (other than itself) is connected to
-   the source database at the start of the operation, but this does not
-   guarantee that changes cannot be made while the copy proceeds, which
-   would result in an inconsistent copied database.  Therefore,
-   we recommend that databases used as templates be treated as read-only.
+   a general-purpose &#8220;<span class="quote"><code class="command">COPY DATABASE</code></span>&#8221; facility.
+   The principal limitation is that no other sessions can be connected to
+   the source database while it is being copied.  <code class="command">CREATE
+   DATABASE</code> will fail if any other connection exists when it starts;
+   otherwise, new connections to the source database are locked out
+   until <code class="command">CREATE DATABASE</code> completes.
   </p>
-<p>   Two useful flags exist in <code class="literal">pg_database</code><a name="id606598"></a> for each
+<p>   Two useful flags exist in <code class="literal">pg_database</code><a name="id2639777"></a> for each
    database: the columns <code class="literal">datistemplate</code> and
    <code class="literal">datallowconn</code>.  <code class="literal">datistemplate</code>
    may be set to indicate that a database is intended as a template for

@@ -4,11 +4,12 @@
 <title>Chapter 49. GiST Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="index-cost-estimation.html" title="48.6. Index Cost Estimation Functions">
 <link rel="next" href="gist-extensibility.html" title="49.2. Extensibility">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="gist">
 <div class="titlepage"><div><div><h2 class="title">
@@ -23,17 +24,15 @@
 <dt><span class="sect1"><a href="gist-recovery.html">49.5. Crash Recovery</a></span></dt>
 </dl>
 </div>
-<div class="sect1" lang="en">
+<a name="id2820047"></a><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="gist-intro"></a>49.1. Introduction</h2></div></div></div>
-<p>   <a name="id791429"></a>
-   <a name="id791439"></a>
-   <span class="acronym">GiST</span> stands for Generalized Search Tree.  It is a
+<p>   <acronym class="acronym">GiST</acronym> stands for Generalized Search Tree.  It is a
    balanced, tree-structured access method, that acts as a base template in
-   which to implement arbitrary indexing schemes. B+-trees, R-trees and many
-   other indexing schemes can be implemented in <span class="acronym">GiST</span>.
+   which to implement arbitrary indexing schemes. B-trees, R-trees and many
+   other indexing schemes can be implemented in <acronym class="acronym">GiST</acronym>.
  </p>
-<p>  One advantage of <span class="acronym">GiST</span> is that it allows the development
+<p>  One advantage of <acronym class="acronym">GiST</acronym> is that it allows the development
   of custom data types with the appropriate access methods, by
   an expert in the domain of the data type, rather than a database expert.
  </p>
@@ -41,7 +40,7 @@
     Berkeley's GiST Indexing Project
     <a href="http://gist.cs.berkeley.edu/" target="_top">web site</a> and 
     <a href="http://www.sai.msu.su/~megera/postgres/gist/papers/concurrency/access-methods-for-next-generation.pdf.gz" target="_top">    Marcel Kornacker's thesis, Access Methods for Next-Generation Database Systems</a>.
-    The <span class="acronym">GiST</span>
+    The <acronym class="acronym">GiST</acronym>
     implementation in <span class="productname">PostgreSQL</span> is primarily
     maintained by Teodor Sigaev and Oleg Bartunov, and there is more
     information on their

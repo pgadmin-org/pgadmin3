@@ -4,11 +4,12 @@
 <title>17.4. Resource Consumption</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-connection.html" title="17.3. Connections and Authentication">
 <link rel="next" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -22,7 +23,7 @@
 </dt>
 <dd>
 <p>        Sets the number of shared memory buffers used by the database
-        server. The default is typically 1000, but may be less if your
+        server. The default is typically 4000, but may be less if your
         kernel settings will not support it (as determined during
         <span class="application">initdb</span>).  Each buffer is 8192 bytes, unless a
         different value of <code class="symbol">BLCKSZ</code> was chosen when building
@@ -30,7 +31,7 @@
         least twice the value of <a href="runtime-config-connection.html#guc-max-connections">max_connections</a>;
         however, settings significantly higher than the minimum are
         usually needed for good performance.  Values of a few thousand
-        are recommended for production installations.  This option can
+        are recommended for production installations.  This parameter can
         only be set at server start.
        </p>
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
@@ -69,7 +70,7 @@
         Setting this parameter to zero disables the prepared-transaction
         feature.
         The default is 5.
-        This option can only be set at server start.
+        This parameter can only be set at server start.
        </p>
 <p>        If you are not using prepared transactions, this parameter may as
         well be set to zero.  If you are using them, you will probably
@@ -131,13 +132,14 @@
         2048 KB (two megabytes), which is conservatively small and unlikely
         to risk crashes.  However, it may be too small to allow execution
         of complex functions.
+        Only superusers can change this setting.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-resource-fsm"></a>17.4.2. Free Space Map</h3></div></div></div>
-<a name="id594459"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
+<a name="id2627975"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
       map</em>, which tracks the locations of unused space in the database.
       An undersized free space map may cause the database to consume
       increasing amounts of disk space over time, because free space that
@@ -162,8 +164,10 @@
 <dd><p>        Sets the maximum number of disk pages for which free space will
         be tracked in the shared free-space map.  Six bytes of shared memory
         are consumed for each page slot.  This setting must be more than
-        16 * <code class="varname">max_fsm_relations</code>.  The default is 20000.
-        This option can only be set at server start.
+        16 * <code class="varname">max_fsm_relations</code>.  The default is chosen
+        by <span class="application">initdb</span> depending on the amount of available memory,
+        and can range from 20000 to 200000.
+        This parameter can only be set at server start.
        </p></dd>
 <dt>
 <a name="guc-max-fsm-relations"></a><span class="term"><code class="varname">max_fsm_relations</code> (<code class="type">integer</code>)</span>
@@ -172,7 +176,7 @@
         free space will be tracked in the shared free-space map.  Roughly
         seventy bytes of shared memory are consumed for each slot.
         The default is 1000.
-        This option can only be set at server start.
+        This parameter can only be set at server start.
        </p></dd>
 </dl></div>
 </div>
@@ -191,37 +195,40 @@
         can really support when a large number of processes all try to open
         that many files. If you find yourself seeing &#8220;<span class="quote">Too many open
         files</span>&#8221; failures, try reducing this setting.
-        This option can only be set at server start.
+        This parameter can only be set at server start.
        </p></dd>
 <dt>
-<a name="guc-preload-libraries"></a><span class="term"><code class="varname">preload_libraries</code> (<code class="type">string</code>)</span>
+<a name="guc-shared-preload-libraries"></a><span class="term"><code class="varname">shared_preload_libraries</code> (<code class="type">string</code>)</span>
 </dt>
 <dd>
 <p>        This variable specifies one or more shared libraries that are
-        to be preloaded at server start. A parameterless
-        initialization function can optionally be called for each
-        library.  To specify that, add a colon and the name of the
-        initialization function after the library name. For example
-        <code class="literal">'$libdir/mylib:mylib_init'</code> would cause
-        <code class="literal">mylib</code> to be preloaded and <code class="literal">mylib_init</code>
-        to be executed. If more than one library is to be loaded,
-        separate their names with commas.
-       </p>
-<p>        If a specified library or initialization function is not found,
-        the server will fail to start.
+        to be preloaded at server start. If more than one library is to be
+        loaded, separate their names with commas. For example,
+        <code class="literal">'$libdir/mylib'</code> would cause
+        <code class="literal">mylib.so</code> (or on some platforms,
+        <code class="literal">mylib.sl</code>) to be preloaded from the installation's
+        standard library directory.
+        This parameter can only be set at server start.
        </p>
 <p>        <span class="productname">PostgreSQL</span> procedural language
-        libraries may be preloaded in this way, typically by using the
-        syntax <code class="literal">'$libdir/plXXX:plXXX_init'</code> where
+        libraries can be preloaded in this way, typically by using the
+        syntax <code class="literal">'$libdir/plXXX'</code> where
         <code class="literal">XXX</code> is <code class="literal">pgsql</code>, <code class="literal">perl</code>,
         <code class="literal">tcl</code>, or <code class="literal">python</code>.
        </p>
-<p>        By preloading a shared library (and initializing it if
-        applicable), the library startup time is avoided when the
-        library is first used.  However, the time to start each new
+<p>        By preloading a shared library, the library startup time is avoided
+        when the library is first used.  However, the time to start each new
         server process may increase slightly, even if that process never
-        uses the library.  So this option is recommended only for
-        libraries that will be used in most sessions.
+        uses the library.  So this parameter is recommended only for
+        libraries that will be used in most sessions. 
+       </p>
+<p>        If a specified library is not found,
+        the server will fail to start.
+       </p>
+<p>        Every  PostgreSQL-supported library has a &#8220;<span class="quote">magic
+        block</span>&#8221; that is checked to guarantee compatibility.  
+        For this reason, non-PostgreSQL libraries cannot be 
+        loaded in this way.
        </p>
 </dd>
 </dl></div>
@@ -345,8 +352,8 @@
          delays is 10 milliseconds; setting <code class="varname">bgwriter_delay</code>
          to a value that is not a multiple of 10 may have the same
          results as setting it to the next higher multiple of 10.
-         This option can only be set at server start or in the
-         <code class="filename">postgresql.conf</code> file.
+         This parameter can only be set in the <code class="filename">postgresql.conf</code>
+         file or on the server command line.
         </p></dd>
 <dt>
 <a name="guc-bgwriter-lru-percent"></a><span class="term"><code class="varname">bgwriter_lru_percent</code> (<code class="type">floating point</code>)</span>
@@ -358,8 +365,8 @@
          being recycled, and writes any that are dirty.
          The default value is 1.0 (this is a percentage of the total number
          of shared buffers).
-         This option can only be set at server start or in the
-         <code class="filename">postgresql.conf</code> file.
+         This parameter can only be set in the <code class="filename">postgresql.conf</code>
+         file or on the server command line.
         </p></dd>
 <dt>
 <a name="guc-bgwriter-lru-maxpages"></a><span class="term"><code class="varname">bgwriter_lru_maxpages</code> (<code class="type">integer</code>)</span>
@@ -367,8 +374,8 @@
 <dd><p>         In each round, no more than this many buffers will be written
          as a result of scanning soon-to-be-recycled buffers.
          The default value is 5.
-         This option can only be set at server start or in the
-         <code class="filename">postgresql.conf</code> file.
+         This parameter can only be set in the <code class="filename">postgresql.conf</code>
+         file or on the server command line.
         </p></dd>
 <dt>
 <a name="guc-bgwriter-all-percent"></a><span class="term"><code class="varname">bgwriter_all_percent</code> (<code class="type">floating point</code>)</span>
@@ -382,8 +389,8 @@
          of shared buffers).  With the default <code class="varname">bgwriter_delay</code>
          setting, this will allow the entire shared buffer pool to be scanned
          about once per minute.
-         This option can only be set at server start or in the
-         <code class="filename">postgresql.conf</code> file.
+         This parameter can only be set in the <code class="filename">postgresql.conf</code>
+         file or on the server command line.
         </p></dd>
 <dt>
 <a name="guc-bgwriter-all-maxpages"></a><span class="term"><code class="varname">bgwriter_all_maxpages</code> (<code class="type">integer</code>)</span>
@@ -393,8 +400,8 @@
          limit is reached, the scan stops, and resumes at the next buffer
          during the next round.)
          The default value is 5.
-         This option can only be set at server start or in the
-         <code class="filename">postgresql.conf</code> file.
+         This parameter can only be set in the <code class="filename">postgresql.conf</code>
+         file or on the server command line.
         </p></dd>
 </dl></div>
 <p>      Smaller values of <code class="varname">bgwriter_all_percent</code> and

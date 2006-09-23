@@ -4,16 +4,17 @@
 <title>34.3. Rules on INSERT, UPDATE, and DELETE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="rules.html" title="Chapter 34. The Rule System">
 <link rel="prev" href="rules-views.html" title="34.2. Views and the Rule System">
 <link rel="next" href="rules-privileges.html" title="34.4. Rules and Privileges">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="rules-update"></a>34.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></h2></div></div></div>
-<a name="id664185"></a><a name="id664202"></a><a name="id664217"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+<a name="id2703180"></a><a name="id2703195"></a><a name="id2703208"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
     and <code class="command">DELETE</code> are significantly different from the view rules
     described in the previous section. First, their <code class="command">CREATE
     RULE</code> command allows more:
@@ -24,7 +25,7 @@
         </p></li>
 <li><p>            They can have multiple actions.
         </p></li>
-<li><p>            They can be <code class="literal">INSTEAD</code> or <code class="literal">ALSO</code> (default).
+<li><p>            They can be <code class="literal">INSTEAD</code> or <code class="literal">ALSO</code> (the default).
         </p></li>
 <li><p>            The pseudorelations <code class="literal">NEW</code> and <code class="literal">OLD</code> become useful.
         </p></li>
@@ -38,7 +39,7 @@
     original one.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id664318"></a>34.3.1. How Update Rules Work</h3></div></div></div>
+<a name="id2703300"></a>34.3.1. How Update Rules Work</h3></div></div></div>
 <p>    Keep the syntax
 
 </p>
@@ -57,22 +58,20 @@
     Initially the query-tree list is empty.
     There can be zero (<code class="literal">NOTHING</code> key word), one, or multiple actions.
     To simplify, we will look at a rule with one action. This rule
-    can have a qualification or not and it can be <code class="literal">INSTEAD</code> or <code class="literal">ALSO</code> (default).</p>
+    can have a qualification or not and it can be <code class="literal">INSTEAD</code> or
+    <code class="literal">ALSO</code> (the default).</p>
 <p>    What is a rule qualification? It is a restriction that tells
     when the actions of the rule should be done and when not. This
     qualification can only reference the pseudorelations <code class="literal">NEW</code> and/or <code class="literal">OLD</code>,
     which basically represent the relation that was given as object (but with a
     special meaning).</p>
-<p>    So we have four cases that produce the following query trees for
+<p>    So we have three cases that produce the following query trees for
     a one-action rule.
 
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term">No qualification and <code class="literal">ALSO</code></span></dt>
-<dd><p>        the query tree from the rule action with the original query
-        tree's qualification added
-       </p></dd>
-<dt><span class="term">No qualification but <code class="literal">INSTEAD</code></span></dt>
+<dt><span class="term">No qualification, with either <code class="literal">ALSO</code> or
+      <code class="literal">INSTEAD</code></span></dt>
 <dd><p>        the query tree from the rule action with the original query
         tree's qualification added
        </p></dd>
@@ -125,7 +124,7 @@
     there is no need to apply update rules to the output of view rewriting.</p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id664666"></a>34.3.1.1. A First Rule Step by Step</h4></div></div></div>
+<a name="id2703611"></a>34.3.1.1. A First Rule Step by Step</h4></div></div></div>
 <p>    Say we want to trace changes to the <code class="literal">sl_avail</code> column in the
     <code class="literal">shoelace_data</code> relation. So we set up a log table
     and a rule that conditionally writes a log entry when an
@@ -345,10 +344,10 @@ SELECT shoelace_data.sl_name, 0,
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="rules-update-views"></a>34.3.2. Cooperation with Views</h3></div></div></div>
-<a name="id665168"></a><p>    A simple way to protect view relations from the mentioned
+<a name="id2704073"></a><p>    A simple way to protect view relations from the mentioned
     possibility that someone can try to run <code class="command">INSERT</code>,
     <code class="command">UPDATE</code>, or <code class="command">DELETE</code> on them is
-    to let those query trees get thrown away.  So we create the rules
+    to let those query trees get thrown away.  So we could create the rules
 
 </p>
 <pre class="programlisting">CREATE RULE shoe_ins_protect AS ON INSERT TO shoe
@@ -398,6 +397,32 @@ CREATE RULE shoelace_del AS ON DELETE TO shoelace
     DELETE FROM shoelace_data
      WHERE sl_name = OLD.sl_name;</pre>
 <p>
+   </p>
+<p>    If you want to support <code class="literal">RETURNING</code> queries on the view,
+    you need to make the rules include <code class="literal">RETURNING</code> clauses that
+    compute the view rows.  This is usually pretty trivial for views on a
+    single table, but it's a bit tedious for join views such as
+    <code class="literal">shoelace</code>.  An example for the insert case is
+
+</p>
+<pre class="programlisting">CREATE RULE shoelace_ins AS ON INSERT TO shoelace
+    DO INSTEAD
+    INSERT INTO shoelace_data VALUES (
+           NEW.sl_name,
+           NEW.sl_avail,
+           NEW.sl_color,
+           NEW.sl_len,
+           NEW.sl_unit
+    )
+    RETURNING
+           shoelace_data.*,
+           (SELECT shoelace_data.sl_len * u.un_fact
+            FROM unit u WHERE shoelace_data.sl_unit = u.un_name);</pre>
+<p>
+
+    Note that this one rule supports both <code class="command">INSERT</code> and
+    <code class="command">INSERT RETURNING</code> queries on the view [mdash ] the
+    <code class="literal">RETURNING</code> clause is simply ignored for <code class="command">INSERT</code>.
    </p>
 <p>    Now assume that once in a while, a pack of shoelaces arrives at
     the shop and a big parts list along with it.  But you don't want
@@ -581,7 +606,7 @@ SELECT s.sl_name,
     generated query trees.
    </p>
 <p>    So we end up with two final query trees that are equivalent to the
-    <span class="acronym">SQL</span> statements
+    <acronym class="acronym">SQL</acronym> statements
 
 </p>
 <pre class="programlisting">INSERT INTO shoelace_log

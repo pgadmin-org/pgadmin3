@@ -4,11 +4,12 @@
 <title>CREATE DOMAIN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createdatabase.html" title="CREATE DATABASE">
 <link rel="next" href="sql-createfunction.html" title="CREATE FUNCTION">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-createdomain"></a><div class="titlepage"></div>
@@ -16,9 +17,9 @@
 <h2>Name</h2>
 <p>CREATE DOMAIN &#8212; define a new domain</p>
 </div>
-<a name="id701407"></a><div class="refsynopsisdiv">
+<a name="id2739080"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">CREATE DOMAIN <em class="replaceable"><code>name</code></em> [AS] <em class="replaceable"><code>data_type</code></em>
+<pre class="synopsis">CREATE DOMAIN <em class="replaceable"><code>name</code></em> [ AS ] <em class="replaceable"><code>data_type</code></em>
     [ DEFAULT <em class="replaceable"><code>expression</code></em> ]
     [ <em class="replaceable"><code>constraint</code></em> [ ... ] ]
 
@@ -28,9 +29,11 @@ where <em class="replaceable"><code>constraint</code></em> is:
 { NOT NULL | NULL | CHECK (<em class="replaceable"><code>expression</code></em>) }</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701470"></a><h2>Description</h2>
-<p>   <code class="command">CREATE DOMAIN</code> creates a new data domain.  The
-   user who defines a domain becomes its owner.
+<a name="id2739136"></a><h2>Description</h2>
+<p>   <code class="command">CREATE DOMAIN</code> creates a new domain.  A domain is
+   essentially a data type with optional constraints (restrictions on
+   the allowed set of values).
+   The user who defines a domain becomes its owner.
   </p>
 <p>   If a schema name is given (for example, <code class="literal">CREATE DOMAIN
    myschema.mydomain ...</code>) then the domain is created in the
@@ -38,26 +41,16 @@ where <em class="replaceable"><code>constraint</code></em> is:
    The domain name must be unique among the types and domains existing
    in its schema.
   </p>
-<p>   Domains are useful for abstracting common fields between tables
-   into a single location for maintenance.  For example, an email address
-   column may be used in several tables, all with the same properties.
-   Define a domain and use that rather than setting up each table's
-   constraints individually. 
+<p>   Domains are useful for abstracting common constraints on fields into
+   a single location for maintenance.  For example, several tables might
+   contain email address columns, all requiring the same CHECK constraint
+   to verify the address syntax.
+   Define a domain rather than setting up each table's constraint
+   individually.
   </p>
-<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Caution</h3>
-<p>   At present, declaring a function result value as a domain 
-   is pretty dangerous, because none of the procedural languages enforce domain constraints 
-   on their results.  You'll need to make sure that the function code itself
-   respects the constraints.  In <span class="application">PL/pgSQL</span>, one possible
-   workaround is to explicitly cast the result value to the domain type
-   when you return it.  <span class="application">PL/pgSQL</span> does not enforce domain
-   constraints for local variables within functions, either.
-  </p>
-</div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701530"></a><h2>Parameters</h2>
+<a name="id2739171"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (optionally schema-qualified) of a domain to be created.
@@ -104,7 +97,7 @@ where <em class="replaceable"><code>constraint</code></em> is:
 <p>      <code class="literal">CHECK</code> clauses specify integrity constraints or tests
       which values of the domain must satisfy.
       Each constraint must be an expression
-      producing a Boolean result.  It should use the name <code class="literal">VALUE</code>
+      producing a Boolean result.  It should use the key word <code class="literal">VALUE</code>
       to refer to the value being tested.
      </p>
 <p>      Currently, <code class="literal">CHECK</code> expressions cannot contain
@@ -114,7 +107,7 @@ where <em class="replaceable"><code>constraint</code></em> is:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id701698"></a><h2>Examples</h2>
+<a name="id2739323"></a><h2>Examples</h2>
 <p>   This example creates the <code class="type">us_postal_code</code> data type and
    then uses the type in a table definition.  A regular expression test
    is used to verify that the value looks like a valid US postal code.
@@ -127,12 +120,12 @@ OR VALUE ~ '^\\d{5}-\\d{4}$'
 );
 
 CREATE TABLE us_snail_addy (
-  address_id SERIAL NOT NULL PRIMARY KEY
-, street1 TEXT NOT NULL
-, street2 TEXT
-, street3 TEXT
-, city TEXT NOT NULL
-, postal us_postal_code NOT NULL
+  address_id SERIAL PRIMARY KEY,
+  street1 TEXT NOT NULL,
+  street2 TEXT,
+  street3 TEXT,
+  city TEXT NOT NULL,
+  postal us_postal_code NOT NULL
 );</pre>
 <p>
   </p>

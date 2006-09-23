@@ -1,18 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>51.2. BKI Commands</title>
+<title>52.2. BKI Commands</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
-<link rel="up" href="bki.html" title="Chapter 51. BKI Backend Interface">
-<link rel="prev" href="bki.html" title="Chapter 51. BKI Backend Interface">
-<link rel="next" href="bki-structure.html" title="51.3. Structure of the Bootstrap BKI File">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="bki.html" title="Chapter 52. BKI Backend Interface">
+<link rel="prev" href="bki.html" title="Chapter 52. BKI Backend Interface">
+<link rel="next" href="bki-structure.html" title="52.3. Structure of the Bootstrap BKI File">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="bki-commands"></a>51.2. <span class="acronym">BKI</span> Commands</h2></div></div></div>
+<a name="bki-commands"></a>52.2. <acronym class="acronym">BKI</acronym> Commands</h2></div></div></div>
 <div class="variablelist"><dl>
 <dt><span class="term">     <code class="literal">create</code> 
      [<span class="optional"><code class="literal">bootstrap</code></span>]
@@ -103,6 +104,20 @@
       classes to use are <em class="replaceable"><code>opclass1</code></em>, <em class="replaceable"><code>opclass2</code></em> etc., respectively.
       The index file is created and appropriate catalog entries are
       made for it, but the index contents are not initialized by this command.
+     </p></dd>
+<dt><span class="term">     <code class="literal">declare toast</code>
+     <em class="replaceable"><code>toasttableoid</code></em>
+     <em class="replaceable"><code>toastindexoid</code></em>
+     <code class="literal">on</code> <em class="replaceable"><code>tablename</code></em>
+    </span></dt>
+<dd><p>      Create a TOAST table for the table named
+      <em class="replaceable"><code>tablename</code></em>.
+      The TOAST table is assigned OID
+      <em class="replaceable"><code>toasttableoid</code></em>
+      and its index is assigned OID
+      <em class="replaceable"><code>toastindexoid</code></em>.
+      As with <code class="literal">declare index</code>, filling of the index
+      is postponed.
      </p></dd>
 <dt><span class="term"><code class="literal">build indices</code></span></dt>
 <dd><p>      Fill in the indices that have previously been declared.

@@ -4,11 +4,12 @@
 <title>Chapter 39. PL/Python - Python Procedural Language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="plperl-missing.html" title="38.7. Limitations and Missing Features">
 <link rel="next" href="plpython-trigger.html" title="39.2. Trigger Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpython">
 <div class="titlepage"><div><div><h2 class="title">
@@ -21,7 +22,7 @@
 <dt><span class="sect1"><a href="plpython-database.html">39.3. Database Access</a></span></dt>
 </dl>
 </div>
-<a name="id679563"></a><a name="id679573"></a><p>  The <span class="application">PL/Python</span> procedural language allows
+<a name="id2718050"></a><a name="id2718059"></a><p>  The <span class="application">PL/Python</span> procedural language allows
   <span class="productname">PostgreSQL</span> functions to be written in the
   <a href="http://www.python.org" target="_top">Python language</a>.
  </p>
@@ -52,44 +53,283 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plpython-funcs"></a>39.1. PL/Python Functions</h2></div></div></div>
-<p>   Functions in PL/Python are declared via the usual <a href="sql-createfunction.html">CREATE FUNCTION</a>
-   syntax. For example:
+<p>   Functions in PL/Python are declared via the standard <a href="sql-createfunction.html">CREATE FUNCTION</a>
+   syntax:
+
 </p>
-<pre class="programlisting">CREATE FUNCTION myfunc(text) RETURNS text
-    AS 'return args[0]'
-    LANGUAGE plpythonu;</pre>
+<pre class="programlisting">CREATE FUNCTION <em class="replaceable"><code>funcname</code></em> (<em class="replaceable"><code>argument-list</code></em>)
+  RETURNS <em class="replaceable"><code>return-type</code></em>
+AS $$
+  # PL/Python function body
+$$ LANGUAGE plpythonu;</pre>
+<p>
+  </p>
+<p>   The body of a function is simply a Python script. When the function
+   is called, all unnamed arguments are passed as elements to the array
+   <code class="varname">args[]</code> and named arguments as ordinary variables to the
+   Python script. The result is returned from the Python code in the usual way,
+   with <code class="literal">return</code> or <code class="literal">yield</code> (in case of
+   a resultset statement).
+  </p>
+<p>   For example, a function to return the greater of two integers can be
+   defined as:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION pymax (a integer, b integer)
+  RETURNS integer
+AS $$
+  if a &gt; b:
+    return a
+  return b
+$$ LANGUAGE plpythonu;</pre>
 <p>
 
    The Python code that is given as the body of the function definition
-   gets transformed into a Python function.
-   For example, the above results in
+   is transformed into a Python function. For example, the above results in
 
 </p>
-<pre class="programlisting">def __plpython_procedure_myfunc_23456():
-        return args[0]</pre>
+<pre class="programlisting">def __plpython_procedure_pymax_23456():
+  if a &gt; b:
+    return a
+  return b</pre>
 <p>
 
    assuming that 23456 is the OID assigned to the function by
    <span class="productname">PostgreSQL</span>.
   </p>
-<p>   If you do not provide a return value, Python returns the default
-   <code class="symbol">None</code>. <span class="application">PL/Python</span> translates
-   Python's <code class="symbol">None</code> into the SQL null
-   value.<a name="id679740"></a>
-  </p>
 <p>   The <span class="productname">PostgreSQL</span> function parameters are available in
    the global <code class="varname">args</code> list.  In the
-   <code class="function">myfunc</code> example, <code class="varname">args[0]</code> contains
-   whatever was passed in as the text argument.  For
-   <code class="literal">myfunc2(text, integer)</code>, <code class="varname">args[0]</code>
-   would contain the <code class="type">text</code> argument and
-   <code class="varname">args[1]</code> the <code class="type">integer</code> argument.
+   <code class="function">pymax</code> example, <code class="varname">args[0]</code> contains
+   whatever was passed in as the first argument and
+   <code class="varname">args[1]</code> contains the second argument's value. Alternatively,
+   one can use named parameters as shown in the example above. This greatly simplifies
+   the reading and writing of <span class="application">PL/Python</span> code.
+  </p>
+<p>   If an SQL null value<a name="id2718278"></a> is passed to a
+   function, the argument value will appear as <code class="symbol">None</code> in
+   Python. The above function definition will return the wrong answer for null
+   inputs. We could add <code class="literal">STRICT</code> to the function definition
+   to make <span class="productname">PostgreSQL</span> do something more reasonable:
+   if a null value is passed, the function will not be called at all,
+   but will just return a null result automatically. Alternatively,
+   we could check for null inputs in the function body:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION pymax (a integer, b integer)
+  RETURNS integer
+AS $$
+  if (a is None) or (b is None):
+    return None
+  if a &gt; b:
+    return a
+  return b
+$$ LANGUAGE plpythonu;</pre>
+<p>
+
+   As shown above, to return an SQL null value from a PL/Python
+   function, return the value <code class="symbol">None</code>. This can be done whether the
+   function is strict or not.
+  </p>
+<p>   Composite-type arguments are passed to the function as Python mappings. The
+   element names of the mapping are the attribute names of the composite type.
+   If an attribute in the passed row has the null value, it has the value
+   <code class="symbol">None</code> in the mapping. Here is an example:
+
+</p>
+<pre class="programlisting">CREATE TABLE employee (
+  name text,
+  salary integer,
+  age integer
+);
+
+CREATE FUNCTION overpaid (e employee)
+  RETURNS boolean
+AS $$
+  if e["salary"] &gt; 200000:
+    return True
+  if (e["age"] &lt; 30) and (e["salary"] &gt; 100000):
+    return True
+  return False
+$$ LANGUAGE plpythonu;</pre>
+<p>
+  </p>
+<p>   There are multiple ways to return row or composite types from a Python
+   scripts. In following examples we assume to have:
+
+</p>
+<pre class="programlisting">CREATE TABLE named_value (
+  name   text,
+  value  integer
+);</pre>
+<p>
+   or
+</p>
+<pre class="programlisting">CREATE TYPE named_value AS (
+  name   text,
+  value  integer
+);</pre>
+<p>
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">Sequence types (tuple or list), but not <code class="literal">set</code> (because
+     it is not indexable)</span></dt>
+<dd>
+<p>       Returned sequence objects must have the same number of items as
+       composite types have fields. Item with index 0 is assigned to the first field
+       of the composite type, 1 to second and so on. For example:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION make_pair (name text, value integer)
+  RETURNS named_value
+AS $$
+  return [ name, value ]
+  # or alternatively, as tuple: return ( name, value )
+$$ LANGUAGE plpythonu;</pre>
+<p>
+
+       To return SQL null in any column, insert <code class="symbol">None</code> at
+       the corresponding position.
+      </p>
+</dd>
+<dt><span class="term">Mapping (dictionary)</span></dt>
+<dd>
+<p>       Value for a composite type's column is retrieved from the mapping with
+       the column name as key. Example:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION make_pair (name text, value integer)
+  RETURNS named_value
+AS $$
+  return { "name": name, "value": value }
+$$ LANGUAGE plpythonu;</pre>
+<p>
+
+       Additional dictionary key/value pairs are ignored. Missing keys are
+       treated as errors, i.e. to return an SQL null value for any column, insert
+       <code class="symbol">None</code> with the corresponding column name as the key.
+      </p>
+</dd>
+<dt><span class="term">Object (any object providing method <code class="literal">__getattr__</code>)</span></dt>
+<dd>
+<p>       Example:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION make_pair (name text, value integer)
+  RETURNS named_value
+AS $$
+  class named_value:
+    def __init__ (self, n, v):
+      self.name = n
+      self.value = v
+  return named_value(name, value)
+
+  # or simply
+  class nv: pass
+  nv.name = name
+  nv.value = value
+  return nv
+$$ LANGUAGE plpythonu;</pre>
+<p>
+      </p>
+</dd>
+</dl></div>
+<p>
+  </p>
+<p>   If you do not provide a return value, Python returns the default
+   <code class="symbol">None</code>. <span class="application">PL/Python</span> translates
+   Python's <code class="symbol">None</code> into the SQL null value.
+  </p>
+<p>   A <span class="application">PL/Python</span> function can also return sets of
+   scalar or composite types. There are serveral ways to achieve this because
+   the returned object is internally turned into an iterator. For following
+   examples, let's assume to have composite type:
+
+</p>
+<pre class="programlisting">CREATE TYPE greeting AS (
+  how text,
+  who text
+);</pre>
+<p>
+   
+   Currently known iterable types are:
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">Sequence types (tuple, list, set)</span></dt>
+<dd>
+<pre class="programlisting">CREATE FUNCTION greet (how text)
+  RETURNS SETOF greeting
+AS $$
+  # return tuple containing lists as composite types
+  # all other combinations work also
+  return ( [ how, "World" ], [ how, "PostgreSQL" ], [ how, "PL/Python" ] )
+$$ LANGUAGE plpythonu;</pre>
+<p>
+      </p>
+</dd>
+<dt><span class="term">Iterator (any object providing <code class="symbol">__iter__</code> and
+      <code class="symbol">next</code> methods)</span></dt>
+<dd>
+<pre class="programlisting">CREATE FUNCTION greet (how text)
+  RETURNS SETOF greeting
+AS $$
+  class producer:
+    def __init__ (self, how, who):
+      self.how = how
+      self.who = who
+      self.ndx = -1
+
+    def __iter__ (self):
+      return self
+
+    def next (self):
+      self.ndx += 1
+      if self.ndx == len(self.who):
+        raise StopIteration
+      return ( self.how, self.who[self.ndx] )
+
+  return producer(how, [ "World", "PostgreSQL", "PL/Python" ])
+$$ LANGUAGE plpythonu;</pre>
+<p>
+      </p>
+</dd>
+<dt><span class="term">Generator (<code class="literal">yield</code>)</span></dt>
+<dd>
+<pre class="programlisting">CREATE FUNCTION greet (how text)
+  RETURNS SETOF greeting
+AS $$
+  for who in [ "World", "PostgreSQL", "PL/Python" ]:
+    yield ( how, who )
+$$ LANGUAGE plpythonu;</pre>
+<p>
+
+       </p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p>         Currently, due to Python 
+         <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1483133&amp;group_id=5470&amp;atid=105470" target="_top">bug #1483133</a>,
+         some debug versions of Python 2.4
+         (configured and compiled with option <code class="literal">--with-pydebug</code>)
+         are known to crash the <span class="productname">PostgreSQL</span> server.
+         Unpatched versions of Fedora 4 contain this bug.
+         It does not happen in production version of Python or on patched
+         versions of Fedora 4.
+        </p>
+</div>
+<p>
+      </p>
+</dd>
+</dl></div>
+<p>
+
+   Whenever new iterable types are added to Python language,
+   <span class="application">PL/Python</span> is ready to use it.
   </p>
 <p>   The global dictionary <code class="varname">SD</code> is available to store
    data between function calls.  This variable is private static data.
    The global dictionary <code class="varname">GD</code> is public data,
    available to all Python functions within a session.  Use with
-   care.<a name="id679817"></a>
+   care.<a name="id2718602"></a>
   </p>
 <p>   Each function gets its own execution environment in the
    Python interpreter, so that global data and function arguments from

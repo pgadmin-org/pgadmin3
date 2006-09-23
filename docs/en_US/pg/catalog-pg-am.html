@@ -4,23 +4,24 @@
 <title>42.3. pg_am</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="catalog-pg-aggregate.html" title="42.2. pg_aggregate">
 <link rel="next" href="catalog-pg-amop.html" title="42.4. pg_amop">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-am"></a>42.3. <code class="structname">pg_am</code></h2></div></div></div>
-<a name="id768687"></a><p>   The catalog <code class="structname">pg_am</code> stores information about index
+<a name="id2798273"></a><p>   The catalog <code class="structname">pg_am</code> stores information about index
    access methods.  There is one row for each index access method supported by
    the system.  The contents of this catalog are discussed in detail in
    <a href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">Chapter 48, <i>Index Access Method Interface Definition</i></a>.
   </p>
 <div class="table">
-<a name="id768713"></a><p class="title"><b>Table 42.3. <code class="structname">pg_am</code> Columns</b></p>
-<table summary="pg_am Columns" border="1">
+<a name="id2798297"></a><p class="title"><b>Table 42.3. <code class="structname">pg_am</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_am Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -85,10 +86,16 @@
 <td>Does the access method support null index entries?</td>
 </tr>
 <tr>
-<td><code class="structfield">amconcurrent</code></td>
+<td><code class="structfield">amstorage</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>Does the access method support concurrent updates?</td>
+<td>Can index storage data type differ from column data type?</td>
+</tr>
+<tr>
+<td><code class="structfield">amclusterable</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Can an index of this type be CLUSTERed on?</td>
 </tr>
 <tr>
 <td><code class="structfield">aminsert</code></td>
@@ -162,8 +169,15 @@
 <td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Function to estimate cost of an index scan</td>
 </tr>
+<tr>
+<td><code class="structfield">amoptions</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>Function to parse and validate reloptions for an index</td>
+</tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

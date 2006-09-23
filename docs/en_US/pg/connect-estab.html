@@ -4,11 +4,12 @@
 <title>41.2. How Connections are Established</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="overview.html" title="Chapter 41. Overview of PostgreSQL Internals">
 <link rel="prev" href="overview.html" title="Chapter 41. Overview of PostgreSQL Internals">
 <link rel="next" href="parser-stage.html" title="41.3. The Parser Stage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -20,13 +21,11 @@
     know ahead of time how many connections will be made, we have to
     use a <em class="firstterm">master process</em> that spawns a new
     server process every time a connection is requested. This master
-    process is called <code class="literal">postmaster</code> and listens at a
+    process is called <code class="literal">postgres</code> and listens at a
     specified TCP/IP port for incoming connections. Whenever a request
-    for a connection is detected the <code class="literal">postmaster</code>
-    process spawns a new server process called
-    <code class="literal">postgres</code>. The server tasks
-    (<code class="literal">postgres</code> processes) communicate with each
-    other using <em class="firstterm">semaphores</em> and
+    for a connection is detected the <code class="literal">postgres</code>
+    process spawns a new server process. The server tasks
+    communicate with each other using <em class="firstterm">semaphores</em> and
     <em class="firstterm">shared memory</em> to ensure data integrity
     throughout concurrent data access.
    </p>

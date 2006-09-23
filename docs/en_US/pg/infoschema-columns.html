@@ -1,18 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.9. columns</title>
+<title>31.12. columns</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
-<link rel="prev" href="infoschema-column-udt-usage.html" title="31.8. column_udt_usage">
-<link rel="next" href="infoschema-constraint-column-usage.html" title="31.10. constraint_column_usage">
+<link rel="prev" href="infoschema-column-udt-usage.html" title="31.11. column_udt_usage">
+<link rel="next" href="infoschema-constraint-column-usage.html" title="31.13. constraint_column_usage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="infoschema-columns"></a>31.9. <code class="literal">columns</code></h2></div></div></div>
+<a name="infoschema-columns"></a>31.12. <code class="literal">columns</code></h2></div></div></div>
 <p>   The view <code class="literal">columns</code> contains information about all
    table columns (or view columns) in the database.  System columns
    (<code class="literal">oid</code>, etc.) are not included.  Only those columns are
@@ -20,8 +21,8 @@
    owner or having some privilege).
   </p>
 <div class="table">
-<a name="id640575"></a><p class="title"><b>Table 31.7. <code class="literal">columns</code> Columns</b></p>
-<table summary="columns Columns" border="1">
+<a name="id2679959"></a><p class="title"><b>Table 31.10. <code class="literal">columns</code> Columns</b></p>
+<div class="table-contents"><table summary="columns Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -61,9 +62,7 @@
 <tr>
 <td><code class="literal">column_default</code></td>
 <td><code class="type">character_data</code></td>
-<td>       Default expression of the column (null if the current user is
-       not the owner of the table containing the column)
-      </td>
+<td>Default expression of the column</td>
 </tr>
 <tr>
 <td><code class="literal">is_nullable</code></td>
@@ -277,10 +276,72 @@
 <td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
 </td>
 </tr>
+<tr>
+<td><code class="literal">is_identity</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">identity_generation</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">identity_start</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">identity_increment</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">identity_maximum</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">identity_minimum</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">identity_cycle</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">is_generated</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">generation_expression</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">is_updatable</code></td>
+<td><code class="type">character_data</code></td>
+<td>       <code class="literal">YES</code> if the column is updatable,
+       <code class="literal">NO</code> if not (Columns in base tables are always
+       updatable, columns in views not necessarily)
+      </td>
+</tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   Since data types can be defined in a variety of ways in SQL, and
+<br class="table-break"><p>   Since data types can be defined in a variety of ways in SQL, and
    <span class="productname">PostgreSQL</span> contains additional ways to
    define data types, their representation in the information schema
    can be somewhat difficult.  The column <code class="literal">data_type</code>

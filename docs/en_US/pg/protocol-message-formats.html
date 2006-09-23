@@ -4,11 +4,12 @@
 <title>43.4. Message Formats</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="protocol.html" title="Chapter 43. Frontend/Backend Protocol">
 <link rel="prev" href="protocol-message-types.html" title="43.3. Message Data Types">
 <link rel="next" href="protocol-error-fields.html" title="43.5. Error and Notice Message Fields">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -296,7 +297,14 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <p>        For a <code class="command">FETCH</code> command, the tag is
         <code class="literal">FETCH <em class="replaceable"><code>rows</code></em></code> where
         <em class="replaceable"><code>rows</code></em> is the number of rows that
-        have been retrieved from the cursor.</p>
+        have been retrieved from the cursor.
+       </p>
+<p>        For a <code class="command">COPY</code> command, the tag is
+        <code class="literal">COPY <em class="replaceable"><code>rows</code></em></code> where
+        <em class="replaceable"><code>rows</code></em> is the number of rows copied.
+        (Note: the row count appears only in
+        <span class="productname">PostgreSQL</span> 8.2 and later.)
+       </p>
 </dd>
 </dl></div>
 <p>
@@ -848,7 +856,7 @@ of any individual CopyData message may not be interpretable on their own.)</p>
 <dt><span class="term">        Int32(8)</span></dt>
 <dd><p>                Length of message contents in bytes, including self.</p></dd>
 <dt><span class="term">        Int32(80877103)</span></dt>
-<dd><p>                The <span class="acronym">SSL</span> request code.  The value is chosen to contain
+<dd><p>                The <acronym class="acronym">SSL</acronym> request code.  The value is chosen to contain
                 <code class="literal">1234</code> in the most significant 16 bits, and <code class="literal">5679</code> in the
                 least 16 significant bits.  (To avoid confusion, this code
                 must not be the same as any protocol version number.)</p></dd>

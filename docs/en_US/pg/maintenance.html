@@ -4,11 +4,12 @@
 <title>Chapter 22. Routine Database Maintenance Tasks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="multibyte.html" title="21.2. Character Set Support">
 <link rel="next" href="routine-reindex.html" title="22.2. Routine Reindexing">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="maintenance">
 <div class="titlepage"><div><div><h2 class="title">
@@ -27,11 +28,12 @@
 <dt><span class="sect1"><a href="logfile-maintenance.html">22.3. Log File Maintenance</a></span></dt>
 </dl>
 </div>
-<a name="id613326"></a><p>   There are a few routine maintenance chores that must be performed on
-   a regular basis to keep a <span class="productname">PostgreSQL</span>
-   server running smoothly.  The tasks discussed here are repetitive
-   in nature and can easily be automated using standard Unix tools such
-   as <span class="application">cron</span> scripts.  But it is the database
+<a name="id2646307"></a><a name="id2646315"></a><p>   <span class="productname">PostgreSQL</span>, like any database software, requires that certain tasks
+   be performed regularly to achieve optimum performance. The tasks
+   discussed here are <span class="emphasis"><em>required</em></span>, but they
+   are repetitive in nature and can easily be automated using standard
+   Unix tools such as <span class="application">cron</span> scripts or
+   Windows' <span class="application">Task Scheduler</span>.  But it is the database
    administrator's responsibility to set up appropriate scripts, and to
    check that they execute successfully.
   </p>
@@ -44,9 +46,11 @@
   </p>
 <p>   The other main category of maintenance task is periodic &#8220;<span class="quote">vacuuming</span>&#8221;
    of the database.  This activity is discussed in
-   <a href="maintenance.html#routine-vacuuming" title="22.1. Routine Vacuuming">Section 22.1, &#8220;Routine Vacuuming&#8221;</a>.
+   <a href="maintenance.html#routine-vacuuming" title="22.1. Routine Vacuuming">Section 22.1, &#8220;Routine Vacuuming&#8221;</a>.  Closely related to this updating
+   the statistics that will be used by the query planner, as discussed in
+   <a href="maintenance.html#vacuum-for-statistics" title="22.1.2. Updating planner statistics">Section 22.1.2, &#8220;Updating planner statistics&#8221;</a>.
   </p>
-<p>   Something else that might need periodic attention is log file management.
+<p>   Another task that might need periodic attention is log file management.
    This is discussed in <a href="logfile-maintenance.html" title="22.3. Log File Maintenance">Section 22.3, &#8220;Log File Maintenance&#8221;</a>.
   </p>
 <p>   <span class="productname">PostgreSQL</span> is low-maintenance compared
@@ -57,12 +61,12 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="routine-vacuuming"></a>22.1. Routine Vacuuming</h2></div></div></div>
-<a name="id613430"></a><p>   <span class="productname">PostgreSQL</span>'s <code class="command">VACUUM</code> command
-   must be run on a regular basis for several reasons:
+<a name="id2646429"></a><p>   <span class="productname">PostgreSQL</span>'s <code class="command">VACUUM</code> command
+   <span class="emphasis"><em>must</em></span> be run on a regular basis for several reasons:
 
     </p>
 <div class="orderedlist"><ol type="1">
-<li>To recover disk space occupied by updated or deleted
+<li>To recover or reuse disk space occupied by updated or deleted
       rows.</li>
 <li>To update data statistics used by the
       <span class="productname">PostgreSQL</span> query planner.</li>
@@ -78,14 +82,12 @@
    strategy.  This section concentrates on explaining the high-level
    issues; for details about command syntax and so on, see the <a href="sql-vacuum.html">VACUUM</a> reference page.
   </p>
-<p>   Beginning in <span class="productname">PostgreSQL</span> 7.2, the standard form
-   of <code class="command">VACUUM</code> can run in parallel with normal database operations
-   (selects, inserts, updates, deletes, but not changes to table definitions).
-   Routine vacuuming is therefore not nearly as intrusive as it was in prior
-   releases, and it is not as critical to try to schedule it at low-usage
-   times of day.
-  </p>
-<p>   Beginning in <span class="productname">PostgreSQL</span> 8.0, there are
+<p>   The standard form of <code class="command">VACUUM</code> can run in parallel with production
+   database operations. Commands such as SELECTs, INSERTs, UPDATEs and DELETEs
+   will continue to function as normal, though you will not be able to modify the
+   definition of a table with commands such as ALTER TABLE ADD COLUMN
+   while it is being vacuumed.
+   Beginning in <span class="productname">PostgreSQL</span> 8.0, there are
    configuration parameters that can be adjusted to further reduce the
    performance impact of background vacuuming.  See
    <a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost" title="17.4.4.        Cost-Based Vacuum Delay
@@ -99,7 +101,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="vacuum-for-space-recovery"></a>22.1.1. Recovering disk space</h3></div></div></div>
-<a name="id613590"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
+<a name="id2646567"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
     <code class="command">UPDATE</code> or <code class="command">DELETE</code> of a row does not
     immediately remove the old version of the row.
     This approach is necessary to gain the benefits of multiversion
@@ -123,11 +125,12 @@
     command. The first form, known as &#8220;<span class="quote">lazy vacuum</span>&#8221; or
     just <code class="command">VACUUM</code>, marks expired data in tables and
     indexes for future reuse; it does <span class="emphasis"><em>not</em></span> attempt
-    to reclaim the space used by this expired data
-    immediately. Therefore, the table file is not shortened, and any
-    unused space in the file is not returned to the operating
-    system. This variant of <code class="command">VACUUM</code> can be run
-    concurrently with normal database operations.
+    to reclaim the space used by this expired data unless the space is
+    at the end of the table and an exclusive table lock can be easily 
+    obtained. Unused space at the start or middle of the file does
+    not result in the file being shortened and space returned to the
+    operating system. This variant of <code class="command">VACUUM</code> can be
+    run concurrently with normal database operations.
    </p>
 <p>    The second form is the <code class="command">VACUUM FULL</code>
     command. This uses a more aggressive algorithm for reclaiming the
@@ -166,7 +169,7 @@
     <code class="command">VACUUM</code>, not <code class="command">VACUUM FULL</code>, for routine
     vacuuming for space recovery.
    </p>
-<p>    If you have a table whose contents are deleted on a periodic
+<p>    If you have a table whose entire contents are deleted on a periodic
     basis, consider doing it with <code class="command">TRUNCATE</code> rather
     than using <code class="command">DELETE</code> followed by
     <code class="command">VACUUM</code>. <code class="command">TRUNCATE</code> removes the
@@ -178,7 +181,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="vacuum-for-statistics"></a>22.1.2. Updating planner statistics</h3></div></div></div>
-<a name="id613918"></a><a name="id613933"></a><p>    The <span class="productname">PostgreSQL</span> query planner relies on
+<a name="id2646869"></a><a name="id2646881"></a><p>    The <span class="productname">PostgreSQL</span> query planner relies on
     statistical information about the contents of tables in order to
     generate good plans for queries.  These statistics are gathered by
     the <code class="command">ANALYZE</code> command, which can be invoked by itself or
@@ -203,12 +206,9 @@
 <p>    It is possible to run <code class="command">ANALYZE</code> on specific tables and even
     just specific columns of a table, so the flexibility exists to update some
     statistics more frequently than others if your application requires it.
-    In practice, however, the usefulness of this feature is doubtful.
-    Beginning in <span class="productname">PostgreSQL</span> 7.2,
-    <code class="command">ANALYZE</code> is a fairly fast operation even on large tables,
-    because it uses a statistical random sampling of the rows of a table
-    rather than reading every single row.  So it's probably much simpler
-    to just run it over the whole database every so often.
+    In practice, however, it is usually best to just analyze the entire database
+    because it is a fast operation.  It uses a statistical random sampling of 
+    the rows of a table rather than reading every single row.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
@@ -232,8 +232,8 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="vacuum-for-wraparound"></a>22.1.3. Preventing transaction ID wraparound failures</h3></div></div></div>
-<a name="id614098"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
-    depend on being able to compare transaction ID (<span class="acronym">XID</span>)
+<a name="id2647020"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
+    depend on being able to compare transaction ID (<acronym class="acronym">XID</acronym>)
     numbers: a row version with an insertion XID greater than the current
     transaction's XID is &#8220;<span class="quote">in the future</span>&#8221; and should not be visible
     to the current transaction.  But since transaction IDs have limited size
@@ -243,16 +243,8 @@
     transactions that were in the past appear to be in the future [mdash ] which
     means their outputs become invisible.  In short, catastrophic data loss.
     (Actually the data is still there, but that's cold comfort if you can't
-    get at it.)
-   </p>
-<p>    Prior to <span class="productname">PostgreSQL</span> 7.2, the only defense
-    against XID wraparound was to re-<code class="command">initdb</code> at least every 4
-    billion transactions. This of course was not very satisfactory for
-    high-traffic sites, so a better solution has been devised. The new
-    approach allows a server to remain up indefinitely, without
-    <code class="command">initdb</code> or any sort of restart. The price is this
-    maintenance requirement: <span class="emphasis"><em>every table in the database must
-    be vacuumed at least once every billion transactions</em></span>.
+    get at it.)  To avoid this, it is <span class="emphasis"><em>necessary to vacuum every table
+    in every database at least once every billion transactions</em></span>.
    </p>
 <p>    In practice this isn't an onerous requirement, but since the
     consequences of failing to meet it can be complete data loss (not
@@ -356,10 +348,10 @@ HINT:  Stop the postmaster and use a standalone backend to VACUUM in "mydb".</pr
     administrator recover without data loss, by manually executing the
     required <code class="command">VACUUM</code> commands.  However, since the system will not
     execute commands once it has gone into the safety shutdown mode,
-    the only way to do this is to stop the postmaster and use a standalone
+    the only way to do this is to stop the server and use a single-user
     backend to execute <code class="command">VACUUM</code>.  The shutdown mode is not enforced
-    by a standalone backend.  See the <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a> reference
-    page for details about using a standalone backend.
+    by a single-user backend.  See the <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a> reference
+    page for details about using a single-user backend.
    </p>
 <p>    <code class="command">VACUUM</code> with the <code class="command">FREEZE</code> option uses a more
     aggressive freezing policy: row versions are frozen if they are old enough
@@ -389,7 +381,7 @@ HINT:  Stop the postmaster and use a standalone backend to VACUUM in "mydb".</pr
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="autovacuum"></a>22.1.4. The auto-vacuum daemon</h3></div></div></div>
-<a name="id614653"></a><p>    Beginning in <span class="productname">PostgreSQL </span> 8.1, there is a
+<a name="id2647505"></a><p>    Beginning in <span class="productname">PostgreSQL </span> 8.1, there is a
     separate optional server process called the <em class="firstterm">autovacuum
     daemon</em>, whose purpose is to automate the execution of
     <code class="command">VACUUM</code> and <code class="command">ANALYZE </code> commands.

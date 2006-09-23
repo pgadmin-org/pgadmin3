@@ -1,0 +1,62 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>28.15. LDAP Lookup of Connection Parameters</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 28. libpq - C Library">
+<link rel="prev" href="libpq-pgservice.html" title="28.14. The Connection Service File">
+<link rel="next" href="libpq-ssl.html" title="28.16. SSL Support">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-ldap"></a>28.15. LDAP Lookup of Connection Parameters</h2></div></div></div>
+<a name="id2666012"></a><p>If <span class="application">libpq</span> has been compiled with LDAP support (option
+<code class="literal"><code class="option">--with-ldap</code></code> for <code class="command">configure</code>)
+it is possible to retrieve connection options like <code class="literal">host</code>
+or <code class="literal">dbname</code> via LDAP from a central server.
+The advantage is that if the connection parameters for a database change,
+the connection information doesn't have to be updated on all client machines.</p>
+<p>LDAP connection parameter lookup uses the connection service file
+<code class="filename">pg_service.conf</code> (see <a href="libpq-pgservice.html" title="28.14. The Connection Service File">Section 28.14, &#8220;The Connection Service File&#8221;</a>).
+A line in a <code class="filename">pg_service.conf</code> stanza that starts with
+<code class="literal">ldap://</code> will be recognized as an LDAP URL and an LDAP
+query will be performed. The result must be a list of <code class="literal">keyword =
+value</code> pairs which will be used to set connection options.
+The URL must conform to RFC 1959 and be of the form
+</p>
+<pre class="synopsis">ldap://[<em class="replaceable"><code>hostname</code></em>[:<em class="replaceable"><code>port</code></em>]]/<em class="replaceable"><code>search_base</code></em>?<em class="replaceable"><code>attribute</code></em>?<em class="replaceable"><code>search_scope</code></em>?<em class="replaceable"><code>filter</code></em></pre>
+<p>
+where <em class="replaceable"><code>hostname</code></em>
+defaults to <code class="literal">localhost</code> and
+<em class="replaceable"><code>port</code></em> defaults to 389.</p>
+<p>Processing of <code class="filename">pg_service.conf</code> is terminated after
+a successful LDAP lookup, but is continued if the LDAP server cannot be
+contacted.  This is to provide a fallback with
+further LDAP URL lines that point to different LDAP
+servers, classical <code class="literal">keyword = value</code> pairs, or
+default connection options.
+If you would rather get an error message in this case, add a
+syntactically incorrect line after the LDAP URL.</p>
+<p>A sample LDAP entry that has been created with the LDIF file
+</p>
+<pre class="synopsis">version:1
+dn:cn=mydatabase,dc=mycompany,dc=com
+changetype:add
+objectclass:top
+objectclass:groupOfUniqueNames
+cn:mydatabase
+uniqueMember:host=dbserver.mycompany.com
+uniqueMember:port=5439
+uniqueMember:dbname=mydb
+uniqueMember:user=mydb_user
+uniqueMember:sslmode=require</pre>
+<p>
+might be queried with the following LDAP URL:
+</p>
+<pre class="synopsis">ldap://ldap.mycompany.com/dc=mycompany,dc=com?uniqueMember?one?(cn=mydatabase)</pre>
+</div></body>
+</html>

@@ -1,29 +1,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.17. enabled_roles</title>
+<title>31.20. enabled_roles</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
-<link rel="prev" href="infoschema-element-types.html" title="31.16. element_types">
-<link rel="next" href="infoschema-key-column-usage.html" title="31.18. key_column_usage">
+<link rel="prev" href="infoschema-element-types.html" title="31.19. element_types">
+<link rel="next" href="infoschema-key-column-usage.html" title="31.21. key_column_usage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="infoschema-enabled-roles"></a>31.17. <code class="literal">enabled_roles</code></h2></div></div></div>
-<p>   The view <code class="literal">enabled_roles</code> identifies all groups
-   that the current user is a member of.  (A role is the same thing as
-   a group.)  The difference between this view and
-   <code class="literal">applicable_roles</code> is that in the future there may
-   be a mechanism to enable and disable groups during a session.  In
-   that case this view identifies those groups that are currently
-   enabled.
+<a name="infoschema-enabled-roles"></a>31.20. <code class="literal">enabled_roles</code></h2></div></div></div>
+<p>   The view <code class="literal">enabled_roles</code> identifies the currently
+   &#8220;<span class="quote">enabled roles</span>&#8221;.  The enabled roles are recursively
+   defined as the current user together with all roles that have been
+   granted to the enabled roles with automatic inheritance.  In other
+   words, these are all roles that the current user has direct or
+   indirect, automatically inheriting membership in.
+   <a name="id2682847"></a>
+   <a name="id2682854"></a>
+  </p>
+<p>   For permission checking, the set of &#8220;<span class="quote">applicable roles</span>&#8221;
+   is applied, which may be broader than the set of enabled roles.  So
+   generally, it is better to use the view
+   <code class="literal">applicable_roles</code> instead of this one; see also
+   there.
   </p>
 <div class="table">
-<a name="id643531"></a><p class="title"><b>Table 31.15. <code class="literal">enabled_roles</code> Columns</b></p>
-<table summary="enabled_roles Columns" border="1">
+<a name="id2682878"></a><p class="title"><b>Table 31.18. <code class="literal">enabled_roles</code> Columns</b></p>
+<div class="table-contents"><table summary="enabled_roles Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -37,9 +45,10 @@
 <tbody><tr>
 <td><code class="literal">role_name</code></td>
 <td><code class="type">sql_identifier</code></td>
-<td>Name of a group</td>
+<td>Name of a role</td>
 </tr></tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

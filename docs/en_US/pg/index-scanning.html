@@ -4,11 +4,12 @@
 <title>48.3. Index Scanning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="prev" href="index-functions.html" title="48.2. Index Access Method Functions">
 <link rel="next" href="index-locking.html" title="48.4. Index Locking Considerations">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -77,11 +78,7 @@
    a concurrent delete may or may not be reflected in the results of a scan.
    What is important is that insertions or deletions not cause the scan to
    miss or multiply return entries that were not themselves being inserted or
-   deleted.  (For an index type that does not set
-   <code class="structname">pg_am</code>.<code class="structfield">amconcurrent</code>, it is sufficient to
-   handle these cases for insertions or deletions performed by the same
-   backend that's doing the scan.  But when <code class="structfield">amconcurrent</code> is
-   true, insertions or deletions from other backends must be handled as well.)
+   deleted.
   </p>
 <p>   Instead of using <code class="function">amgettuple</code>, an index scan can be done with 
    <code class="function">amgetmulti</code> to fetch multiple tuples per call.  This can be

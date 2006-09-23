@@ -4,11 +4,12 @@
 <title>REINDEX</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">
+<link rel="prev" href="sql-reassign-owned.html" title="REASSIGN OWNED">
 <link rel="next" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-reindex"></a><div class="titlepage"></div>
@@ -16,15 +17,15 @@
 <h2>Name</h2>
 <p>REINDEX &#8212; rebuild indexes</p>
 </div>
-<a name="id726113"></a><div class="refsynopsisdiv">
+<a name="id2764402"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">REINDEX { INDEX | TABLE | DATABASE | SYSTEM } <em class="replaceable"><code>name</code></em> [ FORCE ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id726137"></a><h2>Description</h2>
+<a name="id2764423"></a><h2>Description</h2>
 <p>   <code class="command">REINDEX</code> rebuilds an index using the data
    stored in the index's table, replacing the old copy of the index. There are
-   two main reasons to use <code class="command">REINDEX</code>:
+   several scenarios in which to use <code class="command">REINDEX</code>:
 
    </p>
 <div class="itemizedlist"><ul type="disc">
@@ -34,19 +35,29 @@
       hardware failures.  <code class="command">REINDEX</code> provides a
       recovery method.
      </p></li>
-<li><p>      The index in question contains a lot of dead index pages that
-      are not being reclaimed. This can occur with B-tree indexes in
-      <span class="productname">PostgreSQL</span> under certain access
+<li><p>      An index has become &#8220;<span class="quote">bloated</span>&#8221;, that it is contains many
+      empty or nearly-empty pages.  This can occur with B-tree indexes in
+      <span class="productname">PostgreSQL</span> under certain uncommon access
       patterns. <code class="command">REINDEX</code> provides a way to reduce
       the space consumption of the index by writing a new version of
       the index without the dead pages. See <a href="routine-reindex.html" title="22.2. Routine Reindexing">Section 22.2, &#8220;Routine Reindexing&#8221;</a> for more information.
+     </p></li>
+<li><p>      You have altered a storage parameter (such as fillfactor)
+      for an index, and wish to ensure that the change has taken full effect.
+     </p></li>
+<li><p>      An index build with the <code class="literal">CONCURRENTLY</code> option failed, leaving
+      an &#8220;<span class="quote">invalid</span>&#8221; index. Such indexes are useless but it can be
+      convenient to use <code class="command">REINDEX</code> to rebuild them. Note that
+      <code class="command">REINDEX</code> will not perform a concurrent build. To build the
+      index without interfering with production you should drop the index and
+      reissue the <code class="command">CREATE INDEX CONCURRENTLY</code> command.
      </p></li>
 </ul></div>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id726205"></a><h2>Parameters</h2>
+<a name="id2764531"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">INDEX</code></span></dt>
 <dd><p>      Recreate the specified index.
@@ -78,7 +89,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id726310"></a><h2>Notes</h2>
+<a name="id2764627"></a><h2>Notes</h2>
 <p>   If you suspect corruption of an index on a user table, you can
    simply rebuild that index, or all indexes on the table, using
    <code class="command">REINDEX INDEX</code> or <code class="command">REINDEX TABLE</code>.  
@@ -92,7 +103,7 @@
    with the <code class="option">-P</code> option, which prevents it from using
    indexes for system catalog lookups.
   </p>
-<p>   One way to do this is to shut down the postmaster and start a stand-alone
+<p>   One way to do this is to shut down the server and start a single-user
    <span class="productname">PostgreSQL</span> server
    with the <code class="option">-P</code> option included on its command line.
    Then, <code class="command">REINDEX DATABASE</code>, <code class="command">REINDEX SYSTEM</code>,
@@ -100,9 +111,9 @@
    issued, depending on how much you want to reconstruct.  If in
    doubt, use <code class="command">REINDEX SYSTEM</code> to select
    reconstruction of all system indexes in the database.  Then quit
-   the standalone server session and restart the regular server.
-   See the <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a> reference page for more
-   information about how to interact with the stand-alone server
+   the single-user server session and restart the regular server.
+   See the <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a> reference page for more
+   information about how to interact with the single-user server
    interface.
   </p>
 <p>   Alternatively, a regular server session can be started with
@@ -166,17 +177,17 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id726606"></a><h2>Examples</h2>
-<p>   Recreate the indexes on the table <code class="literal">my_table</code>:
-
-</p>
-<pre class="programlisting">REINDEX TABLE my_table;</pre>
-<p>
-  </p>
+<a name="id2764898"></a><h2>Examples</h2>
 <p>   Rebuild a single index:
 
 </p>
 <pre class="programlisting">REINDEX INDEX my_index;</pre>
+<p>
+  </p>
+<p>   Rebuild all the indexes on the table <code class="literal">my_table</code>:
+
+</p>
+<pre class="programlisting">REINDEX TABLE my_table;</pre>
 <p>
   </p>
 <p>   Rebuild all indexes in a particular database, without trusting the
@@ -192,7 +203,7 @@ broken_db=&gt; \q</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id726662"></a><h2>Compatibility</h2>
+<a name="id2764950"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">REINDEX</code> command in the SQL standard.
   </p>
 </div>

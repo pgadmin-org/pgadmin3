@@ -4,19 +4,20 @@
 <title>26.2. Write-Ahead Logging (WAL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">
 <link rel="prev" href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">
 <link rel="next" href="wal-configuration.html" title="26.3. WAL Configuration">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="wal-intro"></a>26.2. Write-Ahead Logging (<span class="acronym">WAL</span>)</h2></div></div></div>
-<a name="id620748"></a><a name="id620757"></a><p>    <em class="firstterm">Write-Ahead Logging</em> (<span class="acronym">WAL</span>)
+<a name="wal-intro"></a>26.2. Write-Ahead Logging (<acronym class="acronym">WAL</acronym>)</h2></div></div></div>
+<a name="id2653704"></a><a name="id2653712"></a><p>    <em class="firstterm">Write-Ahead Logging</em> (<acronym class="acronym">WAL</acronym>)
     is a standard approach to transaction logging.  Its detailed
     description may be found in most (if not all) books about
-    transaction processing. Briefly, <span class="acronym">WAL</span>'s central
+    transaction processing. Briefly, <acronym class="acronym">WAL</acronym>'s central
     concept is that changes to data files (where tables and indexes
     reside) must be written only after those changes have been logged,
     that is, when log records describing the changes have been flushed
@@ -27,7 +28,7 @@
     the data pages can be redone from the log records.  (This is
     roll-forward recovery, also known as REDO.)
    </p>
-<p>    A major benefit of using <span class="acronym">WAL</span> is a
+<p>    A major benefit of using <acronym class="acronym">WAL</acronym> is a
     significantly reduced number of disk writes, because only the log
     file needs to be flushed to disk at the time of transaction
     commit, rather than every data file changed by the transaction.
@@ -39,8 +40,8 @@
     handling many small transactions touching different parts of the data
     store.
    </p>
-<p>    <span class="acronym">WAL</span> also makes it possible to support on-line
-    backup and point-in-time recovery, as described in <a href="backup-online.html" title="23.3. On-line backup and point-in-time recovery (PITR)">Section 23.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>.  By archiving the WAL data we can support
+<p>    <acronym class="acronym">WAL</acronym> also makes it possible to support on-line
+    backup and point-in-time recovery, as described in <a href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">Section 23.3, &#8220;Continuous Archiving and Point-In-Time Recovery (PITR)&#8221;</a>.  By archiving the WAL data we can support
     reverting to any time instant covered by the available WAL data:
     we simply install a prior physical backup of the database, and
     replay the WAL log just as far as the desired time.  What's more,

@@ -4,16 +4,17 @@
 <title>9.12. Sequence Manipulation Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-net.html" title="9.11. Network Address Functions and Operators">
 <link rel="next" href="functions-conditional.html" title="9.13. Conditional Expressions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div></div>
-<a name="id564279"></a><a name="id564285"></a><a name="id564292"></a><a name="id564298"></a><a name="id564304"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
+<a name="id2597008"></a><a name="id2597014"></a><a name="id2597020"></a><a name="id2597025"></a><a name="id2597031"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
    for operating on <em class="firstterm">sequence objects</em>.
    Sequence objects (also called sequence generators or
    just sequences) are special single-row tables created with
@@ -25,7 +26,7 @@
   </p>
 <div class="table">
 <a name="functions-sequence-table"></a><p class="title"><b>Table 9.34. Sequence Functions</b></p>
-<table summary="Sequence Functions" border="1">
+<div class="table-contents"><table summary="Sequence Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -38,21 +39,15 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><code class="literal"><code class="function">nextval</code>(<code class="type">regclass</code>)</code></td>
-<td><code class="type">bigint</code></td>
-<td>Advance sequence and return new value</td>
-</tr>
-<tr>
 <td><code class="literal"><code class="function">currval</code>(<code class="type">regclass</code>)</code></td>
 <td><code class="type">bigint</code></td>
 <td>Return value most recently obtained with
         <code class="function">nextval</code> for specified sequence</td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">lastval</code>()</code></td>
+<td><code class="literal"><code class="function">nextval</code>(<code class="type">regclass</code>)</code></td>
 <td><code class="type">bigint</code></td>
-<td>Return value most recently obtained with <code class="function">nextval</code>
-</td>
+<td>Advance sequence and return new value</td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">setval</code>(<code class="type">regclass</code>, <code class="type">bigint</code>)</code></td>
@@ -65,16 +60,16 @@
 <td>Set sequence's current value and <code class="literal">is_called</code> flag</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   The sequence to be operated on by a sequence-function call is specified by
+<br class="table-break"><p>   The sequence to be operated on by a sequence-function call is specified by
    a <code class="type">regclass</code> argument, which is just the OID of the sequence in the
    <code class="structname">pg_class</code> system catalog.  You do not have to look up the
    OID by hand, however, since the <code class="type">regclass</code> data type's input
    converter will do the work for you.  Just write the sequence name enclosed
    in single quotes, so that it looks like a literal constant.  To
    achieve some compatibility with the handling of ordinary
-   <span class="acronym">SQL</span> names, the string will be converted to lowercase
+   <acronym class="acronym">SQL</acronym> names, the string will be converted to lowercase
    unless it contains double quotes around the sequence name.  Thus
 </p>
 <pre class="programlisting">nextval('foo')      <em class="lineannotation"><span class="lineannotation">operates on sequence <code class="literal">foo</code></span></em>

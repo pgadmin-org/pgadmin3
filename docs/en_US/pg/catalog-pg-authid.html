@@ -4,16 +4,17 @@
 <title>42.8. pg_authid</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="catalog-pg-attribute.html" title="42.7. pg_attribute">
 <link rel="next" href="catalog-pg-auth-members.html" title="42.9. pg_auth_members">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-authid"></a>42.8. <code class="structname">pg_authid</code></h2></div></div></div>
-<a name="id770145"></a><p>   The catalog <code class="structname">pg_authid</code> contains information about
+<a name="id2799613"></a><p>   The catalog <code class="structname">pg_authid</code> contains information about
    database authorization identifiers (roles).  A role subsumes the concepts
    of &#8220;<span class="quote">users</span>&#8221; and &#8220;<span class="quote">groups</span>&#8221;.  A user is essentially just a
    role with the <code class="structfield">rolcanlogin</code> flag set.  Any role (with or
@@ -21,7 +22,7 @@
    <a href="catalog-pg-auth-members.html" title="42.9. pg_auth_members"><code class="structname">pg_auth_members</code></a>.
   </p>
 <p>   Since this catalog contains passwords, it must not be publicly readable.
-   <a href="view-pg-roles.html" title="42.39. pg_roles"><code class="structname">pg_roles</code></a>
+   <a href="view-pg-roles.html" title="42.42. pg_roles"><code class="structname">pg_roles</code></a>
    is a publicly readable view on
    <code class="structname">pg_authid</code> that blanks out the password field.
   </p>
@@ -35,8 +36,8 @@
    one per database.
   </p>
 <div class="table">
-<a name="id770237"></a><p class="title"><b>Table 42.8. <code class="structname">pg_authid</code> Columns</b></p>
-<table summary="pg_authid Columns" border="1">
+<a name="id2799694"></a><p class="title"><b>Table 42.8. <code class="structname">pg_authid</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_authid Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -93,7 +94,7 @@
 <td><code class="structfield">rolcanlogin</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>       Role may log in, that is, this role can be given as the initial
+<td>       Role may log in. That is, this role can be given as the initial
        session authorization identifier.
       </td>
 </tr>
@@ -125,7 +126,8 @@
 <td>Session defaults for run-time configuration variables</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

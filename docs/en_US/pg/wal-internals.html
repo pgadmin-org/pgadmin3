@@ -4,21 +4,22 @@
 <title>26.4. WAL Internals</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">
 <link rel="prev" href="wal-configuration.html" title="26.3. WAL Configuration">
 <link rel="next" href="regress.html" title="Chapter 27. Regression Tests">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="wal-internals"></a>26.4. WAL Internals</h2></div></div></div>
-<p>   <span class="acronym">WAL</span> is automatically enabled; no action is
+<p>   <acronym class="acronym">WAL</acronym> is automatically enabled; no action is
    required from the administrator except ensuring that the
-   disk-space requirements for the <span class="acronym">WAL</span> logs are met,
-   and that any necessary tuning is done (see <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a>).
+   disk-space requirements for the <acronym class="acronym">WAL</acronym> logs are met,
+   and that any necessary tuning is done (see <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a>).
   </p>
-<p>   <span class="acronym">WAL</span> logs are stored in the directory
+<p>   <acronym class="acronym">WAL</acronym> logs are stored in the directory
    <code class="filename">pg_xlog</code> under the data directory, as a set of
    segment files, normally each 16 MB in size.  Each segment is divided into
    pages, normally 8 KB each.  The log record headers are described in
@@ -35,15 +36,15 @@
    is shut down, of course) and creating a symbolic link from the
    original location in the main data directory to the new location.
   </p>
-<p>   The aim of <span class="acronym">WAL</span>, to ensure that the log is
+<p>   The aim of <acronym class="acronym">WAL</acronym>, to ensure that the log is
    written before database records are altered, may be subverted by
-   disk drives<a name="id621351"></a> that falsely report a
+   disk drives<a name="id2654255"></a> that falsely report a
    successful write to the kernel, 
    when in fact they have only cached the data and not yet stored it
    on the disk.  A power failure in such a situation may still lead to
    irrecoverable data corruption.  Administrators should try to ensure
    that disks holding <span class="productname">PostgreSQL</span>'s
-   <span class="acronym">WAL</span> log files do not make such false reports.
+   <acronym class="acronym">WAL</acronym> log files do not make such false reports.
   </p>
 <p>   After a checkpoint has been made and the log flushed, the
    checkpoint's position is saved in the file

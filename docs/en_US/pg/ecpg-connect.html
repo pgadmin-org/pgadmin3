@@ -4,11 +4,12 @@
 <title>30.2. Connecting to the Database Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">
 <link rel="next" href="ecpg-disconnect.html" title="30.3. Closing a Connection">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -77,7 +78,7 @@
 </p>
 <pre class="programlisting">EXEC SQL CONNECT TO mydb@sql.mydomain.com;
 
-EXEC SQL CONNECT TO 'unix:postgresql://sql.mydomain.com/mydb' AS myconnection USER john;
+EXEC SQL CONNECT TO unix:postgresql://sql.mydomain.com/mydb AS myconnection USER john;
 
 EXEC SQL BEGIN DECLARE SECTION;
 const char *target = "mydb@sql.mydomain.com";

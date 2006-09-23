@@ -4,16 +4,17 @@
 <title>17.5. Write Ahead Log</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
 <link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-wal"></a>17.5. Write Ahead Log</h2></div></div></div>
-<p>    See also <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<span class="acronym">WAL</span> Configuration&#8221;</a> for details on WAL
+<p>    See also <a href="wal-configuration.html" title="26.3. WAL Configuration">Section 26.3, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
     tuning.
    </p>
 <div class="sect2" lang="en">
@@ -24,7 +25,7 @@
 <a name="guc-fsync"></a><span class="term"><code class="varname">fsync</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
-<p>        If this option is on, the <span class="productname">PostgreSQL</span> server
+<p>        If this parameter is on, the <span class="productname">PostgreSQL</span> server
         will try to make sure that updates are physically written to
         disk, by issuing <code class="function">fsync()</code> system calls or various
         equivalent methods (see <a href="runtime-config-wal.html#guc-wal-sync-method">wal_sync_method</a>).
@@ -56,9 +57,9 @@
         utility company (or your battery backup), you can consider
         disabling <code class="varname">fsync</code>.
        </p>
-<p>        This option can only be set at server start or in the
-        <code class="filename">postgresql.conf</code> file.  If you turn
-        this option off, also consider turning off 
+<p>        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
+        If you turn this parameter off, also consider turning off 
         <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a>.
        </p>
 </dd>
@@ -84,16 +85,17 @@
         </p></li>
 </ul></div>
 <p>        Not all of these choices are available on all platforms.
-        The default is the first method in the above list that is supported.
-        This option can only be set at server start or in the
-        <code class="filename">postgresql.conf</code> file.
+        The default is the first method in the above list that is supported
+        by the platform.
+        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
        </p>
 </dd>
 <dt>
 <a name="guc-full-page-writes"></a><span class="term"><code class="varname">full_page_writes</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd>
-<p>        When this option is on, the <span class="productname">PostgreSQL</span> server
+<p>        When this parameter is on, the <span class="productname">PostgreSQL</span> server
         writes the entire content of each disk page to WAL during the
         first modification of that page after a checkpoint.
         This is needed because
@@ -109,21 +111,21 @@
         Therefore, one way to reduce the cost of full-page writes is to
         increase the checkpoint interval parameters.)
        </p>
-<p>        Turning this option off speeds normal operation, but
+<p>        Turning this parameter off speeds normal operation, but
         might lead to a corrupt database after an operating system crash
         or power failure. The risks are similar to turning off
         <code class="varname">fsync</code>, though smaller.  It may be safe to turn off
-        this option if you have hardware (such as a battery-backed disk
+        this parameter if you have hardware (such as a battery-backed disk
         controller) or filesystem software (e.g., Reiser4) that reduces
         the risk of partial page writes to an acceptably low level.
        </p>
-<p>        Turning off this option does not affect use of
+<p>        Turning off this parameter does not affect use of
         WAL archiving for point-in-time recovery (PITR)
-        (see <a href="backup-online.html" title="23.3. On-line backup and point-in-time recovery (PITR)">Section 23.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>).
+        (see <a href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">Section 23.3, &#8220;Continuous Archiving and Point-In-Time Recovery (PITR)&#8221;</a>).
        </p>
-<p>        This option can only be set at server start or in the
-        <code class="filename">postgresql.conf</code> file.  The default is
-        <code class="literal">on</code>.
+<p>        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
+        The default is <code class="literal">on</code>.
        </p>
 </dd>
 <dt>
@@ -134,7 +136,7 @@
         The default is 8.  The setting need only be large enough to hold
         the amount of WAL data generated by one typical transaction, since
         the data is written out to disk at every transaction commit.
-        This option can only be set at server start.
+        This parameter can only be set at server start.
        </p>
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
@@ -178,16 +180,17 @@
 </dt>
 <dd><p>        Maximum distance between automatic WAL checkpoints, in log
         file segments (each segment is normally 16 megabytes). The
-        default is three.  This option can only be set at server start
-        or in the <code class="filename">postgresql.conf</code> file.
+        default is three.
+        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
        </p></dd>
 <dt>
 <a name="guc-checkpoint-timeout"></a><span class="term"><code class="varname">checkpoint_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Maximum time between automatic WAL checkpoints, in
-        seconds. The default is 300 seconds.  This option can only be
-        set at server start or in the <code class="filename">postgresql.conf</code>
-        file.
+        seconds. The default is 300 seconds.
+        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
        </p></dd>
 <dt>
 <a name="guc-checkpoint-warning"></a><span class="term"><code class="varname">checkpoint_warning</code> (<code class="type">integer</code>)</span>
@@ -197,6 +200,8 @@
         than this many seconds (which suggests that
         <code class="varname">checkpoint_segments</code> ought to be raised).  The default is
         30 seconds.  Zero disables the warning.
+        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
        </p></dd>
 </dl></div>
 </div>
@@ -214,9 +219,9 @@
         replaced by the absolute path of the file to archive, and any
         <code class="literal">%f</code> is replaced by the file name only. Use
         <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character in the
-        command. For more information see <a href="backup-online.html#backup-archiving-wal" title="23.3.1. Setting up WAL archiving">Section 23.3.1, &#8220;Setting up WAL archiving&#8221;</a>. This option can only be set at
-        server start or in the <code class="filename">postgresql.conf</code>
-        file.
+        command. For more information see <a href="continuous-archiving.html#backup-archiving-wal" title="23.3.1. Setting up WAL archiving">Section 23.3.1, &#8220;Setting up WAL archiving&#8221;</a>.
+        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
        </p>
 <p>        It is important for the command to return a zero exit status if
         and only if it succeeds.  Examples:
@@ -226,6 +231,28 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <p>
        </p>
 </dd>
+<dt>
+<a name="guc-archive-timeout"></a><span class="term"><code class="varname">archive_timeout</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        The <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> is only invoked on completed 
+        WAL segments. Hence,
+        if your server generates only little WAL traffic (or has slack periods 
+        where it does so), there could be a long delay between the completion
+        of a transaction and its safe recording in archive storage.  To put
+        a limit on how old unarchived data can be, you can set
+        <code class="varname">archive_timeout</code> to force the server to switch
+        to a new WAL segment file periodically.  When this parameter is
+        greater than zero, the server will switch to a new segment file
+        whenever this many seconds elapse since the last segment file switch.
+        Note that archived
+        files that are closed early due to a forced switch are still the same
+        length as completely full files.  It is therefore unwise to set a very
+        short <code class="varname">archive_timeout</code> [mdash ] it will bloat your archive
+        storage.  <code class="varname">archive_timeout</code> settings of a minute or so are
+        usually reasonable.
+        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
+       </p></dd>
 </dl></div>
 </div>
 </div></body>

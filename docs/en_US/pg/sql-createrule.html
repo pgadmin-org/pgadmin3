@@ -4,11 +4,12 @@
 <title>CREATE RULE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createrole.html" title="CREATE ROLE">
 <link rel="next" href="sql-createschema.html" title="CREATE SCHEMA">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-createrule"></a><div class="titlepage"></div>
@@ -16,14 +17,14 @@
 <h2>Name</h2>
 <p>CREATE RULE &#8212; define a new rewrite rule</p>
 </div>
-<a name="id706876"></a><div class="refsynopsisdiv">
+<a name="id2745086"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ OR REPLACE ] RULE <em class="replaceable"><code>name</code></em> AS ON <em class="replaceable"><code>event</code></em>
     TO <em class="replaceable"><code>table</code></em> [ WHERE <em class="replaceable"><code>condition</code></em> ]
     DO [ ALSO | INSTEAD ] { NOTHING | <em class="replaceable"><code>command</code></em> | ( <em class="replaceable"><code>command</code></em> ; <em class="replaceable"><code>command</code></em> ... ) }</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id706942"></a><h2>Description</h2>
+<a name="id2745135"></a><h2>Description</h2>
 <p>   <code class="command">CREATE RULE</code> defines a new rule applying to a specified
    table or view.
    <code class="command">CREATE OR REPLACE RULE</code> will either create a
@@ -58,7 +59,9 @@
    <code class="literal">ON INSERT</code>, <code class="literal">ON UPDATE</code>, and
    <code class="literal">ON DELETE</code> rules (or any subset of those that's
    sufficient for your purposes) to replace update actions on the view
-   with appropriate updates on other tables.
+   with appropriate updates on other tables.  If you want to support
+   <code class="command">INSERT RETURNING</code> and so on, then be sure to put a suitable
+   <code class="literal">RETURNING</code> clause into each of these rules.
   </p>
 <p>   There is a catch if you try to use conditional rules for view
    updates: there <span class="emphasis"><em>must</em></span> be an unconditional
@@ -73,11 +76,12 @@
    understands it will never be called on to update the dummy table.
    Then make the conditional rules non-<code class="literal">INSTEAD</code>; in
    the cases where they are applied, they add to the default
-   <code class="literal">INSTEAD NOTHING</code> action.
+   <code class="literal">INSTEAD NOTHING</code> action.  (This method does not
+   currently work to support <code class="literal">RETURNING</code> queries, however.)
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id707133"></a><h2>Parameters</h2>
+<a name="id2745314"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of a rule to create.  This must be distinct from the
@@ -95,7 +99,7 @@
       rule applies to.
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>condition</code></em></span></dt>
-<dd><p>      Any <span class="acronym">SQL</span> conditional expression (returning
+<dd><p>      Any <acronym class="acronym">SQL</acronym> conditional expression (returning
       <code class="type">boolean</code>).  The condition expression may not refer
       to any tables except <code class="literal">NEW</code> and <code class="literal">OLD</code>, and
       may not contain aggregate functions.
@@ -134,16 +138,30 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id707422"></a><h2>Notes</h2>
-<p>   You must have the privilege <code class="literal">RULE</code> on a table to
-   be allowed to define a rule on it.
+<a name="id2745551"></a><h2>Notes</h2>
+<p>   You must be the owner of a table to create or change rules for it.
+  </p>
+<p>   In a rule for <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, or
+   <code class="literal">DELETE</code> on a view, you can add a <code class="literal">RETURNING</code>
+   clause that emits the view's columns.  This clause will be used to compute
+   the outputs if the rule is triggered by an <code class="command">INSERT RETURNING</code>,
+   <code class="command">UPDATE RETURNING</code>, or <code class="command">DELETE RETURNING</code> command
+   respectively.  When the rule is triggered by a command without
+   <code class="literal">RETURNING</code>, the rule's <code class="literal">RETURNING</code> clause will be
+   ignored.  The current implementation allows only unconditional
+   <code class="literal">INSTEAD</code> rules to contain <code class="literal">RETURNING</code>; furthermore
+   there can be at most one <code class="literal">RETURNING</code> clause among all the rules
+   for the same event.  (This ensures that there is only one candidate
+   <code class="literal">RETURNING</code> clause to be used to compute the results.)
+   <code class="literal">RETURNING</code> queries on the view will be rejected if
+   there is no <code class="literal">RETURNING</code> clause in any available rule.
   </p>
 <p>   It is very important to take care to avoid circular rules.  For
    example, though each of the following two rule definitions are
    accepted by <span class="productname">PostgreSQL</span>, the
    <code class="command">SELECT</code> command would cause
    <span class="productname">PostgreSQL</span> to report an error because
-   the query cycled too many times:
+   of recursive expansion of a rule:
 
 </p>
 <pre class="programlisting">CREATE RULE "_RETURN" AS
@@ -176,7 +194,7 @@ UPDATE mytable SET name = 'foo' WHERE id = 42;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id707529"></a><h2>Compatibility</h2>
+<a name="id2745727"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE RULE</code> is a
    <span class="productname">PostgreSQL</span> language extension, as is the
    entire query rewrite system.

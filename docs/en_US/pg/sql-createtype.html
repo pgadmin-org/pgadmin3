@@ -4,11 +4,12 @@
 <title>CREATE TYPE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createtrigger.html" title="CREATE TRIGGER">
 <link rel="next" href="sql-createuser.html" title="CREATE USER">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-createtype"></a><div class="titlepage"></div>
@@ -16,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE TYPE &#8212; define a new data type</p>
 </div>
-<a name="id712569"></a><div class="refsynopsisdiv">
+<a name="id2750829"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE TYPE <em class="replaceable"><code>name</code></em> AS
     ( <em class="replaceable"><code>attribute_name</code></em> <em class="replaceable"><code>data_type</code></em> [, ... ] )
@@ -34,10 +35,12 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
     [ , DEFAULT = <em class="replaceable"><code>default</code></em> ]
     [ , ELEMENT = <em class="replaceable"><code>element</code></em> ]
     [ , DELIMITER = <em class="replaceable"><code>delimiter</code></em> ]
-)</pre>
+)
+
+CREATE TYPE <em class="replaceable"><code>name</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id712691"></a><h2>Description</h2>
+<a name="id2750943"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TYPE</code> registers a new data type for use in
    the current database.  The user who defines a type becomes its
    owner.
@@ -50,7 +53,7 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
    table in the same schema.)
   </p>
 <div class="refsect2" lang="en">
-<a name="id712715"></a><h3>Composite Types</h3>
+<a name="id2750965"></a><h3>Composite Types</h3>
 <p>   The first form of <code class="command">CREATE TYPE</code>
    creates a composite type.
    The composite type is specified by a list of attribute names and data types.
@@ -62,7 +65,7 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id712742"></a><h3>Base Types</h3>
+<a name="id2750989"></a><h3>Base Types</h3>
 <p>   The second form of <code class="command">CREATE TYPE</code> creates a new base type
    (scalar type).  The parameters may appear in any order, not only that
    illustrated above, and most are optional.  You must register
@@ -79,8 +82,7 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
   </p>
 <p>   The <em class="replaceable"><code>input_function</code></em>
    converts the type's external textual representation to the internal
-   representation  used by the
-   operators and functions defined for the type.
+   representation used by the operators and functions defined for the type.
    <em class="replaceable"><code>output_function</code></em>
    performs the reverse transformation.  The input function may be
    declared as taking one argument of type <code class="type">cstring</code>,
@@ -92,9 +94,16 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
    and the third is the <code class="literal">typmod</code> of the destination column, if known
    (-1 will be passed if not).
    The input function must return a value of the data type itself.
+   Usually, an input function should be declared STRICT; if it is not,
+   it will be called with a NULL first parameter when reading a NULL
+   input value.  The function must still return NULL in this case, unless
+   it raises an error.
+   (This case is mainly meant to support domain input functions, which
+   may need to reject NULL inputs.)
    The output function must be
    declared as taking one argument of the new data type.
    The output function must return type <code class="type">cstring</code>.
+   Output functions are not invoked for NULL values.
   </p>
 <p>   The optional <em class="replaceable"><code>receive_function</code></em>
    converts the type's external binary representation to the internal
@@ -113,6 +122,12 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
    holding the received byte string; the optional arguments are the
    same as for the text input function.
    The receive function must return a value of the data type itself.
+   Usually, a receive function should be declared STRICT; if it is not,
+   it will be called with a NULL first parameter when reading a NULL
+   input value.  The function must still return NULL in this case, unless
+   it raises an error.
+   (This case is mainly meant to support domain receive functions, which
+   may need to reject NULL inputs.)
    Similarly, the optional
    <em class="replaceable"><code>send_function</code></em> converts
    from the internal representation to the external binary representation.
@@ -120,19 +135,19 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
    output.  The send function must be
    declared as taking one argument of the new data type.
    The send function must return type <code class="type">bytea</code>.
+   Send functions are not invoked for NULL values.
   </p>
 <p>   You should at this point be wondering how the input and output functions
-   can be declared to have results or arguments of the new type, when they have
-   to be created before the new type can be created.  The answer is that the
-   input function must be created first, then the output function (and
-   the binary I/O functions if wanted), and finally the data type.
-   <span class="productname">PostgreSQL</span> will first see the name of the new
-   data type as the return type of the input function.  It will create a
-   &#8220;<span class="quote">shell</span>&#8221; type, which is simply a placeholder entry in
-   the system catalog, and link the input function definition to the shell
-   type.  Similarly the other functions will be linked to the (now already
-   existing) shell type.  Finally, <code class="command">CREATE TYPE</code> replaces the
-   shell entry with a complete type definition, and the new type can be used.
+   can be declared to have results or arguments of the new type, when they
+   have to be created before the new type can be created.  The answer is that
+   the type should first be defined as a <em class="firstterm">shell type</em>, which is a
+   placeholder type that has no properties except a name and an owner.  This
+   is done by issuing the command <code class="literal">CREATE TYPE
+   <em class="replaceable"><code>name</code></em></code>, with no additional parameters.  Then the
+   I/O functions can be defined referencing the shell type.  Finally,
+   <code class="command">CREATE TYPE</code> with a full definition replaces the shell entry
+   with a complete, valid type definition, after which the new type can be
+   used normally.
   </p>
 <p>   The optional <em class="replaceable"><code>analyze_function</code></em>
    performs type-specific statistics collection for columns of the data type.
@@ -209,7 +224,7 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id713222"></a><h3>Array Types</h3>
+<a name="id2751452"></a><h3>Array Types</h3>
 <p>    Whenever a user-defined base data type is created, 
     <span class="productname">PostgreSQL</span> automatically creates an
     associated array type, whose name consists of the base type's
@@ -242,7 +257,7 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id713337"></a><h2>Parameters</h2>
+<a name="id2751556"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of a type to be created.
@@ -314,19 +329,41 @@ CREATE TYPE <em class="replaceable"><code>name</code></em> (
    names).  Type names beginning with underscore are reserved for
    internally-created array type names.
   </p>
+<p>   Because there are no restrictions on use of a data type once it's been
+   created, creating a base type is tantamount to granting public execute
+   permission on the functions mentioned in the type definition.  (The creator
+   of the type is therefore required to own these functions.)  This is usually
+   not an issue for the sorts of functions that are useful in a type
+   definition.  But you might want to think twice before designing a type
+   in a way that would require &#8220;<span class="quote">secret</span>&#8221; information to be used
+   while converting it to or from external form.
+  </p>
+<p>   Before <span class="productname">PostgreSQL</span> version 8.2, the syntax
+   <code class="literal">CREATE TYPE <em class="replaceable"><code>name</code></em></code> did not exist.
+   The way to create a new base type was to create its input function first.
+   In this approach, <span class="productname">PostgreSQL</span> will first see
+   the name of the new data type as the return type of the input function.
+   The shell type is implicitly created in this situation, and then it
+   can be referenced in the definitions of the remaining I/O functions.
+   This approach still works, but is deprecated and may be disallowed in
+   some future release.  Also, to avoid accidentally cluttering
+   the catalogs with shell types as a result of simple typos in function
+   definitions, a shell type will only be made this way when the input
+   function is written in C.
+  </p>
 <p>   In <span class="productname">PostgreSQL</span> versions before 7.3, it
-   was customary to avoid creating a shell type by replacing the
+   was customary to avoid creating a shell type at all, by replacing the
    functions' forward references to the type name with the placeholder
    pseudotype <code class="type">opaque</code>.  The <code class="type">cstring</code> arguments and
    results also had to be declared as <code class="type">opaque</code> before 7.3.  To
    support loading of old dump files, <code class="command">CREATE TYPE</code> will
-   accept functions declared using <code class="type">opaque</code>, but it will issue
-   a notice and change the function's declaration to use the correct
+   accept I/O functions declared using <code class="type">opaque</code>, but it will issue
+   a notice and change the function declarations to use the correct
    types.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id713663"></a><h2>Examples</h2>
+<a name="id2751900"></a><h2>Examples</h2>
 <p>   This example creates a composite type and uses it in
    a function definition:
 </p>
@@ -340,7 +377,12 @@ $$ LANGUAGE SQL;</pre>
 <p>   This example creates the base data type <code class="type">box</code> and then uses the
    type in a table definition:
 </p>
-<pre class="programlisting">CREATE TYPE box (
+<pre class="programlisting">CREATE TYPE box;
+
+CREATE FUNCTION my_box_in_function(cstring) RETURNS box AS ... ;
+CREATE FUNCTION my_box_out_function(box) RETURNS cstring AS ... ;
+
+CREATE TYPE box (
     INTERNALLENGTH = 16,
     INPUT = my_box_in_function,
     OUTPUT = my_box_out_function
@@ -386,13 +428,13 @@ CREATE TABLE big_objs (
 <a name="sql-createtype-compatibility"></a><h2>Compatibility</h2>
 <p>   This <code class="command">CREATE TYPE</code> command is a
    <span class="productname">PostgreSQL</span> extension.  There is a
-   <code class="command">CREATE TYPE</code> statement in the <span class="acronym">SQL</span> standard
+   <code class="command">CREATE TYPE</code> statement in the <acronym class="acronym">SQL</acronym> standard
    that is rather different in detail.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtype-see-also"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-droptype.html">DROP TYPE</a>, <a href="sql-altertype.html">ALTER TYPE</a></span>
+<span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-droptype.html">DROP TYPE</a>, <a href="sql-altertype.html">ALTER TYPE</a>, <a href="sql-createdomain.html">CREATE DOMAIN</a></span>
 </div>
 </div></body>
 </html>

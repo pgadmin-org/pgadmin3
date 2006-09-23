@@ -4,16 +4,17 @@
 <title>28.7. Asynchronous Notification</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 28. libpq - C Library">
 <link rel="prev" href="libpq-fastpath.html" title="28.6. The Fast-Path Interface">
 <link rel="next" href="libpq-copy.html" title="28.8. Functions Associated with the COPY Command">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="libpq-notify"></a>28.7. Asynchronous Notification</h2></div></div></div>
-<a name="id630368"></a><p><span class="productname">PostgreSQL</span> offers asynchronous notification via the
+<a name="id2663068"></a><p><span class="productname">PostgreSQL</span> offers asynchronous notification via the
 <code class="command">LISTEN</code> and <code class="command">NOTIFY</code> commands.  A client session registers its interest in a particular
 notification condition with the <code class="command">LISTEN</code> command (and can stop listening
 with the <code class="command">UNLISTEN</code> command).  All sessions listening on a
@@ -27,7 +28,7 @@ not necessary for there to be any associated table.</p>
 <code class="command">LISTEN</code> and <code class="command">UNLISTEN</code> commands as
 ordinary SQL commands.  The arrival of <code class="command">NOTIFY</code>
 messages can subsequently be detected by calling
-<code class="function">PQnotifies</code>.<a name="id630467"></a></p>
+<code class="function">PQnotifies</code>.<a name="id2663160"></a></p>
 <p>The function <code class="function">PQnotifies</code>
           returns  the next notification from a list of unhandled
           notification messages received from the server.  It returns a null pointer if
@@ -39,7 +40,7 @@ messages can subsequently be detected by calling
 
 typedef struct pgNotify {
     char *relname;              /* notification condition name */
-    int  be_pid;                /* process ID of server process */
+    int  be_pid;                /* process ID of notifying server process */
     char *extra;                /* notification parameter */
 } PGnotify;</pre>
 <p>
@@ -51,12 +52,6 @@ After processing a <code class="structname">PGnotify</code> object returned by
 do not represent separate allocations.
 (At present, the <code class="structfield">extra</code> field is unused and will
 always point to an empty string.)</p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p> In <span class="productname">PostgreSQL</span> 6.4 and later,
- the <code class="structfield">be_pid</code> is that of the notifying server process,
- whereas in earlier versions it was always the <span class="acronym">PID</span> of your own server process.</p>
-</div>
 <p><a href="libpq-example.html#libpq-example-2" title="Example 28.2. libpq Example Program 2">Example 28.2, &#8220;<span class="application">libpq</span> Example Program 2&#8221;</a> gives a sample program that illustrates the use
 of asynchronous notification.</p>
 <p><code class="function">PQnotifies</code> does not actually read data from the server; it just
@@ -71,7 +66,7 @@ messages when you have no useful commands to execute is to call
 <code class="function">PQconsumeInput</code>, then check
 <code class="function">PQnotifies</code>.
 You can use <code class="function">select()</code> to wait for data to
-arrive from the server, thereby using no <span class="acronym">CPU</span> power unless there is something
+arrive from the server, thereby using no <acronym class="acronym">CPU</acronym> power unless there is something
 to do.  (See <code class="function">PQsocket</code> to obtain the file descriptor
 number to use with <code class="function">select()</code>.)
 Note that this will work OK whether you submit commands with

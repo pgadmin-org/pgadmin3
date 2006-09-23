@@ -1,0 +1,222 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.6. attributes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 31. The Information Schema">
+<link rel="prev" href="infoschema-applicable-roles.html" title="31.5. applicable_roles">
+<link rel="next" href="infoschema-check-constraint-routine-usage.html" title="31.7. check_constraint_routine_usage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-attributes"></a>31.6. <code class="literal">attributes</code></h2></div></div></div>
+<p>   The view <code class="literal">attributes</code> contains information about
+   the attributes of composite data types defined in the database.
+   (Note that the view does not give information about table columns,
+   which are sometimes called attributes in PostgreSQL contexts.)
+  </p>
+<div class="table">
+<a name="id2678611"></a><p class="title"><b>Table 31.4. <code class="literal">attributes</code> Columns</b></p>
+<div class="table-contents"><table summary="attributes Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the data type (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the data type</td>
+</tr>
+<tr>
+<td><code class="literal">udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the data type</td>
+</tr>
+<tr>
+<td><code class="literal">attribute_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the attribute</td>
+</tr>
+<tr>
+<td><code class="literal">ordinal_position</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Ordinal position of the attribute within the data type (count starts at 1)</td>
+</tr>
+<tr>
+<td><code class="literal">attribute_default</code></td>
+<td><code class="type">character_data</code></td>
+<td>Default expression of the attribute</td>
+</tr>
+<tr>
+<td><code class="literal">is_nullable</code></td>
+<td><code class="type">character_data</code></td>
+<td>       <code class="literal">YES</code> if the attribute is possibly nullable,
+       <code class="literal">NO</code> if it is known not nullable.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">data_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Data type of the attribute, if it is a built-in type, or
+       <code class="literal">ARRAY</code> if it is some array (in that case, see
+       the view <code class="literal">element_types</code>), else
+       <code class="literal">USER-DEFINED</code> (in that case, the type is
+       identified in <code class="literal">attribute_udt_name</code> and
+       associated columns).
+      </td>
+</tr>
+<tr>
+<td><code class="literal">character_maximum_length</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a character or bit
+       string type, the declared maximum length; null for all other
+       data types or if no maximum length was declared.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">character_octet_length</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a character type,
+       the maximum possible length in octets (bytes) of a datum (this
+       should not be of concern to
+       <span class="productname">PostgreSQL</span> users); null for all
+       other data types.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a numeric type, this
+       column contains the (declared or implicit) precision of the
+       type for this attribute.  The precision indicates the number of
+       significant digits.  It may be expressed in decimal (base 10)
+       or binary (base 2) terms, as specified in the column
+       <code class="literal">numeric_precision_radix</code>.  For all other data
+       types, this column is null.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision_radix</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a numeric type, this
+       column indicates in which base the values in the columns
+       <code class="literal">numeric_precision</code> and
+       <code class="literal">numeric_scale</code> are expressed.  The value is
+       either 2 or 10.  For all other data types, this column is null.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_scale</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies an exact numeric
+       type, this column contains the (declared or implicit) scale of
+       the type for this attribute.  The scale indicates the number of
+       significant digits to the right of the decimal point.  It may
+       be expressed in decimal (base 10) or binary (base 2) terms, as
+       specified in the column
+       <code class="literal">numeric_precision_radix</code>.  For all other data
+       types, this column is null.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">datetime_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       If <code class="literal">data_type</code> identifies a date, time, or
+       interval type, the declared precision; null for all other data
+       types or if no precision was declared.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">interval_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td><code class="literal">interval_precision</code></td>
+<td><code class="type">character_data</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td><code class="literal">attribute_udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the database that the attribute data type is defined in
+       (always the current database)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">attribute_udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the schema that the attribute data type is defined in
+      </td>
+</tr>
+<tr>
+<td><code class="literal">attribute_udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the attribute data type
+      </td>
+</tr>
+<tr>
+<td><code class="literal">scope_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">scope_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">scope_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">maximum_cardinality</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, because arrays always have unlimited maximum cardinality in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">dtd_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       An identifier of the data type descriptor of the column, unique
+       among the data type descriptors pertaining to the table.  This
+       is mainly useful for joining with other instances of such
+       identifiers.  (The specific format of the identifier is not
+       defined and not guaranteed to remain the same in future
+       versions.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_derived_reference_attribute</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>   See also under <a href="infoschema-columns.html" title="31.12. columns">Section 31.12, &#8220;<code class="literal">columns</code>&#8221;</a>, a similarly
+   structured view, for further information on some of the columns.
+  </p>
+</div></body>
+</html>

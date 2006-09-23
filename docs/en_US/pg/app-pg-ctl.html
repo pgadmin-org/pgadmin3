@@ -4,11 +4,12 @@
 <title>pg_ctl</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="app-pgcontroldata.html" title="pg_controldata">
 <link rel="next" href="app-pgresetxlog.html" title="pg_resetxlog">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="app-pg-ctl"></a><div class="titlepage"></div>
@@ -16,19 +17,19 @@
 <h2>Name</h2>
 <p>pg_ctl &#8212; start, stop, or restart a <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id757195"></a><div class="refsynopsisdiv">
+<a name="id2792638"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">pg_ctl</code>  start  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-l <em class="replaceable"><code>filename</code></em>] [-o <em class="replaceable"><code>options</code></em>] [-p <em class="replaceable"><code>path</code></em>]<br><code class="command">pg_ctl</code>  stop  [-W] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
-       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
+      [s[mart]] |  [f[ast]] |  [i[mmediate]] 
    ]<br><code class="command">pg_ctl</code>  restart  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
-       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
+      [s[mart]] |  [f[ast]] |  [i[mmediate]] 
    ] [-o <em class="replaceable"><code>options</code></em>]<br><code class="command">pg_ctl</code>  reload  [-s] [-D <em class="replaceable"><code>datadir</code></em>]<br><code class="command">pg_ctl</code>  status  [-D <em class="replaceable"><code>datadir</code></em>]<br><code class="command">pg_ctl</code>  kill  [<em class="replaceable"><code>signal_name</code></em>] [<em class="replaceable"><code>process_id</code></em>]<br><code class="command">pg_ctl</code>  register  [-N <em class="replaceable"><code>servicename</code></em>] [-U <em class="replaceable"><code>username</code></em>] [-P <em class="replaceable"><code>password</code></em>] [-D <em class="replaceable"><code>datadir</code></em>] [-w] [-o <em class="replaceable"><code>options</code></em>]<br><code class="command">pg_ctl</code>  unregister  [-N <em class="replaceable"><code>servicename</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
 <a name="app-pg-ctl-description"></a><h2>Description</h2>
 <p>   <span class="application">pg_ctl</span> is a utility for starting,
    stopping, or restarting the <span class="productname">PostgreSQL</span>
-   backend server (<a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>), or displaying the
+   backend server (<a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>), or displaying the
    status of a running server.  Although the server can be started
    manually, <span class="application">pg_ctl</span> encapsulates tasks such
    as redirecting log output and properly detaching from the terminal
@@ -43,7 +44,7 @@
    standard output (not standard error).  If no log file is chosen, the 
    standard output of <span class="application">pg_ctl</span> should be redirected 
    to a file or piped to another process such as a log rotating program
-   like <span class="application">rotatelogs</span>; otherwise the <code class="command">postmaster</code> 
+   like <span class="application">rotatelogs</span>; otherwise <code class="command">postgres</code> 
    will write its output to the controlling terminal (from the background) 
    and will not leave the shell's process group.
   </p>
@@ -59,11 +60,11 @@
    a recovery run on restart.
   </p>
 <p>   <code class="option">restart</code> mode effectively executes a stop followed
-   by a start.  This allows changing the <code class="command">postmaster</code>
+   by a start.  This allows changing the <code class="command">postgres</code>
    command-line options.
   </p>
 <p>   <code class="option">reload</code> mode simply sends the
-   <code class="command">postmaster</code> process a <span class="systemitem">SIGHUP</span>
+   <code class="command">postgres</code> process a <span class="systemitem">SIGHUP</span>
    signal, causing it to reread its configuration files
    (<code class="filename">postgresql.conf</code>,
    <code class="filename">pg_hba.conf</code>, etc.).  This allows changing of
@@ -71,7 +72,7 @@
    to take effect.
   </p>
 <p>   <code class="option">status</code> mode checks whether a server is running in
-   the specified data directory. If it is, the <span class="acronym">PID</span>
+   the specified data directory. If it is, the <acronym class="acronym">PID</acronym>
    and the command line options that were used to invoke it are
    displayed.
   </p>
@@ -113,19 +114,19 @@
 <dt><span class="term"><code class="option">-o <em class="replaceable"><code>options</code></em></code></span></dt>
 <dd>
 <p>        Specifies options to be passed directly to the
-        <code class="command">postmaster</code> command.
+        <code class="command">postgres</code> command.
        </p>
 <p>	The options are usually surrounded by single or double
 	quotes to ensure that they are passed through as a group.
        </p>
 </dd>
 <dt><span class="term"><code class="option">-p <em class="replaceable"><code>path</code></em></code></span></dt>
-<dd><p>	Specifies the location of the <code class="filename">postmaster</code>
-	executable.  By default the <code class="filename">postmaster</code> executable is taken from the same
+<dd><p>	Specifies the location of the <code class="filename">postgres</code>
+	executable.  By default the <code class="filename">postgres</code> executable is taken from the same
 	directory as <code class="command">pg_ctl</code>, or failing that, the hard-wired
 	installation directory.  It is not necessary to use this
 	option unless you are doing something unusual and get errors
-	that the <code class="filename">postmaster</code> executable was not found.
+	that the <code class="filename">postgres</code> executable was not found.
        </p></dd>
 <dt><span class="term"><code class="option">-s</code></span></dt>
 <dd><p>        Only print errors, no informational messages.
@@ -133,7 +134,7 @@
 <dt><span class="term"><code class="option">-w</code></span></dt>
 <dd><p>	Wait for the start or shutdown to complete.  Times out after
 	60 seconds.  This is the default for shutdowns. A successful 
-        shutdown is indicated by removal of the <span class="acronym">PID</span> 
+        shutdown is indicated by removal of the <acronym class="acronym">PID</acronym> 
         file. For starting up, a successful <code class="command">psql -l</code> 
         indicates success. <code class="command">pg_ctl</code> will attempt to 
         use the proper port for <span class="application">psql</span>. If the environment variable 
@@ -173,7 +174,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758194"></a><h2>Environment</h2>
+<a name="id2793542"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGDATA</code></span></dt>
 <dd><p>      Default data directory location.
@@ -182,11 +183,11 @@
 <dd><p>      Default port for <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> (used by the -w option).
      </p></dd>
 </dl></div>
-<p>   For others, see <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>.
+<p>   For others, see <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758234"></a><h2>Files</h2>
+<a name="id2793578"></a><h2>Files</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="filename">postmaster.pid</code></span></dt>
 <dd><p>      The existence of this file in the data directory is used to help
@@ -197,14 +198,14 @@
 <dd><p>      If this file exists in the data directory,
       <span class="application">pg_ctl</span> (in <code class="option">start</code>
       mode) will pass the contents of the file as options to the
-      <code class="command">postmaster</code> command, unless overridden by the
+      <code class="command">postgres</code> command, unless overridden by the
       <code class="option">-o</code> option.
      </p></dd>
 <dt><span class="term"><code class="filename">postmaster.opts</code></span></dt>
 <dd><p>If this file exists in the data directory,
       <span class="application">pg_ctl</span> (in <code class="option">restart</code> mode) 
-      will pass the contents of the file as options to the 
-      <span class="application">postmaster</span>, unless overridden 
+      will pass the contents of the file as options to
+      <span class="application">postgres</span>, unless overridden 
       by the <code class="option">-o</code> option. The contents of this file 
       are also displayed in <code class="option">status</code> mode.
      </p></dd>
@@ -216,7 +217,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758364"></a><h2>Notes</h2>
+<a name="id2793695"></a><h2>Notes</h2>
 <p>   Waiting for complete start is not a well-defined operation and may
    fail if access control is set up so that a local client cannot
    connect without manual interaction (e.g., password authentication).
@@ -281,17 +282,17 @@
     <span class="application">pg_ctl</span>:
 </p>
 <pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_ctl status</code></strong>
-<code class="computeroutput">pg_ctl: postmaster is running (pid: 13718)
+<code class="computeroutput">pg_ctl: server is running (pid: 13718)
 Command line was:
-/usr/local/pgsql/bin/postmaster '-D' '/usr/local/pgsql/data' '-p' '5433' '-B' '128'</code></pre>
+/usr/local/pgsql/bin/postgres '-D' '/usr/local/pgsql/data' '-p' '5433' '-B' '128'</code></pre>
 <p>
     This is the command line that would be invoked in restart mode.
    </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id758620"></a><h2>See Also</h2>
-<p>   <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a>
+<a name="id2793929"></a><h2>See Also</h2>
+<p>   <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>
   </p>
 </div>
 </div></body>

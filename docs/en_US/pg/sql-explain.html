@@ -4,11 +4,12 @@
 <title>EXPLAIN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-execute.html" title="EXECUTE">
 <link rel="next" href="sql-fetch.html" title="FETCH">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-explain"></a><div class="titlepage"></div>
@@ -16,12 +17,12 @@
 <h2>Name</h2>
 <p>EXPLAIN &#8212; show the execution plan of a statement</p>
 </div>
-<a name="id720262"></a><a name="id720271"></a><a name="id720285"></a><div class="refsynopsisdiv">
+<a name="id2758581"></a><a name="id2758589"></a><a name="id2758601"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">EXPLAIN [ ANALYZE ] [ VERBOSE ] <em class="replaceable"><code>statement</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720310"></a><h2>Description</h2>
+<a name="id2758624"></a><h2>Description</h2>
 <p>   This command displays the execution plan that the
    <span class="productname">PostgreSQL</span> planner generates for the
    supplied statement.  The execution plan shows how the table(s)
@@ -68,7 +69,7 @@ ROLLBACK;</pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720441"></a><h2>Parameters</h2>
+<a name="id2758745"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">ANALYZE</code></span></dt>
 <dd><p>      Carry out the command and show the actual run times.
@@ -82,13 +83,13 @@ ROLLBACK;</pre>
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>statement</code></em></span></dt>
 <dd><p>      Any <code class="command">SELECT</code>, <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
-      <code class="command">DELETE</code>, <code class="command">EXECUTE</code>, or <code class="command">DECLARE</code>
-      statement, whose execution plan you wish to see.
+      <code class="command">DELETE</code>, <code class="command">VALUES</code>, <code class="command">EXECUTE</code>, or
+      <code class="command">DECLARE</code> statement, whose execution plan you wish to see.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720541"></a><h2>Notes</h2>
+<a name="id2758841"></a><h2>Notes</h2>
 <p>   There is only sparse documentation on the optimizer's use of cost
    information in <span class="productname">PostgreSQL</span>.  Refer to
    <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a> for more information.
@@ -103,14 +104,15 @@ ROLLBACK;</pre>
    estimated costs are unlikely to conform to the real properties of
    the query, and consequently an inferior query plan may be chosen.
   </p>
-<p>   Prior to <span class="productname">PostgreSQL</span> 7.3, the plan was
-   emitted in the form of a <code class="literal">NOTICE</code> message.  Now it
-   appears as a query result (formatted like a table with a single
-   text column).
+<p>   Genetic query optimization (<acronym class="acronym">GEQO</acronym>) randomly 
+   tests execution plans.  Therefore, when the number of tables exceeds
+   <code class="varname">geqo_threshold</code> causing genetic query optimization to be 
+   used, the execution plan is likely to change each time the statement
+   is executed.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720611"></a><h2>Examples</h2>
+<a name="id2758902"></a><h2>Examples</h2>
 <p>   To show the plan for a simple query on a table with a single
    <code class="type">integer</code> column and 10000 rows:
 
@@ -182,12 +184,12 @@ EXPLAIN ANALYZE EXECUTE query(100, 200);
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720745"></a><h2>Compatibility</h2>
+<a name="id2759026"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">EXPLAIN</code> statement defined in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id720759"></a><h2>See Also</h2>
+<a name="id2759039"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-analyze.html">ANALYZE</a></span>
 </div>
 </div></body>

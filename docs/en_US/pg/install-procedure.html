@@ -4,11 +4,12 @@
 <title>14.5. Installation Procedure</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
-<link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="installation.html" title="Chapter 14.  Installation Instructions">
 <link rel="prev" href="install-upgrading.html" title="14.4. If You Are Upgrading">
 <link rel="next" href="install-post.html" title="14.6. Post-Installation Setup">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -16,7 +17,7 @@
 <div class="procedure"><ol type="1">
 <li>
 <a name="configure"></a><p class="title"><b>Configuration</b></p>
-<a name="id582904"></a><p>    The first step of the installation procedure is to configure the
+<a name="id2616831"></a><p>    The first step of the installation procedure is to configure the
     source tree for your system and choose the options you would like.
     This is done by running the <code class="filename">configure</code> script. For a
     default installation simply enter
@@ -173,7 +174,7 @@
 </dd>
 <dt><span class="term"><code class="option">--enable-nls[<span class="optional">=<em class="replaceable"><code>LANGUAGES</code></em></span>]</code></span></dt>
 <dd>
-<p>         Enables Native Language Support (<span class="acronym">NLS</span>),
+<p>         Enables Native Language Support (<acronym class="acronym">NLS</acronym>),
          that is, the ability to display a program's messages in a
          language other than English.
          <em class="replaceable"><code>LANGUAGES</code></em> is a space-separated
@@ -230,7 +231,7 @@
          reason to change this.
         </p></dd>
 <dt><span class="term"><code class="option">--with-openssl</code></span></dt>
-<dd><p>         Build with support for <span class="acronym">SSL</span> (encrypted)
+<dd><p>         Build with support for <acronym class="acronym">SSL</acronym> (encrypted)
          connections. This requires the <span class="productname">OpenSSL</span>
          package to be installed.  <code class="filename">configure</code> will check
          for the required header files and libraries to make sure that
@@ -238,8 +239,22 @@
          before proceeding.
         </p></dd>
 <dt><span class="term"><code class="option">--with-pam</code></span></dt>
-<dd><p>         Build with <span class="acronym">PAM</span><a name="id583756"></a>
+<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2617599"></a>
          (Pluggable Authentication Modules) support.
+        </p></dd>
+<dt><span class="term"><code class="option">--with-ldap</code></span></dt>
+<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2617618"></a> support
+         for authentication and connection parameter lookup.
+         On Unix, this requires the
+         <span class="productname">OpenLDAP</span> package to be installed.
+         <code class="filename">configure</code> will check for the required header files
+         and libraries to make sure that your <span class="productname">OpenLDAP</span>
+         installation is sufficient before proceeding. On Windows,
+         the default <span class="productname">WinLDAP</span> library is used.
+        </p></dd>
+<dt><span class="term"><code class="option">--with-libedit-preferred</code></span></dt>
+<dd><p>         Favors the use of the BSD-licensed <span class="application">libedit</span> library
+         rather than GPL-licensed <span class="application">Readline</span>.
         </p></dd>
 <dt><span class="term"><code class="option">--without-readline</code></span></dt>
 <dd><p>         Prevents use of the <span class="application">Readline</span> library.  This disables
@@ -279,7 +294,7 @@
          threading support in your operating system.
         </p></dd>
 <dt><span class="term"><code class="option">--without-zlib</code></span></dt>
-<dd><p>         <a name="id583895"></a>
+<dd><p>         <a name="id2617795"></a>
          Prevents use of the <span class="application">Zlib</span> library.  This disables
          support for compressed archives in <span class="application">pg_dump</span>
          and <span class="application">pg_restore</span>.
@@ -318,6 +333,23 @@
          if you intend only to compile once and install.  At present,
          this option will work only if you use GCC.
         </p></dd>
+<dt><span class="term"><code class="option">--enable-dtrace</code></span></dt>
+<dd>
+<p>         <a name="id2617892"></a>
+         Compiles with support for the dynamic tracing tool DTrace.
+         Operating system support for DTrace is currently only
+         available in Solaris.
+        </p>
+<p>         To point to the <code class="command">dtrace</code> program, the
+         environment variable <code class="envar">DTRACE</code> can be set.  This
+         will often be necessary because <code class="command">dtrace</code> is
+         typically installed under <code class="filename">/usr/sbin</code>,
+         which might not be in the path.  Additional command-line
+         options for the <code class="command">dtrace</code> program can be
+         specified in the environment variable
+         <code class="envar">DTRACEFLAGS</code>.
+        </p>
+</dd>
 </dl></div>
 <p>
     </p>
@@ -335,6 +367,108 @@
 <pre class="screen"><strong class="userinput"><code>./configure CC=/opt/bin/gcc CFLAGS='-O2 -pipe'</code></strong></pre>
 <p>
     </p>
+<p>    Here's a list of the significant environment variables:
+    </p>
+<p>     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="option">AWK=<em class="replaceable"><code>/path/to/awk</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/awk</code></em> is the full path to <span class="application">awk</span>.
+        </p></dd>
+<dt><span class="term"><code class="option">CC=<em class="replaceable"><code>/path/to/cc</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/cc</code></em> is the full path to your C compiler, such
+         as <span class="application">gcc</span>.
+        </p></dd>
+<dt><span class="term"><code class="option">CFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the C
+         compiler.
+        </p></dd>
+<dt><span class="term"><code class="option">COLLATEINDEX</code></span></dt>
+<dd><p>         Used for building the SGML documentation.
+        </p></dd>
+<dt><span class="term"><code class="option">CPP=<em class="replaceable"><code>/path/to/cpp</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/cpp</code></em> is the full path to your C preprocessor,
+         such as <span class="application">gcc</span>.
+        </p></dd>
+<dt><span class="term"><code class="option">CPPFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the C
+         preprocessor.
+        </p></dd>
+<dt><span class="term"><code class="option">DOCBOOKSTYLE</code></span></dt>
+<dd><p>         Used for building the SGML documentation.
+        </p></dd>
+<dt><span class="term"><code class="option">DTRACE=<em class="replaceable"><code>/path/to/dtrace</code></em></code></span></dt>
+<dd><p>         Specifies the location of the <code class="command">dtrace</code> program.
+        </p></dd>
+<dt><span class="term"><code class="option">DTRACEFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the
+         <code class="command">dtrace</code> program.
+        </p></dd>
+<dt><span class="term"><code class="option">JADE</code></span></dt>
+<dd><p>         Used for building the SGML documentation.
+        </p></dd>
+<dt><span class="term"><code class="option">LDFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the link file
+         editor.
+        </p></dd>
+<dt><span class="term"><code class="option">LDFLAGS_SL</code></span></dt>
+<dd><p>         Used for shared library linking.
+        </p></dd>
+<dt><span class="term"><code class="option">LORDER=<em class="replaceable"><code>/path/to/lorder</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/lorder</code></em> is the full path to your dependency
+         listing program.
+        </p></dd>
+<dt><span class="term"><code class="option">MSGFMT</code></span></dt>
+<dd><p>         Used for Native Language Support (NLS).
+        </p></dd>
+<dt><span class="term"><code class="option">MSGMERGE</code></span></dt>
+<dd><p>         Used for Native Language Support (NLS).
+        </p></dd>
+<dt><span class="term"><code class="option">NSGMLS</code></span></dt>
+<dd><p>         Used for building the SGML documentation.
+        </p></dd>
+<dt><span class="term"><code class="option">PERL=<em class="replaceable"><code>/path/to/perl</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/perl</code></em> is the full path to your Perl 5
+         interpreter. Note that this wil be used to determine the dependencies
+         for building PL/Perl.
+        </p></dd>
+<dt><span class="term"><code class="option">PTHREAD_CC</code></span></dt>
+<dd><p>         Used for adding thread-safety flags.
+        </p></dd>
+<dt><span class="term"><code class="option">PYTHON=<em class="replaceable"><code>/path/to/python</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/python</code></em> is the full path to your Python
+         interpreter. Note that this wil be used to determine the dependencies
+         for building PL/Python.
+        </p></dd>
+<dt><span class="term"><code class="option">RANLIB=<em class="replaceable"><code>/path/to/ranlib</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/ranlib</code></em> is the full path to your archive
+         library table of contents editor.
+        </p></dd>
+<dt><span class="term"><code class="option">SGMLSPL</code></span></dt>
+<dd><p>         Used for building the SGML documentation.
+        </p></dd>
+<dt><span class="term"><code class="option">STRIP=<em class="replaceable"><code>/path/to/strip</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/strip</code></em> is the full path to your strip program.
+        </p></dd>
+<dt><span class="term"><code class="option">TCL=<em class="replaceable"><code>/path/to/tcl</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/tcl</code></em> is the full path to your TCL
+         interpreter. Note that this wil be used to determine the dependencies
+         for building PL/TCL.
+        </p></dd>
+<dt><span class="term"><code class="option">TAR=<em class="replaceable"><code>/path/to/tar</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/tar</code></em> is the full path to your tar program.
+        </p></dd>
+<dt><span class="term"><code class="option">TCLISH=<em class="replaceable"><code>/path/to/tclish</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/tclish</code></em> is the full path to your tclish program.
+        </p></dd>
+<dt><span class="term"><code class="option">XGETTEXT=<em class="replaceable"><code>/path/to/xgettext</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/xgettext</code></em> is the full path to your xgettext program.
+        </p></dd>
+<dt><span class="term"><code class="option">YACC=<em class="replaceable"><code>/path/to/yacc</code></em></code></span></dt>
+<dd><p>         <em class="replaceable"><code>/path/to/yacc</code></em> is the full path to your yacc program.
+        </p></dd>
+</dl></div>
+<p>
+    </p>
 </li>
 <li>
 <p class="title"><b>Build</b></p>
@@ -342,7 +476,7 @@
 </p>
 <pre class="screen"><strong class="userinput"><code>gmake</code></strong></pre>
 <p>
-    (Remember to use <span class="acronym">GNU</span> <span class="application">make</span>.) The build
+    (Remember to use <acronym class="acronym">GNU</acronym> <span class="application">make</span>.) The build
     may take anywhere from 5 minutes to half an hour depending on your
     hardware. The last line displayed should be
 </p>
@@ -352,7 +486,7 @@
 </li>
 <li>
 <p class="title"><b>Regression Tests</b></p>
-<a name="id584102"></a><p>    If you want to test the newly built server before you install it,
+<a name="id2618426"></a><p>    If you want to test the newly built server before you install it,
     you can run the regression tests at this point. The regression
     tests are a test suite to verify that <span class="productname">PostgreSQL</span>
     runs on your machine in the way the developers expected it

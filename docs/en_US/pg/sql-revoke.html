@@ -4,11 +4,12 @@
 <title>REVOKE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-reset.html" title="RESET">
 <link rel="next" href="sql-rollback.html" title="ROLLBACK">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-revoke"></a><div class="titlepage"></div>
@@ -16,17 +17,24 @@
 <h2>Name</h2>
 <p>REVOKE &#8212; remove access privileges</p>
 </div>
-<a name="id727150"></a><div class="refsynopsisdiv">
+<a name="id2765387"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">REVOKE [ GRANT OPTION FOR ]
-    { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
+    { { SELECT | INSERT | UPDATE | DELETE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
     ON [ TABLE ] <em class="replaceable"><code>tablename</code></em> [, ...]
     FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ GRANT OPTION FOR ]
-    { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
+    { { USAGE | SELECT | UPDATE }
+    [,...] | ALL [ PRIVILEGES ] }
+    ON SEQUENCE <em class="replaceable"><code>sequencename</code></em> [, ...]
+    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
+    [ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ]
+    { { CREATE | CONNECT | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
     ON DATABASE <em class="replaceable"><code>dbname</code></em> [, ...]
     FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
     [ CASCADE | RESTRICT ]
@@ -56,8 +64,7 @@ REVOKE [ GRANT OPTION FOR ]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ ADMIN OPTION FOR ]
-    <em class="replaceable"><code>role</code></em> [, ...]
-    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
+    <em class="replaceable"><code>role</code></em> [, ...] FROM <em class="replaceable"><code>username</code></em> [, ...]
     [ CASCADE | RESTRICT ]</pre>
 </div>
 <div class="refsect1" lang="en">
@@ -96,6 +103,8 @@ REVOKE [ ADMIN OPTION FOR ]
   </p>
 <p>   When revoking membership in a role, <code class="literal">GRANT OPTION</code> is instead
    called <code class="literal">ADMIN OPTION</code>, but the behavior is similar.
+   Note also that this form of the command does not
+   allow the noise word <code class="literal">GROUP</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
@@ -197,7 +206,7 @@ REVOKE [ ADMIN OPTION FOR ]
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id727858"></a><h2>See Also</h2>
+<a name="id2766050"></a><h2>See Also</h2>
 <p>   <a href="sql-grant.html">GRANT</a>
   </p>
 </div>

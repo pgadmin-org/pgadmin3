@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.5. Release 8.1.1</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1-2.html" title="E.4. Release 8.1.2">
+<link rel="next" href="release-8-1.html" title="E.6. Release 8.1">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-1-1"></a>E.5. Release 8.1.1</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-12-12</p>
+</div>
+<p>    This release contains a variety of fixes from 8.1.0.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2844445"></a>E.5.1. Migration to version 8.1.1</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.1.X.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2844452"></a>E.5.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Fix incorrect optimizations of outer-join conditions
+(Tom)</p></li>
+<li><p>Fix problems with wrong reported column names in cases
+involving sub-selects flattened by the optimizer (Tom)</p></li>
+<li><p>Fix update failures in scenarios involving CHECK constraints,
+toasted columns, <span class="emphasis"><em>and</em></span> indexes (Tom)</p></li>
+<li>
+<p>Fix bgwriter problems after recovering from errors
+(Tom)</p>
+<p>The background writer was found to leak buffer pins after write errors.
+While not fatal in itself, this might lead to mysterious blockages of
+later VACUUM commands.</p>
+</li>
+<li><p>Prevent failure if client sends Bind protocol message
+when current transaction is already aborted</p></li>
+<li><p><code class="filename">/contrib/tsearch2</code> and <code class="filename">/contrib/ltree</code>
+fixes (Teodor)</p></li>
+<li>
+<p>Fix problems with translated error messages in
+languages that require word reordering, such as Turkish; also problems with
+unexpected truncation of output strings and wrong display of the smallest
+possible bigint value (Andrew, Tom)</p>
+<p>These problems only appeared on platforms that were using our
+<code class="filename">port/snprintf.c</code> code, which includes BSD variants if
+<code class="literal">--enable-nls</code> was given, and perhaps others.  In addition,
+a different form of the translated-error-message problem could appear
+on Windows depending on which version of <code class="filename">libintl</code> was used.</p>
+</li>
+<li><p>Re-allow <code class="literal">AM</code>/<code class="literal">PM</code>, <code class="literal">HH</code>,
+<code class="literal">HH12</code>, and <code class="literal">D</code> format specifiers for
+<code class="function">to_char(time)</code> and <code class="function">to_char(interval)</code>.
+(<code class="function">to_char(interval)</code> should probably use
+<code class="literal">HH24</code>.) (Bruce)</p></li>
+<li><p>AIX, HPUX, and MSVC compile fixes (Tom, Hiroshi 
+Saito)</p></li>
+<li><p>Optimizer improvements (Tom)</p></li>
+<li><p>Retry file reads and writes after Windows
+NO_SYSTEM_RESOURCES error (Qingqing Zhou)</p></li>
+<li><p>Prevent <span class="application">autovacuum</span> from crashing during
+ANALYZE of expression index (Alvaro)</p></li>
+<li><p>Fix problems with ON COMMIT DELETE ROWS temp
+tables</p></li>
+<li><p>Fix problems when a trigger alters the output of a SELECT
+DISTINCT query</p></li>
+<li><p>Add 8.1.0 release note item on how to migrate invalid
+<code class="literal">UTF-8</code> byte sequences (Paul Lindner)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

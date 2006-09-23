@@ -4,24 +4,25 @@
 <title>16.3. Starting the Database Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
 <link rel="next" href="kernel-resources.html" title="16.4. Managing Kernel Resources">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="postmaster-start"></a>16.3. Starting the Database Server</h2></div></div></div>
+<a name="server-start"></a>16.3. Starting the Database Server</h2></div></div></div>
 <p>   Before anyone can access the database, you must start the database
    server. The database server program is called
-   <code class="command">postmaster</code>.<a name="id588332"></a>
-   The <code class="command">postmaster</code> must know where to
+   <code class="command">postgres</code>.<a name="id2622255"></a>
+   The <code class="command">postgres</code> program must know where to
    find the data it is supposed to use. This is done with the
    <code class="option">-D</code> option. Thus, the simplest way to start the
    server is:
 </p>
-<pre class="screen">$ <strong class="userinput"><code>postmaster -D /usr/local/pgsql/data</code></strong></pre>
+<pre class="screen">$ <strong class="userinput"><code>postgres -D /usr/local/pgsql/data</code></strong></pre>
 <p>
    which will leave the server running in the foreground. This must be
    done while logged into the <span class="productname">PostgreSQL</span> user
@@ -29,35 +30,35 @@
    the data directory named by the environment variable <code class="envar">PGDATA</code>.
    If that variable is not provided either, it will fail.
   </p>
-<p>   Normally it is better to start the <code class="command">postmaster</code> in the
+<p>   Normally it is better to start <code class="command">postgres</code> in the
    background.  For this, use the usual shell syntax:
 </p>
-<pre class="screen">$ <strong class="userinput"><code>postmaster -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;</code></strong></pre>
+<pre class="screen">$ <strong class="userinput"><code>postgres -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;</code></strong></pre>
 <p>
    It is important to store the server's <span class="systemitem">stdout</span> and
    <span class="systemitem">stderr</span> output somewhere, as shown above. It will help
    for auditing purposes and to diagnose problems. (See <a href="logfile-maintenance.html" title="22.3. Log File Maintenance">Section 22.3, &#8220;Log File Maintenance&#8221;</a> for a more thorough discussion of log
    file handling.)
   </p>
-<p>   The <code class="command">postmaster</code> also takes a number of other
-   command line options. For more information, see the
-   <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a> reference page
+<p>   The <code class="command">postgres</code> program also takes a number of other
+   command-line options. For more information, see the
+   <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a> reference page
    and <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> below.
   </p>
 <p>   This shell syntax can get tedious quickly.  Therefore the wrapper
    program
-   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id588470"></a>
+   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2622378"></a>
    is provided to simplify some tasks.  For example:
 </p>
 <pre class="programlisting">pg_ctl start -l logfile</pre>
 <p>
    will start the server in the background and put the output into the
    named log file. The <code class="option">-D</code> option has the same meaning
-   here as in the <code class="command">postmaster</code>. <code class="command">pg_ctl</code>
+   here as for <code class="command">postgres</code>. <code class="command">pg_ctl</code>
    is also capable of stopping the server.
   </p>
 <p>   Normally, you will want to start the database server when the
-   computer boots.<a name="id588508"></a> Autostart scripts are operating-system-specific.
+   computer boots.<a name="id2622414"></a> Autostart scripts are operating-system-specific.
    There are a few distributed with
    <span class="productname">PostgreSQL</span> in the
    <code class="filename">contrib/start-scripts</code> directory. Installing one will require
@@ -85,14 +86,14 @@
 <li><p>      For <span class="productname">FreeBSD</span>, look at the file
       <code class="filename">contrib/start-scripts/freebsd</code> in the
       <span class="productname">PostgreSQL</span> source distribution.
-      <a name="id588620"></a>
+      <a name="id2622515"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">OpenBSD</span>, add the following lines
       to the file <code class="filename">/etc/rc.local</code>:
-      <a name="id588648"></a>
+      <a name="id2622541"></a>
 </p>
-<pre class="programlisting">if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postmaster ]; then
+<pre class="programlisting">if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postgres ]; then
     su - -c '/usr/local/pgsql/bin/pg_ctl start -l /var/postgresql/log -s' postgres
     echo -n ' postgresql'
 fi</pre>
@@ -101,7 +102,7 @@ fi</pre>
 </li>
 <li>
 <p>      On <span class="productname">Linux</span> systems either add
-      <a name="id588679"></a>
+      <a name="id2622569"></a>
 </p>
 <pre class="programlisting">/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data</pre>
 <p>
@@ -113,13 +114,13 @@ fi</pre>
 <li><p>      On <span class="productname">NetBSD</span>, either use the
       <span class="productname">FreeBSD</span> or
       <span class="productname">Linux</span> start scripts, depending on
-      preference. <a name="id588743"></a>
+      preference. <a name="id2622627"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">Solaris</span>, create a file called
       <code class="filename">/etc/init.d/postgresql</code> that contains
       the following line:
-      <a name="id588772"></a>
+      <a name="id2622653"></a>
 </p>
 <pre class="programlisting">su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data"</pre>
 <p>
@@ -131,16 +132,16 @@ fi</pre>
 <p>
 
   </p>
-<p>    While the <code class="command">postmaster</code> is running, its
-    <span class="acronym">PID</span> is stored in the file
+<p>    While the server is running, its
+    <acronym class="acronym">PID</acronym> is stored in the file
     <code class="filename">postmaster.pid</code> in the data directory. This is
-    used to prevent multiple <code class="command">postmaster</code> processes
+    used to prevent multiple server instances from
     running in the same data directory and can also be used for
-    shutting down the <code class="command">postmaster</code> process.
+    shutting down the server.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="postmaster-start-failures"></a>16.3.1. Server Start-up Failures</h3></div></div></div>
+<a name="server-start-failures"></a>16.3.1. Server Start-up Failures</h3></div></div></div>
 <p>     There are several common reasons the server might fail to
      start. Check the server's log file, or start it by hand (without
      redirecting standard output or standard error) and see what error
@@ -152,13 +153,13 @@ HINT:  Is another postmaster already running on port 5432? If not, wait a few se
 FATAL:  could not create TCP/IP listen socket</pre>
 <p>
      This usually means just what it suggests: you tried to start
-     another <code class="command">postmaster</code> on the same port where one is already running.
+     another server on the same port where one is already running.
      However, if the kernel error message is not <code class="computeroutput">Address
      already in use</code> or some variant of that, there may
-     be a different problem. For example, trying to start a <code class="command">postmaster</code>
+     be a different problem. For example, trying to start a server
      on a reserved port number may draw something like:
 </p>
-<pre class="screen">$ <strong class="userinput"><code>postmaster -p 666</code></strong>
+<pre class="screen">$ <strong class="userinput"><code>postgres -p 666</code></strong>
 LOG:  could not bind IPv4 socket: Permission denied
 HINT:  Is another postmaster already running on port 666? If not, wait a few seconds and retry.
 FATAL:  could not create TCP/IP listen socket</pre>
@@ -200,7 +201,7 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
      enable these features.
     </p>
 <p>     Details about configuring <span class="systemitem">System V</span>
-     <span class="acronym">IPC</span> facilities are given in <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a>.
+     <acronym class="acronym">IPC</acronym> facilities are given in <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a>.
     </p>
 </div>
 <div class="sect2" lang="en">

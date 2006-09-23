@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.40. pg_prepared_statements</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
+<link rel="prev" href="view-pg-locks.html" title="42.39. pg_locks">
+<link rel="next" href="view-pg-prepared-xacts.html" title="42.41. pg_prepared_xacts">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-prepared-statements"></a>42.40. <code class="structname">pg_prepared_statements</code></h2></div></div></div>
+<a name="id2808470"></a><p>   The <code class="structname">pg_prepared_statements</code> view displays
+   all the prepared statements that are available in the current
+   session. See <a href="sql-prepare.html">PREPARE</a> for more information about prepared
+   statements.
+  </p>
+<p>   <code class="structname">pg_prepared_statements</code> contains one row
+   for each prepared statement. Rows are added to the view when a new
+   prepared statement is created and removed when a prepared statement
+   is released (for example, via the <a href="sql-deallocate.html">DEALLOCATE</a> command).
+  </p>
+<div class="table">
+<a name="id2808517"></a><p class="title"><b>Table 42.40. <code class="structname">pg_prepared_statements</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_prepared_statements Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">name</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>       The identifier of the prepared statement
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">statement</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>       The query string submitted by the client to create this
+       prepared statement. For prepared statements created via SQL,
+       this is the <code class="command">PREPARE</code> statement submitted by
+       the client. For prepared statements created via the
+       frontend/backend protocol, this is the text of the prepared
+       statement itself.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">prepare_time</code></td>
+<td><code class="type">timestamptz</code></td>
+<td> </td>
+<td>       The time at which the prepared statement was created
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">parameter_types</code></td>
+<td><code class="type">regtype[]</code></td>
+<td> </td>
+<td>       The expected parameter types for the prepared statement in the
+       form of an array of <code class="type">regtype</code>. The OID corresponding
+       to an element of this array can be obtained by casting the
+       <code class="type">regtype</code> value to <code class="type">oid</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">from_sql</code></td>
+<td><code class="type">boolean</code></td>
+<td> </td>
+<td>       <code class="literal">true</code> if the prepared statement was created
+       via the <code class="command">PREPARE</code> SQL statement;
+       <code class="literal">false</code> if the statement was prepared via the
+       frontend/backend protocol
+      </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>   The <code class="structname">pg_prepared_statements</code> view is read only.
+  </p>
+</div></body>
+</html>

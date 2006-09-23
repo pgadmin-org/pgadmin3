@@ -4,11 +4,12 @@
 <title>DROP TRIGGER</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-droptablespace.html" title="DROP TABLESPACE">
 <link rel="next" href="sql-droptype.html" title="DROP TYPE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-droptrigger"></a><div class="titlepage"></div>
@@ -16,20 +17,24 @@
 <h2>Name</h2>
 <p>DROP TRIGGER &#8212; remove a trigger</p>
 </div>
-<a name="id719111"></a><div class="refsynopsisdiv">
+<a name="id2757498"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">DROP TRIGGER <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> [ CASCADE | RESTRICT ]</pre>
+<pre class="synopsis">DROP TRIGGER [ IF EXISTS ] <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> [ CASCADE | RESTRICT ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id719141"></a><h2>Description</h2>
+<a name="id2757525"></a><h2>Description</h2>
 <p>   <code class="command">DROP TRIGGER</code> will remove an existing
    trigger definition. To execute this command, the current
    user must be the owner of the table for which the trigger is defined.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id719157"></a><h2>Parameters</h2>
+<a name="id2757540"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">IF EXISTS</code></span></dt>
+<dd><p>      Do not throw an error if the trigger does not exist. A notice is issued 
+      in this case.
+     </p></dd>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the trigger to remove.
      </p></dd>
@@ -66,7 +71,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id719282"></a><h2>See Also</h2>
+<a name="id2757665"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createtrigger.html">CREATE TRIGGER</a></span>
 </div>
 </div></body>

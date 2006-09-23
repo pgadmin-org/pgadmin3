@@ -4,19 +4,20 @@
 <title>14.4. If You Are Upgrading</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
-<link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="installation.html" title="Chapter 14.  Installation Instructions">
 <link rel="prev" href="install-getsource.html" title="14.3. Getting The Source">
 <link rel="next" href="install-procedure.html" title="14.5. Installation Procedure">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="install-upgrading"></a>14.4. If You Are Upgrading</h2></div></div></div>
-<a name="id582568"></a><p>   The internal data storage format changes with new releases of
+<a name="id2616558"></a><p>   The internal data storage format changes with new releases of
    <span class="productname">PostgreSQL</span>. Therefore, if you are upgrading an
    existing installation that does not have a version number
-   &#8220;<span class="quote">8.1.x</span>&#8221;, you must back up and restore your
+   &#8220;<span class="quote">8.2.x</span>&#8221;, you must back up and restore your
    data as shown here. These instructions assume that your existing
    installation is under the <code class="filename">/usr/local/pgsql</code> directory,
    and that the data area is in <code class="filename">/usr/local/pgsql/data</code>.
@@ -31,7 +32,7 @@
      disallow access from everyone except you.
     </p></li>
 <li>
-<p>     <a name="id582639"></a>
+<p>     <a name="id2616622"></a>
 
      To back up your database installation, type:
 </p>
@@ -44,7 +45,7 @@
 <p>     To make the backup, you can use the <span class="application">pg_dumpall</span>
      command from the version you are currently running.  For best
      results, however, try to use the <span class="application">pg_dumpall</span>
-     command from <span class="productname">PostgreSQL</span> 8.1.0,
+     command from <span class="productname">PostgreSQL</span> 8.2beta1,
      since this version contains bug fixes and improvements over older
      versions.  While this advice might seem idiosyncratic since you
      haven't installed the new version yet, it is advisable to follow
@@ -70,17 +71,6 @@
 <p>
      works.
     </p>
-<p>     Very old versions might not have <span class="application">pg_ctl</span>.  If you
-     can't find it or it doesn't work, find out the process ID of the
-     old server, for example by typing
-</p>
-<pre class="screen"><strong class="userinput"><code>ps ax | grep postmaster</code></strong></pre>
-<p>
-     and signal it to stop this way:
-</p>
-<pre class="screen"><strong class="userinput"><code>kill -INT <em class="replaceable"><code>processID</code></em></code></strong></pre>
-<p>
-    </p>
 </li>
 <li>
 <p>     If you are installing in the same place as the old version then
@@ -93,13 +83,13 @@
     </p>
 </li>
 </ol></div>
-<p>   After you have installed <span class="productname">PostgreSQL</span> 8.1.0, create a new database
+<p>   After you have installed <span class="productname">PostgreSQL</span> 8.2beta1, create a new database
    directory and start the new server. Remember that you must execute
    these commands while logged in to the special database user account
    (which you already have if you are upgrading).
 </p>
 <pre class="programlisting"><strong class="userinput"><code>/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</code></strong>
-<strong class="userinput"><code>/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data</code></strong></pre>
+<strong class="userinput"><code>/usr/local/pgsql/bin/postgres -D /usr/local/pgsql/data</code></strong></pre>
 <p>
    Finally, restore your data with
 </p>
@@ -109,7 +99,7 @@
   </p>
 <p>   Further discussion appears in
    
-   <a href="migration.html" title="23.4. Migration Between Releases">Section 23.4, &#8220;Migration Between Releases&#8221;</a>,
+   <a href="migration.html" title="23.5. Migration Between Releases">Section 23.5, &#8220;Migration Between Releases&#8221;</a>,
    which you are encouraged to read in any case.
   </p>
 </div></body>

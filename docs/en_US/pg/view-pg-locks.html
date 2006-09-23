@@ -1,19 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>42.37. pg_locks</title>
+<title>42.39. pg_locks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
-<link rel="prev" href="view-pg-indexes.html" title="42.36. pg_indexes">
-<link rel="next" href="view-pg-prepared-xacts.html" title="42.38. pg_prepared_xacts">
+<link rel="prev" href="view-pg-indexes.html" title="42.38. pg_indexes">
+<link rel="next" href="view-pg-prepared-statements.html" title="42.40. pg_prepared_statements">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="view-pg-locks"></a>42.37. <code class="structname">pg_locks</code></h2></div></div></div>
-<a name="id778875"></a><p>   The view <code class="structname">pg_locks</code> provides access to
+<a name="view-pg-locks"></a>42.39. <code class="structname">pg_locks</code></h2></div></div></div>
+<a name="id2807988"></a><p>   The view <code class="structname">pg_locks</code> provides access to
    information about the locks held by open transactions within the
    database server.  See <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more discussion
    of locking.
@@ -35,8 +36,8 @@
    relation is represented as a separate lockable object.
   </p>
 <div class="table">
-<a name="id778930"></a><p class="title"><b>Table 42.37. <code class="structname">pg_locks</code> Columns</b></p>
-<table summary="pg_locks Columns" border="1">
+<a name="id2808038"></a><p class="title"><b>Table 42.39. <code class="structname">pg_locks</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_locks Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -60,8 +61,9 @@
        <code class="literal">page</code>,
        <code class="literal">tuple</code>,
        <code class="literal">transactionid</code>,
-       <code class="literal">object</code>, or
-       <code class="literal">userlock</code>
+       <code class="literal">object</code>,
+       <code class="literal">userlock</code>, or
+       <code class="literal">advisory</code>
       </td>
 </tr>
 <tr>
@@ -133,7 +135,7 @@
 <td><code class="structfield">transaction</code></td>
 <td><code class="type">xid</code></td>
 <td> </td>
-<td>       ID of the transaction that is holding or awaiting this lock.
+<td>       ID of the transaction that is holding or awaiting this lock
       </td>
 </tr>
 <tr>
@@ -141,7 +143,7 @@
 <td><code class="type">integer</code></td>
 <td> </td>
 <td>       Process ID of the server process holding or awaiting this
-       lock.  Null if the lock is held by a prepared transaction.
+       lock.  NULL if the lock is held by a prepared transaction.
       </td>
 </tr>
 <tr>
@@ -157,9 +159,9 @@
 <td>true if lock is held, false if lock is awaited</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   <code class="structfield">granted</code> is true in a row representing a lock
+<br class="table-break"><p>   <code class="structfield">granted</code> is true in a row representing a lock
    held by the indicated transaction.  False indicates that this transaction is
    currently waiting to acquire this lock, which implies that some other
    transaction is holding a conflicting lock mode on the same lockable object.
@@ -180,9 +182,15 @@
    row-level lock, it will usually appear in the view as waiting for the
    transaction ID of the current holder of that row lock.
   </p>
-<p>   If user-defined locks are in use, they are displayed using the columns
-   for general database objects.  However, the actual meaning of the lock
-   fields in such cases is up to the user.
+<p>   Advisory locks can be acquired on keys consisting of either a single
+   bigint value or two integer values.  A bigint key is displayed with its
+   high-order half in the <code class="structfield">classid</code> column, its low-order half
+   in the <code class="structfield">objid</code> column, and <code class="structfield">objsubid</code> equal
+   to 1.  Integer keys are displayed with the first key in the
+   <code class="structfield">classid</code> column, the second key in the <code class="structfield">objid</code>
+   column, and <code class="structfield">objsubid</code> equal to 2.  The actual meaning of
+   the keys is up to the user.  Advisory locks are local to each database,
+   so the <code class="structfield">database</code> column is meaningful for an advisory lock.
   </p>
 <p>   When the <code class="structname">pg_locks</code> view is accessed, the
    internal lock manager data structures are momentarily locked, and

@@ -4,11 +4,12 @@
 <title>27.3. Variant Comparison Files</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="regress.html" title="Chapter 27. Regression Tests">
 <link rel="prev" href="regress-evaluation.html" title="27.2. Test Evaluation">
 <link rel="next" href="client-interfaces.html" title="Part IV. Client Interfaces">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -35,13 +36,10 @@
     The test name is just the name of the particular regression test
     module.  The platform pattern is a pattern in the style of the Unix
     tool <code class="command">expr</code> (that is, a regular expression with an implicit
-    <code class="literal">^</code> anchor
-    at the start).  It is matched against the platform name as printed
-    by <code class="command">config.guess</code> followed by
-    <code class="literal">:gcc</code> or <code class="literal">:cc</code>, depending on
-    whether you use the GNU compiler or the system's native compiler
-    (on systems where there is a difference).  The comparison file
-    name is the base name of the substitute result comparison file.
+    <code class="literal">^</code> anchor at the start).  It is matched against the
+    platform name as printed by <code class="command">config.guess</code>.
+    The comparison file name is the base name of the substitute result
+    comparison file.
    </p>
 <p>    For example: some systems interpret very small floating-point values
     as zero, rather than reporting an underflow error.  This causes a

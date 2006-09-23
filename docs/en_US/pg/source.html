@@ -4,11 +4,12 @@
 <title>Chapter 44. PostgreSQL Coding Conventions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="protocol-changes.html" title="43.6. Summary of Changes since Protocol 2.0">
 <link rel="next" href="error-message-reporting.html" title="44.2. Reporting Errors Within the Server">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="source">
 <div class="titlepage"><div><div><h2 class="title">
@@ -34,42 +35,11 @@
     <span class="application">pgindent</span>, so there's no point in making it look nice
     under some other set of formatting conventions.
    </p>
-<p>    For <span class="productname">Emacs</span>, add the following (or
-    something similar) to your <code class="filename">~/.emacs</code> 
-    initialization file:
-
-</p>
-<pre class="programlisting">;; check for files with a path containing "postgres" or "pgsql"
-(setq auto-mode-alist
-  (cons '("\\(postgres\\|pgsql\\).*\\.[ch]\\'" . pgsql-c-mode)
-        auto-mode-alist))
-(setq auto-mode-alist
-  (cons '("\\(postgres\\|pgsql\\).*\\.cc\\'" . pgsql-c-mode)
-        auto-mode-alist))
-
-(defun pgsql-c-mode ()
-  ;; sets up formatting for PostgreSQL C code
-  (interactive)
-  (c-mode)
-  (setq-default tab-width 4)
-  (c-set-style "bsd")             ; set c-basic-offset to 4, plus other stuff
-  (c-set-offset 'case-label '+)   ; tweak case indent to match PG custom
-  (setq indent-tabs-mode t))      ; make sure we keep tabs when indenting</pre>
-<p>
-   </p>
-<p>    For <span class="application">vi</span>, your
-    <code class="filename">~/.vimrc</code> or equivalent file should contain
-    the following:
-
-</p>
-<pre class="programlisting">set tabstop=4</pre>
-<p>
-
-    or equivalently from within <span class="application">vi</span>, try
-
-</p>
-<pre class="programlisting">:set ts=4</pre>
-<p>
+<p>    The <code class="filename">src/tools</code> directory contains sample settings 
+	files that can be used with the <span class="productname">emacs</span>, 
+	<span class="productname">xemacs</span> or <span class="productname">vim</span> 
+	editors to help ensure that they format	code according to these 
+	conventions.
    </p>
 <p>    The text browsing tools <span class="application">more</span> and
     <span class="application">less</span> can be invoked as

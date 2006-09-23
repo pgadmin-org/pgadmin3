@@ -4,21 +4,22 @@
 <title>32.10. User-Defined Aggregates</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
 <link rel="prev" href="xfunc-c.html" title="32.9. C-Language Functions">
 <link rel="next" href="xtypes.html" title="32.11. User-Defined Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xaggr"></a>32.10. User-Defined Aggregates</h2></div></div></div>
-<a name="id657302"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
-   are expressed as <em class="firstterm">state values</em>
+<a name="id2696760"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
+   are expressed in terms of <em class="firstterm">state values</em>
    and <em class="firstterm">state transition functions</em>.
-   That is,  an  aggregate  can  be
-   defined  in terms of state that is modified whenever an
-   input item is processed.  To define a new aggregate
+   That is, an aggregate operates using a state value that is updated
+   as each successive input row is processed.
+   To define a new aggregate
    function, one selects a data type for the state value,
    an initial value for the state, and a state transition
    function.  The state transition function is just an
@@ -43,23 +44,24 @@
    The aggregate definition would be:
    
 </p>
-<pre class="screen">CREATE AGGREGATE complex_sum (
+<pre class="screen">CREATE AGGREGATE sum (complex)
+(
     sfunc = complex_add,
-    basetype = complex,
     stype = complex,
     initcond = '(0,0)'
 );
 
-SELECT complex_sum(a) FROM test_complex;
+SELECT sum(a) FROM test_complex;
 
- complex_sum
--------------
+   sum
+-----------
  (34,53.9)</pre>
 <p>
 
-   (In practice, we'd just name the aggregate <code class="function">sum</code> and rely on
-   <span class="productname">PostgreSQL</span> to figure out which kind
-   of sum to apply to a column of type <code class="type">complex</code>.)
+   (Notice that we are relying on function overloading: there is more than
+    one aggregate named <code class="function">sum</code>, but
+   <span class="productname">PostgreSQL</span> can figure out which kind
+   of sum applies to a column of type <code class="type">complex</code>.)
   </p>
 <p>   The above definition of <code class="function">sum</code> will return zero (the initial
    state condition) if there are no nonnull input values.
@@ -80,11 +82,12 @@ SELECT complex_sum(a) FROM test_complex;
 <p>   Another bit of default behavior for a &#8220;<span class="quote">strict</span>&#8221; transition function
    is that the previous state value is retained unchanged whenever a
    null input value is encountered.  Thus, null values are ignored.  If you
-   need some other behavior for null inputs, just do not define your transition
-   function as strict, and code it to test for null inputs and do
-   whatever is needed.
+   need some other behavior for null inputs, do not declare your
+   transition function as strict; instead code it to test for null inputs and
+   do whatever is needed.
   </p>
-<p>   <code class="function">avg</code> (average) is a more complex example of an aggregate.  It requires
+<p>   <code class="function">avg</code> (average) is a more complex example of an aggregate.
+   It requires
    two pieces of running state: the sum of the inputs and the count
    of the number of inputs.  The final result is obtained by dividing
    these quantities.  Average is typically implemented by using a
@@ -93,9 +96,9 @@ SELECT complex_sum(a) FROM test_complex;
    looks like:
 
 </p>
-<pre class="programlisting">CREATE AGGREGATE avg (
+<pre class="programlisting">CREATE AGGREGATE avg (float8)
+(
     sfunc = float8_accum,
-    basetype = float8,
     stype = float8[],
     finalfunc = float8_avg,
     initcond = '{0,0}'
@@ -108,14 +111,14 @@ SELECT complex_sum(a) FROM test_complex;
    See <a href="extend-type-system.html#extend-types-polymorphic" title="32.2.5. Polymorphic Types">Section 32.2.5, &#8220;Polymorphic Types&#8221;</a>
    for an explanation of polymorphic functions.
    Going a step further, the aggregate function itself may be specified
-   with a polymorphic base type and state type, allowing a single
+   with polymorphic input type(s) and state type, allowing a single
    aggregate definition to serve for multiple input data types.
    Here is an example of a polymorphic aggregate:
 
 </p>
-<pre class="programlisting">CREATE AGGREGATE array_accum (
+<pre class="programlisting">CREATE AGGREGATE array_accum (anyelement)
+(
     sfunc = array_append,
-    basetype = anyelement,
     stype = anyarray,
     initcond = '{}'
 );</pre>
@@ -155,7 +158,7 @@ SELECT attrelid::regclass, array_accum(atttypid)
 </p>
 <pre class="programlisting">        if (fcinfo-&gt;context &amp;&amp; IsA(fcinfo-&gt;context, AggState))</pre>
 <p>
-   One reason for checking this is that when it is true, the left input
+   One reason for checking this is that when it is true, the first input
    must be a temporary transition value and can therefore safely be modified
    in-place rather than allocating a new copy.  (This is the <span class="emphasis"><em>only</em></span>
    case where it is safe for a function to modify a pass-by-reference input.)

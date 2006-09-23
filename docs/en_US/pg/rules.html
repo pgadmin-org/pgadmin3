@@ -4,11 +4,12 @@
 <title>Chapter 34. The Rule System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="trigger-example.html" title="33.4. A Complete Example">
 <link rel="next" href="rules-views.html" title="34.2. Views and the Rule System">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="rules">
 <div class="titlepage"><div><div><h2 class="title">
@@ -20,13 +21,13 @@
 <dt><span class="sect1"><a href="rules-views.html">34.2. Views and the Rule System</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="rules-views.html#rules-select">34.2.1. How <code class="command">SELECT</code> Rules Work</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id663741">34.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id664068">34.2.3. The Power of Views in <span class="productname">PostgreSQL</span></a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2702772">34.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2703071">34.2.3. The Power of Views in <span class="productname">PostgreSQL</span></a></span></dt>
 <dt><span class="sect2"><a href="rules-views.html#rules-views-update">34.2.4. Updating a View</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="rules-update.html">34.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rules-update.html#id664318">34.3.1. How Update Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#id2703300">34.3.1. How Update Rules Work</a></span></dt>
 <dt><span class="sect2"><a href="rules-update.html#rules-update-views">34.3.2. Cooperation with Views</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="rules-privileges.html">34.4. Rules and Privileges</a></span></dt>
@@ -34,7 +35,7 @@
 <dt><span class="sect1"><a href="rules-triggers.html">34.6. Rules versus Triggers</a></span></dt>
 </dl>
 </div>
-<a name="id662330"></a><p>     This chapter discusses the rule system in
+<a name="id2701455"></a><p>     This chapter discusses the rule system in
      <span class="productname">PostgreSQL</span>.  Production rule systems
      are conceptually simple, but there are many subtle points
      involved in actually using them.</p>
@@ -53,7 +54,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="querytree"></a>34.1. The Query Tree</h2></div></div></div>
-<a name="id662398"></a><p>    To understand how the rule system works it is necessary to know
+<a name="id2701517"></a><p>    To understand how the rule system works it is necessary to know
     when it is invoked and what its input and results are.</p>
 <p>    The rule system is located between the parser and the planner.
     It takes the output of the parser, one query tree, and the user-defined
@@ -61,9 +62,9 @@
     query trees with some extra information, and creates zero or more
     query trees as result. So its input and output are always things
     the parser itself could have produced and thus, anything it sees
-    is basically representable as an <span class="acronym">SQL</span> statement.</p>
+    is basically representable as an <acronym class="acronym">SQL</acronym> statement.</p>
 <p>    Now what is a query tree? It is an internal representation of an
-    <span class="acronym">SQL</span> statement where the single parts that it is
+    <acronym class="acronym">SQL</acronym> statement where the single parts that it is
     built from are stored separately. These query trees can be shown
     in the server log if you set the configuration parameters
     <code class="varname">debug_print_parse</code>,
@@ -73,10 +74,10 @@
     <code class="structname">pg_rewrite</code>.  They are not formatted like
     the log output, but they contain exactly the same information.</p>
 <p>    Reading a raw query tree requires some experience.  But since
-    <span class="acronym">SQL</span> representations of query trees are
+    <acronym class="acronym">SQL</acronym> representations of query trees are
     sufficient to understand the rule system, this chapter will not
     teach how to read them.</p>
-<p>    When reading the <span class="acronym">SQL</span> representations of the 
+<p>    When reading the <acronym class="acronym">SQL</acronym> representations of the 
     query trees in this chapter it is necessary to be able to identify
     the parts the statement is broken into when it is in the query tree
     structure. The parts of a query tree are
@@ -101,7 +102,7 @@
         by which name it is called in the other parts of the query.
         In the query tree, the range table entries are referenced by
         number rather than by name, so here it doesn't matter if there
-        are duplicate names as it would in an <span class="acronym">SQL</span>
+        are duplicate names as it would in an <acronym class="acronym">SQL</acronym>
         statement. This can happen after the range tables of rules
         have been merged in. The examples in this chapter will not have
         this situation.
@@ -139,7 +140,7 @@
     </p>
 <p>        <code class="command">DELETE</code> commands don't need a target list
         because they don't produce any result. In fact, the planner will
-        add a special <span class="acronym">CTID</span> entry to the empty target list, but
+        add a special <acronym class="acronym">CTID</acronym> entry to the empty target list, but
         this is after the rule system and will be discussed later; for the
         rule system, the target list is empty.
     </p>
@@ -159,7 +160,7 @@
         column = expression</code> part of the command.  The planner will handle
         missing columns by inserting expressions that copy the values from
         the old row into the new one. And it will add the special
-        <span class="acronym">CTID</span> entry just as for <code class="command">DELETE</code>, too.
+        <acronym class="acronym">CTID</acronym> entry just as for <code class="command">DELETE</code>, too.
     </p>
 <p>        Every entry in the target list contains an expression that can
         be a constant value, a variable pointing to a column of one
@@ -175,7 +176,7 @@
         (<code class="command">INSERT</code>, <code class="command">UPDATE</code>,
         <code class="command">DELETE</code>, or <code class="command">SELECT</code>) for the
         final result row should be executed or not. It corresponds to the <code class="literal">WHERE</code> clause
-        of an <span class="acronym">SQL</span> statement.
+        of an <acronym class="acronym">SQL</acronym> statement.
     </p></dd>
 <dt><span class="term">        the join tree
     </span></dt>

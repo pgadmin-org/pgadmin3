@@ -4,23 +4,24 @@
 <title>9.16. Subquery Expressions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-aggregate.html" title="9.15. Aggregate Functions">
 <link rel="next" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-subquery"></a>9.16. Subquery Expressions</h2></div></div></div>
-<a name="id567101"></a><a name="id567107"></a><a name="id567113"></a><a name="id567119"></a><a name="id567125"></a><a name="id567131"></a><a name="id567138"></a><p>   This section describes the <span class="acronym">SQL</span>-compliant subquery
+<a name="id2600788"></a><a name="id2600794"></a><a name="id2600799"></a><a name="id2600805"></a><a name="id2600810"></a><a name="id2600816"></a><a name="id2600821"></a><p>   This section describes the <acronym class="acronym">SQL</acronym>-compliant subquery
    expressions available in <span class="productname">PostgreSQL</span>.
    All of the expression forms documented in this section return
    Boolean (true/false) results.
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id567160"></a>9.16.1. <code class="literal">EXISTS</code></h3></div></div></div>
+<a name="id2600842"></a>9.16.1. <code class="literal">EXISTS</code></h3></div></div></div>
 <pre class="synopsis">EXISTS (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The argument of <code class="token">EXISTS</code> is an arbitrary <code class="command">SELECT</code> statement,
    or <em class="firstterm">subquery</em>.  The
@@ -56,7 +57,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id567285"></a>9.16.2. <code class="literal">IN</code></h3></div></div></div>
+<a name="id2600955"></a>9.16.2. <code class="literal">IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -90,13 +91,13 @@
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of that row comparison is unknown (null).
-   If all the row results are either unequal or null, with at least one null,
-   then the result of <code class="token">IN</code> is null.
+   If all the per-row results are either unequal or null, with at least one
+   null, then the result of <code class="token">IN</code> is null.
   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id567405"></a>9.16.3. <code class="literal">NOT IN</code></h3></div></div></div>
+<a name="id2601064"></a>9.16.3. <code class="literal">NOT IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> NOT IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -130,13 +131,13 @@
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
    otherwise the result of that row comparison is unknown (null).
-   If all the row results are either unequal or null, with at least one null,
-   then the result of <code class="token">NOT IN</code> is null.
+   If all the per-row results are either unequal or null, with at least one
+   null, then the result of <code class="token">NOT IN</code> is null.
   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id567525"></a>9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></h3></div></div></div>
+<a name="id2601175"></a>9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ANY (<em class="replaceable"><code>subquery</code></em>)
 <em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> SOME (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
@@ -168,26 +169,22 @@
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result,
-   using the given <em class="replaceable"><code>operator</code></em>.  Presently,
-   only <code class="literal">=</code> and <code class="literal">&lt;&gt;</code> operators are allowed
-   in row-wise <code class="token">ANY</code> constructs.
-   The result of <code class="token">ANY</code> is &#8220;<span class="quote">true</span>&#8221; if any equal or unequal row is
-   found, respectively.
-   The result is &#8220;<span class="quote">false</span>&#8221; if no such row is found (including the special
-   case where the subquery returns no rows).
+   using the given <em class="replaceable"><code>operator</code></em>.
+   The result of <code class="token">ANY</code> is &#8220;<span class="quote">true</span>&#8221; if the comparison
+   returns true for any subquery row.
+   The result is &#8220;<span class="quote">false</span>&#8221; if the comparison returns false for every
+   subquery row (including the special case where the subquery returns no
+   rows).
+   The result is NULL if the comparison does not return true for any row,
+   and it returns NULL for at least one row.
   </p>
-<p>   As usual, null values in the rows are combined per
-   the normal rules of SQL Boolean expressions.  Two rows are considered
-   equal if all their corresponding members are non-null and equal; the rows
-   are unequal if any corresponding members are non-null and unequal;
-   otherwise the result of that row comparison is unknown (null).
-   If there is at least one null row result, then the result of <code class="token">ANY</code>
-   cannot be false; it will be true or null. 
+<p>   See <a href="functions-comparisons.html#row-wise-comparison" title="9.17.5. Row-wise Comparison">Section 9.17.5, &#8220;Row-wise Comparison&#8221;</a> for details about the meaning
+   of a row-wise comparison.
   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id567731"></a>9.16.5. <code class="literal">ALL</code></h3></div></div></div>
+<a name="id2601345"></a>9.16.5. <code class="literal">ALL</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ALL (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -197,14 +194,10 @@
    The result of <code class="token">ALL</code> is &#8220;<span class="quote">true</span>&#8221; if all rows yield true
    (including the special case where the subquery returns no rows).
    The result is &#8220;<span class="quote">false</span>&#8221; if any false result is found.
+   The result is NULL if the comparison does not return false for any row,
+   and it returns NULL for at least one row.
   </p>
 <p>   <code class="token">NOT IN</code> is equivalent to <code class="literal">&lt;&gt; ALL</code>.
-  </p>
-<p>   Note that if there are no failures but at least one right-hand row yields
-   null for the operator's result, the result of the <code class="token">ALL</code> construct
-   will be null, not true.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
   </p>
 <p>   As with <code class="token">EXISTS</code>, it's unwise to assume that the subquery will
    be evaluated completely.
@@ -216,28 +209,23 @@
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result,
-   using the given <em class="replaceable"><code>operator</code></em>.  Presently,
-   only <code class="literal">=</code> and <code class="literal">&lt;&gt;</code> operators are allowed
-   in row-wise <code class="token">ALL</code> queries.
-   The result of <code class="token">ALL</code> is &#8220;<span class="quote">true</span>&#8221; if all subquery rows are equal
-   or unequal, respectively (including the special
+   using the given <em class="replaceable"><code>operator</code></em>.
+   The result of <code class="token">ALL</code> is &#8220;<span class="quote">true</span>&#8221; if the comparison
+   returns true for all subquery rows (including the special
    case where the subquery returns no rows).
-   The result is &#8220;<span class="quote">false</span>&#8221; if any row is found to be unequal or equal,
-   respectively.
+   The result is &#8220;<span class="quote">false</span>&#8221; if the comparison returns false for any
+   subquery row.
+   The result is NULL if the comparison does not return false for any
+   subquery row, and it returns NULL for at least one row.
   </p>
-<p>   As usual, null values in the rows are combined per
-   the normal rules of SQL Boolean expressions.  Two rows are considered
-   equal if all their corresponding members are non-null and equal; the rows
-   are unequal if any corresponding members are non-null and unequal;
-   otherwise the result of that row comparison is unknown (null).
-   If there is at least one null row result, then the result of <code class="token">ALL</code>
-   cannot be true; it will be false or null. 
+<p>   See <a href="functions-comparisons.html#row-wise-comparison" title="9.17.5. Row-wise Comparison">Section 9.17.5, &#8220;Row-wise Comparison&#8221;</a> for details about the meaning
+   of a row-wise comparison.
   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id567899"></a>9.16.6. Row-wise Comparison</h3></div></div></div>
-<a name="id567904"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> (<em class="replaceable"><code>subquery</code></em>)</pre>
+<a name="id2601472"></a>9.16.6. Row-wise Comparison</h3></div></div></div>
+<a name="id2601475"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The left-hand side is a row constructor,
    as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized subquery, which must return exactly
@@ -245,15 +233,9 @@
    the subquery cannot return more than one row.  (If it returns zero rows,
    the result is taken to be null.)  The left-hand side is evaluated and
    compared row-wise to the single subquery result row.
-   Presently, only <code class="literal">=</code> and <code class="literal">&lt;&gt;</code> operators are allowed
-   in row-wise comparisons.
-   The result is &#8220;<span class="quote">true</span>&#8221; if the two rows are equal or unequal, respectively.
   </p>
-<p>   As usual, null values in the rows are combined per
-   the normal rules of SQL Boolean expressions.  Two rows are considered
-   equal if all their corresponding members are non-null and equal; the rows
-   are unequal if any corresponding members are non-null and unequal;
-   otherwise the result of the row comparison is unknown (null).
+<p>   See <a href="functions-comparisons.html#row-wise-comparison" title="9.17.5. Row-wise Comparison">Section 9.17.5, &#8220;Row-wise Comparison&#8221;</a> for details about the meaning
+   of a row-wise comparison.
   </p>
 </div>
 </div></body>

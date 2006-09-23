@@ -4,16 +4,17 @@
 <title>39.2. Trigger Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="plpython.html" title="Chapter 39. PL/Python - Python Procedural Language">
 <link rel="prev" href="plpython.html" title="Chapter 39. PL/Python - Python Procedural Language">
 <link rel="next" href="plpython-database.html" title="39.3. Database Access">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plpython-trigger"></a>39.2. Trigger Functions</h2></div></div></div>
-<a name="id679859"></a><p>   When a function is used as a trigger, the dictionary
+<a name="id2718640"></a><p>   When a function is used as a trigger, the dictionary
    <code class="literal">TD</code> contains trigger-related values.  The trigger
    rows are in <code class="literal">TD["new"]</code> and/or <code class="literal">TD["old"]</code>
    depending on the trigger event.  <code class="literal">TD["event"]</code> contains
@@ -23,6 +24,9 @@
    <code class="literal">AFTER</code>, and <code class="literal">UNKNOWN</code>.
    <code class="literal">TD["level"]</code> contains one of <code class="literal">ROW</code>,
    <code class="literal">STATEMENT</code>, and <code class="literal">UNKNOWN</code>.
+   <code class="literal">TD["name"]</code> contains the trigger name,
+   <code class="literal">TD["table_name"]</code> contains the name of the table on which the trigger occurred,
+   <code class="literal">TD["table_schema"]</code> contains the schema of the table on which the trigger occurred,
    <code class="literal">TD["name"]</code> contains the trigger name, and
    <code class="literal">TD["relid"]</code> contains the OID of the table on
    which the trigger occurred.  If the <code class="command">CREATE TRIGGER</code> command

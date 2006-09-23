@@ -4,11 +4,12 @@
 <title>DROP FUNCTION</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-dropdomain.html" title="DROP DOMAIN">
 <link rel="next" href="sql-dropgroup.html" title="DROP GROUP">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-dropfunction"></a><div class="titlepage"></div>
@@ -16,13 +17,13 @@
 <h2>Name</h2>
 <p>DROP FUNCTION &#8212; remove a function</p>
 </div>
-<a name="id716803"></a><div class="refsynopsisdiv">
+<a name="id2755026"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">DROP FUNCTION <em class="replaceable"><code>name</code></em> ( [ [ <em class="replaceable"><code>argmode</code></em> ] [ <em class="replaceable"><code>argname</code></em> ] <em class="replaceable"><code>argtype</code></em> [, ...] ] )
+<pre class="synopsis">DROP FUNCTION [ IF EXISTS ] <em class="replaceable"><code>name</code></em> ( [ [ <em class="replaceable"><code>argmode</code></em> ] [ <em class="replaceable"><code>argname</code></em> ] <em class="replaceable"><code>argtype</code></em> [, ...] ] )
     [ CASCADE | RESTRICT ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id716847"></a><h2>Description</h2>
+<a name="id2755066"></a><h2>Description</h2>
 <p>   <code class="command">DROP FUNCTION</code> removes the definition of an existing
    function. To execute this command the user must be the
    owner of the function. The argument types to the
@@ -31,8 +32,12 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id716865"></a><h2>Parameters</h2>
+<a name="id2755082"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">IF EXISTS</code></span></dt>
+<dd><p>      Do not throw an error if the function does not exist. A notice is issued 
+      in this case.
+     </p></dd>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing function.
      </p></dd>
@@ -81,7 +86,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id717049"></a><h2>See Also</h2>
+<a name="id2755261"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-alterfunction.html">ALTER FUNCTION</a></span>
 </div>
 </div></body>

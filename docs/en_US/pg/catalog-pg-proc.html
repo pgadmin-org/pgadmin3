@@ -4,16 +4,17 @@
 <title>42.27. pg_proc</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="catalog-pg-pltemplate.html" title="42.26. pg_pltemplate">
 <link rel="next" href="catalog-pg-rewrite.html" title="42.28. pg_rewrite">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-proc"></a>42.27. <code class="structname">pg_proc</code></h2></div></div></div>
-<a name="id775409"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
+<a name="id2804457"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
    See <a href="sql-createfunction.html">CREATE FUNCTION</a>
    and <a href="xfunc.html" title="32.3. User-Defined Functions">Section 32.3, &#8220;User-Defined Functions&#8221;</a> for more information.
   </p>
@@ -22,8 +23,8 @@
    row in <code class="structfield">pg_aggregate</code>.
   </p>
 <div class="table">
-<a name="id775458"></a><p class="title"><b>Table 42.27. <code class="structname">pg_proc</code> Columns</b></p>
-<table summary="pg_proc Columns" border="1">
+<a name="id2804500"></a><p class="title"><b>Table 42.27. <code class="structname">pg_proc</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_proc Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -118,13 +119,13 @@
 <tr>
 <td><code class="structfield">prorettype</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="42.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>Data type of the return value</td>
 </tr>
 <tr>
 <td><code class="structfield">proargtypes</code></td>
 <td><code class="type">oidvector</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="42.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>       An array with the data types of the function arguments.  This includes
        only input arguments (including INOUT arguments), and thus represents
        the call signature of the function.
@@ -133,7 +134,7 @@
 <tr>
 <td><code class="structfield">proallargtypes</code></td>
 <td><code class="type">oid[]</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="42.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>       An array with the data types of the function arguments.  This includes
        all arguments (including OUT and INOUT arguments); however, if all the
        arguments are IN arguments, this field will be null.
@@ -190,13 +191,13 @@
 <td>       Access privileges; see
        <a href="sql-grant.html">GRANT</a> and
        <a href="sql-revoke.html">REVOKE</a>
-       for details.
+       for details
       </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>   For compiled functions, both built-in and dynamically loaded,
+<br class="table-break"><p>   For compiled functions, both built-in and dynamically loaded,
    <code class="structfield">prosrc</code> contains the function's C-language
    name (link symbol).  For all other currently-known language types,
    <code class="structfield">prosrc</code> contains the function's source

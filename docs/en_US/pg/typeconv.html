@@ -4,11 +4,12 @@
 <title>Chapter 10. Type Conversion</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="prev" href="functions-admin.html" title="9.20. System Administration Functions">
 <link rel="next" href="typeconv-oper.html" title="10.2. Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="typeconv">
 <div class="titlepage"><div><div><h2 class="title">
@@ -23,7 +24,7 @@
 <dt><span class="sect1"><a href="typeconv-union-case.html">10.5. <code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs</a></span></dt>
 </dl>
 </div>
-<a name="id573220"></a><p><span class="acronym">SQL</span> statements can, intentionally or not, require
+<a name="id2607561"></a><p><acronym class="acronym">SQL</acronym> statements can, intentionally or not, require
 mixing of different data types in the same expression. 
 <span class="productname">PostgreSQL</span> has extensive facilities for
 evaluating mixed-type expressions.</p>
@@ -40,10 +41,10 @@ operators.</p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="typeconv-overview"></a>10.1. Overview</h2></div></div></div>
-<p><span class="acronym">SQL</span> is a strongly typed language. That is, every data item
+<p><acronym class="acronym">SQL</acronym> is a strongly typed language. That is, every data item
 has an associated data type which determines its behavior and allowed usage.
 <span class="productname">PostgreSQL</span> has an extensible type system that is
-much more general and flexible than other <span class="acronym">SQL</span> implementations.
+much more general and flexible than other <acronym class="acronym">SQL</acronym> implementations.
 Hence, most type conversion behavior in <span class="productname">PostgreSQL</span>
 is governed by general rules rather than by <span class="foreignphrase"><em class="foreignphrase">ad hoc</em></span>
 heuristics.  This allows
@@ -51,7 +52,7 @@ mixed-type expressions to be meaningful even with user-defined types.</p>
 <p>The <span class="productname">PostgreSQL</span> scanner/parser divides lexical
 elements into only five fundamental categories: integers, non-integer numbers,
 strings, identifiers, and key words.  Constants of most non-numeric types are
-first classified as strings. The <span class="acronym">SQL</span> language definition
+first classified as strings. The <acronym class="acronym">SQL</acronym> language definition
 allows specifying type names with strings, and this mechanism can be used in
 <span class="productname">PostgreSQL</span> to start the parser down the correct
 path. For example, the query
@@ -69,7 +70,7 @@ has two literal constants, of type <code class="type">text</code> and <code clas
 If a type is not specified for a string literal, then the placeholder type
 <code class="type">unknown</code> is assigned initially, to be resolved in later
 stages as described below.</p>
-<p>There are four fundamental <span class="acronym">SQL</span> constructs requiring
+<p>There are four fundamental <acronym class="acronym">SQL</acronym> constructs requiring
 distinct type conversion rules in the <span class="productname">PostgreSQL</span>
 parser:
 
@@ -89,7 +90,7 @@ as well as binary (two-argument) operators.  Like functions, operators can
 be overloaded, and so the same problem of selecting the right operator
 exists.</p></dd>
 <dt><span class="term">Value Storage</span></dt>
-<dd><p><span class="acronym">SQL</span> <code class="command">INSERT</code> and <code class="command">UPDATE</code> statements place the results of
+<dd><p><acronym class="acronym">SQL</acronym> <code class="command">INSERT</code> and <code class="command">UPDATE</code> statements place the results of
 expressions into a table. The expressions in the statement must be matched up
 with, and perhaps converted to, the types of the target columns.</p></dd>
 <dt><span class="term"><code class="literal">UNION</code>, <code class="literal">CASE</code>, and related constructs</span></dt>
@@ -108,8 +109,8 @@ with the <code class="command">CREATE CAST</code> command.  (This is usually
 done in conjunction with defining new data types.  The set of casts
 between the built-in types has been carefully crafted and is best not
 altered.)</p>
-<a name="id573559"></a><p>An additional heuristic is provided in the parser to allow better guesses
-at proper behavior for <span class="acronym">SQL</span> standard types. There are
+<a name="id2607868"></a><p>An additional heuristic is provided in the parser to allow better guesses
+at proper behavior for <acronym class="acronym">SQL</acronym> standard types. There are
 several basic <em class="firstterm">type categories</em> defined: <code class="type">boolean</code>,
 <code class="type">numeric</code>, <code class="type">string</code>, <code class="type">bitstring</code>, <code class="type">datetime</code>, <code class="type">timespan</code>, <code class="type">geometric</code>, <code class="type">network</code>,
 and user-defined. Each category, with the exception of user-defined, has

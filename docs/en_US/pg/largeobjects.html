@@ -4,11 +4,12 @@
 <title>Chapter 29. Large Objects</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
-<link rel="prev" href="libpq-example.html" title="28.16. Example Programs">
+<link rel="prev" href="libpq-example.html" title="28.19. Example Programs">
 <link rel="next" href="lo-implementation.html" title="29.2. Implementation Features">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="largeobjects">
 <div class="titlepage"><div><div><h2 class="title">
@@ -16,26 +17,26 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="largeobjects.html#lo-history">29.1. History</a></span></dt>
+<dt><span class="sect1"><a href="largeobjects.html#lo-intro">29.1. Introduction</a></span></dt>
 <dt><span class="sect1"><a href="lo-implementation.html">29.2. Implementation Features</a></span></dt>
 <dt><span class="sect1"><a href="lo-interfaces.html">29.3. Client Interfaces</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="lo-interfaces.html#id634914">29.3.1. Creating a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635073">29.3.2. Importing a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635109">29.3.3. Exporting a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635150">29.3.4. Opening an Existing Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635331">29.3.5. Writing Data to a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635389">29.3.6. Reading Data from a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635447">29.3.7. Seeking in a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635508">29.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635532">29.3.9. Closing a Large Object Descriptor</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id635581">29.3.10. Removing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667457">29.3.1. Creating a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667600">29.3.2. Importing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667633">29.3.3. Exporting a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667670">29.3.4. Opening an Existing Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667835">29.3.5. Writing Data to a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667888">29.3.6. Reading Data from a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667940">29.3.7. Seeking in a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2667995">29.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2668017">29.3.9. Closing a Large Object Descriptor</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2668061">29.3.10. Removing a Large Object</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="lo-funcs.html">29.4. Server-Side Functions</a></span></dt>
 <dt><span class="sect1"><a href="lo-examplesect.html">29.5. Example Program</a></span></dt>
 </dl>
 </div>
-<a name="id634404"></a><a name="id634415"></a><p>    <span class="productname">PostgreSQL</span> has a <em class="firstterm">large object</em>
+<a name="id2667247"></a><a name="id2667258"></a><p>    <span class="productname">PostgreSQL</span> has a <em class="firstterm">large object</em>
     facility, which provides stream-style access to user data that is stored
     in a special large-object structure.  Streaming access is useful
     when working with data values that are too large to manipulate
@@ -52,35 +53,18 @@
    </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="lo-history"></a>29.1. History</h2></div></div></div>
-<p>    <span class="productname">POSTGRES 4.2</span>, the indirect predecessor
-    of <span class="productname">PostgreSQL</span>, supported three standard
-    implementations of large objects: as files external to the
-    <span class="productname">POSTGRES</span> server, as external files
-    managed by the <span class="productname">POSTGRES</span> server, and as
-    data stored within the <span class="productname">POSTGRES</span>
-    database. This caused considerable confusion among users. As a
-    result, only support for large objects as data stored within the
-    database is retained in <span class="productname">PostgreSQL</span>.
-    Even though this is slower to access, it provides stricter data
-    integrity.  For historical reasons, this storage scheme is
-    referred to as <em class="firstterm">Inversion large
-    objects</em>. (You will see the term Inversion used
-    occasionally to mean the same thing as large object.)  Since
-    <span class="productname">PostgreSQL 7.1</span>, all large objects are
-    placed in one system table called
+<a name="lo-intro"></a>29.1. Introduction</h2></div></div></div>
+<a name="id2667317"></a><p>    All large objects are placed in a single system table called
     <code class="classname">pg_largeobject</code>.
-   </p>
-<p>    <a name="id634762"></a>
-    <span class="productname">PostgreSQL</span> 7.1 introduced a mechanism
-    (nicknamed &#8220;<span class="quote"><span class="acronym">TOAST</span></span>&#8221;) that allows
-    data values to be much larger than single pages.  This
-    makes the large object facility partially obsolete.  One
+    <span class="productname">PostgreSQL</span> also supports a storage system called
+    &#8220;<span class="quote"><acronym class="acronym">TOAST</acronym></span>&#8221; that automatically stores values
+    larger than a single database page into a secondary storage area per table.
+    This makes the large object facility partially obsolete.  One
     remaining advantage of the large object facility is that it allows values
-    up to 2 GB in size, whereas <span class="acronym">TOAST</span>ed fields can be at
-    most 1 GB.  Also, large objects can be manipulated piece-by-piece much more
-    easily than ordinary data fields, so the practical limits are considerably
-    different.
+    up to 2 GB in size, whereas <acronym class="acronym">TOAST</acronym>ed fields can be at
+    most 1 GB.  Also, large objects can be randomly modified using a read/write 
+    API that is more efficient than performing such operations using
+    <acronym class="acronym">TOAST</acronym>.
    </p>
 </div>
 </div></body>

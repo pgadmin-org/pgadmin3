@@ -4,11 +4,12 @@
 <title>43.2. Message Flow</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="protocol.html" title="Chapter 43. Frontend/Backend Protocol">
 <link rel="prev" href="protocol.html" title="Chapter 43. Frontend/Backend Protocol">
 <link rel="next" href="protocol-message-types.html" title="43.3. Message Data Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -25,7 +26,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id781779"></a>43.2.1. Start-Up</h3></div></div></div>
+<a name="id2811052"></a>43.2.1. Start-Up</h3></div></div></div>
 <p>    To begin a session, a frontend opens a connection to the server and sends
     a startup message.  This message includes the names of the user and of the
     database the user wants to connect to; it also identifies the particular
@@ -159,7 +160,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id782025"></a>43.2.2. Simple Query</h3></div></div></div>
+<a name="id2811288"></a>43.2.2. Simple Query</h3></div></div></div>
 <p>    A simple query cycle is initiated by the frontend sending a Query message
     to the backend.  The message includes an SQL command (or commands)
     expressed as a text string.
@@ -262,7 +263,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id782283"></a>43.2.3. Extended Query</h3></div></div></div>
+<a name="protocol-flow-ext-query"></a>43.2.3. Extended Query</h3></div></div></div>
 <p>    The extended query protocol breaks down the above-described simple
     query protocol into multiple steps.  The results of preparatory
     steps can be re-used multiple times for improved efficiency.
@@ -339,7 +340,7 @@
     </p>
 </div>
 <p>    Query planning for named prepared-statement objects occurs when the Parse
-    message is received. If a query will be repeatedly executed with
+    message is processed. If a query will be repeatedly executed with
     different parameters, it may be beneficial to send a single Parse message
     containing a parameterized query, followed by multiple Bind
     and Execute messages. This will avoid replanning the query on each
@@ -347,9 +348,9 @@
    </p>
 <p>    The unnamed prepared statement is likewise planned during Parse processing
     if the Parse message defines no parameters.  But if there are parameters,
-    query planning is delayed until the first Bind message for the statement
-    is received. The planner will consider the actual values of the parameters
-    provided in the Bind message when planning the query.
+    query planning occurs during Bind processing instead.  This allows the
+    planner to make use of the actual values of the parameters provided in
+    the Bind message when planning the query.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -360,15 +361,8 @@
      planning a parameterized query assigned to a named prepared-statement
      object.  This possible penalty is avoided when using the unnamed
      statement, since it is not planned until actual parameter values are
-     available.
-    </p>
-<p>     If a second or subsequent Bind referencing the unnamed prepared-statement
-     object is received without an intervening Parse, the query is
-     not replanned. The parameter values used in the first Bind message may
-     produce a query plan that is only efficient for a subset of possible
-     parameter values. To force replanning of the query for a fresh set of
-     parameters, send another Parse message to replace the unnamed
-     prepared-statement object. 
+     available.  The cost is that planning must occur afresh for each Bind,
+     even if the query stays the same.
     </p>
 </div>
 <p>    If successfully created, a named portal object lasts till the end of the
@@ -482,7 +476,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id782671"></a>43.2.4. Function Call</h3></div></div></div>
+<a name="id2811886"></a>43.2.4. Function Call</h3></div></div></div>
 <p>    The Function Call sub-protocol allows the client to request a direct
     call of any function that exists in the database's
     <code class="structname">pg_proc</code> system catalog.  The client must have
@@ -616,7 +610,7 @@
     this case is effectively synchronous [mdash ] but it is also possible
     for parameter status changes to occur because the administrator
     changed a configuration file and then sent the
-    <span class="systemitem">SIGHUP</span> signal to the postmaster.  Also,
+    <span class="systemitem">SIGHUP</span> signal to the server.  Also,
     if a <code class="command">SET</code> command is rolled back, an appropriate
     ParameterStatus message will be generated to report the current
     effective value.
@@ -664,7 +658,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id783106"></a>43.2.7. Cancelling Requests in Progress</h3></div></div></div>
+<a name="id2812298"></a>43.2.7. Cancelling Requests in Progress</h3></div></div></div>
 <p>    During the processing of a query, the frontend may request
     cancellation of the query.  The cancel request is not sent
     directly on the open connection to the backend for reasons of
@@ -716,7 +710,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id783170"></a>43.2.8. Termination</h3></div></div></div>
+<a name="id2812360"></a>43.2.8. Termination</h3></div></div></div>
 <p>    The normal, graceful termination procedure is that the frontend
     sends a Terminate message and immediately closes the connection.
     On receipt of this message, the backend closes the connection and
@@ -748,43 +742,43 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id783230"></a>43.2.9. <span class="acronym">SSL</span> Session Encryption</h3></div></div></div>
+<a name="id2812416"></a>43.2.9. <acronym class="acronym">SSL</acronym> Session Encryption</h3></div></div></div>
 <p>    If <span class="productname">PostgreSQL</span> was built with
-    <span class="acronym">SSL</span> support, frontend/backend communications
-    can be encrypted using <span class="acronym">SSL</span>.  This provides
+    <acronym class="acronym">SSL</acronym> support, frontend/backend communications
+    can be encrypted using <acronym class="acronym">SSL</acronym>.  This provides
     communication security in environments where attackers might be
     able to capture the session traffic. For more information on
     encrypting <span class="productname">PostgreSQL</span> sessions with
-    <span class="acronym">SSL</span>, see <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
+    <acronym class="acronym">SSL</acronym>, see <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
    </p>
-<p>    To initiate an <span class="acronym">SSL</span>-encrypted connection, the
+<p>    To initiate an <acronym class="acronym">SSL</acronym>-encrypted connection, the
     frontend initially sends an SSLRequest message rather than a
     StartupMessage.  The server then responds with a single byte
     containing <code class="literal">S</code> or <code class="literal">N</code>, indicating that it is
-    willing or unwilling to perform <span class="acronym">SSL</span>,
+    willing or unwilling to perform <acronym class="acronym">SSL</acronym>,
     respectively.  The frontend may close the connection at this point
     if it is dissatisfied with the response.  To continue after
-    <code class="literal">S</code>, perform an <span class="acronym">SSL</span> startup handshake
-    (not described here, part of the <span class="acronym">SSL</span>
+    <code class="literal">S</code>, perform an <acronym class="acronym">SSL</acronym> startup handshake
+    (not described here, part of the <acronym class="acronym">SSL</acronym>
     specification) with the server.  If this is successful, continue
     with sending the usual StartupMessage.  In this case the
     StartupMessage and all subsequent data will be
-    <span class="acronym">SSL</span>-encrypted.  To continue after
+    <acronym class="acronym">SSL</acronym>-encrypted.  To continue after
     <code class="literal">N</code>, send the usual StartupMessage and proceed without
     encryption.
    </p>
 <p>    The frontend should also be prepared to handle an ErrorMessage
     response to SSLRequest from the server.  This would only occur if
-    the server predates the addition of <span class="acronym">SSL</span> support
+    the server predates the addition of <acronym class="acronym">SSL</acronym> support
     to <span class="productname">PostgreSQL</span>.  In this case the connection must
     be closed, but the frontend may choose to open a fresh connection
-    and proceed without requesting <span class="acronym">SSL</span>.
+    and proceed without requesting <acronym class="acronym">SSL</acronym>.
    </p>
 <p>    An initial SSLRequest may also be used in a connection that is being
     opened to send a CancelRequest message.
    </p>
 <p>    While the protocol itself does not provide a way for the server to
-    force <span class="acronym">SSL</span> encryption, the administrator may
+    force <acronym class="acronym">SSL</acronym> encryption, the administrator may
     configure the server to reject unencrypted sessions as a byproduct
     of authentication checking.
    </p>

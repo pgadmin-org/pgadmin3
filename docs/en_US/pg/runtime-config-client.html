@@ -4,11 +4,12 @@
 <title>17.10. Client Connection Defaults</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-autovacuum.html" title="17.9. Automatic Vacuuming">
 <link rel="next" href="runtime-config-locks.html" title="17.11. Lock Management">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -50,7 +51,7 @@
         empty.
        </p>
 <p>        The default value for this parameter is
-        <code class="literal">'$user, public'</code> (where the second part will be
+        <code class="literal">'"$user", public'</code> (where the second part will be
         ignored if there is no schema named <code class="literal">public</code>).
         This supports shared use of a database (where no users
         have private schemas, and all share use of <code class="literal">public</code>),
@@ -59,7 +60,7 @@
         setting, either globally or per-user.
        </p>
 <p>        The current effective value of the search path can be examined
-        via the <span class="acronym">SQL</span> function
+        via the <acronym class="acronym">SQL</acronym> function
         <code class="function">current_schemas()</code>.  This is not quite the same as
         examining the value of <code class="varname">search_path</code>, since
         <code class="function">current_schemas()</code> shows how the requests
@@ -123,7 +124,8 @@
 <a name="guc-statement-timeout"></a><span class="term"><code class="varname">statement_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Abort any statement that takes over the specified number of
-        milliseconds.  If <code class="varname">log_min_error_statement</code> is set to
+        milliseconds, starting from the time the command arrives at the server
+        from the client.  If <code class="varname">log_min_error_statement</code> is set to
         <code class="literal">ERROR</code> or lower, the statement that timed out will also be
         logged.  A value of zero (the default) turns off the 
         limitation.
@@ -149,7 +151,10 @@
         keywords <code class="literal">US</code>, <code class="literal">NonEuro</code>, and
         <code class="literal">NonEuropean</code> are synonyms for <code class="literal">MDY</code>. See
         <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information. The
-        default is <code class="literal">ISO, MDY</code>.
+        built-in default is <code class="literal">ISO, MDY</code>, but
+        <span class="application">initdb</span> will initialize the
+        configuration file with a setting that corresponds to the
+        behavior of the chosen <code class="varname">lc_time</code> locale.
        </p></dd>
 <dt>
 <a name="guc-timezone"></a><span class="term"><code class="varname">timezone</code> (<code class="type">string</code>)</span>
@@ -159,13 +164,13 @@
         the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
        </p></dd>
 <dt>
-<a name="guc-australian-timezones"></a><span class="term"><code class="varname">australian_timezones</code> (<code class="type">boolean</code>)</span>
+<a name="guc-timezone-abbreviations"></a><span class="term"><code class="varname">timezone_abbreviations</code> (<code class="type">string</code>)</span>
 </dt>
-<dd><p>        If set to on, <code class="literal">ACST</code>,
-        <code class="literal">CST</code>, <code class="literal">EST</code>, and
-        <code class="literal">SAT</code> are interpreted as Australian time
-        zones rather than as North/South American time zones and
-        Saturday. The default is <code class="literal">off</code>.
+<dd><p>        Sets the collection of time zone abbreviations that will be accepted
+        by the server for datetime input.  The default is 'Default',
+        which is a collection that works in most of the world; there are
+        also 'Australia' and 'India', and other collections can be defined
+        for a particular installation.  See <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for more information.
        </p></dd>
 <dt>
 <a name="guc-extra-float-digits"></a><span class="term"><code class="varname">extra_float_digits</code> (<code class="type">integer</code>)</span>
@@ -200,6 +205,9 @@
         Also, there is a chance that no translated messages for the
         desired language exist.  In that case you will continue to see
         the English messages.
+       </p>
+<p>        Only superusers can change this setting, because it affects the
+        messages sent to the server log as well as to the client.
        </p>
 </dd>
 <dt>
@@ -284,6 +292,44 @@
         development purposes. The recommended way to set this parameter
         is in the <code class="filename">postgresql.conf</code> configuration
         file.
+       </p>
+</dd>
+<dt>
+<a name="guc-local-preload-libraries"></a><span class="term"><code class="varname">local_preload_libraries</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        This variable specifies one or more shared libraries that are
+        to be preloaded at connection start.  If more than one library
+        is to be loaded, separate their names with commas.
+        This parameter cannot be changed after the start of a particular
+        session.
+       </p>
+<p>        Because this is not a superuser-only option, the libraries
+        that can be loaded are restricted to those appearing in the
+        <code class="filename">plugins</code> subdirectory of the installation's
+        standard library directory.  (It is the database administrator's
+        responsibility to ensure that only &#8220;<span class="quote">safe</span>&#8221; libraries
+        are installed there.)  Entries in <code class="varname">local_preload_libraries</code>
+        can specify this directory explicitly, for example
+        <code class="literal">$libdir/plugins/mylib</code>, or just specify
+        the library name [mdash ] <code class="literal">mylib</code> would have
+        the same effect as <code class="literal">$libdir/plugins/mylib</code>.
+       </p>
+<p>        There is no performance advantage to loading a library at session
+        start rather than when it is first used.  Rather, the intent of
+        this feature is to allow debugging or performance-measurement
+        libraries to be loaded into specific sessions without an explicit
+        <code class="command">LOAD</code> command being given.  For example, debugging could
+        be enabled for all sessions under a given user name by setting
+        this parameter with <code class="command">ALTER USER SET</code>.
+       </p>
+<p>        If a specified library is not found,
+        the connection attempt will fail.
+       </p>
+<p>        Every  PostgreSQL-supported library has a &#8220;<span class="quote">magic
+        block</span>&#8221; that is checked to guarantee compatibility.  
+        For this reason, non-PostgreSQL libraries cannot be 
+        loaded in this way.
        </p>
 </dd>
 </dl></div>

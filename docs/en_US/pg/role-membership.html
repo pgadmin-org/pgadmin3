@@ -4,16 +4,17 @@
 <title>18.4. Role Membership</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
 <link rel="prev" href="privileges.html" title="18.3. Privileges">
 <link rel="next" href="perm-functions.html" title="18.5. Functions and Triggers">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="role-membership"></a>18.4. Role Membership</h2></div></div></div>
-<a name="id605338"></a><p>   It is frequently convenient to group users together to ease
+<a name="id2638628"></a><p>   It is frequently convenient to group users together to ease
    management of privileges: that way, privileges can be granted to, or
    revoked from, a group as a whole.  In <span class="productname">PostgreSQL</span>
    this is done by creating a role that represents the group, and then
@@ -36,7 +37,9 @@ REVOKE <em class="replaceable"><code>group_role</code></em> FROM <em class="repl
 <p>
    You can grant membership to other group roles, too (since there isn't
    really any distinction between group roles and non-group roles).  The
-   only restriction is that you can't set up circular membership loops.
+   database will not let you set up circular membership loops.  Also,
+   it is not permitted to grant membership in a role to
+   <code class="literal">PUBLIC</code>.
   </p>
 <p>   The members of a role can use the privileges of the group role in two
    ways.  First, every member of a group can explicitly do

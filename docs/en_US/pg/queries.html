@@ -4,11 +4,12 @@
 <title>Chapter 7. Queries</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="prev" href="dml-delete.html" title="6.3. Deleting Data">
 <link rel="next" href="queries-table-expressions.html" title="7.2. Table Expressions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="queries">
 <div class="titlepage"><div><div><h2 class="title">
@@ -32,9 +33,10 @@
 <dt><span class="sect1"><a href="queries-union.html">7.4. Combining Queries</a></span></dt>
 <dt><span class="sect1"><a href="queries-order.html">7.5. Sorting Rows</a></span></dt>
 <dt><span class="sect1"><a href="queries-limit.html">7.6. <code class="literal">LIMIT</code> and <code class="literal">OFFSET</code></a></span></dt>
+<dt><span class="sect1"><a href="queries-values.html">7.7. <code class="literal">VALUES</code> Lists</a></span></dt>
 </dl>
 </div>
-<a name="id527419"></a><a name="id527429"></a><p>  The previous chapters explained how to create tables, how to fill
+<a name="id2562056"></a><a name="id2562065"></a><p>  The previous chapters explained how to create tables, how to fill
   them with data, and how to manipulate that data.  Now we finally
   discuss how to retrieve the data out of the database.
  </p>
@@ -43,8 +45,9 @@
 <a name="queries-overview"></a>7.1. Overview</h2></div></div></div>
 <p>   The process of retrieving or the command to retrieve data from a
    database is called a <em class="firstterm">query</em>.  In SQL the
-   <code class="command">SELECT</code> command is used to specify queries.  The
-   general syntax of the <code class="command">SELECT</code> command is
+   <a href="sql-select.html">SELECT</a> command is
+   used to specify queries.  The general syntax of the
+   <code class="command">SELECT</code> command is
 </p>
 <pre class="synopsis">SELECT <em class="replaceable"><code>select_list</code></em> FROM <em class="replaceable"><code>table_expression</code></em> [<span class="optional"><em class="replaceable"><code>sort_specification</code></em></span>]</pre>
 <p>

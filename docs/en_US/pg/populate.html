@@ -4,11 +4,12 @@
 <title>13.4. Populating a Database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="prev" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
 <link rel="next" href="admin.html" title="Part III. Server Administration">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -20,7 +21,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="disable-autocommit"></a>13.4.1. Disable Autocommit</h3></div></div></div>
-<a name="id580891"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
+<a name="id2614998"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
     SQL, this means issuing <code class="command">BEGIN</code> at the start and
     <code class="command">COMMIT</code> at the end.  Some client libraries may
     do this behind your back, in which case you need to make sure the
@@ -151,7 +152,7 @@
     drop or recreate indexes, and it does not normally touch foreign
     keys.
 
-     <sup>[<a name="id581366" href="#ftn.id581366">8</a>]</sup>
+     <sup>[<a name="id2615438" href="#ftn.id2615438">8</a>]</sup>
 
     So when loading a data-only dump, it is up to you to drop and recreate
     indexes and foreign keys if you wish to use those techniques.
@@ -164,7 +165,7 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id581366" href="#id581366">8</a>] </sup>       You can get the effect of disabling foreign keys by using
+<div class="footnote"><p><sup>[<a name="ftn.id2615438" href="#id2615438">8</a>] </sup>       You can get the effect of disabling foreign keys by using
        the <code class="option">-X disable-triggers</code> option [mdash ] but realize that
        that eliminates, rather than just postponing, foreign key
        validation, and so it is possible to insert bad data if you use it.

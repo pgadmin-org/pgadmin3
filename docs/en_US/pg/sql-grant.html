@@ -4,11 +4,12 @@
 <title>GRANT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-fetch.html" title="FETCH">
 <link rel="next" href="sql-insert.html" title="INSERT">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-grant"></a><div class="titlepage"></div>
@@ -16,14 +17,19 @@
 <h2>Name</h2>
 <p>GRANT &#8212; define access privileges</p>
 </div>
-<a name="id721851"></a><div class="refsynopsisdiv">
+<a name="id2760023"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">GRANT { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
+<pre class="synopsis">GRANT { { SELECT | INSERT | UPDATE | DELETE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
     ON [ TABLE ] <em class="replaceable"><code>tablename</code></em> [, ...]
     TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
-GRANT { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
+GRANT { { USAGE | SELECT | UPDATE }
+    [,...] | ALL [ PRIVILEGES ] }
+    ON SEQUENCE <em class="replaceable"><code>sequencename</code></em> [, ...]
+    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
+
+GRANT { { CREATE | CONNECT | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
     ON DATABASE <em class="replaceable"><code>dbname</code></em> [, ...]
     TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
@@ -43,8 +49,7 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
     ON TABLESPACE <em class="replaceable"><code>tablespacename</code></em> [, ...]
     TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
-GRANT <em class="replaceable"><code>role</code></em> [, ...]
-    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH ADMIN OPTION ]</pre>
+GRANT <em class="replaceable"><code>role</code></em> [, ...] TO <em class="replaceable"><code>username</code></em> [, ...] [ WITH ADMIN OPTION ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-grant-description"></a><h2>Description</h2>
@@ -94,7 +99,8 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
 <p>   Depending on the type of object, the initial default privileges may
    include granting some privileges to <code class="literal">PUBLIC</code>.
    The default is no public access for tables, schemas, and tablespaces;
-   <code class="literal">TEMP</code> table creation privilege for databases;
+   <code class="literal">CONNECT</code> privilege and <code class="literal">TEMP</code> table creation privilege
+   for databases;
    <code class="literal">EXECUTE</code> privilege for functions; and
    <code class="literal">USAGE</code> privilege for languages.
    The object owner may of course revoke these privileges.  (For maximum
@@ -129,9 +135,6 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
 <dd><p>       Allows <a href="sql-delete.html">DELETE</a> of a row from the
        specified table.
       </p></dd>
-<dt><span class="term">RULE</span></dt>
-<dd><p>       Allows the creation of a rule on the table/view.  (See the <a href="sql-createrule.html">CREATE RULE</a> statement.)
-      </p></dd>
 <dt><span class="term">REFERENCES</span></dt>
 <dd><p>       To create a foreign key constraint, it is
        necessary to have this privilege on both the referencing and
@@ -155,6 +158,11 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
        will not alter the placement of existing objects.)
       </p>
 </dd>
+<dt><span class="term">CONNECT</span></dt>
+<dd><p>       Allows the user to connect to the specified database.  This
+       privilege is checked at connection startup (in addition to checking
+       any restrictions imposed by <code class="filename">pg_hba.conf</code>).
+      </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term">TEMPORARY</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term">TEMP</span>
 </dt>
@@ -175,7 +183,14 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
 <p>       For schemas, allows access to objects contained in the specified
        schema (assuming that the objects' own privilege requirements are
        also met).  Essentially this allows the grantee to &#8220;<span class="quote">look up</span>&#8221;
-       objects within the schema.
+       objects within the schema.  Without this permission, it is still
+       possible to see the object names, e.g. by querying the system tables.
+       Also, after revoking this permission, existing backends might have
+       statements that have previously performed this lookup, so this is not
+       a completely secure way to prevent object access.
+      </p>
+<p>       For sequences, this privilege allows the use of the
+       <code class="function">currval</code> and <code class="function">nextval</code> functions.
       </p>
 </dd>
 <dt><span class="term">ALL PRIVILEGES</span></dt>
@@ -205,6 +220,10 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
    database superusers can grant or revoke membership in any role to anyone.
    Roles having <code class="literal">CREATEROLE</code> privilege can grant or revoke
    membership in any role that is not a superuser.
+  </p>
+<p>   Unlike the case with privileges, membership in a role cannot be granted
+   to <code class="literal">PUBLIC</code>.  Note also that this form of the command does not
+   allow the noise word <code class="literal">GROUP</code>.
   </p>
 </div>
 </div>
@@ -257,6 +276,11 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
     cases it is best practice to use <code class="command">SET ROLE</code> to become the
     specific role you want to do the <code class="command">GRANT</code> as.
    </p>
+<p>    Granting permission on a table does not automatically extend 
+    permissions to any sequences used by the table, including 
+    sequences tied to <code class="type">SERIAL</code> columns.  Permissions on 
+    sequence must be set separately.
+   </p>
 <p>    Currently, <span class="productname">PostgreSQL</span> does not support
     granting or revoking privileges for individual columns of a table.
     One possible workaround is to create a view having just the desired
@@ -269,8 +293,8 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
 
                         Access privileges for database "lusitania"
  Schema |  Name   | Type  |                     Access privileges
---------+---------+-------+------------------------------------------------------------
- public | mytable | table | {miriam=arwdRxt/miriam,=r/miriam,"group todos=arw/miriam"}
+--------+---------+-------+-----------------------------------------------------------
+ public | mytable | table | {miriam=arwdxt/miriam,=r/miriam,"group todos=arw/miriam"}
 (1 row)</pre>
 <p>
     The entries shown by <code class="command">\z</code> are interpreted thus:
@@ -283,14 +307,14 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
                   w -- UPDATE ("write")
                   a -- INSERT ("append")
                   d -- DELETE
-                  R -- RULE
                   x -- REFERENCES
                   t -- TRIGGER
                   X -- EXECUTE
                   U -- USAGE
                   C -- CREATE
+                  c -- CONNECT
                   T -- TEMPORARY
-            arwdRxt -- ALL PRIVILEGES (for tables)
+             arwdxt -- ALL PRIVILEGES (for tables)
                   * -- grant option for preceding privilege
 
               /yyyy -- user who granted this privilege</pre>
@@ -311,7 +335,7 @@ and may include some privileges for <code class="literal">PUBLIC</code> dependin
 object type, as explained above.  The first <code class="command">GRANT</code> or
 <code class="command">REVOKE</code> on an object
 will instantiate the default privileges (producing, for example,
-<code class="literal">{miriam=arwdRxt/miriam}</code>) and then modify them per the
+<code class="literal">{miriam=arwdxt/miriam}</code>) and then modify them per the
 specified request.
    </p>
 <p>    Notice that the owner's implicit grant options are not marked in the
@@ -376,13 +400,12 @@ specified request.
     on other kinds of objects: character sets, collations,
     translations, domains.
    </p>
-<p>    The <code class="literal">RULE</code> privilege, and privileges on
-    databases, tablespaces, schemas, languages, and sequences are
+<p>    Privileges on databases, tablespaces, schemas, and languages are
     <span class="productname">PostgreSQL</span> extensions.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id723116"></a><h2>See Also</h2>
+<a name="id2761228"></a><h2>See Also</h2>
 <p>   <a href="sql-revoke.html">REVOKE</a>
   </p>
 </div>

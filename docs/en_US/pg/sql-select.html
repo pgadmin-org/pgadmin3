@@ -4,11 +4,12 @@
 <title>SELECT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-savepoint.html" title="SAVEPOINT">
 <link rel="next" href="sql-selectinto.html" title="SELECT INTO">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-select"></a><div class="titlepage"></div>
@@ -16,7 +17,7 @@
 <h2>Name</h2>
 <p>SELECT &#8212; retrieve rows from a table or view</p>
 </div>
-<a name="id460948"></a><div class="refsynopsisdiv">
+<a name="id2766919"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <em class="replaceable"><code>expression</code></em> [, ...] ) ] ]
     * | <em class="replaceable"><code>expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...]
@@ -28,7 +29,7 @@
     [ ORDER BY <em class="replaceable"><code>expression</code></em> [ ASC | DESC | USING <em class="replaceable"><code>operator</code></em> ] [, ...] ]
     [ LIMIT { <em class="replaceable"><code>count</code></em> | ALL } ]
     [ OFFSET <em class="replaceable"><code>start</code></em> ]
-    [ FOR { UPDATE | SHARE } [ OF <em class="replaceable"><code>table_name</code></em> [, ...] ] [ NOWAIT ] ]
+    [ FOR { UPDATE | SHARE } [ OF <em class="replaceable"><code>table_name</code></em> [, ...] ] [ NOWAIT ] [...] ]
 
 where <em class="replaceable"><code>from_item</code></em> can be one of:
 
@@ -39,7 +40,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     <em class="replaceable"><code>from_item</code></em> [ NATURAL ] <em class="replaceable"><code>join_type</code></em> <em class="replaceable"><code>from_item</code></em> [ ON <em class="replaceable"><code>join_condition</code></em> | USING ( <em class="replaceable"><code>join_column</code></em> [, ...] ) ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id729752"></a><h2>Description</h2>
+<a name="id2767138"></a><h2>Description</h2>
 <p>   <code class="command">SELECT</code> retrieves rows from zero or more tables.
    The general processing of <code class="command">SELECT</code> is as follows:
 
@@ -98,8 +99,8 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
       clause is specified, the <code class="command">SELECT</code> statement
       only returns a subset of the result rows. (See <a href="sql-select.html#sql-limit"><code class="literal">LIMIT</code> Clause</a> below.)
      </p></li>
-<li><p>      If the <code class="literal">FOR UPDATE</code> or <code class="literal">FOR SHARE</code>
-      clause is specified, the
+<li><p>      If <code class="literal">FOR UPDATE</code> or <code class="literal">FOR SHARE</code>
+      is specified, the
       <code class="command">SELECT</code> statement locks the selected rows
       against concurrent updates.  (See <a href="sql-select.html#sql-for-update-share"><code class="literal">FOR UPDATE</code>/<code class="literal">FOR SHARE</code> Clause</a> below.)
      </p></li>
@@ -113,7 +114,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id730102"></a><h2>Parameters</h2>
+<a name="id2767539"></a><h2>Parameters</h2>
 <div class="refsect2" lang="en">
 <a name="sql-from"></a><h3>
 <code class="literal">FROM</code> Clause</h3>
@@ -159,7 +160,9 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
         this single <code class="command">SELECT</code> command.  Note that the
         sub-<code class="command">SELECT</code> must be surrounded by
         parentheses, and an alias <span class="emphasis"><em>must</em></span> be
-        provided for it.
+        provided for it.  A
+        <a href="sql-values.html">VALUES</a> command
+        can also be used here.
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>function_name</code></em></span></dt>
 <dd><p>        Function calls can appear in the <code class="literal">FROM</code>
@@ -640,16 +643,24 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
     FOR UPDATE</code> on these rows, but it does not prevent them
     from performing <code class="command">SELECT FOR SHARE</code>.
    </p>
-<p>    It is currently not allowed for a single <code class="command">SELECT</code>
-    statement to include both <code class="literal">FOR UPDATE</code> and
-    <code class="literal">FOR SHARE</code>, nor can different parts of the statement use
-    both <code class="literal">NOWAIT</code> and normal waiting mode.
-   </p>
 <p>    If specific tables are named in <code class="literal">FOR UPDATE</code>
     or <code class="literal">FOR SHARE</code>,
     then only rows coming from those tables are locked; any other
     tables used in the <code class="command">SELECT</code> are simply read as
-    usual.
+    usual.  A <code class="literal">FOR UPDATE</code> or <code class="literal">FOR SHARE</code>
+    clause without a table list affects all tables used in the command.
+    If <code class="literal">FOR UPDATE</code> or <code class="literal">FOR SHARE</code> is
+    applied to a view or sub-query, it affects all tables used in
+    the view or sub-query.
+   </p>
+<p>    Multiple <code class="literal">FOR UPDATE</code> and <code class="literal">FOR SHARE</code>
+    clauses can be written if it is necessary to specify different locking
+    behavior for different tables.  If the same table is mentioned (or
+    implicitly affected) by both <code class="literal">FOR UPDATE</code> and
+    <code class="literal">FOR SHARE</code> clauses, then it is processed as
+    <code class="literal">FOR UPDATE</code>.  Similarly, a table is processed
+    as <code class="literal">NOWAIT</code> if that is specified in any of the clauses
+    affecting it.
    </p>
 <p>    <code class="literal">FOR UPDATE</code> and <code class="literal">FOR SHARE</code> cannot be
     used in contexts where returned rows can't be clearly identified with
@@ -668,7 +679,7 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id732647"></a><h2>Examples</h2>
+<a name="id2770031"></a><h2>Examples</h2>
 <p>   To join the table <code class="literal">films</code> with the table
    <code class="literal">distributors</code>:
 
@@ -798,13 +809,13 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id732826"></a><h2>Compatibility</h2>
+<a name="id2770199"></a><h2>Compatibility</h2>
 <p>   Of course, the <code class="command">SELECT</code> statement is compatible
    with the SQL standard.  But there are some extensions and some
    missing features.
   </p>
 <div class="refsect2" lang="en">
-<a name="id732841"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
+<a name="id2770213"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
 <p>    <span class="productname">PostgreSQL</span> allows one to omit the
     <code class="literal">FROM</code> clause.  It has a straightforward use to
     compute the results of simple expressions:
@@ -815,7 +826,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
 ----------
         4</pre>
 <p>
-    Some other <span class="acronym">SQL</span> databases cannot do this except
+    Some other <acronym class="acronym">SQL</acronym> databases cannot do this except
     by introducing a dummy one-row table from which to do the
     <code class="command">SELECT</code>.
    </p>
@@ -836,7 +847,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id732932"></a><h3>The <code class="literal">AS</code> Key Word</h3>
+<a name="id2770299"></a><h3>The <code class="literal">AS</code> Key Word</h3>
 <p>    In the SQL standard, the optional key word <code class="literal">AS</code> is just
     noise and can be omitted without affecting the meaning.  The
     <span class="productname">PostgreSQL</span> parser requires this key
@@ -847,7 +858,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id732976"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
+<a name="id2770338"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
 </h3>
 <p>    In the SQL-92 standard, an <code class="literal">ORDER BY</code> clause may
     only use result column names or numbers, while a <code class="literal">GROUP
@@ -868,7 +879,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id733054"></a><h3>Nonstandard Clauses</h3>
+<a name="id2770410"></a><h3>Nonstandard Clauses</h3>
 <p>    The clauses <code class="literal">DISTINCT ON</code>,
     <code class="literal">LIMIT</code>, and <code class="literal">OFFSET</code> are not
     defined in the SQL standard.

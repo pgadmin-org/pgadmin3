@@ -1,19 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>23.4. Migration Between Releases</title>
+<title>23.5. Migration Between Releases</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
-<link rel="prev" href="backup-online.html" title="23.3. On-line backup and point-in-time recovery (PITR)">
+<link rel="prev" href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">
 <link rel="next" href="monitoring.html" title="Chapter 24. Monitoring Database Activity">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="migration"></a>23.4. Migration Between Releases</h2></div></div></div>
-<a name="id618362"></a><a name="id618372"></a><p>   This section discusses how to migrate your database data from one
+<a name="migration"></a>23.5. Migration Between Releases</h2></div></div></div>
+<a name="id2651379"></a><a name="id2651388"></a><p>   This section discusses how to migrate your database data from one
    <span class="productname">PostgreSQL</span> release to a newer one.
    The software installation procedure <span class="foreignphrase"><em class="foreignphrase">per se</em></span> is not the
    subject of this section; those details are in <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>.
@@ -23,8 +24,8 @@
    the number after the first dot changes). This does not apply to
    different minor releases under the same major release (where the
    number after the second dot changes); these always have compatible
-   storage formats. For example, releases 7.0.1, 7.1.2, and 7.2 are
-   not compatible, whereas 7.1.1 and 7.1.2 are. When you update
+   storage formats. For example, releases 7.2.1, 7.3.2, and 7.4 are
+   not compatible, whereas 7.2.1 and 7.2.2 are. When you update
    between compatible versions, you can simply replace the executables
    and reuse the data directory on disk. Otherwise you need to back
    up your data and restore it on the new server.  This has to be done
@@ -69,10 +70,10 @@
 <pre class="programlisting">pg_dumpall &gt; backup
 pg_ctl stop
 mv /usr/local/pgsql /usr/local/pgsql.old
-cd ~/postgresql-8.1.0
+cd ~/postgresql-8.2beta1
 gmake install
 initdb -D /usr/local/pgsql/data
-postmaster -D /usr/local/pgsql/data
+postgres -D /usr/local/pgsql/data
 psql -f backup postgres</pre>
 <p>
 

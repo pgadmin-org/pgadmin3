@@ -4,11 +4,12 @@
 <title>DECLARE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-deallocate.html" title="DEALLOCATE">
 <link rel="next" href="sql-delete.html" title="DELETE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-declare"></a><div class="titlepage"></div>
@@ -16,14 +17,14 @@
 <h2>Name</h2>
 <p>DECLARE &#8212; define a cursor</p>
 </div>
-<a name="id714707"></a><a name="id714717"></a><div class="refsynopsisdiv">
+<a name="id2752838"></a><a name="id2752847"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">DECLARE <em class="replaceable"><code>name</code></em> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
     CURSOR [ { WITH | WITHOUT } HOLD ] FOR <em class="replaceable"><code>query</code></em>
     [ FOR { READ ONLY | UPDATE [ OF <em class="replaceable"><code>column</code></em> [, ...] ] } ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id714758"></a><h2>Description</h2>
+<a name="id2752884"></a><h2>Description</h2>
 <p>   <code class="command">DECLARE</code> allows a user to create cursors, which
    can be used to retrieve
    a small number of rows at a time out of a larger query. Cursors can
@@ -65,7 +66,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id714852"></a><h2>Parameters</h2>
+<a name="id2752976"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the cursor to be created.
@@ -89,7 +90,9 @@
       execution plan, specifying <code class="literal">SCROLL</code> may impose
       a performance penalty on the query's execution time.
       <code class="literal">NO SCROLL</code> specifies that the cursor cannot be
-      used to retrieve rows in a nonsequential fashion.
+      used to retrieve rows in a nonsequential fashion.  The default is to
+      allow scrolling in some cases; this is not the same as specifying
+      <code class="literal">SCROLL</code>. See <a href="sql-declare.html#sql-declare-notes">Notes</a> for details.
      </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WITH HOLD</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">WITHOUT HOLD</code></span>
@@ -103,9 +106,9 @@
       HOLD</code> is the default.
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>query</code></em></span></dt>
-<dd><p>      A <code class="command">SELECT</code> command that will provide the rows to be
-      returned by the cursor.  Refer to <a href="sql-select.html">SELECT</a> for further information about valid
-      queries.
+<dd><p>      A <a href="sql-select.html">SELECT</a> or
+      <a href="sql-values.html">VALUES</a> command
+      which will provide the rows to be returned by the cursor.
      </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">FOR READ ONLY</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">FOR UPDATE</code></span>
@@ -131,7 +134,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id715140"></a><h2>Notes</h2>
+<a name="sql-declare-notes"></a><h2>Notes</h2>
 <p>    Unless <code class="literal">WITH HOLD</code> is specified, the cursor
     created by this command can only be used within the current
     transaction.  Thus, <code class="command">DECLARE</code> without <code class="literal">WITH
@@ -169,7 +172,7 @@
     specified, then backward fetches are disallowed in any case.
    </p>
 <p>    The SQL standard only makes provisions for cursors in embedded
-    <span class="acronym">SQL</span>.  The <span class="productname">PostgreSQL</span>
+    <acronym class="acronym">SQL</acronym>.  The <span class="productname">PostgreSQL</span>
     server does not implement an <code class="command">OPEN</code> statement for
     cursors; a cursor is considered to be open when it is declared.
     However, <span class="application">ECPG</span>, the embedded SQL
@@ -177,9 +180,12 @@
     the standard SQL cursor conventions, including those involving
     <code class="command">DECLARE</code> and <code class="command">OPEN</code> statements.
    </p>
+<p>    You can see all available cursors by querying the <a href="view-pg-cursors.html" title="42.36. pg_cursors"><code class="structname">pg_cursors</code></a>
+    system view.
+   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id715339"></a><h2>Examples</h2>
+<a name="id2753461"></a><h2>Examples</h2>
 <p>   To declare a cursor:
 </p>
 <pre class="programlisting">DECLARE liahona CURSOR FOR SELECT * FROM films;</pre>
@@ -189,9 +195,9 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id715365"></a><h2>Compatibility</h2>
+<a name="id2753484"></a><h2>Compatibility</h2>
 <p>   The SQL standard allows cursors only in embedded
-   <span class="acronym">SQL</span> and in modules. <span class="productname">PostgreSQL</span>
+   <acronym class="acronym">SQL</acronym> and in modules. <span class="productname">PostgreSQL</span>
    permits cursors to be used interactively.
   </p>
 <p>   The SQL standard allows cursors to update table data. All
@@ -202,7 +208,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id715404"></a><h2>See Also</h2>
+<a name="id2753519"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-fetch.html">FETCH</a>, <a href="sql-move.html">MOVE</a></span>
 </div>
 </div></body>

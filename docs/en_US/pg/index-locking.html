@@ -4,38 +4,26 @@
 <title>48.4. Index Locking Considerations</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="prev" href="index-scanning.html" title="48.3. Index Scanning">
 <link rel="next" href="index-unique-checks.html" title="48.5. Index Uniqueness Checks">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="index-locking"></a>48.4. Index Locking Considerations</h2></div></div></div>
-<p>   An index access method can choose whether it supports concurrent updates
-   of the index by multiple processes.  If the method's
-   <code class="structname">pg_am</code>.<code class="structfield">amconcurrent</code> flag is true, then
-   the core <span class="productname">PostgreSQL</span> system obtains
+<p>   Index access methods must handle concurrent updates
+   of the index by multiple processes.
+   The core <span class="productname">PostgreSQL</span> system obtains
    <code class="literal">AccessShareLock</code> on the index during an index scan, and
-   <code class="literal">RowExclusiveLock</code> when updating the index.  Since these lock
+   <code class="literal">RowExclusiveLock</code> when updating the index (including plain
+   <code class="command">VACUUM</code>).  Since these lock
    types do not conflict, the access method is responsible for handling any
    fine-grained locking it may need.  An exclusive lock on the index as a whole
-   will be taken only during index creation, destruction, or
-   <code class="literal">REINDEX</code>.  When <code class="structfield">amconcurrent</code> is false,
-   <span class="productname">PostgreSQL</span> still obtains
-   <code class="literal">AccessShareLock</code> during index scans, but it obtains
-   <code class="literal">AccessExclusiveLock</code> during any update.  This ensures that
-   updaters have sole use of the index.  Note that this implicitly assumes
-   that index scans are read-only; an access method that might modify the
-   index during a scan will still have to do its own locking to handle the
-   case of concurrent scans.
-  </p>
-<p>   Recall that a backend's own locks never conflict; therefore, even a
-   non-concurrent index type must be prepared to handle the case where
-   a backend is inserting or deleting entries in an index that it is itself
-   scanning.  (This is of course necessary to support an <code class="command">UPDATE</code>
-   that uses the index to find the rows to be updated.)
+   will be taken only during index creation, destruction,
+   <code class="command">REINDEX</code>, or <code class="command">VACUUM FULL</code>.
   </p>
 <p>   Building an index type that supports concurrent updates usually requires
    extensive and subtle analysis of the required behavior.  For the b-tree
@@ -61,7 +49,7 @@
 <li><p>       When a heap entry is to be deleted (by <code class="command">VACUUM</code>), all its
        index entries must be removed first.
       </p></li>
-<li><p>       For concurrent index types, an index scan must maintain a pin
+<li><p>       An index scan must maintain a pin
        on the index page holding the item last returned by
        <code class="function">amgettuple</code>, and <code class="function">ambulkdelete</code> cannot delete
        entries from pages that are pinned by other backends.  The need
@@ -70,11 +58,10 @@
 </ul></div>
 <p>
 
-   If an index is concurrent then it is possible for an index reader to
+   Without the third rule, it is possible for an index reader to
    see an index entry just before it is removed by <code class="command">VACUUM</code>, and
    then to arrive at the corresponding heap entry after that was removed by
-   <code class="command">VACUUM</code>.  (With a nonconcurrent index, this is not possible
-   because of the conflicting index-level locks that will be taken out.)
+   <code class="command">VACUUM</code>.
    This creates no serious problems if that item
    number is still unused when the reader reaches it, since an empty
    item slot will be ignored by <code class="function">heap_fetch()</code>.  But what if a

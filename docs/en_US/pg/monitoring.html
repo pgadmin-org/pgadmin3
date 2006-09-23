@@ -4,11 +4,12 @@
 <title>Chapter 24. Monitoring Database Activity</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="prev" href="migration.html" title="23.4. Migration Between Releases">
+<link rel="prev" href="migration.html" title="23.5. Migration Between Releases">
 <link rel="next" href="monitoring-stats.html" title="24.2. The Statistics Collector">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="monitoring">
 <div class="titlepage"><div><div><h2 class="title">
@@ -25,7 +26,7 @@
 <dt><span class="sect1"><a href="monitoring-locks.html">24.3. Viewing Locks</a></span></dt>
 </dl>
 </div>
-<a name="id618574"></a><a name="id618587"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
+<a name="id2651580"></a><a name="id2651592"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
   doing right now?</span>&#8221;
   This chapter discusses how to find that out.
  </p>
@@ -44,14 +45,14 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-ps"></a>24.1. Standard Unix Tools</h2></div></div></div>
-<a name="id618690"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
+<a name="id2651684"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
    command title as reported by <code class="command">ps</code>, so that individual server
    processes can readily be identified.  A sample display is
 
 </p>
 <pre class="screen">$ ps auxww | grep ^postgres
-postgres   960  0.0  1.1  6104 1480 pts/1    SN   13:17   0:00 postmaster -i
-postgres   963  0.0  1.1  7084 1472 pts/1    SN   13:17   0:00 postgres: stats buffer process   
+postgres   960  0.0  1.1  6104 1480 pts/1    SN   13:17   0:00 postgres -i
+postgres   963  0.0  1.1  7084 1472 pts/1    SN   13:17   0:00 postgres: writer process
 postgres   965  0.0  1.1  6152 1512 pts/1    SN   13:17   0:00 postgres: stats collector process   
 postgres   998  0.0  2.3  6532 2992 pts/1    SN   13:18   0:00 postgres: tgl runbug 127.0.0.1 idle
 postgres  1003  0.0  2.4  6532 3128 pts/1    SN   13:19   0:00 postgres: tgl regression [local] SELECT waiting
@@ -61,10 +62,11 @@ postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl reg
    (The appropriate invocation of <code class="command">ps</code> varies across different
    platforms, as do the details of what is shown.  This example is from a
    recent Linux system.)  The first process listed here is the
-   <span class="application">postmaster</span>, the master server process.  The command arguments
+   master server process.  The command arguments
    shown for it are the same ones given when it was launched.  The next two
-   processes implement the statistics collector, which will be described in
-   detail in the next section.  (These will not be present if you have set
+   processes are background worker processes automatically launched by the
+   master process.  (The &#8220;<span class="quote">stats collector</span>&#8221; process will not be present
+   if you have set
    the system not to start the statistics collector.)  Each of the remaining
    processes is a server process handling one client connection.  Each such
    process sets its command line display in the form
@@ -83,16 +85,21 @@ postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl reg
   that process 1003 is waiting for process 1016 to complete its transaction and
   thereby release some lock or other.
   </p>
+<p>   If you have turned off <a href="runtime-config-statistics.html#guc-update-process-title">update_process_title</a> then the
+   activity indicator is not updated; the process title is set only once
+   when a new process is launched.  On some platforms this saves a useful
+   amount of per-command overhead, on others it's insignificant.
+  </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>  <span class="productname">Solaris</span> requires special handling. You must
   use <code class="command">/usr/ucb/ps</code>, rather than
   <code class="command">/bin/ps</code>. You also must use two <code class="option">w</code>
   flags, not just one. In addition, your original invocation of the
-  <code class="command">postmaster</code> command must have a shorter
+  <code class="command">postgres</code> command must have a shorter
   <code class="command">ps</code> status display than that provided by each
   server process.  If you fail to do all three things, the <code class="command">ps</code>
-  output for each server process will be the original <code class="command">postmaster</code>
+  output for each server process will be the original <code class="command">postgres</code>
   command line.
   </p>
 </div>

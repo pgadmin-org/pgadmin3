@@ -4,11 +4,12 @@
 <title>9.9. Date/Time Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="next" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -31,7 +32,7 @@
   </p>
 <div class="table">
 <a name="operators-datetime-table"></a><p class="title"><b>Table 9.25. Date/Time Operators</b></p>
-<table summary="Date/Time Operators" border="1">
+<div class="table-contents"><table summary="Date/Time Operators" border="1">
 <colgroup>
 <col>
 <col>
@@ -51,32 +52,32 @@
 <tr>
 <td> <code class="literal">+</code> </td>
 <td><code class="literal">date '2001-09-28' + interval '1 hour'</code></td>
-<td><code class="literal">timestamp '2001-09-28 01:00'</code></td>
+<td><code class="literal">timestamp '2001-09-28 01:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">+</code> </td>
 <td><code class="literal">date '2001-09-28' + time '03:00'</code></td>
-<td><code class="literal">timestamp '2001-09-28 03:00'</code></td>
+<td><code class="literal">timestamp '2001-09-28 03:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">+</code> </td>
 <td><code class="literal">interval '1 day' + interval '1 hour'</code></td>
-<td><code class="literal">interval '1 day 01:00'</code></td>
+<td><code class="literal">interval '1 day 01:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">+</code> </td>
 <td><code class="literal">timestamp '2001-09-28 01:00' + interval '23 hours'</code></td>
-<td><code class="literal">timestamp '2001-09-29 00:00'</code></td>
+<td><code class="literal">timestamp '2001-09-29 00:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">+</code> </td>
 <td><code class="literal">time '01:00' + interval '3 hours'</code></td>
-<td><code class="literal">time '04:00'</code></td>
+<td><code class="literal">time '04:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">-</code> </td>
 <td><code class="literal">- interval '23 hours'</code></td>
-<td><code class="literal">interval '-23:00'</code></td>
+<td><code class="literal">interval '-23:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">-</code> </td>
@@ -91,49 +92,59 @@
 <tr>
 <td> <code class="literal">-</code> </td>
 <td><code class="literal">date '2001-09-28' - interval '1 hour'</code></td>
-<td><code class="literal">timestamp '2001-09-27 23:00'</code></td>
+<td><code class="literal">timestamp '2001-09-27 23:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">-</code> </td>
 <td><code class="literal">time '05:00' - time '03:00'</code></td>
-<td><code class="literal">interval '02:00'</code></td>
+<td><code class="literal">interval '02:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">-</code> </td>
 <td><code class="literal">time '05:00' - interval '2 hours'</code></td>
-<td><code class="literal">time '03:00'</code></td>
+<td><code class="literal">time '03:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">-</code> </td>
 <td><code class="literal">timestamp '2001-09-28 23:00' - interval '23 hours'</code></td>
-<td><code class="literal">timestamp '2001-09-28 00:00'</code></td>
+<td><code class="literal">timestamp '2001-09-28 00:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">-</code> </td>
 <td><code class="literal">interval '1 day' - interval '1 hour'</code></td>
-<td><code class="literal">interval '23:00'</code></td>
+<td><code class="literal">interval '1 day -01:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">-</code> </td>
 <td><code class="literal">timestamp '2001-09-29 03:00' - timestamp '2001-09-27 12:00'</code></td>
-<td><code class="literal">interval '1 day 15:00'</code></td>
+<td><code class="literal">interval '1 day 15:00:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">*</code> </td>
-<td><code class="literal">interval '1 hour' * double precision '3.5'</code></td>
-<td><code class="literal">interval '03:30'</code></td>
+<td><code class="literal">900 * interval '1 second'</code></td>
+<td><code class="literal">interval '00:15:00'</code></td>
+</tr>
+<tr>
+<td> <code class="literal">*</code> </td>
+<td><code class="literal">21 * interval '1 day'</code></td>
+<td><code class="literal">interval '21 days'</code></td>
+</tr>
+<tr>
+<td> <code class="literal">*</code> </td>
+<td><code class="literal">double precision '3.5' * interval '1 hour'</code></td>
+<td><code class="literal">interval '03:30:00'</code></td>
 </tr>
 <tr>
 <td> <code class="literal">/</code> </td>
 <td><code class="literal">interval '1 hour' / double precision '1.5'</code></td>
-<td><code class="literal">interval '00:40'</code></td>
+<td><code class="literal">interval '00:40:00'</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<a name="id558706"></a><a name="id558712"></a><a name="id558719"></a><a name="id558725"></a><a name="id558732"></a><a name="id558738"></a><a name="id558744"></a><a name="id558751"></a><a name="id558757"></a><a name="id558764"></a><a name="id558770"></a><a name="id558776"></a><a name="id558783"></a><a name="id558789"></a><div class="table">
+<br class="table-break"><a name="id2591484"></a><a name="id2591490"></a><a name="id2591496"></a><a name="id2591502"></a><a name="id2591507"></a><a name="id2591513"></a><a name="id2591519"></a><a name="id2591525"></a><a name="id2591530"></a><a name="id2591536"></a><a name="id2591542"></a><a name="id2591548"></a><a name="id2591554"></a><a name="id2591560"></a><a name="id2591565"></a><a name="id2591571"></a><a name="id2591577"></a><a name="id2591582"></a><div class="table">
 <a name="functions-datetime-table"></a><p class="title"><b>Table 9.26. Date/Time Functions</b></p>
-<table summary="Date/Time Functions" border="1">
+<div class="table-contents"><table summary="Date/Time Functions" border="1">
 <colgroup>
 <col>
 <col>
@@ -166,9 +177,19 @@
 <td><code class="literal">43 years 8 mons 3 days</code></td>
 </tr>
 <tr>
+<td><code class="literal"><code class="function">clock_timestamp</code>()</code></td>
+<td><code class="type">timestamp with time zone</code></td>
+<td>Current date and time (changes during statement execution);
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+        </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
 <td><code class="literal"><code class="function">current_date</code></code></td>
 <td><code class="type">date</code></td>
-<td>Today's date; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+<td>Current date;
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
         </td>
 <td> </td>
 <td> </td>
@@ -176,7 +197,8 @@
 <tr>
 <td><code class="literal"><code class="function">current_time</code></code></td>
 <td><code class="type">time with time zone</code></td>
-<td>Time of day; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+<td>Current time of day;
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
         </td>
 <td> </td>
 <td> </td>
@@ -184,7 +206,8 @@
 <tr>
 <td><code class="literal"><code class="function">current_timestamp</code></code></td>
 <td><code class="type">timestamp with time zone</code></td>
-<td>Date and time; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+<td>Current date and time (start of current transaction);
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
         </td>
 <td> </td>
 <td> </td>
@@ -192,8 +215,8 @@
 <tr>
 <td><code class="literal"><code class="function">date_part</code>(<code class="type">text</code>, <code class="type">timestamp</code>)</code></td>
 <td><code class="type">double precision</code></td>
-<td>Get subfield (equivalent to
-         <code class="function">extract</code>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;<code class="function">EXTRACT</code>, <code class="function">date_part</code>&#8221;</a>
+<td>Get subfield (equivalent to <code class="function">extract</code>);
+         see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;<code class="function">EXTRACT</code>, <code class="function">date_part</code>&#8221;</a>
         </td>
 <td><code class="literal">date_part('hour', timestamp '2001-02-16 20:38:40')</code></td>
 <td><code class="literal">20</code></td>
@@ -248,13 +271,6 @@
 <td><code class="literal">true</code></td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">justify_hours</code>(<code class="type">interval</code>)</code></td>
-<td><code class="type">interval</code></td>
-<td>Adjust interval so 24-hour time periods are represented as days</td>
-<td><code class="literal">justify_hours(interval '24 hours')</code></td>
-<td><code class="literal">1 day</code></td>
-</tr>
-<tr>
 <td><code class="literal"><code class="function">justify_days</code>(<code class="type">interval</code>)</code></td>
 <td><code class="type">interval</code></td>
 <td>Adjust interval so 30-day time periods are represented as months</td>
@@ -262,9 +278,24 @@
 <td><code class="literal">1 month</code></td>
 </tr>
 <tr>
+<td><code class="literal"><code class="function">justify_hours</code>(<code class="type">interval</code>)</code></td>
+<td><code class="type">interval</code></td>
+<td>Adjust interval so 24-hour time periods are represented as days</td>
+<td><code class="literal">justify_hours(interval '24 hours')</code></td>
+<td><code class="literal">1 day</code></td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">justify_interval</code>(<code class="type">interval</code>)</code></td>
+<td><code class="type">interval</code></td>
+<td>Adjust interval using <code class="function">justify_days</code> and <code class="function">justify_hours</code>, with additional sign adjustments</td>
+<td><code class="literal">justify_interval(interval '1 mon -1 hour')</code></td>
+<td><code class="literal">29 days 23:00:00</code></td>
+</tr>
+<tr>
 <td><code class="literal"><code class="function">localtime</code></code></td>
 <td><code class="type">time</code></td>
-<td>Time of day; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+<td>Current time of day;
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
         </td>
 <td> </td>
 <td> </td>
@@ -272,7 +303,8 @@
 <tr>
 <td><code class="literal"><code class="function">localtimestamp</code></code></td>
 <td><code class="type">timestamp</code></td>
-<td>Date and time; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+<td>Current date and time (start of current transaction);
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
         </td>
 <td> </td>
 <td> </td>
@@ -280,8 +312,17 @@
 <tr>
 <td><code class="literal"><code class="function">now</code>()</code></td>
 <td><code class="type">timestamp with time zone</code></td>
-<td>Current date and time (equivalent to
-         <code class="function">current_timestamp</code>); see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+<td>Current date and time (start of current transaction);
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+        </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">statement_timestamp</code>()</code></td>
+<td><code class="type">timestamp with time zone</code></td>
+<td>Current date and time (start of current statement);
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
         </td>
 <td> </td>
 <td> </td>
@@ -289,20 +330,26 @@
 <tr>
 <td><code class="literal"><code class="function">timeofday</code>()</code></td>
 <td><code class="type">text</code></td>
-<td>Current date and time; see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+<td>Current date and time
+         (like <code class="function">clock_timestamp</code>, but as a <code class="type">text</code> string);
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+        </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">transaction_timestamp</code>()</code></td>
+<td><code class="type">timestamp with time zone</code></td>
+<td>Current date and time (start of current transaction);
+         see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
         </td>
 <td> </td>
 <td> </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    If you are using both <code class="function">justify_hours</code> and
-    <code class="function">justify_days</code>, it is best to use <code class="function">justify_hours</code>
-    first so any additional days will be included in the
-    <code class="function">justify_days</code> calculation.
-   </p>
-<p>    In addition to these functions, the SQL <code class="literal">OVERLAPS</code> operator is
+<br class="table-break"><p>    In addition to these functions, the SQL <code class="literal">OVERLAPS</code> operator is
     supported:
 </p>
 <pre class="synopsis">(<em class="replaceable"><code>start1</code></em>, <em class="replaceable"><code>end1</code></em>) OVERLAPS (<em class="replaceable"><code>start2</code></em>, <em class="replaceable"><code>end2</code></em>)
@@ -338,7 +385,7 @@ SELECT (DATE '2001-02-16', INTERVAL '100 days') OVERLAPS
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-extract"></a>9.9.1. <code class="function">EXTRACT</code>, <code class="function">date_part</code></h3></div></div></div>
-<a name="id559743"></a><a name="id559750"></a><pre class="synopsis">EXTRACT(<em class="replaceable"><code>field</code></em> FROM <em class="replaceable"><code>source</code></em>)</pre>
+<a name="id2592542"></a><a name="id2592548"></a><pre class="synopsis">EXTRACT(<em class="replaceable"><code>field</code></em> FROM <em class="replaceable"><code>source</code></em>)</pre>
 <p>    The <code class="function">extract</code> function retrieves subfields
     such as year or hour from date/time values.
     <em class="replaceable"><code>source</code></em> must be a value expression of
@@ -494,7 +541,7 @@ SELECT EXTRACT(MONTH FROM INTERVAL '2 years 13 months');
 <dt><span class="term"><code class="literal">second</code></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts (0 -
-        59<sup>[<a name="id560320" href="#ftn.id560320">5</a>]</sup>)
+        59<sup>[<a name="id2593065" href="#ftn.id2593065">5</a>]</sup>)
        </p>
 <pre class="screen">SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40');
 <em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">40</code>
@@ -516,8 +563,8 @@ SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
 <dt><span class="term"><code class="literal">week</code></span></dt>
 <dd>
 <p>        The number of the week of the year that the day is in.  By definition
-        (<span class="acronym">ISO</span> 8601), the first week of a year
-        contains January 4 of that year.  (The <span class="acronym">ISO</span>-8601
+        (<acronym class="acronym">ISO</acronym> 8601), the first week of a year
+        contains January 4 of that year.  (The <acronym class="acronym">ISO</acronym>-8601
         week starts on Monday.)  In other words, the first Thursday of
         a year is in week 1 of that year. (for <code class="type">timestamp</code> values only)
        </p>
@@ -546,7 +593,7 @@ SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
    </p>
 <p>    The <code class="function">date_part</code> function is modeled on the traditional
     <span class="productname">Ingres</span> equivalent to the
-    <span class="acronym">SQL</span>-standard function <code class="function">extract</code>:
+    <acronym class="acronym">SQL</acronym>-standard function <code class="function">extract</code>:
 </p>
 <pre class="synopsis">date_part('<em class="replaceable"><code>field</code></em>', <em class="replaceable"><code>source</code></em>)</pre>
 <p>
@@ -564,7 +611,7 @@ SELECT date_part('hour', INTERVAL '4 hours 3 minutes');
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-trunc"></a>9.9.2. <code class="function">date_trunc</code></h3></div></div></div>
-<a name="id560615"></a><p>    The function <code class="function">date_trunc</code> is conceptually
+<a name="id2593331"></a><p>    The function <code class="function">date_trunc</code> is conceptually
     similar to the <code class="function">trunc</code> function for numbers.
    </p>
 <pre class="synopsis">date_trunc('<em class="replaceable"><code>field</code></em>', <em class="replaceable"><code>source</code></em>)</pre>
@@ -611,13 +658,13 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-zoneconvert"></a>9.9.3. <code class="literal">AT TIME ZONE</code></h3></div></div></div>
-<a name="id560829"></a><a name="id560838"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
+<a name="id2593525"></a><a name="id2593533"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
     of time stamps to different time zones.  <a href="functions-datetime.html#functions-datetime-zoneconvert-table" title="Table 9.27. AT TIME ZONE Variants">Table 9.27, &#8220;<code class="literal">AT TIME ZONE</code> Variants&#8221;</a> shows its
     variants.
    </p>
 <div class="table">
 <a name="functions-datetime-zoneconvert-table"></a><p class="title"><b>Table 9.27. <code class="literal">AT TIME ZONE</code> Variants</b></p>
-<table summary="AT TIME ZONE Variants" border="1">
+<div class="table-contents"><table summary="AT TIME ZONE Variants" border="1">
 <colgroup>
 <col>
 <col>
@@ -648,14 +695,13 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <td>Convert given time <span class="emphasis"><em>with time zone</em></span> to the new time zone</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>    In these expressions, the desired time zone <em class="replaceable"><code>zone</code></em> can be
+<br class="table-break"><p>    In these expressions, the desired time zone <em class="replaceable"><code>zone</code></em> can be
     specified either as a text string (e.g., <code class="literal">'PST'</code>)
     or as an interval (e.g., <code class="literal">INTERVAL '-08:00'</code>).
-    In the text case, the available zone names are those shown in either
-    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting <code class="varname">timezone</code>&#8221;</a> or
-    <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a>.
+    In the text case, a time zone name may be specified in any of the ways
+    described in <a href="datatype-datetime.html#datatype-timezones" title="8.5.3. Time Zones">Section 8.5.3, &#8220;Time Zones&#8221;</a>.
    </p>
 <p>    Examples (supposing that the local time zone is <code class="literal">PST8PDT</code>):
 </p>
@@ -678,18 +724,20 @@ SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-current"></a>9.9.4. Current Date/Time</h3></div></div></div>
-<a name="id561104"></a><a name="id561113"></a><p>    The following functions are available to obtain the current date and/or
-    time:
+<a name="id2593762"></a><a name="id2593770"></a><p>    <span class="productname">PostgreSQL</span> provides a number of functions
+    that return values related to the current date and time.  These
+    SQL-standard functions all return values based on the start time of
+    the current transaction:
 </p>
 <pre class="synopsis">CURRENT_DATE
 CURRENT_TIME
 CURRENT_TIMESTAMP
-CURRENT_TIME (<em class="replaceable"><code>precision</code></em>)
-CURRENT_TIMESTAMP (<em class="replaceable"><code>precision</code></em>)
+CURRENT_TIME(<em class="replaceable"><code>precision</code></em>)
+CURRENT_TIMESTAMP(<em class="replaceable"><code>precision</code></em>)
 LOCALTIME
 LOCALTIMESTAMP
-LOCALTIME (<em class="replaceable"><code>precision</code></em>)
-LOCALTIMESTAMP (<em class="replaceable"><code>precision</code></em>)</pre>
+LOCALTIME(<em class="replaceable"><code>precision</code></em>)
+LOCALTIMESTAMP(<em class="replaceable"><code>precision</code></em>)</pre>
 <p>
     </p>
 <p>     <code class="function">CURRENT_TIME</code> and
@@ -706,13 +754,6 @@ LOCALTIMESTAMP (<em class="replaceable"><code>precision</code></em>)</pre>
      to that many fractional digits in the seconds field.  Without a precision parameter,
      the result is given to the full available precision.
     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      Prior to <span class="productname">PostgreSQL</span> 7.2, the precision
-      parameters were unimplemented, and the result was always given
-      in integer seconds.
-     </p>
-</div>
 <p>    Some examples:
 </p>
 <pre class="screen">SELECT CURRENT_TIME;
@@ -731,13 +772,8 @@ SELECT LOCALTIMESTAMP;
 <em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">2001-12-23 14:39:53.662522</code></pre>
 <p>
    </p>
-<p>    The function <code class="function">now()</code> is the traditional
-    <span class="productname">PostgreSQL</span> equivalent to
-    <code class="function">CURRENT_TIMESTAMP</code>.
-   </p>
-<p>    It is important to know that
-    <code class="function">CURRENT_TIMESTAMP</code> and related functions return
-    the start time of the current transaction; their values do not
+<p>    Since these functions return
+    the start time of the current transaction, their values do not
     change during the transaction. This is considered a feature:
     the intent is to allow a single transaction to have a consistent
     notion of the &#8220;<span class="quote">current</span>&#8221; time, so that multiple
@@ -750,18 +786,40 @@ SELECT LOCALTIMESTAMP;
      frequently.
     </p>
 </div>
-<p>    There is also the function <code class="function">timeofday()</code> which
-    returns the wall-clock time and advances during transactions.  For
-    historical reasons <code class="function">timeofday()</code> returns a
-    <code class="type">text</code> string rather than a <code class="type">timestamp</code>
-    value:
+<p>    <span class="productname">PostgreSQL</span> also provides functions that
+    return the start time of the current statement, as well as the actual
+    current time at the instant the function is called.  The complete list
+    of non-SQL-standard time functions is:
 </p>
-<pre class="screen">SELECT timeofday();
-<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">Sat Feb 17 19:07:32.000126 2001 EST</code></pre>
+<pre class="synopsis">now()
+transaction_timestamp()
+statement_timestamp()
+clock_timestamp()
+timeofday()</pre>
 <p>
    </p>
+<p>    <code class="function">now()</code> is a traditional <span class="productname">PostgreSQL</span>
+    equivalent to <code class="function">CURRENT_TIMESTAMP</code>.
+    <code class="function">transaction_timestamp()</code> is likewise equivalent to
+    <code class="function">CURRENT_TIMESTAMP</code>, but is named to clearly reflect
+    what it returns.
+    <code class="function">statement_timestamp()</code> returns the start time of the current
+    statement (more specifically, the time of receipt of the latest command
+    message from the client).
+    <code class="function">statement_timestamp()</code> and <code class="function">transaction_timestamp()</code>
+    return the same value during the first command of a transaction, but may
+    differ during subsequent commands.
+    <code class="function">clock_timestamp()</code> returns the actual current time, and
+    therefore its value changes even within a single SQL command.
+    <code class="function">timeofday()</code> is a historical
+    <span class="productname">PostgreSQL</span> function.  Like
+    <code class="function">clock_timestamp()</code>, it returns the actual current time,
+    but as a formatted <code class="type">text</code> string rather than a <code class="type">timestamp
+    with time zone</code> value.
+   </p>
 <p>    All the date/time data types also accept the special literal value
-    <code class="literal">now</code> to specify the current date and time.  Thus,
+    <code class="literal">now</code> to specify the current date and time (again,
+    interpreted as the transaction start time).  Thus,
     the following three all return the same result:
 </p>
 <pre class="programlisting">SELECT CURRENT_TIMESTAMP;
@@ -782,9 +840,44 @@ SELECT TIMESTAMP 'now';  -- incorrect for use with DEFAULT</pre>
      </p>
 </div>
 </div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-datetime-delay"></a>9.9.5. Delaying Execution</h3></div></div></div>
+<a name="id2594103"></a><a name="id2594109"></a><a name="id2594115"></a><p>    The following function is available to delay execution of the server
+    process:
+</p>
+<pre class="synopsis">pg_sleep(<em class="replaceable"><code>seconds</code></em>)</pre>
+<p>
+
+    <code class="function">pg_sleep</code> makes the current session's process
+    sleep until <em class="replaceable"><code>seconds</code></em> seconds have
+    elapsed.  <em class="replaceable"><code>seconds</code></em> is a value of type
+    <code class="type">double precision</code>, so fractional-second delays can be specified.
+    For example:
+
+</p>
+<pre class="programlisting">SELECT pg_sleep(1.5);</pre>
+<p>
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      The effective resolution of the sleep interval is platform-specific;
+      0.01 seconds is a common value.  The sleep delay will be at least as long
+      as specified. It may be longer depending on factors such as server load.
+     </p>
+</div>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p>      Make sure that your session does not hold more locks than necessary
+      when calling <code class="function">pg_sleep</code>.  Otherwise other sessions
+      might have to wait for your sleeping process, slowing down the entire
+      system.
+     </p>
+</div>
+</div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id560320" href="#id560320">5</a>] </sup>60 if leap seconds are
+<div class="footnote"><p><sup>[<a name="ftn.id2593065" href="#id2593065">5</a>] </sup>60 if leap seconds are
         implemented by the operating system</p></div>
 </div>
 </div></body>

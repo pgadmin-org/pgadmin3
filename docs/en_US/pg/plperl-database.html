@@ -4,11 +4,12 @@
 <title>38.2. Database Access from PL/Perl</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="plperl.html" title="Chapter 38. PL/Perl - Perl Procedural Language">
 <link rel="prev" href="plperl.html" title="Chapter 38. PL/Perl - Perl Procedural Language">
 <link rel="next" href="plperl-data.html" title="38.3. Data Values in PL/Perl">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -17,18 +18,18 @@
    via the function <code class="function">spi_exec_query</code> described
    below, or via an experimental module 
    <a href="http://www.cpan.org/modules/by-module/DBD/APILOS/" target="_top">   <code class="literal">DBD::PgSPI</code></a>
-   (also available at <a href="http://www.cpan.org/SITES.html" target="_top">   <span class="acronym">CPAN mirror sites</span></a>).  This module makes available a
-   <span class="acronym">DBI</span>-compliant database-handle named
+   (also available at <a href="http://www.cpan.org/SITES.html" target="_top">   <acronym class="acronym">CPAN mirror sites</acronym></a>).  This module makes available a
+   <acronym class="acronym">DBI</acronym>-compliant database-handle named
    <code class="varname">$pg_dbh</code> that can be used to perform queries with
-   normal <span class="acronym">DBI</span>
-   syntax.<a name="id678475"></a>
+   normal <acronym class="acronym">DBI</acronym>
+   syntax.<a name="id2716782"></a>
   </p>
-<p>   PL/Perl provides three additional Perl commands:
+<p>   PL/Perl provides additional Perl commands:
 
    </p>
 <div class="variablelist"><dl>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_query</code>(<em class="replaceable"><code>query</code></em> [, <em class="replaceable"><code>max-rows</code></em>])</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_query</code>(<em class="replaceable"><code>command</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_query</code>(<em class="replaceable"><code>command</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal"><code class="function">spi_fetchrow</code>(<em class="replaceable"><code>command</code></em>)</code></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_query</code>(<em class="replaceable"><code>query</code></em> [, <em class="replaceable"><code>max-rows</code></em>])</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_query</code>(<em class="replaceable"><code>command</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_fetchrow</code>(<em class="replaceable"><code>cursor</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_prepare</code>(<em class="replaceable"><code>command</code></em>, <em class="replaceable"><code>argument types</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_exec_prepared</code>(<em class="replaceable"><code>plan</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_query_prepared</code>(<em class="replaceable"><code>plan</code></em> [, <em class="replaceable"><code>attributes</code></em>], <em class="replaceable"><code>arguments</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal"><code class="function">spi_cursor_close</code>(<em class="replaceable"><code>cursor</code></em>)</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal"><code class="function">spi_freeplan</code>(<em class="replaceable"><code>plan</code></em>)</code></span>
 </dt>
 <dd>
 <p>       <code class="literal">spi_exec_query</code> executes an SQL command and
@@ -113,7 +114,7 @@ CREATE OR REPLACE FUNCTION lotsa_md5 (INTEGER) RETURNS SETOF foo_type AS $$
     my $t = localtime;
     elog(NOTICE, "opening file $file at $t" );
     open my $fh, '&lt;', $file # ooh, it's a file access!
-        or elog(ERROR, "Can't open $file for reading: $!");
+        or elog(ERROR, "can't open $file for reading: $!");
     my @words = &lt;$fh&gt;;
     close $fh;
     $t = localtime;
@@ -132,6 +133,56 @@ $$ LANGUAGE plperlu;
 
 SELECT * from lotsa_md5(500);</pre>
 <p>
+    </p>
+<p>    <code class="literal">spi_prepare</code>, <code class="literal">spi_query_prepared</code>, <code class="literal">spi_exec_prepared</code>, 
+    and <code class="literal">spi_freeplan</code> implement the same functionality but for prepared queries. Once
+    a query plan is prepared by a call to <code class="literal">spi_prepare</code>, the plan can be used instead
+    of the string query, either in <code class="literal">spi_exec_prepared</code>, where the result is the same as returned
+    by <code class="literal">spi_exec_query</code>, or in <code class="literal">spi_query_prepared</code> which returns a cursor
+    exactly as <code class="literal">spi_query</code> does, which can be later passed to <code class="literal">spi_fetchrow</code>.
+    </p>
+<p>    The advantage of prepared queries is that is it possible to use one prepared plan for more
+    than one query execution. After the plan is not needed anymore, it may be freed with 
+    <code class="literal">spi_freeplan</code>:
+    </p>
+<p>    </p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION init() RETURNS INTEGER AS $$
+        $_SHARED{my_plan} = spi_prepare( 'SELECT (now() + $1)::date AS now', 'INTERVAL');
+$$ LANGUAGE plperl;
+
+CREATE OR REPLACE FUNCTION add_time( INTERVAL ) RETURNS TEXT AS $$
+        return spi_exec_prepared( 
+                $_SHARED{my_plan},
+                $_[0],
+        )-&gt;{rows}-&gt;[0]-&gt;{now};
+$$ LANGUAGE plperl;
+
+CREATE OR REPLACE FUNCTION done() RETURNS INTEGER AS $$
+        spi_freeplan( $_SHARED{my_plan});
+        undef $_SHARED{my_plan};
+$$ LANGUAGE plperl;
+
+SELECT init();
+SELECT add_time('1 day'), add_time('2 days'), add_time('3 days');
+SELECT done();
+
+  add_time  |  add_time  |  add_time  
+------------+------------+------------
+ 2005-12-10 | 2005-12-11 | 2005-12-12
+    </pre>
+<p>
+    </p>
+<p>    Note that the parameter subscript in <code class="literal">spi_prepare</code> is defined via
+    $1, $2, $3, etc, so avoid declaring query strings in double quotes that might easily
+    lead to hard-to-catch bugs.
+    </p>
+<p>     Normally, <code class="function">spi_fetchrow</code> should be repeated until it
+     returns <code class="literal">undef</code>, indicating that there are no more
+     rows to read.  The cursor is automatically freed when
+     <code class="function">spi_fetchrow</code> returns <code class="literal">undef</code>.
+     If you do not wish to read all the rows, instead call
+     <code class="function">spi_cursor_close</code> to free the cursor.
+     Failure to do so will result in memory leaks.
     </p>
 </dd>
 <dt><span class="term"><code class="literal"><code class="function">elog</code>(<em class="replaceable"><code>level</code></em>, <em class="replaceable"><code>msg</code></em>)</code></span></dt>

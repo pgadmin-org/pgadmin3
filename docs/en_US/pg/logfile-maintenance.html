@@ -4,16 +4,17 @@
 <title>22.3. Log File Maintenance</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
 <link rel="prev" href="routine-reindex.html" title="22.2. Routine Reindexing">
 <link rel="next" href="backup.html" title="Chapter 23. Backup and Restore">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="logfile-maintenance"></a>22.3. Log File Maintenance</h2></div></div></div>
-<a name="id615132"></a><p>   It is a good idea to save the database server's log output
+<a name="id2647935"></a><p>   It is a good idea to save the database server's log output
    somewhere, rather than just routing it to <code class="filename">/dev/null</code>.
    The log output is invaluable when it comes time to diagnose
    problems.  However, the log output tends to be voluminous
@@ -22,15 +23,15 @@
    new log files are started and old ones removed after a reasonable
    period of time.
   </p>
-<p>   If you simply direct the <span class="systemitem">stderr</span> of the
-   <code class="command">postmaster</code> into a
+<p>   If you simply direct the <span class="systemitem">stderr</span> of
+   <code class="command">postgres</code> into a
    file, you will have log output, but
    the only way to truncate the log file is to stop and restart
-   the <code class="command">postmaster</code>. This may be OK if you are using
+   the server. This may be OK if you are using
    <span class="productname">PostgreSQL</span> in a development environment,
    but few production servers would find this behavior acceptable.
   </p>
-<p>   A better approach is to send the <code class="command">postmaster</code>'s
+<p>   A better approach is to send the server's
    <span class="systemitem">stderr</span> output to some type of log rotation program.
    There is a built-in log rotation program, which you can use by
    setting the configuration parameter <code class="literal">redirect_stderr</code> to
@@ -42,7 +43,7 @@
    server software. For example, the <span class="application">rotatelogs</span>
    tool included in the <span class="productname">Apache</span> distribution
    can be used with <span class="productname">PostgreSQL</span>.  To do this,
-   just pipe the <code class="command">postmaster</code>'s
+   just pipe the server's
    <span class="systemitem">stderr</span> output to the desired program.
    If you start the server with
    <code class="command">pg_ctl</code>, then <span class="systemitem">stderr</span>

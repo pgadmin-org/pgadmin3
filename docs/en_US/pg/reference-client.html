@@ -4,11 +4,12 @@
 <title>PostgreSQL Client Applications</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="reference.html" title="Part VI. Reference">
-<link rel="prev" href="sql-vacuum.html" title="VACUUM">
+<link rel="prev" href="sql-values.html" title="VALUES">
 <link rel="next" href="app-clusterdb.html" title="clusterdb">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="reference" lang="en" id="reference-client">
 <div class="titlepage">
@@ -16,7 +17,7 @@
 <a name="reference-client"></a>PostgreSQL Client Applications</h1></div></div>
 <hr>
 </div>
-<div class="partintro" lang="en" id="id737695">
+<div class="partintro" lang="en" id="id2775514">
 <div></div>
 <p>    This part contains reference information for
     <span class="productname">PostgreSQL</span> client applications and
@@ -29,52 +30,52 @@
 <p><b>Table of Contents</b></p>
 <dl>
 <dt>
-<span class="refentrytitle"><a href="app-clusterdb.html"><span class="application">clusterdb</span></a></span><span class="refpurpose"> - cluster a PostgreSQL database</span>
+<span class="refentrytitle"><a href="app-clusterdb.html"><span class="application">clusterdb</span></a></span><span class="refpurpose"> &#8212; cluster a <span class="productname">PostgreSQL</span> database</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-createdb.html"><span class="application">createdb</span></a></span><span class="refpurpose"> - create a new PostgreSQL database</span>
+<span class="refentrytitle"><a href="app-createdb.html"><span class="application">createdb</span></a></span><span class="refpurpose"> &#8212; create a new <span class="productname">PostgreSQL</span> database</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-createlang.html"><span class="application">createlang</span></a></span><span class="refpurpose"> - define a new PostgreSQL procedural language</span>
+<span class="refentrytitle"><a href="app-createlang.html"><span class="application">createlang</span></a></span><span class="refpurpose"> &#8212; define a new <span class="productname">PostgreSQL</span> procedural language</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-createuser.html"><span class="application">createuser</span></a></span><span class="refpurpose"> - define a new PostgreSQL user account</span>
+<span class="refentrytitle"><a href="app-createuser.html"><span class="application">createuser</span></a></span><span class="refpurpose"> &#8212; define a new <span class="productname">PostgreSQL</span> user account</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-dropdb.html"><span class="application">dropdb</span></a></span><span class="refpurpose"> - remove a PostgreSQL database</span>
+<span class="refentrytitle"><a href="app-dropdb.html"><span class="application">dropdb</span></a></span><span class="refpurpose"> &#8212; remove a <span class="productname">PostgreSQL</span> database</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-droplang.html"><span class="application">droplang</span></a></span><span class="refpurpose"> - remove a PostgreSQL procedural language</span>
+<span class="refentrytitle"><a href="app-droplang.html"><span class="application">droplang</span></a></span><span class="refpurpose"> &#8212; remove a <span class="productname">PostgreSQL</span> procedural language</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-dropuser.html"><span class="application">dropuser</span></a></span><span class="refpurpose"> - remove a PostgreSQL user account</span>
+<span class="refentrytitle"><a href="app-dropuser.html"><span class="application">dropuser</span></a></span><span class="refpurpose"> &#8212; remove a <span class="productname">PostgreSQL</span> user account</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-ecpg.html"><span class="application">ecpg</span></a></span><span class="refpurpose"> - embedded SQL C preprocessor</span>
+<span class="refentrytitle"><a href="app-ecpg.html"><span class="application">ecpg</span></a></span><span class="refpurpose"> &#8212; embedded SQL C preprocessor</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-pgconfig.html">pg_config</a></span><span class="refpurpose"> - retrieve information about the installed version of PostgreSQL</span>
+<span class="refentrytitle"><a href="app-pgconfig.html">pg_config</a></span><span class="refpurpose"> &#8212; retrieve information about the installed version of <span class="productname">PostgreSQL</span></span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-pgdump.html">pg_dump</a></span><span class="refpurpose"> -    extract a PostgreSQL database into a script file or other archive file 
+<span class="refentrytitle"><a href="app-pgdump.html">pg_dump</a></span><span class="refpurpose"> &#8212;    extract a <span class="productname">PostgreSQL</span> database into a script file or other archive file 
   </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-pg-dumpall.html"><span class="application">pg_dumpall</span></a></span><span class="refpurpose"> - extract a PostgreSQL database cluster into a script file</span>
+<span class="refentrytitle"><a href="app-pg-dumpall.html"><span class="application">pg_dumpall</span></a></span><span class="refpurpose"> &#8212; extract a <span class="productname">PostgreSQL</span> database cluster into a script file</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-pgrestore.html">pg_restore</a></span><span class="refpurpose"> -    restore a PostgreSQL database from an archive file created by pg_dump
+<span class="refentrytitle"><a href="app-pgrestore.html">pg_restore</a></span><span class="refpurpose"> &#8212;    restore a <span class="productname">PostgreSQL</span> database from an archive file created by pg_dump
   </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-psql.html"><span class="application">psql</span></a></span><span class="refpurpose"> -       PostgreSQL interactive terminal
+<span class="refentrytitle"><a href="app-psql.html"><span class="application">psql</span></a></span><span class="refpurpose"> &#8212;       <span class="productname">PostgreSQL</span> interactive terminal
     </span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-reindexdb.html"><span class="application">reindexdb</span></a></span><span class="refpurpose"> - reindex a PostgreSQL database</span>
+<span class="refentrytitle"><a href="app-reindexdb.html"><span class="application">reindexdb</span></a></span><span class="refpurpose"> &#8212; reindex a <span class="productname">PostgreSQL</span> database</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="app-vacuumdb.html"><span class="application">vacuumdb</span></a></span><span class="refpurpose"> - garbage-collect and analyze a PostgreSQL database</span>
+<span class="refentrytitle"><a href="app-vacuumdb.html"><span class="application">vacuumdb</span></a></span><span class="refpurpose"> &#8212; garbage-collect and analyze a <span class="productname">PostgreSQL</span> database</span>
 </dt>
 </dl>
 </div>

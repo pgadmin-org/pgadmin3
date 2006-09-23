@@ -4,11 +4,12 @@
 <title>36.6. Basic Statements</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-expressions.html" title="36.5. Expressions">
 <link rel="next" href="plpgsql-control-structures.html" title="36.7. Control Structures">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -17,19 +18,15 @@
     types that are explicitly understood by
     <span class="application">PL/pgSQL</span>.
     Anything not recognized as one of these statement types is presumed
-    to be an SQL command and is sent to the main database engine to execute
-    (after substitution of any <span class="application">PL/pgSQL</span> variables
-    used in the statement).  Thus,
-    for example, the SQL commands <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and
-    <code class="command">DELETE</code> may be considered to be statements of
-    <span class="application">PL/pgSQL</span>, but they are not specifically
-    listed here.
+    to be an SQL command and is sent to the main database engine to execute,
+    as described in <a href="plpgsql-statements.html#plpgsql-statements-sql-noresult" title="36.6.2. Executing a Query With No Result">Section 36.6.2, &#8220;Executing a Query With No Result&#8221;</a>
+    and <a href="plpgsql-statements.html#plpgsql-statements-sql-onerow" title="36.6.3. Executing a Query with a Single-Row Result">Section 36.6.3, &#8220;Executing a Query with a Single-Row Result&#8221;</a>.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="plpgsql-statements-assignment"></a>36.6.1. Assignment</h3></div></div></div>
-<p>     An assignment of a value to a variable or row/record field is
-     written as:
+<p>     An assignment of a value to a <span class="application">PL/pgSQL</span>
+     variable or row/record field is written as:
 </p>
 <pre class="synopsis"><em class="replaceable"><code>identifier</code></em> := <em class="replaceable"><code>expression</code></em>;</pre>
 <p>
@@ -55,87 +52,57 @@ tax := subtotal * 0.06;</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-select-into"></a>36.6.2. <code class="command">SELECT INTO</code></h3></div></div></div>
-<a name="id669729"></a><p>     The result of a <code class="command">SELECT</code> command yielding multiple columns (but
-     only one row) can be assigned to a record variable, row-type
-     variable, or list of scalar variables.  This is done by:
-
-</p>
-<pre class="synopsis">SELECT INTO <em class="replaceable"><code>target</code></em> <em class="replaceable"><code>select_expressions</code></em> FROM ...;</pre>
-<p>
-
-     where <em class="replaceable"><code>target</code></em> can be a record variable, a row
-     variable, or a comma-separated list of simple variables and
-     record/row fields.  The <em class="replaceable"><code>select_expressions</code></em>
-     and the remainder of the command are the same as in regular SQL.
+<a name="plpgsql-statements-sql-noresult"></a>36.6.2. Executing a Query With No Result</h3></div></div></div>
+<p>     For any SQL query that does not return rows, for example
+     <code class="command">INSERT</code> without a <code class="literal">RETURNING</code> clause, you can
+     execute the query within a <span class="application">PL/pgSQL</span> function
+     just by writing the query.
     </p>
-<p>     Note that this is quite different from
-     <span class="productname">PostgreSQL</span>'s normal interpretation of
-     <code class="command">SELECT INTO</code>, where the <code class="literal">INTO</code> target
-     is a newly created table.  If you want to create a table from a
-     <code class="command">SELECT</code> result inside a
-     <span class="application">PL/pgSQL</span> function, use the syntax
-     <code class="command">CREATE TABLE ... AS SELECT</code>.
+<p>     Any <span class="application">PL/pgSQL</span> variable name appearing
+     in the query text is replaced by a parameter symbol, and then the
+     current value of the variable is provided as the parameter value
+     at runtime.  This allows the same textual query to do different
+     things in different calls of the function.
     </p>
-<p>     If a row or a variable list is used as target, the selected values
-     must exactly match the structure of the target, or a run-time error
-     occurs.  When a record variable is the target, it automatically
-     configures itself to the row type of the query result columns.
-    </p>
-<p>     Except for the <code class="literal">INTO</code> clause, the <code class="command">SELECT</code>
-     statement is the same as a normal SQL <code class="command">SELECT</code> command
-     and can use its full power.
-    </p>
-<p>     The <code class="literal">INTO</code> clause can appear almost anywhere in the
-     <code class="command">SELECT</code> statement.  Customarily it is written
-     either just after <code class="literal">SELECT</code> as shown above, or
-     just before <code class="literal">FROM</code> [mdash ] that is, either just before
-     or just after the list of <em class="replaceable"><code>select_expressions</code></em>.
-    </p>
-<p>     If the query returns zero rows, null values are assigned to the
-     target(s).  If the query returns multiple rows, the first
-     row is assigned to the target(s) and the rest are discarded.
-     (Note that &#8220;<span class="quote">the first row</span>&#8221; is not well-defined unless you've
-     used <code class="literal">ORDER BY</code>.)
-    </p>
-<p>     You can check the special <code class="literal">FOUND</code> variable (see
-     <a href="plpgsql-statements.html#plpgsql-statements-diagnostics" title="36.6.6. Obtaining the Result Status">Section 36.6.6, &#8220;Obtaining the Result Status&#8221;</a>) after a
-     <code class="command">SELECT INTO</code> statement to determine whether the
-     assignment was successful, that is, at least one row was was returned by
-     the query. For example:
-
-</p>
-<pre class="programlisting">SELECT INTO myrec * FROM emp WHERE empname = myname;
-IF NOT FOUND THEN
-    RAISE EXCEPTION 'employee % not found', myname;
-END IF;</pre>
-<p>
-    </p>
-<p>     To test for whether a record/row result is null, you can use the
-     <code class="literal">IS NULL</code> conditional.  There is, however, no
-     way to tell whether any additional rows might have been
-     discarded.  Here is an example that handles the case where no
-     rows have been returned:
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      This two-step process allows
+      <span class="application">PL/pgSQL</span> to plan the query just once
+      and re-use the plan on subsequent executions.  As an example,
+      if you write
 </p>
 <pre class="programlisting">DECLARE
-    users_rec RECORD;
+    key TEXT;
+    delta INTEGER;
 BEGIN
-    SELECT INTO users_rec * FROM users WHERE user_id=3;
-
-    IF users_rec.homepage IS NULL THEN
-        -- user entered no homepage, return "http://"
-        RETURN 'http://';
-    END IF;
-END;</pre>
+    ...
+    UPDATE mytab SET val = val + delta WHERE id = key;</pre>
 <p>
-    </p>
+      the query text seen by the main SQL engine will look like
+</p>
+<pre class="programlisting">    UPDATE mytab SET val = val + $1 WHERE id = $2;</pre>
+<p>
+      Although you don't normally have to think about this, it's helpful
+      to know it when you need to make sense of syntax-error messages.
+     </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-perform"></a>36.6.3. Executing an Expression or Query With No Result</h3></div></div></div>
-<p>     Sometimes one wishes to evaluate an expression or query but
-     discard the result (typically because one is calling a function
-     that has useful side-effects but no useful result value).  To do
+<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Caution</h3>
+<p>      <span class="application">PL/pgSQL</span> will substitute for any identifier
+      matching one of the function's declared variables; it is not bright
+      enough to know whether that's what you meant!  Thus, it is a bad idea
+      to use a variable name that is the same as any table or column name
+      that you need to reference in queries within the function.  Sometimes
+      you can work around this by using qualified names in the query:
+      <span class="application">PL/pgSQL</span> will not substitute in a
+      qualified name <em class="replaceable"><code>foo</code></em>.<em class="replaceable"><code>bar</code></em>, even if
+      <em class="replaceable"><code>foo</code></em> or <em class="replaceable"><code>bar</code></em> is a declared variable
+      name.
+     </p>
+</div>
+<p>     Sometimes it is useful to evaluate an expression or <code class="command">SELECT</code>
+     query but discard the result, for example when calling a function
+     that has side-effects but no useful result value.  To do
      this in <span class="application">PL/pgSQL</span>, use the
      <code class="command">PERFORM</code> statement:
 
@@ -145,25 +112,133 @@ END;</pre>
 
      This executes <em class="replaceable"><code>query</code></em> and discards the
      result.  Write the <em class="replaceable"><code>query</code></em> the same
-     way as you would in an SQL <code class="command">SELECT</code> command, but replace the
+     way you would write an SQL <code class="command">SELECT</code> command, but replace the
      initial keyword <code class="command">SELECT</code> with <code class="command">PERFORM</code>.
      <span class="application">PL/pgSQL</span> variables will be
      substituted into the query as usual.  Also, the special variable
      <code class="literal">FOUND</code> is set to true if the query produced at
-     least one row or false if it produced no rows.
+     least one row, or false if it produced no rows.
     </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>      One might expect that <code class="command">SELECT</code> with no
-      <code class="literal">INTO</code> clause would accomplish this result, but at
+<p>      One might expect that writing <code class="command">SELECT</code> directly
+      would accomplish this result, but at
       present the only accepted way to do it is
-      <code class="command">PERFORM</code>.
+      <code class="command">PERFORM</code>.  A SQL command that can return rows,
+      such as <code class="command">SELECT</code>, will be rejected as an error
+      unless it has an <code class="literal">INTO</code> clause as discussed in the
+      next section.
      </p>
 </div>
 <p>     An example:
 </p>
 <pre class="programlisting">PERFORM create_mv('cs_session_page_requests_mv', my_query);</pre>
 <p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="plpgsql-statements-sql-onerow"></a>36.6.3. Executing a Query with a Single-Row Result</h3></div></div></div>
+<a name="id2708534"></a><a name="id2708546"></a><p>     The result of a SQL command yielding a single row (possibly of multiple
+     columns) can be assigned to a record variable, row-type variable, or list
+     of scalar variables.  This is done by writing the base SQL command and
+     adding an <code class="literal">INTO</code> clause.  For example,
+
+</p>
+<pre class="synopsis">SELECT <em class="replaceable"><code>select_expressions</code></em> INTO [<span class="optional">STRICT</span>] <em class="replaceable"><code>target</code></em> FROM ...;
+INSERT ... RETURNING <em class="replaceable"><code>expressions</code></em> INTO [<span class="optional">STRICT</span>] <em class="replaceable"><code>target</code></em>;
+UPDATE ... RETURNING <em class="replaceable"><code>expressions</code></em> INTO [<span class="optional">STRICT</span>] <em class="replaceable"><code>target</code></em>;
+DELETE ... RETURNING <em class="replaceable"><code>expressions</code></em> INTO [<span class="optional">STRICT</span>] <em class="replaceable"><code>target</code></em>;</pre>
+<p>
+
+     where <em class="replaceable"><code>target</code></em> can be a record variable, a row
+     variable, or a comma-separated list of simple variables and
+     record/row fields.
+     <span class="application">PL/pgSQL</span> variables will be
+     substituted into the rest of the query as usual.
+     This works for <code class="command">SELECT</code>,
+     <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code> with
+     <code class="literal">RETURNING</code>, and utility commands that return rowset
+     results (such as <code class="command">EXPLAIN</code>).
+     Except for the <code class="literal">INTO</code> clause, the SQL command is the same
+     as it would be written outside <span class="application">PL/pgSQL</span>.
+    </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>     Note that this interpretation of <code class="command">SELECT</code> with <code class="literal">INTO</code>
+     is quite different from <span class="productname">PostgreSQL</span>'s regular
+     <code class="command">SELECT INTO</code> command, wherein the <code class="literal">INTO</code>
+     target is a newly created table.  If you want to create a table from a
+     <code class="command">SELECT</code> result inside a
+     <span class="application">PL/pgSQL</span> function, use the syntax
+     <code class="command">CREATE TABLE ... AS SELECT</code>.
+    </p>
+</div>
+<p>     If a row or a variable list is used as target, the query's result columns
+     must exactly match the structure of the target as to number and data
+     types, or a run-time error
+     occurs.  When a record variable is the target, it automatically
+     configures itself to the row type of the query result columns.
+    </p>
+<p>     The <code class="literal">INTO</code> clause can appear almost anywhere in the SQL
+     command.  Customarily it is written either just before or just after
+     the list of <em class="replaceable"><code>select_expressions</code></em> in a
+     <code class="command">SELECT</code> command, or at the end of the command for other
+     command types.  It is recommended that you follow this convention
+     in case the <span class="application">PL/pgSQL</span> parser becomes
+     stricter in future versions.
+    </p>
+<p>     If <code class="literal">STRICT</code> is not specified, then
+     <em class="replaceable"><code>target</code></em> will be set to the first row
+     returned by the query, or to nulls if the query returned no rows.
+     (Note that &#8220;<span class="quote">the first row</span>&#8221; is not
+     well-defined unless you've used <code class="literal">ORDER BY</code>.)  Any result rows
+     after the first row are discarded.
+     You can check the special <code class="literal">FOUND</code> variable (see
+     <a href="plpgsql-statements.html#plpgsql-statements-diagnostics" title="36.6.6. Obtaining the Result Status">Section 36.6.6, &#8220;Obtaining the Result Status&#8221;</a>) to
+     determine whether a row was returned:
+
+</p>
+<pre class="programlisting">SELECT * INTO myrec FROM emp WHERE empname = myname;
+IF NOT FOUND THEN
+    RAISE EXCEPTION 'employee % not found', myname;
+END IF;</pre>
+<p>
+
+     If the <code class="literal">STRICT</code> option is specified, the query must
+     return exactly one row or a run-time error will be reported, either
+     <code class="literal">NO_DATA_FOUND</code> (no rows) or <code class="literal">TOO_MANY_ROWS</code>
+     (more than one row). You can use an exception block if you wish
+     to catch the error, for example:
+
+</p>
+<pre class="programlisting">BEGIN;
+    SELECT * INTO STRICT myrec FROM emp WHERE empname = myname;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE EXCEPTION 'employee % not found', myname;
+        WHEN TOO_MANY_ROWS THEN
+            RAISE EXCEPTION 'employee % not unique', myname;
+END;</pre>
+<p>
+     Successful execution of a command with <code class="literal">STRICT</code>
+     always sets <code class="literal">FOUND</code> to true.
+    </p>
+<p>     For <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code> with
+     <code class="literal">RETURNING</code>, <span class="application">PL/pgSQL</span> reports
+     an error for more than one returned row, even when
+     <code class="literal">STRICT</code> is not specified.  This is because there
+     is no option such as <code class="literal">ORDER BY</code> with which to determine
+     which affected row would be returned.
+    </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      The <code class="literal">STRICT</code> option matches the behavior of
+      Oracle PL/SQL's <code class="command">SELECT INTO</code> and related statements.
+     </p>
+</div>
+<p>     To handle cases where you need to process multiple result rows
+     from a SQL query, see <a href="plpgsql-control-structures.html#plpgsql-records-iterating" title="36.7.4. Looping Through Query Results">Section 36.7.4, &#8220;Looping Through Query Results&#8221;</a>.
     </p>
 </div>
 <div class="sect2" lang="en">
@@ -218,7 +293,7 @@ END;</pre>
      <code class="command">EXECUTE</code> statement is provided:
 
 </p>
-<pre class="synopsis">EXECUTE <em class="replaceable"><code>command-string</code></em> [ INTO <em class="replaceable"><code>target</code></em> ];</pre>
+<pre class="synopsis">EXECUTE <em class="replaceable"><code>command-string</code></em> [<span class="optional"> INTO [<span class="optional">STRICT</span>] <em class="replaceable"><code>target</code></em> </span>];</pre>
 <p>
 
      where <em class="replaceable"><code>command-string</code></em> is an expression
@@ -228,8 +303,8 @@ END;</pre>
      simple variables and record/row fields.
     </p>
 <p>     Note in particular that no substitution of <span class="application">PL/pgSQL</span>
-     variables is done on the command string.  The values of variables must
-     be inserted in the command string as it is constructed.
+     variables is done on the computed command string.  The values of
+     variables must be inserted in the command string as it is constructed.
     </p>
 <p>     Unlike all other commands in <span class="application">PL/pgSQL</span>, a command
      run by an <code class="command">EXECUTE</code> statement is not prepared
@@ -239,16 +314,18 @@ END;</pre>
      actions on different tables and columns.
     </p>
 <p>     The <code class="literal">INTO</code> clause specifies where the results of
-     a <code class="command">SELECT</code> command should be assigned. If a row
+     a SQL command returning rows should be assigned. If a row
      or variable list is provided, it must exactly match the structure
-     of the results produced by the <code class="command">SELECT</code> (when a
+     of the query's results (when a
      record variable is used, it will configure itself to match the
-     result's structure automatically). If multiple rows are returned,
+     result structure automatically). If multiple rows are returned,
      only the first will be assigned to the <code class="literal">INTO</code>
      variable. If no rows are returned, NULL is assigned to the
      <code class="literal">INTO</code> variable. If no <code class="literal">INTO</code>
-     clause is specified, the results of a <code class="command">SELECT</code>
-     command are discarded.
+     clause is specified, the query results are discarded.
+    </p>
+<p>     If the <code class="literal">STRICT</code> option is given, an error is reported
+     unless the query produces exactly one row.
     </p>
 <p>     <code class="command">SELECT INTO</code> is not currently supported within
      <code class="command">EXECUTE</code>.
@@ -274,7 +351,7 @@ END;</pre>
         || quote_literal(keyvalue);</pre>
 <p>
     </p>
-<a name="id670384"></a><a name="id670393"></a><p>     This example demonstrates the use of the
+<a name="id2709208"></a><a name="id2709216"></a><p>     This example demonstrates the use of the
      <code class="function">quote_ident</code> and
      <code class="function">quote_literal</code> functions.  For safety,
      expressions containing column and table identifiers should be
@@ -322,10 +399,10 @@ END;</pre>
      value to be assigned to the specified variable (which should be
      of the right data type to receive it).  The currently available
      status items are <code class="varname">ROW_COUNT</code>, the number of rows
-     processed by the last <span class="acronym">SQL</span> command sent down to
-     the <span class="acronym">SQL</span> engine, and <code class="varname">RESULT_OID</code>,
+     processed by the last <acronym class="acronym">SQL</acronym> command sent down to
+     the <acronym class="acronym">SQL</acronym> engine, and <code class="varname">RESULT_OID</code>,
      the OID of the last row inserted by the most recent
-     <span class="acronym">SQL</span> command.  Note that <code class="varname">RESULT_OID</code>
+     <acronym class="acronym">SQL</acronym> command.  Note that <code class="varname">RESULT_OID</code>
      is only useful after an <code class="command">INSERT</code> command into a
      table containing OIDs.
     </p>
@@ -341,8 +418,8 @@ END;</pre>
      It is set by each of the following types of statements:
          </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>                A <code class="command">SELECT INTO</code> statement sets
-                <code class="literal">FOUND</code> true if it returns a row, false if no
+<li><p>                A <code class="command">SELECT INTO</code> statement sets 
+                <code class="literal">FOUND</code> true if a row is assigned, false if no
                 row is returned.
            </p></li>
 <li><p>                A <code class="command">PERFORM</code> statement sets <code class="literal">FOUND</code>

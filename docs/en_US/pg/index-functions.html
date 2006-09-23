@@ -4,11 +4,12 @@
 <title>48.2. Index Access Method Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="prev" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="next" href="index-scanning.html" title="48.3. Index Scanning">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -16,7 +17,7 @@
 <p>   The index construction and maintenance functions that an index access
    method must provide are:
   </p>
-<pre class="programlisting">void
+<pre class="programlisting">IndexBuildResult *
 ambuild (Relation heapRelation,
          Relation indexRelation,
          IndexInfo *indexInfo);</pre>
@@ -27,6 +28,8 @@ ambuild (Relation heapRelation,
    in the table.  Ordinarily the <code class="function">ambuild</code> function will call
    <code class="function">IndexBuildHeapScan()</code> to scan the table for existing tuples
    and compute the keys that need to be inserted into the index.
+   The function must return a palloc'd struct containing statistics about
+   the new index.
   </p>
 <pre class="programlisting">bool
 aminsert (Relation indexRelation,
@@ -50,35 +53,82 @@ aminsert (Relation indexRelation,
    as an index AM refusing to index a NULL.)
   </p>
 <pre class="programlisting">IndexBulkDeleteResult *
-ambulkdelete (Relation indexRelation,
+ambulkdelete (IndexVacuumInfo *info,
+              IndexBulkDeleteResult *stats,
               IndexBulkDeleteCallback callback,
               void *callback_state);</pre>
 <p>
    Delete tuple(s) from the index.  This is a &#8220;<span class="quote">bulk delete</span>&#8221; operation
    that is intended to be implemented by scanning the whole index and checking
    each entry to see if it should be deleted.
-   The passed-in <code class="literal">callback</code> function may be called, in the style
+   The passed-in <code class="literal">callback</code> function must be called, in the style
    <code class="literal">callback(<em class="replaceable"><code>TID</code></em>, callback_state) returns bool</code>,
    to determine whether any particular index entry, as identified by its
    referenced TID, is to be deleted.  Must return either NULL or a palloc'd
    struct containing statistics about the effects of the deletion operation.
+   It is OK to return NULL if no information needs to be passed on to
+   <code class="function">amvacuumcleanup</code>.
+  </p>
+<p>   Because of limited <code class="varname">maintenance_work_mem</code>,
+   <code class="function">ambulkdelete</code> may need to be called more than once when many
+   tuples are to be deleted.  The <code class="literal">stats</code> argument is the result
+   of the previous call for this index (it is NULL for the first call within a
+   <code class="command">VACUUM</code> operation).  This allows the AM to accumulate statistics
+   across the whole operation.  Typically, <code class="function">ambulkdelete</code> will
+   modify and return the same struct if the passed <code class="literal">stats</code> is not
+   null.
   </p>
 <pre class="programlisting">IndexBulkDeleteResult *
-amvacuumcleanup (Relation indexRelation,
-                 IndexVacuumCleanupInfo *info,
+amvacuumcleanup (IndexVacuumInfo *info,
                  IndexBulkDeleteResult *stats);</pre>
 <p>
-   Clean up after a <code class="command">VACUUM</code> operation (one or more
-   <code class="function">ambulkdelete</code> calls).  An index access method does not have
-   to provide this function (if so, the entry in <code class="structname">pg_am</code> must
-   be zero).  If it is provided, it is typically used for bulk cleanup
-   such as reclaiming empty index pages.  <code class="literal">info</code>
-   provides some additional arguments such as a message level for statistical
-   reports, and <code class="literal">stats</code> is whatever the last
-   <code class="function">ambulkdelete</code> call returned.  <code class="function">amvacuumcleanup</code>
-   may replace or modify this struct before returning it.  If the result
-   is not NULL it must be a palloc'd struct.  The statistics it contains
-   will be reported by <code class="command">VACUUM</code> if <code class="literal">VERBOSE</code> is given.
+   Clean up after a <code class="command">VACUUM</code> operation (zero or more
+   <code class="function">ambulkdelete</code> calls).  This does not have to do anything
+   beyond returning index statistics, but it may perform bulk cleanup
+   such as reclaiming empty index pages.  <code class="literal">stats</code> is whatever the
+   last <code class="function">ambulkdelete</code> call returned, or NULL if
+   <code class="function">ambulkdelete</code> was not called because no tuples needed to be
+   deleted.  If the result is not NULL it must be a palloc'd struct.
+   The statistics it contains will be used to update <code class="structname">pg_class</code>,
+   and will be reported by <code class="command">VACUUM</code> if <code class="literal">VERBOSE</code> is given.
+   It is OK to return NULL if the index was not changed at all during the
+   <code class="command">VACUUM</code> operation, but otherwise correct stats should
+   be returned.
+  </p>
+<pre class="programlisting">void
+amcostestimate (PlannerInfo *root,
+                IndexOptInfo *index,
+                List *indexQuals,
+                RelOptInfo *outer_rel,
+                Cost *indexStartupCost,
+                Cost *indexTotalCost,
+                Selectivity *indexSelectivity,
+                double *indexCorrelation);</pre>
+<p>
+   Estimate the costs of an index scan.  This function is described fully
+   in <a href="index-cost-estimation.html" title="48.6. Index Cost Estimation Functions">Section 48.6, &#8220;Index Cost Estimation Functions&#8221;</a>, below.
+  </p>
+<pre class="programlisting">bytea *
+amoptions (ArrayType *reloptions,
+           bool validate);</pre>
+<p>
+   Parse and validate the reloptions array for an index.  This is called only
+   when a non-null reloptions array exists for the index.
+   <em class="parameter"><code>reloptions</code></em> is a <code class="type">text</code> array containing entries of the
+   form <em class="replaceable"><code>name</code></em><code class="literal">=</code><em class="replaceable"><code>value</code></em>.
+   The function should construct a <code class="type">bytea</code> value, which will be copied
+   into the <code class="structfield">rd_options</code> field of the index's relcache entry.
+   The data contents of the <code class="type">bytea</code> value are open for the access
+   method to define, but the standard access methods currently all use struct
+   <code class="structname">StdRdOptions</code>.
+   When <em class="parameter"><code>validate</code></em> is true, the function should report a suitable
+   error message if any of the options are unrecognized or have invalid
+   values; when <em class="parameter"><code>validate</code></em> is false, invalid entries should be
+   silently ignored.  (<em class="parameter"><code>validate</code></em> is false when loading options
+   already stored in <code class="structname">pg_catalog</code>; an invalid entry could only
+   be found if the access method has changed its rules for options, and in
+   that case ignoring obsolete entries is appropriate.)
+   It is OK to return NULL if default behavior is wanted.
   </p>
 <p>   The purpose of an index, of course, is to support scans for tuples matching
    an indexable <code class="literal">WHERE</code> condition, often called a
@@ -162,24 +212,16 @@ amrestrpos (IndexScanDesc scan);</pre>
 <p>
    Restore the scan to the most recently marked position.
   </p>
-<pre class="programlisting">void
-amcostestimate (PlannerInfo *root,
-                IndexOptInfo *index,
-                List *indexQuals,
-                Cost *indexStartupCost,
-                Cost *indexTotalCost,
-                Selectivity *indexSelectivity,
-                double *indexCorrelation);</pre>
-<p>
-   Estimate the costs of an index scan.  This function is described fully
-   in <a href="index-cost-estimation.html" title="48.6. Index Cost Estimation Functions">Section 48.6, &#8220;Index Cost Estimation Functions&#8221;</a>, below.
-  </p>
-<p>   By convention, the <code class="literal">pg_proc</code> entry for any index
+<p>   By convention, the <code class="literal">pg_proc</code> entry for an index
    access method function should show the correct number of arguments,
    but declare them all as type <code class="type">internal</code> (since most of the arguments
    have types that are not known to SQL, and we don't want users calling
    the functions directly anyway).  The return type is declared as
    <code class="type">void</code>, <code class="type">internal</code>, or <code class="type">boolean</code> as appropriate.
+   The only exception is <code class="function">amoptions</code>, which should be correctly
+   declared as taking <code class="type">text[]</code> and <code class="type">bool</code> and returning
+   <code class="type">bytea</code>.  This provision allows client code to execute
+   <code class="function">amoptions</code> to test validity of options settings.
   </p>
 </div></body>
 </html>

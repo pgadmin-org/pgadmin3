@@ -4,11 +4,12 @@
 <title>Chapter 43. Frontend/Backend Protocol</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
-<link rel="prev" href="view-pg-views.html" title="42.46. pg_views">
+<link rel="prev" href="view-pg-views.html" title="42.51. pg_views">
 <link rel="next" href="protocol-flow.html" title="43.2. Message Flow">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="protocol">
 <div class="titlepage"><div><div><h2 class="title">
@@ -24,15 +25,15 @@
 </dl></dd>
 <dt><span class="sect1"><a href="protocol-flow.html">43.2. Message Flow</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="protocol-flow.html#id781779">43.2.1. Start-Up</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id782025">43.2.2. Simple Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id782283">43.2.3. Extended Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id782671">43.2.4. Function Call</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2811052">43.2.1. Start-Up</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2811288">43.2.2. Simple Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#protocol-flow-ext-query">43.2.3. Extended Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2811886">43.2.4. Function Call</a></span></dt>
 <dt><span class="sect2"><a href="protocol-flow.html#protocol-copy">43.2.5. COPY Operations</a></span></dt>
 <dt><span class="sect2"><a href="protocol-flow.html#protocol-async">43.2.6. Asynchronous Operations</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id783106">43.2.7. Cancelling Requests in Progress</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id783170">43.2.8. Termination</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id783230">43.2.9. <span class="acronym">SSL</span> Session Encryption</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2812298">43.2.7. Cancelling Requests in Progress</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2812360">43.2.8. Termination</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2812416">43.2.9. <acronym class="acronym">SSL</acronym> Session Encryption</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="protocol-message-types.html">43.3. Message Data Types</a></span></dt>
 <dt><span class="sect1"><a href="protocol-message-formats.html">43.4. Message Formats</a></span></dt>
@@ -42,7 +43,7 @@
 </div>
 <p>  <span class="productname">PostgreSQL</span> uses a message-based protocol
   for communication between frontends and backends (clients and servers).
-  The protocol is supported over <span class="acronym">TCP/IP</span> and also over
+  The protocol is supported over <acronym class="acronym">TCP/IP</acronym> and also over
   Unix-domain sockets.  Port number 5432 has been registered with IANA as
   the customary TCP port number for servers supporting this protocol, but
   in practice any non-privileged port number may be used.
@@ -138,8 +139,9 @@
     into multiple steps.  The state retained between steps is represented
     by two types of objects: <em class="firstterm">prepared statements</em> and
     <em class="firstterm">portals</em>.  A prepared statement represents the result of
-    parsing, semantic analysis, and planning of a textual query string.  A
-    prepared statement is not necessarily ready to execute, because it may
+    parsing, semantic analysis, and (optionally) planning of a textual query
+    string.
+    A prepared statement is not necessarily ready to execute, because it may
     lack specific values for <em class="firstterm">parameters</em>.  A portal represents
     a ready-to-execute or already-partially-executed statement, with any
     missing parameter values filled in.  (For <code class="command">SELECT</code> statements,

@@ -4,20 +4,21 @@
 <title>9.2. Comparison Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="next" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-comparison"></a>9.2. Comparison Operators</h2></div></div></div>
-<a name="id541664"></a><p>    The usual comparison operators are available, shown in <a href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
+<a name="id2575780"></a><p>    The usual comparison operators are available, shown in <a href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
    </p>
 <div class="table">
 <a name="functions-comparison-table"></a><p class="title"><b>Table 9.1. Comparison Operators</b></p>
-<table summary="Comparison Operators" border="1">
+<div class="table-contents"><table summary="Comparison Operators" border="1">
 <colgroup>
 <col>
 <col>
@@ -52,9 +53,9 @@
 <td>not equal</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     The <code class="literal">!=</code> operator is converted to
      <code class="literal">&lt;&gt;</code> in the parser stage.  It is not
@@ -69,7 +70,7 @@
     no <code class="literal">&lt;</code> operator to compare a Boolean value with
     <code class="literal">3</code>).
    </p>
-<p>    <a name="id541859"></a>
+<p>    <a name="id2575955"></a>
     In addition to the comparison operators, the special
     <code class="token">BETWEEN</code> construct is available.
 </p>
@@ -88,17 +89,17 @@
 <pre class="synopsis"><em class="replaceable"><code>a</code></em> &lt; <em class="replaceable"><code>x</code></em> OR <em class="replaceable"><code>a</code></em> &gt; <em class="replaceable"><code>y</code></em></pre>
 <p>
     There is no difference between the two respective forms apart from
-    the <span class="acronym">CPU</span> cycles required to rewrite the first one
+    the <acronym class="acronym">CPU</acronym> cycles required to rewrite the first one
     into the second one internally.
-    <a name="id541949"></a>
+    <a name="id2576036"></a>
     <code class="token">BETWEEN SYMMETRIC</code> is the same as <code class="literal">BETWEEN</code>
     except there is no requirement that the argument to the left of <code class="literal">AND</code> be less than
     or equal to the argument on the right;  the proper range is automatically determined.
    </p>
-<p>    <a name="id541980"></a>
-    <a name="id541987"></a>
-    <a name="id541995"></a>
-    <a name="id542002"></a>
+<p>    <a name="id2576064"></a>
+    <a name="id2576071"></a>
+    <a name="id2576078"></a>
+    <a name="id2576084"></a>
     To check whether a value is or is not null, use the constructs
 </p>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS NULL
@@ -109,7 +110,7 @@
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> ISNULL
 <em class="replaceable"><code>expression</code></em> NOTNULL</pre>
 <p>
-    <a name="id542040"></a>
+    <a name="id2576118"></a>
    </p>
 <p>    Do <span class="emphasis"><em>not</em></span> write
     <code class="literal"><em class="replaceable"><code>expression</code></em> = NULL</code>
@@ -133,24 +134,30 @@
     releases 6.5 through 7.1.
    </p>
 </div>
-<p>    <a name="id542148"></a>
+<p>    <a name="id2576215"></a>
+    <a name="id2576222"></a>
     The ordinary comparison operators yield null (signifying &#8220;<span class="quote">unknown</span>&#8221;)
     when either input is null.  Another way to do comparisons is with the
-    <code class="literal">IS DISTINCT FROM</code> construct:
+    <code class="literal">IS [<span class="optional"> NOT </span>] DISTINCT FROM</code> construct:
 </p>
-<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS DISTINCT FROM <em class="replaceable"><code>expression</code></em></pre>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS DISTINCT FROM <em class="replaceable"><code>expression</code></em>
+<em class="replaceable"><code>expression</code></em> IS NOT DISTINCT FROM <em class="replaceable"><code>expression</code></em></pre>
 <p>
-    For non-null inputs this is the same as the <code class="literal">&lt;&gt;</code> operator.
-    However, when both inputs are null it will return false, and when just
-    one input is null it will return true.  Thus it effectively acts as though
-    null were a normal data value, rather than &#8220;<span class="quote">unknown</span>&#8221;.
+    For non-null inputs, <code class="literal">IS DISTINCT FROM</code> is
+    the same as the <code class="literal">&lt;&gt;</code> operator.  However, when both
+    inputs are null it will return false, and when just one input is
+    null it will return true.  Similarly, <code class="literal">IS NOT DISTINCT
+    FROM</code> is identical to <code class="literal">=</code> for non-null
+    inputs, but it returns true when both inputs are null, and false when only
+    one input is null. Thus, these constructs effectively act as though null
+    were a normal data value, rather than &#8220;<span class="quote">unknown</span>&#8221;.
    </p>
-<p>    <a name="id542199"></a>
-    <a name="id542207"></a>
-    <a name="id542214"></a>
-    <a name="id542222"></a>
-    <a name="id542230"></a>
-    <a name="id542237"></a>
+<p>    <a name="id2576299"></a>
+    <a name="id2576306"></a>
+    <a name="id2576313"></a>
+    <a name="id2576320"></a>
+    <a name="id2576327"></a>
+    <a name="id2576333"></a>
     Boolean values can also be tested using the constructs
 </p>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS TRUE

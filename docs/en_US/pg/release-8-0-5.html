@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.10. Release 8.0.5</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-6.html" title="E.9. Release 8.0.6">
+<link rel="next" href="release-8-0-4.html" title="E.11. Release 8.0.4">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0-5"></a>E.10. Release 8.0.5</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-12-12</p>
+</div>
+<p>    This release contains a variety of fixes from 8.0.4.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2849158"></a>E.10.1. Migration to version 8.0.5</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.X.  However,
+     if you are upgrading from a version earlier than 8.0.3, see the release
+     notes for 8.0.3.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2849166"></a>E.10.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Fix race condition in transaction log management</p>
+<p>There was a narrow window in which an I/O operation could be initiated
+for the wrong page, leading to an Assert failure or data
+corruption.</p>
+</li>
+<li>
+<p>Fix bgwriter problems after recovering from errors
+(Tom)</p>
+<p>The background writer was found to leak buffer pins after write errors.
+While not fatal in itself, this might lead to mysterious blockages of
+later VACUUM commands.</p>
+</li>
+<li><p>Prevent failure if client sends Bind protocol message
+when current transaction is already aborted</p></li>
+<li><p><code class="filename">/contrib/ltree</code> fixes (Teodor)</p></li>
+<li><p>AIX and HPUX compile fixes (Tom)</p></li>
+<li><p>Retry file reads and writes after Windows
+NO_SYSTEM_RESOURCES error (Qingqing Zhou)</p></li>
+<li><p>Fix intermittent failure when <code class="varname">log_line_prefix</code>
+includes <code class="literal">%i</code></p></li>
+<li><p>Fix <span class="application">psql</span> performance issue with long scripts
+on Windows (Merlin Moncure)</p></li>
+<li><p>Fix missing updates of <code class="filename">pg_group</code> flat
+file</p></li>
+<li>
+<p>Fix longstanding planning error for outer joins</p>
+<p>This bug sometimes caused a bogus error &#8220;<span class="quote">RIGHT JOIN is
+only supported with merge-joinable join conditions</span>&#8221;.</p>
+</li>
+<li>
+<p>Postpone timezone initialization until after
+<code class="filename">postmaster.pid</code> is created</p>
+<p>This avoids confusing startup scripts that expect the pid file to appear
+quickly.</p>
+</li>
+<li><p>Prevent core dump in <span class="application">pg_autovacuum</span> when a
+table has been dropped</p></li>
+<li><p>Fix problems with whole-row references (<code class="literal">foo.*</code>)
+to subquery results</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

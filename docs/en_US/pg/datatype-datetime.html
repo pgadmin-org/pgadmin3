@@ -4,23 +4,24 @@
 <title>8.5. Date/Time Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-binary.html" title="8.4. Binary Data Types">
 <link rel="next" href="datatype-boolean.html" title="8.6. Boolean Type">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="datatype-datetime"></a>8.5. Date/Time Types</h2></div></div></div>
-<a name="id534203"></a><a name="id534215"></a><a name="id534225"></a><a name="id534235"></a><a name="id534246"></a><a name="id534257"></a><a name="id534268"></a><a name="id534279"></a><a name="id534289"></a><p>    <span class="productname">PostgreSQL</span> supports the full set of
-    <span class="acronym">SQL</span> date and time types, shown in <a href="datatype-datetime.html#datatype-datetime-table" title="Table 8.9. Date/Time Types">Table 8.9, &#8220;Date/Time Types&#8221;</a>.  The operations available
+<a name="id2568477"></a><a name="id2568488"></a><a name="id2568497"></a><a name="id2568506"></a><a name="id2568515"></a><a name="id2568525"></a><a name="id2568534"></a><a name="id2568544"></a><a name="id2568553"></a><p>    <span class="productname">PostgreSQL</span> supports the full set of
+    <acronym class="acronym">SQL</acronym> date and time types, shown in <a href="datatype-datetime.html#datatype-datetime-table" title="Table 8.9. Date/Time Types">Table 8.9, &#8220;Date/Time Types&#8221;</a>.  The operations available
     on these data types are described in
     <a href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">Section 9.9, &#8220;Date/Time Functions and Operators&#8221;</a>.
    </p>
 <div class="table">
 <a name="datatype-datetime-table"></a><p class="title"><b>Table 8.9. Date/Time Types</b></p>
-<table summary="Date/Time Types" border="1">
+<div class="table-contents"><table summary="Date/Time Types" border="1">
 <colgroup>
 <col>
 <col>
@@ -67,7 +68,7 @@
 <td>4 bytes</td>
 <td>dates only</td>
 <td>4713 BC</td>
-<td>32767 AD</td>
+<td>5874897 AD</td>
 <td>1 day</td>
 </tr>
 <tr>
@@ -87,9 +88,9 @@
 <td>1 microsecond / 14 digits</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     Prior to <span class="productname">PostgreSQL</span> 7.3, writing just
      <code class="type">timestamp</code> was equivalent to <code class="type">timestamp with
@@ -145,7 +146,7 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="datatype-datetime-input"></a>8.5.1. Date/Time Input</h3></div></div></div>
 <p>     Date and time input is accepted in almost any reasonable format, including
-     ISO 8601, <span class="acronym">SQL</span>-compatible, 
+     ISO 8601, <acronym class="acronym">SQL</acronym>-compatible, 
      traditional <span class="productname">POSTGRES</span>, and others.
      For some formats, ordering of month, day, and year in date input is
      ambiguous and there is support for specifying the expected
@@ -156,7 +157,7 @@
     </p>
 <p>     <span class="productname">PostgreSQL</span> is more flexible in
      handling date/time input than the
-     <span class="acronym">SQL</span> standard requires.
+     <acronym class="acronym">SQL</acronym> standard requires.
      See <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a>
      for the exact parsing rules of date/time input and for the
      recognized text fields including months, days of the week, and
@@ -166,7 +167,7 @@
      in single quotes, like text strings.  Refer to 
      <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a> for more
      information.
-     <span class="acronym">SQL</span> requires the following syntax
+     <acronym class="acronym">SQL</acronym> requires the following syntax
 </p>
 <pre class="synopsis"><em class="replaceable"><code>type</code></em> [ (<em class="replaceable"><code>p</code></em>) ] '<em class="replaceable"><code>value</code></em>'</pre>
 <p>
@@ -180,13 +181,13 @@
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id534792"></a>8.5.1.1. Dates</h4></div></div></div>
-<a name="id534796"></a><p>     <a href="datatype-datetime.html#datatype-datetime-date-table" title="Table 8.10. Date Input">Table 8.10, &#8220;Date Input&#8221;</a> shows some possible
+<a name="id2569003"></a>8.5.1.1. Dates</h4></div></div></div>
+<a name="id2569007"></a><p>     <a href="datatype-datetime.html#datatype-datetime-date-table" title="Table 8.10. Date Input">Table 8.10, &#8220;Date Input&#8221;</a> shows some possible
      inputs for the <code class="type">date</code> type.
     </p>
 <div class="table">
 <a name="datatype-datetime-date-table"></a><p class="title"><b>Table 8.10. Date Input</b></p>
-<table summary="Date Input" border="1">
+<div class="table-contents"><table summary="Date Input" border="1">
 <colgroup>
 <col>
 <col>
@@ -267,13 +268,14 @@
 <td>year 99 before the Common Era</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id535015"></a>8.5.1.2. Times</h4></div></div></div>
-<a name="id535019"></a><a name="id535025"></a><a name="id535031"></a><p>      The time-of-day types are <code class="type">time [
+<a name="id2569202"></a>8.5.1.2. Times</h4></div></div></div>
+<a name="id2569205"></a><a name="id2569211"></a><a name="id2569217"></a><p>      The time-of-day types are <code class="type">time [
       (<em class="replaceable"><code>p</code></em>) ] without time zone</code> and
       <code class="type">time [ (<em class="replaceable"><code>p</code></em>) ] with time
       zone</code>.  Writing just <code class="type">time</code> is equivalent to
@@ -283,11 +285,16 @@
       by an optional time zone. (See <a href="datatype-datetime.html#datatype-datetime-time-table" title="Table 8.11. Time Input">Table 8.11, &#8220;Time Input&#8221;</a> 
       and <a href="datatype-datetime.html#datatype-timezone-table" title="Table 8.12. Time Zone Input">Table 8.12, &#8220;Time Zone Input&#8221;</a>.)  If a time zone is
       specified in the input for <code class="type">time without time zone</code>,
-      it is silently ignored.
+      it is silently ignored. You can also always specify a date but it will
+      be ignored except for when you use a full time zone name like
+      <code class="literal">America/New_York</code>. In this case specifying the date
+      is compulsory in order to tell which time zone offset should be
+      applied. It will be applied whatever time zone offset was valid at that
+      date and time at the specified place.
      </p>
 <div class="table">
 <a name="datatype-datetime-time-table"></a><p class="title"><b>Table 8.11. Time Input</b></p>
-<table summary="Time Input" border="1">
+<div class="table-contents"><table summary="Time Input" border="1">
 <colgroup>
 <col>
 <col>
@@ -341,12 +348,16 @@
 <td><code class="literal">04:05:06 PST</code></td>
 <td>time zone specified by name</td>
 </tr>
+<tr>
+<td><code class="literal">2003-04-12 04:05:06 America/New_York</code></td>
+<td>time zone specified by full name</td>
+</tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<div class="table">
+<br class="table-break"><div class="table">
 <a name="datatype-timezone-table"></a><p class="title"><b>Table 8.12. Time Zone Input</b></p>
-<table summary="Time Zone Input" border="1">
+<div class="table-contents"><table summary="Time Zone Input" border="1">
 <colgroup>
 <col>
 <col>
@@ -359,6 +370,10 @@
 <tr>
 <td><code class="literal">PST</code></td>
 <td>Pacific Standard Time</td>
+</tr>
+<tr>
+<td><code class="literal">America/New_York</code></td>
+<td>Full time zone name</td>
 </tr>
 <tr>
 <td><code class="literal">-8:00</code></td>
@@ -382,16 +397,16 @@
 </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>     Refer to <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for a list of
-     time zone names that are recognized for input.
+<br class="table-break"><p>     Refer to <a href="datatype-datetime.html#datatype-timezones" title="8.5.3. Time Zones">Section 8.5.3, &#8220;Time Zones&#8221;</a> for more information on how
+     to specify time zones.
     </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id535330"></a>8.5.1.3. Time Stamps</h4></div></div></div>
-<a name="id535334"></a><a name="id535341"></a><a name="id535347"></a><p>      Valid input for the time stamp types consists of a concatenation
+<a name="id2569518"></a>8.5.1.3. Time Stamps</h4></div></div></div>
+<a name="id2569522"></a><a name="id2569528"></a><a name="id2569534"></a><p>      Valid input for the time stamp types consists of a concatenation
       of a date and a time, followed by an optional time zone,
       followed by an optional <code class="literal">AD</code> or <code class="literal">BC</code>.
       (Alternatively, <code class="literal">AD</code>/<code class="literal">BC</code> can appear
@@ -406,15 +421,19 @@
 <pre class="programlisting">1999-01-08 04:05:06 -8:00</pre>
 <p>
 
-      are valid values, which follow the <span class="acronym">ISO</span> 8601
-      standard.  In addition, the wide-spread format
+      are valid values, which follow the <acronym class="acronym">ISO</acronym> 8601
+      standard. You can also specify the full time zone name as in
+</p>
+<pre class="programlisting">1999-01-08 04:05:06 America/New_York</pre>
+<p>
 
+      In addition, the wide-spread format
 </p>
 <pre class="programlisting">January 8 04:05:06 1999 PST</pre>
 <p>
       is supported.
      </p>
-<p>      The <span class="acronym">SQL</span> standard differentiates <code class="type">timestamp without time zone</code> 
+<p>      The <acronym class="acronym">SQL</acronym> standard differentiates <code class="type">timestamp without time zone</code> 
       and <code class="type">timestamp with time zone</code> literals by the presence of a 
       &#8220;<span class="quote">+</span>&#8221; or &#8220;<span class="quote">-</span>&#8221;. Hence, according to the standard, 
       </p>
@@ -442,7 +461,7 @@
 <p>      For <code class="type">timestamp with time zone</code>, the internally stored
       value is always in UTC (Universal
       Coordinated Time, traditionally known as Greenwich Mean Time,
-      <span class="acronym">GMT</span>).  An input value that has an explicit
+      <acronym class="acronym">GMT</acronym>).  An input value that has an explicit
       time zone specified is converted to UTC using the appropriate offset
       for that time zone.  If no time zone is stated in the input string,
       then it is assumed to be in the time zone indicated by the system's
@@ -465,8 +484,8 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id535600"></a>8.5.1.4. Intervals</h4></div></div></div>
-<a name="id535604"></a><p>       <code class="type">interval</code> values can be written with the following syntax:
+<a name="id2569768"></a>8.5.1.4. Intervals</h4></div></div></div>
+<a name="id2569772"></a><p>       <code class="type">interval</code> values can be written with the following syntax:
 
 </p>
 <pre class="programlisting">[<span class="optional">@</span>] <em class="replaceable"><code>quantity</code></em> <em class="replaceable"><code>unit</code></em> [<span class="optional"><em class="replaceable"><code>quantity</code></em> <em class="replaceable"><code>unit</code></em>...</span>] [<span class="optional"><em class="replaceable"><code>direction</code></em></span>]</pre>
@@ -487,15 +506,24 @@
       explicit unit markings.  For example, <code class="literal">'1 12:59:10'</code> is read
       the same as <code class="literal">'1 day 12 hours 59 min 10 sec'</code>.
      </p>
-<p>      The optional precision
-      <em class="replaceable"><code>p</code></em> should be between 0 and 6, and
-      defaults to the precision of the input literal.
+<p>      The optional subsecond precision <em class="replaceable"><code>p</code></em> should 
+      be between 0 and 6, and defaults to the precision of the input literal.
+     </p>
+<p>      Internally <code class="type">interval</code> values are stored as months, days,
+      and seconds. This is done because the number of days in a month
+      varies, and a day can have 23 or 25 hours if a daylight savings
+      time adjustment is involved. Because intervals are usually created
+      from constant strings or <code class="type">timestamp</code> subtraction, this
+      storage method works well in most cases. Functions
+      <code class="function">justify_days</code> and <code class="function">justify_hours</code> are
+      available for adjusting days and hours that overflow their normal
+      periods.
      </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id535769"></a>8.5.1.5. Special Values</h4></div></div></div>
-<a name="id535773"></a><a name="id535782"></a><p>      <span class="productname">PostgreSQL</span> supports several
+<a name="id2569950"></a>8.5.1.5. Special Values</h4></div></div></div>
+<a name="id2569954"></a><a name="id2569962"></a><p>      <span class="productname">PostgreSQL</span> supports several
       special date/time input values for convenience, as shown in <a href="datatype-datetime.html#datatype-datetime-special-table" title="Table 8.13. Special Date/Time Inputs">Table 8.13, &#8220;Special Date/Time Inputs&#8221;</a>.  The values
       <code class="literal">infinity</code> and <code class="literal">-infinity</code>
       are specially represented inside the system and will be displayed
@@ -508,7 +536,7 @@
      </p>
 <div class="table">
 <a name="datatype-datetime-special-table"></a><p class="title"><b>Table 8.13. Special Date/Time Inputs</b></p>
-<table summary="Special Date/Time Inputs" border="1">
+<div class="table-contents"><table summary="Special Date/Time Inputs" border="1">
 <colgroup>
 <col>
 <col>
@@ -570,15 +598,15 @@
 <td>00:00:00.00 UTC</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>      The following <span class="acronym">SQL</span>-compatible functions can also
+<br class="table-break"><p>      The following <acronym class="acronym">SQL</acronym>-compatible functions can also
       be used to obtain the current time value for the corresponding data
       type:
       <code class="literal">CURRENT_DATE</code>, <code class="literal">CURRENT_TIME</code>, 
       <code class="literal">CURRENT_TIMESTAMP</code>, <code class="literal">LOCALTIME</code>, 
       <code class="literal">LOCALTIMESTAMP</code>.  The latter four accept an 
-      optional precision specification.  (See <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>.)  Note however that these are
+      optional subsecond precision specification.  (See <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>.)  Note however that these are
       SQL functions and are <span class="emphasis"><em>not</em></span> recognized as data input strings.
      </p>
 </div>
@@ -586,12 +614,12 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="datatype-datetime-output"></a>8.5.2. Date/Time Output</h3></div></div></div>
-<a name="id536068"></a><a name="id536080"></a><p>     The output format of the date/time types can be set to one of the four
+<a name="id2570218"></a><a name="id2570229"></a><p>     The output format of the date/time types can be set to one of the four
      styles ISO 8601,
-     <span class="acronym">SQL</span> (Ingres), traditional POSTGRES, and
+     <acronym class="acronym">SQL</acronym> (Ingres), traditional POSTGRES, and
      German, using the command <code class="literal">SET datestyle</code>.  The default
-     is the <span class="acronym">ISO</span> format.  (The
-     <span class="acronym">SQL</span> standard requires the use of the ISO 8601
+     is the <acronym class="acronym">ISO</acronym> format.  (The
+     <acronym class="acronym">SQL</acronym> standard requires the use of the ISO 8601
      format.  The name of the &#8220;<span class="quote">SQL</span>&#8221; output format is a
      historical accident.)  <a href="datatype-datetime.html#datatype-datetime-output-table" title="Table 8.14. Date/Time Output Styles">Table 8.14, &#8220;Date/Time Output Styles&#8221;</a> shows examples of each
      output style.  The output of the <code class="type">date</code> and
@@ -600,7 +628,7 @@
     </p>
 <div class="table">
 <a name="datatype-datetime-output-table"></a><p class="title"><b>Table 8.14. Date/Time Output Styles</b></p>
-<table summary="Date/Time Output Styles" border="1">
+<div class="table-contents"><table summary="Date/Time Output Styles" border="1">
 <colgroup>
 <col>
 <col>
@@ -633,9 +661,9 @@
 <td>17.12.1997 07:37:16.00 PST</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>     In the <span class="acronym">SQL</span> and POSTGRES styles, day appears before
+<br class="table-break"><p>     In the <acronym class="acronym">SQL</acronym> and POSTGRES styles, day appears before
      month if DMY field ordering has been specified, otherwise month appears
      before day.
      (See <a href="datatype-datetime.html#datatype-datetime-input" title="8.5.1. Date/Time Input">Section 8.5.1, &#8220;Date/Time Input&#8221;</a>
@@ -645,7 +673,7 @@
     </p>
 <div class="table">
 <a name="datatype-datetime-output2-table"></a><p class="title"><b>Table 8.15. Date Order Conventions</b></p>
-<table summary="Date Order Conventions" border="1">
+<div class="table-contents"><table summary="Date Order Conventions" border="1">
 <colgroup>
 <col>
 <col>
@@ -680,9 +708,9 @@
 <td>Wed 17 Dec 07:37:16 1997 PST</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>     <code class="type">interval</code> output looks like the input format, except
+<br class="table-break"><p>     <code class="type">interval</code> output looks like the input format, except
      that units like <code class="literal">century</code> or
      <code class="literal">week</code> are converted to years and days and
      <code class="literal">ago</code> is converted to an appropriate sign.  In
@@ -704,7 +732,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="datatype-timezones"></a>8.5.3. Time Zones</h3></div></div></div>
-<a name="id536448"></a><p>    Time zones, and time-zone conventions, are influenced by
+<a name="id2570560"></a><p>    Time zones, and time-zone conventions, are influenced by
     political decisions, not just earth geometry. Time zones around the
     world became somewhat standardized during the 1900's,
     but continue to be prone to arbitrary changes, particularly with
@@ -716,8 +744,8 @@
     matter what part of the year they fall in.
    </p>
 <p>     <span class="productname">PostgreSQL</span> endeavors to be compatible with
-     the <span class="acronym">SQL</span> standard definitions for typical usage.
-     However, the <span class="acronym">SQL</span> standard has an odd mix of date and
+     the <acronym class="acronym">SQL</acronym> standard definitions for typical usage.
+     However, the <acronym class="acronym">SQL</acronym> standard has an odd mix of date and
      time types and capabilities. Two obvious problems are:
 
      </p>
@@ -731,9 +759,9 @@
         time boundaries.
        </p></li>
 <li><p>        The default time zone is specified as a constant numeric offset 
-        from <span class="acronym">UTC</span>. It is therefore not possible to adapt to
+        from <acronym class="acronym">UTC</acronym>. It is therefore not possible to adapt to
         daylight-saving time when doing date/time arithmetic across
-        <span class="acronym">DST</span> boundaries.
+        <acronym class="acronym">DST</acronym> boundaries.
        </p></li>
 </ul></div>
 <p>
@@ -743,14 +771,75 @@
      recommend <span class="emphasis"><em>not</em></span> using the type <code class="type">time with
      time zone</code> (though it is supported by
      <span class="productname">PostgreSQL</span> for legacy applications and
-     for compliance with the <span class="acronym">SQL</span> standard).
+     for compliance with the <acronym class="acronym">SQL</acronym> standard).
      <span class="productname">PostgreSQL</span> assumes
      your local time zone for any type containing only date or time.
     </p>
 <p>     All timezone-aware dates and times are stored internally in
-     <span class="acronym">UTC</span>.  They are converted to local time
+     <acronym class="acronym">UTC</acronym>.  They are converted to local time
      in the zone specified by the <a href="runtime-config-client.html#guc-timezone">timezone</a> configuration
      parameter before being displayed to the client.
+    </p>
+<p>     <span class="productname">PostgreSQL</span> allows you to specify time zones in
+     three different forms:
+     </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        A full time zone name, for example <code class="literal">America/New_York</code>.
+        The recognized time zone names are listed in the
+        <code class="literal">pg_timezone_names</code> view (see <a href="view-pg-timezone-names.html" title="42.49. pg_timezone_names">Section 42.49, &#8220;<code class="structname">pg_timezone_names</code>&#8221;</a>).
+        <span class="productname">PostgreSQL</span> uses the widely-used
+        <code class="literal">zic</code> time zone data for this purpose, so the same
+        names are also recognized by much other software.
+       </p></li>
+<li><p>        A time zone abbreviation, for example <code class="literal">PST</code>.  Such a
+        specification merely defines a particular offset from UTC, in
+        contrast to full time zone names which may imply a set of daylight
+        savings transition-date rules as well.  The recognized abbreviations
+        are listed in the <code class="literal">pg_timezone_abbrevs</code> view (see <a href="view-pg-timezone-abbrevs.html" title="42.48. pg_timezone_abbrevs">Section 42.48, &#8220;<code class="structname">pg_timezone_abbrevs</code>&#8221;</a>).  You cannot set the
+        configuration parameter <a href="runtime-config-client.html#guc-timezone">timezone</a> using a time
+        zone abbreviation, but you can use abbreviations in
+        date/time input values and with the <code class="literal">AT TIME ZONE</code>
+        operator.
+       </p></li>
+<li><p>        In addition to the timezone names and abbreviations,
+        <span class="productname">PostgreSQL</span> will accept time zone
+        specifications of the form <em class="replaceable"><code>STD</code></em><em class="replaceable"><code>offset</code></em> or
+        <em class="replaceable"><code>STD</code></em><em class="replaceable"><code>offset</code></em><em class="replaceable"><code>DST</code></em>, where
+        <em class="replaceable"><code>STD</code></em> is a zone abbreviation, <em class="replaceable"><code>offset</code></em> is a
+        numeric offset in hours west from UTC, and <em class="replaceable"><code>DST</code></em> is an
+        optional daylight-savings zone abbreviation, assumed to stand for one
+        hour ahead of the given offset. For example, if <code class="literal">EST5EDT</code>
+        were not already a recognized zone name, it would be accepted and would
+        be functionally equivalent to USA East Coast time.  When a
+        daylight-savings zone name is present, it is assumed to be used
+        according to USA time zone rules, so this feature is of limited use
+        outside North America.  One should also be wary that this provision can
+        lead to silently accepting bogus input, since there is no check on the
+        reasonableness of the zone abbreviations.  For example, <code class="literal">SET
+        TIMEZONE TO FOOBAR0</code> will work, leaving the system effectively using
+        a rather peculiar abbreviation for GMT.
+       </p></li>
+</ul></div>
+<p>
+
+     There is a conceptual and practical difference between the abbreviations
+     and the full names: abbreviations always represent a fixed offset from
+     UTC, whereas most of the full names imply a local daylight-savings time
+     rule and so have two possible UTC offsets. That's why you always have to
+     specify a date if you want to use full time zone names in <code class="type">timetz</code>
+     values. This is also the reason why you should set <a href="runtime-config-client.html#guc-timezone">timezone</a> to a full time zone name: this way,
+     <span class="productname">PostgreSQL</span>
+     will always know the correct UTC offset for your region.
+    </p>
+<p>     Note that timezone names are <span class="emphasis"><em>not</em></span> used for date/time output
+     [mdash ] all supported output formats use numeric timezone displays to
+     avoid ambiguity.
+    </p>
+<p>     Neither full names nor abbreviations are hard-wired into the server;
+     they are obtained from configuration files stored under
+     <code class="filename">.../share/timezone/</code> and <code class="filename">.../share/timezonesets/</code>
+     of the installation directory
+     (see <a href="datetime-config-files.html" title="B.3. Date/Time Configuration Files">Section B.3, &#8220;Date/Time Configuration Files&#8221;</a>).
     </p>
 <p>     The <a href="runtime-config-client.html#guc-timezone">timezone</a> configuration parameter can
      be set in the file <code class="filename">postgresql.conf</code>, or in any of the
@@ -760,7 +849,7 @@
      </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        If <code class="varname">timezone</code> is not specified in
-        <code class="filename">postgresql.conf</code> nor as a postmaster command-line switch,
+        <code class="filename">postgresql.conf</code> nor as a server command-line option,
         the server attempts to use the value of the <code class="envar">TZ</code>
         environment variable as the default time zone.  If <code class="envar">TZ</code>
         is not defined or is not any of the time zone names known to
@@ -770,7 +859,7 @@
         default time zone is selected as the closest match among
         <span class="productname">PostgreSQL</span>'s known time zones.
        </p></li>
-<li><p>        The <span class="acronym">SQL</span> command <code class="command">SET TIME ZONE</code>
+<li><p>        The <acronym class="acronym">SQL</acronym> command <code class="command">SET TIME ZONE</code>
         sets the time zone for the session.  This is an alternative spelling
         of <code class="command">SET TIMEZONE TO</code> with a more SQL-spec-compatible syntax.
        </p></li>
@@ -782,9 +871,6 @@
 </ul></div>
 <p>
     </p>
-<p>    Refer to <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for a list of
-    available time zones.
-   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">

@@ -4,11 +4,12 @@
 <title>48.5. Index Uniqueness Checks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
 <link rel="prev" href="index-locking.html" title="48.4. Index Locking Considerations">
 <link rel="next" href="index-cost-estimation.html" title="48.6. Index Cost Estimation Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -46,6 +47,14 @@
       </p></li>
 </ul></div>
 <p>
+  </p>
+<p>   Furthermore, immediately before raising a uniqueness violation
+   according to the above rules, the access method must recheck the
+   liveness of the row being inserted.  If it is committed dead then
+   no error should be raised.  (This case cannot occur during the
+   ordinary scenario of inserting a row that's just been created by
+   the current transaction.  It can happen during
+   <code class="command">CREATE UNIQUE INDEX CONCURRENTLY</code>, however.) 
   </p>
 <p>   We require the index access method to apply these tests itself, which
    means that it must reach into the heap to check the commit status of

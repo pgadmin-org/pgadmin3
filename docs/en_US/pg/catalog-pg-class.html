@@ -4,27 +4,28 @@
 <title>42.12. pg_class</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="catalog-pg-cast.html" title="42.11. pg_cast">
 <link rel="next" href="catalog-pg-constraint.html" title="42.13. pg_constraint">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-class"></a>42.12. <code class="structname">pg_class</code></h2></div></div></div>
-<a name="id771146"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
+<a name="id2800516"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
    everything else that has columns or is otherwise similar to a
    table.  This includes indexes (but see also
    <code class="structname">pg_index</code>), sequences, views, composite types,
-   and some kinds of special relation; see <code class="structfield">relkind</code>.
+   and TOAST tables; see <code class="structfield">relkind</code>.
    Below, when we mean all of these
    kinds of objects we speak of &#8220;<span class="quote">relations</span>&#8221;.  Not all
    columns are meaningful for all relation types.
   </p>
 <div class="table">
-<a name="id771182"></a><p class="title"><b>Table 42.12. <code class="structname">pg_class</code> Columns</b></p>
-<table summary="pg_class Columns" border="1">
+<a name="id2800547"></a><p class="title"><b>Table 42.12. <code class="structname">pg_class</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_class Columns" border="1">
 <colgroup>
 <col>
 <col>
@@ -54,7 +55,7 @@
 <tr>
 <td><code class="structfield">reltype</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="42.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>       The OID of the data type that corresponds to this table's row type,
        if any (zero for indexes, which have no <code class="structname">pg_type</code> entry)
       </td>
@@ -80,7 +81,7 @@
 <tr>
 <td><code class="structfield">reltablespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-tablespace.html" title="42.31. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="42.32. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
 <td>       The tablespace in which this relation is stored.  If zero,
        the database's default tablespace is implied.  (Not meaningful
        if the relation has no on-disk file.)
@@ -150,7 +151,7 @@
 <td> </td>
 <td>       <code class="literal">r</code> = ordinary table, <code class="literal">i</code> = index,
        <code class="literal">S</code> = sequence, <code class="literal">v</code> = view, <code class="literal">c</code> =
-       composite type, <code class="literal">s</code> = special, <code class="literal">t</code> = TOAST
+       composite type, <code class="literal">t</code> = TOAST
        table
       </td>
 </tr>
@@ -184,32 +185,32 @@
 <td><code class="structfield">relukeys</code></td>
 <td><code class="type">int2</code></td>
 <td> </td>
-<td>unused  (<span class="emphasis"><em>not</em></span> the number of unique keys)</td>
+<td>Unused  (<span class="emphasis"><em>not</em></span> the number of unique keys)</td>
 </tr>
 <tr>
 <td><code class="structfield">relfkeys</code></td>
 <td><code class="type">int2</code></td>
 <td> </td>
-<td>unused  (<span class="emphasis"><em>not</em></span> the number of foreign keys on the table)</td>
+<td>Unused  (<span class="emphasis"><em>not</em></span> the number of foreign keys on the table)</td>
 </tr>
 <tr>
 <td><code class="structfield">relrefs</code></td>
 <td><code class="type">int2</code></td>
 <td> </td>
-<td>unused</td>
+<td>Unused</td>
 </tr>
 <tr>
 <td><code class="structfield">relhasoids</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>       True if we generate an OID for each row of the relation.
+<td>       True if we generate an OID for each row of the relation
       </td>
 </tr>
 <tr>
 <td><code class="structfield">relhaspkey</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>       True if the table has (or once had) a primary key.
+<td>       True if the table has (or once had) a primary key
       </td>
 </tr>
 <tr>
@@ -217,14 +218,34 @@
 <td><code class="type">bool</code></td>
 <td> </td>
 <td>True if table has rules; see
-       <code class="structname">pg_rewrite</code> catalog.
+       <code class="structname">pg_rewrite</code> catalog
       </td>
 </tr>
 <tr>
 <td><code class="structfield">relhassubclass</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>True if table has (or once had) any inheritance children.</td>
+<td>True if table has (or once had) any inheritance children</td>
+</tr>
+<tr>
+<td><code class="structfield">relminxid</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       The minimum transaction ID present in all rows in this table.  This
+       value is used to determine the database-global
+       <code class="structname">pg_database</code>.<code class="structfield">datminxid</code> value.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relvacuumxid</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       The transaction ID that was used as cleaning point as of the last vacuum
+       operation.  All rows inserted, updated or deleted in this table by
+       transactions whose IDs are below this one have been marked as known good
+       or deleted.  This is used to determine the database-global
+       <code class="structname">pg_database</code>.<code class="structfield">datvacuumxid</code> value.
+      </td>
 </tr>
 <tr>
 <td><code class="structfield">relacl</code></td>
@@ -233,11 +254,19 @@
 <td>       Access privileges; see
        <a href="sql-grant.html">GRANT</a> and
        <a href="sql-revoke.html">REVOKE</a>
-       for details.
+       for details
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">reloptions</code></td>
+<td><code class="type">text[]</code></td>
+<td> </td>
+<td>       Access-method-specific options, as &#8220;<span class="quote">keyword=value</span>&#8221; strings
       </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
+<br class="table-break">
 </div></body>
 </html>

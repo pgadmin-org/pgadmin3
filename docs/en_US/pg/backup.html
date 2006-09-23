@@ -4,11 +4,12 @@
 <title>Chapter 23. Backup and Restore</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="logfile-maintenance.html" title="22.3. Log File Maintenance">
 <link rel="next" href="backup-file.html" title="23.2. File system level backup">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="backup">
 <div class="titlepage"><div><div><h2 class="title">
@@ -16,25 +17,32 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="backup.html#backup-dump">23.1. <span class="acronym">SQL</span> Dump</a></span></dt>
+<dt><span class="sect1"><a href="backup.html#backup-dump">23.1. <acronym class="acronym">SQL</acronym> Dump</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="backup.html#backup-dump-restore">23.1.1. Restoring the dump</a></span></dt>
 <dt><span class="sect2"><a href="backup.html#backup-dump-all">23.1.2. Using <span class="application">pg_dumpall</span></a></span></dt>
 <dt><span class="sect2"><a href="backup.html#backup-dump-large">23.1.3. Handling large databases</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="backup-file.html">23.2. File system level backup</a></span></dt>
-<dt><span class="sect1"><a href="backup-online.html">23.3. On-line backup and point-in-time recovery (PITR)</a></span></dt>
+<dt><span class="sect1"><a href="continuous-archiving.html">23.3. Continuous Archiving and Point-In-Time Recovery (PITR)</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="backup-online.html#backup-archiving-wal">23.3.1. Setting up WAL archiving</a></span></dt>
-<dt><span class="sect2"><a href="backup-online.html#backup-base-backup">23.3.2. Making a Base Backup</a></span></dt>
-<dt><span class="sect2"><a href="backup-online.html#backup-pitr-recovery">23.3.3. Recovering with an On-line Backup</a></span></dt>
-<dt><span class="sect2"><a href="backup-online.html#backup-timelines">23.3.4. Timelines</a></span></dt>
-<dt><span class="sect2"><a href="backup-online.html#backup-online-caveats">23.3.5. Caveats</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-archiving-wal">23.3.1. Setting up WAL archiving</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-base-backup">23.3.2. Making a Base Backup</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-pitr-recovery">23.3.3. Recovering using a Continuous Archive Backup</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-timelines">23.3.4. Timelines</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#continuous-archiving-caveats">23.3.5. Caveats</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="migration.html">23.4. Migration Between Releases</a></span></dt>
+<dt><span class="sect1"><a href="warm-standby.html">23.4. Warm Standby Servers for High Availability</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-planning">23.4.1. Planning</a></span></dt>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-config">23.4.2. Implementation</a></span></dt>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-failover">23.4.3. Failover</a></span></dt>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-record">23.4.4. Implementing Record-based Log Shipping</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="migration.html">23.5. Migration Between Releases</a></span></dt>
 </dl>
 </div>
-<a name="id615449"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
+<a name="id2648206"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
   databases should be backed up regularly. While the procedure is
   essentially simple, it is important to have a basic understanding of
   the underlying techniques and assumptions.
@@ -43,16 +51,16 @@
   <span class="productname">PostgreSQL</span> data:
   </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p><span class="acronym">SQL</span> dump</p></li>
+<li><p><acronym class="acronym">SQL</acronym> dump</p></li>
 <li><p>File system level backup</p></li>
-<li><p>On-line backup</p></li>
+<li><p>Continuous Archiving</p></li>
 </ul></div>
 <p>
   Each has its own strengths and weaknesses.
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="backup-dump"></a>23.1. <span class="acronym">SQL</span> Dump</h2></div></div></div>
+<a name="backup-dump"></a>23.1. <acronym class="acronym">SQL</acronym> Dump</h2></div></div></div>
 <p>   The idea behind the SQL-dump method is to generate a text file with SQL
    commands that, when fed back to the server, will recreate the
    database in the same state as it was at the time of the dump.
@@ -100,7 +108,7 @@
   </p>
 <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Important</h3>
-<p>    When your database schema relies on OIDs (for instance as foreign
+<p>    If your database schema relies on OIDs (for instance as foreign
     keys) you must instruct <span class="application">pg_dump</span> to dump the OIDs
     as well. To do this, use the <code class="option">-o</code> command line
     option.
@@ -118,25 +126,37 @@
     where <em class="replaceable"><code>infile</code></em> is what
     you used as <em class="replaceable"><code>outfile</code></em>
     for the <span class="application">pg_dump</span> command. The database <em class="replaceable"><code>dbname</code></em> will not be created by this
-    command, you must create it yourself from <code class="literal">template0</code> before executing
-    <span class="application">psql</span> (e.g., with <code class="literal">createdb -T template0
-    <em class="replaceable"><code>dbname</code></em></code>).
-    <span class="application">psql</span> supports options similar to <span class="application">pg_dump</span> 
-    for controlling the database server location and the user name. See
-    <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s reference page for more information.
+    command, so you must create it yourself from <code class="literal">template0</code>
+    before executing <span class="application">psql</span> (e.g., with
+    <code class="literal">createdb -T template0 <em class="replaceable"><code>dbname</code></em></code>).  <span class="application">psql</span>
+    supports similar options to <span class="application">pg_dump</span> for specifying
+    the database server to connect to and the user name to use. See
+    the <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> reference page for more information.
    </p>
-<p>    Not only must the target database already exist before starting to
-    run the restore, but so must all the users who own objects in the
-    dumped database or were granted permissions on the objects.  If they
-    do not, then the restore will fail to recreate the objects with the
-    original ownership and/or permissions.  (Sometimes this is what you want,
-    but usually it is not.)
+<p>    Before restoring a SQL dump, all the users who own objects or were
+    granted permissions on objects in the dumped database must already
+    exist. If they do not, then the restore will fail to recreate the
+    objects with the original ownership and/or permissions.
+    (Sometimes this is what you want, but usually it is not.)
    </p>
-<p>    Once restored, it is wise to run <a href="sql-analyze.html">ANALYZE</a> on each database so the optimizer has
-    useful statistics. An easy way to do this is to run
-    <code class="command">vacuumdb -a -z</code> to
-    <code class="command">VACUUM ANALYZE</code> all databases; this is equivalent to
-    running <code class="command">VACUUM ANALYZE</code> manually.
+<p>    By default, the <span class="application">psql</span> script will continue to
+    execute after an SQL error is encountered. You may wish to use the
+    following command at the top of the script to alter that
+    behaviour and have <span class="application">psql</span> exit with an
+    exit status of 3 if an SQL error occurs:
+</p>
+<pre class="programlisting">\set ON_ERROR_STOP</pre>
+<p>
+    Either way, you will only have a partially restored
+    dump. Alternatively, you can specify that the whole dump should be
+    restored as a single transaction, so the restore is either fully
+    completed or fully rolled back. This mode can be specified by
+    passing the <code class="option">-1</code> or <code class="option">--single-transaction</code>
+    command-line options to <span class="application">psql</span>. When using this
+    mode, be aware that even the smallest of errors can rollback a
+    restore that has already run for many hours. However, that may
+    still be preferable to manually cleaning up a complex database
+    after a partially restored dump.
    </p>
 <p>    The ability of <span class="application">pg_dump</span> and <span class="application">psql</span> to
     write to or read from pipes makes it possible to dump a database
@@ -156,8 +176,12 @@
      above.
     </p>
 </div>
-<p>    For advice on how to load large amounts of data into
-    <span class="productname">PostgreSQL</span> efficiently, refer to <a href="populate.html" title="13.4. Populating a Database">Section 13.4, &#8220;Populating a Database&#8221;</a>.
+<p>    After restoring a backup, it is wise to run <a href="sql-analyze.html">ANALYZE</a> on each
+    database so the query optimizer has useful statistics. An easy way
+    to do this is to run <code class="command">vacuumdb -a -z</code>; this is
+    equivalent to running <code class="command">VACUUM ANALYZE</code> on each database
+    manually.  For more advice on how to load large amounts of data
+    into <span class="productname">PostgreSQL</span> efficiently, refer to <a href="populate.html" title="13.4. Populating a Database">Section 13.4, &#8220;Populating a Database&#8221;</a>.
    </p>
 </div>
 <div class="sect2" lang="en">

@@ -4,23 +4,24 @@
 <title>8.10. Arrays</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-bit.html" title="8.9. Bit String Types">
 <link rel="next" href="rowtypes.html" title="8.11. Composite Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="arrays"></a>8.10. Arrays</h2></div></div></div>
-<a name="id538675"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
+<a name="id2572686"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
   built-in or user-defined base type can be created.  (Arrays of
   composite types or domains are not yet supported, however.)
  </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id538694"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
+<a name="id2572703"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
 <p>  To illustrate the use of array types, we create this table:
 </p>
 <pre class="programlisting">CREATE TABLE sal_emp (
@@ -74,8 +75,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id538812"></a>8.10.2. Array Value Input</h3></div></div></div>
-<a name="id538816"></a><p>   To write an array value as a literal constant, enclose the element
+<a name="id2572811"></a>8.10.2. Array Value Input</h3></div></div></div>
+<a name="id2572815"></a><p>   To write an array value as a literal constant, enclose the element
    values within curly braces and separate them by commas.  (If you
    know C, this is not unlike the C syntax for initializing
    structures.)  You may put double quotes around any element value,
@@ -99,23 +100,17 @@
    This constant is a two-dimensional, 3-by-3 array consisting of
    three subarrays of integers.
   </p>
+<p>   To set an element of an array constant to NULL, write <code class="literal">NULL</code>
+   for the element value.  (Any upper- or lower-case variant of
+   <code class="literal">NULL</code> will do.)  If you want an actual string value
+   &#8220;<span class="quote">NULL</span>&#8221;, you must put double quotes around it.
+  </p>
 <p>   (These kinds of array constants are actually only a special case of
    the generic type constants discussed in <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  The constant is initially
    treated as a string and passed to the array input conversion
    routine.  An explicit type specification might be necessary.)
   </p>
 <p>   Now we can show some <code class="command">INSERT</code> statements.
-
-</p>
-<pre class="programlisting">INSERT INTO sal_emp
-    VALUES ('Bill',
-    '{10000, 10000, 10000, 10000}',
-    '{{"meeting", "lunch"}, {"meeting"}}');
-ERROR:  multidimensional arrays must have array expressions with matching dimensions</pre>
-<p>
-
-  Note that multidimensional arrays must have matching extents for each
-  dimension. A mismatch causes an error report.
 
 </p>
 <pre class="programlisting">INSERT INTO sal_emp
@@ -129,12 +124,8 @@ INSERT INTO sal_emp
     '{{"breakfast", "consulting"}, {"meeting", "lunch"}}');</pre>
 <p>
   </p>
-<p>   A limitation of the present array implementation is that individual
-   elements of an array cannot be SQL null values.  The entire array
-   can be set to null, but you can't have an array with some elements
-   null and some not.  (This is likely to change in the future.)
-  </p>
 <p>  The result of the previous two inserts looks like this:
+
 </p>
 <pre class="programlisting">SELECT * FROM sal_emp;
  name  |      pay_by_quarter       |                 schedule
@@ -162,10 +153,21 @@ INSERT INTO sal_emp
   constructor syntax is discussed in more detail in
   <a href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>.
  </p>
+<p>  Multidimensional arrays must have matching extents for each
+  dimension. A mismatch causes an error report, for example:
+
+</p>
+<pre class="programlisting">INSERT INTO sal_emp
+    VALUES ('Bill',
+    '{10000, 10000, 10000, 10000}',
+    '{{"meeting", "lunch"}, {"meeting"}}');
+ERROR:  multidimensional arrays must have array expressions with matching dimensions</pre>
+<p>
+ </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id539026"></a>8.10.3. Accessing Arrays</h3></div></div></div>
+<a name="id2573020"></a>8.10.3. Accessing Arrays</h3></div></div></div>
 <p>  Now, we can run some queries on the table.
   First, we show how to access a single element of an array at a time.
   This query retrieves the names of the employees whose pay changed in
@@ -233,14 +235,20 @@ INSERT INTO sal_emp
 (1 row)</pre>
 <p>
  </p>
-<p>  Fetching from outside the current bounds of an array yields a
-  SQL null value, not an error.  For example, if <code class="literal">schedule</code>
+<p>  An array subscript expression will return null if either the array itself or
+  any of the subscript expressions are null.  Also, null is returned if a
+  subscript is outside the array bounds (this case does not raise an error).
+  For example, if <code class="literal">schedule</code>
   currently has the dimensions <code class="literal">[1:3][1:2]</code> then referencing
   <code class="literal">schedule[3][3]</code> yields NULL.  Similarly, an array reference
   with the wrong number of subscripts yields a null rather than an error.
-  Fetching an array slice that
-  is completely outside the current bounds likewise yields a null array;
-  but if the requested slice partially overlaps the array bounds, then it
+ </p>
+<p>  An array slice expression likewise yields null if the array itself or
+  any of the subscript expressions are null.  However, in other corner
+  cases such as selecting an array slice that
+  is completely outside the current array bounds, a slice expression
+  yields an empty (zero-dimensional) array instead of null.
+  If the requested slice partially overlaps the array bounds, then it
   is silently reduced to just the overlapping region.
  </p>
 <p>  The current dimensions of any array value can be retrieved with the
@@ -274,7 +282,7 @@ INSERT INTO sal_emp
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id539234"></a>8.10.4. Modifying Arrays</h3></div></div></div>
+<a name="id2573218"></a>8.10.4. Modifying Arrays</h3></div></div></div>
 <p>  An array value can be replaced completely:
 
 </p>
@@ -312,7 +320,7 @@ INSERT INTO sal_emp
   Currently, enlargement in this fashion is only allowed for one-dimensional
   arrays, not multidimensional arrays.
  </p>
-<p>  Array slice assignment allows creation of arrays that do not use one-based
+<p>  Subscripted assignment allows creation of arrays that do not use one-based
   subscripts.  For example one might assign to <code class="literal">myarray[-2:7]</code> to
   create an array with subscript values running from -2 to 7.
  </p>
@@ -337,13 +345,11 @@ SELECT ARRAY[5,6] || ARRAY[[1,2],[3,4]];
   <em class="replaceable"><code>N</code></em>-dimensional arrays, or an <em class="replaceable"><code>N</code></em>-dimensional
   and an <em class="replaceable"><code>N+1</code></em>-dimensional array.
  </p>
-<p>  When a single element is pushed on to the beginning of a one-dimensional
-  array, the result is an array with a lower bound subscript equal to
-  the right-hand operand's lower bound subscript, minus one. When a single
-  element is pushed on to the end of a one-dimensional array, the result is
-  an array retaining the lower bound of the left-hand operand. For example:
+<p>  When a single element is pushed on to either the beginning or end of a
+  one-dimensional array, the result is an array with the same lower bound
+  subscript as the array operand. For example:
 </p>
-<pre class="programlisting">SELECT array_dims(1 || ARRAY[2,3]);
+<pre class="programlisting">SELECT array_dims(1 || '[0:1]={2,3}'::int[]);
  array_dims
 ------------
  [0:2]
@@ -383,7 +389,7 @@ SELECT array_dims(ARRAY[[1,2],[3,4]] || ARRAY[[5,6],[7,8],[9,0]]);
 <pre class="programlisting">SELECT array_dims(ARRAY[1,2] || ARRAY[[3,4],[5,6]]);
  array_dims
 ------------
- [0:2][1:2]
+ [1:3][1:2]
 (1 row)</pre>
 <p>
  </p>
@@ -393,7 +399,7 @@ SELECT array_dims(ARRAY[[1,2],[3,4]] || ARRAY[[5,6],[7,8],[9,0]]);
   arrays, but <code class="function">array_cat</code> supports multidimensional arrays.
 
   Note that the concatenation operator discussed above is preferred over
-  direct use of these functions. In fact, the functions are primarily for use
+  direct use of these functions. In fact, the functions exist primarily for use
   in implementing the concatenation operator. However, they may be directly
   useful in the creation of user-defined aggregates. Some examples:
 
@@ -431,7 +437,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id539470"></a>8.10.5. Searching in Arrays</h3></div></div></div>
+<a name="id2573434"></a>8.10.5. Searching in Arrays</h3></div></div></div>
 <p>  To search for a value in an array, you must check each value of the
   array. This can be done by hand, if you know the size of the array.
   For example:
@@ -472,7 +478,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id539526"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
+<a name="id2573486"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of an array value consists of items that
    are interpreted according to the I/O conversion rules for the array's
    element type, plus decoration that indicates the array structure.
@@ -488,41 +494,23 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
    must be written between adjacent curly-braced entities of the same level.
   </p>
 <p>   The array output routine will put double quotes around element values
-   if they are empty strings or contain curly braces, delimiter characters,
-   double quotes, backslashes, or white space.  Double quotes and backslashes
+   if they are empty strings, contain curly braces, delimiter characters,
+   double quotes, backslashes, or white space, or match the word
+   <code class="literal">NULL</code>.  Double quotes and backslashes
    embedded in element values will be backslash-escaped.  For numeric
    data types it is safe to assume that double quotes will never appear, but
    for textual data types one should be prepared to cope with either presence
-   or absence of quotes.  (This is a change in behavior from pre-7.2
-   <span class="productname">PostgreSQL</span> releases.)
+   or absence of quotes.
   </p>
 <p>   By default, the lower bound index value of an array's dimensions is
-   set to one. If any of an array's dimensions has a lower bound index not
-   equal to one, an additional decoration that indicates the actual
-   array dimensions will precede the array structure decoration.
+   set to one.  To represent arrays with other lower bounds, the array
+   subscript ranges can be specified explicitly before writing the
+   array contents.
    This decoration consists of square brackets (<code class="literal">[]</code>)
    around each array dimension's lower and upper bounds, with
    a colon (<code class="literal">:</code>) delimiter character in between. The
    array dimension decoration is followed by an equal sign (<code class="literal">=</code>).
    For example:
-</p>
-<pre class="programlisting">SELECT 1 || ARRAY[2,3] AS array;
-
-     array
----------------
- [0:2]={1,2,3}
-(1 row)
-
-SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
-
-          array
---------------------------
- [0:1][1:2]={{1,2},{3,4}}
-(1 row)</pre>
-<p>
-  </p>
-<p>   This syntax can also be used to specify non-default array subscripts
-   in an array literal. For example:
 </p>
 <pre class="programlisting">SELECT f1[1][-2][3] AS e1, f1[1][-1][5] AS e2
  FROM (SELECT '[1:1][-2:-1][3:5]={{{1,2,3},{4,5,6}}}'::int[] AS f1) AS ss;
@@ -532,13 +520,24 @@ SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
   1 |  6
 (1 row)</pre>
 <p>
+   The array output routine will include explicit dimensions in its result
+   only when there are one or more lower bounds different from one.
+  </p>
+<p>   If the value written for an element is <code class="literal">NULL</code> (in any case
+   variant), the element is taken to be NULL.  The presence of any quotes
+   or backslashes disables this and allows the literal string value
+   &#8220;<span class="quote">NULL</span>&#8221; to be entered.  Also, for backwards compatibility with
+   pre-8.2 versions of <span class="productname">PostgreSQL</span>, the <a href="runtime-config-compatible.html#guc-array-nulls">array_nulls</a> configuration parameter may be turned
+   <code class="literal">off</code> to suppress recognition of <code class="literal">NULL</code> as a NULL.
   </p>
 <p>   As shown previously, when writing an array value you may write double
    quotes around any individual array element. You <span class="emphasis"><em>must</em></span> do so
    if the element value would otherwise confuse the array-value parser.
    For example, elements containing curly braces, commas (or whatever the
    delimiter character is), double quotes, backslashes, or leading or trailing
-   whitespace must be double-quoted.  To put a double quote or backslash in a
+   whitespace must be double-quoted.  Empty strings and strings matching the
+   word <code class="literal">NULL</code> must be quoted, too.  To put a double quote or
+   backslash in a
    quoted array element value, precede it with a backslash. Alternatively, you
    can use backslash-escaping to protect all data characters that would
    otherwise be taken as array syntax.

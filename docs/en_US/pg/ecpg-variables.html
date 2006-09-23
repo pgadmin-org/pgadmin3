@@ -4,11 +4,12 @@
 <title>30.6. Using Host Variables</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg-set-connection.html" title="30.5. Choosing a Connection">
 <link rel="next" href="ecpg-dynamic.html" title="30.7. Dynamic SQL">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -21,11 +22,15 @@
    not really useful in real applications.  This section explains in
    detail how you can pass data between your C program and the
    embedded SQL statements using a simple mechanism called
-   <em class="firstterm">host variables</em>.
+   <em class="firstterm">host variables</em>. In an embedded SQL program  we
+   consider the SQL statements to be <em class="firstterm">guests</em> in the C
+   program code which is the <em class="firstterm">host language</em>. Therefore
+   the variables of the C program are called <em class="firstterm">host
+   variables</em>.
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id636705"></a>30.6.1. Overview</h3></div></div></div>
+<a name="id2669125"></a>30.6.1. Overview</h3></div></div></div>
 <p>    Passing data between the C program and the SQL statements is
     particularly simple in embedded SQL.  Instead of having the
     program paste the data into the statement, which entails various
@@ -41,14 +46,12 @@
     restricted to use one kind of data or the other.
    </p>
 <p>    This style of inserting C variables in SQL statements works
-    anywhere a value expression is expected in an SQL statement.  In
-    the SQL environment we call the references to C variables
-    <em class="firstterm">host variables</em>.
+    anywhere a value expression is expected in an SQL statement.
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id636748"></a>30.6.2. Declare Sections</h3></div></div></div>
+<a name="id2669159"></a>30.6.2. Declare Sections</h3></div></div></div>
 <p>    To pass data from the program to the database, for example as
     parameters in a query, or to pass data from the database back to
     the program, the C variables that are intended to contain this
@@ -66,8 +69,16 @@
     Between those lines, there must be normal C variable declarations,
     such as
 </p>
-<pre class="programlisting">int   x;
+<pre class="programlisting">int   x = 4;
 char  foo[16], bar[16];</pre>
+<p>
+    As you can see, you can optionally assign an initial value to the variable.
+    The variable's scope is determined by the location of its declaring
+    section within the program.
+    You can also declare variables with the following syntax which implicitly
+    creates a declare section:
+</p>
+<pre class="programlisting">EXEC SQL int i = 4;</pre>
 <p>
     You can have as many declare sections in a program as you like.
    </p>
@@ -80,23 +91,90 @@ char  foo[16], bar[16];</pre>
     a <code class="literal">DECLARE</code> section. Otherwise the preprocessor cannot
     handle these types since it does not know the definition.
    </p>
-<p>    The special type <code class="type">VARCHAR</code> 
-    is converted into a named <code class="type">struct</code> for every variable. A
-    declaration like
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2669224"></a>30.6.3. Different types of host variables</h3></div></div></div>
+<p>    As a host variable you can also use arrays, typedefs, structs and
+    pointers. Moreover there are special types of host variables that exist
+    only in ecpg.
+   </p>
+<p>    A few examples on host variables:
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term">Arrays</span></dt>
+<dd>
+<p>       One of the most common uses of an array declaration is probably the
+       allocation of a char array as in
+</p>
+<pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
+    char str[50];
+EXEC SQL END DECLARE SECTION;</pre>
+<p>
+       Note that you have to take care of the length for yourself. If you use
+       this host variable as the target variable of a query which returns a
+       string with more than 49 characters, a buffer overflow occurs.
+      </p>
+</dd>
+<dt><span class="term">Typedefs</span></dt>
+<dd>
+<p>      Use the <code class="literal">typedef</code> keyword to map new types to already
+      existing types.
+</p>
+<pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
+    typedef char mychartype[40];
+    typedef long serial_t;
+EXEC SQL END DECLARE SECTION;</pre>
+<p>
+       Note that you could also use
+</p>
+<pre class="programlisting">EXEC SQL TYPE serial_t IS long;</pre>
+<p>
+       This declaration does not need to be part of a declare section.
+      </p>
+</dd>
+<dt><span class="term">Pointers</span></dt>
+<dd>
+<p>       You can declare pointers to the most common types. Note however that
+       you can not use pointers as target variables of queries without
+       auto-allocation. See <a href="ecpg-descriptors.html" title="30.10. Using SQL Descriptor Areas">Section 30.10, &#8220;Using SQL Descriptor Areas&#8221;</a> for more
+       information on auto-allocation.
+      </p>
+<pre class="programlisting">EXEC SQL BEGIN DECLARE SECTION;
+    int   *intp;
+    char **charp;
+EXEC SQL END DECLARE SECTION;</pre>
+</dd>
+<dt><span class="term">Special types of variables</span></dt>
+<dd>
+<p>        ecpg contains some special types that help you to interact easily with
+        data from the SQL server. For example it has implemented support for
+        the varchar, numeric, date, timestamp and interval types.
+        <a href="ecpg-pgtypes.html" title="30.8. pgtypes library">Section 30.8, &#8220;pgtypes library&#8221;</a> contains basic functions to deal with
+        those types, such that you do not need to send a query to the SQL
+        server just for adding an interval to a timestamp for example.
+       </p>
+<p>        The special type <code class="type">VARCHAR</code> 
+        is converted into a named <code class="type">struct</code> for every variable. A
+        declaration like
 </p>
 <pre class="programlisting">VARCHAR var[180];</pre>
 <p>
-    is converted into
+         is converted into
 </p>
 <pre class="programlisting">struct varchar_var { int len; char arr[180]; } var;</pre>
 <p>
-    This structure is suitable for interfacing with SQL datums of type
-    <code class="type">varchar</code>.
+        This structure is suitable for interfacing with SQL datums of type
+        <code class="type">varchar</code>.
+       </p>
+</dd>
+</dl></div>
+<p>
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id636838"></a>30.6.3. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></h3></div></div></div>
+<a name="id2669364"></a>30.6.4. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></h3></div></div></div>
 <p>    Now you should be able to pass data generated by your program into
     an SQL command.  But how do you retrieve the results of a query?
     For that purpose, embedded SQL provides special variants of the
@@ -156,7 +234,7 @@ do {
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id636946"></a>30.6.4. Indicators</h3></div></div></div>
+<a name="id2669467"></a>30.6.5. Indicators</h3></div></div></div>
 <p>    The examples above do not handle null values.  In fact, the
     retrieval examples will raise an error if they fetch a null value
     from the database.  To be able to pass null values to the database

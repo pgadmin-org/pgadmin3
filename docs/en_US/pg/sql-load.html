@@ -4,11 +4,12 @@
 <title>LOAD</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-listen.html" title="LISTEN">
 <link rel="next" href="sql-lock.html" title="LOCK">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-load"></a><div class="titlepage"></div>
@@ -16,7 +17,7 @@
 <h2>Name</h2>
 <p>LOAD &#8212; load or reload a shared library file</p>
 </div>
-<a name="id723942"></a><div class="refsynopsisdiv">
+<a name="id2762157"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">LOAD '<em class="replaceable"><code>filename</code></em>'</pre>
 </div>
@@ -36,6 +37,13 @@
    shared library file name extension.  See <a href="xfunc-c.html" title="32.9. C-Language Functions">Section 32.9, &#8220;C-Language Functions&#8221;</a> for
    more information on this topic.
   </p>
+<a name="id2762232"></a><p>   Non-superusers may only apply <code class="command">LOAD</code> to library files
+   located in <code class="filename">$libdir/plugins/</code> [mdash ] the specified
+   <em class="replaceable"><code>filename</code></em> must begin
+   with exactly that string.  (It is the database administrator's
+   responsibility to ensure that only &#8220;<span class="quote">safe</span>&#8221; libraries
+   are installed there.)
+  </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-load-compat"></a><h2>Compatibility</h2>
@@ -44,7 +52,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id724050"></a><h2>See Also</h2>
+<a name="id2762290"></a><h2>See Also</h2>
 <p>   <a href="sql-createfunction.html">CREATE FUNCTION</a>
   </p>
 </div>

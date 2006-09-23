@@ -4,31 +4,39 @@
 <title>17.15. Developer Options</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.69.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.0 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-custom.html" title="17.14. Customized Options">
 <link rel="next" href="runtime-config-short.html" title="17.16. Short Options">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-developer"></a>17.15. Developer Options</h2></div></div></div>
-<p>     The following options are intended for work on the
+<p>     The following parameters are intended for work on the
      <span class="productname">PostgreSQL</span> source, and in some cases
      to assist with recovery of severely damaged databases.  There
      should be no reason to use them in a production database setup.
      As such, they have been excluded from the sample
      <code class="filename">postgresql.conf</code> file.  Note that many of these
-     options require special source compilation flags to work at all.
+     parameters require special source compilation flags to work at all.
     </p>
 <div class="variablelist"><dl>
+<dt>
+<a name="guc-allow-system-table-mods"></a><span class="term"><code class="varname">allow_system_table_mods</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Allows modification of the structure of system tables.
+        This is used by <code class="command">initdb</code>.
+        This parameter can only be set at server start.
+       </p></dd>
 <dt>
 <a name="guc-debug-assertions"></a><span class="term"><code class="varname">debug_assertions</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Turns on various assertion checks. This is a debugging aid. If
         you are experiencing strange problems or crashes you might want
         to turn this on, as it might expose programming mistakes. To use
-        this option, the macro <code class="symbol">USE_ASSERT_CHECKING</code>
+        this parameter, the macro <code class="symbol">USE_ASSERT_CHECKING</code>
         must be defined when <span class="productname">PostgreSQL</span> is
         built (accomplished by the <code class="command">configure</code> option
         <code class="option">--enable-cassert</code>). Note that
@@ -37,13 +45,32 @@
         assertions enabled.
        </p></dd>
 <dt>
+<a name="guc-ignore-system-indexes"></a><span class="term"><code class="varname">ignore_system_indexes</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Ignore system indexes when reading system tables (but still
+        update the indexes when modifying the tables).  This is useful
+        when recovering from damaged system indexes.
+        This parameter cannot be changed after session start.
+       </p></dd>
+<dt>
+<a name="guc-post-auth-delay"></a><span class="term"><code class="varname">post_auth_delay</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        If nonzero, a delay of this many seconds occurs when a new
+        server process is started, after it conducts the
+        authentication procedure.  This is intended to give an
+        opportunity to attach to the server process with a debugger.
+        This parameter cannot be changed after session start.
+       </p></dd>
+<dt>
 <a name="guc-pre-auth-delay"></a><span class="term"><code class="varname">pre_auth_delay</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        If nonzero, a delay of this many seconds occurs just after a new
-        server process is forked, before it conducts the authentication
-        process.  This is intended to give an opportunity to attach to the
-        server process with a debugger to trace down misbehavior in
-        authentication.
+<dd><p>        If nonzero, a delay of this many seconds occurs just after a
+        new server process is forked, before it conducts the
+        authentication procedure.  This is intended to give an
+        opportunity to attach to the server process with a debugger to
+        trace down misbehavior in authentication.
+        This parameter can only be set in the <code class="filename">postgresql.conf</code>
+        file or on the server command line.
        </p></dd>
 <dt>
 <a name="guc-trace-notify"></a><span class="term"><code class="varname">trace_notify</code> (<code class="type">boolean</code>)</span>
@@ -59,7 +86,7 @@
 <a name="guc-trace-sort"></a><span class="term"><code class="varname">trace_sort</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        If on, emit information about resource usage during sort operations.
-        This option is only available if the <code class="symbol">TRACE_SORT</code> macro
+        This parameter is only available if the <code class="symbol">TRACE_SORT</code> macro
         was defined when <span class="productname">PostgreSQL</span> was compiled.
         (However, <code class="symbol">TRACE_SORT</code> is currently defined by default.)
        </p></dd>
@@ -71,7 +98,7 @@
 <dt>
 <a name="guc-wal-debug"></a><span class="term"><code class="varname">wal_debug</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        If on, emit WAL-related debugging output. This option is
+<dd><p>        If on, emit WAL-related debugging output. This parameter is
         only available if the <code class="symbol">WAL_DEBUG</code> macro was
         defined when <span class="productname">PostgreSQL</span> was
         compiled.
