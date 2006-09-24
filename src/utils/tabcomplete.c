@@ -15,6 +15,7 @@
  * Adds a bit of C<->C++ cruft...
  */
 
+#define _CRT_NONSTDC_NO_DEPRECATE
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
