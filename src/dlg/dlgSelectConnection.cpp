@@ -26,6 +26,7 @@ BEGIN_EVENT_TABLE(dlgSelectConnection, DialogWithHelp)
     EVT_COMBOBOX(XRCID("cbDatabase"),   dlgSelectConnection::OnChangeDatabase) 
 	EVT_TEXT(XRCID("cbServer"),        dlgSelectConnection::OnTextChange)
 	EVT_TEXT(XRCID("cbDatabase"),      dlgSelectConnection::OnTextChange)
+	EVT_TEXT(XRCID("txtUsername"),     dlgSelectConnection::OnTextChange)
     EVT_BUTTON (wxID_OK,               dlgSelectConnection::OnOK)
     EVT_BUTTON (wxID_CANCEL,           dlgSelectConnection::OnCancel)
 END_EVENT_TABLE()
@@ -55,6 +56,7 @@ DialogWithHelp(form)
 	{
 		stUsername->Hide();
 		txtUsername->Hide();
+		btnOK->Enable(false);
 	}
 	else
 	{
@@ -149,12 +151,14 @@ wxString dlgSelectConnection::GetServerName()
 
 void dlgSelectConnection::OnChangeDatabase(wxCommandEvent& ev)
 {
-    btnOK->Enable(cbDatabase->GetCount() > 0 && cbDatabase->GetCurrentSelection() >= 0);
+	if (GetServer())
+		btnOK->Enable(cbDatabase->GetCount() > 0 && cbDatabase->GetCurrentSelection() >= 0);
 }
 
 void dlgSelectConnection::OnTextChange(wxCommandEvent& ev)
 {
-	btnOK->Enable(cbDatabase->GetValue().Len() > 0 && cbServer->GetValue().Len() > 0 && txtUsername->GetValue().Len() > 0);
+	if (!GetServer())
+		btnOK->Enable(cbDatabase->GetValue().Len() > 0 && cbServer->GetValue().Len() > 0 && txtUsername->GetValue().Len() > 0);
 }
 
 void dlgSelectConnection::OnOK(wxCommandEvent& ev)
@@ -237,6 +241,7 @@ int dlgSelectConnection::Go(pgConn *conn, ctlComboBoxFix *cb)
 			if (s->GetConnected() && s->GetConnection()->GetHost() == conn->GetHost() && s->GetConnection()->GetPort() == conn->GetPort())
 			{
 				 cbServer->SetSelection(cbServer->GetCount()-1);
+				 remoteServer = s;
 			}
 		}    
 		cbServer->SetFocus();
