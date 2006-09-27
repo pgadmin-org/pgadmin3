@@ -230,6 +230,9 @@ void frmGrantWizard::Go()
     }
 
     Show(true);
+
+    // Work around a wierd display bug in wx2.7
+    this->Refresh();
 }
 
 
