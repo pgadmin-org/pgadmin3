@@ -854,6 +854,9 @@ void frmMain::OnDefaultView(wxCommandEvent& event)
     manager.GetPane(wxT("listViews")).Caption(_("Info pane"));
     manager.GetPane(wxT("sqlPane")).Caption(_("SQL pane"));
     manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
 }
 
 void frmMain::OnPositionStc(wxStyledTextEvent& event)

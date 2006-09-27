@@ -169,9 +169,6 @@ frmMain::frmMain(const wxString& title)
     manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CaptionVisible(false).CloseButton(false));
     manager.AddPane(sqlPane, wxPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom());
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-                              
-    // tell the manager to "commit" all the changes just made
-    manager.Update();
 
     // Now load the layout
     wxString perspective;
@@ -191,6 +188,9 @@ frmMain::frmMain(const wxString& title)
     viewMenu->Check(MNU_SQLPANE, manager.GetPane(wxT("sqlPane")).IsShown());
     viewMenu->Check(MNU_OBJECTBROWSER, manager.GetPane(wxT("objectBrowser")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
 
     // Add the root node
     serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());

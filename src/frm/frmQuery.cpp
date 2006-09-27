@@ -290,9 +290,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     manager.AddPane(outputPane, wxPaneInfo().Name(wxT("outputPane")).Caption(_("Output pane")).Bottom());
     manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right());
 
-    // tell the manager to "commit" all the changes just made
-    manager.Update();
-
     // Now load the layout
     wxString perspective;
     settings->Read(wxT("frmQuery/Perspective"), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);
@@ -315,6 +312,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
 
     bool bVal;
 
@@ -466,6 +466,8 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
     manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
     manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
     manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
+
+    manager.Update();
 }
 
 void frmQuery::OnWordWrap(wxCommandEvent &event)

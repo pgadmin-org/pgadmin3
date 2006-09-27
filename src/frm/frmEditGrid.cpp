@@ -209,9 +209,6 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CaptionVisible(false).CloseButton(false));
     manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom());
 
-    // tell the manager to "commit" all the changes just made
-    manager.Update();
-
     // Now load the layout
     wxString perspective;
     settings->Read(wxT("frmEditGrid/Perspective"), &perspective, FRMEDITGRID_DEFAULT_PERSPECTIVE);
@@ -230,6 +227,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     viewMenu->Check(MNU_LIMITBAR, manager.GetPane(wxT("limitBar")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
 
     if (obj->GetMetaType() == PGM_TABLE)
     {
@@ -318,6 +318,9 @@ void frmEditGrid::OnDefaultView(wxCommandEvent& event)
     manager.GetPane(wxT("limitBar")).Caption(_("Limit bar"));
     manager.GetPane(wxT("sqlGrid")).Caption(_("Data grid"));
     manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
 }
 
 void frmEditGrid::SetSortCols(const wxString &cols) 
