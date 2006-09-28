@@ -248,14 +248,13 @@ wxString frmBackup::getCmdPart2()
 
     cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));
 
-    pgSchema *schema=0;
     if (object->GetMetaType() == PGM_SCHEMA)
-        schema =(pgSchema*)object;
-    else if (object->GetMetaType() == PGM_TABLE)
+        cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+    else if (object->GetMetaType() == PGM_TABLE) 
+    {
         cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
-
-    if (schema)
-        cmd.Append(wxT(" -n ") + schema->GetQuotedIdentifier());
+        cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+    }
 
     cmd.Append(wxT(" ") + object->GetDatabase()->GetQuotedIdentifier());
 
