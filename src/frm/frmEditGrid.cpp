@@ -136,9 +136,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     cbLimit = new ctlComboBoxFix(this, CTRLID_LIMITCOMBO, wxPoint(0, 0), wxSize(GetCharWidth()*24, -1), wxCB_DROPDOWN);
 #endif
     cbLimit->Append(_("No limit"));
-    cbLimit->Append(wxT("1000 rows"));
-    cbLimit->Append(wxT("500 rows"));
-    cbLimit->Append(wxT("100 rows"));
+    cbLimit->Append(_("1000 rows"));
+    cbLimit->Append(_("500 rows"));
+    cbLimit->Append(_("100 rows"));
     cbLimit->SetValue(_("No limit"));
 
     // Finally, the scratchpad

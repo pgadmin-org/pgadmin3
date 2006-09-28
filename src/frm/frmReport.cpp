@@ -1211,9 +1211,8 @@ bool reportObjectPropertiesFactory::CheckEnable(pgObject *obj)
 
 void reportObjectPropertiesFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title = object->GetTypeName();
-    title += _(" properties report - ");
-    title += object->GetIdentifier();
+    wxString title;
+    title.Printf(_("%s properties report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
     report->SetReportTitle(title);
 
     int section = report->XmlCreateSection(object->GetTypeName() + _(" properties"));
@@ -1249,9 +1248,8 @@ bool reportObjectDdlFactory::CheckEnable(pgObject *obj)
 
 void reportObjectDdlFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title = object->GetTypeName();
-    title += _(" DDL report - ");
-    title += object->GetIdentifier();
+    wxString title;
+    title.Printf(_("%s DDL report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
     report->SetReportTitle(title);
 
     int section = report->XmlCreateSection(object->GetTypeName() + _(" DDL"));
@@ -1285,9 +1283,8 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 
     pgTable *table = (pgTable *)object;
 
-    wxString title = object->GetTypeName();
-    title += _(" Data dictionary report - ");
-    title += object->GetIdentifier();
+    wxString title;
+    title.Printf(_("%s Data dictionnary report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
     report->SetReportTitle(title);
 
     // Columns
@@ -1430,9 +1427,8 @@ bool reportObjectStatisticsFactory::CheckEnable(pgObject *obj)
 
 void reportObjectStatisticsFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title = object->GetTypeName();
-    title += _(" statistics report - ");
-    title += object->GetIdentifier();
+    wxString title;
+    title.Printf(_("%s statistics report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
     report->SetReportTitle(title);
 
     int section = report->XmlCreateSection(object->GetTypeName() + _(" statistics"));
@@ -1466,9 +1462,8 @@ bool reportObjectDependenciesFactory::CheckEnable(pgObject *obj)
 
 void reportObjectDependenciesFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title = object->GetTypeName();
-    title += _(" dependencies report - ");
-    title += object->GetIdentifier();
+    wxString title;
+    title.Printf(_("%s dependencies report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
     report->SetReportTitle(title);
 
     int section = report->XmlCreateSection(object->GetTypeName() + _(" dependencies"));
@@ -1501,9 +1496,8 @@ bool reportObjectDependentsFactory::CheckEnable(pgObject *obj)
 
 void reportObjectDependentsFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title = object->GetTypeName();
-    title += _(" dependents report - ");
-    title += object->GetIdentifier();
+    wxString title;
+    title.Printf(_("%s dependents report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
     report->SetReportTitle(title);
 
     int section = report->XmlCreateSection(object->GetTypeName() + _(" dependents"));
