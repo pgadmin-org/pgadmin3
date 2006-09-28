@@ -20,20 +20,19 @@
 #include "pgServer.h"
 #include "images/connect.xpm"
 
+#define CTRLID_CBSERVER 4242
+#define CTRLID_CBDATABASE 4243
 
 BEGIN_EVENT_TABLE(dlgSelectConnection, DialogWithHelp)
-    EVT_COMBOBOX(XRCID("cbServer"),   dlgSelectConnection::OnChangeServer) 
-    EVT_COMBOBOX(XRCID("cbDatabase"),   dlgSelectConnection::OnChangeDatabase) 
-	EVT_TEXT(XRCID("cbServer"),        dlgSelectConnection::OnTextChange)
-	EVT_TEXT(XRCID("cbDatabase"),      dlgSelectConnection::OnTextChange)
+    EVT_COMBOBOX(CTRLID_CBSERVER,      dlgSelectConnection::OnChangeServer) 
+    EVT_COMBOBOX(CTRLID_CBDATABASE,    dlgSelectConnection::OnChangeDatabase) 
+	EVT_TEXT(CTRLID_CBSERVER,          dlgSelectConnection::OnTextChange)
+	EVT_TEXT(CTRLID_CBDATABASE,        dlgSelectConnection::OnTextChange)
 	EVT_TEXT(XRCID("txtUsername"),     dlgSelectConnection::OnTextChange)
     EVT_BUTTON (wxID_OK,               dlgSelectConnection::OnOK)
     EVT_BUTTON (wxID_CANCEL,           dlgSelectConnection::OnCancel)
 END_EVENT_TABLE()
 
-
-#define cbServer        CTRL_COMBOBOX("cbServer")
-#define cbDatabase      CTRL_COMBOBOX("cbDatabase")
 #define stUsername		CTRL_STATIC("stUsername")
 #define txtUsername		CTRL_TEXT("txtUsername")
 
@@ -57,9 +56,13 @@ DialogWithHelp(form)
 		stUsername->Hide();
 		txtUsername->Hide();
 		btnOK->Enable(false);
+		cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN | wxCB_READONLY);
+		cbDatabase = new ctlComboBoxFix(this, CTRLID_CBDATABASE, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN | wxCB_READONLY);
 	}
 	else
 	{
+		cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN);
+		cbDatabase = new ctlComboBoxFix(this, CTRLID_CBDATABASE, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN);
 		cbServer->SetValue(settings->Read(wxT("QuickConnect/server"), wxEmptyString));
 		cbDatabase->SetValue(settings->Read(wxT("QuickConnect/database"), wxEmptyString));
 		txtUsername->SetValue(settings->Read(wxT("QuickConnect/username"), wxEmptyString));
@@ -183,9 +186,19 @@ pgConn *dlgSelectConnection::CreateConn()
     {
         /* gcc requires that we store this in temporary variables for some reason... */
         wxString serv = cbServer->GetValue();
-        wxString db = cbServer->GetValue();
+        wxString db = cbDatabase->GetValue();
+		long port = 0;
+		if (serv.Find(':') > 0)
+		{
+			if (!serv.Mid(serv.Find(':')+1).ToLong(&port))
+			{
+				wxMessageBox(_("Invalid port number specified."));
+				return NULL;
+			}
+			serv = serv.Mid(0, serv.Find(':'));
+		}
         wxString user = txtUsername->GetValue();
-		return CreateConn(serv, db, user, 0, 0, true);
+		return CreateConn(serv, db, user, port, 0, true);
     }
 }
 

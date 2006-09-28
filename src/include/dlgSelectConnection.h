@@ -39,6 +39,8 @@ private:
 
     pgServer *remoteServer;
     ctlComboBoxFix *cbConnection;
+	ctlComboBoxFix *cbServer;
+	ctlComboBoxFix *cbDatabase;
 
     DECLARE_EVENT_TABLE()
 };
