@@ -74,13 +74,13 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     switch (level) {
         case wxLOG_FatalError:
             msgtype = wxT("FATAL  ");
-            preamble = _("A fatal error has occured:\n\n");
+            preamble = _("A fatal error has occurred:\n\n");
             icon = wxICON_ERROR;
             break;
 
         case wxLOG_Error:
             msgtype = wxT("ERROR  ");
-            preamble = _("An error has occured:\n\n");
+            preamble = _("An error has occurred:\n\n");
             icon = wxICON_ERROR;
             break;
 
