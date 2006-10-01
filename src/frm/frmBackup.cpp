@@ -251,8 +251,10 @@ wxString frmBackup::getCmdPart2()
     pgSchema *schema=0;
     if (object->GetMetaType() == PGM_SCHEMA)
         schema =(pgSchema*)object;
-    else if (object->GetMetaType() == PGM_TABLE)
+    else if (object->GetMetaType() == PGM_TABLE) {
         cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
+        cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+    }
 
     if (schema)
         cmd.Append(wxT(" -n ") + schema->GetQuotedIdentifier());
