@@ -276,7 +276,7 @@ void ctlSQLResult::DisplayData(bool single)
         for (col=0 ; col < nCols ; col++)
         {
             colName = thread->DataSet()->ColName(col);
-            colType = thread->DataSet()->ColType(col);
+            colType = thread->DataSet()->ColFullType(col);
             colNames.Add(colName);
             colTypes.Add(colType);
             colTypClasses.Add(thread->DataSet()->ColTypClass(col));
@@ -429,7 +429,7 @@ wxString sqlResultTable::GetColLabelValue(int col)
 {
     if (thread && thread->DataValid())
         return thread->DataSet()->ColName(col) + wxT("\n") +
-            thread->DataSet()->ColType(col);
+            thread->DataSet()->ColFullType(col);
     return wxEmptyString;
 }
 

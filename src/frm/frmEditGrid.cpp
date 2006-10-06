@@ -1624,8 +1624,8 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
 
     pgSet *colSet=connection->ExecuteSet(
-        wxT("SELECT n.nspname AS nspname, relname, format_type(t.oid,NULL) AS typname, nt.nspname AS typnspname, ")
-               wxT("attname, attnum, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
+        wxT("SELECT n.nspname AS nspname, relname, format_type(t.oid,NULL) AS typname, format_type(t.oid, att.atttypmod) AS displaytypname, ")
+               wxT("nt.nspname AS typnspname, attname, attnum, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n")
         wxT("  FROM pg_attribute att\n")
@@ -1657,6 +1657,12 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
             columns[i].name = colSet->GetVal(wxT("attname"));
             columns[i].typeName = colSet->GetVal(wxT("typname"));
+            columns[i].displayTypeName = colSet->GetVal(wxT("displaytypname"));
+
+            // Special case for character datatypes. We always cast them to text to avoid
+            // truncation issues with casts like ::character(3)
+            if (columns[i].typeName == wxT("character") || columns[i].typeName == wxT("character varying") || columns[i].typeName == wxT("\"char\""))
+                columns[i].typeName = wxT("text");
 
             columns[i].type = (Oid)colSet->GetOid(wxT("basetype"));
             if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8)
@@ -1841,7 +1847,7 @@ wxString sqlTable::GetColLabelValue(int col)
             label += wxT("bigserial");
             break;
         default:
-            label += columns[col].typeName;
+            label += columns[col].displayTypeName;
             break;
     }
     return label;

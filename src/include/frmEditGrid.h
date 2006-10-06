@@ -73,7 +73,7 @@ public:
     wxString Quote(pgConn *conn, const wxString &value);
     OID type;
     long typlen, typmod;
-    wxString name, typeName;
+    wxString name, typeName, displayTypeName;
     bool numeric, isPrimaryKey, needResize;
 };
 

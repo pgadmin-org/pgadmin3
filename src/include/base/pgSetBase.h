@@ -52,7 +52,9 @@ public:
     bool Eof() const { return (!nRows || pos > nRows); }
     wxString ColName(int col) const;
     OID ColTypeOid(int col) const;
+    long ColTypeMod(int col) const;
     wxString ColType(int col) const;
+    wxString ColFullType(int col) const;
     pgTypClass ColTypClass(int col) const;
 
     OID GetInsertedOid() const { return PQoidValue(res); }
@@ -93,7 +95,7 @@ protected:
     wxString ExecuteScalar(const wxString& sql) const;
     wxMBConv &conv;
     bool needColQuoting;
-    wxArrayString colTypes;
+    wxArrayString colTypes, colFullTypes;
 };
 
 

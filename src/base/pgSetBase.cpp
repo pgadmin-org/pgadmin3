@@ -42,7 +42,10 @@ pgSetBase::pgSetBase(PGresult *newRes, pgConnBase *newConn, wxMBConv &cnv, bool 
     {
         nCols = PQnfields(res);
         for (int x = 0; x < nCols+1; x++)
+        {
             colTypes.Add(wxT(""));
+            colFullTypes.Add(wxT(""));
+        }
 
         nRows = PQntuples(res);
         MoveFirst();
@@ -61,6 +64,11 @@ pgSetBase::~pgSetBase()
 OID pgSetBase::ColTypeOid(int col) const
 {
     return PQftype(res, col);
+}
+
+long pgSetBase::ColTypeMod(int col) const
+{
+    return PQfmod(res, col);
 }
 
 
@@ -125,6 +133,19 @@ wxString pgSetBase::ColType(int col) const
     szSQL.Printf(wxT("SELECT format_type(oid,NULL) as typname FROM pg_type WHERE oid = %d"), ColTypeOid(col));
     szResult = ExecuteScalar(szSQL);
     colTypes[col] = szResult;
+
+    return szResult;
+}
+
+wxString pgSetBase::ColFullType(int col) const
+{
+    if (!colFullTypes[col].IsEmpty())
+        return colFullTypes[col];
+
+    wxString szSQL, szResult;
+    szSQL.Printf(wxT("SELECT format_type(oid,%d) as typname FROM pg_type WHERE oid = %d"), ColTypeMod(col), ColTypeOid(col));
+    szResult = ExecuteScalar(szSQL);
+    colFullTypes[col] = szResult;
 
     return szResult;
 }
