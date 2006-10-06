@@ -764,7 +764,7 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
 								_("Show system objects"),
 								wxYES_NO|wxCANCEL | wxICON_QUESTION);
 	}
-	dlg->CenterOnParent();
+	dlg->Center();
 	rc=dlg->ShowModal();
 	delete dlg;
 
