@@ -86,7 +86,7 @@ int dlgColumn::Go(bool modal)
         if (!column->IsReferenced())
         {
             wxString typeSql=
-                wxT("SELECT tt.oid, tt.typname\n")
+                wxT("SELECT tt.oid, format_type(tt.oid,NULL) AS typname\n")
                 wxT("  FROM pg_cast\n")
                 wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
                 wxT(" WHERE castsource=") + NumToStr(column->GetAttTypId()) + wxT("\n");
@@ -395,11 +395,6 @@ void dlgColumn::OnSelChangeTyp(wxCommandEvent &ev)
     cbDatatype->GuessSelection(ev);
 
     CheckLenEnable();
-    if (column && column->GetLength() <= 0)
-    {
-        isVarLen=false;
-        isVarPrec=false;
-    }
     txtLength->Enable(isVarLen);
 
     bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial"));
