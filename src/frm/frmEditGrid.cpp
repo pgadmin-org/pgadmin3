@@ -1505,12 +1505,14 @@ void sqlGridBoolEditor::StartingClick()
 
     switch (value)
     {
-        case wxCHK_UNCHECKED:
         case wxCHK_UNDETERMINED:
+            CBox()->Set3StateValue(wxCHK_UNCHECKED);
+            break;
+        case wxCHK_UNCHECKED:
             CBox()->Set3StateValue(wxCHK_CHECKED);
             break;
         case wxCHK_CHECKED:
-            CBox()->Set3StateValue(wxCHK_UNCHECKED);
+            CBox()->Set3StateValue(wxCHK_UNDETERMINED);
             break;
     }
 }
