@@ -588,7 +588,7 @@ bool frmMain::CheckAlive()
                                 pgConn *conn=db->GetConnection();
                                 if (conn)
                                 {
-                                    if (!conn->IsAlive() && conn->GetStatus() == PGCONN_BROKEN)
+                                    if (!conn->IsAlive() && (conn->GetStatus() == PGCONN_BROKEN || conn->GetStatus() == PGCONN_BAD))
                                     {
                                         conn->Close();
                                         if (!userInformed)
@@ -618,7 +618,7 @@ bool frmMain::CheckAlive()
             }
             else
             {
-                if (server->connection()->GetStatus() == PGCONN_BROKEN)
+                if (server->connection()->GetStatus() == PGCONN_BROKEN || server->connection()->GetStatus() == PGCONN_BAD)
                 {
                     server->connection()->Close();
                     if (!userInformed)
@@ -632,9 +632,8 @@ bool frmMain::CheckAlive()
                     }
                     if (closeIt)
                     {
-
-                        browser->SelectItem(serverItem);
                         server->Disconnect(this);
+                        browser->SelectItem(serverItem);
                         execSelChange(serverItem, true);
                         browser->DeleteChildren(serverItem);
                     }

@@ -332,7 +332,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     }
 
     pgConn *conn=data->GetConnection();
-    if (conn && conn->GetStatus() == PGCONN_BROKEN)
+    if (conn && (conn->GetStatus() == PGCONN_BROKEN || conn->GetStatus() == PGCONN_BAD))
     {
         CheckAlive();
         return;
