@@ -2,30 +2,53 @@ Source: pgadmin3
 Section: misc
 Priority: optional
 Maintainer: Raphael Enrici <blacknoz@club-internet.fr>
-Build-Depends: debhelper (>= 4.1.0), libpq-dev (>= 7.3), devscripts, libwxgtk2.6-dev, libssl-dev
-Standards-Version: 3.6.2
+Build-Depends: debhelper (>= 4.1.0), libpq-dev (>= 7.3), devscripts, libxml2-dev, libxslt1-dev
+Standards-Version: 3.7.2
 
 Package: pgadmin3
 Architecture: any
 Depends: pgadmin3-data (= ${Source-Version}), ${shlibs:Depends}
-Description: Graphical administration tool for PostgreSQL
+Recommends: pgagent
+Description: graphical administration tool for PostgreSQL
  pgAdmin III is a database design and management application for use with 
- PostgreSQL. It is written in C++ using the wxWidgets (http://www.wxwidgets.org)
- cross-platform framework to allow it to run on multiple platforms.
+ PostgreSQL. The application can be used to manage PostgreSQL 7.3 and above
+ running on any platform.
+ .
+ pgAdmin III is designed to answer the needs of all users, from writing
+ simple SQL queries to developing complex databases. The graphical
+ interface supports all PostgreSQL features and makes administration
+ easy. The application also includes a syntax highlighting SQL editor, a
+ server-side code editor, an SQL/batch/shell job scheduling agent,
+ support for the Slony-I replication engine and much more. Server
+ connection may be made using TCP/IP or Unix Domain Sockets (on *nix
+ platforms), and may be SSL encrypted for security. No additional
+ drivers are required to communicate with the database server.
  .
  Homepage: http://www.pgadmin.org/
 
 Package: pgadmin3-data
 Architecture: all
-Depends: pgadmin3 (= ${Source-Version})
+Enhances: pgadmin3 (= ${Source-Version})
 Conflicts: pgadmin3 (<< 1.0.2-1)
 Replaces: pgadmin3 (<< 1.0.2-1)
-Description: Graphical administration tool for PostgreSQL - documentation
+Description: graphical administration tool for PostgreSQL - documentation
  pgAdmin III is a database design and management application for use with 
- PostgreSQL. It is written in C++ using the wxWidgets (http://www.wxwidgets.org)
- cross-platform framework to allow it to run on multiple platforms.
+ PostgreSQL.
  .
  This package contains the documentation for pgAdmin III in English language.
  This package is mandatory to get the pgAdmin III help system to run smoothly.
+ .
+ Homepage: http://www.pgadmin.org/
+
+Package: pgagent
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: pgadmin3(<= 1.4.2-1)
+Replaces: pgadmin3(<= 1.4.2-1)
+Suggests: pgadmin3
+Description: job scheduler for PostgreSQL
+ Introduced in pgAdmin III v1.4, pgAgent is a job scheduling agent for
+ PostgreSQL, capable of running multi-step batch/shell and SQL tasks on
+ complex schedules.
  .
  Homepage: http://www.pgadmin.org/

@@ -6,8 +6,41 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+# <rip>
+# #       This piece of code ripped from doc-linux-fr debian package
+# #       We use this to generate our hacked .orig.tar.gz by invoking
+# #       manually the "orig" target
+TGZ = tar -z
+TBZ2 = tar -j
+source = $(shell dpkg-parsechangelog | grep '^Source:' | sed 's/^Source: //')
+src_version = $(shell dpkg-parsechangelog | grep '^Version:' | \
+	sed 's/^Version: *//')
+upstream = $(shell dpkg-parsechangelog | grep '^Version:' | \
+	sed -e 's/^Version: //' -e 's/-.*//')
+# </rip>
+
+
 pkg=pgadmin3
 pkg-data=$(pkg)-data
+
+#
+#
+orig: clean
+	$(TGZ) -C .. --exclude $(source)-$(upstream)/debian \
+		--exclude $(source)-$(upstream)/pkg/debian  -cvf \
+		../$(source)_$(upstream).orig.tar.gz $(source)-$(upstream)
+
+#
+doPgA3Wx=localwx
+_PGA3_WXVERSION = 2.7.0-1
+_PGA3_WXSNAPBASE = wxWidgets
+_PGA3_WXTAR = $(shell pwd)/wxWidgets-$(_PGA3_WXVERSION).tar.gz
+_PGA3_WXDEST = $(shell pwd)/$(_PGA3_WXSNAPBASE)-$(_PGA3_WXVERSION)
+_PGA3_WXTOP = $(_PGA3_WXDEST)/$(_PGA3_WXSNAPBASE)-$(_PGA3_WXVERSION)
+_PGA3_WXLOCALINST = $(_PGA3_WXTOP)/localinst
+_PGA3_WXCONFIG ?= wx-config
+#
+
 
 # The name of the wxWidgets config script we invoke later in configure
 _PGA3_WXCONFIG ?= wx-config
@@ -41,21 +74,84 @@ endif
 	#CXXFLAGS += -Wa,-xgot
 #endif
 
+
+
+
+# Build a new .orig.tar.gz.
+orig: clean
+
+	$(TGZ) -C .. --exclude $(source)-$(upstream)/debian \
+		--exclude $(source)-$(upstream)/pkg/debian  -cvf \
+		../$(source)_$(upstream).orig.tar.gz $(source)-$(upstream)
+
+# Here goes the wxWidgets untar/configure/build
+$(doPgA3Wx)-clean:
+	[ -d $(_PGA3_WXDEST) ] && rm -rf $(_PGA3_WXDEST) || true
+	-rm $(doPgA3Wx)-stamp
+	-rm $(doPgA3Wx)-untar-stamp
+	-rm $(doPgA3Wx)-configure-stamp
+	-rm $(doPgA3Wx)-build-stamp
+	-rm $(doPgA3Wx)-install-stamp
+                                                                                                                             
+$(doPgA3Wx): $(doPgA3Wx)-stamp
+
+$(doPgA3Wx)-stamp: $(doPgA3Wx)-untar $(doPgA3Wx)-configure $(doPgA3Wx)-build $(doPgA3Wx)-install
+	touch $@
+
+$(doPgA3Wx)-untar: $(doPgA3Wx)-untar-stamp
+
+$(doPgA3Wx)-untar-stamp:
+	mkdir -p $(_PGA3_WXDEST)
+	cd $(_PGA3_WXDEST) && $(TGZ) -xf $(_PGA3_WXTAR)
+	# Here we eventually apply wxWindows patches
+	cat debian/wxWidgets.patch | ( cd $(_PGA3_WXTOP) && patch -p0 )
+	touch $@
+
+$(doPgA3Wx)-configure: $(doPgA3Wx)-configure-stamp
+
+$(doPgA3Wx)-configure-stamp:
+	cd $(_PGA3_WXTOP) && \
+	./configure --build=$(DEB_BUILD_GNU_TYPE) \
+	--prefix=$(_PGA3_WXLOCALINST) \
+	--mandir=\$${prefix}/share/man \
+	--infodir=\$${prefix}/share/info \
+	--with-gtk --enable-gtk2 --enable-unicode \
+	--enable-debug \
+	--disable-shared
+	touch $@
+
+$(doPgA3Wx)-build: $(doPgA3Wx)-build-stamp
+
+$(doPgA3Wx)-build-stamp:
+	cd $(_PGA3_WXTOP) && $(MAKE)
+	cd $(_PGA3_WXTOP)/contrib/ && $(MAKE)
+	touch $@
+
+$(doPgA3Wx)-install: $(doPgA3Wx)-install-stamp
+
+$(doPgA3Wx)-install-stamp:
+	cd $(_PGA3_WXTOP) && $(MAKE) install
+	cd $(_PGA3_WXTOP)/contrib/ && $(MAKE) install
+	touch $@
+
+
 # Here goes the pgAdmin3 stuff
 
-config.status: configure
+config.status: configure $(doPgA3Wx)
 	dh_testdir
 	# Add here commands to configure the package.
-	CXXFLAGS="$(CXXFLAGS)" CFLAGS="$(CFLAGS)" ./configure \
-		--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
+	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) \
+		--build=$(DEB_BUILD_GNU_TYPE) \
 		--prefix=/usr \
 		--mandir=\$${prefix}/share/man \
 		--infodir=\$${prefix}/share/info \
-		--with-wx=/usr \
+		--disable-dependency-tracking \
+		--with-wx=$(_PGA3_WXLOCALINST) \
 		--with-wx-config=$(_PGA3_WXCONFIG) \
 		--with-pgsql-include=$(_pgsql_inc) \
 		--enable-gtk2 \
-		--enable-unicode
+		--enable-unicode \
+		--enable-debug --enable-static --with-libxml2=/usr --with-libxslt=/usr
 
 build: build-stamp
 
@@ -68,7 +164,7 @@ build-stamp: config.status
 
 	touch build-stamp
 
-clean:
+clean: $(doPgA3Wx)-clean
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
@@ -119,8 +215,8 @@ install: build
 spec-binary-indep:
 	dh_testdir
 	dh_testroot
-	# dh_installchangelogs 
-	# dh_installdocs
+	dh_installchangelogs 
+	dh_installdocs
 	# dh_installexamples
 	#dh_install
 	dh_link
@@ -166,6 +262,7 @@ spec-binary-arch:
 	dh_md5sums
 	dh_builddeb
 
+	#make -f debian/rules $(doPgA3Wx)-clean
 
 # Build architecture independant packages using the common target.
 binary-indep: build install
