@@ -1716,6 +1716,10 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     editor = new sqlGridNumericEditor();
                     break;
                 case PGOID_TYPE_MONEY:
+                    columns[i].numeric = false;
+                    columns[i].attr->SetReadOnly(false);
+                    editor = new wxGridCellTextEditor();
+                    break;
                 case PGOID_TYPE_NUMERIC:
                 {
                     columns[i].numeric = true;
