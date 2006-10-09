@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<refentry id="pgagent">
+  <refmeta>
+    <refentrytitle>pgagent</refentrytitle>
+
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>December 26, 2005</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>pgAgent</refname>
+
+    <refpurpose>a job scheduler for PostgreSQL.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>pgagent</command>
+
+      <group>
+        <arg>-f</arg>
+
+        <arg>-t <replaceable>seconds</replaceable></arg>
+
+        <arg>-r <replaceable>seconds</replaceable></arg>
+
+        <arg>-l <replaceable>number</replaceable></arg>
+      </group>
+
+      <arg choice="req">&lt;connect string&gt;</arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>Introduced in pgAdmin III v1.4, pgAgent is a job scheduling agent
+    for PostgreSQL, capable of running multi-step batch/shell and SQL tasks on
+    complex schedules.</para>
+
+    <para>Full documentation of pgAgent is available in pgAdmin III's online
+    help. Launch pgAdmin III (simply type pgadmin3 at command prompt) and
+    select "Help..." from the "Help" menu. Browse through the pgAdmin III
+    documentation until you find "pgAgent". Both database setup and system
+    part of the installation are detailed. You will also find instructions
+    to create jobs and schedules.</para>
+  </refsect1>
+
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <variablelist>
+      <varlistentry>
+        <term><option>-f</option></term>
+
+        <listitem>
+          <para>run in the foreground (do not detach from the
+          terminal)</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><option>-t</option> <replaceable>seconds</replaceable></term>
+
+        <listitem>
+          <para>poll time interval in seconds (default 10)</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><option>-r</option> <replaceable>seconds</replaceable></term>
+
+        <listitem>
+          <para>retry period after connection abort in seconds (&gt;=10,
+          default 30)</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><option>-l</option> <replaceable>verbosity</replaceable></term>
+
+        <listitem>
+          <para>logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default
+          0)</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><replaceable>&lt;connect string&gt;</replaceable></term>
+
+        <listitem>
+          <para>The connect string required is a standard PostgreSQL libpq
+          connection string (see the PostgreSQL documentation for further
+          details). For example, the following command line will run pgAgent
+          against a server listening on the localhost, using a database called
+          'pgadmin', connecting as the user 'postgres': /usr/bin/pgagent
+          hostaddr=127.0.0.1 dbname=pgadmin user=postgres</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>SEE ALSO</title>
+
+    <para><emphasis role="bold">pgadmin3</emphasis>(1)</para>
+  </refsect1>
+
+  <refsect1>
+    <title>AUTHORS</title>
+
+    <para>The content of this manual page was mostly ripped from documentation 
+    written by the pgAdmin development team. It was built by Raphaël Enrici 
+    &lt;blacknoz@club-internet.fr&gt; for the Debian project (but may be used
+    by others).</para>
+  </refsect1>
+</refentry>
+
