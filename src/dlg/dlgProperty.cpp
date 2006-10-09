@@ -202,7 +202,9 @@ int dlgProperty::Go(bool modal)
     if (pos.x >= 0 && pos.y >= 0)
         Move(pos);
 
-    CheckOnScreen(pos, GetSize(), 0, 0);
+    wxSize size = GetSize();
+    CheckOnScreen(pos, size, 0, 0);
+        Move(pos);
 
     ctlComboBoxFix *cbowner = (ctlComboBoxFix*)cbOwner;
 
