@@ -137,9 +137,12 @@ DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
 {
     wxString condition=wxT("typisdefined AND typtype ");
     if (withDomains)
-        condition += wxT("IN ('b', 'd')");
+        condition += wxT("IN ('b', 'c', 'd')");
     else
-        condition += wxT("= 'b'");
+        condition += wxT("IN ('b', 'c')");
+
+    condition += wxT("AND typname NOT IN (SELECT relname FROM pg_class WHERE relnamespace = typnamespace AND relkind != 'c') ");
+
     if (!settings->GetShowSystemObjects())
         condition += wxT(" AND nsp.nspname NOT LIKE 'information_schema'");
     init(db, condition);
