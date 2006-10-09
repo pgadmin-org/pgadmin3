@@ -308,6 +308,21 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		else
 			AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
 		fi
+
+		if test "$build_cpu-$build_vendor" = "powerpc-apple"
+		then
+			echo -n "Checking if libpq links against libkrb5: "
+			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libkrb5)" -gt 0
+			then
+				PG_KRB5="yes"
+			else
+				PG_KRB5="no"
+			fi
+			echo $PG_KRB5
+		else
+			AC_CHECK_LIB(pq, krb5_free_principal, [PG_KRB5=yes], [PG_KRB5=no])
+		fi
+
 		AC_LANG_RESTORE
 
 		PG_INCLUDE=`${PG_CONFIG} --includedir` 
@@ -338,6 +353,11 @@ AC_DEFUN([SETUP_POSTGRESQL],
 				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS -lssl $CRYPTO_LIB"
 			else
 				LIBS="${PG_LIB}/libpq.a $CRYPT_LIB $LIBS $CRYPTO_LIB"
+			fi
+
+			if test "$PG_KRB5" = "yes"
+			then
+				LIBS="$LIBS -lkrb5"
 			fi
 		else
 			if test "$PG_SSL" = "yes"
