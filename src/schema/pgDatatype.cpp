@@ -156,7 +156,7 @@ void DatatypeReader::init(pgDatabase *db, const wxString &condition)
         wxT("       (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname = t.typname) > 1 AS isdup\n")
         wxT("  FROM pg_type t\n")
         wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
-        wxT(" WHERE ") + condition + wxT("\n")
+        wxT(" WHERE (NOT (typname = 'unknown' AND nspname = 'pg_catalog')) AND ") + condition + wxT("\n")
         wxT(" ORDER BY CASE WHEN typtype='d' THEN 0 ELSE 1 END, (t.typelem>0)::bool, 1"));
 }
 
