@@ -268,18 +268,18 @@ void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
 void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
 {
 	int pos = GetCurrentPos();
-	wxChar ch = GetCharAt(pos);
+	wxChar ch = GetCharAt(pos-1);
+    int st = GetStyleAt(pos-1);
 	int match;
 
 	// Clear all highlighting
 	BraceBadLight(wxSTC_INVALID_POSITION);
 
-	// Highlight the previous set if the match
-	ch = GetCharAt(pos-1);
-
-	if (ch == '{' || ch == '}' ||
-		ch == '[' || ch == ']' ||
-		ch == '(' || ch == ')')
+    // Check for braces that aren't in comment styles
+	if ((ch == '{' || ch == '}' ||
+		 ch == '[' || ch == ']' ||
+		 ch == '(' || ch == ')') &&
+         st != 2) 
 	{
 		match = BraceMatch(pos-1);
 		if (match != wxSTC_INVALID_POSITION)
@@ -290,10 +290,12 @@ void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
 	while ((pos--) >= 0)
 	{
 		ch = GetCharAt(pos);
+        st = GetStyleAt(pos);
 
-		if (ch == '{' || ch == '}' ||
-			ch == '[' || ch == ']' ||
-			ch == '(' || ch == ')')
+		if ((ch == '{' || ch == '}' ||
+			 ch == '[' || ch == ']' ||
+			 ch == '(' || ch == ')') &&
+             st != 2)
 		{
 			match = BraceMatch(pos);
 			if (match == wxSTC_INVALID_POSITION)
