@@ -79,7 +79,14 @@ END_EVENT_TABLE();
 
 dlgProperty *pgFunctionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgFunction(this, frame, (pgFunction*)node, (pgSchema*)parent);
+    pgSchema *sch;
+
+    if (parent->GetMetaType() == PGM_TRIGGER)
+        sch = parent->GetSchema();
+    else
+        sch = (pgSchema*)parent;
+
+    return new dlgFunction(this, frame, (pgFunction*)node, sch);
 }
 
 

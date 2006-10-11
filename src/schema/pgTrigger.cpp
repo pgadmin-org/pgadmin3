@@ -246,6 +246,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 pgTriggerFactory::pgTriggerFactory() 
 : pgTableObjFactory(__("Trigger"), __("New Trigger..."), __("Create a new Trigger."), trigger_xpm)
 {
+    metaType = PGM_TRIGGER;
 }
 
 
