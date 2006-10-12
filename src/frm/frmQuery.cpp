@@ -292,7 +292,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("frmQuery/Perspective"), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);
+    settings->Read(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
     // and reset the captions for the current language
@@ -368,7 +368,7 @@ frmQuery::~frmQuery()
 	if (mainForm)
 		mainForm->RemoveFrame(this);
 
-    settings->Write(wxT("frmQuery/Perspective"), manager.SavePerspective());
+    settings->Write(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
 
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
