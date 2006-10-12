@@ -7,7 +7,7 @@
  * Portions Copyright (c) 1996-2006, PostgreSQL Global Development Group
  * Portions Copyright (c) 1994, Regents of the University of California
  *
- * $Id: keywords.h 4875 2006-01-06 21:06:46Z dpage $
+ * $Id$
  *
  *-------------------------------------------------------------------------
  */
