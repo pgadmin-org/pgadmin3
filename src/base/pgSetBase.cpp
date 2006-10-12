@@ -399,6 +399,9 @@ pgQueryThreadBase::pgQueryThreadBase(pgConnBase *_conn, const wxString &qry, int
     resultToRetrieve=_resultToRetrieve;
     rc=-1;
     insertedOid = (OID)-1;
+
+    wxLogSql(wxT("Thread Query %s"), qry.c_str());
+
     conn->RegisterNoticeProcessor(pgNoticeProcessor, this);
     if (conn->conn)
         PQsetnonblocking(conn->conn, 1);
@@ -438,8 +441,6 @@ int pgQueryThreadBase::execute()
 {
     rowsInserted = -1L;
     wxLongLong startTime=wxGetLocalTimeMillis();
-
-    wxLogSql(wxT("Thread Query %s"), query.c_str());
 
     if (!conn->conn)
         return(0);
@@ -539,8 +540,6 @@ bool pgQueryThreadBase::IsRunning() const
 void *pgQueryThreadBase::Entry()
 {
     rc=-2;
-    wxLogInfo(wxT("Running query %s"), query.c_str());
-
     execute();
 
     return(NULL);

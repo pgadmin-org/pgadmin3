@@ -471,7 +471,8 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
             nb->SetSelection(nb->GetPageCount()-1);
 
 // WARNING - wxMSW crashes when appending to the text box in this loop :-(
-//           Consequently, we don't update it in real time.
+//           Consequently, we don't update it in real time. 
+//           Thread safety in wxString?
 #ifdef __WXMSW__
         wxString msg;
         if (txtMessages)

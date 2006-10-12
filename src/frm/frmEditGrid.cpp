@@ -596,6 +596,9 @@ void frmEditGrid::OnUndo(wxCommandEvent& event)
 
 void frmEditGrid::OnRefresh(wxCommandEvent& event)
 {
+    if (!toolBar->GetToolEnabled(MNU_REFRESH))
+        return;
+
     if (toolBar->GetToolEnabled(MNU_SAVE))
     {
         wxMessageDialog msg(this, _("There is unsaved data in a row.\nDo you want to store to the database?"), _("Unsaved data"),
@@ -825,6 +828,9 @@ void frmEditGrid::Go()
 
     SetStatusText(_("Refreshing data, please wait."), 0);
 
+    toolBar->EnableTool(MNU_REFRESH, false);
+    viewMenu->Enable(MNU_REFRESH, false);
+
     wxString qry=wxT("SELECT ");
     if (hasOids)
         qry += wxT("oid, ");
@@ -844,6 +850,8 @@ void frmEditGrid::Go()
     if (thread->Create() != wxTHREAD_NO_ERROR)
     {
         Abort();
+        toolBar->EnableTool(MNU_REFRESH, true);
+        viewMenu->Enable(MNU_REFRESH, true);
         return;
     }
 
@@ -855,11 +863,17 @@ void frmEditGrid::Go()
         wxMilliSleep(10);
     }
     if (!thread)
+    {
+        toolBar->EnableTool(MNU_REFRESH, true);
+        viewMenu->Enable(MNU_REFRESH, true);
         return;
+    }
 
     if (!thread->DataValid())
     {
         Abort();
+        toolBar->EnableTool(MNU_REFRESH, true);
+        viewMenu->Enable(MNU_REFRESH, true);
         return;
     }
     SetStatusText(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()), 0);
@@ -874,9 +888,9 @@ void frmEditGrid::Go()
     sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
     sqlGrid->EndBatch();
 
-    wxSizeEvent event;
-    event.m_size = GetSize();
-    OnSize(event);
+    toolBar->EnableTool(MNU_REFRESH, true);
+    viewMenu->Enable(MNU_REFRESH, true);
+
     manager.Update();
 
     if (!hasOids && primaryKeyColNumbers.IsEmpty() && relkind == 'r')
