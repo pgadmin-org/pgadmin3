@@ -16,7 +16,11 @@ EXTRA_DIST = \
 		$(srcdir)/Info-Debug.plist.in \
 		$(srcdir)/pgadmin3.icns \
 		$(srcdir)/sql.icns \
-		$(srcdir)/PkgInfo
+		$(srcdir)/PkgInfo \
+		$(srcdir)/installer/installer.pmproj \
+		$(srcdir)/installer/intro.rtf \
+		$(srcdir)/installer/licence.rtf \
+		$(srcdir)/installer/logo.jpg
 
 install-exec-hook:
 if APPBUNDLE
