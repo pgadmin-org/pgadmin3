@@ -61,6 +61,8 @@ wxString ExecProcess(const wxString &cmd);
 wxString GetHtmlEntity(const wxChar ch);
 wxString HtmlEntities(const wxString &str);
 
+wxString VerFromRev(const wxString &rev);
+
 enum 
 {
     PGM_SERVER,

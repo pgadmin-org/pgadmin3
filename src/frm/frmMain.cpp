@@ -172,7 +172,7 @@ frmMain::frmMain(const wxString& title)
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("frmMain/Perspective"), &perspective, FRMMAIN_DEFAULT_PERSPECTIVE);
+    settings->Read(wxT("frmMain/Perspective-") + VerFromRev(PERPSECTIVE_VER), &perspective, FRMMAIN_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
     // and reset the captions for the current language
@@ -204,7 +204,7 @@ frmMain::~frmMain()
 {
     StoreServers();
 
-    settings->Write(wxT("frmMain/Perspective"), manager.SavePerspective());
+    settings->Write(wxT("frmMain/Perspective-") + VerFromRev(PERPSECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
 
     // Clear the treeview

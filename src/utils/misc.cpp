@@ -630,3 +630,9 @@ extern "C" long _ftol2( double dblSource ) { return _ftol( dblSource ); }
 #endif
 #endif
 
+wxString VerFromRev(const wxString &rev)
+{
+   wxString ret = rev.AfterFirst(' ');
+   ret = ret.BeforeFirst(' ');
+   return ret;
+}
