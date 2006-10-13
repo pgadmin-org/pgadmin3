@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.0_RC5 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="requirements.html" title="3. System Requirements">
 <link rel="next" href="concepts.html" title="5. Slony-I Concepts">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="installation"></a>4. <span class="productname">Slony-I</span> Installation</h2></div></div></div>
-<a name="id2499582"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<a name="id2499593"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>For <span class="trademark">Windows</span>&#8482; users: Unless you are planning on hacking
 the <span class="productname">Slony-I</span> code, it is highly recommended that you download and
@@ -42,7 +42,7 @@ the <span class="productname">Slony-I</span> sources.  Head into that that direc
 the installation procedure.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2499699"></a>4.1. Short Version</h3></div></div></div>
+<a name="id2499710"></a>4.1. Short Version</h3></div></div></div>
 <pre class="screen">PGMAIN=/usr/local/pgsql746-freebsd-2005-04-01 \
 ./configure \
     --with-pgconfigdir=$PGMAIN/bin
@@ -50,8 +50,8 @@ gmake all; gmake install</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2499710"></a>4.2. Configuration</h3></div></div></div>
-<a name="id2499714"></a><p> <span class="productname">Slony-I</span> normally needs to be built and installed by the
+<a name="id2499721"></a>4.2. Configuration</h3></div></div></div>
+<a name="id2499725"></a><p> <span class="productname">Slony-I</span> normally needs to be built and installed by the
 <span class="productname">PostgreSQL</span> Unix user.  The installation target must be identical to
 the existing <span class="productname">PostgreSQL</span> installation particularly in view of the fact
 that several <span class="productname">Slony-I</span> components represent libraries and SQL scripts
@@ -95,7 +95,7 @@ right places for all of the components. </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2499948"></a>4.3. Example</h3></div></div></div>
+<a name="id2499959"></a>4.3. Example</h3></div></div></div>
 <p> After determining that the <span class="productname">PostgreSQL</span> instance to be used is
 installed in
 <code class="filename">/opt/dbs/pgsql746-aix-2005-04-01</code>:</p>
@@ -115,7 +115,7 @@ safety </a>. </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2549596"></a>4.4. Build</h3></div></div></div>
+<a name="id2549606"></a>4.4. Build</h3></div></div></div>
 <p>To start the build process, type
 
 </p>
@@ -134,7 +134,7 @@ install.  </code></p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2549651"></a>4.5.  Installing <span class="productname">Slony-I</span> Once Built;</h3></div></div></div>
+<a name="id2549661"></a>4.5.  Installing <span class="productname">Slony-I</span> Once Built;</h3></div></div></div>
 <p> To install <span class="productname">Slony-I</span>, enter
 
 <code class="command">gmake install</code></p>
@@ -171,7 +171,7 @@ may be able to be loaded remotely from other hosts.) </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2549823"></a>4.6.  Building Documentation: Admin Guide </h3></div></div></div>
+<a name="id2549833"></a>4.6.  Building Documentation: Admin Guide </h3></div></div></div>
 <p> The document you are reading now is a fairly extensive
 &#8220;<span class="quote">Administrator's Guide</span>&#8221; containing what wisdom has been
 discovered and written down about the care and feeding of <span class="productname">Slony-I</span>.</p>
@@ -197,7 +197,7 @@ Fedora...</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2549896"></a>4.7.  Installing <span class="productname">Slony-I</span> from RPMs</h3></div></div></div>
+<a name="id2549906"></a>4.7.  Installing <span class="productname">Slony-I</span> from RPMs</h3></div></div></div>
 <p> Even though <span class="productname">Slony-I</span> can be compiled and run on most Linux
 distributions, it is also possible to install <span class="productname">Slony-I</span> using binary
 packages. Slony Global Development Team provides official RPMs and
@@ -222,8 +222,8 @@ docs are installed in
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2550020"></a>4.8.  Installing the <span class="productname">Slony-I</span> service on <span class="trademark">Windows</span>&#8482;</h3></div></div></div>
-<a name="id2550034"></a><p> On <span class="trademark">Windows</span>&#8482; systems, instead of running one <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon per node, a single slon service is installed
+<a name="id2550030"></a>4.8.  Installing the <span class="productname">Slony-I</span> service on <span class="trademark">Windows</span>&#8482;</h3></div></div></div>
+<a name="id2550044"></a><p> On <span class="trademark">Windows</span>&#8482; systems, instead of running one <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon per node, a single slon service is installed
 which can then be controlled through the <code class="command">Services</code>
 control panel applet, or from a command prompt using the
 <code class="command">net</code> command.</p>

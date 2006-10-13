@@ -4,8 +4,8 @@
 <title>REVOKE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-reset.html" title="RESET">
 <link rel="next" href="sql-rollback.html" title="ROLLBACK">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>REVOKE &#8212; remove access privileges</p>
 </div>
-<a name="id781085"></a><div class="refsynopsisdiv">
+<a name="id2744650"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">REVOKE [ GRANT OPTION FOR ]
     { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
@@ -57,8 +57,7 @@ REVOKE [ GRANT OPTION FOR ]
     [ CASCADE | RESTRICT ]
 
 REVOKE [ ADMIN OPTION FOR ]
-    <em class="replaceable"><code>role</code></em> [, ...]
-    FROM { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...]
+    <em class="replaceable"><code>role</code></em> [, ...] FROM <em class="replaceable"><code>username</code></em> [, ...]
     [ CASCADE | RESTRICT ]</pre>
 </div>
 <div class="refsect1" lang="en">
@@ -97,6 +96,8 @@ REVOKE [ ADMIN OPTION FOR ]
   </p>
 <p>   When revoking membership in a role, <code class="literal">GRANT OPTION</code> is instead
    called <code class="literal">ADMIN OPTION</code>, but the behavior is similar.
+   Note also that this form of the command does not
+   allow the noise word <code class="literal">GROUP</code>.
   </p>
 </div>
 <div class="refsect1" lang="en">
@@ -198,7 +199,7 @@ REVOKE [ ADMIN OPTION FOR ]
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id781792"></a><h2>See Also</h2>
+<a name="id2745292"></a><h2>See Also</h2>
 <p>   <a href="sql-grant.html">GRANT</a>
   </p>
 </div>

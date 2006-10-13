@@ -4,8 +4,8 @@
 <title>GRANT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-fetch.html" title="FETCH">
 <link rel="next" href="sql-insert.html" title="INSERT">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>GRANT &#8212; define access privileges</p>
 </div>
-<a name="id775784"></a><div class="refsynopsisdiv">
+<a name="id2739820"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">GRANT { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
@@ -44,8 +44,7 @@ GRANT { CREATE | ALL [ PRIVILEGES ] }
     ON TABLESPACE <em class="replaceable"><code>tablespacename</code></em> [, ...]
     TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
-GRANT <em class="replaceable"><code>role</code></em> [, ...]
-    TO { <em class="replaceable"><code>username</code></em> | GROUP <em class="replaceable"><code>groupname</code></em> | PUBLIC } [, ...] [ WITH ADMIN OPTION ]</pre>
+GRANT <em class="replaceable"><code>role</code></em> [, ...] TO <em class="replaceable"><code>username</code></em> [, ...] [ WITH ADMIN OPTION ]</pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-grant-description"></a><h2>Description</h2>
@@ -206,6 +205,10 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...]
    database superusers can grant or revoke membership in any role to anyone.
    Roles having <code class="literal">CREATEROLE</code> privilege can grant or revoke
    membership in any role that is not a superuser.
+  </p>
+<p>   Unlike the case with privileges, membership in a role cannot be granted
+   to <code class="literal">PUBLIC</code>.  Note also that this form of the command does not
+   allow the noise word <code class="literal">GROUP</code>.
   </p>
 </div>
 </div>
@@ -383,7 +386,7 @@ specified request.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id777051"></a><h2>See Also</h2>
+<a name="id2740977"></a><h2>See Also</h2>
 <p>   <a href="sql-revoke.html">REVOKE</a>
   </p>
 </div>

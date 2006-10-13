@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.0_RC5 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="reshape.html" title="7. Reshaping a Cluster">
 <link rel="next" href="listenpaths.html" title="9. Slony-I listen paths">
@@ -14,9 +14,9 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="failover"></a>8. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id2555522"></a><div class="sect2" lang="en">
+<a name="id2555532"></a><div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2555530"></a>8.1. Foreword</h3></div></div></div>
+<a name="id2555540"></a>8.1. Foreword</h3></div></div></div>
 <p><span class="productname">Slony-I</span> is an asynchronous replication system.  Because of
 that, it is almost certain that at the moment the current origin of a
 set fails, the final transactions committed at the origin will have
@@ -39,8 +39,8 @@ simple 2 node replication system with <span class="productname">Slony-I</span>.<
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2555589"></a>8.2.  Controlled Switchover</h3></div></div></div>
-<a name="id2555593"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
+<a name="id2555600"></a>8.2.  Controlled Switchover</h3></div></div></div>
+<a name="id2555603"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
 &#8220;<span class="quote">subscriber</span>&#8221; as node2 (<span class="emphasis"><em>e.g.</em></span> -
 slave).  A web application on a third server is accessing the database
 on node1.  Both databases are up and running and replication is more
@@ -90,8 +90,8 @@ be any loss of data.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2555706"></a>8.3.  Failover</h3></div></div></div>
-<a name="id2555709"></a><p> If some more serious problem occurs on the
+<a name="id2555716"></a>8.3.  Failover</h3></div></div></div>
+<a name="id2555719"></a><p> If some more serious problem occurs on the
 &#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
 undesirable circumstance, as transactions &#8220;<span class="quote">committed</span>&#8221; on
 the origin, but not applied to the subscribers, will be lost.  You may
@@ -159,16 +159,31 @@ implications.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2555910"></a>8.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
-<a name="id2555918"></a><p> If you do choose to automate <code class="command">FAIL OVER </code>, it
+<a name="id2555920"></a>8.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
+<a name="id2555929"></a><p> If you do choose to automate <code class="command">FAIL OVER </code>, it
 is important to do so <span class="emphasis"><em>carefully.</em></span> You need to have
 good assurance that the failed node is well and truly failed, and you
 need to be able to assure that the failed node will not accidentally
 return into service, thereby allowing there to be two nodes out there
 able to respond in a &#8220;<span class="quote">master</span>&#8221; role. </p>
-<p> When failover occurs, there needs to be a mechanism to forcibly
-knock the failed node off the network.  This could take place via
-having an SNMP interface that does some combination of the following:
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p> The problem here requiring that you &#8220;<span class="quote">shoot the
+failed node in the head</span>&#8221; is not fundamentally about replication
+or <span class="productname">Slony-I</span>; <span class="productname">Slony-I</span> handles this all reasonably gracefully, as once
+the node is marked as failed, the other nodes will &#8220;<span class="quote">shun</span>&#8221;
+it, effectively ignoring it.  The problem is instead with
+<span class="emphasis"><em>your application.</em></span> Supposing the failed node can
+come back up sufficiently that it can respond to application requests,
+<span class="emphasis"><em>that</em></span> is likely to be a problem, and one that
+hasn't anything to do with <span class="productname">Slony-I</span>.  The trouble is if there are two
+databases that can respond as if they are &#8220;<span class="quote">master</span>&#8221;
+systems. </p>
+</div>
+<p> When failover occurs, there therefore needs to be a mechanism
+to forcibly knock the failed node off the network in order to prevent
+applications from getting confused.  This could take place via having
+an SNMP interface that does some combination of the following:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
@@ -192,7 +207,7 @@ would remain accessible to system administrators.  </p>
 <div class="titlepage"><div><div><h3 class="title">
 <a name="rebuildnode1"></a>8.5. After Failover, Reconfiguring
 Former Origin</h3></div></div></div>
-<a name="id2555986"></a><p> What happens to the failed node will depend somewhat on the
+<a name="id2556045"></a><p> What happens to the failed node will depend somewhat on the
 nature of the catastrophe that lead to needing to fail over to another
 node.  If the node had to be abandoned because of physical destruction
 of its disk storage, there will likely not be anything of interest

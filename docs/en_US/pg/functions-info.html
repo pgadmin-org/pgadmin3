@@ -4,8 +4,8 @@
 <title>9.19. System Information Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-srf.html" title="9.18. Set Returning Functions">
 <link rel="next" href="functions-admin.html" title="9.20. System Administration Functions">
@@ -97,7 +97,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id621710"></a><a name="id621723"></a><a name="id621736"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
+<br class="table-break"><a name="id2599570"></a><a name="id2599582"></a><a name="id2599593"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
     the current database connection; but superusers can change this setting
     with <a href="sql-set-session-authorization.html">SET SESSION AUTHORIZATION</a>.
     The <code class="function">current_user</code> is the user identifier
@@ -133,7 +133,7 @@
 <p>
     </p>
 </div>
-<a name="id621898"></a><a name="id621909"></a><a name="id621919"></a><a name="id621929"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
+<a name="id2599739"></a><a name="id2599748"></a><a name="id2599758"></a><a name="id2599767"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
      current client, and <code class="function">inet_client_port</code> returns the
      port number.
      <code class="function">inet_server_addr</code> returns the IP address on which
@@ -142,14 +142,14 @@
      All these functions return NULL if the current connection is via a
      Unix-domain socket.
    </p>
-<a name="id621974"></a><p>     <code class="function">pg_postmaster_start_time</code> returns the
+<a name="id2599808"></a><p>     <code class="function">pg_postmaster_start_time</code> returns the
      <code class="type">timestamp with time zone</code> when the
      <code class="command">postmaster</code> started.
    </p>
-<a name="id622006"></a><p>    <code class="function">version</code> returns a string describing the
+<a name="id2599836"></a><p>    <code class="function">version</code> returns a string describing the
     <span class="productname">PostgreSQL</span> server's version.
    </p>
-<a name="id622032"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
+<a name="id2599860"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.40. Access Privilege Inquiry Functions">Table 9.40, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
    allow the user to query object access privileges programmatically.
    See <a href="ddl-priv.html" title="5.6. Privileges">Section 5.6, &#8220;Privileges&#8221;</a> for more information about
    privileges.
@@ -290,7 +290,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id622617"></a><a name="id622628"></a><a name="id622638"></a><a name="id622648"></a><a name="id622659"></a><a name="id622669"></a><a name="id622679"></a><p>    <code class="function">has_table_privilege</code> checks whether a user
+<br class="table-break"><a name="id2600389"></a><a name="id2600398"></a><a name="id2600408"></a><a name="id2600418"></a><a name="id2600427"></a><a name="id2600436"></a><a name="id2600446"></a><p>    <code class="function">has_table_privilege</code> checks whether a user
     can access a table in a particular way.  The user can be
     specified by name or by OID
     (<code class="literal">pg_authid.oid</code>), or if the argument is
@@ -437,7 +437,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id623253"></a><a name="id623264"></a><a name="id623274"></a><a name="id623285"></a><a name="id623295"></a><a name="id623306"></a><p>   <code class="function">pg_table_is_visible</code> performs the check for
+<br class="table-break"><a name="id2600967"></a><a name="id2600976"></a><a name="id2600986"></a><a name="id2600996"></a><a name="id2601005"></a><a name="id2601014"></a><p>   <code class="function">pg_table_is_visible</code> performs the check for
    tables (or views, or any other kind of <code class="literal">pg_class</code> entry).
    <code class="function">pg_type_is_visible</code>,
    <code class="function">pg_function_is_visible</code>,
@@ -461,7 +461,7 @@
     Note that it would not make much sense to test an unqualified name in
     this way [mdash ] if the name can be recognized at all, it must be visible.
    </p>
-<a name="id623410"></a><a name="id623420"></a><a name="id623430"></a><a name="id623441"></a><a name="id623451"></a><a name="id623462"></a><a name="id623472"></a><a name="id623482"></a><a name="id623492"></a><a name="id623503"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
+<a name="id2601110"></a><a name="id2601119"></a><a name="id2601128"></a><a name="id2601137"></a><a name="id2601147"></a><a name="id2601156"></a><a name="id2601166"></a><a name="id2601175"></a><a name="id2601184"></a><a name="id2601194"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.42. System Catalog Information Functions">Table 9.42, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
    extract information from the system catalogs.
   </p>
 <div class="table">
@@ -482,54 +482,6 @@
 <td><code class="literal"><code class="function">format_type</code>(<em class="parameter"><code>type_oid</code></em>, <em class="parameter"><code>typemod</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>get SQL name of a data type</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE VIEW</code> command for view</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE RULE</code> command for rule</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE RULE</code> command for rule</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE INDEX</code> command for index</td>
-</tr>
-<tr>
-<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>, <em class="parameter"><code>column_no</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE INDEX</code> command for index,
-       or definition of just one index column when
-       <em class="parameter"><code>column_no</code></em> is not zero</td>
-</tr>
-<tr>
-<td>
-<code class="function">pg_get_triggerdef</code>(<em class="parameter"><code>trigger_oid</code></em>)</td>
-<td><code class="type">text</code></td>
-<td>get <code class="command">CREATE [ CONSTRAINT ] TRIGGER</code> command for trigger</td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">pg_get_constraintdef</code>(<em class="parameter"><code>constraint_oid</code></em>)</code></td>
@@ -554,9 +506,26 @@
        in it refer to the relation indicated by the second parameter</td>
 </tr>
 <tr>
-<td><code class="literal"><code class="function">pg_get_userbyid</code>(<em class="parameter"><code>roleid</code></em>)</code></td>
-<td><code class="type">name</code></td>
-<td>get role name with given ID</td>
+<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE INDEX</code> command for index</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_indexdef</code>(<em class="parameter"><code>index_oid</code></em>, <em class="parameter"><code>column_no</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE INDEX</code> command for index,
+       or definition of just one index column when
+       <em class="parameter"><code>column_no</code></em> is not zero</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE RULE</code> command for rule</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_ruledef</code>(<em class="parameter"><code>rule_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE RULE</code> command for rule</td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">pg_get_serial_sequence</code>(<em class="parameter"><code>table_name</code></em>, <em class="parameter"><code>column_name</code></em>)</code></td>
@@ -569,6 +538,37 @@
 <td><code class="type">setof oid</code></td>
 <td>get the set of database OIDs that have objects in the tablespace</td>
 </tr>
+<tr>
+<td>
+<code class="function">pg_get_triggerdef</code>(<em class="parameter"><code>trigger_oid</code></em>)</td>
+<td><code class="type">text</code></td>
+<td>get <code class="command">CREATE [ CONSTRAINT ] TRIGGER</code> command for trigger</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_userbyid</code>(<em class="parameter"><code>roleid</code></em>)</code></td>
+<td><code class="type">name</code></td>
+<td>get role name with given ID</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get underlying <code class="command">SELECT</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_name</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get underlying <code class="command">SELECT</code> command for view (<span class="emphasis"><em>deprecated</em></span>)</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get underlying <code class="command">SELECT</code> command for view</td>
+</tr>
+<tr>
+<td><code class="literal"><code class="function">pg_get_viewdef</code>(<em class="parameter"><code>view_oid</code></em>, <em class="parameter"><code>pretty_bool</code></em>)</code></td>
+<td><code class="type">text</code></td>
+<td>get underlying <code class="command">SELECT</code> command for view</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -576,28 +576,22 @@
    is identified by its type OID and possibly a type modifier.  Pass NULL
    for the type modifier if no specific modifier is known.
   </p>
-<p>   <code class="function">pg_get_viewdef</code>,
-   <code class="function">pg_get_ruledef</code>,
-   <code class="function">pg_get_indexdef</code>,
-   <code class="function">pg_get_triggerdef</code>, and
-   <code class="function">pg_get_constraintdef</code> respectively
-   reconstruct the creating command for a view, rule, index, trigger, or
-   constraint.  (Note that this is a decompiled reconstruction, not
-   the original text of the command.)
+<p>   <code class="function">pg_get_constraintdef</code>,
+   <code class="function">pg_get_indexdef</code>, <code class="function">pg_get_ruledef</code>,
+   and <code class="function">pg_get_triggerdef</code>, respectively reconstruct the
+   creating command for a constraint, index, rule, or trigger. (Note that this
+   is a decompiled reconstruction, not the original text of the command.)
    <code class="function">pg_get_expr</code> decompiles the internal form of an
-   individual expression, such as the default value for a column.  It
-   may be useful when examining the contents of system catalogs.
-   Most of these functions come in two
-   variants, one of which can optionally &#8220;<span class="quote">pretty-print</span>&#8221; the result.
-   The pretty-printed format is more readable, but the default format is more
-   likely to be
-   interpreted the same way by future versions of <span class="productname">PostgreSQL</span>;
-   avoid using pretty-printed output for dump purposes.
-   Passing <code class="literal">false</code> for the pretty-print parameter yields the
-   same result as the variant that does not have the parameter at all.
-  </p>
-<p>   <code class="function">pg_get_userbyid</code> extracts a role's name given
-   its OID.
+   individual expression, such as the default value for a column.  It may be
+   useful when examining the contents of system catalogs.
+   <code class="function">pg_get_viewdef</code> reconstructs the <code class="command">SELECT</code>
+   query that defines a view. Most of these functions come in two variants,
+   one of which can optionally &#8220;<span class="quote">pretty-print</span>&#8221; the result.  The
+   pretty-printed format is more readable, but the default format is more
+   likely to be interpreted the same way by future versions of
+   <span class="productname">PostgreSQL</span>; avoid using pretty-printed output for dump
+   purposes.  Passing <code class="literal">false</code> for the pretty-print parameter yields
+   the same result as the variant that does not have the parameter at all.
   </p>
 <p>   <code class="function">pg_get_serial_sequence</code> fetches the name of the
    sequence associated with a <code class="type">serial</code> or <code class="type">bigserial</code>
@@ -605,16 +599,18 @@
    functions (see <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>).  NULL is
    returned if the column does not have an associated sequence.
   </p>
-<p>  <code class="function">pg_tablespace_databases</code> allows a tablespace to
-  be examined. It returns the set of OIDs of databases that have objects
-  stored in the tablespace. If this function returns any rows, the
-  tablespace is not empty and cannot be dropped. To
-  display the specific objects populating the tablespace, you will need
-  to connect to the databases identified by 
-  <code class="function">pg_tablespace_databases</code> and query their
-  <code class="structname">pg_class</code> catalogs.
+<p>   <code class="function">pg_tablespace_databases</code> allows a tablespace to be
+   examined. It returns the set of OIDs of databases that have objects stored
+   in the tablespace. If this function returns any rows, the tablespace is not
+   empty and cannot be dropped. To display the specific objects populating the
+   tablespace, you will need to connect to the databases identified by
+   <code class="function">pg_tablespace_databases</code> and query their
+   <code class="structname">pg_class</code> catalogs.
   </p>
-<a name="id624291"></a><a name="id624302"></a><a name="id624312"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
+<p>   <code class="function">pg_get_userbyid</code> extracts a role's name given
+   its OID.
+  </p>
+<a name="id2601914"></a><a name="id2601924"></a><a name="id2601933"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.43. Comment Information Functions">Table 9.43, &#8220;Comment Information Functions&#8221;</a> extract comments
     previously stored with the <code class="command">COMMENT</code> command.  A
     null value is returned if no comment could be found matching the
     specified parameters.

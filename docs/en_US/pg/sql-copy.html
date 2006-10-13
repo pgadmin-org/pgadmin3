@@ -4,8 +4,8 @@
 <title>COPY</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-commit-prepared.html" title="COMMIT PREPARED">
 <link rel="next" href="sql-createaggregate.html" title="CREATE AGGREGATE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>COPY &#8212; copy data between a file and a table</p>
 </div>
-<a name="id750381"></a><div class="refsynopsisdiv">
+<a name="id2716796"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replaceable"><code>column</code></em> [, ...] ) ]
     FROM { '<em class="replaceable"><code>filename</code></em>' | STDIN }
@@ -45,7 +45,7 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
                 [ FORCE QUOTE <em class="replaceable"><code>column</code></em> [, ...] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id750515"></a><h2>Description</h2>
+<a name="id2716915"></a><h2>Description</h2>
 <p>   <code class="command">COPY</code> moves data between
    <span class="productname">PostgreSQL</span> tables and standard file-system
    files. <code class="command">COPY TO</code> copies the contents of a table
@@ -69,7 +69,7 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id750612"></a><h2>Parameters</h2>
+<a name="id2717003"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>tablename</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing table.
@@ -152,7 +152,7 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id750969"></a><h2>Notes</h2>
+<a name="id2717326"></a><h2>Notes</h2>
 <p>    <code class="command">COPY</code> can only be used with plain tables, not
     with views.
    </p>
@@ -214,9 +214,9 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id751229"></a><h2>File Formats</h2>
+<a name="id2717564"></a><h2>File Formats</h2>
 <div class="refsect2" lang="en">
-<a name="id751233"></a><h3>Text Format</h3>
+<a name="id2717568"></a><h3>Text Format</h3>
 <p>    When <code class="command">COPY</code> is used without the <code class="literal">BINARY</code>
     or <code class="literal">CSV</code> options,
     the data read or written is a text file with one line per table row.
@@ -341,7 +341,7 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id751612"></a><h3>CSV Format</h3>
+<a name="id2717919"></a><h3>CSV Format</h3>
 <p>    This format is used for importing and exporting the Comma
     Separated Value (<code class="literal">CSV</code>) file format used by many other
     programs, such as spreadsheets. Instead of the escaping used by
@@ -413,14 +413,14 @@ COPY <em class="replaceable"><code>tablename</code></em> [ ( <em class="replacea
 </div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id751883"></a><h3>Binary Format</h3>
+<a name="id2718166"></a><h3>Binary Format</h3>
 <p>    The file format used for <code class="command">COPY BINARY</code> changed in
     <span class="productname">PostgreSQL</span> 7.4. The new format consists
     of a file header, zero or more tuples containing the row data, and
     a file trailer. Headers and data are now in network byte order.
    </p>
 <div class="refsect3" lang="en">
-<a name="id751906"></a><h4>File Header</h4>
+<a name="id2718188"></a><h4>File Header</h4>
 <p>     The file header consists of 15 bytes of fixed fields, followed
      by a variable-length header extension area.  The fixed fields are:
 
@@ -475,7 +475,7 @@ is left for a later release.
     </p>
 </div>
 <div class="refsect3" lang="en">
-<a name="id752003"></a><h4>Tuples</h4>
+<a name="id2718277"></a><h4>Tuples</h4>
 <p>Each tuple begins with a 16-bit integer count of the number of fields in the
 tuple.  (Presently, all tuples in a table will have the same count, but that
 might not always be true.)  Then, repeated for each field in the tuple, there
@@ -505,7 +505,7 @@ OIDs to be shown as null if that ever proves desirable.
     </p>
 </div>
 <div class="refsect3" lang="en">
-<a name="id752075"></a><h4>File Trailer</h4>
+<a name="id2718344"></a><h4>File Trailer</h4>
 <p>     The file trailer consists of a 16-bit integer word containing -1.  This
      is easily distinguished from a tuple's field-count word.
     </p>
@@ -517,7 +517,7 @@ OIDs to be shown as null if that ever proves desirable.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id752090"></a><h2>Examples</h2>
+<a name="id2718358"></a><h2>Examples</h2>
 <p>   The following example copies a table to the client
    using the vertical bar (<code class="literal">|</code>) as the field delimiter:
 </p>
@@ -570,7 +570,7 @@ ZW      ZIMBABWE</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id752205"></a><h2>Compatibility</h2>
+<a name="id2718464"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">COPY</code> statement in the SQL standard.
   </p>
 <p>   The following syntax was used before <span class="productname">PostgreSQL</span>

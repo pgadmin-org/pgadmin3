@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.0_RC5 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="testbed.html" title="22.  Slony-I Test Bed Framework">
 <link rel="next" href="help.html" title="24. More Slony-I Help">
@@ -14,11 +14,11 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="loganalysis"></a>23. Log Analysis</h2></div></div></div>
-<a name="id2563445"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+<a name="id2563700"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2563460"></a>23.1. CONFIG notices</h3></div></div></div>
+<a name="id2563715"></a>23.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -35,7 +35,7 @@ CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2563490"></a>23.2. DEBUG Notices</h3></div></div></div>
+<a name="id2563738"></a>23.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -64,8 +64,8 @@ events.</p></dd>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2563541"></a>23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<a name="id2563551"></a><p> Note that as far as slon is concerned, there is no
+<a name="id2563789"></a>23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id2563799"></a><p> Note that as far as slon is concerned, there is no
 &#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
 nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -148,7 +148,7 @@ happen frequently when the origin sees heavy updates. </p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2563796"></a>23.4.  Log Messages and Implications </h3></div></div></div>
+<a name="id2564044"></a>23.4.  Log Messages and Implications </h3></div></div></div>
 <p> This section lists numerous of the error messages found in
 <span class="productname">Slony-I</span>, along with a brief explanation of implications.  It is a
 fairly well comprehensive list, leaving out mostly some of
@@ -286,7 +286,7 @@ a <span class="emphasis"><em>second</em></span> time?  </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2564186"></a>23.4.3.  Threading Issues </h4></div></div></div>
+<a name="id2564434"></a>23.4.3.  Threading Issues </h4></div></div></div>
 <p> There should not be any &#8220;<span class="quote">user-serviceable</span>&#8221; aspects
 to the <span class="productname">Slony-I</span> threading model; each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> creates a quite
 well-specified set of helper threads to manage the various database
@@ -740,7 +740,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2565639"></a>23.4.7.  Logging When Moving Objects Between Sets  </h4></div></div></div>
+<a name="id2565881"></a>23.4.7.  Logging When Moving Objects Between Sets  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setMoveTable_int(): table % not found</code></p>
@@ -786,7 +786,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2565758"></a>23.4.8.  Issues with Dropping Objects  </h4></div></div></div>
+<a name="id2565999"></a>23.4.8.  Issues with Dropping Objects  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setDropTable(): table % not found</code></p>
@@ -816,7 +816,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2565840"></a>23.4.9.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
+<a name="id2566081"></a>23.4.9.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
 <p> Many of these errors will occur if you submit a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 script that describes a reconfiguration incompatible with your
 cluster's current configuration.  Those will lead to the
@@ -875,7 +875,7 @@ forwarding turned on. </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2566015"></a>23.4.10.  Log Switching </h4></div></div></div>
+<a name="id2566257"></a>23.4.10.  Log Switching </h4></div></div></div>
 <p> These messages relate to the new-in-1.2 facility whereby
 <span class="productname">Slony-I</span> periodically switches back and forth between storing data
 in <code class="envar">sl_log_1</code> and <code class="envar">sl_log_2</code>.</p>
@@ -908,7 +908,7 @@ to halt...</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2566119"></a>23.4.11.  Miscellanea </h4></div></div></div>
+<a name="id2566361"></a>23.4.11.  Miscellanea </h4></div></div></div>
 <p> Perhaps these messages should be categorized further; that
 remains a task for the documentors.</p>
 <div class="itemizedlist"><ul type="disc">

@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Release Checklist</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.0_RC5 Documentation">
+<link rel="up" href="index.html" title="Slony-I 1.2.0_RC5 Documentation">
+<link rel="prev" href="supportedplatforms.html" title="Slony-I Supported Platforms">
+<link rel="next" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" lang="en" id="releasechecklist">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="releasechecklist"></a> Release Checklist </h2></div></div>
+<hr>
+</div>
+<a name="id2581007"></a><p> Here are things that should be done whenever a release is prepared:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Positive build reports for each supported platform -
+  although it is arguably less necessary for a comprehensive list if
+  we are releasing a minor upgrade
+
+  </p></li>
+<li><p>Some kind of Standard Test Plan 
+
+  </p></li>
+<li><p>Binary RPM packages 
+
+  </p></li>
+<li><p>Tag with the release ID. For version 1.1.2, this would be <code class="envar">REL_1_1_2 </code>
+
+  </p></li>
+<li><p>Check out a copy via <code class="command">cvs export -rREL_1_1_2 </code>
+
+  </p></li>
+<li><p>Run <span class="application">autoconf</span> so as to
+regenerate <code class="filename">configure</code> from
+<code class="filename">configure.ac</code>
+
+  </p></li>
+<li><p>Purge directory <code class="filename">autom4te.cache</code> so it is not included in the build  </p></li>
+<li><p>Purge out .cvsignore files; this can be done with the command <code class="command"> find . -name .cvsignore | xargs rm </code>  </p></li>
+<li>
+<p>Need to make sure that all references to CVS tags properly point to the tag for the release. </p>
+<p>For instance, configure should contain, for release 1.1.2:</p>
+<div class="itemizedlist"><ul type="circle">
+<li><p>PACKAGE_VERSION=REL_1_1_2</p></li>
+<li><p>PACKAGE_STRING=postgresql-slony1-engine REL_1_1_2</p></li>
+</ul></div>
+<p> RPM spec files used to contain release tags as well as names of tarballs which needed to be updated. As of 2005-12-13, there is less of this...   For those platforms with specific spec files such as SuSE, some editing still needs to be done. see the file(s) in the <code class="filename">suse</code> dir for more information </p>
+<p> The admin guide <code class="filename">version.sgml</code> file needs to contain the release name. This should not need to be touched; version.sgml is generated automatically with the release name/tag on demand. </p>
+<p> It sure would be nice if more of these could be assigned automatically, somehow.
+</p>
+</li>
+<li><p>commit the new configure 
+
+  </p></li>
+<li>
+<p>make sure that the generated files from .l and .y are
+created, for example <code class="filename">slony/conf-file.[ch]</code> </p>
+<p> Currently this is best done by issuing <code class="command"> ./configure &amp;&amp;
+make all &amp;&amp; make clean</code> but that is a somewhat ugly approach.
+</p>
+</li>
+<li><p>Generate HTML tarball, and RTF/PDF, if possible... Note that the HTML version should include *.html (duh!), *.jpg, *.png, as well as *.css 
+  </p></li>
+<li><p>Run <code class="command">make clean</code> in <code class="filename">doc/adminguide</code> before generating the tarball in order that <code class="filename">bookindex.sgml</code> is NOT part of the tarball 
+
+  </p></li>
+<li><p>Alternatively, delete <code class="filename">doc/adminguide/bookindex.sgml </code>
+
+  </p></li>
+<li><p>Rename the directory (e.g <code class="filename">slony1-engine</code>) to a name based on the release, e.g. - <code class="filename">slony1-1.1.2 </code>
+
+  </p></li>
+<li><p>Generate a tarball - <code class="command">tar tfvj slony1-1.1.2.tar.bz2 slony1-1.1.2 </code>
+
+  </p></li>
+<li>
+<p>Build the administrative documentation, and build a tarball as <code class="filename">slony1-1.1.2-html.tar.bz2</code></p>
+<p> Make sure that the docs are inside a subdir in the tarball.
+</p>
+</li>
+<li><p>Put these tarballs in a temporary area, and notify everyone (on some mailing list???) that they should test them out ASAP based on the Standard Test Plan. </p></li>
+</ul></div>
+</div></body>
+</html>

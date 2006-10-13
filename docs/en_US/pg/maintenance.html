@@ -4,8 +4,8 @@
 <title>Chapter 22. Routine Database Maintenance Tasks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="multibyte.html" title="21.2. Character Set Support">
 <link rel="next" href="routine-reindex.html" title="22.2. Routine Reindexing">
@@ -28,7 +28,7 @@
 <dt><span class="sect1"><a href="logfile-maintenance.html">22.3. Log File Maintenance</a></span></dt>
 </dl>
 </div>
-<a name="id666256"></a><p>   There are a few routine maintenance chores that must be performed on
+<a name="id2640122"></a><p>   There are a few routine maintenance chores that must be performed on
    a regular basis to keep a <span class="productname">PostgreSQL</span>
    server running smoothly.  The tasks discussed here are repetitive
    in nature and can easily be automated using standard Unix tools such
@@ -58,7 +58,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="routine-vacuuming"></a>22.1. Routine Vacuuming</h2></div></div></div>
-<a name="id666360"></a><p>   <span class="productname">PostgreSQL</span>'s <code class="command">VACUUM</code> command
+<a name="id2640216"></a><p>   <span class="productname">PostgreSQL</span>'s <code class="command">VACUUM</code> command
    must be run on a regular basis for several reasons:
 
     </p>
@@ -100,7 +100,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="vacuum-for-space-recovery"></a>22.1.1. Recovering disk space</h3></div></div></div>
-<a name="id666519"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
+<a name="id2640359"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
     <code class="command">UPDATE</code> or <code class="command">DELETE</code> of a row does not
     immediately remove the old version of the row.
     This approach is necessary to gain the benefits of multiversion
@@ -180,7 +180,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="vacuum-for-statistics"></a>22.1.2. Updating planner statistics</h3></div></div></div>
-<a name="id666850"></a><a name="id666865"></a><p>    The <span class="productname">PostgreSQL</span> query planner relies on
+<a name="id2640661"></a><a name="id2640674"></a><p>    The <span class="productname">PostgreSQL</span> query planner relies on
     statistical information about the contents of tables in order to
     generate good plans for queries.  These statistics are gathered by
     the <code class="command">ANALYZE</code> command, which can be invoked by itself or
@@ -234,7 +234,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="vacuum-for-wraparound"></a>22.1.3. Preventing transaction ID wraparound failures</h3></div></div></div>
-<a name="id667029"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
+<a name="id2640834"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
     depend on being able to compare transaction ID (<acronym class="acronym">XID</acronym>)
     numbers: a row version with an insertion XID greater than the current
     transaction's XID is &#8220;<span class="quote">in the future</span>&#8221; and should not be visible
@@ -391,7 +391,7 @@ HINT:  Stop the postmaster and use a standalone backend to VACUUM in "mydb".</pr
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="autovacuum"></a>22.1.4. The auto-vacuum daemon</h3></div></div></div>
-<a name="id667584"></a><p>    Beginning in <span class="productname">PostgreSQL </span> 8.1, there is a
+<a name="id2641346"></a><p>    Beginning in <span class="productname">PostgreSQL </span> 8.1, there is a
     separate optional server process called the <em class="firstterm">autovacuum
     daemon</em>, whose purpose is to automate the execution of
     <code class="command">VACUUM</code> and <code class="command">ANALYZE </code> commands.
