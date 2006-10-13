@@ -4,8 +4,8 @@
 <title>ALTER SEQUENCE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterschema.html" title="ALTER SCHEMA">
 <link rel="next" href="sql-altertable.html" title="ALTER TABLE">
@@ -19,7 +19,7 @@
    &#8212;    change the definition of a sequence generator
   </p>
 </div>
-<a name="id731667"></a><div class="refsynopsisdiv">
+<a name="id2699907"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
     [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
@@ -27,14 +27,14 @@
   </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id731728"></a><h2>Description</h2>
+<a name="id2699961"></a><h2>Description</h2>
 <p>   <code class="command">ALTER SEQUENCE</code> changes the parameters of an existing
    sequence generator.  Any parameter not specifically set in the
    <code class="command">ALTER SEQUENCE</code> command retains its prior setting.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id731750"></a><h2>Parameters</h2>
+<a name="id2699981"></a><h2>Parameters</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
@@ -102,7 +102,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id732027"></a><h2>Examples</h2>
+<a name="id2700231"></a><h2>Examples</h2>
 <p>   Restart a sequence called <code class="literal">serial</code>, at 105:
 </p>
 <pre class="programlisting">ALTER SEQUENCE serial RESTART WITH 105;</pre>
@@ -110,7 +110,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id732048"></a><h2>Notes</h2>
+<a name="id2700249"></a><h2>Notes</h2>
 <p>   To avoid blocking of concurrent transactions that obtain numbers from the
    same sequence, <code class="command">ALTER SEQUENCE</code> is never rolled back;
    the changes take effect immediately and are not reversible.
@@ -123,7 +123,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id732084"></a><h2>Compatibility</h2>
+<a name="id2700283"></a><h2>Compatibility</h2>
 <p>   <code class="command">ALTER SEQUENCE</code> conforms with <acronym class="acronym">SQL:2003</acronym>.
   </p>
 </div>

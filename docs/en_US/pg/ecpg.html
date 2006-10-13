@@ -4,8 +4,8 @@
 <title>Chapter 29. ECPG - Embedded SQL in C</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
 <link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
 <link rel="prev" href="lo-examplesect.html" title="28.5. Example Program">
 <link rel="next" href="ecpg-connect.html" title="29.2. Connecting to the Database Server">
@@ -24,18 +24,18 @@
 <dt><span class="sect1"><a href="ecpg-set-connection.html">29.5. Choosing a Connection</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-variables.html">29.6. Using Host Variables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-variables.html#id679925">29.6.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id679967">29.6.2. Declare Sections</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id680058">29.6.3. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id680170">29.6.4. Indicators</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2652697">29.6.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2652736">29.6.2. Declare Sections</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2652819">29.6.3. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2652923">29.6.4. Indicators</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-dynamic.html">29.7. Dynamic SQL</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-descriptors.html">29.8. Using SQL Descriptor Areas</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-errors.html">29.9. Error Handling</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-errors.html#id680722">29.9.1. Setting Callbacks</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id681021">29.9.2. sqlca</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id681291">29.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2653426">29.9.1. Setting Callbacks</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2653698">29.9.2. sqlca</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2653944">29.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-include.html">29.10. Including Files</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-process.html">29.11. Processing Embedded SQL Programs</a></span></dt>
@@ -43,7 +43,7 @@
 <dt><span class="sect1"><a href="ecpg-develop.html">29.13. Internals</a></span></dt>
 </dl>
 </div>
-<a name="id679240"></a><a name="id679020"></a><a name="id679030"></a><p>  This chapter describes the embedded <acronym class="acronym">SQL</acronym> package
+<a name="id2651992"></a><a name="id2652004"></a><a name="id2652013"></a><p>  This chapter describes the embedded <acronym class="acronym">SQL</acronym> package
   for <span class="productname">PostgreSQL</span>. It was written by
   Linus Tolke (<code class="email">&lt;<a href="mailto:linus@epact.se">linus@epact.se</a>&gt;</code>) and Michael Meskes
   (<code class="email">&lt;<a href="mailto:meskes@postgresql.org">meskes@postgresql.org</a>&gt;</code>). Originally it was written to work with

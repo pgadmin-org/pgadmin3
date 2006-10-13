@@ -4,8 +4,8 @@
 <title>Chapter 19. Client Authentication</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="manage-ag-tablespaces.html" title="18.6. Tablespaces">
 <link rel="next" href="auth-methods.html" title="19.2. Authentication methods">
@@ -29,7 +29,7 @@
 <dt><span class="sect1"><a href="client-authentication-problems.html">19.3. Authentication problems</a></span></dt>
 </dl>
 </div>
-<a name="id652161"></a><p>  When a client application connects to the database server, it
+<a name="id2627270"></a><p>  When a client application connects to the database server, it
   specifies which <span class="productname">PostgreSQL</span> user name it
   wants to connect as, much the same way one logs into a Unix computer
   as a particular user. Within the SQL environment the active database
@@ -60,7 +60,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="auth-pg-hba-conf"></a>19.1. The <code class="filename">pg_hba.conf</code> file</h2></div></div></div>
-<a name="id652258"></a><p>   Client authentication is controlled by a configuration file,
+<a name="id2627360"></a><p>   Client authentication is controlled by a configuration file,
    which traditionally is named
    <code class="filename">pg_hba.conf</code> and is stored in the database
    cluster's data directory.
@@ -302,7 +302,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
   </p>
 <p>   The <code class="filename">pg_hba.conf</code> file is read on start-up and when
    the main server process (<code class="command">postmaster</code>) receives a
-   <span class="systemitem">SIGHUP</span><a name="id653269"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2628275"></a>
    signal. If you edit the file on an
    active system, you will need to signal the <code class="command">postmaster</code>
    (using <code class="literal">pg_ctl reload</code> or <code class="literal">kill -HUP</code>) to make it

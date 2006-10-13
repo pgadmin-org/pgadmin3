@@ -4,8 +4,8 @@
 <title>16.3. Starting the Database Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="prev" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
 <link rel="next" href="runtime-config.html" title="16.4. Run-time Configuration">
@@ -16,7 +16,7 @@
 <a name="postmaster-start"></a>16.3. Starting the Database Server</h2></div></div></div>
 <p>   Before anyone can access the database, you must start the database
    server. The database server program is called
-   <code class="command">postmaster</code>.<a name="id635910"></a>
+   <code class="command">postmaster</code>.<a name="id2612446"></a>
    The <code class="command">postmaster</code> must know where to
    find the data it is supposed to use. This is done with the
    <code class="option">-D</code> option. Thus, the simplest way to start the
@@ -47,7 +47,7 @@
   </p>
 <p>   This shell syntax can get tedious quickly.  Therefore the wrapper
    program
-   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id636046"></a>
+   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2612570"></a>
    is provided to simplify some tasks.  For example:
 </p>
 <pre class="programlisting">pg_ctl start -l logfile</pre>
@@ -58,7 +58,7 @@
    is also capable of stopping the server.
   </p>
 <p>   Normally, you will want to start the database server when the
-   computer boots.<a name="id636085"></a> Autostart scripts are operating-system-specific.
+   computer boots.<a name="id2612605"></a> Autostart scripts are operating-system-specific.
    There are a few distributed with
    <span class="productname">PostgreSQL</span> in the
    <code class="filename">contrib/start-scripts</code> directory. Installing one will require
@@ -86,12 +86,12 @@
 <li><p>      For <span class="productname">FreeBSD</span>, look at the file
       <code class="filename">contrib/start-scripts/freebsd</code> in the
       <span class="productname">PostgreSQL</span> source distribution.
-      <a name="id636197"></a>
+      <a name="id2612707"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">OpenBSD</span>, add the following lines
       to the file <code class="filename">/etc/rc.local</code>:
-      <a name="id636225"></a>
+      <a name="id2612732"></a>
 </p>
 <pre class="programlisting">if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postmaster ]; then
     su - -c '/usr/local/pgsql/bin/pg_ctl start -l /var/postgresql/log -s' postgres
@@ -102,7 +102,7 @@ fi</pre>
 </li>
 <li>
 <p>      On <span class="productname">Linux</span> systems either add
-      <a name="id636256"></a>
+      <a name="id2612760"></a>
 </p>
 <pre class="programlisting">/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data</pre>
 <p>
@@ -114,13 +114,13 @@ fi</pre>
 <li><p>      On <span class="productname">NetBSD</span>, either use the
       <span class="productname">FreeBSD</span> or
       <span class="productname">Linux</span> start scripts, depending on
-      preference. <a name="id636320"></a>
+      preference. <a name="id2612818"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">Solaris</span>, create a file called
       <code class="filename">/etc/init.d/postgresql</code> that contains
       the following line:
-      <a name="id636348"></a>
+      <a name="id2612844"></a>
 </p>
 <pre class="programlisting">su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data"</pre>
 <p>

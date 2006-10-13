@@ -4,8 +4,8 @@
 <title>27.4. Asynchronous Command Processing</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="prev" href="libpq-exec.html" title="27.3. Command Execution Functions">
 <link rel="next" href="libpq-cancel.html" title="27.5. Cancelling Queries in Progress">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="libpq-async"></a>27.4. Asynchronous Command Processing</h2></div></div></div>
-<a name="id672298"></a><p>The <code class="function">PQexec</code> function is adequate for submitting commands in
+<a name="id2645722"></a><p>The <code class="function">PQexec</code> function is adequate for submitting commands in
 normal, synchronous
 applications.  It has a couple of deficiencies, however, that can be of importance to some users:
 
@@ -47,7 +47,7 @@ respectively.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQsendQuery</code><a name="id672452"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendQuery</code><a name="id2645863"></a></span></dt>
 <dd>
 <p>          Submits a command to the server without
           waiting for the result(s).  1 is returned if the command was
@@ -63,7 +63,7 @@ respectively.
           again (on the same connection) until <code class="function">PQgetResult</code> has returned a null pointer,
           indicating that the command is done.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendQueryParams</code><a name="id672519"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendQueryParams</code><a name="id2645923"></a></span></dt>
 <dd>
 <p>          Submits a command and separate parameters to the server without
           waiting for the result(s).
@@ -85,7 +85,7 @@ respectively.
         <code class="function">PQexecParams</code>, it will not work on 2.0-protocol
         connections, and it allows only one command in the query string.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendPrepare</code><a name="id672576"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendPrepare</code><a name="id2645976"></a></span></dt>
 <dd>
 <p>        Sends a request to create a prepared statement with the given
         parameters, without waiting for completion.
@@ -107,7 +107,7 @@ respectively.
         <code class="function">PQprepare</code>, it will not work on 2.0-protocol
         connections.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendQueryPrepared</code><a name="id672639"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendQueryPrepared</code><a name="id2646033"></a></span></dt>
 <dd>
 <p>          Sends a request to execute a prepared statement with given
           parameters, without waiting for the result(s).
@@ -129,7 +129,7 @@ respectively.
         <code class="function">PQexecPrepared</code>, it will not work on 2.0-protocol
         connections.</p>
 </dd>
-<dt><span class="term"><code class="function">PQgetResult</code><a name="id672696"></a></span></dt>
+<dt><span class="term"><code class="function">PQgetResult</code><a name="id2646086"></a></span></dt>
 <dd>
 <p>          Waits for the next result from a prior
           <code class="function">PQsendQuery</code>,
@@ -163,7 +163,7 @@ more functions:
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQconsumeInput</code><a name="id672851"></a></span></dt>
+<dt><span class="term"><code class="function">PQconsumeInput</code><a name="id2646226"></a></span></dt>
 <dd>
 <p>          If input is available from the server, consume it.
 </p>
@@ -183,7 +183,7 @@ causing a <code class="function">select()</code> read-ready indication to go awa
 application can thus use <code class="function">PQconsumeInput</code> to clear the
 <code class="function">select()</code> condition immediately, and then examine the results at leisure.</p>
 </dd>
-<dt><span class="term"><code class="function">PQisBusy</code><a name="id672952"></a></span></dt>
+<dt><span class="term"><code class="function">PQisBusy</code><a name="id2646318"></a></span></dt>
 <dd>
 <p>Returns 1 if a command is busy, that is, <code class="function">PQgetResult</code> would block
 waiting for input.  A 0 return indicates that <code class="function">PQgetResult</code> can
@@ -225,7 +225,7 @@ functions may be used.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQsetnonblocking</code><a name="id673153"></a></span></dt>
+<dt><span class="term"><code class="function">PQsetnonblocking</code><a name="id2646500"></a></span></dt>
 <dd>
 <p>    Sets the nonblocking status of the connection.
 </p>
@@ -245,7 +245,7 @@ functions may be used.
     if it is called, it will act in blocking fashion anyway.
    </p>
 </dd>
-<dt><span class="term"><code class="function">PQisnonblocking</code><a name="id673237"></a></span></dt>
+<dt><span class="term"><code class="function">PQisnonblocking</code><a name="id2646576"></a></span></dt>
 <dd>
 <p>       Returns the blocking status of the database connection.
 </p>
@@ -253,7 +253,7 @@ functions may be used.
 <p>       Returns 1 if the connection is set to nonblocking mode and
        0 if blocking.</p>
 </dd>
-<dt><span class="term"><code class="function">PQflush</code><a name="id673265"></a></span></dt>
+<dt><span class="term"><code class="function">PQflush</code><a name="id2646602"></a></span></dt>
 <dd>
 <p>Attempts to flush any queued output data to the server.
 Returns 0 if successful (or if the send queue is empty), -1 if it failed for

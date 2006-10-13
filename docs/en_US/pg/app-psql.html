@@ -4,8 +4,8 @@
 <title>psql</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="prev" href="app-pgrestore.html" title="pg_restore">
 <link rel="next" href="app-vacuumdb.html" title="vacuumdb">
@@ -18,13 +18,13 @@
 <p><span class="application">psql</span> &#8212;       <span class="productname">PostgreSQL</span> interactive terminal
     </p>
 </div>
-<a name="id782772"></a><div class="refsynopsisdiv">
+<a name="id2746110"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">psql</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>
     [<em class="replaceable"><code>username</code></em>]]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id782826"></a><h2>Description</h2>
+<a name="id2746158"></a><h2>Description</h2>
 <p>     <span class="application">psql</span> is a terminal-based front-end to
      <span class="productname">PostgreSQL</span>. It enables you to type in
      queries interactively, issue them to
@@ -304,7 +304,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id783852"></a><h2>Exit Status</h2>
+<a name="id2747083"></a><h2>Exit Status</h2>
 <p>   <span class="application">psql</span> returns 0 to the shell if it
    finished normally, 1 if a fatal error of its own (out of memory,
    file not found) occurs, 2 if the connection to the server went bad
@@ -313,7 +313,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id783873"></a><h2>Usage</h2>
+<a name="id2747102"></a><h2>Usage</h2>
 <div class="refsect2" lang="en">
 <a name="r2-app-psql-connecting"></a><h3>Connecting To A Database</h3>
 <p>    <span class="application">psql</span> is a regular
@@ -358,7 +358,7 @@
     the string <code class="literal">=&gt;</code>. For example,
 </p>
 <pre class="programlisting">$ <strong class="userinput"><code>psql testdb</code></strong>
-Welcome to psql 8.0.8, the PostgreSQL interactive terminal.
+Welcome to psql 8.0.9, the PostgreSQL interactive terminal.
 
 Type:  \copyright for distribution terms
        \h for help with SQL commands
@@ -383,7 +383,7 @@ testdb=&gt;</pre>
     </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id784111"></a><h3>Meta-Commands</h3>
+<a name="id2747319"></a><h3>Meta-Commands</h3>
 <p>    Anything you enter in <span class="application">psql</span> that begins
     with an unquoted backslash is a <span class="application">psql</span>
     meta-command that is processed by <span class="application">psql</span>
@@ -1140,7 +1140,7 @@ lo_import 152801</pre>
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id787347"></a><h3>Advanced features</h3>
+<a name="id2750250"></a><h3>Advanced features</h3>
 <div class="refsect3" lang="en">
 <a name="app-psql-variables"></a><h4>Variables</h4>
 <p>    <span class="application">psql</span> provides variable substitution
@@ -1362,7 +1362,7 @@ bar</pre>
 </dl></div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id788105"></a><h4>
+<a name="id2750947"></a><h4>
 <acronym class="acronym">SQL</acronym> Interpolation</h4>
 <p>    An additional useful feature of <span class="application">psql</span>
     variables is that you can substitute (&#8220;<span class="quote">interpolate</span>&#8221;)
@@ -1547,7 +1547,7 @@ testdb=&gt; <strong class="userinput"><code>INSERT INTO my_table VALUES (:conten
 </div>
 </div>
 <div class="refsect3" lang="en">
-<a name="id788880"></a><h4>Command-Line Editing</h4>
+<a name="id2751654"></a><h4>Command-Line Editing</h4>
 <p>    <span class="application">psql</span> supports the <span class="application">Readline</span>
     library for convenient line editing and retrieval. The command
     history is automatically saved when <span class="application">psql</span>
@@ -1570,7 +1570,7 @@ $endif</pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id788952"></a><h2>Environment</h2>
+<a name="id2751719"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PAGER</code></span></dt>
 <dd><p>      If the query results do not fit on the screen, they are piped
@@ -1603,7 +1603,7 @@ $endif</pre>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id789074"></a><h2>Files</h2>
+<a name="id2751830"></a><h2>Files</h2>
 <div class="itemizedlist"><ul type="disc">
 <li><p>     Before starting up, <span class="application">psql</span> attempts to
      read and execute commands from the system-wide
@@ -1619,7 +1619,7 @@ $endif</pre>
 <li><p>     Both the system-wide <code class="filename">psqlrc</code> file and the user's
      <code class="filename">~/.psqlrc</code> file can be made version-specific
      by appending a dash and the <span class="productname">PostgreSQL</span>
-     release number, for example <code class="filename">~/.psqlrc-8.0.8</code>.
+     release number, for example <code class="filename">~/.psqlrc-8.0.9</code>.
      A matching version-specific file will be read in preference to a
      non-version-specific file.
     </p></li>
@@ -1630,7 +1630,7 @@ $endif</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id789192"></a><h2>Notes</h2>
+<a name="id2751936"></a><h2>Notes</h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>      In an earlier life <span class="application">psql</span> allowed the
@@ -1656,7 +1656,7 @@ Field separator is "oo".</pre>
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id789243"></a><h2>Notes for Windows users</h2>
+<a name="id2751983"></a><h2>Notes for Windows users</h2>
 <p>  <span class="application">psql</span> is built as a &#8220;<span class="quote">console
   application</span>&#8221;.  Since the Windows console windows use a different
   encoding than the rest of the system, you must take special care

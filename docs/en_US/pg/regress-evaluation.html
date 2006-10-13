@@ -4,8 +4,8 @@
 <title>26.2. Test Evaluation</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.70.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.8 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
 <link rel="up" href="regress.html" title="Chapter 26. Regression Tests">
 <link rel="prev" href="regress.html" title="Chapter 26. Regression Tests">
 <link rel="next" href="regress-platform.html" title="26.3. Platform-specific comparison files">
@@ -39,7 +39,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id665411"></a>26.2.1. Error message differences</h3></div></div></div>
+<a name="id2639422"></a>26.2.1. Error message differences</h3></div></div></div>
 <p>     Some of the regression tests involve intentional invalid input
      values.  Error messages can come from either the
      <span class="productname">PostgreSQL</span> code or from the host
@@ -52,7 +52,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id665436"></a>26.2.2. Locale differences</h3></div></div></div>
+<a name="id2639444"></a>26.2.2. Locale differences</h3></div></div></div>
 <p>     If you run the tests against an already-installed server that was
      initialized with a collation-order locale other than C, then
      there may be differences due to sort order and follow-up
@@ -81,7 +81,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id665521"></a>26.2.3. Date and time differences</h3></div></div></div>
+<a name="id2639522"></a>26.2.3. Date and time differences</h3></div></div></div>
 <p>     A few of the queries in the <code class="filename">horology</code> test will
      fail if you run the test on the day of a daylight-saving time
      changeover, or the day after one.  These queries expect that
@@ -111,7 +111,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id665579"></a>26.2.4. Floating-point differences</h3></div></div></div>
+<a name="id2639576"></a>26.2.4. Floating-point differences</h3></div></div></div>
 <p>     Some of the tests involve computing 64-bit floating-point numbers (<code class="type">double
      precision</code>) from table columns. Differences in
      results involving mathematical functions of <code class="type">double
@@ -133,7 +133,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id665656"></a>26.2.5. Row ordering differences</h3></div></div></div>
+<a name="id2639647"></a>26.2.5. Row ordering differences</h3></div></div></div>
 <p>You might see differences in which the same rows are output in a
 different order than what appears in the expected file.  In most cases
 this is not, strictly speaking, a bug.  Most of the regression test
@@ -161,7 +161,7 @@ exclusion of those that don't.
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id665727"></a>26.2.6. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div></div>
+<a name="id2639712"></a>26.2.6. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div></div>
 <p>     The <code class="literal">random</code> test script is intended to produce 
      random results.   In rare cases, this causes the random regression
      test to fail.  Typing
