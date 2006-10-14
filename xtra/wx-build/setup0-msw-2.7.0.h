@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by:
 // Created:     01/02/97
-// RCS-ID:      $Id: setup0.h,v 1.229 2006/06/30 22:04:38 VZ Exp $
+// RCS-ID:      $Id: setup0.h,v 1.238 2006/10/09 17:50:38 VZ Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -483,6 +483,15 @@
 // This code is experimental and subject to change.
 #define wxUSE_URL_NATIVE 0
 
+// Support for wxVariant class used in several places throughout the library,
+// notably in wxDataViewCtrl API.
+//
+// Default is 1.
+//
+// Recommended setting: 1 unless you want to reduce the library size as much as
+// possible in which case setting this to 0 can gain up to 100KB.
+#define wxUSE_VARIANT 1
+
 // Support for regular expression matching via wxRegEx class: enable this to
 // use POSIX regular expressions in your code. You need to compile regex
 // library from src/regex to use it under Windows.
@@ -503,7 +512,7 @@
 //
 // Default is 1.
 //
-// Recommended setting: 1 
+// Recommended setting: 1
 #define wxUSE_MEDIACTRL     1
 
 // Use GStreamer for Unix (req a lot of dependancies)
@@ -538,6 +547,21 @@
 //
 // Recommended setting: 1
 #define wxUSE_AUI       1
+
+
+// Enable the new wxGraphicsPath and wxGraphicsContext classes for an advanced
+// 2D drawing API.  (Still somewhat experimental)
+//
+// Please note that on Windows you will need to link with gdiplus.lib (use
+// USE_GDIPLUS=1 for makefile builds) and distribute gdiplus.dll with your
+// application if you want it to be runnable on pre-XP systems.
+//
+// Default is 0
+//
+// Recommended setting: 1
+#ifndef wxUSE_GRAPHICS_CONTEXT
+#define wxUSE_GRAPHICS_CONTEXT 0
+#endif
 
 // ----------------------------------------------------------------------------
 // Individual GUI controls
@@ -576,6 +600,7 @@
 // Default is 1
 //
 // Recommended setting: 1
+#define wxUSE_ANIMATIONCTRL 1   // wxAnimationCtrl
 #define wxUSE_BUTTON        1   // wxButton
 #define wxUSE_BMPBUTTON     1   // wxBitmapButton
 #define wxUSE_CALENDARCTRL  1   // wxCalendarCtrl
@@ -714,8 +739,16 @@
 //
 // Default is 1.
 //
-// Recommended setting: 1 but can be safely set to 0
+// Recommended setting: 1 but can be safely set to 0, except where it is
+//                      needed as a base class for generic wxBitmapComboBox.
 #define wxUSE_ODCOMBOBOX 1
+
+// wxBitmapComboBox is a combobox that can have images in front of text items.
+//
+// Default is 1.
+//
+// Recommended setting: 1 but can be safely set to 0
+#define wxUSE_BITMAPCOMBOBOX 1
 
 // ----------------------------------------------------------------------------
 // Miscellaneous GUI stuff
@@ -869,6 +902,14 @@
 // wizards
 #define wxUSE_WIZARDDLG 1
 
+// Compile in wxAboutBox() function showing the standard "About" dialog.
+//
+// Default is 1
+//
+// Recommended setting: 1 but can be set to 0 to save some space if you don't
+//                      use this function
+#define wxUSE_ABOUTDLG 1
+
 // ----------------------------------------------------------------------------
 // Metafiles support
 // ----------------------------------------------------------------------------
@@ -998,6 +1039,16 @@
 #define wxUSE_HELP        1
                                 // 0 for no help facility
 
+// Should we use MS HTML help for wxHelpController? If disabled, neither
+// wxCHMHelpController nor wxBestHelpController are available.
+//
+// Default is 1
+//
+// Recommended setting: 1, only set to 0 if you have trouble compiling
+// wxCHMHelpController (could be a problem with really ancient compilers)
+#define wxUSE_MS_HTML_HELP 1
+
+
 // Use wxHTML-based help controller?
 #define wxUSE_WXHTML_HELP 1
 
@@ -1112,6 +1163,22 @@
 // Set to 1 to compile in wxPalette class
 #define wxUSE_PALETTE       1
 
+// ----------------------------------------------------------------------------
+// wxUniversal-only options
+// ----------------------------------------------------------------------------
+
+// Set to 1 to enable compilation of all themes, this is the default
+#define wxUSE_ALL_THEMES    1
+
+// Set to 1 to enable the compilation of individual theme if wxUSE_ALL_THEMES
+// is unset, if it is set these options are not used; notice that metal theme
+// uses Win32 one
+#define wxUSE_THEME_GTK     0
+#define wxUSE_THEME_METAL   0
+#define wxUSE_THEME_MONO    0
+#define wxUSE_THEME_WIN32   0
+
+
 /* --- end common options --- */
 
 // ----------------------------------------------------------------------------
@@ -1136,15 +1203,6 @@
     #define wxUSE_UNICODE_MSLU 0
 #endif
 
-// Should we use MS HTML help for wxHelpController? If disabled, neither
-// wxCHMHelpController nor wxBestHelpController are available.
-//
-// Default is 1
-//
-// Recommended setting: 1, only set to 0 if you have trouble compiling
-// wxCHMHelpController (could be a problem with really ancient compilers)
-#define wxUSE_MS_HTML_HELP 1
-
 // Set this to 1 if you want to use wxWidgets and MFC in the same program. This
 // will override some other settings (see below)
 //
@@ -1161,6 +1219,22 @@
 //
 // Recommended setting: 1
 #define wxUSE_OLE           1
+
+// Set this to 1 to enable wxAutomationObject class.
+//
+// Default is 1.
+//
+// Recommended setting: 1 if you need to control other applications via OLE
+// Automation, can be safely set to 0 otherwise
+#define wxUSE_OLE_AUTOMATION 1
+
+// Set this to 1 to enable wxActiveXContainer class allowing to embed OLE
+// controls in wx.
+//
+// Default is 1.
+//
+// Recommended setting: 1, required by wxMediaCtrl
+#define wxUSE_ACTIVEX 1
 
 // wxDC cacheing implementation
 #define wxUSE_DC_CACHEING 1
