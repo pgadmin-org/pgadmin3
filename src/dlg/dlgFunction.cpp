@@ -566,7 +566,8 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
                     }
                     else
                     {
-                        args += qtIdent(colName) + wxT(" ");
+                        if (!colName.IsEmpty())
+                            args += qtIdent(colName) + wxT(" ");
                     }
 
                     
@@ -582,6 +583,10 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
             braces = wxT("[]");
             typname = typname.Left(typname.Length()-2);
         }
+
+        if (isProcedure && !withNames)
+            args += lstArguments->GetText(i, 0).BeforeFirst(' ') + wxT(" ");
+
         if (quoted)
             AppendQuotedType(args, typname);
         else
