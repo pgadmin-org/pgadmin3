@@ -470,32 +470,15 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
         if (nb)
             nb->SetSelection(nb->GetPageCount()-1);
 
-// WARNING - wxMSW crashes when appending to the text box in this loop :-(
-//           Consequently, we don't update it in real time. 
-//           Thread safety in wxString?
-#ifdef __WXMSW__
-        wxString msg;
-        if (txtMessages)
-            txtMessages->AppendText(_("Running...\n\n"));
-#endif;
-
         while (thread && thread->IsRunning())
         {
             wxMilliSleep(10);
             // here could be the animation
-#ifdef __WXMSW__
-            msg.Append(thread->GetMessagesAndClear());
-#else
             if (txtMessages)
                 txtMessages->AppendText(thread->GetMessagesAndClear());
-#endif
+
             wxTheApp->Yield(true);
         }
-
-#ifdef __WXMSW__
-        if (txtMessages)
-            txtMessages->AppendText(msg);
-#endif
 
         if (thread)
         {

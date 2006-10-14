@@ -38,8 +38,20 @@
 #undef VERSION
 #endif
 
+#ifdef __WXMSW__
+#if !wxCHECK_VERSION(2, 7, 1)
+#error wxMSW 2.7.1 or higher is required to compile this version of pgAdmin.
+#endif
+#else
+#ifdef __WXMAC__
 #if !wxCHECK_VERSION(2, 7, 0)
-#error wxWidgets 2.7.0 or higher is required to compile this version of pgAdmin.
+#error wxMAC 2.7.0 or higher is required to compile this version of pgAdmin.
+#endif
+#else
+#if !wxCHECK_VERSION(2, 7, 0)
+#error wxGTK 2.7.0 or higher is required to compile this version of pgAdmin.
+#endif
+#endif
 #endif
 
 const float SERVER_MIN_VERSION = 7.3f;
