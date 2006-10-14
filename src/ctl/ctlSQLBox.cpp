@@ -135,11 +135,13 @@ void ctlSQLBox::OnSearchReplace(wxCommandEvent& ev)
     {
         m_dlgFindReplace = new dlgFindReplace(this);
         m_dlgFindReplace->Show(true);
+        m_dlgFindReplace->FocusSearch();
     }
     else
     {
         m_dlgFindReplace->Show(true);
         m_dlgFindReplace->SetFocus();
+        m_dlgFindReplace->FocusSearch();
     }
 }
 

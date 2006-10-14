@@ -22,6 +22,7 @@ class dlgFindReplace : public pgDialog
 public:
     dlgFindReplace(ctlSQLBox *parent);
     ~dlgFindReplace();
+    void FocusSearch();
 
 private:
 

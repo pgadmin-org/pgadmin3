@@ -122,6 +122,12 @@ dlgFindReplace::~dlgFindReplace()
     wxLogInfo(wxT("Destroying a search & replace dialogue"));
 }
 
+void dlgFindReplace::FocusSearch()
+{
+    txtFind->SetFocus();
+    txtFind->SetSelection(-1, -1);
+}
+
 void dlgFindReplace::OnClose(wxCloseEvent& ev)
 {
     // Save settings
