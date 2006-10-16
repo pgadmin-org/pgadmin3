@@ -358,7 +358,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 
 pgObject *pgIndexFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
-    return pgIndexBaseFactory::CreateObjects(collection, browser, wxT("\n   AND conname IS NULL"));
+    return pgIndexBaseFactory::CreateObjects(collection, browser, restriction);
 }
 
 

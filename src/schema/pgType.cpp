@@ -191,7 +191,7 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	else
 		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
 
-	sql +=	systemRestriction +
+	sql +=	+ restriction + systemRestriction +
 			wxT(" ORDER BY t.typname");
 
 	pgSet *types = collection->GetDatabase()->ExecuteSet(sql);
