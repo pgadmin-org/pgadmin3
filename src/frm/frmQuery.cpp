@@ -935,6 +935,9 @@ void frmQuery::updateMenu(wxObject *obj)
     bool canFind=false;
 	bool canAddFavourite=false;
 
+    wxFloatingPane *fp = wxDynamicCastThis(wxFloatingPane);
+    if (fp)
+        return;
 
     if (!obj || obj == sqlQuery)
     {

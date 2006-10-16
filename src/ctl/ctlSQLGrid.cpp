@@ -21,6 +21,15 @@
 #include "frmExport.h"
 
 
+BEGIN_EVENT_TABLE(ctlSQLGrid, wxGrid)
+    EVT_MENU(MNU_COPY, ctlSQLGrid::OnCopy)
+END_EVENT_TABLE()
+
+IMPLEMENT_DYNAMIC_CLASS(ctlSQLGrid, wxGrid)
+
+ctlSQLGrid::ctlSQLGrid()
+{
+}
 
 ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
 : wxGrid(parent, id, pos, size, wxWANTS_CHARS|wxVSCROLL|wxHSCROLL)
@@ -32,7 +41,17 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 	SetRowLabelSize(50);
 	SetDefaultCellOverflow(false);
 
+    wxAcceleratorEntry entries[1];
+    entries[0].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
+    wxAcceleratorTable accel(1, entries);
+    SetAcceleratorTable(accel);
+
     Connect(wxID_ANY, wxEVT_GRID_LABEL_LEFT_DCLICK, wxGridEventHandler(ctlSQLGrid::OnLabelDoubleClick));
+}
+
+void ctlSQLGrid::OnCopy(wxCommandEvent& ev)
+{
+    Copy();
 }
 
 wxString ctlSQLGrid::GetExportLine(int row)

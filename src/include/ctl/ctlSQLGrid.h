@@ -20,6 +20,7 @@ class ctlSQLGrid : public wxGrid
 {
 public:
     ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+    ctlSQLGrid();
 
     wxString GetExportLine(int row);
     wxString GetExportLine(int row, wxArrayInt cols);
@@ -30,6 +31,12 @@ public:
     virtual bool CheckRowPresent(int row) { return true; }
     wxSize GetBestSize(int row, int col);
     void OnLabelDoubleClick(wxGridEvent& event);
+
+    DECLARE_DYNAMIC_CLASS(ctlSQLGrid)
+    DECLARE_EVENT_TABLE()
+
+private:
+    void OnCopy(wxCommandEvent& event);
 };
 
 #endif
