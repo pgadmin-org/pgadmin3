@@ -132,40 +132,21 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
 {
     colSizes.Empty();
     colHeaders.Empty();
-    int i;
 
 #if USE_LISTVIEW
-    wxListItem item;
-    item.SetMask(wxLIST_MASK_TEXT|wxLIST_MASK_WIDTH);
-
-    for (i=0 ; i < GetColumnCount() ; i++)
-    {
-        GetColumn(i, item);
-        colHeaders.Add(item.GetText());
-        colSizes.Add(item.GetWidth());
-    }
-
     ClearAll();
-
 #else
-
-    for (i=0 ; i < GetNumberCols() ; i++)
-    {
-        colHeaders.Add(GetColLabelValue(i));
-        colSizes.Add(GetColSize(i));
-    }
-
-    Abort();
-
-    int num;
-    num = GetNumberRows();
-    if (num)
-        DeleteRows(0, num);
-    num = GetNumberCols();
-    if (num)
-        DeleteCols(0, num);
+    wxGridTableMessage *msg;
+    sqlResultTable *table = (sqlResultTable *)GetTable();
+    msg = new wxGridTableMessage(table, wxGRIDTABLE_NOTIFY_ROWS_DELETED, 0, GetNumberRows());
+    ProcessTableMessage(*msg);
+    delete msg;
+    msg = new wxGridTableMessage(table, wxGRIDTABLE_NOTIFY_COLS_DELETED, 0, GetNumberCols());
+    ProcessTableMessage(*msg);
+    delete msg;
 #endif
 
+    Abort();
 
     colNames.Empty();
     colTypes.Empty();
@@ -439,4 +420,5 @@ int sqlResultTable::GetNumberCols()
         return thread->DataSet()->NumCols();
     return 0;
 }
+
 #endif

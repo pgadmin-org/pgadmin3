@@ -61,13 +61,17 @@ pgSetBase::~pgSetBase()
 
 
 
-OID pgSetBase::ColTypeOid(int col) const
+OID pgSetBase::ColTypeOid(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     return PQftype(res, col);
 }
 
-long pgSetBase::ColTypeMod(int col) const
+long pgSetBase::ColTypeMod(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     return PQfmod(res, col);
 }
 
@@ -82,8 +86,10 @@ long pgSetBase::GetInsertedCount() const
 }
 
 
-pgTypClass pgSetBase::ColTypClass(int col) const
+pgTypClass pgSetBase::ColTypClass(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     wxString typoid=ExecuteScalar(
         wxT("SELECT CASE WHEN typbasetype=0 THEN oid else typbasetype END AS basetype\n")
         wxT("  FROM pg_type WHERE oid=") + NumToStr(ColTypeOid(col)));
@@ -124,8 +130,10 @@ pgTypClass pgSetBase::ColTypClass(int col) const
 }
 
 
-wxString pgSetBase::ColType(int col) const
+wxString pgSetBase::ColType(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     if (!colTypes[col].IsEmpty())
         return colTypes[col];
 
@@ -137,8 +145,10 @@ wxString pgSetBase::ColType(int col) const
     return szResult;
 }
 
-wxString pgSetBase::ColFullType(int col) const
+wxString pgSetBase::ColFullType(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     if (!colFullTypes[col].IsEmpty())
         return colFullTypes[col];
 
@@ -150,13 +160,17 @@ wxString pgSetBase::ColFullType(int col) const
     return szResult;
 }
 
-int pgSetBase::ColScale(int col) const
+int pgSetBase::ColScale(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     // TODO
     return 0;
 }
-wxString pgSetBase::ColName(int col) const
+wxString pgSetBase::ColName(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     return wxString(PQfname(res, col), conv);
 }
 
@@ -181,6 +195,8 @@ int pgSetBase::ColNumber(const wxString &colname) const
 
 char *pgSetBase::GetCharPtr(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     return PQgetvalue(res, pos -1, col);
 }
 
@@ -193,6 +209,8 @@ char *pgSetBase::GetCharPtr(const wxString &col) const
 
 wxString pgSetBase::GetVal(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     return wxString(GetCharPtr(col), conv);
 }
 
@@ -205,6 +223,8 @@ wxString pgSetBase::GetVal(const wxString& colname) const
 
 long pgSetBase::GetLong(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
         return atol(c);
@@ -225,6 +245,8 @@ long pgSetBase::GetLong(const wxString &col) const
 
 bool pgSetBase::GetBool(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
     {
@@ -243,6 +265,8 @@ bool pgSetBase::GetBool(const wxString &col) const
 
 wxDateTime pgSetBase::GetDateTime(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     wxDateTime dt;
     wxString str=GetVal(col);
     /* This hasn't just been used. ( Is not infinity ) */
@@ -260,6 +284,8 @@ wxDateTime pgSetBase::GetDateTime(const wxString &col) const
 
 wxDateTime pgSetBase::GetDate(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     wxDateTime dt;
     wxString str=GetVal(col);
     /* This hasn't just been used. ( Is not infinity ) */
@@ -277,6 +303,8 @@ wxDateTime pgSetBase::GetDate(const wxString &col) const
 
 double pgSetBase::GetDouble(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     return StrToDouble(GetVal(col));
 }
 
@@ -289,6 +317,8 @@ double pgSetBase::GetDouble(const wxString &col) const
 
 wxULongLong pgSetBase::GetLongLong(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
         return atolonglong(c);
@@ -304,6 +334,8 @@ wxULongLong pgSetBase::GetLongLong(const wxString &col) const
 
 OID pgSetBase::GetOid(const int col) const
 {
+    wxASSERT(col < nCols && col >= 0);
+
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
         return (OID)strtoul(c, 0, 10);

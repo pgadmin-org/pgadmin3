@@ -50,18 +50,18 @@ public:
     long CurrentPos() const { return pos; }
     bool Bof() const { return (!nRows || pos < 1); }
     bool Eof() const { return (!nRows || pos > nRows); }
-    wxString ColName(int col) const;
-    OID ColTypeOid(int col) const;
-    long ColTypeMod(int col) const;
-    wxString ColType(int col) const;
-    wxString ColFullType(int col) const;
-    pgTypClass ColTypClass(int col) const;
+    wxString ColName(const int col) const;
+    OID ColTypeOid(const int col) const;
+    long ColTypeMod(const int col) const;
+    wxString ColType(const int col) const;
+    wxString ColFullType(const int col) const;
+    pgTypClass ColTypClass(const int col) const;
 
     OID GetInsertedOid() const { return PQoidValue(res); }
     long GetInsertedCount() const;
-    int ColSize(int col) const { return PQfsize(res, col); }
-    bool IsNull(int col) const { return (PQgetisnull(res, pos-1, col) != 0); }
-    int ColScale(int col) const;
+    int ColSize(const int col) const { return PQfsize(res, col); }
+    bool IsNull(const int col) const { return (PQgetisnull(res, pos-1, col) != 0); }
+    int ColScale(const int col) const;
     int ColNumber(const wxString &colName) const;
 
 
