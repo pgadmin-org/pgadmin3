@@ -92,13 +92,13 @@ pgDialog()
     settings->Read(wxT("FindReplace/Direction"), &val, wxT("f"));
     if (val == wxT("b"))
     {
-        rdDirectionForward->SetValue(true);
-        rdDirectionBackward->SetValue(false);
+        rdDirectionForward->SetValue(false);
+        rdDirectionBackward->SetValue(true);
     }
     else
     {
-        rdDirectionForward->SetValue(false);
-        rdDirectionBackward->SetValue(true);
+        rdDirectionForward->SetValue(true);
+        rdDirectionBackward->SetValue(false);
     }
 
     // WholeWord
@@ -185,6 +185,9 @@ void dlgFindReplace::OnChange(wxCommandEvent& ev)
 
 void dlgFindReplace::OnFind(wxCommandEvent& ev)
 {
+    if (txtFind->GetValue().IsEmpty())
+        return;
+
     bool wholeWord = false, 
          matchCase = false, 
          useRegexps = false, 
@@ -211,6 +214,9 @@ void dlgFindReplace::OnFind(wxCommandEvent& ev)
 
 void dlgFindReplace::OnReplace(wxCommandEvent& ev)
 {
+    if (txtFind->GetValue().IsEmpty())
+        return;
+
     bool wholeWord = false, 
          matchCase = false, 
          useRegexps = false, 
@@ -237,6 +243,9 @@ void dlgFindReplace::OnReplace(wxCommandEvent& ev)
 
 void dlgFindReplace::OnReplaceAll(wxCommandEvent& ev)
 {
+    if (txtFind->GetValue().IsEmpty())
+        return;
+
     bool wholeWord = false, 
          matchCase = false, 
          useRegexps = false;
