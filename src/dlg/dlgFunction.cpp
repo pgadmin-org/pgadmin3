@@ -690,14 +690,7 @@ wxString dlgFunction::GetSql()
             if (chkSetof->GetValue())
                 sql += wxT("SETOF ");
 
-            wxString rt=cbReturntype->GetValue();
-            if (rt.Right(2) == wxT("[]"))
-            {
-                AppendQuotedType(sql, rt.Left(rt.Length()-2));
-                sql += wxT("[]");
-            }
-            else
-                AppendQuotedType(sql, rt);
+            sql += cbReturntype->GetValue();
         }
 
         sql += wxT(" AS\n");

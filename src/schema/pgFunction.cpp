@@ -347,8 +347,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetAcl(functions->GetVal(wxT("proacl")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
-            function->iSetReturnType(obj->GetDatabase()->GetSchemaPrefix(functions->GetVal(wxT("typnsp"))) + functions->GetVal(wxT("typname")));
-			function->iSetQuotedReturnType(obj->GetDatabase()->GetQuotedSchemaPrefix(functions->GetVal(wxT("typnsp"))) + qtTypeIdent(functions->GetVal(wxT("typname"))));
+            function->iSetReturnType(functions->GetVal(wxT("typname")));
+			function->iSetQuotedReturnType(functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
             function->iSetArgTypeOids(oids);
 
