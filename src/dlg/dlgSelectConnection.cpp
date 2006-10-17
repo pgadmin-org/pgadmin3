@@ -78,7 +78,7 @@ dlgSelectConnection::~dlgSelectConnection()
 
 wxString dlgSelectConnection::GetHelpPage() const
 {
-    return wxT("pg/server-connect");
+    return wxT("connect");
 }
 
 
