@@ -195,6 +195,8 @@ int dlgProperty::Go(bool modal)
     // restore previous position and size, if applicable
     wxString prop = wxT("Properties/") + wxString(factory->GetTypeName());
 
+    wxSize origSize = GetSize();
+
     if (GetWindowStyle() & wxTHICK_FRAME)
         SetSize(settings->Read(prop, GetSize()));
 
@@ -203,7 +205,7 @@ int dlgProperty::Go(bool modal)
         Move(pos);
 
     wxSize size = GetSize();
-    CheckOnScreen(pos, size, 0, 0);
+    CheckOnScreen(pos, size, origSize.GetWidth(), origSize.GetHeight());
         Move(pos);
 
     ctlComboBoxFix *cbowner = (ctlComboBoxFix*)cbOwner;
