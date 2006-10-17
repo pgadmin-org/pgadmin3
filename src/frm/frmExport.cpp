@@ -162,7 +162,16 @@ bool frmExport::Export(pgSet *set)
                 line=wxEmptyString;
             else
                 line += cbColSeparator->GetValue();
-            line += set->ColName(col);
+            
+            if (rbQuoteStrings->GetValue() || rbQuoteAll->GetValue())
+            {
+                wxString qc = cbQuoteChar->GetValue();
+                wxString hdr = set->ColName(col);
+                hdr.Replace(qc, qc+qc);
+                line += qc + hdr + qc;
+            }
+            else
+                line += set->ColName(col);
         }
         if (rbCRLF->GetValue())
             line += wxT("\r\n");
