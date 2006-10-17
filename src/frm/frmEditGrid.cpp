@@ -86,7 +86,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     SetIcon(wxIcon(viewdata_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
     dlgName = wxT("frmEditGrid");
-    RestorePosition(-1, -1, 600, 500, 200, 150);
+    RestorePosition(-1, -1, 600, 500, 300, 350);
     connection=_conn;
     mainForm=form;
     thread=0;
@@ -98,6 +98,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+
+    SetMinSize(wxSize(300,350));
 
     CreateStatusBar();
     SetStatusBarPane(-1);
@@ -206,8 +208,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(cbLimit, wxPaneInfo().Name(wxT("limitBar")).Caption(_("Limit bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CaptionVisible(false).CloseButton(false));
-    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom());
+    manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200, 100)).BestSize(wxSize(300, 200)));
+    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom().MinSize(wxSize(200, 100)).BestSize(wxSize(300, 150)));
 
     // Now load the layout
     wxString perspective;
@@ -318,6 +320,11 @@ void frmEditGrid::OnDefaultView(wxCommandEvent& event)
 
     // tell the manager to "commit" all the changes just made
     manager.Update();
+
+    // Sync the View menu options
+    viewMenu->Check(MNU_LIMITBAR, manager.GetPane(wxT("limitBar")).IsShown());
+    viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
 }
 
 void frmEditGrid::SetSortCols(const wxString &cols) 
@@ -1912,6 +1919,7 @@ cacheLine *sqlTable::GetLine(int row)
         line=dataPool->Get(lineIndex[row]);
     else
         line=addPool->Get(row-(nRows-rowsDeleted));
+
     return line;
 }
 
@@ -1940,7 +1948,7 @@ wxString sqlTable::MakeKey(cacheLine *line)
             if (columns[cn-1].typeName != wxT(""))
             {
                 whereClause += wxT("::");
-                whereClause += columns[cn-1].typeName;
+                whereClause += columns[cn-1].displayTypeName;
             }
         }
     }

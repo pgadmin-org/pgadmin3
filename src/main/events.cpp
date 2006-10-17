@@ -857,6 +857,11 @@ void frmMain::OnDefaultView(wxCommandEvent& event)
 
     // tell the manager to "commit" all the changes just made
     manager.Update();
+
+    // Sync the View menu options
+    viewMenu->Check(MNU_SQLPANE, manager.GetPane(wxT("sqlPane")).IsShown());
+    viewMenu->Check(MNU_OBJECTBROWSER, manager.GetPane(wxT("objectBrowser")).IsShown());
+    viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 }
 
 void frmMain::OnPositionStc(wxStyledTextEvent& event)

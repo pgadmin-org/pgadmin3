@@ -88,7 +88,7 @@ frmMain::frmMain(const wxString& title)
 
     dlgName = wxT("frmMain");
     SetMinSize(wxSize(400,300));
-    RestorePosition(50, 50, 750, 550, 300, 200);
+    RestorePosition(50, 50, 750, 550, 600, 450);
 
     wxWindowBase::SetFont(settings->GetSystemFont());
 
@@ -119,6 +119,8 @@ frmMain::frmMain(const wxString& title)
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+
+    SetMinSize(wxSize(600, 450)); 
 
     // wxGTK needs this deferred
     pgaFactory::RealizeImages();
@@ -165,9 +167,9 @@ frmMain::frmMain(const wxString& title)
     menuFactories->CheckMenu(0, menuBar, toolBar);
 
     // Kickstart wxAUI
-    manager.AddPane(browser, wxPaneInfo().Name(wxT("objectBrowser")).Caption(_("Object browser")).Left());
-    manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CaptionVisible(false).CloseButton(false));
-    manager.AddPane(sqlPane, wxPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom());
+    manager.AddPane(browser, wxPaneInfo().Name(wxT("objectBrowser")).Caption(_("Object browser")).Left().MinSize(wxSize(100, 200)).BestSize(wxSize(200, 450)));
+    manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200, 100)).BestSize(wxSize(400, 200)));
+    manager.AddPane(sqlPane, wxPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom().MinSize(wxSize(200, 100)).BestSize(wxSize(400, 200)));
     manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
 
     // Now load the layout
