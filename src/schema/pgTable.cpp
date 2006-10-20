@@ -409,7 +409,7 @@ wxString pgTable::GetUpdateSql(ctlTree *browser)
 
 void pgTable::UpdateRows()
 {
-    pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ") + GetQuotedFullIdentifier());
+    pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ONLY ") + GetQuotedFullIdentifier());
     if (props)
     {
         rows = props->GetLongLong(0);
