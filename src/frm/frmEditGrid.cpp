@@ -2237,6 +2237,12 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
         cacheLine *line=GetLine(pos);
         if (!line)
             break;
+			
+        // If line->cols is null, it probably means we need to force the cacheline to be populated.
+        if (!line->cols)
+		    GetValue(pos, 0);
+			
+        line=GetLine(pos);
 
         if (line->stored)
         {
