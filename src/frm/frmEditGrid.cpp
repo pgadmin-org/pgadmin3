@@ -1826,8 +1826,11 @@ sqlTable::~sqlTable()
         delete dataPool;
 
     delete addPool;
-
+	
     delete[] columns;
+	
+	if (lineIndex)
+	    delete[] lineIndex;
 }
 
 
