@@ -249,7 +249,7 @@ wxString frmBackup::getCmdPart2()
     cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));
 
     if (object->GetMetaType() == PGM_SCHEMA)
-        cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+        cmd.Append(wxT(" -n ") + ((pgSchema*)object)->GetQuotedIdentifier());
     else if (object->GetMetaType() == PGM_TABLE) 
     {
         cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
