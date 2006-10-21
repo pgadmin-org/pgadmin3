@@ -472,7 +472,6 @@ void pgQueryThreadBase::appendMessage(const wxString &str)
 int pgQueryThreadBase::execute()
 {
     rowsInserted = -1L;
-    wxLongLong startTime=wxGetLocalTimeMillis();
 
     if (!conn->conn)
         return(0);
@@ -510,7 +509,6 @@ int pgQueryThreadBase::execute()
         // all others are discarded
         PGresult *res=PQgetResult(conn->conn);
 
-        startTime = wxGetLocalTimeMillis();
         if (!res)
             break;
 
@@ -557,17 +555,9 @@ int pgQueryThreadBase::execute()
         if (*s)
             rowsInserted = atol(s);
     }
+
     return(1);
 }
-
-
-bool pgQueryThreadBase::IsRunning() const
-{
-    if (rc <  0)
-        return wxThread::IsRunning();
-    return false;
-}
-
 
 void *pgQueryThreadBase::Entry()
 {

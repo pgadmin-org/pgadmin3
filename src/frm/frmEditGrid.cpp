@@ -1634,10 +1634,12 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     rowsStored=0;
     rowsDeleted=0;
 
+
     dataPool=0;
     addPool = new cacheLinePool(100);       // arbitrary initial size
     lastRow=-1;
     int i;
+    lineIndex = 0;
 
     nRows = thread->DataSet()->NumRows();
     nCols=thread->DataSet()->NumCols();
@@ -2240,9 +2242,10 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
 			
         // If line->cols is null, it probably means we need to force the cacheline to be populated.
         if (!line->cols)
-		    GetValue(pos, 0);
-			
-        line=GetLine(pos);
+        {
+		    GetValue(pos, 0);	
+            line=GetLine(pos);
+        }
 
         if (line->stored)
         {

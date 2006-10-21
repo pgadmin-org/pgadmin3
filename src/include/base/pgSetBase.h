@@ -149,7 +149,6 @@ public:
     long RowsInserted() const { return rowsInserted; }
     OID InsertedOid() const { return insertedOid; }
     wxString GetMessagesAndClear();
-    bool IsRunning() const;
     void appendMessage(const wxString &str);
 
 protected:
