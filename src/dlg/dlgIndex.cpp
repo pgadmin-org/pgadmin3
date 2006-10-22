@@ -39,6 +39,8 @@ BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgIndexBase::OnSelectCol)
+    EVT_COMBOBOX(XRCID("cbColumns"),                dlgIndexBase::OnSelectCol)
 END_EVENT_TABLE();
 
 
@@ -79,8 +81,6 @@ int dlgIndexBase::Go(bool modal)
     {
         // edit mode: view only
         txtName->Disable();
-        btnAddCol->Disable();
-        btnRemoveCol->Disable();
         cbColumns->Disable();
 
 	    int pos = 0;
@@ -98,6 +98,9 @@ int dlgIndexBase::Go(bool modal)
         // create mode
     }
 
+    btnAddCol->Disable();
+    btnRemoveCol->Disable();
+
     return dlgCollistProperty::Go(modal);
 }
 
@@ -113,6 +116,8 @@ void dlgIndexBase::OnAddCol(wxCommandEvent &ev)
             cbColumns->SetSelection(0);
 
         CheckChange();
+        if (cbColumns->GetValue().IsEmpty())
+            btnAddCol->Disable();
     }
 }
 
@@ -127,9 +132,32 @@ void dlgIndexBase::OnRemoveCol(wxCommandEvent &ev)
         cbColumns->Append(col);
 
         CheckChange();
+        btnRemoveCol->Disable();
     }
 }
 
+void dlgIndexBase::OnSelectCol(wxListEvent &ev)
+{
+    OnSelectCol();
+}
+
+void dlgIndexBase::OnSelectCol(wxCommandEvent &ev)
+{
+    OnSelectCol();
+}
+
+void dlgIndexBase::OnSelectCol()
+{
+    if (lstColumns->GetSelection() != wxNOT_FOUND)
+        btnRemoveCol->Enable(true);
+    else
+        btnRemoveCol->Enable(false);
+
+    if (cbColumns->GetSelection() != wxNOT_FOUND && !cbColumns->GetValue().IsEmpty())
+        btnAddCol->Enable(true);
+    else
+        btnAddCol->Enable(false);
+}
 
 void dlgIndexBase::CheckChange()
 {
