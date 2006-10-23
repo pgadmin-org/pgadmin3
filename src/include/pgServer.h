@@ -28,6 +28,7 @@ public:
     virtual pgCollection *CreateCollection(pgObject *obj);
 
     int GetClosedIconId() { return WantSmallIcon() ? smallClosedId : closedId; }
+
 protected:
     int closedId, smallClosedId;
 };
@@ -127,6 +128,9 @@ public:
     bool HasReferences() { return false; }
 
     pgConn *connection() { return conn; }
+
+    void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where=wxEmptyString);
+    void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
     
 private:
     wxString passwordFilename();

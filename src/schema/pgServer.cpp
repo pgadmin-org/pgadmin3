@@ -962,6 +962,22 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
     }
 }
 
+void pgServer::ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &wh)
+{
+    Dependencies->ClearAll();
+    Dependencies->AddColumn(_("Type"), 60);
+    Dependencies->AddColumn(_("Name"), 100);
+    Dependencies->AddColumn(_("Restriction"), 50);
+}
+
+
+void pgServer::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &wh)
+{
+    referencedBy->ClearAll();
+    referencedBy->AddColumn(_("Type"), 60);
+    referencedBy->AddColumn(_("Name"), 100);
+    referencedBy->AddColumn(_("Restriction"), 50);
+}
 
 pgServerCollection::pgServerCollection(pgaFactory *factory)
  : pgCollection(factory)
