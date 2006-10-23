@@ -82,7 +82,7 @@ DialogWithHelp((frmMain*)parent)
 
     // Icon
     SetIcon(wxIcon(property_xpm));
-    CenterOnParent();
+    RestorePosition();
 
     item=_item;
 
@@ -136,6 +136,7 @@ DialogWithHelp((frmMain*)parent)
 dlgMainConfig::~dlgMainConfig()
 {
     wxLogInfo(wxT("Destroying a main config dialogue"));
+    SavePosition();
 }
 
 

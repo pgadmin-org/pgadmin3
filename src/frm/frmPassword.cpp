@@ -39,16 +39,17 @@ frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("frmPassword")); 
+    RestorePosition();
 
     server = obj->GetServer();
     // Icon
     SetIcon(wxIcon(connect_xpm));
-    CenterOnParent();
 }
 
 frmPassword::~frmPassword()
 {
     wxLogInfo(wxT("Destroying a change password dialogue"));
+    SavePosition();
 }
 
 

@@ -156,6 +156,7 @@ frmHint::frmHint(wxWindow *fr, bool _force) : DialogWithHelp(0)
     force=_force;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(fr, wxT("frmHint"));
+    RestorePosition();
 
     if (force)
         btnCancel->Disable();
@@ -319,6 +320,7 @@ frmHint::~frmHint()
                 settings->Write(wxString(wxT("Hints/")) + hintArray[hintno].hintPage, wxT("Suppress"));
         }
     }
+    SavePosition();
 }
 
 

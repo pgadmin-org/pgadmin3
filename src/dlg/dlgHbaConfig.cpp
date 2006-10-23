@@ -64,7 +64,7 @@ DialogWithHelp((frmMain*)parent)
 
     // Icon
     SetIcon(wxIcon(property_xpm));
-    CenterOnParent();
+    RestorePosition();
 
     line = _line;
 
@@ -141,6 +141,7 @@ DialogWithHelp((frmMain*)parent)
 dlgHbaConfig::~dlgHbaConfig()
 {
     wxLogInfo(wxT("Destroying a hba config dialogue"));
+    SavePosition();
 }
 
 

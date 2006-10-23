@@ -69,7 +69,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 
     // Icon
     SetIcon(wxIcon(sortfilter_xpm));
-    CenterOnParent();
+    RestorePosition();
 
     int cols = grid->GetNumberCols();
     long x;
@@ -164,6 +164,11 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
         nbOptions->DeletePage(0);
 
     filter->SetFocus();
+}
+
+dlgEditGridOptions::~dlgEditGridOptions()
+{
+    SavePosition();
 }
 
 void dlgEditGridOptions::OnRemove(wxCommandEvent &ev)

@@ -51,11 +51,10 @@ pgDialog()
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("dlgFindReplace"));
+    RestorePosition();
 
     // Icon
     appearanceFactory->SetIcons(this);
-
-    CenterOnParent();
 
     // Accelerator table
     wxAcceleratorEntry entries[1];
@@ -120,6 +119,7 @@ pgDialog()
 dlgFindReplace::~dlgFindReplace()
 {
     wxLogInfo(wxT("Destroying a search & replace dialogue"));
+    SavePosition();
 }
 
 void dlgFindReplace::FocusSearch()

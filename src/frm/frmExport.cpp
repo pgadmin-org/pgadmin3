@@ -52,11 +52,11 @@ frmExport::frmExport(wxWindow *p)
     wxLogInfo(wxT("Creating the export dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(p, wxT("frmExport")); 
+    LoadResource(p, wxT("frmExport"));
+    RestorePosition();
 
     // Icon
     appearanceFactory->SetIcons(this);
-    CenterOnParent();
     cbQuoteChar->Disable();
     btnOK->Disable();
 
@@ -92,6 +92,7 @@ frmExport::frmExport(wxWindow *p)
 frmExport::~frmExport()
 {
     wxLogInfo(wxT("Destroying the export dialogue"));
+    SavePosition();
 }
 
 

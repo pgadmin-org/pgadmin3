@@ -44,7 +44,7 @@ DialogWithHelp(form)
     LoadResource((wxWindow*)form, wxT("dlgConnect"));
 
     SetIcon(wxIcon(connect_xpm));
-    CenterOnParent();
+    RestorePosition();
 
     // Setup the default values
     stDescription->SetLabel(description);
@@ -58,6 +58,7 @@ DialogWithHelp(form)
 dlgConnect::~dlgConnect()
 {
     wxLogInfo(wxT("Destroying a connect dialogue"));
+    SavePosition();
 }
 
 

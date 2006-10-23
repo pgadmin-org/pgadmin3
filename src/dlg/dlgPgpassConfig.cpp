@@ -58,8 +58,7 @@ DialogWithHelp((frmMain*)parent)
 
     // Icon
     SetIcon(wxIcon(property_xpm));
-    CenterOnParent();
-
+    RestorePosition();
     line = _line;
 
     chkEnabled->SetValue(!line->isComment);
@@ -77,6 +76,7 @@ DialogWithHelp((frmMain*)parent)
 dlgPgpassConfig::~dlgPgpassConfig()
 {
     wxLogInfo(wxT("Destroying a pgpass config dialogue"));
+    SavePosition();
 }
 
 

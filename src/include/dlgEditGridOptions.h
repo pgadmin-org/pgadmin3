@@ -39,6 +39,7 @@ public:
 
 	// Construction
     dlgEditGridOptions(frmEditGrid *parent, pgConn *conn, const wxString &rel, ctlSQLEditGrid *grid);
+    ~dlgEditGridOptions();
 
 private:
 

@@ -88,7 +88,7 @@ frmReport::frmReport(wxWindow *p)
 
     // Icon
     appearanceFactory->SetIcons(this);
-    CenterOnParent();
+    RestorePosition();
     btnOK->Disable();
 
     wxString val;
@@ -176,6 +176,7 @@ frmReport::frmReport(wxWindow *p)
 frmReport::~frmReport()
 {
     wxLogInfo(wxT("Destroying the report dialogue"));
+    SavePosition();
 }
 
 

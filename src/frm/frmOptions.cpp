@@ -82,7 +82,7 @@ frmOptions::frmOptions(frmMain *parent)
 
     // Icon
     SetIcon(wxIcon(properties_xpm));
-    CenterOnParent();
+    RestorePosition();
 
     wxAcceleratorEntry entries[1];
 
@@ -156,6 +156,7 @@ frmOptions::frmOptions(frmMain *parent)
 frmOptions::~frmOptions()
 {
     wxLogInfo(wxT("Destroying an options dialogue"));
+    SavePosition();
 }
 
 

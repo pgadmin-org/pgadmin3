@@ -49,8 +49,7 @@ pgDialog()
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("dlgManageFavourites"));
-
-    CenterOnParent();
+    RestorePosition();
 
 	anythingChanged = false;
 
@@ -88,6 +87,7 @@ int dlgManageFavourites::ManageFavourites()
 dlgManageFavourites::~dlgManageFavourites()
 {
     wxLogInfo(wxT("Destroying a manage favourites dialogue"));
+    SavePosition();
 }
 
 

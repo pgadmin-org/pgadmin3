@@ -46,12 +46,14 @@ frmUpdate::frmUpdate(frmMain *mainForm) : DialogWithHelp(mainForm)
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource((wxWindow*)mainForm, wxT("frmUpdate"));
+    RestorePosition();
 }
 
 
 frmUpdate::~frmUpdate()
 {
     wxLogInfo(wxT("Destroy an update dialogue"));
+    SavePosition();
 }
 
 wxString frmUpdate::GetHelpPage() const

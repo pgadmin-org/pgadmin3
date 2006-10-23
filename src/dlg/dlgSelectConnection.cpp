@@ -49,7 +49,7 @@ DialogWithHelp(form)
     LoadResource(parent, wxT("dlgSelectConnection"));
 
     SetIcon(wxIcon(connect_xpm));
-    CenterOnParent();
+    RestorePosition();
 
 	if (form != NULL)
 	{
@@ -73,6 +73,7 @@ DialogWithHelp(form)
 dlgSelectConnection::~dlgSelectConnection()
 {
     wxLogInfo(wxT("Destroying a select connection dialogue"));
+    SavePosition();
 }
 
 
