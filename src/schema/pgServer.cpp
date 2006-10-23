@@ -533,7 +533,7 @@ void pgServer::StorePassword()
 }
 
     
-int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
+int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool forceStorePassword)
 {
     wxLogInfo(wxT("Attempting to create a connection object..."));
 
@@ -665,7 +665,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
                 settings->Write(wxT("Updates/UseSSL"), true);
 
             UpdateIcon(form->GetBrowser());
-            if (storePassword)
+            if (storePassword || forceStorePassword)
                 StorePassword();
         }
         else

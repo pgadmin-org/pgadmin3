@@ -110,7 +110,10 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
             hostname = server;
         }
     	else
+        {
     	    hostip = server;
+            hostname = server;
+        }
 #ifndef __WXMSW__
     }
     else

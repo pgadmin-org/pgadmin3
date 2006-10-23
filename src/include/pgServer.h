@@ -43,7 +43,7 @@ public:
     int GetIconId();
 
     wxString GetTypeName() const { return wxT("Server"); }
-    int Connect(frmMain *form, bool askPassword=true, const wxString &pwd=wxEmptyString);
+    int Connect(frmMain *form, bool askPassword=true, const wxString &pwd=wxEmptyString, bool forceStorePassword=false);
     bool Disconnect(frmMain *form);
     void StorePassword();
     bool GetPasswordIsStored();

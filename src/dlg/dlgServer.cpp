@@ -345,7 +345,7 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
         {
             wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
                 server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), form);
-            rc = server->Connect(form, false, dlg.GetPassword());
+            rc = server->Connect(form, false, dlg.GetPassword(), true);
         }
         else
         {
