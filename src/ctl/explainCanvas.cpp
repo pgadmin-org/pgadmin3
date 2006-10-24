@@ -304,6 +304,7 @@ void ExplainPopup::SetShape(ExplainShape *s)
 void ExplainPopup::Popup()
 {
     Show();
+	Raise();
     wxTheApp->Yield(true);
 
     popupPoint = wxDefaultPosition;
