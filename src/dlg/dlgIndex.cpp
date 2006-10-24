@@ -39,8 +39,8 @@ BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
-    EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgIndexBase::OnSelectCol)
-    EVT_COMBOBOX(XRCID("cbColumns"),                dlgIndexBase::OnSelectCol)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgIndexBase::OnSelectListCol)
+    EVT_COMBOBOX(XRCID("cbColumns"),                dlgIndexBase::OnSelectComboCol)
 END_EVENT_TABLE();
 
 
@@ -136,12 +136,12 @@ void dlgIndexBase::OnRemoveCol(wxCommandEvent &ev)
     }
 }
 
-void dlgIndexBase::OnSelectCol(wxListEvent &ev)
+void dlgIndexBase::OnSelectListCol(wxListEvent &ev)
 {
     OnSelectCol();
 }
 
-void dlgIndexBase::OnSelectCol(wxCommandEvent &ev)
+void dlgIndexBase::OnSelectComboCol(wxCommandEvent &ev)
 {
     OnSelectCol();
 }

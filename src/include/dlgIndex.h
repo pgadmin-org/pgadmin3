@@ -25,8 +25,8 @@ public:
     dlgIndexBase(pgaFactory *factory, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
     dlgIndexBase(pgaFactory *factory, frmMain *frame, const wxString &resName, ctlListView *colList);
 
-    void OnSelectCol(wxCommandEvent &ev);
-    void OnSelectCol(wxListEvent &ev);
+    void OnSelectComboCol(wxCommandEvent &ev);
+    void OnSelectListCol(wxListEvent &ev);
     void OnSelectCol();
     void CheckChange();
     pgObject *GetObject();
