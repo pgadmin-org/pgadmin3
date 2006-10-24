@@ -131,7 +131,7 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
     }
     if (!hostip.IsEmpty()) {
       connstr.Append(wxT(" hostaddr="));
-      connstr.Append(qtConnString(hostip));
+      connstr.Append(hostip);
     }
     if (!database.IsEmpty()) {
       connstr.Append(wxT(" dbname="));
@@ -145,6 +145,7 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
       connstr.Append(wxT(" password="));
       connstr.Append(qtConnString(password));
     }
+
     if (port > 0) {
       connstr.Append(wxT(" port="));
       connstr.Append(NumToStr((long)port));
@@ -517,6 +518,9 @@ bool pgConnBase::IsAlive()
 
 int pgConnBase::GetStatus() const
 {
+    if (!this)
+        return PGCONN_BAD;
+
     if (conn)
         ((pgConnBase*)this)->connStatus = PQstatus(conn);
 
