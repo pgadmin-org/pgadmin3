@@ -1,48 +1,48 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 27. Regression Tests</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="prev" href="wal-internals.html" title="26.4. WAL Internals">
-<link rel="next" href="regress-evaluation.html" title="27.2. Test Evaluation">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="admin.html" title="">
+<link rel="prev" href="wal-internals.html" title="">
+<link rel="next" href="regress-evaluation.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="regress">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="regress"></a>Chapter 27. Regression Tests</h2></div></div></div>
+<a name="regress"></a></h2></div></div></div>
 <div class="toc">
-<p><b>Table of Contents</b></p>
+<p><b></b></p>
 <dl>
 <dt><span class="sect1"><a href="regress.html#regress-run">27.1. Running the Tests</a></span></dt>
 <dt><span class="sect1"><a href="regress-evaluation.html">27.2. Test Evaluation</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2654798">27.2.1. Error message differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2654820">27.2.2. Locale differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2654833">27.2.3. Date and time differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2654860">27.2.4. Floating-point differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2654931">27.2.5. Row ordering differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2655003">27.2.6. Insufficient stack depth</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2655042">27.2.7. The &#8220;<span class="quote">random</span>&#8221; test</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653042">27.2.1. Error message differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653064">27.2.2. Locale differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653077">27.2.3. Date and time differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653104">27.2.4. Floating-point differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653175">27.2.5. Row ordering differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653246">27.2.6. Insufficient stack depth</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653286">27.2.7. The <span class="quote">random</span> test</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="regress-variant.html">27.3. Variant Comparison Files</a></span></dt>
 </dl>
 </div>
-<a name="id2654347"></a><a name="id2654356"></a><p>   The regression tests are a comprehensive set of tests for the SQL
+<a name="id2652591"></a><a name="id2652600"></a><p>   The regression tests are a comprehensive set of tests for the SQL
    implementation in <span class="productname">PostgreSQL</span>.  They test
    standard SQL operations as well as the extended capabilities of
    <span class="productname">PostgreSQL</span>.
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="regress-run"></a>27.1. Running the Tests</h2></div></div></div>
+<a name="regress-run"></a></h2></div></div></div>
 <p>   The regression tests can be run against an already installed and
    running server, or using a temporary installation within the build
-   tree.  Furthermore, there is a &#8220;<span class="quote">parallel</span>&#8221; and a
-   &#8220;<span class="quote">sequential</span>&#8221; mode for running the tests.  The
+   tree.  Furthermore, there is a <span class="quote">parallel</span> and a
+   <span class="quote">sequential</span> mode for running the tests.  The
    sequential method runs each test script in turn, whereas the
    parallel method starts up multiple server processes to run groups
    of tests in parallel.  Parallel testing gives confidence that
@@ -66,8 +66,8 @@
  All 100 tests passed.
 ======================</code></pre>
 <p>
-   or otherwise a note about which tests failed.  See <a href="regress-evaluation.html" title="27.2. Test Evaluation">Section 27.2, &#8220;Test Evaluation&#8221;</a> below before assuming that a
-   &#8220;<span class="quote">failure</span>&#8221; represents a serious problem.
+   or otherwise a note about which tests failed.  See <a href="regress-evaluation.html" title=""></a> below before assuming that a
+   <span class="quote">failure</span> represents a serious problem.
   </p>
 <p>    Because this test method runs a temporary server, it will not work
     when you are the root user (since the server will not start as root).
@@ -82,7 +82,7 @@
 <code class="prompt">joeuser$ </code><strong class="userinput"><code>cd <em class="replaceable"><code>top-level build directory</code></em></code></strong>
 <code class="prompt">joeuser$ </code><strong class="userinput"><code>gmake check</code></strong></pre>
 <p>
-    (The only possible &#8220;<span class="quote">security risk</span>&#8221; here is that other
+    (The only possible <span class="quote">security risk</span> here is that other
     users might be able to alter the regression test results behind
     your back.  Use common sense when managing user permissions.)
    </p>
@@ -113,9 +113,9 @@
 <p>
     runs no more than ten tests concurrently.
    </p>
-<p>   To run the tests after installation (see <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>),
+<p>   To run the tests after installation (see <a href="installation.html" title=""></a>),
    initialize a data area and start the
-   server, as explained in <a href="runtime.html" title="Chapter 16. Operating System Environment">Chapter 16, <i>Operating System Environment</i></a>,  then type
+   server, as explained in <a href="runtime.html" title=""></a>,  then type
 </p>
 <pre class="screen">gmake installcheck</pre>
 <p>

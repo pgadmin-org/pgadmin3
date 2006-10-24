@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>18.4. Role Membership</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
-<link rel="prev" href="privileges.html" title="18.3. Privileges">
-<link rel="next" href="perm-functions.html" title="18.5. Functions and Triggers">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="user-manag.html" title="">
+<link rel="prev" href="privileges.html" title="">
+<link rel="next" href="perm-functions.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="role-membership"></a>18.4. Role Membership</h2></div></div></div>
-<a name="id2638628"></a><p>   It is frequently convenient to group users together to ease
+<a name="role-membership"></a></h2></div></div></div>
+<a name="id2636659"></a><p>   It is frequently convenient to group users together to ease
    management of privileges: that way, privileges can be granted to, or
    revoked from, a group as a whole.  In <span class="productname">PostgreSQL</span>
    this is done by creating a role that represents the group, and then
@@ -44,7 +44,7 @@ REVOKE <em class="replaceable"><code>group_role</code></em> FROM <em class="repl
 <p>   The members of a role can use the privileges of the group role in two
    ways.  First, every member of a group can explicitly do
    <a href="sql-set-role.html">SET ROLE</a> to
-   temporarily &#8220;<span class="quote">become</span>&#8221; the group role.  In this state, the
+   temporarily <span class="quote">become</span> the group role.  In this state, the
    database session has access to the privileges of the group role rather
    than the original login role, and any database objects created are
    considered owned by the group role not the login role.  Second, member
@@ -61,7 +61,7 @@ GRANT wheel TO admin;</pre>
    Immediately after connecting as role <code class="literal">joe</code>, a database
    session will have use of privileges granted directly to <code class="literal">joe</code>
    plus any privileges granted to <code class="literal">admin</code>, because <code class="literal">joe</code>
-   &#8220;<span class="quote">inherits</span>&#8221; <code class="literal">admin</code>'s privileges.  However, privileges
+   <span class="quote">inherits</span> <code class="literal">admin</code>'s privileges.  However, privileges
    granted to <code class="literal">wheel</code> are not available, because even though
    <code class="literal">joe</code> is indirectly a member of <code class="literal">wheel</code>, the
    membership is via <code class="literal">admin</code> which has the <code class="literal">NOINHERIT</code>
@@ -85,7 +85,7 @@ RESET ROLE;</pre>
 <p>
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    The <code class="command">SET ROLE</code> command always allows selecting any role
     that the original login role is directly or indirectly a member of.
     Thus, in the above example, it is not necessary to become
@@ -93,7 +93,7 @@ RESET ROLE;</pre>
    </p>
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    In the SQL standard, there is a clear distinction between users and roles,
     and users do not automatically inherit privileges while roles do.  This
     behavior can be obtained in <span class="productname">PostgreSQL</span> by giving

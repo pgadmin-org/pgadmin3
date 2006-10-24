@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>17.12. Version and Platform Compatibility</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
-<link rel="prev" href="runtime-config-locks.html" title="17.11. Lock Management">
-<link rel="next" href="runtime-config-preset.html" title="17.13. Preset Options">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="runtime-config.html" title="">
+<link rel="prev" href="runtime-config-locks.html" title="">
+<link rel="next" href="runtime-config-preset.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config-compatible"></a>17.12. Version and Platform Compatibility</h2></div></div></div>
+<a name="runtime-config-compatible"></a></h2></div></div></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-compatible-version"></a>17.12.1. Previous PostgreSQL Versions</h3></div></div></div>
+<a name="runtime-config-compatible-version"></a></h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-add-missing-from"></a><span class="term"><code class="varname">add_missing_from</code> (<code class="type">boolean</code>)</span>
@@ -46,16 +46,16 @@
 </dt>
 <dd>
 <p>        This controls whether the array input parser recognizes
-        unquoted <code class="literal">NULL</code> as specifying a NULL array element.
+        unquoted <code class="literal">NULL</code> as specifying a null array element.
         By default, this is <code class="literal">on</code>, allowing array values containing
-        NULLs to be entered.  However, <span class="productname">PostgreSQL</span> versions
-        before 8.2 did not support NULLs in arrays, and therefore would
+        null values to be entered.  However, <span class="productname">PostgreSQL</span> versions
+        before 8.2 did not support null values in arrays, and therefore would
         treat <code class="literal">NULL</code> as specifying a normal array element with
-        the string value &#8220;<span class="quote">NULL</span>&#8221;.  For backwards compatibility with
+        the string value <span class="quote">NULL</span>.  For backwards compatibility with
         applications that require the old behavior, this variable can be
         turned <code class="literal">off</code>.
        </p>
-<p>        Note that it is possible to create array values containing NULLs
+<p>        Note that it is possible to create array values containing null values
         even when this variable is <code class="literal">off</code>.
        </p>
 </dd>
@@ -128,12 +128,12 @@
 <dt>
 <a name="guc-regex-flavor"></a><span class="term"><code class="varname">regex_flavor</code> (<code class="type">string</code>)</span>
 </dt>
-<dd><p>        The regular expression &#8220;<span class="quote">flavor</span>&#8221; can be set to
+<dd><p>        The regular expression <span class="quote">flavor</span> can be set to
         <code class="literal">advanced</code>, <code class="literal">extended</code>, or <code class="literal">basic</code>.
         The default is <code class="literal">advanced</code>.  The <code class="literal">extended</code>
         setting may be useful for exact backwards compatibility with
         pre-7.4 releases of <span class="productname">PostgreSQL</span>.  See
-        <a href="functions-matching.html#posix-syntax-details" title="9.7.3.1. Regular Expression Details">Section 9.7.3.1, &#8220;Regular Expression Details&#8221;</a> for details.
+        <a href="functions-matching.html#posix-syntax-details" title=""></a> for details.
        </p></dd>
 <dt>
 <a name="guc-sql-inheritance"></a><span class="term"><code class="varname">sql_inheritance</code> (<code class="type">boolean</code>)</span>
@@ -142,7 +142,7 @@
         subtables are not included by various commands by default; basically
         an implied <code class="literal">ONLY</code> key word.  This was added for 
         compatibility with releases prior to 7.1.  See
-        <a href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a> for more information.
+        <a href="ddl-inherit.html" title=""></a> for more information.
        </p></dd>
 <dt>
 <a name="guc-standard-conforming-strings"></a><span class="term"><code class="varname">standard_conforming_strings</code> (<code class="type">boolean</code>)</span>
@@ -166,7 +166,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-compatible-clients"></a>17.12.2. Platform and Client Compatibility</h3></div></div></div>
+<a name="runtime-config-compatible-clients"></a></h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-transform-null-equals"></a><span class="term"><code class="varname">transform_null_equals</code> (<code class="type">boolean</code>)</span>
@@ -200,7 +200,7 @@
         involving the equals operator (such as <code class="literal">IN</code>).
         Thus, this option is not a general fix for bad programming.
        </p>
-<p>        Refer to <a href="functions-comparison.html" title="9.2. Comparison Operators">Section 9.2, &#8220;Comparison Operators&#8221;</a> for related information.
+<p>        Refer to <a href="functions-comparison.html" title=""></a> for related information.
        </p>
 </dd>
 </dl></div>

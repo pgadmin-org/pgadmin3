@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>5.4. System Columns</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="prev" href="ddl-constraints.html" title="5.3. Constraints">
-<link rel="next" href="ddl-alter.html" title="5.5. Modifying Tables">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="ddl.html" title="">
+<link rel="prev" href="ddl-constraints.html" title="">
+<link rel="next" href="ddl-alter.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-system-columns"></a>5.4. System Columns</h2></div></div></div>
+<a name="ddl-system-columns"></a></h2></div></div></div>
 <p>   Every table has several <em class="firstterm">system columns</em> that are
    implicitly defined by the system.  Therefore, these names cannot be
    used as names of user-defined columns.  (Note that these
@@ -22,20 +22,20 @@
    restrictions.)  You do not really need to be concerned about these
    columns, just know they exist.
   </p>
-<a name="id2557905"></a><div class="variablelist"><dl>
+<a name="id2556373"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="structfield">oid</code></span></dt>
-<dd><p>      <a name="id2557922"></a>
+<dd><p>      <a name="id2556390"></a>
       The object identifier (object ID) of a row. This column is only
       present if the table was created using <code class="literal">WITH
       OIDS</code>, or if the <a href="runtime-config-compatible.html#guc-default-with-oids">default_with_oids</a>
-      configuration variable was set. This column is of type
-      <code class="type">oid</code> (same name as the column); see <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about the type.
+      configuration variable was set at the time. This column is of type
+      <code class="type">oid</code> (same name as the column); see <a href="datatype-oid.html" title=""></a> for more information about the type.
      </p></dd>
 <dt><span class="term"><code class="structfield">tableoid</code></span></dt>
 <dd>
-<a name="id2557965"></a><p>      The OID of the table containing this row.  This column is
+<a name="id2556433"></a><p>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
-      hierarchies (see <a href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a>), since without it,
+      hierarchies (see <a href="ddl-inherit.html" title=""></a>), since without it,
       it's difficult to tell which individual table a row came from.  The
       <code class="structfield">tableoid</code> can be joined against the
       <code class="structfield">oid</code> column of
@@ -44,7 +44,7 @@
 </dd>
 <dt><span class="term"><code class="structfield">xmin</code></span></dt>
 <dd>
-<a name="id2558000"></a><p>      The identity (transaction ID) of the inserting transaction for
+<a name="id2556468"></a><p>      The identity (transaction ID) of the inserting transaction for
       this row version.  (A row version is an individual state of a
       row; each update of a row creates a new row version for the same
       logical row.)
@@ -52,13 +52,13 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmin</code></span></dt>
 <dd>
-<a name="id2558017"></a><p>      The command identifier (starting at zero) within the inserting
+<a name="id2556486"></a><p>      The command identifier (starting at zero) within the inserting
       transaction.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">xmax</code></span></dt>
 <dd>
-<a name="id2558033"></a><p>      The identity (transaction ID) of the deleting transaction, or
+<a name="id2556501"></a><p>      The identity (transaction ID) of the deleting transaction, or
       zero for an undeleted row version.  It is possible for this column to
       be nonzero in a visible row version. That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
@@ -67,12 +67,12 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmax</code></span></dt>
 <dd>
-<a name="id2558052"></a><p>      The command identifier within the deleting transaction, or zero.
+<a name="id2556520"></a><p>      The command identifier within the deleting transaction, or zero.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">ctid</code></span></dt>
 <dd>
-<a name="id2558067"></a><p>      The physical location of the row version within its table.  Note that
+<a name="id2556535"></a><p>      The physical location of the row version within its table.  Note that
       although the <code class="structfield">ctid</code> can be used to
       locate the row version very quickly, a row's
       <code class="structfield">ctid</code> will change each time it is
@@ -107,7 +107,7 @@
        the combination of <code class="structfield">tableoid</code> and row OID if you
        need a database-wide identifier.
       </p></li>
-<li><p>       The tables in question should be created using <code class="literal">WITH
+<li><p>       Of course, the tables in question must be created <code class="literal">WITH
        OIDS</code>.  As of <span class="productname">PostgreSQL</span> 8.1,
        <code class="literal">WITHOUT OIDS</code> is the default.
       </p></li>
@@ -117,7 +117,7 @@
 <p>    Transaction identifiers are also 32-bit quantities.  In a
     long-lived database it is possible for transaction IDs to wrap
     around.  This is not a fatal problem given appropriate maintenance
-    procedures; see <a href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">Chapter 22, <i>Routine Database Maintenance Tasks</i></a> for details.  It is
+    procedures; see <a href="maintenance.html" title=""></a> for details.  It is
     unwise, however, to depend on the uniqueness of transaction IDs
     over the long term (more than one billion transactions).
    </p>
@@ -125,7 +125,7 @@
     identifiers are also 32-bit quantities.  This creates a hard limit
     of 2<sup>32</sup> (4 billion) <acronym class="acronym">SQL</acronym> commands
     within a single transaction.  In practice this limit is not a
-    problem [mdash ] note that the limit is on number of
+    problem &#8212; note that the limit is on number of
     <acronym class="acronym">SQL</acronym> commands, not number of rows processed.
    </p>
 </div></body>

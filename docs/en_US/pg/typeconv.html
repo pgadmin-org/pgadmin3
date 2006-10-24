@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 10. Type Conversion</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="sql.html" title="Part II. The SQL Language">
-<link rel="prev" href="functions-admin.html" title="9.20. System Administration Functions">
-<link rel="next" href="typeconv-oper.html" title="10.2. Operators">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="sql.html" title="">
+<link rel="prev" href="functions-admin.html" title="">
+<link rel="next" href="typeconv-oper.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="typeconv">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="typeconv"></a>Chapter 10. Type Conversion</h2></div></div></div>
+<a name="typeconv"></a></h2></div></div></div>
 <div class="toc">
-<p><b>Table of Contents</b></p>
+<p><b></b></p>
 <dl>
 <dt><span class="sect1"><a href="typeconv.html#typeconv-overview">10.1. Overview</a></span></dt>
 <dt><span class="sect1"><a href="typeconv-oper.html">10.2. Operators</a></span></dt>
@@ -24,7 +24,7 @@
 <dt><span class="sect1"><a href="typeconv-union-case.html">10.5. <code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs</a></span></dt>
 </dl>
 </div>
-<a name="id2607561"></a><p><acronym class="acronym">SQL</acronym> statements can, intentionally or not, require
+<a name="id2605804"></a><p><acronym class="acronym">SQL</acronym> statements can, intentionally or not, require
 mixing of different data types in the same expression. 
 <span class="productname">PostgreSQL</span> has extensive facilities for
 evaluating mixed-type expressions.</p>
@@ -35,12 +35,12 @@ can affect the results of a query.  When necessary, these results
 can be tailored by using <span class="emphasis"><em>explicit</em></span> type conversion.</p>
 <p>This chapter introduces the <span class="productname">PostgreSQL</span>
 type conversion mechanisms and conventions.
-Refer to the relevant sections in <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a> and <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
+Refer to the relevant sections in <a href="datatype.html" title=""></a> and <a href="functions.html" title=""></a>
 for more information on specific data types and allowed functions and
 operators.</p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="typeconv-overview"></a>10.1. Overview</h2></div></div></div>
+<a name="typeconv-overview"></a></h2></div></div></div>
 <p><acronym class="acronym">SQL</acronym> is a strongly typed language. That is, every data item
 has an associated data type which determines its behavior and allowed usage.
 <span class="productname">PostgreSQL</span> has an extensible type system that is
@@ -109,7 +109,7 @@ with the <code class="command">CREATE CAST</code> command.  (This is usually
 done in conjunction with defining new data types.  The set of casts
 between the built-in types has been carefully crafted and is best not
 altered.)</p>
-<a name="id2607868"></a><p>An additional heuristic is provided in the parser to allow better guesses
+<a name="id2606111"></a><p>An additional heuristic is provided in the parser to allow better guesses
 at proper behavior for <acronym class="acronym">SQL</acronym> standard types. There are
 several basic <em class="firstterm">type categories</em> defined: <code class="type">boolean</code>,
 <code class="type">numeric</code>, <code class="type">string</code>, <code class="type">bitstring</code>, <code class="type">datetime</code>, <code class="type">timespan</code>, <code class="type">geometric</code>, <code class="type">network</code>,
@@ -127,7 +127,7 @@ types.</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Implicit conversions should never have surprising or unpredictable outcomes.</p></li>
 <li><p>User-defined types, of which the parser has no <span class="foreignphrase"><em class="foreignphrase">a priori</em></span> knowledge, should be
-&#8220;<span class="quote">higher</span>&#8221; in the type hierarchy. In mixed-type expressions, native types shall always
+<span class="quote">higher</span> in the type hierarchy. In mixed-type expressions, native types shall always
 be converted to a user-defined type (of course, only if conversion is necessary).</p></li>
 <li><p>User-defined types are not related. Currently, <span class="productname">PostgreSQL</span>
 does not have information available to it on relationships between types, other than

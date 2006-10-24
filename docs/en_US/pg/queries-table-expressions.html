@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>7.2. Table Expressions</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="queries.html" title="Chapter 7. Queries">
-<link rel="prev" href="queries.html" title="Chapter 7. Queries">
-<link rel="next" href="queries-select-lists.html" title="7.3. Select Lists">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="queries.html" title="">
+<link rel="prev" href="queries.html" title="">
+<link rel="next" href="queries-select-lists.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="queries-table-expressions"></a>7.2. Table Expressions</h2></div></div></div>
-<a name="id2562265"></a><p>   A <em class="firstterm">table expression</em> computes a table.  The
+<a name="queries-table-expressions"></a></h2></div></div></div>
+<a name="id2560696"></a><p>   A <em class="firstterm">table expression</em> computes a table.  The
    table expression contains a <code class="literal">FROM</code> clause that is
    optionally followed by <code class="literal">WHERE</code>, <code class="literal">GROUP BY</code>, and
    <code class="literal">HAVING</code> clauses.  Trivial table expressions simply refer
@@ -31,7 +31,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="queries-from"></a>7.2.1. The <code class="literal">FROM</code> Clause</h3></div></div></div>
+<a name="queries-from"></a></h3></div></div></div>
 <p>    The <a href="sql-select.html#sql-from"><code class="literal">FROM</code> Clause</a> derives a
     table from one or more other tables given in a comma-separated
     table reference list.
@@ -48,22 +48,22 @@
     and <code class="literal">HAVING</code> clauses and is finally the result of the
     overall table expression.
    </p>
-<a name="id2562417"></a><p>    When a table reference names a table that is the supertable of a
+<a name="id2560848"></a><p>    When a table reference names a table that is the parent of a
     table inheritance hierarchy, the table reference produces rows of
-    not only that table but all of its subtable successors, unless the
+    not only that table but all of its descendant tables, unless the
     key word <code class="literal">ONLY</code> precedes the table name.  However, the
     reference produces only the columns that appear in the named table
-    [mdash ] any columns added in subtables are ignored.
+    &#8212; any columns added in subtables are ignored.
    </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="queries-join"></a>7.2.1.1. Joined Tables</h4></div></div></div>
-<a name="id2562445"></a><p>     A joined table is a table derived from two other (real or
+<a name="queries-join"></a></h4></div></div></div>
+<a name="id2560876"></a><p>     A joined table is a table derived from two other (real or
      derived) tables according to the rules of the particular join
      type.  Inner, outer, and cross-joins are available.
     </p>
 <div class="variablelist">
-<p class="title"><b>Join Types</b></p>
+<p class="title"><b></b></p>
 <dl>
 <dt><span class="term">Cross join</span></dt>
 <dd>
@@ -99,7 +99,7 @@
         <code class="literal">ON</code> or <code class="literal">USING</code> clause, or implicitly by
         the word <code class="literal">NATURAL</code>.  The join condition determines
         which rows from the two source tables are considered to
-        &#8220;<span class="quote">match</span>&#8221;, as explained in detail below.
+        <span class="quote">match</span>, as explained in detail below.
        </p>
 <p>        The <code class="literal">ON</code> clause is the most general kind of join
         condition: it takes a Boolean value expression of the same
@@ -120,8 +120,8 @@
         <code class="literal">a</code>, <code class="literal">b</code>, and <code class="literal">c</code> in the result,
         whereas with <code class="literal">USING</code> there will be only one of each.
        </p>
-<p>        <a name="id2562792"></a>
-        <a name="id2562801"></a>
+<p>        <a name="id2561222"></a>
+        <a name="id2561231"></a>
         Finally, <code class="literal">NATURAL</code> is a shorthand form of
         <code class="literal">USING</code>: it forms a <code class="literal">USING</code> list
         consisting of exactly those column names that appear in both
@@ -275,8 +275,8 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="queries-table-aliases"></a>7.2.1.2. Table and Column Aliases</h4></div></div></div>
-<a name="id2563143"></a><a name="id2563156"></a><p>     A temporary name can be given to tables and complex table
+<a name="queries-table-aliases"></a></h4></div></div></div>
+<a name="id2561573"></a><a name="id2561586"></a><p>     A temporary name can be given to tables and complex table
      references to be used for references to the derived table in
      the rest of the query.  This is called a <em class="firstterm">table
      alias</em>.
@@ -300,7 +300,7 @@
 <p>
     </p>
 <p>     The alias becomes the new name of the table reference for the
-     current query [mdash ] it is no longer possible to refer to the table
+     current query &#8212; it is no longer possible to refer to the table
      by the original name.  Thus
 </p>
 <pre class="programlisting">SELECT * FROM my_table AS m WHERE my_table.a &gt; 5;</pre>
@@ -323,7 +323,7 @@
 <pre class="programlisting">SELECT * FROM people AS mother JOIN people AS child ON mother.id = child.mother_id;</pre>
 <p>
      Additionally, an alias is required if the table reference is a
-     subquery (see <a href="queries-table-expressions.html#queries-subqueries" title="7.2.1.3. Subqueries">Section 7.2.1.3, &#8220;Subqueries&#8221;</a>).
+     subquery (see <a href="queries-table-expressions.html#queries-subqueries" title=""></a>).
     </p>
 <p>     Parentheses are used to resolve ambiguities.  In the following example,
      the first statement assigns the alias <code class="literal">b</code> to the second
@@ -359,10 +359,10 @@ SELECT * FROM (my_table AS a CROSS JOIN my_table) AS b ...</pre>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="queries-subqueries"></a>7.2.1.3. Subqueries</h4></div></div></div>
-<a name="id2563411"></a><p>     Subqueries specifying a derived table must be enclosed in
+<a name="queries-subqueries"></a></h4></div></div></div>
+<a name="id2561841"></a><p>     Subqueries specifying a derived table must be enclosed in
      parentheses and <span class="emphasis"><em>must</em></span> be assigned a table
-     alias name.  (See <a href="queries-table-expressions.html#queries-table-aliases" title="7.2.1.2. Table and Column Aliases">Section 7.2.1.2, &#8220;Table and Column Aliases&#8221;</a>.)  For
+     alias name.  (See <a href="queries-table-expressions.html#queries-table-aliases" title=""></a>.)  For
      example:
 </p>
 <pre class="programlisting">FROM (SELECT * FROM table1) AS alias_name</pre>
@@ -380,13 +380,13 @@ SELECT * FROM (my_table AS a CROSS JOIN my_table) AS b ...</pre>
 <p>
      Again, a table alias is required.  Assigning alias names to the columns
      of the <code class="command">VALUES</code> list is optional, but is good practice.
-     For more information see <a href="queries-values.html" title="7.7. VALUES Lists">Section 7.7, &#8220;<code class="literal">VALUES</code> Lists&#8221;</a>.
+     For more information see <a href="queries-values.html" title=""></a>.
     </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="queries-tablefunctions"></a>7.2.1.4. Table Functions</h4></div></div></div>
-<a name="id2563493"></a><a name="id2563503"></a><p>     Table functions are functions that produce a set of rows, made up
+<a name="queries-tablefunctions"></a></h4></div></div></div>
+<a name="id2561923"></a><a name="id2561934"></a><p>     Table functions are functions that produce a set of rows, made up
      of either base data types (scalar types) or composite data types
      (table rows).  They are used like a table, view, or subquery in
      the <code class="literal">FROM</code> clause of a query. Columns returned by table
@@ -447,13 +447,13 @@ SELECT * FROM vw_getfoo;</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="queries-where"></a>7.2.2. The <code class="literal">WHERE</code> Clause</h3></div></div></div>
-<a name="id2563647"></a><p>    The syntax of the <a href="sql-select.html#sql-where"><code class="literal">WHERE</code> Clause</a> is
+<a name="queries-where"></a></h3></div></div></div>
+<a name="id2562078"></a><p>    The syntax of the <a href="sql-select.html#sql-where"><code class="literal">WHERE</code> Clause</a> is
 </p>
 <pre class="synopsis">WHERE <em class="replaceable"><code>search_condition</code></em></pre>
 <p>
     where <em class="replaceable"><code>search_condition</code></em> is any value
-    expression (see <a href="sql-expressions.html" title="4.2. Value Expressions">Section 4.2, &#8220;Value Expressions&#8221;</a>) that
+    expression (see <a href="sql-expressions.html" title=""></a>) that
     returns a value of type <code class="type">boolean</code>.
    </p>
 <p>    After the processing of the <code class="literal">FROM</code> clause is done, each
@@ -466,7 +466,7 @@ SELECT * FROM vw_getfoo;</pre>
     <code class="literal">WHERE</code> clause will be fairly useless.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     The join condition of an inner join can be written either in
      the <code class="literal">WHERE</code> clause or in the <code class="literal">JOIN</code> clause.
      For example, these table expressions are equivalent:
@@ -522,8 +522,8 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="queries-group"></a>7.2.3. The <code class="literal">GROUP BY</code> and <code class="literal">HAVING</code> Clauses</h3></div></div></div>
-<a name="id2563917"></a><a name="id2563926"></a><p>    After passing the <code class="literal">WHERE</code> filter, the derived input
+<a name="queries-group"></a></h3></div></div></div>
+<a name="id2562341"></a><a name="id2562351"></a><p>    After passing the <code class="literal">WHERE</code> filter, the derived input
     table may be subject to grouping, using the <code class="literal">GROUP BY</code>
     clause, and elimination of group rows using the <code class="literal">HAVING</code>
     clause.
@@ -579,13 +579,13 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</pre>
 <p>
     Here <code class="literal">sum</code> is an aggregate function that
     computes a single value over the entire group.  More information
-    about the available aggregate functions can be found in <a href="functions-aggregate.html" title="9.15. Aggregate Functions">Section 9.15, &#8220;Aggregate Functions&#8221;</a>.
+    about the available aggregate functions can be found in <a href="functions-aggregate.html" title=""></a>.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
+<h3 class="title"></h3>
 <p>     Grouping without aggregate expressions effectively calculates the
      set of distinct values in a column.  This can also be achieved
-     using the <code class="literal">DISTINCT</code> clause (see <a href="queries-select-lists.html#queries-distinct" title="7.3.3. DISTINCT">Section 7.3.3, &#8220;<code class="literal">DISTINCT</code>&#8221;</a>).
+     using the <code class="literal">DISTINCT</code> clause (see <a href="queries-select-lists.html#queries-distinct" title=""></a>).
     </p>
 </div>
 <p>    Here is another example:  it calculates the total sales for each
@@ -614,7 +614,7 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</pre>
     select list.  Grouping by value expressions instead of simple
     column names is also allowed.
    </p>
-<a name="id2564194"></a><p>    If a table has been grouped using a <code class="literal">GROUP BY</code>
+<a name="id2562618"></a><p>    If a table has been grouped using a <code class="literal">GROUP BY</code>
     clause, but then only certain groups are of interest, the
     <code class="literal">HAVING</code> clause can be used, much like a
     <code class="literal">WHERE</code> clause, to eliminate groups from a grouped

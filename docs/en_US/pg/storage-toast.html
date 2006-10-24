@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>51.2. TOAST</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="storage.html" title="Chapter 51. Database Physical Storage">
-<link rel="prev" href="storage.html" title="Chapter 51. Database Physical Storage">
-<link rel="next" href="storage-page-layout.html" title="51.3. Database Page Layout">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="storage.html" title="">
+<link rel="prev" href="storage.html" title="">
+<link rel="next" href="storage-page-layout.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="storage-toast"></a>51.2. TOAST</h2></div></div></div>
-<a name="id2821306"></a><a name="id2821312"></a><p>This section provides an overview of <acronym class="acronym">TOAST</acronym> (The
+<a name="storage-toast"></a></h2></div></div></div>
+<a name="id2820341"></a><a name="id2820347"></a><p>This section provides an overview of <acronym class="acronym">TOAST</acronym> (The
 Oversized-Attribute Storage Technique).</p>
 <p><span class="productname">PostgreSQL</span> uses a fixed page size (commonly
 8Kb), and does not allow tuples to span multiple pages.  Therefore,  it is
@@ -22,8 +22,8 @@ not possible to store very large field values directly.  To overcome
 this limitation, large  field values are compressed and/or broken up into
 multiple physical rows. This happens transparently to the user, with only
 small impact on most of the backend code.  The technique is affectionately 
-known as <acronym class="acronym">TOAST</acronym>  (or &#8220;<span class="quote">the best thing since sliced bread</span>&#8221;).</p>
-<p>Only certain data types support <acronym class="acronym">TOAST</acronym> [mdash ] there is no need to
+known as <acronym class="acronym">TOAST</acronym>  (or <span class="quote">the best thing since sliced bread</span>).</p>
+<p>Only certain data types support <acronym class="acronym">TOAST</acronym> &#8212; there is no need to
 impose the overhead on data types that cannot produce large field values.
 To support <acronym class="acronym">TOAST</acronym>, a data type must have a variable-length
 (<em class="firstterm">varlena</em>) representation, in which the first 32-bit word of any

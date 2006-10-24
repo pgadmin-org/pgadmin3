@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>12.4. Data Consistency Checks at the Application Level</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
-<link rel="prev" href="explicit-locking.html" title="12.3. Explicit Locking">
-<link rel="next" href="locking-indexes.html" title="12.5. Locking and Indexes">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="mvcc.html" title="">
+<link rel="prev" href="explicit-locking.html" title="">
+<link rel="next" href="locking-indexes.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="applevel-consistency"></a>12.4. Data Consistency Checks at the Application Level</h2></div></div></div>
+<a name="applevel-consistency"></a></h2></div></div></div>
 <p>    Because readers in <span class="productname">PostgreSQL</span>
     do not lock data, regardless of
     transaction isolation level, data read by one transaction can be
@@ -23,14 +23,14 @@
     after the current query began).  The row might have been modified or
     deleted by an already-committed transaction that committed after this one
     started.
-    Even if the row is still valid &#8220;<span class="quote">now</span>&#8221;, it could be changed or
+    Even if the row is still valid <span class="quote">now</span>, it could be changed or
     deleted
     before the current transaction does a commit or rollback.
    </p>
 <p>    Another way to think about it is that each
     transaction sees a snapshot of the database contents, and concurrently
     executing transactions may very well see different snapshots.  So the
-    whole concept of &#8220;<span class="quote">now</span>&#8221; is somewhat ill-defined anyway.
+    whole concept of <span class="quote">now</span> is somewhat ill-defined anyway.
     This is not normally
     a big problem if the client applications are isolated from each other,
     but if the clients can communicate via channels outside the database
@@ -55,7 +55,7 @@
     of transactions not counted by the first.  Doing the two sums in a
     single serializable transaction will give an accurate picture of the
     effects of transactions that committed before the serializable transaction
-    started [mdash ] but one might legitimately wonder whether the answer is still
+    started &#8212; but one might legitimately wonder whether the answer is still
     relevant by the time it is delivered.  If the serializable transaction
     itself applied some changes before trying to make the consistency check,
     the usefulness of the check becomes even more debatable, since now it

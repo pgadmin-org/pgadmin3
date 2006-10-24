@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>29.3. Client Interfaces</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="largeobjects.html" title="Chapter 29. Large Objects">
-<link rel="prev" href="lo-implementation.html" title="29.2. Implementation Features">
-<link rel="next" href="lo-funcs.html" title="29.4. Server-Side Functions">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="largeobjects.html" title="">
+<link rel="prev" href="lo-implementation.html" title="">
+<link rel="next" href="lo-funcs.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="lo-interfaces"></a>29.3. Client Interfaces</h2></div></div></div>
+<a name="lo-interfaces"></a></h2></div></div></div>
 <p>    This section describes the facilities that
     <span class="productname">PostgreSQL</span> client interface libraries
     provide for accessing large objects.  All large object
@@ -32,15 +32,15 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667457"></a>29.3.1. Creating a Large Object</h3></div></div></div>
+<a name="id2665686"></a></h3></div></div></div>
 <p>     The function
 </p>
 <pre class="synopsis">Oid lo_creat(PGconn *conn, int mode);</pre>
 <p>
-     <a name="id2667470"></a>
+     <a name="id2665699"></a>
      creates a new large object.  
      The return value is the OID that was assigned to the new large object,
-     or InvalidOid (zero) on failure.
+     or <code class="symbol">InvalidOid</code> (zero) on failure.
 
      <em class="replaceable"><code>mode</code></em> is unused and
      ignored as of <span class="productname">PostgreSQL</span> 8.1; however, for
@@ -59,19 +59,19 @@
 </p>
 <pre class="synopsis">Oid lo_create(PGconn *conn, Oid lobjId);</pre>
 <p>
-     <a name="id2667539"></a>
+     <a name="id2665771"></a>
      also creates a new large object.  The OID to be assigned can be
      specified by <em class="replaceable"><code>lobjId</code></em>;
      if so, failure occurs if that OID is already in use for some large
      object.  If <em class="replaceable"><code>lobjId</code></em>
-     is InvalidOid (zero) then <code class="function">lo_create</code> assigns an unused
+     is <code class="symbol">InvalidOid</code> (zero) then <code class="function">lo_create</code> assigns an unused
      OID (this is the same behavior as <code class="function">lo_creat</code>).
      The return value is the OID that was assigned to the new large object,
-     or InvalidOid (zero) on failure.
+     or <code class="symbol">InvalidOid</code> (zero) on failure.
     </p>
 <p>     <code class="function">lo_create</code> is new as of <span class="productname">PostgreSQL</span>
      8.1; if this function is run against an older server version, it will
-     fail and return InvalidOid.
+     fail and return <code class="symbol">InvalidOid</code>.
     </p>
 <p>     An example:
 </p>
@@ -81,31 +81,31 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667600"></a>29.3.2. Importing a Large Object</h3></div></div></div>
+<a name="id2665843"></a></h3></div></div></div>
 <p>     To import an operating system file as a large object, call
 </p>
 <pre class="synopsis">Oid lo_import(PGconn *conn, const char *filename);</pre>
 <p>
-     <a name="id2667614"></a>
+     <a name="id2665857"></a>
      <em class="replaceable"><code>filename</code></em> 
      specifies the operating system name of
      the file to be imported as a large object.
      The return value is the OID that was assigned to the new large object,
-     or InvalidOid (zero) on failure.
+     or <code class="symbol">InvalidOid</code> (zero) on failure.
      Note that the file is read by the client interface library, not by
-     the server; so it must exist in the client filesystem and be readable
+     the server; so it must exist in the client file system and be readable
      by the client application.
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667633"></a>29.3.3. Exporting a Large Object</h3></div></div></div>
+<a name="id2665879"></a></h3></div></div></div>
 <p>     To export a large object
      into an operating system file, call
 </p>
 <pre class="synopsis">int lo_export(PGconn *conn, Oid lobjId, const char *filename);</pre>
 <p>
-     <a name="id2667647"></a>
+     <a name="id2665893"></a>
      The <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the large
      object to export and the <em class="parameter"><code>filename</code></em> argument
      specifies the operating system name of the file.  Note that the file is
@@ -115,12 +115,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667670"></a>29.3.4. Opening an Existing Large Object</h3></div></div></div>
+<a name="id2665917"></a></h3></div></div></div>
 <p>     To open an existing large object for reading or writing, call
 </p>
 <pre class="synopsis">int lo_open(PGconn *conn, Oid lobjId, int mode);</pre>
 <p>
-     <a name="id2667684"></a>
+     <a name="id2665930"></a>
      The <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the large
      object to open.   The <em class="parameter"><code>mode</code></em> bits control whether the
      object is opened for reading (<code class="symbol">INV_READ</code>), writing
@@ -159,12 +159,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667835"></a>29.3.5. Writing Data to a Large Object</h3></div></div></div>
+<a name="id2666081"></a></h3></div></div></div>
 <p>     The function
 </p>
 <pre class="synopsis">int lo_write(PGconn *conn, int fd, const char *buf, size_t len);</pre>
 <p>
-     <a name="id2667848"></a> writes
+     <a name="id2666094"></a> writes
      <em class="parameter"><code>len</code></em> bytes from <em class="parameter"><code>buf</code></em>
      to large object descriptor <em class="parameter"><code>fd</code></em>.  The <em class="parameter"><code>fd</code></em>
      argument must have been returned by a previous
@@ -174,12 +174,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667888"></a>29.3.6. Reading Data from a Large Object</h3></div></div></div>
+<a name="id2666134"></a></h3></div></div></div>
 <p>     The function
 </p>
 <pre class="synopsis">int lo_read(PGconn *conn, int fd, char *buf, size_t len);</pre>
 <p>
-     <a name="id2667901"></a> reads
+     <a name="id2666147"></a> reads
      <em class="parameter"><code>len</code></em> bytes from large object descriptor
      <em class="parameter"><code>fd</code></em> into <em class="parameter"><code>buf</code></em>. The
      <em class="parameter"><code>fd</code></em> argument must have been returned by a
@@ -189,13 +189,13 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667940"></a>29.3.7. Seeking in a Large Object</h3></div></div></div>
+<a name="id2666186"></a></h3></div></div></div>
 <p>     To change the current read or write location associated with a
      large object descriptor, call
 </p>
 <pre class="synopsis">int lo_lseek(PGconn *conn, int fd, int offset, int whence);</pre>
 <p>
-     <a name="id2667954"></a> This function moves the
+     <a name="id2666201"></a> This function moves the
      current location pointer for the large object descriptor identified by
      <em class="parameter"><code>fd</code></em> to the new location specified by
      <em class="parameter"><code>offset</code></em>.  The valid values for <em class="parameter"><code>whence</code></em>
@@ -206,23 +206,23 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2667995"></a>29.3.8. Obtaining the Seek Position of a Large Object</h3></div></div></div>
+<a name="id2666241"></a></h3></div></div></div>
 <p>     To obtain the current read or write location of a large object descriptor,
      call
 </p>
 <pre class="synopsis">int lo_tell(PGconn *conn, int fd);</pre>
 <p>
-     <a name="id2668009"></a> If there is an error, the
+     <a name="id2666256"></a> If there is an error, the
      return value is negative.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2668017"></a>29.3.9. Closing a Large Object Descriptor</h3></div></div></div>
+<a name="id2666263"></a></h3></div></div></div>
 <p>     A large object descriptor may be closed by calling
 </p>
 <pre class="synopsis">int lo_close(PGconn *conn, int fd);</pre>
 <p>
-     <a name="id2668030"></a> where <em class="parameter"><code>fd</code></em> is a
+     <a name="id2666277"></a> where <em class="parameter"><code>fd</code></em> is a
      large object descriptor returned by <code class="function">lo_open</code>.
      On success, <code class="function">lo_close</code> returns zero.  On
      error, the return value is negative.</p>
@@ -231,12 +231,12 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2668061"></a>29.3.10. Removing a Large Object</h3></div></div></div>
+<a name="id2666307"></a></h3></div></div></div>
 <p>     To remove a large object from the database, call
 </p>
 <pre class="synopsis">int lo_unlink(PGconn *conn, Oid lobjId);</pre>
 <p>
-     <a name="id2668074"></a> The
+     <a name="id2666321"></a> The
      <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the
      large object to remove.  Returns 1 if successful, -1 on failure.
     </p>

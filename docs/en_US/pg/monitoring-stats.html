@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>24.2. The Statistics Collector</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="monitoring.html" title="Chapter 24. Monitoring Database Activity">
-<link rel="prev" href="monitoring.html" title="Chapter 24. Monitoring Database Activity">
-<link rel="next" href="monitoring-locks.html" title="24.3. Viewing Locks">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="monitoring.html" title="">
+<link rel="prev" href="monitoring.html" title="">
+<link rel="next" href="monitoring-locks.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-stats"></a>24.2. The Statistics Collector</h2></div></div></div>
-<a name="id2651881"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
+<a name="monitoring-stats"></a></h2></div></div></div>
+<a name="id2650131"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
    is a subsystem that supports collection and reporting of information about
    server activity.  Presently, the collector can count accesses to tables
    and indexes in both disk-block and individual-row terms.
@@ -26,11 +26,11 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="monitoring-stats-setup"></a>24.2.1. Statistics Collection Configuration</h3></div></div></div>
+<a name="monitoring-stats-setup"></a></h3></div></div></div>
 <p>   Since collection of statistics adds some overhead to query execution,
    the system can be configured to collect or not collect information.
    This is controlled by configuration parameters that are normally set in
-   <code class="filename">postgresql.conf</code>.  (See <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> for
+   <code class="filename">postgresql.conf</code>.  (See <a href="runtime-config.html" title=""></a> for
    details about setting configuration parameters.)
   </p>
 <p>   The parameter <a href="runtime-config-statistics.html#guc-stats-start-collector">stats_start_collector</a> must be
@@ -62,7 +62,7 @@
    <code class="command">SET</code>.)
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     Since the parameters <code class="varname">stats_block_level</code>, and
      <code class="varname">stats_row_level</code> default to <code class="literal">false</code>,
      very few statistics are collected in the default
@@ -75,8 +75,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="monitoring-stats-views"></a>24.2.2. Viewing Collected Statistics</h3></div></div></div>
-<p>   Several predefined views, listed in <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 24.1. Standard Statistics Views">Table 24.1, &#8220;Standard Statistics Views&#8221;</a>, are available to show the results
+<a name="monitoring-stats-views"></a></h3></div></div></div>
+<p>   Several predefined views, listed in <a href="monitoring-stats.html#monitoring-stats-views-table" title=""></a>, are available to show the results
    of statistics collection.  Alternatively, one can
    build custom views using the underlying statistics functions.
   </p>
@@ -107,7 +107,7 @@
    block.
   </p>
 <div class="table">
-<a name="monitoring-stats-views-table"></a><p class="title"><b>Table 24.1. Standard Statistics Views</b></p>
+<a name="monitoring-stats-views-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="Standard Statistics Views" border="1">
 <colgroup>
 <col>
@@ -245,7 +245,7 @@
    indexes are being used and how effective they are.
   </p>
 <p>   Beginning in <span class="productname">PostgreSQL</span> 8.1, indexes can be
-   used either directly or via &#8220;<span class="quote">bitmap scans</span>&#8221;.  In a bitmap scan
+   used either directly or via <span class="quote">bitmap scans</span>.  In a bitmap scan
    the output of several indexes can be combined via AND or OR rules;
    so it is difficult to associate individual heap row fetches 
    with specific indexes when a bitmap scan is used.  Therefore, a bitmap
@@ -257,7 +257,7 @@
    <code class="structname">pg_stat_all_indexes</code>.<code class="structfield">idx_tup_fetch</code>.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    Before <span class="productname">PostgreSQL</span> 8.1, the
     <code class="structfield">idx_tup_read</code> and <code class="structfield">idx_tup_fetch</code> counts
     were essentially always equal.  Now they can be different even without
@@ -284,7 +284,7 @@
   </p>
 <p>   Other ways of looking at the statistics can be set up by writing
    queries that use the same underlying statistics access functions as
-   these standard views do.  These functions are listed in <a href="monitoring-stats.html#monitoring-stats-funcs-table" title="Table 24.2. Statistics Access Functions">Table 24.2, &#8220;Statistics Access Functions&#8221;</a>.  The per-database access
+   these standard views do.  These functions are listed in <a href="monitoring-stats.html#monitoring-stats-funcs-table" title=""></a>.  The per-database access
    functions take a database OID as argument to identify which
    database to report on.  The per-table and per-index functions take
    a table or index OID.  (Note that only tables and indexes in the
@@ -294,7 +294,7 @@
    server processes.
   </p>
 <div class="table">
-<a name="monitoring-stats-funcs-table"></a><p class="title"><b>Table 24.2. Statistics Access Functions</b></p>
+<a name="monitoring-stats-funcs-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="Statistics Access Functions" border="1">
 <colgroup>
 <col>
@@ -509,7 +509,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     <code class="function">blocks_fetched</code> minus
      <code class="function">blocks_hit</code> gives the number of kernel
      <code class="function">read()</code> calls issued for the table, index, or

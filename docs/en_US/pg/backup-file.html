@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>23.2. File system level backup</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
-<link rel="prev" href="backup.html" title="Chapter 23. Backup and Restore">
-<link rel="next" href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="backup.html" title="">
+<link rel="prev" href="backup.html" title="">
+<link rel="next" href="continuous-archiving.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="backup-file"></a>23.2. File system level backup</h2></div></div></div>
+<a name="backup-file"></a></h2></div></div></div>
 <p>   An alternative backup strategy is to directly copy the files that
    <span class="productname">PostgreSQL</span> uses to store the data in the database. In
-   <a href="creating-cluster.html" title="16.2. Creating a Database Cluster">Section 16.2, &#8220;Creating a Database Cluster&#8221;</a> it is explained where these files
+   <a href="creating-cluster.html" title=""></a> it is explained where these files
    are located, but you have probably found them already if you are
    interested in this method. You can use whatever method you prefer
    for doing usual file system backups, for example
@@ -37,7 +37,7 @@
       (mainly because <code class="command">tar</code> and similar tools do not take an
       atomic snapshot of the state of the file system at a point in
       time). Information about stopping the server can be found in
-      <a href="server-shutdown.html" title="16.5. Shutting Down the Server">Section 16.5, &#8220;Shutting Down the Server&#8221;</a>.  Needless to say that you
+      <a href="server-shutdown.html" title=""></a>.  Needless to say that you
       also need to shut down the server before restoring the data.
      </p></li>
 <li><p>      If you have dug into the details of the file system layout of the
@@ -58,10 +58,10 @@
 <p>
   </p>
 <p>   An alternative file-system backup approach is to make a
-   &#8220;<span class="quote">consistent snapshot</span>&#8221; of the data directory, if the
+   <span class="quote">consistent snapshot</span> of the data directory, if the
    file system supports that functionality (and you are willing to
    trust that it is implemented correctly).  The typical procedure is
-   to make a &#8220;<span class="quote">frozen snapshot</span>&#8221; of the volume containing the
+   to make a <span class="quote">frozen snapshot</span> of the volume containing the
    database, then copy the whole data directory (not just parts, see
    above) from the snapshot to a backup device, then release the frozen
    snapshot.  This will work even while the database server is running.

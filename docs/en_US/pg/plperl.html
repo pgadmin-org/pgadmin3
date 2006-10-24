@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 38. PL/Perl - Perl Procedural Language</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="server-programming.html" title="Part V. Server Programming">
-<link rel="prev" href="pltcl-procnames.html" title="37.8. Tcl Procedure Names">
-<link rel="next" href="plperl-database.html" title="38.2. Database Access from PL/Perl">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="server-programming.html" title="">
+<link rel="prev" href="pltcl-procnames.html" title="">
+<link rel="next" href="plperl-database.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plperl">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="plperl"></a>Chapter 38. PL/Perl - Perl Procedural Language</h2></div></div></div>
+<a name="plperl"></a></h2></div></div></div>
 <div class="toc">
-<p><b>Table of Contents</b></p>
+<p><b></b></p>
 <dl>
 <dt><span class="sect1"><a href="plperl.html#plperl-funcs">38.1. PL/Perl Functions and Arguments</a></span></dt>
 <dt><span class="sect1"><a href="plperl-database.html">38.2. Database Access from PL/Perl</a></span></dt>
@@ -26,34 +26,34 @@
 <dt><span class="sect1"><a href="plperl-missing.html">38.7. Limitations and Missing Features</a></span></dt>
 </dl>
 </div>
-<a name="id2716244"></a><a name="id2716253"></a><p>   PL/Perl is a loadable procedural language that enables you to write
+<a name="id2714793"></a><a name="id2714802"></a><p>   PL/Perl is a loadable procedural language that enables you to write
    <span class="productname">PostgreSQL</span> functions in the 
    <a href="http://www.perl.com" target="_top">Perl programming language</a>.
   </p>
 <p> The usual advantage to using PL/Perl is that this allows use,
-   within stored functions, of the manyfold &#8220;<span class="quote">string
-    munging</span>&#8221; operators and functions available for Perl.  Parsing
+   within stored functions, of the manyfold <span class="quote">string
+    munging</span> operators and functions available for Perl.  Parsing
    complex strings may be be easier using Perl than it is with the
-   string functions and control structures provided in PL/pgsql.</p>
+   string functions and control structures provided in PL/pgSQL.</p>
 <p>   To install PL/Perl in a particular database, use
    <code class="literal">createlang plperl <em class="replaceable"><code>dbname</code></em></code>.
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
+<h3 class="title"></h3>
 <p>    If a language is installed into <code class="literal">template1</code>, all subsequently
     created databases will have the language installed automatically.
    </p>
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    Users of source packages must specially enable the build of
-    PL/Perl during the installation process.  (Refer to <a href="installation.html#install-short" title="14.1. Short Version">Section 14.1, &#8220;Short Version&#8221;</a> for more information.)  Users of
+    PL/Perl during the installation process.  (Refer to <a href="installation.html#install-short" title=""></a> for more information.)  Users of
     binary packages might find PL/Perl in a separate subpackage.
    </p>
 </div>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plperl-funcs"></a>38.1. PL/Perl Functions and Arguments</h2></div></div></div>
+<a name="plperl-funcs"></a></h2></div></div></div>
 <p>   To create a function in the PL/Perl language, use the standard
    <a href="sql-createfunction.html">CREATE FUNCTION</a>
    syntax:
@@ -70,7 +70,7 @@ $$ LANGUAGE plperl;</pre>
    Never return a list.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    The use of named nested subroutines is dangerous in Perl, especially if
     they refer to lexical variables in the enclosing scope. Because a PL/Perl
     function is wrapped in a subroutine, any named subroutine you create will
@@ -81,11 +81,11 @@ $$ LANGUAGE plperl;</pre>
 </div>
 <p>   The syntax of the <code class="command">CREATE FUNCTION</code> command requires
    the function body to be written as a string constant.  It is usually
-   most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) for the string constant.
+   most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title=""></a>) for the string constant.
    If you choose to use regular single-quoted string constant syntax,
    you must escape single quote marks (<code class="literal">'</code>) and backslashes
    (<code class="literal">\</code>) used in the body of the function, typically by
-   doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
+   doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title=""></a>).
   </p>
 <p>   Arguments and results are handled as in any other Perl subroutine:
    arguments are passed in <code class="varname">@_</code>, and a result value
@@ -102,8 +102,8 @@ $$ LANGUAGE plperl;</pre>
 $$ LANGUAGE plperl;</pre>
 <p>
   </p>
-<p>   If an SQL null value<a name="id2716454"></a> is passed to a function,
-   the argument value will appear as &#8220;<span class="quote">undefined</span>&#8221; in Perl.  The
+<p>   If an SQL null value<a name="id2715002"></a> is passed to a function,
+   the argument value will appear as <span class="quote">undefined</span> in Perl.  The
    above function definition will not behave very nicely with null
    inputs (in fact, it will act as though they are zeroes).  We could
    add <code class="literal">STRICT</code> to the function definition to make
@@ -177,7 +177,7 @@ SELECT * FROM perl_row();</pre>
 <p>
 
    Any columns in the declared result data type that are not present in the
-   hash will be returned as NULLs.
+   hash will be returned as null values.
   </p>
 <p>    PL/Perl functions can also return sets of either scalar or
     composite types.  Usually you'll want to return rows one at a
@@ -238,7 +238,7 @@ SELECT * FROM perl_set();</pre>
    subsequent compilations of <span class="application">PL/Perl</span> functions, but not
    functions already compiled in the current session.  To set the
    parameter before <span class="application">PL/Perl</span> has been loaded, it is
-   necessary to have added &#8220;<span class="quote"><code class="literal">plperl</code></span>&#8221; to the <a href="runtime-config-custom.html#guc-custom-variable-classes">custom_variable_classes</a> list in
+   necessary to have added <span class="quote"><code class="literal">plperl</code></span> to the <a href="runtime-config-custom.html#guc-custom-variable-classes">custom_variable_classes</a> list in
    <code class="filename">postgresql.conf</code>.
   </p>
 <p>   Another way to use the <code class="literal">strict</code> pragma is to put

@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 28. libpq - C Library</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
-<link rel="prev" href="client-interfaces.html" title="Part IV. Client Interfaces">
-<link rel="next" href="libpq-status.html" title="28.2. Connection Status Functions">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="client-interfaces.html" title="">
+<link rel="prev" href="client-interfaces.html" title="">
+<link rel="next" href="libpq-status.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="libpq">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="libpq"></a>Chapter 28. <span class="application">libpq</span> - C Library</h2></div></div></div>
+<a name="libpq"></a></h2></div></div></div>
 <div class="toc">
-<p><b>Table of Contents</b></p>
+<p><b></b></p>
 <dl>
 <dt><span class="sect1"><a href="libpq.html#libpq-connect">28.1. Database Connection Control Functions</a></span></dt>
 <dt><span class="sect1"><a href="libpq-status.html">28.2. Connection Status Functions</a></span></dt>
@@ -50,7 +50,7 @@
 <dt><span class="sect1"><a href="libpq-example.html">28.19. Example Programs</a></span></dt>
 </dl>
 </div>
-<a name="id2655377"></a><a name="id2655387"></a><p>   <span class="application">libpq</span> is the <acronym class="acronym">C</acronym>
+<a name="id2653621"></a><a name="id2653631"></a><p>   <span class="application">libpq</span> is the <acronym class="acronym">C</acronym>
    application programmer's interface to <span class="productname">PostgreSQL</span>.
    <span class="application">libpq</span> is a set of library functions that allow
    client programs to pass queries to the <span class="productname">PostgreSQL</span>
@@ -61,31 +61,31 @@
    those written for C++, Perl, Python, Tcl and <span class="application">ECPG</span>.
    So some aspects of <span class="application">libpq</span>'s behavior will be
    important to you if you use one of those packages.  In particular,
-   <a href="libpq-envars.html" title="28.12. Environment Variables">Section 28.12, &#8220;Environment Variables&#8221;</a>,
-   <a href="libpq-pgpass.html" title="28.13. The Password File">Section 28.13, &#8220;The Password File&#8221;</a> and
-   <a href="libpq-ssl.html" title="28.16. SSL Support">Section 28.16, &#8220;SSL Support&#8221;</a>
+   <a href="libpq-envars.html" title=""></a>,
+   <a href="libpq-pgpass.html" title=""></a> and
+   <a href="libpq-ssl.html" title=""></a>
    describe behavior that is visible to the user of any application
    that uses <span class="application">libpq</span>.
   </p>
-<p>   Some short programs are included at the end of this chapter (<a href="libpq-example.html" title="28.19. Example Programs">Section 28.19, &#8220;Example Programs&#8221;</a>) to show how
+<p>   Some short programs are included at the end of this chapter (<a href="libpq-example.html" title=""></a>) to show how
    to write programs that use <span class="application">libpq</span>.  There are also several
    complete examples of <span class="application">libpq</span> applications in the
    directory <code class="filename">src/test/examples</code> in the source code distribution.
   </p>
 <p>   Client programs that use <span class="application">libpq</span> must
    include the header file
-   <code class="filename">libpq-fe.h</code><a name="id2655531"></a>
+   <code class="filename">libpq-fe.h</code><a name="id2653775"></a>
    and must link with the <span class="application">libpq</span> library.
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="libpq-connect"></a>28.1. Database Connection Control Functions</h2></div></div></div>
+<a name="libpq-connect"></a></h2></div></div></div>
 <p>   The following functions deal with making a connection to a
    <span class="productname">PostgreSQL</span> backend server.  An
    application program can have several backend connections open at
    one time.  (One reason to do that is to access more than one
    database.)  Each connection is represented by a
-   <code class="structname">PGconn</code><a name="id2655568"></a> object, which
+   <code class="structname">PGconn</code><a name="id2653812"></a> object, which
    is obtained from the function <code class="function">PQconnectdb</code> or
    <code class="function">PQsetdbLogin</code>.  Note that these functions will always
    return a non-null object pointer, unless perhaps there is too
@@ -96,7 +96,7 @@
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQconnectdb</code><a name="id2655610"></a></span></dt>
+<dt><span class="term"><code class="function">PQconnectdb</code><a name="id2653854"></a></span></dt>
 <dd>
 <p>       Makes a new connection to the database server.
 </p>
@@ -123,13 +123,13 @@
    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">host</code></span></dt>
-<dd><p>      Name of host to connect to.<a name="id2655704"></a>
+<dd><p>      Name of host to connect to.<a name="id2653948"></a>
       If this begins with a slash, it specifies Unix-domain
       communication rather than TCP/IP communication; the value is the
       name of the directory in which the socket file is stored.  The
       default behavior when <code class="literal">host</code> is not specified
       is to connect to a Unix-domain
-      socket<a name="id2655722"></a> in
+      socket<a name="id2653966"></a> in
       <code class="filename">/tmp</code> (or whatever socket directory was specified
       when <span class="productname">PostgreSQL</span> was built). On machines without
       Unix-domain sockets, the default is to connect to <code class="literal">localhost</code>.
@@ -159,7 +159,7 @@
       that is not the name of the machine at <code class="literal">hostaddr</code>.)  Also,
       <code class="literal">host</code> rather than <code class="literal">hostaddr</code> is used to identify
       the connection in <code class="filename">~/.pgpass</code> (see
-      <a href="libpq-pgpass.html" title="28.13. The Password File">Section 28.13, &#8220;The Password File&#8221;</a>).
+      <a href="libpq-pgpass.html" title=""></a>).
      </p>
 <p>      Without either a host name or host address,
       <span class="application">libpq</span> will connect using a
@@ -170,7 +170,7 @@
 <dt><span class="term"><code class="literal">port</code></span></dt>
 <dd><p>      Port number to connect to at the server host, or socket file
       name extension for Unix-domain
-      connections.<a name="id2655918"></a>
+      connections.<a name="id2654162"></a>
      </p></dd>
 <dt><span class="term"><code class="literal">dbname</code></span></dt>
 <dd><p>      The database name.  Defaults to be the same as the user name.
@@ -213,7 +213,7 @@
        options <code class="literal">allow</code> and <code class="literal">prefer</code> will be
        accepted but <span class="application">libpq</span> will not in fact attempt
        an <acronym class="acronym">SSL</acronym>
-       connection.<a name="id2656105"></a>
+       connection.<a name="id2654349"></a>
       </p>
 </dd>
 <dt><span class="term"><code class="literal">requiressl</code></span></dt>
@@ -236,24 +236,24 @@
 <dd><p>       Kerberos service name to use when authenticating with Kerberos 5.
        This must match the service name specified in the server
        configuration for Kerberos authentication to succeed. (See also
-       <a href="auth-methods.html#kerberos-auth" title="20.2.3. Kerberos authentication">Section 20.2.3, &#8220;Kerberos authentication&#8221;</a>.)
+       <a href="auth-methods.html#kerberos-auth" title=""></a>.)
       </p></dd>
 <dt><span class="term"><code class="literal">service</code></span></dt>
 <dd><p>      Service name to use for additional parameters.  It specifies a service
       name in <code class="filename">pg_service.conf</code> that holds additional connection parameters.
       This allows applications to specify only a service name so connection parameters 
-      can be centrally maintained. See <a href="libpq-pgservice.html" title="28.14. The Connection Service File">Section 28.14, &#8220;The Connection Service File&#8221;</a>.
+      can be centrally maintained. See <a href="libpq-pgservice.html" title=""></a>.
      </p></dd>
 </dl></div>
 <p>
 
    If  any  parameter is unspecified, then the corresponding
-   environment variable (see <a href="libpq-envars.html" title="28.12. Environment Variables">Section 28.12, &#8220;Environment Variables&#8221;</a>)
+   environment variable (see <a href="libpq-envars.html" title=""></a>)
    is checked. If the  environment  variable is not set either,
    then the indicated built-in defaults are used.
    </p>
 </dd>
-<dt><span class="term"><code class="function">PQsetdbLogin</code><a name="id2656255"></a></span></dt>
+<dt><span class="term"><code class="function">PQsetdbLogin</code><a name="id2654499"></a></span></dt>
 <dd>
 <p>       Makes a new connection to the database server.
 </p>
@@ -270,7 +270,7 @@
    empty string for any one of the fixed parameters that is to be defaulted.
    </p>
 </dd>
-<dt><span class="term"><code class="function">PQsetdb</code><a name="id2656297"></a></span></dt>
+<dt><span class="term"><code class="function">PQsetdb</code><a name="id2654541"></a></span></dt>
 <dd>
 <p>   Makes a new connection to the database server.
 </p>
@@ -285,10 +285,10 @@
    </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="function">PQconnectStart</code><a xmlns="" name="id2656344"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="function">PQconnectPoll</code><a name="id2656356"></a></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="function">PQconnectStart</code><a xmlns="" name="id2654588"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="function">PQconnectPoll</code><a name="id2654600"></a></span>
 </dt>
 <dd>
-<p>   <a name="id2656365"></a>
+<p>   <a name="id2654609"></a>
    Make a connection to the database server in a nonblocking manner.
 </p>
 <pre class="synopsis">PGconn *PQconnectStart(const char *conninfo);</pre>
@@ -419,7 +419,7 @@
    the connection attempt fails or is abandoned.
   </p>
 </dd>
-<dt><span class="term"><code class="function">PQconndefaults</code><a name="id2656821"></a></span></dt>
+<dt><span class="term"><code class="function">PQconndefaults</code><a name="id2655059"></a></span></dt>
 <dd>
 <p>   Returns the default connection options.
 </p>
@@ -454,7 +454,7 @@ typedef struct
     is leaked for each call to <code class="function">PQconndefaults</code>.
    </p>
 </dd>
-<dt><span class="term"><code class="function">PQfinish</code><a name="id2656912"></a></span></dt>
+<dt><span class="term"><code class="function">PQfinish</code><a name="id2655138"></a></span></dt>
 <dd>
 <p>   Closes  the  connection to the server.  Also frees
    memory used by the <code class="structname">PGconn</code> object.
@@ -467,7 +467,7 @@ typedef struct
    <code class="function">PQfinish</code> has been called.
    </p>
 </dd>
-<dt><span class="term"><code class="function">PQreset</code><a name="id2656969"></a></span></dt>
+<dt><span class="term"><code class="function">PQreset</code><a name="id2655194"></a></span></dt>
 <dd>
 <p>   Resets the communication channel to the server.
 </p>
@@ -480,7 +480,7 @@ typedef struct
    </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="function">PQresetStart</code><a xmlns="" name="id2656997"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="function">PQresetPoll</code><a name="id2657009"></a></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="function">PQresetStart</code><a xmlns="" name="id2655223"></a></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="function">PQresetPoll</code><a name="id2655234"></a></span>
 </dt>
 <dd>
 <p>   Reset the communication channel to the server, in a nonblocking manner.

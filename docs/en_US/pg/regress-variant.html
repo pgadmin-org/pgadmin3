@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>27.3. Variant Comparison Files</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="regress.html" title="Chapter 27. Regression Tests">
-<link rel="prev" href="regress-evaluation.html" title="27.2. Test Evaluation">
-<link rel="next" href="client-interfaces.html" title="Part IV. Client Interfaces">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="regress.html" title="">
+<link rel="prev" href="regress-evaluation.html" title="">
+<link rel="next" href="client-interfaces.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="regress-variant"></a>27.3. Variant Comparison Files</h2></div></div></div>
+<a name="regress-variant"></a></h2></div></div></div>
 <p>    Since some of the tests inherently produce environment-dependent
-    results, we have provided ways to specify alternative &#8220;<span class="quote">expected</span>&#8221;
+    results, we have provided ways to specify alternative <span class="quote">expected</span>
     result files.  Each regression test can have several comparison files
     showing possible results on different platforms.  There are two
     independent mechanisms for determining which comparison file is used
@@ -25,7 +25,7 @@
     specific platforms.  There is a mapping file,
     <code class="filename">src/test/regress/resultmap</code>, that defines
     which comparison file to use for each platform.
-    To eliminate bogus test &#8220;<span class="quote">failures</span>&#8221; for a particular platform,
+    To eliminate bogus test <span class="quote">failures</span> for a particular platform,
     you first choose or make a variant result file, and then add a line to the
     <code class="filename">resultmap</code> file.
    </p>
@@ -47,7 +47,7 @@
     Therefore, we provide a variant comparison file,
     <code class="filename">float8-small-is-zero.out</code>, which includes
     the results to be expected on these systems.  To silence the bogus
-    &#8220;<span class="quote">failure</span>&#8221; message on <span class="systemitem">OpenBSD</span>
+    <span class="quote">failure</span> message on <span class="systemitem">OpenBSD</span>
     platforms, <code class="filename">resultmap</code> includes
 </p>
 <pre class="programlisting">float8/i.86-.*-openbsd=float8-small-is-zero</pre>
@@ -59,7 +59,7 @@
     platforms where it's appropriate.
    </p>
 <p>    The second selection mechanism for variant comparison files is
-    much more automatic: it simply uses the &#8220;<span class="quote">best match</span>&#8221; among
+    much more automatic: it simply uses the <span class="quote">best match</span> among
     several supplied comparison files.  The regression test driver
     script considers both the standard comparison file for a test,
     <code class="literal"><em class="replaceable"><code>testname</code></em>.out</code>, and variant files named
@@ -82,7 +82,7 @@
     results, but it can be used in any situation where the test results
     cannot be predicted easily from the platform name alone.  A limitation of
     this mechanism is that the test driver cannot tell which variant is
-    actually &#8220;<span class="quote">correct</span>&#8221; for the current environment; it will just pick
+    actually <span class="quote">correct</span> for the current environment; it will just pick
     the variant that seems to work best.  Therefore it is safest to use this
     mechanism only for variant results that you are willing to consider
     equally valid in all contexts.

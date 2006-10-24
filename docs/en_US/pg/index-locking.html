@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>48.4. Index Locking Considerations</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">
-<link rel="prev" href="index-scanning.html" title="48.3. Index Scanning">
-<link rel="next" href="index-unique-checks.html" title="48.5. Index Uniqueness Checks">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="indexam.html" title="">
+<link rel="prev" href="index-scanning.html" title="">
+<link rel="next" href="index-unique-checks.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="index-locking"></a>48.4. Index Locking Considerations</h2></div></div></div>
+<a name="index-locking"></a></h2></div></div></div>
 <p>   Index access methods must handle concurrent updates
    of the index by multiple processes.
    The core <span class="productname">PostgreSQL</span> system obtains
@@ -44,7 +44,7 @@
 <li><p>       A new heap entry is made before making its index entries.  (Therefore
        a concurrent index scan is likely to fail to see the heap entry.
        This is okay because the index reader would be uninterested in an
-       uncommitted row anyway.  But see <a href="index-unique-checks.html" title="48.5. Index Uniqueness Checks">Section 48.5, &#8220;Index Uniqueness Checks&#8221;</a>.)
+       uncommitted row anyway.  But see <a href="index-unique-checks.html" title=""></a>.)
       </p></li>
 <li><p>       When a heap entry is to be deleted (by <code class="command">VACUUM</code>), all its
        index entries must be removed first.
@@ -74,16 +74,16 @@
    against this scenario by requiring the scan keys to be rechecked
    against the heap row in all cases, but that is too expensive.  Instead,
    we use a pin on an index page as a proxy to indicate that the reader
-   may still be &#8220;<span class="quote">in flight</span>&#8221; from the index entry to the matching
+   may still be <span class="quote">in flight</span> from the index entry to the matching
    heap entry.  Making <code class="function">ambulkdelete</code> block on such a pin ensures
    that <code class="command">VACUUM</code> cannot delete the heap entry before the reader
    is done with it.  This solution costs little in run time, and adds blocking
    overhead only in the rare cases where there actually is a conflict.
   </p>
-<p>   This solution requires that index scans be &#8220;<span class="quote">synchronous</span>&#8221;: we have
+<p>   This solution requires that index scans be <span class="quote">synchronous</span>: we have
    to fetch each heap tuple immediately after scanning the corresponding index
    entry.  This is expensive for a number of reasons.  An
-   &#8220;<span class="quote">asynchronous</span>&#8221; scan in which we collect many TIDs from the index,
+   <span class="quote">asynchronous</span> scan in which we collect many TIDs from the index,
    and only visit the heap tuples sometime later, requires much less index
    locking overhead and may allow a more efficient heap access pattern.
    Per the above analysis, we must use the synchronous approach for

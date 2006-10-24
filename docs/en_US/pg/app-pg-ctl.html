@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>pg_ctl</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
-<link rel="prev" href="app-pgcontroldata.html" title="pg_controldata">
-<link rel="next" href="app-pgresetxlog.html" title="pg_resetxlog">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="reference-server.html" title="">
+<link rel="prev" href="app-pgcontroldata.html" title="">
+<link rel="next" href="app-pgresetxlog.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="app-pg-ctl"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2>Name</h2>
+<h2></h2>
 <p>pg_ctl &#8212; start, stop, or restart a <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id2792638"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="id2791620"></a><div class="refsynopsisdiv">
+<h2></h2>
 <div class="cmdsynopsis"><p><code class="command">pg_ctl</code>  start  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-l <em class="replaceable"><code>filename</code></em>] [-o <em class="replaceable"><code>options</code></em>] [-p <em class="replaceable"><code>path</code></em>]<br><code class="command">pg_ctl</code>  stop  [-W] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
    ]<br><code class="command">pg_ctl</code>  restart  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
@@ -29,7 +29,7 @@
 <a name="app-pg-ctl-description"></a><h2>Description</h2>
 <p>   <span class="application">pg_ctl</span> is a utility for starting,
    stopping, or restarting the <span class="productname">PostgreSQL</span>
-   backend server (<a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>), or displaying the
+   backend server (<a href="app-postgres.html" title=""><span class="refentrytitle"><span class="application">postgres</span></span></a>), or displaying the
    status of a running server.  Although the server can be started
    manually, <span class="application">pg_ctl</span> encapsulates tasks such
    as redirecting log output and properly detaching from the terminal
@@ -51,11 +51,11 @@
 <p>   In <code class="option">stop</code> mode, the server that is running in
    the specified data directory is shut down.  Three different
    shutdown methods can be selected with the <code class="option">-m</code>
-   option: &#8220;<span class="quote">Smart</span>&#8221; mode waits for all the clients to
-   disconnect.  This is the default.  &#8220;<span class="quote">Fast</span>&#8221; mode does
+   option: <span class="quote">Smart</span> mode waits for all the clients to
+   disconnect.  This is the default.  <span class="quote">Fast</span> mode does
    not wait for clients to disconnect.  All active transactions are
    rolled back and clients are forcibly disconnected, then the
-   server is shut down.  &#8220;<span class="quote">Immediate</span>&#8221; mode will abort
+   server is shut down.  <span class="quote">Immediate</span> mode will abort
    all server processes without a clean shutdown.  This will lead to 
    a recovery run on restart.
   </p>
@@ -174,20 +174,20 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2793542"></a><h2>Environment</h2>
+<a name="id2792525"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGDATA</code></span></dt>
 <dd><p>      Default data directory location.
      </p></dd>
 <dt><span class="term"><code class="envar">PGPORT</code></span></dt>
-<dd><p>      Default port for <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> (used by the -w option).
+<dd><p>      Default port for <a href="app-psql.html" title=""><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> (used by the -w option).
      </p></dd>
 </dl></div>
-<p>   For others, see <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>.
+<p>   For others, see <a href="app-postgres.html" title=""><span class="refentrytitle"><span class="application">postgres</span></span></a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2793578"></a><h2>Files</h2>
+<a name="id2792560"></a><h2>Files</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="filename">postmaster.pid</code></span></dt>
 <dd><p>      The existence of this file in the data directory is used to help
@@ -217,7 +217,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2793695"></a><h2>Notes</h2>
+<a name="id2792678"></a><h2>Notes</h2>
 <p>   Waiting for complete start is not a well-defined operation and may
    fail if access control is set up so that a local client cannot
    connect without manual interaction (e.g., password authentication).
@@ -291,8 +291,8 @@ Command line was:
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2793929"></a><h2>See Also</h2>
-<p>   <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>
+<a name="id2792912"></a><h2>See Also</h2>
+<p>   <a href="app-postgres.html" title=""><span class="refentrytitle"><span class="application">postgres</span></span></a>
   </p>
 </div>
 </div></body>

@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>5.8. Inheritance</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="prev" href="ddl-schemas.html" title="5.7. Schemas">
-<link rel="next" href="ddl-partitioning.html" title="5.9. Partitioning">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="ddl.html" title="">
+<link rel="prev" href="ddl-schemas.html" title="">
+<link rel="next" href="ddl-partitioning.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-inherit"></a>5.8. Inheritance</h2></div></div></div>
-<a name="id2559768"></a><a name="id2559774"></a><p>   <span class="productname">PostgreSQL</span> implements table inheritance
+<a name="ddl-inherit"></a></h2></div></div></div>
+<a name="id2558266"></a><a name="id2558271"></a><p>   <span class="productname">PostgreSQL</span> implements table inheritance,
    which can be a useful tool for database designers.  (SQL:1999 and
    later define a type inheritance feature, which differs in many
    respects from the features described here.)
@@ -62,7 +62,7 @@ CREATE TABLE capitals (
 <p>
 
    Given the sample data from the <span class="productname">PostgreSQL</span>
-   tutorial (see <a href="tutorial-sql.html#tutorial-sql-intro" title="2.1. Introduction">Section 2.1, &#8220;Introduction&#8221;</a>), this returns:
+   tutorial (see <a href="tutorial-sql.html#tutorial-sql-intro" title=""></a>), this returns:
 
 </p>
 <pre class="programlisting">   name    | altitude
@@ -89,9 +89,9 @@ CREATE TABLE capitals (
 <p>   Here the <code class="literal">ONLY</code> keyword indicates that the query
    should apply only to <code class="structname">cities</code>, and not any tables
    below <code class="structname">cities</code> in the inheritance hierarchy.  Many
-   of the commands that we have already discussed [mdash ]
+   of the commands that we have already discussed &#8212;
    <code class="command">SELECT</code>, <code class="command">UPDATE</code> and
-   <code class="command">DELETE</code> [mdash ] support the
+   <code class="command">DELETE</code> &#8212; support the
    <code class="literal">ONLY</code> keyword.
   </p>
 <p>   In some cases you may wish to know which table a particular row
@@ -147,7 +147,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    <code class="structname">capitals</code> table, but this does not happen:
    <code class="command">INSERT</code> always inserts into exactly the table
    specified.  In some cases it is possible to redirect the insertion
-   using a rule (see <a href="rules.html" title="Chapter 34. The Rule System">Chapter 34, <i>The Rule System</i></a>).  However that does not
+   using a rule (see <a href="rules.html" title=""></a>).  However that does not
    help for the above case because the <code class="structname">cities</code> table
    does not contain the column <code class="structfield">state</code>, and so the
    command will be rejected before the rule can be applied.
@@ -161,53 +161,54 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    the union of the columns defined by the parent tables.  Any columns
    declared in the child table's definition are added to these.  If the
    same column name appears in multiple parent tables, or in both a parent
-   table and the child's definition, then these columns are &#8220;<span class="quote">merged</span>&#8221;
+   table and the child's definition, then these columns are <span class="quote">merged</span>
    so that there is only one such column in the child table.  To be merged,
    columns must have the same data types, else an error is raised.  The
    merged column will have copies of all the check constraints coming from
    any one of the column definitions it came from.
   </p>
-<p>   Table inheritance can be defined using the <a href="sql-createtable.html">CREATE TABLE</a> statement using the
-   <code class="command">INHERITS</code> keyword. However the related statement
-   <code class="command">CREATE TABLE AS</code> does not allow inheritance to be
-   specified. 
-  </p>
-<p>   Alternatively a table which is already defined in a compatible way can have
-   a new parent added with <a href="sql-altertable.html">ALTER TABLE</a> using the <code class="command">INHERIT</code>
-   subform. To do this the new child table must already include columns with
-   the same name and type as the columns of the parent. It must also include
-   check constraints with the same name and check expression as those of the
+<p>   Table inheritance is typically established when the child table is
+   created, using the <code class="literal">INHERITS</code> clause of the
+   <a href="sql-createtable.html">CREATE TABLE</a>
+   statement.
+   Alternatively, a table which is already defined in a compatible way can
+   have a new parent relationship added, using the <code class="literal">INHERIT</code>
+   variant of <a href="sql-altertable.html">ALTER TABLE</a>.
+   To do this the new child table must already include columns with
+   the same names and types as the columns of the parent. It must also include
+   check constraints with the same names and check expressions as those of the
    parent. Similarly an inheritance link can be removed from a child using the
-   <code class="command">ALTER TABLE</code> using the <code class="command">NO INHERIT</code>
-   subform.
+   <code class="literal">NO INHERIT</code> variant of <code class="command">ALTER TABLE</code>.
+   Dynamically adding and removing inheritance links like this can be useful
+   when the inheritance relationship is being used for table
+   partitioning (see <a href="ddl-partitioning.html" title=""></a>).
   </p>
-<p>   One convenient way to create a compatible table to be a new child
-   is specify the <code class="command">LIKE</code> clause in <code class="command">CREATE
+<p>   One convenient way to create a compatible table that will later be made
+   a new child is to use the <code class="literal">LIKE</code> clause in <code class="command">CREATE
    TABLE</code>. This creates a new table with the same columns as
-   the source table. If there are any <code class="command">CHECK</code>
-   constraints defined on the parent table, the <code class="command">INCLUDING
-   CONSTRAINTS</code> option to <code class="command">LIKE</code> may be
-   useful, as the new child must have constraints matching the parent
-   to be considered compatible. Alternatively a compatible table can
-   be created by first creating a new child using <code class="command">CREATE
-   TABLE</code> then removing the inheritance link with
-   <code class="command">ALTER TABLE</code>.
+   the source table. If there are any <code class="literal">CHECK</code>
+   constraints defined on the source table, the <code class="literal">INCLUDING
+   CONSTRAINTS</code> option to <code class="literal">LIKE</code> should be
+   specified, as the new child must have constraints matching the parent
+   to be considered compatible.
   </p>
-<p>   A parent table cannot be dropped while any
-   of its children remain. If you wish to remove a table and all of its
+<p>   A parent table cannot be dropped while any of its children remain. Neither
+   can columns of child tables be dropped or altered if they are inherited
+   from any parent tables. If you wish to remove a table and all of its
    descendants, one easy way is to drop the parent table with the
-   <code class="literal">CASCADE</code> option. Neither can columns of child tables be
-   dropped or altered if they are inherited from any parent tables.
+   <code class="literal">CASCADE</code> option.
   </p>
 <p>   <a href="sql-altertable.html">ALTER TABLE</a> will
-   propagate any changes in column data definitions and check constraints down
-   the inheritance hierarchy. <code class="command">ALTER TABLE</code> follows the same
-   rules for duplicate column merging and rejection that apply during
-   <code class="command">CREATE TABLE</code>. 
+   propagate any changes in column data definitions and check
+   constraints down the inheritance hierarchy.  Again, dropping
+   columns or constraints on parent tables is only possible when using
+   the <code class="literal">CASCADE</code> option. <code class="command">ALTER
+   TABLE</code> follows the same rules for duplicate column merging
+   and rejection that apply during <code class="command">CREATE TABLE</code>.
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-inherit-caveats"></a>5.8.1. Caveats</h3></div></div></div>
+<a name="ddl-inherit-caveats"></a></h3></div></div></div>
 <p>   Table access permissions are not automatically inherited.  Therefore,
    a user attempting to access a parent table must either have permissions
    to do the operation on all its child tables as well, or must use the
@@ -244,12 +245,6 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
       cities(name)</code> would allow the other table to contain city names, but
       not capital names.  There is no good workaround for this case.
      </p></li>
-<li><p>      If a table is ever removed from the inheritance structure using
-      <code class="command">ALTER TABLE</code> then all its columns will be marked as
-      being locally defined. This means <code class="command">DROP COLUMN</code> on the
-      parent table will never cascade to drop those columns on the child
-      table. They must be dropped manually.
-     </p></li>
 </ul></div>
 <p>
 
@@ -258,7 +253,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    inheritance is useful for your problem.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Deprecated</h3>
+<h3 class="title"></h3>
 <p>     In releases of <span class="productname">PostgreSQL</span> prior to 7.1, the
      default behavior was not to include child tables in queries. This was
      found to be error prone and also in violation of the SQL

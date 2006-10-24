@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2.6. Joins Between Tables</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="prev" href="tutorial-select.html" title="2.5. Querying a Table">
-<link rel="next" href="tutorial-agg.html" title="2.7. Aggregate Functions">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="tutorial-sql.html" title="">
+<link rel="prev" href="tutorial-select.html" title="">
+<link rel="next" href="tutorial-agg.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="tutorial-join"></a>2.6. Joins Between Tables</h2></div></div></div>
-<a name="id2551290"></a><p>    Thus far, our queries have only accessed one table at a time.
+<a name="tutorial-join"></a></h2></div></div></div>
+<a name="id2549611"></a><p>    Thus far, our queries have only accessed one table at a time.
     Queries can access multiple tables at once, or access the same
     table in such a way that multiple rows of the table are being
     processed at the same time.  A query that accesses multiple rows
@@ -26,7 +26,7 @@
     the cities table, and select the pairs of rows where these values match.
     </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>      This  is only a conceptual model.  The join is usually performed
       in a more efficient manner than actually comparing each possible
       pair of rows, but this is invisible to the user.
@@ -81,8 +81,10 @@
      <code class="literal">WHERE</code> clause is omitted.
     </p>
 <p>    Since the columns all had different names, the parser
-    automatically found out which table they belong to, but it is good
-    style to fully qualify column names in join queries:
+    automatically found out which table they belong to.  If there
+    were duplicate column names in the two tables you'd need to
+    <em class="firstterm">qualify</em> the column names to show which one you
+    meant, as in:
 
 </p>
 <pre class="programlisting">SELECT weather.city, weather.temp_lo, weather.temp_hi,
@@ -90,6 +92,10 @@
     FROM weather, cities
     WHERE cities.name = weather.city;</pre>
 <p>
+
+    It is widely considered good style to qualify all column names
+    in a join query, so that the query won't fail if a duplicate
+    column name is later added to one of the tables.
    </p>
 <p>    Join queries of the kind seen thus far can also be written in this
     alternative form:
@@ -102,13 +108,13 @@
     This syntax is not as commonly used as the one above, but we show
     it here to help you understand the following topics.
    </p>
-<p>    <a name="id2551430"></a>
+<p>    <a name="id2549759"></a>
 
     Now we will figure out how we can get the Hayward records back in.
     What we want the query to do is to scan the
     <code class="classname">weather</code> table and for each row to find the
-    matching <code class="classname">cities</code> row.  If no matching row is
-    found we want some &#8220;<span class="quote">empty values</span>&#8221; to be substituted
+    matching <code class="classname">cities</code> row(s).  If no matching row is
+    found we want some <span class="quote">empty values</span> to be substituted
     for the <code class="classname">cities</code> table's columns.  This kind
     of query is called an <em class="firstterm">outer join</em>.  (The
     joins we have seen so far are inner joins.)  The command looks
@@ -137,8 +143,8 @@
 <p><b>Exercise: </b>     There are also right outer joins and full outer joins.  Try to
      find out what those do.
     </p>
-<p>    <a name="id2551499"></a>
-    <a name="id2551508"></a>
+<p>    <a name="id2549828"></a>
+    <a name="id2549837"></a>
 
     We can also join a table against itself.  This is called a
     <em class="firstterm">self join</em>.  As an example, suppose we wish

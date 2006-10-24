@@ -1,27 +1,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>11.2. Index Types</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="indexes.html" title="">
+<link rel="prev" href="indexes.html" title="">
+<link rel="next" href="indexes-multicolumn.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-types"></a>11.2. Index Types</h2></div></div></div>
+<a name="indexes-types"></a></h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> provides several index types:
    B-tree, Hash, GIN and GiST.  Each index type uses a different
    algorithm that is best suited to different types of queries.
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id2609351"></a>
-   <a name="id2609360"></a>
+<p>   <a name="id2607594"></a>
+   <a name="id2607603"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -46,19 +46,19 @@
 <p>   The optimizer can also use a B-tree index for queries involving the
    pattern matching operators <code class="literal">LIKE</code> and <code class="literal">~</code>
    <span class="emphasis"><em>if</em></span> the pattern is a constant and is anchored to
-   the beginning of the string [mdash ] for example, <code class="literal">col LIKE
+   the beginning of the string &#8212; for example, <code class="literal">col LIKE
    'foo%'</code> or <code class="literal">col ~ '^foo'</code>, but not
    <code class="literal">col LIKE '%bar'</code>. However, if your server does not
    use the C locale you will need to create the index with a special
    operator class to support indexing of pattern-matching queries. See
-   <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below. It is also possible to use
+   <a href="indexes-opclass.html" title=""></a> below. It is also possible to use
    B-tree indexes for <code class="literal">ILIKE</code> and
    <code class="literal">~*</code>, but only if the pattern starts with
    non-alphabetic characters, i.e. characters that are not affected by
    upper/lower case conversion.
   </p>
-<p>   <a name="id2609505"></a>
-   <a name="id2609514"></a>
+<p>   <a name="id2607748"></a>
+   <a name="id2607758"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
@@ -69,7 +69,7 @@
 <p>
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    Testing has shown <span class="productname">PostgreSQL</span>'s hash
     indexes to perform no better than B-tree indexes, and the
     index size and build time for hash indexes is much worse.
@@ -79,8 +79,8 @@
     For these reasons, hash index use is presently discouraged.
    </p>
 </div>
-<p>   <a name="id2609574"></a>
-   <a name="id2609583"></a>
+<p>   <a name="id2607817"></a>
+   <a name="id2607826"></a>
    GiST indexes are not a single kind of index, but rather an infrastructure
    within which many different indexing strategies can be implemented.
    Accordingly, the particular operators with which a GiST index can be
@@ -107,14 +107,14 @@
 </table>
 <p>
 
-   (See <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
+   (See <a href="functions-geometry.html" title=""></a> for the meaning of
    these operators.)
    Many other GiST operator
    classes are available in the <code class="literal">contrib</code> collection or as separate
-   projects.  For more information see <a href="gist.html" title="Chapter 49. GiST Indexes">Chapter 49, <i>GiST Indexes</i></a>.
+   projects.  For more information see <a href="gist.html" title=""></a>.
   </p>
-<p>   <a name="id2609710"></a>
-   <a name="id2609720"></a>
+<p>   <a name="id2607949"></a>
+   <a name="id2607958"></a>
    GIN is a inverted index and it's usable for values which have more
    than one key, arrays for example. Like GiST, GIN may support
    many different user-defined indexing strategies and the particular 
@@ -122,7 +122,7 @@
    indexing strategy.  
    As an example, the standard distribution of
    <span class="productname">PostgreSQL</span> includes GIN operator classes
-   for one-dimentional arrays, which support indexed
+   for one-dimensional arrays, which support indexed
    queries using these operators:
 
    </p>
@@ -134,10 +134,10 @@
 </table>
 <p>
 
-   (See <a href="functions-array.html" title="9.14. Array Functions and Operators">Section 9.14, &#8220;Array Functions and Operators&#8221;</a> for the meaning of
+   (See <a href="functions-array.html" title=""></a> for the meaning of
    these operators.)
    Other GIN operator classes are available in the <code class="literal">contrib</code>
-   tsearch2 and intarray modules. For more information see <a href="gin.html" title="Chapter 50. GIN Indexes">Chapter 50, <i>GIN Indexes</i></a>.
+   <code class="literal">tsearch2</code> and <code class="literal">intarray</code> modules. For more information see <a href="gin.html" title=""></a>.
   </p>
 </div></body>
 </html>

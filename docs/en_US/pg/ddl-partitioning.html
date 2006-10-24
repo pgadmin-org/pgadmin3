@@ -1,54 +1,48 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>5.9. Partitioning</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="prev" href="ddl-inherit.html" title="5.8. Inheritance">
-<link rel="next" href="ddl-others.html" title="5.10. Other Database Objects">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="ddl.html" title="">
+<link rel="prev" href="ddl-inherit.html" title="">
+<link rel="next" href="ddl-others.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-partitioning"></a>5.9. Partitioning</h2></div></div></div>
-<a name="id2560412"></a><a name="id2560418"></a><p>    <span class="productname">PostgreSQL</span> supports basic table
+<a name="ddl-partitioning"></a></h2></div></div></div>
+<a name="id2558884"></a><a name="id2558890"></a><p>    <span class="productname">PostgreSQL</span> supports basic table
     partitioning. This section describes why and how to implement
     partitioning as part of your database design.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-overview"></a>5.9.1. Overview</h3></div></div></div>
+<a name="ddl-partitioning-overview"></a></h3></div></div></div>
 <p>    Partitioning refers to splitting what is logically one large table
     into smaller physical pieces.
     Partitioning can provide several benefits:
    </p>
 <div class="itemizedlist"><ul type="disc">
-<li>
-<p>      Query performance can be improved when partition constraints can be
-      combined with local indexes to reduce the number of records that need to
-      be accessed for a query. Whereas the alternative, adding those columns
-      to every index, increases space usage which can erase any
-      performance gain.
-     </p>
-<p>      When most of the heavily accessed area of the table is in a single
-      partition or a small number of partitions. That partition and its
-      indexes are more likely to fit within memory than the index of the
-      entire table.
-     </p>
-</li>
-<li><p>      When queries or updates access a large percentage of a a single
-      partition performance can be improved dramatically by taking advantage
-      of sequential disk access of a single partition instead of using an
-      index and random access reads across the whole table.
+<li><p>      Query performance can be improved dramatically in certain situations,
+      particularly when most of the heavily accessed rows of the table are in a
+      single partition or a small number of partitions.  The partitioning
+      substitutes for leading columns of indexes, reducing index size and
+      making it more likely that the heavily-used parts of the indexes
+      fit in memory.
      </p></li>
-<li><p>      Bulk loads and deletes may be accomplished by simply removing or adding
-      one of the partitions. <code class="command">ALTER TABLE</code> is far faster than a bulk
-      and takes the same amount of time regardless of the amount of data being
-      added or removed. It also entirely avoids the <code class="command">VACUUM</code>
-      overhead caused by a bulk <code class="command">delete</code>.
+<li><p>      When queries or updates access a large percentage of a a single
+      partition, performance can be improved by taking advantage
+      of sequential scan of that partition instead of using an
+      index and random access reads scattered across the whole table.
+     </p></li>
+<li><p>      Bulk loads and deletes may be accomplished by adding or removing
+      partitions, if that requirement is planned into the partitioning design.
+      <code class="command">ALTER TABLE</code> is far faster than a bulk operation.
+      It also entirely avoids the <code class="command">VACUUM</code>
+      overhead caused by a bulk <code class="command">DELETE</code>.
      </p></li>
 <li><p>      Seldom-used data can be migrated to cheaper and slower storage media.
      </p></li>
@@ -65,7 +59,7 @@
     via table inheritance.  Each partition must be created as a child
     table of a single parent table.  The parent table itself is normally
     empty; it exists just to represent the entire data set.  You should be
-    familiar with inheritance (see <a href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a>) before
+    familiar with inheritance (see <a href="ddl-inherit.html" title=""></a>) before
     attempting to set up partitioning.
    </p>
 <p>    The following forms of partitioning can be implemented in
@@ -74,7 +68,7 @@
     </p>
 <div class="variablelist"><dl>
 <dt><span class="term">Range Partitioning</span></dt>
-<dd><p>        The table is partitioned into &#8220;<span class="quote">ranges</span>&#8221; defined
+<dd><p>        The table is partitioned into <span class="quote">ranges</span> defined
         by a key column or set of columns, with no overlap between
         the ranges of values assigned to different partitions.  For
         example one might partition by date ranges, or by ranges of
@@ -86,18 +80,16 @@
        </p></dd>
 </dl></div>
 <p>
-
-    Hash partitioning is not currently supported.
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-implementation"></a>5.9.2. Implementing Partitioning</h3></div></div></div>
+<a name="ddl-partitioning-implementation"></a></h3></div></div></div>
 <p>     To set up a partitioned table, do the following:
      </p>
 <div class="orderedlist"><ol type="1" compact>
 <li>
-<p>        Create the &#8220;<span class="quote">master</span>&#8221; table, from which all of the
+<p>        Create the <span class="quote">master</span> table, from which all of the
         partitions will inherit.
        </p>
 <p>        This table will contain no data.  Do not define any check
@@ -107,7 +99,7 @@
        </p>
 </li>
 <li>
-<p>        Create several &#8220;<span class="quote">child</span>&#8221; tables that each inherit from
+<p>        Create several <span class="quote">child</span> tables that each inherit from
         the master table.  Normally, these tables will not add any columns
         to the set inherited from the master.
        </p>
@@ -310,23 +302,40 @@ DO INSTEAD
      creating a new partition each month, so it may be wise to write a
      script that generates the required DDL automatically.
     </p>
+<p>    Partitioning can also be arranged using a <code class="literal">UNION ALL</code>
+    view:
+
+</p>
+<pre class="programlisting">CREATE VIEW measurement AS
+          SELECT * FROM measurement_y2004m02
+UNION ALL SELECT * FROM measurement_y2004m03
+...
+UNION ALL SELECT * FROM measurement_y2005m11
+UNION ALL SELECT * FROM measurement_y2005m12
+UNION ALL SELECT * FROM measurement_y2006m01;</pre>
+<p>
+
+    However, the need to
+    recreate the view adds an extra step to adding and dropping
+    individual partitions of the data set.
+   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-managing-partitions"></a>5.9.3. Managing Partitions</h3></div></div></div>
+<a name="ddl-partitioning-managing-partitions"></a></h3></div></div></div>
 <p>     Normally the set of partitions established when initially
      defining the table are not intended to remain static. It is
      common to want to remove old partitions of data and periodically
      add new partitions for new data. One of the most important
      advantages of partitioning is precisely that it allows this
      otherwise painful task to be executed nearly instantaneously by
-     manipulating the partition structure, rather than moving large
-     amounts of data around physically.
+     manipulating the partition structure, rather than physically moving large
+     amounts of data around.
    </p>
-<p>     The simplest option for removing old data is to simply drop the partition
+<p>     The simplest option for removing old data is simply to drop the partition
      that is no longer necessary:
 </p>
-<pre class="programlisting">DROP TABLE measurement_y2003mm02;</pre>
+<pre class="programlisting">DROP TABLE measurement_y2003m02;</pre>
 <p>
      This can very quickly delete millions of records because it doesn't have
      to individually delete every record.
@@ -335,10 +344,10 @@ DO INSTEAD
      the partitioned table but retain access to it as a table in its own
      right:
 </p>
-<pre class="programlisting">ALTER TABLE measurement_y2003mm02 NO INHERIT measurement;</pre>
+<pre class="programlisting">ALTER TABLE measurement_y2003m02 NO INHERIT measurement;</pre>
 <p>
      This allows further operations to be performed on the data before
-     it is dropped. For example, this is often a useful time to backup
+     it is dropped. For example, this is often a useful time to back up
      the data using <code class="command">COPY</code>, <span class="application">pg_dump</span>, or
      similar tools. It can also be a useful time to aggregate data
      into smaller formats, perform other data manipulations, or run
@@ -360,17 +369,19 @@ DO INSTEAD
      transformed prior to it appearing in the partitioned table.
 
 </p>
-<pre class="programlisting">CREATE TABLE measurement_y2006m02 (LIKE measurement INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
-\COPY measurement_y2006m02 FROM 'measurement_y2006m02'
-UPDATE ... ;
-ALTER TABLE measurement_y2006m02 ADD CONSTRAINT y2006m02 CHECK ( logdate &gt;= DATE '2006-02-01' AND logdate &lt; DATE '2006-03-01' );
+<pre class="programlisting">CREATE TABLE measurement_y2006m02
+  (LIKE measurement INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
+ALTER TABLE measurement_y2006m02 ADD CONSTRAINT y2006m02
+   CHECK ( logdate &gt;= DATE '2006-02-01' AND logdate &lt; DATE '2006-03-01' );
+\copy measurement_y2006m02 from 'measurement_y2006m02'
+-- possibly some other data preparation work
 ALTER TABLE measurement_y2006m02 INHERIT measurement;</pre>
 <p>
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-caveats"></a>5.9.4. Caveats</h3></div></div></div>
+<a name="ddl-partitioning-caveats"></a></h3></div></div></div>
 <p>    The following caveats apply to partitioned tables:
    </p>
 <div class="itemizedlist"><ul type="disc">
@@ -387,38 +398,14 @@ ALTER TABLE measurement_y2006m02 INHERIT measurement;</pre>
       used to redirect the data into the proper child table, instead of
       using a set of rules as suggested above.)
      </p></li>
-<li><p>      When using the <code class="literal">LIKE</code> option above to create new
-      partitions, <code class="literal">CHECK</code> constraints are not copied from
-      the parent. If there are any <code class="literal">CHECK</code> constraints
-      defined for the parent, they must be manually created in new
-      partitions before <code class="command">ALTER TABLE</code> will allow them
-      to be added.
-     </p></li>
 </ul></div>
 <p>
-   </p>
-<p>    Partitioning can also be arranged using a <code class="literal">UNION ALL</code>
-    view:
-
-</p>
-<pre class="programlisting">CREATE VIEW measurement AS
-          SELECT * FROM measurement_y2004m02
-UNION ALL SELECT * FROM measurement_y2004m03
-...
-UNION ALL SELECT * FROM measurement_y2005m11
-UNION ALL SELECT * FROM measurement_y2005m12
-UNION ALL SELECT * FROM measurement_y2006m01;</pre>
-<p>
-
-    However, the need to
-    recreate the view adds an extra step to adding and dropping
-    individual partitions of the dataset.
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-constraint-exclusion"></a>5.9.5. Partitioning and Constraint Exclusion</h3></div></div></div>
-<a name="id2561118"></a><p>    <em class="firstterm">Constraint exclusion</em> is a query optimization technique
+<a name="ddl-partitioning-constraint-exclusion"></a></h3></div></div></div>
+<a name="id2559567"></a><p>    <em class="firstterm">Constraint exclusion</em> is a query optimization technique
     that improves performance for partitioned tables defined in the
     fashion described above.  As an example:
 
@@ -494,12 +481,12 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2006-01-01';
 <li><p>      Constraint exclusion only works when the query's <code class="literal">WHERE</code>
       clause contains constants.  A parameterized query will not be
       optimized, since the planner cannot know what partitions the
-      parameter value might select at runtime.  For the same reason,
-      &#8220;<span class="quote">stable</span>&#8221; functions such as <code class="function">CURRENT_DATE</code>
+      parameter value might select at run time.  For the same reason,
+      <span class="quote">stable</span> functions such as <code class="function">CURRENT_DATE</code>
       must be avoided.
      </p></li>
 <li>
-<p>      Avoid cross-datatype comparisons in the <code class="literal">CHECK</code>
+<p>      Avoid cross-data type comparisons in the <code class="literal">CHECK</code>
       constraints, as the planner will currently fail to prove such
       conditions false.  For example, the following constraint
       will work if <code class="varname">x</code> is an <code class="type">integer</code>
@@ -513,9 +500,9 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2006-01-01';
 <pre class="programlisting">CHECK ( x = 1::bigint )</pre>
 <p>
       The problem is not limited to the <code class="type">bigint</code> data type
-      [mdash ] it can occur whenever the default data type of the
+      &#8212; it can occur whenever the default data type of the
       constant does not match the data type of the column to which it
-      is being compared.  Cross-datatype comparisons in the supplied
+      is being compared.  Cross-data type comparisons in the supplied
       queries are usually OK, just not in the <code class="literal">CHECK</code> conditions.
      </p>
 </li>

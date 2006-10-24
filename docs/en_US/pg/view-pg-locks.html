@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>42.39. pg_locks</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
-<link rel="prev" href="view-pg-indexes.html" title="42.38. pg_indexes">
-<link rel="next" href="view-pg-prepared-statements.html" title="42.40. pg_prepared_statements">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="catalogs.html" title="">
+<link rel="prev" href="view-pg-indexes.html" title="">
+<link rel="next" href="view-pg-prepared-statements.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="view-pg-locks"></a>42.39. <code class="structname">pg_locks</code></h2></div></div></div>
-<a name="id2807988"></a><p>   The view <code class="structname">pg_locks</code> provides access to
+<a name="view-pg-locks"></a></h2></div></div></div>
+<a name="id2807028"></a><p>   The view <code class="structname">pg_locks</code> provides access to
    information about the locks held by open transactions within the
-   database server.  See <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more discussion
+   database server.  See <a href="mvcc.html" title=""></a> for more discussion
    of locking.
   </p>
 <p>   <code class="structname">pg_locks</code> contains one row per active lockable
@@ -36,7 +36,7 @@
    relation is represented as a separate lockable object.
   </p>
 <div class="table">
-<a name="id2808038"></a><p class="title"><b>Table 42.39. <code class="structname">pg_locks</code> Columns</b></p>
+<a name="id2807078"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="pg_locks Columns" border="1">
 <colgroup>
 <col>
@@ -69,7 +69,7 @@
 <tr>
 <td><code class="structfield">database</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-database.html" title="42.15. pg_database"><code class="structname">pg_database</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-database.html" title=""><code class="structname">pg_database</code></a>.oid</code></td>
 <td>       OID of the database in which the object exists, or
        zero if the object is a shared object, or
        NULL if the object is a transaction ID
@@ -78,7 +78,7 @@
 <tr>
 <td><code class="structfield">relation</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title=""><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       OID of the relation, or NULL if the object is not
        a relation or part of a relation
       </td>
@@ -108,7 +108,7 @@
 <tr>
 <td><code class="structfield">classid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title=""><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       OID of the system catalog containing the object, or NULL if the
        object is not a general database object
       </td>
@@ -150,7 +150,7 @@
 <td><code class="structfield">mode</code></td>
 <td><code class="type">text</code></td>
 <td> </td>
-<td>name of the lock mode held or desired by this process (see <a href="explicit-locking.html#locking-tables" title="12.3.1. Table-Level Locks">Section 12.3.1, &#8220;Table-Level Locks&#8221;</a>)</td>
+<td>name of the lock mode held or desired by this process (see <a href="explicit-locking.html#locking-tables" title=""></a>)</td>
 </tr>
 <tr>
 <td><code class="structfield">granted</code></td>
@@ -183,7 +183,7 @@
    transaction ID of the current holder of that row lock.
   </p>
 <p>   Advisory locks can be acquired on keys consisting of either a single
-   bigint value or two integer values.  A bigint key is displayed with its
+   <code class="type">bigint</code> value or two integer values.  A <code class="type">bigint</code> key is displayed with its
    high-order half in the <code class="structfield">classid</code> column, its low-order half
    in the <code class="structfield">objid</code> column, and <code class="structfield">objsubid</code> equal
    to 1.  Integer keys are displayed with the first key in the

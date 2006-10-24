@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>13.3. Controlling the Planner with Explicit JOIN Clauses</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
-<link rel="prev" href="planner-stats.html" title="13.2. Statistics Used by the Planner">
-<link rel="next" href="populate.html" title="13.4. Populating a Database">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="performance-tips.html" title="">
+<link rel="prev" href="planner-stats.html" title="">
+<link rel="next" href="populate.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="explicit-joins"></a>13.3. Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses</h2></div></div></div>
-<a name="id2614590"></a><p>   It is possible
+<a name="explicit-joins"></a></h2></div></div></div>
+<a name="id2612791"></a><p>   It is possible
    to control the query planner to some extent by using the explicit <code class="literal">JOIN</code>
    syntax.  To see why this matters, we first need some background.
   </p>
@@ -27,7 +27,7 @@
    the <code class="literal">WHERE</code> condition <code class="literal">a.id = b.id</code>, and then
    joins C to this joined table, using the other <code class="literal">WHERE</code>
    condition.  Or it could join B to C and then join A to that result.
-   Or it could join A to C and then join them with B [mdash ] but that
+   Or it could join A to C and then join them with B &#8212; but that
    would be inefficient, since the full Cartesian product of A and C
    would have to be formed, there being no applicable condition in the
    <code class="literal">WHERE</code> clause to allow optimization of the join.  (All
@@ -114,7 +114,7 @@ SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</pre>
    both for reducing planning time and for directing the planner to a
    good query plan.  If the planner chooses a bad join order by default,
    you can force it to choose a better order via <code class="literal">JOIN</code> syntax
-   [mdash ] assuming that you know of a better order, that is.  Experimentation
+   &#8212; assuming that you know of a better order, that is.  Experimentation
    is recommended.
   </p>
 <p>   A closely related issue that affects planning time is collapsing of
@@ -147,7 +147,7 @@ WHERE somethingelse;</pre>
   </p>
 <p>   <a href="runtime-config-query.html#guc-from-collapse-limit">from_collapse_limit</a> and <a href="runtime-config-query.html#guc-join-collapse-limit">join_collapse_limit</a>
    are similarly named because they do almost the same thing: one controls
-   when the planner will &#8220;<span class="quote">flatten out</span>&#8221; subselects, and the
+   when the planner will <span class="quote">flatten out</span> subselects, and the
    other controls when it will flatten out explicit joins.  Typically
    you would either set <code class="varname">join_collapse_limit</code> equal to
    <code class="varname">from_collapse_limit</code> (so that explicit joins and subselects

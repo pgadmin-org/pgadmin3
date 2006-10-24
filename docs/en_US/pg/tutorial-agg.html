@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2.7. Aggregate Functions</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="prev" href="tutorial-join.html" title="2.6. Joins Between Tables">
-<link rel="next" href="tutorial-update.html" title="2.8. Updates">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="tutorial-sql.html" title="">
+<link rel="prev" href="tutorial-join.html" title="">
+<link rel="next" href="tutorial-update.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="tutorial-agg"></a>2.7. Aggregate Functions</h2></div></div></div>
-<a name="id2551605"></a><p>    <a name="id2551617"></a>
-    <a name="id2551624"></a>
-    <a name="id2551631"></a>
-    <a name="id2551638"></a>
-    <a name="id2551645"></a>
+<a name="tutorial-agg"></a></h2></div></div></div>
+<a name="id2549934"></a><p>    <a name="id2549946"></a>
+    <a name="id2549953"></a>
+    <a name="id2549959"></a>
+    <a name="id2549966"></a>
+    <a name="id2549973"></a>
 
     Like  most  other relational database products, 
     <span class="productname">PostgreSQL</span> supports
@@ -43,7 +43,7 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id2551709"></a>
+<p>    <a name="id2550038"></a>
 
     If we wanted to know what city (or cities) that reading occurred in,
     we might try
@@ -55,11 +55,11 @@
     but this will not work since the aggregate
     <code class="function">max</code> cannot be used in the
     <code class="literal">WHERE</code> clause.  (This restriction exists because
-    the <code class="literal">WHERE</code> clause determines the rows that will
-    go into the aggregation stage; so it has to be evaluated before
-    aggregate functions are computed.)
+    the <code class="literal">WHERE</code> clause determines which rows will be
+    included in the aggregate calculation; so obviously it has to be evaluated
+    before aggregate functions are computed.)
     However, as is often the case
-    the query can be restated to accomplish the intended result, here
+    the query can be restated to accomplish the desired result, here
     by using a <em class="firstterm">subquery</em>:
 
 </p>
@@ -78,8 +78,8 @@
     that computes its own aggregate separately from what is happening
     in the outer query.
    </p>
-<p>    <a name="id2551773"></a>
-    <a name="id2551779"></a>
+<p>    <a name="id2550102"></a>
+    <a name="id2550108"></a>
 
     Aggregates are also very useful in combination with <code class="literal">GROUP
     BY</code> clauses.  For example, we can get the maximum low
@@ -121,7 +121,7 @@
     which gives us the same results for only the cities that have all
     <code class="literal">temp_lo</code> values below 40.  Finally, if we only care about
     cities whose
-    names begin with &#8220;<span class="quote"><code class="literal">S</code></span>&#8221;, we might do
+    names begin with <span class="quote"><code class="literal">S</code></span>, we might do
 
 </p>
 <pre class="programlisting">SELECT city, max(temp_lo)
@@ -135,7 +135,7 @@
 <td width="5%" valign="top" align="left">
 <a href="#co.tutorial-agg-like">(1)</a> </td>
 <td valign="top" align="left"><p>      The <code class="literal">LIKE</code> operator does pattern matching and
-      is explained in <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a>.
+      is explained in <a href="functions-matching.html" title=""></a>.
      </p></td>
 </tr></table></div>
 <p>

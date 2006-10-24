@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 26. Reliability and the Write-Ahead Log</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="prev" href="disk-full.html" title="25.2. Disk Full Failure">
-<link rel="next" href="wal-intro.html" title="26.2. Write-Ahead Logging (WAL)">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="admin.html" title="">
+<link rel="prev" href="disk-full.html" title="">
+<link rel="next" href="wal-intro.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="wal">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="wal"></a>Chapter 26. Reliability and the Write-Ahead Log</h2></div></div></div>
+<a name="wal"></a></h2></div></div></div>
 <div class="toc">
-<p><b>Table of Contents</b></p>
+<p><b></b></p>
 <dl>
 <dt><span class="sect1"><a href="wal.html#wal-reliability">26.1. Reliability</a></span></dt>
 <dt><span class="sect1"><a href="wal-intro.html">26.2. Write-Ahead Logging (<acronym class="acronym">WAL</acronym>)</a></span></dt>
@@ -28,7 +28,7 @@
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="wal-reliability"></a>26.1. Reliability</h2></div></div></div>
+<a name="wal-reliability"></a></h2></div></div></div>
 <p>   Reliability is an important property of any serious database
    system, and <span class="productname">PostgreSQL</span> does everything possible to
    guarantee reliable operation. One aspect of reliable operation is
@@ -92,8 +92,8 @@
    permanent storage <span class="emphasis"><em>before</em></span> modifying the actual page on
    disk. By doing this, during crash recovery <span class="productname">PostgreSQL</span> can
    restore partially-written pages.  If you have a battery-backed disk
-   controller or file-system software (e.g., Reiser4) that prevents partial
-   page writes,  you can turn off this page imaging by using the 
+   controller or file-system software that prevents partial page writes
+   (e.g., ReiserFS 4),  you can turn off this page imaging by using the 
    <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> parameter.
   </p>
 </div>

@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SELECT</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-savepoint.html" title="SAVEPOINT">
-<link rel="next" href="sql-selectinto.html" title="SELECT INTO">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="sql-commands.html" title="">
+<link rel="prev" href="sql-savepoint.html" title="">
+<link rel="next" href="sql-selectinto.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-select"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2>Name</h2>
+<h2></h2>
 <p>SELECT &#8212; retrieve rows from a table or view</p>
 </div>
-<a name="id2766919"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="id2765474"></a><div class="refsynopsisdiv">
+<h2></h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <em class="replaceable"><code>expression</code></em> [, ...] ) ] ]
     * | <em class="replaceable"><code>expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...]
     [ FROM <em class="replaceable"><code>from_item</code></em> [, ...] ]
@@ -40,7 +40,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     <em class="replaceable"><code>from_item</code></em> [ NATURAL ] <em class="replaceable"><code>join_type</code></em> <em class="replaceable"><code>from_item</code></em> [ ON <em class="replaceable"><code>join_condition</code></em> | USING ( <em class="replaceable"><code>join_column</code></em> [, ...] ) ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2767138"></a><h2>Description</h2>
+<a name="id2765694"></a><h2>Description</h2>
 <p>   <code class="command">SELECT</code> retrieves rows from zero or more tables.
    The general processing of <code class="command">SELECT</code> is as follows:
 
@@ -114,7 +114,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2767539"></a><h2>Parameters</h2>
+<a name="id2766095"></a><h2>Parameters</h2>
 <div class="refsect2" lang="en">
 <a name="sql-from"></a><h3>
 <code class="literal">FROM</code> Clause</h3>
@@ -544,8 +544,8 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     keeps only the first row of each set of rows where the given
     expressions evaluate to equal.  The <code class="literal">DISTINCT ON</code>
     expressions are interpreted using the same rules as for
-    <code class="literal">ORDER BY</code> (see above).  Note that the &#8220;<span class="quote">first
-    row</span>&#8221; of each set is unpredictable unless <code class="literal">ORDER
+    <code class="literal">ORDER BY</code> (see above).  Note that the <span class="quote">first
+    row</span> of each set is unpredictable unless <code class="literal">ORDER
     BY</code> is used to ensure that the desired row appears first.  For
     example,
 </p>
@@ -582,7 +582,7 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
 <p>    When using <code class="literal">LIMIT</code>, it is a good idea to use an
     <code class="literal">ORDER BY</code> clause that constrains the result rows into a
     unique order.  Otherwise you will get an unpredictable subset of
-    the query's rows [mdash ] you may be asking for the tenth through
+    the query's rows &#8212; you may be asking for the tenth through
     twentieth rows, but tenth through twentieth in what ordering?  You
     don't know what ordering unless you specify <code class="literal">ORDER BY</code>.
    </p>
@@ -624,15 +624,15 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
     has already locked a selected row or rows, <code class="command">SELECT FOR
     UPDATE</code> will wait for the other transaction to complete,
     and will then lock and return the updated row (or no row, if the
-    row was deleted).  For further discussion see <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a>.
+    row was deleted).  For further discussion see <a href="mvcc.html" title=""></a>.
    </p>
 <p>    To prevent the operation from waiting for other transactions to commit,
     use the <code class="literal">NOWAIT</code> option.  <code class="command">SELECT FOR UPDATE
     NOWAIT</code> reports an error, rather than waiting, if a selected row
     cannot be locked immediately.  Note that <code class="literal">NOWAIT</code> applies only
-    to the row-level lock(s) [mdash ] the required <code class="literal">ROW SHARE</code>
+    to the row-level lock(s) &#8212; the required <code class="literal">ROW SHARE</code>
     table-level lock is still taken in the ordinary way (see
-    <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a>).  You can use the <code class="literal">NOWAIT</code> option of
+    <a href="mvcc.html" title=""></a>).  You can use the <code class="literal">NOWAIT</code> option of
     <a href="sql-lock.html">LOCK</a>
     if you need to acquire the table-level lock without waiting.
    </p>
@@ -679,7 +679,7 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2770031"></a><h2>Examples</h2>
+<a name="id2768587"></a><h2>Examples</h2>
 <p>   To join the table <code class="literal">films</code> with the table
    <code class="literal">distributors</code>:
 
@@ -809,13 +809,13 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2770199"></a><h2>Compatibility</h2>
+<a name="id2768755"></a><h2>Compatibility</h2>
 <p>   Of course, the <code class="command">SELECT</code> statement is compatible
    with the SQL standard.  But there are some extensions and some
    missing features.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2770213"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
+<a name="id2768769"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
 <p>    <span class="productname">PostgreSQL</span> allows one to omit the
     <code class="literal">FROM</code> clause.  It has a straightforward use to
     compute the results of simple expressions:
@@ -847,7 +847,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2770299"></a><h3>The <code class="literal">AS</code> Key Word</h3>
+<a name="id2768854"></a><h3>The <code class="literal">AS</code> Key Word</h3>
 <p>    In the SQL standard, the optional key word <code class="literal">AS</code> is just
     noise and can be omitted without affecting the meaning.  The
     <span class="productname">PostgreSQL</span> parser requires this key
@@ -858,7 +858,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2770338"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
+<a name="id2768894"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
 </h3>
 <p>    In the SQL-92 standard, an <code class="literal">ORDER BY</code> clause may
     only use result column names or numbers, while a <code class="literal">GROUP
@@ -879,7 +879,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2770410"></a><h3>Nonstandard Clauses</h3>
+<a name="id2768966"></a><h3>Nonstandard Clauses</h3>
 <p>    The clauses <code class="literal">DISTINCT ON</code>,
     <code class="literal">LIMIT</code>, and <code class="literal">OFFSET</code> are not
     defined in the SQL standard.

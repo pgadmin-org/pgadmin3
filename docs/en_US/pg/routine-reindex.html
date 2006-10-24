@@ -1,28 +1,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>22.2. Routine Reindexing</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
-<link rel="prev" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
-<link rel="next" href="logfile-maintenance.html" title="22.3. Log File Maintenance">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="maintenance.html" title="">
+<link rel="prev" href="maintenance.html" title="">
+<link rel="next" href="logfile-maintenance.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="routine-reindex"></a>22.2. Routine Reindexing</h2></div></div></div>
-<a name="id2647849"></a><p>   In some situations it is worthwhile to rebuild indexes periodically
+<a name="routine-reindex"></a></h2></div></div></div>
+<a name="id2645908"></a><p>   In some situations it is worthwhile to rebuild indexes periodically
    with the <a href="sql-reindex.html">REINDEX</a>
    command.
   </p>
 <p>   In <span class="productname">PostgreSQL</span> releases before 7.4, periodic reindexing
-   was frequently necessary to avoid &#8220;<span class="quote">index bloat</span>&#8221;, due to lack of
+   was frequently necessary to avoid <span class="quote">index bloat</span>, due to lack of
    internal space reclamation in B-tree indexes.  Any situation in which the
-   range of index keys changed over time [mdash ] for example, an index on
-   timestamps in a table where old entries are eventually deleted [mdash ]
+   range of index keys changed over time &#8212; for example, an index on
+   timestamps in a table where old entries are eventually deleted &#8212;
    would result in bloat, because index pages for no-longer-needed portions
    of the key range were not reclaimed for re-use.  Over time, the index size
    could become indefinitely much larger than the amount of useful data in it.
@@ -32,8 +32,8 @@
    for inefficient use of space: if all but a few index keys on a page have
    been deleted, the page remains allocated.  So a usage pattern in which all
    but a few keys in each range are eventually deleted will see poor use of
-   space.  The potential for bloat is not indefinite [mdash ] at worst there
-   will be one key per page [mdash ] but it may still be worthwhile to schedule
+   space.  The potential for bloat is not indefinite &#8212; at worst there
+   will be one key per page &#8212; but it may still be worthwhile to schedule
    periodic reindexing for indexes that have such usage patterns.
   </p>
 <p>   The potential for bloat in non-B-tree indexes has not been well

@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>CREATE TABLE</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-createsequence.html" title="CREATE SEQUENCE">
-<link rel="next" href="sql-createtableas.html" title="CREATE TABLE AS">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="sql-commands.html" title="">
+<link rel="prev" href="sql-createsequence.html" title="">
+<link rel="next" href="sql-createtableas.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-createtable"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2>Name</h2>
+<h2></h2>
 <p>CREATE TABLE &#8212; define a new table</p>
 </div>
-<a name="id2746840"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="id2745472"></a><div class="refsynopsisdiv">
+<h2></h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> ( [
   { <em class="replaceable"><code>column_name</code></em> <em class="replaceable"><code>data_type</code></em> [ DEFAULT <em class="replaceable"><code>default_expr</code></em> ] [ <em class="replaceable"><code>column_constraint</code></em> [ ... ] ]
     | <em class="replaceable"><code>table_constraint</code></em>
@@ -91,7 +91,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2747150"></a><h2>Parameters</h2>
+<a name="id2745744"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd>
@@ -119,7 +119,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 <dt><span class="term"><em class="replaceable"><code>data_type</code></em></span></dt>
 <dd><p>      The data type of the column. This may include array
       specifiers. For more information on the data types supported by
-      <span class="productname">PostgreSQL</span>, refer to <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a>.
+      <span class="productname">PostgreSQL</span>, refer to <a href="datatype.html" title=""></a>.
      </p></dd>
 <dt><span class="term"><code class="literal">DEFAULT
     <em class="replaceable"><code>default_expr</code></em></code></span></dt>
@@ -187,7 +187,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       <code class="literal">CHECK</code> constraints will only be copied if
       <code class="literal">INCLUDING CONSTRAINTS</code> is specified; other types of
       constraints will never be copied. Also, no distinction is made between
-      column constraints and table constraints [mdash ] when constraints are
+      column constraints and table constraints &#8212; when constraints are
       requested, all check constraints are copied.
      </p>
 <p>      Note also that unlike <code class="literal">INHERITS</code>, copied columns and
@@ -492,7 +492,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
      purpose.
     </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
+<h3 class="title"></h3>
 <p>      The use of <code class="literal">OIDS=FALSE</code> is not recommended
       for tables with no primary key, since without either an OID or a
       unique data key, it is difficult to identify specific rows.
@@ -686,7 +686,7 @@ WITH (fillfactor=70);</pre>
    <acronym class="acronym">SQL</acronym> standard, with exceptions listed below.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2748735"></a><h3>Temporary Tables</h3>
+<a name="id2747296"></a><h3>Temporary Tables</h3>
 <p>    Although the syntax of <code class="literal">CREATE TEMPORARY TABLE</code>
     resembles that of the SQL standard, the effect is not the same.  In the
     standard,
@@ -721,7 +721,7 @@ WITH (fillfactor=70);</pre>
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2748860"></a><h3>Column Check Constraints</h3>
+<a name="id2747421"></a><h3>Column Check Constraints</h3>
 <p>    The SQL standard says that <code class="literal">CHECK</code> column constraints
     may only refer to the column they apply to; only <code class="literal">CHECK</code>
     table constraints may refer to multiple columns.
@@ -730,9 +730,9 @@ WITH (fillfactor=70);</pre>
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2748887"></a><h3>
-<code class="literal">NULL</code> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
-<p>    The <code class="literal">NULL</code> &#8220;<span class="quote">constraint</span>&#8221; (actually a
+<a name="id2747449"></a><h3>
+<code class="literal">NULL</code> <span class="quote">Constraint</span></h3>
+<p>    The <code class="literal">NULL</code> <span class="quote">constraint</span> (actually a
     non-constraint) is a <span class="productname">PostgreSQL</span>
     extension to the SQL standard that is included for compatibility with some
     other database systems (and for symmetry with the <code class="literal">NOT
@@ -741,7 +741,7 @@ WITH (fillfactor=70);</pre>
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2748926"></a><h3>Inheritance</h3>
+<a name="id2747487"></a><h3>Inheritance</h3>
 <p>    Multiple inheritance via the <code class="literal">INHERITS</code> clause is
     a <span class="productname">PostgreSQL</span> language extension.
     SQL:1999 and later define single inheritance using a
@@ -751,7 +751,7 @@ WITH (fillfactor=70);</pre>
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2748953"></a><h3>Zero-column tables</h3>
+<a name="id2747514"></a><h3>Zero-column tables</h3>
 <p>    <span class="productname">PostgreSQL</span> allows a table of no columns
     to be created (for example, <code class="literal">CREATE TABLE foo();</code>).  This
     is an extension from the SQL standard, which does not allow zero-column
@@ -761,14 +761,14 @@ WITH (fillfactor=70);</pre>
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2748982"></a><h3>
+<a name="id2747544"></a><h3>
 <code class="literal">WITH</code> clause</h3>
 <p>    The <code class="literal">WITH</code> clause is a <span class="productname">PostgreSQL</span>
     extension; neither storage parameters nor OIDs are in the standard.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2749006"></a><h3>Tablespaces</h3>
+<a name="id2747567"></a><h3>Tablespaces</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of tablespaces is not
     part of the standard.  Hence, the clauses <code class="literal">TABLESPACE</code>
     and <code class="literal">USING INDEX TABLESPACE</code> are extensions.
@@ -776,7 +776,7 @@ WITH (fillfactor=70);</pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2749032"></a><h2>See Also</h2>
+<a name="id2747593"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-droptable.html">DROP TABLE</a>, <a href="sql-createtablespace.html">CREATE TABLESPACE</a></span>
 </div>
 </div></body>

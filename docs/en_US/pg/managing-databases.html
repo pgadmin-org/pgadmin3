@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 19. Managing Databases</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="prev" href="perm-functions.html" title="18.5. Functions and Triggers">
-<link rel="next" href="manage-ag-createdb.html" title="19.2. Creating a Database">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="admin.html" title="">
+<link rel="prev" href="perm-functions.html" title="">
+<link rel="next" href="manage-ag-createdb.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="managing-databases">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="managing-databases"></a>Chapter 19. Managing Databases</h2></div></div></div>
+<a name="managing-databases"></a></h2></div></div></div>
 <div class="toc">
-<p><b>Table of Contents</b></p>
+<p><b></b></p>
 <dl>
 <dt><span class="sect1"><a href="managing-databases.html#manage-ag-overview">19.1. Overview</a></span></dt>
 <dt><span class="sect1"><a href="manage-ag-createdb.html">19.2. Creating a Database</a></span></dt>
@@ -25,18 +25,18 @@
 <dt><span class="sect1"><a href="manage-ag-tablespaces.html">19.6. Tablespaces</a></span></dt>
 </dl>
 </div>
-<a name="id2639097"></a><p>  Every instance of a running <span class="productname">PostgreSQL</span>
+<a name="id2637128"></a><p>  Every instance of a running <span class="productname">PostgreSQL</span>
   server manages one or more databases.  Databases are therefore the
   topmost hierarchical level for organizing <acronym class="acronym">SQL</acronym>
-  objects (&#8220;<span class="quote">database objects</span>&#8221;).  This chapter describes
+  objects (<span class="quote">database objects</span>).  This chapter describes
   the properties of databases, and how to create, manage, and destroy
   them.
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="manage-ag-overview"></a>19.1. Overview</h2></div></div></div>
-<a name="id2639134"></a><p>   A database is a named collection of <acronym class="acronym">SQL</acronym> objects
-   (&#8220;<span class="quote">database objects</span>&#8221;).  Generally, every database
+<a name="manage-ag-overview"></a></h2></div></div></div>
+<a name="id2637165"></a><p>   A database is a named collection of <acronym class="acronym">SQL</acronym> objects
+   (<span class="quote">database objects</span>).  Generally, every database
    object (tables, functions, etc.) belongs to one and only one
    database.  (But there are a few system catalogs, for example
    <code class="literal">pg_database</code>, that belong to a whole cluster and
@@ -60,24 +60,24 @@
    resources they should be put in the same database, but possibly
    into separate schemas.  Schemas are a purely logical structure and who can
    access what is managed by the privilege system.  More information about
-   managing schemas is in <a href="ddl-schemas.html" title="5.7. Schemas">Section 5.7, &#8220;Schemas&#8221;</a>.
+   managing schemas is in <a href="ddl-schemas.html" title=""></a>.
   </p>
 <p>   Databases are created with the <code class="command">CREATE DATABASE</code> command
-   (see <a href="manage-ag-createdb.html" title="19.2. Creating a Database">Section 19.2, &#8220;Creating a Database&#8221;</a>) and destroyed with the
+   (see <a href="manage-ag-createdb.html" title=""></a>) and destroyed with the
    <code class="command">DROP DATABASE</code> command
-   (see <a href="manage-ag-dropdb.html" title="19.5. Destroying a Database">Section 19.5, &#8220;Destroying a Database&#8221;</a>).
+   (see <a href="manage-ag-dropdb.html" title=""></a>).
    To determine the set of existing databases, examine the
    <code class="structname">pg_database</code> system catalog, for example
 </p>
 <pre class="synopsis">SELECT datname FROM pg_database;</pre>
 <p>
-   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\l</code> meta-command
+   The <a href="app-psql.html" title=""><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\l</code> meta-command
    and <code class="option">-l</code> command-line option are also useful for listing the
    existing databases.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>    The <acronym class="acronym">SQL</acronym> standard calls databases &#8220;<span class="quote">catalogs</span>&#8221;, but there
+<h3 class="title"></h3>
+<p>    The <acronym class="acronym">SQL</acronym> standard calls databases <span class="quote">catalogs</span>, but there
     is no difference in practice.
    </p>
 </div>

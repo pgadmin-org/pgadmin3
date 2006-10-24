@@ -1,40 +1,40 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>16.5. Shutting Down the Server</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
-<link rel="prev" href="kernel-resources.html" title="16.4. Managing Kernel Resources">
-<link rel="next" href="encryption-options.html" title="16.6. Encryption Options">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="runtime.html" title="">
+<link rel="prev" href="kernel-resources.html" title="">
+<link rel="next" href="encryption-options.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="server-shutdown"></a>16.5. Shutting Down the Server</h2></div></div></div>
-<a name="id2624933"></a><p>   There are several ways to shut down the database server. You control
+<a name="server-shutdown"></a></h2></div></div></div>
+<a name="id2622917"></a><p>   There are several ways to shut down the database server. You control
    the type of shutdown by sending different signals to the master
    <code class="command">postgres</code> process.
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2624962"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2622946"></a></span></dt>
 <dd><p>       After receiving <span class="systemitem">SIGTERM</span>, the server
        disallows new connections, but lets existing sessions end their
        work normally. It shuts down only after all of the sessions
        terminate normally. This is the <em class="firstterm">Smart
        Shutdown</em>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2624991"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2622975"></a></span></dt>
 <dd><p>       The server disallows new connections and sends all existing
        server processes <span class="systemitem">SIGTERM</span>, which will cause them
        to abort their current transactions and exit promptly. It then
        waits for the server processes to exit and finally shuts down. This is the
        <em class="firstterm">Fast Shutdown</em>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2625021"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2623005"></a></span></dt>
 <dd><p>      This is the <em class="firstterm">Immediate Shutdown</em>, which
       will cause the master <code class="command">postgres</code> process to send a
       <span class="systemitem">SIGQUIT</span> to all child processes and exit
@@ -47,7 +47,7 @@
 </dl></div>
 <p>
   </p>
-<p>   The <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a> program provides a convenient
+<p>   The <a href="app-pg-ctl.html" title=""><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a> program provides a convenient
    interface for sending these signals to shut down the server.
   </p>
 <p>   Alternatively, you can send the signal directly using <code class="command">kill</code>.
@@ -60,7 +60,7 @@
 <p>
   </p>
 <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Important</h3>
+<h3 class="title"></h3>
 <p>     It is best not to use <span class="systemitem">SIGKILL</span> to shut down
      the server.  Doing so will prevent the server from releasing
      shared memory and semaphores, which may then have to be done

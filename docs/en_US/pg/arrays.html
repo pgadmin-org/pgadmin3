@@ -1,27 +1,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>8.10. Arrays</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
-<link rel="prev" href="datatype-bit.html" title="8.9. Bit String Types">
-<link rel="next" href="rowtypes.html" title="8.11. Composite Types">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="datatype.html" title="">
+<link rel="prev" href="datatype-bit.html" title="">
+<link rel="next" href="rowtypes.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="arrays"></a>8.10. Arrays</h2></div></div></div>
-<a name="id2572686"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
+<a name="arrays"></a></h2></div></div></div>
+<a name="id2571109"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
   built-in or user-defined base type can be created.  (Arrays of
   composite types or domains are not yet supported, however.)
  </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2572703"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
+<a name="id2571126"></a></h3></div></div></div>
 <p>  To illustrate the use of array types, we create this table:
 </p>
 <pre class="programlisting">CREATE TABLE sal_emp (
@@ -51,7 +51,7 @@
 <p>
 
   However, the current implementation does not enforce the array size
-  limits [mdash ] the behavior is the same as for arrays of unspecified
+  limits &#8212; the behavior is the same as for arrays of unspecified
   length.
  </p>
 <p>  Actually, the current implementation does not enforce the declared
@@ -75,8 +75,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2572811"></a>8.10.2. Array Value Input</h3></div></div></div>
-<a name="id2572815"></a><p>   To write an array value as a literal constant, enclose the element
+<a name="id2571234"></a></h3></div></div></div>
+<a name="id2571238"></a><p>   To write an array value as a literal constant, enclose the element
    values within curly braces and separate them by commas.  (If you
    know C, this is not unlike the C syntax for initializing
    structures.)  You may put double quotes around any element value,
@@ -103,10 +103,10 @@
 <p>   To set an element of an array constant to NULL, write <code class="literal">NULL</code>
    for the element value.  (Any upper- or lower-case variant of
    <code class="literal">NULL</code> will do.)  If you want an actual string value
-   &#8220;<span class="quote">NULL</span>&#8221;, you must put double quotes around it.
+   <span class="quote">NULL</span>, you must put double quotes around it.
   </p>
 <p>   (These kinds of array constants are actually only a special case of
-   the generic type constants discussed in <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  The constant is initially
+   the generic type constants discussed in <a href="sql-syntax.html#sql-syntax-constants-generic" title=""></a>.  The constant is initially
    treated as a string and passed to the array input conversion
    routine.  An explicit type specification might be necessary.)
   </p>
@@ -151,7 +151,7 @@ INSERT INTO sal_emp
   expressions; for instance, string literals are single quoted, instead of
   double quoted as they would be in an array literal.  The <code class="literal">ARRAY</code>
   constructor syntax is discussed in more detail in
-  <a href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>.
+  <a href="sql-expressions.html#sql-syntax-array-constructors" title=""></a>.
  </p>
 <p>  Multidimensional arrays must have matching extents for each
   dimension. A mismatch causes an error report, for example:
@@ -167,7 +167,7 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2573020"></a>8.10.3. Accessing Arrays</h3></div></div></div>
+<a name="id2571444"></a></h3></div></div></div>
 <p>  Now, we can run some queries on the table.
   First, we show how to access a single element of an array at a time.
   This query retrieves the names of the employees whose pay changed in
@@ -282,7 +282,7 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2573218"></a>8.10.4. Modifying Arrays</h3></div></div></div>
+<a name="id2571642"></a></h3></div></div></div>
 <p>  An array value can be replaced completely:
 
 </p>
@@ -312,11 +312,12 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
 <p>
 
  </p>
-<p>  A stored array value can be enlarged by assigning to an element adjacent to
-  those already present, or by assigning to a slice that is adjacent
-  to or overlaps the data already present.  For example, if array
-  <code class="literal">myarray</code> currently has 4 elements, it will have five
-  elements after an update that assigns to <code class="literal">myarray[5]</code>.
+<p>  A stored array value can be enlarged by assigning to element(s) not already
+  present.  Any positions between those previously present and the newly
+  assigned element(s) will be filled with nulls.  For example, if array
+  <code class="literal">myarray</code> currently has 4 elements, it will have six
+  elements after an update that assigns to <code class="literal">myarray[6]</code>,
+  and <code class="literal">myarray[5]</code> will contain a null.
   Currently, enlargement in this fashion is only allowed for one-dimensional
   arrays, not multidimensional arrays.
  </p>
@@ -437,7 +438,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2573434"></a>8.10.5. Searching in Arrays</h3></div></div></div>
+<a name="id2571864"></a></h3></div></div></div>
 <p>  To search for a value in an array, you must check each value of the
   array. This can be done by hand, if you know the size of the array.
   For example:
@@ -451,7 +452,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 
   However, this quickly becomes tedious for large arrays, and is not
   helpful if the size of the array is uncertain. An alternative method is
-  described in <a href="functions-comparisons.html" title="9.17. Row and Array Comparisons">Section 9.17, &#8220;Row and Array Comparisons&#8221;</a>. The above
+  described in <a href="functions-comparisons.html" title=""></a>. The above
   query could be replaced by:
 
 </p>
@@ -467,7 +468,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 
  </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
+<h3 class="title"></h3>
 <p>   Arrays are not sets; searching for specific array elements
    may be a sign of database misdesign.  Consider
    using a separate table with a row for each item that would be an
@@ -478,7 +479,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2573486"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
+<a name="id2571915"></a></h3></div></div></div>
 <p>   The external text representation of an array value consists of items that
    are interpreted according to the I/O conversion rules for the array's
    element type, plus decoration that indicates the array structure.
@@ -526,7 +527,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 <p>   If the value written for an element is <code class="literal">NULL</code> (in any case
    variant), the element is taken to be NULL.  The presence of any quotes
    or backslashes disables this and allows the literal string value
-   &#8220;<span class="quote">NULL</span>&#8221; to be entered.  Also, for backwards compatibility with
+   <span class="quote">NULL</span> to be entered.  Also, for backwards compatibility with
    pre-8.2 versions of <span class="productname">PostgreSQL</span>, the <a href="runtime-config-compatible.html#guc-array-nulls">array_nulls</a> configuration parameter may be turned
    <code class="literal">off</code> to suppress recognition of <code class="literal">NULL</code> as a NULL.
   </p>
@@ -549,7 +550,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
    non-whitespace characters of an element, is not ignored.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>   Remember that what you write in an SQL command will first be interpreted
    as a string literal, and then as an array.  This doubles the number of
    backslashes you need.  For example, to insert a <code class="type">text</code> array
@@ -564,14 +565,14 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
    with a data type whose input routine also treated backslashes specially,
    <code class="type">bytea</code> for example, we might need as many as eight backslashes
    in the command to get one backslash into the stored array element.)
-   Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
+   Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title=""></a>) may be
    used to avoid the need to double backslashes.
   </p>
 </div>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Tip</h3>
+<h3 class="title"></h3>
 <p>   The <code class="literal">ARRAY</code> constructor syntax (see
-   <a href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>) is often easier to work
+   <a href="sql-expressions.html#sql-syntax-array-constructors" title=""></a>) is often easier to work
    with than the array-literal syntax when writing array values in SQL
    commands. In <code class="literal">ARRAY</code>, individual element values are written the
    same way they would be written when not members of an array.

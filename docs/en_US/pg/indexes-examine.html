@@ -1,28 +1,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>11.9. Examining Index Usage</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
-<link rel="prev" href="indexes-opclass.html" title="11.8. Operator Classes">
-<link rel="next" href="mvcc.html" title="Chapter 12. Concurrency Control">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="indexes.html" title="">
+<link rel="prev" href="indexes-opclass.html" title="">
+<link rel="next" href="mvcc.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-examine"></a>11.9. Examining Index Usage</h2></div></div></div>
-<a name="id2611024"></a><p>   Although indexes in <span class="productname">PostgreSQL</span> do not need
+<a name="indexes-examine"></a></h2></div></div></div>
+<a name="id2609268"></a><p>   Although indexes in <span class="productname">PostgreSQL</span> do not need
    maintenance and tuning, it is still important to check
    which indexes are actually used by the real-life query workload.
    Examining index usage for an individual query is done with the
    <a href="sql-explain.html">EXPLAIN</a>
    command; its application for this purpose is
-   illustrated in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>.
+   illustrated in <a href="performance-tips.html#using-explain" title=""></a>.
    It is also possible to gather overall statistics about index usage
-   in a running server, as described in <a href="monitoring-stats.html" title="24.2. The Statistics Collector">Section 24.2, &#8220;The Statistics Collector&#8221;</a>.
+   in a running server, as described in <a href="monitoring-stats.html" title=""></a>.
   </p>
 <p>   It is difficult to formulate a general procedure for determining
    which indexes to set up.  There are a number of typical cases that
@@ -62,7 +62,7 @@
 </li>
 <li><p>     When indexes are not used, it can be useful for testing to force
      their use.  There are run-time parameters that can turn off
-     various plan types (see <a href="runtime-config-query.html#runtime-config-query-enable" title="17.6.1. Planner Method Configuration">Section 17.6.1, &#8220;Planner Method Configuration&#8221;</a>).
+     various plan types (see <a href="runtime-config-query.html#runtime-config-query-enable" title=""></a>).
      For instance, turning off sequential scans
      (<code class="varname">enable_seqscan</code>) and nested-loop joins
      (<code class="varname">enable_nestloop</code>), which are the most basic plans,
@@ -85,9 +85,7 @@
      again, two possibilities.  The total cost is computed from the
      per-row costs of each plan node times the selectivity estimate of
      the plan node.  The costs estimated for the plan nodes can be adjusted
-     via run-time parameters (described in <a href="runtime-config-query.html#runtime-config-query-constants" title="17.6.2.       Planner Cost Constants
-     ">Section 17.6.2, &#8220;      Planner Cost Constants
-     &#8221;</a>).
+     via run-time parameters (described in <a href="runtime-config-query.html#runtime-config-query-constants" title=""></a>).
      An inaccurate selectivity estimate is due to
      insufficient statistics.  It may be possible to improve this by
      tuning the statistics-gathering parameters (see

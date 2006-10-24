@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>30.9. Informix compatibility mode</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="ecpg.html" title="Chapter 30. ECPG - Embedded SQL in C">
-<link rel="prev" href="ecpg-pgtypes.html" title="30.8. pgtypes library">
-<link rel="next" href="ecpg-descriptors.html" title="30.10. Using SQL Descriptor Areas">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="ecpg.html" title="">
+<link rel="prev" href="ecpg-pgtypes.html" title="">
+<link rel="next" href="ecpg-descriptors.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ecpg-informix-compat"></a>30.9. Informix compatibility mode</h2></div></div></div>
+<a name="ecpg-informix-compat"></a></h2></div></div></div>
 <p>   ecpg can be run in a so-called <em class="firstterm">Informix compatibility mode</em>. If
-   this mode is active, it tries to behave as if it were the Informix
-   precompiler for Informix E/SQL. Generally spoken this will allow you to use
+   this mode is active, it tries to behave as if it were the <span class="productname">Informix</span>
+   precompiler for <span class="productname">Informix</span> E/SQL. Generally spoken this will allow you to use
    the dollar sign instead of the <code class="literal">EXEC SQL</code> primitive to introduce
    embedded SQL commands.
 </p>
@@ -32,18 +32,18 @@
 <p>   When linking programs that use this compatibility mode, remember to link
    against <code class="literal">libcompat</code> that is shipped with ecpg.
   </p>
-<p>   Besides the previously explained syntactic sugar, the Informix compatibility
+<p>   Besides the previously explained syntactic sugar, the <span class="productname">Informix</span> compatibility
    mode ports some functions for input, output and transformation of data as
    well as embedded SQL statements known from E/SQL to ecpg.
   </p>
-<p>   Informix compatibility mode is closely connected to the pgtypeslib library
+<p>   <span class="productname">Informix</span> compatibility mode is closely connected to the pgtypeslib library
    of ecpg. pgtypeslib maps SQL data types to data types within the C host
-   program and most of the additional functions of the Informix compatibility
+   program and most of the additional functions of the <span class="productname">Informix</span> compatibility
    mode allow you to operate on those C host program types. Note however that
-   the extent of the compatibility is limited. It does not try to copy Informix
+   the extent of the compatibility is limited. It does not try to copy <span class="productname">Informix</span>
    behaviour; it allows you to do more or less the same operations and gives
    you functions that have the same name and the same basic behavior but it is
-   no drop-in replacement if you are using Informix at the moment. Moreover,
+   no drop-in replacement if you are using <span class="productname">Informix</span> at the moment. Moreover,
    some of the data types are different. For example,
    <span class="productname">PostgreSQL's</span> datetime and interval types do not
    know about ranges like for example <code class="literal">YEAR TO MINUTE</code> so you won't
@@ -51,7 +51,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2673357"></a>30.9.1. Additional embedded SQL statements</h3></div></div></div>
+<a name="id2671658"></a></h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">CLOSE DATABASE</code></span></dt>
@@ -70,7 +70,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2673390"></a>30.9.2. Additional functions</h3></div></div></div>
+<a name="id2671691"></a></h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="function">decadd</code></span></dt>
@@ -148,7 +148,7 @@
 	<code class="literal">ECPG_INFORMIX_NUM_UNDERFLOW</code> is returned. If the ASCII
 	representation could not be parsed,
 	<code class="literal">ECPG_INFORMIX_BAD_NUMERIC</code> is returned or
-	<code class="literal">ECPG_INFORMIX_BAD_EXPONENT</code> if this problem ocurred while
+	<code class="literal">ECPG_INFORMIX_BAD_EXPONENT</code> if this problem occurred while
 	parsing the exponent.
        </p>
 </dd>
@@ -303,8 +303,8 @@
 	failed. If an overflow occurred, <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code>
 	is returned.
        </p>
-<p>	Note that the ecpg implementation differs from the Informix
-	implementation. Informix limits an integer to the range from -32767 to
+<p>	Note that the ecpg implementation differs from the <span class="productname">Informix</span>
+	implementation. <span class="productname">Informix</span> limits an integer to the range from -32767 to
 	32767, while the limits in the ecpg implementation depend on the
 	architecture (<code class="literal">-INT_MAX .. INT_MAX</code>).
        </p>
@@ -323,8 +323,8 @@
 	failed. If an overflow occurred, <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code>
 	is returned.
        </p>
-<p>	Note that the ecpg implementation differs from the Informix
-	implementation. Informix limits a long integer to the range from
+<p>	Note that the ecpg implementation differs from the <span class="productname">Informix</span>
+	implementation. <span class="productname">Informix</span> limits a long integer to the range from
 	-2,147,483,647 to 2,147,483,647, while the limits in the ecpg
 	implementation depend on the architecture (<code class="literal">-LONG_MAX ..
 	LONG_MAX</code>).
@@ -345,8 +345,8 @@
 <p>	The function returns 0 on success and a negative value in case of
 	error.
        </p>
-<p>	Note that ecpg's implementation differs from the Informix
-	implementation. In Informix the format can be influenced by setting
+<p>	Note that ecpg's implementation differs from the <span class="productname">Informix</span>
+	implementation. In <span class="productname">Informix</span> the format can be influenced by setting
 	environment variables. In ecpg however, you cannot change the output
 	format.
        </p>
@@ -360,7 +360,7 @@
 	The function receives the textual representation of the date to convert
 	(<code class="literal">str</code>) and a pointer to a variable of type date
 	(<code class="literal">d</code>). This function does not allow you to specify a format
-	mask. It uses the default format mask of Informix which is
+	mask. It uses the default format mask of <span class="productname">Informix</span> which is
 	<code class="literal">mm/dd/yyyy</code>. Internally, this function is implemented by
 	means of <code class="function">rdefmtdate</code>. Therefore, <code class="function">rstrdate</code> is
 	not faster and if you have the choice you should opt for
@@ -606,8 +606,8 @@
 <p>	Upon success, the function returns 0 and a negative value if an
 	error occurred.
        </p>
-<p>	Internally this function uses the <a href="ecpg-pgtypes.html#pgtypestimestampfmtasc"><code class="function">PGTYPEStimestamp_fmt_asc</code></a> function. See the reference there for
-	informations on what format mask specifiers can be used.
+<p>	Internally, this function uses the <a href="ecpg-pgtypes.html#pgtypestimestampfmtasc"><code class="function">PGTYPEStimestamp_fmt_asc</code></a> function. See the reference there for
+	information on what format mask specifiers can be used.
        </p>
 </dd>
 <dt><span class="term"><code class="function">intoasc</code></span></dt>
@@ -757,25 +757,25 @@
 <p>        The following types exist:
         </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>	   <code class="literal">CCHARTYPE</code> - For a variable of type char or char*
+<li><p>	   <code class="literal">CCHARTYPE</code> - For a variable of type <code class="type">char</code> or <code class="type">char*</code>
           </p></li>
-<li><p>	   <code class="literal">CSHORTTYPE</code> - For a variable of type short int
+<li><p>	   <code class="literal">CSHORTTYPE</code> - For a variable of type <code class="type">short int</code>
           </p></li>
-<li><p>	   <code class="literal">CINTTYPE</code> - For a variable of type int
+<li><p>	   <code class="literal">CINTTYPE</code> - For a variable of type <code class="type">int</code>
           </p></li>
-<li><p>	   <code class="literal">CBOOLTYPE</code> - For a variable of type boolean
+<li><p>	   <code class="literal">CBOOLTYPE</code> - For a variable of type <code class="type">boolean</code>
           </p></li>
-<li><p>	   <code class="literal">CFLOATTYPE</code> - For a variable of type float
+<li><p>	   <code class="literal">CFLOATTYPE</code> - For a variable of type <code class="type">float</code>
           </p></li>
-<li><p>	   <code class="literal">CLONGTYPE</code> - For a variable of type long
+<li><p>	   <code class="literal">CLONGTYPE</code> - For a variable of type <code class="type">long</code>
           </p></li>
-<li><p>	   <code class="literal">CDOUBLETYPE</code> - For a variable of type double
+<li><p>	   <code class="literal">CDOUBLETYPE</code> - For a variable of type <code class="type">double</code>
           </p></li>
-<li><p>	   <code class="literal">CDECIMALTYPE</code> - For a variable of type decimal
+<li><p>	   <code class="literal">CDECIMALTYPE</code> - For a variable of type <code class="type">decimal</code>
           </p></li>
-<li><p>	   <code class="literal">CDATETYPE</code> - For a variable of type date
+<li><p>	   <code class="literal">CDATETYPE</code> - For a variable of type <code class="type">date</code>
           </p></li>
-<li><p>	   <code class="literal">CDTIMETYPE</code> - For a variable of type timestamp
+<li><p>	   <code class="literal">CDTIMETYPE</code> - For a variable of type <code class="type">timestamp</code>
           </p></li>
 </ul></div>
 <p>
@@ -820,7 +820,7 @@ risnull(CINTTYPE, (char *) &amp;i);</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2675560"></a>30.9.3. Additional constants</h3></div></div></div>
+<a name="id2673936"></a></h3></div></div></div>
 <p>    Note that all constants here describe errors and all of them are defined
     to represent negative values. In the descriptions of the different
     constants you can also find the value that the constants represent in the
@@ -831,68 +831,68 @@ risnull(CINTTYPE, (char *) &amp;i);</pre>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code></span></dt>
 <dd><p>	Functions return this value if an overflow occurred in a
-	calculation. Internally it is defined to -1200 (the Informix
+	calculation. Internally it is defined to -1200 (the <span class="productname">Informix</span>
 	definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_NUM_UNDERFLOW</code></span></dt>
 <dd><p>	Functions return this value if an underflow occurred in a calculation.
-	Internally it is defined to -1201 (the Informix definition).
+	Internally it is defined to -1201 (the <span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_DIVIDE_ZERO</code></span></dt>
 <dd><p>	Functions return this value if an attempt to divide by zero is
-	observed. Internally it is defined to -1202 (the Informix definition).
+	observed. Internally it is defined to -1202 (the <span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_BAD_YEAR</code></span></dt>
 <dd><p>	Functions return this value if a bad value for a year was found while
-	parsing a date. Internally it is defined to -1204 (the Informix
+	parsing a date. Internally it is defined to -1204 (the <span class="productname">Informix</span>
 	definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_BAD_MONTH</code></span></dt>
 <dd><p>	Functions return this value if a bad value for a month was found while
-	parsing a date. Internally it is defined to -1205 (the Informix
+	parsing a date. Internally it is defined to -1205 (the <span class="productname">Informix</span>
 	definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_BAD_DAY</code></span></dt>
 <dd><p>	Functions return this value if a bad value for a day was found while
-	parsing a date. Internally it is defined to -1206 (the Informix
+	parsing a date. Internally it is defined to -1206 (the <span class="productname">Informix</span>
 	definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_ENOSHORTDATE</code></span></dt>
 <dd><p>	Functions return this value if a parsing routine needs a short date
 	representation but did not get the date string in the right length.
-	Internally it is defined to -1209 (the Informix definition).
+	Internally it is defined to -1209 (the <span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_DATE_CONVERT</code></span></dt>
 <dd><p>	Functions return this value if Internally it is defined to -1210 (the
-	Informix definition).
+	<span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_OUT_OF_MEMORY</code></span></dt>
 <dd><p>	Functions return this value if Internally it is defined to -1211 (the
-	Informix definition).
+	<span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_ENOTDMY</code></span></dt>
 <dd><p>	Functions return this value if a parsing routine was supposed to get a
 	format mask (like <code class="literal">mmddyy</code>) but not all fields were listed
-	correctly. Internally it is defined to -1212 (the Informix definition).
+	correctly. Internally it is defined to -1212 (the <span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_BAD_NUMERIC</code></span></dt>
 <dd><p>	Functions return this value either if a parsing routine cannot parse
 	the textual representation for a numeric value because it contains
 	errors or if a routine cannot complete a calculation involving numeric
 	variables because at least one of the numeric variables is invalid.
-	Internally it is defined to -1213 (the Informix definition).
+	Internally it is defined to -1213 (the <span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_BAD_EXPONENT</code></span></dt>
 <dd><p>	Functions return this value if Internally it is defined to -1216 (the
-	Informix definition).
+	<span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_BAD_DATE</code></span></dt>
 <dd><p>	Functions return this value if Internally it is defined to -1218 (the
-	Informix definition).
+	<span class="productname">Informix</span> definition).
        </p></dd>
 <dt><span class="term"><code class="literal">ECPG_INFORMIX_EXTRA_CHARS</code></span></dt>
 <dd><p>	Functions return this value if Internally it is defined to -1264 (the
-	Informix definition).
+	<span class="productname">Informix</span> definition).
        </p></dd>
 </dl></div>
 <p>

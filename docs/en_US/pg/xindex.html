@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>32.14. Interfacing Extensions To Indexes</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
-<link rel="prev" href="xoper-optimization.html" title="32.13. Operator Optimization Information">
-<link rel="next" href="triggers.html" title="Chapter 33. Triggers">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="extend.html" title="">
+<link rel="prev" href="xoper-optimization.html" title="">
+<link rel="next" href="triggers.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xindex"></a>32.14. Interfacing Extensions To Indexes</h2></div></div></div>
-<a name="id2698802"></a><p>   The procedures described thus far let you define new types, new
+<a name="xindex"></a></h2></div></div></div>
+<a name="id2697316"></a><p>   The procedures described thus far let you define new types, new
    functions, and new operators. However, we cannot yet define an
    index on a column of a new data type.  To do this, we must define an
    <em class="firstterm">operator class</em> for the new data type.  Later in this
@@ -23,7 +23,7 @@
    complex numbers in ascending absolute value order.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    Prior to <span class="productname">PostgreSQL</span> release 7.3, it was
     necessary to make manual additions to the system catalogs
     <code class="classname">pg_amop</code>, <code class="classname">pg_amproc</code>, and
@@ -36,20 +36,20 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xindex-im"></a>32.14.1. Index Methods and Operator Classes</h3></div></div></div>
+<a name="xindex-im"></a></h3></div></div></div>
 <p>   The <code class="classname">pg_am</code> table contains one row for every
    index method (internally known as access method).  Support for
    regular access to tables is built into
    <span class="productname">PostgreSQL</span>, but all index methods are
    described in <code class="classname">pg_am</code>.  It is possible to add a
    new index method by defining the required interface routines and
-   then creating a row in <code class="classname">pg_am</code> [mdash ] but that is
-   beyond the scope of this chapter (see <a href="indexam.html" title="Chapter 48. Index Access Method Interface Definition">Chapter 48, <i>Index Access Method Interface Definition</i></a>).
+   then creating a row in <code class="classname">pg_am</code> &#8212; but that is
+   beyond the scope of this chapter (see <a href="indexam.html" title=""></a>).
   </p>
 <p>   The routines for an index method do not directly know anything
    about the data types that the index method will operate on.
    Instead, an <em class="firstterm">operator
-   class</em><a name="id2698912"></a>
+   class</em><a name="id2697426"></a>
    identifies the set of operations that the index method needs to use
    to work with a particular data type.  Operator classes are so
    called because one thing they specify is the set of
@@ -81,27 +81,27 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xindex-strategies"></a>32.14.2. Index Method Strategies</h3></div></div></div>
+<a name="xindex-strategies"></a></h3></div></div></div>
 <p>   The operators associated with an operator class are identified by
-   &#8220;<span class="quote">strategy numbers</span>&#8221;, which serve to identify the semantics of
+   <span class="quote">strategy numbers</span>, which serve to identify the semantics of
    each operator within the context of its operator class.
    For example, B-trees impose a strict ordering on keys, lesser to greater,
-   and so operators like &#8220;<span class="quote">less than</span>&#8221; and &#8220;<span class="quote">greater than or equal
-   to</span>&#8221; are interesting with respect to a B-tree.
+   and so operators like <span class="quote">less than</span> and <span class="quote">greater than or equal
+   to</span> are interesting with respect to a B-tree.
    Because
    <span class="productname">PostgreSQL</span> allows the user to define operators,
    <span class="productname">PostgreSQL</span> cannot look at the name of an operator
    (e.g., <code class="literal">&lt;</code> or <code class="literal">&gt;=</code>) and tell what kind of
    comparison it is.  Instead, the index method defines a set of
-   &#8220;<span class="quote">strategies</span>&#8221;, which can be thought of as generalized operators.
+   <span class="quote">strategies</span>, which can be thought of as generalized operators.
    Each operator class specifies which actual operator corresponds to each
    strategy for a particular data type and interpretation of the index
    semantics.
   </p>
-<p>   The B-tree index method defines five strategies, shown in <a href="xindex.html#xindex-btree-strat-table" title="Table 32.2. B-tree Strategies">Table 32.2, &#8220;B-tree Strategies&#8221;</a>.
+<p>   The B-tree index method defines five strategies, shown in <a href="xindex.html#xindex-btree-strat-table" title=""></a>.
   </p>
 <div class="table">
-<a name="xindex-btree-strat-table"></a><p class="title"><b>Table 32.2. B-tree Strategies</b></p>
+<a name="xindex-btree-strat-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="B-tree Strategies" border="1">
 <colgroup>
 <col>
@@ -136,10 +136,10 @@
 </table></div>
 </div>
 <br class="table-break"><p>   Hash indexes express only bitwise equality, and so they use only one
-   strategy, shown in <a href="xindex.html#xindex-hash-strat-table" title="Table 32.3. Hash Strategies">Table 32.3, &#8220;Hash Strategies&#8221;</a>.
+   strategy, shown in <a href="xindex.html#xindex-hash-strat-table" title=""></a>.
   </p>
 <div class="table">
-<a name="xindex-hash-strat-table"></a><p class="title"><b>Table 32.3. Hash Strategies</b></p>
+<a name="xindex-hash-strat-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="Hash Strategies" border="1">
 <colgroup>
 <col>
@@ -156,18 +156,18 @@
 </table></div>
 </div>
 <br class="table-break"><p>   GiST indexes are even more flexible: they do not have a fixed set of
-   strategies at all.  Instead, the &#8220;<span class="quote">consistency</span>&#8221; support routine
+   strategies at all.  Instead, the <span class="quote">consistency</span> support routine
    of each particular GiST operator class interprets the strategy numbers
    however it likes.  As an example, several of the built-in GiST index
    operator classes index two-dimensional geometric objects, providing
-   the &#8220;<span class="quote">R-tree</span>&#8221; strategies shown in
-   <a href="xindex.html#xindex-rtree-strat-table" title="Table 32.4. GiST Two-Dimensional &#8220;R-tree&#8221; Strategies">Table 32.4, &#8220;GiST Two-Dimensional &#8220;<span class="quote">R-tree</span>&#8221; Strategies&#8221;</a>.  Four of these are true
+   the <span class="quote">R-tree</span> strategies shown in
+   <a href="xindex.html#xindex-rtree-strat-table" title=""></a>.  Four of these are true
    two-dimensional tests (overlaps, same, contains, contained by);
    four of them consider only the X direction; and the other four
    provide the same tests in the Y direction.
   </p>
 <div class="table">
-<a name="xindex-rtree-strat-table"></a><p class="title"><b>Table 32.4. GiST Two-Dimensional &#8220;<span class="quote">R-tree</span>&#8221; Strategies</b></p>
+<a name="xindex-rtree-strat-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="GiST Two-Dimensional R-tree Strategies" border="1">
 <colgroup>
 <col>
@@ -230,13 +230,13 @@
 </table></div>
 </div>
 <br class="table-break"><p>   GIN indexes are similar to GiST's in flexibility: they don't have a fixed
-   et of strategies. Instead, the &#8220;<span class="quote">consistency</span>&#8221; support routine
+   et of strategies. Instead, the <span class="quote">consistency</span> support routine
    interprets the strategy numbers accordingly with operator class
    definition. As an example, strategies of operator class over arrays
-   is shown in <a href="xindex.html#xindex-gin-array-strat-table" title="Table 32.5. GIN Array's Strategies">Table 32.5, &#8220;GIN Array's Strategies&#8221;</a>.
+   is shown in <a href="xindex.html#xindex-gin-array-strat-table" title=""></a>.
   </p>
 <div class="table">
-<a name="xindex-gin-array-strat-table"></a><p class="title"><b>Table 32.5. GIN Array's Strategies</b></p>
+<a name="xindex-gin-array-strat-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="GIN Array's Strategies" border="1">
 <colgroup>
 <col>
@@ -277,12 +277,12 @@
    does, <code class="structfield">amorderstrategy</code> is the strategy
    number that corresponds to the ordering operator.  For example, B-tree
    has <code class="structfield">amorderstrategy</code> = 1, which is its
-   &#8220;<span class="quote">less than</span>&#8221; strategy number.
+   <span class="quote">less than</span> strategy number.
   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xindex-support"></a>32.14.3. Index Method Support Routines</h3></div></div></div>
+<a name="xindex-support"></a></h3></div></div></div>
 <p>   Strategies aren't usually enough information for the system to figure
    out how to use an index.  In practice, the index methods require
    additional support routines in order to work. For example, the B-tree
@@ -297,12 +297,12 @@
    functions should play each of these roles for a given data type and
    semantic interpretation.  The index method defines the set
    of functions it needs, and the operator class identifies the correct
-   functions to use by assigning them to the &#8220;<span class="quote">support function numbers</span>&#8221;.
+   functions to use by assigning them to the <span class="quote">support function numbers</span>.
   </p>
-<p>   B-trees require a single support function, shown in <a href="xindex.html#xindex-btree-support-table" title="Table 32.6. B-tree Support Functions">Table 32.6, &#8220;B-tree Support Functions&#8221;</a>.
+<p>   B-trees require a single support function, shown in <a href="xindex.html#xindex-btree-support-table" title=""></a>.
   </p>
 <div class="table">
-<a name="xindex-btree-support-table"></a><p class="title"><b>Table 32.6. B-tree Support Functions</b></p>
+<a name="xindex-btree-support-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="B-tree Support Functions" border="1">
 <colgroup>
 <col>
@@ -321,10 +321,10 @@
 </tr></tbody>
 </table></div>
 </div>
-<br class="table-break"><p>   Hash indexes likewise require one support function, shown in <a href="xindex.html#xindex-hash-support-table" title="Table 32.7. Hash Support Functions">Table 32.7, &#8220;Hash Support Functions&#8221;</a>.
+<br class="table-break"><p>   Hash indexes likewise require one support function, shown in <a href="xindex.html#xindex-hash-support-table" title=""></a>.
   </p>
 <div class="table">
-<a name="xindex-hash-support-table"></a><p class="title"><b>Table 32.7. Hash Support Functions</b></p>
+<a name="xindex-hash-support-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="Hash Support Functions" border="1">
 <colgroup>
 <col>
@@ -341,10 +341,10 @@
 </table></div>
 </div>
 <br class="table-break"><p>   GiST indexes require seven support functions,
-   shown in <a href="xindex.html#xindex-gist-support-table" title="Table 32.8. GiST Support Functions">Table 32.8, &#8220;GiST Support Functions&#8221;</a>.
+   shown in <a href="xindex.html#xindex-gist-support-table" title=""></a>.
   </p>
 <div class="table">
-<a name="xindex-gist-support-table"></a><p class="title"><b>Table 32.8. GiST Support Functions</b></p>
+<a name="xindex-gist-support-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="GiST Support Functions" border="1">
 <colgroup>
 <col>
@@ -356,7 +356,7 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>consistent - determine whether key satifies the 
+<td>consistent - determine whether key satisfies the 
 		query qualifier</td>
 <td>1</td>
 </tr>
@@ -393,10 +393,10 @@
 </table></div>
 </div>
 <br class="table-break"><p>   GIN indexes require four support functions,
-   shown in <a href="xindex.html#xindex-gin-support-table" title="Table 32.9. GIN Support Functions">Table 32.9, &#8220;GIN Support Functions&#8221;</a>.
+   shown in <a href="xindex.html#xindex-gin-support-table" title=""></a>.
   </p>
 <div class="table">
-<a name="xindex-gin-support-table"></a><p class="title"><b>Table 32.9. GIN Support Functions</b></p>
+<a name="xindex-gin-support-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="GIN Support Functions" border="1">
 <colgroup>
 <col>
@@ -437,7 +437,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xindex-example"></a>32.14.4. An Example</h3></div></div></div>
+<a name="xindex-example"></a></h3></div></div></div>
 <p>   Now that we have seen the ideas, here is the promised example of
    creating a new operator class.
    (You can find a working copy of this example in
@@ -448,7 +448,7 @@
    operators that sort complex numbers in absolute value order, so we
    choose the name <code class="literal">complex_abs_ops</code>.  First, we need
    a set of operators.  The procedure for defining operators was
-   discussed in <a href="xoper.html" title="32.12. User-Defined Operators">Section 32.12, &#8220;User-Defined Operators&#8221;</a>.  For an operator class on
+   discussed in <a href="xoper.html" title=""></a>.  For an operator class on
    B-trees, the operators we require are:
 
    </p>
@@ -596,7 +596,7 @@ CREATE OPERATOR &lt; (
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xindex-opclass-crosstype"></a>32.14.5. Cross-Data-Type Operator Classes</h3></div></div></div>
+<a name="xindex-opclass-crosstype"></a></h3></div></div></div>
 <p>   So far we have implicitly assumed that an operator class deals with
    only one data type.  While there certainly can be only one data type in
    a particular index column, it is often useful to index operations that
@@ -638,7 +638,7 @@ DEFAULT FOR TYPE int8 USING btree AS
   FUNCTION 1 btint84cmp(int8, int4) ;</pre>
 <p>
 
-   Notice that this definition &#8220;<span class="quote">overloads</span>&#8221; the operator strategy and
+   Notice that this definition <span class="quote">overloads</span> the operator strategy and
    support function numbers.  This is allowed (for B-tree operator classes
    only) so long as each instance of a particular number has a different
    right-hand data type.  The instances that are not cross-type are the
@@ -655,8 +655,8 @@ DEFAULT FOR TYPE int8 USING btree AS
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xindex-opclass-dependencies"></a>32.14.6. System Dependencies on Operator Classes</h3></div></div></div>
-<a name="id2699994"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
+<a name="xindex-opclass-dependencies"></a></h3></div></div></div>
+<a name="id2698509"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
    properties of operators in more ways than just whether they can be used
    with indexes.  Therefore, you might want to create operator classes
    even if you have no intention of indexing any columns of your data type.
@@ -665,7 +665,7 @@ DEFAULT FOR TYPE int8 USING btree AS
    <code class="literal">DISTINCT</code> that require comparison and sorting of values.
    To implement these features on a user-defined data type,
    <span class="productname">PostgreSQL</span> looks for the default B-tree operator
-   class for the data type.  The &#8220;<span class="quote">equals</span>&#8221; member of this operator
+   class for the data type.  The <span class="quote">equals</span> member of this operator
    class defines the system's notion of equality of values for
    <code class="literal">GROUP BY</code> and <code class="literal">DISTINCT</code>, and the sort ordering
    imposed by the operator class defines the default <code class="literal">ORDER BY</code>
@@ -680,11 +680,11 @@ DEFAULT FOR TYPE int8 USING btree AS
    to support array equality.
   </p>
 <p>   When there is no default operator class for a data type, you will get
-   errors like &#8220;<span class="quote">could not identify an ordering operator</span>&#8221; if you
+   errors like <span class="quote">could not identify an ordering operator</span> if you
    try to use these SQL features with the data type.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     In <span class="productname">PostgreSQL</span> versions before 7.4,
      sorting and grouping operations would implicitly use operators named
      <code class="literal">=</code>, <code class="literal">&lt;</code>, and <code class="literal">&gt;</code>.  The new
@@ -695,7 +695,7 @@ DEFAULT FOR TYPE int8 USING btree AS
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xindex-opclass-features"></a>32.14.7. Special Features of Operator Classes</h3></div></div></div>
+<a name="xindex-opclass-features"></a></h3></div></div></div>
 <p>   There are two special features of operator classes that we have
    not discussed yet, mainly because they are not useful
    with the most commonly used index methods.
@@ -714,7 +714,7 @@ DEFAULT FOR TYPE int8 USING btree AS
    polygons.  Yet we could use the index to find objects whose bounding
    box overlaps the bounding box of the target object, and then do the
    exact overlap test only on the objects found by the index.  If this
-   scenario applies, the index is said to be &#8220;<span class="quote">lossy</span>&#8221; for the
+   scenario applies, the index is said to be <span class="quote">lossy</span> for the
    operator, and we add <code class="literal">RECHECK</code> to the <code class="literal">OPERATOR</code> clause
    in the <code class="command">CREATE OPERATOR CLASS</code> command.
    <code class="literal">RECHECK</code> is valid if the index is guaranteed to return
@@ -724,7 +724,7 @@ DEFAULT FOR TYPE int8 USING btree AS
 <p>   Consider again the situation where we are storing in the index only
    the bounding box of a complex object such as a polygon.  In this
    case there's not much value in storing the whole polygon in the index
-   entry [mdash ] we may as well store just a simpler object of type
+   entry &#8212; we may as well store just a simpler object of type
    <code class="type">box</code>.  This situation is expressed by the <code class="literal">STORAGE</code>
    option in <code class="command">CREATE OPERATOR CLASS</code>: we'd write something like
 

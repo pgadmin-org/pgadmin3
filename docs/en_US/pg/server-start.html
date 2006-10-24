@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>16.3. Starting the Database Server</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
-<link rel="prev" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
-<link rel="next" href="kernel-resources.html" title="16.4. Managing Kernel Resources">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="runtime.html" title="">
+<link rel="prev" href="creating-cluster.html" title="">
+<link rel="next" href="kernel-resources.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="server-start"></a>16.3. Starting the Database Server</h2></div></div></div>
+<a name="server-start"></a></h2></div></div></div>
 <p>   Before anyone can access the database, you must start the database
    server. The database server program is called
-   <code class="command">postgres</code>.<a name="id2622255"></a>
+   <code class="command">postgres</code>.<a name="id2620244"></a>
    The <code class="command">postgres</code> program must know where to
    find the data it is supposed to use. This is done with the
    <code class="option">-D</code> option. Thus, the simplest way to start the
@@ -37,17 +37,17 @@
 <p>
    It is important to store the server's <span class="systemitem">stdout</span> and
    <span class="systemitem">stderr</span> output somewhere, as shown above. It will help
-   for auditing purposes and to diagnose problems. (See <a href="logfile-maintenance.html" title="22.3. Log File Maintenance">Section 22.3, &#8220;Log File Maintenance&#8221;</a> for a more thorough discussion of log
+   for auditing purposes and to diagnose problems. (See <a href="logfile-maintenance.html" title=""></a> for a more thorough discussion of log
    file handling.)
   </p>
 <p>   The <code class="command">postgres</code> program also takes a number of other
    command-line options. For more information, see the
-   <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a> reference page
-   and <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> below.
+   <a href="app-postgres.html" title=""><span class="refentrytitle"><span class="application">postgres</span></span></a> reference page
+   and <a href="runtime-config.html" title=""></a> below.
   </p>
 <p>   This shell syntax can get tedious quickly.  Therefore the wrapper
    program
-   <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2622378"></a>
+   <a href="app-pg-ctl.html" title=""><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2620367"></a>
    is provided to simplify some tasks.  For example:
 </p>
 <pre class="programlisting">pg_ctl start -l logfile</pre>
@@ -58,7 +58,7 @@
    is also capable of stopping the server.
   </p>
 <p>   Normally, you will want to start the database server when the
-   computer boots.<a name="id2622414"></a> Autostart scripts are operating-system-specific.
+   computer boots.<a name="id2620402"></a> Autostart scripts are operating-system-specific.
    There are a few distributed with
    <span class="productname">PostgreSQL</span> in the
    <code class="filename">contrib/start-scripts</code> directory. Installing one will require
@@ -86,12 +86,12 @@
 <li><p>      For <span class="productname">FreeBSD</span>, look at the file
       <code class="filename">contrib/start-scripts/freebsd</code> in the
       <span class="productname">PostgreSQL</span> source distribution.
-      <a name="id2622515"></a>
+      <a name="id2620504"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">OpenBSD</span>, add the following lines
       to the file <code class="filename">/etc/rc.local</code>:
-      <a name="id2622541"></a>
+      <a name="id2620530"></a>
 </p>
 <pre class="programlisting">if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postgres ]; then
     su - -c '/usr/local/pgsql/bin/pg_ctl start -l /var/postgresql/log -s' postgres
@@ -102,7 +102,7 @@ fi</pre>
 </li>
 <li>
 <p>      On <span class="productname">Linux</span> systems either add
-      <a name="id2622569"></a>
+      <a name="id2620558"></a>
 </p>
 <pre class="programlisting">/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data</pre>
 <p>
@@ -114,13 +114,13 @@ fi</pre>
 <li><p>      On <span class="productname">NetBSD</span>, either use the
       <span class="productname">FreeBSD</span> or
       <span class="productname">Linux</span> start scripts, depending on
-      preference. <a name="id2622627"></a>
+      preference. <a name="id2620616"></a>
      </p></li>
 <li>
 <p>      On <span class="productname">Solaris</span>, create a file called
       <code class="filename">/etc/init.d/postgresql</code> that contains
       the following line:
-      <a name="id2622653"></a>
+      <a name="id2620642"></a>
 </p>
 <pre class="programlisting">su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data"</pre>
 <p>
@@ -141,7 +141,7 @@ fi</pre>
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="server-start-failures"></a>16.3.1. Server Start-up Failures</h3></div></div></div>
+<a name="server-start-failures"></a></h3></div></div></div>
 <p>     There are several common reasons the server might fail to
      start. Check the server's log file, or start it by hand (without
      redirecting standard output or standard error) and see what error
@@ -195,18 +195,18 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
      (<a href="runtime-config-connection.html#guc-max-connections">max_connections</a>), but you'll eventually want to
      increase the kernel limit.
     </p>
-<p>     If you get an &#8220;<span class="quote">illegal system call</span>&#8221; error, it is likely that
+<p>     If you get an <span class="quote">illegal system call</span> error, it is likely that
      shared memory or semaphores are not supported in your kernel at
      all. In that case your only option is to reconfigure the kernel to
      enable these features.
     </p>
 <p>     Details about configuring <span class="systemitem">System V</span>
-     <acronym class="acronym">IPC</acronym> facilities are given in <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a>.
+     <acronym class="acronym">IPC</acronym> facilities are given in <a href="kernel-resources.html#sysvipc" title=""></a>.
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="client-connection-problems"></a>16.3.2. Client Connection Problems</h3></div></div></div>
+<a name="client-connection-problems"></a></h3></div></div></div>
 <p>     Although the error conditions possible on the client side are quite
      varied and application-dependent, a few of them might be directly
      related to how the server was started up. Conditions other than
@@ -217,8 +217,8 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
         Is the server running on host "server.joe.com" and accepting
         TCP/IP connections on port 5432?</pre>
 <p>
-     This is the generic &#8220;<span class="quote">I couldn't find a server to talk
-     to</span>&#8221; failure. It looks like the above when TCP/IP
+     This is the generic <span class="quote">I couldn't find a server to talk
+     to</span> failure. It looks like the above when TCP/IP
      communication is attempted. A common mistake is to forget to
      configure the server to allow TCP/IP connections.
     </p>
@@ -239,7 +239,7 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
      <code class="computeroutput">Connection refused</code> in this context
      does <span class="emphasis"><em>not</em></span> mean that the server got your
      connection request and rejected it. That case will produce a
-     different message, as shown in <a href="client-authentication-problems.html" title="20.3. Authentication problems">Section 20.3, &#8220;Authentication problems&#8221;</a>.) Other error messages
+     different message, as shown in <a href="client-authentication-problems.html" title=""></a>.) Other error messages
      such as <code class="computeroutput">Connection timed out</code> may
      indicate more fundamental problems, like lack of network
      connectivity.

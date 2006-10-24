@@ -1,25 +1,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>10.4. Value Storage</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
-<link rel="prev" href="typeconv-func.html" title="10.3. Functions">
-<link rel="next" href="typeconv-union-case.html" title="10.5. UNION, CASE, and Related Constructs">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="typeconv.html" title="">
+<link rel="prev" href="typeconv-func.html" title="">
+<link rel="next" href="typeconv-union-case.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="typeconv-query"></a>10.4. Value Storage</h2></div></div></div>
+<a name="typeconv-query"></a></h2></div></div></div>
 <p>   Values to be inserted into a table are converted to the destination
    column's data type according to the
    following steps.
   </p>
 <div class="procedure">
-<a name="id2608700"></a><p class="title"><b>Value Storage Type Conversion</b></p>
+<a name="id2606943"></a><p class="title"><b></b></p>
 <ol type="1">
 <li><p>Check for an exact match with the target.</p></li>
 <li><p>Otherwise, try to convert the expression to the target type.  This will succeed
@@ -40,7 +40,7 @@ checking or truncation.</p></li>
 </ol>
 </div>
 <div class="example">
-<a name="id2608749"></a><p class="title"><b>Example 10.6. <code class="type">character</code> Storage Type Conversion</b></p>
+<a name="id2606992"></a><p class="title"><b></b></p>
 <div class="example-contents">
 <p>For a target column declared as <code class="type">character(20)</code> the following statement
 ensures that the stored value is sized correctly:
@@ -57,8 +57,8 @@ SELECT v, length(v) FROM vv;
 <p>What has really happened here is that the two unknown literals are resolved
 to <code class="type">text</code> by default, allowing the <code class="literal">||</code> operator
 to be resolved as <code class="type">text</code> concatenation.  Then the <code class="type">text</code>
-result of the operator is converted to <code class="type">bpchar</code> (&#8220;<span class="quote">blank-padded
-char</span>&#8221;, the internal name of the <code class="type">character</code> data type) to match the target
+result of the operator is converted to <code class="type">bpchar</code> (<span class="quote">blank-padded
+char</span>, the internal name of the <code class="type">character</code> data type) to match the target
 column type.  (Since the types <code class="type">text</code> and
 <code class="type">bpchar</code> are binary-compatible, this conversion does
 not insert any real function call.)  Finally, the sizing function

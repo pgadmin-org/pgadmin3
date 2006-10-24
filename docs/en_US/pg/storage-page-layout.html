@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>51.3. Database Page Layout</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="storage.html" title="Chapter 51. Database Physical Storage">
-<link rel="prev" href="storage-toast.html" title="51.2. TOAST">
-<link rel="next" href="bki.html" title="Chapter 52. BKI Backend Interface">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="storage.html" title="">
+<link rel="prev" href="storage-toast.html" title="">
+<link rel="next" href="bki.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="storage-page-layout"></a>51.3. Database Page Layout</h2></div></div></div>
+<a name="storage-page-layout"></a></h2></div></div></div>
 <p>This section provides an overview of the page format used within
-<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id2821717" href="#ftn.id2821717">10</a>]</sup>
+<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id2820741" href="#ftn.id2820741">10</a>]</sup>
 Sequences and <acronym class="acronym">TOAST</acronym> tables are formatted just like a regular table.</p>
 <p>In the following explanation, a
 <em class="firstterm">byte</em>
@@ -30,10 +30,10 @@ equivalent, so a particular item (row) can be stored in any page.  In
 indexes, the first page is generally reserved as a <em class="firstterm">metapage</em>
 holding control information, and there may be different types of pages
 within the index, depending on the index access method.</p>
-<p><a href="storage-page-layout.html#page-table" title="Table 51.2. Overall Page Layout">Table 51.2, &#8220;Page Layout&#8221;</a> shows the overall layout of a page.
+<p><a href="storage-page-layout.html#page-table" title=""></a> shows the overall layout of a page.
 There are five parts to each page.</p>
 <div class="table">
-<a name="page-table"></a><p class="title"><b>Table 51.2. Overall Page Layout</b></p>
+<a name="page-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="Overall Page Layout" border="1">
 <colgroup>
 <col>
@@ -73,7 +73,7 @@ data. Empty in ordinary tables.</td>
 </div>
 <br class="table-break"><p>
   The first 20 bytes of each page consists of a page header
-  (PageHeaderData). Its format is detailed in <a href="storage-page-layout.html#pageheaderdata-table" title="Table 51.3. PageHeaderData Layout">Table 51.3, &#8220;PageHeaderData Layout&#8221;</a>. The first two fields track the most
+  (PageHeaderData). Its format is detailed in <a href="storage-page-layout.html#pageheaderdata-table" title=""></a>. The first two fields track the most
   recent WAL entry related to this page. They are followed by three 2-byte
   integer fields
   (<code class="structfield">pd_lower</code>, <code class="structfield">pd_upper</code>,
@@ -95,7 +95,7 @@ data. Empty in ordinary tables.</td>
   
  </p>
 <div class="table">
-<a name="pageheaderdata-table"></a><p class="title"><b>Table 51.3. PageHeaderData Layout</b></p>
+<a name="pageheaderdata-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="PageHeaderData Layout" border="1">
 <colgroup>
 <col>
@@ -181,7 +181,7 @@ data. Empty in ordinary tables.</td>
 
  </p>
 <p> 
-  The final section is the &#8220;<span class="quote">special section</span>&#8221; which may
+  The final section is the <span class="quote">special section</span> which may
   contain anything the access method wishes to store.  For example,
   b-tree indexes store links to the page's left and right siblings,
   as well as some other data relevant to the index structure.
@@ -194,7 +194,7 @@ data. Empty in ordinary tables.</td>
   header (occupying 27 bytes on most machines), followed by an optional null
   bitmap, an optional object ID field, and the user data. The header is
   detailed
-  in <a href="storage-page-layout.html#heaptupleheaderdata-table" title="Table 51.4. HeapTupleHeaderData Layout">Table 51.4, &#8220;HeapTupleHeaderData Layout&#8221;</a>.  The actual user data
+  in <a href="storage-page-layout.html#heaptupleheaderdata-table" title=""></a>.  The actual user data
   (columns of the row) begins at the offset indicated by
   <code class="structfield">t_hoff</code>, which must always be a multiple of the MAXALIGN
   distance for the platform.
@@ -214,7 +214,7 @@ data. Empty in ordinary tables.</td>
   
  </p>
 <div class="table">
-<a name="heaptupleheaderdata-table"></a><p class="title"><b>Table 51.4. HeapTupleHeaderData Layout</b></p>
+<a name="heaptupleheaderdata-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="HeapTupleHeaderData Layout" border="1">
 <colgroup>
 <col>
@@ -311,12 +311,12 @@ data. Empty in ordinary tables.</td>
   <code class="type">varattrib</code>, which includes the total length of the stored
   value and some flag bits.  Depending on the flags, the data may be either
   inline or in a <acronym class="acronym">TOAST</acronym> table;
-  it might be compressed, too (see <a href="storage-toast.html" title="51.2. TOAST">Section 51.2, &#8220;TOAST&#8221;</a>).
+  it might be compressed, too (see <a href="storage-toast.html" title=""></a>).
   
  </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2821717" href="#id2821717">10</a>] </sup>    Actually, index access methods need not use this page format.
+<div class="footnote"><p><sup>[<a name="ftn.id2820741" href="#id2820741">10</a>] </sup>    Actually, index access methods need not use this page format.
     All the existing index methods do use this basic format,
     but the data kept on index metapages usually doesn't follow
     the item layout rules.

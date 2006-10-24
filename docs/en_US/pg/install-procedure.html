@@ -1,23 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>14.5. Installation Procedure</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="installation.html" title="Chapter 14.  Installation Instructions">
-<link rel="prev" href="install-upgrading.html" title="14.4. If You Are Upgrading">
-<link rel="next" href="install-post.html" title="14.6. Post-Installation Setup">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="installation.html" title="">
+<link rel="prev" href="install-upgrading.html" title="">
+<link rel="next" href="install-post.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="install-procedure"></a>14.5. Installation Procedure</h2></div></div></div>
+<a name="install-procedure"></a></h2></div></div></div>
 <div class="procedure"><ol type="1">
 <li>
 <a name="configure"></a><p class="title"><b>Configuration</b></p>
-<a name="id2616831"></a><p>    The first step of the installation procedure is to configure the
+<a name="id2615031"></a><p>    The first step of the installation procedure is to configure the
     source tree for your system and choose the options you would like.
     This is done by running the <code class="filename">configure</code> script. For a
     default installation simply enter
@@ -106,7 +106,7 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--with-docdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--without-docdir</code></span>
 </dt>
-<dd><p>         Documentation files, except &#8220;<span class="quote">man</span>&#8221; pages, will be
+<dd><p>         Documentation files, except <span class="quote">man</span> pages, will be
          installed into this directory. The default is
          <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/doc</code>.  If the option
          <code class="option">--without-docdir</code> is specified, the
@@ -119,17 +119,17 @@
 
      </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>       Care has been taken to make it possible to install
        <span class="productname">PostgreSQL</span> into shared installation locations
        (such as <code class="filename">/usr/local/include</code>) without
        interfering with the namespace of the rest of the system. First,
-       the string &#8220;<span class="quote"><code class="literal">/postgresql</code></span>&#8221; is
+       the string <span class="quote"><code class="literal">/postgresql</code></span> is
        automatically appended to <code class="varname">datadir</code>,
        <code class="varname">sysconfdir</code>, and <code class="varname">docdir</code>,
        unless the fully expanded directory name already contains the
-       string &#8220;<span class="quote"><code class="literal">postgres</code></span>&#8221; or
-       &#8220;<span class="quote"><code class="literal">pgsql</code></span>&#8221;. For example, if you choose
+       string <span class="quote"><code class="literal">postgres</code></span> or
+       <span class="quote"><code class="literal">pgsql</code></span>. For example, if you choose
        <code class="filename">/usr/local</code> as prefix, the documentation will
        be installed in <code class="filename">/usr/local/doc/postgresql</code>,
        but if the prefix is <code class="filename">/opt/postgres</code>, then it
@@ -239,27 +239,32 @@
          before proceeding.
         </p></dd>
 <dt><span class="term"><code class="option">--with-pam</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2617599"></a>
+<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2615799"></a>
          (Pluggable Authentication Modules) support.
         </p></dd>
 <dt><span class="term"><code class="option">--with-ldap</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2617618"></a> support
-         for authentication and connection parameter lookup.
-         On Unix, this requires the
-         <span class="productname">OpenLDAP</span> package to be installed.
-         <code class="filename">configure</code> will check for the required header files
-         and libraries to make sure that your <span class="productname">OpenLDAP</span>
-         installation is sufficient before proceeding. On Windows,
-         the default <span class="productname">WinLDAP</span> library is used.
+<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2615818"></a>
+         support for authentication and connection parameter lookup (see 
+         <a href="libpq-ldap.html" title=""></a> and
+         <a href="auth-methods.html#auth-ldap" title=""></a> for more information). On Unix,
+         this requires the <span class="productname">OpenLDAP</span> package to be
+         installed. <code class="filename">configure</code> will check for the required
+         header files and libraries to make sure that your
+         <span class="productname">OpenLDAP</span> installation is sufficient before
+         proceeding. On Windows, the default <span class="productname">WinLDAP</span>
+         library is used.
+        </p></dd>
+<dt><span class="term"><code class="option">--without-readline</code></span></dt>
+<dd><p>         Prevents use of the <span class="application">Readline</span> library
+         (and <span class="application">libedit</span> as well).  This option disables
+         command-line editing and history in
+         <span class="application">psql</span>, so it is not recommended.
         </p></dd>
 <dt><span class="term"><code class="option">--with-libedit-preferred</code></span></dt>
 <dd><p>         Favors the use of the BSD-licensed <span class="application">libedit</span> library
-         rather than GPL-licensed <span class="application">Readline</span>.
-        </p></dd>
-<dt><span class="term"><code class="option">--without-readline</code></span></dt>
-<dd><p>         Prevents use of the <span class="application">Readline</span> library.  This disables
-         command-line editing and history in
-         <span class="application">psql</span>, so it is not recommended.
+         rather than GPL-licensed <span class="application">Readline</span>.  This option
+         is significant only if you have both libraries installed; the
+         default in that case is to use <span class="application">Readline</span>.
         </p></dd>
 <dt><span class="term"><code class="option">--with-bonjour</code></span></dt>
 <dd><p>         Build with Bonjour support.  This requires Bonjour support
@@ -271,7 +276,7 @@
          of representable values but guarantees microsecond precision across
          the full range (see
          
-         <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a>
+         <a href="datatype-datetime.html" title=""></a>
          for more information).  Note also that the integer datetimes code is
          newer than the floating-point code, and we still find bugs in it from
          time to time.
@@ -294,7 +299,7 @@
          threading support in your operating system.
         </p></dd>
 <dt><span class="term"><code class="option">--without-zlib</code></span></dt>
-<dd><p>         <a name="id2617795"></a>
+<dd><p>         <a name="id2616024"></a>
          Prevents use of the <span class="application">Zlib</span> library.  This disables
          support for compressed archives in <span class="application">pg_dump</span>
          and <span class="application">pg_restore</span>.
@@ -315,7 +320,7 @@
         </p></dd>
 <dt><span class="term"><code class="option">--enable-cassert</code></span></dt>
 <dd><p>         Enables <em class="firstterm">assertion</em> checks in the server, which test for
-         many &#8220;<span class="quote">can't happen</span>&#8221; conditions.  This is invaluable for
+         many <span class="quote">can't happen</span> conditions.  This is invaluable for
          code development purposes, but the tests slow things down a little.
          Also, having the tests turned on won't necessarily enhance the
          stability of your server!  The assertion checks are not categorized
@@ -335,7 +340,7 @@
         </p></dd>
 <dt><span class="term"><code class="option">--enable-dtrace</code></span></dt>
 <dd>
-<p>         <a name="id2617892"></a>
+<p>         <a name="id2616121"></a>
          Compiles with support for the dynamic tracing tool DTrace.
          Operating system support for DTrace is currently only
          available in Solaris.
@@ -367,104 +372,52 @@
 <pre class="screen"><strong class="userinput"><code>./configure CC=/opt/bin/gcc CFLAGS='-O2 -pipe'</code></strong></pre>
 <p>
     </p>
-<p>    Here's a list of the significant environment variables:
-    </p>
-<p>     </p>
+<p>     Here is a list of the significant variables that can be set in
+     this manner:
+ 
+     </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="option">AWK=<em class="replaceable"><code>/path/to/awk</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/awk</code></em> is the full path to <span class="application">awk</span>.
+<dt><span class="term"><code class="envar">CC</code></span></dt>
+<dd><p>         C compiler
         </p></dd>
-<dt><span class="term"><code class="option">CC=<em class="replaceable"><code>/path/to/cc</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/cc</code></em> is the full path to your C compiler, such
-         as <span class="application">gcc</span>.
+<dt><span class="term"><code class="envar">CFLAGS</code></span></dt>
+<dd><p>         options to pass to the C compiler
         </p></dd>
-<dt><span class="term"><code class="option">CFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the C
-         compiler.
+<dt><span class="term"><code class="envar">CPP</code></span></dt>
+<dd><p>         C preprocessor
         </p></dd>
-<dt><span class="term"><code class="option">COLLATEINDEX</code></span></dt>
-<dd><p>         Used for building the SGML documentation.
+<dt><span class="term"><code class="envar">CPPFLAGS</code></span></dt>
+<dd><p>         options to pass to the C preprocessor
         </p></dd>
-<dt><span class="term"><code class="option">CPP=<em class="replaceable"><code>/path/to/cpp</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/cpp</code></em> is the full path to your C preprocessor,
-         such as <span class="application">gcc</span>.
+<dt><span class="term"><code class="envar">DTRACE</code></span></dt>
+<dd><p>         location of the <code class="command">dtrace</code> program
         </p></dd>
-<dt><span class="term"><code class="option">CPPFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the C
-         preprocessor.
+<dt><span class="term"><code class="envar">DTRACEFLAGS</code></span></dt>
+<dd><p>         options to pass to the <code class="command">dtrace</code> program
         </p></dd>
-<dt><span class="term"><code class="option">DOCBOOKSTYLE</code></span></dt>
-<dd><p>         Used for building the SGML documentation.
+<dt><span class="term"><code class="envar">LDFLAGS</code></span></dt>
+<dd><p>         options to pass to the link editor
         </p></dd>
-<dt><span class="term"><code class="option">DTRACE=<em class="replaceable"><code>/path/to/dtrace</code></em></code></span></dt>
-<dd><p>         Specifies the location of the <code class="command">dtrace</code> program.
+<dt><span class="term"><code class="envar">LDFLAGS_SL</code></span></dt>
+<dd><p>         linker options for shared library linking
         </p></dd>
-<dt><span class="term"><code class="option">DTRACEFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the
-         <code class="command">dtrace</code> program.
+<dt><span class="term"><code class="envar">MSGFMT</code></span></dt>
+<dd><p>         <code class="command">msgfmt</code> program for native language support
         </p></dd>
-<dt><span class="term"><code class="option">JADE</code></span></dt>
-<dd><p>         Used for building the SGML documentation.
+<dt><span class="term"><code class="envar">PERL</code></span></dt>
+<dd><p>         Full path to the Perl interpreter.  This will be used to
+         determine the dependencies for building PL/Perl.
         </p></dd>
-<dt><span class="term"><code class="option">LDFLAGS=<em class="replaceable"><code>FLAGS</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>FLAGS</code></em> is the a list of flags to pass to the link file
-         editor.
+<dt><span class="term"><code class="envar">PYTHON</code></span></dt>
+<dd><p>         Full path to the Python interpreter.  This will be used to
+         determine the dependencies for building PL/Python.
         </p></dd>
-<dt><span class="term"><code class="option">LDFLAGS_SL</code></span></dt>
-<dd><p>         Used for shared library linking.
+<dt><span class="term"><code class="envar">TCLSH</code></span></dt>
+<dd><p>         Full path to the Tcl interpreter.  This wil be used to
+         determine the dependencies for building PL/Tcl.
         </p></dd>
-<dt><span class="term"><code class="option">LORDER=<em class="replaceable"><code>/path/to/lorder</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/lorder</code></em> is the full path to your dependency
-         listing program.
-        </p></dd>
-<dt><span class="term"><code class="option">MSGFMT</code></span></dt>
-<dd><p>         Used for Native Language Support (NLS).
-        </p></dd>
-<dt><span class="term"><code class="option">MSGMERGE</code></span></dt>
-<dd><p>         Used for Native Language Support (NLS).
-        </p></dd>
-<dt><span class="term"><code class="option">NSGMLS</code></span></dt>
-<dd><p>         Used for building the SGML documentation.
-        </p></dd>
-<dt><span class="term"><code class="option">PERL=<em class="replaceable"><code>/path/to/perl</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/perl</code></em> is the full path to your Perl 5
-         interpreter. Note that this wil be used to determine the dependencies
-         for building PL/Perl.
-        </p></dd>
-<dt><span class="term"><code class="option">PTHREAD_CC</code></span></dt>
-<dd><p>         Used for adding thread-safety flags.
-        </p></dd>
-<dt><span class="term"><code class="option">PYTHON=<em class="replaceable"><code>/path/to/python</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/python</code></em> is the full path to your Python
-         interpreter. Note that this wil be used to determine the dependencies
-         for building PL/Python.
-        </p></dd>
-<dt><span class="term"><code class="option">RANLIB=<em class="replaceable"><code>/path/to/ranlib</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/ranlib</code></em> is the full path to your archive
-         library table of contents editor.
-        </p></dd>
-<dt><span class="term"><code class="option">SGMLSPL</code></span></dt>
-<dd><p>         Used for building the SGML documentation.
-        </p></dd>
-<dt><span class="term"><code class="option">STRIP=<em class="replaceable"><code>/path/to/strip</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/strip</code></em> is the full path to your strip program.
-        </p></dd>
-<dt><span class="term"><code class="option">TCL=<em class="replaceable"><code>/path/to/tcl</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/tcl</code></em> is the full path to your TCL
-         interpreter. Note that this wil be used to determine the dependencies
-         for building PL/TCL.
-        </p></dd>
-<dt><span class="term"><code class="option">TAR=<em class="replaceable"><code>/path/to/tar</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/tar</code></em> is the full path to your tar program.
-        </p></dd>
-<dt><span class="term"><code class="option">TCLISH=<em class="replaceable"><code>/path/to/tclish</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/tclish</code></em> is the full path to your tclish program.
-        </p></dd>
-<dt><span class="term"><code class="option">XGETTEXT=<em class="replaceable"><code>/path/to/xgettext</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/xgettext</code></em> is the full path to your xgettext program.
-        </p></dd>
-<dt><span class="term"><code class="option">YACC=<em class="replaceable"><code>/path/to/yacc</code></em></code></span></dt>
-<dd><p>         <em class="replaceable"><code>/path/to/yacc</code></em> is the full path to your yacc program.
+<dt><span class="term"><code class="envar">YACC</code></span></dt>
+<dd><p>         Yacc program (<code class="literal">bison -y</code> if using Bison)
         </p></dd>
 </dl></div>
 <p>
@@ -486,7 +439,7 @@
 </li>
 <li>
 <p class="title"><b>Regression Tests</b></p>
-<a name="id2618426"></a><p>    If you want to test the newly built server before you install it,
+<a name="id2616415"></a><p>    If you want to test the newly built server before you install it,
     you can run the regression tests at this point. The regression
     tests are a test suite to verify that <span class="productname">PostgreSQL</span>
     runs on your machine in the way the developers expected it
@@ -496,7 +449,7 @@
 <p>
     (This won't work as root; do it as an unprivileged user.)
     
-    <a href="regress.html" title="Chapter 27. Regression Tests">Chapter 27, <i>Regression Tests</i></a> contains
+    <a href="regress.html" title=""></a> contains
     detailed information about interpreting the test results. You can
     repeat this test at any later time by issuing the same command.
    </p>
@@ -504,11 +457,11 @@
 <li>
 <a name="install"></a><p class="title"><b>Installing The Files</b></p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     If you are upgrading an existing system and are going to install
      the new files over the old ones, be sure to back up
      your data and shut down the old server before proceeding, as explained in
-     <a href="install-upgrading.html" title="14.4. If You Are Upgrading">Section 14.4, &#8220;If You Are Upgrading&#8221;</a> above.
+     <a href="install-upgrading.html" title=""></a> above.
     </p>
 </div>
 <p>    To install <span class="productname">PostgreSQL</span> enter
@@ -516,7 +469,7 @@
 <pre class="screen"><strong class="userinput"><code>gmake install</code></strong></pre>
 <p>
     This will install files into the directories that were specified
-    in <a href="install-procedure.html#configure" title="Step 1">Step 1</a>. Make sure that you have appropriate
+    in <a href="install-procedure.html#configure" title=" 1"> 1</a>. Make sure that you have appropriate
     permissions to write into that area. Normally you need to do this
     step as root. Alternatively, you could create the target
     directories in advance and arrange for appropriate permissions to

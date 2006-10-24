@@ -1,31 +1,31 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>9.12. Sequence Manipulation Functions</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="prev" href="functions-net.html" title="9.11. Network Address Functions and Operators">
-<link rel="next" href="functions-conditional.html" title="9.13. Conditional Expressions">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="functions.html" title="">
+<link rel="prev" href="functions-net.html" title="">
+<link rel="next" href="functions-conditional.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div></div>
-<a name="id2597008"></a><a name="id2597014"></a><a name="id2597020"></a><a name="id2597025"></a><a name="id2597031"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
+<a name="functions-sequence"></a></h2></div></div></div>
+<a name="id2595494"></a><a name="id2595499"></a><a name="id2595505"></a><a name="id2595511"></a><a name="id2595516"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
    for operating on <em class="firstterm">sequence objects</em>.
    Sequence objects (also called sequence generators or
    just sequences) are special single-row tables created with
    <code class="command">CREATE SEQUENCE</code>.  A sequence object is usually used to
    generate unique identifiers for rows of a table.  The sequence functions,
-   listed in <a href="functions-sequence.html#functions-sequence-table" title="Table 9.34. Sequence Functions">Table 9.34, &#8220;Sequence Functions&#8221;</a>,
+   listed in <a href="functions-sequence.html#functions-sequence-table" title=""></a>,
    provide simple, multiuser-safe methods for obtaining successive
    sequence values from sequence objects.
   </p>
 <div class="table">
-<a name="functions-sequence-table"></a><p class="title"><b>Table 9.34. Sequence Functions</b></p>
+<a name="functions-sequence-table"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="Sequence Functions" border="1">
 <colgroup>
 <col>
@@ -82,11 +82,11 @@ nextval('"Foo"')    <em class="lineannotation"><span class="lineannotation">oper
 nextval('"myschema".foo')   <em class="lineannotation"><span class="lineannotation">same as above</span></em>
 nextval('foo')              <em class="lineannotation"><span class="lineannotation">searches search path for <code class="literal">foo</code></span></em></pre>
 <p>
-   See <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about
+   See <a href="datatype-oid.html" title=""></a> for more information about
    <code class="type">regclass</code>.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>    Before <span class="productname">PostgreSQL</span> 8.1, the arguments of the
     sequence functions were of type <code class="type">text</code>, not <code class="type">regclass</code>, and
     the above-described conversion from a text string to an OID value would
@@ -99,9 +99,9 @@ nextval('foo')              <em class="lineannotation"><span class="lineannotati
     literal string, it becomes a constant of type <code class="type">regclass</code>.
     Since this is really just an OID, it will track the originally
     identified sequence despite later renaming, schema reassignment,
-    etc.  This &#8220;<span class="quote">early binding</span>&#8221; behavior is usually desirable for
+    etc.  This <span class="quote">early binding</span> behavior is usually desirable for
     sequence references in column defaults and views.  But sometimes you will
-    want &#8220;<span class="quote">late binding</span>&#8221; where the sequence reference is resolved
+    want <span class="quote">late binding</span> where the sequence reference is resolved
     at run time.  To get late-binding behavior, force the constant to be
     stored as a <code class="type">text</code> constant instead of <code class="type">regclass</code>:
 </p>
@@ -178,12 +178,12 @@ SELECT setval('foo', 42, false);    <em class="lineannotation"><span class="line
    see its command reference page for more information.
   </p>
 <div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Important</h3>
+<h3 class="title"></h3>
 <p>    To avoid blocking of concurrent transactions that obtain numbers from the
     same sequence, a <code class="function">nextval</code> operation is never rolled back;
     that is, once a value has been fetched it is considered used, even if the
     transaction that did the <code class="function">nextval</code> later aborts.  This means
-    that aborted transactions may leave unused &#8220;<span class="quote">holes</span>&#8221; in the
+    that aborted transactions may leave unused <span class="quote">holes</span> in the
     sequence of assigned values.  <code class="function">setval</code> operations are never
     rolled back, either.
    </p>

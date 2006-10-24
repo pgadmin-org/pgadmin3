@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2.5. Querying a Table</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
-<link rel="prev" href="tutorial-populate.html" title="2.4. Populating a Table With Rows">
-<link rel="next" href="tutorial-join.html" title="2.6. Joins Between Tables">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="tutorial-sql.html" title="">
+<link rel="prev" href="tutorial-populate.html" title="">
+<link rel="next" href="tutorial-join.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="tutorial-select"></a>2.5. Querying a Table</h2></div></div></div>
-<p>    <a name="id2550978"></a>
-    <a name="id2550985"></a>
+<a name="tutorial-select"></a></h2></div></div></div>
+<p>    <a name="id2549301"></a>
+    <a name="id2549308"></a>
 
     To retrieve data from a table, the table is
     <em class="firstterm">queried</em>.  An <acronym class="acronym">SQL</acronym>
@@ -29,8 +29,8 @@
 </p>
 <pre class="programlisting">SELECT * FROM weather;</pre>
 <p>
-    Here <code class="literal">*</code> is a shorthand for &#8220;<span class="quote">all columns</span>&#8221;.
-     <sup>[<a name="id2551031" href="#ftn.id2551031">2</a>]</sup>
+    Here <code class="literal">*</code> is a shorthand for <span class="quote">all columns</span>.
+     <sup>[<a name="id2549354" href="#ftn.id2549354">2</a>]</sup>
     So the same result would be had with:
 </p>
 <pre class="programlisting">SELECT city, temp_lo, temp_hi, prcp, date FROM weather;</pre>
@@ -64,7 +64,7 @@
     Notice how the <code class="literal">AS</code> clause is used to relabel the
     output column.  (The <code class="literal">AS</code> clause is optional.)
    </p>
-<p>    A query can be &#8220;<span class="quote">qualified</span>&#8221; by adding a <code class="literal">WHERE</code>
+<p>    A query can be <span class="quote">qualified</span> by adding a <code class="literal">WHERE</code>
     clause that specifies which rows are wanted.  The <code class="literal">WHERE</code>
     clause contains a Boolean (truth value) expression, and only rows for
     which the Boolean expression is true are returned.  The usual
@@ -85,7 +85,7 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id2551157"></a>
+<p>    <a name="id2549480"></a>
 
     You can request that the results of a query
     be returned in sorted order:
@@ -112,8 +112,8 @@
     ORDER BY city, temp_lo;</pre>
 <p>
    </p>
-<p>    <a name="id2551194"></a>
-    <a name="id2551201"></a>
+<p>    <a name="id2549516"></a>
+    <a name="id2549522"></a>
 
     You can request that duplicate rows be removed from the result of
     a query:
@@ -134,7 +134,7 @@
     Here again, the result row ordering might vary.
     You can ensure consistent results by using <code class="literal">DISTINCT</code> and
     <code class="literal">ORDER BY</code> together:
-     <sup>[<a name="id2551236" href="#ftn.id2551236">3</a>]</sup>
+     <sup>[<a name="id2549557" href="#ftn.id2549557">3</a>]</sup>
 
 </p>
 <pre class="programlisting">SELECT DISTINCT city
@@ -144,14 +144,14 @@
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2551031" href="#id2551031">2</a>] </sup>       While <code class="literal">SELECT *</code> is useful for off-the-cuff
+<div class="footnote"><p><sup>[<a name="ftn.id2549354" href="#id2549354">2</a>] </sup>       While <code class="literal">SELECT *</code> is useful for off-the-cuff
        queries, it is widely considered bad style in production code,
        since adding a column to the table would change the results.
       </p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id2551236" href="#id2551236">3</a>] </sup>       In some database systems, including older versions of
+<div class="footnote"><p><sup>[<a name="ftn.id2549557" href="#id2549557">3</a>] </sup>       In some database systems, including older versions of
        <span class="productname">PostgreSQL</span>, the implementation of
        <code class="literal">DISTINCT</code> automatically orders the rows and
-       so <code class="literal">ORDER BY</code> is redundant.  But this is not
+       so <code class="literal">ORDER BY</code> is unnecessary.  But this is not
        required by the SQL standard, and current
        <span class="productname">PostgreSQL</span> doesn't guarantee that
        <code class="literal">DISTINCT</code> causes the rows to be ordered.

@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ALTER TABLE</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="sql-commands.html" title="SQL Commands">
-<link rel="prev" href="sql-altersequence.html" title="ALTER SEQUENCE">
-<link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="sql-commands.html" title="">
+<link rel="prev" href="sql-altersequence.html" title="">
+<link rel="next" href="sql-altertablespace.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-altertable"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2>Name</h2>
+<h2></h2>
 <p>ALTER TABLE &#8212; change the definition of a table</p>
 </div>
-<a name="id2729882"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="id2728395"></a><div class="refsynopsisdiv">
+<h2></h2>
 <pre class="synopsis">ALTER TABLE [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
     <em class="replaceable"><code>action</code></em> [, ... ]
 ALTER TABLE [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
@@ -53,7 +53,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
     SET TABLESPACE <em class="replaceable"><code>new_tablespace</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2730121"></a><h2>Description</h2>
+<a name="id2728634"></a><h2>Description</h2>
 <p>   <code class="command">ALTER TABLE</code> changes the definition of an existing table.
    There are several subforms:
 
@@ -103,7 +103,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
       target (<a href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a>).
       For more information on the use of statistics by the
       <span class="productname">PostgreSQL</span> query planner, refer to
-      <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
+      <a href="planner-stats.html" title=""></a>.
      </p></dd>
 <dt><span class="term"><code class="literal">SET STORAGE</code></span></dt>
 <dd><p>      This form sets the storage mode for a column. This controls whether this
@@ -120,7 +120,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
       columns faster, at the penalty of increased storage space.  Note that
       <code class="literal">SET STORAGE</code> doesn't itself change anything in the table,
       it just sets the strategy to be pursued during future table updates.
-      See <a href="storage-toast.html" title="51.2. TOAST">Section 51.2, &#8220;TOAST&#8221;</a> for more information.
+      See <a href="storage-toast.html" title=""></a> for more information.
      </p></dd>
 <dt><span class="term"><code class="literal">ADD <em class="replaceable"><code>table_constraint</code></em></code></span></dt>
 <dd><p>      This form adds a new constraint to a table using the same syntax as
@@ -177,7 +177,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
       TABLE</code> that forces a table rewrite.
      </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>       While <code class="command">CREATE TABLE</code> allows <code class="literal">OIDS</code> to be specified
        in the <code class="literal">WITH (<em class="replaceable"><code>storage_parameter</code></em>)</code> syntax,
        <code class="command">ALTER TABLE</code> does not treat <code class="literal">OIDS</code> as a
@@ -192,28 +192,25 @@ where <em class="replaceable"><code>action</code></em> is one of:
      </p></dd>
 <dt><span class="term"><code class="literal">INHERIT <em class="replaceable"><code>parent_table</code></em></code></span></dt>
 <dd>
-<p>      This form adds a new parent table to the table. This won't add new
-      columns to the child table, instead all columns of the parent table must
-      already exist in the child table. They must have matching data types,
+<p>      This form adds the target table as a new child of the specified parent
+      table.  Subsequently, queries against the parent will include records
+      of the target table.  To be added as a child, the target table must
+      already contain all the same columns as the parent (it could have
+      additional columns, too).  The columns must have matching data types,
       and if they have <code class="literal">NOT NULL</code> constraints in the parent
       then they must also have <code class="literal">NOT NULL</code> constraints in the
       child.
      </p>
-<p>      There must also be matching table constraints for all
-      <code class="literal">CHECK</code> table constraints of the parent. Currently
+<p>      There must also be matching child-table constraints for all
+      <code class="literal">CHECK</code> constraints of the parent. Currently
       <code class="literal">UNIQUE</code>, <code class="literal">PRIMARY KEY</code>, and
-      <code class="literal">FOREIGN KEY</code> constraints are ignored however this may
-      change in the future.
-     </p>
-<p>      The easiest way to create a suitable table is to create a table using
-      <code class="literal">INHERITS</code> and then remove it via <code class="literal">NO
-      INHERIT</code>. Alternatively create a table using
-      <code class="literal">LIKE</code> however note that <code class="literal">LIKE</code> does
-      not create the necessary constraints.
+      <code class="literal">FOREIGN KEY</code> constraints are not considered, but
+      this may change in the future.
      </p>
 </dd>
 <dt><span class="term"><code class="literal">NO INHERIT <em class="replaceable"><code>parent_table</code></em></code></span></dt>
-<dd><p>      This form removes a parent table from the list of parents of the table.
+<dd><p>      This form removes the target table from the list of children of the
+      specified parent table.
       Queries against the parent table will no longer include records drawn
       from the target table.
      </p></dd>
@@ -251,6 +248,8 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <p>   You must own the table to use <code class="command">ALTER TABLE</code>.
    To change the schema of a table, you must also have
    <code class="literal">CREATE</code> privilege on the new schema.
+   To add the table as a new child of a parent table, you must own the
+   parent table as well.
    To alter the owner, you must also be a direct or indirect member of the new
    owning role, and that role must have <code class="literal">CREATE</code> privilege on
    the table's schema.  (These restrictions enforce that altering the owner
@@ -259,7 +258,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2730914"></a><h2>Parameters</h2>
+<a name="id2729402"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (possibly schema-qualified) of an existing table to
@@ -336,7 +335,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2731175"></a><h2>Notes</h2>
+<a name="id2729663"></a><h2>Notes</h2>
 <p>    The key word <code class="literal">COLUMN</code> is noise and can be omitted.
    </p>
 <p>    When a column is added with <code class="literal">ADD COLUMN</code>, all existing
@@ -413,12 +412,12 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <p>    Changing any part of a system catalog table is not permitted.
    </p>
 <p>    Refer to <a href="sql-createtable.html">CREATE TABLE</a> for a further description of valid
-    parameters. <a href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a> has further information on
+    parameters. <a href="ddl.html" title=""></a> has further information on
     inheritance.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2731460"></a><h2>Examples</h2>
+<a name="id2729948"></a><h2>Examples</h2>
 <p>   To add a column of type <code class="type">varchar</code> to a table:
 </p>
 <pre class="programlisting">ALTER TABLE distributors ADD COLUMN address varchar(30);</pre>
@@ -446,7 +445,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <p>
   </p>
 <p>   The same, when the column has a default expression that won't automatically
-   cast to the new datatype:
+   cast to the new data type:
 </p>
 <pre class="programlisting">ALTER TABLE foo
     ALTER COLUMN foo_timestamp DROP DEFAULT,
@@ -520,7 +519,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2731640"></a><h2>Compatibility</h2>
+<a name="id2730128"></a><h2>Compatibility</h2>
 <p>   The <code class="literal">ADD</code>, <code class="literal">DROP</code>, and <code class="literal">SET DEFAULT</code>
    forms conform with the SQL standard.  The other forms are
    <span class="productname">PostgreSQL</span> extensions of the SQL standard.

@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>42.11. pg_cast</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
-<link rel="prev" href="catalog-pg-autovacuum.html" title="42.10. pg_autovacuum">
-<link rel="next" href="catalog-pg-class.html" title="42.12. pg_class">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="catalogs.html" title="">
+<link rel="prev" href="catalog-pg-autovacuum.html" title="">
+<link rel="next" href="catalog-pg-class.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-cast"></a>42.11. <code class="structname">pg_cast</code></h2></div></div></div>
-<a name="id2800271"></a><p>   The catalog <code class="structname">pg_cast</code> stores data type conversion paths,
+<a name="catalog-pg-cast"></a></h2></div></div></div>
+<a name="id2799270"></a><p>   The catalog <code class="structname">pg_cast</code> stores data type conversion paths,
    both built-in paths and those defined with <code class="command">CREATE CAST</code>.
   </p>
 <div class="table">
-<a name="id2800293"></a><p class="title"><b>Table 42.11. <code class="structfield">pg_cast</code> Columns</b></p>
+<a name="id2799292"></a><p class="title"><b></b></p>
 <div class="table-contents"><table summary="pg_cast Columns" border="1">
 <colgroup>
 <col>
@@ -36,19 +36,19 @@
 <tr>
 <td><code class="structfield">castsource</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title=""><code class="structname">pg_type</code></a>.oid</code></td>
 <td>OID of the source data type</td>
 </tr>
 <tr>
 <td><code class="structfield">casttarget</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title=""><code class="structname">pg_type</code></a>.oid</code></td>
 <td>OID of the target data type</td>
 </tr>
 <tr>
 <td><code class="structfield">castfunc</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title=""><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>       The OID of the function to use to perform this cast.  Zero is
        stored if the data types are binary compatible (that is, no
        run-time operation is needed to perform the cast).
@@ -83,7 +83,7 @@
 <p>   It is legitimate to create a <code class="structname">pg_cast</code> entry
    in which the source and target types are the same, if the associated
    function takes more than one argument.  Such entries represent
-   &#8220;<span class="quote">length coercion functions</span>&#8221; that coerce values of the type
+   <span class="quote">length coercion functions</span> that coerce values of the type
    to be legal for a particular type modifier value.  Note however that
    at present there is no support for associating non-default type
    modifiers with user-created data types, and so this facility is only

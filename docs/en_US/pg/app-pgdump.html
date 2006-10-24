@@ -1,25 +1,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>pg_dump</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
-<link rel="prev" href="app-pgconfig.html" title="pg_config">
-<link rel="next" href="app-pg-dumpall.html" title="pg_dumpall">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="reference-client.html" title="">
+<link rel="prev" href="app-pgconfig.html" title="">
+<link rel="next" href="app-pg-dumpall.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="app-pgdump"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2>Name</h2>
-<p>pg_dump &#8212;    extract a <span class="productname">PostgreSQL</span> database into a script file or other archive file 
+<h2></h2>
+<p>pg_dump &#8212;    extract a <span class="productname">PostgreSQL</span> database into a script file or other archive file
   </p>
 </div>
-<a name="id2780196"></a><div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="id2778777"></a><div class="refsynopsisdiv">
+<h2></h2>
 <div class="cmdsynopsis"><p><code class="command">pg_dump</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
@@ -34,13 +34,13 @@
 <p>   Dumps can be output in script or archive file formats. Script
    dumps are plain-text files containing the SQL commands required
    to reconstruct the database to the state it was in at the time it was
-   saved. To restore from such a script, feed it to <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>. Script files
+   saved. To restore from such a script, feed it to <a href="app-psql.html" title=""><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>. Script files
    can be used to reconstruct the database even on other machines and
    other architectures; with some modifications even on other SQL
    database products.
   </p>
 <p>   The alternative archive file formats must be used with
-   <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a> to rebuild the database.  They
+   <a href="app-pgrestore.html" title=""><span class="refentrytitle">pg_restore</span></a> to rebuild the database.  They
    allow <span class="application">pg_restore</span> to be selective about
    what is restored, or even to reorder the items prior to being
    restored.
@@ -54,7 +54,7 @@
    backup an entire database, then <span class="application">pg_restore</span>
    can be used to examine the archive and/or select which parts of the
    database are to be restored. The most flexible output file format is
-   the &#8220;<span class="quote">custom</span>&#8221; format (<code class="option">-Fc</code>). It allows
+   the <span class="quote">custom</span> format (<code class="option">-Fc</code>). It allows
    for selection and reordering of all archived items, and is compressed
    by default. The <span class="application">tar</span> format
    (<code class="option">-Ft</code>) is not compressed and it is not possible to
@@ -92,6 +92,14 @@
        </p>
 </dd>
 <dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-b</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--blobs</code></span>
+</dt>
+<dd><p>        Include large objects in the dump.  This is the default behavior
+        except when <code class="option">--schema</code>, <code class="option">--table</code>, or
+        <code class="option">--schema-only</code> is specified, so the <code class="option">-b</code>
+        switch is only useful to add large objects to selective dumps.
+       </p></dd>
+<dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-c</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--clean</code></span>
 </dt>
 <dd>
@@ -123,12 +131,14 @@
 <dd><p>        Dump data as <code class="command">INSERT</code> commands (rather
         than <code class="command">COPY</code>).  This will make restoration very slow;
         it is mainly useful for making dumps that can be loaded into
-        non-<span class="productname">PostgreSQL</span> databases.  Note that
+        non-<span class="productname">PostgreSQL</span> databases.
+        Also, since this option generates a separate command for each row,
+        an error in reloading a row causes only that row to be lost rather
+        than the entire table contents.
+        Note that
         the restore may fail altogether if you have rearranged column order.
-        The <code class="option">-D</code> option is safer, though even slower.
-        Also, while this option generates errors for invalid data, 
-        it allows other <code class="command">INSERT</code>s to continue loading
-        data into the table.
+        The <code class="option">-D</code> option is safe against column order changes,
+        though even slower.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-D</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--column-inserts</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--attribute-inserts</code></span>
@@ -140,9 +150,9 @@
         ...</code>).  This will make restoration very slow; it is mainly
         useful for making dumps that can be loaded into
         non-<span class="productname">PostgreSQL</span> databases.
-        Also, while this option generates errors for invalid data, 
-        it allows other <code class="command">INSERT</code>s to continue loading
-        data into the table.
+        Also, since this option generates a separate command for each row,
+        an error in reloading a row causes only that row to be lost rather
+        than the entire table contents.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-E <em class="replaceable"><code>encoding</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--encoding=<em class="replaceable"><code>encoding</code></em></code></span>
@@ -170,24 +180,24 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">p</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">plain</code></span>
 </dt>
-<dd><p>           Output a plain-text <acronym class="acronym">SQL</acronym> script file (default)
+<dd><p>           Output a plain-text <acronym class="acronym">SQL</acronym> script file (the default).
           </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">c</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">custom</code></span>
 </dt>
-<dd><p>         Output a custom archive suitable for input into 
-         <span class="application">pg_restore</span>. This is the most flexible 
-         format in that it allows reordering of loading data as well 
-         as object definitions. This format is also compressed by default.
+<dd><p>           Output a custom archive suitable for input into
+           <span class="application">pg_restore</span>. This is the most flexible
+           format in that it allows reordering of loading data as well
+           as object definitions. This format is also compressed by default.
           </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">t</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">tar</code></span>
 </dt>
-<dd><p>         Output a <code class="command">tar</code> archive suitable for input into 
-         <span class="application">pg_restore</span>. Using this archive format 
-         allows reordering and/or exclusion of database objects
-         at the time the database is restored. It is also possible to limit 
-         which data is reloaded at restore time.
+<dd><p>           Output a <code class="command">tar</code> archive suitable for input into
+           <span class="application">pg_restore</span>. Using this archive format
+           allows reordering and/or exclusion of database objects
+           at the time the database is restored. It is also possible to limit
+           which data is reloaded at restore time.
           </p></dd>
 </dl></div>
 <p>
@@ -200,9 +210,11 @@
 <p>        Ignore version mismatch between
         <span class="application">pg_dump</span> and the database server.
        </p>
-<p>        <span class="application">pg_dump</span> can handle databases from
+<p>        <span class="application">pg_dump</span> can dump from servers running
         previous releases of <span class="productname">PostgreSQL</span>, but very old
-        versions are not supported anymore (currently prior to 7.0).
+        versions are not supported anymore (currently, those prior to 7.0).
+        Dumping from a server newer than <span class="application">pg_dump</span>
+        is likely not to work at all.
         Use this option if you need to override the version check (and
         if <span class="application">pg_dump</span> then fails, don't say
         you weren't warned).
@@ -212,19 +224,50 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-n <em class="replaceable"><code>schema</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--schema=<em class="replaceable"><code>schema</code></em></code></span>
 </dt>
 <dd>
-<p>        Dump the contents of <em class="replaceable"><code>schema</code></em>
-        only. If this option is not specified, all non-system schemas
-        in the target database will be dumped.
+<p>        Dump only schemas matching <em class="replaceable"><code>schema</code></em>; this selects both the
+        schema itself, and all its contained objects.  When this option is
+        not specified, all non-system schemas in the target database will be
+        dumped.  Multiple schemas can be
+        selected by writing multiple <code class="option">-n</code> switches.  Also, the
+        <em class="replaceable"><code>schema</code></em> parameter is
+        interpreted as a pattern according to the same rules used by
+        <span class="application">psql</span>'s <code class="literal">\d</code> commands (see <a href="app-psql.html#app-psql-patterns">Patterns</a>),
+        so multiple schemas can also be selected by writing wildcard characters
+        in the pattern.  When using wildcards, be careful to quote the pattern
+        if needed to prevent the shell from expanding the wildcards.
        </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>         In this mode, <span class="application">pg_dump</span> makes no
-         attempt to dump any other database objects that objects in the
-         selected schema may depend upon. Therefore, there is no
-         guarantee that the results of a single-schema dump can be
-         successfully restored by themselves into a clean database.
+<h3 class="title"></h3>
+<p>         When <code class="option">-n</code> is specified, <span class="application">pg_dump</span>
+         makes no attempt to dump any other database objects that the selected
+         schema(s) may depend upon. Therefore, there is no guarantee
+         that the results of a specific-schema dump can be successfully
+         restored by themselves into a clean database.
         </p>
 </div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title"></h3>
+<p>         Non-schema objects such as blobs are not dumped when <code class="option">-n</code> is
+         specified.  You can add blobs back to the dump with the
+         <code class="option">--blobs</code> switch.
+        </p>
+</div>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-N <em class="replaceable"><code>schema</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--exclude-schema=<em class="replaceable"><code>schema</code></em></code></span>
+</dt>
+<dd>
+<p>        Do not dump any schemas matching the <em class="replaceable"><code>schema</code></em> pattern.  The pattern is
+        interpreted according to the same rules as for <code class="option">-n</code>.
+        <code class="option">-N</code> can be given more than once to exclude schemas
+        matching any of several patterns.
+       </p>
+<p>        When both <code class="option">-n</code> and <code class="option">-N</code> are given, the behavior
+        is to dump just the schemas that match at least one <code class="option">-n</code>
+        switch but no <code class="option">-N</code> switches.  If <code class="option">-N</code> appears
+        without <code class="option">-n</code>, then schemas matching <code class="option">-N</code> are
+        excluded from what is otherwise a normal dump.
+       </p>
 </dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-o</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--oids</code></span>
@@ -242,7 +285,7 @@
 <p>        Do not output commands to set
         ownership of objects to match the original database.
         By default, <span class="application">pg_dump</span> issues
-        <code class="command">ALTER OWNER</code> or 
+        <code class="command">ALTER OWNER</code> or
         <code class="command">SET SESSION AUTHORIZATION</code>
         statements to set ownership of created database objects.
         These statements
@@ -279,86 +322,64 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-t <em class="replaceable"><code>table</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--table=<em class="replaceable"><code>table</code></em></code></span>
 </dt>
 <dd>
-<p>        Dump data for <em class="replaceable"><code>table</code></em>
-        only. It is possible for there to be multiple tables with the same 
-        name in different schemas; if that is the case, all matching tables 
-        will be dumped. Also, if any POSIX regular expression character appears
-        in the table name (<code class="literal">([{\.?+</code>, the string will be interpreted
-        as a regular expression.  Note that when in regular expression mode, the
-        string will not be anchored to the start/end unless <code class="literal">^</code> and
-        <code class="literal">$</code> are used at the beginning/end of the string.
+<p>        Dump only tables (or views or sequences) matching <em class="replaceable"><code>table</code></em>.  Multiple tables can be
+        selected by writing multiple <code class="option">-t</code> switches.  Also, the
+        <em class="replaceable"><code>table</code></em> parameter is
+        interpreted as a pattern according to the same rules used by
+        <span class="application">psql</span>'s <code class="literal">\d</code> commands (see <a href="app-psql.html#app-psql-patterns">Patterns</a>),
+        so multiple tables can also be selected by writing wildcard characters
+        in the pattern.  When using wildcards, be careful to quote the pattern
+        if needed to prevent the shell from expanding the wildcards.
        </p>
-<p>       The options <code class="option">-t</code>, <code class="option">-T</code>, <code class="option">-n</code>, and <code class="option">-N</code> 
-       can be used together to achieve a high degree of control over what is
-       dumped. Multiple arguments can be used, and are parsed in the order 
-       given to build a list of valid tables and schemas. The schema options are 
-       parsed first to create a list of schemas to dump, and then the table options 
-       are parsed to only find tables in the matching schemas.
-       </p>
-<p>For example, to dump a single table named <code class="literal">pg_class</code>:
-
-</p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -t pg_class mydb &gt; db.out</code></strong></pre>
-<p>
-       </p>
-<p>To dump all tables starting with <code class="literal">employee</code> in the 
-       <code class="literal">detroit</code> schema, except for the table named <code class="literal">employee_log</code>:
-
-</p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -n detroit -t ^employee -T employee_log mydb &gt; db.out</code></strong></pre>
-<p>
-       </p>
-<p>To dump all schemas starting with <code class="literal">east</code> or <code class="literal">west</code> and ending in
-       <code class="literal">gsm</code>, but not schemas that contain the letters <code class="literal">test</code>, except for 
-       one named <code class="literal">east_alpha_test_five</code>:
-
-</p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -n "^(east|west).*gsm$" -N test -n east_alpha_test_five mydb &gt; db.out</code></strong></pre>
-<p>
-       </p>
-<p>To dump all tables except for those beginning with <code class="literal">ts_</code>:
-
-</p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -T "^ts_" mydb &gt; db.out</code></strong></pre>
-<p>
+<p>        The <code class="option">-n</code> and <code class="option">-N</code> switches have no effect when
+        <code class="option">-t</code> is used, because tables selected by <code class="option">-t</code> will
+        be dumped regardless of those switches, and non-table objects will not
+        be dumped.
        </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>         In this mode, <span class="application">pg_dump</span> makes no
-         attempt to dump any other database objects that the selected tables
-         may depend upon. Therefore, there is no guarantee
+<h3 class="title"></h3>
+<p>         When <code class="option">-t</code> is specified, <span class="application">pg_dump</span>
+         makes no attempt to dump any other database objects that the selected
+         table(s) may depend upon. Therefore, there is no guarantee
          that the results of a specific-table dump can be successfully
          restored by themselves into a clean database.
+        </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title"></h3>
+<p>         The behavior of the <code class="option">-t</code> switch is not entirely upward
+         compatible with pre-8.2 <span class="productname">PostgreSQL</span>
+         versions.  Formerly, writing <code class="literal">-t tab</code> would dump all
+         tables named <code class="literal">tab</code>, but now it just dumps whichever one
+         is visible in your default search path.  To get the old behavior
+         you can write <code class="literal">-t '*.tab'</code>.  Also, you must write something
+         like <code class="literal">-t sch.tab</code> to select a table in a particular schema,
+         rather than the old locution of <code class="literal">-n sch -t tab</code>.
         </p>
 </div>
 </dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-T <em class="replaceable"><code>table</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--exclude-table=<em class="replaceable"><code>table</code></em></code></span>
 </dt>
-<dd><p>        Do not dump any matching <em class="replaceable"><code>tables</code></em>.
-        More than one option can be used, and POSIX regular expressions are handled just
-        like <code class="literal">-t</code>.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-n <em class="replaceable"><code>schema</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--schema=<em class="replaceable"><code>schema</code></em></code></span>
-</dt>
-<dd><p>        Dump only the matching <em class="replaceable"><code>schemas</code></em>.
-        More than one option can be used, and POSIX regular expressions are handled just
-        like <code class="literal">-t</code>.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-N <em class="replaceable"><code>schema</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--exclude-schema=<em class="replaceable"><code>schema</code></em></code></span>
-</dt>
-<dd><p>        Do not dump the matching <em class="replaceable"><code>schemas</code></em>.
-        More than one option can be used, and POSIX regular expressions are handled just
-        like <code class="literal">-t</code>.
-       </p></dd>
+<dd>
+<p>        Do not dump any tables matching the <em class="replaceable"><code>table</code></em> pattern.  The pattern is
+        interpreted according to the same rules as for <code class="option">-t</code>.
+        <code class="option">-T</code> can be given more than once to exclude tables
+        matching any of several patterns.
+       </p>
+<p>        When both <code class="option">-t</code> and <code class="option">-T</code> are given, the behavior
+        is to dump just the tables that match at least one <code class="option">-t</code>
+        switch but no <code class="option">-T</code> switches.  If <code class="option">-T</code> appears
+        without <code class="option">-t</code>, then tables matching <code class="option">-T</code> are
+        excluded from what is otherwise a normal dump.
+       </p>
+</dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-v</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--verbose</code></span>
 </dt>
 <dd><p>        Specifies verbose mode.  This will cause
         <span class="application">pg_dump</span> to output detailed object
-        comments and start/stop times to the dump file, and progress 
+        comments and start/stop times to the dump file, and progress
         messages to standard error.
        </p></dd>
 <dt>
@@ -366,15 +387,11 @@
 </dt>
 <dd><p>        Prevent dumping of access privileges (grant/revoke commands).
        </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-X disable-dollar-quoting</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--disable-dollar-quoting</code></span>
-</dt>
+<dt><span class="term"><code class="option">--disable-dollar-quoting</code></span></dt>
 <dd><p>        This option disables the use of dollar quoting for function bodies,
         and forces them to be quoted using SQL standard string syntax.
        </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-X disable-triggers</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--disable-triggers</code></span>
-</dt>
+<dt><span class="term"><code class="option">--disable-triggers</code></span></dt>
 <dd>
 <p>        This option is only relevant when creating a data-only dump.
         It instructs <span class="application">pg_dump</span> to include commands
@@ -393,9 +410,7 @@
         call <code class="command">pg_restore</code>.
        </p>
 </dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-X use-set-session-authorization</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--use-set-session-authorization</code></span>
-</dt>
+<dt><span class="term"><code class="option">--use-set-session-authorization</code></span></dt>
 <dd><p>        Output SQL-standard <code class="command">SET SESSION AUTHORIZATION</code> commands
         instead of <code class="command">ALTER OWNER</code> commands to determine object
         ownership.  This makes the dump more standards compatible, but
@@ -447,7 +462,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2781511"></a><h2>Environment</h2>
+<a name="id2780122"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGDATABASE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="envar">PGUSER</code></span>
@@ -461,7 +476,7 @@
 <p>   <span class="application">pg_dump</span> internally executes
    <code class="command">SELECT</code> statements. If you have problems running
    <span class="application">pg_dump</span>, make sure you are able to
-   select information from the database using, for example, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.
+   select information from the database using, for example, <a href="app-psql.html" title=""><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
@@ -502,7 +517,7 @@
    <code class="command">ANALYZE</code> after restoring from a dump file to
    ensure good performance.
   </p>
-<p>   Because <span class="application">pg_dump</span> is used to tranfer data
+<p>   Because <span class="application">pg_dump</span> is used to transfer data
    to newer versions of <span class="productname">PostgreSQL</span>, the output of
    <span class="application">pg_dump</span> can be loaded into
    newer <span class="productname">PostgreSQL</span> databases.  It also can read older
@@ -514,32 +529,69 @@
 </div>
 <div class="refsect1" lang="en">
 <a name="pg-dump-examples"></a><h2>Examples</h2>
-<p>   To dump a database:
+<p>   To dump a database called <code class="literal">mydb</code> into a SQL-script file:
 </p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump mydb &gt; db.out</code></strong></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump mydb &gt; db.sql</code></strong></pre>
 <p>
   </p>
-<p>   To reload this database:
-</p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>psql -d database -f db.out</code></strong></pre>
-<p>
-  </p>
-<p>   To dump a database called <code class="literal">mydb</code> to a file in custom format:
-   file:
+<p>   To reload such a script into a (freshly created) database named
+   <code class="literal">newdb</code>:
 
 </p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -Fc mydb &gt; db.out</code></strong></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>psql -d newdb -f db.sql</code></strong></pre>
 <p>
   </p>
-<p>   To reload this dump into an existing database called <code class="literal">newdb</code>:
+<p>   To dump a database into a custom-format archive file:
 
 </p>
-<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_restore -d newdb db.out</code></strong></pre>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -Fc mydb &gt; db.dump</code></strong></pre>
+<p>
+  </p>
+<p>   To reload an archive file into a (freshly created) database named
+   <code class="literal">newdb</code>:
+
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_restore -d newdb db.dump</code></strong></pre>
+<p>
+  </p>
+<p>   To dump a single table named <code class="literal">mytab</code>:
+
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -t mytab mydb &gt; db.sql</code></strong></pre>
+<p>
+  </p>
+<p>   To dump all tables whose names start with <code class="literal">emp</code> in the
+   <code class="literal">detroit</code> schema, except for the table named
+   <code class="literal">employee_log</code>:
+
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -t 'detroit.emp*' -T detroit.employee_log mydb &gt; db.sql</code></strong></pre>
+<p>
+  </p>
+<p>   To dump all schemas whose names start with <code class="literal">east</code> or
+   <code class="literal">west</code> and end in <code class="literal">gsm</code>, excluding any schemas whose
+   names contain the word <code class="literal">test</code>:
+
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -n 'east*gsm' -n 'west*gsm' -N '*test*' mydb &gt; db.sql</code></strong></pre>
+<p>
+  </p>
+<p>   The same, using regular expression notation to consolidate the switches:
+
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -n '(east|west)*gsm' -N '*test*' mydb &gt; db.sql</code></strong></pre>
+<p>
+  </p>
+<p>   To dump all database objects except for tables whose names begin with
+   <code class="literal">ts_</code>:
+
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -T 'ts_*' mydb &gt; db.sql</code></strong></pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2781806"></a><h2>History</h2>
+<a name="id2780574"></a><h2>History</h2>
 <p>   The <span class="application">pg_dump</span> utility first appeared in
    <span class="application">Postgres95</span> release 0.02.  The
    non-plain-text output formats were introduced in
@@ -547,8 +599,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2781831"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a>, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>, Environment Variables (<a href="libpq-envars.html" title="28.12. Environment Variables">Section 28.12, &#8220;Environment Variables&#8221;</a>)</span>
+<a name="id2780599"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-pg-dumpall.html" title=""><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-pgrestore.html" title=""><span class="refentrytitle">pg_restore</span></a>, <a href="app-psql.html" title=""><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>, Environment Variables (<a href="libpq-envars.html" title=""></a>)</span>
 </div>
 </div></body>
 </html>

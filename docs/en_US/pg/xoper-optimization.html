@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>32.13. Operator Optimization Information</title>
+<title></title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta1 Documentation">
-<link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
-<link rel="prev" href="xoper.html" title="32.12. User-Defined Operators">
-<link rel="next" href="xindex.html" title="32.14. Interfacing Extensions To Indexes">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="">
+<link rel="up" href="extend.html" title="">
+<link rel="prev" href="xoper.html" title="">
+<link rel="next" href="xindex.html" title="">
+<link rel="copyright" href="ln-legalnotice.html" title="">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xoper-optimization"></a>32.13. Operator Optimization Information</h2></div></div></div>
+<a name="xoper-optimization"></a></h2></div></div></div>
 <p>    A <span class="productname">PostgreSQL</span> operator definition can include
     several optional clauses that tell the system useful things about how
     the operator behaves.  These clauses should be provided whenever
@@ -27,11 +27,11 @@
    </p>
 <p>    Additional optimization clauses might be added in future versions of
     <span class="productname">PostgreSQL</span>.  The ones described here are all
-    the ones that release 8.2beta1 understands.
+    the ones that release 8.2beta2 understands.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2697661"></a>32.13.1. <code class="literal">COMMUTATOR</code></h3></div></div></div>
+<a name="id2696182"></a></h3></div></div></div>
 <p>     The <code class="literal">COMMUTATOR</code> clause, if provided, names an operator that is the
      commutator of the operator being defined.  We say that operator A is the
      commutator of operator B if (x A y) equals (y B x) for all possible input
@@ -48,7 +48,7 @@
     </p>
 <p>     It's critical to provide commutator information for operators that
      will be used in indexes and join clauses, because this allows the
-     query optimizer to &#8220;<span class="quote">flip around</span>&#8221; such a clause to the forms
+     query optimizer to <span class="quote">flip around</span> such a clause to the forms
      needed for different plan types.  For example, consider a query with
      a WHERE clause like <code class="literal">tab1.x = tab2.y</code>, where <code class="literal">tab1.x</code>
      and <code class="literal">tab2.y</code> are of a user-defined type, and suppose that
@@ -57,7 +57,7 @@
      <code class="literal">tab2.y = tab1.x</code>, because the index-scan machinery expects
      to see the indexed column on the left of the operator it is given.
      <span class="productname">PostgreSQL</span> will <span class="emphasis"><em>not</em></span> simply
-     assume that this is a valid transformation [mdash ] the creator of the
+     assume that this is a valid transformation &#8212; the creator of the
      <code class="literal">=</code> operator must specify that it is valid, by marking the
      operator with commutator information.
     </p>
@@ -95,7 +95,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2697865"></a>32.13.2. <code class="literal">NEGATOR</code></h3></div></div></div>
+<a name="id2696386"></a></h3></div></div></div>
 <p>     The <code class="literal">NEGATOR</code> clause, if provided, names an operator that is the
      negator of the operator being defined.  We say that operator A
      is the negator of operator B if both return Boolean results and
@@ -123,7 +123,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2697950"></a>32.13.3. <code class="literal">RESTRICT</code></h3></div></div></div>
+<a name="id2696471"></a></h3></div></div></div>
 <p>    The <code class="literal">RESTRICT</code> clause, if provided, names a restriction selectivity
     estimation function for the operator.  (Note that this is a function
     name, not an operator name.)  <code class="literal">RESTRICT</code> clauses only make sense for
@@ -195,7 +195,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2698233"></a>32.13.4. <code class="literal">JOIN</code></h3></div></div></div>
+<a name="id2696754"></a></h3></div></div></div>
 <p>     The <code class="literal">JOIN</code> clause, if provided, names a join selectivity
      estimation function for the operator.  (Note that this is a function
      name, not an operator name.)  <code class="literal">JOIN</code> clauses only make sense for
@@ -238,7 +238,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2698378"></a>32.13.5. <code class="literal">HASHES</code></h3></div></div></div>
+<a name="id2696899"></a></h3></div></div></div>
 <p>     The <code class="literal">HASHES</code> clause, if present, tells the system that
      it is permissible to use the hash join method for a join based on this
      operator.  <code class="literal">HASHES</code> only makes sense for a binary operator that
@@ -276,14 +276,14 @@
      to ensure it generates the same hash value as positive zero.
     </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     The function underlying a hash-joinable operator must be marked
      immutable or stable.  If it is volatile, the system will never
      attempt to use the operator for a hash join.
     </p>
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     If a hash-joinable operator has an underlying function that is marked
      strict, the
      function must also be complete: that is, it should return true or
@@ -297,7 +297,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2698504"></a>32.13.6. <code class="literal">MERGES</code> (<code class="literal">SORT1</code>, <code class="literal">SORT2</code>, <code class="literal">LTCMP</code>, <code class="literal">GTCMP</code>)</h3></div></div></div>
+<a name="id2697018"></a></h3></div></div></div>
 <p>     The <code class="literal">MERGES</code> clause, if present, tells the system that
      it is permissible to use the merge-join method for a join based on this
      operator.  <code class="literal">MERGES</code> only makes sense for a binary operator that
@@ -308,7 +308,7 @@
      into order and then scanning them in parallel.  So, both data types must
      be capable of being fully ordered, and the join operator must be one
      that can only succeed for pairs of values that fall at the
-     &#8220;<span class="quote">same place</span>&#8221;
+     <span class="quote">same place</span>
      in the sort order.  In practice this means that the join operator must
      behave like equality.  But unlike hash join, where the left and right
      data types had better be the same (or at least bitwise equivalent),
@@ -372,14 +372,14 @@
 <p>
     </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     The function underlying a merge-joinable operator must be marked
      immutable or stable.  If it is volatile, the system will never
      attempt to use the operator for a merge join.
     </p>
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<h3 class="title"></h3>
 <p>     In <span class="productname">PostgreSQL</span> versions before 7.3,
      the <code class="literal">MERGES</code> shorthand was not available: to make a
      merge-joinable operator one had to write both <code class="literal">SORT1</code> and
