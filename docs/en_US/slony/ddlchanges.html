@@ -4,8 +4,8 @@
 <title>15. Database Schema Changes (DDL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">
 <link rel="next" href="usingslonik.html" title="16. Using Slonik">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddlchanges"></a>15. Database Schema Changes (DDL)</h2></div></div></div>
-<a name="id2559608"></a><p>When changes are made to the database schema,
+<a name="id2558092"></a><p>When changes are made to the database schema,
 <span class="emphasis"><em>e.g.</em></span> - adding fields to a table, it is necessary
 for this to be handled rather carefully, otherwise different nodes may
 get rather deranged because they disagree on how particular tables are
@@ -173,7 +173,7 @@ more discussion of related issues.</p>
 here: <a href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2560122"></a>15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<a name="id2558606"></a>15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></h3></div></div></div>
 <p> While it is <span class="emphasis"><em> vitally necessary </em></span> to use
 <code class="command">EXECUTE SCRIPT</code> to propagate DDL modifications to
@@ -230,11 +230,17 @@ takes 20 minutes to build, replication will block for 20 minutes, but
 should catch up quickly enough once the index is
 created.</p>
 </li>
+<li><p> <span class="productname">Slony-I</span> stores the &#8220;<span class="quote">primary index</span>&#8221; name
+in <a href="table.sl-table.html">sl_table</a>, and uses that name to control what
+columns are considered the &#8220;<span class="quote">key columns</span>&#8221; when the log
+trigger is attached.  It would be plausible to drop that index and
+replace it with another primary key candidate, but changing the name
+of the primary key candidate would break things. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2560272"></a>15.2.  Testing DDL Changes </h3></div></div></div>
+<a name="id2558783"></a>15.2.  Testing DDL Changes </h3></div></div></div>
 <p> A method for testing DDL changes has been pointed out as a
 likely &#8220;<span class="quote">best practice.</span>&#8221;</p>
 <p> You <span class="emphasis"><em>need</em></span> to test DDL scripts in a

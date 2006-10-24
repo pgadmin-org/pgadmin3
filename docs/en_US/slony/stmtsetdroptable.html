@@ -4,8 +4,8 @@
 <title>SET DROP TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtsetaddsequence.html" title="SET ADD SEQUENCE">
 <link rel="next" href="stmtsetdropsequence.html" title="SET DROP SEQUENCE">
@@ -24,7 +24,7 @@
 <div class="cmdsynopsis"><p><code class="command">SET DROP TABLE (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577825"></a><h2>Description</h2>
+<a name="id2576493"></a><h2>Description</h2>
 <p>     Drop a table from a replication set.
     </p>
 <p>     Note that this action will <span class="emphasis"><em>not</em></span> drop a
@@ -43,7 +43,7 @@
 <p> This uses <a href="function.setdroptable-integer.html">schemadocsetdroptable( integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577885"></a><h2>Example</h2>
+<a name="id2576553"></a><h2>Example</h2>
 <pre class="programlisting">     SET DROP TABLE (
      ORIGIN = 1,
      ID = 20
@@ -51,14 +51,14 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577894"></a><h2> Locking Behaviour </h2>
+<a name="id2576562"></a><h2> Locking Behaviour </h2>
 <p> This operation must acquire an exclusive lock on the table
     being dropped from replication in order to alter it to drop the
     replication trigger.  On subscriber nodes, this also involves
     adding back any rules/triggers that have been hidden. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577905"></a><h2> Version Information </h2>
+<a name="id2576572"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0.5 </p>
 </div>
 </div></body>

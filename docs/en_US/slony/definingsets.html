@@ -4,8 +4,8 @@
 <title>7. Defining Slony-I Replication Sets</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="Slony-I HEAD_20060922 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="cluster.html" title="6. Defining Slony-I Clusters">
 <link rel="next" href="slonyadmin.html" title="Slony-I Administration">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="definingsets"></a>7. Defining <span class="productname">Slony-I</span> Replication Sets</h2></div></div></div>
-<a name="id2550679"></a><p>Defining the nodes indicated the shape of the cluster of
+<a name="id2548998"></a><p>Defining the nodes indicated the shape of the cluster of
 database servers; it is now time to determine what data is to be
 copied between them.  The groups of data that are copied are defined
 as &#8220;<span class="quote">replication sets.</span>&#8221;</p>
@@ -27,8 +27,8 @@ suitable primary key</p></li>
 </ul></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2550710"></a>7.1. Primary Keys</h3></div></div></div>
-<a name="id2550713"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
+<a name="id2549028"></a>7.1. Primary Keys</h3></div></div></div>
+<a name="id2549032"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
 candidate thereof on each table that is replicated.  PK values are
 used as the primary identifier for each tuple that is modified in the
 source system.  Note that they can be composite keys composed of
@@ -125,8 +125,8 @@ intrude on your applications.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2551004"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
-<a name="id2551008"></a><p> Each time a SYNC is processed, values are recorded for
+<a name="id2549323"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
+<a name="id2549327"></a><p> Each time a SYNC is processed, values are recorded for
 <span class="emphasis"><em>all</em></span> of the sequences in the set.  If there are a
 lot of sequences, this can cause <a href="table.sl-seqlog.html">sl_seqlog</a> to
 grow rather large.</p>
