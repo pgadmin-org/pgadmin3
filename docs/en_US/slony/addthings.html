@@ -4,8 +4,8 @@
 <title>12. A Task-Oriented View of Slony-I</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.0_RC5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="locking.html" title="11. Locking Issues">
 <link rel="next" href="dropthings.html" title="13. Dropping things from Slony-I Replication">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="addthings"></a>12. A Task-Oriented View of <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id2557501"></a><p>You may discover that you have missed replicating things that
+<a name="id2555885"></a><p>You may discover that you have missed replicating things that
 you wish you were replicating.</p>
 <p>This can generally be fairly easily remedied.  This section
 attempts to provide a &#8220;<span class="quote">task-oriented</span>&#8221; view of how to use
@@ -61,7 +61,7 @@ the interaction of five things that have all broken.</p>
 sorts of modifications to replication configuration:</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557662"></a>12.1.  Adding a table to replication </h3></div></div></div>
+<a name="id2556046"></a>12.1.  Adding a table to replication </h3></div></div></div>
 <p> <span class="productname">Slony-I</span> does not allow you to add a table to a replication set
 that is already being replicated. In principle, it would certainly be
 <span class="emphasis"><em>possible;</em></span> what would happen is that the
@@ -97,7 +97,7 @@ Once the subscriptions have all been set up so that the new set has an identical
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557788"></a>12.2.  How to add columns to a replicated table </h3></div></div></div>
+<a name="id2556172"></a>12.2.  How to add columns to a replicated table </h3></div></div></div>
 <p> This also answers the question &#8220;<span class="quote">How do I rename columns
 on a replicated table?</span>&#8221;, and, more generally, other questions
 to the effect of &#8220;<span class="quote">How do I modify the definitions of replicated
@@ -133,7 +133,7 @@ alter column c1 set not null; </code>.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557927"></a>12.3.  How to remove replication for a node</h3></div></div></div>
+<a name="id2556310"></a>12.3.  How to remove replication for a node</h3></div></div></div>
 <p> You will want to remove the various <span class="productname">Slony-I</span> components
 connected to the database(s).</p>
 <p> We will just consider, for now, doing this to one node. If you
@@ -182,7 +182,7 @@ previously added in using <a href="stmttableaddkey.html" title="TABLE ADD KEY"><
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2558082"></a>12.4.  Adding A Node To Replication</h3></div></div></div>
+<a name="id2556466"></a>12.4.  Adding A Node To Replication</h3></div></div></div>
 <p>Things are not fundamentally different whether you are adding a
 brand new, fresh node, or if you had previously dropped a node and are
 recreating it. In either case, you are adding a node to
@@ -232,7 +232,7 @@ some replication set.</p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2558266"></a>12.5.  How do I reshape subscriptions?</h3></div></div></div>
+<a name="id2556650"></a>12.5.  How do I reshape subscriptions?</h3></div></div></div>
 <p> For instance, I want subscriber node 3 to draw data from node
 1, when it is presently drawing data from node 2. </p>
 <p> This isn't a case for <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; we're not
@@ -243,12 +243,12 @@ they will merely be reconfigured.  </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2558297"></a>12.6.  How do I use <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> </h3></div></div></div>
+<a name="id2556681"></a>12.6.  How do I use <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> </h3></div></div></div>
 <p> Discussed in the <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> section... </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2558314"></a>12.7.  How do I know replication is working?</h3></div></div></div>
+<a name="id2556698"></a>12.7.  How do I know replication is working?</h3></div></div></div>
 <p> The ultimate proof is in looking at whether data added at the
 origin makes it to the subscribers.  That's a &#8220;<span class="quote">simply matter of
 querying</span>&#8221;.</p>
@@ -280,18 +280,18 @@ node. </p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2558385"></a>12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </h3></div></div></div>
+<a name="id2556769"></a>12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </h3></div></div></div>
 <p> Discussed  <a href="slonyupgrade.html" title="20.  Slony-I Upgrade"> here </a> </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2558406"></a>12.9.  What happens when I fail over?</h3></div></div></div>
+<a name="id2556789"></a>12.9.  What happens when I fail over?</h3></div></div></div>
 <p> Some of this is described under <a href="failover.html" title="8. Doing switchover and failover with Slony-I">Section 8, &#8220;Doing switchover and failover with <span class="productname">Slony-I</span>&#8221;</a> but
 more of a procedure should be written...</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2558418"></a>12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </h3></div></div></div>
+<a name="id2556802"></a>12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </h3></div></div></div>
 <p> You must first pick a node that is connected to the former
 origin (otherwise it is not straightforward to reverse connections in
 the move to keep everything connected). </p>
