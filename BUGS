@@ -4,33 +4,53 @@ Known issues
 pgAdmin III
 -----------
 
-- [Property]  Working with property dialog after the corresponding node is 
-              refreshed crashes
-- [Edit grid] Editing very large columns freezes (might be restricted to bytea)
-- [Edit grid] bool editing doesn't know NULL; major redesign needed
-- [Edit grid] sqlGridTextEditor is broken on Mac. We're currently using 
-              wxGridCellAutoWrapStringEditor which works but isn't overly user 
-              friendly
+[DLG] Working with property dialog after the corresponding node is 
+      refreshed crashes
+
+[FRM] Editing very large columns freezes (might be restricted to bytea) the
+      edit grid
 
 wxWidgets
 ---------
 
-- [Scintilla] ASSERT when typing a multibyte char [wx patch 1072408]
-- [Object Tree] Scrollbar doesn't scroll page by page under gtk
-- [Scintilla lexer] doesn't know about escaping quotes
-- [Main listview] Background behind the tabs doesn't redraw on Win XP and 2003.
-- [gtk] FindFocus reports bogus controls. Symptom: select a menu or toolbar, 
-        but nothing happens.
-- [gtk] combobox positioning when height is not specified; current workaround: 
-        fixed 12d height
-- [Edit Grid] several platform-dependent misbehaviours when starting editing a 
-        cell (F2 or any key): waiting for new wxGrid implementation
-- [gtk] Crash with some themes; probably gtk issue.
+[STC] ASSERT when typing a multibyte char [wx patch 1072408]
+
+[GTK] Scrollbar doesn't scroll page by page in the browser tree.
+
+[STC] Lexer doesn't know about escaping quotes
+
+[GTK] FindFocus reports bogus controls. Symptom: select a menu or toolbar, 
+      but nothing happens.
+
+[GTK] combobox positioning when height is not specified; current workaround: 
+      fixed 12d height
+
+[GTK] Crash with some themes; probably gtk issue.
+
+[MAC] wxComboBox::GetInsertionPoint() always returns 0 which prevents auto
+      complete working correctly in combo boxes such as the data type 
+      selectors. wxWidgets bug ref 1584384, applies to wx2.6.3 and 2.7.0.
+        
+[MAC] wxProcess::IsInputAvailable()/IsErrorAvailable() crash in wx2.7.0, 
+      which prevents messages from pg_dump/pg_restore being displayed.
+      wxWidgets bug ref 1584387.
+        
+[STC] On wxMSW 2.6.3 with Num Lock turned off, the control functions 
+      (arrows, insert/delete etc) of the numeric keypad do not work.
+      wxWidgets bug ref 1529525.
+        
+[AUI] If a pane with a minimum size set is docked next to the center pane, it
+      is possible to drag either side such that the panes size is less than 
+      the minimum. In addition, the minimum size doesn't appear to be honoured
+      at all by the center pane. wxWidgets bug ref: 1578958
+      
+[MSW] In 2.7/2.7.1 on wxMSW, it seems that the return key is acting like tab 
+      normally does in dialogues - ie. where the control doesn't catch the 
+      keypress, the focus moves to the next control in the tab order. Default 
+      buttons on the dialogue don't get activated. wxWidgets bug ref: 1582051.
 
 Known issues, that might stay unfixed
 -------------------------------------
 
-- [non-unicode build] Reading unicode files won't convert (wx not capable, use
-                      unicode build instead)
-- [Object Tree] M$ Context menu key doesn't work in Windows (wxWidgets bug?).
+[FRM] MS Context menu key doesn't work in Windows (wxWidgets bug?).
 
