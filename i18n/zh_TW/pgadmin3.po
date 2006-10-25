@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: pgAdmin III\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-10-12 12:14+0100\n"
-"PO-Revision-Date: 2006-10-24 08:45+0800\n"
-"Last-Translator: 郭朝益(chaoyi, Kuo), Taiwan <kuo.chaoyi@gmail.com>\n"
+"PO-Revision-Date: 2006-10-25 08:21+0100\n"
+"Last-Translator: Guillaume Lelarge <gleu@wanadoo.fr>\n"
 "Language-Team: The pgAdmin Development Team <pgadmin-hackers@postgresql.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,6 +25,8 @@ msgid ""
 "\n"
 "Asynchronous notification of '%s' received from backend pid %d"
 msgstr ""
+"\n"
+"'%s' 已承認來自伺服端 pid %d 的非同步通知"
 
 #: src/frm/frmQuery.cpp:1271
 #: src/frm/frmQuery.cpp:1614
@@ -34,6 +36,9 @@ msgid ""
 "Asynchronous notification of '%s' received from backend pid %d\n"
 "   Data: %s"
 msgstr ""
+"\n"
+"'%s' 已承認來自伺服端 pid %d 的非同步通知\n"
+"   資料: %s"
 
 #: src/main/dlgClasses.cpp:503
 #: src/main/dlgClasses.cpp:528
@@ -76,7 +81,7 @@ msgstr ""
 #: src/frm/frmMainConfig.cpp:62
 #, c-format
 msgid " - %s on %s (%s:%d)"
-msgstr " - %s on %s (%s:%d)"
+msgstr " - %s 在 %s (%s:%d)"
 
 #: src/frm/frmConfig.cpp:318
 #: src/frm/frmHbaConfig.cpp:70
@@ -86,7 +91,7 @@ msgstr " - %s on %s (%s:%d)"
 #: src/frm/frmMainConfig.cpp:73
 #, c-format
 msgid " Configuration read from %s"
-msgstr "組態讀取從 %s"
+msgstr " 組態讀取從 %s"
 
 #: src/frm/frmConfig.cpp:388
 #: src/frm/frmConfig.cpp:390
@@ -99,7 +104,7 @@ msgstr " 組態寫入到 %s"
 #: src/schema/pgObject.cpp:429
 #: src/schema/pgObject.cpp:442
 msgid " Connection broken."
-msgstr "連線已中斷。"
+msgstr " 連線已中斷。"
 
 #: src/frm/frmReport.cpp:1255
 msgid " DDL"
@@ -131,11 +136,11 @@ msgstr " 檢索成員擁有的物件"
 
 #: src/schema/pgTablespace.cpp:39
 msgid " Retrieving tablespace usage"
-msgstr " 取出資料表空間使用"
+msgstr " 檢索資料表空間使用"
 
 #: src/schema/pgUser.cpp:89
 msgid " Retrieving user owned objects"
-msgstr "檢索用戶擁有的物件"
+msgstr " 檢索用戶擁有的物件"
 
 #: xtra/pgagent/unix.cpp:26
 #: xtra/pgagent/unix.cpp:27
@@ -146,29 +151,25 @@ msgstr " [選項] <連結-字串>\n"
 #: src/frm/frmStatus.cpp:787
 #: src/frm/frmStatus.cpp:835
 msgid " current"
-msgstr "目前的"
+msgstr " 目前的"
 
 #: src/frm/frmReport.cpp:1469
-#, fuzzy
 msgid " dependencies"
-msgstr "依存服務"
+msgstr " 附屬性"
 
 #: src/frm/frmReport.cpp:1503
-#, fuzzy
 msgid " dependents"
-msgstr "依存關係"
+msgstr " 附屬關係"
 
 # standard
 # standard
 #: src/frm/frmReport.cpp:1218
-#, fuzzy
 msgid " properties"
-msgstr "屬性"
+msgstr " 屬性"
 
 #: src/frm/frmReport.cpp:1434
-#, fuzzy
 msgid " statistics"
-msgstr "統計情報"
+msgstr " 統計情報"
 
 # standard
 # standard
@@ -252,7 +253,7 @@ msgstr "共檢索 %ld 列。"
 #: src/frm/frmQuery.cpp:1628
 #, c-format
 msgid "%s (%d asynchronous notifications received)."
-msgstr "%s (%d 非同步 notifications received)."
+msgstr "%s (%d 非同步通知被承認)."
 
 #: src/frm/frmReport.cpp:1252
 #, c-format
@@ -262,17 +263,17 @@ msgstr "%s DLL 報告 - %s"
 #: src/frm/frmReport.cpp:1287
 #, c-format
 msgid "%s Data dictionnary report - %s"
-msgstr ""
+msgstr "%s 資料字典報告 - %s"
 
 #: src/frm/frmReport.cpp:1466
 #, c-format
 msgid "%s dependencies report - %s"
-msgstr "%s 依存關係報告 - %s"
+msgstr "%s 附屬性報告 - %s"
 
 #: src/frm/frmReport.cpp:1500
 #, c-format
 msgid "%s dependents report - %s"
-msgstr "%s 依存關係報告 - %s"
+msgstr "%s 附屬關係報告 - %s"
 
 #: src/frm/frmReport.cpp:1548
 #, c-format
@@ -310,9 +311,8 @@ msgid "%s statistics report - %s"
 msgstr "%s 統計情報報告 - %s"
 
 #: src/frm/frmAbout.cpp:72
-#, fuzzy
 msgid "&About"
-msgstr "關於(&A)..."
+msgstr "關於(&A)"
 
 #: src/frm/frmAbout.cpp:69
 msgid "&About..."
@@ -340,18 +340,16 @@ msgid "&Backup"
 msgstr "備份(&B)"
 
 #: src/frm/frmBackup.cpp:274
-#, fuzzy
 msgid "&Backup..."
-msgstr "備份(&B)"
+msgstr "備份(&B)..."
 
 #: src/frm/frmHelp.cpp:273
-#, fuzzy
 msgid "&Bug Report"
-msgstr "錯誤報告(&B)"
+msgstr "臭蟲回報(&B)"
 
 #: src/frm/frmHelp.cpp:273
 msgid "&Bugreport"
-msgstr "錯誤報告(&B)"
+msgstr "臭蟲回報(&B)"
 
 # standard
 # standard
@@ -431,18 +429,16 @@ msgid "&Create"
 msgstr "建立(&C)"
 
 #: src/dlg/dlgProperty.cpp:1438
-#, fuzzy
 msgid "&Create..."
-msgstr "建立(&C)"
+msgstr "建立(&C)..."
 
 #: src/frm/frmReport.cpp:1234
-#, fuzzy
 msgid "&DDL report"
-msgstr "錯誤報告(&B)"
+msgstr "DLL 報告(&D)"
 
 #: src/frm/frmReport.cpp:1266
 msgid "&Data dictionary report"
-msgstr "&Data dictionary report"
+msgstr "資料字典報告(&D)"
 
 #: src/frm/frmQuery.cpp:160
 msgid "&Database bar"
@@ -471,12 +467,10 @@ msgstr "刪除(&D)"
 # standard
 # standard
 #: src/frm/frmConfig.cpp:136
-#, fuzzy
 msgid "&Delete\tDEL"
-msgstr "刪除(&D)"
+msgstr "刪除(&D)\tDEL"
 
 #: src/frm/frmEditGrid.cpp:162
-#, fuzzy
 msgid "&Delete\tDel"
 msgstr "刪除(&D)\tDel"
 
@@ -490,11 +484,11 @@ msgstr "刪除(&D)\tDel"
 
 #: src/frm/frmReport.cpp:1448
 msgid "&Dependencies report"
-msgstr "依存關係報告(&D)"
+msgstr "附屬性報告(&D)"
 
 #: src/frm/frmReport.cpp:1482
 msgid "&Dependents report"
-msgstr "依存關係報告(&D)"
+msgstr "附屬關係報告(&D)"
 
 # standard
 # standard
@@ -512,7 +506,7 @@ msgstr "檢視(&D)"
 
 #: standard input:935
 msgid "&Do not use a stylesheet"
-msgstr "&Do not use a stylesheet"
+msgstr "不能使用樣式表(&D)"
 
 #: src/frm/frmConfig.cpp:148
 #: src/frm/frmMain.cpp:234
@@ -556,9 +550,8 @@ msgid "&Export"
 msgstr "匯出(&E)"
 
 #: src/frm/frmQuery.cpp:134
-#, fuzzy
 msgid "&Export..."
-msgstr "匯出(&E)"
+msgstr "匯出(&E)..."
 
 # standard
 # standard
@@ -568,7 +561,7 @@ msgstr "FK 索引檢查(&F)"
 
 #: src/frm/frmQuery.cpp:189
 msgid "&Favourites"
-msgstr "&Favourites"
+msgstr "最愛(&F)"
 
 #: src/frm/frmConfig.cpp:147
 #: src/frm/frmMain.cpp:233
@@ -657,7 +650,7 @@ msgstr "加入到(&J)..."
 
 #: src/frm/frmEditGrid.cpp:173
 msgid "&Limit bar"
-msgstr "&Limit bar"
+msgstr "限制列(&L)"
 
 #: standard input:933
 #: input:937
@@ -669,9 +662,8 @@ msgid "&Maintenance"
 msgstr "維護(&M)"
 
 #: src/frm/frmMaintenance.cpp:194
-#, fuzzy
 msgid "&Maintenance..."
-msgstr "維護(&M)"
+msgstr "維護(&M)..."
 
 #: src/frm/frmQuery.cpp:129
 msgid "&New window\tCtrl-N"
@@ -719,7 +711,7 @@ msgstr "不記錄日誌(&N)"
 #: input:968
 #: input:992
 msgid "&OK"
-msgstr "&OK"
+msgstr "確定(&O)"
 
 # standard
 # standard
@@ -749,9 +741,8 @@ msgid "&Options..."
 msgstr "選項(&O)..."
 
 #: src/frm/frmQuery.cpp:161
-#, fuzzy
 msgid "&Output pane"
-msgstr "輸出"
+msgstr "輸出窗格(&O)"
 
 #: src/frm/frmQuery.cpp:125
 #: src/frm/frmEditGrid.cpp:161
@@ -772,16 +763,14 @@ msgstr "屬性(&P)"
 # standard
 # standard
 #: src/frm/frmReport.cpp:1197
-#, fuzzy
 msgid "&Properties report"
-msgstr "屬性(&P)"
+msgstr "屬性報告(&P)"
 
 # standard
 # standard
 #: src/dlg/dlgProperty.cpp:1412
-#, fuzzy
 msgid "&Properties..."
-msgstr "屬性(&P)"
+msgstr "屬性(&P)..."
 
 #: src/frm/frmQuery.cpp:146
 #: src/frm/frmQuery.cpp:181
@@ -800,9 +789,8 @@ msgid "&Query tool"
 msgstr "查詢工具(&Q)"
 
 #: src/frm/frmQuery.cpp:135
-#, fuzzy
 msgid "&Quick report..."
-msgstr "錯誤報告(&B)"
+msgstr "快速報告(&Q)"
 
 #: src/frm/frmConfig.cpp:127
 #: src/frm/frmQuery.cpp:114
@@ -818,14 +806,12 @@ msgstr "重覆(&R)\tCtrl-Y"
 
 # standard
 #: src/frm/frmEditGrid.cpp:169
-#, fuzzy
 msgid "&Refresh\tF5"
-msgstr "重新整理(&F)\tF5"
+msgstr "重新整理(&R)\tF5"
 
 #: standard input:136
-#, fuzzy
 msgid "&Replace"
-msgstr "取代/還原文字"
+msgstr "取代/還原(&R)"
 
 #: src/frm/frmQuery.cpp:129
 msgid "&Replace\tCtrl-R"
@@ -840,9 +826,8 @@ msgid "&Restore"
 msgstr "備份回存(&R)"
 
 #: src/frm/frmRestore.cpp:452
-#, fuzzy
 msgid "&Restore..."
-msgstr "備份回存(&R)"
+msgstr "備份回存(&R)..."
 
 #: src/frm/frmQuery.cpp:150
 #: src/frm/frmQuery.cpp:193
@@ -851,7 +836,7 @@ msgstr "&SQL 說明\tF1"
 
 #: src/frm/frmMain.cpp:251
 msgid "&SQL pane"
-msgstr "&SQL pane"
+msgstr "SQL 窗格(&S)"
 
 #: src/frm/frmEditGrid.cpp:151
 msgid "&Save"
@@ -865,7 +850,6 @@ msgid "&Save\tCtrl-S"
 msgstr "存檔(&S)\tCtrl-S"
 
 #: src/frm/frmMain.cpp:246
-#, fuzzy
 msgid "&Save Definition..."
 msgstr "儲存定義(&S)..."
 
@@ -881,23 +865,21 @@ msgstr "伺服器狀態(&S)"
 
 #: src/frm/frmQuery.cpp:155
 msgid "&Show line ends"
-msgstr "&Show 結尾列"
+msgstr "顯行最後行(&S)"
 
 #: src/frm/frmQuery.cpp:154
 msgid "&Show whitespace"
 msgstr "&Show whitespace"
 
 #: src/frm/frmEditGrid.cpp:171
-#, fuzzy
 msgid "&Sort/filter..."
-msgstr "排序/過濾選項。"
+msgstr "排序/過濾(&S)..."
 
 #: src/frm/frmReport.cpp:1388
 msgid "&Statistics report"
 msgstr "統計情報報告(&S)"
 
 #: src/frm/frmMain.cpp:264
-#, fuzzy
 msgid "&System Objects"
 msgstr "系統物件(&S)"
 
@@ -911,10 +893,10 @@ msgstr "今日小密訣(&T)"
 
 #: src/frm/frmHint.cpp:464
 msgid "&Tip of the day"
-msgstr "本日小密訣(&T)"
+msgstr "今日小密訣(&T)"
 
 msgid "&Tip of the day..."
-msgstr "本日小密訣(&T)..."
+msgstr "今日小密訣(&T)..."
 
 #: src/frm/frmEditGrid.cpp:175
 #: src/frm/frmMain.cpp:252
@@ -935,13 +917,15 @@ msgstr "工具(&T)"
 msgid "&Undo\tCtrl-Z"
 msgstr "回復(&U)\tCtrl-Z"
 
+# standard
+# standard
 #: standard input:859
 #: src/frm/frmEditGrid.cpp:187
 #: src/frm/frmMain.cpp:394
 #: src/frm/frmQuery.cpp:164
 #: input:967
 msgid "&View"
-msgstr "視表(&V)"
+msgstr "檢視(&V)"
 
 #: src/frm/frmQuery.cpp:153
 msgid "&Word wrap"
@@ -985,9 +969,9 @@ msgid "*"
 msgstr "*"
 
 #: src/frm/frmReport.cpp:1329
-#, fuzzy, c-format
+#, c-format
 msgid "* Inherited columns from %s."
-msgstr "由資料表 %s 繼承"
+msgstr "* 繼承欄位來自 %s "
 
 # standard
 # standard
@@ -1412,7 +1396,7 @@ msgstr "一個查詢執行中。您要取消它？"
 #: src/frm/frmStatus.cpp:914
 #: src/frm/frmStatus.cpp:962
 msgid "A terminate signal was sent to the selected server process(es)."
-msgstr ""
+msgstr "一個終止訊號被寄發到選擇的伺服器進程."
 
 #: src/schema/pgDatabase.cpp:400
 #: src/schema/pgFunction.cpp:140
@@ -1613,9 +1597,8 @@ msgid "Add favourite"
 msgstr "新增最愛"
 
 #: src/frm/frmQuery.cpp:184
-#, fuzzy
 msgid "Add favourite..."
-msgstr "新增伺服器(&A)..."
+msgstr "新增最愛..."
 
 #: src/dlg/dlgServer.cpp:232
 #: src/dlg/dlgServer.cpp:238
@@ -1785,9 +1768,8 @@ msgid "Are you sure the logfile should be rotated?"
 msgstr "您確定要 the logfile should be rotated？"
 
 #: src/dlg/dlgManageFavourites.cpp:162
-#, fuzzy
 msgid "Are you sure you want to delete the "
-msgstr "您確定要刪除所選取的列(範圍)？"
+msgstr "您確定您將要刪除所選取的"
 
 #: src/frm/frmConfig.cpp:237
 #: src/frm/frmConfig.cpp:246
@@ -1810,18 +1792,17 @@ msgid "Are you sure you wish to commit the selected prepared transactions?"
 msgstr "您確定要停止所選的事物(transactions)？"
 
 #: src/frm/frmEditGrid.cpp:688
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you wish to delete the %d selected rows?"
-msgstr "您確定要刪除所選取的列(範圍)？"
+msgstr "您確定您要刪除所選取 %d 的列(範圍)？"
 
 #: src/frm/frmEditGrid.cpp:507
 msgid "Are you sure you wish to delete the selected row(s)?"
 msgstr "您確定要刪除所選取的列(範圍)？"
 
 #: src/frm/frmEditGrid.cpp:686
-#, fuzzy
 msgid "Are you sure you wish to delete the selected row?"
-msgstr "您確定要刪除所選取的列(範圍)？"
+msgstr "您確定您要刪除所選取的列(範圍)？"
 
 #: src/main/events.cpp:652
 #: src/main/events.cpp:630
@@ -1947,32 +1928,32 @@ msgstr "返回上一頁。"
 
 #: src/dlg/dlgMainConfig.cpp:50
 msgid "Backend - overridable in individual backend"
-msgstr "後端 - overridable in individual backend"
+msgstr "伺服端 - overridable in individual 伺服端"
 
 #: src/frm/frmHbaConfig.cpp:42
 #: src/frm/frmHbaConfig.cpp:76
 #: src/frm/frmHbaConfig.cpp:44
 #: src/frm/frmHbaConfig.cpp:78
 msgid "Backend Access Configuration Editor"
-msgstr "後端存取組態編輯器"
+msgstr "伺服端存取權組態編輯器"
 
 #: src/frm/frmMainConfig.cpp:42
 #: src/frm/frmMainConfig.cpp:78
 #: src/frm/frmMainConfig.cpp:43
 #: src/frm/frmMainConfig.cpp:79
 msgid "Backend Configuration Editor"
-msgstr "後端組態編輯器"
+msgstr "伺服端組態編輯器"
 
 #: src/schema/pgServer.cpp:883
 #: src/schema/pgServer.cpp:903
 #: src/schema/pgServer.cpp:931
 msgid "Backend start"
-msgstr "後端啟動"
+msgstr "伺服端啟動"
 
 #: src/schema/pgDatabase.cpp:574
 #: src/schema/pgDatabase.cpp:587
 msgid "Backends"
-msgstr "後端"
+msgstr "伺服端"
 
 #: standard input:704
 #: input:761
@@ -1987,7 +1968,7 @@ msgstr "備份 %s %s"
 #: src/frm/frmBackup.cpp:123
 #: src/frm/frmRestore.cpp:135
 msgid "Backup files (*.backup)|*.backup|All files (*.*)|*.*"
-msgstr "備分檔 (*.backup)|*.backup|所有檔案 (*.*)|*.*"
+msgstr "備分檔案 (*.backup)|*.backup|所有檔案 (*.*)|*.*"
 
 #: standard input:152
 #, fuzzy
@@ -2044,7 +2025,6 @@ msgid "Browse for a logfile."
 msgstr "瀏覽日誌檔。"
 
 #: src/frm/frmPassword.cpp:97
-#, fuzzy
 msgid "C&hange Password..."
 msgstr "變更密碼(&h)..."
 
@@ -2081,7 +2061,7 @@ msgstr "CR/LF"
 #: src/frm/frmQuery.cpp:1695
 #: src/frm/frmQuery.cpp:1697
 msgid "CREATE script"
-msgstr "CREATE script"
+msgstr "CREATE 描述腳本"
 
 # standard
 # standard
@@ -2136,7 +2116,6 @@ msgid "Can modify catalog directly"
 msgstr "能修改分類目錄"
 
 #: xtra/pgagent/unix.cpp:50
-#, fuzzy
 msgid "Can not open the logfile!"
 msgstr "無法開啟日誌檔！"
 
@@ -2311,7 +2290,7 @@ msgstr "無法啟始網路子系統！"
 
 #: src/base/sysLogger.cpp:198
 msgid "Cannot open the logfile!"
-msgstr "無法開啟日誌檔！"
+msgstr "不能開啟日誌檔！"
 
 #: src/schema/pgCast.cpp:166
 msgid "Cast"
@@ -2376,9 +2355,8 @@ msgstr ""
 # standard
 # standard
 #: src/base/pgConnBase.cpp:570
-#, fuzzy
 msgid "Character: "
-msgstr "參數"
+msgstr "字符:"
 
 # standard
 # standard
@@ -2495,16 +2473,14 @@ msgstr "客戶端存取組態"
 
 #: src/frm/frmPgpassConfig.cpp:43
 #: src/frm/frmPgpassConfig.cpp:46
-#, fuzzy
 msgid "Client Access Configuration Editor"
-msgstr "客戶端存取組態"
+msgstr "客戶端存取組態編輯器"
 
 # standard
 # standard
 #: src/frm/frmStatus.cpp:115
-#, fuzzy
 msgid "Client start"
-msgstr "客戶端"
+msgstr "客戶端啟始"
 
 # standard
 # standard
@@ -2524,15 +2500,13 @@ msgid "Close server browser? If you abort, the object browser will not show accu
 msgstr "關閉伺服器瀏覽? 如果你使中止, 這物件瀏覽將不顯示精確的資料."
 
 #: standard input:133
-#, fuzzy
 msgid "Close the dialog"
-msgstr "關閉這個視窗。"
+msgstr "關閉這個對話。"
 
 msgid "Close this Window."
 msgstr "關閉這個視窗。"
 
 #: src/frm/frmEditGrid.cpp:153
-#, fuzzy
 msgid "Close this window."
 msgstr "關閉這個視窗。"
 
@@ -2777,11 +2751,9 @@ msgstr "編譯工作: %s"
 msgid "Composite"
 msgstr "合成"
 
-# standard
 #: standard input:252
-#, fuzzy
 msgid "Concurrent build?"
-msgstr "目前的值"
+msgstr "共同時點建構?"
 
 # standard
 # standard
@@ -2811,21 +2783,21 @@ msgid "Confirm Password"
 msgstr "確認密碼"
 
 # standard
+# standard
 #: src/dlg/dlgManageFavourites.cpp:162
-#, fuzzy
 msgid "Confirm delete"
-msgstr "於刪除時"
+msgstr "確認刪除"
 
 # standard
 # standard
 #: standard input:806
 #: input:863
 msgid "Confirm object deletion?"
-msgstr "確認刪除物件？"
+msgstr "確認物件刪除？"
 
 #: src/frm/frmQuery.cpp:1028
 msgid "Confirm replace"
-msgstr ""
+msgstr "確認替換"
 
 # standard
 # standard
@@ -2835,7 +2807,7 @@ msgstr ""
 #: src/schema/pgUser.cpp:43
 #: src/dlg/dlgRole.cpp:267
 msgid "Confirm superuser deletion"
-msgstr "確認刪除超級用戶？"
+msgstr "確認超級用戶刪除？"
 
 #: standard input:337
 #: input:392
@@ -2970,9 +2942,8 @@ msgid "Context"
 msgstr "本文"
 
 #: src/base/pgConnBase.cpp:577
-#, fuzzy
 msgid "Context: "
-msgstr "本文"
+msgstr "本文:"
 
 msgid "Continue?"
 msgstr "繼續？"
@@ -3003,18 +2974,16 @@ msgid "Copy SQL from main form to SQL dialogue"
 msgstr "由主表單複製 SQL 至 SQL 對話視窗"
 
 #: src/frm/frmEditGrid.cpp:160
-#, fuzzy
 msgid "Copy selected cells to clipboard."
-msgstr "複製指定行到剪貼簿"
+msgstr "複製已選擇巢式到剪貼簿"
 
 #: src/frm/frmEditGrid.cpp:104
 msgid "Copy selected lines to clipboard"
 msgstr "複製指定行到剪貼簿"
 
 #: src/frm/frmEditGrid.cpp:116
-#, fuzzy
 msgid "Copy selected lines to clipboard."
-msgstr "複製指定行到剪貼簿"
+msgstr "複製已選擇行到剪貼簿."
 
 #: src/frm/frmQuery.cpp:124
 #: src/frm/frmQuery.cpp:192
@@ -3072,7 +3041,7 @@ msgstr "不能集支持這類型。"
 #: src/main/events.cpp:738
 #, c-format
 msgid "Could not write the file %s: Errcode=%d."
-msgstr ""
+msgstr "不能寫入這檔案 %s: 錯誤碼=%d."
 
 #: src/schema/pgServer.cpp:537
 #: src/schema/pgServer.cpp:555
@@ -3108,7 +3077,7 @@ msgstr "無法建立暫存目錄: %s"
 #: xtra/pgagent/job.cpp:189
 #, c-format
 msgid "Couldn't create temporary script file: %s"
-msgstr "無法建立暫存腳本檔案: %s"
+msgstr "無法建立暫存描述腳本檔案: %s"
 
 #: src/pgAdmin3.cpp:399
 #: src/pgAdmin3.cpp:473
@@ -3123,17 +3092,17 @@ msgstr "無法建立歡迎畫面！"
 #: xtra/pgagent/job.cpp:235
 #, c-format
 msgid "Couldn't execute script: %s"
-msgstr "無法執行腳本: %s"
+msgstr "無法執行描述腳本: %s"
 
 #: xtra/pgagent/job.cpp:237
 #, c-format
 msgid "Couldn't execute script: %s, GetLastError() returned %d, errno = %d"
-msgstr ""
+msgstr "不能執行描述腳本: %s, GetLastError() returned %d, errno = %d"
 
 #: xtra/pgagent/job.cpp:269
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't execute script: %s, errno = %d"
-msgstr "無法執行腳本: %s"
+msgstr "不能執行描述腳本: %s, errno = %d"
 
 #: xtra/pgagent/job.cpp:141
 #: xtra/pgagent/job.cpp:139
@@ -3156,7 +3125,7 @@ msgstr "無法開啟 tips.txt 檔！"
 #: xtra/pgagent/job.cpp:197
 #, c-format
 msgid "Couldn't open temporary script file: %s"
-msgstr "無法開啟暫存腳本檔案: %s"
+msgstr "無法開啟暫存描述腳本檔案: %s"
 
 #: xtra/pgagent/win32.cpp:364
 #: xtra/pgagent/win32.cpp:429
@@ -3178,7 +3147,7 @@ msgstr "無法移除暫存檔案: %s"
 #: xtra/pgagent/job.cpp:290
 #, c-format
 msgid "Couldn't remove temporary script file: %s"
-msgstr "無法移除暫存腳本檔案: %s"
+msgstr "無法移除暫存描述腳本檔案: %s"
 
 #: src/slony/dlgRepCluster.cpp:839
 msgid "Couldn't test for the Slony version. Assuming 1.2.0"
@@ -3188,7 +3157,7 @@ msgstr ""
 #: xtra/pgagent/job.cpp:216
 #, c-format
 msgid "Couldn't write to temporary script file: %s"
-msgstr "無法寫入暫存腳本檔案: %s"
+msgstr "無法寫入暫存描述腳本檔案: %s"
 
 # standard
 # standard
@@ -3426,14 +3395,12 @@ msgid "Create new Step"
 msgstr "建立新步驟。"
 
 #: src/dlg/dlgManageFavourites.cpp:183
-#, fuzzy
 msgid "Create new favourites folder"
-msgstr "建立新群組成員。"
+msgstr "建立新最愛夾"
 
 #: src/frm/frmMain.cpp:334
-#, fuzzy
 msgid "Create reports about the selected item."
-msgstr "計算指定物件的列數。"
+msgstr "建立報告關於這選擇的項目。"
 
 #: src/schema/pgRole.cpp:249
 msgid "Create roles?"
@@ -3600,9 +3567,8 @@ msgid "Data export aborted."
 msgstr "已中止資料匯出。"
 
 #: src/frm/frmExport.cpp:248
-#, fuzzy
 msgid "Data export completed successfully."
-msgstr "已中止資料匯出。"
+msgstr "資料匯出完整完成。"
 
 #: src/frm/frmExport.cpp:246
 #, c-format
@@ -3615,9 +3581,9 @@ msgid ""
 msgstr ""
 
 #: src/frm/frmEditGrid.cpp:399
-#, fuzzy, c-format
+#, c-format
 msgid "Data from %d rows copied to clipboard."
-msgstr "%d 列已複製到剪貼簿。"
+msgstr "資料從 %d 列已複製到剪貼簿。"
 
 #: src/frm/frmEditGrid.cpp:209
 #: src/frm/frmEditGrid.cpp:220
@@ -3852,9 +3818,8 @@ msgstr "刪除所選的行。"
 
 #: src/frm/frmEditGrid.cpp:120
 #: src/frm/frmEditGrid.cpp:162
-#, fuzzy
 msgid "Delete selected rows."
-msgstr "刪除所選的行。"
+msgstr "刪除選擇的行。"
 
 #: src/dlg/dlgProperty.cpp:1370
 #: src/dlg/dlgProperty.cpp:1461
@@ -3883,25 +3848,23 @@ msgid "Delimiter"
 msgstr "定界符"
 
 #: src/frm/frmMain.cpp:141
-#, fuzzy
 msgid "Dependencies"
-msgstr "依存服務"
+msgstr "附屬性"
 
 #: src/schema/pgServer.cpp:248
 #: src/schema/pgServer.cpp:311
 #: src/schema/pgServer.cpp:252
 #: src/schema/pgServer.cpp:315
 msgid "Dependent services"
-msgstr "依存服務"
+msgstr "附屬關係服務"
 
 #: src/frm/frmMain.cpp:142
-#, fuzzy
 msgid "Dependents"
-msgstr "依存服務"
+msgstr "附屬關係"
 
 #: src/frm/frmMain.cpp:287
 msgid "Depends on"
-msgstr "依存關係"
+msgstr "附屬在"
 
 #: src/dlg/dlgEditGridOptions.cpp:121
 #: src/dlg/dlgEditGridOptions.cpp:141
@@ -3939,9 +3902,8 @@ msgid "Dimensions"
 msgstr "維數"
 
 #: standard input:149
-#, fuzzy
 msgid "Direction"
-msgstr "持續期間"
+msgstr "方向"
 
 #: src/frm/frmBackup.cpp:81
 #: standard input:715
@@ -3989,9 +3951,8 @@ msgstr "檢視關於組態選項的說明。"
 
 #: src/frm/frmEditGrid.cpp:125
 #: src/frm/frmEditGrid.cpp:182
-#, fuzzy
 msgid "Display help on this window."
-msgstr "檢視關於 SQL 指令的說明。"
+msgstr "顯示說明在這視窗。"
 
 #: src/frm/frmConfig.cpp:138
 #: src/frm/frmConfig.cpp:139
@@ -4006,7 +3967,7 @@ msgstr "檢視指導建議在目前物件上。"
 
 #: standard input:131
 msgid "Display the help topic for this dialog"
-msgstr ""
+msgstr "顯禦這個對話的說明主題"
 
 #: src/dlg/dlgProperty.cpp:1321
 #: src/dlg/dlgProperty.cpp:1325
@@ -4057,7 +4018,7 @@ msgstr "不顯示指導建議"
 
 #: standard input:936
 msgid "Do not use a stylesheet"
-msgstr "不要使用 stylesheet"
+msgstr "不能使用樣式表"
 
 msgid "Do you want to save changes?"
 msgstr "儲存更改？"
@@ -4117,7 +4078,6 @@ msgid "Drop %s?"
 msgstr "刪除 %s ？"
 
 #: src/dlg/dlgProperty.cpp:1481
-#, fuzzy
 msgid "Drop Cascaded"
 msgstr "整串(cascaded)移除"
 
@@ -4222,7 +4182,7 @@ msgstr "編輯通用伺服器組態設定檔。"
 
 #: src/frm/frmEditGrid.cpp:125
 msgid "Edit grid help"
-msgstr ""
+msgstr "編輯 grid 說明"
 
 #: src/frm/frmHbaConfig.cpp:285
 #: src/frm/frmHbaConfig.cpp:349
@@ -4231,7 +4191,7 @@ msgstr "編輯伺服器存取組態檔。"
 
 #: src/frm/frmHint.cpp:131
 msgid "Editing views, stored procedures or functions"
-msgstr ""
+msgstr "編輯視表中, 已儲存程序語言或函數群"
 
 # standard
 # standard
@@ -4244,7 +4204,7 @@ msgstr "元素"
 
 #: standard input:932
 msgid "Embed an external stylesheet into the report"
-msgstr ""
+msgstr "Embed an external 樣式表 into the 報告"
 
 #: standard input:930
 msgid "Embed pgAdmin's default stylesheet into the report."
@@ -4396,7 +4356,7 @@ msgstr ""
 
 #: standard input:141
 msgid "Enter the string to search for"
-msgstr ""
+msgstr "輸入搜尋的字符串"
 
 # standard
 # standard
@@ -4434,9 +4394,8 @@ msgid "Errors, Notices, &SQL"
 msgstr "錯誤、提示和SQL(&S)"
 
 #: src/frm/frmMain.cpp:742
-#, fuzzy
 msgid "Establishing connection"
-msgstr "清除所有連線"
+msgstr "清除連線中"
 
 # standard
 # standard
@@ -4541,7 +4500,7 @@ msgstr "執行批次步驟 %s (part of job %s)"
 #: xtra/pgagent/job.cpp:225
 #, c-format
 msgid "Executing script file: %s"
-msgstr "執行腳本檔案: %s"
+msgstr "執行描述腳本檔案: %s"
 
 #: src/frm/frmConfig.cpp:128
 #: src/frm/frmConfig.cpp:131
@@ -4570,7 +4529,6 @@ msgid "Explain analyse query"
 msgstr "解析分析查詢"
 
 #: src/frm/frmQuery.cpp:174
-#, fuzzy
 msgid "Explain analyze query"
 msgstr "解析分析查詢"
 
@@ -4582,9 +4540,8 @@ msgid "Explain query"
 msgstr "解析查詢"
 
 #: src/frm/frmQuery.cpp:170
-#, fuzzy
 msgid "Explain text"
-msgstr "解析"
+msgstr "解析文字"
 
 #: src/frm/frmQuery.cpp:138
 #: src/frm/frmQuery.cpp:173
@@ -4673,65 +4630,63 @@ msgstr "已失敗"
 #: xtra/pgagent/connection.cpp:140
 #, c-format
 msgid "Failed to create new connection to database %s"
-msgstr "建立新資料庫 %s 連線失敗"
+msgstr "建立新連線到資料庫 %s 失敗"
 
 #: xtra/pgagent/connection.cpp:92
 msgid "Failed to create primary connection!"
-msgstr "無法建立主連線！"
+msgstr "建立主連線失敗！"
 
 #: src/dlg/dlgDatabase.cpp:221
 msgid "Failed to disable the CONNECT privilege checkbox!"
-msgstr ""
+msgstr "CONNECT 特權檢查盒喪失能力！"
 
 #: src/dlg/dlgSequence.cpp:117
 msgid "Failed to disable the DELETE privilege checkbox!"
-msgstr ""
+msgstr "DELETE 特權檢查盒喪失能力！"
 
 #: src/dlg/dlgSequence.cpp:115
 msgid "Failed to disable the INSERT privilege checkbox!"
-msgstr ""
+msgstr "INSERT 特權檢查盒喪失能力！"
 
 #: src/dlg/dlgSequence.cpp:121
 msgid "Failed to disable the REFERENCES privilege checkbox!"
-msgstr ""
+msgstr "REFERENCES 特權檢查盒喪失能力！"
 
 #: src/dlg/dlgSequence.cpp:119
 #: src/dlg/dlgTable.cpp:411
 msgid "Failed to disable the RULE privilege checkbox!"
-msgstr ""
+msgstr "RULE 特權檢查盒喪失能力！"
 
 #: src/dlg/dlgSequence.cpp:123
 msgid "Failed to disable the TRIGGER privilege checkbox!"
-msgstr ""
+msgstr "TRIGGER 特權檢查盒喪失能力！"
 
 #: src/dlg/dlgSequence.cpp:110
 msgid "Failed to disable the USAGE privilege checkbox!"
-msgstr ""
+msgstr "USAGE 特權檢查盒喪失能力！"
 
 #: src/utils/favourites.cpp:293
-#, fuzzy
 msgid "Failed to load favourites file!"
-msgstr "無法開啟檔案: %s。"
+msgstr "載入最愛檔案失敗！"
 
 #: src/frm/frmExport.cpp:143
 #: src/frm/frmExport.cpp:142
 #: src/frm/frmReport.cpp:364
 #, c-format
 msgid "Failed to open file %s."
-msgstr "無法開啟檔案: %s。"
+msgstr "開啟檔案失敗: %s。"
 
 #: src/frm/frmReport.cpp:1107
-#, fuzzy
 msgid "Failed to parse the XML document!"
-msgstr "到達文件末尾"
+msgstr "語法分析 XML 文件失敗!"
 
 #: src/frm/frmReport.cpp:1090
 msgid "Failed to parse the XML stylesheet!"
-msgstr ""
+msgstr "XML 樣式表語法分析失敗!"
 
 #: src/frm/frmReport.cpp:1098
 msgid "Failed to parse the XSL stylesheet!"
-msgstr ""
+msgstr "XSL 樣式表語法分析失敗!"
 
 #: xtra/pgagent/pgAgent.cpp:117
 #: xtra/pgagent/pgAgent.cpp:118
@@ -4739,9 +4694,8 @@ msgid "Failed to query jobs table!"
 msgstr "查詢工作資料表失敗！"
 
 #: src/utils/favourites.cpp:300
-#, fuzzy
 msgid "Failed to read favourites file!"
-msgstr "無法開啟檔案: %s。"
+msgstr "讀取最愛檔案失敗！"
 
 #: src/schema/pgServer.cpp:231
 #: src/schema/pgServer.cpp:235
@@ -4760,28 +4714,27 @@ msgid ""
 "Failed to stop server %s: Errcode=%d\n"
 "Check event log for details."
 msgstr ""
-"中止伺服器失敗 %s: 錯誤碼=%d\n"
+"停止伺服器失敗 %s: 錯誤碼=%d\n"
 "詳細原因請檢查事件日誌。"
 
 #: src/frm/frmReport.cpp:1116
 msgid "Failed to to apply the XSL stylesheet to the XML document!"
-msgstr ""
+msgstr "將 XSL 樣式表應用到 XML 文件失敗!"
 
 #: src/frm/frmReport.cpp:1125
 msgid "Failed to to read the processed document!"
-msgstr ""
+msgstr "讀取這進程文件失敗!"
 
 #: src/utils/favourites.cpp:320
 #: src/utils/favourites.cpp:328
 #: src/utils/favourites.cpp:337
-#, fuzzy
 msgid "Failed to write to favourites file!"
-msgstr "無法寫入輸出檔: %s"
+msgstr "寫入到最愛檔失敗！"
 
 #: src/main/events.cpp:761
 #, c-format
 msgid "Failed to write to the output file: %s"
-msgstr "無法寫入輸出檔: %s"
+msgstr "寫入到輸出檔失敗: %s"
 
 #: src/slony/dlgRepCluster.cpp:1337
 #: src/slony/dlgRepCluster.cpp:1354
@@ -4864,20 +4817,17 @@ msgid "Find and Replace text"
 msgstr "尋找並取代文字"
 
 #: standard input:139
-#, fuzzy
 msgid "Find and replace all occurrences of the specified text"
-msgstr "尋找並取代文字"
+msgstr "尋找並取代指定文字的全部事件"
 
 #: src/frm/frmQuery.cpp:151
 #: src/frm/frmQuery.cpp:245
-#, fuzzy
 msgid "Find and replace text"
 msgstr "尋找並取代文字"
 
 #: standard input:137
-#, fuzzy
 msgid "Find and replace the specified text"
-msgstr "尋找並取代文字"
+msgstr "尋找並取代指定文字"
 
 #: src/ctl/ctlSQLBox.cpp:374
 #: src/ctl/ctlSQLBox.cpp:387
@@ -4891,9 +4841,8 @@ msgid "Find text"
 msgstr "尋找文字"
 
 #: standard input:135
-#, fuzzy
 msgid "Find the specified text"
-msgstr "尋找並取代文字"
+msgstr "尋找指定文字"
 
 #: standard input:140
 msgid "Find what:"
@@ -4937,9 +4886,8 @@ msgid "Foreign Key Check"
 msgstr "外部鍵(FK)檢查"
 
 #: src/frm/frmReport.cpp:1362
-#, fuzzy
 msgid "Foreign key"
-msgstr "外部鍵(FK)？"
+msgstr "外部鍵(FK)"
 
 #: src/schema/pgColumn.cpp:214
 #: src/schema/pgColumn.cpp:221
@@ -4984,7 +4932,7 @@ msgstr ""
 
 #: standard input:147
 msgid "From the top"
-msgstr ""
+msgstr "從頂部"
 
 # standard
 # standard
@@ -5017,7 +4965,7 @@ msgstr "通用的"
 
 #: src/frm/frmReport.cpp:1234
 msgid "Generate a DDL report for this object."
-msgstr ""
+msgstr "產生這個物件的DDL報告."
 
 #: src/frm/frmReport.cpp:1266
 msgid "Generate a data dictionary report for this object."
@@ -5025,7 +4973,7 @@ msgstr ""
 
 #: src/frm/frmReport.cpp:1448
 msgid "Generate a dependencies report for this object."
-msgstr ""
+msgstr "Generate a dependencies report for this object."
 
 #: src/frm/frmReport.cpp:1482
 #, fuzzy
@@ -5039,7 +4987,7 @@ msgstr "檢視/編輯所選物件的屬性。"
 
 #: standard input:916
 msgid "Generate a report"
-msgstr ""
+msgstr "產生一個報告"
 
 #: src/frm/frmReport.cpp:1388
 msgid "Generate a statistics report for this object."
@@ -5052,9 +5000,8 @@ msgstr ""
 # standard
 # standard
 #: src/frm/frmReport.cpp:562
-#, fuzzy
 msgid "Generated"
-msgstr "通用的"
+msgstr "通用"
 
 #: src/frm/frmStatus.cpp:135
 #: src/frm/frmStatus.cpp:138
@@ -5127,7 +5074,7 @@ msgstr "群組"
 
 #: src/frm/frmReport.cpp:426
 msgid "HTML Stylesheet files (*.css)|*.css|All files (*.*)|*.*"
-msgstr "HTML Stylesheet files (*.css)|*.css|全部檔案 (*.*)|*.*"
+msgstr "HTML 樣式表檔案 (*.css)|*.css|全部檔案 (*.*)|*.*"
 
 #: src/frm/frmReport.cpp:456
 msgid "HTML files (*.html)|*.html|All files (*.*)|*.*"
@@ -5398,7 +5345,7 @@ msgstr "INSERT"
 # standard
 #: src/frm/frmQuery.cpp:1770
 msgid "INSERT script"
-msgstr "INSERT script"
+msgstr "INSERT 描述腳本"
 
 # standard
 # standard
@@ -5536,7 +5483,7 @@ msgstr "索引大小"
 #: src/frm/frmMain.cpp:180
 #: src/main/events.cpp:854
 msgid "Info pane"
-msgstr "Info pane"
+msgstr "Info 窗格"
 
 #: src/dlg/dlgTable.cpp:208
 #: src/schema/pgColumn.cpp:216
@@ -5893,9 +5840,9 @@ msgid "Ln %d Col %d"
 msgstr "Ln %d Col %d"
 
 #: src/frm/frmQuery.cpp:1124
-#, fuzzy, c-format
+#, c-format
 msgid "Ln %d Col %d Ch %d"
-msgstr "Ln %d Col %d"
+msgstr "Ln %d Col %d Ch %d"
 
 #: src/dlg/dlgForeignKey.cpp:303
 msgid "Local"
@@ -5939,7 +5886,6 @@ msgid "Location"
 msgstr "位置"
 
 #: src/slony/dlgRepSet.cpp:346
-#, fuzzy
 msgid "Lock Set"
 msgstr "鎖定集"
 
@@ -6071,11 +6017,11 @@ msgstr "維護作業"
 
 #: standard input:315
 msgid "Manage favourites"
-msgstr ""
+msgstr "管理最愛"
 
 #: src/frm/frmQuery.cpp:185
 msgid "Manage favourites..."
-msgstr ""
+msgstr "管理最愛..."
 
 # standard
 # standard
@@ -6088,7 +6034,6 @@ msgstr "符合"
 # standard
 # standard
 #: standard input:157
-#, fuzzy
 msgid "Match case"
 msgstr "符合類型"
 
@@ -6189,7 +6134,6 @@ msgstr "成員"
 # standard
 # standard
 #: src/slony/dlgRepSet.cpp:316
-#, fuzzy
 msgid "Merge Set"
 msgstr "合併集"
 
@@ -6289,7 +6233,6 @@ msgid "Most Common Values"
 msgstr "最大共用值"
 
 #: src/slony/dlgRepSet.cpp:411
-#, fuzzy
 msgid "Move Set"
 msgstr "移動集"
 
@@ -6471,18 +6414,16 @@ msgid "New Aggregate"
 msgstr "新聚集函數"
 
 #: src/schema/pgAggregate.cpp:202
-#, fuzzy
 msgid "New Aggregate..."
-msgstr "新聚集函數"
+msgstr "新聚集函數..."
 
 #: src/schema/pgCast.cpp:166
 msgid "New Cast"
 msgstr "新類型轉換(Cast)"
 
 #: src/schema/pgCast.cpp:166
-#, fuzzy
 msgid "New Cast..."
-msgstr "新類型轉換(Cast)"
+msgstr "新類型轉換(Cast)..."
 
 # standard
 # standard
@@ -6496,63 +6437,56 @@ msgstr "新檢查約束"
 # standard
 # standard
 #: src/schema/pgCheck.cpp:147
-#, fuzzy
 msgid "New Check..."
-msgstr "新檢查"
+msgstr "新檢查..."
 
 #: src/schema/pgColumn.cpp:364
 msgid "New Column"
 msgstr "新欄位"
 
 #: src/schema/pgColumn.cpp:371
-#, fuzzy
 msgid "New Column..."
-msgstr "新欄位"
+msgstr "新欄位..."
 
 #: src/schema/pgConversion.cpp:143
 msgid "New Conversion"
 msgstr "新建編碼轉換"
 
 #: src/schema/pgConversion.cpp:143
-#, fuzzy
 msgid "New Conversion..."
-msgstr "新建編碼轉換"
+msgstr "新建編碼轉換..."
 
 #: src/schema/pgDatabase.cpp:628
 msgid "New Database"
 msgstr "新資料庫"
 
 #: src/schema/pgDatabase.cpp:641
-#, fuzzy
 msgid "New Database..."
-msgstr "新資料庫"
+msgstr "新資料庫..."
 
 #: src/schema/pgDomain.cpp:193
 msgid "New Domain"
 msgstr "新領域"
 
 #: src/schema/pgDomain.cpp:193
-#, fuzzy
 msgid "New Domain..."
-msgstr "新領域"
+msgstr "新領域..."
 
 #: src/schema/pgForeignKey.cpp:269
 msgid "New Foreign Key"
 msgstr "新外部鍵(FK)"
 
 #: src/schema/pgForeignKey.cpp:269
-#, fuzzy
 msgid "New Foreign Key..."
-msgstr "新外部鍵(FK)"
+msgstr "新外部鍵(FK)..."
 
 #: src/schema/pgFunction.cpp:424
 msgid "New Function"
 msgstr "新函數"
 
 #: src/schema/pgFunction.cpp:455
-#, fuzzy
 msgid "New Function..."
-msgstr "新函數"
+msgstr "新函數..."
 
 #: src/schema/pgGroup.cpp:150
 msgid "New Group"
@@ -6563,23 +6497,20 @@ msgid "New Group Role"
 msgstr "新群組成員"
 
 #: src/schema/pgRole.cpp:378
-#, fuzzy
 msgid "New Group Role..."
-msgstr "新群組成員"
+msgstr "新群組成員..."
 
 #: src/schema/pgGroup.cpp:150
-#, fuzzy
 msgid "New Group..."
-msgstr "新群組"
+msgstr "新群組..."
 
 #: src/schema/pgIndex.cpp:361
 msgid "New Index"
 msgstr "新索引"
 
 #: src/schema/pgIndex.cpp:371
-#, fuzzy
 msgid "New Index..."
-msgstr "新索引"
+msgstr "新索引..."
 
 #: src/agent/pgaJob.cpp:274
 msgid "New Job"
@@ -6590,9 +6521,8 @@ msgid "New Language"
 msgstr "新程序語言"
 
 #: src/schema/pgLanguage.cpp:147
-#, fuzzy
 msgid "New Language..."
-msgstr "新程序語言"
+msgstr "新程序語言..."
 
 #: src/slony/slListen.cpp:158
 msgid "New Listen"
@@ -6603,9 +6533,8 @@ msgid "New Login Role"
 msgstr "新登入成員"
 
 #: src/schema/pgRole.cpp:369
-#, fuzzy
 msgid "New Login Role..."
-msgstr "新登入成員"
+msgstr "新登入成員..."
 
 #: src/slony/slNode.cpp:370
 msgid "New Node"
@@ -6643,9 +6572,8 @@ msgid "New Primary Key"
 msgstr "新主鍵(PK)"
 
 #: src/schema/pgIndexConstraint.cpp:129
-#, fuzzy
 msgid "New Primary Key..."
-msgstr "新主鍵(PK)"
+msgstr "新主鍵(PK)..."
 
 #: src/schema/pgFunction.cpp:440
 #: src/schema/pgFunction.cpp:471
@@ -6661,9 +6589,8 @@ msgid "New Rule"
 msgstr "新建規則"
 
 #: src/schema/pgRule.cpp:155
-#, fuzzy
 msgid "New Rule..."
-msgstr "新建規則"
+msgstr "新規則..."
 
 #: src/agent/pgaSchedule.cpp:490
 msgid "New Schedule"
@@ -6674,9 +6601,8 @@ msgid "New Schema"
 msgstr "新網要模式"
 
 #: src/schema/pgSchema.cpp:279
-#, fuzzy
 msgid "New Schema..."
-msgstr "新網要模式"
+msgstr "新網要模式..."
 
 #: src/schema/pgSequence.cpp:194
 #: src/slony/slSequence.cpp:145
@@ -6684,9 +6610,8 @@ msgid "New Sequence"
 msgstr "新序列數"
 
 #: src/schema/pgSequence.cpp:199
-#, fuzzy
 msgid "New Sequence..."
-msgstr "新序列數"
+msgstr "新序列數..."
 
 msgid "New Server"
 msgstr "新建伺服器"
@@ -6702,9 +6627,8 @@ msgid "New Slony-I Cluster"
 msgstr "新 Slony-I Cluster"
 
 #: src/slony/slCluster.cpp:382
-#, fuzzy
 msgid "New Slony-I Cluster..."
-msgstr "新 Slony-I Cluster"
+msgstr "新 Slony-I Cluster..."
 
 #: src/agent/pgaStep.cpp:217
 #: src/agent/pgaStep.cpp:226
@@ -6724,18 +6648,16 @@ msgid "New Table"
 msgstr "新資料表"
 
 #: src/schema/pgTable.cpp:815
-#, fuzzy
 msgid "New Table..."
-msgstr "新資料表"
+msgstr "新資料表..."
 
 #: src/schema/pgTablespace.cpp:255
 msgid "New Tablespace"
 msgstr "新資料表空間"
 
 #: src/schema/pgTablespace.cpp:255
-#, fuzzy
 msgid "New Tablespace..."
-msgstr "新資料表空間"
+msgstr "新資料表空間..."
 
 #: src/schema/pgTrigger.cpp:247
 msgid "New Trigger"
@@ -6746,32 +6668,28 @@ msgid "New Trigger Function"
 msgstr "新觸發器函數"
 
 #: src/schema/pgFunction.cpp:463
-#, fuzzy
 msgid "New Trigger Function..."
-msgstr "新觸發器函數"
+msgstr "新觸發器函數..."
 
 #: src/schema/pgTrigger.cpp:247
-#, fuzzy
 msgid "New Trigger..."
-msgstr "新觸發器"
+msgstr "新觸發器..."
 
 #: src/schema/pgType.cpp:247
 msgid "New Type"
 msgstr "新類型"
 
 #: src/schema/pgType.cpp:256
-#, fuzzy
 msgid "New Type..."
-msgstr "新類型"
+msgstr "新類型..."
 
 #: src/schema/pgIndexConstraint.cpp:141
 msgid "New Unique Constraint"
 msgstr "新唯一約束"
 
 #: src/schema/pgIndexConstraint.cpp:141
-#, fuzzy
 msgid "New Unique Constraint..."
-msgstr "新唯一約束"
+msgstr "新唯一約束..."
 
 #: src/schema/pgUser.cpp:297
 msgid "New User"
@@ -6786,14 +6704,12 @@ msgid "New View"
 msgstr "新視表"
 
 #: src/schema/pgView.cpp:270
-#, fuzzy
 msgid "New View..."
-msgstr "新視表"
+msgstr "新視表..."
 
 #: standard input:318
-#, fuzzy
 msgid "New folder"
-msgstr "新節點"
+msgstr "新目錄夾"
 
 #: src/dlg/dlgColumn.cpp:430
 #: src/dlg/dlgColumn.cpp:425
@@ -6909,7 +6825,7 @@ msgstr "無步驟"
 #: src/frm/frmReport.cpp:349
 #, c-format
 msgid "No stylesheet data could be read from the file %s: Errcode=%d."
-msgstr ""
+msgstr "從這檔案無樣式表資料能被讀取 %s: 錯誤碼=%d."
 
 #: src/slony/slNode.cpp:321
 #: src/slony/slNode.cpp:370
@@ -6944,6 +6860,7 @@ msgid "Not NULL"
 msgstr "不允許空值(NN)"
 
 # standard
+# standard
 #: src/schema/pgColumn.cpp:212
 #: src/schema/pgDomain.cpp:103
 #: src/schema/pgColumn.cpp:219
@@ -6951,10 +6868,10 @@ msgid "Not NULL?"
 msgstr "不允許空值(NN)？"
 
 # standard
+# standard
 #: src/frm/frmReport.cpp:1293
-#, fuzzy
 msgid "Not Null?"
-msgstr "不允許空值(NN)？"
+msgstr "不允許空值(NN)?"
 
 #: src/agent/pgaJob.cpp:98
 msgid "Not currently running"
@@ -6971,9 +6888,8 @@ msgid "Not implemented."
 msgstr "未履行。"
 
 #: src/frm/frmReport.cpp:601
-#, fuzzy
 msgid "Notes"
-msgstr "節點"
+msgstr "記事本"
 
 msgid "Nothing"
 msgstr "無事件"
@@ -7169,7 +7085,7 @@ msgstr "OUT"
 #: src/frm/frmMain.cpp:179
 #: src/main/events.cpp:853
 msgid "Object browser"
-msgstr "物件觀看器"
+msgstr "物件導灠器"
 
 # standard
 # standard
@@ -7189,7 +7105,7 @@ msgstr "十月"
 #: src/schema/pgDatabase.cpp:420
 #: src/schema/pgDatabase.cpp:433
 msgid "Old style FKs"
-msgstr "Old style FKs"
+msgstr "老舊樣式 FKs"
 
 #: src/slony/slNode.cpp:159
 msgid "Oldest outstanding"
@@ -7200,19 +7116,19 @@ msgstr ""
 #: standard input:146
 #: input:183
 msgid "On Delete"
-msgstr "於刪除時"
+msgstr "在刪除時"
 
 # standard
 # standard
 #: standard input:140
 #: input:177
 msgid "On Update"
-msgstr "於更新時"
+msgstr "在更新時"
 
 # standard
 #: src/schema/pgForeignKey.cpp:161
 msgid "On delete"
-msgstr "於刪除時"
+msgstr "在刪除時"
 
 # standard
 # standard
@@ -7221,12 +7137,12 @@ msgstr "於刪除時"
 #: src/agent/pgaStep.cpp:69
 #: input:614
 msgid "On error"
-msgstr "僅錯誤"
+msgstr "在錯誤"
 
 # standard
 #: src/schema/pgForeignKey.cpp:160
 msgid "On update"
-msgstr "於更新時"
+msgstr "在更新時"
 
 #: src/frm/frmQuery.cpp:1088
 #: src/frm/frmQuery.cpp:1489
@@ -7272,9 +7188,8 @@ msgid "Open .pgpass"
 msgstr "開啟 .pgpass"
 
 #: src/frm/frmQuery.cpp:129
-#, fuzzy
 msgid "Open a new query window"
-msgstr "開啟一個查詢檔"
+msgstr "開啟一個新查詢視窗"
 
 #: src/frm/frmConfig.cpp:108
 #: src/frm/frmQuery.cpp:108
@@ -7284,9 +7199,8 @@ msgid "Open a query file"
 msgstr "開啟一個查詢檔"
 
 #: src/frm/frmPgpassConfig.cpp:324
-#, fuzzy
 msgid "Open configuration editor with .pgpass"
-msgstr "開啟組態編輯器及 pg_hba.conf。"
+msgstr "開啟組態編輯器及 .pgpass"
 
 #: src/frm/frmHbaConfig.cpp:319
 #: src/frm/frmHbaConfig.cpp:383
@@ -7294,9 +7208,8 @@ msgid "Open configuration editor with pg_hba.conf."
 msgstr "開啟組態編輯器及 pg_hba.conf。"
 
 #: src/frm/frmPgpassConfig.cpp:322
-#, fuzzy
 msgid "Open configuration editor with pgpass.conf."
-msgstr "開啟組態編輯器及 pg_hba.conf。"
+msgstr "開啟組態編輯器及 .pgpass.conf。"
 
 #: src/frm/frmMainConfig.cpp:641
 #: src/frm/frmMainConfig.cpp:652
@@ -7332,9 +7245,8 @@ msgid "Open postgresql.conf"
 msgstr "開啟 postgresql.conf"
 
 #: src/frm/frmMainConfig.cpp:652
-#, fuzzy
 msgid "Open postgresql.conf..."
-msgstr "開啟 postgresql.conf"
+msgstr "開啟 postgresql.conf..."
 
 #: src/frm/frmQuery.cpp:821
 #: src/frm/frmQuery.cpp:1156
@@ -7468,9 +7380,8 @@ msgstr "輸出函數"
 #: src/frm/frmQuery.cpp:290
 #: src/frm/frmQuery.cpp:302
 #: src/frm/frmQuery.cpp:464
-#, fuzzy
 msgid "Output pane"
-msgstr "輸出"
+msgstr "輸出窗格"
 
 #: src/slony/slNode.cpp:197
 msgid "Outstanding acks"
@@ -7661,13 +7572,13 @@ msgid "Please enter function source code."
 msgstr "請輸入函數原始碼。"
 
 #: src/dlg/dlgSelectConnection.cpp:217
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Please enter password for user %s\n"
 "on server %s"
 msgstr ""
 "請輸入用戶密碼 %s\n"
-"在伺服器 %s (%s)"
+"在伺服器 %s"
 
 #: src/schema/pgServer.cpp:523
 #: src/schema/pgServer.cpp:541
@@ -8082,7 +7993,7 @@ msgstr "進程遞回離開碼 %d。"
 
 #: standard input:940
 msgid "Process the XML data using the specified stylesheet"
-msgstr ""
+msgstr "XML資料進程使用指定樣式表中"
 
 # standard
 # standard
@@ -8262,9 +8173,8 @@ msgstr "查詢結果，將傳回 %d 列。\n"
 
 # standard
 #: src/frm/frmQuery.cpp:1244
-#, fuzzy
 msgid "Query results"
-msgstr "查詢工具"
+msgstr "查詢回覆"
 
 #: src/frm/frmQuery.cpp:1081
 #: src/frm/frmQuery.cpp:1482
@@ -8433,7 +8343,7 @@ msgstr "已參照"
 
 #: src/frm/frmMain.cpp:288
 msgid "Referenced by"
-msgstr "參照事項"
+msgstr "參照事項於"
 
 # standard
 # standard
@@ -8470,9 +8380,8 @@ msgstr "重整率(秒)"
 # standard
 # standard
 #: standard input:982
-#, fuzzy
 msgid "Refresh rate:"
-msgstr "重新整理"
+msgstr "重新整理:"
 
 #: src/dlg/dlgProperty.cpp:1411
 #: src/dlg/dlgProperty.cpp:1415
@@ -8488,9 +8397,8 @@ msgstr "重新計算資料列數"
 # standard
 #: src/frm/frmEditGrid.cpp:113
 #: src/frm/frmEditGrid.cpp:169
-#, fuzzy
 msgid "Refresh."
-msgstr "重新整理"
+msgstr "重新載入."
 
 #: src/frm/frmMain.cpp:349
 #: src/frm/frmMain.cpp:429
@@ -8634,23 +8542,21 @@ msgstr "更改最愛名稱"
 
 #: src/dlg/dlgManageFavourites.cpp:140
 msgid "Rename favourites folder"
-msgstr ""
+msgstr "更改最愛夾名稱"
 
 # standard
 # standard
 #: standard input:138
-#, fuzzy
 msgid "Replace &All"
-msgstr "全選(&A)"
+msgstr "取代全部(&A)"
 
 #: src/ctl/ctlSQLBox.cpp:171
 msgid "Replace all"
 msgstr "取代/還原全部"
 
 #: src/frm/frmQuery.cpp:1028
-#, fuzzy
 msgid "Replace current query?"
-msgstr "重新載入本頁。"
+msgstr "取代目前查詢?"
 
 #: src/ctl/ctlSQLBox.cpp:459
 #: src/ctl/ctlSQLBox.cpp:484
@@ -8659,9 +8565,8 @@ msgid "Replace text"
 msgstr "取代/還原文字"
 
 #: standard input:142
-#, fuzzy
 msgid "Replace with:"
-msgstr "取代/還原文字"
+msgstr "取代/還原:"
 
 #: src/schema/pgTable.cpp:440
 #: src/schema/pgTable.cpp:443
@@ -8689,9 +8594,8 @@ msgid "Report Title"
 msgstr "報告名稱"
 
 #: src/frm/frmReport.cpp:616
-#, fuzzy
 msgid "Report generated by"
-msgstr "參照事項"
+msgstr "報告產生在"
 
 #: standard input:810
 #: input:867
@@ -8701,7 +8605,6 @@ msgstr "重設小秘訣"
 # standard
 # standard
 #: src/slony/dlgRepCluster.cpp:1299
-#, fuzzy
 msgid "Restart Node"
 msgstr "重啟節點"
 
@@ -8740,20 +8643,18 @@ msgstr "回復 %s %s"
 # standard
 # standard
 #: standard input:599
-#, fuzzy
 msgid "Restore env?"
-msgstr "回復"
+msgstr "回存環境?"
 
 #: src/schema/pgServer.cpp:887
-#, fuzzy
 msgid "Restore environment?"
-msgstr "回復先前環境"
+msgstr "回復環境變數?"
 
 #: src/frm/frmEditGrid.cpp:177
 #: src/frm/frmMain.cpp:254
 #: src/frm/frmQuery.cpp:311
 msgid "Restore the default view."
-msgstr ""
+msgstr "回存預設檢視."
 
 #: src/frm/frmRestore.cpp:452
 msgid "Restores a backup from a local file"
@@ -9017,7 +8918,7 @@ msgstr "執行？"
 #: src/frm/frmEditGrid.cpp:174
 #: src/frm/frmQuery.cpp:162
 msgid "S&cratch pad"
-msgstr ""
+msgstr "便箋簿(&c)"
 
 # standard
 # standard
@@ -9030,7 +8931,7 @@ msgstr "SELECT"
 # standard
 #: src/frm/frmQuery.cpp:1714
 msgid "SELECT script"
-msgstr "SELECT script"
+msgstr "SELECT 描述腳本"
 
 # standard
 # standard
@@ -9067,7 +8968,7 @@ msgstr "SQL 說明"
 #: src/main/events.cpp:753
 #: src/main/events.cpp:731
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
-msgstr "SQL 腳本 (*.sql)|*.sql|所有檔案 (*.*)|*.*"
+msgstr "SQL 描述腳本 (*.sql)|*.sql|所有檔案 (*.*)|*.*"
 
 # standard
 # standard
@@ -9079,18 +8980,16 @@ msgstr "SQL 說明網頁"
 #: src/frm/frmMain.cpp:170
 #: src/frm/frmMain.cpp:181
 #: src/main/events.cpp:855
-#, fuzzy
 msgid "SQL pane"
-msgstr "SQL 說明"
+msgstr "SQL 窗格"
 
 # standard
 # standard
 #: src/frm/frmQuery.cpp:289
 #: src/frm/frmQuery.cpp:301
 #: src/frm/frmQuery.cpp:463
-#, fuzzy
 msgid "SQL query"
-msgstr "查詢"
+msgstr "SQL 查詢"
 
 #: src/base/pgConnBase.cpp:549
 msgid "SQL state: "
@@ -9234,14 +9133,13 @@ msgstr "網要模式"
 #: src/frm/frmQuery.cpp:303
 #: src/frm/frmQuery.cpp:465
 msgid "Scratch pad"
-msgstr ""
+msgstr "便箋簿"
 
 # standard
 # standard
 #: src/frm/frmMain.cpp:324
-#, fuzzy
 msgid "Scripts"
-msgstr "描述"
+msgstr "描述腳本"
 
 #: standard input:153
 msgid "Search backwards through the text"
@@ -9295,7 +9193,7 @@ msgstr "選擇安裝 Slony-I cluster 的資料庫。"
 #: src/frm/frmOptions.cpp:158
 #: src/frm/frmOptions.cpp:171
 msgid "Select directory with Slony-I creation scripts"
-msgstr "選擇目錄並建立 Slony-I 腳本"
+msgstr "選擇目錄並建立 Slony-I 描述腳本"
 
 #: src/frm/frmExport.cpp:267
 #: src/frm/frmExport.cpp:264
@@ -9325,16 +9223,14 @@ msgstr "選擇選擇安裝 Slony-I cluster 的伺服器。"
 
 #: src/frm/frmReport.cpp:426
 #: src/frm/frmReport.cpp:441
-#, fuzzy
 msgid "Select stylesheet filename"
-msgstr "選擇匯出檔名"
+msgstr "選擇樣式表檔案名稱"
 
 #: standard input:947
 #: input:948
 #: input:950
-#, fuzzy
 msgid "Select the file to write the report to."
-msgstr "選擇一個欄位增加到這排序清單。"
+msgstr "選擇這檔案來寫入報告。"
 
 # standard
 # standard
@@ -9347,7 +9243,7 @@ msgstr "選擇記錄這日誌檔的細節等級。"
 #: input:943
 #: input:945
 msgid "Select the stylesheet to use."
-msgstr ""
+msgstr "選擇這樣式表到使用"
 
 # standard
 # standard
@@ -9438,7 +9334,6 @@ msgid "Server"
 msgstr "伺服器"
 
 #: src/frm/frmMain.cpp:358
-#, fuzzy
 msgid "Server Configuration"
 msgstr "伺服器組態"
 
@@ -9458,7 +9353,7 @@ msgstr "伺服器denies存取"
 
 #: src/frm/frmHint.cpp:96
 msgid "Server instrumentation not installed"
-msgstr ""
+msgstr "伺服器測試設備未安裝"
 
 # standard
 # standard
@@ -9558,7 +9453,7 @@ msgstr "設定名稱"
 #: src/frm/frmHint.cpp:464
 #: src/frm/frmHint.cpp:471
 msgid "Show a tip of the day."
-msgstr "顯示本日小秘訣。"
+msgstr "顯示今日小秘訣。"
 
 #: src/frm/frmAbout.cpp:69
 #: src/frm/frmAbout.cpp:72
@@ -9583,9 +9478,8 @@ msgid "Show or hide system objects."
 msgstr "顯示或隱藏系統物件。"
 
 #: src/frm/frmMain.cpp:251
-#, fuzzy
 msgid "Show or hide the SQL pane."
-msgstr "顯示或隱藏系統物件。"
+msgstr "顯示或隱藏 SQL 窗格。"
 
 #: src/frm/frmQuery.cpp:160
 msgid "Show or hide the database selection bar."
@@ -9596,20 +9490,17 @@ msgid "Show or hide the object browser."
 msgstr "顯示或隱藏物件導灠。"
 
 #: src/frm/frmQuery.cpp:161
-#, fuzzy
 msgid "Show or hide the output pane."
-msgstr "顯示或隱藏系統物件。"
+msgstr "顯示或隱藏輸出窗格。"
 
 #: src/frm/frmEditGrid.cpp:173
-#, fuzzy
 msgid "Show or hide the row limit options bar."
-msgstr "顯示或隱藏系統物件。"
+msgstr "顯示或隱藏列(row)限制選項列。"
 
 #: src/frm/frmEditGrid.cpp:174
 #: src/frm/frmQuery.cpp:162
-#, fuzzy
 msgid "Show or hide the scratch pad."
-msgstr "顯示或隱藏系統物件。"
+msgstr "顯示或隱藏便箋簿。"
 
 #: src/frm/frmEditGrid.cpp:175
 #: src/frm/frmMain.cpp:252
@@ -9658,7 +9549,7 @@ msgstr "Slony-I Cluster"
 
 #: src/slony/dlgRepCluster.cpp:651
 msgid "Slony-I creation scripts not available; only joining possible."
-msgstr "不是有效的 Slony-I 建立腳本; only joining possible。"
+msgstr "不是有效的 Slony-I 建立描述腳本; only joining possible。"
 
 #: standard input:799
 #: input:856
@@ -9725,14 +9616,13 @@ msgstr "啟動PostgreSQL服務"
 
 #: src/frm/frmMain.cpp:324
 msgid "Start Query Tool with scripted query."
-msgstr "開始查詢工具與腳本查詢."
+msgstr "開始查詢工具與描述腳本查詢."
 
 #: src/frm/frmQuery.cpp:1695
 msgid "Start Query tool with CREATE script."
-msgstr "開始查詢工具與建立腳本."
+msgstr "開始查詢工具與 CREATE 描述腳本."
 
 #: src/dlg/dlgServer.cpp:402
-#, fuzzy
 msgid "Start Service"
 msgstr "啟動服務"
 
@@ -9744,19 +9634,19 @@ msgstr "啟動日期"
 
 #: src/frm/frmQuery.cpp:1697
 msgid "Start query tool with CREATE script."
-msgstr "開始查詢工具與建立腳本."
+msgstr "開始查詢工具與 CREATE 描述腳本."
 
 #: src/frm/frmQuery.cpp:1770
 msgid "Start query tool with INSERT script."
-msgstr "開始查詢工具與插入腳本."
+msgstr "開始查詢工具與 INSERT 描述腳本."
 
 #: src/frm/frmQuery.cpp:1714
 msgid "Start query tool with SELECT script."
-msgstr "開始查詢工具與選擇腳本."
+msgstr "開始查詢工具與 SELECT 描述腳本."
 
 #: src/frm/frmQuery.cpp:1736
 msgid "Start query tool with UPDATE script."
-msgstr "開始查詢工具與更新腳本."
+msgstr "開始查詢工具與 UPDATE 描述腳本."
 
 #: src/dlg/dlgServer.cpp:395
 msgid "Start service"
@@ -9774,9 +9664,8 @@ msgid "Start time"
 msgstr "啟動時間"
 
 #: src/dlg/dlgServer.cpp:409
-#, fuzzy
 msgid "Starting Service"
-msgstr "正在啟動服務"
+msgstr "啟動服務中"
 
 #: xtra/pgagent/job.cpp:30
 #: xtra/pgagent/job.cpp:28
@@ -9856,7 +9745,6 @@ msgstr "停止 PostgreSQL 服務"
 
 #: src/dlg/dlgServer.cpp:431
 #: src/dlg/dlgServer.cpp:439
-#, fuzzy
 msgid "Stop Service"
 msgstr "停止服務"
 
@@ -9925,7 +9813,7 @@ msgstr "字串"
 
 #: standard input:928
 msgid "Stylesheet"
-msgstr ""
+msgstr "樣式表"
 
 # standard
 # standard
@@ -10317,6 +10205,11 @@ msgid ""
 "\n"
 "already exists. Do you want to overwrite it?"
 msgstr ""
+"這檔案: \n"
+"\n"
+"%s\n"
+"\n"
+"已經存在。您想要覆寫它嗎?"
 
 # standard
 # standard
@@ -10470,7 +10363,7 @@ msgstr "本軟體依 Artistic 授權條款發行。"
 
 #: src/frm/frmEditGrid.cpp:2357
 msgid "This table contains serial columns. Do you want to use the values in the clipboard for these columns?"
-msgstr ""
+msgstr "這是資料表內文序例號欄位. 您將要使用這些欄位值在剪貼簿?"
 
 #: src/agent/pgaSchedule.cpp:272
 #: standard input:443
@@ -10716,7 +10609,7 @@ msgstr "UPDATE"
 # standard
 #: src/frm/frmQuery.cpp:1736
 msgid "UPDATE script"
-msgstr "UPDATE script"
+msgstr "UPDATE 描述腳本"
 
 #: standard input:755
 #: input:770
@@ -10841,7 +10734,6 @@ msgid "Update catalogs?"
 msgstr "更新分類(Catalogs)？"
 
 #: src/slony/dlgRepCluster.cpp:1337
-#, fuzzy
 msgid "Upgrade Node"
 msgstr "升級節點"
 
@@ -11209,9 +11101,8 @@ msgid "View F&iltered Data"
 msgstr "觀看篩選後資料(&F)"
 
 #: src/frm/frmEditGrid.cpp:2593
-#, fuzzy
 msgid "View F&iltered Rows..."
-msgstr "觀看篩選後資料(&F)"
+msgstr "檢視篩選後行列(&i)..."
 
 #: src/frm/frmEditGrid.cpp:2041
 msgid "View Filtered Data"
@@ -11227,9 +11118,8 @@ msgid "View Top %i Rows"
 msgstr "檢視上 %i Rows"
 
 #: src/frm/frmEditGrid.cpp:2606
-#, fuzzy
 msgid "View a limited number of rows in the selected object."
-msgstr "觀看所選物件的資料。"
+msgstr "檢視一個受限制編號在所選擇物件的列中。"
 
 #: src/frm/frmMain.cpp:331
 msgid "View data."
@@ -11328,14 +11218,12 @@ msgid "Writing data."
 msgstr "寫入資料。"
 
 #: src/frm/frmReport.cpp:441
-#, fuzzy
 msgid "XML Stylesheet files (*.xsl)|*.xsl|All files (*.*)|*.*"
-msgstr "查詢檔 (*.sql)|*.sql|所有檔案 (*.*)|*.*"
+msgstr "XML 樣式表 (*.xsl)|*.xsl|全部檔案 (*.*)|*.*"
 
 #: src/frm/frmReport.cpp:467
-#, fuzzy
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
-msgstr "日誌檔 (*.log)|*.log|所有檔案 (*.*)|*.*"
+msgstr "XML files (*.xml)|*.xml|All files (*.*)|*.*"
 
 #: src/schema/pgDatabase.cpp:575
 #: src/schema/pgDatabase.cpp:588
@@ -11426,9 +11314,8 @@ msgid "char"
 msgstr "char"
 
 #: src/pgAdmin3.cpp:183
-#, fuzzy
 msgid "connect query tool to database"
-msgstr "無伺服器連線。"
+msgstr "連結查詢工具到資料庫"
 
 msgid "daily"
 msgstr "每日"
@@ -11453,14 +11340,12 @@ msgid "double"
 msgstr "double"
 
 #: src/pgAdmin3.cpp:185
-#, fuzzy
 msgid "edit HBA configuration file"
-msgstr "集在組態檔"
+msgstr "編輯 HBA 組態檔"
 
 #: src/pgAdmin3.cpp:186
-#, fuzzy
 msgid "edit configuration files in cluster directory"
-msgstr "寫入組態檔到伺服器中"
+msgstr "編輯在集群目錄的組態檔"
 
 #: src/pgAdmin3.cpp:184
 msgid "edit main configuration file"
@@ -11468,7 +11353,7 @@ msgstr "編輯主組態檔案"
 
 #: src/dlg/dlgManageFavourites.cpp:162
 msgid "favourite"
-msgstr ""
+msgstr "最愛"
 
 #: src/dlg/dlgManageFavourites.cpp:162
 msgid "folder"
