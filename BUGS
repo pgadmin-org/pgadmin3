@@ -33,6 +33,8 @@ wxWidgets
         
 [MAC] wxProcess::IsInputAvailable()/IsErrorAvailable() crash in wx2.7.0, 
       which prevents messages from pg_dump/pg_restore being displayed.
+	  To avoid the crash, on Mac the streams aren't checked until the 
+	  process ends. See ExternProcessDialog::Execute().
       wxWidgets bug ref 1584387.
         
 [STC] On wxMSW 2.6.3 with Num Lock turned off, the control functions 

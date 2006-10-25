@@ -587,8 +587,11 @@ bool ExternProcessDialog::Execute(int step, bool finalStep)
             nb->SetSelection(nb->GetPageCount()-1);
         if (txtMessages)
         {
+// Checking the streams before the process has finished crashes on wxMac 2.7
+#ifndef __WXMAC__
             checkStreams();
             timer->Start(100L);
+#endif
         }
         return true;
     }
