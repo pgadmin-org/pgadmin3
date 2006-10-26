@@ -147,6 +147,11 @@ wxString dlgProperty::GetHelpPage() const
         page=wxT("pg/sql-create");
         page += wxString(factory->GetTypeName()).Lower();
     }
+    
+    // There is no create column page...
+    if (page == wxT("pg/sql-createcolumn"))
+        page = wxT("pg/sql-createtable");
+
     return page;
 }
 
