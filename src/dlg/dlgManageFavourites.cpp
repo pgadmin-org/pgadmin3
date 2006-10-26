@@ -24,6 +24,7 @@
 
 #include "favourites.h"
 
+#include <wx/imaglist.h>
 
 BEGIN_EVENT_TABLE(dlgManageFavourites, pgDialog)
 	EVT_TREE_SEL_CHANGED(XRCID("trLocation"),	dlgManageFavourites::OnTreeChange)

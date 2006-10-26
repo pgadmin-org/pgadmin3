@@ -24,6 +24,7 @@
 
 #include "favourites.h"
 
+#include <wx/imaglist.h>
 
 BEGIN_EVENT_TABLE(dlgAddFavourite, pgDialog)
 	EVT_TEXT(XRCID("txtTitle"),			dlgAddFavourite::OnChange)

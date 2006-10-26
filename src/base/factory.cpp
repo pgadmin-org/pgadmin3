@@ -15,6 +15,7 @@
 #include "pgCollection.h"
 #include "menu.h"
 
+#include <wx/imaglist.h>
 
 wxArrayPtrVoid *factoryArray=0;
 
