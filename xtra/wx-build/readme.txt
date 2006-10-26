@@ -1,13 +1,39 @@
-These files are used to create the wx library.
+This directory contains scripts for building a suitable installation of 
+wxWidgets for your platform to allow you to build pgAdmin.
 
-Download wxWidgets to ..\..\..\pgadmin3-deps\wxWidgets
+GTK
+===
 
-Run "build-wx.bat" to from a Visual Studio 2005 commandprompt to build the required
-parts of wxWidgets in both release and debug builds (unicode, non-DLL).
+Download wxGTK to a suitable directory and unpack it. Then run the following 
+command as root:
+
+./build-wxgtk /path/to/wxgtk
+
+wxGTK will be built in shared and static library versions, with and without
+debug symbols. it will be installed in the default location, /usr/local/
+
+Mac
+===
+
+Download wxMAC to a suitable directory and unpack it. Then run the following
+command as root:
+
+./build-wxmac /path/to/wxmac
+
+wxMAC will be built in shared and static library versions, with and without
+debug symbols. it will be installed in the default location, /usr/local/
+
+MSW
+===
+
+Download wxMSW to ..\..\..\pgadmin3-deps\wxWidgets
+
+Run "build-wxmsw.bat" to from a Visual Studio 2005 commandprompt to build the 
+required parts of wxWidgets in both release and debug builds (unicode, non-DLL).
 
 
-Additional tips
-===============
+Additional tips 
+---------------
 
 To view wxString and other objects in the VC++ debugger:
 
@@ -47,7 +73,4 @@ Note that the function name match is a regexp, hence the escaping of the colons.
 Originally from: 
   http://www.litwindow.com/Knowhow/wxHowto/wxhowto.html
   http://lists.wxwidgets.org/archive/wx-users/msg16845.html
-
-
-
 

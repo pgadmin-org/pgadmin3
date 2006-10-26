@@ -8,6 +8,8 @@
 ##############################################################################
 
 EXTRA_DIST = \
-	$(srcdir)/readme.txt
-	$(srcdir)/setup0-msw-2.7.0.h
-	$(srcdir)/build-wx.bat
+	$(srcdir)/readme.txt \
+	$(srcdir)/setup0-msw-2.7.0.h \
+	$(srcdir)/build-wxgtk \
+	$(srcdir)/build-wxmac \
+	$(srcdir)/build-wxmsw.bat
