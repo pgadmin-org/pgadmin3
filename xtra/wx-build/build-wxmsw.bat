@@ -13,9 +13,9 @@ set HERE=%CD%
 if not exist %WX%\build\msw\wx.dsw goto no_wx
 
 REM Copy include files
-copy setup0-msw-2.7.0.h %WX%\include\wx\setup0.h
-copy setup0-msw-2.7.0.h %WX%\include\wx\setup.h
-copy setup0-msw-2.7.0.h %WX%\include\wx\msw\setup.h
+copy setup0-msw-2.7.h %WX%\include\wx\setup0.h
+copy setup0-msw-2.7.h %WX%\include\wx\setup.h
+copy setup0-msw-2.7.h %WX%\include\wx\msw\setup.h
 
 REM Convert projects if necessary
 cd %WX%\build\msw
