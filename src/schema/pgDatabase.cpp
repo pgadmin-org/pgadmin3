@@ -91,7 +91,10 @@ int pgDatabase::Connect()
         }
 
         // Now we're connected.
-        iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+        if (connection()->BackendMinimumVersion(8, 2))
+            iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_shdescription WHERE objoid=") + GetOidStr()));
+        else
+            iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
 
         // check for extended ruleutils with pretty-print option
         wxString exprname=connection()->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=16"));
@@ -458,7 +461,11 @@ pgObject *pgDatabase::Refresh(ctlTree *browser, const wxTreeItemId item)
             for (i=0 ; i < database->GetVariables().GetCount() ; i++)
                 variables.Add(database->GetVariables().Item(i));
 
-            iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+            if (connection()->BackendMinimumVersion(8, 2))
+                iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_shdescription WHERE objoid=") + GetOidStr()));
+            else
+                iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+
             delete database;
         }
     }

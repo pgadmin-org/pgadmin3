@@ -171,8 +171,9 @@ int dlgDatabase::Go(bool modal)
     else
     {
         // create mode
+        if (!connection->BackendMinimumVersion(8, 2))
+            txtComment->Disable();
 
-        txtComment->Disable();
         cbVarname->Disable();
         txtValue->Disable();
 
@@ -424,6 +425,9 @@ wxString dlgDatabase::GetSql()
         AppendIfFilled(sql, wxT("\n       TABLESPACE="), qtIdent(cbTablespace->GetValue()));
 
         sql += wxT(";\n");
+
+        if (connection->BackendMinimumVersion(8, 2))
+            AppendComment(sql, wxT("DATABASE"), 0, database);
     }
 
 
