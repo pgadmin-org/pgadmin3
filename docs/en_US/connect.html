@@ -19,16 +19,44 @@ pgAdmin tree.
 If you're experiencing connection problems, check the <a href="connect-error.html">connection problems</a> page.
 </P>
 <P>
-The address is the IP address of the machine to contact, or the fully
-qualified domain name. On Unix based systems the address field may 
-be left blank to use the default PostgreSQL Unix Domain Socket on
-the local machine, or be set to an alternate path containing a PostgreSQL
-socket. If a path is entered, it must begin with a "/".
-</P> 
-<P>
 The description is a text to identify the
 server in the pgAdmin tree.
 </P>
+<P>
+The host is the IP address of the machine to contact, or the fully
+qualified domain name. On Unix based systems the address field may 
+be left blank to use the default PostgreSQL Unix Domain Socket on
+the local machine, or be set to an alternate path containing a PostgreSQL
+socket. If a path is entered, it must begin with a "/". The port number
+and SSL connection options may also be specified.
+</P> 
+<p>
+The maintenance DB field is used to specify the initial database that 
+pgAdmin connects to, and that will be expected to have the <a href="pgagent.html">
+pgAgent</a> schema and <a href="extend.html">adminpack</a> objects 
+installed (both optional). On PostgreSQL 8.1 and above, the maintenance
+DB is normally called 'postgres', and on earlier versions 'template1' is
+often used, though it is preferrable to create a 'postgres' database for 
+this purpose to avoid cluttering the template database.
+</p>
+<P>
+If you select "Store password", pgAdmin stores passwords you enter in the ~/.pgpass file under *nix or %APPDATA%\postgresql\pgpass.conf
+under Win32 for later reuse. For details, see <a href='pg/libpq-pgpass.html'>pgpass documentation</a>.
+It will be used for all libpq based tools. If you want the password removed, you can
+select the server's properties and uncheck the selection any time.
+</P>
+<P>
+The "Restore env?" option determines whether or not pgAdmin will attempt to restore the 
+browser environment when you reconnect to this server. If you regularly use different
+databases on the same server you might want to turn this option off.
+</P>
+<P>The DB restriction field allows you to enter an SQL restriction that 
+will be used against the <a href="pg/catalog-pg-database.html">pg_database</a>
+table to limit the databases that you see. For example, you might enter: 
+<i>datname IN ('live_db', 'test_db')</i> so that only live_db and test_db 
+are shown in the pgAdmin browser. Note that you can also limit the schemas
+shown in the database from the Database properties dialogue by entering a
+restriction against <a href="pg/catalog-pg-namespace.html">pg_namespace</a>.
 <P>
 The service field specifies parameters to control the database service
 process. Its meaning is operating system dependent.
@@ -47,30 +75,11 @@ executing service control functions, pgAdmin will append
 status/start/stop keywords to this. Example:<BR>
 sudo /usr/local/pgsql/bin/pg_ctl -D /data/pgsql
 </P>
-<p>
-The maintenance DB field is used to specify the initial database that 
-pgAdmin connects to, and that will be expected to have the <a href="pgagent.html">
-pgAgent</a> schema and <a href="extend.html">adminpack</a> objects 
-installed (both optional). On PostgreSQL 8.1 and above, the maintenance
-DB is normally called 'postgres', and on earlier versions 'template1' is
-often used, though it is preferrable to create a 'postgres' database for 
-this purpose to avoid cluttering the template database.
-</p>
+
 <P>
 You can unckeck the "Connect now" checkbox if you don't want the connection
 to the server being established immediately, but only registered for later use. In this
 case, the connection parameters won't be validated.
-</P>
-<P>
-If you select "Store password", pgAdmin stores passwords you enter in the ~/.pgpass file under *nix or %APPDATA%\postgresql\pgpass.conf
-under Win32 for later reuse. For details, see <a href='pg/libpq-pgpass.html'>pgpass documentation</a>.
-It will be used for all libpq based tools. If you want the password removed, you can
-select the server's properties and uncheck the selection any time.
-</P>
-<P>
-The "Restore env?" option determines whether or not pgAdmin will attempt to restore the 
-browser environment when you reconnect to this server. If you regularly use different
-databases on the same server you might want to turn this option off.
 </P>
 <P>
 This dialog can be launched at a later time to correct or add
