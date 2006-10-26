@@ -108,6 +108,8 @@ IMPLEMENT_APP(pgAdmin3)
 class pgRendererNative : public wxDelegateRendererNative
 {
 public:
+	pgRendererNative() : wxDelegateRendererNative(wxRendererNative::GetDefault()) {}
+
 	void DrawTreeItemButton(wxWindow* win,wxDC& dc, const wxRect& rect, int flags)
 	{
 		GetGeneric().DrawTreeItemButton(win, dc, rect, flags);
