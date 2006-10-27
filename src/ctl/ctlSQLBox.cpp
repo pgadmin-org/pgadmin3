@@ -277,11 +277,12 @@ void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
 	// Clear all highlighting
 	BraceBadLight(wxSTC_INVALID_POSITION);
 
-    // Check for braces that aren't in comment styles
+    // Check for braces that aren't in comment styles,
+    // double quoted styles or single quoted styles
 	if ((ch == '{' || ch == '}' ||
 		 ch == '[' || ch == ']' ||
 		 ch == '(' || ch == ')') &&
-         st != 2) 
+         st != 2 && st != 6 && st != 7) 
 	{
 		match = BraceMatch(pos-1);
 		if (match != wxSTC_INVALID_POSITION)
@@ -297,7 +298,7 @@ void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
 		if ((ch == '{' || ch == '}' ||
 			 ch == '[' || ch == ']' ||
 			 ch == '(' || ch == ')') &&
-             st != 2)
+             st != 2 && st != 6 && st != 7)
 		{
 			match = BraceMatch(pos);
 			if (match == wxSTC_INVALID_POSITION)
