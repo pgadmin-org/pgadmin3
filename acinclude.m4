@@ -114,6 +114,29 @@ AC_DEFUN([LOCATE_LIBXML2],
    ])
 ])
 
+#########################
+# Check libxml2 version #
+#########################
+AC_DEFUN([CHECK_LIBXML2],
+[
+	XML2_VERSION=`${XML2_CONFIG} --version`
+	changequote(<<. >>)dnl
+	XML2_MAJOR=`expr ${XML2_VERSION} : '\([0-9]*\)'`
+	XML2_MINOR=`expr ${XML2_VERSION} : '[0-9]*\.\([0-9]*\)'`
+	XML2_REVISION=`expr ${XML2_VERSION} : '[0-9]*\.[0-9]*\.\([0-9]*\)'`
+	changequote([, ])dnl
+	if test "$XML2_MAJOR" -lt 2; then
+		AC_MSG_ERROR([libxml2 2.6.18 or newer is require to build pgAdmin])
+	fi
+	if test "$XML2_MAJOR" -eq 2 && test "$XML2_MINOR" -lt 6; then
+		AC_MSG_ERROR([libxml2 2.6.18 or newer is require to build pgAdmin])
+	fi
+	if test "$XML2_MAJOR" -eq 2 && test "$XML2_MINOR" -eq 6 && test "$XML2_REVISION" -lt 18; then
+		AC_MSG_ERROR([libxml2 2.6.18 or newer is require to build pgAdmin])
+	fi
+])
+
+
 #####################
 # Locate libxslt    #
 #####################
