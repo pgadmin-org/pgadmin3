@@ -119,6 +119,7 @@ AC_DEFUN([LOCATE_LIBXML2],
 #########################
 AC_DEFUN([CHECK_LIBXML2],
 [
+	AC_MSG_CHECKING(libxml2 version)
 	XML2_VERSION=`${XML2_CONFIG} --version`
 	changequote(<<. >>)dnl
 	XML2_MAJOR=`expr ${XML2_VERSION} : '\([0-9]*\)'`
@@ -320,7 +321,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 
 		if test "$build_cpu-$build_vendor" = "powerpc-apple"
 		then
-			echo -n "Checking if libpq links against libssl: "
+			echo -n "checking if libpq links against libssl: "
 			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libssl)" -gt 0
 			then
 				PG_SSL="yes"
@@ -334,7 +335,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 
 		if test "$build_cpu-$build_vendor" = "powerpc-apple"
 		then
-			echo -n "Checking if libpq links against libkrb5: "
+			echo -n "checking if libpq links against libkrb5: "
 			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libkrb5)" -gt 0
 			then
 				PG_KRB5="yes"
@@ -429,17 +430,17 @@ AC_DEFUN([SETUP_WXWIDGETS],
 	
 		if test "$BUILD_DEBUG" == yes
 		then
-			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION}`
+			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
 			
-			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION}`
-			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=yes --version=${WX_VERSION}`
+			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
+			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 		else
-			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION}`
+			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
 		
-			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION}`
-			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=no --version=${WX_VERSION}`
+			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
+			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 		fi
 
 		AC_MSG_CHECKING(wxWidgets in ${WX_HOME})
