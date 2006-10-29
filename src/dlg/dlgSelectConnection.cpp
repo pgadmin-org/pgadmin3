@@ -124,7 +124,10 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
                     for (i=0 ; i < cbConnection->GetCount()-1 ; i++)
                     {
                         pgConn *conn=(pgConn*)cbConnection->GetClientData(i);
-                        if (conn->GetHost() == remoteServer->GetName() && conn->GetDbname() == dbName)
+                        if (conn->GetHost() == remoteServer->GetName() && 
+                            conn->GetPort() == remoteServer->GetPort() &&
+                            conn->GetUser() == remoteServer->GetUsername() &&
+                            conn->GetDbname() == dbName)
                         {
                             alreadyConnected=true;
                             break;
