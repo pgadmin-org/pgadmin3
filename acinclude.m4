@@ -135,6 +135,7 @@ AC_DEFUN([CHECK_LIBXML2],
 	if test "$XML2_MAJOR" -eq 2 && test "$XML2_MINOR" -eq 6 && test "$XML2_REVISION" -lt 18; then
 		AC_MSG_ERROR([libxml2 2.6.18 or newer is require to build pgAdmin])
 	fi
+	AC_MSG_RESULT(ok)
 ])
 
 
