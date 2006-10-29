@@ -95,7 +95,7 @@ public:
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
-    bool HasStats() { return true; }
+    bool HasStats() { return false; }
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
 
