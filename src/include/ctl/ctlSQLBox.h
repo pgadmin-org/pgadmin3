@@ -53,6 +53,8 @@ private:
 
     dlgFindReplace* m_dlgFindReplace;
 	pgConn *m_database;
+    wxString lastFindString;
+    int lastFindPos;
 	
 };
 

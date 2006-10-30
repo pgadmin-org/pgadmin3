@@ -179,14 +179,43 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
     int startPos = GetSelectionStart();
     int endPos = GetTextLength();
 
+    // Setup flags
     if (wholeWord)
         flags |= wxSTC_FIND_WHOLEWORD;
 
     if (matchCase)
         flags |= wxSTC_FIND_MATCHCASE;
 
+    // Replace the current selection, if there is one and it matches the find param.
+    wxString current = GetText().Mid(startPos, GetSelectionEnd() - startPos);
+    if (doReplace)
+    {
+        if (useRegexps)
+        {
+            wxRegEx *re = new wxRegEx(find);
+            if (re->IsValid() && re->Matches(current))
+            {
+                ReplaceSelection(replace);
+                SetSelectionStart(startPos);
+                SetSelectionEnd(startPos + replace.Length());
+            }
+        }
+        else if ((matchCase && current == find) || (!matchCase && current.Upper() == find.Upper()))
+        {
+            ReplaceSelection(replace);
+            SetSelectionStart(startPos);
+            SetSelectionEnd(startPos + replace.Length());
+        }
+    }
+
+    // Now do the next search
     if (startAtTop)
-        startPos = 0;
+    {
+        if (!lastFindString.IsEmpty() && lastFindString == find)
+            startPos = lastFindPos+1;
+        else
+            startPos = 0;
+    }
     
     if (!reverse)
     {
@@ -228,17 +257,15 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
     {
         SetSelectionStart(selStart);
         SetSelectionEnd(selEnd);
-        if (doReplace)
-        {
-            ReplaceSelection(replace);
-            SetSelectionStart(selStart);
-            SetSelectionEnd(selStart + replace.Length());
-        }
+        lastFindString = find;
+        lastFindPos = selStart;
         EnsureCaretVisible();
         return true;
     }
     else
     {
+        lastFindString = wxEmptyString;
+        lastFindPos = 0;
         return false;
     }
 }
