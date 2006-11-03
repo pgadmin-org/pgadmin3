@@ -491,7 +491,14 @@ void pgConnBase::LogError()
 bool pgConnBase::IsAlive()
 {
     if (GetStatus() != PGCONN_OK)
+    {
+        lastResultError.severity = wxString(wxT("FATAL"));
+        lastResultError.sql_state = wxString(wxT("08006"));
+        lastResultError.msg_primary = wxString::Format(_("Connection to database %s lost."), GetDbname().c_str());
+        lastResultError.formatted_msg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary + wxT("\n") +
+                                        _("SQL state: ") + lastResultError.sql_state;
         return false;
+    }
 
     PGresult *qryRes = PQexec(conn, "SELECT 1;");
     lastResultStatus = PQresultStatus(qryRes);
@@ -500,6 +507,7 @@ bool pgConnBase::IsAlive()
         PQclear(qryRes);
         qryRes = PQexec(conn, "ROLLBACK TRANSACTION; SELECT 1;");
         lastResultStatus = PQresultStatus(qryRes);
+        SetLastResultError(qryRes);
     }
     PQclear(qryRes);
 
