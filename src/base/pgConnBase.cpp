@@ -493,10 +493,9 @@ bool pgConnBase::IsAlive()
     if (GetStatus() != PGCONN_OK)
     {
         lastResultError.severity = wxString(wxT("FATAL"));
-        lastResultError.sql_state = wxString(wxT("08006"));
-        lastResultError.msg_primary = wxString::Format(_("Connection to database %s lost."), GetDbname().c_str());
-        lastResultError.formatted_msg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary + wxT("\n") +
-                                        _("SQL state: ") + lastResultError.sql_state;
+        lastResultError.msg_primary = wxString(PQerrorMessage(conn), *conv);
+        lastResultError.formatted_msg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary;
+        wxLogError(lastResultError.msg_primary);
         return false;
     }
 
