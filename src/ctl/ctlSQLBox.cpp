@@ -189,7 +189,7 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
         flags |= wxSTC_FIND_MATCHCASE;
 
     // Replace the current selection, if there is one and it matches the find param.
-    wxString current = GetText().Mid(startPos, GetSelectionEnd() - startPos);
+    wxString current = GetSelectedText();
     if (doReplace)
     {
         if (useRegexps)
