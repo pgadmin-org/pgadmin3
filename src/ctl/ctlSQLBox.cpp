@@ -131,6 +131,8 @@ void ctlSQLBox::SetDatabase(pgConn *db)
 
 void ctlSQLBox::OnSearchReplace(wxCommandEvent& ev)
 {
+    lastFindString = wxEmptyString;
+    lastFindPos = 0;
     if (!m_dlgFindReplace)
     {
         m_dlgFindReplace = new dlgFindReplace(this);
