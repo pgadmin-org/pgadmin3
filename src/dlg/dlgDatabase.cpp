@@ -110,7 +110,9 @@ int dlgDatabase::Go(bool modal)
     {
         // edit mode
 
-        if (!connection->BackendMinimumVersion(7, 4))
+		// Even with 7.4+, we don't currently have a way to change the database name
+		// as it must be done from a different database.
+        // if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
 
         if (!connection->BackendMinimumVersion(7, 5))
@@ -269,7 +271,8 @@ void dlgDatabase::CheckChange()
     if (database)
     {
         enable = txtSchemaRestr->GetValue() != database->GetSchemaRestriction()
-               || txtComment->GetValue() != database->GetComment();
+               || txtComment->GetValue() != database->GetComment()
+			   || txtName->GetValue() != database->GetName();
     }
 
     CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
