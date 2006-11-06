@@ -1761,6 +1761,9 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     break;
                 }
                 case PGOID_TYPE_BYTEA:
+                    columns[i].numeric = false;
+                    columns[i].attr->SetReadOnly(true);
+                    break;
                 case PGOID_TYPE_CHAR:
                 case PGOID_TYPE_NAME:
                 case PGOID_TYPE_TEXT:
@@ -2194,14 +2197,20 @@ wxString sqlTable::GetValue(int row, int col)
             int i;
             for (i=0 ; i < nCols ; i++)
             {
-                wxString val= thread->DataSet()->GetVal(i);
-                if (val.IsEmpty())
-                {
-                    if (!thread->DataSet()->IsNull(i))
-                        val = wxT("''");
-                }
-                else if (val == wxT("''"))
-                    val = wxT("\\'\\'");
+				wxString val;
+				if (thread->DataSet()->ColType(i) == wxT("bytea"))
+					val = _("<Binary data>");
+				else
+				{
+					val = thread->DataSet()->GetVal(i);
+					if (val.IsEmpty())
+					{
+						if (!thread->DataSet()->IsNull(i))
+							val = wxT("''");
+					}
+					else if (val == wxT("''"))
+						val = wxT("\\'\\'");
+				}
                 line->cols[i] = val;
             }
             rowsCached++;
