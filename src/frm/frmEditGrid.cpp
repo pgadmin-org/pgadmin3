@@ -1946,23 +1946,29 @@ wxString sqlTable::MakeKey(cacheLine *line)
     {
         wxStringTokenizer collist(primaryKeyColNumbers, wxT(","));
         long cn;
+		int offset;
+		
+		if (hasOids)
+		    offset = 0;
+		else
+			offset = 1;
 
         while (collist.HasMoreTokens())
         {
             cn=StrToLong(collist.GetNextToken());
 
-            wxString colval=line->cols[cn-1];
+            wxString colval=line->cols[cn-offset];
             if (colval.IsEmpty())
                 return wxEmptyString;
 
             if (!whereClause.IsEmpty())
                 whereClause += wxT(" AND ");
-            whereClause += qtIdent(columns[cn-1].name) + wxT(" = ") + connection->qtDbString(colval);
+            whereClause += qtIdent(columns[cn-offset].name) + wxT(" = ") + connection->qtDbString(colval);
             
-            if (columns[cn-1].typeName != wxT(""))
+            if (columns[cn-offset].typeName != wxT(""))
             {
                 whereClause += wxT("::");
-                whereClause += columns[cn-1].displayTypeName;
+                whereClause += columns[cn-offset].displayTypeName;
             }
         }
     }
