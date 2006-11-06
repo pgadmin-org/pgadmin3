@@ -272,7 +272,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
             if (isProcedure)
                 function = new pgProcedure(schema, functions->GetVal(wxT("proname")));
-            else if (functions->GetVal(wxT("typname")).IsSameAs(wxT("trigger")))
+            else if (functions->GetVal(wxT("typname")).IsSameAs(wxT("\"trigger\"")))
                 function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
             else
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
