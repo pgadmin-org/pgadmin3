@@ -395,6 +395,11 @@ pgObject *pgFunction::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (coll)
         function = functionFactory.AppendFunctions(coll, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
 
+    // We might be linked to trigger....
+    pgObject *trigger=browser->GetParentObject(item);
+    if (trigger->GetMetaType() == PGM_TRIGGER)
+        function = functionFactory.AppendFunctions(trigger, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
+
     return function;
 }
 
