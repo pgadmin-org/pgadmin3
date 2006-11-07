@@ -48,7 +48,7 @@ bool pgFunction::IsUpToDate()
 
 bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(")");
+    wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")");
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);
@@ -74,9 +74,9 @@ wxString pgFunction::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypeNames() + wxT(")");
+        wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetArgTypeNames() + wxT(")");
 
-        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames() + wxT(")\n\n")
+        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")\n\n")
             + wxT("-- DROP FUNCTION ") + qtName + wxT(";")
             + wxT("\n\nCREATE OR REPLACE FUNCTION ") + qtName;
 
@@ -85,12 +85,12 @@ wxString pgFunction::GetSql(ctlTree *browser)
             sql += wxT("\n  RETURNS ");
             if (GetReturnAsSet())
                 sql += wxT("SETOF ");
-            sql += GetQuotedReturnType();
+            sql += GetReturnType();
         }
         else if (GetReturnAsSet())
         {
             sql += wxT("\n  RETURNS SETOF ");
-            sql += GetQuotedReturnType();
+            sql += GetReturnType();
         }
 
         sql += wxT(" AS\n");
@@ -173,7 +173,7 @@ wxString pgProcedure::GetSql(ctlTree *browser)
 
     if (sql.IsNull())
     {
-        wxString qtName = GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames() + wxT(")");
+        wxString qtName = GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")");
 
         sql = wxT("-- Procedure: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- DROP PROCEDURE") + GetQuotedFullIdentifier() + wxT(";")
@@ -182,7 +182,7 @@ wxString pgProcedure::GetSql(ctlTree *browser)
         if (GetReturnAsSet())
         {
             sql += wxT("\n  RETURNS SETOF ");
-            sql +=GetQuotedReturnType();
+            sql +=GetReturnType();
         }
 
         sql += wxT(" AS\n")
@@ -278,7 +278,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
 
 
-            wxString type, name, argTypes, quotedArgTypes, argTypeNames, quotedArgTypeNames, mode;
+            wxString type, name, argTypes, argTypeNames, mode;
             wxStringTokenizer names(argNames.Mid(1, argNames.Length()-2), wxT(","));
 
             
@@ -301,9 +301,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                     if (!argTypes.IsNull())
                     {
                         argTypes += wxT(", ");
-                        quotedArgTypes += wxT(", ");
                         argTypeNames += wxT(", ");
-                        quotedArgTypeNames += wxT(", ");
                     }
                     name = names.GetNextToken();
                     if (name[0] == '"')
@@ -324,20 +322,15 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
                         function->iAddArgMode(mode);
                         argTypeNames += mode + wxT(" ");
-                        quotedArgTypeNames += mode + wxT(" ");
-                        quotedArgTypes += mode + wxT(" ");
                     }
                     if (!name.IsNull())
                     {
                         function->iAddArgName(name);
                         argTypeNames += name + wxT(" ");
-                        quotedArgTypeNames += qtIdent(name) + wxT(" ");
                     }
 
-    				argTypeNames += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
-					quotedArgTypeNames += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtTypeIdent(types->GetVal(wxT("typname")));
-    				argTypes += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
-					quotedArgTypes += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtTypeIdent(types->GetVal(wxT("typname")));
+    				argTypeNames += types->GetVal(wxT("typname"));
+    				argTypes += types->GetVal(wxT("typname"));
                 }
             }
 
@@ -348,14 +341,11 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             function->iSetAcl(functions->GetVal(wxT("proacl")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
             function->iSetReturnType(functions->GetVal(wxT("typname")));
-			function->iSetQuotedReturnType(functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
             function->iSetArgTypeOids(oids);
 
             function->iSetArgTypes(argTypes);
-            function->iSetQuotedArgTypes(quotedArgTypes);
             function->iSetArgTypeNames(argTypeNames);
-            function->iSetQuotedArgTypeNames(quotedArgTypeNames);
 
             function->iSetLanguage(lanname);
             function->iSetSecureDefiner(functions->GetBool(wxT("prosecdef")));

@@ -335,7 +335,7 @@ void dlgFunction::CheckChange()
               || chkStrict->GetValue() != function->GetIsStrict()
               || cbLanguage->GetValue() != function->GetLanguage()
               || cbOwner->GetValue() != function->GetOwner()
-              || GetArgs(true, true) != function->GetQuotedArgTypeNames()
+              || GetArgs(true, true) != function->GetArgTypeNames()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
               || (!isC && txtSqlBox->GetText() != function->GetSource()));
     }
@@ -614,7 +614,7 @@ wxString dlgFunction::GetSql()
         || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
         || chkStrict->GetValue() != function->GetIsStrict()
         || cbOwner->GetValue() != function->GetOwner()
-        || GetArgs(true, true) != function->GetQuotedArgTypeNames()
+        || GetArgs(true, true) != function->GetArgTypeNames()
         || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
         || (!isC && txtSqlBox->GetText() != function->GetSource());
 
@@ -624,7 +624,7 @@ wxString dlgFunction::GetSql()
         if (name != function->GetName())
         {
             sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier() 
-                                         + wxT("(") + function->GetQuotedArgTypes() + wxT(")")
+                                         + wxT("(") + function->GetArgTypes() + wxT(")")
                 + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
         }
  
