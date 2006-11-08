@@ -1528,20 +1528,11 @@ void sqlGridBoolEditor::Reset()
 
 void sqlGridBoolEditor::StartingClick()
 {
-    wxCheckBoxState value = CBox()->Get3StateValue();
-
-    switch (value)
-    {
-        case wxCHK_UNDETERMINED:
-            CBox()->Set3StateValue(wxCHK_UNCHECKED);
-            break;
-        case wxCHK_UNCHECKED:
-            CBox()->Set3StateValue(wxCHK_CHECKED);
-            break;
-        case wxCHK_CHECKED:
-            CBox()->Set3StateValue(wxCHK_UNDETERMINED);
-            break;
-    }
+    // We used to cycle the value on click here but
+    // that can lead to odd behaviour of the cell.
+    // Without cycling here, the checkbox is displayed
+    // but the user must toggle the box itself - she
+    // cannot just keep clicking the cell.
 }
 
 bool sqlGridBoolEditor::IsAcceptedKey(wxKeyEvent& event)
