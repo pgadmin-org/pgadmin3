@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>44.6. Summary of Changes since Protocol 2.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="protocol.html" title="">
-<link rel="prev" href="protocol-error-fields.html" title="">
-<link rel="next" href="source.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="protocol.html" title="Chapter 44. Frontend/Backend Protocol">
+<link rel="prev" href="protocol-error-fields.html" title="44.5. Error and Notice Message Fields">
+<link rel="next" href="source.html" title="Chapter 45. PostgreSQL Coding Conventions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="protocol-changes"></a></h2></div></div></div>
+<a name="protocol-changes"></a>44.6. Summary of Changes since Protocol 2.0</h2></div></div></div>
 <p>This section provides a quick checklist of changes, for the benefit of
 developers trying to update existing client libraries to protocol 3.0.</p>
 <p>The initial startup packet uses a flexible list-of-strings format
@@ -37,7 +37,7 @@ single DataRow message type serves for returning data in all formats.
 Note that the layout of DataRow has changed to make it easier to parse.
 Also, the representation of binary values has changed: it is no longer
 directly tied to the server's internal representation.</p>
-<p>There is a new <span class="quote">extended query</span> sub-protocol, which adds the frontend
+<p>There is a new &#8220;<span class="quote">extended query</span>&#8221; sub-protocol, which adds the frontend
 message types Parse, Bind, Execute, Describe, Close, Flush, and Sync, and the
 backend message types ParseComplete, BindComplete, PortalSuspended,
 ParameterDescription, NoData, and CloseComplete.  Existing clients do not
@@ -45,7 +45,7 @@ have to concern themselves with this sub-protocol, but making use of it
 may allow improvements in performance or functionality.</p>
 <p><code class="command">COPY</code> data is now encapsulated into CopyData and CopyDone messages.  There
 is a well-defined way to recover from errors during <code class="command">COPY</code>.  The special
-<span class="quote"><code class="literal">\.</code></span> last line is not needed anymore, and is not sent
+&#8220;<span class="quote"><code class="literal">\.</code></span>&#8221; last line is not needed anymore, and is not sent
 during <code class="command">COPY OUT</code>.
 (It is still recognized as a terminator during <code class="command">COPY IN</code>, but its use is
 deprecated and will eventually be removed.)  Binary <code class="command">COPY</code> is supported.

@@ -1,23 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>43.15. pg_database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="catalogs.html" title="">
-<link rel="prev" href="catalog-pg-conversion.html" title="">
-<link rel="next" href="catalog-pg-depend.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="catalog-pg-conversion.html" title="43.14. pg_conversion">
+<link rel="next" href="catalog-pg-depend.html" title="43.16. pg_depend">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-database"></a></h2></div></div></div>
-<a name="id2800722"></a><p>   The catalog <code class="structname">pg_database</code> stores information
+<a name="catalog-pg-database"></a>43.15. <code class="structname">pg_database</code></h2></div></div></div>
+<a name="id2801521"></a><p>   The catalog <code class="structname">pg_database</code> stores information
    about the available databases.  Databases are created with the
    <code class="command">CREATE DATABASE</code> command.  Consult
-   <a href="managing-databases.html" title=""></a> for details about the meaning of some of the
+   <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for details about the meaning of some of the
    parameters.
   </p>
 <p>   Unlike most system catalogs, <code class="structname">pg_database</code>
@@ -26,7 +26,7 @@
    one per database.
   </p>
 <div class="table">
-<a name="id2800764"></a><p class="title"><b></b></p>
+<a name="id2801563"></a><p class="title"><b>Table 43.15. <code class="structname">pg_database</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_database Columns" border="1">
 <colgroup>
 <col>
@@ -50,7 +50,7 @@
 <tr>
 <td><code class="structfield">datdba</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-authid.html" title=""><code class="structname">pg_authid</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
 <td>Owner of the database, usually the user who created it</td>
 </tr>
 <tr>
@@ -96,34 +96,21 @@
       </td>
 </tr>
 <tr>
-<td><code class="structfield">datvacuumxid</code></td>
+<td><code class="structfield">datfrozenxid</code></td>
 <td><code class="type">xid</code></td>
 <td> </td>
-<td>       The transaction ID that was used as cleaning point as of the last vacuum
-       operation.  All rows inserted or deleted by transaction IDs before this one
-       have been marked as known good or deleted.  This
-       is used to determine when commit-log space can be recycled.
-       If <code class="symbol">InvalidTransactionId</code>, then the minimum is unknown and can be
-       determined by scanning <code class="structname">pg_class</code>.<code class="structfield">relvacuumxid</code>.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">datminxid</code></td>
-<td><code class="type">xid</code></td>
-<td> </td>
-<td>       The minimum transaction ID present in all tables in this database.
-       All rows inserted by transaction IDs before this one have been
-       relabeled with a permanent (<span class="quote">frozen</span>) transaction ID in this
-       database.  This is useful to check whether a database must be
-       vacuumed soon to avoid transaction ID wrap-around problems.
-       If <code class="symbol">InvalidTransactionId</code>, then the minimum is unknown and can be
-       determined by scanning <code class="structname">pg_class</code>.<code class="structfield">relminxid</code>.
+<td>       All transaction IDs before this one have been replaced with a permanent
+       (&#8220;<span class="quote">frozen</span>&#8221;) transaction ID in this database.  This is used to
+       track whether the database needs to be vacuumed in order to prevent
+       transaction ID wraparound or to allow <code class="literal">pg_clog</code> to be shrunk.
+       It is the minimum of the per-table
+       <code class="structname">pg_class</code>.<code class="structfield">relfrozenxid</code> values.
       </td>
 </tr>
 <tr>
 <td><code class="structfield">dattablespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-tablespace.html" title=""><code class="structname">pg_tablespace</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="43.32. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
 <td>       The default tablespace for the database.
        Within this database, all tables for which
        <code class="structname">pg_class</code>.<code class="structfield">reltablespace</code> is zero

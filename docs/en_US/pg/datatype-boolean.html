@@ -1,27 +1,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>8.6. Boolean Type</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="datatype.html" title="">
-<link rel="prev" href="datatype-datetime.html" title="">
-<link rel="next" href="datatype-geometric.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
+<link rel="prev" href="datatype-datetime.html" title="8.5. Date/Time Types">
+<link rel="next" href="datatype-geometric.html" title="8.7. Geometric Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="datatype-boolean"></a></h2></div></div></div>
-<a name="id2569468"></a><a name="id2569480"></a><a name="id2569490"></a><p>    <span class="productname">PostgreSQL</span> provides the
+<a name="datatype-boolean"></a>8.6. Boolean Type</h2></div></div></div>
+<a name="id2569490"></a><a name="id2569503"></a><a name="id2569512"></a><p>    <span class="productname">PostgreSQL</span> provides the
     standard <acronym class="acronym">SQL</acronym> type <code class="type">boolean</code>.
     <code class="type">boolean</code> can have one of only two states:
-    <span class="quote">true</span> or <span class="quote">false</span>.  A third state,
-    <span class="quote">unknown</span>, is represented by the
+    &#8220;<span class="quote">true</span>&#8221; or &#8220;<span class="quote">false</span>&#8221;.  A third state,
+    &#8220;<span class="quote">unknown</span>&#8221;, is represented by the
     <acronym class="acronym">SQL</acronym> null value.
    </p>
-<p>    Valid literal values for the <span class="quote">true</span> state are:
+<p>    Valid literal values for the &#8220;<span class="quote">true</span>&#8221; state are:
     </p>
 <table class="simplelist" border="0" summary="Simple list">
 <tr><td><code class="literal">TRUE</code></td></tr>
@@ -32,7 +32,7 @@
 <tr><td><code class="literal">'1'</code></td></tr>
 </table>
 <p>
-    For the <span class="quote">false</span> state, the following values can be
+    For the &#8220;<span class="quote">false</span>&#8221; state, the following values can be
     used:
     </p>
 <table class="simplelist" border="0" summary="Simple list">
@@ -49,7 +49,7 @@
     <acronym class="acronym">SQL</acronym>-compliant).
    </p>
 <div class="example">
-<a name="datatype-boolean-example"></a><p class="title"><b></b></p>
+<a name="datatype-boolean-example"></a><p class="title"><b>Example 8.2. Using the <code class="type">boolean</code> type</b></p>
 <div class="example-contents"><pre class="programlisting">CREATE TABLE test1 (a boolean, b text);
 INSERT INTO test1 VALUES (TRUE, 'sic est');
 INSERT INTO test1 VALUES (FALSE, 'non est');
@@ -64,7 +64,7 @@ SELECT * FROM test1 WHERE a;
 ---+---------
  t | sic est</pre></div>
 </div>
-<br class="example-break"><p>    <a href="datatype-boolean.html#datatype-boolean-example" title=""></a> shows that
+<br class="example-break"><p>    <a href="datatype-boolean.html#datatype-boolean-example" title="Example 8.2. Using the boolean type">Example 8.2, &#8220;Using the <code class="type">boolean</code> type&#8221;</a> shows that
     <code class="type">boolean</code> values are output using the letters
     <code class="literal">t</code> and <code class="literal">f</code>.
    </p>

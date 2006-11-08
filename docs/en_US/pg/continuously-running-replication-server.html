@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>24.3. Continuously Running Replication Server</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="failover.html" title="Chapter 24. Failover, Replication, Load Balancing, and Clustering Options">
+<link rel="prev" href="warm-standby-using-point-in-time-recovery.html" title="24.2. Warm Standby Using Point-In-Time Recovery">
+<link rel="next" href="data-partitioning.html" title="24.4. Data Partitioning">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="continuously-running-replication-server"></a>24.3. Continuously Running Replication Server</h2></div></div></div>
+<p>   A continuously running replication server allows the backup server to
+   answer read-only queries while the master server is running.  It
+   receives a continuous stream of write activity from the master server.
+   Because the backup server can be used for read-only database requests,
+   it is ideal for data warehouse queries.
+  </p>
+<p>   Slony is an example of this type of replication, with per-table
+   granularity.  It updates the backup server in batches, so the replication
+   is asynchronous and might lose data during a fail over.
+  </p>
+</div></body>
+</html>

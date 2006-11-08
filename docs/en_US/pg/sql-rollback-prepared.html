@@ -1,34 +1,34 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>ROLLBACK PREPARED</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="sql-commands.html" title="">
-<link rel="prev" href="sql-rollback.html" title="">
-<link rel="next" href="sql-rollback-to.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-rollback.html" title="ROLLBACK">
+<link rel="next" href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-rollback-prepared"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2></h2>
+<h2>Name</h2>
 <p>ROLLBACK PREPARED &#8212; cancel a transaction that was earlier prepared for two-phase commit</p>
 </div>
-<a name="id2764803"></a><div class="refsynopsisdiv">
-<h2></h2>
+<a name="id2765485"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
 <pre class="synopsis">ROLLBACK PREPARED <em class="replaceable"><code>transaction_id</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2764824"></a><h2>Description</h2>
+<a name="id2765506"></a><h2>Description</h2>
 <p>   <code class="command">ROLLBACK PREPARED</code> rolls back a transaction that is in 
    prepared state.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2764837"></a><h2>Parameters</h2>
+<a name="id2765519"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>transaction_id</code></em></span></dt>
 <dd><p>      The transaction identifier of the transaction that is to be
@@ -37,7 +37,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2764853"></a><h2>Notes</h2>
+<a name="id2765535"></a><h2>Notes</h2>
 <p>   To roll back a prepared transaction, you must be either the same user that
    executed the transaction originally, or a superuser.  But you do not
    have to be in the same session that executed the transaction.
@@ -46,7 +46,7 @@
    transaction is rolled back immediately.
   </p>
 <p>   All currently available prepared transactions are listed in the
-   <a href="view-pg-prepared-xacts.html" title=""><code class="structname">pg_prepared_xacts</code></a>
+   <a href="view-pg-prepared-xacts.html" title="43.41. pg_prepared_xacts"><code class="structname">pg_prepared_xacts</code></a>
    system view.
   </p>
 </div>
@@ -61,7 +61,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2764907"></a><h2>See Also</h2>
+<a name="id2765590"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a>, <a href="sql-commit-prepared.html">COMMIT PREPARED</a></span>
 </div>
 </div></body>

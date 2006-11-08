@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>31.12. Preprocessor directives</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="ecpg.html" title="">
-<link rel="prev" href="ecpg-errors.html" title="">
-<link rel="next" href="ecpg-process.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C">
+<link rel="prev" href="ecpg-errors.html" title="31.11. Error Handling">
+<link rel="next" href="ecpg-process.html" title="31.13. Processing Embedded SQL Programs">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ecpg-preproc"></a></h2></div></div></div>
+<a name="ecpg-preproc"></a>31.12. Preprocessor directives</h2></div></div></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2675671"></a></h3></div></div></div>
+<a name="id2676080"></a>31.12.1. Including files</h3></div></div></div>
 <p>    To include an external file into your embedded SQL program, use:
 </p>
 <pre class="programlisting">EXEC SQL INCLUDE <em class="replaceable"><code>filename</code></em>;</pre>
@@ -36,7 +36,7 @@
     files.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     The include file name is case-sensitive, even though the rest of
      the <code class="literal">EXEC SQL INCLUDE</code> command follows the normal
      SQL case-sensitivity rules.
@@ -45,7 +45,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2675736"></a></h3></div></div></div>
+<a name="id2676144"></a>31.12.2. The #define and #undef directives</h3></div></div></div>
 <p>    Similar to the directive <code class="literal">#define</code> that is known from C,
     embedded SQL has a similar concept:
 </p>
@@ -85,7 +85,7 @@ EXEC SQL UPDATE Tbl SET col = MYNUMBER;</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2675842"></a></h3></div></div></div>
+<a name="id2676251"></a>31.12.3. ifdef, ifndef, else, elif and endif directives</h3></div></div></div>
 <p>   You can use the following directives to compile code sections conditionally:
 
    </p>

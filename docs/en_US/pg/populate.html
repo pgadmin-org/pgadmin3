@@ -1,27 +1,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>13.4. Populating a Database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="performance-tips.html" title="">
-<link rel="prev" href="explicit-joins.html" title="">
-<link rel="next" href="admin.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="prev" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
+<link rel="next" href="admin.html" title="Part III. Server Administration">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="populate"></a></h2></div></div></div>
+<a name="populate"></a>13.4. Populating a Database</h2></div></div></div>
 <p>   One may need to insert a large amount of data when first populating
    a database. This section contains some suggestions on how to make
    this process as efficient as possible.
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="disable-autocommit"></a></h3></div></div></div>
-<a name="id2613199"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
+<a name="disable-autocommit"></a>13.4.1. Disable Autocommit</h3></div></div></div>
+<a name="id2613257"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
     SQL, this means issuing <code class="command">BEGIN</code> at the start and
     <code class="command">COMMIT</code> at the end.  Some client libraries may
     do this behind your back, in which case you need to make sure the
@@ -37,7 +37,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="populate-copy-from"></a></h3></div></div></div>
+<a name="populate-copy-from"></a>13.4.2. Use <code class="command">COPY</code></h3></div></div></div>
 <p>    Use <a href="sql-copy.html">COPY</a> to load
     all the rows in one command, instead of using a series of
     <code class="command">INSERT</code> commands.  The <code class="command">COPY</code>
@@ -61,7 +61,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="populate-rm-indexes"></a></h3></div></div></div>
+<a name="populate-rm-indexes"></a>13.4.3. Remove Indexes</h3></div></div></div>
 <p>    If you are loading a freshly created table, the fastest way is to
     create the table, bulk load the table's data using
     <code class="command">COPY</code>, then create any indexes needed for the
@@ -80,9 +80,9 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="populate-rm-fkeys"></a></h3></div></div></div>
+<a name="populate-rm-fkeys"></a>13.4.4. Remove Foreign Key Constraints</h3></div></div></div>
 <p>    Just as with indexes, a foreign key constraint can be checked
-    <span class="quote">in bulk</span> more efficiently than row-by-row.  So it may be
+    &#8220;<span class="quote">in bulk</span>&#8221; more efficiently than row-by-row.  So it may be
     useful to drop foreign key constraints, load data, and re-create
     the constraints.  Again, there is a trade-off between data load
     speed and loss of error checking while the constraint is missing.
@@ -90,7 +90,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="populate-work-mem"></a></h3></div></div></div>
+<a name="populate-work-mem"></a>13.4.5. Increase <code class="varname">maintenance_work_mem</code></h3></div></div></div>
 <p>    Temporarily increasing the <a href="runtime-config-resource.html#guc-maintenance-work-mem">maintenance_work_mem</a>
     configuration variable when loading large amounts of data can
     lead to improved performance.  This will help to speed up <code class="command">CREATE
@@ -101,7 +101,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="populate-checkpoint-segments"></a></h3></div></div></div>
+<a name="populate-checkpoint-segments"></a>13.4.6. Increase <code class="varname">checkpoint_segments</code></h3></div></div></div>
 <p>    Temporarily increasing the <a href="runtime-config-wal.html#guc-checkpoint-segments">checkpoint_segments</a> configuration variable can also
     make large data loads faster.  This is because loading a large
     amount of data into <span class="productname">PostgreSQL</span> will
@@ -116,7 +116,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="populate-analyze"></a></h3></div></div></div>
+<a name="populate-analyze"></a>13.4.7. Run <code class="command">ANALYZE</code> Afterwards</h3></div></div></div>
 <p>    Whenever you have significantly altered the distribution of data
     within a table, running <a href="sql-analyze.html">ANALYZE</a> is strongly recommended. This
     includes bulk loading large amounts of data into the table.  Running
@@ -130,7 +130,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="populate-pg-dump"></a></h3></div></div></div>
+<a name="populate-pg-dump"></a>13.4.8. Some Notes About <span class="application">pg_dump</span></h3></div></div></div>
 <p>    Dump scripts generated by <span class="application">pg_dump</span> automatically apply
     several, but not all, of the above guidelines.  To reload a
     <span class="application">pg_dump</span> dump as quickly as possible, you need to
@@ -152,7 +152,7 @@
     drop or recreate indexes, and it does not normally touch foreign
     keys.
 
-     <sup>[<a name="id2613632" href="#ftn.id2613632">8</a>]</sup>
+     <sup>[<a name="id2613690" href="#ftn.id2613690">8</a>]</sup>
 
     So when loading a data-only dump, it is up to you to drop and recreate
     indexes and foreign keys if you wish to use those techniques.
@@ -165,7 +165,7 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2613632" href="#id2613632">8</a>] </sup>       You can get the effect of disabling foreign keys by using
+<div class="footnote"><p><sup>[<a name="ftn.id2613690" href="#id2613690">8</a>] </sup>       You can get the effect of disabling foreign keys by using
        the <code class="option">--disable-triggers</code> option &#8212; but realize that
        that eliminates, rather than just postponing, foreign key
        validation, and so it is possible to insert bad data if you use it.

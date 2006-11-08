@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>12.3. Explicit Locking</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="mvcc.html" title="">
-<link rel="prev" href="transaction-iso.html" title="">
-<link rel="next" href="applevel-consistency.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
+<link rel="prev" href="transaction-iso.html" title="12.2. Transaction Isolation">
+<link rel="next" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="explicit-locking"></a></h2></div></div></div>
-<a name="id2610297"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
+<a name="explicit-locking"></a>12.3. Explicit Locking</h2></div></div></div>
+<a name="id2610349"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
     to control concurrent access to data in tables.  These modes can
     be used for application-controlled locking in situations where
     <acronym class="acronym">MVCC</acronym> does not give the desired behavior.  Also,
@@ -26,20 +26,20 @@
    </p>
 <p>    To examine a list of the currently outstanding locks in a database
     server, use the <code class="structname">pg_locks</code> system view
-    (<a href="view-pg-locks.html" title=""></a>). For more
+    (<a href="view-pg-locks.html" title="43.39. pg_locks">Section 43.39, &#8220;<code class="structname">pg_locks</code>&#8221;</a>). For more
     information on monitoring the status of the lock manager
-    subsystem, refer to <a href="monitoring.html" title=""></a>.
+    subsystem, refer to <a href="monitoring.html" title="Chapter 25. Monitoring Database Activity">Chapter 25, <i>Monitoring Database Activity</i></a>.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="locking-tables"></a></h3></div></div></div>
-<a name="id2610365"></a><p>    The list below shows the available lock modes and the contexts in
+<a name="locking-tables"></a>12.3.1. Table-Level Locks</h3></div></div></div>
+<a name="id2610417"></a><p>    The list below shows the available lock modes and the contexts in
     which they are used automatically by
     <span class="productname">PostgreSQL</span>.  You can also acquire any
     of these locks explicitly with the command <a href="sql-lock.html">LOCK</a>.
     Remember that all of these lock modes are table-level locks,
     even if the name contains the word
-    <span class="quote">row</span>; the names of the lock modes are historical.
+    &#8220;<span class="quote">row</span>&#8221;; the names of the lock modes are historical.
     To some extent the names reflect the typical usage of each lock
     mode &#8212; but the semantics are all the same.  The only real difference
     between one lock mode and another is the set of lock modes with
@@ -56,7 +56,7 @@
     Once acquired, a lock is held till end of transaction.
    </p>
 <div class="variablelist">
-<p class="title"><b></b></p>
+<p class="title"><b>Table-level lock modes</b></p>
 <dl>
 <dt><span class="term">        <code class="literal">ACCESS SHARE</code>
        </span></dt>
@@ -177,7 +177,7 @@
 </dl>
 </div>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>       Only an <code class="literal">ACCESS EXCLUSIVE</code> lock blocks a
        <code class="command">SELECT</code> (without <code class="option">FOR UPDATE/SHARE</code>)
        statement.
@@ -186,7 +186,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="locking-rows"></a></h3></div></div></div>
+<a name="locking-rows"></a>12.3.2. Row-Level Locks</h3></div></div></div>
 <p>     In addition to table-level locks, there are row-level locks, which
      can be exclusive or shared locks.  An exclusive row-level lock on a
      specific row is automatically acquired when the row is updated or
@@ -223,8 +223,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="locking-deadlocks"></a></h3></div></div></div>
-<a name="id2611076"></a><p>     The use of explicit locking can increase the likelihood of
+<a name="locking-deadlocks"></a>12.3.3. Deadlocks</h3></div></div></div>
+<a name="id2611128"></a><p>     The use of explicit locking can increase the likelihood of
      <em class="firstterm">deadlocks</em>, wherein two (or more) transactions each
      hold locks that the other wants.  For example, if transaction 1
      acquires an exclusive lock on table A and then tries to acquire
@@ -295,8 +295,8 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="advisory-locks"></a></h3></div></div></div>
-<a name="id2611200"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
+<a name="advisory-locks"></a>12.3.4. Advisory Locks</h3></div></div></div>
+<a name="id2611252"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
      creating locks that have application-defined meanings.  These are
      called <em class="firstterm">advisory locks</em>, because the system does not
      enforce their use &#8212; it is up to the application to use them
@@ -313,7 +313,7 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
      if other sessions are awaiting the lock.)  Like all locks in
      <span class="productname">PostgreSQL</span>, a complete list of advisory
      locks currently held by any session can be found in the
-     <a href="view-pg-locks.html" title=""><code class="structname">pg_locks</code></a>
+     <a href="view-pg-locks.html" title="43.39. pg_locks"><code class="structname">pg_locks</code></a>
      system view.
     </p>
 <p>     Advisory locks are allocated out of a shared memory pool whose size
@@ -327,7 +327,7 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
      depending on how the server is configured.
     </p>
 <p>     A common use of advisory locks is to emulate pessimistic locking
-     strategies typical of so called <span class="quote">flat file</span> data management
+     strategies typical of so called &#8220;<span class="quote">flat file</span>&#8221; data management
      systems.
      While a flag stored in a table could be used for the same purpose,
      advisory locks are faster, avoid MVCC bloat, and are automatically
@@ -354,7 +354,7 @@ SELECT pg_advisory_lock(q.id) FROM
      <code class="structname">pg_locks</code>.
     </p>
 <p>     The functions provided to manipulate advisory locks are described in
-     <a href="functions-admin.html#functions-advisory-locks" title=""></a>.
+     <a href="functions-admin.html#functions-advisory-locks" title="Table 9.50. Advisory Lock Functions">Table 9.50, &#8220;Advisory Lock Functions&#8221;</a>.
     </p>
 </div>
 </div></body>

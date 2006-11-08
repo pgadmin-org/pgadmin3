@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>51.3. Implementation</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="gin.html" title="">
-<link rel="prev" href="gin-extensibility.html" title="">
-<link rel="next" href="gin-tips.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="gin.html" title="Chapter 51. GIN Indexes">
+<link rel="prev" href="gin-extensibility.html" title="51.2. Extensibility">
+<link rel="next" href="gin-tips.html" title="51.4. GIN tips and trics">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="gin-implementation"></a></h2></div></div></div>
+<a name="gin-implementation"></a>51.3. Implementation</h2></div></div></div>
 <p>  Internally, <acronym class="acronym">GIN</acronym> consists of a B-tree index constructed 
   over keys, where each key is an element of the indexed value 
   (element of array, for example) and where each tuple in a leaf page is 
@@ -37,7 +37,7 @@
 		StrategyNumber n)</span></dt>
 <dd><p>	   Returns an array of keys of the query to be executed. n contains
 	   the strategy number of the operation 
-	   (see <a href="xindex.html#xindex-strategies" title=""></a>).
+	   (see <a href="xindex.html#xindex-strategies" title="33.14.2. Index Method Strategies">Section 33.14.2, &#8220;Index Method Strategies&#8221;</a>).
 	   Depending on n, query may be different type.
       </p></dd>
 <dt><span class="term">bool consistent( bool check[], StrategyNumber n, Datum query)</span></dt>

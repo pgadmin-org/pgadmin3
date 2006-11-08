@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>11.8. Operator Classes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="indexes.html" title="">
-<link rel="prev" href="indexes-partial.html" title="">
-<link rel="next" href="indexes-examine.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="prev" href="indexes-partial.html" title="11.7. Partial Indexes">
+<link rel="next" href="indexes-examine.html" title="11.9. Examining Index Usage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-opclass"></a></h2></div></div></div>
-<a name="id2609067"></a><p>   An index definition may specify an <em class="firstterm">operator
+<a name="indexes-opclass"></a>11.8. Operator Classes</h2></div></div></div>
+<a name="id2609110"></a><p>   An index definition may specify an <em class="firstterm">operator
    class</em> for each column of an index.
 </p>
 <pre class="synopsis">CREATE INDEX <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> (<em class="replaceable"><code>column</code></em> <em class="replaceable"><code>opclass</code></em> [<span class="optional">, ...</span>]);</pre>
@@ -47,7 +47,7 @@
       these operator classes suitable for use by queries involving
       pattern matching expressions (<code class="literal">LIKE</code> or POSIX
       regular expressions) when the server does not use the standard
-      <span class="quote">C</span> locale.  As an example, you might index a
+      &#8220;<span class="quote">C</span>&#8221; locale.  As an example, you might index a
       <code class="type">varchar</code> column like this:
 </p>
 <pre class="programlisting">CREATE INDEX test_index ON test_table (col varchar_pattern_ops);</pre>

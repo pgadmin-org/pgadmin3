@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>38.5. Database Access from PL/Tcl</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="pltcl.html" title="">
-<link rel="prev" href="pltcl-global.html" title="">
-<link rel="next" href="pltcl-trigger.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
+<link rel="prev" href="pltcl-global.html" title="38.4. Global Data in PL/Tcl">
+<link rel="next" href="pltcl-trigger.html" title="38.6. Trigger Procedures in PL/Tcl">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="pltcl-dbaccess"></a></h2></div></div></div>
+<a name="pltcl-dbaccess"></a>38.5. Database Access from PL/Tcl</h2></div></div></div>
 <p>     The following commands are available to access the database from
      the body of a PL/Tcl function:
 
@@ -78,14 +78,14 @@
         usual way inside the loop body.
        </p>
 <p>        If a column of a query result is null, the target
-        variable for it is <span class="quote">unset</span> rather than being set.
+        variable for it is &#8220;<span class="quote">unset</span>&#8221; rather than being set.
        </p>
 </dd>
 <dt><span class="term"><code class="function">spi_prepare</code> <em class="replaceable"><code>query</code></em> <em class="replaceable"><code>typelist</code></em></span></dt>
 <dd>
 <p>        Prepares and saves a query plan for later execution.  The
         saved plan will be retained for the life of the current
-        session.<a name="id2713716"></a>
+        session.<a name="id2714332"></a>
        </p>
 <p>        The query may use parameters, that is, placeholders for
         values to be supplied whenever the plan is actually executed.
@@ -224,7 +224,7 @@ $$ LANGUAGE pltcl;</pre>
         written to the server log, or both is controlled by the
         <a href="runtime-config-logging.html#guc-log-min-messages">log_min_messages</a> and
         <a href="runtime-config-logging.html#guc-client-min-messages">client_min_messages</a> configuration
-        variables. See <a href="runtime-config.html" title=""></a> for more
+        variables. See <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> for more
         information.
        </p></dd>
 </dl></div>

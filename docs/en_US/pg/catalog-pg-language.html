@@ -1,26 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>43.20. pg_language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="catalogs.html" title="">
-<link rel="prev" href="catalog-pg-inherits.html" title="">
-<link rel="next" href="catalog-pg-largeobject.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="catalog-pg-inherits.html" title="43.19. pg_inherits">
+<link rel="next" href="catalog-pg-largeobject.html" title="43.21. pg_largeobject">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-language"></a></h2></div></div></div>
-<a name="id2801981"></a><p>   The catalog <code class="structname">pg_language</code> registers
+<a name="catalog-pg-language"></a>43.20. <code class="structname">pg_language</code></h2></div></div></div>
+<a name="id2802752"></a><p>   The catalog <code class="structname">pg_language</code> registers
    languages in which you can write functions or stored procedures.
    See <a href="sql-createlanguage.html">CREATE LANGUAGE</a>
-   and <a href="xplang.html" title=""></a> for more information about language handlers.
+   and <a href="xplang.html" title="Chapter 36. Procedural Languages">Chapter 36, <i>Procedural Languages</i></a> for more information about language handlers.
   </p>
 <div class="table">
-<a name="id2802014"></a><p class="title"><b></b></p>
+<a name="id2802785"></a><p class="title"><b>Table 43.20. <code class="structname">pg_language</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_language Columns" border="1">
 <colgroup>
 <col>
@@ -65,7 +65,7 @@
 <tr>
 <td><code class="structfield">lanplcallfoid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title=""><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>       For noninternal languages this references the language
        handler, which is a special function that is responsible for
        executing all functions that are written in the particular
@@ -75,7 +75,7 @@
 <tr>
 <td><code class="structfield">lanvalidator</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title=""><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>       This references a language validator function that is responsible
        for checking the syntax and validity of new functions when they
        are created.  Zero if no validator is provided.

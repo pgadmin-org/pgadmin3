@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>9.17. Row and Array Comparisons</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="functions.html" title="">
-<link rel="prev" href="functions-subquery.html" title="">
-<link rel="next" href="functions-srf.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions-subquery.html" title="9.16. Subquery Expressions">
+<link rel="next" href="functions-srf.html" title="9.18. Set Returning Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-comparisons"></a></h2></div></div></div>
-<a name="id2599798"></a><a name="id2599804"></a><a name="id2599810"></a><a name="id2599815"></a><a name="id2599821"></a><a name="id2599826"></a><a name="id2599832"></a><a name="id2599840"></a><a name="id2599846"></a><p>   This section describes several specialized constructs for making
+<a name="functions-comparisons"></a>9.17. Row and Array Comparisons</h2></div></div></div>
+<a name="id2599819"></a><a name="id2599824"></a><a name="id2599830"></a><a name="id2599836"></a><a name="id2599841"></a><a name="id2599847"></a><a name="id2599852"></a><a name="id2599860"></a><a name="id2599866"></a><p>   This section describes several specialized constructs for making
    multiple comparisons between groups of values.  These forms are
    syntactically related to the subquery forms of the previous section,
    but do not involve subqueries.
@@ -26,10 +26,10 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2599871"></a></h3></div></div></div>
+<a name="id2599891"></a>9.17.1. <code class="literal">IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IN (<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
 <p>   The right-hand side is a parenthesized list
-   of scalar expressions.  The result is <span class="quote">true</span> if the left-hand expression's
+   of scalar expressions.  The result is &#8220;<span class="quote">true</span>&#8221; if the left-hand expression's
    result is equal to any of the right-hand expressions.  This is a shorthand
    notation for
 
@@ -50,10 +50,10 @@ OR
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2599931"></a></h3></div></div></div>
+<a name="id2599951"></a>9.17.2. <code class="literal">NOT IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> NOT IN (<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
 <p>   The right-hand side is a parenthesized list
-   of scalar expressions.  The result is <span class="quote">true</span> if the left-hand expression's
+   of scalar expressions.  The result is &#8220;<span class="quote">true</span>&#8221; if the left-hand expression's
    result is unequal to all of the right-hand expressions.  This is a shorthand
    notation for
 
@@ -73,7 +73,7 @@ AND
    of null values.
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>   <code class="literal">x NOT IN y</code> is equivalent to <code class="literal">NOT (x IN y)</code> in all
    cases.  However, null values are much more likely to trip up the novice when
    working with <code class="token">NOT IN</code> than when working with <code class="token">IN</code>.
@@ -83,7 +83,7 @@ AND
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600018"></a></h3></div></div></div>
+<a name="id2600038"></a>9.17.3. <code class="literal">ANY</code>/<code class="literal">SOME</code> (array)</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ANY (<em class="replaceable"><code>array expression</code></em>)
 <em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> SOME (<em class="replaceable"><code>array expression</code></em>)</pre>
 <p>   The right-hand side is a parenthesized expression, which must yield an
@@ -92,8 +92,8 @@ AND
    is evaluated and compared to each element of the array using the
    given <em class="replaceable"><code>operator</code></em>, which must yield a Boolean
    result.
-   The result of <code class="token">ANY</code> is <span class="quote">true</span> if any true result is obtained.
-   The result is <span class="quote">false</span> if no true result is found (including the special
+   The result of <code class="token">ANY</code> is &#8220;<span class="quote">true</span>&#8221; if any true result is obtained.
+   The result is &#8220;<span class="quote">false</span>&#8221; if no true result is found (including the special
    case where the array has zero elements).
   </p>
 <p>   If the array expression yields a null array, the result of
@@ -111,7 +111,7 @@ AND
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600110"></a></h3></div></div></div>
+<a name="id2600130"></a>9.17.4. <code class="literal">ALL</code> (array)</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ALL (<em class="replaceable"><code>array expression</code></em>)</pre>
 <p>   The right-hand side is a parenthesized expression, which must yield an
    array value.
@@ -119,9 +119,9 @@ AND
    is evaluated and compared to each element of the array using the
    given <em class="replaceable"><code>operator</code></em>, which must yield a Boolean
    result.
-   The result of <code class="token">ALL</code> is <span class="quote">true</span> if all comparisons yield true
+   The result of <code class="token">ALL</code> is &#8220;<span class="quote">true</span>&#8221; if all comparisons yield true
    (including the special case where the array has zero elements).
-   The result is <span class="quote">false</span> if any false result is found.
+   The result is &#8220;<span class="quote">false</span>&#8221; if any false result is found.
   </p>
 <p>   If the array expression yields a null array, the result of
    <code class="token">ALL</code> will be null.  If the left-hand expression yields null,
@@ -136,10 +136,10 @@ AND
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="row-wise-comparison"></a></h3></div></div></div>
+<a name="row-wise-comparison"></a>9.17.5. Row-wise Comparison</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> <em class="replaceable"><code>row_constructor</code></em></pre>
 <p>   Each side is a row constructor,
-   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title=""></a>.
+   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The two row values must have the same number of fields.
    Each side is evaluated and they are compared row-wise.  Row comparisons
    are allowed when the <em class="replaceable"><code>operator</code></em> is
@@ -171,7 +171,7 @@ AND
    considered.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>    Prior to <span class="productname">PostgreSQL</span> 8.2, the
     <code class="literal">&lt;</code>, <code class="literal">&lt;=</code>, <code class="literal">&gt;</code> and <code class="literal">&gt;=</code>
     cases were not handled per SQL specification.  A comparison like

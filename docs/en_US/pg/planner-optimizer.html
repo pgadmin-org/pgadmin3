@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>42.5. Planner/Optimizer</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="overview.html" title="">
-<link rel="prev" href="rule-system.html" title="">
-<link rel="next" href="executor.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
+<link rel="prev" href="rule-system.html" title="42.4. The PostgreSQL Rule System">
+<link rel="next" href="executor.html" title="42.6. Executor">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="planner-optimizer"></a></h2></div></div></div>
+<a name="planner-optimizer"></a>42.5. Planner/Optimizer</h2></div></div></div>
 <p>    The task of the <em class="firstterm">planner/optimizer</em> is to
     create an optimal execution plan. A given SQL query (and hence, a
     query tree) can be actually executed in a wide variety of
@@ -23,7 +23,7 @@
     selecting the execution plan that is expected to run the fastest.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     In some situations, examining each possible way in which a query
      may be executed would take an excessive amount of time and memory
      space. In particular, this occurs when executing queries
@@ -43,7 +43,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2796141"></a></h3></div></div></div>
+<a name="id2796885"></a>42.5.1. Generating Possible Plans</h3></div></div></div>
 <p>     The planner/optimizer starts by generating plans for scanning each
      individual relation (table) used in the query.  The possible plans
      are determined by the available indexes on each relation.

@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 5. Data Definition</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="sql.html" title="">
-<link rel="prev" href="sql-expressions.html" title="">
-<link rel="next" href="ddl-default.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql.html" title="Part II. The SQL Language">
+<link rel="prev" href="sql-expressions.html" title="4.2. Value Expressions">
+<link rel="next" href="ddl-default.html" title="5.2. Default Values">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="ddl">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="ddl"></a></h2></div></div></div>
+<a name="ddl"></a>Chapter 5. Data Definition</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
+<p><b>Table of Contents</b></p>
 <dl>
 <dt><span class="sect1"><a href="ddl.html#ddl-basics">5.1. Table Basics</a></span></dt>
 <dt><span class="sect1"><a href="ddl-default.html">5.2. Default Values</a></span></dt>
@@ -76,14 +76,14 @@
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-basics"></a></h2></div></div></div>
+<a name="ddl-basics"></a>5.1. Table Basics</h2></div></div></div>
 <a name="id2555049"></a><a name="id2555058"></a><a name="id2555063"></a><p>   A table in a relational database is much like a table on paper: It
    consists of rows and columns.  The number and order of the columns
    is fixed, and each column has a name.  The number of rows is
    variable &#8212; it reflects how much data is stored at a given moment.
    SQL does not make any guarantees about the order of the rows in a
    table.  When a table is read, the rows will appear in random order,
-   unless sorting is explicitly requested.  This is covered in <a href="queries.html" title=""></a>.  Furthermore, SQL does not assign unique
+   unless sorting is explicitly requested.  This is covered in <a href="queries.html" title="Chapter 7. Queries">Chapter 7, <i>Queries</i></a>.  Furthermore, SQL does not assign unique
    identifiers to rows, so it is possible to have several completely
    identical rows in a table.  This is a consequence of the
    mathematical model that underlies SQL but is usually not desirable.
@@ -103,7 +103,7 @@
 <p>   <span class="productname">PostgreSQL</span> includes a sizable set of
    built-in data types that fit many applications.  Users can also
    define their own data types.  Most built-in data types have obvious
-   names and semantics, so we defer a detailed explanation to <a href="datatype.html" title=""></a>.  Some of the frequently used data types are
+   names and semantics, so we defer a detailed explanation to <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a>.  Some of the frequently used data types are
    <code class="type">integer</code> for whole numbers, <code class="type">numeric</code> for
    possibly fractional numbers, <code class="type">text</code> for character
    strings, <code class="type">date</code> for dates, <code class="type">time</code> for
@@ -126,7 +126,7 @@
    <code class="type">text</code>; the second column has the name
    <code class="literal">second_column</code> and the type <code class="type">integer</code>.
    The table and column names follow the identifier syntax explained
-   in <a href="sql-syntax.html#sql-syntax-identifiers" title=""></a>.  The type names are
+   in <a href="sql-syntax.html#sql-syntax-identifiers" title="4.1.1. Identifiers and Key Words">Section 4.1.1, &#8220;Identifiers and Key Words&#8221;</a>.  The type names are
    usually also identifiers, but there are some exceptions.  Note that the
    column list is comma-separated and surrounded by parentheses.
   </p>
@@ -145,7 +145,7 @@
    would be typical of monetary amounts.)
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>    When you create many interrelated tables it is wise to choose a
     consistent naming pattern for the tables and columns.  For
     instance, there is a choice of using singular or plural nouns for
@@ -170,13 +170,13 @@ DROP TABLE products;</pre>
    (If you like, you can use the <code class="literal">DROP TABLE IF EXISTS</code> variant
    to avoid the error messages, but this is not standard SQL.)
   </p>
-<p>   If you need to modify a table that already exists look into <a href="ddl-alter.html" title=""></a> later in this chapter.
+<p>   If you need to modify a table that already exists look into <a href="ddl-alter.html" title="5.5. Modifying Tables">Section 5.5, &#8220;Modifying Tables&#8221;</a> later in this chapter.
   </p>
 <p>   With the tools discussed so far you can create fully functional
    tables.  The remainder of this chapter is concerned with adding
    features to the table definition to ensure data integrity,
    security, or convenience.  If you are eager to fill your tables with
-   data now you can skip ahead to <a href="dml.html" title=""></a> and read the
+   data now you can skip ahead to <a href="dml.html" title="Chapter 6. Data Manipulation">Chapter 6, <i>Data Manipulation</i></a> and read the
    rest of this chapter later.
   </p>
 </div>

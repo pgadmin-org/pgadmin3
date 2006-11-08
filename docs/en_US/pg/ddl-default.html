@@ -1,25 +1,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>5.2. Default Values</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="ddl.html" title="">
-<link rel="prev" href="ddl.html" title="">
-<link rel="next" href="ddl-constraints.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="prev" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="next" href="ddl-constraints.html" title="5.3. Constraints">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-default"></a></h2></div></div></div>
+<a name="ddl-default"></a>5.2. Default Values</h2></div></div></div>
 <a name="id2555328"></a><p>   A column can be assigned a default value.  When a new row is
    created and no values are specified for some of the columns, those
    columns will be filled with their respective default values.  A
    data manipulation command can also request explicitly that a column
    be set to its default value, without having to know what that value is.
-   (Details about data manipulation commands are in <a href="dml.html" title=""></a>.)
+   (Details about data manipulation commands are in <a href="dml.html" title="Chapter 6. Data Manipulation">Chapter 6, <i>Data Manipulation</i></a>.)
   </p>
 <p>   <a name="id2555355"></a>
    If no default value is declared explicitly, the default value is the
@@ -41,7 +41,7 @@
    (<span class="emphasis"><em>not</em></span> when the table is created).  A common example
    is that a <code class="type">timestamp</code> column may have a default of <code class="literal">now()</code>,
    so that it gets set to the time of row insertion.  Another common
-   example is generating a <span class="quote">serial number</span> for each row.
+   example is generating a &#8220;<span class="quote">serial number</span>&#8221; for each row.
    In <span class="productname">PostgreSQL</span> this is typically done by
    something like
 </p>
@@ -51,7 +51,7 @@
 );</pre>
 <p>
    where the <code class="literal">nextval()</code> function supplies successive values
-   from a <em class="firstterm">sequence object</em> (see <a href="functions-sequence.html" title=""></a>). This arrangement is sufficiently common
+   from a <em class="firstterm">sequence object</em> (see <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>). This arrangement is sufficiently common
    that there's a special shorthand for it:
 </p>
 <pre class="programlisting">CREATE TABLE products (
@@ -59,7 +59,7 @@
     ...
 );</pre>
 <p>
-   The <code class="literal">SERIAL</code> shorthand is discussed further in <a href="datatype.html#datatype-serial" title=""></a>.
+   The <code class="literal">SERIAL</code> shorthand is discussed further in <a href="datatype.html#datatype-serial" title="8.1.4. Serial Types">Section 8.1.4, &#8220;Serial Types&#8221;</a>.
   </p>
 </div></body>
 </html>

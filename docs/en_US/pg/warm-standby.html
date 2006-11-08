@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>23.4. Warm Standby Servers for High Availability</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="backup.html" title="">
-<link rel="prev" href="continuous-archiving.html" title="">
-<link rel="next" href="migration.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
+<link rel="prev" href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">
+<link rel="next" href="migration.html" title="23.5. Migration Between Releases">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="warm-standby"></a></h2></div></div></div>
-<a name="id2649119"></a><a name="id2649127"></a><a name="id2649136"></a><a name="id2649146"></a><a name="id2649155"></a><a name="id2649164"></a><a name="id2649172"></a><p>   Continuous Archiving can be used to create a High Availability (HA)
+<a name="warm-standby"></a>23.4. Warm Standby Servers for High Availability</h2></div></div></div>
+<a name="id2649223"></a><a name="id2649231"></a><a name="id2649240"></a><a name="id2649250"></a><a name="id2649259"></a><a name="id2649268"></a><a name="id2649276"></a><p>   Continuous Archiving can be used to create a High Availability (HA)
    cluster configuration with one or more Standby Servers ready to take
    over operations in the case that the Primary Server fails. This
    capability is more widely known as Warm Standby Log Shipping.
@@ -60,7 +60,7 @@
 <p>    When running a Standby Server, backups can be performed on the Standby
     rather than the Primary, thereby offloading the expense of
     taking periodic base backups. (See 
-    <a href="continuous-archiving.html#backup-incremental-updated" title=""></a>)
+    <a href="continuous-archiving.html#backup-incremental-updated" title="23.3.5. Incrementally Updated Backups">Section 23.3.5, &#8220;Incrementally Updated Backups&#8221;</a>)
    </p>
 <p>   Other mechanisms for High Availability replication are available, both
    commercially and as open-source software.  
@@ -75,7 +75,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="warm-standby-planning"></a></h3></div></div></div>
+<a name="warm-standby-planning"></a>23.4.1. Planning</h3></div></div></div>
 <p>    On the Standby server all tablespaces and paths will refer to similarly
     named mount points, so it is important to create the Primary and Standby
     servers so that they are as similar as possible, at least from the
@@ -111,7 +111,7 @@
     server.
    </p>
 <p>    Sample code for the C version of the <code class="varname">restore_command</code>
-    would be be:
+    would be:
 </p>
 <pre class="programlisting">triggered = false;
 while (!NextWALFileReady() &amp;&amp; !triggered)
@@ -147,7 +147,7 @@ if (!triggered)
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="warm-standby-config"></a></h3></div></div></div>
+<a name="warm-standby-config"></a>23.4.2. Implementation</h3></div></div></div>
 <p>    The short procedure for configuring a Standby Server is as follows. For
     full details of each step, refer to previous sections as noted.
     </p>
@@ -158,14 +158,14 @@ if (!triggered)
       </p></li>
 <li><p>       Setup Continuous Archiving from the Primary to a WAL archive located
        in a directory on the Standby Server. Ensure that both <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> and <a href="runtime-config-wal.html#guc-archive-timeout">archive_timeout</a>
-       are set. (See <a href="continuous-archiving.html#backup-archiving-wal" title=""></a>)
+       are set. (See <a href="continuous-archiving.html#backup-archiving-wal" title="23.3.1. Setting up WAL archiving">Section 23.3.1, &#8220;Setting up WAL archiving&#8221;</a>)
       </p></li>
-<li><p>       Make a Base Backup of the Primary Server. (See <a href="continuous-archiving.html#backup-base-backup" title=""></a>)
+<li><p>       Make a Base Backup of the Primary Server. (See <a href="continuous-archiving.html#backup-base-backup" title="23.3.2. Making a Base Backup">Section 23.3.2, &#8220;Making a Base Backup&#8221;</a>)
       </p></li>
 <li><p>       Begin recovery on the Standby Server from the local WAL
        archive, using a <code class="filename">recovery.conf</code> that specifies a
        <code class="varname">restore_command</code> that waits as described
-       previously. (See <a href="continuous-archiving.html#backup-pitr-recovery" title=""></a>)
+       previously. (See <a href="continuous-archiving.html#backup-pitr-recovery" title="23.3.3. Recovering using a Continuous Archive Backup">Section 23.3.3, &#8220;Recovering using a Continuous Archive Backup&#8221;</a>)
       </p></li>
 </ol></div>
 <p>
@@ -184,7 +184,7 @@ if (!triggered)
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="warm-standby-failover"></a></h3></div></div></div>
+<a name="warm-standby-failover"></a>23.4.3. Failover</h3></div></div></div>
 <p>    If the Primary Server fails then the Standby Server should begin
     failover procedures.
    </p>
@@ -229,11 +229,11 @@ if (!triggered)
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="warm-standby-record"></a></h3></div></div></div>
+<a name="warm-standby-record"></a>23.4.4. Implementing Record-based Log Shipping</h3></div></div></div>
 <p>    The main features for Log Shipping in this release are based
     around the file-based Log Shipping described above. It is also
     possible to implement record-based Log Shipping using the
-    <code class="function">pg_xlogfile_name_offset()</code> function (see <a href="functions-admin.html" title=""></a>), though this requires custom
+    <code class="function">pg_xlogfile_name_offset()</code> function (see <a href="functions-admin.html" title="9.20. System Administration Functions">Section 9.20, &#8220;System Administration Functions&#8221;</a>), though this requires custom
     development.
    </p>
 <p>    An external program can call <code class="function">pg_xlogfile_name_offset()</code>

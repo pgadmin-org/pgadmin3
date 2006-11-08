@@ -1,32 +1,32 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 53. BKI Backend Interface</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="internals.html" title="">
-<link rel="prev" href="storage-page-layout.html" title="">
-<link rel="next" href="bki-commands.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="storage-page-layout.html" title="52.3. Database Page Layout">
+<link rel="next" href="bki-commands.html" title="53.2. BKI Commands">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="bki">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="bki"></a></h2></div></div></div>
+<a name="bki"></a>Chapter 53. <acronym class="acronym">BKI</acronym> Backend Interface</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
+<p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="bki.html#bki-format">52.1. <acronym class="acronym">BKI</acronym> File Format</a></span></dt>
-<dt><span class="sect1"><a href="bki-commands.html">52.2. <acronym class="acronym">BKI</acronym> Commands</a></span></dt>
-<dt><span class="sect1"><a href="bki-structure.html">52.3. Structure of the Bootstrap <acronym class="acronym">BKI</acronym> File</a></span></dt>
-<dt><span class="sect1"><a href="bki-example.html">52.4. Example</a></span></dt>
+<dt><span class="sect1"><a href="bki.html#bki-format">53.1. <acronym class="acronym">BKI</acronym> File Format</a></span></dt>
+<dt><span class="sect1"><a href="bki-commands.html">53.2. <acronym class="acronym">BKI</acronym> Commands</a></span></dt>
+<dt><span class="sect1"><a href="bki-structure.html">53.3. Structure of the Bootstrap <acronym class="acronym">BKI</acronym> File</a></span></dt>
+<dt><span class="sect1"><a href="bki-example.html">53.4. Example</a></span></dt>
 </dl>
 </div>
 <p>  Backend Interface (<acronym class="acronym">BKI</acronym>) files are scripts in a
   special language that is understood by the
   <span class="productname">PostgreSQL</span> backend when running in the
-  <span class="quote">bootstrap</span> mode.  The bootstrap mode allows system catalogs
+  &#8220;<span class="quote">bootstrap</span>&#8221; mode.  The bootstrap mode allows system catalogs
   to be created and filled from scratch, whereas ordinary SQL commands
   require the catalogs to exist already.
   <acronym class="acronym">BKI</acronym> files can therefore be used to create the
@@ -49,7 +49,7 @@
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="bki-format"></a></h2></div></div></div>
+<a name="bki-format"></a>53.1. <acronym class="acronym">BKI</acronym> File Format</h2></div></div></div>
 <p>   This section describes how the <span class="productname">PostgreSQL</span>
    backend interprets <acronym class="acronym">BKI</acronym> files.  This description
    will be easier to understand if the <code class="filename">postgres.bki</code>

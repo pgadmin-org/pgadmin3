@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>5.7. Schemas</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="ddl.html" title="">
-<link rel="prev" href="ddl-priv.html" title="">
-<link rel="next" href="ddl-inherit.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="prev" href="ddl-priv.html" title="5.6. Privileges">
+<link rel="next" href="ddl-inherit.html" title="5.8. Inheritance">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-schemas"></a></h2></div></div></div>
+<a name="ddl-schemas"></a>5.7. Schemas</h2></div></div></div>
 <a name="id2557416"></a><p>   A <span class="productname">PostgreSQL</span> database cluster
    contains one or more named databases.  Users and groups of users are
    shared across the entire cluster, but no other data is shared across
@@ -22,7 +22,7 @@
    request.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>    Users of a cluster do not necessarily have the privilege to access every
     database in the cluster.  Sharing of user names means that there
     cannot be different users named, say, <code class="literal">joe</code> in two databases
@@ -61,7 +61,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-schemas-create"></a></h3></div></div></div>
+<a name="ddl-schemas-create"></a>5.7.1. Creating a Schema</h3></div></div></div>
 <a name="id2557521"></a><p>    To create a schema, use the <a href="sql-createschema.html">CREATE SCHEMA</a> command.  Give the schema a name
     of your choice.  For example:
 </p>
@@ -104,7 +104,7 @@
 </p>
 <pre class="programlisting">DROP SCHEMA myschema CASCADE;</pre>
 <p>
-    See <a href="ddl-depend.html" title=""></a> for a description of the general
+    See <a href="ddl-depend.html" title="5.11. Dependency Tracking">Section 5.11, &#8220;Dependency Tracking&#8221;</a> for a description of the general
     mechanism behind this.
    </p>
 <p>    Often you will want to create a schema owned by someone else
@@ -114,7 +114,7 @@
 <pre class="programlisting">CREATE SCHEMA <em class="replaceable"><code>schemaname</code></em> AUTHORIZATION <em class="replaceable"><code>username</code></em>;</pre>
 <p>
     You can even omit the schema name, in which case the schema name
-    will be the same as the user name.  See <a href="ddl-schemas.html#ddl-schemas-patterns" title=""></a> for how this can be useful.
+    will be the same as the user name.  See <a href="ddl-schemas.html#ddl-schemas-patterns" title="5.7.6. Usage Patterns">Section 5.7.6, &#8220;Usage Patterns&#8221;</a> for how this can be useful.
    </p>
 <p>    Schema names beginning with <code class="literal">pg_</code> are reserved for
     system purposes and may not be created by users.
@@ -122,10 +122,10 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-schemas-public"></a></h3></div></div></div>
+<a name="ddl-schemas-public"></a>5.7.2. The Public Schema</h3></div></div></div>
 <a name="id2557714"></a><p>    In the previous sections we created tables without specifying any
     schema names.  By default, such tables (and other objects) are
-    automatically put into a schema named <span class="quote">public</span>.  Every new
+    automatically put into a schema named &#8220;<span class="quote">public</span>&#8221;.  Every new
     database contains such a schema.  Thus, the following are equivalent:
 </p>
 <pre class="programlisting">CREATE TABLE products ( ... );</pre>
@@ -138,7 +138,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-schemas-path"></a></h3></div></div></div>
+<a name="ddl-schemas-path"></a>5.7.3. The Schema Search Path</h3></div></div></div>
 <a name="id2557757"></a><a name="id2557763"></a><a name="id2557768"></a><p>    Qualified names are tedious to write, and it's often best not to
     wire a particular schema name into applications anyway.  Therefore
     tables are often referred to by <em class="firstterm">unqualified names</em>,
@@ -199,7 +199,7 @@
     explicit qualification.  There is nothing special about the public
     schema except that it exists by default.  It can be dropped, too.
    </p>
-<p>    See also <a href="functions-info.html" title=""></a> for other ways to manipulate
+<p>    See also <a href="functions-info.html" title="9.19. System Information Functions">Section 9.19, &#8220;System Information Functions&#8221;</a> for other ways to manipulate
     the schema search path.
    </p>
 <p>    The search path works in the same way for data type names, function names,
@@ -220,7 +220,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-schemas-priv"></a></h3></div></div></div>
+<a name="ddl-schemas-priv"></a>5.7.4. Schemas and Privileges</h3></div></div></div>
 <a name="id2557956"></a><p>    By default, users cannot access any objects in schemas they do not
     own.  To allow that, the owner of the schema needs to grant the
     <code class="literal">USAGE</code> privilege on the schema.  To allow users
@@ -239,16 +239,16 @@
 </p>
 <pre class="programlisting">REVOKE CREATE ON SCHEMA public FROM PUBLIC;</pre>
 <p>
-    (The first <span class="quote">public</span> is the schema, the second
-    <span class="quote">public</span> means <span class="quote">every user</span>.  In the
+    (The first &#8220;<span class="quote">public</span>&#8221; is the schema, the second
+    &#8220;<span class="quote">public</span>&#8221; means &#8220;<span class="quote">every user</span>&#8221;.  In the
     first sense it is an identifier, in the second sense it is a
     key word, hence the different capitalization; recall the
-    guidelines from <a href="sql-syntax.html#sql-syntax-identifiers" title=""></a>.)
+    guidelines from <a href="sql-syntax.html#sql-syntax-identifiers" title="4.1.1. Identifiers and Key Words">Section 4.1.1, &#8220;Identifiers and Key Words&#8221;</a>.)
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-schemas-catalog"></a></h3></div></div></div>
+<a name="ddl-schemas-catalog"></a>5.7.5. The System Catalog Schema</h3></div></div></div>
 <a name="id2558056"></a><p>    In addition to <code class="literal">public</code> and user-created schemas, each
     database contains a <code class="literal">pg_catalog</code> schema, which contains
     the system tables and all the built-in data types, functions, and
@@ -276,7 +276,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-schemas-patterns"></a></h3></div></div></div>
+<a name="ddl-schemas-patterns"></a>5.7.6. Usage Patterns</h3></div></div></div>
 <p>    Schemas can be used to organize your data in many ways.  There are
     a few usage patterns that are recommended and are easily supported by
     the default configuration:
@@ -315,7 +315,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-schemas-portability"></a></h3></div></div></div>
+<a name="ddl-schemas-portability"></a>5.7.7. Portability</h3></div></div></div>
 <p>    In the SQL standard, the notion of objects in the same schema
     being owned by different users does not exist.  Moreover, some
     implementations do not allow you to create schemas that have a

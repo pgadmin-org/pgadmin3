@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>GRANT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="sql-commands.html" title="">
-<link rel="prev" href="sql-fetch.html" title="">
-<link rel="next" href="sql-insert.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-fetch.html" title="FETCH">
+<link rel="next" href="sql-insert.html" title="INSERT">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-grant"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2></h2>
+<h2>Name</h2>
 <p>GRANT &#8212; define access privileges</p>
 </div>
-<a name="id2758570"></a><div class="refsynopsisdiv">
-<h2></h2>
+<a name="id2759238"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
 <pre class="synopsis">GRANT { { SELECT | INSERT | UPDATE | DELETE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
     ON [ TABLE ] <em class="replaceable"><code>tablename</code></em> [, ...]
@@ -182,7 +182,7 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...] TO <em class="repla
       </p>
 <p>       For schemas, allows access to objects contained in the specified
        schema (assuming that the objects' own privilege requirements are
-       also met).  Essentially this allows the grantee to <span class="quote">look up</span>
+       also met).  Essentially this allows the grantee to &#8220;<span class="quote">look up</span>&#8221;
        objects within the schema.  Without this permission, it is still
        possible to see the object names, e.g. by querying the system tables.
        Also, after revoking this permission, existing backends might have
@@ -286,7 +286,7 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...] TO <em class="repla
     One possible workaround is to create a view having just the desired
     columns and then grant privileges to that view.
    </p>
-<p>    Use <a href="app-psql.html" title=""><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s <code class="command">\z</code> command
+<p>    Use <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s <code class="command">\z</code> command
     to obtain information about existing privileges, for example:
 </p>
 <pre class="programlisting">=&gt; \z mytable
@@ -328,7 +328,7 @@ GRANT <em class="replaceable"><code>role</code></em> [, ...] TO <em class="repla
 GRANT SELECT, UPDATE, INSERT ON mytable TO GROUP todos;</pre>
 <p>
    </p>
-<p>   If the <span class="quote">Access privileges</span> column is empty for a given object,
+<p>   If the &#8220;<span class="quote">Access privileges</span>&#8221; column is empty for a given object,
 it means the object has default privileges (that is, its privileges column
 is null).  Default privileges always include all privileges for the owner,
 and may include some privileges for <code class="literal">PUBLIC</code> depending on the
@@ -384,8 +384,8 @@ specified request.
     reason is that <span class="productname">PostgreSQL</span> treats the owner's
     privileges as having been granted by the owner to himself; therefore he
     can revoke them too.  In the SQL standard, the owner's privileges are
-    granted by an assumed entity <span class="quote">_SYSTEM</span>.  Not being
-    <span class="quote">_SYSTEM</span>, the owner cannot revoke these rights.
+    granted by an assumed entity &#8220;<span class="quote">_SYSTEM</span>&#8221;.  Not being
+    &#8220;<span class="quote">_SYSTEM</span>&#8221;, the owner cannot revoke these rights.
    </p>
 <p>    The SQL standard allows setting privileges for individual columns
     within a table:
@@ -405,7 +405,7 @@ specified request.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2759775"></a><h2>See Also</h2>
+<a name="id2760443"></a><h2>See Also</h2>
 <p>   <a href="sql-revoke.html">REVOKE</a>
   </p>
 </div>

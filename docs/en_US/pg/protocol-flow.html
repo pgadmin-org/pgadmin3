@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>44.2. Message Flow</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="protocol.html" title="">
-<link rel="prev" href="protocol.html" title="">
-<link rel="next" href="protocol-message-types.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="protocol.html" title="Chapter 44. Frontend/Backend Protocol">
+<link rel="prev" href="protocol.html" title="Chapter 44. Frontend/Backend Protocol">
+<link rel="next" href="protocol-message-types.html" title="44.3. Message Data Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="protocol-flow"></a></h2></div></div></div>
+<a name="protocol-flow"></a>44.2. Message Flow</h2></div></div></div>
 <p>   This section describes the message flow and the semantics of each
    message type.  (Details of the exact representation of each message
-   appear in <a href="protocol-message-formats.html" title=""></a>.)  There are
+   appear in <a href="protocol-message-formats.html" title="44.4. Message Formats">Section 44.4, &#8220;Message Formats&#8221;</a>.)  There are
    several different sub-protocols depending on the state of the
    connection: start-up, query, function call,
    <code class="command">COPY</code>, and termination.  There are also special
@@ -26,7 +26,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2810099"></a></h3></div></div></div>
+<a name="id2810855"></a>44.2.1. Start-Up</h3></div></div></div>
 <p>    To begin a session, a frontend opens a connection to the server and sends
     a startup message.  This message includes the names of the user and of the
     database the user wants to connect to; it also identifies the particular
@@ -131,7 +131,7 @@
 <dd><p>        This message informs the frontend about the current (initial)
          setting of backend parameters, such as <a href="runtime-config-client.html#guc-client-encoding">client_encoding</a> or <a href="runtime-config-client.html#guc-datestyle">DateStyle</a>.
          The frontend may ignore this message, or record the settings
-         for its future use; see <a href="protocol-flow.html#protocol-async" title=""></a> for
+         for its future use; see <a href="protocol-flow.html#protocol-async" title="44.2.6. Asynchronous Operations">Section 44.2.6, &#8220;Asynchronous Operations&#8221;</a> for
          more details.  The frontend should not respond to this
          message, but should continue listening for a ReadyForQuery
          message.
@@ -160,7 +160,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2810327"></a></h3></div></div></div>
+<a name="id2811082"></a>44.2.2. Simple Query</h3></div></div></div>
 <p>    A simple query cycle is initiated by the frontend sending a Query message
     to the backend.  The message includes an SQL command (or commands)
     expressed as a text string.
@@ -182,11 +182,11 @@
        </p></dd>
 <dt><span class="term">CopyInResponse</span></dt>
 <dd><p>        The backend is ready to copy data from the frontend to a
-        table; see <a href="protocol-flow.html#protocol-copy" title=""></a>.
+        table; see <a href="protocol-flow.html#protocol-copy" title="44.2.5. COPY Operations">Section 44.2.5, &#8220;COPY Operations&#8221;</a>.
        </p></dd>
 <dt><span class="term">CopyOutResponse</span></dt>
 <dd><p>        The backend is ready to copy data from a table to the
-        frontend; see <a href="protocol-flow.html#protocol-copy" title=""></a>.
+        frontend; see <a href="protocol-flow.html#protocol-copy" title="44.2.5. COPY Operations">Section 44.2.5, &#8220;COPY Operations&#8221;</a>.
        </p></dd>
 <dt><span class="term">RowDescription</span></dt>
 <dd><p>        Indicates that rows are about to be returned in response to
@@ -226,7 +226,7 @@
     normally consists of RowDescription, zero or more
     DataRow messages, and then CommandComplete.
     <code class="command">COPY</code> to or from the frontend invokes special protocol
-    as described in <a href="protocol-flow.html#protocol-copy" title=""></a>.
+    as described in <a href="protocol-flow.html#protocol-copy" title="44.2.5. COPY Operations">Section 44.2.5, &#8220;COPY Operations&#8221;</a>.
     All other query types normally produce only
     a CommandComplete message.
    </p>
@@ -253,7 +253,7 @@
    </p>
 <p>    A frontend must be prepared to accept ErrorResponse and
     NoticeResponse messages whenever it is expecting any other type of
-    message.  See also <a href="protocol-flow.html#protocol-async" title=""></a> concerning messages
+    message.  See also <a href="protocol-flow.html#protocol-async" title="44.2.6. Asynchronous Operations">Section 44.2.6, &#8220;Asynchronous Operations&#8221;</a> concerning messages
     that the backend may generate due to outside events.
    </p>
 <p>    Recommended practice is to code frontends in a state-machine style
@@ -263,7 +263,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="protocol-flow-ext-query"></a></h3></div></div></div>
+<a name="protocol-flow-ext-query"></a>44.2.3. Extended Query</h3></div></div></div>
 <p>    The extended query protocol breaks down the above-described simple
     query protocol into multiple steps.  The results of preparatory
     steps can be re-used multiple times for improved efficiency.
@@ -282,7 +282,7 @@
     constants.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     A parameter data type can be left unspecified by setting it to zero,
      or by making the array of parameter type OIDs shorter than the
      number of parameter symbols (<code class="literal">$</code><em class="replaceable"><code>n</code></em>)
@@ -299,7 +299,7 @@
     </p>
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     The query string contained in a Parse message cannot include more
      than one SQL statement; else a syntax error is reported.  This
      restriction does not exist in the simple-query protocol, but it
@@ -332,7 +332,7 @@
     The response is either BindComplete or ErrorResponse.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     The choice between text and binary output is determined by the format
      codes given in Bind, regardless of the SQL command involved.  The
      <code class="literal">BINARY</code> attribute in cursor declarations is irrelevant when
@@ -353,7 +353,7 @@
     the Bind message when planning the query.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     Query plans generated from a parameterized query may be less
      efficient than query plans generated from an equivalent query with actual
      parameter values substituted. The query planner cannot make decisions
@@ -378,7 +378,7 @@
 <p>    Once a portal exists, it can be executed using an Execute message.
     The Execute message specifies the portal name (empty string denotes the
     unnamed portal) and
-    a maximum result-row count (zero meaning <span class="quote">fetch all rows</span>).
+    a maximum result-row count (zero meaning &#8220;<span class="quote">fetch all rows</span>&#8221;).
     The result-row count is only meaningful for portals
     containing commands that return row sets; in other cases the command is
     always executed to completion, and the row count is ignored.
@@ -401,7 +401,7 @@
 <p>    At completion of each series of extended-query messages, the frontend
     should issue a Sync message.  This parameterless message causes the
     backend to close the current transaction if it's not inside a
-    <code class="command">BEGIN</code>/<code class="command">COMMIT</code> transaction block (<span class="quote">close</span>
+    <code class="command">BEGIN</code>/<code class="command">COMMIT</code> transaction block (&#8220;<span class="quote">close</span>&#8221;
     meaning to commit if no error, or roll back if error).  Then a
     ReadyForQuery response is issued.  The purpose of Sync is to provide
     a resynchronization point for error recovery.  When an error is detected
@@ -413,7 +413,7 @@
     and only one ReadyForQuery sent for each Sync.)
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     Sync does not cause a transaction block opened with <code class="command">BEGIN</code>
      to be closed.  It is possible to detect this situation since the
      ReadyForQuery message includes transaction status information.
@@ -440,7 +440,7 @@
     RowDescription message will be zeroes in this case.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>     In most scenarios the frontend should issue one or the other variant
      of Describe before issuing Execute, to ensure that it knows how to
      interpret the results it will get back.
@@ -463,7 +463,7 @@
     network overhead.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     The simple Query message is approximately equivalent to the series Parse,
      Bind, portal Describe, Execute, Close, Sync, using the unnamed prepared
      statement and portal objects and no parameters.  One difference is that
@@ -476,14 +476,14 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2810936"></a></h3></div></div></div>
+<a name="id2811670"></a>44.2.4. Function Call</h3></div></div></div>
 <p>    The Function Call sub-protocol allows the client to request a direct
     call of any function that exists in the database's
     <code class="structname">pg_proc</code> system catalog.  The client must have
     execute permission for the function.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     The Function Call sub-protocol is a legacy feature that is probably best
      avoided in new code.  Similar results can be accomplished by setting up
      a prepared statement that does <code class="literal">SELECT function($1, ...)</code>.
@@ -526,7 +526,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="protocol-copy"></a></h3></div></div></div>
+<a name="protocol-copy"></a>44.2.5. COPY Operations</h3></div></div></div>
 <p>    The <code class="command">COPY</code> command allows high-speed bulk data transfer
     to or from the server.  Copy-in and copy-out operations each switch
     the connection into a distinct sub-protocol, which lasts until the
@@ -588,7 +588,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="protocol-async"></a></h3></div></div></div>
+<a name="protocol-async"></a>44.2.6. Asynchronous Operations</h3></div></div></div>
 <p>    There are several cases in which the backend will send messages that
     are not specifically prompted by the frontend's command stream.
     Frontends must be prepared to deal with these messages at any time,
@@ -598,7 +598,7 @@
    </p>
 <p>    It is possible for NoticeResponse messages to be generated due to
     outside activity; for example, if the database administrator commands
-    a <span class="quote">fast</span> database shutdown, the backend will send a NoticeResponse
+    a &#8220;<span class="quote">fast</span>&#8221; database shutdown, the backend will send a NoticeResponse
     indicating this fact before closing the connection.  Accordingly,
     frontends should always be prepared to accept and display NoticeResponse
     messages, even when the connection is nominally idle.
@@ -646,7 +646,7 @@
     notification name.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     At present, NotificationResponse can only be sent outside a
      transaction, and thus it will not occur in the middle of a
      command-response series, though it may occur just before ReadyForQuery.
@@ -658,7 +658,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2811348"></a></h3></div></div></div>
+<a name="id2812086"></a>44.2.7. Cancelling Requests in Progress</h3></div></div></div>
 <p>    During the processing of a query, the frontend may request
     cancellation of the query.  The cancel request is not sent
     directly on the open connection to the backend for reasons of
@@ -710,7 +710,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2811410"></a></h3></div></div></div>
+<a name="id2812147"></a>44.2.8. Termination</h3></div></div></div>
 <p>    The normal, graceful termination procedure is that the frontend
     sends a Terminate message and immediately closes the connection.
     On receipt of this message, the backend closes the connection and
@@ -742,14 +742,14 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2811466"></a></h3></div></div></div>
+<a name="id2812203"></a>44.2.9. <acronym class="acronym">SSL</acronym> Session Encryption</h3></div></div></div>
 <p>    If <span class="productname">PostgreSQL</span> was built with
     <acronym class="acronym">SSL</acronym> support, frontend/backend communications
     can be encrypted using <acronym class="acronym">SSL</acronym>.  This provides
     communication security in environments where attackers might be
     able to capture the session traffic. For more information on
     encrypting <span class="productname">PostgreSQL</span> sessions with
-    <acronym class="acronym">SSL</acronym>, see <a href="ssl-tcp.html" title=""></a>.
+    <acronym class="acronym">SSL</acronym>, see <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
    </p>
 <p>    To initiate an <acronym class="acronym">SSL</acronym>-encrypted connection, the
     frontend initially sends an SSLRequest message rather than a

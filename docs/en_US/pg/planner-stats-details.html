@@ -1,25 +1,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 54. How the Planner Uses Statistics</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="internals.html" title="">
-<link rel="prev" href="bki-example.html" title="">
-<link rel="next" href="appendixes.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="bki-example.html" title="53.4. Example">
+<link rel="next" href="appendixes.html" title="Part VIII. Appendixes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="planner-stats-details">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="planner-stats-details"></a></h2></div></div></div>
+<a name="planner-stats-details"></a>Chapter 54. How the Planner Uses Statistics</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
-<dl><dt><span class="sect1"><a href="planner-stats-details.html#row-estimation-examples">53.1. Row Estimation Examples</a></span></dt></dl>
+<p><b>Table of Contents</b></p>
+<dl><dt><span class="sect1"><a href="planner-stats-details.html#row-estimation-examples">54.1. Row Estimation Examples</a></span></dt></dl>
 </div>
-<p>   This chapter builds on the material covered in <a href="performance-tips.html#using-explain" title=""></a>
-   and <a href="planner-stats.html" title=""></a>, and shows how the planner uses the 
+<p>   This chapter builds on the material covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>
+   and <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>, and shows how the planner uses the 
    system statistics to estimate the number of rows each stage in a query might
    return. This is a significant part of the planning / optimizing process,
    providing much of the raw material for cost calculation.
@@ -35,8 +35,8 @@
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="row-estimation-examples"></a></h2></div></div></div>
-<a name="id2822328"></a><p>   Using examples drawn from the regression test database, let's start with a 
+<a name="row-estimation-examples"></a>54.1. Row Estimation Examples</h2></div></div></div>
+<a name="id2823058"></a><p>   Using examples drawn from the regression test database, let's start with a 
    very simple query:
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1;
@@ -47,7 +47,7 @@
 <p>
    
    How the planner determines the cardinality of <code class="classname">tenk1</code>
-   is covered in <a href="performance-tips.html#using-explain" title=""></a>, but is repeated here for
+   is covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>, but is repeated here for
    completeness. The number of rows is looked up from 
    <code class="classname">pg_class</code>:
 
@@ -104,7 +104,7 @@ WHERE tablename='tenk1' AND attname='unique1';
  {1,970,1943,2958,3971,5069,6028,7007,7919,8982,9995}</pre>
 <p>
 
-   Next the fraction of the histogram occupied by <span class="quote">&lt; 1000</span> 
+   Next the fraction of the histogram occupied by &#8220;<span class="quote">&lt; 1000</span>&#8221; 
    is worked out. This is the selectivity. The histogram divides the range 
    into equal frequency buckets, so all we have to do is locate the bucket 
    that our value is in and count <span class="emphasis"><em>part</em></span> of it and 
@@ -265,7 +265,7 @@ WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
 <p>
 
    The restriction on <code class="classname">tenk1</code> 
-   <span class="quote">unique1 &lt; 50</span> is evaluated before the nested-loop join. 
+   &#8220;<span class="quote">unique1 &lt; 50</span>&#8221; is evaluated before the nested-loop join. 
    This is handled analogously to the previous range example. The restriction 
    operator for <code class="literal">&lt;</code> is <code class="function">scalarlteqsel</code> 
    as before, but this time the value 50 is in the first bucket of the 

@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>42.2. How Connections are Established</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="overview.html" title="">
-<link rel="prev" href="overview.html" title="">
-<link rel="next" href="parser-stage.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
+<link rel="prev" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
+<link rel="next" href="parser-stage.html" title="42.3. The Parser Stage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="connect-estab"></a></h2></div></div></div>
+<a name="connect-estab"></a>42.2. How Connections are Established</h2></div></div></div>
 <p>    <span class="productname">PostgreSQL</span> is implemented using a
-    simple <span class="quote">process per user</span> client/server model.  In this model
+    simple &#8220;<span class="quote">process per user</span>&#8221; client/server model.  In this model
     there is one <em class="firstterm">client process</em> connected to
     exactly one <em class="firstterm">server process</em>.  As we do not
     know ahead of time how many connections will be made, we have to
@@ -31,7 +31,7 @@
    </p>
 <p>    The client process can be any program that understands the
     <span class="productname">PostgreSQL</span> protocol described in
-    <a href="protocol.html" title=""></a>.  Many clients are based on the
+    <a href="protocol.html" title="Chapter 44. Frontend/Backend Protocol">Chapter 44, <i>Frontend/Backend Protocol</i></a>.  Many clients are based on the
     C-language library <span class="application">libpq</span>, but several independent
     implementations of the protocol exist, such as the Java
     <span class="application">JDBC</span> driver.

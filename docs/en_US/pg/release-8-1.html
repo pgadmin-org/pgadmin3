@@ -1,26 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>E.7. Release 8.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="release.html" title="">
-<link rel="prev" href="release-8-1-1.html" title="">
-<link rel="next" href="release-8-0-9.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1-1.html" title="E.6. Release 8.1.1">
+<link rel="next" href="release-8-0-9.html" title="E.8. Release 8.0.9">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-8-1"></a></h2></div></div></div>
+<a name="release-8-1"></a>E.7. Release 8.1</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Release date</h3>
 <p>2005-11-08</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2844920"></a></h3></div></div></div>
+<a name="id2845730"></a>E.7.1. Overview</h3></div></div></div>
 <p>     Major changes in this release:
     </p>
 <div class="variablelist"><dl>
@@ -31,7 +31,7 @@
         systems. In this release, the way that locking is done in the
         buffer manager has been overhauled to reduce lock contention
         and improve scalability. The buffer manager has also been
-        changed to use a <span class="quote">clock sweep</span> replacement
+        changed to use a &#8220;<span class="quote">clock sweep</span>&#8221; replacement
         policy.
        </p></dd>
 <dt><span class="term">       Allow index scans to use an intermediate in-memory bitmap (Tom)
@@ -124,7 +124,7 @@
       </span></dt>
 <dd><p>        This extension of the dependency mechanism prevents roles from
         being dropped while there are still database objects they own.
-        Formerly it was possible to accidentally <span class="quote">orphan</span> objects by
+        Formerly it was possible to accidentally &#8220;<span class="quote">orphan</span>&#8221; objects by
         deleting their owner.  While this could be recovered from, it
         was messy and unpleasant.
        </p></dd>
@@ -146,7 +146,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2845245"></a></h3></div></div></div>
+<a name="id2846055"></a>E.7.2. Migration to version 8.1</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span> is required
      for those wishing to migrate data from any previous release.
     </p>
@@ -260,7 +260,7 @@
       </p>
 <p>       When a large object is opened with <code class="literal">INV_READ</code> (and not
        <code class="literal">INV_WRITE</code>), the data read from the descriptor will now
-       reflect a <span class="quote">snapshot</span> of the large object's state at the
+       reflect a &#8220;<span class="quote">snapshot</span>&#8221; of the large object's state at the
        time of the transaction snapshot in use by the query that called
        <code class="function">lo_open()</code>.  To obtain the old behavior of always
        returning the latest committed data, include <code class="literal">INV_WRITE</code>
@@ -381,14 +381,14 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2845939"></a></h3></div></div></div>
+<a name="id2846754"></a>E.7.3. Additional Changes</h3></div></div></div>
 <p>     Below you will find a detailed account of the additional changes
      between <span class="productname">PostgreSQL</span> 8.1 and the
      previous major release.
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2845953"></a></h4></div></div></div>
+<a name="id2846768"></a>E.7.3.1. Performance Improvements</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Improve GiST and R-tree index performance (Neil)
        </p></li>
@@ -465,7 +465,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2846145"></a></h4></div></div></div>
+<a name="id2846960"></a>E.7.3.2. Server Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Prevent problems due to transaction ID (XID) wraparound (Tom)
@@ -559,7 +559,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2846378"></a></h4></div></div></div>
+<a name="id2847193"></a>E.7.3.3. Query Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add temporary views (Koju Iijima, Neil) 
        </p></li>
@@ -614,7 +614,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2846560"></a></h4></div></div></div>
+<a name="id2847375"></a>E.7.3.4. Object Manipulation Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Track dependencies of shared objects (Alvaro)
@@ -654,7 +654,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2846635"></a></h4></div></div></div>
+<a name="id2847450"></a>E.7.3.5. Utility Command Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow <code class="command">TRUNCATE</code> to truncate multiple tables in a
@@ -739,7 +739,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2846890"></a></h4></div></div></div>
+<a name="id2847705"></a>E.7.3.6. Data Type and Function Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add <code class="function">MAX()</code> and <code class="function">MIN()</code> aggregates for
         array types (Koju Iijima)
@@ -856,8 +856,8 @@ WHERE   n.oid = c.relnamespace AND
        </p>
 <p>        Days that contain a daylight saving time adjustment are not 24
         hours long, but typically 23 or 25 hours.  This change creates a
-        conceptual distinction between intervals of <span class="quote">so many days</span>
-        and intervals of <span class="quote">so many hours</span>.  Adding
+        conceptual distinction between intervals of &#8220;<span class="quote">so many days</span>&#8221;
+        and intervals of &#8220;<span class="quote">so many hours</span>&#8221;.  Adding
         <code class="literal">1 day</code> to a timestamp now gives the same local time on
         the next day even if a daylight saving time adjustment occurs
         between, whereas adding <code class="literal">24 hours</code> will give a different
@@ -929,7 +929,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2847418"></a></h4></div></div></div>
+<a name="id2848233"></a>E.7.3.7. Encoding and Locale Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Rename some encodings to be more consistent and to follow
@@ -976,7 +976,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2847552"></a></h4></div></div></div>
+<a name="id2848366"></a>E.7.3.8. General Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Fix <code class="command">ALTER LANGUAGE RENAME</code> (Sergey Yatskevich)
        </p></li>
@@ -1012,7 +1012,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2847656"></a></h4></div></div></div>
+<a name="id2848471"></a>E.7.3.9. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Overhaul the memory management of PL/PgSQL functions (Neil)
@@ -1067,7 +1067,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2847832"></a></h4></div></div></div>
+<a name="id2848647"></a>E.7.3.10. PL/Perl Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow large result sets to be returned efficiently (Abhijit
@@ -1112,7 +1112,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2847934"></a></h4></div></div></div>
+<a name="id2848749"></a>E.7.3.11. <span class="application">psql</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <code class="command">\set ON_ERROR_ROLLBACK</code> to allow statements in
@@ -1186,7 +1186,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2848140"></a></h4></div></div></div>
+<a name="id2848955"></a>E.7.3.12. <span class="application">pg_dump</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <code class="option">-n</code> / <code class="option">--schema</code> switch to 
@@ -1232,7 +1232,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2848261"></a></h4></div></div></div>
+<a name="id2849076"></a>E.7.3.13. <span class="application">libpq</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add a <code class="envar">PGPASSFILE</code> environment variable to specify the
         password file's filename (Andrew)
@@ -1249,7 +1249,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2848313"></a></h4></div></div></div>
+<a name="id2849128"></a>E.7.3.14. Source Code Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Fix <span class="application">pgxs</span> to support building against a relocated
         installation
@@ -1327,7 +1327,7 @@ WHERE   n.oid = c.relnamespace AND
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2848518"></a></h4></div></div></div>
+<a name="id2849333"></a>E.7.3.15. Contrib Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <code class="filename">/contrib/pg_buffercache</code> contrib module (Mark

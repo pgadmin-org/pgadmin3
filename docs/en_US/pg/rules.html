@@ -1,41 +1,41 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 35. The Rule System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="server-programming.html" title="">
-<link rel="prev" href="trigger-example.html" title="">
-<link rel="next" href="rules-views.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="trigger-example.html" title="34.4. A Complete Example">
+<link rel="next" href="rules-views.html" title="35.2. Views and the Rule System">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="rules">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="rules"></a></h2></div></div></div>
+<a name="rules"></a>Chapter 35. The Rule System</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
+<p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="rules.html#querytree">34.1. The Query Tree</a></span></dt>
-<dt><span class="sect1"><a href="rules-views.html">34.2. Views and the Rule System</a></span></dt>
+<dt><span class="sect1"><a href="rules.html#querytree">35.1. The Query Tree</a></span></dt>
+<dt><span class="sect1"><a href="rules-views.html">35.2. Views and the Rule System</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rules-views.html#rules-select">34.2.1. How <code class="command">SELECT</code> Rules Work</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id2701278">34.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id2701577">34.2.3. The Power of Views in <span class="productname">PostgreSQL</span></a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#rules-views-update">34.2.4. Updating a View</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#rules-select">35.2.1. How <code class="command">SELECT</code> Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2701662">35.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2701960">35.2.3. The Power of Views in <span class="productname">PostgreSQL</span></a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#rules-views-update">35.2.4. Updating a View</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="rules-update.html">34.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></a></span></dt>
+<dt><span class="sect1"><a href="rules-update.html">35.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rules-update.html#id2701806">34.3.1. How Update Rules Work</a></span></dt>
-<dt><span class="sect2"><a href="rules-update.html#rules-update-views">34.3.2. Cooperation with Views</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#id2702189">35.3.1. How Update Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#rules-update-views">35.3.2. Cooperation with Views</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="rules-privileges.html">34.4. Rules and Privileges</a></span></dt>
-<dt><span class="sect1"><a href="rules-status.html">34.5. Rules and Command Status</a></span></dt>
-<dt><span class="sect1"><a href="rules-triggers.html">34.6. Rules versus Triggers</a></span></dt>
+<dt><span class="sect1"><a href="rules-privileges.html">35.4. Rules and Privileges</a></span></dt>
+<dt><span class="sect1"><a href="rules-status.html">35.5. Rules and Command Status</a></span></dt>
+<dt><span class="sect1"><a href="rules-triggers.html">35.6. Rules versus Triggers</a></span></dt>
 </dl>
 </div>
-<a name="id2699969"></a><p>     This chapter discusses the rule system in
+<a name="id2700353"></a><p>     This chapter discusses the rule system in
      <span class="productname">PostgreSQL</span>.  Production rule systems
      are conceptually simple, but there are many subtle points
      involved in actually using them.</p>
@@ -53,8 +53,8 @@
      also discussed in [<a href="biblio.html#ston90b" title="[ston90b]">ston90b</a>] and [<a href="biblio.html#ong90" title="[ong90]">ong90</a>].</p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="querytree"></a></h2></div></div></div>
-<a name="id2700031"></a><p>    To understand how the rule system works it is necessary to know
+<a name="querytree"></a>35.1. The Query Tree</h2></div></div></div>
+<a name="id2700415"></a><p>    To understand how the rule system works it is necessary to know
     when it is invoked and what its input and results are.</p>
 <p>    The rule system is located between the parser and the planner.
     It takes the output of the parser, one query tree, and the user-defined

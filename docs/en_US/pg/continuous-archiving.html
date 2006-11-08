@@ -1,25 +1,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>23.3. Continuous Archiving and Point-In-Time Recovery (PITR)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="backup.html" title="">
-<link rel="prev" href="backup-file.html" title="">
-<link rel="next" href="warm-standby.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
+<link rel="prev" href="backup-file.html" title="23.2. File system level backup">
+<link rel="next" href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="continuous-archiving"></a></h2></div></div></div>
-<a name="id2647308"></a><a name="id2647316"></a><a name="id2647326"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="continuous-archiving"></a>23.3. Continuous Archiving and Point-In-Time Recovery (PITR)</h2></div></div></div>
+<a name="id2647436"></a><a name="id2647445"></a><a name="id2647454"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
    primarily for crash-safety purposes: if the system crashes, the
-   database can be restored to consistency by <span class="quote">replaying</span> the
+   database can be restored to consistency by &#8220;<span class="quote">replaying</span>&#8221; the
    log entries made since the last checkpoint.  However, the existence
    of the log makes it possible to use a third strategy for backing up
    databases: we can combine a file-system-level backup with backup of
@@ -50,7 +50,7 @@
     </p></li>
 <li><p>     If we continuously feed the series of WAL files to another
      machine that has been loaded with the same base backup file, we
-     have a <span class="quote">hot standby</span> system: at any point we can bring up
+     have a &#8220;<span class="quote">hot standby</span>&#8221; system: at any point we can bring up
      the second machine and it will have a nearly-current copy of the
      database.
     </p></li>
@@ -74,7 +74,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="backup-archiving-wal"></a></h3></div></div></div>
+<a name="backup-archiving-wal"></a>23.3.1. Setting up WAL archiving</h3></div></div></div>
 <p>    In an abstract sense, a running <span class="productname">PostgreSQL</span> system
     produces an indefinitely long sequence of WAL records.  The system
     physically divides this sequence into WAL <em class="firstterm">segment
@@ -83,7 +83,7 @@
     files are given numeric names that reflect their position in the
     abstract WAL sequence.  When not using WAL archiving, the system
     normally creates just a few segment files and then
-    <span class="quote">recycles</span> them by renaming no-longer-needed segment files
+    &#8220;<span class="quote">recycles</span>&#8221; them by renaming no-longer-needed segment files
     to higher segment numbers.  It's assumed that a segment file whose
     contents precede the checkpoint-before-last is no longer of
     interest and can be recycled.
@@ -91,8 +91,8 @@
 <p>    When archiving WAL data, we want to capture the contents of each segment
     file once it is filled, and save that data somewhere before the segment
     file is recycled for reuse.  Depending on the application and the
-    available hardware, there could be many different ways of <span class="quote">saving
-    the data somewhere</span>: we could copy the segment files to an NFS-mounted
+    available hardware, there could be many different ways of &#8220;<span class="quote">saving
+    the data somewhere</span>&#8221;: we could copy the segment files to an NFS-mounted
     directory on another machine, write them onto a tape drive (ensuring that
     you have a way of restoring the file with its original file name), or batch
     them together and burn them onto CDs, or something else entirely.  To
@@ -107,8 +107,10 @@
 <p>    The shell command to use is specified by the <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> configuration parameter, which in practice
     will always be placed in the <code class="filename">postgresql.conf</code> file.
     In this string,
-    any <code class="literal">%p</code> is replaced by the absolute path of the file to
+    any <code class="literal">%p</code> is replaced by the path name of the file to
     archive, while any <code class="literal">%f</code> is replaced by the file name only.
+    (The path name is relative to the working directory of the server,
+    i.e., the cluster's data directory.)
     Write <code class="literal">%%</code> if you need to embed an actual <code class="literal">%</code>
     character in the command.  The simplest useful command is something
     like
@@ -185,7 +187,7 @@
     than through SQL operations.
     You may wish to keep the configuration files in a location that will
     be backed up by your regular file system backup procedures.  See
-    <a href="runtime-config-file-locations.html" title=""></a> for how to relocate the
+    <a href="runtime-config-file-locations.html" title="17.2. File Locations">Section 17.2, &#8220;File Locations&#8221;</a> for how to relocate the
     configuration files.
    </p>
 <p>    The archive command is only invoked on completed WAL segments.  Hence,
@@ -204,12 +206,12 @@
 <p>    Also, you can force a segment switch manually with
     <code class="function">pg_switch_xlog</code>, if you want to ensure that a
     just-finished transaction is archived immediately.  Other utility
-    functions related to WAL management are listed in <a href="functions-admin.html#functions-admin-backup-table" title=""></a>.
+    functions related to WAL management are listed in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.47. Backup Control Functions">Table 9.47, &#8220;Backup Control Functions&#8221;</a>.
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="backup-base-backup"></a></h3></div></div></div>
+<a name="backup-base-backup"></a>23.3.2. Making a Base Backup</h3></div></div></div>
 <p>    The procedure for making a base backup is relatively simple:
   </p>
 <div class="orderedlist"><ol type="1">
@@ -265,8 +267,8 @@
     This situation is normal, and not an error, when taking a base backup of
     an active database; so you need to ensure that you can distinguish
     complaints of this sort from real errors.  For example, some versions
-    of <span class="application">rsync</span> return a separate exit code for <span class="quote">vanished
-    source files</span>, and you can write a driver script to accept this exit
+    of <span class="application">rsync</span> return a separate exit code for &#8220;<span class="quote">vanished
+    source files</span>&#8221;, and you can write a driver script to accept this exit
     code as a non-error case.  Also,
     some versions of GNU <span class="application">tar</span> consider it an error if a file
     is changed while <span class="application">tar</span> is copying it.  There does not seem
@@ -356,7 +358,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="backup-pitr-recovery"></a></h3></div></div></div>
+<a name="backup-pitr-recovery"></a>23.3.3. Recovering using a Continuous Archive Backup</h3></div></div></div>
 <p>    Okay, the worst has happened and you need to recover from your backup.
     Here is the procedure:
   </p>
@@ -423,7 +425,9 @@
     WAL file segments.  Like the <code class="varname">archive_command</code>, this is
     a shell command string.  It may contain <code class="literal">%f</code>, which is
     replaced by the name of the desired log file, and <code class="literal">%p</code>,
-    which is replaced by the absolute path to copy the log file to.
+    which is replaced by the path name to copy the log file to.
+    (The path name is relative to the working directory of the server,
+    i.e., the cluster's data directory.)
     Write <code class="literal">%%</code> if you need to embed an actual <code class="literal">%</code>
     character in the command.  The simplest useful command is
     something like
@@ -455,13 +459,13 @@
     to recover to some previous point in time (say, right before the junior
     DBA dropped your main transaction table), just specify the required
     stopping point in <code class="filename">recovery.conf</code>.  You can specify the stop
-    point, known as the <span class="quote">recovery target</span>, either by date/time or
+    point, known as the &#8220;<span class="quote">recovery target</span>&#8221;, either by date/time or
     by completion of a specific transaction ID.  As of this writing only
     the date/time option is very usable, since there are no tools to help
     you identify with any accuracy which transaction ID to use.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>      The stop point must be after the ending time of the base backup (the
       time of <code class="function">pg_stop_backup</code>).  You cannot use a base backup
       to recover to a time when that backup was still going on.  (To
@@ -472,7 +476,7 @@
 <p>    If recovery finds a corruption in the WAL data then recovery will
     complete at that point and the server will not start. The recovery 
     process could be re-run from the beginning, specifying a 
-    <span class="quote">recovery target</span> so that recovery can complete normally.
+    &#8220;<span class="quote">recovery target</span>&#8221; so that recovery can complete normally.
     If recovery fails for an external reason, such as a system crash or
     the WAL archive has become inaccessible, then the recovery can be
     simply restarted and it will restart almost from where it failed.
@@ -482,7 +486,7 @@
    </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="recovery-config-settings"></a></h4></div></div></div>
+<a name="recovery-config-settings"></a>23.3.3.1. Recovery Settings</h4></div></div></div>
 <p>      These settings can only be made in the <code class="filename">recovery.conf</code>
       file, and apply only for the duration of the recovery. They must be
       reset for any subsequent recovery you wish to perform. They cannot be
@@ -497,8 +501,10 @@
         the WAL file series. This parameter is required.
         Any <code class="literal">%f</code> in the string is
         replaced by the name of the file to retrieve from the archive,
-        and any <code class="literal">%p</code> is replaced by the absolute path to copy
+        and any <code class="literal">%p</code> is replaced by the path name to copy
         it to on the server.
+        (The path name is relative to the working directory of the server,
+        i.e., the cluster's data directory.)
         Write <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character
         in the command. 
        </p>
@@ -564,15 +570,15 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
         base backup was taken.  You would only need to set this parameter
         in complex re-recovery situations, where you need to return to
         a state that itself was reached after a point-in-time recovery.
-        See <a href="continuous-archiving.html#backup-timelines" title=""></a> for discussion.
+        See <a href="continuous-archiving.html#backup-timelines" title="23.3.4. Timelines">Section 23.3.4, &#8220;Timelines&#8221;</a> for discussion.
        </p></dd>
 </dl></div>
 </div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="backup-timelines"></a></h3></div></div></div>
-<a name="id2648810"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
+<a name="id2648927"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -605,7 +611,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     states in timeline branches that you later abandoned.
    </p>
 <p>    Each time a new timeline is created, <span class="productname">PostgreSQL</span> creates
-    a <span class="quote">timeline history</span> file that shows which timeline it branched
+    a &#8220;<span class="quote">timeline history</span>&#8221; file that shows which timeline it branched
     off from and when.  These history files are necessary to allow the system
     to pick the right WAL segment files when recovering from an archive that
     contains multiple timelines.  Therefore, they are archived into the WAL
@@ -627,8 +633,8 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="backup-incremental-updated"></a></h3></div></div></div>
-<a name="id2648938"></a><a name="id2648947"></a><p>    Restartable Recovery can also be utilised to offload the expense of
+<a name="backup-incremental-updated"></a>23.3.5. Incrementally Updated Backups</h3></div></div></div>
+<a name="id2649042"></a><a name="id2649051"></a><p>    Restartable Recovery can also be utilised to offload the expense of
     taking periodic base backups from a main server, by instead backing
     up a Standby server's files.  This concept is also generally known as 
     incrementally updated backups, log change accumulation or more simply,
@@ -642,7 +648,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     incrementally updated backup than from the base backup.
    </p>
 <p>    To make use of this capability you will need to setup a Standby database
-    on a second system, as described in <a href="warm-standby.html" title=""></a>. By
+    on a second system, as described in <a href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">Section 23.4, &#8220;Warm Standby Servers for High Availability&#8221;</a>. By
     taking a backup of the Standby server while it is running you will
     have produced an incrementally updated backup. Once this configuration
     has been implemented you will no longer need to produce regular base 
@@ -654,7 +660,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="continuous-archiving-caveats"></a></h3></div></div></div>
+<a name="continuous-archiving-caveats"></a>23.3.6. Caveats</h3></div></div></div>
 <p>    At this writing, there are several limitations of the continuous archiving
     technique.  These will probably be fixed in future releases:
 
@@ -696,7 +702,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     be small enough to ignore, in which case you can significantly
     reduce the total volume of archived logs by turning off page
     snapshots using the <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a>
-    parameter.  (Read the notes and warnings in <a href="wal.html" title=""></a>
+    parameter.  (Read the notes and warnings in <a href="wal.html" title="Chapter 27. Reliability and the Write-Ahead Log">Chapter 27, <i>Reliability and the Write-Ahead Log</i></a>
     before you do so.)  Turning off page snapshots does not prevent
     use of the logs for PITR operations.  An area for future
     development is to compress archived WAL data by removing

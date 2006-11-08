@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>33.10. User-Defined Aggregates</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="extend.html" title="">
-<link rel="prev" href="xfunc-c.html" title="">
-<link rel="next" href="xtypes.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="extend.html" title="Chapter 33. Extending SQL">
+<link rel="prev" href="xfunc-c.html" title="33.9. C-Language Functions">
+<link rel="next" href="xtypes.html" title="33.11. User-Defined Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xaggr"></a></h2></div></div></div>
-<a name="id2695281"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
+<a name="xaggr"></a>33.10. User-Defined Aggregates</h2></div></div></div>
+<a name="id2695659"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
    are expressed in terms of <em class="firstterm">state values</em>
    and <em class="firstterm">state transition functions</em>.
    That is, an aggregate operates using a state value that is updated
@@ -76,10 +76,10 @@ SELECT sum(a) FROM test_complex;
    the state variable and then start applying the transition function
    at the second nonnull input value.  <span class="productname">PostgreSQL</span>
    will do that automatically if the initial condition is null and
-   the transition function is marked <span class="quote">strict</span> (i.e., not to be called
+   the transition function is marked &#8220;<span class="quote">strict</span>&#8221; (i.e., not to be called
    for null inputs).
   </p>
-<p>   Another bit of default behavior for a <span class="quote">strict</span> transition function
+<p>   Another bit of default behavior for a &#8220;<span class="quote">strict</span>&#8221; transition function
    is that the previous state value is retained unchanged whenever a
    null input value is encountered.  Thus, null values are ignored.  If you
    need some other behavior for null inputs, do not declare your
@@ -108,7 +108,7 @@ SELECT sum(a) FROM test_complex;
 <p>   Aggregate functions may use polymorphic
    state transition functions or final functions, so that the same functions
    can be used to implement multiple aggregates.
-   See <a href="extend-type-system.html#extend-types-polymorphic" title=""></a>
+   See <a href="extend-type-system.html#extend-types-polymorphic" title="33.2.5. Polymorphic Types">Section 33.2.5, &#8220;Polymorphic Types&#8221;</a>
    for an explanation of polymorphic functions.
    Going a step further, the aggregate function itself may be specified
    with polymorphic input type(s) and state type, allowing a single
@@ -153,7 +153,7 @@ SELECT attrelid::regclass, array_accum(atttypid)
   </p>
 <p>   A function written in C can detect that it is being called as an
    aggregate transition or final function by seeing if it was passed
-   an <code class="structname">AggState</code> node as the function call <span class="quote">context</span>,
+   an <code class="structname">AggState</code> node as the function call &#8220;<span class="quote">context</span>&#8221;,
    for example by
 </p>
 <pre class="programlisting">        if (fcinfo-&gt;context &amp;&amp; IsA(fcinfo-&gt;context, AggState))</pre>

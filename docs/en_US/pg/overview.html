@@ -1,37 +1,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 42. Overview of PostgreSQL Internals</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="internals.html" title="">
-<link rel="prev" href="internals.html" title="">
-<link rel="next" href="connect-estab.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="internals.html" title="Part VII. Internals">
+<link rel="next" href="connect-estab.html" title="42.2. How Connections are Established">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="overview">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="overview"></a></h2></div></div></div>
+<a name="overview"></a>Chapter 42. Overview of PostgreSQL Internals</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
+<p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="overview.html#query-path">41.1. The Path of a Query</a></span></dt>
-<dt><span class="sect1"><a href="connect-estab.html">41.2. How Connections are Established</a></span></dt>
-<dt><span class="sect1"><a href="parser-stage.html">41.3. The Parser Stage</a></span></dt>
+<dt><span class="sect1"><a href="overview.html#query-path">42.1. The Path of a Query</a></span></dt>
+<dt><span class="sect1"><a href="connect-estab.html">42.2. How Connections are Established</a></span></dt>
+<dt><span class="sect1"><a href="parser-stage.html">42.3. The Parser Stage</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="parser-stage.html#id2795703">41.3.1. Parser</a></span></dt>
-<dt><span class="sect2"><a href="parser-stage.html#id2795888">41.3.2. Transformation Process</a></span></dt>
+<dt><span class="sect2"><a href="parser-stage.html#id2796446">42.3.1. Parser</a></span></dt>
+<dt><span class="sect2"><a href="parser-stage.html#id2796631">42.3.2. Transformation Process</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="rule-system.html">41.4. The <span class="productname">PostgreSQL</span> Rule System</a></span></dt>
-<dt><span class="sect1"><a href="planner-optimizer.html">41.5. Planner/Optimizer</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id2796141">41.5.1. Generating Possible Plans</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="executor.html">41.6. Executor</a></span></dt>
+<dt><span class="sect1"><a href="rule-system.html">42.4. The <span class="productname">PostgreSQL</span> Rule System</a></span></dt>
+<dt><span class="sect1"><a href="planner-optimizer.html">42.5. Planner/Optimizer</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id2796885">42.5.1. Generating Possible Plans</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="executor.html">42.6. Executor</a></span></dt>
 </dl>
 </div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Author</h3>
 <p>    This chapter originated as part of
     [<a href="biblio.html#sim98" title="[sim98]">sim98</a>], Stefan Simkovics'
     Master's Thesis prepared at Vienna University of Technology under the direction
@@ -51,7 +51,7 @@
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="query-path"></a></h2></div></div></div>
+<a name="query-path"></a>42.1. The Path of a Query</h2></div></div></div>
 <p>    Here we give a short overview of the stages a query has to pass in
     order to obtain a result.
    </p>

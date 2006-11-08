@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>17.4. Resource Consumption</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="runtime-config.html" title="">
-<link rel="prev" href="runtime-config-connection.html" title="">
-<link rel="next" href="runtime-config-wal.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
+<link rel="prev" href="runtime-config-connection.html" title="17.3. Connections and Authentication">
+<link rel="next" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config-resource"></a></h2></div></div></div>
+<a name="runtime-config-resource"></a>17.4. Resource Consumption</h2></div></div></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-memory"></a></h3></div></div></div>
+<a name="runtime-config-resource-memory"></a>17.4.1. Memory</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-shared-buffers"></a><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)</span>
@@ -37,7 +37,7 @@
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
         memory than your operating system's default configuration
-        allows. See <a href="kernel-resources.html#sysvipc" title=""></a> for information on how to
+        allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
        </p>
 </dd>
@@ -66,7 +66,7 @@
 </dt>
 <dd>
 <p>        Sets the maximum number of transactions that can be in the
-        <span class="quote">prepared</span> state simultaneously (see <a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a>).
+        &#8220;<span class="quote">prepared</span>&#8221; state simultaneously (see <a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a>).
         Setting this parameter to zero disables the prepared-transaction
         feature.
         The default is 5.
@@ -81,7 +81,7 @@
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
         memory than your operating system's default configuration
-        allows. See <a href="kernel-resources.html#sysvipc" title=""></a> for information on how to
+        allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
        </p>
 </dd>
@@ -146,8 +146,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-fsm"></a></h3></div></div></div>
-<a name="id2625998"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
+<a name="runtime-config-resource-fsm"></a>17.4.2. Free Space Map</h3></div></div></div>
+<a name="id2626045"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
       map</em>, which tracks the locations of unused space in the database.
       An undersized free space map may cause the database to consume
       increasing amounts of disk space over time, because free space that
@@ -162,7 +162,7 @@
 <p>      Increasing these parameters may cause <span class="productname">PostgreSQL</span>
       to request more <span class="systemitem">System V</span> shared
       memory than your operating system's default configuration
-      allows. See <a href="kernel-resources.html#sysvipc" title=""></a> for information on how to
+      allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
       adjust those parameters, if necessary.
      </p>
 <div class="variablelist"><dl>
@@ -190,7 +190,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-kernel"></a></h3></div></div></div>
+<a name="runtime-config-resource-kernel"></a>17.4.3. Kernel Resource Usage</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-max-files-per-process"></a><span class="term"><code class="varname">max_files_per_process</code> (<code class="type">integer</code>)</span>
@@ -201,8 +201,8 @@
         But on some platforms (notably, most BSD systems), the kernel will
         allow individual processes to open many more files than the system
         can really support when a large number of processes all try to open
-        that many files. If you find yourself seeing <span class="quote">Too many open
-        files</span> failures, try reducing this setting.
+        that many files. If you find yourself seeing &#8220;<span class="quote">Too many open
+        files</span>&#8221; failures, try reducing this setting.
         This parameter can only be set at server start.
        </p></dd>
 <dt>
@@ -233,8 +233,8 @@
 <p>        If a specified library is not found,
         the server will fail to start.
        </p>
-<p>        Every  PostgreSQL-supported library has a <span class="quote">magic
-        block</span> that is checked to guarantee compatibility.  
+<p>        Every  PostgreSQL-supported library has a &#8220;<span class="quote">magic
+        block</span>&#8221; that is checked to guarantee compatibility.  
         For this reason, non-PostgreSQL libraries cannot be 
         loaded in this way.
        </p>
@@ -243,7 +243,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-vacuum-cost"></a></h3></div></div></div>
+<a name="runtime-config-resource-vacuum-cost"></a>17.4.4.        Cost-Based Vacuum Delay
+     </h3></div></div></div>
 <p>      During the execution of <a href="sql-vacuum.html">VACUUM</a> and <a href="sql-analyze.html">ANALYZE</a> commands, the system maintains an
       internal counter that keeps track of the estimated cost of the
       various I/O operations that are performed.  When the accumulated
@@ -313,7 +314,7 @@
         </p></dd>
 </dl></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>       There are certain operations that hold critical locks and should
        therefore complete as quickly as possible.  Cost-based vacuum
        delays do not occur during such operations.  Therefore it is
@@ -328,10 +329,10 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-background-writer"></a></h3></div></div></div>
+<a name="runtime-config-resource-background-writer"></a>17.4.5. Background Writer</h3></div></div></div>
 <p>      Beginning in <span class="productname">PostgreSQL</span> 8.0, there is a separate server
       process called the <em class="firstterm">background writer</em>, whose sole function
-      is to issue writes of <span class="quote">dirty</span> shared buffers.  The intent is
+      is to issue writes of &#8220;<span class="quote">dirty</span>&#8221; shared buffers.  The intent is
       that server processes handling user queries should seldom or never have
       to wait for a write to occur, because the background writer will do it.
       This arrangement also reduces the performance penalty associated with

@@ -1,41 +1,41 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>VALUES</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="sql-commands.html" title="">
-<link rel="prev" href="sql-vacuum.html" title="">
-<link rel="next" href="reference-client.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-vacuum.html" title="VACUUM">
+<link rel="next" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-values"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2></h2>
+<h2>Name</h2>
 <p>VALUES &#8212; compute a set of rows</p>
 </div>
-<a name="id2773453"></a><div class="refsynopsisdiv">
-<h2></h2>
+<a name="id2774168"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
 <pre class="synopsis">VALUES ( <em class="replaceable"><code>expression</code></em> [, ...] ) [, ...]
     [ ORDER BY <em class="replaceable"><code>sort_expression</code></em> [ ASC | DESC | USING <em class="replaceable"><code>operator</code></em> ] [, ...] ]
     [ LIMIT { <em class="replaceable"><code>count</code></em> | ALL } ]
     [ OFFSET <em class="replaceable"><code>start</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2773498"></a><h2>Description</h2>
+<a name="id2774212"></a><h2>Description</h2>
 <p>   <code class="command">VALUES</code> computes a row value or set of row values
    specified by value expressions.  It is most commonly used to generate
-   a <span class="quote">constant table</span> within a larger command, but it can be
+   a &#8220;<span class="quote">constant table</span>&#8221; within a larger command, but it can be
    used on its own.
   </p>
 <p>   When more than one row is specified, all the rows must have the same
    number of elements.  The data types of the resulting table's columns are
    determined by combining the explicit or inferred types of the expressions
    appearing in that column, using the same rules as for <code class="literal">UNION</code>
-   (see <a href="typeconv-union-case.html" title=""></a>).
+   (see <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and Related Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs&#8221;</a>).
   </p>
 <p>   Within larger commands, <code class="command">VALUES</code> is syntactically allowed
    anywhere that <code class="command">SELECT</code> is.  Because it is treated like a
@@ -45,7 +45,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2773581"></a><h2>Parameters</h2>
+<a name="id2774295"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>expression</code></em></span></dt>
 <dd><p>      A constant or expression to compute and insert at the indicated place
@@ -79,7 +79,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2773738"></a><h2>Notes</h2>
+<a name="id2774452"></a><h2>Notes</h2>
 <p>   <code class="command">VALUES</code> lists with very large numbers of rows should be avoided,
    as you may encounter out-of-memory failures or poor performance.
    <code class="command">VALUES</code> appearing within <code class="command">INSERT</code> is a special case
@@ -89,7 +89,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2773778"></a><h2>Examples</h2>
+<a name="id2774493"></a><h2>Examples</h2>
 <p>   A bare <code class="command">VALUES</code> command:
 
 </p>
@@ -159,7 +159,7 @@ WHERE ip_address IN (VALUES('192.168.0.1'::inet), ('192.168.0.10'), ('192.168.1.
 <p>
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>    For simple <code class="literal">IN</code> tests, it's better to rely on the
     list-of-scalars form of <code class="literal">IN</code> than to write a <code class="command">VALUES</code>
     query as shown above.  The list of scalars method requires less writing
@@ -168,14 +168,14 @@ WHERE ip_address IN (VALUES('192.168.0.1'::inet), ('192.168.0.10'), ('192.168.1.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2774006"></a><h2>Compatibility</h2>
+<a name="id2774720"></a><h2>Compatibility</h2>
 <p>   <code class="command">VALUES</code> conforms to the SQL standard, except that
    <code class="literal">LIMIT</code> and <code class="literal">OFFSET</code> are
    <span class="productname">PostgreSQL</span> extensions.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2774037"></a><h2>See Also</h2>
+<a name="id2774751"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-insert.html">INSERT</a>, <a href="sql-select.html">SELECT</a></span>
 </div>
 </div></body>

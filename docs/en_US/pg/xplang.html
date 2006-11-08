@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 36. Procedural Languages</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="server-programming.html" title="">
-<link rel="prev" href="rules-triggers.html" title="">
-<link rel="next" href="plpgsql.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="rules-triggers.html" title="35.6. Rules versus Triggers">
+<link rel="next" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="xplang">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="xplang"></a></h2></div></div></div>
+<a name="xplang"></a>Chapter 36. Procedural Languages</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
-<dl><dt><span class="sect1"><a href="xplang.html#xplang-install">35.1. Installing Procedural Languages</a></span></dt></dl>
+<p><b>Table of Contents</b></p>
+<dl><dt><span class="sect1"><a href="xplang.html#xplang-install">36.1. Installing Procedural Languages</a></span></dt></dl>
 </div>
-<a name="id2703973"></a><p>   <span class="productname">PostgreSQL</span> allows user-defined functions
+<a name="id2704329"></a><p>   <span class="productname">PostgreSQL</span> allows user-defined functions
    to be written in other languages besides SQL and C.  These other
    languages are generically called <em class="firstterm">procedural
    languages</em> (<acronym class="acronym">PL</acronym>s).  For a function
@@ -27,7 +27,7 @@
    text. Instead, the task is passed to a special handler that knows
    the details of the language.  The handler could either do all the
    work of parsing, syntax analysis, execution, etc. itself, or it
-   could serve as <span class="quote">glue</span> between
+   could serve as &#8220;<span class="quote">glue</span>&#8221; between
    <span class="productname">PostgreSQL</span> and an existing implementation
    of a programming language.  The handler itself is a
    C language function compiled into a shared object and
@@ -35,21 +35,21 @@
   </p>
 <p>   There are currently four procedural languages available in the
    standard <span class="productname">PostgreSQL</span> distribution:
-   <span class="application">PL/pgSQL</span> (<a href="plpgsql.html" title=""></a>),
-   <span class="application">PL/Tcl</span> (<a href="pltcl.html" title=""></a>),
-   <span class="application">PL/Perl</span> (<a href="plperl.html" title=""></a>), and
-   <span class="application">PL/Python</span> (<a href="plpython.html" title=""></a>).
+   <span class="application">PL/pgSQL</span> (<a href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">Chapter 37, <i><span class="application">PL/pgSQL</span> - <acronym class="acronym">SQL</acronym> Procedural Language</i></a>),
+   <span class="application">PL/Tcl</span> (<a href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">Chapter 38, <i>PL/Tcl - Tcl Procedural Language</i></a>),
+   <span class="application">PL/Perl</span> (<a href="plperl.html" title="Chapter 39. PL/Perl - Perl Procedural Language">Chapter 39, <i>PL/Perl - Perl Procedural Language</i></a>), and
+   <span class="application">PL/Python</span> (<a href="plpython.html" title="Chapter 40. PL/Python - Python Procedural Language">Chapter 40, <i>PL/Python - Python Procedural Language</i></a>).
    Other languages can be defined by users.
-   The basics of developing a new procedural language are covered in <a href="plhandler.html" title=""></a>.
+   The basics of developing a new procedural language are covered in <a href="plhandler.html" title="Chapter 47. Writing A Procedural Language Handler">Chapter 47, <i>Writing A Procedural Language Handler</i></a>.
   </p>
 <p>   There are additional procedural languages available that are not
-   included in the core distribution. <a href="external-projects.html" title=""></a>
+   included in the core distribution. <a href="external-projects.html" title="Appendix H. PgFoundry and External Projects">Appendix H, <i>PgFoundry and External Projects</i></a>
    has information about finding them.
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xplang-install"></a></h2></div></div></div>
-<p>    A procedural language must be <span class="quote">installed</span> into each
+<a name="xplang-install"></a>36.1. Installing Procedural Languages</h2></div></div></div>
+<p>    A procedural language must be &#8220;<span class="quote">installed</span>&#8221; into each
     database where it is to be used.  But procedural languages installed in
     the database <code class="literal">template1</code> are automatically available in all
     subsequently created databases, since their entries in
@@ -61,7 +61,7 @@
 <p>    For the languages supplied with the standard distribution, it is
     only necessary to execute <code class="command">CREATE LANGUAGE</code>
     <em class="replaceable"><code>language_name</code></em> to install the language into the
-    current database.  Alternatively, the program <a href="app-createlang.html" title=""><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a> may be used to do this from the shell
+    current database.  Alternatively, the program <a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a> may be used to do this from the shell
     command line.  For example, to install the language
     <span class="application">PL/pgSQL</span> into the database
     <code class="literal">template1</code>, use
@@ -73,7 +73,8 @@
     does not know about.
    </p>
 <div class="procedure">
-<a name="id2704180"></a><p class="title"><b></b></p>
+<a name="id2704537"></a><p class="title"><b>     Manual Procedural Language Installation
+    </b></p>
 <p>     A procedural language is installed in a database in four steps,
      which must be carried out by a database superuser.  (For languages
      known to <code class="command">CREATE LANGUAGE</code>, the second and third steps
@@ -85,7 +86,7 @@
 <a name="xplang-install-cr1"></a><p>      The shared object for the language handler must be compiled and
       installed into an appropriate library directory.  This works in the same
       way as building and installing modules with regular user-defined C
-      functions does; see <a href="xfunc-c.html#dfunc" title=""></a>.  Often, the language
+      functions does; see <a href="xfunc-c.html#dfunc" title="33.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 33.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a>.  Often, the language
       handler will depend on an external library that provides the actual
       programming language engine; if so, that must be installed as well.
      </p>
@@ -105,7 +106,7 @@
      </p>
 </li>
 <li>
-<a name="xplang-install-cr3"></a><p>      Optionally, the language handler may provide a <span class="quote">validator</span>
+<a name="xplang-install-cr3"></a><p>      Optionally, the language handler may provide a &#8220;<span class="quote">validator</span>&#8221;
       function that checks a function definition for correctness without
       actually executing it.  The validator function is called by
       <code class="command">CREATE FUNCTION</code> if it exists.  If a validator function
@@ -145,12 +146,12 @@
 </li>
 </ol>
 </div>
-<p>    <a href="xplang.html#xplang-install-example" title=""></a> shows how the manual
+<p>    <a href="xplang.html#xplang-install-example" title="Example 36.1. Manual Installation of PL/pgSQL">Example 36.1, &#8220;Manual Installation of <span class="application">PL/pgSQL</span>&#8221;</a> shows how the manual
     installation procedure would work with the language
     <span class="application">PL/pgSQL</span>.
    </p>
 <div class="example">
-<a name="xplang-install-example"></a><p class="title"><b></b></p>
+<a name="xplang-install-example"></a><p class="title"><b>Example 36.1. Manual Installation of <span class="application">PL/pgSQL</span></b></p>
 <div class="example-contents">
 <p>      The following command tells the database server where to find the 
       shared object for the <span class="application">PL/pgSQL</span> language's call handler function.
@@ -182,7 +183,7 @@
 </div>
 <br class="example-break"><p>    In a default <span class="productname">PostgreSQL</span> installation,
     the handler for the <span class="application">PL/pgSQL</span> language
-    is built and installed into the <span class="quote">library</span>
+    is built and installed into the &#8220;<span class="quote">library</span>&#8221;
     directory. If <span class="application">Tcl</span> support is configured in, the handlers
     for <span class="application">PL/Tcl</span> and <span class="application">PL/TclU</span> are also built and
     installed in the same location.  Likewise, the <span class="application">PL/Perl</span> and

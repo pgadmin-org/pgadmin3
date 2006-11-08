@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>43.9. pg_auth_members</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="catalogs.html" title="">
-<link rel="prev" href="catalog-pg-authid.html" title="">
-<link rel="next" href="catalog-pg-autovacuum.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="catalog-pg-authid.html" title="43.8. pg_authid">
+<link rel="next" href="catalog-pg-autovacuum.html" title="43.10. pg_autovacuum">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-auth-members"></a></h2></div></div></div>
-<a name="id2798855"></a><p>   The catalog <code class="structname">pg_auth_members</code> shows the membership
+<a name="catalog-pg-auth-members"></a>43.9. <code class="structname">pg_auth_members</code></h2></div></div></div>
+<a name="id2799591"></a><p>   The catalog <code class="structname">pg_auth_members</code> shows the membership
    relations between roles.  Any non-circular set of relationships is allowed.
   </p>
 <p>   Because user identities are cluster-wide,
@@ -24,7 +24,7 @@
    one per database.
   </p>
 <div class="table">
-<a name="id2798885"></a><p class="title"><b></b></p>
+<a name="id2799622"></a><p class="title"><b>Table 43.9. <code class="structname">pg_auth_members</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_auth_members Columns" border="1">
 <colgroup>
 <col>
@@ -42,20 +42,20 @@
 <tr>
 <td><code class="structfield">roleid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-authid.html" title=""><code class="structname">pg_authid</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
 <td>ID of a role that has a member</td>
 </tr>
 <tr>
 <td><code class="structfield">member</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-authid.html" title=""><code class="structname">pg_authid</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
 <td>ID of a role that is a member of <code class="structfield">roleid</code>
 </td>
 </tr>
 <tr>
 <td><code class="structfield">grantor</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-authid.html" title=""><code class="structname">pg_authid</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
 <td>ID of the role that granted this membership</td>
 </tr>
 <tr>

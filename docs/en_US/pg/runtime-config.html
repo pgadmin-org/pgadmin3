@@ -1,21 +1,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 17. Server Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="admin.html" title="">
-<link rel="prev" href="ssh-tunnels.html" title="">
-<link rel="next" href="runtime-config-file-locations.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
+<link rel="next" href="runtime-config-file-locations.html" title="17.2. File Locations">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime-config">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="runtime-config"></a></h2></div></div></div>
+<a name="runtime-config"></a>Chapter 17. Server Configuration</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
+<p><b>Table of Contents</b></p>
 <dl>
 <dt><span class="sect1"><a href="runtime-config.html#config-setting">17.1. Setting Parameters</a></span></dt>
 <dt><span class="sect1"><a href="runtime-config-file-locations.html">17.2. File Locations</a></span></dt>
@@ -77,14 +77,14 @@
 <dt><span class="sect1"><a href="runtime-config-short.html">17.16. Short Options</a></span></dt>
 </dl>
 </div>
-<a name="id2623745"></a><p>   There are many configuration parameters that affect the behavior of
+<a name="id2623804"></a><p>   There are many configuration parameters that affect the behavior of
    the database system. In the first section of this chapter, we
    describe how to set configuration parameters. The subsequent sections
    discuss each parameter in detail.
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="config-setting"></a></h2></div></div></div>
+<a name="config-setting"></a>17.1. Setting Parameters</h2></div></div></div>
 <p>    All parameter names are case-insensitive. Every parameter takes a
     value of one of four types: Boolean, integer, floating point,
     or string. Boolean values may be written as <code class="literal">ON</code>,
@@ -106,7 +106,7 @@
     memory units in 1024, not 1000.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id2623884"></a>,
+    <code class="filename">postgresql.conf</code><a name="id2623942"></a>,
     which is normally kept in the data directory. (<span class="application">initdb</span>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -124,7 +124,7 @@ shared_buffers = 128MB</pre>
     numbers must be single-quoted.  To embed a single quote in a parameter
     value, write either two quotes (preferred) or backslash-quote.
    </p>
-<p>    <a name="id2623921"></a>
+<p>    <a name="id2623980"></a>
     In addition to parameter settings, the <code class="filename">postgresql.conf</code>
     file can contain <em class="firstterm">include directives</em>, which specify
     another file to read and process as if it were inserted into the
@@ -136,7 +136,7 @@ shared_buffers = 128MB</pre>
     the directory containing the referencing configuration file.
     Inclusions can be nested.
    </p>
-<p>    <a name="id2623959"></a>
+<p>    <a name="id2624017"></a>
     The configuration file is reread whenever the main server process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
     of <code class="literal">pg_ctl reload</code>). The main server process
@@ -199,7 +199,7 @@ shared_buffers = 128MB</pre>
     command allows inspection of the current values of all parameters.
    </p>
 <p>    The virtual table <code class="structname">pg_settings</code>
-    (described in <a href="view-pg-settings.html" title=""></a>) also allows
+    (described in <a href="view-pg-settings.html" title="43.44. pg_settings">Section 43.44, &#8220;<code class="structname">pg_settings</code>&#8221;</a>) also allows
     displaying and updating session run-time parameters.  It is equivalent
     to <code class="command">SHOW</code> and <code class="command">SET</code>, but can be more convenient
     to use because it can be joined with other tables, or selected from using

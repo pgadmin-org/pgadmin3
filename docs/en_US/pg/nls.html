@@ -1,44 +1,44 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 46. Native Language Support</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="internals.html" title="">
-<link rel="prev" href="error-style-guide.html" title="">
-<link rel="next" href="nls-programmer.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="prev" href="error-style-guide.html" title="45.3. Error Message Style Guide">
+<link rel="next" href="nls-programmer.html" title="46.2. For the Programmer">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="nls">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="nls"></a></h2></div>
+<a name="nls"></a>Chapter 46. Native Language Support</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Peter</span> <span class="surname">Eisentraut</span>
 </h3></div></div>
 </div></div>
 <div class="toc">
-<p><b></b></p>
+<p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="nls.html#nls-translator">45.1. For the Translator</a></span></dt>
+<dt><span class="sect1"><a href="nls.html#nls-translator">46.1. For the Translator</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="nls.html#id2815585">45.1.1. Requirements</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2815652">45.1.2. Concepts</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2815788">45.1.3. Creating and maintaining message catalogs</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2815967">45.1.4. Editing the PO files</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2816317">46.1.1. Requirements</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2816385">46.1.2. Concepts</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2816518">46.1.3. Creating and maintaining message catalogs</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2816697">46.1.4. Editing the PO files</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="nls-programmer.html">45.2. For the Programmer</a></span></dt>
+<dt><span class="sect1"><a href="nls-programmer.html">46.2. For the Programmer</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="nls-programmer.html#nls-mechanics">45.2.1. Mechanics</a></span></dt>
-<dt><span class="sect2"><a href="nls-programmer.html#nls-guidelines">45.2.2. Message-writing guidelines</a></span></dt>
+<dt><span class="sect2"><a href="nls-programmer.html#nls-mechanics">46.2.1. Mechanics</a></span></dt>
+<dt><span class="sect2"><a href="nls-programmer.html#nls-guidelines">46.2.2. Message-writing guidelines</a></span></dt>
 </dl></dd>
 </dl>
 </div>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="nls-translator"></a></h2></div></div></div>
+<a name="nls-translator"></a>46.1. For the Translator</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span>
    programs (server and client) can issue their messages in
    your favorite language &#8212; if the messages have been translated.
@@ -50,7 +50,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2815585"></a></h3></div></div></div>
+<a name="id2816317"></a>46.1.1. Requirements</h3></div></div></div>
 <p>    We won't judge your language skills &#8212; this section is about
     software tools.  Theoretically, you only need a text editor.  But
     this is only in the unlikely event that you do not want to try out
@@ -77,15 +77,15 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2815652"></a></h3></div></div></div>
+<a name="id2816385"></a>46.1.2. Concepts</h3></div></div></div>
 <p>    The pairs of original (English) messages and their (possibly)
     translated equivalents are kept in <em class="firstterm">message
     catalogs</em>, one for each program (although related
     programs can share a message catalog) and for each target
     language.  There are two file formats for message catalogs:  The
-    first is the <span class="quote">PO</span> file (for Portable Object), which
+    first is the &#8220;<span class="quote">PO</span>&#8221; file (for Portable Object), which
     is a plain text file with special syntax that translators edit.
-    The second is the <span class="quote">MO</span> file (for Machine Object),
+    The second is the &#8220;<span class="quote">MO</span>&#8221; file (for Machine Object),
     which is a binary file generated from the respective PO file and
     is used while the internationalized program is run.  Translators
     do not deal with MO files; in fact hardly anyone does.
@@ -149,8 +149,8 @@ msgstr "another translated"
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2815788"></a></h3></div></div></div>
-<p>    OK, so how does one create a <span class="quote">blank</span> message
+<a name="id2816518"></a>46.1.3. Creating and maintaining message catalogs</h3></div></div></div>
+<p>    OK, so how does one create a &#8220;<span class="quote">blank</span>&#8221; message
     catalog?  First, go into the directory that contains the program
     whose messages you want to translate.  If there is a file
     <code class="filename">nls.mk</code>, then this program has been prepared
@@ -180,8 +180,8 @@ msgstr "another translated"
     This will create a file
     <code class="filename"><em class="replaceable"><code>progname</code></em>.pot</code>.
     (<code class="filename">.pot</code> to distinguish it from PO files that
-    are <span class="quote">in production</span>. The <code class="literal">T</code> stands for
-    <span class="quote">template</span>.)
+    are &#8220;<span class="quote">in production</span>&#8221;. The <code class="literal">T</code> stands for
+    &#8220;<span class="quote">template</span>&#8221;.)
     Copy this file to
     <code class="filename"><em class="replaceable"><code>language</code></em>.po</code> and
     edit it.  To make it known that the new language is available,
@@ -201,14 +201,14 @@ msgstr "another translated"
     which will create a new blank message catalog file (the pot file
     you started with) and will merge it with the existing PO files.
     If the merge algorithm is not sure about a particular message it
-    marks it <span class="quote">fuzzy</span> as explained above.  For the case
+    marks it &#8220;<span class="quote">fuzzy</span>&#8221; as explained above.  For the case
     where something went really wrong, the old PO file is saved with a
     <code class="filename">.po.old</code> extension.
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2815967"></a></h3></div></div></div>
+<a name="id2816697"></a>46.1.4. Editing the PO files</h3></div></div></div>
 <p>    The PO files can be edited with a regular text editor.  The
     translator should only change the area between the quotes after
     the msgstr directive, may add comments and alter the fuzzy flag.
@@ -264,7 +264,7 @@ msgstr "another translated"
        open file %s</code>) should probably not start with a
        capital letter (if your language distinguishes letter case) or
        end with a period (if your language uses punctuation marks).
-       It may help to read <a href="error-style-guide.html" title=""></a>.
+       It may help to read <a href="error-style-guide.html" title="45.3. Error Message Style Guide">Section 45.3, &#8220;Error Message Style Guide&#8221;</a>.
       </p></li>
 <li><p>       If you don't know what a message means, or if it is ambiguous,
        ask on the developers' mailing list.  Chances are that English

@@ -1,31 +1,31 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>CREATE SEQUENCE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="sql-commands.html" title="">
-<link rel="prev" href="sql-createschema.html" title="">
-<link rel="next" href="sql-createtable.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-createschema.html" title="CREATE SCHEMA">
+<link rel="next" href="sql-createtable.html" title="CREATE TABLE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-createsequence"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2></h2>
+<h2>Name</h2>
 <p>CREATE SEQUENCE &#8212; define a new sequence generator</p>
 </div>
-<a name="id2744751"></a><div class="refsynopsisdiv">
-<h2></h2>
+<a name="id2745386"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ TEMPORARY | TEMP ] SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
     [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
     [ START [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]
     [ OWNED BY { <em class="replaceable"><code>table</code></em>.<em class="replaceable"><code>column</code></em> | NONE } ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2744808"></a><h2>Description</h2>
+<a name="id2745443"></a><h2>Description</h2>
 <p>   <code class="command">CREATE SEQUENCE</code> creates a new sequence number
    generator.  This involves creating and initializing a new special
    single-row table with the name <em class="replaceable"><code>name</code></em>.  The generator will be
@@ -43,7 +43,7 @@
    <code class="function">currval</code>, and
    <code class="function">setval</code>
    to operate on the sequence.  These functions are documented in
-   <a href="functions-sequence.html" title=""></a>.
+   <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>.
   </p>
 <p>   Although you cannot update a sequence directly, you can use a query like
 
@@ -59,7 +59,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2744888"></a><h2>Parameters</h2>
+<a name="id2745522"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>      If specified, the sequence object is created only for this
@@ -140,7 +140,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2745188"></a><h2>Notes</h2>
+<a name="id2745823"></a><h2>Notes</h2>
 <p>   Use <code class="command">DROP SEQUENCE</code> to remove a sequence.
   </p>
 <p>   Sequences are based on <code class="type">bigint</code> arithmetic, so the range
@@ -159,7 +159,7 @@
    uses of <code class="function">nextval</code> within that session simply return the
    preallocated values without touching the sequence object.  So, any
    numbers allocated but not used within a session will be lost when
-   that session ends, resulting in <span class="quote">holes</span> in the
+   that session ends, resulting in &#8220;<span class="quote">holes</span>&#8221; in the
    sequence.
   </p>
 <p>   Furthermore, although multiple sessions are guaranteed to allocate
@@ -185,7 +185,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2745327"></a><h2>Examples</h2>
+<a name="id2745961"></a><h2>Examples</h2>
 <p>   Create an ascending sequence called <code class="literal">serial</code>, starting at 101:
 </p>
 <pre class="programlisting">CREATE SEQUENCE serial START 101;</pre>
@@ -215,7 +215,7 @@ END;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2745382"></a><h2>Compatibility</h2>
+<a name="id2746017"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE SEQUENCE</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard, with the following exceptions:
    </p>
@@ -235,7 +235,7 @@ END;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2745438"></a><h2>See Also</h2>
+<a name="id2746072"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-altersequence.html">ALTER SEQUENCE</a>, <a href="sql-dropsequence.html">DROP SEQUENCE</a></span>
 </div>
 </div></body>

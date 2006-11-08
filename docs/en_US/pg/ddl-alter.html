@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>5.5. Modifying Tables</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="ddl.html" title="">
-<link rel="prev" href="ddl-system-columns.html" title="">
-<link rel="next" href="ddl-priv.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="prev" href="ddl-system-columns.html" title="5.4. System Columns">
+<link rel="next" href="ddl-priv.html" title="5.6. Privileges">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-alter"></a></h2></div></div></div>
+<a name="ddl-alter"></a>5.5. Modifying Tables</h2></div></div></div>
 <a name="id2556665"></a><p>   When you create a table and you realize that you made a mistake, or
    the requirements of the application change, then you can drop the
    table and create it again.  But this is not a convenient option if
@@ -45,7 +45,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556746"></a></h3></div></div></div>
+<a name="id2556746"></a>5.5.1. Adding a Column</h3></div></div></div>
 <a name="id2556749"></a><p>    To add a column, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products ADD COLUMN description text;</pre>
@@ -66,7 +66,7 @@
     correctly.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>    Adding a column with a default requires updating each row of the
     table (to store the new column value).  However, if no default is
     specified, <span class="productname">PostgreSQL</span> is able to avoid
@@ -79,7 +79,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556826"></a></h3></div></div></div>
+<a name="id2556826"></a>5.5.2. Removing a Column</h3></div></div></div>
 <a name="id2556829"></a><p>    To remove a column, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products DROP COLUMN description;</pre>
@@ -93,13 +93,13 @@
 </p>
 <pre class="programlisting">ALTER TABLE products DROP COLUMN description CASCADE;</pre>
 <p>
-    See <a href="ddl-depend.html" title=""></a> for a description of the general
+    See <a href="ddl-depend.html" title="5.11. Dependency Tracking">Section 5.11, &#8220;Dependency Tracking&#8221;</a> for a description of the general
     mechanism behind this.
    </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556879"></a></h3></div></div></div>
+<a name="id2556879"></a>5.5.3. Adding a Constraint</h3></div></div></div>
 <a name="id2556883"></a><p>    To add a constraint, the table constraint syntax is used.  For example:
 </p>
 <pre class="programlisting">ALTER TABLE products ADD CHECK (name &lt;&gt; '');
@@ -118,7 +118,7 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556920"></a></h3></div></div></div>
+<a name="id2556920"></a>5.5.4. Removing a Constraint</h3></div></div></div>
 <a name="id2556924"></a><p>    To remove a constraint you need to know its name.  If you gave it
     a name then that's easy.  Otherwise the system assigned a
     generated name, which you need to find out.  The
@@ -148,7 +148,7 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556993"></a></h3></div></div></div>
+<a name="id2556993"></a>5.5.5. Changing a Column's Default Value</h3></div></div></div>
 <a name="id2556997"></a><p>    To set a new default for a column, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products ALTER COLUMN price SET DEFAULT 7.77;</pre>
@@ -168,7 +168,7 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557036"></a></h3></div></div></div>
+<a name="id2557036"></a>5.5.6. Changing a Column's Data Type</h3></div></div></div>
 <a name="id2557040"></a><p>    To convert a column to a different data type, use a command like this:
 </p>
 <pre class="programlisting">ALTER TABLE products ALTER COLUMN price TYPE numeric(10,2);</pre>
@@ -188,7 +188,7 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557083"></a></h3></div></div></div>
+<a name="id2557083"></a>5.5.7. Renaming a Column</h3></div></div></div>
 <a name="id2557087"></a><p>    To rename a column:
 </p>
 <pre class="programlisting">ALTER TABLE products RENAME COLUMN product_no TO product_number;</pre>
@@ -197,7 +197,7 @@ ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_group
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557104"></a></h3></div></div></div>
+<a name="id2557104"></a>5.5.8. Renaming a Table</h3></div></div></div>
 <a name="id2557108"></a><p>    To rename a table:
 </p>
 <pre class="programlisting">ALTER TABLE products RENAME TO items;</pre>

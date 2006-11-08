@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>29.8. Functions Associated with the COPY Command</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="libpq.html" title="">
-<link rel="prev" href="libpq-notify.html" title="">
-<link rel="next" href="libpq-control.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 29. libpq - C Library">
+<link rel="prev" href="libpq-notify.html" title="29.7. Asynchronous Notification">
+<link rel="next" href="libpq-control.html" title="29.9. Control Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="libpq-copy"></a></h2></div></div></div>
-<a name="id2661602"></a><p> The <code class="command">COPY</code> command in <span class="productname">PostgreSQL</span>
+<a name="libpq-copy"></a>29.8. Functions Associated with the <code class="command">COPY</code> Command</h2></div></div></div>
+<a name="id2662022"></a><p> The <code class="command">COPY</code> command in <span class="productname">PostgreSQL</span>
  has options to read from or write to the network connection used by
  <span class="application">libpq</span>.  The functions described in this section
  allow applications to take advantage of this capability by supplying or
@@ -52,16 +52,16 @@
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQnfields</code><a name="id2661804"></a></span></dt>
+<dt><span class="term"><code class="function">PQnfields</code><a name="id2662224"></a></span></dt>
 <dd><p>          Returns the number of columns (fields) to be copied.</p></dd>
-<dt><span class="term"><code class="function">PQbinaryTuples</code><a name="id2661824"></a></span></dt>
+<dt><span class="term"><code class="function">PQbinaryTuples</code><a name="id2662243"></a></span></dt>
 <dd><p>                0 indicates the overall copy format is textual (rows
                 separated by newlines, columns separated by separator
                 characters, etc).
                 1 indicates the overall copy format is binary.
                 See <a href="sql-copy.html">COPY</a>
                 for more information.</p></dd>
-<dt><span class="term"><code class="function">PQfformat</code><a name="id2661856"></a></span></dt>
+<dt><span class="term"><code class="function">PQfformat</code><a name="id2662275"></a></span></dt>
 <dd><p>          Returns the format code (0 for text, 1 for binary) associated
           with each column of the copy operation.  The per-column format
           codes will always be zero when the overall copy format is textual,
@@ -71,18 +71,18 @@
           formats always match the overall format at present.)</p></dd>
 </dl></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>These additional data values are only available when using protocol 3.0.
 When using protocol 2.0, all these functions will return 0.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="libpq-copy-send"></a></h3></div></div></div>
+<a name="libpq-copy-send"></a>29.8.1. Functions for Sending <code class="command">COPY</code> Data</h3></div></div></div>
 <p> These functions are used to send data during <code class="literal">COPY FROM STDIN</code>.
  They will fail if called when the connection is not in <code class="literal">COPY_IN</code>
  state.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQputCopyData</code><a name="id2661925"></a></span></dt>
+<dt><span class="term"><code class="function">PQputCopyData</code><a name="id2662344"></a></span></dt>
 <dd>
 <p> Sends data to the server during <code class="literal">COPY_IN</code> state.
 </p>
@@ -101,7 +101,7 @@ sending.  The contents of the data stream must match the data format expected
 by the <code class="command">COPY</code> command; see
 <a href="sql-copy.html">COPY</a> for details.</p>
 </dd>
-<dt><span class="term"><code class="function">PQputCopyEnd</code><a name="id2662014"></a></span></dt>
+<dt><span class="term"><code class="function">PQputCopyEnd</code><a name="id2662433"></a></span></dt>
 <dd>
 <p> Sends end-of-data indication to the server during <code class="literal">COPY_IN</code> state.
 </p>
@@ -129,12 +129,12 @@ operation.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="libpq-copy-receive"></a></h3></div></div></div>
+<a name="libpq-copy-receive"></a>29.8.2. Functions for Receiving <code class="command">COPY</code> Data</h3></div></div></div>
 <p> These functions are used to receive data during <code class="literal">COPY TO STDOUT</code>.
  They will fail if called when the connection is not in <code class="literal">COPY_OUT</code>
  state.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQgetCopyData</code><a name="id2662161"></a></span></dt>
+<dt><span class="term"><code class="function">PQgetCopyData</code><a name="id2662580"></a></span></dt>
 <dd>
 <p> Receives data from the server during <code class="literal">COPY_OUT</code> state.
 </p>
@@ -175,13 +175,13 @@ operation.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="libpq-copy-deprecated"></a></h3></div></div></div>
+<a name="libpq-copy-deprecated"></a>29.8.3. Obsolete Functions for <code class="command">COPY</code></h3></div></div></div>
 <p> These functions represent older methods of handling <code class="command">COPY</code>.
  Although they still work, they are deprecated due to poor error handling,
  inconvenient methods of detecting end-of-data, and lack of support for binary
  or nonblocking transfers.</p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQgetline</code><a name="id2662372"></a></span></dt>
+<dt><span class="term"><code class="function">PQgetline</code><a name="id2662791"></a></span></dt>
 <dd>
 <p>          Reads  a  newline-terminated  line  of  characters
           (transmitted  by the server) into a buffer
@@ -206,7 +206,7 @@ care is needed to be sure it recognizes the <code class="literal">\.</code> line
 (and does not, for example, mistake the end of a long data line
 for a terminator line).</p>
 </dd>
-<dt><span class="term"><code class="function">PQgetlineAsync</code><a name="id2662456"></a></span></dt>
+<dt><span class="term"><code class="function">PQgetlineAsync</code><a name="id2662875"></a></span></dt>
 <dd>
 <p>          Reads a row of <code class="command">COPY</code> data
           (transmitted  by the server) into a buffer
@@ -243,7 +243,7 @@ The returned string is not null-terminated.  (If you want to add a
 terminating null, be sure to pass a <em class="parameter"><code>bufsize</code></em> one smaller
 than the room actually available.)</p>
 </dd>
-<dt><span class="term"><code class="function">PQputline</code><a name="id2662600"></a></span></dt>
+<dt><span class="term"><code class="function">PQputline</code><a name="id2663019"></a></span></dt>
 <dd>
 <p>Sends  a  null-terminated  string  to  the server.
 Returns 0 if OK and <code class="symbol">EOF</code> if unable to send the string.
@@ -256,7 +256,7 @@ Returns 0 if OK and <code class="symbol">EOF</code> if unable to send the string
 obliged to send exactly one data row per <code class="function">PQputline</code>
 call; it is okay to send a partial line or multiple lines per call.</p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>Before <span class="productname">PostgreSQL</span> protocol 3.0, it was necessary
 for the application to explicitly send the two characters
 <code class="literal">\.</code> as a final line to indicate to the server that it had
@@ -266,7 +266,7 @@ future release.  It is sufficient to call <code class="function">PQendcopy</code
 having sent the actual data.</p>
 </div>
 </dd>
-<dt><span class="term"><code class="function">PQputnbytes</code><a name="id2662694"></a></span></dt>
+<dt><span class="term"><code class="function">PQputnbytes</code><a name="id2663114"></a></span></dt>
 <dd>
 <p>Sends  a  non-null-terminated  string  to  the server.
 Returns 0 if OK and <code class="symbol">EOF</code> if unable to send the string.
@@ -278,7 +278,7 @@ Returns 0 if OK and <code class="symbol">EOF</code> if unable to send the string
 buffer need not be null-terminated since the number of bytes to send is
 specified directly.  Use this procedure when sending binary data.</p>
 </dd>
-<dt><span class="term"><code class="function">PQendcopy</code><a name="id2662733"></a></span></dt>
+<dt><span class="term"><code class="function">PQendcopy</code><a name="id2663152"></a></span></dt>
 <dd>
 <p> Synchronizes with the server.
 </p>
@@ -290,7 +290,7 @@ specified directly.  Use this procedure when sending binary data.</p>
  sent  to  the  server using <code class="function">PQputline</code> or when the
  last string has been  received  from  the  server
  using <code class="function">PGgetline</code>.  It must be issued or the server
- will get <span class="quote">out of sync</span> with  the client.   Upon
+ will get &#8220;<span class="quote">out of sync</span>&#8221; with  the client.   Upon
  return from this function, the server is ready to
  receive the next SQL command.
  The return value is 0  on  successful  completion,

@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>35.4. Rules and Privileges</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="rules.html" title="">
-<link rel="prev" href="rules-update.html" title="">
-<link rel="next" href="rules-status.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="rules.html" title="Chapter 35. The Rule System">
+<link rel="prev" href="rules-update.html" title="35.3. Rules on INSERT, UPDATE, and DELETE">
+<link rel="next" href="rules-status.html" title="35.5. Rules and Command Status">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="rules-privileges"></a></h2></div></div></div>
-<a name="id2703202"></a><a name="id2703216"></a><p>    Due to rewriting of queries by the <span class="productname">PostgreSQL</span>
+<a name="rules-privileges"></a>35.4. Rules and Privileges</h2></div></div></div>
+<a name="id2703573"></a><a name="id2703588"></a><p>    Due to rewriting of queries by the <span class="productname">PostgreSQL</span>
     rule system, other tables/views than those used in the original
     query get accessed. When update rules are used, this can include write access
     to tables.</p>
@@ -67,7 +67,7 @@ GRANT SELECT ON phone_number TO secretary;</pre>
     could set up a table with the same columns as <code class="literal">phone_number</code> and
     copy the data to there once per day. Then it's his own data and
     he can grant access to everyone he wants. A
-    <code class="command">GRANT</code> command means, <span class="quote">I trust you</span>.
+    <code class="command">GRANT</code> command means, &#8220;<span class="quote">I trust you</span>&#8221;.
     If someone you trust does the thing above, it's time to
     think it over and then use <code class="command">REVOKE</code>.</p>
 <p>    This mechanism also works for update rules. In the examples of

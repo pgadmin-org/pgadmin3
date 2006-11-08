@@ -1,26 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>E.17. Release 8.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="release.html" title="">
-<link rel="prev" href="release-8-0-1.html" title="">
-<link rel="next" href="release-7-4-14.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-1.html" title="E.16. Release 8.0.1">
+<link rel="next" href="release-7-4-14.html" title="E.18. Release 7.4.14">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-8-0"></a></h2></div></div></div>
+<a name="release-8-0"></a>E.17. Release 8.0</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Release date</h3>
 <p>2005-01-19</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2850989"></a></h3></div></div></div>
+<a name="id2851804"></a>E.17.1. Overview</h3></div></div></div>
 <p>     Major changes in this release:
     </p>
 <div class="variablelist"><dl>
@@ -107,7 +107,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2851233"></a></h3></div></div></div>
+<a name="id2852048"></a>E.17.2. Migration to version 8.0</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span> is
      required for those wishing to migrate data from any previous
      release.
@@ -241,7 +241,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2851667"></a></h3></div></div></div>
+<a name="id2852482"></a>E.17.3. Deprecated Features</h3></div></div></div>
 <p>     Some aspects of <span class="productname">PostgreSQL</span>'s behavior
      have been determined to be suboptimal. For the sake of backward
      compatibility these have not been removed in 8.0, but they are
@@ -272,13 +272,13 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2851755"></a></h3></div></div></div>
+<a name="id2852570"></a>E.17.4. Changes</h3></div></div></div>
 <p>     Below you will find a detailed account of the changes between
      release 8.0 and the previous major release.
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2851763"></a></h4></div></div></div>
+<a name="id2852578"></a>E.17.4.1. Performance Improvements</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Support cross-data-type index usage (Tom)
@@ -428,7 +428,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2852037"></a></h4></div></div></div>
+<a name="id2852852"></a>E.17.4.2. Server Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add WAL file archiving and point-in-time recovery (Simon Riggs)
        </p></li>
@@ -515,7 +515,7 @@
        </p>
 </li>
 <li><p>        Some logging-related configuration parameters could formerly be adjusted
-        by ordinary users, but only in the <span class="quote">more verbose</span> direction.
+        by ordinary users, but only in the &#8220;<span class="quote">more verbose</span>&#8221; direction.
         They are now treated more strictly: only superusers can set them.
         However, a superuser may use <code class="command">ALTER USER</code> to provide per-user
         settings of these values for non-superusers.  Also, it is now possible
@@ -571,7 +571,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2852439"></a></h4></div></div></div>
+<a name="id2853254"></a>E.17.4.3. Query Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add savepoints (nested transactions) (Alvaro)
        </p></li>
@@ -647,7 +647,7 @@
 <p>        Avoid locale-specific case conversion of basic ASCII letters in
         identifiers and keywords (Tom)
        </p>
-<p>        This solves the <span class="quote">Turkish problem</span> with mangling of words
+<p>        This solves the &#8220;<span class="quote">Turkish problem</span>&#8221; with mangling of words
         containing <code class="literal">I</code> and  <code class="literal">i</code>.  Folding of characters
         outside the 7-bit-ASCII set is still locale-aware.
        </p>
@@ -678,7 +678,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2852658"></a></h4></div></div></div>
+<a name="id2853482"></a>E.17.4.4. Object Manipulation Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add <code class="command">COMMENT ON</code> for casts, conversions, languages,
         operator classes, and large objects (Christopher)
@@ -786,7 +786,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2852954"></a></h4></div></div></div>
+<a name="id2853778"></a>E.17.4.5. Utility Command Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow <code class="command">CREATE SCHEMA</code> to create triggers,
         indexes, and sequences (Neil)
@@ -879,7 +879,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2853220"></a></h4></div></div></div>
+<a name="id2854045"></a>E.17.4.6. Data Type and Function Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        More complete support for composite types (row types)  (Tom)
@@ -902,7 +902,7 @@
          <code class="type">"char"</code> data type have been removed.
         </p>
 <p>         Formerly, the parser would select these operators in many situations
-         where an <span class="quote">unable to select an operator</span> error would be more
+         where an &#8220;<span class="quote">unable to select an operator</span>&#8221; error would be more
          appropriate, such as <code class="literal">null * null</code>.  If you actually want
          to do arithmetic on a <code class="type">"char"</code> column, you can cast it to
          integer explicitly.
@@ -1049,7 +1049,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2853716"></a></h4></div></div></div>
+<a name="id2854540"></a>E.17.4.7. Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        In <code class="literal">READ COMMITTED</code> serialization mode, volatile functions
         now see the results of concurrent transactions committed up to the
@@ -1131,7 +1131,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2853902"></a></h4></div></div></div>
+<a name="id2854727"></a>E.17.4.8. <span class="application">psql</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Improve <span class="application">psql</span> information display about database
         objects (Christopher)
@@ -1189,7 +1189,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2854159"></a></h4></div></div></div>
+<a name="id2854984"></a>E.17.4.9. <span class="application">pg_dump</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Use dependency information to improve the reliability of
@@ -1236,7 +1236,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2854310"></a></h4></div></div></div>
+<a name="id2855134"></a>E.17.4.10. libpq Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Make libpq's <code class="option">SIGPIPE</code> handling thread-safe (Bruce)
        </p></li>
@@ -1263,7 +1263,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2854412"></a></h4></div></div></div>
+<a name="id2855236"></a>E.17.4.11. Source Code Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow the database server to run natively on Windows (Claudio, Magnus, Andrew)
        </p></li>
@@ -1375,7 +1375,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2854696"></a></h4></div></div></div>
+<a name="id2855520"></a>E.17.4.12. Contrib Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Overhaul of <code class="filename">contrib/dblink</code> (Joe)
        </p></li>

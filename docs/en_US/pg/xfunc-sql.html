@@ -1,29 +1,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>33.4. Query Language (SQL) Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="extend.html" title="">
-<link rel="prev" href="xfunc.html" title="">
-<link rel="next" href="xfunc-overload.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="extend.html" title="Chapter 33. Extending SQL">
+<link rel="prev" href="xfunc.html" title="33.3. User-Defined Functions">
+<link rel="next" href="xfunc-overload.html" title="33.5. Function Overloading">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xfunc-sql"></a></h2></div></div></div>
-<a name="id2689217"></a><p>    SQL functions execute an arbitrary list of SQL statements, returning
+<a name="xfunc-sql"></a>33.4. Query Language (<acronym class="acronym">SQL</acronym>) Functions</h2></div></div></div>
+<a name="id2689601"></a><p>    SQL functions execute an arbitrary list of SQL statements, returning
     the result of the last query in the list.
     In the simple (non-set)
     case, the first row of the last query's result will be returned.
-    (Bear in mind that <span class="quote">the first row</span> of a multirow
+    (Bear in mind that &#8220;<span class="quote">the first row</span>&#8221; of a multirow
     result is not well-defined unless you use <code class="literal">ORDER BY</code>.)
     If the last query happens
     to return no rows at all, the null value will be returned.
    </p>
-<p>    <a name="id2689252"></a> Alternatively,
+<p>    <a name="id2689635"></a> Alternatively,
     an SQL function may be declared to return a set, by specifying the
     function's return type as <code class="literal">SETOF
     <em class="replaceable"><code>sometype</code></em></code>.  In this case all rows of the
@@ -67,11 +67,11 @@ SELECT clean_emp();
     </p>
 <p>    The syntax of the <code class="command">CREATE FUNCTION</code> command requires
     the function body to be written as a string constant.  It is usually
-    most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title=""></a>) for the string constant.
+    most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) for the string constant.
     If you choose to use regular single-quoted string constant syntax,
     you must escape single quote marks (<code class="literal">'</code>) and backslashes
     (<code class="literal">\</code>) used in the body of the function, typically by
-    doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title=""></a>).
+    doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
    </p>
 <p>    Arguments to the SQL function are referenced in the function
     body using the syntax <code class="literal">$<em class="replaceable"><code>n</code></em></code>: <code class="literal">$1</code>
@@ -90,7 +90,7 @@ but this will not work:
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xfunc-sql-base-functions"></a></h3></div></div></div>
+<a name="xfunc-sql-base-functions"></a>33.4.1. <acronym class="acronym">SQL</acronym> Functions on Base Types</h3></div></div></div>
 <p>     The simplest possible <acronym class="acronym">SQL</acronym> function has no arguments and
      simply returns a base type, such as <code class="type">integer</code>:
      
@@ -170,7 +170,7 @@ $$ LANGUAGE SQL;</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2689590"></a></h3></div></div></div>
+<a name="id2689973"></a>33.4.2. <acronym class="acronym">SQL</acronym> Functions on Composite Types</h3></div></div></div>
 <p>     When writing  functions with arguments of composite
      types, we must  not  only  specify  which
      argument  we  want (as we did above with <code class="literal">$1</code> and <code class="literal">$2</code>) but
@@ -291,7 +291,7 @@ SELECT * FROM new_emp();
  None | 1000.0 |  25 | (2,2)</pre>
 <p>
 
-     The second way is described more fully in <a href="xfunc-sql.html#xfunc-sql-table-functions" title=""></a>.
+     The second way is described more fully in <a href="xfunc-sql.html#xfunc-sql-table-functions" title="33.4.4. SQL Functions as Table Sources">Section 33.4.4, &#8220;<acronym class="acronym">SQL</acronym> Functions as Table Sources&#8221;</a>.
     </p>
 <p>     When you use a function that returns a composite type,
      you might want only one field (attribute) from its result.
@@ -342,12 +342,12 @@ SELECT name(emp) AS youngster FROM emp WHERE age(emp) &lt; 30;
 <p>
     </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>      The equivalence between functional notation and attribute notation
       makes it possible to use functions on composite types to emulate
-      <span class="quote">computed fields</span>.
-      <a name="id2689850"></a>
-      <a name="id2689857"></a>
+      &#8220;<span class="quote">computed fields</span>&#8221;.
+      <a name="id2690233"></a>
+      <a name="id2690240"></a>
       For example, using the previous definition
       for <code class="literal">double_salary(emp)</code>, we can write
 
@@ -376,13 +376,13 @@ SELECT getname(new_emp());
 <p>
     </p>
 <p>     Still another way to use a function that returns a composite type is to
-     call it as a table function, as described in <a href="xfunc-sql.html#xfunc-sql-table-functions" title=""></a>.
+     call it as a table function, as described in <a href="xfunc-sql.html#xfunc-sql-table-functions" title="33.4.4. SQL Functions as Table Sources">Section 33.4.4, &#8220;<acronym class="acronym">SQL</acronym> Functions as Table Sources&#8221;</a>.
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xfunc-output-parameters"></a></h3></div></div></div>
-<a name="id2689921"></a><p>     An alternative way of describing a function's results is to define it
+<a name="xfunc-output-parameters"></a>33.4.3. Functions with Output Parameters</h3></div></div></div>
+<a name="id2690304"></a><p>     An alternative way of describing a function's results is to define it
      with <em class="firstterm">output parameters</em>, as in this example:
 
 </p>
@@ -398,7 +398,7 @@ SELECT add_em(3,7);
 <p>
 
      This is not essentially different from the version of <code class="literal">add_em</code>
-     shown in <a href="xfunc-sql.html#xfunc-sql-base-functions" title=""></a>.  The real value of
+     shown in <a href="xfunc-sql.html#xfunc-sql-base-functions" title="33.4.1. SQL Functions on Base Types">Section 33.4.1, &#8220;<acronym class="acronym">SQL</acronym> Functions on Base Types&#8221;</a>.  The real value of
      output parameters is that they provide a convenient way of defining
      functions that return several columns.  For example,
 
@@ -450,7 +450,7 @@ DROP FUNCTION sum_n_product (int, int);</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xfunc-sql-table-functions"></a></h3></div></div></div>
+<a name="xfunc-sql-table-functions"></a>33.4.4. <acronym class="acronym">SQL</acronym> Functions as Table Sources</h3></div></div></div>
 <p>     All SQL functions may be used in the <code class="literal">FROM</code> clause of a query,
      but it is particularly useful for functions returning composite types.
      If the function is defined to return a base type, the table function
@@ -487,7 +487,7 @@ SELECT *, upper(fooname) FROM getfoo(1) AS t1;
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2690089"></a></h3></div></div></div>
+<a name="id2690473"></a>33.4.5. <acronym class="acronym">SQL</acronym> Functions Returning Sets</h3></div></div></div>
 <p>     When an SQL function is declared as returning <code class="literal">SETOF
      <em class="replaceable"><code>sometype</code></em></code>, the function's final
      <code class="command">SELECT</code> query is executed to completion, and each row it
@@ -566,10 +566,10 @@ SELECT name, listchildren(name) FROM nodes;
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2690201"></a></h3></div></div></div>
+<a name="id2690585"></a>33.4.6. Polymorphic <acronym class="acronym">SQL</acronym> Functions</h3></div></div></div>
 <p>     <acronym class="acronym">SQL</acronym> functions may be declared to accept and
      return the polymorphic types <code class="type">anyelement</code> and
-     <code class="type">anyarray</code>.  See <a href="extend-type-system.html#extend-types-polymorphic" title=""></a> for a more detailed
+     <code class="type">anyarray</code>.  See <a href="extend-type-system.html#extend-types-polymorphic" title="33.2.5. Polymorphic Types">Section 33.2.5, &#8220;Polymorphic Types&#8221;</a> for a more detailed
      explanation of polymorphic functions. Here is a polymorphic
      function <code class="function">make_array</code> that builds up an array
      from two arbitrary data type elements:

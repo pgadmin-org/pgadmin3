@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>37.8. Cursors</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="plpgsql.html" title="">
-<link rel="prev" href="plpgsql-control-structures.html" title="">
-<link rel="next" href="plpgsql-errors-and-messages.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql-control-structures.html" title="37.7. Control Structures">
+<link rel="next" href="plpgsql-errors-and-messages.html" title="37.9. Errors and Messages">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-cursors"></a></h2></div></div></div>
-<a name="id2710056"></a><p>    Rather than executing a whole query at once, it is possible to set
+<a name="plpgsql-cursors"></a>37.8. Cursors</h2></div></div></div>
+<a name="id2710661"></a><p>    Rather than executing a whole query at once, it is possible to set
     up a <em class="firstterm">cursor</em> that encapsulates the query, and then read
     the query result a few rows at a time. One reason for doing this is
     to avoid memory overrun when the result contains a large number of
@@ -27,7 +27,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-cursor-declarations"></a></h3></div></div></div>
+<a name="plpgsql-cursor-declarations"></a>37.8.1. Declaring Cursor Variables</h3></div></div></div>
 <p>     All access to cursors in <span class="application">PL/pgSQL</span> goes through
      cursor variables, which are always of the special data type
      <code class="type">refcursor</code>.  One way to create a cursor variable
@@ -65,7 +65,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-cursor-opening"></a></h3></div></div></div>
+<a name="plpgsql-cursor-opening"></a>37.8.2. Opening Cursors</h3></div></div></div>
 <p>     Before a cursor can be used to retrieve rows, it must be
      <em class="firstterm">opened</em>. (This is the equivalent action to the SQL
      command <code class="command">DECLARE CURSOR</code>.) <span class="application">PL/pgSQL</span> has
@@ -74,7 +74,7 @@
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2710257"></a></h4></div></div></div>
+<a name="id2710862"></a>37.8.2.1. <code class="command">OPEN FOR</code> <em class="replaceable"><code>query</code></em></h4></div></div></div>
 <pre class="synopsis">OPEN <em class="replaceable"><code>unbound_cursor</code></em> FOR <em class="replaceable"><code>query</code></em>;</pre>
 <p>        The cursor variable is opened and given the specified query to
         execute.  The cursor cannot be open already, and it must have been
@@ -95,7 +95,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2710325"></a></h4></div></div></div>
+<a name="id2710931"></a>37.8.2.2. <code class="command">OPEN FOR EXECUTE</code></h4></div></div></div>
 <pre class="synopsis">OPEN <em class="replaceable"><code>unbound_cursor</code></em> FOR EXECUTE <em class="replaceable"><code>query_string</code></em>;</pre>
 <p>          The cursor variable is opened and given the specified query to
           execute.  The cursor cannot be open already, and it must have been
@@ -113,7 +113,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2710375"></a></h4></div></div></div>
+<a name="id2710981"></a>37.8.2.3. Opening a Bound Cursor</h4></div></div></div>
 <pre class="synopsis">OPEN <em class="replaceable"><code>bound_cursor</code></em> [<span class="optional"> ( <em class="replaceable"><code>argument_values</code></em> ) </span>];</pre>
 <p>          This form of <code class="command">OPEN</code> is used to open a cursor
           variable whose query was bound to it when it was declared.  The
@@ -133,7 +133,7 @@ OPEN curs3(42);</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-cursor-using"></a></h3></div></div></div>
+<a name="plpgsql-cursor-using"></a>37.8.3. Using Cursors</h3></div></div></div>
 <p>     Once a cursor has been opened, it can be manipulated with the
      statements described here.
     </p>
@@ -151,7 +151,7 @@ OPEN curs3(42);</pre>
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2710467"></a></h4></div></div></div>
+<a name="id2711072"></a>37.8.3.1. <code class="literal">FETCH</code></h4></div></div></div>
 <pre class="synopsis">FETCH <em class="replaceable"><code>cursor</code></em> INTO <em class="replaceable"><code>target</code></em>;</pre>
 <p>          <code class="command">FETCH</code> retrieves the next row from the
           cursor into a target, which may be a row variable, a record
@@ -169,7 +169,7 @@ FETCH curs2 INTO foo, bar, baz;</pre>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2710525"></a></h4></div></div></div>
+<a name="id2711131"></a>37.8.3.2. <code class="literal">CLOSE</code></h4></div></div></div>
 <pre class="synopsis">CLOSE <em class="replaceable"><code>cursor</code></em>;</pre>
 <p>        <code class="command">CLOSE</code> closes the portal underlying an open
         cursor.  This can be used to release resources earlier than end of
@@ -183,7 +183,7 @@ FETCH curs2 INTO foo, bar, baz;</pre>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2710560"></a></h4></div></div></div>
+<a name="id2711166"></a>37.8.3.3. Returning Cursors</h4></div></div></div>
 <p>        <span class="application">PL/pgSQL</span> functions can return cursors to the
         caller. This is useful to return multiple rows or columns,
         especially with very large result sets.  To do this, the function
@@ -204,7 +204,7 @@ FETCH curs2 INTO foo, bar, baz;</pre>
         <code class="type">refcursor</code> variable.
        </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>         A bound cursor variable is initialized to the string value
          representing its name, so that the portal name is the same as
          the cursor variable name, unless the programmer overrides it

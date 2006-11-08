@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>2.6. Joins Between Tables</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="tutorial-sql.html" title="">
-<link rel="prev" href="tutorial-select.html" title="">
-<link rel="next" href="tutorial-agg.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
+<link rel="prev" href="tutorial-select.html" title="2.5. Querying a Table">
+<link rel="next" href="tutorial-agg.html" title="2.7. Aggregate Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="tutorial-join"></a></h2></div></div></div>
+<a name="tutorial-join"></a>2.6. Joins Between Tables</h2></div></div></div>
 <a name="id2549611"></a><p>    Thus far, our queries have only accessed one table at a time.
     Queries can access multiple tables at once, or access the same
     table in such a way that multiple rows of the table are being
@@ -26,7 +26,7 @@
     the cities table, and select the pairs of rows where these values match.
     </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>      This  is only a conceptual model.  The join is usually performed
       in a more efficient manner than actually comparing each possible
       pair of rows, but this is invisible to the user.
@@ -114,7 +114,7 @@
     What we want the query to do is to scan the
     <code class="classname">weather</code> table and for each row to find the
     matching <code class="classname">cities</code> row(s).  If no matching row is
-    found we want some <span class="quote">empty values</span> to be substituted
+    found we want some &#8220;<span class="quote">empty values</span>&#8221; to be substituted
     for the <code class="classname">cities</code> table's columns.  This kind
     of query is called an <em class="firstterm">outer join</em>.  (The
     joins we have seen so far are inner joins.)  The command looks

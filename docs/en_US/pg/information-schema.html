@@ -1,72 +1,72 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>Chapter 32. The Information Schema</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="client-interfaces.html" title="">
-<link rel="prev" href="ecpg-develop.html" title="">
-<link rel="next" href="infoschema-datatypes.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
+<link rel="prev" href="ecpg-develop.html" title="31.15. Internals">
+<link rel="next" href="infoschema-datatypes.html" title="32.2. Data Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="information-schema">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="information-schema"></a></h2></div></div></div>
+<a name="information-schema"></a>Chapter 32. The Information Schema</h2></div></div></div>
 <div class="toc">
-<p><b></b></p>
+<p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="information-schema.html#infoschema-schema">31.1. The Schema</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-datatypes.html">31.2. Data Types</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-information-schema-catalog-name.html">31.3. <code class="literal">information_schema_catalog_name</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-administrable-role-authorizations.html">31.4. <code class="literal">administrable_role_authorizations</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-applicable-roles.html">31.5. <code class="literal">applicable_roles</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-attributes.html">31.6. <code class="literal">attributes</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-check-constraint-routine-usage.html">31.7. <code class="literal">check_constraint_routine_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-check-constraints.html">31.8. <code class="literal">check_constraints</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-column-domain-usage.html">31.9. <code class="literal">column_domain_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-column-privileges.html">31.10. <code class="literal">column_privileges</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-column-udt-usage.html">31.11. <code class="literal">column_udt_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-columns.html">31.12. <code class="literal">columns</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-constraint-column-usage.html">31.13. <code class="literal">constraint_column_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-constraint-table-usage.html">31.14. <code class="literal">constraint_table_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-data-type-privileges.html">31.15. <code class="literal">data_type_privileges</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-domain-constraints.html">31.16. <code class="literal">domain_constraints</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-domain-udt-usage.html">31.17. <code class="literal">domain_udt_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-domains.html">31.18. <code class="literal">domains</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-element-types.html">31.19. <code class="literal">element_types</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-enabled-roles.html">31.20. <code class="literal">enabled_roles</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-key-column-usage.html">31.21. <code class="literal">key_column_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-parameters.html">31.22. <code class="literal">parameters</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-referential-constraints.html">31.23. <code class="literal">referential_constraints</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-column-grants.html">31.24. <code class="literal">role_column_grants</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-routine-grants.html">31.25. <code class="literal">role_routine_grants</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-table-grants.html">31.26. <code class="literal">role_table_grants</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-usage-grants.html">31.27. <code class="literal">role_usage_grants</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-routine-privileges.html">31.28. <code class="literal">routine_privileges</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-routines.html">31.29. <code class="literal">routines</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-schemata.html">31.30. <code class="literal">schemata</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sequences.html">31.31. <code class="literal">sequences</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-features.html">31.32. <code class="literal">sql_features</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-implementation-info.html">31.33. <code class="literal">sql_implementation_info</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-languages.html">31.34. <code class="literal">sql_languages</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-packages.html">31.35. <code class="literal">sql_packages</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-parts.html">31.36. <code class="literal">sql_parts</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-sizing.html">31.37. <code class="literal">sql_sizing</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-sizing-profiles.html">31.38. <code class="literal">sql_sizing_profiles</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-table-constraints.html">31.39. <code class="literal">table_constraints</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-table-privileges.html">31.40. <code class="literal">table_privileges</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-tables.html">31.41. <code class="literal">tables</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-triggers.html">31.42. <code class="literal">triggers</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-usage-privileges.html">31.43. <code class="literal">usage_privileges</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-view-column-usage.html">31.44. <code class="literal">view_column_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-view-routine-usage.html">31.45. <code class="literal">view_routine_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-view-table-usage.html">31.46. <code class="literal">view_table_usage</code></a></span></dt>
-<dt><span class="sect1"><a href="infoschema-views.html">31.47. <code class="literal">views</code></a></span></dt>
+<dt><span class="sect1"><a href="information-schema.html#infoschema-schema">32.1. The Schema</a></span></dt>
+<dt><span class="sect1"><a href="infoschema-datatypes.html">32.2. Data Types</a></span></dt>
+<dt><span class="sect1"><a href="infoschema-information-schema-catalog-name.html">32.3. <code class="literal">information_schema_catalog_name</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-administrable-role-authorizations.html">32.4. <code class="literal">administrable_role_authorizations</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-applicable-roles.html">32.5. <code class="literal">applicable_roles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-attributes.html">32.6. <code class="literal">attributes</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-check-constraint-routine-usage.html">32.7. <code class="literal">check_constraint_routine_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-check-constraints.html">32.8. <code class="literal">check_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-domain-usage.html">32.9. <code class="literal">column_domain_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-privileges.html">32.10. <code class="literal">column_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-udt-usage.html">32.11. <code class="literal">column_udt_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-columns.html">32.12. <code class="literal">columns</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-constraint-column-usage.html">32.13. <code class="literal">constraint_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-constraint-table-usage.html">32.14. <code class="literal">constraint_table_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-data-type-privileges.html">32.15. <code class="literal">data_type_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domain-constraints.html">32.16. <code class="literal">domain_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domain-udt-usage.html">32.17. <code class="literal">domain_udt_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domains.html">32.18. <code class="literal">domains</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-element-types.html">32.19. <code class="literal">element_types</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-enabled-roles.html">32.20. <code class="literal">enabled_roles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-key-column-usage.html">32.21. <code class="literal">key_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-parameters.html">32.22. <code class="literal">parameters</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-referential-constraints.html">32.23. <code class="literal">referential_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-column-grants.html">32.24. <code class="literal">role_column_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-routine-grants.html">32.25. <code class="literal">role_routine_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-table-grants.html">32.26. <code class="literal">role_table_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-usage-grants.html">32.27. <code class="literal">role_usage_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-routine-privileges.html">32.28. <code class="literal">routine_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-routines.html">32.29. <code class="literal">routines</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-schemata.html">32.30. <code class="literal">schemata</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sequences.html">32.31. <code class="literal">sequences</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-features.html">32.32. <code class="literal">sql_features</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-implementation-info.html">32.33. <code class="literal">sql_implementation_info</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-languages.html">32.34. <code class="literal">sql_languages</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-packages.html">32.35. <code class="literal">sql_packages</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-parts.html">32.36. <code class="literal">sql_parts</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-sizing.html">32.37. <code class="literal">sql_sizing</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-sizing-profiles.html">32.38. <code class="literal">sql_sizing_profiles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-table-constraints.html">32.39. <code class="literal">table_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-table-privileges.html">32.40. <code class="literal">table_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-tables.html">32.41. <code class="literal">tables</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-triggers.html">32.42. <code class="literal">triggers</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-usage-privileges.html">32.43. <code class="literal">usage_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-column-usage.html">32.44. <code class="literal">view_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-routine-usage.html">32.45. <code class="literal">view_routine_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-table-usage.html">32.46. <code class="literal">view_table_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-views.html">32.47. <code class="literal">views</code></a></span></dt>
 </dl>
 </div>
-<a name="id2676625"></a><p>  The information schema consists of a set of views that contain
+<a name="id2677034"></a><p>  The information schema consists of a set of views that contain
   information about the objects defined in the current database.  The
   information schema is defined in the SQL standard and can therefore
   be expected to be portable and remain stable &#8212; unlike the system
@@ -80,7 +80,7 @@
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="infoschema-schema"></a></h2></div></div></div>
+<a name="infoschema-schema"></a>32.1. The Schema</h2></div></div></div>
 <p>   The information schema itself is a schema named
    <code class="literal">information_schema</code>.  This schema automatically
    exists in all databases.  The owner of this schema is the initial

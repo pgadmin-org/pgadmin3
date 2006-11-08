@@ -1,23 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>14.5. Installation Procedure</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="installation.html" title="">
-<link rel="prev" href="install-upgrading.html" title="">
-<link rel="next" href="install-post.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="installation.html" title="Chapter 14.  Installation Instructions">
+<link rel="prev" href="install-upgrading.html" title="14.4. If You Are Upgrading">
+<link rel="next" href="install-post.html" title="14.6. Post-Installation Setup">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="install-procedure"></a></h2></div></div></div>
+<a name="install-procedure"></a>14.5. Installation Procedure</h2></div></div></div>
 <div class="procedure"><ol type="1">
 <li>
 <a name="configure"></a><p class="title"><b>Configuration</b></p>
-<a name="id2615031"></a><p>    The first step of the installation procedure is to configure the
+<a name="id2615089"></a><p>    The first step of the installation procedure is to configure the
     source tree for your system and choose the options you would like.
     This is done by running the <code class="filename">configure</code> script. For a
     default installation simply enter
@@ -106,7 +106,7 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--with-docdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--without-docdir</code></span>
 </dt>
-<dd><p>         Documentation files, except <span class="quote">man</span> pages, will be
+<dd><p>         Documentation files, except &#8220;<span class="quote">man</span>&#8221; pages, will be
          installed into this directory. The default is
          <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/doc</code>.  If the option
          <code class="option">--without-docdir</code> is specified, the
@@ -119,17 +119,17 @@
 
      </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>       Care has been taken to make it possible to install
        <span class="productname">PostgreSQL</span> into shared installation locations
        (such as <code class="filename">/usr/local/include</code>) without
        interfering with the namespace of the rest of the system. First,
-       the string <span class="quote"><code class="literal">/postgresql</code></span> is
+       the string &#8220;<span class="quote"><code class="literal">/postgresql</code></span>&#8221; is
        automatically appended to <code class="varname">datadir</code>,
        <code class="varname">sysconfdir</code>, and <code class="varname">docdir</code>,
        unless the fully expanded directory name already contains the
-       string <span class="quote"><code class="literal">postgres</code></span> or
-       <span class="quote"><code class="literal">pgsql</code></span>. For example, if you choose
+       string &#8220;<span class="quote"><code class="literal">postgres</code></span>&#8221; or
+       &#8220;<span class="quote"><code class="literal">pgsql</code></span>&#8221;. For example, if you choose
        <code class="filename">/usr/local</code> as prefix, the documentation will
        be installed in <code class="filename">/usr/local/doc/postgresql</code>,
        but if the prefix is <code class="filename">/opt/postgres</code>, then it
@@ -239,14 +239,14 @@
          before proceeding.
         </p></dd>
 <dt><span class="term"><code class="option">--with-pam</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2615799"></a>
+<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2615857"></a>
          (Pluggable Authentication Modules) support.
         </p></dd>
 <dt><span class="term"><code class="option">--with-ldap</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2615818"></a>
+<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2615876"></a>
          support for authentication and connection parameter lookup (see 
-         <a href="libpq-ldap.html" title=""></a> and
-         <a href="auth-methods.html#auth-ldap" title=""></a> for more information). On Unix,
+         <a href="libpq-ldap.html" title="29.15. LDAP Lookup of Connection Parameters">Section 29.15, &#8220;LDAP Lookup of Connection Parameters&#8221;</a> and
+         <a href="auth-methods.html#auth-ldap" title="20.2.5. LDAP authentication">Section 20.2.5, &#8220;LDAP authentication&#8221;</a> for more information). On Unix,
          this requires the <span class="productname">OpenLDAP</span> package to be
          installed. <code class="filename">configure</code> will check for the required
          header files and libraries to make sure that your
@@ -276,7 +276,7 @@
          of representable values but guarantees microsecond precision across
          the full range (see
          
-         <a href="datatype-datetime.html" title=""></a>
+         <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a>
          for more information).  Note also that the integer datetimes code is
          newer than the floating-point code, and we still find bugs in it from
          time to time.
@@ -299,7 +299,7 @@
          threading support in your operating system.
         </p></dd>
 <dt><span class="term"><code class="option">--without-zlib</code></span></dt>
-<dd><p>         <a name="id2616024"></a>
+<dd><p>         <a name="id2616082"></a>
          Prevents use of the <span class="application">Zlib</span> library.  This disables
          support for compressed archives in <span class="application">pg_dump</span>
          and <span class="application">pg_restore</span>.
@@ -320,7 +320,7 @@
         </p></dd>
 <dt><span class="term"><code class="option">--enable-cassert</code></span></dt>
 <dd><p>         Enables <em class="firstterm">assertion</em> checks in the server, which test for
-         many <span class="quote">can't happen</span> conditions.  This is invaluable for
+         many &#8220;<span class="quote">can't happen</span>&#8221; conditions.  This is invaluable for
          code development purposes, but the tests slow things down a little.
          Also, having the tests turned on won't necessarily enhance the
          stability of your server!  The assertion checks are not categorized
@@ -340,7 +340,7 @@
         </p></dd>
 <dt><span class="term"><code class="option">--enable-dtrace</code></span></dt>
 <dd>
-<p>         <a name="id2616121"></a>
+<p>         <a name="id2616179"></a>
          Compiles with support for the dynamic tracing tool DTrace.
          Operating system support for DTrace is currently only
          available in Solaris.
@@ -439,7 +439,7 @@
 </li>
 <li>
 <p class="title"><b>Regression Tests</b></p>
-<a name="id2616415"></a><p>    If you want to test the newly built server before you install it,
+<a name="id2616473"></a><p>    If you want to test the newly built server before you install it,
     you can run the regression tests at this point. The regression
     tests are a test suite to verify that <span class="productname">PostgreSQL</span>
     runs on your machine in the way the developers expected it
@@ -449,7 +449,7 @@
 <p>
     (This won't work as root; do it as an unprivileged user.)
     
-    <a href="regress.html" title=""></a> contains
+    <a href="regress.html" title="Chapter 28. Regression Tests">Chapter 28, <i>Regression Tests</i></a> contains
     detailed information about interpreting the test results. You can
     repeat this test at any later time by issuing the same command.
    </p>
@@ -457,11 +457,11 @@
 <li>
 <a name="install"></a><p class="title"><b>Installing The Files</b></p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Note</h3>
 <p>     If you are upgrading an existing system and are going to install
      the new files over the old ones, be sure to back up
      your data and shut down the old server before proceeding, as explained in
-     <a href="install-upgrading.html" title=""></a> above.
+     <a href="install-upgrading.html" title="14.4. If You Are Upgrading">Section 14.4, &#8220;If You Are Upgrading&#8221;</a> above.
     </p>
 </div>
 <p>    To install <span class="productname">PostgreSQL</span> enter
@@ -469,7 +469,7 @@
 <pre class="screen"><strong class="userinput"><code>gmake install</code></strong></pre>
 <p>
     This will install files into the directories that were specified
-    in <a href="install-procedure.html#configure" title=" 1"> 1</a>. Make sure that you have appropriate
+    in <a href="install-procedure.html#configure" title="Step 1">Step 1</a>. Make sure that you have appropriate
     permissions to write into that area. Normally you need to do this
     step as root. Alternatively, you could create the target
     directories in advance and arrange for appropriate permissions to

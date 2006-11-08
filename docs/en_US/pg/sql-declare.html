@@ -1,30 +1,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>DECLARE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="sql-commands.html" title="">
-<link rel="prev" href="sql-deallocate.html" title="">
-<link rel="next" href="sql-delete.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-deallocate.html" title="DEALLOCATE">
+<link rel="next" href="sql-delete.html" title="DELETE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="sql-declare"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2></h2>
+<h2>Name</h2>
 <p>DECLARE &#8212; define a cursor</p>
 </div>
-<a name="id2751390"></a><a name="id2751399"></a><div class="refsynopsisdiv">
-<h2></h2>
+<a name="id2752045"></a><a name="id2752054"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
 <pre class="synopsis">DECLARE <em class="replaceable"><code>name</code></em> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
     CURSOR [ { WITH | WITHOUT } HOLD ] FOR <em class="replaceable"><code>query</code></em>
     [ FOR { READ ONLY | UPDATE [ OF <em class="replaceable"><code>column</code></em> [, ...] ] } ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2751436"></a><h2>Description</h2>
+<a name="id2752091"></a><h2>Description</h2>
 <p>   <code class="command">DECLARE</code> allows a user to create cursors, which
    can be used to retrieve
    a small number of rows at a time out of a larger query. Cursors can
@@ -55,8 +55,8 @@
    format.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
-<p>    When the client application uses the <span class="quote">extended query</span> protocol
+<h3 class="title">Note</h3>
+<p>    When the client application uses the &#8220;<span class="quote">extended query</span>&#8221; protocol
     to issue a <code class="command">FETCH</code> command, the Bind protocol message
     specifies whether data is to be retrieved in text or binary format.
     This choice overrides the way that the cursor is defined.  The concept
@@ -66,7 +66,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2746002"></a><h2>Parameters</h2>
+<a name="id2746642"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the cursor to be created.
@@ -180,12 +180,12 @@
     the standard SQL cursor conventions, including those involving
     <code class="command">DECLARE</code> and <code class="command">OPEN</code> statements.
    </p>
-<p>    You can see all available cursors by querying the <a href="view-pg-cursors.html" title=""><code class="structname">pg_cursors</code></a>
+<p>    You can see all available cursors by querying the <a href="view-pg-cursors.html" title="43.36. pg_cursors"><code class="structname">pg_cursors</code></a>
     system view.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2752007"></a><h2>Examples</h2>
+<a name="id2752663"></a><h2>Examples</h2>
 <p>   To declare a cursor:
 </p>
 <pre class="programlisting">DECLARE liahona CURSOR FOR SELECT * FROM films;</pre>
@@ -195,7 +195,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2752030"></a><h2>Compatibility</h2>
+<a name="id2752685"></a><h2>Compatibility</h2>
 <p>   The SQL standard allows cursors only in embedded
    <acronym class="acronym">SQL</acronym> and in modules. <span class="productname">PostgreSQL</span>
    permits cursors to be used interactively.
@@ -208,7 +208,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2752065"></a><h2>See Also</h2>
+<a name="id2752720"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-fetch.html">FETCH</a>, <a href="sql-move.html">MOVE</a></span>
 </div>
 </div></body>

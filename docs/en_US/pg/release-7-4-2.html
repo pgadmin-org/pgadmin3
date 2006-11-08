@@ -1,28 +1,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>E.30. Release 7.4.2</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="release.html" title="">
-<link rel="prev" href="release-7-4-3.html" title="">
-<link rel="next" href="release-7-4-1.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4-3.html" title="E.29. Release 7.4.3">
+<link rel="next" href="release-7-4-1.html" title="E.31. Release 7.4.1">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-4-2"></a></h2></div></div></div>
+<a name="release-7-4-2"></a>E.30. Release 7.4.2</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Release date</h3>
 <p>2004-03-08</p>
 </div>
 <p>    This release contains a variety of fixes from 7.4.1.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2856631"></a></h3></div></div></div>
+<a name="id2857456"></a>E.30.1. Migration to version 7.4.2</h3></div></div></div>
 <p>     A dump/restore is not required for those running 7.4.X.  However,
      it may be advisable as the easiest method of incorporating fixes for
      two errors that have been found in the initial contents of 7.4.X system
@@ -96,7 +96,7 @@ UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2856804"></a></h3></div></div></div>
+<a name="id2857629"></a>E.30.2. Changes</h3></div></div></div>
 <p>    Release 7.4.2 incorporates all the fixes included in release 7.3.6,
     plus the following fixes:</p>
 <div class="itemizedlist"><ul type="disc">
@@ -106,11 +106,11 @@ UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
 </li>
 <li><p>Allow non-super users to update <code class="structname">pg_settings</code></p></li>
 <li><p>Fix several optimizer bugs, most of which led to
-<span class="quote">variable not found in subplan target lists</span> errors</p></li>
+&#8220;<span class="quote">variable not found in subplan target lists</span>&#8221; errors</p></li>
 <li><p>Avoid out-of-memory failure during startup of large multiple
 index scan</p></li>
-<li><p>Fix multibyte problem that could lead to <span class="quote">out of
-memory</span> error during <code class="command">COPY IN</code></p></li>
+<li><p>Fix multibyte problem that could lead to &#8220;<span class="quote">out of
+memory</span>&#8221; error during <code class="command">COPY IN</code></p></li>
 <li><p>Fix problems with <code class="command">SELECT INTO</code> / <code class="command">CREATE
 TABLE AS</code> from tables without OIDs</p></li>
 <li><p>Fix problems with <code class="filename">alter_table</code> regression test

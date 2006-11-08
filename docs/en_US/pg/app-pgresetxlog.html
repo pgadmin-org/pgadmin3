@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>pg_resetxlog</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="reference-server.html" title="">
-<link rel="prev" href="app-pg-ctl.html" title="">
-<link rel="next" href="app-postgres.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
+<link rel="prev" href="app-pg-ctl.html" title="pg_ctl">
+<link rel="next" href="app-postgres.html" title="postgres">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
 <a name="app-pgresetxlog"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2></h2>
+<h2>Name</h2>
 <p>pg_resetxlog &#8212; reset the write-ahead log and other control information of a <span class="productname">PostgreSQL</span> database cluster</p>
 </div>
 <div class="refsynopsisdiv">
-<h2></h2>
+<h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">pg_resetxlog</code> [-f] [-n] [-o<em class="replaceable"><code>oid</code></em> ] [-x <em class="replaceable"><code>xid</code></em> ] [-e <em class="replaceable"><code>xid_epoch</code></em> ] [-m <em class="replaceable"><code>mxid</code></em> ] [-O <em class="replaceable"><code>mxoff</code></em> ] [-l <em class="replaceable"><code>timelineid</code></em>,<em class="replaceable"><code>fileid</code></em>,<em class="replaceable"><code>seg</code></em> ]  <em class="replaceable"><code>datadir</code></em> </p></div>
 </div>
 <div class="refsect1" lang="en">
@@ -99,7 +99,7 @@
       larger than any file name currently existing in
       the directory <code class="filename">pg_xlog</code> under the data directory.
       These names are also in hexadecimal and have three parts.  The first
-      part is the <span class="quote">timeline ID</span> and should usually be kept the same.
+      part is the &#8220;<span class="quote">timeline ID</span>&#8221; and should usually be kept the same.
       Do not choose a value larger than 255 (<code class="literal">0xFF</code>) for the third
       part; instead increment the second part and reset the third part to 0.
       For example, if <code class="filename">00000001000000320000004A</code> is the
@@ -131,7 +131,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2793450"></a><h2>Notes</h2>
+<a name="id2794193"></a><h2>Notes</h2>
 <p>   This command must not be used when the server is 
    running.  <code class="command">pg_resetxlog</code> will refuse to start up if
    it finds a server lock file in the data directory.  If the

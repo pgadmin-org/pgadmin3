@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>9.20. System Administration Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="functions.html" title="">
-<link rel="prev" href="functions-info.html" title="">
-<link rel="next" href="typeconv.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions-info.html" title="9.19. System Information Functions">
+<link rel="next" href="typeconv.html" title="Chapter 10. Type Conversion">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-admin"></a></h2></div></div></div>
-<p>   <a href="functions-admin.html#functions-admin-set-table" title=""></a> shows the functions
+<a name="functions-admin"></a>9.20. System Administration Functions</h2></div></div></div>
+<p>   <a href="functions-admin.html#functions-admin-set-table" title="Table 9.45. Configuration Settings Functions">Table 9.45, &#8220;Configuration Settings Functions&#8221;</a> shows the functions
    available to query and alter run-time configuration parameters.
   </p>
 <div class="table">
-<a name="functions-admin-set-table"></a><p class="title"><b></b></p>
+<a name="functions-admin-set-table"></a><p class="title"><b>Table 9.45. Configuration Settings Functions</b></p>
 <div class="table-contents"><table summary="Configuration Settings Functions" border="1">
 <colgroup>
 <col>
@@ -48,7 +48,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2603730"></a><a name="id2603740"></a><a name="id2603749"></a><p>    The function <code class="function">current_setting</code> yields the
+<br class="table-break"><a name="id2603756"></a><a name="id2603766"></a><a name="id2603776"></a><p>    The function <code class="function">current_setting</code> yields the
     current value of the setting <em class="parameter"><code>setting_name</code></em>.
     It corresponds to the <acronym class="acronym">SQL</acronym> command
     <code class="command">SHOW</code>.  An example:
@@ -78,12 +78,12 @@
 (1 row)</pre>
 <p>
    </p>
-<a name="id2603852"></a><a name="id2603862"></a><a name="id2603871"></a><a name="id2603880"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-signal-table" title=""></a> send control signals to
+<a name="id2603879"></a><a name="id2603888"></a><a name="id2603898"></a><a name="id2603907"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.46. Server Signalling Functions">Table 9.46, &#8220;Server Signalling Functions&#8221;</a> send control signals to
     other server processes.  Use of these functions is restricted
     to superusers.
    </p>
 <div class="table">
-<a name="functions-admin-signal-table"></a><p class="title"><b></b></p>
+<a name="functions-admin-signal-table"></a><p class="title"><b>Table 9.46. Server Signalling Functions</b></p>
 <div class="table-contents"><table summary="Server Signalling Functions" border="1">
 <colgroup>
 <col>
@@ -137,11 +137,11 @@
     <code class="varname">redirect_stderr</code> is used for logging, since otherwise there
     is no log-file manager subprocess.
    </p>
-<a name="id2604079"></a><a name="id2604088"></a><a name="id2604098"></a><a name="id2604107"></a><a name="id2604117"></a><a name="id2604127"></a><a name="id2604136"></a><a name="id2604145"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title=""></a> assist in making on-line backups.
+<a name="id2604106"></a><a name="id2604115"></a><a name="id2604125"></a><a name="id2604134"></a><a name="id2604144"></a><a name="id2604153"></a><a name="id2604163"></a><a name="id2604172"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.47. Backup Control Functions">Table 9.47, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
     Use of the first three functions is restricted to superusers.
    </p>
 <div class="table">
-<a name="functions-admin-backup-table"></a><p class="title"><b></b></p>
+<a name="functions-admin-backup-table"></a><p class="title"><b>Table 9.47. Backup Control Functions</b></p>
 <div class="table-contents"><table summary="Backup Control Functions" border="1">
 <colgroup>
 <col>
@@ -236,7 +236,7 @@
 <p>    <code class="function">pg_current_xlog_location</code> displays the current transaction log write
     location in the same format used by the above functions.  Similarly
     <code class="function">pg_current_xlog_insert_location</code> displays the current transaction log
-    insertion point.  The insertion point is the <span class="quote">logical</span> end of transaction log
+    insertion point.  The insertion point is the &#8220;<span class="quote">logical</span>&#8221; end of transaction log
     at any instant, while the write location is the end of what has actually
     been written out from the server's internal buffers.  The write location
     is the end of what can be examined from outside the server, and is usually
@@ -263,13 +263,13 @@
     needs to be archived.
    </p>
 <p>    For details about proper usage of these functions, see
-    <a href="continuous-archiving.html" title=""></a>.
+    <a href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">Section 23.3, &#8220;Continuous Archiving and Point-In-Time Recovery (PITR)&#8221;</a>.
    </p>
-<p>    The functions shown in <a href="functions-admin.html#functions-admin-dbsize" title=""></a> calculate
+<p>    The functions shown in <a href="functions-admin.html#functions-admin-dbsize" title="Table 9.48. Database Object Size Functions">Table 9.48, &#8220;Database Object Size Functions&#8221;</a> calculate
     the actual disk space usage of database objects.
    </p>
-<a name="id2604521"></a><a name="id2604530"></a><a name="id2604540"></a><a name="id2604549"></a><a name="id2604558"></a><a name="id2604568"></a><div class="table">
-<a name="functions-admin-dbsize"></a><p class="title"><b></b></p>
+<a name="id2604556"></a><a name="id2604565"></a><a name="id2604575"></a><a name="id2604584"></a><a name="id2604593"></a><a name="id2604603"></a><div class="table">
+<a name="functions-admin-dbsize"></a><p class="title"><b>Table 9.48. Database Object Size Functions</b></p>
 <div class="table-contents"><table summary="Database Object Size Functions" border="1">
 <colgroup>
 <col>
@@ -370,7 +370,7 @@
     table or toast table, and returns the size in bytes of the data
     and all associated indexes and toast tables.
    </p>
-<p>    The functions shown in <a href="functions-admin.html#functions-admin-genfile" title=""></a> provide native file access to
+<p>    The functions shown in <a href="functions-admin.html#functions-admin-genfile" title="Table 9.49. Generic File Access Functions">Table 9.49, &#8220;Generic File Access Functions&#8221;</a> provide native file access to
     files on the machine hosting the server. Only files within the
     database cluster directory and the <code class="varname">log_directory</code> may be
     accessed.  Use a relative path for files within the cluster directory,
@@ -378,7 +378,7 @@
     for log files.  Use of these functions is restricted to superusers.
    </p>
 <div class="table">
-<a name="functions-admin-genfile"></a><p class="title"><b></b></p>
+<a name="functions-admin-genfile"></a><p class="title"><b>Table 9.49. Generic File Access Functions</b></p>
 <div class="table-contents"><table summary="Generic File Access Functions" border="1">
 <colgroup>
 <col>
@@ -412,16 +412,16 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2605038"></a><p>    <code class="function">pg_ls_dir</code> returns all the names in the specified
-    directory, except the special entries <span class="quote"><code class="literal">.</code></span> and
-    <span class="quote"><code class="literal">..</code></span>.
+<br class="table-break"><a name="id2605073"></a><p>    <code class="function">pg_ls_dir</code> returns all the names in the specified
+    directory, except the special entries &#8220;<span class="quote"><code class="literal">.</code></span>&#8221; and
+    &#8220;<span class="quote"><code class="literal">..</code></span>&#8221;.
    </p>
-<a name="id2605071"></a><p>    <code class="function">pg_read_file</code> returns part of a text file, starting
+<a name="id2605105"></a><p>    <code class="function">pg_read_file</code> returns part of a text file, starting
     at the given <em class="parameter"><code>offset</code></em>, returning at most <em class="parameter"><code>length</code></em>
     bytes (less if the end of file is reached first).  If <em class="parameter"><code>offset</code></em>
     is negative, it is relative to the end of the file.
    </p>
-<a name="id2605108"></a><p>    <code class="function">pg_stat_file</code> returns a record containing the file
+<a name="id2605143"></a><p>    <code class="function">pg_stat_file</code> returns a record containing the file
     size, last accessed time stamp, last modified time stamp,
     last file status change time stamp (Unix platforms only),
     file creation time stamp (Windows only), and a <code class="type">boolean</code>
@@ -431,12 +431,12 @@
 SELECT (pg_stat_file('filename')).modification;</pre>
 <p>
    </p>
-<p>    The functions shown in <a href="functions-admin.html#functions-advisory-locks" title=""></a> manage
+<p>    The functions shown in <a href="functions-admin.html#functions-advisory-locks" title="Table 9.50. Advisory Lock Functions">Table 9.50, &#8220;Advisory Lock Functions&#8221;</a> manage
     advisory locks.  For details about proper usage of these functions, see
-    <a href="explicit-locking.html#advisory-locks" title=""></a>.
+    <a href="explicit-locking.html#advisory-locks" title="12.3.4. Advisory Locks">Section 12.3.4, &#8220;Advisory Locks&#8221;</a>.
    </p>
 <div class="table">
-<a name="functions-advisory-locks"></a><p class="title"><b></b></p>
+<a name="functions-advisory-locks"></a><p class="title"><b>Table 9.50. Advisory Lock Functions</b></p>
 <div class="table-contents"><table summary="Advisory Lock Functions" border="1">
 <colgroup>
 <col>
@@ -530,7 +530,7 @@ SELECT (pg_stat_file('filename')).modification;</pre>
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2605600"></a><p>    <code class="function">pg_advisory_lock</code> locks an application-defined resource,
+<br class="table-break"><a name="id2605635"></a><p>    <code class="function">pg_advisory_lock</code> locks an application-defined resource,
     which may be identified either by a single 64-bit key value or two
     32-bit key values (note that these two key spaces do not overlap).  If
     another session already holds a lock on the same resource, the
@@ -539,32 +539,32 @@ SELECT (pg_stat_file('filename')).modification;</pre>
     is locked three times it must be also unlocked three times to be
     released for other sessions' use.
    </p>
-<a name="id2605626"></a><p>    <code class="function">pg_advisory_lock_shared</code> works the same as
+<a name="id2605669"></a><p>    <code class="function">pg_advisory_lock_shared</code> works the same as
     <code class="function">pg_advisory_lock</code>,
     except the lock can be shared with other sessions requesting shared locks.
     Only would-be exclusive lockers are locked out.
    </p>
-<a name="id2605652"></a><p>    <code class="function">pg_try_advisory_lock</code> is similar to
+<a name="id2605696"></a><p>    <code class="function">pg_try_advisory_lock</code> is similar to
     <code class="function">pg_advisory_lock</code>, except the function will not wait for the
     lock to become available.  It will either obtain the lock immediately and
     return <code class="literal">true</code>, or return <code class="literal">false</code> if the lock cannot be
     acquired now.
    </p>
-<a name="id2605691"></a><p>    <code class="function">pg_try_advisory_lock_shared</code> works the same as
+<a name="id2605735"></a><p>    <code class="function">pg_try_advisory_lock_shared</code> works the same as
     <code class="function">pg_try_advisory_lock</code>, except it attempts to acquire
     shared rather than exclusive lock.
    </p>
-<a name="id2605717"></a><p>    <code class="function">pg_advisory_unlock</code> will release a previously-acquired
+<a name="id2605761"></a><p>    <code class="function">pg_advisory_unlock</code> will release a previously-acquired
     exclusive advisory lock.  It
     will return <code class="literal">true</code> if the lock is successfully released.
     If the lock was in fact not held, it will return <code class="literal">false</code>,
     and in addition, an SQL warning will be raised by the server.
    </p>
-<a name="id2605750"></a><p>    <code class="function">pg_advisory_unlock_shared</code> works the same as
+<a name="id2605794"></a><p>    <code class="function">pg_advisory_unlock_shared</code> works the same as
     <code class="function">pg_advisory_unlock</code>, 
     except to release a shared advisory lock.
    </p>
-<a name="id2605775"></a><p>    <code class="function">pg_advisory_unlock_all</code> will release all advisory locks
+<a name="id2605819"></a><p>    <code class="function">pg_advisory_unlock_all</code> will release all advisory locks
     held by the current session.  (This function is implicitly invoked
     at session end, even if the client disconnects ungracefully.)
    </p>

@@ -1,29 +1,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>29.6. The Fast-Path Interface</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="libpq.html" title="">
-<link rel="prev" href="libpq-cancel.html" title="">
-<link rel="next" href="libpq-notify.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 29. libpq - C Library">
+<link rel="prev" href="libpq-cancel.html" title="29.5. Cancelling Queries in Progress">
+<link rel="next" href="libpq-notify.html" title="29.7. Asynchronous Notification">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="libpq-fastpath"></a></h2></div></div></div>
-<a name="id2661102"></a><p><span class="productname">PostgreSQL</span> provides a fast-path interface to send
+<a name="libpq-fastpath"></a>29.6. The Fast-Path Interface</h2></div></div></div>
+<a name="id2661521"></a><p><span class="productname">PostgreSQL</span> provides a fast-path interface to send
 simple function calls to the server.</p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title"></h3>
+<h3 class="title">Tip</h3>
 <p>This interface is somewhat obsolete, as one may achieve similar performance
 and greater functionality by setting up a prepared statement to define the
 function call.  Then, executing the statement with binary transmission of
 parameters and results substitutes for a fast-path function call.</p>
 </div>
-<p>The function <code class="function">PQfn</code><a name="id2661136"></a>
+<p>The function <code class="function">PQfn</code><a name="id2661555"></a>
 requests execution of a server function via the fast-path interface:
 </p>
 <pre class="synopsis">PGresult *PQfn(PGconn *conn,

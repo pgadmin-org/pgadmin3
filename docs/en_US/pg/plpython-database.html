@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>40.3. Database Access</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="plpython.html" title="">
-<link rel="prev" href="plpython-trigger.html" title="">
-<link rel="next" href="spi.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="plpython.html" title="Chapter 40. PL/Python - Python Procedural Language">
+<link rel="prev" href="plpython-trigger.html" title="40.2. Trigger Functions">
+<link rel="next" href="spi.html" title="Chapter 41. Server Programming Interface">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpython-database"></a></h2></div></div></div>
+<a name="plpython-database"></a>40.3. Database Access</h2></div></div></div>
 <p>   The PL/Python language module automatically imports a Python module
    called <code class="literal">plpy</code>.  The functions and constants in
    this module are available to you in the Python code as
@@ -25,7 +25,7 @@
    <code class="literal">plpy.notice(<em class="replaceable"><code>msg</code></em>)</code>,
    <code class="literal">plpy.warning(<em class="replaceable"><code>msg</code></em>)</code>,
    <code class="literal">plpy.error(<em class="replaceable"><code>msg</code></em>)</code>, and
-   <code class="literal">plpy.fatal(<em class="replaceable"><code>msg</code></em>)</code>.<a name="id2717468"></a>
+   <code class="literal">plpy.fatal(<em class="replaceable"><code>msg</code></em>)</code>.<a name="id2718084"></a>
    <code class="function">plpy.error</code> and 
    <code class="function">plpy.fatal</code> actually raise a Python exception
    which, if uncaught, propagates out to the calling query, causing
@@ -41,7 +41,7 @@
    written to the server log, or both is controlled by the
    <a href="runtime-config-logging.html#guc-log-min-messages">log_min_messages</a> and
    <a href="runtime-config-logging.html#guc-client-min-messages">client_min_messages</a> configuration
-   variables. See <a href="runtime-config.html" title=""></a> for more information.
+   variables. See <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> for more information.
   </p>
 <p>   Additionally, the <code class="literal">plpy</code> module provides two
    functions called <code class="function">execute</code> and
@@ -67,7 +67,7 @@
 <pre class="programlisting">foo = rv[i]["my_column"]</pre>
 <p>
   </p>
-<p>   <a name="id2717634"></a>
+<p>   <a name="id2718251"></a>
    The second function, <code class="function">plpy.prepare</code>, prepares
    the execution plan for a query.  It is called with a query string
    and a list of parameter types, if you have parameter references in
@@ -84,11 +84,11 @@
    The third argument is the limit and is optional.
   </p>
 <p>   When you prepare a plan using the PL/Python module it is
-   automatically saved.  Read the SPI documentation (<a href="spi.html" title=""></a>) for a description of what this means.
+   automatically saved.  Read the SPI documentation (<a href="spi.html" title="Chapter 41. Server Programming Interface">Chapter 41, <i>Server Programming Interface</i></a>) for a description of what this means.
    In order to make effective use of this across function calls
    one needs to use one of the persistent storage dictionaries
    <code class="literal">SD</code> or <code class="literal">GD</code> (see
-   <a href="plpython.html#plpython-funcs" title=""></a>). For example:
+   <a href="plpython.html#plpython-funcs" title="40.1. PL/Python Functions">Section 40.1, &#8220;PL/Python Functions&#8221;</a>). For example:
 </p>
 <pre class="programlisting">CREATE FUNCTION usesavedplan() RETURNS trigger AS $$
     if SD.has_key("plan"):

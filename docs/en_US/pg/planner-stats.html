@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>13.2. Statistics Used by the Planner</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="performance-tips.html" title="">
-<link rel="prev" href="performance-tips.html" title="">
-<link rel="next" href="explicit-joins.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="prev" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="next" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="planner-stats"></a></h2></div></div></div>
-<a name="id2612475"></a><p>   As we saw in the previous section, the query planner needs to estimate
+<a name="planner-stats"></a>13.2. Statistics Used by the Planner</h2></div></div></div>
+<a name="id2612533"></a><p>   As we saw in the previous section, the query planner needs to estimate
    the number of rows retrieved by a query in order to make good choices
    of query plans.  This section provides a quick look at the statistics
    that the system uses for these estimates.
@@ -22,7 +22,7 @@
 <p>   One component of the statistics is the total number of entries in
    each table and index, as well as the number of disk blocks occupied
    by each table and index.  This information is kept in the table
-   <a href="catalog-pg-class.html" title=""><code class="structname">pg_class</code></a>, in
+   <a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>, in
    the columns <code class="structfield">reltuples</code> and
    <code class="structfield">relpages</code>.  We can look at it with
    queries similar to this one:
@@ -56,19 +56,19 @@
    to match the current physical table size, thus obtaining a closer
    approximation.
   </p>
-<a name="id2612592"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
+<a name="id2612650"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
    to having <code class="literal">WHERE</code> clauses that restrict the rows to be
    examined.  The planner thus needs to make an estimate of the
    <em class="firstterm">selectivity</em> of <code class="literal">WHERE</code> clauses, that is,
    the fraction of rows that match each condition in the
    <code class="literal">WHERE</code> clause.  The information used for this task is
-   stored in the <a href="catalog-pg-statistic.html" title=""><code class="structname">pg_statistic</code></a>
+   stored in the <a href="catalog-pg-statistic.html" title="43.31. pg_statistic"><code class="structname">pg_statistic</code></a>
    system catalog.  Entries in <code class="structname">pg_statistic</code>
    are updated by the <code class="command">ANALYZE</code> and <code class="command">VACUUM
    ANALYZE</code> commands, and are always approximate even when freshly
    updated.
   </p>
-<a name="id2612655"></a><p>   Rather than look at <code class="structname">pg_statistic</code> directly,
+<a name="id2612713"></a><p>   Rather than look at <code class="structname">pg_statistic</code> directly,
    it's better to look at its view <code class="structname">pg_stats</code>
    when examining the statistics manually.  <code class="structname">pg_stats</code>
    is designed to be more easily readable.  Furthermore,
@@ -91,7 +91,7 @@
 <p>
   </p>
 <p>   <code class="structname">pg_stats</code> is described in detail in
-   <a href="view-pg-stats.html" title=""></a>.
+   <a href="view-pg-stats.html" title="43.46. pg_stats">Section 43.46, &#8220;<code class="structname">pg_stats</code>&#8221;</a>.
   </p>
 <p>   The amount of information stored in <code class="structname">pg_statistic</code>,
    in particular the maximum number of entries in the

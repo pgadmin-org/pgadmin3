@@ -1,30 +1,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
+<title>43.12. pg_class</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="">
-<link rel="up" href="catalogs.html" title="">
-<link rel="prev" href="catalog-pg-cast.html" title="">
-<link rel="next" href="catalog-pg-constraint.html" title="">
-<link rel="copyright" href="ln-legalnotice.html" title="">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="catalog-pg-cast.html" title="43.11. pg_cast">
+<link rel="next" href="catalog-pg-constraint.html" title="43.13. pg_constraint">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-class"></a></h2></div></div></div>
-<a name="id2799509"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
+<a name="catalog-pg-class"></a>43.12. <code class="structname">pg_class</code></h2></div></div></div>
+<a name="id2800322"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
    everything else that has columns or is otherwise similar to a
    table.  This includes indexes (but see also
    <code class="structname">pg_index</code>), sequences, views, composite types,
    and TOAST tables; see <code class="structfield">relkind</code>.
    Below, when we mean all of these
-   kinds of objects we speak of <span class="quote">relations</span>.  Not all
+   kinds of objects we speak of &#8220;<span class="quote">relations</span>&#8221;.  Not all
    columns are meaningful for all relation types.
   </p>
 <div class="table">
-<a name="id2799540"></a><p class="title"><b></b></p>
+<a name="id2800353"></a><p class="title"><b>Table 43.12. <code class="structname">pg_class</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_class Columns" border="1">
 <colgroup>
 <col>
@@ -48,14 +48,14 @@
 <tr>
 <td><code class="structfield">relnamespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-namespace.html" title=""><code class="structname">pg_namespace</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="43.23. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
 <td>       The OID of the namespace that contains this relation
       </td>
 </tr>
 <tr>
 <td><code class="structfield">reltype</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title=""><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="43.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>       The OID of the data type that corresponds to this table's row type,
        if any (zero for indexes, which have no <code class="structname">pg_type</code> entry)
       </td>
@@ -63,13 +63,13 @@
 <tr>
 <td><code class="structfield">relowner</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-authid.html" title=""><code class="structname">pg_authid</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
 <td>Owner of the relation</td>
 </tr>
 <tr>
 <td><code class="structfield">relam</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-am.html" title=""><code class="structname">pg_am</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-am.html" title="43.3. pg_am"><code class="structname">pg_am</code></a>.oid</code></td>
 <td>If this is an index, the access method used (B-tree, hash, etc.)</td>
 </tr>
 <tr>
@@ -81,7 +81,7 @@
 <tr>
 <td><code class="structfield">reltablespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-tablespace.html" title=""><code class="structname">pg_tablespace</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-tablespace.html" title="43.32. pg_tablespace"><code class="structname">pg_tablespace</code></a>.oid</code></td>
 <td>       The tablespace in which this relation is stored.  If zero,
        the database's default tablespace is implied.  (Not meaningful
        if the relation has no on-disk file.)
@@ -113,16 +113,16 @@
 <tr>
 <td><code class="structfield">reltoastrelid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title=""><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       OID of the TOAST table associated with this table, 0 if none.
-       The TOAST table stores large attributes <span class="quote">out of
-       line</span> in a secondary table.
+       The TOAST table stores large attributes &#8220;<span class="quote">out of
+       line</span>&#8221; in a secondary table.
       </td>
 </tr>
 <tr>
 <td><code class="structfield">reltoastidxid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title=""><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       For a TOAST table, the OID of its index.  0 if not a TOAST table.
       </td>
 </tr>
@@ -228,23 +228,14 @@
 <td>True if table has (or once had) any inheritance children</td>
 </tr>
 <tr>
-<td><code class="structfield">relminxid</code></td>
+<td><code class="structfield">relfrozenxid</code></td>
 <td><code class="type">xid</code></td>
 <td> </td>
-<td>       The minimum transaction ID present in all rows in this table.  This
-       value is used to determine the database-global
-       <code class="structname">pg_database</code>.<code class="structfield">datminxid</code> value.
-      </td>
-</tr>
-<tr>
-<td><code class="structfield">relvacuumxid</code></td>
-<td><code class="type">xid</code></td>
-<td> </td>
-<td>       The transaction ID that was used as cleaning point as of the last vacuum
-       operation.  All rows inserted, updated or deleted in this table by
-       transactions whose IDs are below this one have been marked as known good
-       or deleted.  This is used to determine the database-global
-       <code class="structname">pg_database</code>.<code class="structfield">datvacuumxid</code> value.
+<td>       All transaction IDs before this one have been replaced with a permanent
+       (&#8220;<span class="quote">frozen</span>&#8221;) transaction ID in this table.  This is used to track
+       whether the table needs to be vacuumed in order to prevent transaction
+       ID wraparound or to allow <code class="literal">pg_clog</code> to be shrunk.  Zero
+       (<code class="symbol">InvalidTransactionId</code>) if the relation is not a table.
       </td>
 </tr>
 <tr>
@@ -261,7 +252,7 @@
 <td><code class="structfield">reloptions</code></td>
 <td><code class="type">text[]</code></td>
 <td> </td>
-<td>       Access-method-specific options, as <span class="quote">keyword=value</span> strings
+<td>       Access-method-specific options, as &#8220;<span class="quote">keyword=value</span>&#8221; strings
       </td>
 </tr>
 </tbody>
