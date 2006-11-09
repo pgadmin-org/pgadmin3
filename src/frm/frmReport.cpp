@@ -1285,7 +1285,7 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
     pgTable *table = (pgTable *)object;
 
     wxString title;
-    title.Printf(_("%s Data dictionnary report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
+    title.Printf(_("%s Data dictionary report - %s"), object->GetTypeName().c_str(), object->GetIdentifier().c_str());
     report->SetReportTitle(title);
 
     // Columns
