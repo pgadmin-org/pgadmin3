@@ -421,7 +421,13 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
     }
     else
     {
-        sqlGrid->GetTable()->Paste();
+        if (sqlGrid->GetTable()->Paste())
+        {
+            toolBar->EnableTool(MNU_SAVE, true);
+            toolBar->EnableTool(MNU_UNDO, true);
+            fileMenu->Enable(MNU_SAVE, true);
+            editMenu->Enable(MNU_UNDO, true);
+        }
     }
 }
 
@@ -598,6 +604,11 @@ void frmEditGrid::OnUndo(wxCommandEvent& event)
     sqlGrid->DisableCellEditControl();
     sqlGrid->GetTable()->UndoLine(sqlGrid->GetGridCursorRow());
     sqlGrid->ForceRefresh();
+
+    toolBar->EnableTool(MNU_SAVE, false);
+    toolBar->EnableTool(MNU_UNDO, false);
+    fileMenu->Enable(MNU_SAVE, false);
+    editMenu->Enable(MNU_UNDO, false);
 }
 
 
@@ -2302,7 +2313,7 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
 }
 
 
-void sqlTable::Paste()
+bool sqlTable::Paste()
 {
     int row, col;
     int start, pos, len;
@@ -2320,12 +2331,12 @@ void sqlTable::Paste()
         }
         else {
             wxTheClipboard->Close();
-            return;
+            return false;
         }
         wxTheClipboard->Close();
     }
     else {
-        return;
+        return false;
     }
 
     start = pos = 0;
@@ -2402,9 +2413,12 @@ void sqlTable::Paste()
             columns[col].type == (unsigned int)PGOID_TYPE_SERIAL8)))
         {
             SetValue(row, col, data.Item(col));
+            GetView()->SetGridCursor(row, col);
         }
     }
     GetView()->ForceRefresh();
+
+    return true;
 }
 
 

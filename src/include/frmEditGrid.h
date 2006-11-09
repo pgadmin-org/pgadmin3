@@ -129,7 +129,7 @@ public:
 
     bool CheckInCache(int row);
 
-    void Paste();
+    bool Paste();
 
 private:
     pgQueryThread *thread;
