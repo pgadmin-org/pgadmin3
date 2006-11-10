@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by:
 // Created:     01/02/97
-// RCS-ID:      $Id: setup0.h,v 1.238 2006/10/09 17:50:38 VZ Exp $
+// RCS-ID:      $Id: setup0.h,v 1.244 2006/10/30 20:07:51 VZ Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -272,7 +272,7 @@
 #define wxUSE_STD_IOSTREAM  0
 
 // Enable conversion to standard C++ string if 1.
-#define wxUSE_STD_STRING  0
+#define wxUSE_STD_STRING  1
 
 // Support for positional parameters (e.g. %1$d, %2$s ...) in wxVsnprintf.
 // Note that if the system's implementation does not support positional
@@ -426,6 +426,9 @@
 // Set to 1 to enable virtual ZIP filesystem (requires wxUSE_FILESYSTEM)
 #define wxUSE_FS_ZIP        1
 
+// Set to 1 to enable virtual archive filesystem (requires wxUSE_FILESYSTEM)
+#define wxUSE_FS_ARCHIVE    1
+
 // Set to 1 to enable virtual Internet filesystem (requires wxUSE_FILESYSTEM)
 #define wxUSE_FS_INET       1
 
@@ -434,6 +437,9 @@
 
 // Set to 1 to compile wxZipInput/OutputStream classes.
 #define wxUSE_ZIPSTREAM     1
+
+// Set to 1 to compile wxTarInput/OutputStream classes.
+#define wxUSE_TARSTREAM     1
 
 // Set to 1 to compile wxZlibInput/OutputStream classes. Also required by
 // wxUSE_LIBPNG
@@ -607,6 +613,7 @@
 #define wxUSE_CHECKBOX      1   // wxCheckBox
 #define wxUSE_CHECKLISTBOX  1   // wxCheckListBox (requires wxUSE_OWNER_DRAWN)
 #define wxUSE_CHOICE        1   // wxChoice
+#define wxUSE_COLLPANE      1   // wxCollapsiblePane
 #define wxUSE_COLOURPICKERCTRL 1    // wxColourPickerCtrl
 #define wxUSE_COMBOBOX      1   // wxComboBox
 #define wxUSE_DATAVIEWCTRL  1   // wxDataViewCtrl
@@ -1141,6 +1148,9 @@
 
 // Set to 1 for TIFF format support (requires libtiff)
 #define wxUSE_LIBTIFF       1
+
+// Set to 1 for TGA format support (loading only)
+#define wxUSE_TGA           1
 
 // Set to 1 for GIF format support
 #define wxUSE_GIF           1

@@ -24,6 +24,14 @@
 #include "dlgClasses.h"
 #include "base/factory.h"
 
+// Backwards compatibility
+#if wxCHECK_VERSION(2, 7, 2)
+#define wxFrameManager wxAuiManager
+#define wxFrameManagerEvent wxAuiManagerEvent
+#define wxPaneInfo wxAuiPaneInfo
+#define wxFloatingPane wxAuiFloatingFrame
+#endif
+
 #define FRMMAIN_PERPSECTIVE_VER wxT("$Rev$")
 
 #ifdef __WXMAC__

@@ -169,7 +169,11 @@ bool wxCalendarBox::Create(wxWindow *parent,
     yearControl->SetSize(width-yearSize.x-CALBORDER/2, yearPosition.y, yearSize.x, yearSize.y);
 	m_cal->GetMonthControl()->Move(0, 0);
 
+#if wxCHECK_VERSION(2, 7, 2)
+    SetInitialSize(size);
+#else
     SetBestFittingSize(size);
+#endif
 
 
     panel->SetClientSize(width+CALBORDER/2, calSize.y-2+CALBORDER);

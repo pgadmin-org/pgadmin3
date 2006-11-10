@@ -50,7 +50,9 @@ public:
 
 
 #ifdef __WXMSW__
+#if !wxCHECK_VERSION(2, 7, 2)
     wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
+#endif
 #endif
 };
 
