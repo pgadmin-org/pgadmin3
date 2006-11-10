@@ -421,6 +421,28 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
     }
     else
     {
+        if (toolBar->GetToolEnabled(MNU_SAVE))
+        {
+            wxMessageDialog msg(this, _("There is unsaved data in a row.\nDo you want to store to the database?"), _("Unsaved data"),
+                wxYES_NO | wxICON_QUESTION | wxCANCEL);
+            switch (msg.ShowModal())
+            {
+                case wxID_YES:
+                    if (!DoSave())
+                        return;
+                    break;
+
+                case wxID_CANCEL:
+                    return;
+                    break;
+
+                case wxID_NO:
+                    sqlGrid->GetTable()->UndoLine(sqlGrid->GetGridCursorRow());
+                    sqlGrid->ForceRefresh();
+                    break;
+            }
+        }
+
         if (sqlGrid->GetTable()->Paste())
         {
             toolBar->EnableTool(MNU_SAVE, true);
@@ -2407,6 +2429,7 @@ bool sqlTable::Paste()
         }
     }
 
+    bool pasted = false;
     for (col = (hasOids ? 1 : 0); col < nCols && col < (int)data.GetCount(); col++)
     {
         if (!(skipSerial && (columns[col].type == (unsigned int)PGOID_TYPE_SERIAL ||
@@ -2414,11 +2437,13 @@ bool sqlTable::Paste()
         {
             SetValue(row, col, data.Item(col));
             GetView()->SetGridCursor(row, col);
+            GetView()->MakeCellVisible(row, col);
+            pasted = true;
         }
     }
     GetView()->ForceRefresh();
 
-    return true;
+    return pasted;
 }
 
 
