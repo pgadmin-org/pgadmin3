@@ -378,13 +378,7 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
                 doSkip = DoSave();
             }
         }
-        else
-        {
-            toolBar->EnableTool(MNU_SAVE, false);
-            toolBar->EnableTool(MNU_UNDO, false);
-            fileMenu->Enable(MNU_SAVE, false);
-            editMenu->Enable(MNU_UNDO, false);
-        }
+
     }
 
     if (doSkip)
