@@ -1313,7 +1313,11 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     sql += query;
 
     if (analyze)
-        sql += wxT(";\nROLLBACK;");
+    {
+        // Bizarre bug fix - if we append a rollback directly after -- it'll crash!!
+        // Add a \n first.
+        sql += wxT("\n;\nROLLBACK;");
+    }
 
     if (execQuery(sql, resultToRetrieve, true, offset))
     {
