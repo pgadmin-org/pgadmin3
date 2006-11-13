@@ -40,6 +40,7 @@
 #define PGOID_TYPE_VARCHAR_ARRAY            1015L
 #define PGOID_TYPE_BPCHAR                   1042L
 #define PGOID_TYPE_VARCHAR                  1043L
+#define PGOID_TYPE_DATE                     1082L
 #define PGOID_TYPE_TIME                     1083L
 #define PGOID_TYPE_TIMESTAMP                1114L
 #define PGOID_TYPE_TIMESTAMP_ARRAY          1115L

@@ -1782,6 +1782,15 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(true);
                     break;
+                case PGOID_TYPE_DATE:
+                case PGOID_TYPE_TIME:
+                case PGOID_TYPE_TIMETZ:
+                case PGOID_TYPE_TIMESTAMP:
+                case PGOID_TYPE_TIMESTAMPTZ:
+                case PGOID_TYPE_INTERVAL:
+                    columns[i].numeric = false;
+                    columns[i].attr->SetReadOnly(false);
+                    break;
                 case PGOID_TYPE_CHAR:
                 case PGOID_TYPE_NAME:
                 case PGOID_TYPE_TEXT:
