@@ -136,6 +136,7 @@ public:
     bool IsColText(int col);
 
     bool CheckInCache(int row);
+    bool IsLineSaved(int row) { return GetLine(row)->stored; }
 
     bool Paste();
 
