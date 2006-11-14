@@ -378,6 +378,16 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
                 doSkip = DoSave();
             }
         }
+        else
+        {
+            if (sqlGrid->GetGridCursorRow() != event.GetRow())
+            {
+                toolBar->EnableTool(MNU_SAVE, false);
+                toolBar->EnableTool(MNU_UNDO, false);
+                fileMenu->Enable(MNU_SAVE, false);
+                editMenu->Enable(MNU_UNDO, false);
+            }
+        }
 
     }
 
@@ -411,7 +421,7 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
     }
     else if (editorShown)
     {
-        ev.Skip();
+        // ev.Skip();
     }
     else
     {
@@ -2476,7 +2486,7 @@ wxString sqlCellAttr::Quote(pgConn *conn, const wxString& value)
     if (value.IsEmpty())
         str=wxT("NULL");
     else if (numeric)
-        str = value;
+        str = wxT("'") + value + wxT("'");
     else if (value == wxT("\\'\\'"))
         str = conn->qtDbString(wxT("''"));
     else if (value == wxT("''"))
