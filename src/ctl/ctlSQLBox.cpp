@@ -218,6 +218,8 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
         else
             startPos = 0;
     }
+    else
+        startPos += 1;
     
     if (!reverse)
     {
