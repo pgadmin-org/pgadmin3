@@ -837,6 +837,8 @@ void frmEditGrid::ShowForm(bool filter)
 			abort = !(winOptions->ShowModal());
 		}
 		if (abort) {
+            // Hack to ensure there's a table for ~wxGrid() to delete
+            sqlGrid->CreateGrid(0, 0);
 			Close();
 			Destroy();
 		} else {
@@ -847,6 +849,8 @@ void frmEditGrid::ShowForm(bool filter)
     else
     {
         wxLogError(__("No Table or view."));
+        // Hack to ensure there's a table for ~wxGrid() to delete
+        sqlGrid->CreateGrid(0, 0);
         Close();
         Destroy();
     }
