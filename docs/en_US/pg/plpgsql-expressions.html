@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>37.5. Expressions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql-declarations.html" title="37.4. Declarations">
+<link rel="next" href="plpgsql-statements.html" title="37.6. Basic Statements">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-expressions"></a>37.5. Expressions</h2></div></div></div>
+<p>     All expressions used in <span class="application">PL/pgSQL</span>
+     statements are processed using the server's regular
+     <acronym class="acronym">SQL</acronym> executor.  In effect, a query like
+</p>
+<pre class="synopsis">SELECT <em class="replaceable"><code>expression</code></em></pre>
+<p>
+     is executed using the <acronym class="acronym">SPI</acronym> manager. Before evaluation,
+     occurrences of <span class="application">PL/pgSQL</span> variable
+     identifiers are replaced by parameters, and the actual values from
+     the variables are passed to the executor in the parameter array.
+     This allows the query plan for the <code class="command">SELECT</code> to
+     be prepared just once and then reused for subsequent
+     evaluations.
+    </p>
+<p>     The evaluation done by the <span class="productname">PostgreSQL</span>
+     main parser has some side
+     effects on the interpretation of constant values. In detail there
+     is a difference between what these two functions do:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION logfunc1(logtxt text) RETURNS timestamp AS $$
+    BEGIN
+        INSERT INTO logtable VALUES (logtxt, 'now');
+        RETURN 'now';
+    END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+
+     and
+
+</p>
+<pre class="programlisting">CREATE FUNCTION logfunc2(logtxt text) RETURNS timestamp AS $$
+    DECLARE
+        curtime timestamp;
+    BEGIN
+        curtime := 'now';
+        INSERT INTO logtable VALUES (logtxt, curtime);
+        RETURN curtime;
+    END;
+$$ LANGUAGE plpgsql;</pre>
+<p>
+    </p>
+<p>     In the case of <code class="function">logfunc1</code>, the
+     <span class="productname">PostgreSQL</span> main parser knows when
+     preparing the plan for the <code class="command">INSERT</code> that the
+     string <code class="literal">'now'</code> should be interpreted as
+     <code class="type">timestamp</code> because the target column of
+     <code class="classname">logtable</code> is of that type. Thus,
+     <code class="literal">'now'</code> will be converted to a constant when the
+     <code class="command">INSERT</code> is planned, and then used in all
+     invocations of <code class="function">logfunc1</code> during the lifetime
+     of the session. Needless to say, this isn't what the programmer
+     wanted.
+    </p>
+<p>     In the case of <code class="function">logfunc2</code>, the 
+     <span class="productname">PostgreSQL</span> main parser does not know
+     what type <code class="literal">'now'</code> should become and therefore 
+     it returns a data value of type <code class="type">text</code> containing the string 
+     <code class="literal">now</code>. During the ensuing assignment
+     to the local variable <code class="varname">curtime</code>, the
+     <span class="application">PL/pgSQL</span> interpreter casts this
+     string to the <code class="type">timestamp</code> type by calling the
+     <code class="function">text_out</code> and <code class="function">timestamp_in</code>
+     functions for the conversion.  So, the computed time stamp is updated
+     on each execution as the programmer expects.
+    </p>
+<p>     The mutable nature of record variables presents a problem in this
+     connection.  When fields of a record variable are used in
+     expressions or statements, the data types of the fields must not
+     change between calls of one and the same expression, since the
+     expression will be planned using the data type that is present
+     when the expression is first reached.  Keep this in mind when
+     writing trigger procedures that handle events for more than one
+     table.  (<code class="command">EXECUTE</code> can be used to get around
+     this problem when necessary.)
+    </p>
+</div></body>
+</html>

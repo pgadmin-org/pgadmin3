@@ -1,0 +1,120 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 18. Database Roles and Privileges</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="runtime-config-short.html" title="17.16. Short Options">
+<link rel="next" href="role-attributes.html" title="18.2. Role Attributes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="user-manag">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="user-manag"></a>Chapter 18. Database Roles and Privileges</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="user-manag.html#database-roles">18.1. Database Roles</a></span></dt>
+<dt><span class="sect1"><a href="role-attributes.html">18.2. Role Attributes</a></span></dt>
+<dt><span class="sect1"><a href="privileges.html">18.3. Privileges</a></span></dt>
+<dt><span class="sect1"><a href="role-membership.html">18.4. Role Membership</a></span></dt>
+<dt><span class="sect1"><a href="perm-functions.html">18.5. Functions and Triggers</a></span></dt>
+</dl>
+</div>
+<p>  <span class="productname">PostgreSQL</span> manages database access permissions
+  using the concept of <em class="firstterm">roles</em>.  A role can be thought of as
+  either a database user, or a group of database users, depending on how
+  the role is set up.  Roles can own database objects (for example,
+  tables) and can assign privileges on those objects to other roles to
+  control who has access to which objects.  Furthermore, it is possible
+  to grant <em class="firstterm">membership</em> in a role to another role, thus
+  allowing the member role use of privileges assigned to the role it is
+  a member of.
+ </p>
+<p>  The concept of roles subsumes the concepts of &#8220;<span class="quote">users</span>&#8221; and
+  &#8220;<span class="quote">groups</span>&#8221;.  In <span class="productname">PostgreSQL</span> versions
+  before 8.1, users and groups were distinct kinds of entities, but now
+  there are only roles.  Any role can act as a user, a group, or both.
+ </p>
+<p>  This chapter describes how to create and manage roles and introduces
+  the privilege system.  More information about the various types of
+  database objects and the effects of privileges can be found in
+  <a href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a>.
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="database-roles"></a>18.1. Database Roles</h2></div></div></div>
+<a name="id2636028"></a><a name="id2636038"></a><a name="id2636048"></a><a name="id2636053"></a><p>   Database roles are conceptually completely separate from
+   operating system users. In practice it might be convenient to
+   maintain a correspondence, but this is not required. Database roles
+   are global across a database cluster installation (and not
+   per individual database). To create a role use the <a href="sql-createrole.html">CREATE ROLE</a> SQL command:
+</p>
+<pre class="synopsis">CREATE ROLE <em class="replaceable"><code>name</code></em>;</pre>
+<p>
+   <em class="replaceable"><code>name</code></em> follows the rules for SQL
+   identifiers: either unadorned without special characters, or
+   double-quoted.  (In practice, you will usually want to add additional
+   options, such as <code class="literal">LOGIN</code>, to the command.  More details appear
+   below.)  To remove an existing role, use the analogous
+   <a href="sql-droprole.html">DROP ROLE</a> command:
+</p>
+<pre class="synopsis">DROP ROLE <em class="replaceable"><code>name</code></em>;</pre>
+<p>
+  </p>
+<a name="id2636124"></a><a name="id2636129"></a><p>   For convenience, the programs <a href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>
+   and <a href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a> are provided as wrappers
+   around these SQL commands that can be called from the shell command
+   line:
+</p>
+<pre class="synopsis">createuser <em class="replaceable"><code>name</code></em>
+dropuser <em class="replaceable"><code>name</code></em></pre>
+<p>
+  </p>
+<p>   To determine the set of existing roles, examine the <code class="structname">pg_roles</code>
+   system catalog, for example
+</p>
+<pre class="synopsis">SELECT rolname FROM pg_roles;</pre>
+<p>
+   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\du</code> meta-command
+   is also useful for listing the existing roles.
+  </p>
+<p>   In order to bootstrap the database system, a freshly initialized
+   system always contains one predefined role. This role is always
+   a &#8220;<span class="quote">superuser</span>&#8221;, and by default (unless altered when running
+   <code class="command">initdb</code>) it will have the same name as the
+   operating system user that initialized the database
+   cluster. Customarily, this role will be named
+   <code class="literal">postgres</code>. In order to create more roles you
+   first have to connect as this initial role.
+  </p>
+<p>   Every connection to the database server is made in the name of some
+   particular role, and this role determines the initial access privileges for
+   commands issued on that connection.
+   The role name to use for a particular database
+   connection is indicated by the client that is initiating the
+   connection request in an application-specific fashion. For example,
+   the <code class="command">psql</code> program uses the
+   <code class="option">-U</code> command line option to indicate the role to
+   connect as.  Many applications assume the name of the current
+   operating system user by default (including
+   <code class="command">createuser</code> and <code class="command">psql</code>).  Therefore it
+   is often convenient to maintain a naming correspondence between
+   roles and operating system users.
+  </p>
+<p>   The set of database roles a given client connection may connect as
+   is determined by the client authentication setup, as explained in
+   <a href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a>. (Thus, a client is not
+   necessarily limited to connect as the role with the same name as
+   its operating system user, just as a person's login name 
+   need not match her real name.)  Since the role
+   identity determines the set of privileges available to a connected
+   client, it is important to carefully configure this when setting up
+   a multiuser environment.
+  </p>
+</div>
+</div></body>
+</html>

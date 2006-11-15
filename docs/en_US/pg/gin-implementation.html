@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>51.3. Implementation</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="gin.html" title="Chapter 51. GIN Indexes">
+<link rel="prev" href="gin-extensibility.html" title="51.2. Extensibility">
+<link rel="next" href="gin-tips.html" title="51.4. GIN tips and trics">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="gin-implementation"></a>51.3. Implementation</h2></div></div></div>
+<p>  Internally, <acronym class="acronym">GIN</acronym> consists of a B-tree index constructed 
+  over keys, where each key is an element of the indexed value 
+  (element of array, for example) and where each tuple in a leaf page is 
+  either a pointer to a B-tree over heap pointers (PT, posting tree), or a 
+  list of heap pointers (PL, posting list) if the tuple is small enough.
+ </p>
+<p>   There are four methods that an index operator class for
+   <acronym class="acronym">GIN</acronym> must provide (prototypes are in pseudocode):
+ </p>
+<div class="variablelist"><dl>
+<dt><span class="term">int compare( Datum a, Datum b )</span></dt>
+<dd><p>	   Compares keys (not indexed values!) and returns an integer less than 
+	   zero, zero, or greater than zero, indicating whether the first key is 
+	   less than, equal to, or greater than the second.
+      </p></dd>
+<dt><span class="term">Datum* extractValue(Datum inputValue, uint32 *nkeys)</span></dt>
+<dd><p>	   Returns an array of keys of value to be indexed, nkeys should
+	   contain the number of returned keys.
+      </p></dd>
+<dt><span class="term">Datum* extractQuery(Datum query, uint32 nkeys, 
+		StrategyNumber n)</span></dt>
+<dd><p>	   Returns an array of keys of the query to be executed. n contains
+	   the strategy number of the operation 
+	   (see <a href="xindex.html#xindex-strategies" title="33.14.2. Index Method Strategies">Section 33.14.2, &#8220;Index Method Strategies&#8221;</a>).
+	   Depending on n, query may be different type.
+      </p></dd>
+<dt><span class="term">bool consistent( bool check[], StrategyNumber n, Datum query)</span></dt>
+<dd><p>	   Returns TRUE if the indexed value satisfies the query qualifier with 
+	   strategy n (or may satisfy in case of RECHECK mark in operator class). 
+	   Each element of the check array is TRUE if the indexed value has a 
+	   corresponding key in the query: if (check[i] == TRUE ) the i-th key of 
+	   the query is present in the indexed value.
+      </p></dd>
+</dl></div>
+</div></body>
+</html>

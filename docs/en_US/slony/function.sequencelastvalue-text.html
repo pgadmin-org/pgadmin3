@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.90.  sequencelastvalue( text )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.registry-set-timestamp-text-timestamp-without-time-zone.html" title="1.89.  registry_set_timestamp( text, timestamp without time zone )">
+<link rel="next" href="function.sequencesetvalue-integer-integer-bigint-bigint.html" title="1.91.  sequencesetvalue( integer, integer, bigint, bigint )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.sequencelastvalue-text"></a>1.90.        sequencelastvalue( text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       sequenceLastValue(p_seqname)
+
+Utility function used in sl_seqlastvalue view to compactly get the
+last value from the requested sequence.
+        </p>
+<pre class="programlisting">declare
+	p_seqname	alias for $1;
+	v_seq_row	record;
+begin
+	for v_seq_row in execute 'select last_value from ' || slon_quote_input(p_seqname)
+	loop
+		return v_seq_row.last_value;
+	end loop;
+
+	-- not reached
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

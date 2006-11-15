@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.34. Release 7.3.15</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-3-16.html" title="E.33. Release 7.3.16">
+<link rel="next" href="release-7-3-14.html" title="E.35. Release 7.3.14">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-15"></a>E.34. Release 7.3.15</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2006-05-23</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.14,
+    including patches for extremely serious security issues.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2861871"></a>E.34.1. Migration to version 7.3.15</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.3.X.  However,
+     if you are upgrading from a version earlier than 7.3.13, see the release
+     notes for 7.3.13.
+    </p>
+<p>     Full security against the SQL-injection attacks described in
+     CVE-2006-2313 and CVE-2006-2314 may require changes in application
+     code.  If you have applications that embed untrustworthy strings
+     into SQL commands, you should examine them as soon as possible to
+     ensure that they are using recommended escaping techniques.  In
+     most cases, applications should be using subroutines provided by
+     libraries or drivers (such as <span class="application">libpq</span>'s
+     <code class="function">PQescapeStringConn()</code>) to perform string escaping,
+     rather than relying on <span class="foreignphrase"><em class="foreignphrase">ad hoc</em></span> code to do it.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2861906"></a>E.34.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Change the server to reject invalidly-encoded multibyte
+characters in all cases (Tatsuo, Tom)</p>
+<p>While <span class="productname">PostgreSQL</span> has been moving in this direction for
+some time, the checks are now applied uniformly to all encodings and all
+textual input, and are now always errors not merely warnings.  This change
+defends against SQL-injection attacks of the type described in CVE-2006-2313.</p>
+</li>
+<li>
+<p>Reject unsafe uses of <code class="literal">\'</code> in string literals</p>
+<p>As a server-side defense against SQL-injection attacks of the type
+described in CVE-2006-2314, the server now only accepts <code class="literal">''</code> and not
+<code class="literal">\'</code> as a representation of ASCII single quote in SQL string
+literals.  By default, <code class="literal">\'</code> is rejected only when
+<code class="varname">client_encoding</code> is set to a client-only encoding (SJIS, BIG5, GBK,
+GB18030, or UHC), which is the scenario in which SQL injection is possible.
+A new configuration parameter <code class="varname">backslash_quote</code> is available to
+adjust this behavior when needed.  Note that full security against
+CVE-2006-2314 may require client-side changes; the purpose of
+<code class="varname">backslash_quote</code> is in part to make it obvious that insecure
+clients are insecure.</p>
+</li>
+<li>
+<p>Modify <span class="application">libpq</span>'s string-escaping routines to be
+aware of encoding considerations</p>
+<p>This fixes <span class="application">libpq</span>-using applications for the security
+issues described in CVE-2006-2313 and CVE-2006-2314.
+Applications that use multiple <span class="productname">PostgreSQL</span> connections
+concurrently should migrate to <code class="function">PQescapeStringConn()</code> and
+<code class="function">PQescapeByteaConn()</code> to ensure that escaping is done correctly
+for the settings in use in each database connection.  Applications that
+do string escaping &#8220;<span class="quote">by hand</span>&#8221; should be modified to rely on library
+routines instead.</p>
+</li>
+<li>
+<p>Fix some incorrect encoding conversion functions</p>
+<p><code class="function">win1251_to_iso</code>, <code class="function">alt_to_iso</code>,
+<code class="function">euc_tw_to_big5</code>, <code class="function">euc_tw_to_mic</code>,
+<code class="function">mic_to_euc_tw</code> were all broken to varying
+extents.</p>
+</li>
+<li><p>Clean up stray remaining uses of <code class="literal">\'</code> in strings
+(Bruce, Jan)</p></li>
+<li><p>Fix server to use custom DH SSL parameters correctly (Michael
+Fuhr)</p></li>
+<li><p>Fix various minor memory leaks</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

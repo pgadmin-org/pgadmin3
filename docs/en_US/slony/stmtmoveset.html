@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>MOVE SET</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtunlockset.html" title="UNLOCK SET">
+<link rel="next" href="stmtfailover.html" title="FAILOVER">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtmoveset"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>MOVE SET &#8212;  Change origin of a <span class="productname">Slony-I</span>
+    replication set </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">MOVE SET (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2577984"></a><h2>Description</h2>
+<p> Changes the origin of a set from one node to another. The
+    new origin must be a current subscriber of the set. The set must
+    currently be locked on the old origin. </p>
+<p> After this command, the set cannot be unlocked on the old
+     origin any more. The old origin will continue as a forwarding
+     subscriber of the set and the subscription chain from the old
+     origin to the new origin will be reversed, hop by hop. As soon as
+     the new origin has finished processing the event (that includes
+     any outstanding sync events that happened before,
+     <span class="emphasis"><em>i.e.</em></span> fully catching up), the new origin will
+     take over and open all tables in the set for client application
+     update activity.
+    </p>
+<p> This is <span class="emphasis"><em>not</em></span> failover, as it requires a
+     functioning old origin node (you needed to lock the set on the old
+     origin).  You would probably prefer to <code class="command">MOVE SET</code>
+     instead of <code class="command">FAILOVER</code>, if at all possible, as
+     <code class="command">FAILOVER</code> winds up discarding the old origin
+     node as being corrupted.</p>
+<p> Note that this is a <a href="locking.html" title="11. Locking Issues"> locking </a> operation, which means that
+    it can get stuck behind other database activity.
+     
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
+<dd><p> ID of the set to transfer</p></dd>
+<dt><span class="term"><code class="literal"> OLD ORIGIN = ival </code></span></dt>
+<dd><p> Node ID of the current set origin</p></dd>
+<dt><span class="term"><code class="literal"> NEW ORIGIN = ival </code></span></dt>
+<dd><p> Node ID of the new set origin</p></dd>
+</dl></div>
+<p>
+    </p>
+<p> This uses <a href="function.moveset-integer-integer.html">schemadocmoveset( integer, integer )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2578090"></a><h2>Example</h2>
+<pre class="programlisting">MOVE SET (
+   ID = 1,
+   OLD ORIGIN = 1,
+   NEW ORIGIN = 3
+);
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2578099"></a><h2> Locking Behaviour </h2>
+<p> Exclusive locks on each replicated table will be taken out
+    on both the old origin node and the new origin node, as
+    replication triggers are changed on both nodes: on the former
+    origin, each table has two triggers (logtrigger and lockset)
+    dropped and a denyaccess trigger added; on the new origin, the
+    denyaccess trigger is dropped and a logtrigger trigger
+    added. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2578112"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
+</div>
+</div></body>
+</html>

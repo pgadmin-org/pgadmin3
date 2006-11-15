@@ -1,0 +1,163 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.5. Examples</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="spi.html" title="Chapter 41. Server Programming Interface">
+<link rel="prev" href="spi-visibility.html" title="41.4. Visibility of Data Changes">
+<link rel="next" href="reference.html" title="Part VI. Reference">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spi-examples"></a>41.5. Examples</h2></div></div></div>
+<p>   This section contains a very simple example of SPI usage. The
+   procedure <code class="function">execq</code> takes an SQL command as its
+   first argument and a row count as its second, executes the command
+   using <code class="function">SPI_exec</code> and returns the number of rows
+   that were processed by the command.  You can find more complex
+   examples for SPI in the source tree in
+   <code class="filename">src/test/regress/regress.c</code> and in
+   <code class="filename">contrib/spi</code>.
+  </p>
+<pre class="programlisting">#include "executor/spi.h"
+
+int execq(text *sql, int cnt);
+
+int
+execq(text *sql, int cnt)
+{
+    char *command;
+    int ret;
+    int proc;
+
+    /* Convert given text object to a C string */
+    command = DatumGetCString(DirectFunctionCall1(textout,
+                                                  PointerGetDatum(sql)));
+
+    SPI_connect();
+    
+    ret = SPI_exec(command, cnt);
+    
+    proc = SPI_processed;
+    /*
+     * If some rows were fetched, print them via elog(INFO).
+     */
+    if (ret &gt; 0 &amp;&amp; SPI_tuptable != NULL)
+    {
+        TupleDesc tupdesc = SPI_tuptable-&gt;tupdesc;
+        SPITupleTable *tuptable = SPI_tuptable;
+        char buf[8192];
+        int i, j;
+        
+        for (j = 0; j &lt; proc; j++)
+        {
+            HeapTuple tuple = tuptable-&gt;vals[j];
+            
+            for (i = 1, buf[0] = 0; i &lt;= tupdesc-&gt;natts; i++)
+                snprintf(buf + strlen (buf), sizeof(buf) - strlen(buf), " %s%s",
+                        SPI_getvalue(tuple, tupdesc, i),
+                        (i == tupdesc-&gt;natts) ? " " : " |");
+            elog(INFO, "EXECQ: %s", buf);
+        }
+    }
+
+    SPI_finish();
+    pfree(command);
+
+    return (proc);
+}</pre>
+<p>   (This function uses call convention version 0, to make the example
+   easier to understand.  In real applications you should use the new
+   version 1 interface.)
+  </p>
+<p>   This is how you declare the function after having compiled it into
+   a shared library:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION execq(text, integer) RETURNS integer
+    AS '<em class="replaceable"><code>filename</code></em>'
+    LANGUAGE C;</pre>
+<p>
+  </p>
+<p>   Here is a sample session:
+
+</p>
+<pre class="programlisting">=&gt; SELECT execq('CREATE TABLE a (x integer)', 0);
+ execq
+-------
+     0
+(1 row)
+
+=&gt; INSERT INTO a VALUES (execq('INSERT INTO a VALUES (0)', 0));
+INSERT 0 1
+=&gt; SELECT execq('SELECT * FROM a', 0);
+INFO:  EXECQ:  0    -- inserted by execq
+INFO:  EXECQ:  1    -- returned by execq and inserted by upper INSERT
+
+ execq
+-------
+     2
+(1 row)
+
+=&gt; SELECT execq('INSERT INTO a SELECT x + 2 FROM a', 1);
+ execq
+-------
+     1
+(1 row)
+
+=&gt; SELECT execq('SELECT * FROM a', 10);
+INFO:  EXECQ:  0
+INFO:  EXECQ:  1
+INFO:  EXECQ:  2    -- 0 + 2, only one row inserted - as specified
+
+ execq
+-------
+     3              -- 10 is the max value only, 3 is the real number of rows
+(1 row)
+
+=&gt; DELETE FROM a;
+DELETE 3
+=&gt; INSERT INTO a VALUES (execq('SELECT * FROM a', 0) + 1);
+INSERT 0 1
+=&gt; SELECT * FROM a;
+ x
+---
+ 1                  -- no rows in a (0) + 1
+(1 row)
+
+=&gt; INSERT INTO a VALUES (execq('SELECT * FROM a', 0) + 1);
+INFO:  EXECQ:  1
+INSERT 0 1
+=&gt; SELECT * FROM a;
+ x
+---
+ 1
+ 2                  -- there was one row in a + 1
+(2 rows)
+
+-- This demonstrates the data changes visibility rule:
+
+=&gt; INSERT INTO a SELECT execq('SELECT * FROM a', 0) * x FROM a;
+INFO:  EXECQ:  1
+INFO:  EXECQ:  2
+INFO:  EXECQ:  1
+INFO:  EXECQ:  2
+INFO:  EXECQ:  2
+INSERT 0 2
+=&gt; SELECT * FROM a;
+ x
+---
+ 1
+ 2
+ 2                  -- 2 rows * 1 (x in first row)
+ 6                  -- 3 rows (2 + 1 just inserted) * 2 (x in second row)
+(4 rows)               ^^^^^^ 
+                       rows visible to execq() in different invocations</pre>
+<p>
+  </p>
+</div></body>
+</html>

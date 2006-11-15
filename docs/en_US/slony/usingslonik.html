@@ -1,0 +1,91 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>16. Using Slonik</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="ddlchanges.html" title="15. Database Schema Changes (DDL)">
+<link rel="next" href="slonikshell.html" title="17.  Embedding Slonik in Shell Scripts">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="usingslonik"></a>16. Using Slonik</h2></div></div></div>
+<a name="id2558864"></a><p> It's a bit of a pain writing <span class="application">Slonik</span>
+scripts by hand, particularly as you start working with <span class="productname">Slony-I</span>
+clusters that may be comprised of increasing numbers of nodes and
+sets.  Some problems that have been noticed include the following:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> If you are using <span class="productname">Slony-I</span> as a
+&#8220;<span class="quote">master/slave</span>&#8221; replication system with one
+&#8220;<span class="quote">master</span>&#8221; node and one &#8220;<span class="quote">slave</span>&#8221; node, it may
+be sufficiently mnemonic to call the &#8220;<span class="quote">master</span>&#8221; node 1 and
+the &#8220;<span class="quote">slave</span>&#8221; node 2.</p>
+<p> Unfortunately, as the number of nodes increases, the mapping of
+IDs to nodes becomes way less obvious, particularly if you have a
+cluster where the origin might shift from node to node over
+time.</p>
+</li>
+<li><p> Similarly, if there is only one replication set, it's
+fine for that to be &#8220;<span class="quote">set 1,</span>&#8221; but if there are a
+multiplicity of sets, the numbering involved in using set numbers may
+grow decreasingly intuitive.</p></li>
+<li><p> People have observed that
+<span class="application">Slonik</span> does not provide any notion of
+iteration.  It is common to want to create a set of similar <a href="stmtstorepath.html" title="STORE
+     PATH"><span class="refentrytitle">STORE
+     PATH</span></a> entries, since, in most cases, hosts will
+likely access a particular server via the same host name or IP
+address.</p></li>
+<li><p> Users seem interested in wrapping everything possible
+in <code class="command">TRY</code> blocks, which is regrettably somewhat
+<span class="emphasis"><em>less</em></span> useful than might be
+hoped...</p></li>
+</ul></div>
+<p> These have assortedly pointed to requests for such enhancements
+as:
+
+</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Named nodes, named sets</p>
+<p> This is supported in <span class="productname">Slony-I</span> 1.1 by the <a href="stmtdefine.html" title="DEFINE"><span class="refentrytitle">DEFINE</span></a> and <a href="stmtinclude.html" title="INCLUDE"><span class="refentrytitle">INCLUDE</span></a> statements.</p>
+<p> The use of <a href="stmtinclude.html" title="INCLUDE"><span class="refentrytitle">INCLUDE</span></a> to allow creating
+&#8220;<span class="quote">preamble files</span>&#8221; has proven an invaluable tool to reduce
+errors.  The preamble file is set up <span class="emphasis"><em>once</em></span>,
+verified <span class="emphasis"><em>once</em></span>, and then that verified script may
+be used with confidence for each slonik script.</p>
+</li>
+<li>
+<p> Looping and control constructs</p>
+<p> It seems to make little sense to create a fullscale parser as
+Yet Another Little Language grows into a rather larger one.  There are
+plenty of scripting languages out there that can be used to construct
+Slonik scripts; it is unattractive to force yet another one on people.</p>
+</li>
+</ul></div>
+<p> There are several ways to work around these issues that have
+been seen &#8220;<span class="quote">in the wild</span>&#8221;:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Embedding generation of slonik inside shell
+scripts</p>
+<p> The test bed found in the <code class="filename">src/ducttape</code>
+directory takes this approach.</p>
+</li>
+<li>
+<p> The <a href="altperl.html" title="19. Slony-I Administration Scripts"> altperl tools </a>
+use Perl code to generate Slonik scripts.</p>
+<p> You define the cluster's configuration as a set of Perl
+objects; each script walks through the Perl objects as needed to
+generate a slonik script for that script's purpose.</p>
+</li>
+</ul></div>
+</div></body>
+</html>

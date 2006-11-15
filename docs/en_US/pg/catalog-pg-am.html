@@ -1,0 +1,183 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>43.3. pg_am</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="catalog-pg-aggregate.html" title="43.2. pg_aggregate">
+<link rel="next" href="catalog-pg-amop.html" title="43.4. pg_amop">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-am"></a>43.3. <code class="structname">pg_am</code></h2></div></div></div>
+<a name="id2797999"></a><p>   The catalog <code class="structname">pg_am</code> stores information about index
+   access methods.  There is one row for each index access method supported by
+   the system.  The contents of this catalog are discussed in detail in
+   <a href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">Chapter 49, <i>Index Access Method Interface Definition</i></a>.
+  </p>
+<div class="table">
+<a name="id2798022"></a><p class="title"><b>Table 43.3. <code class="structname">pg_am</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_am Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">amname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Name of the access method</td>
+</tr>
+<tr>
+<td><code class="structfield">amstrategies</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>Number of operator strategies for this access method</td>
+</tr>
+<tr>
+<td><code class="structfield">amsupport</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>Number of support routines for this access method</td>
+</tr>
+<tr>
+<td><code class="structfield">amorderstrategy</code></td>
+<td><code class="type">int2</code></td>
+<td> </td>
+<td>Zero if the index offers no sort order, otherwise the strategy
+      number of the strategy operator that describes the sort order</td>
+</tr>
+<tr>
+<td><code class="structfield">amcanunique</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Does the access method support unique indexes?</td>
+</tr>
+<tr>
+<td><code class="structfield">amcanmulticol</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Does the access method support multicolumn indexes?</td>
+</tr>
+<tr>
+<td><code class="structfield">amoptionalkey</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Does the access method support a scan without any constraint
+       for the first index column?</td>
+</tr>
+<tr>
+<td><code class="structfield">amindexnulls</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Does the access method support null index entries?</td>
+</tr>
+<tr>
+<td><code class="structfield">amstorage</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Can index storage data type differ from column data type?</td>
+</tr>
+<tr>
+<td><code class="structfield">amclusterable</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Can an index of this type be clustered on?</td>
+</tr>
+<tr>
+<td><code class="structfield">aminsert</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Insert this tuple</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">ambeginscan</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Start new scan</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">amgettuple</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Next valid tuple</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">amgetmulti</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Fetch multiple tuples</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">amrescan</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Restart this scan</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">amendscan</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">End this scan</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">ammarkpos</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Mark current scan position</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">amrestrpos</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Restore marked scan position</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">ambuild</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>&#8220;<span class="quote">Build new index</span>&#8221; function</td>
+</tr>
+<tr>
+<td><code class="structfield">ambulkdelete</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>Bulk-delete function</td>
+</tr>
+<tr>
+<td><code class="structfield">amvacuumcleanup</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>Post-<code class="command">VACUUM</code> cleanup function</td>
+</tr>
+<tr>
+<td><code class="structfield">amcostestimate</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>Function to estimate cost of an index scan</td>
+</tr>
+<tr>
+<td><code class="structfield">amoptions</code></td>
+<td><code class="type">regproc</code></td>
+<td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td>Function to parse and validate <code class="structfield">reloptions</code> for an index</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

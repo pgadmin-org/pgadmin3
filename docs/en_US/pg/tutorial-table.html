@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>2.3. Creating a New Table</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
+<link rel="prev" href="tutorial-concepts.html" title="2.2. Concepts">
+<link rel="next" href="tutorial-populate.html" title="2.4. Populating a Table With Rows">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tutorial-table"></a>2.3. Creating a New Table</h2></div></div></div>
+<a name="id2548942"></a><p>    You  can  create  a  new  table by specifying the table
+    name, along with all column names and their types:
+
+</p>
+<pre class="programlisting">CREATE TABLE weather (
+    city            varchar(80),
+    temp_lo         int,           -- low temperature
+    temp_hi         int,           -- high temperature
+    prcp            real,          -- precipitation
+    date            date
+);</pre>
+<p>
+
+    You can enter this into <code class="command">psql</code> with the line
+    breaks.  <code class="command">psql</code> will recognize that the command
+    is not terminated until the semicolon.
+   </p>
+<p>    White space (i.e., spaces, tabs, and newlines) may be used freely
+    in SQL commands.  That means you can type the command aligned
+    differently than above, or even all on one line.  Two dashes
+    (&#8220;<span class="quote"><code class="literal">--</code></span>&#8221;) introduce comments.
+    Whatever follows them is ignored up to the end of the line.  SQL
+    is case insensitive about key words and identifiers, except
+    when identifiers are double-quoted to preserve the case (not done
+    above).
+   </p>
+<p>    <code class="type">varchar(80)</code> specifies a data type that can store
+    arbitrary character strings up to 80 characters in length.
+    <code class="type">int</code> is the normal integer type.  <code class="type">real</code> is
+    a type for storing single precision floating-point numbers.
+    <code class="type">date</code> should be self-explanatory.  (Yes, the column of
+    type <code class="type">date</code> is also named <code class="literal">date</code>.
+    This may be convenient or confusing &#8212; you choose.)
+   </p>
+<p>    <span class="productname">PostgreSQL</span> supports the standard
+    <acronym class="acronym">SQL</acronym> types <code class="type">int</code>,
+    <code class="type">smallint</code>, <code class="type">real</code>, <code class="type">double
+    precision</code>, <code class="type">char(<em class="replaceable"><code>N</code></em>)</code>,
+    <code class="type">varchar(<em class="replaceable"><code>N</code></em>)</code>, <code class="type">date</code>,
+    <code class="type">time</code>, <code class="type">timestamp</code>, and
+    <code class="type">interval</code>, as well as other types of general utility
+    and a rich set of geometric types.
+    <span class="productname">PostgreSQL</span> can be customized with an
+    arbitrary number of user-defined data types.  Consequently, type
+    names are not syntactical key words, except where required to
+    support special cases in the <acronym class="acronym">SQL</acronym> standard.
+   </p>
+<p>    The second example will store cities and their associated
+    geographical location:
+</p>
+<pre class="programlisting">CREATE TABLE cities (
+    name            varchar(80),
+    location        point
+);</pre>
+<p>
+    The <code class="type">point</code> type is an example of a
+    <span class="productname">PostgreSQL</span>-specific data type.
+   </p>
+<p>    <a name="id2549124"></a>
+
+    Finally, it should be mentioned that if you don't need a table any
+    longer or want to recreate it differently you can remove it using
+    the following command:
+</p>
+<pre class="synopsis">DROP TABLE <em class="replaceable"><code>tablename</code></em>;</pre>
+<p>
+   </p>
+</div></body>
+</html>

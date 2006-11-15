@@ -1,0 +1,227 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>49.2. Index Access Method Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
+<link rel="prev" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
+<link rel="next" href="index-scanning.html" title="49.3. Index Scanning">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index-functions"></a>49.2. Index Access Method Functions</h2></div></div></div>
+<p>   The index construction and maintenance functions that an index access
+   method must provide are:
+  </p>
+<pre class="programlisting">IndexBuildResult *
+ambuild (Relation heapRelation,
+         Relation indexRelation,
+         IndexInfo *indexInfo);</pre>
+<p>
+   Build a new index.  The index relation has been physically created,
+   but is empty.  It must be filled in with whatever fixed data the
+   access method requires, plus entries for all tuples already existing
+   in the table.  Ordinarily the <code class="function">ambuild</code> function will call
+   <code class="function">IndexBuildHeapScan()</code> to scan the table for existing tuples
+   and compute the keys that need to be inserted into the index.
+   The function must return a palloc'd struct containing statistics about
+   the new index.
+  </p>
+<pre class="programlisting">bool
+aminsert (Relation indexRelation,
+          Datum *values,
+          bool *isnull,
+          ItemPointer heap_tid,
+          Relation heapRelation,
+          bool check_uniqueness);</pre>
+<p>
+   Insert a new tuple into an existing index.  The <code class="literal">values</code> and
+   <code class="literal">isnull</code> arrays give the key values to be indexed, and
+   <code class="literal">heap_tid</code> is the TID to be indexed.
+   If the access method supports unique indexes (its
+   <code class="structname">pg_am</code>.<code class="structfield">amcanunique</code> flag is true) then
+   <code class="literal">check_uniqueness</code> may be true, in which case the access method
+   must verify that there is no conflicting row; this is the only situation in
+   which the access method normally needs the <code class="literal">heapRelation</code>
+   parameter.  See <a href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">Section 49.5, &#8220;Index Uniqueness Checks&#8221;</a> for details.
+   The result is TRUE if an index entry was inserted, FALSE if not. (A FALSE
+   result does not denote an error condition, but is used for cases such
+   as an index AM refusing to index a NULL.)
+  </p>
+<pre class="programlisting">IndexBulkDeleteResult *
+ambulkdelete (IndexVacuumInfo *info,
+              IndexBulkDeleteResult *stats,
+              IndexBulkDeleteCallback callback,
+              void *callback_state);</pre>
+<p>
+   Delete tuple(s) from the index.  This is a &#8220;<span class="quote">bulk delete</span>&#8221; operation
+   that is intended to be implemented by scanning the whole index and checking
+   each entry to see if it should be deleted.
+   The passed-in <code class="literal">callback</code> function must be called, in the style
+   <code class="literal">callback(<em class="replaceable"><code>TID</code></em>, callback_state) returns bool</code>,
+   to determine whether any particular index entry, as identified by its
+   referenced TID, is to be deleted.  Must return either NULL or a palloc'd
+   struct containing statistics about the effects of the deletion operation.
+   It is OK to return NULL if no information needs to be passed on to
+   <code class="function">amvacuumcleanup</code>.
+  </p>
+<p>   Because of limited <code class="varname">maintenance_work_mem</code>,
+   <code class="function">ambulkdelete</code> may need to be called more than once when many
+   tuples are to be deleted.  The <code class="literal">stats</code> argument is the result
+   of the previous call for this index (it is NULL for the first call within a
+   <code class="command">VACUUM</code> operation).  This allows the AM to accumulate statistics
+   across the whole operation.  Typically, <code class="function">ambulkdelete</code> will
+   modify and return the same struct if the passed <code class="literal">stats</code> is not
+   null.
+  </p>
+<pre class="programlisting">IndexBulkDeleteResult *
+amvacuumcleanup (IndexVacuumInfo *info,
+                 IndexBulkDeleteResult *stats);</pre>
+<p>
+   Clean up after a <code class="command">VACUUM</code> operation (zero or more
+   <code class="function">ambulkdelete</code> calls).  This does not have to do anything
+   beyond returning index statistics, but it may perform bulk cleanup
+   such as reclaiming empty index pages.  <code class="literal">stats</code> is whatever the
+   last <code class="function">ambulkdelete</code> call returned, or NULL if
+   <code class="function">ambulkdelete</code> was not called because no tuples needed to be
+   deleted.  If the result is not NULL it must be a palloc'd struct.
+   The statistics it contains will be used to update <code class="structname">pg_class</code>,
+   and will be reported by <code class="command">VACUUM</code> if <code class="literal">VERBOSE</code> is given.
+   It is OK to return NULL if the index was not changed at all during the
+   <code class="command">VACUUM</code> operation, but otherwise correct stats should
+   be returned.
+  </p>
+<pre class="programlisting">void
+amcostestimate (PlannerInfo *root,
+                IndexOptInfo *index,
+                List *indexQuals,
+                RelOptInfo *outer_rel,
+                Cost *indexStartupCost,
+                Cost *indexTotalCost,
+                Selectivity *indexSelectivity,
+                double *indexCorrelation);</pre>
+<p>
+   Estimate the costs of an index scan.  This function is described fully
+   in <a href="index-cost-estimation.html" title="49.6. Index Cost Estimation Functions">Section 49.6, &#8220;Index Cost Estimation Functions&#8221;</a>, below.
+  </p>
+<pre class="programlisting">bytea *
+amoptions (ArrayType *reloptions,
+           bool validate);</pre>
+<p>
+   Parse and validate the reloptions array for an index.  This is called only
+   when a non-null reloptions array exists for the index.
+   <em class="parameter"><code>reloptions</code></em> is a <code class="type">text</code> array containing entries of the
+   form <em class="replaceable"><code>name</code></em><code class="literal">=</code><em class="replaceable"><code>value</code></em>.
+   The function should construct a <code class="type">bytea</code> value, which will be copied
+   into the <code class="structfield">rd_options</code> field of the index's relcache entry.
+   The data contents of the <code class="type">bytea</code> value are open for the access
+   method to define, but the standard access methods currently all use struct
+   <code class="structname">StdRdOptions</code>.
+   When <em class="parameter"><code>validate</code></em> is true, the function should report a suitable
+   error message if any of the options are unrecognized or have invalid
+   values; when <em class="parameter"><code>validate</code></em> is false, invalid entries should be
+   silently ignored.  (<em class="parameter"><code>validate</code></em> is false when loading options
+   already stored in <code class="structname">pg_catalog</code>; an invalid entry could only
+   be found if the access method has changed its rules for options, and in
+   that case ignoring obsolete entries is appropriate.)
+   It is OK to return NULL if default behavior is wanted.
+  </p>
+<p>   The purpose of an index, of course, is to support scans for tuples matching
+   an indexable <code class="literal">WHERE</code> condition, often called a
+   <em class="firstterm">qualifier</em> or <em class="firstterm">scan key</em>.  The semantics of
+   index scanning are described more fully in <a href="index-scanning.html" title="49.3. Index Scanning">Section 49.3, &#8220;Index Scanning&#8221;</a>,
+   below.  The scan-related functions that an index access method must provide
+   are:
+  </p>
+<pre class="programlisting">IndexScanDesc
+ambeginscan (Relation indexRelation,
+             int nkeys,
+             ScanKey key);</pre>
+<p>
+   Begin a new scan.  The <code class="literal">key</code> array (of length <code class="literal">nkeys</code>)
+   describes the scan key(s) for the index scan.  The result must be a
+   palloc'd struct. For implementation reasons the index access method
+   <span class="emphasis"><em>must</em></span> create this struct by calling
+   <code class="function">RelationGetIndexScan()</code>.  In most cases
+   <code class="function">ambeginscan</code> itself does little beyond making that call;
+   the interesting parts of index-scan startup are in <code class="function">amrescan</code>.
+  </p>
+<pre class="programlisting">boolean
+amgettuple (IndexScanDesc scan,
+            ScanDirection direction);</pre>
+<p>
+   Fetch the next tuple in the given scan, moving in the given
+   direction (forward or backward in the index).  Returns TRUE if a tuple was
+   obtained, FALSE if no matching tuples remain.  In the TRUE case the tuple
+   TID is stored into the <code class="literal">scan</code> structure.  Note that
+   &#8220;<span class="quote">success</span>&#8221; means only that the index contains an entry that matches
+   the scan keys, not that the tuple necessarily still exists in the heap or
+   will pass the caller's snapshot test.
+  </p>
+<pre class="programlisting">boolean
+amgetmulti (IndexScanDesc scan,
+            ItemPointer tids,
+            int32 max_tids,
+            int32 *returned_tids);</pre>
+<p>
+   Fetch multiple tuples in the given scan.  Returns TRUE if the scan should
+   continue, FALSE if no matching tuples remain.  <code class="literal">tids</code> points to
+   a caller-supplied array of <code class="literal">max_tids</code>
+   <code class="structname">ItemPointerData</code> records, which the call fills with TIDs of
+   matching tuples.  <code class="literal">*returned_tids</code> is set to the number of TIDs
+   actually returned.  This can be less than <code class="literal">max_tids</code>, or even
+   zero, even when the return value is TRUE.  (This provision allows the
+   access method to choose the most efficient stopping points in its scan,
+   for example index page boundaries.)  <code class="function">amgetmulti</code> and
+   <code class="function">amgettuple</code> cannot be used in the same index scan; there
+   are other restrictions too when using <code class="function">amgetmulti</code>, as explained
+   in <a href="index-scanning.html" title="49.3. Index Scanning">Section 49.3, &#8220;Index Scanning&#8221;</a>.
+  </p>
+<pre class="programlisting">void
+amrescan (IndexScanDesc scan,
+          ScanKey key);</pre>
+<p>
+   Restart the given scan, possibly with new scan keys (to continue using
+   the old keys, NULL is passed for <code class="literal">key</code>).  Note that it is not
+   possible for the number of keys to be changed.  In practice the restart
+   feature is used when a new outer tuple is selected by a nested-loop join
+   and so a new key comparison value is needed, but the scan key structure
+   remains the same.  This function is also called by
+   <code class="function">RelationGetIndexScan()</code>, so it is used for initial setup
+   of an index scan as well as rescanning.
+  </p>
+<pre class="programlisting">void
+amendscan (IndexScanDesc scan);</pre>
+<p>
+   End a scan and release resources.  The <code class="literal">scan</code> struct itself
+   should not be freed, but any locks or pins taken internally by the
+   access method must be released.
+  </p>
+<pre class="programlisting">void
+ammarkpos (IndexScanDesc scan);</pre>
+<p>
+   Mark current scan position.  The access method need only support one
+   remembered scan position per scan.
+  </p>
+<pre class="programlisting">void
+amrestrpos (IndexScanDesc scan);</pre>
+<p>
+   Restore the scan to the most recently marked position.
+  </p>
+<p>   By convention, the <code class="literal">pg_proc</code> entry for an index
+   access method function should show the correct number of arguments,
+   but declare them all as type <code class="type">internal</code> (since most of the arguments
+   have types that are not known to SQL, and we don't want users calling
+   the functions directly anyway).  The return type is declared as
+   <code class="type">void</code>, <code class="type">internal</code>, or <code class="type">boolean</code> as appropriate.
+   The only exception is <code class="function">amoptions</code>, which should be correctly
+   declared as taking <code class="type">text[]</code> and <code class="type">bool</code> and returning
+   <code class="type">bytea</code>.  This provision allows client code to execute
+   <code class="function">amoptions</code> to test validity of options settings.
+  </p>
+</div></body>
+</html>

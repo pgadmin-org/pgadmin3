@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>STORE NODE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtinitcluster.html" title="INIT CLUSTER">
+<link rel="next" href="stmtdropnode.html" title="DROP NODE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtstorenode"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>STORE NODE &#8212;  Initialize <span class="productname">Slony-I</span> node </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">STORE NODE (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2574170"></a><h2>Description</h2>
+<p> Initialize a new node and add it to the configuration of an
+    existing cluster.</p>
+<p> The initialization process consists of creating the cluster
+    namespace in the new node (the database itself must already
+    exist), loading all the base tables, functions, procedures and
+    initializing the node.  The existing configuration of the rest of
+    the cluster is copied from the &#8220;<span class="quote">event node</span>&#8221;.
+     
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">ID = ival</code></span></dt>
+<dd><p> The unique, numeric ID number of the new
+      node.</p></dd>
+<dt><span class="term"><code class="literal"> COMMENT = 'description' </code></span></dt>
+<dd><p> A descriptive text added to the node entry in the table <a href="table.sl-node.html">sl_node</a></p></dd>
+<dt><span class="term"><code class="literal"> SPOOLNODE = boolean </code></span></dt>
+<dd><p>Specifies that the new node is a virtual spool
+       node for file archiving of replication log.  If true,
+       <span class="application">slonik</span> will not attempt to
+       initialize a database with the replication
+       schema.</p></dd>
+<dt><span class="term"><code class="literal"> EVENT NODE = ival </code></span></dt>
+<dd><p> The ID of the node used to create the configuration
+	 event that tells all existing nodes about the new node. Default
+	 value is 1.</p></dd>
+</dl></div>
+<p>
+    </p>
+<p> This uses <a href="function.initializelocalnode-integer-text.html">schemadocinitializelocalnode( integer, text )</a> and <a href="function.enablenode-integer.html">schemadocenablenode( integer )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2574266"></a><h2>Example</h2>
+<pre class="programlisting">     STORE NODE ( ID = 2, COMMENT = 'Node 2');
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2574274"></a><h2> Locking Behaviour </h2>
+<p> This command creates a new namespace and configures tables
+    therein; no public objects should be locked during the duration of
+    this.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2574283"></a><h2> Version Information </h2>
+<p> This command
+   was introduced in <span class="productname">Slony-I</span> 1.0.  The <code class="envar">SPOOLNODE</code>
+   parameter was introduced in version 1.1, but was vestigal in that
+   version.  The described functionality for <code class="envar">SPOOLNODE</code>
+   arrives in version 1.2. </p>
+</div>
+</div></body>
+</html>

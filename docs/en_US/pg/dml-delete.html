@@ -1,0 +1,44 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>6.3. Deleting Data</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="dml.html" title="Chapter 6. Data Manipulation">
+<link rel="prev" href="dml-update.html" title="6.2. Updating Data">
+<link rel="next" href="queries.html" title="Chapter 7. Queries">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="dml-delete"></a>6.3. Deleting Data</h2></div></div></div>
+<a name="id2560409"></a><a name="id2560418"></a><p>   So far we have explained how to add data to tables and how to
+   change data.  What remains is to discuss how to remove data that is
+   no longer needed.  Just as adding data is only possible in whole
+   rows, you can only remove entire rows from a table.  In the
+   previous section we explained that SQL does not provide a way to
+   directly address individual rows.  Therefore, removing rows can
+   only be done by specifying conditions that the rows to be removed
+   have to match.  If you have a primary key in the table then you can
+   specify the exact row.  But you can also remove groups of rows
+   matching a condition, or you can remove all rows in the table at
+   once.
+  </p>
+<p>   You use the <a href="sql-delete.html">DELETE</a>
+   command to remove rows; the syntax is very similar to the
+   <code class="command">UPDATE</code> command.  For instance, to remove all
+   rows from the products table that have a price of 10, use
+</p>
+<pre class="programlisting">DELETE FROM products WHERE price = 10;</pre>
+<p>
+  </p>
+<p>   If you simply write
+</p>
+<pre class="programlisting">DELETE FROM products;</pre>
+<p>
+   then all rows in the table will be deleted!  Caveat programmer.
+  </p>
+</div></body>
+</html>

@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+  
+<!-- Product details -->
+
+    <Product 
+        Manufacturer="The pgAdmin Development Team" 
+        Id="C65BB461-502A-42C6-BAE8-B560F40384D5" 
+        Name="$(var.APPNAME) $(var.VERSION)" 
+        Version="$(var.VERSION)" 
+        Language="1033">
+      
+<!-- Package details -->
+
+        <Package 
+            Id="776B07ED-C6AE-4254-A016-0BEC79689C11" 
+            Keywords="PostgreSQL, pgAdmin" 
+            Comments="PostgreSQL Tools"
+            Manufacturer="The pgAdmin Development Team" 
+            InstallerVersion="110" 
+            Languages="1033" 
+            Compressed="yes" 
+            SummaryCodepage="1252" />
+        
+<!-- Directories -->
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="PFiles">
+                <Directory Id="BASEDIR" Name="pgadmin3" LongName="$(var.APPNAME)">
+                    <Directory Id="VERSIONDIR" Name="$(var.VERSION)">
+                    
+                        <Component Id="core_libs" Guid="6EEFD89A-9C5E-4E95-9DA2-812B5A8EE481">
+                            <File Id="core_libs.libpq.dll" Name="libpq.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/libpq.dll" />
+                            <File Id="core_libs.libiconv-2.dll" Name="libico~1.dll" LongName="libiconv-2.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/libiconv-2.dll" />
+                            <File Id="core_libs.libintl-2.dll" Name="libint~1.dll" LongName="libintl-2.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/libintl-2.dll" />
+                            <File Id="core_libs.libeay32.dll" Name="libeay32.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/libeay32.dll" />
+                            <File Id="core_libs.ssleay32.dll" Name="ssleay32.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/ssleay32.dll" />
+                            <File Id="core_libs.comerr32.dll" Name="comerr32.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/comerr32.dll" />
+                            <File Id="core_libs.krb5_32.dll" Name="krb5_32.dll" DiskId="1" src="c:/program files/postgresql/8.1/bin/krb5_32.dll" />
+                            <File Id="core_libs.iconv.dll" Name="iconv.dll" DiskId="1" src="../../../pgadmin3-deps/iconv/bin/iconv.dll" />
+                            <File Id="core_libs.libxml2.dll" Name="libxml2.dll" DiskId="1" src="../../../pgadmin3-deps/libxml2/bin/libxml2.dll" />
+                            <File Id="core_libs.libxslt.dll" Name="libxslt.dll" DiskId="1" src="../../../pgadmin3-deps/libxslt/bin/libxslt.dll" />
+                            <File Id="core_libs.zlib1.dll" Name="zlib1.dll" DiskId="1" src="../../../pgadmin3-deps/zlib/zlib1.dll" />
+                        </Component>
+
+                        <Component Id="core_runtimes" Guid="DA24428C-168D-458D-B8EB-0C63867FA920">
+                            <File Id="core_runtimes.msvcm80.dll" Name="msvcm80.dll" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcm80.dll" />
+                            <File Id="core_runtimes.msvcp80.dll" Name="msvcp80.dll" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcp80.dll" />
+                            <File Id="core_runtimes.msvcr80.dll" Name="msvcr80.dll" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcr80.dll" />
+                            <File Id="core_runtimes.Microsoft.VC80.CRT.manifest" Name="manifest.txt" LongName="Microsoft.VC80.CRT.manifest" DiskId="1" src="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/Microsoft.VC80.CRT.manifest" />
+                        </Component>
+                        
+                        <Component Id="pgadmin_exes" Guid="05EC44F3-BCAB-4BB1-A8B2-829139BE3CFB">
+                            <File Id="pgadmin_exes.pgadmin3.exe" Name="pgadmin3.exe" DiskId="1" src="../../src/Release/pgAdmin3.exe" />
+                            <Shortcut Id="pgadmin_exes.pgadmin3.exe" Directory="SMDIR" Name="pgAdmin3" LongName="$(var.APPNAME)" Target="[#pgadmin_exes.pgadmin3.exe]" Description="pgAdmin III - PostgreSQL Tools" Show="normal" />
+                        </Component>
+                        
+                        <Directory Id="DOCSDIR" Name="Docs">
+                            <Directory Id="EN_USDOCSDIR" Name="en_US">
+                                <Component Id="en_us_docs" Guid="8BF03ED6-3D62-4424-90DA-A670719B8162">
+                                    <File Id="en_us_docs.bugreport.html" Name="bugrep~1.htm" LongName="bugreport.html" DiskId="1" src="../../docs/en_US/bugreport.html" />
+                                    <File Id="en_us_docs.pgadmin3.chm" Name="pgadmin3.chm" DiskId="1" src="../../docs/en_US/pgadmin3.chm" />
+                                    <File Id="en_us_docs.tips.txt" Name="tips.txt" DiskId="1" src="../../docs/en_US/tips.txt" />
+                                    <Shortcut Id="en_us_docs.pgadmin3.chm" Directory="SMDIR" Name="pga3help" LongName="$(var.APPNAME) Help" Target="[#en_us_docs.pgadmin3.chm]" Description="pgAdmin and PostgreSQL documentation" Show="normal" />
+                                </Component>
+                                    
+                                <Directory Id="EN_USHINTSDIR" Name="Hints">
+                                    <Component Id="en_us_hints" Guid="6019CDEB-B620-4851-B2AD-A56057996056">
+                                        <File Id="en_us_hints.autovacuum.html" Name="autova~1.htm" LongName="autovacuum.html" DiskId="1" src="../../docs/en_US/hints/autovacuum.html" />
+                                        <File Id="en_us_hints.conn-hba.html" Name="conn-h~1.htm" LongName="conn-hba.html" DiskId="1" src="../../docs/en_US/hints/conn-hba.html" />
+                                        <File Id="en_us_hints.conn-ident.html" Name="conn-i~1.htm" LongName="conn-ident.html" DiskId="1" src="../../docs/en_US/hints/conn-ident.html" />
+                                        <File Id="en_us_hints.conn-listen.html" Name="conn-l~1.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/en_US/hints/conn-listen.html" />
+                                        <File Id="en_us_hints.encoding-ascii.html" Name="encodi~1.htm" LongName="encoding-ascii.html" DiskId="1" src="../../docs/en_US/hints/encoding-ascii.html" />
+                                        <File Id="en_us_hints.encoding-unicode.html" Name="encodi~2.htm" LongName="encoding-unicode.html" DiskId="1" src="../../docs/en_US/hints/encoding-unicode.html" />
+                                        <File Id="en_us_hints.fki.html" Name="fki.htm" LongName="fki.html" DiskId="1" src="../../docs/en_US/hints/fki.html" />
+                                        <File Id="en_us_hints.instrumentation.html" Name="instru~1.htm" LongName="instrumentation.html" DiskId="1" src="../../docs/en_US/hints/instrumentation.html" />
+                                        <File Id="en_us_hints.multiple.html" Name="multiple.htm" LongName="multiple.html" DiskId="1" src="../../docs/en_US/hints/multiple.html" />
+                                        <File Id="en_us_hints.object-editing.html" Name="object~1.htm" LongName="object-editing.html" DiskId="1" src="../../docs/en_US/hints/object-editing.html" />
+                                        <File Id="en_us_hints.pk.html" Name="pk.htm" LongName="pk.html" DiskId="1" src="../../docs/en_US/hints/pk.html" />
+                                        <File Id="en_us_hints.vacuum.html" Name="vacuum.htm" LongName="vacuum.html" DiskId="1" src="../../docs/en_US/hints/vacuum.html" />
+                                        <File Id="en_us_hints.view-without-pk.html" Name="view-w~.htm" LongName="view-without-pk.html" DiskId="1" src="../../docs/en_US/hints/view-without-pk.html" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+
+                            <Directory Id="DE_DEDOCSDIR" Name="de_DE">  
+
+                                <Component Id="de_de_docs" Guid="DC7E3EA8-45CA-4A7B-B35C-97D8834CBF48">
+                                    <File Id="de_de_docs.tips.txt" Name="tips.txt" DiskId="1" src="../../docs/de_DE/tips.txt" />
+                                </Component>
+
+                                <Directory Id="DE_DEHINTSDIR" Name="Hints">
+                                    <Component Id="de_de_hints" Guid="C6BE6FE9-E806-47DD-8EB3-9F1EED0F7751">
+                                        <File Id="de_de_hints.autovacuum.html" Name="autova~1.htm" LongName="autovacuum.html" DiskId="1" src="../../docs/de_DE/hints/autovacuum.html" />
+                                        <File Id="de_de_hints.conn-hba.html" Name="conn-h~1.htm" LongName="conn-hba.html" DiskId="1" src="../../docs/de_DE/hints/conn-hba.html" />
+                                        <File Id="de_de_hints.conn-ident.html" Name="conn-i~1.htm" LongName="conn-ident.html" DiskId="1" src="../../docs/de_DE/hints/conn-ident.html" />
+                                        <File Id="de_de_hints.conn-listen.html" Name="conn-l~1.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/de_DE/hints/conn-listen.html" />
+                                        <File Id="de_de_hints.encoding-ascii.html" Name="encodi~1.htm" LongName="encoding-ascii.html" DiskId="1" src="../../docs/de_DE/hints/encoding-ascii.html" />
+                                        <File Id="de_de_hints.encoding-unicode.html" Name="encodi~2.htm" LongName="encoding-unicode.html" DiskId="1" src="../../docs/de_DE/hints/encoding-unicode.html" />
+                                        <File Id="de_de_hints.fki.html" Name="fki.htm" LongName="fki.html" DiskId="1" src="../../docs/de_DE/hints/fki.html" />
+                                        <File Id="de_de_hints.instrumentation.html" Name="instru~1.htm" LongName="instrumentation.html" DiskId="1" src="../../docs/de_DE/hints/instrumentation.html" />
+                                        <File Id="de_de_hints.multiple.html" Name="multiple.htm" LongName="multiple.html" DiskId="1" src="../../docs/de_DE/hints/multiple.html" />
+                                        <File Id="de_de_hints.pk.html" Name="pk.htm" LongName="pk.html" DiskId="1" src="../../docs/de_DE/hints/pk.html" />
+                                        <File Id="de_de_hints.vacuum.html" Name="vacuum.htm" LongName="vacuum.html" DiskId="1" src="../../docs/de_DE/hints/vacuum.html" />
+                                        <File Id="de_de_hints.view-without-pk.html" Name="view-w~.htm" LongName="view-without-pk.html" DiskId="1" src="../../docs/de_DE/hints/view-without-pk.html" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+
+                            <Directory Id="ES_ESDOCSDIR" Name="es_ES">
+
+                                <Component Id="es_es_docs" Guid="BA1903A6-3796-4942-B647-429C1FEA95AC">
+                                    <File Id="es_es_docs.tips.txt" Name="tips.txt" DiskId="1" src="../../docs/es_ES/tips.txt" />
+                                </Component>
+
+                                <Directory Id="ES_ESHINTSDIR" Name="Hints">
+                                    <Component Id="es_es_hints" Guid="FD6DC428-8D39-494F-AE5E-D3361C6B7895">
+                                        <File Id="es_es_hints.autovacuum.html" Name="autova~1.htm" LongName="autovacuum.html" DiskId="1" src="../../docs/es_ES/hints/autovacuum.html" />
+                                        <File Id="es_es_hints.conn-hba.html" Name="conn-h~1.htm" LongName="conn-hba.html" DiskId="1" src="../../docs/es_ES/hints/conn-hba.html" />
+                                        <File Id="es_es_hints.conn-ident.html" Name="conn-i~1.htm" LongName="conn-ident.html" DiskId="1" src="../../docs/es_ES/hints/conn-ident.html" />
+                                        <File Id="es_es_hints.conn-listen.html" Name="conn-l~1.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/es_ES/hints/conn-listen.html" />
+                                        <File Id="es_es_hints.encoding-ascii.html" Name="encodi~1.htm" LongName="encoding-ascii.html" DiskId="1" src="../../docs/es_ES/hints/encoding-ascii.html" />
+                                        <File Id="es_es_hints.encoding-unicode.html" Name="encodi~2.htm" LongName="encoding-unicode.html" DiskId="1" src="../../docs/es_ES/hints/encoding-unicode.html" />
+                                        <File Id="es_es_hints.fki.html" Name="fki.htm" LongName="fki.html" DiskId="1" src="../../docs/es_ES/hints/fki.html" />
+                                        <File Id="es_es_hints.instrumentation.html" Name="instru~1.htm" LongName="instrumentation.html" DiskId="1" src="../../docs/es_ES/hints/instrumentation.html" />
+                                        <File Id="es_es_hints.multiple.html" Name="multiple.htm" LongName="multiple.html" DiskId="1" src="../../docs/es_ES/hints/multiple.html" />
+                                        <File Id="es_ss_hints.object-editing.html" Name="object~1.htm" LongName="object-editing.html" DiskId="1" src="../../docs/es_ES/hints/object-editing.html" />
+                                        <File Id="es_es_hints.pk.html" Name="pk.htm" LongName="pk.html" DiskId="1" src="../../docs/es_ES/hints/pk.html" />
+                                        <File Id="es_es_hints.vacuum.html" Name="vacuum.htm" LongName="vacuum.html" DiskId="1" src="../../docs/es_ES/hints/vacuum.html" />
+                                        <File Id="es_es_hints.view-without-pk.html" Name="view-w~.htm" LongName="view-without-pk.html" DiskId="1" src="../../docs/es_ES/hints/view-without-pk.html" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+
+                           <Directory Id="FR_FRDOCSDIR" Name="fr_FR">
+
+                                <Component Id="fr_fr_docs" Guid="C473E3E6-F819-460D-AE64-14600ABDDFD1">
+                                    <File Id="fr_fr_docs.tips.txt" Name="tips.txt" DiskId="1" src="../../docs/fr_FR/tips.txt" />
+                                </Component>
+
+                                <Directory Id="FR_FRHINTSDIR" Name="Hints">
+                                    <Component Id="fr_fr_hints" Guid="EE215598-0C22-45D6-8550-907382456D2A">
+                                        <File Id="fr_fr_hints.autovacuum.html" Name="autova~1.htm" LongName="autovacuum.html" DiskId="1" src="../../docs/fr_FR/hints/autovacuum.html" />
+                                        <File Id="fr_fr_hints.conn-hba.html" Name="conn-h~1.htm" LongName="conn-hba.html" DiskId="1" src="../../docs/fr_FR/hints/conn-hba.html" />
+                                        <File Id="fr_fr_hints.conn-ident.html" Name="conn-i~1.htm" LongName="conn-ident.html" DiskId="1" src="../../docs/fr_FR/hints/conn-ident.html" />
+                                        <File Id="fr_fr_hints.conn-listen.html" Name="conn-l~1.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/fr_FR/hints/conn-listen.html" />
+                                        <File Id="fr_fr_hints.encoding-ascii.html" Name="encodi~1.htm" LongName="encoding-ascii.html" DiskId="1" src="../../docs/fr_FR/hints/encoding-ascii.html" />
+                                        <File Id="fr_fr_hints.encoding-unicode.html" Name="encodi~2.htm" LongName="encoding-unicode.html" DiskId="1" src="../../docs/fr_FR/hints/encoding-unicode.html" />
+                                        <File Id="fr_fr_hints.fki.html" Name="fki.htm" LongName="fki.html" DiskId="1" src="../../docs/fr_FR/hints/fki.html" />
+                                        <File Id="fr_fr_hints.instrumentation.html" Name="instru~1.htm" LongName="instrumentation.html" DiskId="1" src="../../docs/fr_FR/hints/instrumentation.html" />
+                                        <File Id="fr_fr_hints.multiple.html" Name="multiple.htm" LongName="multiple.html" DiskId="1" src="../../docs/fr_FR/hints/multiple.html" />
+                                        <File Id="fr_fr_hints.pk.html" Name="pk.htm" LongName="pk.html" DiskId="1" src="../../docs/fr_FR/hints/pk.html" />
+                                        <File Id="fr_fr_hints.vacuum.html" Name="vacuum.htm" LongName="vacuum.html" DiskId="1" src="../../docs/fr_FR/hints/vacuum.html" />
+                                        <File Id="fr_fr_hints.view-without-pk.html" Name="view-w~.htm" LongName="view-without-pk.html" DiskId="1" src="../../docs/fr_FR/hints/view-without-pk.html" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+
+
+                            <Directory Id="SL_SIDOCSDIR" Name="sl_SI">
+                                <Component Id="sl_si_docs" Guid="F067A635-F28F-4C08-BF89-60E004473395">
+                                    <File Id="sl_si_docs.tips.txt" Name="tips.txt" DiskId="1" src="../../docs/sl_SI/tips.txt" />
+                                </Component>
+
+                                <Directory Id="SL_SIHINTSDIR" Name="Hints">
+                                    <Component Id="sl_si_hints" Guid="7FDD3D3C-93A4-4185-A48C-6EC660E4631D">
+                                        <File Id="sl_si_hints.autovacuum.html" Name="autova~1.htm" LongName="autovacuum.html" DiskId="1" src="../../docs/sl_SI/hints/autovacuum.html" />
+                                        <File Id="sl_si_hints.conn-hba.html" Name="conn-h~1.htm" LongName="conn-hba.html" DiskId="1" src="../../docs/sl_SI/hints/conn-hba.html" />
+                                        <File Id="sl_si_hints.conn-ident.html" Name="conn-i~1.htm" LongName="conn-ident.html" DiskId="1" src="../../docs/sl_SI/hints/conn-ident.html" />
+                                        <File Id="sl_si_hints.conn-listen.html" Name="conn-l~1.htm" LongName="conn-listen.html" DiskId="1" src="../../docs/sl_SI/hints/conn-listen.html" />
+                                        <File Id="sl_si_hints.encoding-ascii.html" Name="encodi~1.htm" LongName="encoding-ascii.html" DiskId="1" src="../../docs/sl_SI/hints/encoding-ascii.html" />
+                                        <File Id="sl_si_hints.encoding-unicode.html" Name="encodi~2.htm" LongName="encoding-unicode.html" DiskId="1" src="../../docs/sl_SI/hints/encoding-unicode.html" />
+                                        <File Id="sl_si_hints.fki.html" Name="fki.htm" LongName="fki.html" DiskId="1" src="../../docs/sl_SI/hints/fki.html" />
+                                        <File Id="sl_si_hints.instrumentation.html" Name="instru~1.htm" LongName="instrumentation.html" DiskId="1" src="../../docs/sl_SI/hints/instrumentation.html" />
+                                        <File Id="sl_si_hints.multiple.html" Name="multiple.htm" LongName="multiple.html" DiskId="1" src="../../docs/sl_SI/hints/multiple.html" />
+                                        <File Id="sl_si_hints.pk.html" Name="pk.htm" LongName="pk.html" DiskId="1" src="../../docs/sl_SI/hints/pk.html" />
+                                        <File Id="sl_si_hints.vacuum.html" Name="vacuum.htm" LongName="vacuum.html" DiskId="1" src="../../docs/sl_SI/hints/vacuum.html" />
+                                        <File Id="sl_si_hints.view-without-pk.html" Name="view-w~.htm" LongName="view-without-pk.html" DiskId="1" src="../../docs/sl_SI/hints/view-without-pk.html" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+
+                        </Directory>
+                        
+                        <Component Id="pgagent_exes" Guid="04D0CED4-2353-402C-9474-E0ADE06C6185">
+                            <File Id="pgagent_exes.pgagent.exe" Name="pgagent.exe" DiskId="1" src="../../xtra/pgagent/Release/pgAgent.exe" />
+                        </Component>
+                        
+                        <Component Id="postgresql_exes" Guid="23630FFE-0943-442A-886F-1665270958D2">
+                            <File Id="postgresql_exes.pg_dump.exe" Name="pg_dum~1.exe" LongName="pg_dump.exe" DiskId="1" src="$(var.PFILESDIR)/PostgreSQL/8.1/bin/pg_dump.exe" />
+                            <File Id="postgresql_exes.pg_restore.exe" Name="pg_res~1.exe" LongName="pg_restore.exe" DiskId="1" src="$(var.PFILESDIR)/PostgreSQL/8.1/bin/pg_restore.exe" />
+                        </Component>
+                        
+                        <Component Id="pgagent_libs" Guid="5EEA2542-8371-4A2B-A71D-0614DA176401">
+                            <File Id="pgagent_libs.pgaevent.dll" Name="pgaevent.dll" DiskId="1" src="../../xtra/pgagent/pgaevent/Release/pgaevent.dll" />
+                        </Component>
+                        
+                        <Directory Id="SCRIPTSDIR" Name="Scripts">
+                        
+                            <Component Id="pgagent_scripts" Guid="2CA5A4AD-9DC7-4C7F-9D2E-864E1465C209">
+                                <File Id="pgagent_scripts.pgagent.sql" Name="pgagent.sql" DiskId="1" src="../../xtra/pgagent/pgagent.sql" />
+                            </Component>
+                            
+                        </Directory>
+                        
+                        <Directory Id="I18NDIR" Name="i18n">
+
+                            <Component Id="pgadmin_il8n" Guid="1918C326-7683-44AB-8BF1-FA38766A6558">
+                                <File Id="pgadmin_il8n.pgadmin3.lng" Name="pgadmin3.lng" DiskId="1" src="../../i18n/pgadmin3.lng" />
+                                <File Id="pgadmin_il8n.pg_settings.csv" Name="pg_set~1.csv" LongName="pg_settings.csv" DiskId="1" src="../../i18n/pg_settings.csv" />
+                            </Component>
+                            
+                            <?include i18ndata.wxs ?>
+                            
+                        </Directory>
+                        
+                    </Directory>
+                </Directory>
+            </Directory>
+            <Directory Id="ProgramMenuFolder" Name="." SourceName="Programs">
+                <Directory Id="SMDIR" Name="pgadmin3" LongName="$(var.APPNAME) $(var.VERSION)" />
+            </Directory>
+        </Directory>
+        
+<!-- Features -->
+
+        <Feature Id="base" Title="pgAdmin - PostgreSQL Tools" Level="1" Description="Management and administration tools for the PostgreSQL DBMS" Display="expand" ConfigurableDirectory="BASEDIR" AllowAdvertise="no">
+        
+            <Feature Id="pgadmin3" Title="$(var.APPNAME)" Description="The pgAdmin management and administration console." Display="expand" Level="1">
+                <ComponentRef Id="core_libs" />
+                <ComponentRef Id="core_runtimes" />
+                <ComponentRef Id="pgadmin_exes" />
+                <ComponentRef Id="de_de_docs" />
+                <ComponentRef Id="de_de_hints" />
+                <ComponentRef Id="en_us_docs" />
+                <ComponentRef Id="en_us_hints" />
+                <ComponentRef Id="es_es_docs" />
+                <ComponentRef Id="es_es_hints" />
+                <ComponentRef Id="fr_fr_docs" />
+                <ComponentRef Id="fr_fr_hints" />
+		<ComponentRef Id="sl_si_docs" />
+                <ComponentRef Id="sl_si_hints" />
+                <ComponentRef Id="pgadmin_il8n" />
+                        
+                <Feature Id="postgresql_utilities" Title="PostgreSQL Utilties" Description="PostgreSQL's pg_dump and pg_restore utilties used by pgAdmin to dump and restore databases." Level="1">
+                    <ComponentRef Id="postgresql_exes" />
+                </Feature>
+            </Feature>
+            
+            <Feature Id="pgagent" Title="pgAgent" Description="A job scheduler designed for centralised management of SQL and shell/batch jobs on one or more hosts." Level="1">
+                <ComponentRef Id="core_libs" />
+                <ComponentRef Id="core_runtimes" />
+                <ComponentRef Id="pgagent_exes" />
+                <ComponentRef Id="pgagent_libs" />
+                <ComponentRef Id="pgagent_scripts" />
+            </Feature>
+
+            <Feature Id="i18n" Title="Internationalisation" Description="Multi language support for pgAdmin III applications." Level="1">
+                <?include i18nrefs.wxs ?>
+            </Feature>
+
+        </Feature>
+
+        <Media Id="1" EmbedCab="yes" Cabinet="installer.cab"/>
+
+<!-- Properties -->
+
+        <Property Id="UILANG" Value="1033"/>
+        <Property Id="_Title">{\Arial8Bold}</Property>
+        <Property Id="DefaultUIFont">MSSansSerif8</Property>
+        <Property Id="ALLUSERS">2</Property>
+        <Property Id="MaintenanceType" Value="Modify" />
+
+<!-- Include files -->
+
+        <?include ui.wxs ?>
+
+    </Product>
+</Wix>

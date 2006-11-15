@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>42.2. How Connections are Established</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
+<link rel="prev" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
+<link rel="next" href="parser-stage.html" title="42.3. The Parser Stage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="connect-estab"></a>42.2. How Connections are Established</h2></div></div></div>
+<p>    <span class="productname">PostgreSQL</span> is implemented using a
+    simple &#8220;<span class="quote">process per user</span>&#8221; client/server model.  In this model
+    there is one <em class="firstterm">client process</em> connected to
+    exactly one <em class="firstterm">server process</em>.  As we do not
+    know ahead of time how many connections will be made, we have to
+    use a <em class="firstterm">master process</em> that spawns a new
+    server process every time a connection is requested. This master
+    process is called <code class="literal">postgres</code> and listens at a
+    specified TCP/IP port for incoming connections. Whenever a request
+    for a connection is detected the <code class="literal">postgres</code>
+    process spawns a new server process. The server tasks
+    communicate with each other using <em class="firstterm">semaphores</em> and
+    <em class="firstterm">shared memory</em> to ensure data integrity
+    throughout concurrent data access.
+   </p>
+<p>    The client process can be any program that understands the
+    <span class="productname">PostgreSQL</span> protocol described in
+    <a href="protocol.html" title="Chapter 44. Frontend/Backend Protocol">Chapter 44, <i>Frontend/Backend Protocol</i></a>.  Many clients are based on the
+    C-language library <span class="application">libpq</span>, but several independent
+    implementations of the protocol exist, such as the Java
+    <span class="application">JDBC</span> driver.
+   </p>
+<p>    Once a connection is established the client process can send a query
+    to the <em class="firstterm">backend</em> (server). The query is transmitted using plain text,
+    i.e. there is no parsing done in the <em class="firstterm">frontend</em> (client). The
+    server parses the query, creates an <em class="firstterm">execution plan</em>,
+    executes the plan and returns the retrieved rows to the client
+    by transmitting them over the established connection.
+   </p>
+</div></body>
+</html>

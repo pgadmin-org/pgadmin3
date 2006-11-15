@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.41. Release 7.3.8</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-3-9.html" title="E.40. Release 7.3.9">
+<link rel="next" href="release-7-3-7.html" title="E.42. Release 7.3.7">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-8"></a>E.41. Release 7.3.8</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2004-10-22</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.7.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2862848"></a>E.41.1. Migration to version 7.3.8</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.3.X.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2862855"></a>E.41.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Repair possible failure to update hint bits on disk</p>
+<p>Under rare circumstances this oversight could lead to 
+&#8220;<span class="quote">could not access transaction status</span>&#8221; failures, which qualifies
+it as a potential-data-loss bug.</p>
+</li>
+<li>
+<p>Ensure that hashed outer join does not miss tuples</p>
+<p>Very large left joins using a hash join plan could fail to output unmatched
+left-side rows given just the right data distribution.</p>
+</li>
+<li>
+<p>Disallow running pg_ctl as root</p>
+<p>This is to guard against any possible security issues.</p>
+</li>
+<li>
+<p>Avoid using temp files in /tmp in make_oidjoins_check</p>
+<p>This has been reported as a security issue, though it's hardly worthy of
+concern since there is no reason for non-developers to use this script anyway.</p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>

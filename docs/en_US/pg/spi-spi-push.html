@@ -1,0 +1,45 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_push</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="41.1. Interface Functions">
+<link rel="prev" href="spi-spi-finish.html" title="SPI_finish">
+<link rel="next" href="spi-spi-pop.html" title="SPI_pop">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-push"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_push &#8212; push SPI stack to allow recursive SPI usage</p>
+</div>
+<a name="id2718697"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">void SPI_push(void)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2718708"></a><h2>Description</h2>
+<p>   <code class="function">SPI_push</code> should be called before executing another
+   procedure that might itself wish to use SPI.
+   After <code class="function">SPI_push</code>, SPI is no longer in a
+   &#8220;<span class="quote">connected</span>&#8221; state, and SPI function calls will be rejected unless
+   a fresh <code class="function">SPI_connect</code> is done.  This ensures a clean
+   separation between your procedure's SPI state and that of another procedure
+   you call.  After the other procedure returns, call
+   <code class="function">SPI_pop</code> to restore access to your own SPI state.
+  </p>
+<p>   Note that <code class="function">SPI_execute</code> and related functions
+   automatically do the equivalent of <code class="function">SPI_push</code> before
+   passing control back to the SQL execution engine, so it is not necessary
+   for you to worry about this when using those functions.
+   Only when you are directly calling arbitrary code that might contain
+   <code class="function">SPI_connect</code> calls do you need to issue
+   <code class="function">SPI_push</code> and <code class="function">SPI_pop</code>.
+  </p>
+</div>
+</div></body>
+</html>

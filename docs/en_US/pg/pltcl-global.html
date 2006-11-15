@@ -1,0 +1,42 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>38.4. Global Data in PL/Tcl</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
+<link rel="prev" href="pltcl-data.html" title="38.3. Data Values in PL/Tcl">
+<link rel="next" href="pltcl-dbaccess.html" title="38.5. Database Access from PL/Tcl">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="pltcl-global"></a>38.4. Global Data in PL/Tcl</h2></div></div></div>
+<a name="id2714026"></a><p>     Sometimes it
+     is useful to have some global data that is held between two
+     calls to a function or is shared between different functions.
+     This is easily done since
+     all PL/Tcl functions executed in one session share the same
+     safe Tcl interpreter.  So, any global Tcl variable is accessible to
+     all PL/Tcl function calls and will persist for the duration of the
+     SQL session.  (Note that <span class="application">PL/TclU</span> functions likewise share
+     global data, but they are in a different Tcl interpreter and cannot
+     communicate with PL/Tcl functions.)
+    </p>
+<p>     To help protect PL/Tcl functions from unintentionally interfering
+     with each other, a global
+     array is made available to each function via the <code class="function">upvar</code>
+     command. The global name of this variable is the function's internal
+     name, and the local name is <code class="literal">GD</code>.  It is recommended that
+     <code class="literal">GD</code> be used
+     for persistent private data of a function.  Use regular Tcl global
+     variables only for values that you specifically intend to be shared among
+     multiple functions.
+    </p>
+<p>     An example of using <code class="literal">GD</code> appears in the
+     <code class="function">spi_execp</code> example below.
+    </p>
+</div></body>
+</html>

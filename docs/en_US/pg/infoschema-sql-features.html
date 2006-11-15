@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.32. sql_features</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-sequences.html" title="32.31. sequences">
+<link rel="next" href="infoschema-sql-implementation-info.html" title="32.33. sql_implementation_info">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-sql-features"></a>32.32. <code class="literal">sql_features</code></h2></div></div></div>
+<p>   The table <code class="literal">sql_features</code> contains information
+   about which formal features defined in the SQL standard are
+   supported by <span class="productname">PostgreSQL</span>.  This is the
+   same information that is presented in <a href="features.html" title="Appendix D. SQL Conformance">Appendix D, <i>SQL Conformance</i></a>.
+   There you can also find some additional background information.
+  </p>
+<div class="table">
+<a name="id2685915"></a><p class="title"><b>Table 32.30. <code class="literal">sql_features</code> Columns</b></p>
+<div class="table-contents"><table summary="sql_features Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">feature_id</code></td>
+<td><code class="type">character_data</code></td>
+<td>Identifier string of the feature</td>
+</tr>
+<tr>
+<td><code class="literal">feature_name</code></td>
+<td><code class="type">character_data</code></td>
+<td>Descriptive name of the feature</td>
+</tr>
+<tr>
+<td><code class="literal">sub_feature_id</code></td>
+<td><code class="type">character_data</code></td>
+<td>Identifier string of the subfeature, or a zero-length string if not a subfeature</td>
+</tr>
+<tr>
+<td><code class="literal">sub_feature_name</code></td>
+<td><code class="type">character_data</code></td>
+<td>Descriptive name of the subfeature, or a zero-length string if not a subfeature</td>
+</tr>
+<tr>
+<td><code class="literal">is_supported</code></td>
+<td><code class="type">character_data</code></td>
+<td>       <code class="literal">YES</code> if the feature is fully supported by the
+       current version of <span class="productname">PostgreSQL</span>, <code class="literal">NO</code> if not
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_verified_by</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Always null, since the <span class="productname">PostgreSQL</span> development group does not
+       perform formal testing of feature conformance
+      </td>
+</tr>
+<tr>
+<td><code class="literal">comments</code></td>
+<td><code class="type">character_data</code></td>
+<td>Possibly a comment about the supported status of the feature</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

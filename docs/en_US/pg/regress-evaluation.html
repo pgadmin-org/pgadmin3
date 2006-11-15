@@ -1,0 +1,163 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>28.2. Test Evaluation</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="regress.html" title="Chapter 28. Regression Tests">
+<link rel="prev" href="regress.html" title="Chapter 28. Regression Tests">
+<link rel="next" href="regress-variant.html" title="28.3. Variant Comparison Files">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="regress-evaluation"></a>28.2. Test Evaluation</h2></div></div></div>
+<p>    Some properly installed and fully functional
+    <span class="productname">PostgreSQL</span> installations can
+    &#8220;<span class="quote">fail</span>&#8221; some of these regression tests due to
+    platform-specific artifacts such as varying floating-point representation
+    and message wording. The tests are currently evaluated using a simple
+    <code class="command">diff</code> comparison against the outputs
+    generated on a reference system, so the results are sensitive to
+    small system differences.  When a test is reported as
+    &#8220;<span class="quote">failed</span>&#8221;, always examine the differences between
+    expected and actual results; you may well find that the
+    differences are not significant.  Nonetheless, we still strive to
+    maintain accurate reference files across all supported platforms,
+    so it can be expected that all tests pass.
+   </p>
+<p>    The actual outputs of the regression tests are in files in the
+    <code class="filename">src/test/regress/results</code> directory. The test
+    script uses <code class="command">diff</code> to compare each output
+    file against the reference outputs stored in the
+    <code class="filename">src/test/regress/expected</code> directory.  Any
+    differences are saved for your inspection in
+    <code class="filename">src/test/regress/regression.diffs</code>.  (Or you
+    can run <code class="command">diff</code> yourself, if you prefer.)
+   </p>
+<p>    If for some reason a particular platform generates a &#8220;<span class="quote">failure</span>&#8221;
+    for a given test, but inspection of the output convinces you that
+    the result is valid, you can add a new comparison file to silence
+    the failure report in future test runs.  See
+    <a href="regress-variant.html" title="28.3. Variant Comparison Files">Section 28.3, &#8220;Variant Comparison Files&#8221;</a> for details.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2653456"></a>28.2.1. Error message differences</h3></div></div></div>
+<p>     Some of the regression tests involve intentional invalid input
+     values.  Error messages can come from either the
+     <span class="productname">PostgreSQL</span> code or from the host
+     platform system routines. In the latter case, the messages may
+     vary between platforms, but should reflect similar
+     information. These differences in messages will result in a
+     &#8220;<span class="quote">failed</span>&#8221; regression test that can be validated by
+     inspection.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2653479"></a>28.2.2. Locale differences</h3></div></div></div>
+<p>     If you run the tests against an already-installed server that was
+     initialized with a collation-order locale other than C, then
+     there may be differences due to sort order and follow-up
+     failures.  The regression test suite is set up to handle this
+     problem by providing alternative result files that together are
+     known to handle a large number of locales.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2653491"></a>28.2.3. Date and time differences</h3></div></div></div>
+<p>     Most of the date and time results are dependent on the time zone
+     environment.  The reference files are generated for time zone
+     <code class="literal">PST8PDT</code> (Berkeley, California), and there will be
+     apparent failures if the tests are not run with that time zone setting.
+     The regression test driver sets environment variable
+     <code class="envar">PGTZ</code> to <code class="literal">PST8PDT</code>, which normally
+     ensures proper results.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2653519"></a>28.2.4. Floating-point differences</h3></div></div></div>
+<p>     Some of the tests involve computing 64-bit floating-point numbers (<code class="type">double
+     precision</code>) from table columns. Differences in
+     results involving mathematical functions of <code class="type">double
+     precision</code> columns have been observed.  The <code class="literal">float8</code> and
+     <code class="literal">geometry</code> tests are particularly prone to small differences
+     across platforms, or even with different compiler optimization options.
+     Human eyeball comparison is needed to determine the real
+     significance of these differences which are usually 10 places to
+     the right of the decimal point.
+    </p>
+<p>     Some systems display minus zero as <code class="literal">-0</code>, while others
+     just show <code class="literal">0</code>.
+    </p>
+<p>     Some systems signal errors from <code class="function">pow()</code> and
+     <code class="function">exp()</code> differently from the mechanism
+     expected by the current <span class="productname">PostgreSQL</span>
+     code.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2653589"></a>28.2.5. Row ordering differences</h3></div></div></div>
+<p>You might see differences in which the same rows are output in a
+different order than what appears in the expected file.  In most cases
+this is not, strictly speaking, a bug.  Most of the regression test
+scripts are not so pedantic as to use an <code class="literal">ORDER BY</code> for every single
+<code class="literal">SELECT</code>, and so their result row orderings are not well-defined
+according to the letter of the SQL specification.  In practice, since we are
+looking at the same queries being executed on the same data by the same
+software, we usually get the same result ordering on all platforms, and
+so the lack of <code class="literal">ORDER BY</code> isn't a problem.  Some queries do exhibit
+cross-platform ordering differences, however.  When testing against an
+already-installed server, ordering differences can also be caused by
+non-C locale settings or non-default parameter settings, such as custom values
+of <code class="varname">work_mem</code> or the planner cost parameters.
+    </p>
+<p>Therefore, if you see an ordering difference, it's not something to
+worry about, unless the query does have an <code class="literal">ORDER BY</code> that your
+result is violating.  But please report it anyway, so that we can add an
+<code class="literal">ORDER BY</code> to that particular query and thereby eliminate the bogus
+&#8220;<span class="quote">failure</span>&#8221; in future releases.
+    </p>
+<p>You might wonder why we don't order all the regression test queries explicitly
+to get rid of this issue once and for all.  The reason is that that would
+make the regression tests less useful, not more, since they'd tend
+to exercise query plan types that produce ordered results to the
+exclusion of those that don't.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2653661"></a>28.2.6. Insufficient stack depth</h3></div></div></div>
+<p>     If the <code class="literal">errors</code> test results in a server crash
+     at the <code class="literal">select infinite_recurse()</code> command, it means that
+     the platform's limit on process stack size is smaller than the
+     <a href="runtime-config-resource.html#guc-max-stack-depth">max_stack_depth</a>
+     
+     parameter indicates.  This
+     can be fixed by running the server under a higher stack
+     size limit (4MB is recommended with the default value of 
+     <code class="varname">max_stack_depth</code>).  If you are unable to do that, an
+     alternative is to reduce the value of <code class="varname">max_stack_depth</code>.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2653700"></a>28.2.7. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div></div>
+<p>     The <code class="literal">random</code> test script is intended to produce 
+     random results.   In rare cases, this causes the random regression
+     test to fail.  Typing
+</p>
+<pre class="programlisting">diff results/random.out expected/random.out</pre>
+<p>
+     should produce only one or a few lines of differences.  You need
+     not worry unless the random test fails repeatedly.
+    </p>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,108 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>18.2. Role Attributes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
+<link rel="prev" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
+<link rel="next" href="privileges.html" title="18.3. Privileges">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="role-attributes"></a>18.2. Role Attributes</h2></div></div></div>
+<p>    A database role may have a number of attributes that define its
+    privileges and interact with the client authentication system.
+
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term">login privilege<a name="id2636286"></a></span></dt>
+<dd>
+<p>        Only roles that have the <code class="literal">LOGIN</code> attribute can be used
+        as the initial role name for a database connection.  A role with
+        the <code class="literal">LOGIN</code> attribute can be considered the same thing
+        as a &#8220;<span class="quote">database user</span>&#8221;.  To create a role with login privilege,
+        use either
+</p>
+<pre class="programlisting">CREATE ROLE <em class="replaceable"><code>name</code></em> LOGIN;
+CREATE USER <em class="replaceable"><code>name</code></em>;</pre>
+<p>
+        (<code class="command">CREATE USER</code> is equivalent to <code class="command">CREATE ROLE</code>
+        except that <code class="command">CREATE USER</code> assumes <code class="literal">LOGIN</code> by
+        default, while <code class="command">CREATE ROLE</code> does not.)
+       </p>
+</dd>
+<dt><span class="term">superuser status<a name="id2636363"></a></span></dt>
+<dd><p>        A database superuser bypasses all permission checks.  This is a
+        dangerous privilege and should not be used carelessly; it is best
+        to do most of your work as a role that is not a superuser.
+        To create a new database superuser, use <code class="literal">CREATE ROLE
+        <em class="replaceable"><code>name</code></em> SUPERUSER</code>.  You must do
+        this as a role that is already a superuser.
+       </p></dd>
+<dt><span class="term">database creation<a name="id2636391"></a></span></dt>
+<dd><p>        A role must be explicitly given permission to create databases
+        (except for superusers, since those bypass all permission
+        checks). To create such a role, use <code class="literal">CREATE ROLE
+        <em class="replaceable"><code>name</code></em> CREATEDB</code>.
+       </p></dd>
+<dt><span class="term">role creation<a name="id2636419"></a></span></dt>
+<dd><p>        A role must be explicitly given permission to create more roles
+        (except for superusers, since those bypass all permission
+        checks). To create such a role, use <code class="literal">CREATE ROLE
+        <em class="replaceable"><code>name</code></em> CREATEROLE</code>.
+        A role with <code class="literal">CREATEROLE</code> privilege can alter and drop
+        other roles, too, as well as grant or revoke membership in them.
+        However, to create, alter, drop, or change membership of a
+        superuser role, superuser status is required;
+        <code class="literal">CREATEROLE</code> is not sufficient for that.
+       </p></dd>
+<dt><span class="term">password<a name="id2636464"></a></span></dt>
+<dd><p>        A password is only significant if the client authentication
+        method requires the user to supply a password when connecting
+        to the database. The <code class="option">password</code>,
+        <code class="option">md5</code>, and <code class="option">crypt</code> authentication methods
+        make use of passwords. Database passwords are separate from
+        operating system passwords. Specify a password upon role
+        creation with <code class="literal">CREATE ROLE
+        <em class="replaceable"><code>name</code></em> PASSWORD '<em class="replaceable"><code>string</code></em>'</code>. 
+       </p></dd>
+</dl></div>
+<p>
+
+    A role's attributes can be modified after creation with
+    <code class="command">ALTER ROLE</code>.<a name="id2636511"></a>
+    See the reference pages for the <a href="sql-createrole.html">CREATE ROLE</a> and <a href="sql-alterrole.html">ALTER ROLE</a> commands for details.
+   </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>    It is good practice to create a role that has the <code class="literal">CREATEDB</code>
+    and <code class="literal">CREATEROLE</code> privileges, but is not a superuser, and then
+    use this role for all routine management of databases and roles.  This
+    approach avoids the dangers of operating as a superuser for tasks that
+    do not really require it.
+   </p>
+</div>
+<p>   A role can also have role-specific defaults for many of the run-time
+   configuration settings described in <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a>.  For example, if for some reason you
+   want to disable index scans (hint: not a good idea) anytime you
+   connect, you can use
+</p>
+<pre class="programlisting">ALTER ROLE myname SET enable_indexscan TO off;</pre>
+<p>
+   This will save the setting (but not set it immediately).  In
+   subsequent connections by this role it will appear as though
+   <code class="literal">SET enable_indexscan TO off;</code> had been executed
+   just before the session started.
+   You can still alter this setting during the session; it will only
+   be the default. To remove a role-specific default setting, use
+   <code class="literal">ALTER ROLE <em class="replaceable"><code>rolename</code></em> RESET <em class="replaceable"><code>varname</code></em>;</code>.
+   Note that role-specific defaults attached to roles without
+   <code class="literal">LOGIN</code> privilege are fairly useless, since they will never
+   be invoked.
+  </p>
+</div></body>
+</html>

@@ -1,0 +1,695 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Slony-I 1.2.0 Documentation</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="next" href="slonyintro.html" title="Slony-I Introduction">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en" id="slony">
+<div class="titlepage">
+<div>
+<div><h1 class="title">
+<a name="slony"></a><span class="productname">Slony-I<br></span> 1.2.0 Documentation</h1></div>
+<div><h3 class="corpauthor">The PostgreSQL Global Development Group</h3></div>
+<div><div class="author"><h3 class="author">
+<span class="firstname">Christopher</span> <span class="surname">Browne</span>
+</h3></div></div>
+<div><p class="copyright">Copyright © 2004-2006 The PostgreSQL Global Development Group</p></div>
+<div><a href="ln-legalnotice.html">Legal Notice</a></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="article"><a href="slonyintro.html"><span class="productname">Slony-I</span> Introduction</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="slonyintro.html#introduction">1. Introduction to <span class="productname">Slony-I</span></a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="slonyintro.html#id2500874">1.1. What <span class="productname">Slony-I</span> is</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2501164">1.2. Why yet another replication system?</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2501185">1.3.  What <span class="productname">Slony-I</span> is not</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2501279">1.4.  Why doesn't <span class="productname">Slony-I</span> do automatic fail-over/promotion?</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2501362">1.5.  Current Limitations</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2501562">1.6. Replication Models</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="slonylistenercosts.html">2.  <span class="productname">Slony-I</span> Communications
+Costs</a></span></dt>
+<dt><span class="sect1"><a href="requirements.html">3. System Requirements</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="requirements.html#id2499282">3.1.  <span class="productname">Slony-I</span> Software Dependancies</a></span></dt>
+<dt><span class="sect2"><a href="requirements.html#id2499625">3.2.  Getting <span class="productname">Slony-I</span> Source</a></span></dt>
+<dt><span class="sect2"><a href="requirements.html#encoding">3.3.  Database Encoding </a></span></dt>
+<dt><span class="sect2"><a href="requirements.html#times">3.4.  Time Synchronization</a></span></dt>
+<dt><span class="sect2"><a href="requirements.html#id2499887">3.5.  Network Connectivity</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="installation.html">4. <span class="productname">Slony-I</span> Installation</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="installation.html#id2500204">4.1. Short Version</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2500215">4.2. Configuration</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2500453">4.3. Example</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2547915">4.4. Build</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2547969">4.5.  Installing <span class="productname">Slony-I</span> Once Built;</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2548142">4.6.  Building Documentation: Admin Guide </a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2548214">4.7.  Installing <span class="productname">Slony-I</span> from RPMs</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2548338">4.8.  Installing the <span class="productname">Slony-I</span> service on <span class="trademark">Windows</span>&#8482;</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="concepts.html">5. <span class="productname">Slony-I</span> Concepts</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="concepts.html#id2548547">5.1. Cluster</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2548600">5.2. Node</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2548674">5.3.  Replication Set</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2548701">5.4.  Origin, Providers and Subscribers</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2548761">5.5. slon Daemon</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2548823">5.6. slonik Configuration Processor</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="cluster.html">6. Defining <span class="productname">Slony-I</span> Clusters</a></span></dt>
+<dt><span class="sect1"><a href="definingsets.html">7. Defining <span class="productname">Slony-I</span> Replication Sets</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="definingsets.html#id2549028">7.1. Primary Keys</a></span></dt>
+<dt><span class="sect2"><a href="definingsets.html#definesets">7.2. Grouping tables into sets</a></span></dt>
+<dt><span class="sect2"><a href="definingsets.html#id2549323">7.3.  The Pathology of Sequences </a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="article"><a href="slonyadmin.html"> Slony-I Administration </a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="slonyadmin.html#bestpractices">1.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </a></span></dt>
+<dt><span class="sect1"><a href="firstdb.html">2. Replicating Your First Database</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="firstdb.html#id2551490">2.1. Creating the <span class="application">pgbench</span> user</a></span></dt>
+<dt><span class="sect2"><a href="firstdb.html#id2551505">2.2. Preparing the databases</a></span></dt>
+<dt><span class="sect2"><a href="firstdb.html#id2551616">2.3. Configuring the Database for Replication.</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="slonstart.html">3. Slon daemons</a></span></dt>
+<dt><span class="sect1"><a href="subscribenodes.html">4. Subscribing Nodes</a></span></dt>
+<dt><span class="sect1"><a href="monitoring.html">5. Monitoring</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="monitoring.html#id2552540">5.1.  <span class="productname">Nagios</span> Replication Checks </a></span></dt>
+<dt><span class="sect2"><a href="monitoring.html#slonymrtg">5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </a></span></dt>
+<dt><span class="sect2"><a href="monitoring.html#testslonystate">5.3.  test_slony_state</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="maintenance.html">6. <span class="productname">Slony-I</span> Maintenance</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="maintenance.html#id2553164">6.1.  Watchdogs: Keeping Slons Running</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#gensync">6.2. Parallel to Watchdog: generate_syncs.sh</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553344">6.3. Testing <span class="productname">Slony-I</span> State </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553432">6.4. Replication Test Scripts </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553623">6.5.  Other Replication Tests </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553704">6.6.  Log Files</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="reshape.html">7. Reshaping a Cluster</a></span></dt>
+<dt><span class="sect1"><a href="failover.html">8. Doing switchover and failover with <span class="productname">Slony-I</span></a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="failover.html#id2553930">8.1. Foreword</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2553989">8.2.  Controlled Switchover</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2554106">8.3.  Failover</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2554309">8.4.  Automating <code class="command"> FAIL OVER </code> </a></span></dt>
+<dt><span class="sect2"><a href="failover.html#rebuildnode1">8.5. After Failover, Reconfiguring
+Former Origin</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="listenpaths.html">9. <span class="productname">Slony-I</span> listen paths</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="listenpaths.html#id2554684">9.1. How listening can break</a></span></dt>
+<dt><span class="sect2"><a href="listenpaths.html#id2554761">9.2. How the listen configuration should look</a></span></dt>
+<dt><span class="sect2"><a href="listenpaths.html#autolisten">9.3. Automated Listen Path Generation</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plainpaths.html">10.  <span class="productname">Slony-I</span> Path Communications</a></span></dt>
+<dt><span class="sect1"><a href="locking.html">11. Locking Issues</a></span></dt>
+<dt><span class="sect1"><a href="addthings.html">12. A Task-Oriented View of <span class="productname">Slony-I</span></a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="addthings.html#id2556046">12.1.  Adding a table to replication </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556172">12.2.  How to add columns to a replicated table </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556310">12.3.  How to remove replication for a node</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556466">12.4.  Adding A Node To Replication</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556650">12.5.  How do I reshape subscriptions?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556681">12.6.  How do I use Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221; </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556698">12.7.  How do I know replication is working?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556769">12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556789">12.9.  What happens when I fail over?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556802">12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="dropthings.html">13. Dropping things from <span class="productname">Slony-I</span> Replication</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="dropthings.html#id2556883">13.1. Dropping A Whole Node</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2556967">13.2. Dropping An Entire Set</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557062">13.3. Unsubscribing One Node From One Set</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557134">13.4.  Dropping A Table From Replication</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557228">13.5. Dropping A Sequence From Replication</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="logshipping.html">14. Log Shipping - <span class="productname">Slony-I</span> with Files</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="logshipping.html#id2557887">14.1.  Usage Hints </a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="ddlchanges.html">15. Database Schema Changes (DDL)</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ddlchanges.html#id2558606">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+process using <code class="command">EXECUTE SCRIPT</code></a></span></dt>
+<dt><span class="sect2"><a href="ddlchanges.html#id2558783">15.2.  Testing DDL Changes </a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="usingslonik.html">16. Using Slonik</a></span></dt>
+<dt><span class="sect1"><a href="slonikshell.html">17.  Embedding Slonik in Shell Scripts </a></span></dt>
+<dt><span class="sect1"><a href="noslonik.html">18.  Not Using Slonik - Bare Metal <span class="productname">Slony-I</span>
+Functions </a></span></dt>
+<dt><span class="sect1"><a href="altperl.html">19. <span class="productname">Slony-I</span> Administration Scripts</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="altperl.html#id2559842">19.1. Node/Cluster Configuration - cluster.nodes</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2559973">19.2. Set configuration - cluster.set1, cluster.set2</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560084">19.3. slonik_build_env</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560128">19.4. slonik_print_preamble</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560144">19.5. slonik_create_set</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560166">19.6. slonik_drop_node</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560178">19.7. slonik_drop_set</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560195">19.8. slonik_drop_table</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560207">19.9. slonik_execute_script</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560214">19.10. slonik_failover</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560222">19.11. slonik_init_cluster</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560236">19.12. slonik_merge_sets</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560242">19.13. slonik_move_set</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560250">19.14. replication_test</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560262">19.15. slonik_restart_node</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560271">19.16. slonik_restart_nodes</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560278">19.17. slony_show_configuration</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560289">19.18. slon_kill</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560297">19.19. slon_start</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560305">19.20. slon_watchdog</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560317">19.21. slon_watchdog2</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560335">19.22. slonik_store_node</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560342">19.23. slonik_subscribe_set</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560349">19.24. slonik_uninstall_nodes</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560367">19.25. slonik_unsubscribe_set</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560374">19.26. slonik_update_nodes</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#mkslonconf">19.27. mkslonconf.sh</a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#launchclusters">19.28.  launch_clusters.sh </a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#extractschema">19.29.  <code class="filename"> slony1_extract_schema.sh </code> </a></span></dt>
+<dt><span class="sect2"><a href="altperl.html#id2560948">19.30.  slony-cluster-analysis </a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="slonyupgrade.html">20.  <span class="productname">Slony-I</span> Upgrade </a></span></dt>
+<dt><span class="sect1"><a href="versionupgrade.html">21. Using <span class="productname">Slony-I</span> for <span class="productname">PostgreSQL</span> Upgrades</a></span></dt>
+<dt><span class="sect1"><a href="testbed.html">22.  <span class="productname">Slony-I</span> Test Bed Framework </a></span></dt>
+<dt><span class="sect1"><a href="loganalysis.html">23. Log Analysis</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="loganalysis.html#id2562235">23.1. CONFIG notices</a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2562258">23.2. DEBUG Notices</a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2562310">23.3.  How to read <span class="productname">Slony-I</span> logs </a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2562564">23.4.  Log Messages and Implications </a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="help.html">24. More <span class="productname">Slony-I</span> Help</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="help.html#id2565283">24.1.  Other Information Sources</a></span></dt></dl></dd>
+</dl></dd>
+<dt><span class="article"><a href="faq.html">Slony-I FAQ</a></span></dt>
+<dt><span class="part"><a href="commandreference.html">I. Core <span class="productname">Slony-I</span> Programs</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="slon.html"><span class="application">slon</span></a></span><span class="refpurpose"> &#8212;    <span class="productname">Slony-I</span> daemon
+  </span>
+</dt>
+<dt><span class="article"><a href="runtime-config.html">Run-time Configuration</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="runtime-config.html#slon-config-logging">1. Logging</a></span></dt>
+<dt><span class="sect1"><a href="slon-config-connection.html">2. Connection settings</a></span></dt>
+<dt><span class="sect1"><a href="slon-archive-logging.html">3.  Archive Logging Options </a></span></dt>
+<dt><span class="sect1"><a href="slon-config-interval.html">4. Event Tuning</a></span></dt>
+</dl></dd>
+<dt>
+<span class="refentrytitle"><a href="slonik.html"><span class="application">slonik</span></a></span><span class="refpurpose"> &#8212;       <span class="productname">Slony-I</span> command processor
+    </span>
+</dt>
+<dt><span class="article"><a href="slonikref.html">Slonik Command Summary</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="slonikref.html#id2573118">1. Introduction</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="slonikref.html#outline">1.1. General outline</a></span></dt></dl></dd>
+</dl></dd>
+<dt><span class="reference"><a href="metacmds.html">I. Slonik Meta Commands</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="stmtinclude.html">INCLUDE</a></span><span class="refpurpose"> &#8212;  pulling in slonik code from another file </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdefine.html">DEFINE</a></span><span class="refpurpose"> &#8212;  Defining a named symbol </span>
+</dt>
+</dl></dd>
+<dt><span class="reference"><a href="hdrcmds.html">II. Slonik Preamble Commands</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="clustername.html">CLUSTER NAME</a></span><span class="refpurpose"> &#8212;  preamble - identifying <span class="productname">Slony-I</span> cluster </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="admconninfo.html">ADMIN CONNINFO</a></span><span class="refpurpose"> &#8212;  preamble - identifying <span class="productname">PostgreSQL</span> database </span>
+</dt>
+</dl></dd>
+<dt><span class="reference"><a href="cmds.html">III. Configuration and Action commmands</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="stmtecho.html">ECHO</a></span><span class="refpurpose"> &#8212;  Generic output tool </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtexit.html">EXIT</a></span><span class="refpurpose"> &#8212;  Terminate Slonik script with signal </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtinitcluster.html">INIT CLUSTER</a></span><span class="refpurpose"> &#8212; Initialize <span class="productname">Slony-I</span> cluster</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstorenode.html">STORE NODE</a></span><span class="refpurpose"> &#8212;  Initialize <span class="productname">Slony-I</span> node </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdropnode.html">DROP NODE</a></span><span class="refpurpose"> &#8212;  Remove the node from participating in the replication </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtuninstallnode.html">UNINSTALL NODE</a></span><span class="refpurpose"> &#8212;  Decommission <span class="productname">Slony-I</span> node </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtrestartnode.html">RESTART NODE</a></span><span class="refpurpose"> &#8212;  Restart <span class="productname">Slony-I</span> node </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstorepath.html">STORE
+     PATH</a></span><span class="refpurpose"> &#8212;  Configure <span class="productname">Slony-I</span> node connection </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdroppath.html">DROP PATH</a></span><span class="refpurpose"> &#8212;  Delete <span class="productname">Slony-I</span> connection information </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstorelisten.html">STORE LISTEN</a></span><span class="refpurpose"> &#8212;  Configure <span class="productname">Slony-I</span> node to
+    indicate where to listen for events </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdroplisten.html">DROP LISTEN</a></span><span class="refpurpose"> &#8212;  Eliminate configuration indicating how
+    <span class="productname">Slony-I</span> node listens for events
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmttableaddkey.html">TABLE ADD KEY</a></span><span class="refpurpose"> &#8212;  Add primary key for use by
+    <span class="productname">Slony-I</span> for a table with no suitable
+    key </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtcreateset.html">CREATE SET</a></span><span class="refpurpose"> &#8212;  Create <span class="productname">Slony-I</span> replication
+    set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdropset.html">DROP SET</a></span><span class="refpurpose"> &#8212;  Discard <span class="productname">Slony-I</span>
+    replication set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtmergeset.html">MERGE
+     SET</a></span><span class="refpurpose"> &#8212;  Merge <span class="productname">Slony-I</span> replication
+    sets together </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetaddtable.html">SET ADD TABLE</a></span><span class="refpurpose"> &#8212;  Add a table to a <span class="productname">Slony-I</span>
+    replication set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetaddsequence.html">SET ADD SEQUENCE</a></span><span class="refpurpose"> &#8212;  Add a sequence to a
+    <span class="productname">Slony-I</span> replication set
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetdroptable.html">SET DROP TABLE</a></span><span class="refpurpose"> &#8212;  Remove a table from a
+    <span class="productname">Slony-I</span> replication set
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetdropsequence.html">SET DROP SEQUENCE</a></span><span class="refpurpose"> &#8212;  Remove a sequence from a
+    <span class="productname">Slony-I</span> replication set
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetmovetable.html">SET MOVE
+     TABLE</a></span><span class="refpurpose"> &#8212;  Move a table from one
+    <span class="productname">Slony-I</span> replication set to another
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsetmovesequence.html">SET MOVE SEQUENCE</a></span><span class="refpurpose"> &#8212;  Move a sequence from one
+    <span class="productname">Slony-I</span> replication set to another
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtstoretrigger.html">STORE TRIGGER</a></span><span class="refpurpose"> &#8212;  Indicate that a trigger should not be disabled by
+    <span class="productname">Slony-I</span> on a subscriber node
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtdroptrigger.html">DROP TRIGGER</a></span><span class="refpurpose"> &#8212;  Return a trigger to default behavior, where it will
+    not fire on subscriber nodes </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtsubscribeset.html">SUBSCRIBE SET</a></span><span class="refpurpose"> &#8212;  Start replication of <span class="productname">Slony-I</span> set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtunsubscribeset.html">UNSUBSCRIBE SET</a></span><span class="refpurpose"> &#8212;  End replication of <span class="productname">Slony-I</span> set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtlockset.html">LOCK SET</a></span><span class="refpurpose"> &#8212;  Guard <span class="productname">Slony-I</span> replication
+    set to prepare for <code class="command">MOVE SET</code>
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtunlockset.html">UNLOCK SET</a></span><span class="refpurpose"> &#8212;  Unlock a <span class="productname">Slony-I</span> set that was locked </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtmoveset.html">MOVE SET</a></span><span class="refpurpose"> &#8212;  Change origin of a <span class="productname">Slony-I</span>
+    replication set </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtfailover.html">FAILOVER</a></span><span class="refpurpose"> &#8212;  Fail a broken replication set over to a backup node
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtddlscript.html">EXECUTE SCRIPT</a></span><span class="refpurpose"> &#8212;  Execute SQL/DDL script  </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtupdatefunctions.html">UPDATE FUNCTIONS</a></span><span class="refpurpose"> &#8212;  Reload stored functions </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtwaitevent.html">WAIT FOR EVENT</a></span><span class="refpurpose"> &#8212;  Have Slonik script wait for previous event to
+    complete </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="stmtrepairconfig.html">REPAIR CONFIG</a></span><span class="refpurpose"> &#8212;  Resets the name-to-oid mapping of tables in a replication set, useful for restoring a node after a <span class="application">pg_dump</span>. </span>
+</dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="article"><a href="supportedplatforms.html"><span class="productname">Slony-I</span> Supported Platforms</a></span></dt>
+<dt><span class="article"><a href="releasechecklist.html"> Release Checklist </a></span></dt>
+<dt><span class="chapter"><a href="schema.html">1. Schema schemadoc</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="schema.html#table.sl-config-lock">1.1.          Table:
+         
+         <code class="structname">sl_config_lock</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-confirm.html">1.2.          Table:
+         
+         <code class="structname">sl_confirm</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-event.html">1.3.          Table:
+         
+         <code class="structname">sl_event</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-listen.html">1.4.          Table:
+         
+         <code class="structname">sl_listen</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-log-1.html">1.5.          Table:
+         
+         <code class="structname">sl_log_1</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-log-2.html">1.6.          Table:
+         
+         <code class="structname">sl_log_2</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-node.html">1.7.          Table:
+         
+         <code class="structname">sl_node</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-nodelock.html">1.8.          Table:
+         
+         <code class="structname">sl_nodelock</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-path.html">1.9.          Table:
+         
+         <code class="structname">sl_path</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-registry.html">1.10.          Table:
+         
+         <code class="structname">sl_registry</code>
+        </a></span></dt>
+<dt><span class="section"><a href="view.sl-seqlastvalue.html">1.11.          View:
+         
+         <code class="structname">sl_seqlastvalue</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-seqlog.html">1.12.          Table:
+         
+         <code class="structname">sl_seqlog</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-sequence.html">1.13.          Table:
+         
+         <code class="structname">sl_sequence</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-set.html">1.14.          Table:
+         
+         <code class="structname">sl_set</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-setsync.html">1.15.          Table:
+         
+         <code class="structname">sl_setsync</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-subscribe.html">1.16.          Table:
+         
+         <code class="structname">sl_subscribe</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-table.html">1.17.          Table:
+         
+         <code class="structname">sl_table</code>
+        </a></span></dt>
+<dt><span class="section"><a href="table.sl-trigger.html">1.18.          Table:
+         
+         <code class="structname">sl_trigger</code>
+        </a></span></dt>
+<dt><span class="section"><a href="function.add-missing-table-field-text-text-text-text.html">1.19.        add_missing_table_field( text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.addpartiallogindices.html">1.20.        addpartiallogindices(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.altertableforreplication-integer.html">1.21.        altertableforreplication( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.altertablerestore-integer.html">1.22.        altertablerestore( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.checkmoduleversion.html">1.23.        checkmoduleversion(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.cleanupevent.html">1.24.        cleanupevent(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.cleanupnodelock.html">1.25.        cleanupnodelock(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.copyfields-integer.html">1.26.        copyfields( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text.html">1.27.        createevent( name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text.html">1.28.        createevent( name, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text.html">1.29.        createevent( name, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text.html">1.30.        createevent( name, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text.html">1.31.        createevent( name, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text.html">1.32.        createevent( name, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text-text.html">1.33.        createevent( name, text, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text-text-text.html">1.34.        createevent( name, text, text, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.createevent-name-text-text-text-text-text-text-text-text-text.html">1.35.        createevent( name, text, text, text, text, text, text, text, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.ddlscript-complete-integer-text-integer.html">1.36.        ddlscript_complete( integer, text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.ddlscript-complete-int-integer-integer.html">1.37.        ddlscript_complete_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.ddlscript-prepare-integer-integer.html">1.38.        ddlscript_prepare( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.ddlscript-prepare-int-integer-integer.html">1.39.        ddlscript_prepare_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.denyaccess.html">1.40.        denyaccess(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineattkindserial-text.html">1.41.        determineattkindserial( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineattkindunique-text-name.html">1.42.        determineattkindunique( text, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineidxnameserial-text.html">1.43.        determineidxnameserial( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.determineidxnameunique-text-name.html">1.44.        determineidxnameunique( text, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.disablenode-integer.html">1.45.        disablenode( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.disablenode-int-integer.html">1.46.        disablenode_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droplisten-integer-integer-integer.html">1.47.        droplisten( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droplisten-int-integer-integer-integer.html">1.48.        droplisten_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropnode-integer.html">1.49.        dropnode( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropnode-int-integer.html">1.50.        dropnode_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droppath-integer-integer.html">1.51.        droppath( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droppath-int-integer-integer.html">1.52.        droppath_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropset-integer.html">1.53.        dropset( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.dropset-int-integer.html">1.54.        dropset_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droptrigger-integer-name.html">1.55.        droptrigger( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.droptrigger-int-integer-name.html">1.56.        droptrigger_int( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablenode-integer.html">1.57.        enablenode( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablenode-int-integer.html">1.58.        enablenode_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablesubscription-integer-integer-integer.html">1.59.        enablesubscription( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.enablesubscription-int-integer-integer-integer.html">1.60.        enablesubscription_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.failednode-integer-integer.html">1.61.        failednode( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.failednode2-integer-integer-integer-bigint-bigint.html">1.62.        failednode2( integer, integer, integer, bigint, bigint )
+      </a></span></dt>
+<dt><span class="section"><a href="function.failoverset-int-integer-integer-integer.html">1.63.        failoverset_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html">1.64.        forwardconfirm( integer, integer, bigint, timestamp without time zone )
+      </a></span></dt>
+<dt><span class="section"><a href="function.generate-sync-event-interval.html">1.65.        generate_sync_event( interval )
+      </a></span></dt>
+<dt><span class="section"><a href="function.getlocalnodeid-name.html">1.66.        getlocalnodeid( name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.getmoduleversion.html">1.67.        getmoduleversion(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.getsessionrole-name.html">1.68.        getsessionrole( name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.initializelocalnode-integer-text.html">1.69.        initializelocalnode( integer, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.killbackend-integer-text.html">1.70.        killbackend( integer, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.lockedset.html">1.71.        lockedset(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.lockset-integer.html">1.72.        lockset( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.logswitch-finish.html">1.73.        logswitch_finish(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.logswitch-start.html">1.74.        logswitch_start(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.logswitch-weekly.html">1.75.        logswitch_weekly(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.logtrigger.html">1.76.        logtrigger(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.mergeset-integer-integer.html">1.77.        mergeset( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.mergeset-int-integer-integer.html">1.78.        mergeset_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.moveset-integer-integer.html">1.79.        moveset( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.moveset-int-integer-integer-integer.html">1.80.        moveset_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.reachablefromnode-integer-integerarray.html">1.81.        reachablefromnode( integer, integer[] )
+      </a></span></dt>
+<dt><span class="section"><a href="function.rebuildlistenentries.html">1.82.        rebuildlistenentries(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.registernodeconnection-integer.html">1.83.        registernodeconnection( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.registry-get-int4-text-integer.html">1.84.        registry_get_int4( text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.registry-get-text-text-text.html">1.85.        registry_get_text( text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.registry-get-timestamp-text-timestamp-without-time-zone.html">1.86.        registry_get_timestamp( text, timestamp without time zone )
+      </a></span></dt>
+<dt><span class="section"><a href="function.registry-set-int4-text-integer.html">1.87.        registry_set_int4( text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.registry-set-text-text-text.html">1.88.        registry_set_text( text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.registry-set-timestamp-text-timestamp-without-time-zone.html">1.89.        registry_set_timestamp( text, timestamp without time zone )
+      </a></span></dt>
+<dt><span class="section"><a href="function.sequencelastvalue-text.html">1.90.        sequencelastvalue( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.sequencesetvalue-integer-integer-bigint-bigint.html">1.91.        sequencesetvalue( integer, integer, bigint, bigint )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddsequence-integer-integer-text-text.html">1.92.        setaddsequence( integer, integer, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddsequence-int-integer-integer-text-text.html">1.93.        setaddsequence_int( integer, integer, text, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddtable-integer-integer-text-name-text.html">1.94.        setaddtable( integer, integer, text, name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setaddtable-int-integer-integer-text-name-text.html">1.95.        setaddtable_int( integer, integer, text, name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdropsequence-integer.html">1.96.        setdropsequence( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdropsequence-int-integer.html">1.97.        setdropsequence_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdroptable-integer.html">1.98.        setdroptable( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setdroptable-int-integer.html">1.99.        setdroptable_int( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovesequence-integer-integer.html">1.100.        setmovesequence( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovesequence-int-integer-integer.html">1.101.        setmovesequence_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovetable-integer-integer.html">1.102.        setmovetable( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setmovetable-int-integer-integer.html">1.103.        setmovetable_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.setsessionrole-name-text.html">1.104.        setsessionrole( name, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slon-quote-brute-text.html">1.105.        slon_quote_brute( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slon-quote-input-text.html">1.106.        slon_quote_input( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversion.html">1.107.        slonyversion(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversionmajor.html">1.108.        slonyversionmajor(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversionminor.html">1.109.        slonyversionminor(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.slonyversionpatchlevel.html">1.110.        slonyversionpatchlevel(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storelisten-integer-integer-integer.html">1.111.        storelisten( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storelisten-int-integer-integer-integer.html">1.112.        storelisten_int( integer, integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storenode-integer-text-boolean.html">1.113.        storenode( integer, text, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storenode-int-integer-text-boolean.html">1.114.        storenode_int( integer, text, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storepath-integer-integer-text-integer.html">1.115.        storepath( integer, integer, text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storepath-int-integer-integer-text-integer.html">1.116.        storepath_int( integer, integer, text, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storeset-integer-text.html">1.117.        storeset( integer, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storeset-int-integer-integer-text.html">1.118.        storeset_int( integer, integer, text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storetrigger-integer-name.html">1.119.        storetrigger( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.storetrigger-int-integer-name.html">1.120.        storetrigger_int( integer, name )
+      </a></span></dt>
+<dt><span class="section"><a href="function.subscribeset-integer-integer-integer-boolean.html">1.121.        subscribeset( integer, integer, integer, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.subscribeset-int-integer-integer-integer-boolean.html">1.122.        subscribeset_int( integer, integer, integer, boolean )
+      </a></span></dt>
+<dt><span class="section"><a href="function.tableaddkey-text.html">1.123.        tableaddkey( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.tabledropkey-integer.html">1.124.        tabledropkey( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.tablehasserialkey-text.html">1.125.        tablehasserialkey( text )
+      </a></span></dt>
+<dt><span class="section"><a href="function.terminatenodeconnections-integer.html">1.126.        terminatenodeconnections( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.uninstallnode.html">1.127.        uninstallnode(  )
+      </a></span></dt>
+<dt><span class="section"><a href="function.unlockset-integer.html">1.128.        unlockset( integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.unsubscribeset-integer-integer.html">1.129.        unsubscribeset( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.unsubscribeset-int-integer-integer.html">1.130.        unsubscribeset_int( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.updaterelname-integer-integer.html">1.131.        updaterelname( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.updatereloid-integer-integer.html">1.132.        updatereloid( integer, integer )
+      </a></span></dt>
+<dt><span class="section"><a href="function.upgradeschema-text.html">1.133.        upgradeschema( text )
+      </a></span></dt>
+</dl></dd>
+</dl>
+</div>
+<div class="list-of-figures">
+<p><b>List of Figures</b></p>
+<dl><dt>1.1. <a href="view.sl-seqlastvalue.html#id2581095">Definition of view sl_seqlastvalue</a>
+</dt></dl>
+</div>
+<div class="list-of-tables">
+<p><b>List of Tables</b></p>
+<dl><dt>1. <a href="supportedplatforms.html#platform-table">Supported Platforms</a>
+</dt></dl>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 24. Failover, Replication, Load Balancing, and Clustering Options</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="admin.html" title="Part III. Server Administration">
+<link rel="prev" href="migration.html" title="23.5. Migration Between Releases">
+<link rel="next" href="warm-standby-using-point-in-time-recovery.html" title="24.2. Warm Standby Using Point-In-Time Recovery">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="failover">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="failover"></a>Chapter 24. Failover, Replication, Load Balancing, and Clustering Options</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="failover.html#shared-disk-failover">24.1. Shared Disk Failover</a></span></dt>
+<dt><span class="sect1"><a href="warm-standby-using-point-in-time-recovery.html">24.2. Warm Standby Using Point-In-Time Recovery</a></span></dt>
+<dt><span class="sect1"><a href="continuously-running-replication-server.html">24.3. Continuously Running Replication Server</a></span></dt>
+<dt><span class="sect1"><a href="data-partitioning.html">24.4. Data Partitioning</a></span></dt>
+<dt><span class="sect1"><a href="query-broadcast-load-balancing.html">24.5. Query Broadcast Load Balancing</a></span></dt>
+<dt><span class="sect1"><a href="clustering-for-load-balancing.html">24.6. Clustering For Load Balancing</a></span></dt>
+<dt><span class="sect1"><a href="clustering-for-parallel-query-execution.html">24.7. Clustering For Parallel Query Execution</a></span></dt>
+<dt><span class="sect1"><a href="commercial-solutions.html">24.8. Commercial Solutions</a></span></dt>
+</dl>
+</div>
+<a name="id2649924"></a><a name="id2649930"></a><a name="id2649936"></a><a name="id2649942"></a><p>  Database servers can work together to allow a backup server to
+  quickly take over if the primary server fails (failover), or to
+  allow several computers to serve the same data (load balancing).
+  Ideally, database servers could work together seamlessly.  Web
+  servers serving static web pages can be combined quite easily by
+  merely load-balancing web requests to multiple machines.  In
+  fact, read-only database servers can be combined relatively easily
+  too.  Unfortunately, most database servers have a read/write mix
+  of requests, and read/write servers are much harder to combine.
+  This is because though read-only data needs to be placed on each
+  server only once, a write to any server has to be propagated to
+  all servers so that future read requests to those servers return
+  consistent results.
+ </p>
+<p>  This synchronization problem is the fundamental difficulty for servers
+  working together.  Because there is no single solution that eliminates
+  the impact of the sync problem for all use cases, there are multiple
+  solutions.  Each solution addresses this problem in a different way, and
+  minimizes its impact for a specific workload.
+ </p>
+<p>  Some failover and load balancing solutions are synchronous, meaning that
+  a data-modifying transaction is not considered committed until all
+  servers have committed the transaction.  This guarantees that a failover
+  will not lose any data and that all load-balanced servers will return
+  consistent results with no propagation delay. Asynchronous updating has
+  a small delay between the time of commit and its propagation to the
+  other servers, opening the possibility that some transactions might be
+  lost in the switch to a backup server, and that load balanced servers
+  might return slightly stale results.  Asynchronous communication is used
+  when synchronous would be too slow.
+ </p>
+<p>  Solutions can also be categorized by their granularity.  Some solutions
+  can deal only with an entire database server, while others allow control
+  at the per-table or per-database level.
+ </p>
+<p>  Performance must be considered in any failover or load balancing
+  choice.  There is usually a tradeoff between functionality and
+  performance.  For example, a full synchronous solution over a slow
+  network might cut performance by more than half, while an asynchronous
+  one might have a minimal performance impact.
+ </p>
+<p>  The remainder of this section outlines various failover, replication,
+  and load balancing solutions.
+ </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="shared-disk-failover"></a>24.1. Shared Disk Failover</h2></div></div></div>
+<p>   Shared disk failover avoids synchronization overhead by having only one
+   copy of the database.  It uses a single disk array that is shared by
+   multiple servers.  If the main database server fails, the backup server
+   is able to mount and start the database as though it was recovering from
+   a database crash.  This allows rapid failover with no data loss.
+  </p>
+<p>   Shared hardware functionality is common in network storage devices.  One
+   significant limitation of this method is that if the shared disk array
+   fails or becomes corrupt, the primary and backup servers are both
+   nonfunctional.
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>TRUNCATE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-start-transaction.html" title="START TRANSACTION">
+<link rel="next" href="sql-unlisten.html" title="UNLISTEN">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-truncate"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>TRUNCATE &#8212; empty a table or set of tables</p>
+</div>
+<a name="id2772517"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">TRUNCATE [ TABLE ] <em class="replaceable"><code>name</code></em> [, ...] [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2772538"></a><h2>Description</h2>
+<p>   <code class="command">TRUNCATE</code> quickly removes all rows from a set of
+   tables. It has the same effect as an unqualified
+   <code class="command">DELETE</code> on each table, but since it does not actually
+   scan the tables it is faster. This is most useful on large tables.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2772559"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of a table to be truncated.
+     </p></dd>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
+<dd><p>      Automatically truncate all tables that have foreign-key references
+      to any of the named tables, or to any tables added to the group
+      due to <code class="literal">CASCADE</code>.
+     </p></dd>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
+<dd><p>      Refuse to truncate if any of the tables have foreign-key references
+      from tables that are not to be truncated.  This is the default.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2772607"></a><h2>Notes</h2>
+<p>   Only the owner of a table may <code class="command">TRUNCATE</code> it.
+  </p>
+<p>   <code class="command">TRUNCATE</code> cannot be used on a table that has foreign-key
+   references from other tables, unless all such tables are also truncated
+   in the same command.  Checking validity in such cases would require table
+   scans, and the whole point is not to do one.  The <code class="literal">CASCADE</code>
+   option can be used to automatically include all dependent tables &#8212;
+   but be very careful when using this option, else you might lose data you
+   did not intend to!
+  </p>
+<p>   <code class="command">TRUNCATE</code> will not run any user-defined <code class="literal">ON
+   DELETE</code> triggers that might exist for the tables.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2772656"></a><h2>Examples</h2>
+<p>   Truncate the tables <code class="literal">bigtable</code> and <code class="literal">fattable</code>:
+
+</p>
+<pre class="programlisting">TRUNCATE TABLE bigtable, fattable;</pre>
+<p>
+  </p>
+<p>   Truncate the table <code class="literal">othertable</code>, and cascade to any tables
+   that are referencing <code class="literal">othertable</code> via foreign-key
+   constraints:
+
+</p>
+<pre class="programlisting">TRUNCATE othertable CASCADE;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2772702"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">TRUNCATE</code> command in the SQL standard.
+  </p>
+</div>
+</div></body>
+</html>

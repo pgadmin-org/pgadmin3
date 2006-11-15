@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>MERGE SET</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtdropset.html" title="DROP SET">
+<link rel="next" href="stmtsetaddtable.html" title="SET ADD TABLE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtmergeset"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>MERGE SET &#8212;  Merge <span class="productname">Slony-I</span> replication
+    sets together </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">MERGE SET (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575828"></a><h2>Description</h2>
+<p> Merge a set of tables and sequences into another one. This
+    function is a workaround for the problem that it is not possible
+    to add tables/sequences to already-subscribed sets. One may create
+    a temporary set, add the new objects to that, subscribe all nodes
+    currently subscribed to the other set to this new one, and then
+    merge the two together, eliminating the set ID that was being
+    added.
+    </p>
+<p>     This operation will refuse to be run if the two sets do not have
+     <span class="emphasis"><em>exactly</em></span> the same set of subscribers.
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
+<dd><p> Unique ID of the set to contain the union of the two separate sets.</p></dd>
+<dt><span class="term"><code class="literal"> ADD ID = ival </code></span></dt>
+<dd><p> Unique ID of the set whose objects should be transferred.  </p></dd>
+<dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
+<dd><p> Current origin node for both sets.  </p></dd>
+</dl></div>
+<p> This uses <a href="function.mergeset-integer-integer.html">schemadocmergeset( integer, integer )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575893"></a><h2>Example</h2>
+<pre class="programlisting">     MERGE SET ( ID = 2, 
+     ADD ID = 9999,
+     ORIGIN = 1 );
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575902"></a><h2> Locking Behaviour </h2>
+<p> No application-visible locking should take place. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575909"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0.5 </p>
+</div>
+</div></body>
+</html>

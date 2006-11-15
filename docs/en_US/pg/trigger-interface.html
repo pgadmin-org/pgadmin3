@@ -1,0 +1,183 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>34.3. Writing Trigger Functions in C</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="triggers.html" title="Chapter 34. Triggers">
+<link rel="prev" href="trigger-datachanges.html" title="34.2. Visibility of Data Changes">
+<link rel="next" href="trigger-example.html" title="34.4. A Complete Example">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="trigger-interface"></a>34.3. Writing Trigger Functions in C</h2></div></div></div>
+<a name="id2699684"></a><p>    This section describes the low-level details of the interface to a
+    trigger function.  This information is only needed when writing
+    trigger functions in C.  If you are using a higher-level language then
+    these details are handled for you.  In most cases you should consider
+    using a procedural language before writing your triggers in C.  The
+    documentation of each procedural language explains how to write a
+    trigger in that language.
+   </p>
+<p>    Trigger functions must use the &#8220;<span class="quote">version 1</span>&#8221; function manager
+    interface.
+   </p>
+<p>    When a function is called by the trigger manager, it is not passed
+    any normal arguments, but it is passed a &#8220;<span class="quote">context</span>&#8221;
+    pointer pointing to a <code class="structname">TriggerData</code> structure.  C
+    functions can check whether they were called from the trigger
+    manager or not by executing the macro
+</p>
+<pre class="programlisting">CALLED_AS_TRIGGER(fcinfo)</pre>
+<p>
+    which expands to
+</p>
+<pre class="programlisting">((fcinfo)-&gt;context != NULL &amp;&amp; IsA((fcinfo)-&gt;context, TriggerData))</pre>
+<p>
+    If this returns true, then it is safe to cast
+    <code class="literal">fcinfo-&gt;context</code> to type <code class="literal">TriggerData
+    *</code> and make use of the pointed-to
+    <code class="structname">TriggerData</code> structure.  The function must
+    <span class="emphasis"><em>not</em></span> alter the <code class="structname">TriggerData</code>
+    structure or any of the data it points to.
+   </p>
+<p>    <code class="structname">struct TriggerData</code> is defined in
+    <code class="filename">commands/trigger.h</code>:
+
+</p>
+<pre class="programlisting">typedef struct TriggerData
+{
+    NodeTag       type;
+    TriggerEvent  tg_event;
+    Relation      tg_relation;
+    HeapTuple     tg_trigtuple;
+    HeapTuple     tg_newtuple;
+    Trigger      *tg_trigger;
+    Buffer        tg_trigtuplebuf;
+    Buffer        tg_newtuplebuf;
+} TriggerData;</pre>
+<p>
+
+    where the members are defined as follows:
+
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="structfield">type</code></span></dt>
+<dd><p>        Always <code class="literal">T_TriggerData</code>.
+       </p></dd>
+<dt><span class="term"><code class="structfield">tg_event</code></span></dt>
+<dd>
+<p>        Describes the event for which the function is called. You may use the
+        following macros to examine <code class="literal">tg_event</code>:
+
+        </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">TRIGGER_FIRED_BEFORE(tg_event)</code></span></dt>
+<dd><p>            Returns true if the trigger fired before the operation.
+           </p></dd>
+<dt><span class="term"><code class="literal">TRIGGER_FIRED_AFTER(tg_event)</code></span></dt>
+<dd><p>            Returns true if the trigger fired after the operation.
+           </p></dd>
+<dt><span class="term"><code class="literal">TRIGGER_FIRED_FOR_ROW(tg_event)</code></span></dt>
+<dd><p>            Returns true if the trigger fired for a row-level event.
+           </p></dd>
+<dt><span class="term"><code class="literal">TRIGGER_FIRED_FOR_STATEMENT(tg_event)</code></span></dt>
+<dd><p>            Returns true if the trigger fired for a statement-level event.
+           </p></dd>
+<dt><span class="term"><code class="literal">TRIGGER_FIRED_BY_INSERT(tg_event)</code></span></dt>
+<dd><p>            Returns true if the trigger was fired by an <code class="command">INSERT</code> command.
+           </p></dd>
+<dt><span class="term"><code class="literal">TRIGGER_FIRED_BY_UPDATE(tg_event)</code></span></dt>
+<dd><p>            Returns true if the trigger was fired by an <code class="command">UPDATE</code> command.
+           </p></dd>
+<dt><span class="term"><code class="literal">TRIGGER_FIRED_BY_DELETE(tg_event)</code></span></dt>
+<dd><p>            Returns true if the trigger was fired by a <code class="command">DELETE</code> command.
+           </p></dd>
+</dl></div>
+<p>
+       </p>
+</dd>
+<dt><span class="term"><code class="structfield">tg_relation</code></span></dt>
+<dd><p>        A pointer to a structure describing the relation that the trigger fired for.
+        Look at <code class="filename">utils/rel.h</code> for details about
+        this structure.  The most interesting things are
+        <code class="literal">tg_relation-&gt;rd_att</code> (descriptor of the relation
+        tuples) and <code class="literal">tg_relation-&gt;rd_rel-&gt;relname</code>
+        (relation name; the type is not <code class="type">char*</code> but
+        <code class="type">NameData</code>; use
+        <code class="literal">SPI_getrelname(tg_relation)</code> to get a <code class="type">char*</code> if you
+        need a copy of the name).
+       </p></dd>
+<dt><span class="term"><code class="structfield">tg_trigtuple</code></span></dt>
+<dd><p>        A pointer to the row for which the trigger was fired. This is
+        the row being inserted, updated, or deleted.  If this trigger
+        was fired for an <code class="command">INSERT</code> or
+        <code class="command">DELETE</code> then this is what you should return
+        from the function if you don't want to replace the row with
+        a different one (in the case of <code class="command">INSERT</code>) or
+        skip the operation.
+       </p></dd>
+<dt><span class="term"><code class="structfield">tg_newtuple</code></span></dt>
+<dd><p>        A pointer to the new version of the row, if the trigger was
+        fired for an <code class="command">UPDATE</code>, and <code class="symbol">NULL</code> if
+        it is for an <code class="command">INSERT</code> or a
+        <code class="command">DELETE</code>. This is what you have to return
+        from the function if the event is an <code class="command">UPDATE</code>
+        and you don't want to replace this row by a different one or
+        skip the operation.
+       </p></dd>
+<dt><span class="term"><code class="structfield">tg_trigger</code></span></dt>
+<dd>
+<p>        A pointer to a structure of type <code class="structname">Trigger</code>,
+        defined in <code class="filename">utils/rel.h</code>:
+
+</p>
+<pre class="programlisting">typedef struct Trigger
+{
+    Oid         tgoid;
+    char       *tgname;
+    Oid         tgfoid;
+    int16       tgtype;
+    bool        tgenabled;
+    bool        tgisconstraint;
+    Oid         tgconstrrelid;
+    bool        tgdeferrable;
+    bool        tginitdeferred;
+    int16       tgnargs;
+    int16       tgnattr;
+    int16      *tgattr;
+    char      **tgargs;
+} Trigger;</pre>
+<p>
+
+       where <code class="structfield">tgname</code> is the trigger's name,
+       <code class="structfield">tgnargs</code> is number of arguments in
+       <code class="structfield">tgargs</code>, and <code class="structfield">tgargs</code> is an array of
+       pointers to the arguments specified in the <code class="command">CREATE
+       TRIGGER</code> statement. The other members are for internal use
+       only.
+       </p>
+</dd>
+<dt><span class="term"><code class="structfield">tg_trigtuplebuf</code></span></dt>
+<dd><p>        The buffer containing <code class="structfield">tg_trigtuple</code>, or <code class="symbol">InvalidBuffer</code> if there
+        is no such tuple or it is not stored in a disk buffer.
+       </p></dd>
+<dt><span class="term"><code class="structfield">tg_newtuplebuf</code></span></dt>
+<dd><p>        The buffer containing <code class="structfield">tg_newtuple</code>, or <code class="symbol">InvalidBuffer</code> if there
+        is no such tuple or it is not stored in a disk buffer.
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+<p>    A trigger function must return either a
+    <code class="structname">HeapTuple</code> pointer or a <code class="symbol">NULL</code> pointer
+    (<span class="emphasis"><em>not</em></span> an SQL null value, that is, do not set <em class="parameter"><code>isNull</code></em> true).
+    Be careful to return either
+    <code class="structfield">tg_trigtuple</code> or <code class="structfield">tg_newtuple</code>,
+    as appropriate, if you don't want to modify the row being operated on.
+   </p>
+</div></body>
+</html>

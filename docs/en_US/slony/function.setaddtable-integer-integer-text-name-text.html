@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.94.  setaddtable( integer, integer, text, name, text )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.setaddsequence-int-integer-integer-text-text.html" title="1.93.  setaddsequence_int( integer, integer, text, text )">
+<link rel="next" href="function.setaddtable-int-integer-integer-text-name-text.html" title="1.95.  setaddtable_int( integer, integer, text, name, text )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.setaddtable-integer-integer-text-name-text"></a>1.94.        setaddtable( integer, integer, text, name, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       setAddTable (set_id, tab_id, tab_fqname, tab_idxname, tab_comment)
+
+Add table tab_fqname to replication set on origin node, and generate
+SET_ADD_TABLE event to allow this to propagate to other nodes.
+
+Note that the table id, tab_id, must be unique ACROSS ALL SETS.
+        </p>
+<pre class="programlisting">declare
+	p_set_id			alias for $1;
+	p_tab_id			alias for $2;
+	p_fqname			alias for $3;
+	p_tab_idxname		alias for $4;
+	p_tab_comment		alias for $5;
+	v_set_origin		int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Check that we are the origin of the set
+	-- ----
+	select set_origin into v_set_origin
+			from sl_set
+			where set_id = p_set_id;
+	if not found then
+		raise exception 'Slony-I: setAddTable(): set % not found', p_set_id;
+	end if;
+	if v_set_origin != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: setAddTable(): set % has remote origin', p_set_id;
+	end if;
+
+	if exists (select true from sl_subscribe
+			where sub_set = p_set_id)
+	then
+		raise exception 'Slony-I: cannot add table to currently subscribed set %',
+				p_set_id;
+	end if;
+
+	-- ----
+	-- Add the table to the set and generate the SET_ADD_TABLE event
+	-- ----
+	perform setAddTable_int(p_set_id, p_tab_id, p_fqname,
+			p_tab_idxname, p_tab_comment);
+	return  createEvent('_schemadoc', 'SET_ADD_TABLE',
+			p_set_id, p_tab_id, p_fqname,
+			p_tab_idxname, p_tab_comment);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

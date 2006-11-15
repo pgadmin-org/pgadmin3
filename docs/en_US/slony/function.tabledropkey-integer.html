@@ -1,0 +1,79 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.124.  tabledropkey( integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.tableaddkey-text.html" title="1.123.  tableaddkey( text )">
+<link rel="next" href="function.tablehasserialkey-text.html" title="1.125.  tablehasserialkey( text )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.tabledropkey-integer"></a>1.124.        tabledropkey( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       tableDropKey (tab_id)
+
+If the specified table has a column "_Slony-I_&lt;clustername&gt;_rowID",
+then drop it.
+        </p>
+<pre class="programlisting">declare
+	p_tab_id		alias for $1;
+	v_tab_fqname	text;
+	v_tab_oid		oid;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Construct the tables fully qualified name and get its oid
+	-- ----
+	select slon_quote_brute(PGN.nspname) || '.' ||
+				slon_quote_brute(PGC.relname),
+				PGC.oid into v_tab_fqname, v_tab_oid
+			from sl_table T,
+				"pg_catalog".pg_class PGC,
+				"pg_catalog".pg_namespace PGN
+			where T.tab_id = p_tab_id
+				and T.tab_reloid = PGC.oid
+				and PGC.relnamespace = PGN.oid;
+	if not found then
+		raise exception 'Slony-I: tableDropKey(): table with ID % not found', p_tab_id;
+	end if;
+
+	-- ----
+	-- Drop the special serial ID column if the table has it
+	-- ----
+	if exists (select true from "pg_catalog".pg_attribute
+			where attrelid = v_tab_oid
+				and attname = '_Slony-I_schemadoc_rowID')
+	then
+		execute 'lock table ' || v_tab_fqname ||
+				' in access exclusive mode';
+		execute 'alter table ' || v_tab_fqname ||
+				' drop column "_Slony-I_schemadoc_rowID"';
+	end if;
+
+	return p_tab_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

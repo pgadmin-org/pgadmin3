@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.28. Release 7.4.4</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4-5.html" title="E.27. Release 7.4.5">
+<link rel="next" href="release-7-4-3.html" title="E.29. Release 7.4.3">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-4-4"></a>E.28. Release 7.4.4</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2004-08-16</p>
+</div>
+<p>    This release contains a variety of fixes from 7.4.3.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2857224"></a>E.28.1. Migration to version 7.4.4</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.4.X.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2857231"></a>E.28.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Prevent possible loss of committed transactions during crash</p>
+<p>Due to insufficient interlocking between transaction commit and checkpointing,
+it was possible for transactions committed just before the most recent
+checkpoint to be lost, in whole or in part, following a database crash and
+restart.  This is a serious bug that has existed
+since <span class="productname">PostgreSQL</span> 7.1.</p>
+</li>
+<li><p>Check HAVING restriction before evaluating result list of an
+aggregate plan</p></li>
+<li><p>Avoid crash when session's current user ID is deleted</p></li>
+<li><p>Fix hashed crosstab for zero-rows case (Joe)</p></li>
+<li><p>Force cache update after renaming a column in a foreign key</p></li>
+<li><p>Pretty-print UNION queries correctly</p></li>
+<li><p>Make psql handle <code class="literal">\r\n</code> newlines properly in COPY IN</p></li>
+<li><p><span class="application">pg_dump</span> handled ACLs with grant options incorrectly</p></li>
+<li><p>Fix thread support for OS X and Solaris</p></li>
+<li><p>Updated JDBC driver (build 215) with various fixes</p></li>
+<li><p>ECPG fixes</p></li>
+<li><p>Translation updates (various contributors)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

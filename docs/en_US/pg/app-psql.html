@@ -1,0 +1,1900 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>psql</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="prev" href="app-pgrestore.html" title="pg_restore">
+<link rel="next" href="app-reindexdb.html" title="reindexdb">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-psql"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p><span class="application">psql</span> &#8212;       <span class="productname">PostgreSQL</span> interactive terminal
+    </p>
+</div>
+<a name="id2783412"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">psql</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>
+    [<em class="replaceable"><code>username</code></em>]]</p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2783460"></a><h2>Description</h2>
+<p>     <span class="application">psql</span> is a terminal-based front-end to
+     <span class="productname">PostgreSQL</span>. It enables you to type in
+     queries interactively, issue them to
+     <span class="productname">PostgreSQL</span>, and see the query results.
+     Alternatively, input can be from a file. In addition, it provides a
+     number of meta-commands and various shell-like features to
+     facilitate writing scripts and automating a wide variety of tasks.
+    </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="r1-app-psql-3"></a><h2>Options</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-a</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--echo-all</code></span>
+</dt>
+<dd><p>      Print all input lines to standard output as they are read. This is more
+      useful for script processing rather than interactive mode. This is
+      equivalent to setting the variable <code class="varname">ECHO</code> to
+      <code class="literal">all</code>.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-A</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--no-align</code></span>
+</dt>
+<dd><p>      Switches to unaligned output mode. (The default output mode is
+      otherwise aligned.)
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-c <em class="replaceable"><code>command</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--command <em class="replaceable"><code>command</code></em></code></span>
+</dt>
+<dd>
+<p>      Specifies that <span class="application">psql</span> is to execute one
+      command string, <em class="replaceable"><code>command</code></em>,
+      and then exit. This is useful in shell scripts.
+      </p>
+<p>      <em class="replaceable"><code>command</code></em> must be either
+      a command string that is completely parsable by the server (i.e.,
+      it contains no <span class="application">psql</span> specific features),
+      or a single backslash command. Thus you cannot mix
+      <acronym class="acronym">SQL</acronym> and <span class="application">psql</span>
+      meta-commands. To achieve that, you could pipe the string into
+      <span class="application">psql</span>, like this: <code class="literal">echo "\x \\
+      select * from foo;" | psql</code>.
+      </p>
+<p>       If the command string contains multiple SQL commands, they are
+       processed in a single transaction, unless there are explicit
+       <code class="command">BEGIN</code>/<code class="command">COMMIT</code> commands included in the
+       string to divide it into multiple transactions.  This is
+       different from the behavior when the same string is fed to
+       <span class="application">psql</span>'s standard input.
+      </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-d <em class="replaceable"><code>dbname</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--dbname <em class="replaceable"><code>dbname</code></em></code></span>
+</dt>
+<dd><p>      Specifies the name of the database to connect to. This is
+      equivalent to specifying <em class="replaceable"><code>dbname</code></em> as the first non-option
+      argument on the command line.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-e</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--echo-queries</code></span>
+</dt>
+<dd><p>      Copy all SQL commands sent to the server to standard output as well.
+      This is equivalent
+      to setting the variable <code class="varname">ECHO</code> to
+      <code class="literal">queries</code>.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-E</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--echo-hidden</code></span>
+</dt>
+<dd><p>      Echo the actual queries generated by <code class="command">\d</code> and other backslash
+      commands. You can use this to study <span class="application">psql</span>'s
+      internal operations. This is equivalent to
+      setting the variable <code class="varname">ECHO_HIDDEN</code> from within
+      <span class="application">psql</span>.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-f <em class="replaceable"><code>filename</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--file <em class="replaceable"><code>filename</code></em></code></span>
+</dt>
+<dd>
+<p>      Use the file <em class="replaceable"><code>filename</code></em>
+      as the source of commands instead of reading commands interactively.
+      After the file is processed, <span class="application">psql</span>
+      terminates. This is in many ways equivalent to the internal
+      command <code class="command">\i</code>.
+      </p>
+<p>       If <em class="replaceable"><code>filename</code></em> is <code class="literal">-</code>
+       (hyphen), then standard input is read.
+      </p>
+<p>      Using this option is subtly different from writing <code class="literal">psql
+      &lt; <em class="replaceable"><code>filename</code></em></code>. In general,
+      both will do what you expect, but using <code class="literal">-f</code>
+      enables some nice features such as error messages with line
+      numbers. There is also a slight chance that using this option will
+      reduce the start-up overhead. On the other hand, the variant using
+      the shell's input redirection is (in theory) guaranteed to yield
+      exactly the same output that you would have gotten had you entered
+      everything by hand.
+      </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-F <em class="replaceable"><code>separator</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--field-separator <em class="replaceable"><code>separator</code></em></code></span>
+</dt>
+<dd><p>      Use <em class="replaceable"><code>separator</code></em> as the
+      field separator for unaligned output. This is equivalent to
+      <code class="command">\pset fieldsep</code> or <code class="command">\f</code>.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-h <em class="replaceable"><code>hostname</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--host <em class="replaceable"><code>hostname</code></em></code></span>
+</dt>
+<dd><p>      Specifies the host name of the machine on which the
+      server is running. If the value begins
+      with a slash, it is used as the directory for the Unix-domain
+      socket.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-H</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--html</code></span>
+</dt>
+<dd><p>      Turn on <acronym class="acronym">HTML</acronym> tabular output. This is
+      equivalent to <code class="literal">\pset format html</code> or the
+      <code class="command">\H</code> command.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-l</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--list</code></span>
+</dt>
+<dd><p>      List all available databases, then exit. Other non-connection
+      options are ignored. This is similar to the internal command
+      <code class="command">\list</code>.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-L <em class="replaceable"><code>filename</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--log-file <em class="replaceable"><code>filename</code></em></code></span>
+</dt>
+<dd><p>       Write all query output into file <em class="replaceable"><code>filename</code></em>, in addition to the
+       normal output destination.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-o <em class="replaceable"><code>filename</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--output <em class="replaceable"><code>filename</code></em></code></span>
+</dt>
+<dd><p>      Put all query output into file <em class="replaceable"><code>filename</code></em>. This is equivalent to
+      the command <code class="command">\o</code>.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-p <em class="replaceable"><code>port</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--port <em class="replaceable"><code>port</code></em></code></span>
+</dt>
+<dd><p>      Specifies the TCP port or the local Unix-domain
+      socket file extension on which the server is listening for
+      connections. Defaults to the value of the <code class="envar">PGPORT</code>
+      environment variable or, if not set, to the port specified at
+      compile time, usually 5432.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-P <em class="replaceable"><code>assignment</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--pset <em class="replaceable"><code>assignment</code></em></code></span>
+</dt>
+<dd><p>      Allows you to specify printing options in the style of
+      <code class="command">\pset</code> on the command line. Note that here you
+      have to separate name and value with an equal sign instead of a
+      space. Thus to set the output format to LaTeX, you could write
+      <code class="literal">-P format=latex</code>.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-q</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--quiet</code></span>
+</dt>
+<dd><p>      Specifies that <span class="application">psql</span> should do its work
+      quietly. By default, it prints welcome messages and various
+      informational output. If this option is used, none of this
+      happens. This is useful with the <code class="option">-c</code> option.
+      Within <span class="application">psql</span> you can also set the
+      <code class="varname">QUIET</code> variable to achieve the same effect.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-R <em class="replaceable"><code>separator</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--record-separator <em class="replaceable"><code>separator</code></em></code></span>
+</dt>
+<dd><p>      Use <em class="replaceable"><code>separator</code></em> as the
+      record separator for unaligned output. This is equivalent to the
+      <code class="command">\pset recordsep</code> command.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-s</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--single-step</code></span>
+</dt>
+<dd><p>      Run in single-step mode. That means the user is prompted before
+      each command is sent to the server, with the option to cancel
+      execution as well. Use this to debug scripts.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-S</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--single-line</code></span>
+</dt>
+<dd>
+<p>      Runs in single-line mode where a newline terminates an SQL command, as a
+      semicolon does.
+      </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>      This mode is provided for those who insist on it, but you are not
+      necessarily encouraged to use it. In particular, if you mix
+      <acronym class="acronym">SQL</acronym> and meta-commands on a line the order of
+      execution might not always be clear to the inexperienced user.
+      </p>
+</div>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-t</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--tuples-only</code></span>
+</dt>
+<dd><p>      Turn off printing of column names and result row count footers,
+      etc. This is equivalent to the <code class="command">\t</code> command.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-T <em class="replaceable"><code>table_options</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--table-attr <em class="replaceable"><code>table_options</code></em></code></span>
+</dt>
+<dd><p>      Allows you to specify options to be placed within the
+      <acronym class="acronym">HTML</acronym> <code class="sgmltag-element">table</code> tag. See
+      <code class="command">\pset</code> for details.
+      </p></dd>
+<dt><span class="term"><code class="option">-u</code></span></dt>
+<dd>
+<p>      Forces <span class="application">psql</span> to prompt for the user name and
+      password before connecting to the database.
+      </p>
+<p>      This option is deprecated, as it is conceptually flawed.
+      (Prompting for a non-default user name and prompting for a
+      password because the server requires it are really two different
+      things.) You are encouraged to look at the <code class="option">-U</code> and
+      <code class="option">-W</code> options instead.
+      </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-U <em class="replaceable"><code>username</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--username <em class="replaceable"><code>username</code></em></code></span>
+</dt>
+<dd><p>      Connect to the database as the user <em class="replaceable"><code>username</code></em> instead of the default.
+      (You must have permission to do so, of course.)
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-v <em class="replaceable"><code>assignment</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--set <em class="replaceable"><code>assignment</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--variable <em class="replaceable"><code>assignment</code></em></code></span>
+</dt>
+<dd><p>      Perform a variable assignment, like the <code class="command">\set</code>
+      internal command. Note that you must separate name and value, if
+      any, by an equal sign on the command line. To unset a variable,
+      leave off the equal sign. To just set a variable without a value,
+      use the equal sign but leave off the value. These assignments are
+      done during a very early stage of start-up, so variables reserved
+      for internal purposes might get overwritten later.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-V</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--version</code></span>
+</dt>
+<dd><p>      Print the <span class="application">psql</span> version and exit.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-W</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--password</code></span>
+</dt>
+<dd>
+<p>      Forces <span class="application">psql</span> to prompt for a
+      password before connecting to a database.  
+      </p>
+<p>      <span class="application">psql</span> should automatically prompt for a
+      password whenever the server requests password authentication.
+      However, currently password request detection is not totally
+      reliable, hence this option to force a prompt. If no password
+      prompt is issued and the server requires password authentication,
+      the connection attempt will fail.
+      </p>
+<p>      This option will remain set for the entire session, even if you
+      change the database connection with the meta-command
+      <code class="command">\connect</code>.
+      </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-x</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--expanded</code></span>
+</dt>
+<dd><p>      Turn on the expanded table formatting mode. This is equivalent to the
+      <code class="command">\x</code> command.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-X,</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--no-psqlrc</code></span>
+</dt>
+<dd><p>      Do not read the start-up file (neither the system-wide
+      <code class="filename">psqlrc</code> file nor the user's
+      <code class="filename">~/.psqlrc</code> file).
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-1</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--single-transaction</code></span>
+</dt>
+<dd>
+<p>        When <span class="application">psql</span> executes a script with the
+        <code class="option">-f</code> option, adding this option wraps
+        <code class="command">BEGIN</code>/<code class="command">COMMIT</code> around the script to execute it
+        as a single transaction.  This ensures that either all the commands
+        complete successfully, or no changes are applied.  
+       </p>
+<p>        If the script itself uses <code class="command">BEGIN</code>, <code class="command">COMMIT</code>,
+        or <code class="command">ROLLBACK</code>, this option will not have the desired
+        effects.
+        Also, if the script contains any command that cannot be executed
+        inside a transaction block, specifying this option will cause that
+        command (and hence the whole transaction) to fail.
+       </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-?</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--help</code></span>
+</dt>
+<dd><p>      Show help about <span class="application">psql</span> command line
+      arguments, and exit.
+      </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2784487"></a><h2>Exit Status</h2>
+<p>   <span class="application">psql</span> returns 0 to the shell if it
+   finished normally, 1 if a fatal error of its own (out of memory,
+   file not found) occurs, 2 if the connection to the server went bad
+   and the session was not interactive, and 3 if an error occurred in a
+   script and the variable <code class="varname">ON_ERROR_STOP</code> was set.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2784507"></a><h2>Usage</h2>
+<div class="refsect2" lang="en">
+<a name="r2-app-psql-connecting"></a><h3>Connecting To A Database</h3>
+<p>    <span class="application">psql</span> is a regular
+    <span class="productname">PostgreSQL</span> client application. In order
+    to connect to a database you need to know the name of your target
+    database, the host name and port number of the server and what user
+    name you want to connect as. <span class="application">psql</span> can be
+    told about those parameters via command line options, namely
+    <code class="option">-d</code>, <code class="option">-h</code>, <code class="option">-p</code>, and
+    <code class="option">-U</code> respectively. If an argument is found that does
+    not belong to any option it will be interpreted as the database name
+    (or the user name, if the database name is already given). Not all
+    these options are required; there are useful defaults. If you omit the host
+    name, <span class="application">psql</span> will connect via a Unix-domain socket
+    to a server on the local host, or via TCP/IP to <code class="literal">localhost</code> on
+    machines that don't have Unix-domain sockets. The default port number is
+    determined at compile time.
+    Since the database server uses the same default, you will not have
+    to specify the port in most cases. The default user name is your
+    Unix user name, as is the default database name. Note that you can't
+    just connect to any database under any user name. Your database
+    administrator should have informed you about your access rights.
+    </p>
+<p>    When the defaults aren't quite right, you can save yourself
+    some typing by setting the environment variables
+    <code class="envar">PGDATABASE</code>, <code class="envar">PGHOST</code>,
+    <code class="envar">PGPORT</code> and/or <code class="envar">PGUSER</code> to appropriate
+    values. (For additional environment variables, see <a href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>.) It is also convenient to have a
+    <code class="filename">~/.pgpass</code> file to avoid regularly having to type in
+    passwords. See <a href="libpq-pgpass.html" title="29.13. The Password File">Section 29.13, &#8220;The Password File&#8221;</a> for more information.
+    </p>
+<p>    If the connection could not be made for any reason (e.g., insufficient
+    privileges, server is not running on the targeted host, etc.),
+    <span class="application">psql</span> will return an error and terminate.
+    </p>
+</div>
+<div class="refsect2" lang="en">
+<a name="r2-app-psql-4"></a><h3>Entering SQL Commands</h3>
+<p>    In normal operation, <span class="application">psql</span> provides a
+    prompt with the name of the database to which
+    <span class="application">psql</span> is currently connected, followed by
+    the string <code class="literal">=&gt;</code>. For example,
+</p>
+<pre class="programlisting">$ <strong class="userinput"><code>psql testdb</code></strong>
+Welcome to psql 8.2beta3, the PostgreSQL interactive terminal.
+
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help with psql commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+
+testdb=&gt;</pre>
+<p>
+    </p>
+<p>    At the prompt, the user may type in <acronym class="acronym">SQL</acronym> commands.
+    Ordinarily, input lines are sent to the server when a
+    command-terminating semicolon is reached. An end of line does not
+    terminate a command.  Thus commands can be spread over several lines for
+    clarity. If the command was sent and executed without error, the results
+    of the command are displayed on the screen.
+    </p>
+<p>    Whenever a command is executed, <span class="application">psql</span> also polls
+    for asynchronous notification events generated by
+    <a href="sql-listen.html">LISTEN</a> and
+    <a href="sql-notify.html">NOTIFY</a>.
+    </p>
+</div>
+<div class="refsect2" lang="en">
+<a name="id2784724"></a><h3>Meta-Commands</h3>
+<p>    Anything you enter in <span class="application">psql</span> that begins
+    with an unquoted backslash is a <span class="application">psql</span>
+    meta-command that is processed by <span class="application">psql</span>
+    itself. These commands help make
+    <span class="application">psql</span> more useful for administration or
+    scripting. Meta-commands are more commonly called slash or backslash
+    commands.
+    </p>
+<p>    The format of a <span class="application">psql</span> command is the backslash,
+    followed immediately by a command verb, then any arguments. The arguments
+    are separated from the command verb and each other by any number of
+    whitespace characters.
+    </p>
+<p>    To include whitespace into an argument you may quote it with a
+    single quote. To include a single quote into such an argument,
+    use two single quotes. Anything contained in single quotes is
+    furthermore subject to C-like substitutions for
+    <code class="literal">\n</code> (new line), <code class="literal">\t</code> (tab),
+    <code class="literal">\</code><em class="replaceable"><code>digits</code></em> (octal), and
+    <code class="literal">\x</code><em class="replaceable"><code>digits</code></em> (hexadecimal).
+    </p>
+<p>    If an unquoted argument begins with a colon (<code class="literal">:</code>),
+    it is taken as a <span class="application">psql</span> variable and the value of the
+    variable is used as the argument instead.
+    </p>
+<p>    Arguments that are enclosed in backquotes (<code class="literal">`</code>)
+    are taken as a command line that is passed to the shell. The
+    output of the command (with any trailing newline removed) is taken
+    as the argument value. The above escape sequences also apply in
+    backquotes.
+    </p>
+<p>    Some commands take an <acronym class="acronym">SQL</acronym> identifier (such as a
+    table name) as argument. These arguments follow the syntax rules
+    of <acronym class="acronym">SQL</acronym>: Unquoted letters are forced to
+    lowercase, while double quotes (<code class="literal">"</code>) protect letters
+    from case conversion and allow incorporation of whitespace into
+    the identifier.  Within double quotes, paired double quotes reduce
+    to a single double quote in the resulting name.  For example,
+    <code class="literal">FOO"BAR"BAZ</code> is interpreted as <code class="literal">fooBARbaz</code>,
+    and <code class="literal">"A weird"" name"</code> becomes <code class="literal">A weird"
+    name</code>.
+    </p>
+<p>    Parsing for arguments stops when another unquoted backslash occurs.
+    This is taken as the beginning of a new meta-command. The special
+    sequence <code class="literal">\\</code> (two backslashes) marks the end of
+    arguments and continues parsing <acronym class="acronym">SQL</acronym> commands, if
+    any. That way <acronym class="acronym">SQL</acronym> and
+    <span class="application">psql</span> commands can be freely mixed on a
+    line. But in any case, the arguments of a meta-command cannot
+    continue beyond the end of the line.
+    </p>
+<p>    The following meta-commands are defined:
+
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">\a</code></span></dt>
+<dd><p>        If the current table output format is unaligned, it is switched to aligned.
+        If it is not unaligned, it is set to unaligned. This command is
+        kept for backwards compatibility. See <code class="command">\pset</code> for a
+        more general solution.
+        </p></dd>
+<dt><span class="term"><code class="literal">\cd [ <em class="replaceable"><code>directory</code></em> ]</code></span></dt>
+<dd>
+<p>         Changes the current working directory to
+         <em class="replaceable"><code>directory</code></em>. Without argument, changes
+         to the current user's home directory.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>          To print your current working directory, use <code class="literal">\!pwd</code>.
+         </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\C [ <em class="replaceable"><code>title</code></em> ]</code></span></dt>
+<dd><p>        Sets the title of any tables being printed as the result of a
+        query or unset any such title. This command is equivalent to
+        <code class="literal">\pset title <em class="replaceable"><code>title</code></em></code>. (The name of
+        this command derives from &#8220;<span class="quote">caption</span>&#8221;, as it was
+        previously only used to set the caption in an
+        <acronym class="acronym">HTML</acronym> table.)
+        </p></dd>
+<dt><span class="term"><code class="literal">\connect</code> (or <code class="literal">\c</code>) <code class="literal">[ <em class="replaceable"><code>dbname</code></em> [ <em class="replaceable"><code>username</code></em> ] [ <em class="replaceable"><code>host</code></em> ] [ <em class="replaceable"><code>port</code></em> ] ]</code></span></dt>
+<dd>
+<p>        Establishes a new connection to a <span class="productname">PostgreSQL</span>
+        server. If the new connection is successfully made, the
+        previous connection is closed. If any of <em class="replaceable"><code>dbname</code></em>, <em class="replaceable"><code>username</code></em>, <em class="replaceable"><code>host</code></em> or <em class="replaceable"><code>port</code></em> are omitted or specified
+        as <code class="literal">-</code>, the value of that parameter from the
+        previous connection is used. If there is no previous
+        connection, the <span class="application">libpq</span> default for
+        the parameter's value is used.
+        </p>
+<p>        If the connection attempt failed (wrong user name, access
+        denied, etc.), the previous connection will only be kept if
+        <span class="application">psql</span> is in interactive mode. When
+        executing a non-interactive script, processing will
+        immediately stop with an error. This distinction was chosen as
+        a user convenience against typos on the one hand, and a safety
+        mechanism that scripts are not accidentally acting on the
+        wrong database on the other hand.
+        </p>
+</dd>
+<dt><span class="term"><code class="literal">\copy { <em class="replaceable"><code>table</code></em> [ ( <em class="replaceable"><code>column_list</code></em> ) ] | ( <em class="replaceable"><code>query</code></em> ) }
+        { <code class="literal">from</code> | <code class="literal">to</code> }
+        { <em class="replaceable"><code>filename</code></em> | stdin | stdout | pstdin | pstdout }
+        [ with ]
+            [ binary ]
+            [ oids ]
+            [ delimiter [ as ] '<em class="replaceable"><code>character</code></em>' ]
+            [ null [ as ] '<em class="replaceable"><code>string</code></em>' ]
+            [ csv
+              [ header ]
+              [ quote [ as ] '<em class="replaceable"><code>character</code></em>' ]
+              [ escape [ as ] '<em class="replaceable"><code>character</code></em>' ]
+              [ force quote <em class="replaceable"><code>column_list</code></em> ]
+              [ force not null <em class="replaceable"><code>column_list</code></em> ] ]</code>
+        </span></dt>
+<dd>
+<p>        Performs a frontend (client) copy. This is an operation that
+        runs an <acronym class="acronym">SQL</acronym> <a href="sql-copy.html">COPY</a> command, but instead of the server
+        reading or writing the specified file,
+        <span class="application">psql</span> reads or writes the file and
+        routes the data between the server and the local file system.
+        This means that file accessibility and privileges are those of
+        the local user, not the server, and no SQL superuser
+        privileges are required.
+        </p>
+<p>        The syntax of the command is similar to that of the
+        <acronym class="acronym">SQL</acronym> <a href="sql-copy.html">COPY</a> command.  Note that, because of this,
+        special parsing rules apply to the <code class="command">\copy</code>
+        command. In particular, the variable substitution rules and
+        backslash escapes do not apply.
+        </p>
+<p>        <code class="literal">\copy ... from stdin | to stdout</code>
+        reads/writes based on the command input and output respectively.
+        All rows are read from the same source that issued the command,
+        continuing until <code class="literal">\.</code> is read or the stream
+        reaches <acronym class="acronym">EOF</acronym>. Output is sent to the same place as
+        command output. To read/write from
+        <span class="application">psql</span>'s standard input or output, use
+        <code class="literal">pstdin</code> or <code class="literal">pstdout</code>. This option is useful
+        for populating tables in-line within a SQL script file.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        This operation is not as efficient as the <acronym class="acronym">SQL</acronym>
+        <code class="command">COPY</code> command because all data must pass
+        through the client/server connection. For large
+        amounts of data the <acronym class="acronym">SQL</acronym> command may be preferable.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\copyright</code></span></dt>
+<dd><p>        Shows the copyright and distribution terms of
+        <span class="productname">PostgreSQL</span>.
+        </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">\d [ <em class="replaceable"><code>pattern</code></em> ]</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">\d+ [ <em class="replaceable"><code>pattern</code></em> ]</code></span>
+</dt>
+<dd>
+<p>        For each relation (table, view, index, or sequence) matching the
+        <em class="replaceable"><code>pattern</code></em>, show all
+        columns, their types, the tablespace (if not the default) and any special
+        attributes such as <code class="literal">NOT NULL</code> or defaults, if
+        any. Associated indexes, constraints, rules, and triggers are
+        also shown, as is the view definition if the relation is a view.
+        (&#8220;<span class="quote">Matching the pattern</span>&#8221; is defined below.)
+        </p>
+<p>        The command form <code class="literal">\d+</code> is identical, except that
+        more information is displayed: any comments associated with the
+        columns of the table are shown, as is the presence of OIDs in the
+        table.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        If <code class="command">\d</code> is used without a
+        <em class="replaceable"><code>pattern</code></em> argument, it is
+        equivalent to <code class="command">\dtvs</code> which will show a list of
+        all tables, views, and sequences. This is purely a convenience
+        measure.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\da [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd><p>        Lists all available aggregate functions, together with the data
+        types they operate on. If <em class="replaceable"><code>pattern</code></em>
+        is specified, only aggregates whose names match the pattern are shown.
+        </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">\db [ <em class="replaceable"><code>pattern</code></em> ]</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">\db+ [ <em class="replaceable"><code>pattern</code></em> ]</code></span>
+</dt>
+<dd><p>        Lists all available tablespaces. If <em class="replaceable"><code>pattern</code></em>
+        is specified, only tablespaces whose names match the pattern are shown.
+        If <code class="literal">+</code> is appended to the command name, each object 
+        is listed with its associated permissions.
+        </p></dd>
+<dt><span class="term"><code class="literal">\dc [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd><p>        Lists all available conversions between character-set encodings.
+        If <em class="replaceable"><code>pattern</code></em>
+        is specified, only conversions whose names match the pattern are
+        listed.
+        </p></dd>
+<dt><span class="term"><code class="literal">\dC</code></span></dt>
+<dd><p>        Lists all available type casts.
+        </p></dd>
+<dt><span class="term"><code class="literal">\dd [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd>
+<p>        Shows the descriptions of objects matching the <em class="replaceable"><code>pattern</code></em>, or of all visible objects if
+        no argument is given.  But in either case, only objects that have
+        a description are listed.
+        (&#8220;<span class="quote">Object</span>&#8221; covers aggregates, functions, operators,
+        types, relations (tables, views, indexes, sequences, large
+        objects), rules, and triggers.) For example:
+</p>
+<pre class="programlisting">=&gt; <strong class="userinput"><code>\dd version</code></strong>
+                     Object descriptions
+   Schema   |  Name   |  Object  |        Description
+------------+---------+----------+---------------------------
+ pg_catalog | version | function | PostgreSQL version string
+(1 row)</pre>
+<p>
+        </p>
+<p>        Descriptions for objects can be created with the <a href="sql-comment.html">COMMENT</a>
+        <acronym class="acronym">SQL</acronym> command.
+       </p>
+</dd>
+<dt><span class="term"><code class="literal">\dD [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd><p>        Lists all available domains. If <em class="replaceable"><code>pattern</code></em>
+        is specified, only matching domains are shown.
+        </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">\df [ <em class="replaceable"><code>pattern</code></em> ]</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">\df+ [ <em class="replaceable"><code>pattern</code></em> ]</code></span>
+</dt>
+<dd>
+<p>        Lists available functions, together with their argument and
+        return types. If <em class="replaceable"><code>pattern</code></em>
+        is specified, only functions whose names match the pattern are shown.
+        If the form <code class="literal">\df+</code> is used, additional information about
+        each function, including language and description, is shown.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        To look up functions taking argument or returning values of a specific
+        type, use your pager's search capability to scroll through the <code class="literal">\df</code>
+        output.
+        </p>
+<p>        To reduce clutter, <code class="literal">\df</code> does not show data type I/O
+        functions.  This is implemented by ignoring functions that accept
+        or return type <code class="type">cstring</code>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\dg [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd><p>        Lists all database roles. If <em class="replaceable"><code>pattern</code></em> is specified, only
+        those roles whose names match the pattern are listed.
+        (This command is now effectively the same as <code class="literal">\du</code>.)
+        </p></dd>
+<dt><span class="term"><code class="literal">\distvS [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd>
+<p>        This is not the actual command name: the letters
+        <code class="literal">i</code>, <code class="literal">s</code>,
+        <code class="literal">t</code>, <code class="literal">v</code>,
+        <code class="literal">S</code> stand for index, sequence, table, view,
+        and system table, respectively. You can specify any or all of
+        these letters, in any order, to obtain a listing of all the
+        matching objects.  The letter <code class="literal">S</code> restricts
+        the listing to system objects; without <code class="literal">S</code>,
+        only non-system objects are shown.  If <code class="literal">+</code> is
+        appended to the command name, each object is listed with its
+        associated description, if any.
+        </p>
+<p>        If <em class="replaceable"><code>pattern</code></em> is
+        specified, only objects whose names match the pattern are listed.
+        </p>
+</dd>
+<dt><span class="term"><code class="literal">\dl</code></span></dt>
+<dd><p>        This is an alias for <code class="command">\lo_list</code>, which shows a
+        list of large objects.
+        </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">\dn [ <em class="replaceable"><code>pattern</code></em> ]</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">\dn+ [ <em class="replaceable"><code>pattern</code></em> ]</code></span>
+</dt>
+<dd><p>        Lists all available schemas (namespaces). If <em class="replaceable"><code>pattern</code></em> (a regular expression)
+        is specified, only schemas whose names match the pattern are listed.
+        Non-local temporary schemas are suppressed.  If <code class="literal">+</code>
+        is appended to the command name, each object is listed with its associated
+        permissions and description, if any.
+        </p></dd>
+<dt><span class="term"><code class="literal">\do [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd><p>        Lists available operators with their operand and return types.
+        If <em class="replaceable"><code>pattern</code></em> is
+        specified, only operators whose names match the pattern are listed.
+        </p></dd>
+<dt><span class="term"><code class="literal">\dp [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd>
+<p>        Produces a list of all available tables, views and sequences with their
+        associated access privileges.
+        If <em class="replaceable"><code>pattern</code></em> is
+        specified, only tables, views and sequences whose names match the pattern are listed.
+        </p>
+<p>        The <a href="sql-grant.html">GRANT</a> and
+        <a href="sql-revoke.html">REVOKE</a>
+        commands are used to set access privileges.
+        </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">\dT [ <em class="replaceable"><code>pattern</code></em> ]</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">\dT+ [ <em class="replaceable"><code>pattern</code></em> ]</code></span>
+</dt>
+<dd><p>        Lists all data types or only those that match <em class="replaceable"><code>pattern</code></em>. The command form
+        <code class="literal">\dT+</code> shows extra information.
+        </p></dd>
+<dt><span class="term"><code class="literal">\du [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd><p>        Lists all database roles, or only those that match <em class="replaceable"><code>pattern</code></em>.
+        </p></dd>
+<dt><span class="term"><code class="literal">\edit</code> (or <code class="literal">\e</code>) <code class="literal">[ <em class="replaceable"><code>filename</code></em> ]</code></span></dt>
+<dd>
+<p>        If <em class="replaceable"><code>filename</code></em> is
+        specified, the file is edited; after the editor exits, its
+        content is copied back to the query buffer. If no argument is
+        given, the current query buffer is copied to a temporary file
+        which is then edited in the same fashion.
+        </p>
+<p>        The new query buffer is then re-parsed according to the normal
+        rules of <span class="application">psql</span>, where the whole buffer
+        is treated as a single line. (Thus you cannot make scripts this
+        way. Use <code class="command">\i</code> for that.) This means also that
+        if the query ends with (or rather contains) a semicolon, it is
+        immediately executed. In other cases it will merely wait in the
+        query buffer.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        <span class="application">psql</span> searches the environment
+        variables <code class="envar">PSQL_EDITOR</code>, <code class="envar">EDITOR</code>, and
+        <code class="envar">VISUAL</code> (in that order) for an editor to use. If
+        all of them are unset, <code class="filename">vi</code> is used on Unix
+        systems, <code class="filename">notepad.exe</code> on Windows systems.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\echo <em class="replaceable"><code>text</code></em> [ ... ]</code></span></dt>
+<dd>
+<p>        Prints the arguments to the standard output, separated by one
+        space and followed by a newline. This can be useful to
+        intersperse information in the output of scripts. For example:
+</p>
+<pre class="programlisting">=&gt; <strong class="userinput"><code>\echo `date`</code></strong>
+Tue Oct 26 21:40:57 CEST 1999</pre>
+<p>
+        If the first argument is an unquoted <code class="literal">-n</code> the trailing
+        newline is not written.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        If you use the <code class="command">\o</code> command to redirect your
+        query output you may wish to use <code class="command">\qecho</code>
+        instead of this command.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\encoding [ <em class="replaceable"><code>encoding</code></em> ]</code></span></dt>
+<dd><p>        Sets the client character set encoding.  Without an argument, this command
+        shows the current encoding.
+        </p></dd>
+<dt><span class="term"><code class="literal">\f [ <em class="replaceable"><code>string</code></em> ]</code></span></dt>
+<dd><p>        Sets the field separator for unaligned query output. The default
+        is the vertical bar (<code class="literal">|</code>). See also
+        <code class="command">\pset</code> for a generic way of setting output
+        options.
+        </p></dd>
+<dt><span class="term"><code class="literal">\g</code> [ { <em class="replaceable"><code>filename</code></em> | <code class="literal">|</code><em class="replaceable"><code>command</code></em> } ]</span></dt>
+<dd><p>        Sends the current query input buffer to the server and
+        optionally stores the query's output in <em class="replaceable"><code>filename</code></em> or pipes the output
+        into a separate Unix shell executing <em class="replaceable"><code>command</code></em>. A bare
+        <code class="literal">\g</code> is virtually equivalent to a semicolon. A
+        <code class="literal">\g</code> with argument is a &#8220;<span class="quote">one-shot</span>&#8221;
+        alternative to the <code class="command">\o</code> command.
+        </p></dd>
+<dt><span class="term"><code class="literal">\help</code> (or <code class="literal">\h</code>) <code class="literal">[ <em class="replaceable"><code>command</code></em> ]</code></span></dt>
+<dd>
+<p>        Gives syntax help on the specified <acronym class="acronym">SQL</acronym>
+        command. If <em class="replaceable"><code>command</code></em>
+        is not specified, then <span class="application">psql</span> will list
+        all the commands for which syntax help is available. If
+        <em class="replaceable"><code>command</code></em> is an
+        asterisk (<code class="literal">*</code>), then syntax help on all
+        <acronym class="acronym">SQL</acronym> commands is shown.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        To simplify typing, commands that consists of several words do
+        not have to be quoted. Thus it is fine to type <strong class="userinput"><code>\help
+        alter table</code></strong>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\H</code></span></dt>
+<dd><p>        Turns on <acronym class="acronym">HTML</acronym> query output format. If the
+        <acronym class="acronym">HTML</acronym> format is already on, it is switched
+        back to the default aligned text format. This command is for
+        compatibility and convenience, but see <code class="command">\pset</code>
+        about setting other output options.
+        </p></dd>
+<dt><span class="term"><code class="literal">\i <em class="replaceable"><code>filename</code></em></code></span></dt>
+<dd>
+<p>        Reads input from the file <em class="replaceable"><code>filename</code></em> and executes it as
+        though it had been typed on the keyboard.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        If you want to see the lines on the screen as they are read you
+        must set the variable <code class="varname">ECHO</code> to
+        <code class="literal">all</code>.
+        </p>
+</div>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">\l</code> (or <code xmlns="" class="literal">\list</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">\l+</code> (or <code class="literal">\list+</code>)</span>
+</dt>
+<dd><p>        List the names, owners, and character set encodings of all the databases in
+        the server. If <code class="literal">+</code> is appended to the command
+        name, database descriptions are also displayed.
+        </p></dd>
+<dt><span class="term"><code class="literal">\lo_export <em class="replaceable"><code>loid</code></em> <em class="replaceable"><code>filename</code></em></code></span></dt>
+<dd>
+<p>        Reads the large object with <acronym class="acronym">OID</acronym> <em class="replaceable"><code>loid</code></em> from the database and
+        writes it to <em class="replaceable"><code>filename</code></em>. Note that this is
+        subtly different from the server function
+        <code class="function">lo_export</code>, which acts with the permissions
+        of the user that the database server runs as and on the server's
+        file system.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        Use <code class="command">\lo_list</code> to find out the large object's
+        <acronym class="acronym">OID</acronym>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\lo_import <em class="replaceable"><code>filename</code></em> [ <em class="replaceable"><code>comment</code></em> ]</code></span></dt>
+<dd>
+<p>        Stores the file into a <span class="productname">PostgreSQL</span>
+        large object. Optionally, it associates the given
+        comment with the object. Example:
+</p>
+<pre class="programlisting">foo=&gt; <strong class="userinput"><code>\lo_import '/home/peter/pictures/photo.xcf' 'a picture of me'</code></strong>
+lo_import 152801</pre>
+<p>
+        The response indicates that the large object received object ID
+        152801 which one ought to remember if one wants to access the
+        object ever again. For that reason it is recommended to always
+        associate a human-readable comment with every object. Those can
+        then be seen with the <code class="command">\lo_list</code> command.
+        </p>
+<p>        Note that this command is subtly different from the server-side
+        <code class="function">lo_import</code> because it acts as the local user
+        on the local file system, rather than the server's user and file
+        system.
+        </p>
+</dd>
+<dt><span class="term"><code class="literal">\lo_list</code></span></dt>
+<dd><p>        Shows a list of all <span class="productname">PostgreSQL</span>
+        large objects currently stored in the database,
+        along with any comments provided for them.
+        </p></dd>
+<dt><span class="term"><code class="literal">\lo_unlink <em class="replaceable"><code>loid</code></em></code></span></dt>
+<dd>
+<p>        Deletes the large object with <acronym class="acronym">OID</acronym>
+        <em class="replaceable"><code>loid</code></em> from the
+        database.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        Use <code class="command">\lo_list</code> to find out the large object's
+        <acronym class="acronym">OID</acronym>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\o</code> [ {<em class="replaceable"><code>filename</code></em> | <code class="literal">|</code><em class="replaceable"><code>command</code></em>} ]</span></dt>
+<dd>
+<p>        Saves future query results to the file <em class="replaceable"><code>filename</code></em> or pipes future results
+        into a separate Unix shell to execute <em class="replaceable"><code>command</code></em>. If no arguments are
+        specified, the query output will be reset to the standard output.
+        </p>
+<p>        &#8220;<span class="quote">Query results</span>&#8221; includes all tables, command
+        responses, and notices obtained from the database server, as
+        well as output of various backslash commands that query the
+        database (such as <code class="command">\d</code>), but not error
+        messages.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        To intersperse text output in between query results, use
+        <code class="command">\qecho</code>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\p</code></span></dt>
+<dd><p>        Print the current query buffer to the standard output.
+        </p></dd>
+<dt><span class="term"><code class="literal">\password [ <em class="replaceable"><code>username</code></em> ]</code></span></dt>
+<dd><p>        Changes the password of the specified user (by default, the current
+        user).  This command prompts for the new password, encrypts it, and
+        sends it to the server as an <code class="command">ALTER ROLE</code> command.  This
+        makes sure that the new password does not appear in cleartext in the
+        command history, the server log, or elsewhere.
+        </p></dd>
+<dt><span class="term"><code class="literal">\pset <em class="replaceable"><code>parameter</code></em> [ <em class="replaceable"><code>value</code></em> ]</code></span></dt>
+<dd>
+<p>        This command sets options affecting the output of query result
+        tables. <em class="replaceable"><code>parameter</code></em>
+        describes which option is to be set. The semantics of
+        <em class="replaceable"><code>value</code></em> depend
+        thereon.
+        </p>
+<p>        Adjustable printing options are:
+        </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">format</code></span></dt>
+<dd>
+<p>          Sets the output format to one of <code class="literal">unaligned</code>,
+          <code class="literal">aligned</code>, <code class="literal">html</code>,
+          <code class="literal">latex</code>, or <code class="literal">troff-ms</code>.
+          Unique abbreviations are allowed.  (That would mean one letter
+          is enough.)
+          </p>
+<p>          &#8220;<span class="quote">Unaligned</span>&#8221; writes all columns of a row on a
+          line, separated by the currently active field separator. This
+          is intended to create output that might be intended to be read
+          in by other programs (tab-separated, comma-separated).
+          &#8220;<span class="quote">Aligned</span>&#8221; mode is the standard, human-readable,
+          nicely formatted text output that is default. The
+          &#8220;<span class="quote"><acronym class="acronym">HTML</acronym></span>&#8221; and
+          &#8220;<span class="quote">LaTeX</span>&#8221; modes put out tables that are intended to
+          be included in documents using the respective mark-up
+          language. They are not complete documents! (This might not be
+          so dramatic in <acronym class="acronym">HTML</acronym>, but in LaTeX you must
+          have a complete document wrapper.)
+          </p>
+</dd>
+<dt><span class="term"><code class="literal">border</code></span></dt>
+<dd><p>          The second argument must be a number. In general, the higher
+          the number the more borders and lines the tables will have,
+          but this depends on the particular format. In
+          <acronym class="acronym">HTML</acronym> mode, this will translate directly
+          into the <code class="literal">border=...</code> attribute, in the
+          others only values 0 (no border), 1 (internal dividing lines),
+          and 2 (table frame) make sense.
+          </p></dd>
+<dt><span class="term"><code class="literal">expanded</code> (or <code class="literal">x</code>)</span></dt>
+<dd>
+<p>          Toggles between regular and expanded format. When expanded
+          format is enabled, query results are displayed in two
+          columns, with the column name on the left and the data on
+          the right. This mode is useful if the data wouldn't fit on the
+          screen in the normal &#8220;<span class="quote">horizontal</span>&#8221; mode.
+          </p>
+<p>          Expanded mode is supported by all four output formats.
+          </p>
+</dd>
+<dt><span class="term"><code class="literal">null</code></span></dt>
+<dd><p>          The second argument is a string that should be printed
+          whenever a column is null. The default is not to print
+          anything, which can easily be mistaken for, say, an empty
+          string. Thus, one might choose to write <code class="literal">\pset null
+          '(null)'</code>.
+          </p></dd>
+<dt><span class="term"><code class="literal">fieldsep</code></span></dt>
+<dd><p>          Specifies the field separator to be used in unaligned output
+          mode. That way one can create, for example, tab- or
+          comma-separated output, which other programs might prefer. To
+          set a tab as field separator, type <code class="literal">\pset fieldsep
+          '\t'</code>. The default field separator is
+          <code class="literal">'|'</code> (a vertical bar).
+          </p></dd>
+<dt><span class="term"><code class="literal">footer</code></span></dt>
+<dd><p>          Toggles the display of the default footer <code class="literal">(x
+          rows)</code>.
+          </p></dd>
+<dt><span class="term"><code class="literal">numericlocale</code></span></dt>
+<dd><p>          Toggles the display of a locale-aware character to separate groups
+          of digits to the left of the decimal marker.  It also enables
+          a locale-aware decimal marker.
+          </p></dd>
+<dt><span class="term"><code class="literal">recordsep</code></span></dt>
+<dd><p>          Specifies the record (line) separator to use in unaligned
+          output mode. The default is a newline character.
+          </p></dd>
+<dt><span class="term"><code class="literal">tuples_only</code> (or <code class="literal">t</code>)</span></dt>
+<dd><p>          Toggles between tuples only and full display. Full display may
+          show extra information such as column headers, titles, and
+          various footers. In tuples only mode, only actual table data
+          is shown.
+          </p></dd>
+<dt><span class="term"><code class="literal">title [ <em class="replaceable"><code>text</code></em> ]</code></span></dt>
+<dd><p>          Sets the table title for any subsequently printed tables. This
+          can be used to give your output descriptive tags. If no
+          argument is given, the title is unset.
+          </p></dd>
+<dt><span class="term"><code class="literal">tableattr</code> (or <code class="literal">T</code>) <code class="literal">[ <em class="replaceable"><code>text</code></em> ]</code></span></dt>
+<dd><p>          Allows you to specify any attributes to be placed inside the
+          <acronym class="acronym">HTML</acronym> <code class="sgmltag-element">table</code> tag. This
+          could for example be <code class="literal">cellpadding</code> or
+          <code class="literal">bgcolor</code>. Note that you probably don't want
+          to specify <code class="literal">border</code> here, as that is already
+          taken care of by <code class="literal">\pset border</code>.
+          </p></dd>
+<dt><span class="term"><code class="literal">pager</code></span></dt>
+<dd>
+<p>          Controls use of a pager for query and <span class="application">psql</span>
+          help output. If the environment variable <code class="envar">PAGER</code>
+          is set, the output is piped to the specified program.
+          Otherwise a platform-dependent default (such as
+          <code class="filename">more</code>) is used.
+          </p>
+<p>          When the pager is off, the pager is not used. When the pager
+          is on, the pager is used only when appropriate, i.e. the
+          output is to a terminal and will not fit on the screen.
+          (<span class="application">psql</span> does not do a perfect job of estimating
+          when to use the pager.) <code class="literal">\pset pager</code> turns the
+          pager on and off. Pager can also be set to <code class="literal">always</code>,
+          which causes the pager to be always used.
+          </p>
+</dd>
+</dl></div>
+<p>
+        </p>
+<p>        Illustrations on how these different formats look can be seen in
+        the <a href="app-psql.html#app-psql-examples">Examples</a> section.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        There are various shortcut commands for <code class="command">\pset</code>. See
+        <code class="command">\a</code>, <code class="command">\C</code>, <code class="command">\H</code>,
+        <code class="command">\t</code>, <code class="command">\T</code>, and <code class="command">\x</code>.
+        </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        It is an error to call <code class="command">\pset</code> without
+        arguments. In the future this call might show the current status
+        of all printing options.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\q</code></span></dt>
+<dd><p>        Quits the <span class="application">psql</span> program.
+        </p></dd>
+<dt><span class="term"><code class="literal">\qecho <em class="replaceable"><code>text</code></em> [ ... ] </code></span></dt>
+<dd><p>        This command is identical to <code class="command">\echo</code> except
+        that the output will be written to the query output channel, as
+        set by <code class="command">\o</code>.
+        </p></dd>
+<dt><span class="term"><code class="literal">\r</code></span></dt>
+<dd><p>        Resets (clears) the query buffer.
+        </p></dd>
+<dt><span class="term"><code class="literal">\s [ <em class="replaceable"><code>filename</code></em> ]</code></span></dt>
+<dd><p>        Print or save the command line history to <em class="replaceable"><code>filename</code></em>. If <em class="replaceable"><code>filename</code></em> is omitted, the history
+        is written to the standard output. This option is only available
+        if <span class="application">psql</span> is configured to use the
+        <acronym class="acronym">GNU</acronym> <span class="application">Readline</span> library.
+        </p></dd>
+<dt><span class="term"><code class="literal">\set [ <em class="replaceable"><code>name</code></em> [ <em class="replaceable"><code>value</code></em> [ ... ] ] ]</code></span></dt>
+<dd>
+<p>        Sets the internal variable <em class="replaceable"><code>name</code></em> to <em class="replaceable"><code>value</code></em> or, if more than one value
+        is given, to the concatenation of all of them. If no second
+        argument is given, the variable is just set with no value. To
+        unset a variable, use the <code class="command">\unset</code> command.
+        </p>
+<p>        Valid variable names can contain characters, digits, and
+        underscores. See the section <a href="app-psql.html#app-psql-variables">Variables</a> below for details.
+        Variable names are case-sensitive.
+        </p>
+<p>        Although you are welcome to set any variable to anything you
+        want, <span class="application">psql</span> treats several variables
+        as special. They are documented in the section about variables.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        This command is totally separate from the <acronym class="acronym">SQL</acronym>
+        command <a href="sql-set.html">SET</a>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="literal">\t</code></span></dt>
+<dd><p>        Toggles the display of output column name headings and row count
+        footer. This command is equivalent to <code class="literal">\pset
+        tuples_only</code> and is provided for convenience.
+        </p></dd>
+<dt><span class="term"><code class="literal">\T <em class="replaceable"><code>table_options</code></em></code></span></dt>
+<dd><p>        Allows you to specify attributes to be placed within the
+        <code class="sgmltag-element">table</code> tag in <acronym class="acronym">HTML</acronym> tabular
+        output mode. This command is equivalent to <code class="literal">\pset
+        tableattr <em class="replaceable"><code>table_options</code></em></code>.
+        </p></dd>
+<dt><span class="term"><code class="literal">\timing</code></span></dt>
+<dd><p>         Toggles a display of how long each SQL statement takes, in milliseconds.
+        </p></dd>
+<dt><span class="term"><code class="literal">\w</code> {<em class="replaceable"><code>filename</code></em> | <em class="replaceable"><code>|command</code></em>}</span></dt>
+<dd><p>        Outputs the current query buffer to the file <em class="replaceable"><code>filename</code></em> or pipes it to the Unix
+        command <em class="replaceable"><code>command</code></em>.
+        </p></dd>
+<dt><span class="term"><code class="literal">\x</code></span></dt>
+<dd><p>        Toggles expanded table formatting mode. As such it is equivalent to
+        <code class="literal">\pset expanded</code>.
+       </p></dd>
+<dt><span class="term"><code class="literal">\z [ <em class="replaceable"><code>pattern</code></em> ]</code></span></dt>
+<dd>
+<p>        Produces a list of all available tables, views and sequences with their
+        associated access privileges.
+        If a <em class="replaceable"><code>pattern</code></em> is
+        specified, only tables,views and sequences whose names match the pattern are listed.
+        </p>
+<p>        The <a href="sql-grant.html">GRANT</a> and
+        <a href="sql-revoke.html">REVOKE</a>
+        commands are used to set access privileges.
+        </p>
+<p>        This is an alias for <code class="command">\dp</code> (&#8220;<span class="quote">display
+        privileges</span>&#8221;).
+        </p>
+</dd>
+<dt><span class="term"><code class="literal">\! [ <em class="replaceable"><code>command</code></em> ]</code></span></dt>
+<dd><p>        Escapes to a separate Unix shell or executes the Unix command
+        <em class="replaceable"><code>command</code></em>. The
+        arguments are not further interpreted, the shell will see them
+        as is.
+        </p></dd>
+<dt><span class="term"><code class="literal">\?</code></span></dt>
+<dd><p>        Shows help information about the backslash commands.
+        </p></dd>
+</dl></div>
+<p>
+  </p>
+<div class="refsect3" lang="en">
+<a name="app-psql-patterns"></a><h4>Patterns</h4>
+<a name="id2787626"></a><p>   The various <code class="literal">\d</code> commands accept a <em class="replaceable"><code>pattern</code></em> parameter to specify the
+   object name(s) to be displayed.  In the simplest case, a pattern
+   is just the exact name of the object.  The characters within a
+   pattern are normally folded to lower case, just as in SQL names;
+   for example, <code class="literal">\dt FOO</code> will display the table named
+   <code class="literal">foo</code>.  As in SQL names, placing double quotes around
+   a pattern stops folding to lower case.  Should you need to include
+   an actual double quote character in a pattern, write it as a pair
+   of double quotes within a double-quote sequence; again this is in
+   accord with the rules for SQL quoted identifiers.  For example,
+   <code class="literal">\dt "FOO""BAR"</code> will display the table named
+   <code class="literal">FOO"BAR</code> (not <code class="literal">foo"bar</code>).  Unlike the normal
+   rules for SQL names, you can put double quotes around just part
+   of a pattern, for instance <code class="literal">\dt FOO"FOO"BAR</code> will display
+   the table named <code class="literal">fooFOObar</code>.
+  </p>
+<p>   Within a pattern, <code class="literal">*</code> matches any sequence of characters
+   (including no characters) and <code class="literal">?</code> matches any single character.
+   (This notation is comparable to Unix shell file name patterns.)
+   For example, <code class="literal">\dt int*</code> displays all tables whose names
+   begin with <code class="literal">int</code>.  But within double quotes, <code class="literal">*</code>
+   and <code class="literal">?</code> lose these special meanings and are just matched
+   literally.
+  </p>
+<p>   A pattern that contains a dot (<code class="literal">.</code>) is interpreted as a schema
+   name pattern followed by an object name pattern.  For example,
+   <code class="literal">\dt foo*.bar*</code> displays all tables whose table name
+   starts with <code class="literal">bar</code> that are in schemas whose schema name
+   starts with <code class="literal">foo</code>.  When no dot appears, then the pattern
+   matches only objects that are visible in the current schema search path.
+   Again, a dot within double quotes loses its special meaning and is matched
+   literally.
+  </p>
+<p>   Advanced users can use regular-expression notations such as character
+   classes, for example <code class="literal">[0-9]</code> to match any digit.  All regular
+   expression special characters work as specified in
+   <a href="functions-matching.html#functions-posix-regexp" title="9.7.3. POSIX Regular Expressions">Section 9.7.3, &#8220;<acronym class="acronym">POSIX</acronym> Regular Expressions&#8221;</a>, except for <code class="literal">.</code> which
+   is taken as a separator as mentioned above, <code class="literal">*</code> which is
+   translated to the regular-expression notation <code class="literal">.*</code>, and
+   <code class="literal">?</code> which is translated to <code class="literal">.</code>.  You can emulate
+   these pattern characters at need by writing
+   <code class="literal">?</code> for <code class="literal">.</code>,
+   <code class="literal">(<em class="replaceable"><code>R</code></em>+|)</code> for
+   <code class="literal"><em class="replaceable"><code>R</code></em>*</code>, or
+   <code class="literal">(<em class="replaceable"><code>R</code></em>|)</code> for
+   <code class="literal"><em class="replaceable"><code>R</code></em>?</code>.
+   Remember that the pattern must match the whole name, unlike the usual
+   interpretation of regular expressions; write <code class="literal">*</code> at the beginning
+   and/or end if you don't wish the pattern to be anchored.
+   Note that within double quotes, all regular expression special characters
+   lose their special meanings and are matched literally.  Also, the regular
+   expression special characters are matched literally in operator name
+   patterns (i.e., the argument of <code class="literal">\do</code>).
+  </p>
+<p>   Whenever the <em class="replaceable"><code>pattern</code></em> parameter
+   is omitted completely, the <code class="literal">\d</code> commands display all objects
+   that are visible in the current schema search path &#8212; this is
+   equivalent to using the pattern <code class="literal">*</code>.
+   To see all objects in the database, use the pattern <code class="literal">*.*</code>.
+  </p>
+</div>
+</div>
+<div class="refsect2" lang="en">
+<a name="id2787929"></a><h3>Advanced features</h3>
+<div class="refsect3" lang="en">
+<a name="app-psql-variables"></a><h4>Variables</h4>
+<p>    <span class="application">psql</span> provides variable substitution
+    features similar to common Unix command shells.
+    Variables are simply name/value pairs, where the value
+    can be any string of any length. To set variables, use the
+    <span class="application">psql</span> meta-command
+    <code class="command">\set</code>:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set foo bar</code></strong></pre>
+<p>
+    sets the variable <code class="literal">foo</code> to the value
+    <code class="literal">bar</code>. To retrieve the content of the variable, precede
+    the name with a colon and use it as the argument of any slash
+    command:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\echo :foo</code></strong>
+bar</pre>
+<p>
+    </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    The arguments of <code class="command">\set</code> are subject to the same
+    substitution rules as with other commands. Thus you can construct
+    interesting references such as <code class="literal">\set :foo
+    'something'</code> and get &#8220;<span class="quote">soft links</span>&#8221; or
+    &#8220;<span class="quote">variable variables</span>&#8221; of <span class="productname">Perl</span>
+    or <span class="productname"><acronym class="acronym">PHP</acronym></span> fame,
+    respectively. Unfortunately (or fortunately?), there is no way to do
+    anything useful with these constructs. On the other hand,
+    <code class="literal">\set bar :foo</code> is a perfectly valid way to copy a
+    variable.
+    </p>
+</div>
+<p>    If you call <code class="command">\set</code> without a second argument, the
+    variable is set, with an empty string as value. To unset (or delete) a
+    variable, use the command <code class="command">\unset</code>.
+    </p>
+<p>    <span class="application">psql</span>'s internal variable names can
+    consist of letters, numbers, and underscores in any order and any
+    number of them. A number of these variables are treated specially
+    by <span class="application">psql</span>. They indicate certain option
+    settings that can be changed at run time by altering the value of
+    the variable or represent some state of the application. Although
+    you can use these variables for any other purpose, this is not
+    recommended, as the program behavior might grow really strange
+    really quickly. By convention, all specially treated variables
+    consist of all upper-case letters (and possibly numbers and
+    underscores). To ensure maximum compatibility in the future, avoid
+    using such variable names for your own purposes. A list of all specially
+    treated variables follows.
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="varname">AUTOCOMMIT</code></span></dt>
+<dd>
+<p>        When <code class="literal">on</code> (the default), each SQL command is automatically
+        committed upon successful completion.  To postpone commit in this
+        mode, you must enter a <code class="command">BEGIN</code> or <code class="command">START
+        TRANSACTION</code> SQL command.  When <code class="literal">off</code> or unset, SQL
+        commands are not committed until you explicitly issue
+        <code class="command">COMMIT</code> or <code class="command">END</code>.  The autocommit-off
+        mode works by issuing an implicit <code class="command">BEGIN</code> for you, just
+        before any command that is not already in a transaction block and
+        is not itself a <code class="command">BEGIN</code> or other transaction-control
+        command, nor a command that cannot be executed inside a transaction
+        block (such as <code class="command">VACUUM</code>).
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>         In autocommit-off mode, you must explicitly abandon any failed
+         transaction by entering <code class="command">ABORT</code> or <code class="command">ROLLBACK</code>.
+         Also keep in mind that if you exit the session
+         without committing, your work will be lost.
+        </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>         The autocommit-on mode is <span class="productname">PostgreSQL</span>'s traditional
+         behavior, but autocommit-off is closer to the SQL spec.  If you
+         prefer autocommit-off, you may wish to set it in the system-wide
+         <code class="filename">psqlrc</code> file or your
+         <code class="filename">~/.psqlrc</code> file.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="varname">DBNAME</code></span></dt>
+<dd><p>        The name of the database you are currently connected to. This is
+        set every time you connect to a database (including program
+        start-up), but can be unset.
+        </p></dd>
+<dt><span class="term"><code class="varname">ECHO</code></span></dt>
+<dd><p>        If set to <code class="literal">all</code>, all lines
+        entered from the keyboard or from a script are written to the standard output
+        before they are parsed or executed. To select this behavior on program
+        start-up, use the switch <code class="option">-a</code>. If set to
+        <code class="literal">queries</code>,
+        <span class="application">psql</span> merely prints all queries as
+        they are sent to the server. The switch for this is
+        <code class="option">-e</code>.
+        </p></dd>
+<dt><span class="term"><code class="varname">ECHO_HIDDEN</code></span></dt>
+<dd><p>        When this variable is set and a backslash command queries the
+        database, the query is first shown. This way you can study the
+        <span class="productname">PostgreSQL</span> internals and provide
+        similar functionality in your own programs. (To select this behavior
+        on program start-up, use the switch <code class="option">-E</code>.)  If you set
+        the variable to the value <code class="literal">noexec</code>, the queries are
+        just shown but are not actually sent to the server and executed.
+        </p></dd>
+<dt><span class="term"><code class="varname">ENCODING</code></span></dt>
+<dd><p>        The current client character set encoding.
+        </p></dd>
+<dt><span class="term"><code class="varname">FETCH_COUNT</code></span></dt>
+<dd>
+<p>        If this variable is set to an integer value &gt; 0,
+        the results of <code class="command">SELECT</code> queries are fetched
+        and displayed in groups of that many rows, rather than the
+        default behavior of collecting the entire result set before
+        display.  Therefore only a
+        limited amount of memory is used, regardless of the size of
+        the result set.  Settings of 100 to 1000 are commonly used
+        when enabling this feature.
+        Keep in mind that when using this feature, a query may
+        fail after having already displayed some rows.
+        </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        Although you can use any output format with this feature,
+        the default <code class="literal">aligned</code> format tends to look bad
+        because each group of <code class="varname">FETCH_COUNT</code> rows
+        will be formatted separately, leading to varying column
+        widths across the row groups.  The other output formats work better.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="varname">HISTCONTROL</code></span></dt>
+<dd>
+<p>         If this variable is set to <code class="literal">ignorespace</code>,
+         lines which begin with a space are not entered into the history
+         list. If set to a value of <code class="literal">ignoredups</code>, lines
+         matching the previous history line are not entered. A value of
+         <code class="literal">ignoreboth</code> combines the two options. If
+         unset, or if set to any other value than those above, all lines
+         read in interactive mode are saved on the history list.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        This feature was shamelessly plagiarized from
+        <span class="application">Bash</span>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="varname">HISTFILE</code></span></dt>
+<dd>
+<p>        The file name that will be used to store the history list. The default
+        value is <code class="filename">~/.psql_history</code>.  For example, putting
+</p>
+<pre class="programlisting">\set HISTFILE ~/.psql_history- :DBNAME</pre>
+<p>
+        in <code class="filename">~/.psqlrc</code> will cause
+        <span class="application">psql</span> to maintain a separate history for
+        each database.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        This feature was shamelessly plagiarized from
+        <span class="application">Bash</span>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="varname">HISTSIZE</code></span></dt>
+<dd>
+<p>        The number of commands to store in the command history. The
+        default value is 500.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        This feature was shamelessly plagiarized from
+        <span class="application">Bash</span>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="varname">HOST</code></span></dt>
+<dd><p>        The database server host you are currently connected to. This is
+        set every time you connect to a database (including program
+        start-up), but can be unset.
+        </p></dd>
+<dt><span class="term"><code class="varname">IGNOREEOF</code></span></dt>
+<dd>
+<p>         If unset, sending an <acronym class="acronym">EOF</acronym> character (usually
+         <span><strong class="keycap">Control</strong></span>+<span><strong class="keycap">D</strong></span>)
+         to an interactive session of <span class="application">psql</span>
+         will terminate the application. If set to a numeric value,
+         that many <acronym class="acronym">EOF</acronym> characters are ignored before the
+         application terminates.  If the variable is set but has no
+         numeric value, the default is 10.
+        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        This feature was shamelessly plagiarized from
+        <span class="application">Bash</span>.
+        </p>
+</div>
+</dd>
+<dt><span class="term"><code class="varname">LASTOID</code></span></dt>
+<dd><p>        The value of the last affected OID, as returned from an
+        <code class="command">INSERT</code> or <code class="command">lo_insert</code>
+        command. This variable is only guaranteed to be valid until
+        after the result of the next <acronym class="acronym">SQL</acronym> command has
+        been displayed.
+        </p></dd>
+<dt><span class="term"><code class="varname">ON_ERROR_ROLLBACK</code></span></dt>
+<dd><p>        When <code class="literal">on</code>, if a statement in a transaction block
+        generates an error, the error is ignored and the transaction
+        continues. When <code class="literal">interactive</code>, such errors are only
+        ignored in interactive sessions, and not when reading script
+        files. When <code class="literal">off</code> (the default), a statement in a
+        transaction block that generates an error aborts the entire
+        transaction. The on_error_rollback-on mode works by issuing an
+        implicit <code class="command">SAVEPOINT</code> for you, just before each command
+        that is in a transaction block, and rolls back to the savepoint
+        on error.
+        </p></dd>
+<dt><span class="term"><code class="varname">ON_ERROR_STOP</code></span></dt>
+<dd><p>        By default, if non-interactive scripts encounter an error, such
+        as a malformed <acronym class="acronym">SQL</acronym> command or internal
+        meta-command, processing continues. This has been the
+        traditional behavior of <span class="application">psql</span> but it
+        is sometimes not desirable. If this variable is set, script
+        processing will immediately terminate. If the script was called
+        from another script it will terminate in the same fashion. If
+        the outermost script was not called from an interactive
+        <span class="application">psql</span> session but rather using the
+        <code class="option">-f</code> option, <span class="application">psql</span> will
+        return error code 3, to distinguish this case from fatal error
+        conditions (error code 1).
+        </p></dd>
+<dt><span class="term"><code class="varname">PORT</code></span></dt>
+<dd><p>        The database server port to which you are currently connected.
+        This is set every time you connect to a database (including
+        program start-up), but can be unset.
+        </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">PROMPT1</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">PROMPT2</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="varname">PROMPT3</code></span>
+</dt>
+<dd><p>        These specify what the prompts <span class="application">psql</span>
+        issues should look like. See <a href="app-psql.html#app-psql-prompting">Prompting</a> below.
+        </p></dd>
+<dt><span class="term"><code class="varname">QUIET</code></span></dt>
+<dd><p>        This variable is equivalent to the command line option
+        <code class="option">-q</code>. It is probably not too useful in
+        interactive mode.
+        </p></dd>
+<dt><span class="term"><code class="varname">SINGLELINE</code></span></dt>
+<dd><p>        This variable is equivalent to the command line option
+        <code class="option">-S</code>.
+        </p></dd>
+<dt><span class="term"><code class="varname">SINGLESTEP</code></span></dt>
+<dd><p>        This variable is equivalent to the command line option
+        <code class="option">-s</code>.
+        </p></dd>
+<dt><span class="term"><code class="varname">USER</code></span></dt>
+<dd><p>        The database user you are currently connected as. This is set
+        every time you connect to a database (including program
+        start-up), but can be unset.
+        </p></dd>
+<dt><span class="term"><code class="varname">VERBOSITY</code></span></dt>
+<dd><p>        This variable can be set to the values <code class="literal">default</code>,
+        <code class="literal">verbose</code>, or <code class="literal">terse</code> to control the verbosity
+        of error reports.
+        </p></dd>
+</dl></div>
+</div>
+<div class="refsect3" lang="en">
+<a name="id2788763"></a><h4>
+<acronym class="acronym">SQL</acronym> Interpolation</h4>
+<p>    An additional useful feature of <span class="application">psql</span>
+    variables is that you can substitute (&#8220;<span class="quote">interpolate</span>&#8221;)
+    them into regular <acronym class="acronym">SQL</acronym> statements. The syntax for
+    this is again to prepend the variable name with a colon
+    (<code class="literal">:</code>).
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set foo 'my_table'</code></strong>
+testdb=&gt; <strong class="userinput"><code>SELECT * FROM :foo;</code></strong></pre>
+<p>
+    would then query the table <code class="literal">my_table</code>. The value of
+    the variable is copied literally, so it can even contain unbalanced
+    quotes or backslash commands. You must make sure that it makes sense
+    where you put it. Variable interpolation will not be performed into
+    quoted <acronym class="acronym">SQL</acronym> entities.
+    </p>
+<p>    A popular application of this facility is to refer to the last
+    inserted <acronym class="acronym">OID</acronym> in subsequent statements to build a
+    foreign key scenario. Another possible use of this mechanism is to
+    copy the contents of a file into a table column. First load the file into a
+    variable and then proceed as above.
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '''' `cat my_file.txt` ''''</code></strong>
+testdb=&gt; <strong class="userinput"><code>INSERT INTO my_table VALUES (:content);</code></strong></pre>
+<p>
+    One problem with this approach is that <code class="filename">my_file.txt</code>
+    might contain single quotes. These need to be escaped so that
+    they don't cause a syntax error when the second line is processed. This
+    could be done with the program <code class="command">sed</code>:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '''' `sed -e "s/'/''/g" &lt; my_file.txt` ''''</code></strong></pre>
+<p>
+    If you are using non-standard-conforming strings then you'll also need
+    to double backslashes.  This is a bit tricky:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set content '''' `sed -e "s/'/''/g" -e 's/\\/\\\\/g' &lt; my_file.txt` ''''</code></strong></pre>
+<p>
+    Note the use of different shell quoting conventions so that neither
+    the single quote marks nor the backslashes are special to the shell.
+    Backslashes are still special to <code class="command">sed</code>, however, so
+    we need to double them.  (Perhaps
+    at one point you thought it was great that all Unix commands use the
+    same escape character.)
+    </p>
+<p>    Since colons may legally appear in SQL commands, the following rule
+    applies: the character sequence
+    &#8220;<span class="quote">:name</span>&#8221; is not changed unless &#8220;<span class="quote">name</span>&#8221; is the name
+    of a variable that is currently set. In any case you can escape
+    a colon with a backslash to protect it from substitution. (The
+    colon syntax for variables is standard <acronym class="acronym">SQL</acronym> for
+    embedded query languages, such as <span class="application">ECPG</span>.
+    The colon syntax for array slices and type casts are
+    <span class="productname">PostgreSQL</span> extensions, hence the
+    conflict.)
+    </p>
+</div>
+<div class="refsect3" lang="en">
+<a name="app-psql-prompting"></a><h4>Prompting</h4>
+<p>    The prompts <span class="application">psql</span> issues can be customized
+    to your preference. The three variables <code class="varname">PROMPT1</code>,
+    <code class="varname">PROMPT2</code>, and <code class="varname">PROMPT3</code> contain strings
+    and special escape sequences that describe the appearance of the
+    prompt. Prompt 1 is the normal prompt that is issued when
+    <span class="application">psql</span> requests a new command. Prompt 2 is
+    issued when more input is expected during command input because the
+    command was not terminated with a semicolon or a quote was not closed.
+    Prompt 3 is issued when you run an <acronym class="acronym">SQL</acronym>
+    <code class="command">COPY</code> command and you are expected to type in the
+    row values on the terminal.
+    </p>
+<p>    The value of the selected prompt variable is printed literally,
+    except where a percent sign (<code class="literal">%</code>) is encountered.
+    Depending on the next character, certain other text is substituted
+    instead. Defined substitutions are:
+
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">%M</code></span></dt>
+<dd><p>          The full host name (with domain name) of the database server,
+          or <code class="literal">[local]</code> if the connection is over a Unix
+          domain socket, or
+          <code class="literal">[local:<em class="replaceable"><code>/dir/name</code></em>]</code>, 
+          if the Unix domain socket is not at the compiled in default
+          location.
+        </p></dd>
+<dt><span class="term"><code class="literal">%m</code></span></dt>
+<dd><p>          The host name of the database server, truncated at the
+          first dot, or <code class="literal">[local]</code> if the connection is
+          over a Unix domain socket.
+         </p></dd>
+<dt><span class="term"><code class="literal">%&gt;</code></span></dt>
+<dd><p>The port number at which the database server is listening.</p></dd>
+<dt><span class="term"><code class="literal">%n</code></span></dt>
+<dd><p>          The database session user name.  (The expansion of this
+          value might change during a database session as the result
+          of the command <code class="command">SET SESSION
+          AUTHORIZATION</code>.)
+         </p></dd>
+<dt><span class="term"><code class="literal">%/</code></span></dt>
+<dd><p>The name of the current database.</p></dd>
+<dt><span class="term"><code class="literal">%~</code></span></dt>
+<dd><p>Like <code class="literal">%/</code>, but the output is <code class="literal">~</code>
+         (tilde) if the database is your default database.</p></dd>
+<dt><span class="term"><code class="literal">%#</code></span></dt>
+<dd><p>          If the session user is a database superuser, then a
+          <code class="literal">#</code>, otherwise a <code class="literal">&gt;</code>.
+          (The expansion of this value might change during a database
+          session as the result of the command <code class="command">SET SESSION
+          AUTHORIZATION</code>.)
+         </p></dd>
+<dt><span class="term"><code class="literal">%R</code></span></dt>
+<dd><p>        In prompt 1 normally <code class="literal">=</code>, but <code class="literal">^</code> if
+        in single-line mode, and <code class="literal">!</code> if the session is
+        disconnected from the database (which can happen if
+        <code class="command">\connect</code> fails). In prompt 2 the sequence is
+        replaced by <code class="literal">-</code>, <code class="literal">*</code>, a single quote,
+        a double quote, or a dollar sign, depending on whether
+        <span class="application">psql</span> expects more input because the
+        command wasn't terminated yet, because you are inside a
+        <code class="literal">/* ... */</code> comment, or because you are inside
+        a quoted or dollar-escaped string. In prompt 3 the sequence doesn't
+        produce anything.
+        </p></dd>
+<dt><span class="term"><code class="literal">%x</code></span></dt>
+<dd><p>        Transaction status: an empty string when not in a transaction
+        block, or <code class="literal">*</code> when in a transaction block, or
+        <code class="literal">!</code> when in a failed transaction block, or <code class="literal">?</code>
+        when the transaction state is indeterminate (for example, because
+        there is no connection).
+        </p></dd>
+<dt><span class="term"><code class="literal">%</code><em class="replaceable"><code>digits</code></em></span></dt>
+<dd><p>        The character with the indicated octal code is substituted.
+        </p></dd>
+<dt><span class="term"><code class="literal">%:</code><em class="replaceable"><code>name</code></em><code class="literal">:</code></span></dt>
+<dd><p>        The value of the <span class="application">psql</span> variable
+        <em class="replaceable"><code>name</code></em>. See the
+        section <a href="app-psql.html#app-psql-variables">Variables</a> for details.
+        </p></dd>
+<dt><span class="term"><code class="literal">%`</code><em class="replaceable"><code>command</code></em><code class="literal">`</code></span></dt>
+<dd><p>        The output of <em class="replaceable"><code>command</code></em>, similar to ordinary
+        &#8220;<span class="quote">back-tick</span>&#8221; substitution.
+        </p></dd>
+<dt><span class="term"><code class="literal">%[</code> ... <code class="literal">%]</code></span></dt>
+<dd>
+<p>         Prompts may contain terminal control characters which, for
+         example, change the color, background, or style of the prompt
+         text, or change the title of the terminal window. In order for
+         the line editing features of <span class="application">Readline</span> to work properly, these
+         non-printing control characters must be designated as invisible
+         by surrounding them with <code class="literal">%[</code> and
+         <code class="literal">%]</code>. Multiple pairs of these may occur within
+         the prompt.  For example,
+</p>
+<pre class="programlisting">testdb=&gt; \set PROMPT1 '%[%033[1;33;40m%]%n@%/%R%[%033[0m%]%# '</pre>
+<p>
+         results in a boldfaced (<code class="literal">1;</code>) yellow-on-black
+         (<code class="literal">33;40</code>) prompt on VT100-compatible, color-capable
+         terminals.
+        </p>
+</dd>
+</dl></div>
+<p>
+
+    To insert a percent sign into your prompt, write
+    <code class="literal">%%</code>. The default prompts are
+    <code class="literal">'%/%R%# '</code> for prompts 1 and 2, and
+    <code class="literal">'&gt;&gt; '</code> for prompt 3.
+    </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    This feature was shamelessly plagiarized from
+    <span class="application">tcsh</span>.
+    </p>
+</div>
+</div>
+<div class="refsect3" lang="en">
+<a name="id2789424"></a><h4>Command-Line Editing</h4>
+<p>    <span class="application">psql</span> supports the <span class="application">Readline</span>
+    library for convenient line editing and retrieval. The command
+    history is automatically saved when <span class="application">psql</span>
+    exits and is reloaded when
+    <span class="application">psql</span> starts up. Tab-completion is also
+    supported, although the completion logic makes no claim to be an
+    <acronym class="acronym">SQL</acronym> parser.  If for some reason you do not like the tab completion, you
+    can turn it off by putting this in a file named
+    <code class="filename">.inputrc</code> in your home directory:
+</p>
+<pre class="programlisting">$if psql
+set disable-completion on
+$endif</pre>
+<p>
+    (This is not a <span class="application">psql</span> but a
+    <span class="application">Readline</span> feature. Read its documentation
+    for further details.)
+    </p>
+</div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2789490"></a><h2>Environment</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="envar">PAGER</code></span></dt>
+<dd><p>      If the query results do not fit on the screen, they are piped
+      through this command.  Typical values are
+      <code class="literal">more</code> or <code class="literal">less</code>.  The default
+      is platform-dependent.  The use of the pager can be disabled by
+      using the <code class="command">\pset</code> command.
+     </p></dd>
+<dt><span class="term"><code class="envar">PGDATABASE</code></span></dt>
+<dd><p>      Default connection database
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="envar">PGUSER</code></span>
+</dt>
+<dd><p>      Default connection parameters
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PSQL_EDITOR</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">EDITOR</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="envar">VISUAL</code></span>
+</dt>
+<dd><p>      Editor used by the <code class="command">\e</code> command.  The variables
+      are examined in the order listed; the first that is set is used.
+     </p></dd>
+<dt><span class="term"><code class="envar">SHELL</code></span></dt>
+<dd><p>      Command executed by the <code class="command">\!</code> command.
+     </p></dd>
+<dt><span class="term"><code class="envar">TMPDIR</code></span></dt>
+<dd><p>      Directory for storing temporary files.  The default is
+      <code class="filename">/tmp</code>.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2789600"></a><h2>Files</h2>
+<div class="itemizedlist"><ul type="disc">
+<li><p>     Before starting up, <span class="application">psql</span> attempts to
+     read and execute commands from the system-wide
+     <code class="filename">psqlrc</code> file and the user's
+     <code class="filename">~/.psqlrc</code> file.
+     (On Windows, the user's startup file is named
+     <code class="filename">%APPDATA%\postgresql\psqlrc.conf</code>.)
+     See <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/share/psqlrc.sample</code>
+     for information on setting up the system-wide file.  It could be used
+     to set up the client or the server to taste (using the <code class="command">\set
+     </code> and <code class="command">SET</code> commands).
+    </p></li>
+<li><p>     Both the system-wide <code class="filename">psqlrc</code> file and the user's
+     <code class="filename">~/.psqlrc</code> file can be made version-specific
+     by appending a dash and the <span class="productname">PostgreSQL</span>
+     release number, for example <code class="filename">~/.psqlrc-8.2beta3</code>.
+     A matching version-specific file will be read in preference to a
+     non-version-specific file.
+    </p></li>
+<li><p>     The command-line history is stored in the file
+     <code class="filename">~/.psql_history</code>, or
+     <code class="filename">%APPDATA%\postgresql\psql_history</code> on Windows.
+    </p></li>
+</ul></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2789706"></a><h2>Notes</h2>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      In an earlier life <span class="application">psql</span> allowed the
+      first argument of a single-letter backslash command to start
+      directly after the command, without intervening whitespace. For
+      compatibility this is still supported to some extent,
+      but we are not going to explain the details here as this use is
+      discouraged.  If you get strange messages, keep this in mind.
+      For example
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\foo</code></strong>
+Field separator is "oo".</pre>
+<p>
+      which is perhaps not what one would expect.
+      </p>
+</li>
+<li><p>      <span class="application">psql</span> only works smoothly with servers
+      of the same version. That does not mean other combinations will
+      fail outright, but subtle and not-so-subtle problems might come
+      up.  Backslash commands are particularly likely to fail if the
+      server is of a different version.
+      </p></li>
+</ul></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2789754"></a><h2>Notes for Windows users</h2>
+<p>  <span class="application">psql</span> is built as a &#8220;<span class="quote">console
+  application</span>&#8221;.  Since the Windows console windows use a different
+  encoding than the rest of the system, you must take special care
+  when using 8-bit characters within <span class="application">psql</span>.
+  If <span class="application">psql</span> detects a problematic
+  console code page, it will warn you at startup. To change the
+  console code page, two things are necessary:
+
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      Set the code page by entering <strong class="userinput"><code>cmd.exe /c chcp
+      1252</code></strong>. (1252 is a code page that is appropriate for
+      German; replace it with your value.) If you are using Cygwin,
+      you can put this command in <code class="filename">/etc/profile</code>.
+     </p></li>
+<li><p>      Set the console font to <code class="literal">Lucida Console</code>, because the
+      raster font does not work with the ANSI code page.
+     </p></li>
+</ul></div>
+<p>
+ </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="app-psql-examples"></a><h2>Examples</h2>
+<p>  The first example shows how to spread a command over several lines of
+  input. Notice the changing prompt:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>CREATE TABLE my_table (</code></strong>
+testdb(&gt; <strong class="userinput"><code> first integer not null default 0,</code></strong>
+testdb(&gt; <strong class="userinput"><code> second text)</code></strong>
+testdb-&gt; <strong class="userinput"><code>;</code></strong>
+CREATE TABLE</pre>
+<p>
+  Now look at the table definition again:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\d my_table</code></strong>
+             Table "my_table"
+ Attribute |  Type   |      Modifier
+-----------+---------+--------------------
+ first     | integer | not null default 0
+ second    | text    |
+</pre>
+<p>
+  Now we change the prompt to something more interesting:
+</p>
+<pre class="programlisting">testdb=&gt; <strong class="userinput"><code>\set PROMPT1 '%n@%m %~%R%# '</code></strong>
+peter@localhost testdb=&gt;</pre>
+<p>
+  Let's assume you have filled the table with data and want to take a
+  look at it:
+</p>
+<pre class="programlisting">peter@localhost testdb=&gt; SELECT * FROM my_table;
+ first | second
+-------+--------
+     1 | one
+     2 | two
+     3 | three
+     4 | four
+(4 rows)
+</pre>
+<p>
+  You can display tables in different ways by using the
+  <code class="command">\pset</code> command:
+</p>
+<pre class="programlisting">peter@localhost testdb=&gt; <strong class="userinput"><code>\pset border 2</code></strong>
+Border style is 2.
+peter@localhost testdb=&gt; <strong class="userinput"><code>SELECT * FROM my_table;</code></strong>
++-------+--------+
+| first | second |
++-------+--------+
+|     1 | one    |
+|     2 | two    |
+|     3 | three  |
+|     4 | four   |
++-------+--------+
+(4 rows)
+
+peter@localhost testdb=&gt; <strong class="userinput"><code>\pset border 0</code></strong>
+Border style is 0.
+peter@localhost testdb=&gt; <strong class="userinput"><code>SELECT * FROM my_table;</code></strong>
+first second
+----- ------
+    1 one
+    2 two
+    3 three
+    4 four
+(4 rows)
+
+peter@localhost testdb=&gt; <strong class="userinput"><code>\pset border 1</code></strong>
+Border style is 1.
+peter@localhost testdb=&gt; <strong class="userinput"><code>\pset format unaligned</code></strong>
+Output format is unaligned.
+peter@localhost testdb=&gt; <strong class="userinput"><code>\pset fieldsep ","</code></strong>
+Field separator is ",".
+peter@localhost testdb=&gt; <strong class="userinput"><code>\pset tuples_only</code></strong>
+Showing only tuples.
+peter@localhost testdb=&gt; <strong class="userinput"><code>SELECT second, first FROM my_table;</code></strong>
+one,1
+two,2
+three,3
+four,4</pre>
+<p>
+  Alternatively, use the short commands:
+</p>
+<pre class="programlisting">peter@localhost testdb=&gt; <strong class="userinput"><code>\a \t \x</code></strong>
+Output format is aligned.
+Tuples only is off.
+Expanded display is on.
+peter@localhost testdb=&gt; <strong class="userinput"><code>SELECT * FROM my_table;</code></strong>
+-[ RECORD 1 ]-
+first  | 1
+second | one
+-[ RECORD 2 ]-
+first  | 2
+second | two
+-[ RECORD 3 ]-
+first  | 3
+second | three
+-[ RECORD 4 ]-
+first  | 4
+second | four</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2790021"></a><h2>See Also</h2>
+<span class="simplelist">Environment Variables (<a href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>)</span>
+</div>
+</div></body>
+</html>

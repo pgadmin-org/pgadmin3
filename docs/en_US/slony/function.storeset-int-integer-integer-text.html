@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.118.  storeset_int( integer, integer, text )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.storeset-integer-text.html" title="1.117.  storeset( integer, text )">
+<link rel="next" href="function.storetrigger-integer-name.html" title="1.119.  storetrigger( integer, name )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.storeset-int-integer-integer-text"></a>1.118.        storeset_int( integer, integer, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       storeSet_int (set_id, set_origin, set_comment)
+
+Process the STORE_SET event, indicating the new set with given ID,
+origin node, and human readable comment.
+        </p>
+<pre class="programlisting">declare
+	p_set_id			alias for $1;
+	p_set_origin		alias for $2;
+	p_set_comment		alias for $3;
+	v_dummy				int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	select 1 into v_dummy
+			from sl_set
+			where set_id = p_set_id
+			for update;
+	if found then 
+		update sl_set
+				set set_comment = p_set_comment
+				where set_id = p_set_id;
+	else
+		if not exists (select 1 from sl_node
+						where no_id = p_set_origin) then
+			perform storeNode_int (p_set_origin, '&lt;event pending&gt;', 'f');
+		end if;
+		insert into sl_set
+				(set_id, set_origin, set_comment) values
+				(p_set_id, p_set_origin, p_set_comment);
+	end if;
+
+	-- Run addPartialLogIndices() to try to add indices to unused sl_log_? table
+	perform addPartialLogIndices();
+
+	return p_set_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

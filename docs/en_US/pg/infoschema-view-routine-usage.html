@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.45. view_routine_usage</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-view-column-usage.html" title="32.44. view_column_usage">
+<link rel="next" href="infoschema-view-table-usage.html" title="32.46. view_table_usage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-view-routine-usage"></a>32.45. <code class="literal">view_routine_usage</code></h2></div></div></div>
+<p>   The view <code class="literal">view_routine_usage</code> identifies all
+   routines (functions and procedures) that are used in the query
+   expression of a view (the <code class="command">SELECT</code> statement that
+   defines the view).  A routine is only included if that routine is
+   owned by a currently enabled role.
+  </p>
+<div class="table">
+<a name="id2688428"></a><p class="title"><b>Table 32.43. <code class="literal">view_routine_usage</code> Columns</b></p>
+<div class="table-contents"><table summary="view_routine_usage Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="literal">sql_identifier</code></td>
+<td>Name of the database containing the view (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="literal">sql_identifier</code></td>
+<td>Name of the schema containing the view</td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="literal">sql_identifier</code></td>
+<td>Name of the view</td>
+</tr>
+<tr>
+<td><code class="literal">specific_catalog</code></td>
+<td><code class="literal">sql_identifier</code></td>
+<td>Name of the database containing the function (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">specific_schema</code></td>
+<td><code class="literal">sql_identifier</code></td>
+<td>Name of the schema containing the function</td>
+</tr>
+<tr>
+<td><code class="literal">specific_name</code></td>
+<td><code class="literal">sql_identifier</code></td>
+<td>       The &#8220;<span class="quote">specific name</span>&#8221; of the function.  See <a href="infoschema-routines.html" title="32.29. routines">Section 32.29, &#8220;<code class="literal">routines</code>&#8221;</a> for more information.
+      </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

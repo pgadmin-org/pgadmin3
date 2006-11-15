@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>49.6. Index Cost Estimation Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
+<link rel="prev" href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">
+<link rel="next" href="gist.html" title="Chapter 50. GiST Indexes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index-cost-estimation"></a>49.6. Index Cost Estimation Functions</h2></div></div></div>
+<p>   The amcostestimate function is given a list of WHERE clauses that have
+   been determined to be usable with the index.  It must return estimates
+   of the cost of accessing the index and the selectivity of the WHERE
+   clauses (that is, the fraction of parent-table rows that will be
+   retrieved during the index scan).  For simple cases, nearly all the
+   work of the cost estimator can be done by calling standard routines
+   in the optimizer; the point of having an amcostestimate function is
+   to allow index access methods to provide index-type-specific knowledge,
+   in case it is possible to improve on the standard estimates.
+  </p>
+<p>   Each amcostestimate function must have the signature:
+
+</p>
+<pre class="programlisting">void
+amcostestimate (PlannerInfo *root,
+                IndexOptInfo *index,
+                List *indexQuals,
+                RelOptInfo *outer_rel,
+                Cost *indexStartupCost,
+                Cost *indexTotalCost,
+                Selectivity *indexSelectivity,
+                double *indexCorrelation);</pre>
+<p>
+
+   The first four parameters are inputs:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">root</span></dt>
+<dd><p>       The planner's information about the query being processed.
+      </p></dd>
+<dt><span class="term">index</span></dt>
+<dd><p>       The index being considered.
+      </p></dd>
+<dt><span class="term">indexQuals</span></dt>
+<dd><p>       List of index qual clauses (implicitly ANDed);
+       a NIL list indicates no qualifiers are available.
+       Note that the list contains expression trees, not ScanKeys.
+      </p></dd>
+<dt><span class="term">outer_rel</span></dt>
+<dd><p>       If the index is being considered for use in a join inner indexscan,
+       the planner's information about the outer side of the join.  Otherwise
+       NULL.  When non-NULL, some of the qual clauses will be join clauses
+       with this rel rather than being simple restriction clauses.  Also,
+       the cost estimator should expect that the index scan will be repeated
+       for each row of the outer rel.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   The last four parameters are pass-by-reference outputs:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">*indexStartupCost</span></dt>
+<dd><p>       Set to cost of index start-up processing
+      </p></dd>
+<dt><span class="term">*indexTotalCost</span></dt>
+<dd><p>       Set to total cost of index processing
+      </p></dd>
+<dt><span class="term">*indexSelectivity</span></dt>
+<dd><p>       Set to index selectivity
+      </p></dd>
+<dt><span class="term">*indexCorrelation</span></dt>
+<dd><p>       Set to correlation coefficient between index scan order and
+       underlying table's order
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   Note that cost estimate functions must be written in C, not in SQL or
+   any available procedural language, because they must access internal
+   data structures of the planner/optimizer.
+  </p>
+<p>   The index access costs should be computed using the parameters used by
+   <code class="filename">src/backend/optimizer/path/costsize.c</code>: a sequential
+   disk block fetch has cost <code class="varname">seq_page_cost</code>, a nonsequential fetch
+   has cost <code class="varname">random_page_cost</code>, and the cost of processing one index
+   row should usually be taken as <code class="varname">cpu_index_tuple_cost</code>.  In
+   addition, an appropriate multiple of <code class="varname">cpu_operator_cost</code> should
+   be charged for any comparison operators invoked during index processing
+   (especially evaluation of the indexQuals themselves).
+  </p>
+<p>   The access costs should include all disk and CPU costs associated with
+   scanning the index itself, but <span class="emphasis"><em>not</em></span> the costs of retrieving or
+   processing the parent-table rows that are identified by the index.
+  </p>
+<p>   The &#8220;<span class="quote">start-up cost</span>&#8221; is the part of the total scan cost that
+   must be expended before we can begin to fetch the first row.  For most
+   indexes this can be taken as zero, but an index type with a high start-up
+   cost might want to set it nonzero.
+  </p>
+<p>   The indexSelectivity should be set to the estimated fraction of the parent
+   table rows that will be retrieved during the index scan.  In the case
+   of a lossy index, this will typically be higher than the fraction of
+   rows that actually pass the given qual conditions.
+  </p>
+<p>   The indexCorrelation should be set to the correlation (ranging between
+   -1.0 and 1.0) between the index order and the table order.  This is used
+   to adjust the estimate for the cost of fetching rows from the parent
+   table.
+  </p>
+<p>   In the join case, the returned numbers should be averages expected for
+   any one scan of the index.
+  </p>
+<div class="procedure">
+<a name="id2819716"></a><p class="title"><b>Cost Estimation</b></p>
+<p>    A typical cost estimator will proceed as follows:
+   </p>
+<ol type="1">
+<li>
+<p>     Estimate and return the fraction of parent-table rows that will be visited
+     based on the given qual conditions.  In the absence of any index-type-specific
+     knowledge, use the standard optimizer function <code class="function">clauselist_selectivity()</code>:
+
+</p>
+<pre class="programlisting">*indexSelectivity = clauselist_selectivity(root, indexQuals,
+                                           index-&gt;rel-&gt;relid, JOIN_INNER);</pre>
+<p>
+    </p>
+</li>
+<li><p>     Estimate the number of index rows that will be visited during the
+     scan.  For many index types this is the same as indexSelectivity times
+     the number of rows in the index, but it might be more.  (Note that the
+     index's size in pages and rows is available from the IndexOptInfo struct.)
+    </p></li>
+<li><p>     Estimate the number of index pages that will be retrieved during the scan.
+     This might be just indexSelectivity times the index's size in pages.
+    </p></li>
+<li>
+<p>     Compute the index access cost.  A generic estimator might do this:
+
+</p>
+<pre class="programlisting">    /*
+     * Our generic assumption is that the index pages will be read
+     * sequentially, so they cost seq_page_cost each, not random_page_cost.
+     * Also, we charge for evaluation of the indexquals at each index row.
+     * All the costs are assumed to be paid incrementally during the scan.
+     */
+    cost_qual_eval(&amp;index_qual_cost, indexQuals);
+    *indexStartupCost = index_qual_cost.startup;
+    *indexTotalCost = seq_page_cost * numIndexPages +
+        (cpu_index_tuple_cost + index_qual_cost.per_tuple) * numIndexTuples;</pre>
+<p>
+
+     However, the above does not account for amortization of index reads
+     across repeated index scans in the join case.
+    </p>
+</li>
+<li><p>     Estimate the index correlation.  For a simple ordered index on a single
+     field, this can be retrieved from pg_statistic.  If the correlation
+     is not known, the conservative estimate is zero (no correlation).
+    </p></li>
+</ol>
+</div>
+<p>   Examples of cost estimator functions can be found in
+   <code class="filename">src/backend/utils/adt/selfuncs.c</code>.
+  </p>
+</div></body>
+</html>

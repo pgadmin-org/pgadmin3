@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.31. sequences</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-schemata.html" title="32.30. schemata">
+<link rel="next" href="infoschema-sql-features.html" title="32.32. sql_features">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-sequences"></a>32.31. <code class="literal">sequences</code></h2></div></div></div>
+<p>   The view <code class="literal">sequences</code> contains all sequences
+   defined in the current database.  Only those sequences are shown
+   that the current user has access to (by way of being the owner or
+   having some privilege).
+  </p>
+<div class="table">
+<a name="id2685663"></a><p class="title"><b>Table 32.29. <code class="literal">sequences</code> Columns</b></p>
+<div class="table-contents"><table summary="sequences Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">sequence_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database that contains the sequence (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">sequence_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema that contains the sequence</td>
+</tr>
+<tr>
+<td><code class="literal">sequence_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the sequence</td>
+</tr>
+<tr>
+<td><code class="literal">data_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The data type of the sequence.  In
+       <span class="productname">PostgreSQL</span>, this is currently always
+       <code class="literal">bigint</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       This column contains the (declared or implicit) precision of
+       the sequence data type (see above).  The precision indicates
+       the number of significant digits.  It may be expressed in
+       decimal (base 10) or binary (base 2) terms, as specified in the
+       column <code class="literal">numeric_precision_radix</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision_radix</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       This column indicates in which base the values in the columns
+       <code class="literal">numeric_precision</code> and
+       <code class="literal">numeric_scale</code> are expressed.  The value is
+       either 2 or 10.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">numeric_scale</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       This column contains the (declared or implicit) scale of the
+       sequence data type (see above).  The scale indicates the number
+       of significant digits to the right of the decimal point.  It
+       may be expressed in decimal (base 10) or binary (base 2) terms,
+       as specified in the column
+       <code class="literal">numeric_precision_radix</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">maximum_value</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td><code class="literal">minimum_value</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td><code class="literal">increment</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Not yet implemented</td>
+</tr>
+<tr>
+<td><code class="literal">cycle_option</code></td>
+<td><code class="type">character_data</code></td>
+<td>Not yet implemented</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

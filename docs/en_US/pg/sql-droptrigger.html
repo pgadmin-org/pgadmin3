@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP TRIGGER</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-droptablespace.html" title="DROP TABLESPACE">
+<link rel="next" href="sql-droptype.html" title="DROP TYPE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-droptrigger"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP TRIGGER &#8212; remove a trigger</p>
+</div>
+<a name="id2756712"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP TRIGGER [ IF EXISTS ] <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2756739"></a><h2>Description</h2>
+<p>   <code class="command">DROP TRIGGER</code> will remove an existing
+   trigger definition. To execute this command, the current
+   user must be the owner of the table for which the trigger is defined.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2756754"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">IF EXISTS</code></span></dt>
+<dd><p>      Do not throw an error if the trigger does not exist. A notice is issued 
+      in this case.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name of the trigger to remove.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table for which
+      the trigger is defined.
+     </p></dd>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
+<dd><p>      Automatically drop objects that depend on the trigger.
+     </p></dd>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
+<dd><p>      Refuse to drop the trigger if any objects depend on it.  This is
+      the default.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-droptrigger-examples"></a><h2>Examples</h2>
+<p>   Destroy the trigger <code class="literal">if_dist_exists</code> on the table
+   <code class="literal">films</code>:
+
+</p>
+<pre class="programlisting">DROP TRIGGER if_dist_exists ON films;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-droptrigger-compatibility"></a><h2>Compatibility</h2>
+<p>   The <code class="command">DROP TRIGGER</code> statement in
+   <span class="productname">PostgreSQL</span> is incompatible with the SQL
+   standard.  In the SQL standard, trigger names are not local to
+   tables, so the command is simply <code class="literal">DROP TRIGGER
+   <em class="replaceable"><code>name</code></em></code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2756879"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtrigger.html">CREATE TRIGGER</a></span>
+</div>
+</div></body>
+</html>

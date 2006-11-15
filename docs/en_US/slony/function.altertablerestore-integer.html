@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.22.  altertablerestore( integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.altertableforreplication-integer.html" title="1.21.  altertableforreplication( integer )">
+<link rel="next" href="function.checkmoduleversion.html" title="1.23.  checkmoduleversion( )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.altertablerestore-integer"></a>1.22.        altertablerestore( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       alterTableRestore (tab_id)
+
+Restores table tab_id from being replicated.
+
+On the origin, this simply involves dropping the "logtrigger" trigger.
+
+On subscriber nodes, this involves dropping the "denyaccess" trigger,
+and restoring user triggers and rules.
+        </p>
+<pre class="programlisting">declare
+	p_tab_id			alias for $1;
+	v_no_id				int4;
+	v_tab_row			record;
+	v_tab_fqname		text;
+	v_n					int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Get our local node ID
+	-- ----
+	v_no_id := getLocalNodeId('_schemadoc');
+
+	-- ----
+	-- Get the sl_table row and the current tables origin. Check
+	-- that the table currently IS in altered state.
+	-- ----
+	select T.tab_reloid, T.tab_set, T.tab_altered,
+			S.set_origin, PGX.indexrelid,
+			slon_quote_brute(PGN.nspname) || '.' ||
+			slon_quote_brute(PGC.relname) as tab_fqname
+			into v_tab_row
+			from sl_table T, sl_set S,
+				"pg_catalog".pg_class PGC, "pg_catalog".pg_namespace PGN,
+				"pg_catalog".pg_index PGX, "pg_catalog".pg_class PGXC
+			where T.tab_id = p_tab_id
+				and T.tab_set = S.set_id
+				and T.tab_reloid = PGC.oid
+				and PGC.relnamespace = PGN.oid
+				and PGX.indrelid = T.tab_reloid
+				and PGX.indexrelid = PGXC.oid
+				and PGXC.relname = T.tab_idxname
+				for update;
+	if not found then
+		raise exception 'Slony-I: alterTableRestore(): Table with id % not found', p_tab_id;
+	end if;
+	v_tab_fqname = v_tab_row.tab_fqname;
+	if not v_tab_row.tab_altered then
+		raise exception 'Slony-I: alterTableRestore(): Table % is not in altered state',
+				v_tab_fqname;
+	end if;
+
+	execute 'lock table ' || v_tab_fqname || ' in access exclusive mode';
+
+	-- ----
+	-- Procedures are different on origin and subscriber
+	-- ----
+	if v_no_id = v_tab_row.set_origin then
+		-- ----
+		-- On the Origin we just drop the trigger we originally added
+		-- ----
+		execute 'drop trigger "_schemadoc_logtrigger_' || 
+				p_tab_id || '" on ' || v_tab_fqname;
+	else
+		-- ----
+		-- On the subscriber drop the denyAccess trigger
+		-- ----
+		execute 'drop trigger "_schemadoc_denyaccess_' || 
+				p_tab_id || '" on ' || v_tab_fqname;
+				
+		-- ----
+		-- Restore all original triggers
+		-- ----
+		update "pg_catalog".pg_trigger
+				set tgrelid = v_tab_row.tab_reloid
+				where tgrelid = v_tab_row.indexrelid;
+		get diagnostics v_n = row_count;
+		if v_n &gt; 0 then
+			update "pg_catalog".pg_class
+					set reltriggers = reltriggers + v_n
+					where oid = v_tab_row.tab_reloid;
+		end if;
+
+		-- ----
+		-- Restore all original rewrite rules
+		-- ----
+		update "pg_catalog".pg_rewrite
+				set ev_class = v_tab_row.tab_reloid
+				where ev_class = v_tab_row.indexrelid;
+		get diagnostics v_n = row_count;
+		if v_n &gt; 0 then
+			update "pg_catalog".pg_class
+					set relhasrules = true
+					where oid = v_tab_row.tab_reloid;
+		end if;
+
+	end if;
+
+	-- ----
+	-- Mark the table not altered in our configuration
+	-- ----
+	update sl_table
+			set tab_altered = false where tab_id = p_tab_id;
+
+	return p_tab_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

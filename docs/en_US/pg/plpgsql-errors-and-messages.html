@@ -1,0 +1,62 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>37.9. Errors and Messages</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
+<link rel="prev" href="plpgsql-cursors.html" title="37.8. Cursors">
+<link rel="next" href="plpgsql-trigger.html" title="37.10. Trigger Procedures">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-errors-and-messages"></a>37.9. Errors and Messages</h2></div></div></div>
+<a name="id2711289"></a><a name="id2711295"></a><p>    Use the <code class="command">RAISE</code> statement to report messages and
+    raise errors.
+
+</p>
+<pre class="synopsis">RAISE <em class="replaceable"><code>level</code></em> '<em class="replaceable"><code>format</code></em>' [<span class="optional">, <em class="replaceable"><code>expression</code></em> [<span class="optional">, ...</span>]</span>];</pre>
+<p>
+
+    Possible levels are <code class="literal">DEBUG</code>,
+    <code class="literal">LOG</code>, <code class="literal">INFO</code>,
+    <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>,
+    and <code class="literal">EXCEPTION</code>.
+    <code class="literal">EXCEPTION</code> raises an error (which normally aborts the
+    current transaction); the other levels only generate messages of different
+    priority levels.
+    Whether messages of a particular priority are reported to the client,
+    written to the server log, or both is controlled by the
+    <a href="runtime-config-logging.html#guc-log-min-messages">log_min_messages</a> and
+    <a href="runtime-config-logging.html#guc-client-min-messages">client_min_messages</a> configuration
+    variables. See <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> for more
+    information.
+   </p>
+<p>    Inside the format string, <code class="literal">%</code> is replaced by the
+    next optional argument's string representation. Write
+    <code class="literal">%%</code> to emit a literal <code class="literal">%</code>. 
+    Arguments can be simple variables or expressions, 
+    and the format must be a simple string literal.
+   </p>
+<p>    In this example, the value of <code class="literal">v_job_id</code> will replace the
+    <code class="literal">%</code> in the string:
+</p>
+<pre class="programlisting">RAISE NOTICE 'Calling cs_create_job(%)', v_job_id;</pre>
+<p>
+   </p>
+<p>    This example will abort the transaction with the given error message:
+</p>
+<pre class="programlisting">RAISE EXCEPTION 'Nonexistent ID --&gt; %', user_id;</pre>
+<p>
+   </p>
+<p>     <code class="command">RAISE EXCEPTION</code> presently always generates
+     the same <code class="varname">SQLSTATE</code> code, <code class="literal">P0001</code>, no matter what message
+     it is invoked with.  It is possible to trap this exception with
+     <code class="literal">EXCEPTION ... WHEN RAISE_EXCEPTION THEN ...</code> but there
+     is no way to tell one <code class="command">RAISE</code> from another.
+    </p>
+</div></body>
+</html>

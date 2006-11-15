@@ -1,0 +1,111 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>13.2. Statistics Used by the Planner</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="prev" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="next" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="planner-stats"></a>13.2. Statistics Used by the Planner</h2></div></div></div>
+<a name="id2612533"></a><p>   As we saw in the previous section, the query planner needs to estimate
+   the number of rows retrieved by a query in order to make good choices
+   of query plans.  This section provides a quick look at the statistics
+   that the system uses for these estimates.
+  </p>
+<p>   One component of the statistics is the total number of entries in
+   each table and index, as well as the number of disk blocks occupied
+   by each table and index.  This information is kept in the table
+   <a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>, in
+   the columns <code class="structfield">reltuples</code> and
+   <code class="structfield">relpages</code>.  We can look at it with
+   queries similar to this one:
+
+</p>
+<pre class="screen">SELECT relname, relkind, reltuples, relpages FROM pg_class WHERE relname LIKE 'tenk1%';
+
+       relname        | relkind | reltuples | relpages
+----------------------+---------+-----------+----------
+ tenk1                | r       |     10000 |      358
+ tenk1_hundred        | i       |     10000 |       30
+ tenk1_thous_tenthous | i       |     10000 |       30
+ tenk1_unique1        | i       |     10000 |       30
+ tenk1_unique2        | i       |     10000 |       30
+(5 rows)</pre>
+<p>
+
+   Here we can see that <code class="structname">tenk1</code> contains 10000
+   rows, as do its indexes, but the indexes are (unsurprisingly) much
+   smaller than the table.
+  </p>
+<p>   For efficiency reasons, <code class="structfield">reltuples</code> 
+   and <code class="structfield">relpages</code> are not updated on-the-fly,
+   and so they usually contain somewhat out-of-date values.
+   They are updated by <code class="command">VACUUM</code>, <code class="command">ANALYZE</code>, and a
+   few DDL commands such as <code class="command">CREATE INDEX</code>.  A stand-alone
+   <code class="command">ANALYZE</code>, that is one not part of <code class="command">VACUUM</code>,
+   generates an approximate <code class="structfield">reltuples</code> value
+   since it does not read every row of the table.  The planner
+   will scale the values it finds in <code class="structname">pg_class</code>
+   to match the current physical table size, thus obtaining a closer
+   approximation.
+  </p>
+<a name="id2612650"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
+   to having <code class="literal">WHERE</code> clauses that restrict the rows to be
+   examined.  The planner thus needs to make an estimate of the
+   <em class="firstterm">selectivity</em> of <code class="literal">WHERE</code> clauses, that is,
+   the fraction of rows that match each condition in the
+   <code class="literal">WHERE</code> clause.  The information used for this task is
+   stored in the <a href="catalog-pg-statistic.html" title="43.31. pg_statistic"><code class="structname">pg_statistic</code></a>
+   system catalog.  Entries in <code class="structname">pg_statistic</code>
+   are updated by the <code class="command">ANALYZE</code> and <code class="command">VACUUM
+   ANALYZE</code> commands, and are always approximate even when freshly
+   updated.
+  </p>
+<a name="id2612713"></a><p>   Rather than look at <code class="structname">pg_statistic</code> directly,
+   it's better to look at its view <code class="structname">pg_stats</code>
+   when examining the statistics manually.  <code class="structname">pg_stats</code>
+   is designed to be more easily readable.  Furthermore,
+   <code class="structname">pg_stats</code> is readable by all, whereas
+   <code class="structname">pg_statistic</code> is only readable by a superuser.
+   (This prevents unprivileged users from learning something about
+   the contents of other people's tables from the statistics.  The
+   <code class="structname">pg_stats</code> view is restricted to show only
+   rows about tables that the current user can read.)
+   For example, we might do:
+
+</p>
+<pre class="screen">SELECT attname, n_distinct, most_common_vals FROM pg_stats WHERE tablename = 'road';
+
+ attname | n_distinct |                                                                                                                                                                                  most_common_vals                                                                                                                                                                                   
+---------+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ name    |  -0.467008 | {"I- 580                        Ramp","I- 880                        Ramp","Sp Railroad                       ","I- 580                            ","I- 680                        Ramp","I- 80                         Ramp","14th                          St  ","5th                           St  ","Mission                       Blvd","I- 880                            "}
+ thepath |         20 | {"[(-122.089,37.71),(-122.0886,37.711)]"}
+(2 rows)</pre>
+<p>
+  </p>
+<p>   <code class="structname">pg_stats</code> is described in detail in
+   <a href="view-pg-stats.html" title="43.46. pg_stats">Section 43.46, &#8220;<code class="structname">pg_stats</code>&#8221;</a>.
+  </p>
+<p>   The amount of information stored in <code class="structname">pg_statistic</code>,
+   in particular the maximum number of entries in the
+   <code class="structfield">most_common_vals</code> and <code class="structfield">histogram_bounds</code>
+   arrays for each column, can be set on a
+   column-by-column basis using the <code class="command">ALTER TABLE SET STATISTICS</code>
+   command, or globally by setting the
+   <a href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a> configuration variable.
+   The default limit is presently 10 entries.  Raising the limit
+   may allow more accurate planner estimates to be made, particularly for
+   columns with irregular data distributions, at the price of consuming
+   more space in <code class="structname">pg_statistic</code> and slightly more
+   time to compute the estimates.  Conversely, a lower limit may be
+   appropriate for columns with simple data distributions.
+  </p>
+</div></body>
+</html>

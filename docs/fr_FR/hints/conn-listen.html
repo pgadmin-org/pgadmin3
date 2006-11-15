@@ -1,0 +1,53 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+
+<h3>Le serveur n'écoute pas</h3>
+<p>
+Le serveur n'accepte pas les connexions&nbsp;: la bibliothèque de connexion
+rapporte
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Si vous rencontrez ce message, merci de vérifier que le serveur que vous essayez
+de contacter est réellement en cours d'exécution sur le port donné. Testez si 
+vous avez une connexion réseau à partir de votre client vers le serveur hôte en
+utilisant ping ou des outils équivalents. Votre réseau / VPN / tunnel SSH/ parefeu
+est-il configuré correctement&nbsp;?
+</p>
+<p>
+Pour des raisons de sécurité, PostgreSQL n'écoute <B>pas</B> sur toutes les
+adresses IP disponibles sur le serveur par défaut. Pour accéder au serveur sur
+le réseau, vous devez activer l'coute sur l'adresse en premier lieu.
+</p>
+<p>
+Pour les serveurs PostgreSQL, à partir de la version 8.0, ceci est contrôlé en
+utilisant le paramètre &quot;listen_addresses&quot; dans le fichier
+postgresql.conf. Vous pouvez y saisir une liste d'adresses IP que l serveur devra écouter ou simplement '*' pour indiquer toutes les adresses IP disponibles.
+Pour les versions précédentes (7.3 ou 7.4), vous aurez besoin de configurer le
+paramètre &quot;tcpip_socket&quot; à 'true'.
+</p>
+<p>
+Vous pouvez utiliser l'éditeur de postgresql.conf intégré à pgAdmin III pour
+modifier le fichier de configuration postgresql.conf. Après avoir modifié ce
+fichier, vous devez redémarrer le processus serveur pour que les modifications
+soient prises en compte.
+</p>
+<p>
+Si vous avez bien vérifié votre configuration mais que vous obtenez toujours ce
+message d'erreur, il est toujours improbable que vous ayez rencontré un
+mauvais comportement de PostgreSQL. Vous avez certainement des problèmes de
+connexion réseau (par exemple suivant la configuration du parefeu). Merci de
+vérifier ceci en profondeur avant de rapporter un bogue à la communauté
+PostgreSQL.
+</p>
+</body>
+</html>

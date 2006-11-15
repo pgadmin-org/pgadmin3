@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>38.2. PL/Tcl Functions and Arguments</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
+<link rel="prev" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
+<link rel="next" href="pltcl-data.html" title="38.3. Data Values in PL/Tcl">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="pltcl-functions"></a>38.2. PL/Tcl Functions and Arguments</h2></div></div></div>
+<p>     To create a function in the <span class="application">PL/Tcl</span> language, use
+     the standard <a href="sql-createfunction.html">CREATE FUNCTION</a> syntax:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION <em class="replaceable"><code>funcname</code></em> (<em class="replaceable"><code>argument-types</code></em>) RETURNS <em class="replaceable"><code>return-type</code></em> AS $$
+    # PL/Tcl function body
+$$ LANGUAGE pltcl;</pre>
+<p>
+
+     <span class="application">PL/TclU</span> is the same, except that the language has to be specified as
+     <code class="literal">pltclu</code>.
+    </p>
+<p>     The body of the function is simply a piece of Tcl script.
+     When the function is called, the argument values are passed as
+     variables <code class="literal">$1</code> ... <code class="literal">$<em class="replaceable"><code>n</code></em></code> to the
+     Tcl script.  The result is returned
+     from the Tcl code in the usual way, with a <code class="literal">return</code>
+     statement.
+    </p>
+<p>     For example, a function
+     returning the greater of two integer values could be defined as:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION tcl_max(integer, integer) RETURNS integer AS $$
+    if {$1 &gt; $2} {return $1}
+    return $2
+$$ LANGUAGE pltcl STRICT;</pre>
+<p>
+
+     Note the clause <code class="literal">STRICT</code>, which saves us from
+     having to think about null input values: if a null value is passed, the
+     function will not be called at all, but will just return a null
+     result automatically.
+    </p>
+<p>     In a nonstrict function,
+     if the actual value of an argument is null, the corresponding
+     <code class="literal">$<em class="replaceable"><code>n</code></em></code> variable will be set to an empty string.
+     To detect whether a particular argument is null, use the function
+     <code class="literal">argisnull</code>.  For example, suppose that we wanted <code class="function">tcl_max</code>
+     with one null and one nonnull argument to return the nonnull
+     argument, rather than null:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION tcl_max(integer, integer) RETURNS integer AS $$
+    if {[argisnull 1]} {
+        if {[argisnull 2]} { return_null }
+        return $2
+    }
+    if {[argisnull 2]} { return $1 }
+    if {$1 &gt; $2} {return $1}
+    return $2
+$$ LANGUAGE pltcl;</pre>
+<p>
+    </p>
+<p>     As shown above,
+     to return a null value from a PL/Tcl function, execute
+     <code class="literal">return_null</code>.  This can be done whether the
+     function is strict or not.
+    </p>
+<p>     Composite-type arguments are passed to the function as Tcl
+     arrays.  The element names of the array are the attribute names
+     of the composite type. If an attribute in the passed row has the
+     null value, it will not appear in the array. Here is an example:
+
+</p>
+<pre class="programlisting">CREATE TABLE employee (
+    name text,
+    salary integer,
+    age integer
+);
+
+CREATE FUNCTION overpaid(employee) RETURNS boolean AS $$
+    if {200000.0 &lt; $1(salary)} {
+        return "t"
+    }
+    if {$1(age) &lt; 30 &amp;&amp; 100000.0 &lt; $1(salary)} {
+        return "t"
+    }
+    return "f"
+$$ LANGUAGE pltcl;</pre>
+<p>
+    </p>
+<p>     There is currently no support for returning a composite-type
+     result value, nor for returning sets.
+    </p>
+<p>     <span class="application">PL/Tcl</span> does not currently have full support for
+     domain types: it treats a domain the same as the underlying scalar
+     type.  This means that constraints associated with the domain will
+     not be enforced.  This is not an issue for function arguments, but
+     it is a hazard if you declare a <span class="application">PL/Tcl</span> function
+     as returning a domain type.
+    </p>
+</div></body>
+</html>

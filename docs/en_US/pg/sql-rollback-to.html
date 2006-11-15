@@ -1,0 +1,111 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ROLLBACK TO SAVEPOINT</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">
+<link rel="next" href="sql-savepoint.html" title="SAVEPOINT">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-rollback-to"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ROLLBACK TO SAVEPOINT &#8212; roll back to a savepoint</p>
+</div>
+<a name="id2765637"></a><a name="id2765647"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <em class="replaceable"><code>savepoint_name</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2765667"></a><h2>Description</h2>
+<p>   Roll back all commands that were executed after the savepoint was
+   established.  The savepoint remains valid and can be rolled back to
+   again later, if needed.
+  </p>
+<p>   <code class="command">ROLLBACK TO SAVEPOINT</code> implicitly destroys all savepoints that
+   were established after the named savepoint.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2765685"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
+<dd><p>      The savepoint to roll back to.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2765700"></a><h2>Notes</h2>
+<p>   Use <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a> to destroy a savepoint without
+   discarding the effects of commands executed after it was established.
+  </p>
+<p>   Specifying a savepoint name that has not been established is an error.
+  </p>
+<p>   Cursors have somewhat non-transactional behavior with respect to
+   savepoints.  Any cursor that is opened inside a savepoint will be closed
+   when the savepoint is rolled back.  If a previously opened cursor is
+   affected by a 
+   <code class="command">FETCH</code> command inside a savepoint that is later rolled
+   back, the cursor position remains at the position that <code class="command">FETCH</code>
+   left it pointing to (that is, <code class="command">FETCH</code> is not rolled back).
+   Closing a cursor is not undone by rolling back, either.
+   A cursor whose execution causes a transaction to abort is put in a
+   can't-execute state, so while the transaction can be restored using
+   <code class="command">ROLLBACK TO SAVEPOINT</code>, the cursor can no longer be used.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2765758"></a><h2>Examples</h2>
+<p>   To undo the effects of the commands executed after <code class="literal">my_savepoint</code>
+   was established:
+</p>
+<pre class="programlisting">ROLLBACK TO SAVEPOINT my_savepoint;</pre>
+<p>
+  </p>
+<p>   Cursor positions are not affected by savepoint rollback:
+</p>
+<pre class="programlisting">BEGIN;
+
+DECLARE foo CURSOR FOR SELECT 1 UNION SELECT 2;
+
+SAVEPOINT foo;
+
+FETCH 1 FROM foo;
+ ?column? 
+----------
+        1
+
+ROLLBACK TO SAVEPOINT foo;
+
+FETCH 1 FROM foo;
+ ?column? 
+----------
+        2
+
+COMMIT;</pre>
+<p>
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2765790"></a><h2>Compatibility</h2>
+<p>   The <acronym class="acronym">SQL</acronym> standard specifies that the key word
+   <code class="literal">SAVEPOINT</code> is mandatory, but <span class="productname">PostgreSQL</span>
+   and <span class="productname">Oracle</span> allow it to be omitted.  SQL allows
+   only <code class="literal">WORK</code>, not <code class="literal">TRANSACTION</code>, as a noise word
+   after <code class="literal">ROLLBACK</code>.  Also, SQL has an optional clause
+   <code class="literal">AND [ NO ] CHAIN</code> which is not currently supported by
+   <span class="productname">PostgreSQL</span>.  Otherwise, this command conforms to
+   the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2765851"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a></span>
+</div>
+</div></body>
+</html>

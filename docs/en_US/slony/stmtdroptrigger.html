@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP TRIGGER</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtstoretrigger.html" title="STORE TRIGGER">
+<link rel="next" href="stmtsubscribeset.html" title="SUBSCRIBE SET">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtdroptrigger"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP TRIGGER &#8212;  Return a trigger to default behavior, where it will
+    not fire on subscriber nodes </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">DROP TRIGGER (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2577114"></a><h2>Description</h2>
+<p> Remove the special handling for the specified trigger.
+
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> TABLE ID = ival </code></span></dt>
+<dd><p> The unique, numeric ID number of the table the
+      trigger is defined for.</p></dd>
+<dt><span class="term"><code class="literal"> TRIGGER NAME = 'string' </code></span></dt>
+<dd><p> The name of the trigger as it appears in the
+	 <code class="envar">pg_trigger</code> system catalog.</p></dd>
+<dt><span class="term"><code class="literal"> EVENT NODE = ival </code></span></dt>
+<dd><p> (Optional) The ID of the node used to create
+	 the configuration event that tells all existing nodes about the
+	 special trigger. Default value is 1.</p></dd>
+</dl></div>
+<p>
+    </p>
+<p> This uses <a href="function.droptrigger-integer-name.html">schemadocdroptrigger( integer, name )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2577172"></a><h2>Example</h2>
+<pre class="programlisting">DROP TRIGGER (
+    TABLE ID = 2,
+    TRIGGER NAME = 'cache_invalidation'
+);
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2577182"></a><h2> Locking Behaviour </h2>
+<p> This operation will need to acquire an exclusive lock on
+    the specified table on each node to which it applies in order to
+    alter table schemas to remove the trigger. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2577190"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
+</div>
+</div></body>
+</html>

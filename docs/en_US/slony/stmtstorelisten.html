@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>STORE LISTEN</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtdroppath.html" title="DROP PATH">
+<link rel="next" href="stmtdroplisten.html" title="DROP LISTEN">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtstorelisten"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>STORE LISTEN &#8212;  Configure <span class="productname">Slony-I</span> node to
+    indicate where to listen for events </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">STORE LISTEN (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575017"></a><h2>Description</h2>
+<p> A &#8220;<span class="quote">listen</span>&#8221; entry causes a node (receiver) to query an
+     event provider for events that originate from a specific node, as
+     well as confirmations from every existing node. It requires a
+     &#8220;<span class="quote">path</span>&#8221; to exist so that the receiver (as client) can connect
+     to the provider (as server).</p>
+<p> Every node in the system must listen for events from every
+    other node in the system. As a general rule of thumb, a subscriber
+    (see <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>) should listen for events
+    of the set's origin on the same provider, where it receives the
+    data from. In turn, the origin of the data set should listen for
+    events from the origin in the opposite direction. A node can
+    listen for events from one and the same origin on different
+    providers at the same time. However, to process
+    <code class="command">SYNC</code> events from that origin, all data
+    providers must have the same or higher sync status, so this will
+    not result in any faster replication behaviour.
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> ORIGIN  = ival </code></span></dt>
+<dd><p> Node ID of the event origin the receiver is listening for.</p></dd>
+<dt><span class="term"><code class="literal"> PROVIDER = ival </code></span></dt>
+<dd><p> Node ID of the node from which the receiver gets
+	events that come from the origin.  If not specified, default is
+	the origin.</p></dd>
+<dt><span class="term"><code class="literal"> RECEIVER = ival </code></span></dt>
+<dd><p> The ID of the node receiving the events.</p></dd>
+</dl></div>
+<p> This uses <a href="function.storelisten-integer-integer-integer.html">schemadocstorelisten( integer, integer, integer )</a>. </p>
+<p> For more details, see <a href="listenpaths.html" title="9. Slony-I listen paths">Section 9, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a>.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575112"></a><h2>Example</h2>
+<pre class="programlisting">     STORE LISTEN ( ORIGIN = 1, RECEIVER = 2, PROVIDER = 3 );
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575121"></a><h2> Locking Behaviour </h2>
+<p> No application-visible locking should take place. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575128"></a><h2> Version Information </h2>
+<p> This command
+   was introduced in <span class="productname">Slony-I</span> 1.0.  As of version 1.1, you <span class="emphasis"><em>should</em></span> no
+   longer need to use this command, as listen paths are generated automatically. </p>
+</div>
+</div></body>
+</html>

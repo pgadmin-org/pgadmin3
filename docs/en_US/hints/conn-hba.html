@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Access to database denied</h3>
+<p>
+The server doesn't grant access to the database: the server reports
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+To access a database on a PostgreSQL server, you first have to grant primary access
+to the server for your client (Host Based Authentication). PostgreSQL will check the pg_hba.conf file if a 
+pattern that matches your client address / username / database is present and enabled before any 
+SQL GRANT access control lists are evaluated. 
+</p>
+<p>
+The initial settings in pg_hba.conf are quite restrictive, in order to avoid unwanted security holes 
+caused by unreviewed but mandatory system settings. You'll probably want to add something like
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+This example grants MD5 encrypted password access to all databases to all users on the private network 192.168.0.0/24.
+</p>
+<p>
+You can use the pg_hba.conf editor that is built into pgAdmin III to edit the pg_hba.conf 
+configuration file. After changing pg_hba.conf, you need to trigger a server configuration reload using pg_ctl or by 
+stopping and restarting the server process.
+</p>
+</body>
+</html>

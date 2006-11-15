@@ -1,0 +1,299 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE INDEX</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-creategroup.html" title="CREATE GROUP">
+<link rel="next" href="sql-createlanguage.html" title="CREATE LANGUAGE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createindex"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE INDEX &#8212; define a new index</p>
+</div>
+<a name="id2739847"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE [ UNIQUE ] INDEX [ CONCURRENTLY ] <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> [ USING <em class="replaceable"><code>method</code></em> ]
+    ( { <em class="replaceable"><code>column</code></em> | ( <em class="replaceable"><code>expression</code></em> ) } [ <em class="replaceable"><code>opclass</code></em> ] [, ...] )
+    [ WITH ( <em class="replaceable"><code>storage_parameter</code></em> = <em class="replaceable"><code>value</code></em> [, ... ] ) ]
+    [ TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]
+    [ WHERE <em class="replaceable"><code>predicate</code></em> ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2739923"></a><h2>Description</h2>
+<p>   <code class="command">CREATE INDEX</code> constructs an index <em class="replaceable"><code>index_name</code></em> on the specified table.
+   Indexes are primarily used to enhance database performance (though
+   inappropriate use can result in slower performance).
+  </p>
+<p>   The key field(s) for the index are specified as column names,
+   or alternatively as expressions written in parentheses.
+   Multiple fields can be specified if the index method supports
+   multicolumn indexes.
+  </p>
+<p>   An index field can be an expression computed from the values of
+   one or more columns of the table row.  This feature can be used
+   to obtain fast access to data based on some transformation of
+   the basic data. For example, an index computed on
+   <code class="literal">upper(col)</code> would allow the clause
+   <code class="literal">WHERE upper(col) = 'JIM'</code> to use an index.
+  </p>
+<p>   <span class="productname">PostgreSQL</span> provides the index methods
+   B-tree, hash, GiST, and GIN.  Users can also define their own index
+   methods, but that is fairly complicated.
+  </p>
+<p>    When the <code class="literal">WHERE</code> clause is present, a
+    <em class="firstterm">partial index</em> is created.
+    A partial index is an index that contains entries for only a portion of
+    a table, usually a portion that is more useful for indexing than the
+    rest of the table. For example, if you have a table that contains both
+    billed and unbilled orders where the unbilled orders take up a small
+    fraction of the total table and yet that is an often used section, you
+    can improve performance by creating an index on just that portion.
+    Another possible application is to use <code class="literal">WHERE</code> with
+    <code class="literal">UNIQUE</code> to enforce uniqueness over a subset of a
+    table.  See <a href="indexes-partial.html" title="11.7. Partial Indexes">Section 11.7, &#8220;Partial Indexes&#8221;</a> for more discussion.
+  </p>
+<p>    The expression used in the <code class="literal">WHERE</code> clause may refer
+    only to columns of the underlying table, but it can use all columns,
+    not just the ones being indexed.  Presently, subqueries and
+    aggregate expressions are also forbidden in <code class="literal">WHERE</code>.
+    The same restrictions apply to index fields that are expressions.
+  </p>
+<p>   All functions and operators used in an index definition must be
+   &#8220;<span class="quote">immutable</span>&#8221;, that is, their results must depend only on
+   their arguments and never on any outside influence (such as
+   the contents of another table or the current time).  This restriction
+   ensures that the behavior of the index is well-defined.  To use a
+   user-defined function in an index expression or <code class="literal">WHERE</code>
+   clause, remember to mark the function immutable when you create it.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2740058"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">UNIQUE</code></span></dt>
+<dd><p>        Causes the system to check for
+        duplicate values in the table when the index is created (if data
+        already exist) and each time data is added. Attempts to
+        insert or update data which would result in duplicate entries
+        will generate an error.
+       </p></dd>
+<dt><span class="term"><code class="literal">CONCURRENTLY</code></span></dt>
+<dd><p>        When this option is used, <span class="productname">PostgreSQL</span> will build the
+        index without taking any locks that prevent concurrent inserts,
+        updates, or deletes on the table; whereas a standard index build
+        locks out writes (but not reads) on the table until it's done.
+        There are several caveats to be aware of when using this option
+        &#8212; see <a href="sql-createindex.html#sql-createindex-concurrently">Building Indexes Concurrently</a>.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>        The name of the index to be created.  No schema name can be included
+        here; the index is always created in the same schema as its parent
+        table.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
+<dd><p>        The name (possibly schema-qualified) of the table to be indexed.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>method</code></em></span></dt>
+<dd><p>        The name of the index method to be used.  Choices are
+        <code class="literal">btree</code>, <code class="literal">hash</code>,
+        <code class="literal">gist</code>, and <code class="literal">gin</code>.  The
+        default method is <code class="literal">btree</code>.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>column</code></em></span></dt>
+<dd><p>        The name of a column of the table.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>expression</code></em></span></dt>
+<dd><p>        An expression based on one or more columns of the table.  The
+        expression usually must be written with surrounding parentheses,
+        as shown in the syntax.  However, the parentheses may be omitted
+        if the expression has the form of a function call.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>opclass</code></em></span></dt>
+<dd><p>        The name of an operator class. See below for details.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>storage_parameter</code></em></span></dt>
+<dd><p>        The name of an index-method-specific storage parameter.  See
+        below for details.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>tablespace</code></em></span></dt>
+<dd><p>        The tablespace in which to create the index.  If not specified,
+        <a href="runtime-config-client.html#guc-default-tablespace">default_tablespace</a> is used, or the database's
+        default tablespace if <code class="varname">default_tablespace</code> is an empty
+        string.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>predicate</code></em></span></dt>
+<dd><p>        The constraint expression for a partial index.
+       </p></dd>
+</dl></div>
+<div class="refsect2" lang="en">
+<a name="sql-createindex-storage-parameters"></a><h3>Index Storage Parameters</h3>
+<p>    The <code class="literal">WITH</code> clause can specify <em class="firstterm">storage parameters</em>
+    for indexes.  Each index method can have its own set of allowed storage
+    parameters.  The built-in index methods all accept a single parameter:
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">FILLFACTOR</code></span></dt>
+<dd><p>      The fillfactor for an index is a percentage that determines how full
+      the index method will try to pack index pages.  For B-trees, leaf pages
+      are filled to this percentage during initial index build, and also
+      when extending the index at the right (largest key values).  If pages
+      subsequently become completely full, they will be split, leading to
+      gradual degradation in the index's efficiency.  B-trees use a default
+      fillfactor of 90, but any value from 10 to 100 can be selected.
+      If the table is static then fillfactor 100 is best to minimize the
+      index's physical size, but for heavily updated tables a smaller
+      fillfactor is better to minimize the need for page splits.  The
+      other index methods use fillfactor in different but roughly analogous
+      ways; the default fillfactor varies between methods.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect2" lang="en">
+<a name="sql-createindex-concurrently"></a><h3>Building Indexes Concurrently</h3>
+<a name="id2740325"></a><p>    Creating an index can interfere with regular operation of a database.
+    Normally <span class="productname">PostgreSQL</span> locks the table to be indexed against
+    writes and performs the entire index build with a single scan of the
+    table. Other transactions can still read the table, but if they try to
+    insert, update, or delete rows in the table they will block until the
+    index build is finished. This could have a severe effect if the system is
+    a live production database. Large tables can take many hours to be
+    indexed, and even for smaller tables, an index build can lock out writers
+    for periods that are unacceptably long for a production system.
+   </p>
+<p>    <span class="productname">PostgreSQL</span> supports building indexes without locking
+    out writes.  This method is invoked by specifying the
+    <code class="literal">CONCURRENTLY</code> option of <code class="command">CREATE INDEX</code>.
+    When this option is used,
+    <span class="productname">PostgreSQL</span> must perform two scans of the table, and in
+    addition it must wait for all existing transactions to terminate.  Thus
+    this method requires more total work than a standard index build and takes
+    significantly longer to complete.  However, since it allows normal
+    operations to continue while the index is built, this method is useful for
+    adding new indexes in a production environment.  Of course, the extra CPU
+    and I/O load imposed by the index creation may slow other operations.
+   </p>
+<p>    If a problem arises during the second scan of the table, such as a
+    uniqueness violation in a unique index, the <code class="command">CREATE INDEX</code>
+    command will fail but leave behind an &#8220;<span class="quote">invalid</span>&#8221; index. This index
+    will be ignored for querying purposes because it may be incomplete;
+    however it will still consume update overhead.  The recommended recovery
+    method in such cases is to drop the index and try again to perform
+    <code class="command">CREATE INDEX CONCURRENTLY</code>.  (Another possibility is to rebuild
+    the index with <code class="command">REINDEX</code>.  However, since <code class="command">REINDEX</code>
+    does not support concurrent builds, this option is unlikely to seem
+    attractive.)
+   </p>
+<p>    Another caveat when building a unique index concurrently is that the
+    uniqueness constraint is already being enforced against other transactions
+    when the second table scan begins.  This means that constraint violations
+    could be reported in other queries prior to the index becoming available
+    for use, or even in cases where the index build eventually fails.  Also,
+    if a failure does occur in the second scan, the &#8220;<span class="quote">invalid</span>&#8221; index
+    continues to enforce its uniqueness constraint afterwards.
+   </p>
+<p>    Concurrent builds of expression indexes and partial indexes are supported.
+    Errors occurring in the evaluation of these expressions could cause
+    behavior similar to that described above for unique constraint violations.
+   </p>
+<p>    Regular index builds permit other regular index builds on the
+    same table to occur in parallel, but only one concurrent index build
+    can occur on a table at a time.  In both cases, no other types of schema
+    modification on the table are allowed meanwhile.  Another difference
+    is that a regular <code class="command">CREATE INDEX</code> command can be performed within
+    a transaction block, but <code class="command">CREATE INDEX CONCURRENTLY</code> cannot.
+   </p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2740474"></a><h2>Notes</h2>
+<p>   See <a href="indexes.html" title="Chapter 11. Indexes">Chapter 11, <i>Indexes</i></a> for information about when indexes can
+   be used, when they are not used, and in which particular situations
+   they can be useful.
+  </p>
+<p>   Currently, only the B-tree and GiST index methods support
+   multicolumn indexes. Up to 32 fields may be specified by default.
+   (This limit can be altered when building
+   <span class="productname">PostgreSQL</span>.)  Only B-tree currently
+   supports unique indexes.
+  </p>
+<p>   An <em class="firstterm">operator class</em> can be specified for each
+   column of an index. The operator class identifies the operators to be
+   used by the index for that column. For example, a B-tree index on
+   four-byte integers would use the <code class="literal">int4_ops</code> class;
+   this operator class includes comparison functions for four-byte
+   integers. In practice the default operator class for the column's data
+   type is usually sufficient. The main point of having operator classes
+   is that for some data types, there could be more than one meaningful
+   ordering. For example, we might want to sort a complex-number data
+   type either by absolute value or by real part. We could do this by
+   defining two operator classes for the data type and then selecting
+   the proper class when making an index.  More information about
+   operator classes is in <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> and in <a href="xindex.html" title="33.14. Interfacing Extensions To Indexes">Section 33.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>.
+  </p>
+<p>   Use <a href="sql-dropindex.html">DROP INDEX</a>
+   to remove an index.
+  </p>
+<p>   Indexes are not used for <code class="literal">IS NULL</code> clauses by default.
+   The best way to use indexes in such cases is to create a partial index
+   using an <code class="literal">IS NULL</code> predicate.
+  </p>
+<p>   Prior releases of <span class="productname">PostgreSQL</span> also had an
+   R-tree index method.  This method has been removed because
+   it had no significant advantages over the GiST method.
+   If <code class="literal">USING rtree</code> is specified, <code class="command">CREATE INDEX</code>
+   will interpret it as <code class="literal">USING gist</code>, to simplify conversion
+   of old databases to GiST.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2740598"></a><h2>Examples</h2>
+<p>   To create a B-tree index on the column <code class="literal">title</code> in
+   the table <code class="literal">films</code>:
+</p>
+<pre class="programlisting">CREATE UNIQUE INDEX title_idx ON films (title);</pre>
+<p>
+  </p>
+<p>   To create an index on the expression <code class="literal">lower(title)</code>,
+   allowing efficient case-insensitive searches:
+</p>
+<pre class="programlisting">CREATE INDEX lower_title_idx ON films ((lower(title)));</pre>
+<p>
+  </p>
+<p>   To create an index with non-default fill factor:
+</p>
+<pre class="programlisting">CREATE UNIQUE INDEX title_idx ON films (title) WITH (fillfactor = 70);</pre>
+<p>
+  </p>
+<p>   To create an index on the column <code class="literal">code</code> in the table
+   <code class="literal">films</code> and have the index reside in the tablespace
+   <code class="literal">indexspace</code>:
+</p>
+<pre class="programlisting">CREATE INDEX code_idx ON films(code) TABLESPACE indexspace;</pre>
+<p>
+  </p>
+<p>   To create an index without locking out writes to the table:
+</p>
+<pre class="programlisting">CREATE INDEX CONCURRENTLY sales_quantity_index ON sales_table (quantity);</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2740688"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE INDEX</code> is a
+   <span class="productname">PostgreSQL</span> language extension.  There
+   are no provisions for indexes in the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2740707"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterindex.html">ALTER INDEX</a>, <a href="sql-dropindex.html">DROP INDEX</a></span>
+</div>
+</div></body>
+</html>

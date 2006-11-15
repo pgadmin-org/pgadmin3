@@ -1,0 +1,245 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>30.3. Client Interfaces</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="largeobjects.html" title="Chapter 30. Large Objects">
+<link rel="prev" href="lo-implementation.html" title="30.2. Implementation Features">
+<link rel="next" href="lo-funcs.html" title="30.4. Server-Side Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="lo-interfaces"></a>30.3. Client Interfaces</h2></div></div></div>
+<p>    This section describes the facilities that
+    <span class="productname">PostgreSQL</span> client interface libraries
+    provide for accessing large objects.  All large object
+    manipulation using these functions <span class="emphasis"><em>must</em></span> take
+    place within an SQL transaction block.
+    The  <span class="productname">PostgreSQL</span>  large  object interface is modeled after
+    the <acronym class="acronym">Unix</acronym>  file-system  interface,  with  analogues  of
+    <code class="function">open</code>,  <code class="function">read</code>,
+    <code class="function">write</code>,
+    <code class="function">lseek</code>, etc.
+   </p>
+<p>    Client applications which use the large object interface in
+    <span class="application">libpq</span> should include the header file
+    <code class="filename">libpq/libpq-fs.h</code> and link with the
+    <span class="application">libpq</span> library.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666106"></a>30.3.1. Creating a Large Object</h3></div></div></div>
+<p>     The function
+</p>
+<pre class="synopsis">Oid lo_creat(PGconn *conn, int mode);</pre>
+<p>
+     <a name="id2666119"></a>
+     creates a new large object.  
+     The return value is the OID that was assigned to the new large object,
+     or <code class="symbol">InvalidOid</code> (zero) on failure.
+
+     <em class="replaceable"><code>mode</code></em> is unused and
+     ignored as of <span class="productname">PostgreSQL</span> 8.1; however, for
+     backwards compatibility with earlier releases it is best to
+     set it to <code class="symbol">INV_READ</code>, <code class="symbol">INV_WRITE</code>,
+     or <code class="symbol">INV_READ</code> <code class="literal">|</code> <code class="symbol">INV_WRITE</code>.
+     (These symbolic constants are defined
+     in the header file <code class="filename">libpq/libpq-fs.h</code>.)
+    </p>
+<p>     An example:
+</p>
+<pre class="programlisting">inv_oid = lo_creat(conn, INV_READ|INV_WRITE);</pre>
+<p>
+    </p>
+<p>     The function
+</p>
+<pre class="synopsis">Oid lo_create(PGconn *conn, Oid lobjId);</pre>
+<p>
+     <a name="id2666191"></a>
+     also creates a new large object.  The OID to be assigned can be
+     specified by <em class="replaceable"><code>lobjId</code></em>;
+     if so, failure occurs if that OID is already in use for some large
+     object.  If <em class="replaceable"><code>lobjId</code></em>
+     is <code class="symbol">InvalidOid</code> (zero) then <code class="function">lo_create</code> assigns an unused
+     OID (this is the same behavior as <code class="function">lo_creat</code>).
+     The return value is the OID that was assigned to the new large object,
+     or <code class="symbol">InvalidOid</code> (zero) on failure.
+    </p>
+<p>     <code class="function">lo_create</code> is new as of <span class="productname">PostgreSQL</span>
+     8.1; if this function is run against an older server version, it will
+     fail and return <code class="symbol">InvalidOid</code>.
+    </p>
+<p>     An example:
+</p>
+<pre class="programlisting">inv_oid = lo_create(conn, desired_oid);</pre>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666263"></a>30.3.2. Importing a Large Object</h3></div></div></div>
+<p>     To import an operating system file as a large object, call
+</p>
+<pre class="synopsis">Oid lo_import(PGconn *conn, const char *filename);</pre>
+<p>
+     <a name="id2666276"></a>
+     <em class="replaceable"><code>filename</code></em> 
+     specifies the operating system name of
+     the file to be imported as a large object.
+     The return value is the OID that was assigned to the new large object,
+     or <code class="symbol">InvalidOid</code> (zero) on failure.
+     Note that the file is read by the client interface library, not by
+     the server; so it must exist in the client file system and be readable
+     by the client application.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666299"></a>30.3.3. Exporting a Large Object</h3></div></div></div>
+<p>     To export a large object
+     into an operating system file, call
+</p>
+<pre class="synopsis">int lo_export(PGconn *conn, Oid lobjId, const char *filename);</pre>
+<p>
+     <a name="id2666313"></a>
+     The <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the large
+     object to export and the <em class="parameter"><code>filename</code></em> argument
+     specifies the operating system name of the file.  Note that the file is
+     written by the client interface library, not by the server.  Returns 1
+     on success, -1 on failure.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666336"></a>30.3.4. Opening an Existing Large Object</h3></div></div></div>
+<p>     To open an existing large object for reading or writing, call
+</p>
+<pre class="synopsis">int lo_open(PGconn *conn, Oid lobjId, int mode);</pre>
+<p>
+     <a name="id2666350"></a>
+     The <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the large
+     object to open.   The <em class="parameter"><code>mode</code></em> bits control whether the
+     object is opened for reading (<code class="symbol">INV_READ</code>), writing
+     (<code class="symbol">INV_WRITE</code>), or both.
+     (These symbolic constants are defined
+     in the header file <code class="filename">libpq/libpq-fs.h</code>.)
+     A large object cannot be opened before it is created.
+     <code class="function">lo_open</code> returns a (non-negative) large object
+     descriptor for later use in <code class="function">lo_read</code>,
+     <code class="function">lo_write</code>, <code class="function">lo_lseek</code>,
+     <code class="function">lo_tell</code>, and <code class="function">lo_close</code>.
+     The descriptor is only valid for 
+     the duration of the current transaction.
+     On failure, -1 is returned.
+    </p>
+<p>     The server currently does not distinguish between modes
+     <code class="symbol">INV_WRITE</code> and <code class="symbol">INV_READ</code> <code class="literal">|</code>
+     <code class="symbol">INV_WRITE</code>: you are allowed to read from the descriptor
+     in either case.  However there is a significant difference between
+     these modes and <code class="symbol">INV_READ</code> alone: with <code class="symbol">INV_READ</code>
+     you cannot write on the descriptor, and the data read from it will
+     reflect the contents of the large object at the time of the transaction
+     snapshot that was active when <code class="function">lo_open</code> was executed,
+     regardless of later writes by this or other transactions.  Reading
+     from a descriptor opened with <code class="symbol">INV_WRITE</code> returns
+     data that reflects all writes of other committed transactions as well
+     as writes of the current transaction.  This is similar to the behavior
+     of <code class="literal">SERIALIZABLE</code> versus <code class="literal">READ COMMITTED</code> transaction
+     modes for ordinary SQL <code class="command">SELECT</code> commands.
+    </p>
+<p>     An example:
+</p>
+<pre class="programlisting">inv_fd = lo_open(conn, inv_oid, INV_READ|INV_WRITE);</pre>
+<p>
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666501"></a>30.3.5. Writing Data to a Large Object</h3></div></div></div>
+<p>     The function
+</p>
+<pre class="synopsis">int lo_write(PGconn *conn, int fd, const char *buf, size_t len);</pre>
+<p>
+     <a name="id2666514"></a> writes
+     <em class="parameter"><code>len</code></em> bytes from <em class="parameter"><code>buf</code></em>
+     to large object descriptor <em class="parameter"><code>fd</code></em>.  The <em class="parameter"><code>fd</code></em>
+     argument must have been returned by a previous
+     <code class="function">lo_open</code>.  The number of bytes actually
+     written is returned.  In the event of an error, the return value
+     is negative.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666554"></a>30.3.6. Reading Data from a Large Object</h3></div></div></div>
+<p>     The function
+</p>
+<pre class="synopsis">int lo_read(PGconn *conn, int fd, char *buf, size_t len);</pre>
+<p>
+     <a name="id2666567"></a> reads
+     <em class="parameter"><code>len</code></em> bytes from large object descriptor
+     <em class="parameter"><code>fd</code></em> into <em class="parameter"><code>buf</code></em>. The
+     <em class="parameter"><code>fd</code></em> argument must have been returned by a
+     previous <code class="function">lo_open</code>.  The number of bytes
+     actually read is returned. In the event of an error, the return
+     value is negative.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666606"></a>30.3.7. Seeking in a Large Object</h3></div></div></div>
+<p>     To change the current read or write location associated with a
+     large object descriptor, call
+</p>
+<pre class="synopsis">int lo_lseek(PGconn *conn, int fd, int offset, int whence);</pre>
+<p>
+     <a name="id2666620"></a> This function moves the
+     current location pointer for the large object descriptor identified by
+     <em class="parameter"><code>fd</code></em> to the new location specified by
+     <em class="parameter"><code>offset</code></em>.  The valid values for <em class="parameter"><code>whence</code></em>
+     are <code class="symbol">SEEK_SET</code> (seek from object start),
+     <code class="symbol">SEEK_CUR</code> (seek from current position), and
+     <code class="symbol">SEEK_END</code> (seek from object end).  The return value is
+     the new location pointer, or -1 on error.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666661"></a>30.3.8. Obtaining the Seek Position of a Large Object</h3></div></div></div>
+<p>     To obtain the current read or write location of a large object descriptor,
+     call
+</p>
+<pre class="synopsis">int lo_tell(PGconn *conn, int fd);</pre>
+<p>
+     <a name="id2666675"></a> If there is an error, the
+     return value is negative.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666683"></a>30.3.9. Closing a Large Object Descriptor</h3></div></div></div>
+<p>     A large object descriptor may be closed by calling
+</p>
+<pre class="synopsis">int lo_close(PGconn *conn, int fd);</pre>
+<p>
+     <a name="id2666696"></a> where <em class="parameter"><code>fd</code></em> is a
+     large object descriptor returned by <code class="function">lo_open</code>.
+     On success, <code class="function">lo_close</code> returns zero.  On
+     error, the return value is negative.</p>
+<p>     Any large  object  descriptors that remain open at the end of a
+     transaction will be closed automatically.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2666727"></a>30.3.10. Removing a Large Object</h3></div></div></div>
+<p>     To remove a large object from the database, call
+</p>
+<pre class="synopsis">int lo_unlink(PGconn *conn, Oid lobjId);</pre>
+<p>
+     <a name="id2666740"></a> The
+     <em class="parameter"><code>lobjId</code></em> argument specifies the OID of the
+     large object to remove.  Returns 1 if successful, -1 on failure.
+    </p>
+</div>
+</div></body>
+</html>

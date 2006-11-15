@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.129.  unsubscribeset( integer, integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.unlockset-integer.html" title="1.128.  unlockset( integer )">
+<link rel="next" href="function.unsubscribeset-int-integer-integer.html" title="1.130.  unsubscribeset_int( integer, integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.unsubscribeset-integer-integer"></a>1.129.        unsubscribeset( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       unsubscribeSet (sub_set, sub_receiver) 
+
+Unsubscribe node sub_receiver from subscription set sub_set.  This is
+invoked on the receiver node.  It verifies that this does not break
+any chains (e.g. - where sub_receiver is a provider for another node),
+then restores tables, drops Slony-specific keys, drops table entries
+for the set, drops the subscription, and generates an UNSUBSCRIBE_SET
+node to publish that the node is being dropped.
+        </p>
+<pre class="programlisting">declare
+	p_sub_set			alias for $1;
+	p_sub_receiver		alias for $2;
+	v_tab_row			record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Check that this is called on the receiver node
+	-- ----
+	if p_sub_receiver != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: unsubscribeSet() must be called on receiver';
+	end if;
+
+	-- ----
+	-- Check that this does not break any chains
+	-- ----
+	if exists (select true from sl_subscribe
+			where sub_set = p_sub_set
+				and sub_provider = p_sub_receiver)
+	then
+		raise exception 'Slony-I: Cannot unsubscribe set % while being provider',
+				p_sub_set;
+	end if;
+
+	-- ----
+	-- Restore all tables original triggers and rules and remove
+	-- our replication stuff.
+	-- ----
+	for v_tab_row in select tab_id from sl_table
+			where tab_set = p_sub_set
+			order by tab_id
+	loop
+		perform alterTableRestore(v_tab_row.tab_id);
+		perform tableDropKey(v_tab_row.tab_id);
+	end loop;
+
+	-- ----
+	-- Remove the setsync status. This will also cause the
+	-- worker thread to ignore the set and stop replicating
+	-- right now.
+	-- ----
+	delete from sl_setsync
+			where ssy_setid = p_sub_set;
+
+	-- ----
+	-- Remove all sl_table and sl_sequence entries for this set.
+	-- Should we ever subscribe again, the initial data
+	-- copy process will create new ones.
+	-- ----
+	delete from sl_table
+			where tab_set = p_sub_set;
+	delete from sl_sequence
+			where seq_set = p_sub_set;
+
+	-- ----
+	-- Call the internal procedure to drop the subscription
+	-- ----
+	perform unsubscribeSet_int(p_sub_set, p_sub_receiver);
+
+	-- Rewrite sl_listen table
+	perform RebuildListenEntries();
+
+	-- ----
+	-- Create the UNSUBSCRIBE_SET event
+	-- ----
+	return  createEvent('_schemadoc', 'UNSUBSCRIBE_SET', 
+			p_sub_set, p_sub_receiver);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

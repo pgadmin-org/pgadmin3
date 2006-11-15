@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>8.14. XML Document Support</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
+<link rel="prev" href="datatype-pseudo.html" title="8.13. Pseudo-Types">
+<link rel="next" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datatype-xml"></a>8.14. <acronym class="acronym">XML</acronym> Document Support</h2></div></div></div>
+<a name="id2573599"></a><p>    <acronym class="acronym">XML</acronym> (Extensible Markup Language) support is not one
+    capability, but a variety of features supported by a database
+    system. These capabilities include storage, import/export,
+    validation, indexing, efficiency of modification, searching,
+    transforming, and <acronym class="acronym">XML</acronym> to <acronym class="acronym">SQL</acronym> mapping.
+    <span class="productname">PostgreSQL</span> supports some but not all of these
+    <acronym class="acronym">XML</acronym> capabilities. Future releases of
+    <span class="productname">PostgreSQL</span> will continue to improve <acronym class="acronym">XML</acronym>
+    support. For an overview of <acronym class="acronym">XML</acronym> use in databases, see <a href="http://www.rpbourret.com/xml/XMLAndDatabases.htm" target="_top">http://www.rpbourret.com/xml/XMLAndDatabases.htm</a>.
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">Storage</span></dt>
+<dd><p>      PostgreSQL does not have a specialized <acronym class="acronym">XML</acronym> data type.
+      Users should store <acronym class="acronym">XML</acronym> documents in ordinary
+      <code class="type">TEXT</code> fields. If you need the document split apart into
+      its component parts so each element is stored separately, you must
+      use a middle-ware solution to do that, but once done, the data
+      becomes relational and has to be processed accordingly.
+     </p></dd>
+<dt><span class="term">Import/Export</span></dt>
+<dd><p>      There is no facility for mapping <acronym class="acronym">XML</acronym> to relational
+      tables. An external tool must be used for this. One simple way to
+      export <acronym class="acronym">XML</acronym> is to use <span class="application">psql</span> in
+      <acronym class="acronym">HTML</acronym> mode (<code class="literal">\pset format html</code>), and convert
+      the <acronym class="acronym">XHTML</acronym> output to XML using an external tool.
+     </p></dd>
+<dt><span class="term">Validation</span></dt>
+<dd><p>      <code class="filename">/contrib/xml2</code> has a function called
+      <code class="function">xml_is_well_formed()</code> that can be used in a <code class="literal">CHECK</code>
+      constraint to enforce that a field contains well-formed <acronym class="acronym">XML</acronym>.
+      It does not support validation against a specific <acronym class="acronym">XML</acronym>
+      schema. A server-side language with <acronym class="acronym">XML</acronym> capabilities
+      could be used to do schema-specific <acronym class="acronym">XML</acronym> checks.
+     </p></dd>
+<dt><span class="term">Indexing</span></dt>
+<dd><p>      <code class="filename">/contrib/xml2</code> functions can be used in expression
+      indexes to index specific <acronym class="acronym">XML</acronym> fields. To index the
+      full contents of <acronym class="acronym">XML</acronym> documents, the full-text indexing
+      tool <code class="filename">/contrib/tsearch2</code> can be used. Of course,
+      Tsearch2 indexes have no <acronym class="acronym">XML</acronym> awareness so additional
+      <code class="filename">/contrib/xml2</code> checks should be added to queries.
+     </p></dd>
+<dt><span class="term">Modification</span></dt>
+<dd><p>      If an <code class="command">UPDATE</code> does not modify an <acronym class="acronym">XML</acronym> field,
+      the <acronym class="acronym">XML</acronym> data is shared between the old and new rows.
+      However, if the <code class="command">UPDATE</code> modifies an <acronym class="acronym">XML</acronym>
+      field, a full modified copy of the <acronym class="acronym">XML</acronym> field must be
+      created internally.
+     </p></dd>
+<dt><span class="term">Searching</span></dt>
+<dd><p>      XPath searches are implemented using <code class="filename">/contrib/xml2</code>.
+      It processes <acronym class="acronym">XML</acronym> text documents and returns results
+      based on the requested query.
+     </p></dd>
+<dt><span class="term">Transforming</span></dt>
+<dd><p>      <code class="filename">/contrib/xml2</code> supports <acronym class="acronym">XSLT</acronym> (Extensible
+      Stylesheet Language Transformation).
+     </p></dd>
+<dt><span class="term">XML to SQL Mapping</span></dt>
+<dd><p>      This involves converting <acronym class="acronym">XML</acronym> data to and from
+      relational structures. <span class="productname">PostgreSQL</span> has no internal
+      support for such mapping, and relies on external tools to do such
+      conversions.
+     </p></dd>
+<dt><span class="term">Missing Features</span></dt>
+<dd><p>      Missing features include XQuery, SQL/XML syntax (ISO/IEC
+      9075-14), and an <acronym class="acronym">XML</acronym> data type optimized for
+      <acronym class="acronym">XML</acronym> storage.
+     </p></dd>
+</dl></div>
+</div></body>
+</html>

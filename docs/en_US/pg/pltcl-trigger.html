@@ -1,0 +1,128 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>38.6. Trigger Procedures in PL/Tcl</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
+<link rel="prev" href="pltcl-dbaccess.html" title="38.5. Database Access from PL/Tcl">
+<link rel="next" href="pltcl-unknown.html" title="38.7. Modules and the unknown command">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="pltcl-trigger"></a>38.6. Trigger Procedures in PL/Tcl</h2></div></div></div>
+<a name="id2714852"></a><p>     Trigger procedures can be written in PL/Tcl.
+     <span class="productname">PostgreSQL</span> requires that a procedure that is to be called
+     as a trigger must be declared as a function with no arguments
+     and a return type of <code class="literal">trigger</code>.
+    </p>
+<p>     The information from the trigger manager is passed to the procedure body
+     in the following variables:
+
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="varname">$TG_name</code></span></dt>
+<dd><p>         The name of the trigger from the <code class="command">CREATE TRIGGER</code> statement.
+        </p></dd>
+<dt><span class="term"><code class="varname">$TG_relid</code></span></dt>
+<dd><p>         The object ID of the table that caused the trigger procedure
+         to be invoked.
+        </p></dd>
+<dt><span class="term"><code class="varname">$TG_table_name</code></span></dt>
+<dd><p>         The name of the table that caused the trigger procedure
+         to be invoked.
+        </p></dd>
+<dt><span class="term"><code class="varname">$TG_table_schema</code></span></dt>
+<dd><p>         The schema of the table that caused the trigger procedure
+         to be invoked.
+        </p></dd>
+<dt><span class="term"><code class="varname">$TG_relatts</code></span></dt>
+<dd><p>         A Tcl list of the table column names, prefixed with an empty list
+         element. So looking up a column name in the list with <span class="application">Tcl</span>'s
+         <code class="function">lsearch</code> command returns the element's number starting
+         with 1 for the first column, the same way the columns are customarily
+         numbered in <span class="productname">PostgreSQL</span>.  (Empty list
+         elements also appear in the positions of columns that have been
+         dropped, so that the attribute numbering is correct for columns
+         to their right.)
+        </p></dd>
+<dt><span class="term"><code class="varname">$TG_when</code></span></dt>
+<dd><p>         The string <code class="literal">BEFORE</code> or <code class="literal">AFTER</code> depending on the
+         type of trigger call.
+        </p></dd>
+<dt><span class="term"><code class="varname">$TG_level</code></span></dt>
+<dd><p>         The string <code class="literal">ROW</code> or <code class="literal">STATEMENT</code> depending on the
+         type of trigger call.
+        </p></dd>
+<dt><span class="term"><code class="varname">$TG_op</code></span></dt>
+<dd><p>         The string <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, or
+         <code class="literal">DELETE</code> depending on the type of trigger call.
+        </p></dd>
+<dt><span class="term"><code class="varname">$NEW</code></span></dt>
+<dd><p>         An associative array containing the values of the new table
+         row for <code class="command">INSERT</code> or <code class="command">UPDATE</code> actions, or
+         empty for <code class="command">DELETE</code>.  The array is indexed by column
+         name.  Columns that are null will not appear in the array.
+        </p></dd>
+<dt><span class="term"><code class="varname">$OLD</code></span></dt>
+<dd><p>         An associative array containing the values of the old table
+         row for <code class="command">UPDATE</code> or <code class="command">DELETE</code> actions, or
+         empty for <code class="command">INSERT</code>.  The array is indexed by column
+         name.  Columns that are null will not appear in the array.
+        </p></dd>
+<dt><span class="term"><code class="varname">$args</code></span></dt>
+<dd><p>         A Tcl list of the arguments to the procedure as given in the
+         <code class="command">CREATE TRIGGER</code> statement. These arguments are also accessible as
+         <code class="literal">$1</code> ... <code class="literal">$<em class="replaceable"><code>n</code></em></code> in the procedure body.
+        </p></dd>
+</dl></div>
+<p>
+    </p>
+<p>     The return value from a trigger procedure can be one of the strings
+     <code class="literal">OK</code> or <code class="literal">SKIP</code>, or a list as returned by the
+     <code class="literal">array get</code> Tcl command. If the return value is <code class="literal">OK</code>,
+     the operation (<code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code>) that fired the trigger will proceed
+     normally. <code class="literal">SKIP</code> tells the trigger manager to silently suppress
+     the operation for this row. If a list is returned, it tells PL/Tcl to
+     return a modified row to the trigger manager that will be inserted
+     instead of the one given in <code class="varname">$NEW</code>.  (This works for <code class="command">INSERT</code> and <code class="command">UPDATE</code>
+     only.) Needless to say that all this is only meaningful when the trigger
+     is <code class="literal">BEFORE</code> and <code class="command">FOR EACH ROW</code>; otherwise the return value is ignored.
+    </p>
+<p>     Here's a little example trigger procedure that forces an integer value
+     in a table to keep track of the number of updates that are performed on the
+     row. For new rows inserted, the value is initialized to 0 and then
+     incremented on every update operation.
+
+</p>
+<pre class="programlisting">CREATE FUNCTION trigfunc_modcount() RETURNS trigger AS $$
+    switch $TG_op {
+        INSERT {
+            set NEW($1) 0
+        }
+        UPDATE {
+            set NEW($1) $OLD($1)
+            incr NEW($1)
+        }
+        default {
+            return OK
+        }
+    }
+    return [array get NEW]
+$$ LANGUAGE pltcl;
+
+CREATE TABLE mytab (num integer, description text, modcnt integer);
+
+CREATE TRIGGER trig_mytab_modcount BEFORE INSERT OR UPDATE ON mytab
+    FOR EACH ROW EXECUTE PROCEDURE trigfunc_modcount('modcnt');</pre>
+<p>
+
+     Notice that the trigger procedure itself does not know the column
+     name; that's supplied from the trigger arguments.  This lets the
+     trigger procedure be reused with different tables.
+    </p>
+</div></body>
+</html>

@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.55.  droptrigger( integer, name )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.dropset-int-integer.html" title="1.54.  dropset_int( integer )">
+<link rel="next" href="function.droptrigger-int-integer-name.html" title="1.56.  droptrigger_int( integer, name )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.droptrigger-integer-name"></a>1.55.        droptrigger( integer, name )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       dropTrigger (trig_tabid, trig_tgname)
+
+Submits DROP_TRIGGER event to indicate that trigger trig_tgname on
+replicated table trig_tabid WILL be disabled.
+        </p>
+<pre class="programlisting">declare
+	p_trig_tabid		alias for $1;
+	p_trig_tgname		alias for $2;
+begin
+	perform dropTrigger_int(p_trig_tabid, p_trig_tgname);
+	return  createEvent('_schemadoc', 'DROP_TRIGGER',
+			p_trig_tabid, p_trig_tgname);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

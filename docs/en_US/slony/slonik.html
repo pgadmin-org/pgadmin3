@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>slonik</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
+<link rel="prev" href="slon-config-interval.html" title="4. Event Tuning">
+<link rel="next" href="slonikref.html" title="Slonik Command Summary">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="slonik"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p><span class="application">slonik</span> &#8212;       <span class="productname">Slony-I</span> command processor
+    </p>
+</div>
+<a name="id2572969"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">slonik</code> [<em class="replaceable"><code>filename</code></em>]</p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2572997"></a><h2>Description</h2>
+<p>     <span class="application">slonik</span> is the command processor
+     application that is used to set up and modify configurations of
+     <span class="productname">Slony-I</span> replication clusters.
+    </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2573016"></a><h2>Outline</h2>
+<p>The <span class="application">slonik</span> command line utility is
+  supposed to be used embedded into shell scripts; it reads commands
+  from files or stdin.</p>
+<p>It reads a set of Slonik statements, which are written in a
+  scripting language with syntax similar to that of SQL, and performs
+  the set of configuration changes on the slony nodes specified in the
+  script.</p>
+<p>Nearly all of the real configuration work is actually done by
+  calling stored procedures after loading the
+  <span class="productname">Slony-I</span> support base into a database.
+  <span class="application">Slonik</span> was created because these stored
+  procedures have special requirements as to on which particular node
+  in the replication system they are called.  The absence of named
+  parameters for stored procedures makes it rather hard to do this
+  from the <span class="application">psql</span> prompt, and
+  <span class="application">psql</span> lacks the ability to maintain
+  multiple connections with open transactions to multiple
+  databases.</p>
+<p>The format of the Slonik &#8220;<span class="quote">language</span>&#8221; is very
+  similar to that of SQL, and the parser is based on a similar set of
+  formatting rules for such things as numbers and strings.  Note that
+  slonik is declarative, using literal values throughout.  It is
+  anticipated that Slonik scripts will typically be
+  <span class="emphasis"><em>generated</em></span> by scripts, such as Bash or Perl, and
+  these sorts of scripting languages already have perfectly good ways
+  of managing variables, doing iteration, and such.</p>
+<p>See also <a href="slonikref.html"> Slonik Command Language
+  reference </a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2573098"></a><h2>Exit Status</h2>
+<p>   <span class="application">slonik</span> returns 0 to the shell if it
+   finished normally.  Scripts may specify return codes.   
+  </p>
+</div>
+</div></body>
+</html>

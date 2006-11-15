@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>29.10. Miscellaneous Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 29. libpq - C Library">
+<link rel="prev" href="libpq-control.html" title="29.9. Control Functions">
+<link rel="next" href="libpq-notice-processing.html" title="29.11. Notice Processing">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-misc"></a>29.10. Miscellaneous Functions</h2></div></div></div>
+<p>As always, there are some functions that just don't fit anywhere.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="function">PQencryptPassword</code><a name="id2663478"></a></span></dt>
+<dd>
+<p>Prepares the encrypted form of a <span class="productname">PostgreSQL</span> password.
+</p>
+<pre class="synopsis">char * PQencryptPassword(const char *passwd, const char *user);</pre>
+<p>
+This function is intended to be used by client
+applications that wish to send commands like
+<code class="literal">ALTER USER joe PASSWORD 'pwd'</code>.
+It is good practice not to send the original cleartext password in such a
+command, because it might be exposed in command logs, activity displays,
+and so on.  Instead, use this function to convert the password to encrypted
+form before it is sent.  The arguments are the cleartext password, and the SQL
+name of the user it is for.  The return value is a string allocated by
+<code class="function">malloc</code>, or <code class="symbol">NULL</code> if out of memory.
+The caller may assume the string doesn't contain any special
+characters that would require escaping.  Use <code class="function">PQfreemem</code> to free
+the result when done with it.</p>
+</dd>
+</dl></div>
+</div></body>
+</html>

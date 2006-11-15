@@ -1,0 +1,164 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE DATABASE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-createconversion.html" title="CREATE CONVERSION">
+<link rel="next" href="sql-createdomain.html" title="CREATE DOMAIN">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createdatabase"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE DATABASE &#8212; create a new database</p>
+</div>
+<a name="id2737770"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE DATABASE <em class="replaceable"><code>name</code></em>
+    [ [ WITH ] [ OWNER [=] <em class="replaceable"><code>dbowner</code></em> ]
+           [ TEMPLATE [=] <em class="replaceable"><code>template</code></em> ]
+           [ ENCODING [=] <em class="replaceable"><code>encoding</code></em> ]
+           [ TABLESPACE [=] <em class="replaceable"><code>tablespace</code></em> ]
+           [ CONNECTION LIMIT [=] <em class="replaceable"><code>connlimit</code></em> ] ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2737822"></a><h2>Description</h2>
+<p>   <code class="command">CREATE DATABASE</code> creates a new
+   <span class="productname">PostgreSQL</span> database.
+  </p>
+<p>   To create a database, you must be a superuser or have the special
+   <code class="literal">CREATEDB</code> privilege.
+   See <a href="sql-createuser.html">CREATE USER</a>.
+  </p>
+<p>   Normally, the creator becomes the owner of the new database.
+   Superusers can create databases owned by other users, by using the
+   <code class="literal">OWNER</code> clause. They can even create databases owned by
+   users with no special privileges. Non-superusers with <code class="literal">CREATEDB</code>
+   privilege can only create databases owned by themselves.
+  </p>
+<p>   By default, the new database will be created by cloning the standard
+   system database <code class="literal">template1</code>.  A different template can be
+   specified by writing <code class="literal">TEMPLATE
+   <em class="replaceable"><code>name</code></em></code>.  In particular,
+   by writing <code class="literal">TEMPLATE template0</code>, you can create a virgin
+   database containing only the standard objects predefined by your
+   version of <span class="productname">PostgreSQL</span>.  This is useful
+   if you wish to avoid copying
+   any installation-local objects that may have been added to
+   <code class="literal">template1</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2737922"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>        The name of a database to create.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>dbowner</code></em></span></dt>
+<dd><p>        The name of the database user who will own the new database,
+        or <code class="literal">DEFAULT</code> to use the default (namely, the
+        user executing the command).
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>template</code></em></span></dt>
+<dd><p>        The name of the template from which to create the new database,
+        or <code class="literal">DEFAULT</code> to use the default template
+        (<code class="literal">template1</code>).
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>encoding</code></em></span></dt>
+<dd><p>        Character set encoding to use in the new database.  Specify
+        a string constant (e.g., <code class="literal">'SQL_ASCII'</code>),
+        or an integer encoding number, or <code class="literal">DEFAULT</code>
+        to use the default encoding (namely, the encoding of the
+        template database). The character sets supported by the
+        <span class="productname">PostgreSQL</span> server are described in
+        <a href="multibyte.html#multibyte-charset-supported" title="21.2.1. Supported Character Sets">Section 21.2.1, &#8220;Supported Character Sets&#8221;</a>.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>tablespace</code></em></span></dt>
+<dd><p>        The name of the tablespace that will be associated with the
+        new database, or <code class="literal">DEFAULT</code> to use the
+        template database's tablespace. This
+        tablespace will be the default tablespace used for objects
+        created in this database. See
+        <a href="sql-createtablespace.html">CREATE TABLESPACE</a>
+        for more information.
+       </p></dd>
+<dt><span class="term"><em class="replaceable"><code>connlimit</code></em></span></dt>
+<dd><p>        How many concurrent connections can be made
+        to this database.  -1 (the default) means no limit.
+       </p></dd>
+</dl></div>
+<p>   Optional parameters can be written in any order, not only the order
+   illustrated above.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2738067"></a><h2>Notes</h2>
+<p>    <code class="command">CREATE DATABASE</code> cannot be executed inside a transaction
+    block.
+   </p>
+<p>    Errors along the line of &#8220;<span class="quote">could not initialize database directory</span>&#8221;
+    are most likely related to insufficient permissions on the data
+    directory, a full disk, or other file system problems.
+   </p>
+<p>    Use <a href="sql-dropdatabase.html">DROP DATABASE</a> to remove a database.
+   </p>
+<p>    The program <a href="app-createdb.html"><span class="application">createdb</span></a> is a
+    wrapper program around this command, provided for convenience.
+   </p>
+<p>   Although it is possible to copy a database other than <code class="literal">template1</code>
+   by specifying its name as the template, this is not (yet) intended as
+   a general-purpose &#8220;<span class="quote"><code class="command">COPY DATABASE</code></span>&#8221; facility.
+   The principal limitation is that no other sessions can be connected to
+   the template database while it is being copied.  <code class="command">CREATE
+   DATABASE</code> will fail if any other connection exists when it starts;
+   otherwise, new connections to the template database are locked out
+   until <code class="command">CREATE DATABASE</code> completes.
+   See <a href="manage-ag-templatedbs.html" title="19.3. Template Databases">Section 19.3, &#8220;Template Databases&#8221;</a> for more information.
+  </p>
+<p>   The <code class="literal">CONNECTION LIMIT</code> option is only enforced approximately;
+   if two new sessions start at about the same time when just one
+   connection &#8220;<span class="quote">slot</span>&#8221; remains for the database, it is possible that
+   both will fail.  Also, the limit is not enforced against superusers.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2738172"></a><h2>Examples</h2>
+<p>   To create a new database:
+
+</p>
+<pre class="programlisting">CREATE DATABASE lusiadas;</pre>
+<p>
+  </p>
+<p>   To create a database <code class="literal">sales</code> owned by user <code class="literal">salesapp</code>
+   with a default tablespace of <code class="literal">salesspace</code>:
+
+</p>
+<pre class="programlisting">CREATE DATABASE sales OWNER salesapp TABLESPACE salesspace;</pre>
+<p>
+  </p>
+<p>   To create a database <code class="literal">music</code> which supports the ISO-8859-1 
+   character set:
+
+</p>
+<pre class="programlisting">CREATE DATABASE music ENCODING 'LATIN1';</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2738228"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">CREATE DATABASE</code> statement in the SQL
+   standard.  Databases are equivalent to catalogs, whose creation is
+   implementation-defined.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2738242"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterdatabase.html">ALTER DATABASE</a>, <a href="sql-dropdatabase.html">DROP DATABASE</a></span>
+</div>
+</div></body>
+</html>

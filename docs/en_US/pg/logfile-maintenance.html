@@ -1,0 +1,84 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>22.3. Log File Maintenance</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
+<link rel="prev" href="routine-reindex.html" title="22.2. Routine Reindexing">
+<link rel="next" href="backup.html" title="Chapter 23. Backup and Restore">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="logfile-maintenance"></a>22.3. Log File Maintenance</h2></div></div></div>
+<a name="id2646112"></a><p>   It is a good idea to save the database server's log output
+   somewhere, rather than just routing it to <code class="filename">/dev/null</code>.
+   The log output is invaluable when it comes time to diagnose
+   problems.  However, the log output tends to be voluminous
+   (especially at higher debug levels) and you won't want to save it
+   indefinitely.  You need to &#8220;<span class="quote">rotate</span>&#8221; the log files so that
+   new log files are started and old ones removed after a reasonable
+   period of time.
+  </p>
+<p>   If you simply direct the <span class="systemitem">stderr</span> of
+   <code class="command">postgres</code> into a
+   file, you will have log output, but
+   the only way to truncate the log file is to stop and restart
+   the server. This may be OK if you are using
+   <span class="productname">PostgreSQL</span> in a development environment,
+   but few production servers would find this behavior acceptable.
+  </p>
+<p>   A better approach is to send the server's
+   <span class="systemitem">stderr</span> output to some type of log rotation program.
+   There is a built-in log rotation program, which you can use by
+   setting the configuration parameter <code class="literal">redirect_stderr</code> to
+   <code class="literal">true</code> in <code class="filename">postgresql.conf</code>.  The control
+   parameters for this program are described in <a href="runtime-config-logging.html#runtime-config-logging-where" title="17.7.1. Where To Log">Section 17.7.1, &#8220;Where To Log&#8221;</a>.
+  </p>
+<p>   Alternatively, you might prefer to use an external log rotation
+   program, if you have one that you are already using with other
+   server software. For example, the <span class="application">rotatelogs</span>
+   tool included in the <span class="productname">Apache</span> distribution
+   can be used with <span class="productname">PostgreSQL</span>.  To do this,
+   just pipe the server's
+   <span class="systemitem">stderr</span> output to the desired program.
+   If you start the server with
+   <code class="command">pg_ctl</code>, then <span class="systemitem">stderr</span>
+   is already redirected to <span class="systemitem">stdout</span>, so you just need a
+   pipe command, for example:
+
+</p>
+<pre class="programlisting">pg_ctl start | rotatelogs /var/log/pgsql_log 86400</pre>
+<p>
+  </p>
+<p>   Another production-grade approach to managing log output is to
+   send it all to <span class="application">syslog</span> and let
+   <span class="application">syslog</span> deal with file rotation. To do this, set the
+   configuration parameter <code class="literal">log_destination</code> to <code class="literal">syslog</code>
+   (to log to <span class="application">syslog</span> only) in
+   <code class="filename">postgresql.conf</code>. Then you can send a <code class="literal">SIGHUP</code>
+   signal to the <span class="application">syslog</span> daemon whenever you want to force it
+   to start writing a new log file.  If you want to automate log
+   rotation, the <span class="application">logrotate</span> program can be
+   configured to work with log files from
+   <span class="application">syslog</span>.
+  </p>
+<p>   On many systems, however, <span class="application">syslog</span> is not very reliable,
+   particularly with large log messages; it may truncate or drop messages
+   just when you need them the most.  Also, on <span class="productname">Linux</span>,
+   <span class="application">syslog</span> will sync each message to disk, yielding poor
+   performance.  (You can use a <code class="literal">-</code> at the start of the file name
+   in the <span class="application">syslog</span> configuration file to disable this behavior.)
+  </p>
+<p>   Note that all the solutions described above take care of starting new
+   log files at configurable intervals, but they do not handle deletion
+   of old, no-longer-interesting log files.  You will probably want to set
+   up a batch job to periodically delete old log files.  Another possibility
+   is to configure the rotation program so that old log files are overwritten
+   cyclically.
+  </p>
+</div></body>
+</html>

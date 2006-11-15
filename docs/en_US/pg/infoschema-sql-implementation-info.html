@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.33. sql_implementation_info</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-sql-features.html" title="32.32. sql_features">
+<link rel="next" href="infoschema-sql-languages.html" title="32.34. sql_languages">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-sql-implementation-info"></a>32.33. <code class="literal">sql_implementation_info</code></h2></div></div></div>
+<p>   The table <code class="literal">sql_implementation_info</code> contains
+   information about various aspects that are left
+   implementation-defined by the SQL standard.  This information is
+   primarily intended for use in the context of the ODBC interface;
+   users of other interfaces will probably find this information to be
+   of little use.  For this reason, the individual implementation
+   information items are not described here; you will find them in the
+   description of the ODBC interface.
+  </p>
+<div class="table">
+<a name="id2686085"></a><p class="title"><b>Table 32.31. <code class="literal">sql_implementation_info</code> Columns</b></p>
+<div class="table-contents"><table summary="sql_implementation_info Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">implementation_info_id</code></td>
+<td><code class="type">character_data</code></td>
+<td>Identifier string of the implementation information item</td>
+</tr>
+<tr>
+<td><code class="literal">implementation_info_name</code></td>
+<td><code class="type">character_data</code></td>
+<td>Descriptive name of the implementation information item</td>
+</tr>
+<tr>
+<td><code class="literal">integer_value</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>       Value of the implementation information item, or null if the
+       value is contained in the column
+       <code class="literal">character_value</code>
+      </td>
+</tr>
+<tr>
+<td><code class="literal">character_value</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Value of the implementation information item, or null if the
+       value is contained in the column
+       <code class="literal">integer_value</code>
+      </td>
+</tr>
+<tr>
+<td><code class="literal">comments</code></td>
+<td><code class="type">character_data</code></td>
+<td>Possibly a comment pertaining to the implementation information item</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

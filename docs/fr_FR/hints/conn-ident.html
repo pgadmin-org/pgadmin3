@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+
+<h3>Échec de l'authentification via ident</h3>
+<p>
+Le serveur n'a pas autorisé l'utilisateur courant&nbsp;: le serveur rapporte
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Si ce message apparaît, l'entrée trouvée dans pg_hba.conf pour votre combinaison
+client, utilisateur, base de données est configurée pour une authentification via
+&quot;ident&quot;. Certaines distributions, comme Debian, ont ceci par défaut.
+Pour passer avec succès une authentification basée sur ident, vous avez besoin
+d'une configuration supplémentaire&nbsp;; voir l'aide de PostgreSQL pour cela.
+Pour un débutant, il serait approprié d'utiliser une méthode d'authentification
+différente&nbsp;; les mots de passe cryptés avec MD5 est un bon choix pouvant être
+configuré avec ceci&nbsp;:
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+Cet exemple autorise les accès à toutes les bases de données de tous les
+utilisateurs sur le réseau privé 192.168.0.0/24 à condition que l'identification
+se fasse via des mots de passe cryptés en MD5.
+</p>
+<p>
+Vous pouvez utiliser l'éditeur du fichier pg_hba.conf intégré à pgAdmin III pour
+modifier le fichier de configuration pg_hba.conf. Après l'avoir modifié, vous
+aurez besoin de demander le rechargement de la configuration du serveur en
+utilisant pg_ctl ou en arrêtant puis en redémarrant le processus serveur.
+</p>
+</body>
+</html>

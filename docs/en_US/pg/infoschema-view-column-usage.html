@@ -1,0 +1,89 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.44. view_column_usage</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-usage-privileges.html" title="32.43. usage_privileges">
+<link rel="next" href="infoschema-view-routine-usage.html" title="32.45. view_routine_usage">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-view-column-usage"></a>32.44. <code class="literal">view_column_usage</code></h2></div></div></div>
+<p>   The view <code class="literal">view_column_usage</code> identifies all
+   columns that are used in the query expression of a view (the
+   <code class="command">SELECT</code> statement that defines the view).  A
+   column is only included if the table that contains the column is
+   owned by a currently enabled role.
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    Columns of system tables are not included.  This should be fixed
+    sometime.
+   </p>
+</div>
+<div class="table">
+<a name="id2688279"></a><p class="title"><b>Table 32.42. <code class="literal">view_column_usage</code> Columns</b></p>
+<div class="table-contents"><table summary="view_column_usage Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">view_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database that contains the view (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">view_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema that contains the view</td>
+</tr>
+<tr>
+<td><code class="literal">view_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the view</td>
+</tr>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the database that contains the table that contains the
+       column that is used by the view (always the current database)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the schema that contains the table that contains the
+       column that is used by the view
+      </td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the table that contains the column that is used by the
+       view
+      </td>
+</tr>
+<tr>
+<td><code class="literal">column_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the column that is used by the view</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

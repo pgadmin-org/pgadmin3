@@ -1,0 +1,213 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE TABLE AS</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-createtable.html" title="CREATE TABLE">
+<link rel="next" href="sql-createtablespace.html" title="CREATE TABLESPACE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createtableas"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE TABLE AS &#8212; define a new table from the results of a query</p>
+</div>
+<a name="id2748296"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em>
+    [ (<em class="replaceable"><code>column_name</code></em> [, ...] ) ]
+    [ WITH ( <em class="replaceable"><code>storage_parameter</code></em> [= <em class="replaceable"><code>value</code></em>] [, ... ] ) | WITH OIDS | WITHOUT OIDS ]
+    [ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
+    [ TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]
+    AS <em class="replaceable"><code>query</code></em></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2748344"></a><h2>Description</h2>
+<p>   <code class="command">CREATE TABLE AS</code> creates a table and fills it
+   with data computed by a <code class="command">SELECT</code> command.
+   The table columns have the
+   names and data types associated with the output columns of the
+   <code class="command">SELECT</code> (except that you can override the column
+   names by giving an explicit list of new column names).
+  </p>
+<p>   <code class="command">CREATE TABLE AS</code> bears some resemblance to
+   creating a view, but it is really quite different: it creates a new
+   table and evaluates the query just once to fill the new table
+   initially.  The new table will not track subsequent changes to the
+   source tables of the query.  In contrast, a view re-evaluates its
+   defining <code class="command">SELECT</code> statement whenever it is
+   queried.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2748391"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">GLOBAL</code> or <code class="literal">LOCAL</code></span></dt>
+<dd><p>      Ignored for compatibility. Refer to <a href="sql-createtable.html">CREATE TABLE</a> for
+      details.
+     </p></dd>
+</dl></div>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
+<dd><p>      If specified, the table is created as a temporary table.
+      Refer to <a href="sql-createtable.html">CREATE TABLE</a> for details.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>table_name</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table to be created.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>column_name</code></em></span></dt>
+<dd><p>      The name of a column in the new table.  If column names are not
+      provided, they are taken from the output column names of the
+      query.  If the table is created from an
+      <code class="command">EXECUTE</code> command, a column name list cannot be
+      specified.
+     </p></dd>
+<dt><span class="term"><code class="literal">WITH ( <em class="replaceable"><code>storage_parameter</code></em> [= <em class="replaceable"><code>value</code></em>] [, ... ] )</code></span></dt>
+<dd><p>      This clause specifies optional storage parameters for the new table;
+      see <a href="sql-createtable.html#sql-createtable-storage-parameters">Storage Parameters</a> for more
+      information.  The <code class="literal">WITH</code> clause
+      can also include <code class="literal">OIDS=TRUE</code> (or just <code class="literal">OIDS</code>)
+      to specify that rows of the new table
+      should have OIDs (object identifiers) assigned to them, or
+      <code class="literal">OIDS=FALSE</code> to specify that the rows should not have OIDs.
+      See <a href="sql-createtable.html">CREATE TABLE</a> for more information.
+     </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WITH OIDS</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">WITHOUT OIDS</code></span>
+</dt>
+<dd><p>      These are obsolescent syntaxes equivalent to <code class="literal">WITH (OIDS)</code>
+      and <code class="literal">WITH (OIDS=FALSE)</code>, respectively.  If you wish to give
+      both an <code class="literal">OIDS</code> setting and storage parameters, you must use
+      the <code class="literal">WITH ( ... )</code> syntax; see above.
+     </p></dd>
+<dt><span class="term"><code class="literal">ON COMMIT</code></span></dt>
+<dd>
+<p>      The behavior of temporary tables at the end of a transaction
+      block can be controlled using <code class="literal">ON COMMIT</code>.
+      The three options are:
+
+      </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">PRESERVE ROWS</code></span></dt>
+<dd><p>          No special action is taken at the ends of transactions.
+          This is the default behavior.
+         </p></dd>
+<dt><span class="term"><code class="literal">DELETE ROWS</code></span></dt>
+<dd><p>          All rows in the temporary table will be deleted at the end
+          of each transaction block.  Essentially, an automatic <a href="sql-truncate.html">TRUNCATE</a> is done
+          at each commit.
+         </p></dd>
+<dt><span class="term"><code class="literal">DROP</code></span></dt>
+<dd><p>          The temporary table will be dropped at the end of the current
+          transaction block.
+         </p></dd>
+</dl></div>
+<p>
+     </p>
+</dd>
+<dt><span class="term"><code class="literal">TABLESPACE <em class="replaceable"><code>tablespace</code></em></code></span></dt>
+<dd><p>      The <em class="replaceable"><code>tablespace</code></em> is the name
+      of the tablespace in which the new table is to be created.
+      If not specified,
+      <a href="runtime-config-client.html#guc-default-tablespace">default_tablespace</a> is used, or the database's
+      default tablespace if <code class="varname">default_tablespace</code> is an empty
+      string.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>query</code></em></span></dt>
+<dd><p>      A <a href="sql-select.html">SELECT</a> or
+      <a href="sql-values.html">VALUES</a> command,
+      or an <a href="sql-execute.html">EXECUTE</a> command
+      that runs a prepared <code class="command">SELECT</code> or <code class="command">VALUES</code> query.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2748742"></a><h2>Notes</h2>
+<p>   This command is functionally similar to <a href="sql-selectinto.html">SELECT INTO</a>, but it is
+   preferred since it is less likely to be confused with other uses of
+   the <code class="command">SELECT INTO</code> syntax. Furthermore, <code class="command">CREATE
+   TABLE AS</code> offers a superset of the functionality offered
+   by <code class="command">SELECT INTO</code>.
+  </p>
+<p>   Prior to <span class="productname">PostgreSQL</span> 8.0, <code class="command">CREATE
+   TABLE AS</code> always included OIDs in the table it
+   created.  As of <span class="productname">PostgreSQL</span> 8.0,
+   the <code class="command">CREATE TABLE AS</code> command allows the user to
+   explicitly specify whether OIDs should be included. If the
+   presence of OIDs is not explicitly specified,
+   the <a href="runtime-config-compatible.html#guc-default-with-oids">default_with_oids</a> configuration variable is
+   used.  As of <span class="productname">PostgreSQL</span> 8.1,
+   this variable is false by default, so the default behavior is not
+   identical to pre-8.0 releases.  Applications that
+   require OIDs in the table created by <code class="command">CREATE TABLE
+   AS</code> should explicitly specify <code class="literal">WITH (OIDS)</code>
+   to ensure proper behavior.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2748840"></a><h2>Examples</h2>
+<p>   Create a new table <code class="literal">films_recent</code> consisting of only
+   recent entries from the table <code class="literal">films</code>:
+
+</p>
+<pre class="programlisting">CREATE TABLE films_recent AS
+  SELECT * FROM films WHERE date_prod &gt;= '2002-01-01';</pre>
+<p>
+  </p>
+<p>   Create a new temporary table <code class="literal">films_recent</code>, consisting of
+   only recent entries from the table <code class="literal">films</code>, using a
+   prepared statement.  The new table has OIDs and will be dropped at commit:
+
+</p>
+<pre class="programlisting">PREPARE recentfilms(date) AS
+  SELECT * FROM films WHERE date_prod &gt; $1;
+CREATE TEMP TABLE films_recent WITH (OIDS) ON COMMIT DROP AS
+  EXECUTE recentfilms('2002-01-01');</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2748897"></a><h2>Compatibility</h2>
+<p>   <code class="command">CREATE TABLE AS</code> conforms to the <acronym class="acronym">SQL</acronym>
+   standard, with the following exceptions:
+
+   </p>
+<div class="itemizedlist"><ul type="disc" compact>
+<li><p>      The standard requires parentheses around the subquery clause; in
+      <span class="productname">PostgreSQL</span>, these parentheses are
+      optional.
+     </p></li>
+<li><p>      The standard defines a <code class="literal">WITH [ NO ] DATA</code> clause;
+      this is not currently implemented by <span class="productname">PostgreSQL</span>.
+      The behavior provided by <span class="productname">PostgreSQL</span> is equivalent
+      to the standard's <code class="literal">WITH DATA</code> case.
+      <code class="literal">WITH NO DATA</code> can be simulated by appending
+      <code class="literal">LIMIT 0</code> to the query.
+     </p></li>
+<li><p>      <span class="productname">PostgreSQL</span> handles temporary tables in a way
+      rather different from the standard; see
+      <a href="sql-createtable.html">CREATE TABLE</a>
+      for details.
+     </p></li>
+<li><p>      The <code class="literal">WITH</code> clause is a <span class="productname">PostgreSQL</span>
+      extension; neither storage parameters nor OIDs are in the standard.
+     </p></li>
+<li><p>      The <span class="productname">PostgreSQL</span> concept of tablespaces is not
+      part of the standard.  Hence, the clause <code class="literal">TABLESPACE</code>
+      is an extension.
+     </p></li>
+</ul></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2749026"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtable.html">CREATE TABLE</a>, <a href="sql-execute.html">EXECUTE</a>, <a href="sql-select.html">SELECT</a>, <a href="sql-selectinto.html">SELECT INTO</a>, <a href="sql-values.html">VALUES</a></span>
+</div>
+</div></body>
+</html>

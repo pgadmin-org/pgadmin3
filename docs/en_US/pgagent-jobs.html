@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>pgAgent Jobs</title>
+</head>
+
+<body>
+
+<H3>pgAgent Jobs</H3>
+<P>pgAgent runs 'jobs', each of which consists of 
+<a href="pgagent-steps.html">steps</a> and 
+<a href="pgagent-steps.html">schedules</a>. To configure jobs on your
+server, browse to the database in which the pgAgent database objects
+were created using pgAdmin. A <I>Jobs</I> node will be displayed, under 
+which individual jobs are shown. New jobs may be created, and existing
+jobs modified in the same way as any other object in pgAdmin.</P>
+
+<P><center><img src="images/pgagent-jobdetails.png" alt="Job details"></center></P>
+
+<P>The properties tab in the main pgAdmin window will display the 
+details of the selected job, and the Statistics tab will show the 
+details of each run of the job.</P>
+
+<P><center><img src="images/pgagent-jobstats.png" alt="Job statistics"></center></P>
+
+<P>Job themselves are very simple - the complexity is in the steps and
+schedules. When configuring a job, we specify the job name, whether or
+not it is enabled, a job class or category, and optionally the hostname
+of a specific machine running pgAgent, if this job should only run on
+that specific server. If left empty, any server may run the job. This
+is not normally an issue for SQL-only jobs, however any jobs with
+batch/shell steps may need to be targetted to a specific server. A
+comment may also be included.</P>
+
+<P><center><img src="images/pgagent-jobproperties.png" alt="Job properties"></center></P>
+
+</BODY>
+</HTML>

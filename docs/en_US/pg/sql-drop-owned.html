@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP OWNED</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-dropopclass.html" title="DROP OPERATOR CLASS">
+<link rel="next" href="sql-droprole.html" title="DROP ROLE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-drop-owned"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP OWNED &#8212; remove database objects owned by a database role</p>
+</div>
+<a name="id2755384"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP OWNED BY <em class="replaceable"><code>name</code></em> [, ...] [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755406"></a><h2>Description</h2>
+<p>   <code class="command">DROP OWNED</code> drops all the objects in the current
+   database that are owned by one of the specified roles. Any
+   privileges granted to the given roles on objects in the current
+   database will also be revoked.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755421"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name of a role whose objects will be dropped, and whose
+      privileges will be revoked.
+     </p></dd>
+<dt><span class="term"><code class="literal">CASCADE</code></span></dt>
+<dd><p>      Automatically drop objects that depend on the affected objects.
+     </p></dd>
+<dt><span class="term"><code class="literal">RESTRICT</code></span></dt>
+<dd><p>      Refuse to drop the objects owned by a role if any other database
+      objects depend on one of the affected objects. This is the default.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755461"></a><h2>Notes</h2>
+<p>   <code class="command">DROP OWNED</code> is often used to prepare for the
+   removal of one or more roles. Because <code class="command">DROP OWNED</code>
+   only affects the objects in the current database, it is usually
+   necessary to execute this command in each database that contains
+   objects owned by a role that is to be removed.
+  </p>
+<p>   Using the <code class="literal">CASCADE</code> option may make the command
+   recurse to objects owned by other users.
+  </p>
+<p>   The <a href="sql-reassign-owned.html">REASSIGN OWNED</a> command is an alternative that
+   reassigns the ownership of all the database objects owned by one or
+   more roles.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755510"></a><h2>Compatibility</h2>
+<p>   The <code class="command">DROP OWNED</code> statement is a
+   <span class="productname">PostgreSQL</span> extension.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755528"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-reassign-owned.html">REASSIGN OWNED</a>, <a href="sql-droprole.html">DROP ROLE</a></span>
+</div>
+</div></body>
+</html>

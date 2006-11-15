@@ -1,0 +1,109 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.13. Release 8.0.4</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-5.html" title="E.12. Release 8.0.5">
+<link rel="next" href="release-8-0-3.html" title="E.14. Release 8.0.3">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0-4"></a>E.13. Release 8.0.4</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-10-04</p>
+</div>
+<p>    This release contains a variety of fixes from 8.0.3.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2850535"></a>E.13.1. Migration to version 8.0.4</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.X.  However,
+     if you are upgrading from a version earlier than 8.0.3, see the release
+     notes for 8.0.3.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2850544"></a>E.13.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Fix error that allowed <code class="command">VACUUM</code> to remove
+<code class="literal">ctid</code> chains too soon, and add more checking in code that follows
+<code class="literal">ctid</code> links</p>
+<p>This fixes a long-standing problem that could cause crashes in very rare
+circumstances.</p>
+</li>
+<li>
+<p>Fix <code class="type">CHAR()</code> to properly pad spaces to the specified
+length when using a multiple-byte character set (Yoshiyuki Asaba)</p>
+<p>In prior releases, the padding of <code class="type">CHAR()</code> was incorrect
+because it only padded to the specified number of bytes without
+considering how many characters were stored.</p>
+</li>
+<li>
+<p>Force a checkpoint before committing <code class="command">CREATE
+DATABASE</code></p>
+<p>This should fix recent reports of &#8220;<span class="quote">index is not a btree</span>&#8221;
+failures when a crash occurs shortly after <code class="command">CREATE
+DATABASE</code>.</p>
+</li>
+<li>
+<p>Fix the sense of the test for read-only transaction
+in <code class="command">COPY</code></p>
+<p>The code formerly prohibited <code class="command">COPY TO</code>, where it should
+prohibit <code class="command">COPY FROM</code>.</p>
+</li>
+<li><p>Handle consecutive embedded newlines in <code class="command">COPY</code>
+CSV-mode input</p></li>
+<li><p>Fix <code class="function">date_trunc(week)</code> for dates near year
+end</p></li>
+<li><p>Fix planning problem with outer-join ON clauses that reference
+only the inner-side relation</p></li>
+<li><p>Further fixes for <code class="literal">x FULL JOIN y ON true</code> corner
+cases</p></li>
+<li><p>Fix overenthusiastic optimization of <code class="literal">x IN (SELECT
+DISTINCT ...)</code> and related cases</p></li>
+<li><p>Fix mis-planning of queries with small <code class="literal">LIMIT</code>
+values due to poorly thought out &#8220;<span class="quote">fuzzy</span>&#8221; cost
+comparison</p></li>
+<li><p>Make <code class="function">array_in</code> and <code class="function">array_recv</code> more
+paranoid about validating their OID parameter</p></li>
+<li><p>Fix missing rows in queries like <code class="literal">UPDATE a=... WHERE
+a...</code> with GiST index on column <code class="literal">a</code></p></li>
+<li><p>Improve robustness of datetime parsing</p></li>
+<li><p>Improve checking for partially-written WAL
+pages</p></li>
+<li><p>Improve robustness of signal handling when SSL is
+enabled</p></li>
+<li><p>Improve MIPS and M68K spinlock code</p></li>
+<li><p>Don't try to open more than <code class="literal">max_files_per_process</code>
+files during postmaster startup</p></li>
+<li><p>Various memory leakage fixes</p></li>
+<li><p>Various portability improvements</p></li>
+<li><p>Update timezone data files</p></li>
+<li><p>Improve handling of DLL load failures on Windows</p></li>
+<li><p>Improve random-number generation on Windows</p></li>
+<li><p>Make <code class="literal">psql -f filename</code> return a nonzero exit code
+when opening the file fails</p></li>
+<li><p>Change <span class="application">pg_dump</span> to handle inherited check
+constraints more reliably</p></li>
+<li><p>Fix password prompting in <span class="application">pg_restore</span> on
+Windows</p></li>
+<li><p>Fix PL/PgSQL to handle <code class="literal">var := var</code> correctly when
+the variable is of pass-by-reference type</p></li>
+<li><p>Fix PL/Perl <code class="literal">%_SHARED</code> so it's actually
+shared</p></li>
+<li><p>Fix <code class="filename">contrib/pg_autovacuum</code> to allow sleep
+intervals over 2000 sec</p></li>
+<li><p>Update <code class="filename">contrib/tsearch2</code> to use current Snowball
+code</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

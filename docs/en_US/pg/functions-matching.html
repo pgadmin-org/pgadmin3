@@ -1,0 +1,1310 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.7. Pattern Matching</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="prev" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
+<link rel="next" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="functions-matching"></a>9.7. Pattern Matching</h2></div></div></div>
+<a name="id2582670"></a><p>    There are three separate approaches to pattern matching provided
+    by <span class="productname">PostgreSQL</span>: the traditional
+    <acronym class="acronym">SQL</acronym> <code class="function">LIKE</code> operator, the
+    more recent <code class="function">SIMILAR TO</code> operator (added in
+    SQL:1999), and <acronym class="acronym">POSIX</acronym>-style regular
+    expressions.
+    Additionally, a pattern matching function,
+    <code class="function">substring</code>, is available, using either
+    <code class="function">SIMILAR TO</code>-style or POSIX-style regular
+    expressions.
+   </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>     If you have pattern matching needs that go beyond this,
+     consider writing a user-defined function in Perl or Tcl.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-like"></a>9.7.1. <code class="function">LIKE</code></h3></div></div></div>
+<a name="id2582741"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<em class="replaceable"><code>string</code></em> NOT LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
+<p>     Every <em class="replaceable"><code>pattern</code></em> defines a set of strings.
+     The <code class="function">LIKE</code> expression returns true if the
+     <em class="replaceable"><code>string</code></em> is contained in the set of
+     strings represented by <em class="replaceable"><code>pattern</code></em>.  (As
+     expected, the <code class="function">NOT LIKE</code> expression returns
+     false if <code class="function">LIKE</code> returns true, and vice versa.
+     An equivalent expression is
+     <code class="literal">NOT (<em class="replaceable"><code>string</code></em> LIKE
+      <em class="replaceable"><code>pattern</code></em>)</code>.)
+    </p>
+<p>     If <em class="replaceable"><code>pattern</code></em> does not contain percent
+     signs or underscore, then the pattern only represents the string
+     itself; in that case <code class="function">LIKE</code> acts like the
+     equals operator.  An underscore (<code class="literal">_</code>) in
+     <em class="replaceable"><code>pattern</code></em> stands for (matches) any single
+     character; a percent sign (<code class="literal">%</code>) matches any string
+     of zero or more characters.
+    </p>
+<p>    Some examples:
+</p>
+<pre class="programlisting">'abc' LIKE 'abc'    <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' LIKE 'a%'     <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' LIKE '_b_'    <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' LIKE 'c'      <em class="lineannotation"><span class="lineannotation">false</span></em></pre>
+<p>
+   </p>
+<p>    <code class="function">LIKE</code> pattern matches always cover the entire
+    string.  To match a sequence anywhere within a string, the
+    pattern must therefore start and end with a percent sign.
+   </p>
+<p>    To match a literal underscore or percent sign without matching
+    other characters, the respective character in
+    <em class="replaceable"><code>pattern</code></em> must be 
+    preceded by the escape character.  The default escape
+    character is the backslash but a different one may be selected by
+    using the <code class="literal">ESCAPE</code> clause.  To match the escape
+    character itself, write two escape characters.
+   </p>
+<p>    Note that the backslash already has a special meaning in string
+    literals, so to write a pattern constant that contains a backslash
+    you must write two backslashes in an SQL statement.  Thus, writing a pattern
+    that actually matches a literal backslash means writing four backslashes
+    in the statement.  You can avoid this by selecting a different escape
+    character with <code class="literal">ESCAPE</code>; then a backslash is not special
+    to <code class="function">LIKE</code> anymore. (But it is still special to the string
+    literal parser, so you still need two of them.)
+   </p>
+<p>    It's also possible to select no escape character by writing
+    <code class="literal">ESCAPE ''</code>.  This effectively disables the
+    escape mechanism, which makes it impossible to turn off the
+    special meaning of underscore and percent signs in the pattern.
+   </p>
+<p>    The key word <code class="token">ILIKE</code> can be used instead of
+    <code class="token">LIKE</code> to make the match case-insensitive according
+    to the active locale.  This is not in the <acronym class="acronym">SQL</acronym> standard but is a
+    <span class="productname">PostgreSQL</span> extension.
+   </p>
+<p>    The operator <code class="literal">~~</code> is equivalent to
+    <code class="function">LIKE</code>, and <code class="literal">~~*</code> corresponds to
+    <code class="function">ILIKE</code>.  There are also
+    <code class="literal">!~~</code> and <code class="literal">!~~*</code> operators that
+    represent <code class="function">NOT LIKE</code> and <code class="function">NOT
+    ILIKE</code>, respectively.  All of these operators are
+    <span class="productname">PostgreSQL</span>-specific.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-similarto-regexp"></a>9.7.2. <code class="function">SIMILAR TO</code> Regular Expressions</h3></div></div></div>
+<a name="id2583034"></a><a name="id2583040"></a><a name="id2583046"></a><a name="id2583052"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<em class="replaceable"><code>string</code></em> NOT SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
+<p>     The <code class="function">SIMILAR TO</code> operator returns true or
+     false depending on whether its pattern matches the given string.
+     It is much like <code class="function">LIKE</code>, except that it
+     interprets the pattern using the SQL standard's definition of a
+     regular expression.  SQL regular expressions are a curious cross
+     between <code class="function">LIKE</code> notation and common regular
+     expression notation.
+    </p>
+<p>     Like <code class="function">LIKE</code>, the  <code class="function">SIMILAR TO</code>
+     operator succeeds only if its pattern matches the entire string;
+     this is unlike common regular expression practice, wherein the pattern
+     may match any part of the string.
+     Also like
+     <code class="function">LIKE</code>, <code class="function">SIMILAR TO</code> uses
+     <code class="literal">_</code> and <code class="literal">%</code> as wildcard characters denoting
+     any single character and any string, respectively (these are
+     comparable to <code class="literal">.</code> and <code class="literal">.*</code> in POSIX regular
+     expressions).
+    </p>
+<p>     In addition to these facilities borrowed from <code class="function">LIKE</code>,
+     <code class="function">SIMILAR TO</code> supports these pattern-matching
+     metacharacters borrowed from POSIX regular expressions:
+
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       <code class="literal">|</code> denotes alternation (either of two alternatives).
+      </p></li>
+<li><p>       <code class="literal">*</code> denotes repetition of the previous item zero
+       or more times.
+      </p></li>
+<li><p>       <code class="literal">+</code> denotes repetition of the previous item one
+       or more times.
+      </p></li>
+<li><p>       Parentheses <code class="literal">()</code> may be used to group items into
+       a single logical item.
+      </p></li>
+<li><p>       A bracket expression <code class="literal">[...]</code> specifies a character
+       class, just as in POSIX regular expressions.
+      </p></li>
+</ul></div>
+<p>
+
+     Notice that bounded repetition (<code class="literal">?</code> and <code class="literal">{...}</code>)
+     are not provided, though they exist in POSIX.  Also, the dot (<code class="literal">.</code>)
+     is not a metacharacter.
+    </p>
+<p>     As with <code class="function">LIKE</code>, a backslash disables the special meaning
+     of any of these metacharacters; or a different escape character can
+     be specified with <code class="literal">ESCAPE</code>.
+    </p>
+<p>    Some examples:
+</p>
+<pre class="programlisting">'abc' SIMILAR TO 'abc'      <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' SIMILAR TO 'a'        <em class="lineannotation"><span class="lineannotation">false</span></em>
+'abc' SIMILAR TO '%(b|d)%'  <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' SIMILAR TO '(b|c)%'   <em class="lineannotation"><span class="lineannotation">false</span></em></pre>
+<p>
+   </p>
+<p>     The <code class="function">substring</code> function with three parameters,
+     <code class="function">substring(<em class="replaceable"><code>string</code></em>,  from
+     <em class="replaceable"><code>pattern</code></em>,  for
+     <em class="replaceable"><code>escape-character</code></em>)</code>, provides
+     extraction of a substring that matches an SQL
+     regular expression pattern.  As with <code class="literal">SIMILAR TO</code>, the
+     specified pattern must match to the entire data string, else the
+     function fails and returns null.  To indicate the part of the
+     pattern that should be returned on success, the pattern must contain
+     two occurrences of the escape character followed by a double quote
+     (<code class="literal">"</code>).  The text matching the portion of the pattern
+     between these markers is returned.
+    </p>
+<p>    Some examples:
+</p>
+<pre class="programlisting">substring('foobar' from '%#"o_b#"%' for '#')   <em class="lineannotation"><span class="lineannotation">oob</span></em>
+substring('foobar' from '#"o_b#"%' for '#')    <em class="lineannotation"><span class="lineannotation">NULL</span></em></pre>
+<p>
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="functions-posix-regexp"></a>9.7.3. <acronym class="acronym">POSIX</acronym> Regular Expressions</h3></div></div></div>
+<a name="id2583369"></a><p>    <a href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
+    operators for pattern matching using POSIX regular expressions.
+   </p>
+<div class="table">
+<a name="functions-posix-table"></a><p class="title"><b>Table 9.11. Regular Expression Match Operators</b></p>
+<div class="table-contents"><table summary="Regular Expression Match Operators" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">~</code> </td>
+<td>Matches regular expression, case sensitive</td>
+<td><code class="literal">'thomas' ~ '.*thomas.*'</code></td>
+</tr>
+<tr>
+<td> <code class="literal">~*</code> </td>
+<td>Matches regular expression, case insensitive</td>
+<td><code class="literal">'thomas' ~* '.*Thomas.*'</code></td>
+</tr>
+<tr>
+<td> <code class="literal">!~</code> </td>
+<td>Does not match regular expression, case sensitive</td>
+<td><code class="literal">'thomas' !~ '.*Thomas.*'</code></td>
+</tr>
+<tr>
+<td> <code class="literal">!~*</code> </td>
+<td>Does not match regular expression, case insensitive</td>
+<td><code class="literal">'thomas' !~* '.*vadim.*'</code></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>     <acronym class="acronym">POSIX</acronym> regular expressions provide a more
+     powerful means for 
+     pattern matching than the <code class="function">LIKE</code> and
+     <code class="function">SIMILAR TO</code> operators.
+     Many Unix tools such as <code class="command">egrep</code>,
+     <code class="command">sed</code>, or <code class="command">awk</code> use a pattern
+     matching language that is similar to the one described here.
+    </p>
+<p>     A regular expression is a character sequence that is an
+     abbreviated definition of a set of strings (a <em class="firstterm">regular
+     set</em>).  A string is said to match a regular expression
+     if it is a member of the regular set described by the regular
+     expression.  As with <code class="function">LIKE</code>, pattern characters
+     match string characters exactly unless they are special characters
+     in the regular expression language &#8212; but regular expressions use
+     different special characters than <code class="function">LIKE</code> does.
+     Unlike <code class="function">LIKE</code> patterns, a
+     regular expression is allowed to match anywhere within a string, unless
+     the regular expression is explicitly anchored to the beginning or
+     end of the string.
+    </p>
+<p>    Some examples:
+</p>
+<pre class="programlisting">'abc' ~ 'abc'    <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' ~ '^a'     <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' ~ '(b|d)'  <em class="lineannotation"><span class="lineannotation">true</span></em>
+'abc' ~ '^(b|c)' <em class="lineannotation"><span class="lineannotation">false</span></em></pre>
+<p>
+   </p>
+<p>     The <code class="function">substring</code> function with two parameters,
+     <code class="function">substring(<em class="replaceable"><code>string</code></em>,  from
+     <em class="replaceable"><code>pattern</code></em>)</code>, provides extraction of a
+     substring
+     that matches a POSIX regular expression pattern.  It returns null if
+     there is no match, otherwise the portion of the text that matched the
+     pattern.  But if the pattern contains any parentheses, the portion
+     of the text that matched the first parenthesized subexpression (the
+     one whose left parenthesis comes first) is
+     returned.  You can put parentheses around the whole expression
+     if you want to use parentheses within it without triggering this
+     exception.  If you need parentheses in the pattern before the
+     subexpression you want to extract, see the non-capturing parentheses
+     described below.
+    </p>
+<p>    Some examples:
+</p>
+<pre class="programlisting">substring('foobar' from 'o.b')     <em class="lineannotation"><span class="lineannotation">oob</span></em>
+substring('foobar' from 'o(.)b')   <em class="lineannotation"><span class="lineannotation">o</span></em></pre>
+<p>
+   </p>
+<p>     The <code class="function">regexp_replace</code> function provides substitution of
+     new text for substrings that match POSIX regular expression patterns.
+     It has the syntax
+     <code class="function">regexp_replace</code>(<em class="replaceable"><code>source</code></em>,
+     <em class="replaceable"><code>pattern</code></em>, <em class="replaceable"><code>replacement</code></em>
+     [<span class="optional">, <em class="replaceable"><code>flags</code></em> </span>]).
+     The <em class="replaceable"><code>source</code></em> string is returned unchanged if
+     there is no match to the <em class="replaceable"><code>pattern</code></em>.  If there is a
+     match, the <em class="replaceable"><code>source</code></em> string is returned with the
+     <em class="replaceable"><code>replacement</code></em> string substituted for the matching
+     substring.  The <em class="replaceable"><code>replacement</code></em> string can contain
+     <code class="literal">\</code><em class="replaceable"><code>n</code></em>, where <em class="replaceable"><code>n</code></em> is <code class="literal">1</code>
+     through <code class="literal">9</code>, to indicate that the source substring matching the
+     <em class="replaceable"><code>n</code></em>'th parenthesized subexpression of the pattern should be
+     inserted, and it can contain <code class="literal">\&amp;</code> to indicate that the
+     substring matching the entire pattern should be inserted.  Write
+     <code class="literal">\\</code> if you need to put a literal backslash in the replacement
+     text.  (As always, remember to double backslashes written in literal
+     constant strings.)
+     The <em class="replaceable"><code>flags</code></em> parameter is an optional text
+     string containing zero or more single-letter flags that change the
+     function's behavior.  Flag <code class="literal">i</code> specifies case-insensitive
+     matching, while flag <code class="literal">g</code> specifies replacement of each matching
+     substring rather than only the first one.
+    </p>
+<p>    Some examples:
+</p>
+<pre class="programlisting">regexp_replace('foobarbaz', 'b..', 'X')
+                                   <em class="lineannotation"><span class="lineannotation">fooXbaz</span></em>
+regexp_replace('foobarbaz', 'b..', 'X', 'g')
+                                   <em class="lineannotation"><span class="lineannotation">fooXX</span></em>
+regexp_replace('foobarbaz', 'b(..)', 'X\\1Y', 'g')
+                                   <em class="lineannotation"><span class="lineannotation">fooXarYXazY</span></em></pre>
+<p>
+   </p>
+<p>    <span class="productname">PostgreSQL</span>'s regular expressions are implemented
+    using a package written by Henry Spencer.  Much of
+    the description of regular expressions below is copied verbatim from his
+    manual entry.
+   </p>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="posix-syntax-details"></a>9.7.3.1. Regular Expression Details</h4></div></div></div>
+<p>    Regular expressions (<acronym class="acronym">RE</acronym>s), as defined in
+    <acronym class="acronym">POSIX</acronym> 1003.2, come in two forms:
+    <em class="firstterm">extended</em> <acronym class="acronym">RE</acronym>s or <acronym class="acronym">ERE</acronym>s
+    (roughly those of <code class="command">egrep</code>), and
+    <em class="firstterm">basic</em> <acronym class="acronym">RE</acronym>s or <acronym class="acronym">BRE</acronym>s
+    (roughly those of <code class="command">ed</code>).
+    <span class="productname">PostgreSQL</span> supports both forms, and
+    also implements some extensions
+    that are not in the POSIX standard, but have become widely used anyway
+    due to their availability in programming languages such as Perl and Tcl.
+    <acronym class="acronym">RE</acronym>s using these non-POSIX extensions are called
+    <em class="firstterm">advanced</em> <acronym class="acronym">RE</acronym>s or <acronym class="acronym">ARE</acronym>s
+    in this documentation.  AREs are almost an exact superset of EREs,
+    but BREs have several notational incompatibilities (as well as being
+    much more limited).
+    We first describe the ARE and ERE forms, noting features that apply
+    only to AREs, and then describe how BREs differ.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     The form of regular expressions accepted by
+     <span class="productname">PostgreSQL</span> can be chosen by setting the <a href="runtime-config-compatible.html#guc-regex-flavor">regex_flavor</a> run-time parameter.  The usual
+     setting is <code class="literal">advanced</code>, but one might choose
+     <code class="literal">extended</code> for maximum backwards compatibility with
+     pre-7.4 releases of <span class="productname">PostgreSQL</span>.
+    </p>
+</div>
+<p>    A regular expression is defined as one or more
+    <em class="firstterm">branches</em>, separated by
+    <code class="literal">|</code>.  It matches anything that matches one of the
+    branches.
+   </p>
+<p>    A branch is zero or more <em class="firstterm">quantified atoms</em> or
+    <em class="firstterm">constraints</em>, concatenated.
+    It matches a match for the first, followed by a match for the second, etc;
+    an empty branch matches the empty string.
+   </p>
+<p>    A quantified atom is an <em class="firstterm">atom</em> possibly followed
+    by a single <em class="firstterm">quantifier</em>.
+    Without a quantifier, it matches a match for the atom.
+    With a quantifier, it can match some number of matches of the atom.
+    An <em class="firstterm">atom</em> can be any of the possibilities
+    shown in <a href="functions-matching.html#posix-atoms-table" title="Table 9.12. Regular Expression Atoms">Table 9.12, &#8220;Regular Expression Atoms&#8221;</a>.
+    The possible quantifiers and their meanings are shown in
+    <a href="functions-matching.html#posix-quantifiers-table" title="Table 9.13. Regular Expression Quantifiers">Table 9.13, &#8220;Regular Expression Quantifiers&#8221;</a>.
+   </p>
+<p>    A <em class="firstterm">constraint</em> matches an empty string, but matches only when
+    specific conditions are met.  A constraint can be used where an atom
+    could be used, except it may not be followed by a quantifier.
+    The simple constraints are shown in
+    <a href="functions-matching.html#posix-constraints-table" title="Table 9.14. Regular Expression Constraints">Table 9.14, &#8220;Regular Expression Constraints&#8221;</a>;
+    some more constraints are described later.
+   </p>
+<div class="table">
+<a name="posix-atoms-table"></a><p class="title"><b>Table 9.12. Regular Expression Atoms</b></p>
+<div class="table-contents"><table summary="Regular Expression Atoms" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Atom</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">(</code><em class="replaceable"><code>re</code></em><code class="literal">)</code> </td>
+<td> (where <em class="replaceable"><code>re</code></em> is any regular expression)
+       matches a match for
+       <em class="replaceable"><code>re</code></em>, with the match noted for possible reporting </td>
+</tr>
+<tr>
+<td> <code class="literal">(?:</code><em class="replaceable"><code>re</code></em><code class="literal">)</code> </td>
+<td> as above, but the match is not noted for reporting
+       (a &#8220;<span class="quote">non-capturing</span>&#8221; set of parentheses)
+       (AREs only) </td>
+</tr>
+<tr>
+<td> <code class="literal">.</code> </td>
+<td> matches any single character </td>
+</tr>
+<tr>
+<td> <code class="literal">[</code><em class="replaceable"><code>chars</code></em><code class="literal">]</code> </td>
+<td> a <em class="firstterm">bracket expression</em>,
+       matching any one of the <em class="replaceable"><code>chars</code></em> (see
+       <a href="functions-matching.html#posix-bracket-expressions" title="9.7.3.2. Bracket Expressions">Section 9.7.3.2, &#8220;Bracket Expressions&#8221;</a> for more detail) </td>
+</tr>
+<tr>
+<td> <code class="literal">\</code><em class="replaceable"><code>k</code></em> </td>
+<td> (where <em class="replaceable"><code>k</code></em> is a non-alphanumeric character)
+       matches that character taken as an ordinary character,
+       e.g. <code class="literal">\\</code> matches a backslash character </td>
+</tr>
+<tr>
+<td> <code class="literal">\</code><em class="replaceable"><code>c</code></em> </td>
+<td> where <em class="replaceable"><code>c</code></em> is alphanumeric
+       (possibly followed by other characters)
+       is an <em class="firstterm">escape</em>, see <a href="functions-matching.html#posix-escape-sequences" title="9.7.3.3. Regular Expression Escapes">Section 9.7.3.3, &#8220;Regular Expression Escapes&#8221;</a>
+       (AREs only; in EREs and BREs, this matches <em class="replaceable"><code>c</code></em>) </td>
+</tr>
+<tr>
+<td> <code class="literal">{</code> </td>
+<td> when followed by a character other than a digit,
+       matches the left-brace character <code class="literal">{</code>;
+       when followed by a digit, it is the beginning of a
+       <em class="replaceable"><code>bound</code></em> (see below) </td>
+</tr>
+<tr>
+<td> <em class="replaceable"><code>x</code></em> </td>
+<td> where <em class="replaceable"><code>x</code></em> is a single character with no other
+       significance, matches that character </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    An RE may not end with <code class="literal">\</code>.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Remember that the backslash (<code class="literal">\</code>) already has a special
+     meaning in <span class="productname">PostgreSQL</span> string literals.
+     To write a pattern constant that contains a backslash,
+     you must write two backslashes in the statement.
+    </p>
+</div>
+<div class="table">
+<a name="posix-quantifiers-table"></a><p class="title"><b>Table 9.13. Regular Expression Quantifiers</b></p>
+<div class="table-contents"><table summary="Regular Expression Quantifiers" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Quantifier</th>
+<th>Matches</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">*</code> </td>
+<td> a sequence of 0 or more matches of the atom </td>
+</tr>
+<tr>
+<td> <code class="literal">+</code> </td>
+<td> a sequence of 1 or more matches of the atom </td>
+</tr>
+<tr>
+<td> <code class="literal">?</code> </td>
+<td> a sequence of 0 or 1 matches of the atom </td>
+</tr>
+<tr>
+<td> <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">}</code> </td>
+<td> a sequence of exactly <em class="replaceable"><code>m</code></em> matches of the atom </td>
+</tr>
+<tr>
+<td> <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,}</code> </td>
+<td> a sequence of <em class="replaceable"><code>m</code></em> or more matches of the atom </td>
+</tr>
+<tr>
+<td>       <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,</code><em class="replaceable"><code>n</code></em><code class="literal">}</code> </td>
+<td> a sequence of <em class="replaceable"><code>m</code></em> through <em class="replaceable"><code>n</code></em>
+       (inclusive) matches of the atom; <em class="replaceable"><code>m</code></em> may not exceed
+       <em class="replaceable"><code>n</code></em> </td>
+</tr>
+<tr>
+<td> <code class="literal">*?</code> </td>
+<td> non-greedy version of <code class="literal">*</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">+?</code> </td>
+<td> non-greedy version of <code class="literal">+</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">??</code> </td>
+<td> non-greedy version of <code class="literal">?</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">}?</code> </td>
+<td> non-greedy version of <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">}</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,}?</code> </td>
+<td> non-greedy version of <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,}</code> </td>
+</tr>
+<tr>
+<td>       <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,</code><em class="replaceable"><code>n</code></em><code class="literal">}?</code> </td>
+<td> non-greedy version of <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,</code><em class="replaceable"><code>n</code></em><code class="literal">}</code> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    The forms using <code class="literal">{</code><em class="replaceable"><code>...</code></em><code class="literal">}</code>
+    are known as <em class="firstterm">bounds</em>.
+    The numbers <em class="replaceable"><code>m</code></em> and <em class="replaceable"><code>n</code></em> within a bound are
+    unsigned decimal integers with permissible values from 0 to 255 inclusive.
+   </p>
+<p>     <em class="firstterm">Non-greedy</em> quantifiers (available in AREs only) match the
+     same possibilities as their corresponding normal (<em class="firstterm">greedy</em>)
+     counterparts, but prefer the smallest number rather than the largest
+     number of matches.
+     See <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for more detail.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     A quantifier cannot immediately follow another quantifier.
+     A quantifier cannot
+     begin an expression or subexpression or follow
+     <code class="literal">^</code> or <code class="literal">|</code>.
+    </p>
+</div>
+<div class="table">
+<a name="posix-constraints-table"></a><p class="title"><b>Table 9.14. Regular Expression Constraints</b></p>
+<div class="table-contents"><table summary="Regular Expression Constraints" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Constraint</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">^</code> </td>
+<td> matches at the beginning of the string </td>
+</tr>
+<tr>
+<td> <code class="literal">$</code> </td>
+<td> matches at the end of the string </td>
+</tr>
+<tr>
+<td> <code class="literal">(?=</code><em class="replaceable"><code>re</code></em><code class="literal">)</code> </td>
+<td> <em class="firstterm">positive lookahead</em> matches at any point
+       where a substring matching <em class="replaceable"><code>re</code></em> begins
+       (AREs only) </td>
+</tr>
+<tr>
+<td> <code class="literal">(?!</code><em class="replaceable"><code>re</code></em><code class="literal">)</code> </td>
+<td> <em class="firstterm">negative lookahead</em> matches at any point
+       where no substring matching <em class="replaceable"><code>re</code></em> begins
+       (AREs only) </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    Lookahead constraints may not contain <em class="firstterm">back references</em>
+    (see <a href="functions-matching.html#posix-escape-sequences" title="9.7.3.3. Regular Expression Escapes">Section 9.7.3.3, &#8220;Regular Expression Escapes&#8221;</a>),
+    and all parentheses within them are considered non-capturing.
+   </p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="posix-bracket-expressions"></a>9.7.3.2. Bracket Expressions</h4></div></div></div>
+<p>    A <em class="firstterm">bracket expression</em> is a list of
+    characters enclosed in <code class="literal">[]</code>.  It normally matches
+    any single character from the list (but see below).  If the list
+    begins with <code class="literal">^</code>, it matches any single character
+    <span class="emphasis"><em>not</em></span> from the rest of the list.
+    If two characters
+    in the list are separated by <code class="literal">-</code>, this is
+    shorthand for the full range of characters between those two
+    (inclusive) in the collating sequence,
+    e.g. <code class="literal">[0-9]</code> in <acronym class="acronym">ASCII</acronym> matches
+    any decimal digit.  It is illegal for two ranges to share an
+    endpoint, e.g.  <code class="literal">a-c-e</code>.  Ranges are very
+    collating-sequence-dependent, so portable programs should avoid
+    relying on them.
+   </p>
+<p>    To include a literal <code class="literal">]</code> in the list, make it the
+    first character (following a possible <code class="literal">^</code>).  To
+    include a literal <code class="literal">-</code>, make it the first or last
+    character, or the second endpoint of a range.  To use a literal
+    <code class="literal">-</code> as the first endpoint of a range, enclose it
+    in <code class="literal">[.</code> and <code class="literal">.]</code> to make it a
+    collating element (see below).  With the exception of these characters,
+    some combinations using <code class="literal">[</code>
+    (see next paragraphs), and escapes (AREs only), all other special
+    characters lose their special significance within a bracket expression.
+    In particular, <code class="literal">\</code> is not special when following
+    ERE or BRE rules, though it is special (as introducing an escape)
+    in AREs.
+   </p>
+<p>    Within a bracket expression, a collating element (a character, a
+    multiple-character sequence that collates as if it were a single
+    character, or a collating-sequence name for either) enclosed in
+    <code class="literal">[.</code> and <code class="literal">.]</code> stands for the
+    sequence of characters of that collating element.  The sequence is
+    a single element of the bracket expression's list.  A bracket
+    expression containing a multiple-character collating element can thus
+    match more than one character, e.g. if the collating sequence
+    includes a <code class="literal">ch</code> collating element, then the RE
+    <code class="literal">[[.ch.]]*c</code> matches the first five characters of
+    <code class="literal">chchcc</code>.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     <span class="productname">PostgreSQL</span> currently has no multicharacter collating
+     elements. This information describes possible future behavior.
+    </p>
+</div>
+<p>    Within a bracket expression, a collating element enclosed in
+    <code class="literal">[=</code> and <code class="literal">=]</code> is an equivalence
+    class, standing for the sequences of characters of all collating
+    elements equivalent to that one, including itself.  (If there are
+    no other equivalent collating elements, the treatment is as if the
+    enclosing delimiters were <code class="literal">[.</code> and
+    <code class="literal">.]</code>.)  For example, if <code class="literal">o</code> and
+    <code class="literal">^</code> are the members of an equivalence class, then
+    <code class="literal">[[=o=]]</code>, <code class="literal">[[=^=]]</code>, and
+    <code class="literal">[o^]</code> are all synonymous.  An equivalence class
+    may not be an endpoint of a range.
+   </p>
+<p>    Within a bracket expression, the name of a character class
+    enclosed in <code class="literal">[:</code> and <code class="literal">:]</code> stands
+    for the list of all characters belonging to that class.  Standard
+    character class names are: <code class="literal">alnum</code>,
+    <code class="literal">alpha</code>, <code class="literal">blank</code>,
+    <code class="literal">cntrl</code>, <code class="literal">digit</code>,
+    <code class="literal">graph</code>, <code class="literal">lower</code>,
+    <code class="literal">print</code>, <code class="literal">punct</code>,
+    <code class="literal">space</code>, <code class="literal">upper</code>,
+    <code class="literal">xdigit</code>.  These stand for the character classes
+    defined in
+    <span class="citerefentry"><span class="refentrytitle">ctype</span></span>.
+    A locale may provide others.  A character class may not be used as
+    an endpoint of a range.
+   </p>
+<p>    There are two special cases of bracket expressions:  the bracket
+    expressions <code class="literal">[[:&lt;:]]</code> and
+    <code class="literal">[[:&gt;:]]</code> are constraints,
+    matching empty strings at the beginning
+    and end of a word respectively.  A word is defined as a sequence
+    of word characters that is neither preceded nor followed by word
+    characters.  A word character is an <code class="literal">alnum</code> character (as
+    defined by
+    <span class="citerefentry"><span class="refentrytitle">ctype</span></span>)
+    or an underscore.  This is an extension, compatible with but not
+    specified by <acronym class="acronym">POSIX</acronym> 1003.2, and should be used with
+    caution in software intended to be portable to other systems.
+    The constraint escapes described below are usually preferable (they
+    are no more standard, but are certainly easier to type).
+   </p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="posix-escape-sequences"></a>9.7.3.3. Regular Expression Escapes</h4></div></div></div>
+<p>    <em class="firstterm">Escapes</em> are special sequences beginning with <code class="literal">\</code>
+    followed by an alphanumeric character. Escapes come in several varieties:
+    character entry, class shorthands, constraint escapes, and back references.
+    A <code class="literal">\</code> followed by an alphanumeric character but not constituting
+    a valid escape is illegal in AREs.
+    In EREs, there are no escapes: outside a bracket expression,
+    a <code class="literal">\</code> followed by an alphanumeric character merely stands for
+    that character as an ordinary character, and inside a bracket expression,
+    <code class="literal">\</code> is an ordinary character.
+    (The latter is the one actual incompatibility between EREs and AREs.)
+   </p>
+<p>    <em class="firstterm">Character-entry escapes</em> exist to make it easier to specify
+    non-printing and otherwise inconvenient characters in REs.  They are
+    shown in <a href="functions-matching.html#posix-character-entry-escapes-table" title="Table 9.15. Regular Expression Character-Entry Escapes">Table 9.15, &#8220;Regular Expression Character-Entry Escapes&#8221;</a>.
+   </p>
+<p>    <em class="firstterm">Class-shorthand escapes</em> provide shorthands for certain
+    commonly-used character classes.  They are
+    shown in <a href="functions-matching.html#posix-class-shorthand-escapes-table" title="Table 9.16. Regular Expression Class-Shorthand Escapes">Table 9.16, &#8220;Regular Expression Class-Shorthand Escapes&#8221;</a>.
+   </p>
+<p>    A <em class="firstterm">constraint escape</em> is a constraint,
+    matching the empty string if specific conditions are met,
+    written as an escape.  They are
+    shown in <a href="functions-matching.html#posix-constraint-escapes-table" title="Table 9.17. Regular Expression Constraint Escapes">Table 9.17, &#8220;Regular Expression Constraint Escapes&#8221;</a>.
+   </p>
+<p>    A <em class="firstterm">back reference</em> (<code class="literal">\</code><em class="replaceable"><code>n</code></em>) matches the
+    same string matched by the previous parenthesized subexpression specified
+    by the number <em class="replaceable"><code>n</code></em>
+    (see <a href="functions-matching.html#posix-constraint-backref-table" title="Table 9.18. Regular Expression Back References">Table 9.18, &#8220;Regular Expression Back References&#8221;</a>).  For example,
+    <code class="literal">([bc])\1</code> matches <code class="literal">bb</code> or <code class="literal">cc</code>
+    but not <code class="literal">bc</code> or <code class="literal">cb</code>.
+    The subexpression must entirely precede the back reference in the RE.
+    Subexpressions are numbered in the order of their leading parentheses.
+    Non-capturing parentheses do not define subexpressions.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Keep in mind that an escape's leading <code class="literal">\</code> will need to be
+     doubled when entering the pattern as an SQL string constant.  For example:
+</p>
+<pre class="programlisting">'123' ~ '^\\d{3}' <em class="lineannotation"><span class="lineannotation">true</span></em></pre>
+<p>
+    </p>
+</div>
+<div class="table">
+<a name="posix-character-entry-escapes-table"></a><p class="title"><b>Table 9.15. Regular Expression Character-Entry Escapes</b></p>
+<div class="table-contents"><table summary="Regular Expression Character-Entry Escapes" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Escape</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">\a</code> </td>
+<td> alert (bell) character, as in C </td>
+</tr>
+<tr>
+<td> <code class="literal">\b</code> </td>
+<td> backspace, as in C </td>
+</tr>
+<tr>
+<td> <code class="literal">\B</code> </td>
+<td> synonym for <code class="literal">\</code> to help reduce the need for backslash
+       doubling </td>
+</tr>
+<tr>
+<td> <code class="literal">\c</code><em class="replaceable"><code>X</code></em> </td>
+<td> (where <em class="replaceable"><code>X</code></em> is any character) the character whose
+       low-order 5 bits are the same as those of
+       <em class="replaceable"><code>X</code></em>, and whose other bits are all zero </td>
+</tr>
+<tr>
+<td> <code class="literal">\e</code> </td>
+<td> the character whose collating-sequence name
+       is <code class="literal">ESC</code>,
+       or failing that, the character with octal value 033 </td>
+</tr>
+<tr>
+<td> <code class="literal">\f</code> </td>
+<td> form feed, as in C </td>
+</tr>
+<tr>
+<td> <code class="literal">\n</code> </td>
+<td> newline, as in C </td>
+</tr>
+<tr>
+<td> <code class="literal">\r</code> </td>
+<td> carriage return, as in C </td>
+</tr>
+<tr>
+<td> <code class="literal">\t</code> </td>
+<td> horizontal tab, as in C </td>
+</tr>
+<tr>
+<td> <code class="literal">\u</code><em class="replaceable"><code>wxyz</code></em> </td>
+<td> (where <em class="replaceable"><code>wxyz</code></em> is exactly four hexadecimal digits)
+       the UTF16 (Unicode, 16-bit) character <code class="literal">U+</code><em class="replaceable"><code>wxyz</code></em>
+       in the local byte ordering </td>
+</tr>
+<tr>
+<td> <code class="literal">\U</code><em class="replaceable"><code>stuvwxyz</code></em> </td>
+<td> (where <em class="replaceable"><code>stuvwxyz</code></em> is exactly eight hexadecimal
+       digits)
+       reserved for a somewhat-hypothetical Unicode extension to 32 bits
+       </td>
+</tr>
+<tr>
+<td> <code class="literal">\v</code> </td>
+<td> vertical tab, as in C </td>
+</tr>
+<tr>
+<td> <code class="literal">\x</code><em class="replaceable"><code>hhh</code></em> </td>
+<td> (where <em class="replaceable"><code>hhh</code></em> is any sequence of hexadecimal
+       digits)
+       the character whose hexadecimal value is
+       <code class="literal">0x</code><em class="replaceable"><code>hhh</code></em>
+       (a single character no matter how many hexadecimal digits are used)
+       </td>
+</tr>
+<tr>
+<td> <code class="literal">\0</code> </td>
+<td> the character whose value is <code class="literal">0</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">\</code><em class="replaceable"><code>xy</code></em> </td>
+<td> (where <em class="replaceable"><code>xy</code></em> is exactly two octal digits,
+       and is not a <em class="firstterm">back reference</em>)
+       the character whose octal value is
+       <code class="literal">0</code><em class="replaceable"><code>xy</code></em> </td>
+</tr>
+<tr>
+<td> <code class="literal">\</code><em class="replaceable"><code>xyz</code></em> </td>
+<td> (where <em class="replaceable"><code>xyz</code></em> is exactly three octal digits,
+       and is not a <em class="firstterm">back reference</em>)
+       the character whose octal value is
+       <code class="literal">0</code><em class="replaceable"><code>xyz</code></em> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    Hexadecimal digits are <code class="literal">0</code>-<code class="literal">9</code>,
+    <code class="literal">a</code>-<code class="literal">f</code>, and <code class="literal">A</code>-<code class="literal">F</code>.
+    Octal digits are <code class="literal">0</code>-<code class="literal">7</code>.
+   </p>
+<p>    The character-entry escapes are always taken as ordinary characters.
+    For example, <code class="literal">\135</code> is <code class="literal">]</code> in ASCII, but
+    <code class="literal">\135</code> does not terminate a bracket expression.
+   </p>
+<div class="table">
+<a name="posix-class-shorthand-escapes-table"></a><p class="title"><b>Table 9.16. Regular Expression Class-Shorthand Escapes</b></p>
+<div class="table-contents"><table summary="Regular Expression Class-Shorthand Escapes" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Escape</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">\d</code> </td>
+<td> <code class="literal">[[:digit:]]</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">\s</code> </td>
+<td> <code class="literal">[[:space:]]</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">\w</code> </td>
+<td> <code class="literal">[[:alnum:]_]</code>
+       (note underscore is included) </td>
+</tr>
+<tr>
+<td> <code class="literal">\D</code> </td>
+<td> <code class="literal">[^[:digit:]]</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">\S</code> </td>
+<td> <code class="literal">[^[:space:]]</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">\W</code> </td>
+<td> <code class="literal">[^[:alnum:]_]</code>
+       (note underscore is included) </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    Within bracket expressions, <code class="literal">\d</code>, <code class="literal">\s</code>,
+    and <code class="literal">\w</code> lose their outer brackets,
+    and <code class="literal">\D</code>, <code class="literal">\S</code>, and <code class="literal">\W</code> are illegal.
+    (So, for example, <code class="literal">[a-c\d]</code> is equivalent to
+    <code class="literal">[a-c[:digit:]]</code>.
+    Also, <code class="literal">[a-c\D]</code>, which is equivalent to
+    <code class="literal">[a-c^[:digit:]]</code>, is illegal.)
+   </p>
+<div class="table">
+<a name="posix-constraint-escapes-table"></a><p class="title"><b>Table 9.17. Regular Expression Constraint Escapes</b></p>
+<div class="table-contents"><table summary="Regular Expression Constraint Escapes" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Escape</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">\A</code> </td>
+<td> matches only at the beginning of the string
+       (see <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for how this differs from
+       <code class="literal">^</code>) </td>
+</tr>
+<tr>
+<td> <code class="literal">\m</code> </td>
+<td> matches only at the beginning of a word </td>
+</tr>
+<tr>
+<td> <code class="literal">\M</code> </td>
+<td> matches only at the end of a word </td>
+</tr>
+<tr>
+<td> <code class="literal">\y</code> </td>
+<td> matches only at the beginning or end of a word </td>
+</tr>
+<tr>
+<td> <code class="literal">\Y</code> </td>
+<td> matches only at a point that is not the beginning or end of a
+       word </td>
+</tr>
+<tr>
+<td> <code class="literal">\Z</code> </td>
+<td> matches only at the end of the string
+       (see <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for how this differs from
+       <code class="literal">$</code>) </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    A word is defined as in the specification of
+    <code class="literal">[[:&lt;:]]</code> and <code class="literal">[[:&gt;:]]</code> above.
+    Constraint escapes are illegal within bracket expressions.
+   </p>
+<div class="table">
+<a name="posix-constraint-backref-table"></a><p class="title"><b>Table 9.18. Regular Expression Back References</b></p>
+<div class="table-contents"><table summary="Regular Expression Back References" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Escape</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">\</code><em class="replaceable"><code>m</code></em> </td>
+<td> (where <em class="replaceable"><code>m</code></em> is a nonzero digit)
+       a back reference to the <em class="replaceable"><code>m</code></em>'th subexpression </td>
+</tr>
+<tr>
+<td> <code class="literal">\</code><em class="replaceable"><code>mnn</code></em> </td>
+<td> (where <em class="replaceable"><code>m</code></em> is a nonzero digit, and
+       <em class="replaceable"><code>nn</code></em> is some more digits, and the decimal value
+       <em class="replaceable"><code>mnn</code></em> is not greater than the number of closing capturing
+       parentheses seen so far) 
+       a back reference to the <em class="replaceable"><code>mnn</code></em>'th subexpression </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     There is an inherent historical ambiguity between octal character-entry 
+     escapes and back references, which is resolved by heuristics,
+     as hinted at above.
+     A leading zero always indicates an octal escape.
+     A single non-zero digit, not followed by another digit,
+     is always taken as a back reference.
+     A multidigit sequence not starting with a zero is taken as a back 
+     reference if it comes after a suitable subexpression
+     (i.e. the number is in the legal range for a back reference),
+     and otherwise is taken as octal.
+    </p>
+</div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="posix-metasyntax"></a>9.7.3.4. Regular Expression Metasyntax</h4></div></div></div>
+<p>    In addition to the main syntax described above, there are some special
+    forms and miscellaneous syntactic facilities available.
+   </p>
+<p>    Normally the flavor of RE being used is determined by
+    <code class="varname">regex_flavor</code>.
+    However, this can be overridden by a <em class="firstterm">director</em> prefix.
+    If an RE begins with <code class="literal">***:</code>,
+    the rest of the RE is taken as an ARE regardless of
+    <code class="varname">regex_flavor</code>.
+    If an RE begins with <code class="literal">***=</code>,
+    the rest of the RE is taken to be a literal string,
+    with all characters considered ordinary characters.
+   </p>
+<p>    An ARE may begin with <em class="firstterm">embedded options</em>:
+    a sequence <code class="literal">(?</code><em class="replaceable"><code>xyz</code></em><code class="literal">)</code>
+    (where <em class="replaceable"><code>xyz</code></em> is one or more alphabetic characters)
+    specifies options affecting the rest of the RE.
+    These options override any previously determined options (including
+    both the RE flavor and case sensitivity).
+    The available option letters are
+    shown in <a href="functions-matching.html#posix-embedded-options-table" title="Table 9.19. ARE Embedded-Option Letters">Table 9.19, &#8220;ARE Embedded-Option Letters&#8221;</a>.
+   </p>
+<div class="table">
+<a name="posix-embedded-options-table"></a><p class="title"><b>Table 9.19. ARE Embedded-Option Letters</b></p>
+<div class="table-contents"><table summary="ARE Embedded-Option Letters" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Option</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td> <code class="literal">b</code> </td>
+<td> rest of RE is a BRE </td>
+</tr>
+<tr>
+<td> <code class="literal">c</code> </td>
+<td> case-sensitive matching (overrides operator type) </td>
+</tr>
+<tr>
+<td> <code class="literal">e</code> </td>
+<td> rest of RE is an ERE </td>
+</tr>
+<tr>
+<td> <code class="literal">i</code> </td>
+<td> case-insensitive matching (see
+       <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) (overrides operator type) </td>
+</tr>
+<tr>
+<td> <code class="literal">m</code> </td>
+<td> historical synonym for <code class="literal">n</code> </td>
+</tr>
+<tr>
+<td> <code class="literal">n</code> </td>
+<td> newline-sensitive matching (see
+       <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
+</tr>
+<tr>
+<td> <code class="literal">p</code> </td>
+<td> partial newline-sensitive matching (see
+       <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
+</tr>
+<tr>
+<td> <code class="literal">q</code> </td>
+<td> rest of RE is a literal (&#8220;<span class="quote">quoted</span>&#8221;) string, all ordinary
+       characters </td>
+</tr>
+<tr>
+<td> <code class="literal">s</code> </td>
+<td> non-newline-sensitive matching (default) </td>
+</tr>
+<tr>
+<td> <code class="literal">t</code> </td>
+<td> tight syntax (default; see below) </td>
+</tr>
+<tr>
+<td> <code class="literal">w</code> </td>
+<td> inverse partial newline-sensitive (&#8220;<span class="quote">weird</span>&#8221;) matching
+       (see <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
+</tr>
+<tr>
+<td> <code class="literal">x</code> </td>
+<td> expanded syntax (see below) </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    Embedded options take effect at the <code class="literal">)</code> terminating the sequence.
+    They may appear only at the start of an ARE (after the
+    <code class="literal">***:</code> director if any).
+   </p>
+<p>    In addition to the usual (<em class="firstterm">tight</em>) RE syntax, in which all
+    characters are significant, there is an <em class="firstterm">expanded</em> syntax,
+    available by specifying the embedded <code class="literal">x</code> option.
+    In the expanded syntax,
+    white-space characters in the RE are ignored, as are
+    all characters between a <code class="literal">#</code>
+    and the following newline (or the end of the RE).  This
+    permits paragraphing and commenting a complex RE.
+    There are three exceptions to that basic rule:
+
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       a white-space character or <code class="literal">#</code> preceded by <code class="literal">\</code> is
+       retained
+      </p></li>
+<li><p>       white space or <code class="literal">#</code> within a bracket expression is retained
+      </p></li>
+<li><p>       white space and comments cannot appear within multicharacter symbols,
+       such as <code class="literal">(?:</code>
+      </p></li>
+</ul></div>
+<p>
+
+    For this purpose, white-space characters are blank, tab, newline, and
+    any character that belongs to the <em class="replaceable"><code>space</code></em> character class.
+   </p>
+<p>    Finally, in an ARE, outside bracket expressions, the sequence
+    <code class="literal">(?#</code><em class="replaceable"><code>ttt</code></em><code class="literal">)</code>
+    (where <em class="replaceable"><code>ttt</code></em> is any text not containing a <code class="literal">)</code>)
+    is a comment, completely ignored.
+    Again, this is not allowed between the characters of
+    multicharacter symbols, like <code class="literal">(?:</code>.
+    Such comments are more a historical artifact than a useful facility,
+    and their use is deprecated; use the expanded syntax instead.
+   </p>
+<p>    <span class="emphasis"><em>None</em></span> of these metasyntax extensions is available if
+    an initial <code class="literal">***=</code> director
+    has specified that the user's input be treated as a literal string
+    rather than as an RE.
+   </p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="posix-matching-rules"></a>9.7.3.5. Regular Expression Matching Rules</h4></div></div></div>
+<p>    In the event that an RE could match more than one substring of a given
+    string, the RE matches the one starting earliest in the string.
+    If the RE could match more than one substring starting at that point,
+    either the longest possible match or the shortest possible match will
+    be taken, depending on whether the RE is <em class="firstterm">greedy</em> or
+    <em class="firstterm">non-greedy</em>.
+   </p>
+<p>    Whether an RE is greedy or not is determined by the following rules:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       Most atoms, and all constraints, have no greediness attribute (because
+       they cannot match variable amounts of text anyway).
+      </p></li>
+<li><p>       Adding parentheses around an RE does not change its greediness.
+      </p></li>
+<li><p>       A quantified atom with a fixed-repetition quantifier
+       (<code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">}</code>
+       or
+       <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">}?</code>)
+       has the same greediness (possibly none) as the atom itself.
+      </p></li>
+<li><p>       A quantified atom with other normal quantifiers (including
+       <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,</code><em class="replaceable"><code>n</code></em><code class="literal">}</code>
+       with <em class="replaceable"><code>m</code></em> equal to <em class="replaceable"><code>n</code></em>)
+       is greedy (prefers longest match).
+      </p></li>
+<li><p>       A quantified atom with a non-greedy quantifier (including
+       <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,</code><em class="replaceable"><code>n</code></em><code class="literal">}?</code>
+       with <em class="replaceable"><code>m</code></em> equal to <em class="replaceable"><code>n</code></em>)
+       is non-greedy (prefers shortest match).
+      </p></li>
+<li><p>       A branch &#8212; that is, an RE that has no top-level
+       <code class="literal">|</code> operator &#8212; has the same greediness as the first
+       quantified atom in it that has a greediness attribute.
+      </p></li>
+<li><p>       An RE consisting of two or more branches connected by the
+       <code class="literal">|</code> operator is always greedy.
+      </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    The above rules associate greediness attributes not only with individual
+    quantified atoms, but with branches and entire REs that contain quantified
+    atoms.  What that means is that the matching is done in such a way that
+    the branch, or whole RE, matches the longest or shortest possible
+    substring <span class="emphasis"><em>as a whole</em></span>.  Once the length of the entire match
+    is determined, the part of it that matches any particular subexpression
+    is determined on the basis of the greediness attribute of that
+    subexpression, with subexpressions starting earlier in the RE taking
+    priority over ones starting later.
+   </p>
+<p>    An example of what this means:
+</p>
+<pre class="screen">SELECT SUBSTRING('XY1234Z', 'Y*([0-9]{1,3})');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">123</code>
+SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">1</code></pre>
+<p>
+    In the first case, the RE as a whole is greedy because <code class="literal">Y*</code>
+    is greedy.  It can match beginning at the <code class="literal">Y</code>, and it matches
+    the longest possible string starting there, i.e., <code class="literal">Y123</code>.
+    The output is the parenthesized part of that, or <code class="literal">123</code>.
+    In the second case, the RE as a whole is non-greedy because <code class="literal">Y*?</code>
+    is non-greedy.  It can match beginning at the <code class="literal">Y</code>, and it matches
+    the shortest possible string starting there, i.e., <code class="literal">Y1</code>.
+    The subexpression <code class="literal">[0-9]{1,3}</code> is greedy but it cannot change
+    the decision as to the overall match length; so it is forced to match
+    just <code class="literal">1</code>.
+   </p>
+<p>    In short, when an RE contains both greedy and non-greedy subexpressions,
+    the total match length is either as long as possible or as short as
+    possible, according to the attribute assigned to the whole RE.  The
+    attributes assigned to the subexpressions only affect how much of that
+    match they are allowed to &#8220;<span class="quote">eat</span>&#8221; relative to each other.
+   </p>
+<p>    The quantifiers <code class="literal">{1,1}</code> and <code class="literal">{1,1}?</code>
+    can be used to force greediness or non-greediness, respectively,
+    on a subexpression or a whole RE.
+   </p>
+<p>    Match lengths are measured in characters, not collating elements.
+    An empty string is considered longer than no match at all.
+    For example:
+    <code class="literal">bb*</code>
+    matches the three middle characters of <code class="literal">abbbc</code>;
+    <code class="literal">(week|wee)(night|knights)</code>
+    matches all ten characters of <code class="literal">weeknights</code>;
+    when <code class="literal">(.*).*</code>
+    is matched against <code class="literal">abc</code> the parenthesized subexpression
+    matches all three characters; and when
+    <code class="literal">(a*)*</code> is matched against <code class="literal">bc</code>
+    both the whole RE and the parenthesized
+    subexpression match an empty string.
+   </p>
+<p>    If case-independent matching is specified,
+    the effect is much as if all case distinctions had vanished from the
+    alphabet.
+    When an alphabetic that exists in multiple cases appears as an
+    ordinary character outside a bracket expression, it is effectively
+    transformed into a bracket expression containing both cases,
+    e.g. <code class="literal">x</code> becomes <code class="literal">[xX]</code>.
+    When it appears inside a bracket expression, all case counterparts
+    of it are added to the bracket expression, e.g.
+    <code class="literal">[x]</code> becomes <code class="literal">[xX]</code>
+    and <code class="literal">[^x]</code> becomes <code class="literal">[^xX]</code>.
+   </p>
+<p>    If newline-sensitive matching is specified, <code class="literal">.</code>
+    and bracket expressions using <code class="literal">^</code>
+    will never match the newline character
+    (so that matches will never cross newlines unless the RE
+    explicitly arranges it)
+    and <code class="literal">^</code>and <code class="literal">$</code>
+    will match the empty string after and before a newline
+    respectively, in addition to matching at beginning and end of string
+    respectively.
+    But the ARE escapes <code class="literal">\A</code> and <code class="literal">\Z</code>
+    continue to match beginning or end of string <span class="emphasis"><em>only</em></span>.
+   </p>
+<p>    If partial newline-sensitive matching is specified,
+    this affects <code class="literal">.</code> and bracket expressions
+    as with newline-sensitive matching, but not <code class="literal">^</code>
+    and <code class="literal">$</code>.
+   </p>
+<p>    If inverse partial newline-sensitive matching is specified,
+    this affects <code class="literal">^</code> and <code class="literal">$</code>
+    as with newline-sensitive matching, but not <code class="literal">.</code>
+    and bracket expressions.
+    This isn't very useful but is provided for symmetry.
+   </p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="posix-limits-compatibility"></a>9.7.3.6. Limits and Compatibility</h4></div></div></div>
+<p>    No particular limit is imposed on the length of REs in this
+    implementation.  However,
+    programs intended to be highly portable should not employ REs longer
+    than 256 bytes,
+    as a POSIX-compliant implementation can refuse to accept such REs.
+   </p>
+<p>    The only feature of AREs that is actually incompatible with
+    POSIX EREs is that <code class="literal">\</code> does not lose its special
+    significance inside bracket expressions.
+    All other ARE features use syntax which is illegal or has
+    undefined or unspecified effects in POSIX EREs;
+    the <code class="literal">***</code> syntax of directors likewise is outside the POSIX
+    syntax for both BREs and EREs.
+   </p>
+<p>    Many of the ARE extensions are borrowed from Perl, but some have
+    been changed to clean them up, and a few Perl extensions are not present.
+    Incompatibilities of note include <code class="literal">\b</code>, <code class="literal">\B</code>,
+    the lack of special treatment for a trailing newline,
+    the addition of complemented bracket expressions to the things
+    affected by newline-sensitive matching,
+    the restrictions on parentheses and back references in lookahead
+    constraints, and the longest/shortest-match (rather than first-match)
+    matching semantics.
+   </p>
+<p>    Two significant incompatibilities exist between AREs and the ERE syntax
+    recognized by pre-7.4 releases of <span class="productname">PostgreSQL</span>:
+
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       In AREs, <code class="literal">\</code> followed by an alphanumeric character is either
+       an escape or an error, while in previous releases, it was just another
+       way of writing the alphanumeric.
+       This should not be much of a problem because there was no reason to
+       write such a sequence in earlier releases.
+      </p></li>
+<li><p>       In AREs, <code class="literal">\</code> remains a special character within
+       <code class="literal">[]</code>, so a literal <code class="literal">\</code> within a bracket
+       expression must be written <code class="literal">\\</code>.
+      </p></li>
+</ul></div>
+<p>
+
+    While these differences are unlikely to create a problem for most
+    applications, you can avoid them if necessary by
+    setting <code class="varname">regex_flavor</code> to <code class="literal">extended</code>.
+   </p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="posix-basic-regexes"></a>9.7.3.7. Basic Regular Expressions</h4></div></div></div>
+<p>    BREs differ from EREs in several respects.
+    <code class="literal">|</code>, <code class="literal">+</code>, and <code class="literal">?</code>
+    are ordinary characters and there is no equivalent
+    for their functionality.
+    The delimiters for bounds are
+    <code class="literal">\{</code> and <code class="literal">\}</code>,
+    with <code class="literal">{</code> and <code class="literal">}</code>
+    by themselves ordinary characters.
+    The parentheses for nested subexpressions are
+    <code class="literal">\(</code> and <code class="literal">\)</code>,
+    with <code class="literal">(</code> and <code class="literal">)</code> by themselves ordinary characters.
+    <code class="literal">^</code> is an ordinary character except at the beginning of the
+    RE or the beginning of a parenthesized subexpression,
+    <code class="literal">$</code> is an ordinary character except at the end of the
+    RE or the end of a parenthesized subexpression,
+    and <code class="literal">*</code> is an ordinary character if it appears at the beginning
+    of the RE or the beginning of a parenthesized subexpression
+    (after a possible leading <code class="literal">^</code>).
+    Finally, single-digit back references are available, and
+    <code class="literal">\&lt;</code> and <code class="literal">\&gt;</code>
+    are synonyms for
+    <code class="literal">[[:&lt;:]]</code> and <code class="literal">[[:&gt;:]]</code>
+    respectively; no other escapes are available.
+   </p>
+</div>
+</div>
+</div></body>
+</html>

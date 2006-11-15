@@ -1,0 +1,210 @@
+﻿</head>
+
+<body>
+
+<H3>Default XSL stylesheet</H3>
+
+<P>
+For reference, and as a starting point for your own stylesheets, the builting stylesheet 
+that pgAdmin uses to render XHTML report output from XML report data is included below. 
+This stylesheet includes the default HTML stylesheet that will be embedded into a report
+to give it the pgAdmin look and feel.
+</p>
+
+<pre style="background-color: #dddddd;">
+&#60;?xml version=&#34;1.0&#34;?&#62;
+&#60;xsl:stylesheet version=&#34;1.0&#34; xmlns:xsl=&#34;http://www.w3.org/1999/XSL/Transform&#34;&#62;
+&#60;xsl:output method=&#34;xml&#34; doctype-system=&#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34; doctype-public=&#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; indent=&#34;yes&#34; encoding=&#34;utf-8&#34; /&#62;
+&#60;xsl:template match=&#34;/report&#34;&#62;
+
+&#60;html&#62;
+  &#60;head&#62;
+    &#60;xsl:if test=&#34;header/title != &#39;&#39;&#34;&#62;
+      &#60;title&#62;&#60;xsl:value-of select=&#34;header/title&#34; /&#62;&#60;/title&#62;
+    &#60;/xsl:if&#62;
+    &#60;meta http-equiv=&#34;Content-Type&#34; content=&#34;utf-8&#34; /&#62;
+    &#60;style type=&#34;text/css&#34;&#62;
+      body {  font-family: verdana, helvetica, sans-serif; margin: 0px; padding: 0; }
+      h1 { font-weight: bold; font-size: 150%; border-bottom-style: solid; border-bottom-width: 2px; margin-top: 0px; padding-bottom: 0.5ex; color: #eeeeee; }
+      h2 { font-size: 130%; padding-bottom: 0.5ex; color: #009ace; border-bottom-style: solid; border-bottom-width: 2px; }
+      h3 { font-size: 110%; padding-bottom: 0.5ex; color: #000000; }
+      th { text-align: left; background-color: #009ace; color: #eeeeee; }
+      #ReportHeader { padding: 10px; background-color: #009ace; color: #eeeeee; border-bottom-style: solid; border-bottom-width: 2px; border-color: #999999; }
+      #ReportHeader th { width: 25%; white-space: nowrap; vertical-align: top; }
+      #ReportHeader td { vertical-align: top; color: #eeeeee; }
+      #ReportNotes { padding: 10px; background-color: #eeeeee; font-size: 80%; border-bottom-style: solid; border-bottom-width: 2px; border-color: #999999; }
+      .ReportSQL { margin-bottom: 10px; padding: 10px; display: block; background-color: #eeeeee; font-family: monospace; }
+      #ReportDetails { margin-left: 10px; margin-right: 10px; margin-bottom: 10px; }
+      #ReportDetails td, th { font-size: 80%; margin-left: 2px; margin-right: 2px; }
+      #ReportDetails th { border-bottom-color: #777777; border-bottom-style: solid; border-bottom-width: 2px; }
+      .ReportDetailsOddDataRow { background-color: #dddddd; }
+      .ReportDetailsEvenDataRow { background-color: #eeeeee; }
+      .ReportTableHeaderCell { background-color: #dddddd; color: #009ace; vertical-align: top; font-size: 80%; white-space: nowrap; }
+      .ReportTableValueCell { vertical-align: top; font-size: 80%; white-space: nowrap; }
+      .ReportTableInfo { font-size: 80%; font-style: italic; }
+      #ReportFooter { font-weight: bold; font-size: 80%; text-align: right; background-color: #009ace; color: #eeeeee; margin-top: 10px; padding: 2px; border-bottom-style: solid; border-bottom-width: 2px; border-top-style: solid; border-top-width: 2px; border-color: #999999; }
+      #ReportFooter a { color: #ffffff; text-decoration: none; }
+    &#60;/style&#62;
+  &#60;/head&#62;
+
+  &#60;body&#62;
+    &#60;div id=&#34;ReportHeader&#34;&#62;
+
+    &#60;xsl:if test=&#34;header/title != &#39;&#39;&#34;&#62;
+      &#60;h1&#62;&#60;xsl:value-of select=&#34;header/title&#34; /&#62;&#60;/h1&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;xsl:if test=&#34;header/generated != &#39;&#39;&#34;&#62;
+      &#60;b&#62;Generated: &#60;/b&#62;&#60;xsl:value-of select=&#34;header/generated&#34; /&#62;&#60;br /&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;xsl:if test=&#34;header/server != &#39;&#39;&#34;&#62;
+      &#60;b&#62;Server: &#60;/b&#62;&#60;xsl:value-of select=&#34;header/server&#34; /&#62;&#60;br /&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;xsl:if test=&#34;header/database != &#39;&#39;&#34;&#62;
+      &#60;b&#62;Database: &#60;/b&#62;&#60;xsl:value-of select=&#34;header/database&#34; /&#62;&#60;br /&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;xsl:if test=&#34;header/schema != &#39;&#39;&#34;&#62;
+      &#60;b&#62;Schema: &#60;/b&#62;&#60;xsl:value-of select=&#34;header/schema&#34; /&#62;&#60;br /&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;xsl:if test=&#34;header/table != &#39;&#39;&#34;&#62;
+      &#60;b&#62;Table: &#60;/b&#62;&#60;xsl:value-of select=&#34;header/table&#34; /&#62;&#60;br /&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;xsl:if test=&#34;header/job != &#39;&#39;&#34;&#62;
+      &#60;b&#62;Job: &#60;/b&#62;&#60;xsl:value-of select=&#34;header/job&#34; /&#62;&#60;br /&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;/div&#62;
+
+    &#60;xsl:if test=&#34;header/notes != &#39;&#39;&#34;&#62;
+      &#60;div id=&#34;ReportNotes&#34;&#62;
+      &#60;b&#62;Notes: &#60;/b&#62;&#60;br /&#62;&#60;br /&#62;
+      &#60;xsl:call-template name=&#34;substitute&#34;&#62;
+         &#60;xsl:with-param name=&#34;string&#34; select=&#34;header/notes&#34; /&#62;
+      &#60;/xsl:call-template&#62;
+      &#60;/div&#62;
+    &#60;/xsl:if&#62;
+
+    &#60;div id=&#34;ReportDetails&#34;&#62;
+      &#60;xsl:apply-templates select=&#34;section&#34; &#62;
+        &#60;xsl:sort select=&#34;@number&#34; data-type=&#34;number&#34; order=&#34;ascending&#34; /&#62;
+      &#60;/xsl:apply-templates&#62;
+    &#60;/div&#62;
+
+    &#60;div id=&#34;ReportFooter&#34;&#62;
+Report generated by &#60;a href=&#34;http://www.pgadmin.org/&#34;&#62;pgAdmin&#60;/a&#62;
+    &#60;/div&#62;
+
+    &#60;br /&#62;
+  &#60;/body&#62;
+&#60;/html&#62;
+
+&#60;/xsl:template&#62;
+
+&#60;xsl:template match=&#34;section&#34;&#62;
+  &#60;xsl:if test=&#34;../section[@id = current()/@id]/@name != &#39;&#39;&#34;&#62;
+    &#60;h2&#62;&#60;xsl:value-of select=&#34;../section[@id = current()/@id]/@name&#34; /&#62;&#60;/h2&#62;
+  &#60;/xsl:if&#62;
+
+  &#60;xsl:if test=&#34;count(../section[@id = current()/@id]/table/columns/column) &#62; 0&#34;&#62;
+    &#60;table&#62;
+      &#60;tr&#62;
+        &#60;xsl:apply-templates select=&#34;../section[@id = current()/@id]/table/columns/column&#34;&#62;
+          &#60;xsl:sort select=&#34;@number&#34; data-type=&#34;number&#34; order=&#34;ascending&#34; /&#62;
+          &#60;xsl:with-param name=&#34;count&#34; select=&#34;count(../section[@id = current()/@id]/table/columns/column)&#34; /&#62;
+        &#60;/xsl:apply-templates&#62;
+      &#60;/tr&#62;
+      &#60;xsl:apply-templates select=&#34;../section[@id = current()/@id]/table/rows/*&#34; mode=&#34;rows&#34;&#62;
+          &#60;xsl:sort select=&#34;@number&#34; data-type=&#34;number&#34; order=&#34;ascending&#34; /&#62;
+        &#60;xsl:with-param name=&#34;column-meta&#34; select=&#34;../section[@id = current()/@id]/table/columns/column&#34; /&#62;
+      &#60;/xsl:apply-templates&#62;
+    &#60;/table&#62;
+    &#60;br /&#62;
+    &#60;xsl:if test=&#34;../section[@id = current()/@id]/table/info != &#39;&#39;&#34;&#62;
+      &#60;p class=&#34;ReportTableInfo&#34;&#62;&#60;xsl:value-of select=&#34;../section[@id = current()/@id]/table/info&#34; /&#62;&#60;/p&#62;
+    &#60;/xsl:if&#62;
+  &#60;/xsl:if&#62;
+
+  &#60;xsl:if test=&#34;../section[@id = current()/@id]/sql != &#39;&#39;&#34;&#62;
+    &#60;pre class=&#34;ReportSQL&#34;&#62;
+      &#60;xsl:call-template name=&#34;substitute&#34;&#62;
+         &#60;xsl:with-param name=&#34;string&#34; select=&#34;../section[@id = current()/@id]/sql&#34; /&#62;
+      &#60;/xsl:call-template&#62;
+    &#60;/pre&#62;
+  &#60;/xsl:if&#62;
+&#60;/xsl:template&#62;
+
+&#60;xsl:template match=&#34;column&#34;&#62;
+  &#60;xsl:param name=&#34;count&#34; /&#62;
+  &#60;th class=&#34;ReportTableHeaderCell&#34;&#62;
+  &#60;xsl:attribute name=&#34;width&#34;&#62;&#60;xsl:value-of select=&#34;100 div $count&#34; /&#62;%&#60;/xsl:attribute&#62;
+    &#60;xsl:call-template name=&#34;substitute&#34;&#62;
+       &#60;xsl:with-param name=&#34;string&#34; select=&#34;@name&#34; /&#62;
+    &#60;/xsl:call-template&#62;
+  &#60;/th&#62;
+&#60;/xsl:template&#62;
+
+&#60;xsl:template match=&#34;*&#34; mode=&#34;rows&#34;&#62;
+  &#60;xsl:param name=&#34;column-meta&#34; /&#62;
+  &#60;tr&#62;
+  &#60;xsl:choose&#62;
+  &#60;xsl:when test=&#34;position() mod 2 != 1&#34;&#62;
+    &#60;xsl:attribute name=&#34;class&#34;&#62;ReportDetailsOddDataRow&#60;/xsl:attribute&#62;
+  &#60;/xsl:when&#62;
+  &#60;xsl:otherwise&#62;
+    &#60;xsl:attribute name=&#34;class&#34;&#62;ReportDetailsEvenDataRow&#60;/xsl:attribute&#62;
+  &#60;/xsl:otherwise&#62;
+  &#60;/xsl:choose&#62;
+    &#60;xsl:apply-templates select=&#34;$column-meta&#34; mode=&#34;cells&#34;&#62;
+      &#60;xsl:with-param name=&#34;row&#34; select=&#34;.&#34; /&#62;
+    &#60;/xsl:apply-templates&#62;
+  &#60;/tr&#62;
+&#60;/xsl:template&#62;
+
+&#60;xsl:template match=&#34;*&#34; mode=&#34;cells&#34;&#62;
+  &#60;xsl:param name=&#34;row&#34; /&#62;
+    &#60;td class=&#34;ReportTableValueCell&#34;&#62;
+    &#60;xsl:choose&#62;
+      &#60;xsl:when test=&#34;$row/@*[name() = current()/@id]|$row/*[name() = current()/@id] != &#39;&#39;&#34;&#62;
+        &#60;xsl:call-template name=&#34;substitute&#34;&#62;
+          &#60;xsl:with-param name=&#34;string&#34; select=&#34;$row/@*[name() = current()/@id]|$row/*[name() = current()/@id]&#34; /&#62;
+        &#60;/xsl:call-template&#62;
+      &#60;/xsl:when&#62;
+      &#60;xsl:otherwise&#62;
+        &#60;xsl:text&#62; &#60;/xsl:text&#62;
+      &#60;/xsl:otherwise&#62;
+    &#60;/xsl:choose&#62;
+  &#60;/td&#62;
+&#60;/xsl:template&#62;
+
+&#60;xsl:template name=&#34;substitute&#34;&#62;
+   &#60;xsl:param name=&#34;string&#34; /&#62;
+   &#60;xsl:param name=&#34;from&#34; select=&#34;&#39;&#38;#xA;&#39;&#34; /&#62;
+   &#60;xsl:param name=&#34;to&#34;&#62;
+      &#60;br /&#62;
+   &#60;/xsl:param&#62;
+   &#60;xsl:choose&#62;
+      &#60;xsl:when test=&#34;contains($string, $from)&#34;&#62;
+         &#60;xsl:value-of select=&#34;substring-before($string, $from)&#34; /&#62;
+         &#60;xsl:copy-of select=&#34;$to&#34; /&#62;
+         &#60;xsl:call-template name=&#34;substitute&#34;&#62;
+            &#60;xsl:with-param name=&#34;string&#34; select=&#34;substring-after($string, $from)&#34; /&#62;
+            &#60;xsl:with-param name=&#34;from&#34; select=&#34;$from&#34; /&#62;
+            &#60;xsl:with-param name=&#34;to&#34; select=&#34;$to&#34; /&#62;
+         &#60;/xsl:call-template&#62;
+      &#60;/xsl:when&#62;
+      &#60;xsl:otherwise&#62;
+         &#60;xsl:value-of select=&#34;$string&#34; /&#62;
+      &#60;/xsl:otherwise&#62;
+   &#60;/xsl:choose&#62;
+&#60;/xsl:template&#62;
+
+&#60;/xsl:stylesheet&#62;
+
+</pre>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SET ADD TABLE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtmergeset.html" title="MERGE SET">
+<link rel="next" href="stmtsetaddsequence.html" title="SET ADD SEQUENCE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtsetaddtable"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SET ADD TABLE &#8212;  Add a table to a <span class="productname">Slony-I</span>
+    replication set </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">SET ADD TABLE (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2575953"></a><h2>Description</h2>
+<p> Add an existing user table to a replication set. The set
+    cannot currently be subscribed by any other node - that
+    functionality is supported by the <a href="stmtmergeset.html" title="MERGE
+     SET"><span class="refentrytitle">MERGE
+     SET</span></a>
+    command.
+     
+     </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> SET ID = ival </code></span></dt>
+<dd><p> ID of the set to which the table is to be added. </p></dd>
+<dt><span class="term"><code class="literal"> ORIGIN = ival </code></span></dt>
+<dd><p> Origin node for the set.  A future version of <span class="application">slonik</span>
+	 might figure out this information by itself.</p></dd>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
+<dd>
+<p> Unique ID of the table. These ID's are not
+	 only used to uniquely identify the individual table within the
+	 replication system. The numeric value of this ID also
+	 determines the order in which the tables are locked in a <a href="stmtlockset.html" title="LOCK SET"><span class="refentrytitle">LOCK SET</span></a> command for example. So
+	 these numbers should represent any applicable table hierarchy
+	 to make sure the <span class="application">slonik</span> command
+	 scripts do not deadlock at any critical
+	 moment.</p>
+<p> This ID must be unique across all sets; you cannot
+         have two tables in the same cluster with the same
+         ID. </p>
+</dd>
+<dt><span class="term"><code class="literal"> FULLY QUALIFIED NAME = 'string' </code></span></dt>
+<dd><p> The full table name as described in
+	 <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>.</p></dd>
+<dt><span class="term"><code class="literal"> KEY = { 'string' | SERIAL }
+	</code></span></dt>
+<dd><p>	 <span class="emphasis"><em>(Optional)</em></span> The index name that covers the
+	 unique and not null set of columns to be used as the row identifier
+	 for replication purposes. Or the keyword SERIAL to use the
+	 special column added with a previous <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> command. Default
+	 is to use the table's primary key.  The index name is <span class="emphasis"><em>	  not </em></span> fully qualified; you must omit the
+	 namespace.</p></dd>
+<dt><span class="term"><code class="literal"> COMMENT = 'string' </code></span></dt>
+<dd><p> A descriptive text added to the table entry.  </p></dd>
+</dl></div>
+<p>
+    </p>
+<p> This uses <a href="function.setaddtable-integer-integer-text-name-text.html">schemadocsetaddtable( integer, integer, text, name, text )</a>. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576099"></a><h2>Example</h2>
+<pre class="programlisting">SET ADD TABLE (
+    SET ID = 1,
+    ORIGIN = 1,
+    ID = 20,
+    FULLY QUALIFIED NAME = 'public.tracker_ticket',
+    COMMENT = 'Support ticket'
+);
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576108"></a><h2> Error Messages </h2>
+<p> Here are some of the error messages you may encounter if
+    adding tables incorrectly: </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">Slony-I: setAddTable_int: table public.my_table PK column id nullable </code></span></dt>
+<dd><p> Primary keys (or candidates thereof) are
+        required to have all column defined as <code class="command">NOT
+        NULL</code>.  If you have a PK candidate that has columns
+        that are not thus restricted, <span class="productname">Slony-I</span> will reject the table
+        with this message. </p></dd>
+<dt><span class="term"><code class="literal">Slony-I: setAddTable_int: table id 14 has already been assigned! </code></span></dt>
+<dd><p> The table id, stored in
+        <code class="envar">sl_table.tab_id</code>, is required to be unique
+        across all tables/nodes/sets.  Apparently you have tried to
+        reused a table ID. </p></dd>
+<dt><span class="term"><code class="literal"> Slony-I: setAddTable_int(): table public.my_table has no index mt_idx_14</code></span></dt>
+<dd><p> This will normally occur with candidate
+        primary keys; apparently the index specified is not available
+        on this node. </p></dd>
+<dt><span class="term"><code class="literal">Slony-I: setAddTable_int(): table public.my_table not found </code></span></dt>
+<dd><p> Worse than an index missing, the whole table
+        is missing.  Apparently whatever process you were using to get
+        the schema into place everywhere didn't work properly. </p></dd>
+<dt><span class="term"><code class="literal"> Slony-I: setAddTable_int(): public.my_view is not a regular table </code></span></dt>
+<dd><p> You can only replicate (at least, using
+        <code class="command">SET ADD TABLE</code>) objects that are ordinary
+        tables.  That doesn't include views or indexes.  (Indexes can
+        come along for the ride, but you don't ask to replicate an
+        index...)  </p></dd>
+<dt><span class="term"><code class="literal"> Slony-I: setAddTable_int(): set 4 not found </code></span></dt>
+<dd><p> You need to define a replication set before
+        assigning tables to it. </p></dd>
+<dt><span class="term"><code class="literal"> Slony-I: setAddTable(): set 4 has remote origin </code></span></dt>
+<dd><p> This will occur if set 4 is configured with,
+        as origin, node 1, and then you submit a <code class="command">SET ADD
+        TABLE</code> request involving that set to some other node
+        than node 1.  This would be expected to occur if there was
+        some confusion in the <code class="command">admin conninfo</code>
+        configuration in the slonik script preamble...</p></dd>
+<dt><span class="term"><code class="literal">Slony-I: cannot add table to currently subscribed set 1 </code></span></dt>
+<dd><p> <span class="productname">Slony-I</span> does not support adding tables to
+        sets that are already participating in subscriptions.
+        Probably you need to define a new set to associate additional
+        tables to. </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576269"></a><h2> Locking Behaviour </h2>
+<p> On the origin node, this operation requires a brief
+    exclusive lock on the table in order to alter it to add the
+    replication trigger.  On subscriber nodes, corresponding locking
+    takes place at the time of the <code class="command">SUBSCRIBE_SET</code>
+    event.  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2576285"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
+</div>
+</div></body>
+</html>

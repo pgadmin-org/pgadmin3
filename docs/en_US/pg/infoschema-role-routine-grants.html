@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.25. role_routine_grants</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-role-column-grants.html" title="32.24. role_column_grants">
+<link rel="next" href="infoschema-role-table-grants.html" title="32.26. role_table_grants">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-role-routine-grants"></a>32.25. <code class="literal">role_routine_grants</code></h2></div></div></div>
+<p>   The view <code class="literal">role_routine_grants</code> identifies all
+   privileges granted on functions where the grantor or grantee is a
+   currently enabled role.  Further information can be found under
+   <code class="literal">routine_privileges</code>.
+  </p>
+<div class="table">
+<a name="id2683073"></a><p class="title"><b>Table 32.23. <code class="literal">role_routine_grants</code> Columns</b></p>
+<div class="table-contents"><table summary="role_routine_grants Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the role that granted the privilege</td>
+</tr>
+<tr>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the role that the privilege was granted to</td>
+</tr>
+<tr>
+<td><code class="literal">specific_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the function (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">specific_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the function</td>
+</tr>
+<tr>
+<td><code class="literal">specific_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       The &#8220;<span class="quote">specific name</span>&#8221; of the function.  See <a href="infoschema-routines.html" title="32.29. routines">Section 32.29, &#8220;<code class="literal">routines</code>&#8221;</a> for more information.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">routine_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the function (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">routine_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the function</td>
+</tr>
+<tr>
+<td><code class="literal">routine_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the function (may be duplicated in case of overloading)</td>
+</tr>
+<tr>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always <code class="literal">EXECUTE</code> (the only privilege type for functions)</td>
+</tr>
+<tr>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
+<td>
+<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

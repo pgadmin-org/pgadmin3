@@ -1,0 +1,155 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>43.13. pg_constraint</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="catalog-pg-class.html" title="43.12. pg_class">
+<link rel="next" href="catalog-pg-conversion.html" title="43.14. pg_conversion">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-constraint"></a>43.13. <code class="structname">pg_constraint</code></h2></div></div></div>
+<a name="id2800983"></a><p>   The catalog <code class="structname">pg_constraint</code> stores check, primary key, unique, and foreign
+   key constraints on tables.  (Column constraints are not treated
+   specially.  Every column constraint is equivalent to some table
+   constraint.)  Not-null constraints are represented in the
+   <code class="structname">pg_attribute</code> catalog.
+  </p>
+<p>   Check constraints on domains are stored here, too.
+  </p>
+<div class="table">
+<a name="id2801011"></a><p class="title"><b>Table 43.13. <code class="structname">pg_constraint</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_constraint Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">conname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Constraint name (not necessarily unique!)</td>
+</tr>
+<tr>
+<td><code class="structfield">connamespace</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="43.23. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
+<td>       The OID of the namespace that contains this constraint
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">contype</code></td>
+<td><code class="type">char</code></td>
+<td> </td>
+<td>        <code class="literal">c</code> = check constraint,
+        <code class="literal">f</code> = foreign key constraint,
+        <code class="literal">p</code> = primary key constraint,
+        <code class="literal">u</code> = unique constraint
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">condeferrable</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Is the constraint deferrable?</td>
+</tr>
+<tr>
+<td><code class="structfield">condeferred</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Is the constraint deferred by default?</td>
+</tr>
+<tr>
+<td><code class="structfield">conrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>The table this constraint is on; 0 if not a table constraint</td>
+</tr>
+<tr>
+<td><code class="structfield">contypid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-type.html" title="43.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td>The domain this constraint is on; 0 if not a domain constraint</td>
+</tr>
+<tr>
+<td><code class="structfield">confrelid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>If a foreign key, the referenced table; else 0</td>
+</tr>
+<tr>
+<td><code class="structfield">confupdtype</code></td>
+<td><code class="type">char</code></td>
+<td> </td>
+<td>Foreign key update action code</td>
+</tr>
+<tr>
+<td><code class="structfield">confdeltype</code></td>
+<td><code class="type">char</code></td>
+<td> </td>
+<td>Foreign key deletion action code</td>
+</tr>
+<tr>
+<td><code class="structfield">confmatchtype</code></td>
+<td><code class="type">char</code></td>
+<td> </td>
+<td>Foreign key match type</td>
+</tr>
+<tr>
+<td><code class="structfield">conkey</code></td>
+<td><code class="type">int2[]</code></td>
+<td><code class="literal"><a href="catalog-pg-attribute.html" title="43.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
+<td>If a table constraint, list of columns which the constraint constrains</td>
+</tr>
+<tr>
+<td><code class="structfield">confkey</code></td>
+<td><code class="type">int2[]</code></td>
+<td><code class="literal"><a href="catalog-pg-attribute.html" title="43.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
+<td>If a foreign key, list of the referenced columns</td>
+</tr>
+<tr>
+<td><code class="structfield">conbin</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>If a check constraint, an internal representation of the expression</td>
+</tr>
+<tr>
+<td><code class="structfield">consrc</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>If a check constraint, a human-readable representation of the expression</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    <code class="structfield">consrc</code> is not updated when referenced objects
+    change; for example, it won't track renaming of columns.  Rather than
+    relying on this field, it's best to use <code class="function">pg_get_constraintdef()</code>
+    to extract the definition of a check constraint.
+   </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    <code class="literal">pg_class.relchecks</code> needs to agree with the
+    number of check-constraint entries found in this table for the
+    given relation.
+   </p>
+</div>
+</div></body>
+</html>

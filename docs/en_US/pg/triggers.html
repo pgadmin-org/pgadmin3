@@ -1,0 +1,181 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 34. Triggers</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="xindex.html" title="33.14. Interfacing Extensions To Indexes">
+<link rel="next" href="trigger-datachanges.html" title="34.2. Visibility of Data Changes">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="triggers">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="triggers"></a>Chapter 34. Triggers</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="triggers.html#trigger-definition">34.1. Overview of Trigger Behavior</a></span></dt>
+<dt><span class="sect1"><a href="trigger-datachanges.html">34.2. Visibility of Data Changes</a></span></dt>
+<dt><span class="sect1"><a href="trigger-interface.html">34.3. Writing Trigger Functions in C</a></span></dt>
+<dt><span class="sect1"><a href="trigger-example.html">34.4. A Complete Example</a></span></dt>
+</dl>
+</div>
+<a name="id2699168"></a><p>   This chapter provides general information about writing trigger functions.
+   Trigger functions can be written in most of the available procedural
+   languages, including
+   <span class="application">PL/pgSQL</span> (<a href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">Chapter 37, <i><span class="application">PL/pgSQL</span> - <acronym class="acronym">SQL</acronym> Procedural Language</i></a>),
+   <span class="application">PL/Tcl</span> (<a href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">Chapter 38, <i>PL/Tcl - Tcl Procedural Language</i></a>),
+   <span class="application">PL/Perl</span> (<a href="plperl.html" title="Chapter 39. PL/Perl - Perl Procedural Language">Chapter 39, <i>PL/Perl - Perl Procedural Language</i></a>), and
+   <span class="application">PL/Python</span> (<a href="plpython.html" title="Chapter 40. PL/Python - Python Procedural Language">Chapter 40, <i>PL/Python - Python Procedural Language</i></a>).
+   After reading this chapter, you should consult the chapter for
+   your favorite procedural language to find out the language-specific
+   details of writing a trigger in it.
+  </p>
+<p>   It is also possible to write a trigger function in C, although
+   most people find it easier to use one of the procedural languages.
+   It is not currently possible to write a trigger function in the
+   plain SQL function language.
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="trigger-definition"></a>34.1. Overview of Trigger Behavior</h2></div></div></div>
+<p>    A trigger is a specification that the database should automatically
+    execute a particular function whenever a certain type of operation is
+    performed.  Triggers can be defined to execute either before or after any
+    <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
+    <code class="command">DELETE</code> operation, either once per modified row,
+    or once per <acronym class="acronym">SQL</acronym> statement.
+    If a trigger event occurs, the trigger's function is called
+    at the appropriate time to handle the event.
+   </p>
+<p>    The trigger function must be defined before the trigger itself can be
+    created.  The trigger function must be declared as a 
+    function taking no arguments and returning type <code class="literal">trigger</code>.
+    (The trigger function receives its input through a specially-passed
+    <code class="structname">TriggerData</code> structure, not in the form of ordinary function
+    arguments.)
+   </p>
+<p>    Once a suitable trigger function has been created, the trigger is
+    established with
+    <a href="sql-createtrigger.html">CREATE TRIGGER</a>.
+    The same trigger function can be used for multiple triggers.
+   </p>
+<p>    <span class="productname">PostgreSQL</span> offers both <em class="firstterm">per-row</em>
+    triggers and <em class="firstterm">per-statement</em> triggers.  With a per-row
+    trigger, the trigger function
+    is invoked once for each row that is affected by the statement
+    that fired the trigger. In contrast, a per-statement trigger is
+    invoked only once when an appropriate statement is executed,
+    regardless of the number of rows affected by that statement. In
+    particular, a statement that affects zero rows will still result
+    in the execution of any applicable per-statement triggers. These
+    two types of triggers are sometimes called <em class="firstterm">row-level</em>
+    triggers and <em class="firstterm">statement-level</em> triggers,
+    respectively.
+   </p>
+<p>    Triggers are also classified as <em class="firstterm">before</em> triggers and
+    <em class="firstterm">after</em> triggers.
+    Statement-level before triggers naturally fire before the
+    statement starts to do anything, while statement-level after
+    triggers fire at the very end of the statement.  Row-level before
+    triggers fire immediately before a particular row is operated on,
+    while row-level after triggers fire at the end of the statement
+    (but before any statement-level after triggers).
+   </p>
+<p>    Trigger functions invoked by per-statement triggers should always
+    return <code class="symbol">NULL</code>. Trigger functions invoked by per-row
+    triggers can return a table row (a value of
+    type <code class="structname">HeapTuple</code>) to the calling executor,
+    if they choose.  A row-level trigger fired before an operation has
+    the following choices:
+
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       It can return <code class="symbol">NULL</code> to skip the operation for the
+       current row. This instructs the executor to not perform the
+       row-level operation that invoked the trigger (the insertion or
+       modification of a particular table row).
+      </p></li>
+<li><p>       For row-level <code class="command">INSERT</code>
+       and <code class="command">UPDATE</code> triggers only, the returned row
+       becomes the row that will be inserted or will replace the row
+       being updated.  This allows the trigger function to modify the
+       row being inserted or updated.
+      </p></li>
+</ul></div>
+<p>
+
+    A row-level before trigger that does not intend to cause either of
+    these behaviors must be careful to return as its result the same
+    row that was passed in (that is, the <code class="varname">NEW</code> row
+    for <code class="command">INSERT</code> and <code class="command">UPDATE</code>
+    triggers, the <code class="varname">OLD</code> row for
+    <code class="command">DELETE</code> triggers).
+   </p>
+<p>    The return value is ignored for row-level triggers fired after an
+    operation, and so they may as well return <code class="symbol">NULL</code>.
+   </p>
+<p>    If more than one trigger is defined for the same event on the same
+    relation, the triggers will be fired in alphabetical order by
+    trigger name.  In the case of before triggers, the
+    possibly-modified row returned by each trigger becomes the input
+    to the next trigger.  If any before trigger returns
+    <code class="symbol">NULL</code>, the operation is abandoned for that row and subsequent
+    triggers are not fired.
+   </p>
+<p>    Typically, row before triggers are used for checking or
+    modifying the data that will be inserted or updated.  For example,
+    a before trigger might be used to insert the current time into a
+    <code class="type">timestamp</code> column, or to check that two elements of the row are
+    consistent. Row after triggers are most sensibly
+    used to propagate the updates to other tables, or make consistency
+    checks against other tables.  The reason for this division of labor is
+    that an after trigger can be certain it is seeing the final value of the
+    row, while a before trigger cannot; there might be other before triggers
+    firing after it.  If you have no specific reason to make a trigger before
+    or after, the before case is more efficient, since the information about
+    the operation doesn't have to be saved until end of statement.
+   </p>
+<p>    If a trigger function executes SQL commands then these
+    commands may fire triggers again. This is known as cascading
+    triggers.  There is no direct limitation on the number of cascade
+    levels.  It is possible for cascades to cause a recursive invocation
+    of the same trigger; for example, an <code class="command">INSERT</code>
+    trigger might execute a command that inserts an additional row
+    into the same table, causing the <code class="command">INSERT</code> trigger
+    to be fired again.  It is the trigger programmer's responsibility
+    to avoid infinite recursion in such scenarios.
+   </p>
+<p>    When a trigger is being defined, arguments can be specified for
+    it.<a name="id2699508"></a> The purpose of including arguments in the
+    trigger definition is to allow different triggers with similar
+    requirements to call the same function.  As an example, there
+    could be a generalized trigger function that takes as its
+    arguments two column names and puts the current user in one and
+    the current time stamp in the other.  Properly written, this
+    trigger function would be independent of the specific table it is
+    triggering on.  So the same function could be used for
+    <code class="command">INSERT</code> events on any table with suitable
+    columns, to automatically track creation of records in a
+    transaction table for example. It could also be used to track
+    last-update events if defined as an <code class="command">UPDATE</code>
+    trigger.
+   </p>
+<p>    Each programming language that supports triggers has its own method
+    for making the trigger input data available to the trigger function.
+    This input data includes the type of trigger event (e.g.,
+    <code class="command">INSERT</code> or <code class="command">UPDATE</code>) as well as any
+    arguments that were listed in <code class="command">CREATE TRIGGER</code>.
+    For a row-level trigger, the input data also includes the
+    <code class="varname">NEW</code> row for <code class="command">INSERT</code> and
+    <code class="command">UPDATE</code> triggers, and/or the <code class="varname">OLD</code> row
+    for <code class="command">UPDATE</code> and <code class="command">DELETE</code> triggers.
+    Statement-level triggers do not currently have any way to examine the
+    individual row(s) modified by the statement.
+   </p>
+</div>
+</div></body>
+</html>

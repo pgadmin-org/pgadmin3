@@ -1,0 +1,127 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>43.42. pg_roles</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="view-pg-prepared-xacts.html" title="43.41. pg_prepared_xacts">
+<link rel="next" href="view-pg-rules.html" title="43.43. pg_rules">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-roles"></a>43.42. <code class="structname">pg_roles</code></h2></div></div></div>
+<a name="id2808641"></a><p>   The view <code class="structname">pg_roles</code> provides access to
+   information about database roles.  This is simply a publicly
+   readable view of 
+   <a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>
+   that blanks out the password field.
+  </p>
+<p>   This view explicitly exposes the OID column of the underlying table,
+   since that is needed to do joins to other catalogs.
+  </p>
+<div class="table">
+<a name="id2808672"></a><p class="title"><b>Table 43.42. <code class="structname">pg_roles</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_roles Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">rolname</code></td>
+<td><code class="type">name</code></td>
+<td> </td>
+<td>Role name</td>
+</tr>
+<tr>
+<td><code class="structfield">rolsuper</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role has superuser privileges</td>
+</tr>
+<tr>
+<td><code class="structfield">rolinherit</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role automatically inherits privileges of roles it is a
+       member of</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcreaterole</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role may create more roles</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcreatedb</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>Role may create databases</td>
+</tr>
+<tr>
+<td><code class="structfield">rolcatupdate</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       Role may update system catalogs directly.  (Even a superuser may not do
+       this unless this column is true.)
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolcanlogin</code></td>
+<td><code class="type">bool</code></td>
+<td> </td>
+<td>       Role may log in, that is, this role can be given as the initial
+       session authorization identifier.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolconnlimit</code></td>
+<td><code class="type">int4</code></td>
+<td> </td>
+<td>       For roles that can log in, this sets maximum number of concurrent 
+       connections this role can make.  -1 means no limit.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">rolpassword</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>Not the password (always reads as <code class="literal">********</code>)</td>
+</tr>
+<tr>
+<td><code class="structfield">rolvaliduntil</code></td>
+<td><code class="type">timestamptz</code></td>
+<td> </td>
+<td>Password expiry time (only used for password authentication);
+       NULL if no expiration</td>
+</tr>
+<tr>
+<td><code class="structfield">rolconfig</code></td>
+<td><code class="type">text[]</code></td>
+<td> </td>
+<td>Session defaults for run-time configuration variables</td>
+</tr>
+<tr>
+<td><code class="structfield">oid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td>ID of role</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

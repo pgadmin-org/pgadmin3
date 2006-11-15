@@ -1,0 +1,43 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>40.2. Trigger Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="plpython.html" title="Chapter 40. PL/Python - Python Procedural Language">
+<link rel="prev" href="plpython.html" title="Chapter 40. PL/Python - Python Procedural Language">
+<link rel="next" href="plpython-database.html" title="40.3. Database Access">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plpython-trigger"></a>40.2. Trigger Functions</h2></div></div></div>
+<a name="id2717775"></a><p>   When a function is used as a trigger, the dictionary
+   <code class="literal">TD</code> contains trigger-related values.  The trigger
+   rows are in <code class="literal">TD["new"]</code> and/or <code class="literal">TD["old"]</code>
+   depending on the trigger event.  <code class="literal">TD["event"]</code> contains
+   the event as a string (<code class="literal">INSERT</code>, <code class="literal">UPDATE</code>,
+   <code class="literal">DELETE</code>, or <code class="literal">UNKNOWN</code>).
+   <code class="literal">TD["when"]</code> contains one of <code class="literal">BEFORE</code>,
+   <code class="literal">AFTER</code>, and <code class="literal">UNKNOWN</code>.
+   <code class="literal">TD["level"]</code> contains one of <code class="literal">ROW</code>,
+   <code class="literal">STATEMENT</code>, and <code class="literal">UNKNOWN</code>.
+   <code class="literal">TD["name"]</code> contains the trigger name,
+   <code class="literal">TD["table_name"]</code> contains the name of the table on which the trigger occurred,
+   <code class="literal">TD["table_schema"]</code> contains the schema of the table on which the trigger occurred,
+   <code class="literal">TD["name"]</code> contains the trigger name, and
+   <code class="literal">TD["relid"]</code> contains the OID of the table on
+   which the trigger occurred.  If the <code class="command">CREATE TRIGGER</code> command
+   included arguments, they are available in <code class="literal">TD["args"][0]</code> to
+   <code class="literal">TD["args"][(<em class="replaceable"><code>n</code></em>-1)]</code>.
+  </p>
+<p>   If <code class="literal">TD["when"]</code> is <code class="literal">BEFORE</code>, you may
+   return <code class="literal">None</code> or <code class="literal">"OK"</code> from the
+   Python function to indicate the row is unmodified,
+   <code class="literal">"SKIP"</code> to abort the event, or <code class="literal">"MODIFY"</code> to
+   indicate you've modified the row.
+  </p>
+</div></body>
+</html>

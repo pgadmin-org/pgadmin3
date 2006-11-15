@@ -1,0 +1,1929 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Appendix E. Release Notes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
+<link rel="prev" href="unsupported-features-sql-standard.html" title="D.2. Unsupported Features">
+<link rel="next" href="release-8-1-5.html" title="E.2. Release 8.1.5">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="release">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="release"></a>Appendix E. Release Notes</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="release.html#release-8-2">E.1. Release 8.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release.html#id2839690">E.1.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release.html#id2839833">E.1.2. Migration to version 8.2</a></span></dt>
+<dt><span class="sect2"><a href="release.html#id2840469">E.1.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-5.html">E.2. Release 8.1.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-5.html#id2844327">E.2.1. Migration to version 8.1.5</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-5.html#id2844336">E.2.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-4.html">E.3. Release 8.1.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-4.html#id2844561">E.3.1. Migration to version 8.1.4</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-4.html#id2844597">E.3.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-3.html">E.4. Release 8.1.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-3.html#id2844956">E.4.1. Migration to version 8.1.3</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-3.html#id2844965">E.4.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-2.html">E.5. Release 8.1.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-2.html#id2845292">E.5.1. Migration to version 8.1.2</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-2.html#id2845314">E.5.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-1.html">E.6. Release 8.1.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-1.html#id2845528">E.6.1. Migration to version 8.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-1.html#id2845536">E.6.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1.html">E.7. Release 8.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1.html#id2845730">E.7.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1.html#id2846055">E.7.2. Migration to version 8.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1.html#id2846754">E.7.3. Additional Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-9.html">E.8. Release 8.0.9</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-9.html#id2849532">E.8.1. Migration to version 8.0.9</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-9.html#id2849541">E.8.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-8.html">E.9. Release 8.0.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-8.html#id2849679">E.9.1. Migration to version 8.0.8</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-8.html#id2849715">E.9.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-7.html">E.10. Release 8.0.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-7.html#id2849958">E.10.1. Migration to version 8.0.7</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-7.html#id2849967">E.10.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-6.html">E.11. Release 8.0.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-6.html#id2850211">E.11.1. Migration to version 8.0.6</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-6.html#id2850234">E.11.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-5.html">E.12. Release 8.0.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-5.html#id2850387">E.12.1. Migration to version 8.0.5</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-5.html#id2850396">E.12.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-4.html">E.13. Release 8.0.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-4.html#id2850535">E.13.1. Migration to version 8.0.4</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-4.html#id2850544">E.13.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-3.html">E.14. Release 8.0.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-3.html#id2850864">E.14.1. Migration to version 8.0.3</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-3.html#id2850930">E.14.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-2.html">E.15. Release 8.0.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-2.html#id2851153">E.15.1. Migration to version 8.0.2</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-2.html#id2851169">E.15.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-1.html">E.16. Release 8.0.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-1.html#id2851679">E.16.1. Migration to version 8.0.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-1.html#id2851686">E.16.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0.html">E.17. Release 8.0</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0.html#id2851804">E.17.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2852048">E.17.2. Migration to version 8.0</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2852482">E.17.3. Deprecated Features</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2852570">E.17.4. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-14.html">E.18. Release 7.4.14</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-14.html#id2855670">E.18.1. Migration to version 7.4.14</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-14.html#id2855679">E.18.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-13.html">E.19. Release 7.4.13</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-13.html#id2855753">E.19.1. Migration to version 7.4.13</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-13.html#id2855789">E.19.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-12.html">E.20. Release 7.4.12</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-12.html#id2856010">E.20.1. Migration to version 7.4.12</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-12.html#id2856019">E.20.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-11.html">E.21. Release 7.4.11</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-11.html#id2856112">E.21.1. Migration to version 7.4.11</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-11.html#id2856135">E.21.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-10.html">E.22. Release 7.4.10</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-10.html#id2856250">E.22.1. Migration to version 7.4.10</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-10.html#id2856259">E.22.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-9.html">E.23. Release 7.4.9</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-9.html#id2856328">E.23.1. Migration to version 7.4.9</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-9.html#id2856337">E.23.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-8.html">E.24. Release 7.4.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-8.html#id2856523">E.24.1. Migration to version 7.4.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-8.html#id2856681">E.24.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-7.html">E.25. Release 7.4.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-7.html#id2856943">E.25.1. Migration to version 7.4.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-7.html#id2856950">E.25.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-6.html">E.26. Release 7.4.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-6.html#id2857038">E.26.1. Migration to version 7.4.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-6.html#id2857045">E.26.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-5.html">E.27. Release 7.4.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-5.html#id2857184">E.27.1. Migration to version 7.4.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-5.html#id2857192">E.27.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-4.html">E.28. Release 7.4.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-4.html#id2857224">E.28.1. Migration to version 7.4.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-4.html#id2857231">E.28.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-3.html">E.29. Release 7.4.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-3.html#id2857325">E.29.1. Migration to version 7.4.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-3.html#id2857332">E.29.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-2.html">E.30. Release 7.4.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-2.html#id2857456">E.30.1. Migration to version 7.4.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-2.html#id2857629">E.30.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-1.html">E.31. Release 7.4.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-1.html#id2857792">E.31.1. Migration to version 7.4.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-1.html#id2857837">E.31.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4.html">E.32. Release 7.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4.html#id2858104">E.32.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4.html#id2858445">E.32.2. Migration to version 7.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4.html#id2858750">E.32.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-16.html">E.33. Release 7.3.16</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-16.html#id2861802">E.33.1. Migration to version 7.3.16</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-16.html#id2861811">E.33.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-15.html">E.34. Release 7.3.15</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-15.html#id2861871">E.34.1. Migration to version 7.3.15</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-15.html#id2861906">E.34.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-14.html">E.35. Release 7.3.14</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-14.html#id2862095">E.35.1. Migration to version 7.3.14</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-14.html#id2862104">E.35.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-13.html">E.36. Release 7.3.13</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-13.html#id2862181">E.36.1. Migration to version 7.3.13</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-13.html#id2862204">E.36.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-12.html">E.37. Release 7.3.12</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-12.html#id2862314">E.37.1. Migration to version 7.3.12</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-12.html#id2862323">E.37.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-11.html">E.38. Release 7.3.11</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-11.html#id2862383">E.38.1. Migration to version 7.3.11</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-11.html#id2862392">E.38.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-10.html">E.39. Release 7.3.10</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-10.html#id2862500">E.39.1. Migration to version 7.3.10</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-10.html#id2862601">E.39.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-9.html">E.40. Release 7.3.9</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-9.html#id2862758">E.40.1. Migration to version 7.3.9</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-9.html#id2862765">E.40.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-8.html">E.41. Release 7.3.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-8.html#id2862848">E.41.1. Migration to version 7.3.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-8.html#id2862855">E.41.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-7.html">E.42. Release 7.3.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-7.html#id2862914">E.42.1. Migration to version 7.3.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-7.html#id2862921">E.42.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-6.html">E.43. Release 7.3.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-6.html#id2862969">E.43.1. Migration to version 7.3.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-6.html#id2862979">E.43.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-5.html">E.44. Release 7.3.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-5.html#id2863066">E.44.1. Migration to version 7.3.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-5.html#id2863077">E.44.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-4.html">E.45. Release 7.3.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-4.html#id2863185">E.45.1. Migration to version 7.3.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-4.html#id2863196">E.45.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-3.html">E.46. Release 7.3.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-3.html#id2863256">E.46.1. Migration to version 7.3.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-3.html#id2863266">E.46.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-2.html">E.47. Release 7.3.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-2.html#id2863858">E.47.1. Migration to version 7.3.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-2.html#id2863868">E.47.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-1.html">E.48. Release 7.3.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-1.html#id2864030">E.48.1. Migration to version 7.3.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-1.html#id2864050">E.48.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3.html">E.49. Release 7.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3.html#id2864139">E.49.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3.html#id2864326">E.49.2. Migration to version 7.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3.html#id2864506">E.49.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-8.html">E.50. Release 7.2.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-8.html#id2865900">E.50.1. Migration to version 7.2.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-8.html#id2865907">E.50.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-7.html">E.51. Release 7.2.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-7.html#id2865998">E.51.1. Migration to version 7.2.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-7.html#id2866005">E.51.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-6.html">E.52. Release 7.2.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-6.html#id2866071">E.52.1. Migration to version 7.2.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-6.html#id2866078">E.52.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-5.html">E.53. Release 7.2.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-5.html#id2866141">E.53.1. Migration to version 7.2.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-5.html#id2866148">E.53.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-4.html">E.54. Release 7.2.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-4.html#id2866230">E.54.1. Migration to version 7.2.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-4.html#id2866241">E.54.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-3.html">E.55. Release 7.2.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-3.html#id2866299">E.55.1. Migration to version 7.2.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-3.html#id2866309">E.55.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-2.html">E.56. Release 7.2.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-2.html#id2866362">E.56.1. Migration to version 7.2.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-2.html#id2866373">E.56.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-1.html">E.57. Release 7.2.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-1.html#id2866456">E.57.1. Migration to version 7.2.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-1.html#id2866466">E.57.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2.html">E.58. Release 7.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2.html#id2866552">E.58.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2.html#id2866646">E.58.2. Migration to version 7.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2.html#id2866802">E.58.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1-3.html">E.59. Release 7.1.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1-3.html#id2867983">E.59.1. Migration to version 7.1.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-3.html#id2867994">E.59.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1-2.html">E.60. Release 7.1.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1-2.html#id2868027">E.60.1. Migration to version 7.1.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-2.html#id2868038">E.60.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1-1.html">E.61. Release 7.1.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1-1.html#id2868068">E.61.1. Migration to version 7.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-1.html#id2868079">E.61.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1.html">E.62. Release 7.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1.html#id2868191">E.62.1. Migration to version 7.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1.html#id2868199">E.62.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0-3.html">E.63. Release 7.0.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0-3.html#id2868443">E.63.1. Migration to version 7.0.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-3.html#id2868453">E.63.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0-2.html">E.64. Release 7.0.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0-2.html#id2868543">E.64.1. Migration to version 7.0.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-2.html#id2868553">E.64.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0-1.html">E.65. Release 7.0.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0-1.html#id2868582">E.65.1. Migration to version 7.0.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-1.html#id2868592">E.65.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0.html">E.66. Release 7.0</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0.html#id2868770">E.66.1. Migration to version 7.0</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0.html#id2868881">E.66.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5-3.html">E.67. Release 6.5.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5-3.html#id2869504">E.67.1. Migration to version 6.5.3</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-3.html#id2869515">E.67.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5-2.html">E.68. Release 6.5.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5-2.html#id2869545">E.68.1. Migration to version 6.5.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-2.html#id2869556">E.68.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5-1.html">E.69. Release 6.5.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5-1.html#id2869616">E.69.1. Migration to version 6.5.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-1.html#id2869626">E.69.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5.html">E.70. Release 6.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5.html#id2869890">E.70.1. Migration to version 6.5</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5.html#id2870033">E.70.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-4-2.html">E.71. Release 6.4.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-4-2.html#id2870243">E.71.1. Migration to version 6.4.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-2.html#id2870253">E.71.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-4-1.html">E.72. Release 6.4.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-4-1.html#id2870280">E.72.1. Migration to version 6.4.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-1.html#id2870290">E.72.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-4.html">E.73. Release 6.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-4.html#id2870445">E.73.1. Migration to version 6.4</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4.html#id2870470">E.73.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-3-2.html">E.74. Release 6.3.2</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-6-3-2.html#id2870803">E.74.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-6-3-1.html">E.75. Release 6.3.1</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-6-3-1.html#id2870893">E.75.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-6-3.html">E.76. Release 6.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-3.html#id2871150">E.76.1. Migration to version 6.3</a></span></dt>
+<dt><span class="sect2"><a href="release-6-3.html#id2871176">E.76.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-2-1.html">E.77. Release 6.2.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-2-1.html#id2871458">E.77.1. Migration from version 6.2 to version 6.2.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2-1.html#id2871492">E.77.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-2.html">E.78. Release 6.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-2.html#id2871536">E.78.1. Migration from version 6.1 to version 6.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2.html#id2871559">E.78.2. Migration from version 1.<em class="replaceable"><code>x</code></em> to version 6.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2.html#id2871571">E.78.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-1-1.html">E.79. Release 6.1.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-1-1.html#id2871722">E.79.1. Migration from version 6.1 to version 6.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-1-1.html#id2871731">E.79.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-1.html">E.80. Release 6.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-1.html#id2871893">E.80.1. Migration to version 6.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-1.html#id2871905">E.80.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-0.html">E.81. Release 6.0</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-0.html#id2872044">E.81.1. Migration from version 1.09 to version 6.0</a></span></dt>
+<dt><span class="sect2"><a href="release-6-0.html#id2872052">E.81.2. Migration from pre-1.09 to version 6.0</a></span></dt>
+<dt><span class="sect2"><a href="release-6-0.html#id2872060">E.81.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-09.html">E.82. Release 1.09</a></span></dt>
+<dt><span class="sect1"><a href="release-1-02.html">E.83. Release 1.02</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-1-02.html#id2872294">E.83.1. Migration from version 1.02 to version 1.02.1</a></span></dt>
+<dt><span class="sect2"><a href="release-1-02.html#id2872390">E.83.2. Dump/Reload Procedure</a></span></dt>
+<dt><span class="sect2"><a href="release-1-02.html#id2872442">E.83.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-01.html">E.84. Release 1.01</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-1-01.html#id2872478">E.84.1. Migration from version 1.0 to version 1.01</a></span></dt>
+<dt><span class="sect2"><a href="release-1-01.html#id2872762">E.84.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-0.html">E.85. Release 1.0</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-1-0.html#id2872812">E.85.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-03.html">E.86. <span class="productname">Postgres95</span> Release 0.03</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-0-03.html#id2872898">E.86.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-02.html">E.87. <span class="productname">Postgres95</span> Release 0.02</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-0-02.html#id2873083">E.87.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-01.html">E.88. <span class="productname">Postgres95</span> Release 0.01</a></span></dt>
+</dl>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-2"></a>E.1. Release 8.2</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2006-1?-??</p>
+<p>CURRENT AS OF 2006-11-05</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2839690"></a>E.1.1. Overview</h3></div></div></div>
+<p>     This release adds many functionality and performance improvements that
+     were requested by users, including:
+
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Query language enhancements including <code class="command">INSERT/UPDATE/DELETE
+        RETURNING</code>, multirow <code class="literal">VALUES</code> lists, and
+        optional target-table alias in
+        <code class="command">UPDATE</code>/<code class="command">DELETE</code>
+       </p></li>
+<li><p>        Index creation without blocking concurrent
+        <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code>
+        operations
+       </p></li>
+<li><p>        Many query optimization improvements, including support for
+        reordering outer joins
+       </p></li>
+<li><p>        Improved sorting performance with lower memory usage
+       </p></li>
+<li><p>        More efficient locking with better concurrency
+       </p></li>
+<li><p>        More efficient vacuuming
+       </p></li>
+<li><p>        Easier administration of warm standby servers
+       </p></li>
+<li><p>        New <code class="literal">FILLFACTOR</code> support for tables and indexes
+       </p></li>
+<li><p>        Monitoring, logging, and performance tuning additions
+       </p></li>
+<li><p>        More control over creating and dropping objects
+       </p></li>
+<li><p>        Table inheritance relationships can be defined
+        for and removed from pre-existing tables
+       </p></li>
+<li><p>        <code class="command">COPY TO</code> can copy the output of an arbitrary
+        <code class="command">SELECT</code> statement
+       </p></li>
+<li><p>        Array improvements, including nulls in arrays
+       </p></li>
+<li><p>        Aggregate-function improvements, including multiple-input
+        aggregates and SQL:2003 statistical functions
+       </p></li>
+<li><p>        Many <code class="filename">contrib/</code> improvements
+       </p></li>
+</ul></div>
+<p>
+
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2839833"></a>E.1.2. Migration to version 8.2</h3></div></div></div>
+<p>     A dump/restore using <span class="application">pg_dump</span> is
+     required for those wishing to migrate data from any previous
+     release.
+    </p>
+<p>     Observe the following incompatibilities:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Set <a href="runtime-config-compatible.html#guc-escape-string-warning"><code class="varname">escape_string_warning</code></a>
+        to <code class="literal">on</code> by default (Bruce)
+       </p>
+<p>        This issues a warning if backslash escapes are used in
+        <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">non-escape (non-<code class="literal">E''</code>)
+        strings</a>.
+       </p>
+</li>
+<li>
+<p>        Change the <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">row
+        constructor syntax</a> (<code class="literal">ROW(...)</code>) so that
+        list elements <code class="literal">foo.*</code> will be expanded to a list
+        of their member fields, rather than creating a nested
+        row type field as formerly (Tom)
+       </p>
+<p>        The new behavior is substantially more useful since it
+        allows, for example, triggers to check for data changes
+        with <code class="literal">IF row(new.*) IS DISTINCT FROM row(old.*)</code>.
+        The old behavior is still available by omitting <code class="literal">.*</code>.
+       </p>
+</li>
+<li>
+<p>        Make <a href="functions-comparisons.html#row-wise-comparison" title="9.17.5. Row-wise Comparison">row comparisons</a>
+        follow <acronym class="acronym">SQL</acronym> standard semantics and allow them
+        to be used in index scans (Tom)
+       </p>
+<p>        Previously, row = and &lt;&gt; comparisons followed the
+        standard but &lt; &lt;= &gt; &gt;= did not.  A row comparison
+        can now be used as an index constraint for a multicolumn
+        index matching the row value.
+       </p>
+</li>
+<li>
+<p>        Make <a href="functions-comparison.html" title="9.2. Comparison Operators">row <code class="literal">IS [<span class="optional">NOT</span>] NULL</code></a>
+        tests follow <acronym class="acronym">SQL</acronym> standard semantics (Tom)
+       </p>
+<p>        The former behavior conformed to the standard for simple cases
+        with <code class="literal">IS NULL</code>, but <code class="literal">IS NOT NULL</code> would return
+        true if any row field was non-null, whereas the standard says it
+        should return true only when all fields are non-null.
+       </p>
+</li>
+<li>
+<p>        Make <a href="sql-set-constraints.html" title="SET CONSTRAINTS"><code class="command">SET
+        CONSTRAINT</code></a> affect only one constraint (Kris Jurka)
+       </p>
+<p>        In previous releases, <code class="command">SET CONSTRAINT</code> modified
+        all constraints with a matching name.  In this release,
+        the schema search path is used to modify only the first
+        matching constraint.  A schema specification is also
+        supported.  This more nearly conforms to the SQL standard.
+       </p>
+</li>
+<li>
+<p>        Remove <code class="literal">RULE</code> permission for tables, for security reasons
+        (Tom)
+       </p>
+<p>        As of this release, only a table's owner can create or modify
+        rules for the table.  For backwards compatibility,
+        <code class="command">GRANT</code>/<code class="command">REVOKE RULE</code> is still accepted,
+        but it does nothing.
+       </p>
+</li>
+<li>
+<p>        Array comparison improvements (Tom)
+       </p>
+<p>        Now array dimensions are also compared.
+       </p>
+</li>
+<li>
+<p>        Change <a href="functions-array.html" title="9.14. Array Functions and Operators">array concatenation</a>
+        to match documented behavior (Tom)
+       </p>
+<p>        This changes the previous behavior where concatenation
+        would modify the array lower bound.
+       </p>
+</li>
+<li>
+<p>        Make command-line options of <span class="application">postmaster</span>
+        and <a href="app-postgres.html" title="postgres"><span class="application">postgres</span></a>
+        identical (Peter)
+       </p>
+<p>        This allows the postmaster to pass arguments to each backend
+        without using <code class="literal">-o</code>.
+       </p>
+</li>
+<li>
+<p>        Deprecate use of <span class="application">postmaster</span> symbolic link (Peter)
+       </p>
+<p>        <span class="application">postmaster</span> and <span class="application">postgres</span>
+        commands now act identically, with the behavior determined
+        by command-line options.  The <span class="application">postmaster</span> symbolic link is
+        kept for compatibility, but is not really needed.
+       </p>
+</li>
+<li>
+<p>        Change <a href="runtime-config-logging.html#guc-log-duration"><code class="varname">log_duration</code></a>
+        to output even if the query is not output (Tom)
+       </p>
+<p>        In prior releases, <code class="varname">log_duration</code> only printed if
+        the query appeared earlier in the log.
+       </p>
+</li>
+<li>
+<p>        Make <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions"><code class="function">to_char(time)</code></a>
+        and <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions"><code class="function">to_char(interval)</code></a>
+        treat <code class="literal">HH</code> and <code class="literal">HH12</code> as 12-hour
+        intervals
+       </p>
+<p>        Most applications should use <code class="literal">HH24</code> unless they
+        want a 12-hour display.
+       </p>
+</li>
+<li>
+<p>        Zero unmasked bits in conversion from <a href="datatype-net-types.html#datatype-inet" title="8.8.1. inet"><code class="type">INET</code></a> to <a href="datatype-net-types.html#datatype-inet" title="8.8.1. inet"><code class="type">CIDR</code></a> (Tom)
+       </p>
+<p>        This ensures that the converted value is actually valid for
+        <code class="type">CIDR</code>.
+       </p>
+</li>
+<li>
+<p>        Remove <code class="varname">australian_timezones</code> configuration variable
+        (Joachim Wieland)
+       </p>
+<p>        This variable has been superseded by a more general facility
+        for configuring timezone abbreviations.
+       </p>
+</li>
+<li>
+<p>        Improve cost estimation for nested-loop index scans (Tom)
+       </p>
+<p>        This may eliminate the need to set unrealistically small
+        values of <a href="runtime-config-query.html#guc-random-page-cost"><code class="varname">random_page_cost</code></a>.
+        If you have been using a very small <code class="varname">random_page_cost</code>,
+        please recheck your test cases.
+       </p>
+</li>
+<li><p>        Change <a href="libpq.html" title="Chapter 29. libpq - C Library"><span class="application">libpq</span></a>
+        <code class="function">PQdsplen()</code> to return a useful value (Martijn
+        van Oosterhout)
+       </p></li>
+<li>
+<p>        Declare <a href="libpq.html" title="Chapter 29. libpq - C Library"><span class="application">libpq</span></a>
+        <code class="function">PQgetssl()</code> as returning <code class="literal">void *</code>,
+        rather than <code class="literal">SSL *</code> (Martijn van Oosterhout)
+       </p>
+<p>        This allows applications to use the function without including
+        the OpenSSL headers.
+       </p>
+</li>
+<li><p>        C-language loadable modules must now include a
+        <a href="xfunc-c.html#xfunc-c-dynload" title="33.9.1. Dynamic Loading"><code class="literal">PG_MODULE_MAGIC</code></a>
+        macro call for version compatibility checking
+        (Martijn van Oosterhout)
+       </p></li>
+<li>
+<p>        In <code class="filename">contrib/xml2/</code>, rename <code class="function">xml_valid()</code> to
+        <code class="function">xml_is_well_formed()</code> (Tom)
+       </p>
+<p>        <code class="function">xml_valid()</code> will remain for backward compatibility,
+        but its behavior will change to do schema checking in a future
+        release.
+       </p>
+</li>
+<li><p>        Remove <code class="filename">contrib/ora2pg/</code>, now at <a href="http://www.samse.fr/GPL/ora2pg" target="_top">http://www.samse.fr/GPL/ora2pg</a>
+       </p></li>
+<li><p>        Remove contrib modules that have been migrated to PgFoundry:
+        <code class="filename">adddepend</code>, <code class="filename">dbase</code>, <code class="filename">dbmirror</code>,
+        <code class="filename">fulltextindex</code>, <code class="filename">mac</code>, <code class="filename">userlock</code>
+       </p></li>
+<li><p>        Remove abandoned contrib modules:
+        <code class="filename">mSQL-interface</code>, <code class="filename">tips</code>
+       </p></li>
+<li>
+<p>        Remove <acronym class="acronym">QNX</acronym> and <acronym class="acronym">BEOS</acronym> ports (Bruce)
+       </p>
+<p>        These ports no longer had active maintainers.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2840469"></a>E.1.3. Changes</h3></div></div></div>
+<p>     Below you will find a detailed account of the
+     changes between <span class="productname">PostgreSQL</span> 8.2 and
+     the previous major release.
+    </p>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2840482"></a>E.1.3.1. Performance Improvements</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Allow the planner to reorder <a href="queries-table-expressions.html#queries-join" title="7.2.1.1. Joined Tables">outer
+        joins</a> in some circumstances (Tom)
+       </p>
+<p>        In previous releases, outer joins would always be evaluated in
+        the order written in the query. This change allows the
+        query optimizer to consider reordering outer joins, in cases where
+        it can determine that the join order can be changed without
+        altering the meaning of the query.  This can make a
+        considerable performance difference for queries involving
+        multiple outer joins or mixed inner and outer joins.
+       </p>
+</li>
+<li><p>        Improve efficiency of <a href="functions-comparisons.html" title="9.17. Row and Array Comparisons"><code class="literal">IN</code>
+        (list-of-expressions)</a> clauses (Tom)
+       </p></li>
+<li><p>        Improve sorting speed and reduce memory usage (Simon, Tom)
+       </p></li>
+<li><p>        Improve subtransaction performance (Alvaro, Itagaki Takahiro,
+        Tom)
+       </p></li>
+<li>
+<p>        Add <code class="literal">FILLFACTOR</code> to <a href="sql-createtable.html" title="CREATE TABLE">table</a> and <a href="sql-createindex.html" title="CREATE INDEX">index</a> creation (ITAGAKI
+        Takahiro)
+       </p>
+<p>        This leaves extra free space in each table or index page,
+        allowing improved performance as the database grows.  This
+        is particularly valuable to maintain clustering.
+       </p>
+</li>
+<li><p>        Increase default values for <a href="runtime-config-resource.html#guc-shared-buffers"><code class="varname">shared_buffers</code></a>
+        and <a href="runtime-config-resource.html#guc-max-fsm-pages"><code class="varname">max_fsm_pages</code></a>
+        (Andrew)
+       </p></li>
+<li>
+<p>        Improve locking performance by breaking the lock manager tables into
+        sections
+        (Tom)
+       </p>
+<p>        This allows locking to be more fine-grained, reducing
+        contention.
+       </p>
+</li>
+<li><p>        Reduce locking requirements of sequential scans (Qingqing
+        Zhou)
+       </p></li>
+<li><p>        Reduce locking required for database creation and destruction
+        (Tom)
+       </p></li>
+<li><p>        Improve the optimizer's selectivity estimates for <a href="functions-matching.html#functions-like" title="9.7.1. LIKE"><code class="literal">LIKE</code></a>, <a href="functions-matching.html#functions-like" title="9.7.1. LIKE"><code class="literal">ILIKE</code></a>, and
+        <a href="functions-matching.html#functions-posix-regexp" title="9.7.3. POSIX Regular Expressions">regular expression</a>
+        operations (Tom)
+       </p></li>
+<li><p>        Improve planning of joins to <a href="ddl-inherit.html" title="5.8. Inheritance">inherited
+        tables</a> and <a href="queries-union.html" title="7.4. Combining Queries"><code class="literal">UNION
+        ALL</code></a> views (Tom)
+       </p></li>
+<li>
+<p>        Allow <a href="runtime-config-query.html#guc-constraint-exclusion">constraint
+        exclusion</a> to be applied to <a href="ddl-inherit.html" title="5.8. Inheritance">inherited</a> <code class="command">UPDATE</code> and
+        <code class="command">DELETE</code> queries (Tom)
+       </p>
+<p>        <code class="command">SELECT</code> already honored constraint exclusion.
+       </p>
+</li>
+<li><p>        Improve planning of constant <code class="literal">WHERE</code> clauses, such as
+        a condition that depends only on variables inherited from an
+        outer query level (Tom)
+       </p></li>
+<li>
+<p>        Protocol-level unnamed prepared statements are re-planned
+        for each set of <code class="literal">BIND</code> values (Tom)
+       </p>
+<p>        This improves performance because the exact parameter values
+        can be used in the plan.
+       </p>
+</li>
+<li><p>        Speed up vacuuming of B-Tree indexes (Heikki Linnakangas,
+        Tom)
+       </p></li>
+<li><p>        Avoid extra scan of tables without indexes during <a href="sql-vacuum.html" title="VACUUM"><code class="command">VACUUM</code></a> (Greg Stark)
+       </p></li>
+<li><p>        Improve multicolumn <a href="gist.html" title="Chapter 50. GiST Indexes"><acronym class="acronym">GiST</acronym></a>
+        indexing (Oleg, Teodor)
+       </p></li>
+<li><p>        Remove dead index entries before B-Tree page split (Junji
+        Teramoto)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2840773"></a>E.1.3.2. Server Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Allow a forced switch to a new transaction log file (Simon, Tom)
+       </p>
+<p>        This is valuable for keeping warm standby slave servers
+        in sync with the master.  Transaction log file switching now also happens
+        automatically during <a href="functions-admin.html" title="9.20. System Administration Functions"><code class="function">pg_stop_backup()</code></a>.
+        This ensures that all
+        transaction log files needed for recovery can be archived immediately.
+       </p>
+</li>
+<li>
+<p>        Add <acronym class="acronym">WAL</acronym> informational functions (Simon)
+       </p>
+<p>        Add functions for interrogating the current transaction log insertion
+        point and determining <acronym class="acronym">WAL</acronym> filenames from the
+        hex <acronym class="acronym">WAL</acronym> locations displayed by <a href="functions-admin.html" title="9.20. System Administration Functions"><code class="function">pg_stop_backup()</code></a>
+        and related functions.
+       </p>
+</li>
+<li>
+<p>        Improve recovery from a crash during <acronym class="acronym">WAL</acronym> replay (Simon)
+       </p>
+<p>        The server now does periodic checkpoints during <acronym class="acronym">WAL</acronym>
+        recovery, so if there is a crash, future <acronym class="acronym">WAL</acronym>
+        recovery is shortened.  This also eliminates the need for
+        warm standby servers to replay the entire log since the
+        base backup if they crash.
+       </p>
+</li>
+<li>
+<p>        Improve reliability of long-term <acronym class="acronym">WAL</acronym> replay
+        (Heikki, Simon, Tom)
+       </p>
+<p>        Formerly, trying to roll forward through more than 2 billion
+        transactions would not work due to XID wraparound.  This meant
+        warm standby servers had to be reloaded
+        from fresh base backups periodically.
+       </p>
+</li>
+<li>
+<p>        Add <a href="runtime-config-wal.html#guc-archive-timeout"><code class="varname">archive_timeout</code></a>
+        to force transaction log file switches at a given interval (Simon)
+       </p>
+<p>        This enforces a maximum replication delay for warm standby servers.
+       </p>
+</li>
+<li>
+<p>        Add native <a href="auth-methods.html#auth-ldap" title="20.2.5. LDAP authentication"><acronym class="acronym">LDAP</acronym></a>
+        authentication (Magnus Hagander)
+       </p>
+<p>        This is particularly useful for platforms that do not
+        support <acronym class="acronym">PAM</acronym>, such as Win32.
+       </p>
+</li>
+<li>
+<p>        Add <a href="sql-grant.html#sql-grant-description-objects" title="GRANT on Database Objects"><code class="literal">GRANT
+        CONNECT ON DATABASE</code></a> (Gevik Babakhani)
+       </p>
+<p>        This gives SQL-level control over database access.  It works as
+        an additional filter on top of the existing
+        <a href="client-authentication.html#auth-pg-hba-conf" title="20.1. The pg_hba.conf file"><code class="filename">pg_hba.conf</code></a>
+        controls.
+       </p>
+</li>
+<li>
+<p>        Add support for <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL"><acronym class="acronym">SSL</acronym>
+        Certificate Revocation List</a> (<acronym class="acronym">CRL</acronym>) files
+        (Libor Hoho[scaron])
+       </p>
+<p>        The server and <span class="application">libpq</span> both recognize <acronym class="acronym">CRL</acronym>
+        files now.
+       </p>
+</li>
+<li><p>        <a href="gist.html" title="Chapter 50. GiST Indexes"><acronym class="acronym">GiST</acronym></a> indexes are
+        now clusterable (Teodor)
+       </p></li>
+<li>
+<p>        Remove routine autovacuum server log entries (Bruce)
+       </p>
+<p>        <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 25.1. Standard Statistics Views"><code class="literal">pg_stat_activity</code></a>
+        now shows autovacuum activity.
+       </p>
+</li>
+<li>
+<p>        Track maximum XID age within individual tables, instead of whole databases (Alvaro)
+       </p>
+<p>        This reduces the overhead involved in preventing transaction
+        ID wraparound, by avoiding unnecessary VACUUMs.
+       </p>
+</li>
+<li>
+<p>        Add last vacuum and analyze timestamp columns to the stats
+        collector (Larry Rosenman)
+       </p>
+<p>        These values now appear in the <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 25.1. Standard Statistics Views"><code class="literal">pg_stat_*_tables</code></a>
+        system views.
+       </p>
+</li>
+<li>
+<p>        Improve performance of statistics monitoring, especially
+        <a href="runtime-config-statistics.html#guc-stats-command-string"><code class="varname">stats_command_string</code></a>
+        (Tom, Bruce)
+       </p>
+<p>        This release enables <code class="varname">stats_command_string</code> by
+        default, now that its overhead is minimal.  This means
+        <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 25.1. Standard Statistics Views"><code class="literal">pg_stat_activity</code></a>
+        will now show all active queries by default.
+       </p>
+</li>
+<li>
+<p>        Add a <code class="literal">waiting</code> column to <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 25.1. Standard Statistics Views"><code class="literal">pg_stat_activity</code></a>
+        (Tom)
+       </p>
+<p>        This allows <code class="structname">pg_stat_activity</code> to show all the
+        information included in the <span class="application">ps</span> display.
+       </p>
+</li>
+<li>
+<p>        Add configuration parameter <a href="runtime-config-statistics.html#guc-update-process-title"><code class="varname">update_process_title</code></a>
+        to control whether the <span class="application">ps</span> display is updated
+        for every command (Bruce)
+       </p>
+<p>        On platforms where it is expensive to update the <span class="application">ps</span>
+        display, it may be worthwhile to turn this off and rely solely on
+        <code class="structname">pg_stat_activity</code> for status information.
+       </p>
+</li>
+<li>
+<p>        Allow units to be specified in configuration settings
+        (Peter)
+       </p>
+<p>        For example, you can now set <a href="runtime-config-resource.html#guc-shared-buffers"><code class="varname">shared_buffers</code></a>
+        to <code class="literal">32MB</code> rather than mentally converting sizes.
+       </p>
+</li>
+<li><p>        Add support for <a href="runtime-config.html#config-setting" title="17.1. Setting Parameters">include
+        directives</a> in <code class="filename">postgresql.conf</code> (Joachim
+        Wieland)
+       </p></li>
+<li>
+<p>        Improve logging of protocol-level prepare/bind/execute
+        messages (Bruce, Tom)
+       </p>
+<p>        Such logging now shows statement names, bind parameter
+        values, and the text of the query being executed.  Also,
+        the query text is properly included in logged error messages
+        when enabled by <code class="varname">log_min_error_statement</code>.
+       </p>
+</li>
+<li>
+<p>        Prevent <a href="runtime-config-resource.html#guc-max-stack-depth"><code class="varname">max_stack_depth</code></a>
+        from being set to unsafe values
+       </p>
+<p>        On platforms where we can determine the actual kernel stack depth
+        limit (which is most), make sure that the initial default value of
+        <code class="varname">max_stack_depth</code> is safe, and reject attempts to set it
+        to unsafely large values.
+       </p>
+</li>
+<li>
+<p>        Enable highlighting of error location in query in more
+        cases (Tom)
+       </p>
+<p>        The server is now able to report a specific error location for
+        some semantic errors (such as unrecognized column name), rather
+        than just for basic syntax errors as before.
+       </p>
+</li>
+<li><p>        Fix &#8220;<span class="quote">failed to re-find parent key</span>&#8221; errors in
+        <code class="command">VACUUM</code> (Tom)
+       </p></li>
+<li>
+<p>        Clean out <code class="filename">pg_internal.init</code> cache files during server
+        restart (Simon)
+       </p>
+<p>        This avoids a hazard that the cache files might contain stale
+        data after PITR recovery.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2841245"></a>E.1.3.3. Query Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Add <a href="sql-insert.html" title="INSERT"><code class="command">INSERT</code></a>/<a href="sql-update.html" title="UPDATE"><code class="command">UPDATE</code></a>/<a href="sql-delete.html" title="DELETE"><code class="command">DELETE</code></a>
+        <code class="literal">RETURNING</code> (Jonah Harris, Tom)
+       </p>
+<p>        This allows these commands to return values, such as the
+        computed serial key for a new row.  In the <code class="command">UPDATE</code>
+        case, values from the updated version of the row are returned.
+       </p>
+</li>
+<li>
+<p>        Add support for multiple-row <a href="queries-values.html" title="7.7. VALUES Lists"><code class="literal">VALUES</code></a> clauses,
+        per SQL standard (Joe, Tom)
+       </p>
+<p>        This allows <code class="command">INSERT</code> to insert multiple rows of
+        constants, or queries to generate result sets using constants.
+        For example, <code class="literal">INSERT ...  VALUES (...), (...),
+        ....</code>, and <code class="literal">SELECT * FROM (VALUES (...), (...),
+        ....) AS alias(f1, ...)</code>.
+       </p>
+</li>
+<li>
+<p>        Allow <a href="sql-update.html" title="UPDATE"><code class="command">UPDATE</code></a>
+        and <a href="sql-delete.html" title="DELETE"><code class="command">DELETE</code></a>
+        to use an alias for the target table (Atsushi Ogawa)
+       </p>
+<p>        The SQL standard does not permit an alias in these commands, but
+        many database systems allow one anyway for notational convenience.
+       </p>
+</li>
+<li>
+<p>        Allow <a href="sql-update.html" title="UPDATE"><code class="command">UPDATE</code></a>
+        to set multiple columns with a list of values (Susanne
+        Ebrecht)
+       </p>
+<p>        This is basically a short-hand for assigning the columns
+        and values in pairs.  The syntax is <code class="literal">UPDATE tab
+        SET (<em class="replaceable"><code>column</code></em>, ...) = (<em class="replaceable"><code>val</code></em>, ...)</code>.
+       </p>
+</li>
+<li>
+<p>        Make row comparisons work per standard (Tom)
+       </p>
+<p>        The forms &lt;, &lt;=, &gt;, &gt;= now compare rows lexicographically,
+        that is, compare the first elements, if equal compare the second
+        elements, and so on.  Formerly they expanded to an AND condition
+        across all the elements, which was neither standard nor very useful.
+       </p>
+</li>
+<li>
+<p>        Add <a href="sql-truncate.html" title="TRUNCATE"><code class="literal">CASCADE</code></a>
+        option to <code class="command">TRUNCATE</code> (Joachim Wieland)
+       </p>
+<p>        This causes <code class="command">TRUNCATE</code> to automatically include all tables
+        that reference the specified table(s) via foreign keys.  While
+        convenient, this is a dangerous tool &#8212; use with caution!
+       </p>
+</li>
+<li><p>        Support <code class="literal">FOR UPDATE</code> and <code class="literal">FOR SHARE</code>
+        in the same <a href="sql-insert.html" title="INSERT"><code class="literal">SELECT</code></a>
+        command (Tom)
+       </p></li>
+<li>
+<p>        Add <a href="functions-comparisons.html" title="9.17. Row and Array Comparisons"><code class="literal">IS NOT
+        DISTINCT FROM</code></a> (Pavel Stehule)
+       </p>
+<p>        This operator is similar to equality (<code class="literal">=</code>), but
+        evaluates to true when both left and right operands are
+        <code class="literal">NULL</code>, and to false when just one is, rather than
+        yielding <code class="literal">NULL</code> in these cases.
+       </p>
+</li>
+<li>
+<p>        Improve the length output used by <a href="queries-union.html" title="7.4. Combining Queries"><code class="literal">UNION</code></a>/<code class="literal">INTERSECT</code>/<code class="literal">EXCEPT</code>
+        (Tom)
+       </p>
+<p>        When all corresponding columns are of the same defined length, that
+        length is used for the result, rather than a generic length.
+       </p>
+</li>
+<li>
+<p>        Allow <a href="functions-matching.html#functions-like" title="9.7.1. LIKE"><code class="literal">ILIKE</code></a>
+        to work for multi-byte encodings (Tom)
+       </p>
+<p>        Internally, <code class="literal">ILIKE</code> now calls <code class="function">lower()</code>
+        and then uses <code class="literal">LIKE</code>.  Locale-specific regular
+        expression patterns still do not work in these encodings.
+       </p>
+</li>
+<li>
+<p>        Enable <a href="runtime-config-compatible.html#guc-standard-conforming-strings"><code class="varname">standard_conforming_strings</code></a>
+        to be turned <code class="literal">on</code> (Kevin Grittner)
+       </p>
+<p>        This allows backslash escaping in strings to be disabled,
+        making <span class="productname">PostgreSQL</span> more
+        standards-compliant.  The default is <code class="literal">off</code> for backwards
+        compatibility, but future releases will default this to <code class="literal">on</code>.
+       </p>
+</li>
+<li>
+<p>        Do not flatten subqueries that contain <code class="literal">volatile</code>
+        functions in their target lists (Jaime Casanova)
+       </p>
+<p>        This prevents surprising behavior due to multiple evaluation
+        of a <code class="literal">volatile</code> function (such as <code class="function">random()</code>
+        or <code class="function">nextval()</code>).  It may cause performance
+        degradation in the presence of functions that are unnecessarily
+        marked as <code class="literal">volatile</code>.
+       </p>
+</li>
+<li>
+<p>        Add system views <a href="view-pg-prepared-statements.html" title="43.40. pg_prepared_statements"><code class="literal">pg_prepared_statements</code></a>
+        and <a href="view-pg-cursors.html" title="43.36. pg_cursors"><code class="literal">pg_cursors</code></a>
+        to show prepared statements and open cursors (Joachim Wieland, Neil)
+       </p>
+<p>        These are very useful in pooled connection setups.
+       </p>
+</li>
+<li>
+<p>        Support portal parameters in <a href="sql-explain.html" title="EXPLAIN"><code class="command">EXPLAIN</code></a> and <a href="sql-execute.html" title="EXECUTE"><code class="command">EXECUTE</code></a> (Tom)
+       </p>
+<p>        This allows, for example, <acronym class="acronym">JDBC</acronym> <code class="literal">?</code> parameters to
+        work in these commands.
+       </p>
+</li>
+<li>
+<p>        If <acronym class="acronym">SQL</acronym>-level <a href="sql-prepare.html" title="PREPARE"><code class="command">PREPARE</code></a> parameters
+        are unspecified, infer their types from the content of the
+        query (Neil)
+       </p>
+<p>        Protocol-level <code class="command">PREPARE</code> already did this.
+       </p>
+</li>
+<li><p>        Allow <code class="literal">LIMIT</code> and <code class="literal">OFFSET</code> to exceed
+        two billion (Dhanaraj M)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2841780"></a>E.1.3.4. Object Manipulation Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Add <code class="literal">TABLESPACE</code> clause to <a href="sql-createtableas.html" title="CREATE TABLE AS"><code class="command">CREATE TABLE AS</code></a>
+        (Neil)
+       </p>
+<p>        This allows a tablespace to be specified for the new table.
+       </p>
+</li>
+<li>
+<p>        Add <code class="literal">ON COMMIT</code> clause to <a href="sql-createtableas.html" title="CREATE TABLE AS"><code class="command">CREATE TABLE AS</code></a>
+        (Neil)
+       </p>
+<p>        This allows temporary tables to be truncated or dropped on
+        transaction commit.  The default behavior is for the table
+        to remain until the session ends.
+       </p>
+</li>
+<li>
+<p>        Add <code class="literal">INCLUDING CONSTRAINTS</code> to <a href="sql-createtable.html" title="CREATE TABLE"><code class="command">CREATE TABLE LIKE</code></a>
+        (Greg Stark)
+       </p>
+<p>        This allows easy copying of <code class="literal">CHECK</code> constraints to a new
+        table.
+       </p>
+</li>
+<li>
+<p>        Allow the creation of placeholder (shell) <a href="sql-createtype.html" title="CREATE TYPE">types</a> (Martijn van Oosterhout)
+       </p>
+<p>        A shell type declaration creates a type name, without specifying
+        any of the details of the type.  Making a shell type is useful
+        because it allows cleaner declaration of the type's input/output
+        functions, which must exist before the type can be defined &#8220;<span class="quote">for
+        real</span>&#8221;.  The syntax is <code class="command">CREATE TYPE <em class="replaceable"><code>typename</code></em></code>.
+       </p>
+</li>
+<li><p>        <a href="sql-createaggregate.html" title="CREATE AGGREGATE">Aggregate functions</a>
+        now support multiple input parameters (Sergey Koposov, Tom)
+       </p></li>
+<li>
+<p>        Add new aggregate creation <a href="sql-createaggregate.html" title="CREATE AGGREGATE">syntax</a> (Tom)
+       </p>
+<p>        The new syntax is <code class="command">CREATE AGGREGATE
+        <em class="replaceable"><code>aggname</code></em> (<em class="replaceable"><code>input_type</code></em>)
+        (<em class="replaceable"><code>parameter_list</code></em>)</code>.  This more
+        naturally supports the new multi-parameter aggregate
+        functionality.  The previous syntax is still supported.
+       </p>
+</li>
+<li><p>        Add <a href="sql-alterrole.html" title="ALTER ROLE"><code class="command">ALTER ROLE PASSWORD NULL</code></a>
+        to remove a previously set role password (Peter)
+       </p></li>
+<li>
+<p>        Add <code class="command">DROP</code> object <code class="literal">IF EXISTS</code> for many
+        object types (Andrew)
+       </p>
+<p>        This allows <code class="command">DROP</code> operations on non-existent
+        objects without generating an error.
+       </p>
+</li>
+<li><p>        Add <a href="sql-drop-owned.html" title="DROP OWNED"><code class="literal">DROP OWNED</code></a>
+        to drop all objects owned by a role (Alvaro)
+       </p></li>
+<li>
+<p>        Add <a href="sql-reassign-owned.html" title="REASSIGN OWNED"><code class="literal">REASSIGN
+        OWNED</code></a> to reassign ownership of all objects owned
+        by a role (Alvaro)
+       </p>
+<p>        This, and <code class="literal">DROP OWNED</code> above, facilitate dropping
+        roles.
+       </p>
+</li>
+<li>
+<p>        Add <a href="sql-grant.html" title="GRANT"><code class="command">GRANT ON SEQUENCE</code></a>
+        syntax (Bruce)
+       </p>
+<p>        This was added for setting sequence-specific permissions.
+        <code class="literal">GRANT ON TABLE</code> for sequences is still supported
+        for backward compatibility.
+       </p>
+</li>
+<li>
+<p>        Add <a href="sql-grant.html" title="GRANT"><code class="literal">USAGE</code></a>
+        permission for sequences that allows only <code class="function">currval()</code>
+        and <code class="function">nextval()</code>, not <code class="function">setval()</code>
+        (Bruce)
+       </p>
+<p>        <code class="literal">USAGE</code> permission allows more fine-grained
+        control over sequence access.  Granting <code class="literal">USAGE</code>
+        allows users to increment
+        a sequence, but prevents them from setting the sequence to
+        an arbitrary value using <code class="function">setval()</code>.
+       </p>
+</li>
+<li>
+<p>        Add <a href="sql-altertable.html" title="ALTER TABLE"><code class="literal">ALTER TABLE
+        [ NO ] INHERIT</code></a> (Greg Stark)
+       </p>
+<p>        This allows inheritance to be adjusted dynamically, rather than
+        just at table creation and destruction.  This is very valuable
+        when using inheritance to implement table partitioning.
+       </p>
+</li>
+<li>
+<p>        Allow <a href="sql-comment.html" title="COMMENT">comments</a> on global
+        objects to be stored globally (Kris Jurka)
+       </p>
+<p>        Previously, comments attached to databases were stored in individual
+        databases, making them ineffective, and there was no provision
+        at all for comments on roles or tablespaces.  This change adds a new
+        shared catalog <a href="catalog-pg-shdescription.html" title="43.30. pg_shdescription"><code class="structname">pg_shdescription</code></a>
+        and stores comments on databases, roles, and tablespaces therein.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2842156"></a>E.1.3.5. Utility Command Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Add option to allow indexes to be created without blocking
+        concurrent writes to the table (Greg Stark, Tom)
+       </p>
+<p>        The new syntax is <a href="sql-createindex.html" title="CREATE INDEX"><code class="command">CREATE
+        INDEX CONCURRENTLY</code></a>.  The default behavior is
+        still to block table modification while a index is being
+        created.
+       </p>
+</li>
+<li>
+<p>        Provide <a href="functions-admin.html#functions-advisory-locks" title="Table 9.50. Advisory Lock Functions">advisory
+        locking</a> functionality (Abhijit Menon-Sen, Tom)
+       </p>
+<p>        This is a new locking API designed to replace what used to be
+        in /contrib/userlock.  The userlock code is now on pgfoundry.
+       </p>
+</li>
+<li>
+<p>        Allow <a href="sql-copy.html" title="COPY"><code class="command">COPY</code></a> to
+        dump a <code class="command">SELECT</code> query (Zoltan Boszormenyi, Karel
+        Zak)
+       </p>
+<p>        This allows <code class="command">COPY</code> to dump arbitrary <acronym class="acronym">SQL</acronym>
+        queries. The syntax is <code class="literal">COPY (SELECT ...) TO</code>.
+       </p>
+</li>
+<li><p>        Make the <a href="sql-copy.html" title="COPY"><code class="command">COPY</code></a>
+        command return a command tag that includes the number of
+        rows copied (Volkan YAZICI)
+       </p></li>
+<li><p>        Allow <a href="sql-vacuum.html" title="VACUUM"><code class="command">VACUUM</code></a>
+        to expire rows without being affected by other concurrent
+        <code class="command">VACUUM</code> operations (Hannu Krossing, Alvaro, Tom)
+       </p></li>
+<li>
+<p>        Make <a href="app-initdb.html" title="initdb"><span class="application">initdb</span></a>
+        detect the operating system locale and set the default
+        <code class="varname">DateStyle</code> accordingly (Peter)
+       </p>
+<p>        This makes it more likely that the installed
+        <code class="filename">postgresql.conf</code> <code class="varname">DateStyle</code> value will
+        be as desired.
+       </p>
+</li>
+<li><p>        Reduce number of progress messages displayed by <span class="application">initdb</span> (Tom)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2842318"></a>E.1.3.6. Date/Time Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Allow full timezone names in <a href="datatype-datetime.html" title="8.5. Date/Time Types"><code class="type">timestamp</code></a> input values
+        (Joachim Wieland)
+       </p>
+<p>        For example, <code class="literal">'2006-05-24 21:11
+        America/New_York'::timestamptz</code>.
+       </p>
+</li>
+<li>
+<p>        Support configurable timezone abbreviations (Joachim Wieland)
+       </p>
+<p>        A desired set of timezone abbreviations can be chosen via the
+        configuration parameter <a href="runtime-config-client.html#guc-timezone-abbreviations"><code class="varname">timezone_abbreviations</code></a>.
+       </p>
+</li>
+<li><p>        Add <a href="view-pg-timezone-abbrevs.html" title="43.48. pg_timezone_abbrevs"><code class="varname">pg_timezone_abbrevs</code></a>
+        and <a href="view-pg-timezone-names.html" title="43.49. pg_timezone_names"><code class="varname">pg_timezone_names</code></a>
+        views to show supported timezones (Magnus Hagander)
+       </p></li>
+<li>
+<p>        Add <a href="functions-datetime.html#functions-datetime-table" title="Table 9.26. Date/Time Functions"><code class="function">clock_timestamp()</code></a>,
+        <a href="functions-datetime.html#functions-datetime-table" title="Table 9.26. Date/Time Functions"><code class="function">statement_timestamp()</code></a>,
+        and <a href="functions-datetime.html#functions-datetime-table" title="Table 9.26. Date/Time Functions"><code class="function">transaction_timestamp()</code></a>
+        (Bruce)
+       </p>
+<p>        <code class="function">clock_timestamp()</code> is the current wall-clock time,
+        <code class="function">statement_timestamp()</code> is the time the current
+        statement arrived at the server, and
+        <code class="function">transaction_timestamp()</code> is an alias for
+        <code class="function">now()</code>.
+       </p>
+</li>
+<li><p>        Allow <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions"><code class="function">to_char()</code></a>
+        to print localized month and day names (Euler Taveira de
+        Oliveira)
+       </p></li>
+<li>
+<p>        Allow <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions"><code class="function">to_char(time)</code></a>
+        and <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions"><code class="function">to_char(interval)</code></a>
+        to output <acronym class="acronym">AM</acronym>/<acronym class="acronym">PM</acronym> specifications
+        (Bruce)
+       </p>
+<p>        Intervals and times are treated as 24-hour periods, e.g.
+        <code class="literal">25 hours</code> is considered <acronym class="acronym">AM</acronym>.
+       </p>
+</li>
+<li><p>        Add new function <a href="functions-datetime.html#functions-datetime-table" title="Table 9.26. Date/Time Functions"><code class="function">justify_interval()</code></a>
+        to adjust interval units (Mark Dilger)
+       </p></li>
+<li>
+<p>        Allow timezone offsets up to 14:59 away from GMT
+       </p>
+<p>        Kiribati uses GMT+14, so we'd better accept that.
+       </p>
+</li>
+<li><p>        Interval computation improvements (Michael Glaesemann, Bruce)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2842540"></a>E.1.3.7. Other Data Type and Function Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Allow arrays to contain <code class="literal">NULL</code> elements (Tom)
+       </p></li>
+<li>
+<p>        Allow assignment to array elements not contiguous with the existing
+        entries (Tom)
+       </p>
+<p>        The intervening array positions will be filled with nulls.
+        This is per SQL standard.
+       </p>
+</li>
+<li>
+<p>        New built-in <a href="functions-array.html" title="9.14. Array Functions and Operators">operators</a>
+        for array-subset comparisons (<code class="literal">@&gt;</code>,
+        <code class="literal">&lt;@</code>, <code class="literal">&amp;&amp;</code>) (Teodor, Tom)
+       </p>
+<p>        These operators can be indexed for many data types using
+        <acronym class="acronym">GiST</acronym> or <acronym class="acronym">GIN</acronym> indexes.
+       </p>
+</li>
+<li>
+<p>        Add convenient arithmetic <a href="functions-net.html#cidr-inet-operators-table" title="Table 9.31. cidr and inet Operators">operations</a> on
+        <code class="type">INET</code>/<code class="type">CIDR</code> values (Stephen R. van den
+        Berg)
+       </p>
+<p>        The new operators are <code class="literal">&amp;</code> (and), <code class="literal">|</code>
+        (or), <code class="literal">~</code> (not), <code class="type">inet</code> <code class="literal">+</code> <code class="type">int8</code>,
+        <code class="type">inet</code> <code class="literal">-</code> <code class="type">int8</code>, and
+        <code class="type">inet</code> <code class="literal">-</code> <code class="type">inet</code>.
+       </p>
+</li>
+<li>
+<p>        Add new <a href="functions-aggregate.html#functions-aggregate-statistics-table" title="Table 9.38. Aggregate Functions for Statistics">aggregate functions</a>
+        from SQL:2003 (Neil)
+       </p>
+<p>        The new functions are <code class="function">var_pop()</code>,
+        <code class="function">var_samp()</code>, <code class="function">stddev_pop()</code>, and
+        <code class="function">stddev_samp()</code>.  <code class="function">var_samp()</code> and
+        <code class="function">stddev_samp()</code> are merely renamings of the
+        existing aggregates <code class="function">variance()</code> and
+        <code class="function">stddev()</code>.  The latter names remain available
+        for backward compatibility.
+       </p>
+</li>
+<li>
+<p>        Add SQL:2003 statistical <a href="functions-aggregate.html#functions-aggregate-statistics-table" title="Table 9.38. Aggregate Functions for Statistics">aggregates</a>
+        (Sergey Koposov)
+       </p>
+<p>        New functions:  <code class="function">regr_intercept()</code>,
+        <code class="function">regr_slope()</code>, <code class="function">regr_r2()</code>,
+        <code class="function">corr()</code>, <code class="function">covar_samp()</code>,
+        <code class="function">covar_pop()</code>, <code class="function">regr_avgx()</code>,
+        <code class="function">regr_avgy()</code>, <code class="function">regr_sxy()</code>,
+        <code class="function">regr_sxx()</code>, <code class="function">regr_syy()</code>,
+        <code class="function">regr_count()</code>.
+       </p>
+</li>
+<li><p>        Allow <a href="sql-createdomain.html" title="CREATE DOMAIN">domains</a> to be
+        based on other domains (Tom)
+       </p></li>
+<li>
+<p>        Properly enforce domain <a href="ddl-constraints.html" title="5.3. Constraints"><code class="literal">CHECK</code></a> constraints
+        everywhere (Neil, Tom)
+       </p>
+<p>        For example, the result of a user-defined function that is
+        declared to return a domain type is now checked against the
+        domain's constraints. This closes a significant hole in the domain
+        implementation.
+       </p>
+</li>
+<li>
+<p>        Fix problems with dumping renamed <a href="datatype.html#datatype-serial" title="8.1.4. Serial Types"><code class="type">SERIAL</code></a> columns
+        (Tom)
+       </p>
+<p>        The fix is to dump a <code class="type">SERIAL</code> column by explicitly
+        specifying its <code class="literal">DEFAULT</code> and sequence elements,
+        and reconstructing the <code class="type">SERIAL</code> column on reload
+        using a new <a href="sql-altersequence.html" title="ALTER SEQUENCE"><code class="command">ALTER
+        SEQUENCE OWNED BY</code></a> command.  This also allows
+        dropping a <code class="type">SERIAL</code> column specification.
+       </p>
+</li>
+<li><p>        Add a server-side sleep function <a href="functions-datetime.html#functions-datetime-delay" title="9.9.5. Delaying Execution"><code class="function">pg_sleep()</code></a>
+        (Joachim Wieland)
+       </p></li>
+<li><p>        Add all comparison operators for the <a href="datatype-oid.html" title="8.12. Object Identifier Types"><code class="type">tid</code></a> (tuple id) data
+        type (Mark Kirkwood, Greg Stark, Tom)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2842944"></a>E.1.3.8. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Add <code class="literal">TG_table_name</code> and <code class="literal">TG_table_schema</code> to
+        trigger parameters (Andrew)
+       </p>
+<p>        <code class="literal">TG_relname</code> is now deprecated.  Comparable
+        changes have been made in the trigger parameters for the other
+        PLs as well.
+       </p>
+</li>
+<li><p>        Allow <code class="literal">FOR</code> statements to return values to scalars
+        as well as records and row types (Pavel Stehule)
+       </p></li>
+<li><p>        Add a <code class="literal">BY</code> clause to the <code class="literal">FOR</code> loop,
+        to control the iteration increment (Jaime Casanova)
+       </p></li>
+<li>
+<p>        Add <code class="literal">STRICT</code> to <a href="plpgsql-statements.html#plpgsql-statements-sql-onerow" title="37.6.3. Executing a Query with a Single-Row Result"><code class="command">SELECT
+        INTO</code></a> (Matt Miller)
+       </p>
+<p>        <code class="literal">STRICT</code> mode throws an exception if more or less
+        than one row is returned by the <code class="command">SELECT</code>, for
+        <span class="productname">Oracle PL/SQL</span> compatibility.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843045"></a>E.1.3.9. PL/Perl Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Add <code class="literal">table_name</code> and <code class="literal">table_schema</code> to
+        trigger parameters (Adam Sj[oslash]gren)
+       </p></li>
+<li><p>        Add prepared queries (Dmitry Karasik)
+       </p></li>
+<li>
+<p>        Make <code class="literal">$_TD</code> trigger data a global variable (Andrew)
+       </p>
+<p>        Previously, it was lexical, which caused unexpected sharing
+        violations.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843085"></a>E.1.3.10. PL/Python Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Named parameters are passed as ordinary variables, as well as in the
+        <code class="literal">args[]</code> array (Sven Suursoho)
+       </p></li>
+<li><p>        Add <code class="literal">table_name</code> and <code class="literal">table_schema</code> to
+        trigger parameters (Andrew)
+       </p></li>
+<li><p>        Allow returning of composite types and result sets (Sven Suursoho)
+       </p></li>
+<li><p>        Return result-set as <code class="literal">list</code>, <code class="literal">iterator</code>,
+        or <code class="literal">generator </code>(Sven Suursoho)
+       </p></li>
+<li><p>        Allow functions to return <code class="literal">void</code> (Neil)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843154"></a>E.1.3.11. <a href="app-psql.html" title="psql"><span class="application">psql</span></a> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Add new command <code class="literal">\password</code> for changing role
+        password with client-side password encryption (Peter)
+       </p></li>
+<li><p>        Allow <code class="literal">\c</code> to connect to a new host and port
+        number (David, Volkan YAZICI)
+       </p></li>
+<li><p>        Add tablespace display to <code class="literal">\l+</code> (Philip Yarra)
+       </p></li>
+<li><p>        Improve <code class="literal">\df</code> slash command to include the argument
+        names and modes (<code class="literal">OUT</code> or <code class="literal">INOUT</code>) of
+        the function (David Fetter)
+       </p></li>
+<li><p>        Support binary <code class="command">COPY</code> (Andreas Pflug)
+       </p></li>
+<li>
+<p>        Add option to run the entire session in a single transaction
+        (Simon)
+       </p>
+<p>        Use option <code class="literal">-1</code> or <code class="literal">--single-transaction</code>.
+       </p>
+</li>
+<li>
+<p>        Support for automatically retrieving <code class="command">SELECT</code>
+        results in batches using a cursor (Chris Mair)
+       </p>
+<p>        This is enabled using <code class="command">\set FETCH_COUNT
+        <em class="replaceable"><code>n</code></em></code>. This
+        feature allows large result sets to be retrieved in
+        <span class="application">psql</span> without attempting to buffer the entire
+        result set in memory.
+       </p>
+</li>
+<li>
+<p>        Make multi-line values align in the proper column
+        (Martijn van Oosterhout)
+       </p>
+<p>        Field values containing newlines are now displayed in a more
+        readable fashion.
+       </p>
+</li>
+<li>
+<p>        Save multi-line statements as a single entry, rather than
+        one line at a time (Sergey E. Koposov)
+       </p>
+<p>        This makes up-arrow recall of queries easier.  (This is
+        not available on Win32, because that platform uses the native
+        command-line editing present in the operating system.)
+       </p>
+</li>
+<li><p>        Make the line counter 64-bit so it can handle files with more
+        than two billion lines (David Fetter)
+       </p></li>
+<li><p>        Report both the returned data and the command status tag
+        for <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE
+        RETURNING</code> (Tom)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843329"></a>E.1.3.12. <a href="app-pgdump.html" title="pg_dump"><span class="application">pg_dump</span></a> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Allow complex selection of objects to be included or excluded
+        by <span class="application">pg_dump</span> (Greg Sabino Mullane)
+       </p>
+<p>        <span class="application">pg_dump</span> now supports multiple <code class="literal">-n</code>
+        (schema) and <code class="literal">-t</code> (table) options, and adds
+        <code class="literal">-N</code> and <code class="literal">-T</code> options to exclude objects.
+        Also, the arguments of these switches can now be wild-card expressions
+        rather than single object names, for example
+        <code class="literal">-t 'foo*'</code>, and a schema can be part of
+        a <code class="literal">-t</code> or <code class="literal">-T</code> switch, for example
+        <code class="literal">-t schema1.table1</code>.
+       </p>
+</li>
+<li><p>        Add <a href="app-pgrestore.html" title="pg_restore"><span class="application">pg_restore</span></a>
+        <code class="literal">--no-data-for-failed-tables</code> option to suppress
+        loading data if table creation failed (i.e., the table already
+        exists) (Martin Pitt)
+       </p></li>
+<li>
+<p>        Add <a href="app-pgrestore.html" title="pg_restore"><span class="application">pg_restore</span></a>
+        option to run the entire session in a single transaction
+        (Simon)
+       </p>
+<p>        Use option <code class="literal">-1</code> or <code class="literal">--single-transaction</code>.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843465"></a>E.1.3.13. <a href="libpq.html" title="Chapter 29. libpq - C Library"><span class="application">libpq</span></a> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Add <a href="libpq-misc.html" title="29.10. Miscellaneous Functions"><code class="function">PQencryptPassword()</code></a>
+        to encrypt passwords (Tom)
+       </p>
+<p>        This allows passwords to be sent pre-encrypted for commands
+        like <a href="sql-alterrole.html" title="ALTER ROLE"><code class="command">ALTER ROLE ...
+        PASSWORD</code></a>.
+       </p>
+</li>
+<li>
+<p>        Add function <a href="libpq-threading.html" title="29.17. Behavior in Threaded Programs"><code class="function">PQisthreadsafe()</code></a>
+        (Bruce)
+       </p>
+<p>        This allows applications to query the thread-safety status
+        of the library.
+       </p>
+</li>
+<li><p>        Add <a href="libpq-exec.html#libpq-exec-main" title="29.3.1. Main Functions"><code class="function">PQdescribePrepared()</code></a>,
+        <a href="libpq-exec.html#libpq-exec-main" title="29.3.1. Main Functions"><code class="function">PQdescribePortal()</code></a>,
+        and related functions to return information about previously
+        prepared statements and open cursors (Volkan YAZICI)
+       </p></li>
+<li><p>        Allow <a href="libpq-ldap.html" title="29.15. LDAP Lookup of Connection Parameters"><acronym class="acronym">LDAP</acronym></a> lookups
+        from <a href="libpq-pgservice.html" title="29.14. The Connection Service File"><code class="filename">pg_service.conf</code></a>
+        (Laurenz Albe)
+       </p></li>
+<li>
+<p>        Allow a hostname in <a href="libpq-pgpass.html" title="29.13. The Password File"><code class="filename">~/.pgpass</code></a>
+        to match the default socket directory (Bruce)
+       </p>
+<p>        A blank hostname continues to match any Unix-socket connection,
+        but this addition allows entries that are specific to one of
+        several postmasters on the machine.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843600"></a>E.1.3.14. <a href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C"><span class="application">ecpg</span></a> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Allow <a href="sql-show.html" title="SHOW"><code class="command">SHOW</code></a> to
+        put its result into a variable (Joachim Wieland)
+       </p></li>
+<li><p>        Add <a href="sql-copy.html" title="COPY"><code class="command">COPY TO STDOUT</code></a>
+        (Joachim Wieland)
+       </p></li>
+<li><p>        Add regression tests (Joachim Wieland, Michael)
+       </p></li>
+<li><p>        Major source code cleanups (Joachim Wieland, Michael)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843651"></a>E.1.3.15. <span class="application">Win32</span> Port</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Allow <acronym class="acronym">MSVC</acronym> to compile the <span class="productname">PostgreSQL</span>
+        server (Magnus, Hiroshi Saito)
+       </p></li>
+<li><p>        Add <acronym class="acronym">MSVC</acronym> support for utility commands and <a href="app-pgdump.html" title="pg_dump"><span class="application">pg_dump</span></a> (Hiroshi
+        Saito)
+       </p></li>
+<li><p>        Add support for Windows code pages <code class="literal">1253</code>,
+        <code class="literal">1254</code>, <code class="literal">1255</code>, and <code class="literal">1257</code>
+        (Kris Jurka)
+       </p></li>
+<li><p>        Drop privileges on startup, so that the server can be started from 
+        an administrative account (Magnus)
+       </p></li>
+<li><p>        Stability fixes (Qingqing Zhou, Magnus)
+       </p></li>
+<li>
+<p>        Add native semaphore implementation (Qingqing Zhou)
+       </p>
+<p>        The previous code mimicked SysV semaphores.
+       </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2843738"></a>E.1.3.16. Source Code Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>        Add <a href="gin.html" title="Chapter 51. GIN Indexes"><acronym class="acronym">GIN</acronym></a> (Generalized
+        Inverted iNdex) index access method (Teodor, Oleg)
+       </p></li>
+<li>
+<p>        Remove R-tree indexing (Tom)
+       </p>
+<p>        Rtree has been re-implemented using <a href="gist.html" title="Chapter 50. GiST Indexes"><acronym class="acronym">GiST</acronym></a>. Among other
+        differences, this means that rtree indexes now have support
+        for crash recovery via write-ahead logging (WAL).
+       </p>
+</li>
+<li><p>        Reduce libraries needlessly linked into the backend (Martijn
+        van Oosterhout, Tom)
+       </p></li>
+<li>
+<p>        Add a configure flag to allow libedit to be preferred over
+        <acronym class="acronym">GNU</acronym> readline (Bruce)
+       </p>
+<p>        Use configure <a href="install-procedure.html#configure"><code class="literal">--with-libedit-preferred</code></a>.
+       </p>
+</li>
+<li><p>        Allow installation into directories containing spaces
+        (Peter)
+       </p></li>
+<li><p>        Improve ability to relocate installation directories (Tom)
+       </p></li>
+<li><p>        Add support for <span class="productname">Solaris x86_64</span> using the
+        <span class="productname">Solaris</span> compiler (Pierre Girard, Theo
+        Schlossnagle, Bruce)
+       </p></li>
+<li><p>        Add <span class="application">DTrace</span> support (Robert Lor)
+       </p></li>
+<li><p>        Add <code class="literal">PG_VERSION_NUM</code> for use by third-party
+        applications wanting to test the backend version in C using &gt;
+        and &lt; comparisons (Bruce)
+       </p></li>
+<li><p>        Add <code class="literal">XLOG_BLCKSZ</code> as independent from <code class="literal">BLCKSZ</code>
+        (Mark Wong)
+       </p></li>
+<li><p>        Add <code class="literal">LWLOCK_STATS</code> define to report locking
+        activity (Tom)
+       </p></li>
+<li><p>        Emit warnings for unknown <span class="application">configure</span> options
+        (Martijn van Oosterhout)
+       </p></li>
+<li>
+<p>        Add server support for &#8220;<span class="quote">plugin</span>&#8221; libraries
+        that can be used for add-on tasks such as debugging and performance
+        measurement (Korry Douglas)
+       </p>
+<p>        This consists of two features: a table of &#8220;<span class="quote">rendezvous
+        variables</span>&#8221; that allows separately-loaded shared libraries to
+        communicate, and a new configuration parameter <a href="runtime-config-client.html#guc-local-preload-libraries"><code class="varname">local_preload_libraries</code></a>
+        that allows libraries to be loaded into specific sessions without
+        explicit cooperation from the client application.  This allows
+        external add-ons to implement features such as a PL/PgSQL debugger.
+       </p>
+</li>
+<li>
+<p>        Rename existing configuration parameter
+        <code class="varname">preload_libraries</code> to <a href="runtime-config-resource.html#guc-shared-preload-libraries"><code class="varname">shared_preload_libraries</code></a>
+        (Tom)
+       </p>
+<p>        This was done for clarity in comparison to
+        <code class="varname">local_preload_libraries</code>.
+       </p>
+</li>
+<li>
+<p>        Add new configuration parameter <a href="runtime-config-preset.html#guc-server-version-num"><code class="varname">server_version_num</code></a>
+        (Greg Sabino Mullane)
+       </p>
+<p>        This is like <code class="varname">server_version</code>, but is an
+        integer, e.g.  <code class="literal">80200</code>. This allows applications to
+        make version checks more easily.
+       </p>
+</li>
+<li><p>        Add a configuration parameter <a href="runtime-config-query.html#guc-seq-page-cost"><code class="varname">seq_page_cost</code></a>
+        (Tom)
+       </p></li>
+<li><p>        Re-implement the <a href="regress.html" title="Chapter 28. Regression Tests">regression test</a> script as a C program
+        (Magnus, Tom)
+       </p></li>
+<li><p>        Allow loadable modules to allocate shared memory and
+        lightweight locks (Marc Munro)
+       </p></li>
+<li>
+<p>        Add automatic initialization and finalization of dynamically
+        loaded libraries (Ralf Engelschall, Tom)
+       </p>
+<p>        New <a href="xfunc-c.html#xfunc-c-dynload" title="33.9.1. Dynamic Loading">functions</a>
+        <code class="function">_PG_init()</code> and <code class="function">_PG_fini()</code> are
+        called if the library defines such symbols.  Hence we no
+        longer need to specify an initialization function in
+        <code class="varname">shared_preload_libraries</code>; we can assume that
+        the library used the <code class="function">_PG_init()</code> convention
+        instead.
+       </p>
+</li>
+<li>
+<p>        Add <a href="xfunc-c.html#xfunc-c-dynload" title="33.9.1. Dynamic Loading"><code class="literal">PG_MODULE_MAGIC</code></a>
+        header block to all shared object files (Martijn van
+        Oosterhout)
+       </p>
+<p>        The magic block prevents version mismatches between loadable object
+        files and servers.
+       </p>
+</li>
+<li><p>         Add shared library support for AIX (Laurenz Albe)
+       </p></li>
+<li><p>        New <a href="datatype-xml.html" title="8.14. XML Document Support"><acronym class="acronym">XML</acronym></a>
+        documentation section (Bruce)
+       </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2844079"></a>E.1.3.17. Contrib Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>        Major tsearch2 improvements (Oleg, Teodor)
+       </p>
+<div class="itemizedlist"><ul type="circle">
+<li><p>          multibyte encoding support, including <acronym class="acronym">UTF8</acronym>
+         </p></li>
+<li><p>          query rewriting support
+         </p></li>
+<li><p>          improved ranking functions
+         </p></li>
+<li><p>          thesaurus dictionary support
+         </p></li>
+<li><p>          Ispell dictionaries now recognize <span class="application">MySpell</span>
+          format, used by <span class="application">OpenOffice</span>
+         </p></li>
+<li><p>          <acronym class="acronym">GIN</acronym> support
+         </p></li>
+</ul></div>
+</li>
+<li>
+<p>        Add adminpack module containing <span class="application">Pgadmin</span> administration
+        functions (Dave)
+       </p>
+<p>        These functions provide additional file system access
+        routines not present in the default <span class="productname">PostgreSQL</span>
+        server.
+       </p>
+</li>
+<li>
+<p>        Add sslinfo module (Victor Wagner)
+       </p>
+<p>        Reports information about the current connection's <acronym class="acronym">SSL</acronym>
+        certificate.
+       </p>
+</li>
+<li>
+<p>        Add pgrowlocks module (Tatsuo)
+       </p>
+<p>        This shows row locking information for a specified table.
+       </p>
+</li>
+<li><p>        Add hstore module (Oleg, Teodor)
+       </p></li>
+<li>
+<p>        Add isn module, replacing isbn_issn (Jeremy Kronuz)
+       </p>
+<p>        This new implementation supports <acronym class="acronym">EAN13</acronym>, <acronym class="acronym">UPC</acronym>,
+        <acronym class="acronym">ISBN</acronym> (books), <acronym class="acronym">ISMN</acronym> (music), and
+        <acronym class="acronym">ISSN</acronym> (serials).
+       </p>
+</li>
+<li><p>        Add index information functions to pgstattuple (ITAGAKI Takahiro,
+        Satoshi Nagayasu)
+       </p></li>
+<li><p>        Add pg_freespacemap module to display free space map information
+        (Mark Kirkwood)
+       </p></li>
+<li>
+<p>        pgcrypto now has all planned functionality (Marko Kreen)
+       </p>
+<div class="itemizedlist"><ul type="circle">
+<li><p>          Include iMath library in pgcrypto to have the public-key encryption
+          functions always available.
+         </p></li>
+<li><p>          Add SHA224 algorithm that was missing in OpenBSD code.
+         </p></li>
+<li><p>          Activate builtin code for SHA224/256/384/512 hashes on older
+          OpenSSL to have those algorithms always available.
+         </p></li>
+<li><p>          New function gen_random_bytes() that returns cryptographically strong 
+          randomness.  Useful for generating encryption keys.
+         </p></li>
+<li><p>          Remove digest_exists(), hmac_exists() and cipher_exists() functions.
+         </p></li>
+</ul></div>
+</li>
+<li>
+<p>        Improvements to cube module (Joshua Reich)
+       </p>
+<p>        New functions are <code class="function">cube(float[])</code>,
+        <code class="function">cube(float[], float[])</code>, and
+        <code class="function">cube_subset(cube, int4[])</code>.
+       </p>
+</li>
+<li><p>        Add async query capability to dblink (Kai Londenberg,
+        Joe Conway)
+       </p></li>
+<li>
+<p>        New operators for array-subset comparisons (<code class="literal">@&gt;</code>,
+        <code class="literal">&lt;@</code>, <code class="literal">&amp;&amp;</code>) (Tom)
+       </p>
+<p>        Various contrib packages already had these operators for their
+        datatypes, but the naming wasn't consistent.  We have now added
+        consistently named array-subset comparison operators to the core code
+        and all the contrib packages that have such functionality.
+        (The old names remain available, but are deprecated.)
+       </p>
+</li>
+<li><p>        Add uninstall scripts for all contrib packages that have install
+        scripts (David, Josh Drake)
+       </p></li>
+</ul></div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

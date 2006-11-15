@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>24.6. Clustering For Load Balancing</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="failover.html" title="Chapter 24. Failover, Replication, Load Balancing, and Clustering Options">
+<link rel="prev" href="query-broadcast-load-balancing.html" title="24.5. Query Broadcast Load Balancing">
+<link rel="next" href="clustering-for-parallel-query-execution.html" title="24.7. Clustering For Parallel Query Execution">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="clustering-for-load-balancing"></a>24.6. Clustering For Load Balancing</h2></div></div></div>
+<p>   In clustering, each server can accept write requests, and these
+   write requests are broadcast from the original server to all
+   other servers before each transaction commits.  Under heavy
+   load, this can cause excessive locking and performance degradation.
+   It is implemented by <span class="productname">Oracle</span> in their
+   <span class="productname"><acronym class="acronym">RAC</acronym></span> product.  <span class="productname">PostgreSQL</span>
+   does not offer this type of load balancing, though
+   <span class="productname">PostgreSQL</span> two-phase commit can be used to
+   implement this in application code or middleware.
+  </p>
+</div></body>
+</html>

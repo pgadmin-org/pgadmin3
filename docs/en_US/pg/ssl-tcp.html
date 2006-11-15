@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>16.7. Secure TCP/IP Connections with SSL</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
+<link rel="prev" href="encryption-options.html" title="16.6. Encryption Options">
+<link rel="next" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ssl-tcp"></a>16.7. Secure TCP/IP Connections with SSL</h2></div></div></div>
+<a name="id2623392"></a><p>   <span class="productname">PostgreSQL</span> has native support for using
+   <acronym class="acronym">SSL</acronym> connections to encrypt client/server communications
+   for increased security. This requires that
+   <span class="productname">OpenSSL</span> is installed on both client and
+   server systems and that support in <span class="productname">PostgreSQL</span> is
+   enabled at build time (see <a href="installation.html" title="Chapter 14.   Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>).
+  </p>
+<p>   With <acronym class="acronym">SSL</acronym> support compiled in, the
+   <span class="productname">PostgreSQL</span> server can be started with
+   <acronym class="acronym">SSL</acronym> enabled by setting the parameter
+   <a href="runtime-config-connection.html#guc-ssl">ssl</a> to <code class="literal">on</code> in
+   <code class="filename">postgresql.conf</code>. When
+   starting in <acronym class="acronym">SSL</acronym> mode, the server will look for the
+   files <code class="filename">server.key</code> and <code class="filename">server.crt</code> in the
+   data directory, which must contain the server private key
+   and certificate, respectively. These files must be set up correctly
+   before an <acronym class="acronym">SSL</acronym>-enabled server can start. If the private key is
+   protected with a passphrase, the server will prompt for the
+   passphrase and will not start until it has been entered.
+  </p>
+<p>   The server will listen for both standard and <acronym class="acronym">SSL</acronym>
+   connections on the same TCP port, and will negotiate with any
+   connecting client on whether to use <acronym class="acronym">SSL</acronym>.  By default,
+   this is at the client's option; see <a href="client-authentication.html#auth-pg-hba-conf" title="20.1. The pg_hba.conf file">Section 20.1, &#8220;The <code class="filename">pg_hba.conf</code> file&#8221;</a> about how to set up the server to
+   require use of <acronym class="acronym">SSL</acronym> for some or all connections.
+  </p>
+<p>   For details on how to create your server private key and certificate,
+   refer to the <span class="productname">OpenSSL</span> documentation. A
+   self-signed certificate can be used for testing, but a
+   certificate signed by a certificate authority (<acronym class="acronym">CA</acronym>)
+   (either one of the global
+   <acronym class="acronym">CAs</acronym> or a local one) should be used in production so the
+   client can verify the server's identity. To create a quick
+   self-signed certificate, use the following
+   <span class="productname">OpenSSL</span> command:
+</p>
+<pre class="programlisting">openssl req -new -text -out server.req</pre>
+<p>
+   Fill out the information that <code class="command">openssl</code> asks for. Make sure
+   that you enter the local host name as &#8220;<span class="quote">Common Name</span>&#8221;; the challenge
+   password can be left blank. The program will generate a key that is
+   passphrase protected; it will not accept a passphrase that is less
+   than four characters long. To remove the passphrase (as you must if
+   you want automatic start-up of the server), run the commands
+</p>
+<pre class="programlisting">openssl rsa -in privkey.pem -out server.key
+rm privkey.pem</pre>
+<p>
+   Enter the old passphrase to unlock the existing key. Now do
+</p>
+<pre class="programlisting">openssl req -x509 -in server.req -text -key server.key -out server.crt
+chmod og-rwx server.key</pre>
+<p>
+   to turn the certificate into a self-signed certificate and to copy the
+   key and certificate to where the server will look for them.
+  </p>
+<p>   If verification of client certificates is required, place the
+   certificates of the <acronym class="acronym">CA</acronym>(s) you wish to check for in
+   the file <code class="filename">root.crt</code> in the data directory.  When
+   present, a client certificate will be requested from the client
+   during SSL connection startup, and it must have been signed by one of the
+   certificates present in <code class="filename">root.crt</code>.  Certificate 
+   Revocation List (CRL) entries are also checked if the file 
+   <code class="filename">root.crl</code> exists.
+  </p>
+<p>   When the <code class="filename">root.crt</code> file is not present, client
+   certificates will not be requested or checked.  In this mode, SSL
+   provides communication security but not authentication.
+  </p>
+<p>   The files <code class="filename">server.key</code>, <code class="filename">server.crt</code>,
+   <code class="filename">root.crt</code>, and <code class="filename">root.crl</code>
+   are only examined during server start; so you must restart 
+   the server to make changes in them take effect.
+  </p>
+</div></body>
+</html>

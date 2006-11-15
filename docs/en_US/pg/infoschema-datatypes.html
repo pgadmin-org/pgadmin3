@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.2. Data Types</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="next" href="infoschema-information-schema-catalog-name.html" title="32.3. information_schema_catalog_name">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-datatypes"></a>32.2. Data Types</h2></div></div></div>
+<p>   The columns of the information schema views use special data types
+   that are defined in the information schema.  These are defined as
+   simple domains over ordinary built-in types.  You should not use
+   these types for work outside the information schema, but your
+   applications must be prepared for them if they select from the
+   information schema.
+  </p>
+<p>   These types are:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="type">cardinal_number</code></span></dt>
+<dd><p>       A nonnegative integer.
+      </p></dd>
+<dt><span class="term"><code class="type">character_data</code></span></dt>
+<dd><p>       A character string (without specific maximum length).
+      </p></dd>
+<dt><span class="term"><code class="type">sql_identifier</code></span></dt>
+<dd><p>       A character string.  This type is used for SQL identifiers, the
+       type <code class="type">character_data</code> is used for any other kind of
+       text data.
+      </p></dd>
+<dt><span class="term"><code class="type">time_stamp</code></span></dt>
+<dd><p>       A domain over the type <code class="type">timestamp with time zone</code>
+      </p></dd>
+</dl></div>
+<p>
+
+   Every column in the information schema has one of these four types.
+  </p>
+<p>   Boolean (true/false) data is represented in the information schema
+   by a column of type <code class="type">character_data</code> that contains
+   either <code class="literal">YES</code> or <code class="literal">NO</code>.  (The
+   information schema was invented before the type
+   <code class="type">boolean</code> was added to the SQL standard, so this
+   convention is necessary to keep the information schema backward
+   compatible.)
+  </p>
+</div></body>
+</html>

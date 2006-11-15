@@ -1,0 +1,157 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.13.  Table: sl_sequence</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">
+<link rel="next" href="table.sl-set.html" title="1.14.  Table: sl_set">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="table.sl-sequence"></a>1.13.          Table:
+         
+         <code class="structname">sl_sequence</code>
+        </h2></div></div></div>
+<p>          Similar to sl_table, each entry identifies a sequence being replicated.
+        </p>
+<p>          </p>
+<div class="variablelist">
+<p class="title"><b>              Structure of <code class="structname">sl_sequence</code>
+            </b></p>
+<dl>
+<dt><span class="term"><code class="structfield">seq_id</code></span></dt>
+<dd>
+<p>                <code class="type">integer</code>
+
+
+                <code class="literal">PRIMARY KEY</code>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </p>
+<p>                An internally-used ID for Slony-I to use in its sequencing of updates
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">seq_reloid</code></span></dt>
+<dd>
+<p>                <code class="type">oid</code>
+
+
+
+
+                      <code class="literal">UNIQUE</code>
+
+
+
+
+                <code class="literal">NOT NULL</code>
+
+
+
+
+
+
+
+              </p>
+<p>                The OID of the sequence object
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">seq_relname</code></span></dt>
+<dd>
+<p>                <code class="type">name</code>
+
+
+
+                <code class="literal">NOT NULL</code>
+
+
+
+
+
+              </p>
+<p>                The name of the sdequence in pg_catalog.pg_class.relname used to recover from a dump/restore cycle
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">seq_nspname</code></span></dt>
+<dd>
+<p>                <code class="type">name</code>
+
+
+
+                <code class="literal">NOT NULL</code>
+
+
+
+
+
+              </p>
+<p>                The name of the schema in pg_catalog.pg_namespace.nspname used to recover from a dump/restore cycle
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">seq_set</code></span></dt>
+<dd>
+<p>                <code class="type">integer</code>
+
+
+
+
+
+
+
+
+
+
+
+
+                <code class="literal">REFERENCES</code> <a href="table.sl-set.html">sl_set</a>&gt;
+
+
+              </p>
+<p>                Indicates which replication set the object is in
+              </p>
+</dd>
+<dt><span class="term"><code class="structfield">seq_comment</code></span></dt>
+<dd>
+<p>                <code class="type">text</code>
+
+
+
+
+
+
+
+              </p>
+<p>                A human-oriented comment
+              </p>
+</dd>
+</dl>
+</div>
+<p>
+
+
+
+
+
+
+
+
+
+
+      </p>
+</div></body>
+</html>

@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.99.  setdroptable_int( integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.setdroptable-integer.html" title="1.98.  setdroptable( integer )">
+<link rel="next" href="function.setmovesequence-integer-integer.html" title="1.100.  setmovesequence( integer, integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.setdroptable-int-integer"></a>1.99.        setdroptable_int( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       setDropTable_int (tab_id)
+
+This function processes the SET_DROP_TABLE event on remote nodes,
+dropping a table from replication if the remote node is subscribing to
+its replication set.
+        </p>
+<pre class="programlisting">declare
+	p_tab_id		alias for $1;
+	v_set_id		int4;
+	v_local_node_id		int4;
+	v_set_origin		int4;
+	v_sub_provider		int4;
+	v_tab_reloid		oid;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+        -- ----
+	-- Determine the set_id
+        -- ----
+	select tab_set into v_set_id from sl_table where tab_id = p_tab_id;
+
+	-- ----
+	-- Ensure table exists
+	-- ----
+	if not found then
+		return 0;
+	end if;
+
+	-- ----
+	-- For sets with a remote origin, check that we are subscribed 
+	-- to that set. Otherwise we ignore the table because it might 
+	-- not even exist in our database.
+	-- ----
+	v_local_node_id := getLocalNodeId('_schemadoc');
+	select set_origin into v_set_origin
+			from sl_set
+			where set_id = v_set_id;
+	if not found then
+		raise exception 'Slony-I: setDropTable_int(): set % not found',
+				v_set_id;
+	end if;
+	if v_set_origin != v_local_node_id then
+		select sub_provider into v_sub_provider
+				from sl_subscribe
+				where sub_set = v_set_id
+				and sub_receiver = getLocalNodeId('_schemadoc');
+		if not found then
+			return 0;
+		end if;
+	end if;
+	
+	-- ----
+	-- Drop the table from sl_table and drop trigger from it.
+	-- ----
+	perform alterTableRestore(p_tab_id);
+	perform tableDropKey(p_tab_id);
+	delete from sl_table where tab_id = p_tab_id;
+	return p_tab_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

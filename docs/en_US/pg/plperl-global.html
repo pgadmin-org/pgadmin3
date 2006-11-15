@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>39.4. Global Values in PL/Perl</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="plperl.html" title="Chapter 39. PL/Perl - Perl Procedural Language">
+<link rel="prev" href="plperl-data.html" title="39.3. Data Values in PL/Perl">
+<link rel="next" href="plperl-trusted.html" title="39.5. Trusted and Untrusted PL/Perl">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plperl-global"></a>39.4. Global Values in PL/Perl</h2></div></div></div>
+<p>    You can use the global hash <code class="varname">%_SHARED</code> to store
+    data, including code references, between function calls for the
+    lifetime of the current session.
+  </p>
+<p>    Here is a simple example for shared data:
+</p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION set_var(name text, val text) RETURNS text AS $$
+    if ($_SHARED{$_[0]} = $_[1]) {
+        return 'ok';
+    } else {
+        return "can't set shared variable $_[0] to $_[1]";
+    }
+$$ LANGUAGE plperl;
+
+CREATE OR REPLACE FUNCTION get_var(name text) RETURNS text AS $$
+    return $_SHARED{$_[0]};
+$$ LANGUAGE plperl;
+
+SELECT set_var('sample', 'Hello, PL/Perl!  How's tricks?');
+SELECT get_var('sample');</pre>
+<p>
+  </p>
+<p>   Here is a slightly more complicated example using a code reference:
+
+</p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION myfuncs() RETURNS void AS $$
+    $_SHARED{myquote} = sub {
+        my $arg = shift;
+        $arg =~ s/(['\\])/\\$1/g;
+        return "'$arg'";
+    };
+$$ LANGUAGE plperl;
+
+SELECT myfuncs(); /* initializes the function */
+
+/* Set up a function that uses the quote function */
+
+CREATE OR REPLACE FUNCTION use_quote(TEXT) RETURNS text AS $$
+    my $text_to_quote = shift;
+    my $qfunc = $_SHARED{myquote};
+    return &amp;$qfunc($text_to_quote);
+$$ LANGUAGE plperl;</pre>
+<p>
+
+   (You could have replaced the above with the one-liner
+   <code class="literal">return $_SHARED{myquote}-&gt;($_[0]);</code>
+   at the expense of readability.)
+  </p>
+</div></body>
+</html>

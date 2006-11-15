@@ -1,0 +1,80 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.98.  setdroptable( integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.setdropsequence-int-integer.html" title="1.97.  setdropsequence_int( integer )">
+<link rel="next" href="function.setdroptable-int-integer.html" title="1.99.  setdroptable_int( integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.setdroptable-integer"></a>1.98.        setdroptable( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       setDropTable (tab_id)
+
+Drop table tab_id from set on origin node, and generate SET_DROP_TABLE
+event to allow this to propagate to other nodes.
+        </p>
+<pre class="programlisting">declare
+	p_tab_id		alias for $1;
+	v_set_id		int4;
+	v_set_origin		int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+        -- ----
+	-- Determine the set_id
+        -- ----
+	select tab_set into v_set_id from sl_table where tab_id = p_tab_id;
+
+	-- ----
+	-- Ensure table exists
+	-- ----
+	if not found then
+		raise exception 'Slony-I: setDropTable_int(): table % not found',
+			p_tab_id;
+	end if;
+
+	-- ----
+	-- Check that we are the origin of the set
+	-- ----
+	select set_origin into v_set_origin
+			from sl_set
+			where set_id = v_set_id;
+	if not found then
+		raise exception 'Slony-I: setDropTable(): set % not found', v_set_id;
+	end if;
+	if v_set_origin != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: setDropTable(): set % has remote origin', v_set_id;
+	end if;
+
+	-- ----
+	-- Drop the table from the set and generate the SET_ADD_TABLE event
+	-- ----
+	perform setDropTable_int(p_tab_id);
+	return  createEvent('_schemadoc', 'SET_DROP_TABLE', p_tab_id);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

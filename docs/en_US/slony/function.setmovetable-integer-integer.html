@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.102.  setmovetable( integer, integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.setmovesequence-int-integer-integer.html" title="1.101.  setmovesequence_int( integer, integer )">
+<link rel="next" href="function.setmovetable-int-integer-integer.html" title="1.103.  setmovetable_int( integer, integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.setmovetable-integer-integer"></a>1.102.        setmovetable( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       This processes the SET_MOVE_TABLE event.  The table is moved 
+to the destination set.
+        </p>
+<pre class="programlisting">declare
+	p_tab_id			alias for $1;
+	p_new_set_id		alias for $2;
+	v_old_set_id		int4;
+	v_origin			int4;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Get the tables current set
+	-- ----
+	select tab_set into v_old_set_id from sl_table
+			where tab_id = p_tab_id;
+	if not found then
+		raise exception 'Slony-I: table %d not found', p_tab_id;
+	end if;
+	
+	-- ----
+	-- Check that both sets exist and originate here
+	-- ----
+	if p_new_set_id = v_old_set_id then
+		raise exception 'Slony-I: set ids cannot be identical';
+	end if;
+	select set_origin into v_origin from sl_set
+			where set_id = p_new_set_id;
+	if not found then
+		raise exception 'Slony-I: set % not found', p_new_set_id;
+	end if;
+	if v_origin != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: set % does not originate on local node',
+				p_new_set_id;
+	end if;
+
+	select set_origin into v_origin from sl_set
+			where set_id = v_old_set_id;
+	if not found then
+		raise exception 'Slony-I: set % not found', v_old_set_id;
+	end if;
+	if v_origin != getLocalNodeId('_schemadoc') then
+		raise exception 'Slony-I: set % does not originate on local node',
+				v_old_set_id;
+	end if;
+
+	-- ----
+	-- Check that both sets are subscribed by the same set of nodes
+	-- ----
+	if exists (select true from sl_subscribe SUB1
+				where SUB1.sub_set = p_new_set_id
+				and SUB1.sub_receiver not in (select SUB2.sub_receiver
+						from sl_subscribe SUB2
+						where SUB2.sub_set = v_old_set_id))
+	then
+		raise exception 'Slony-I: subscriber lists of set % and % are different',
+				p_new_set_id, v_old_set_id;
+	end if;
+
+	if exists (select true from sl_subscribe SUB1
+				where SUB1.sub_set = v_old_set_id
+				and SUB1.sub_receiver not in (select SUB2.sub_receiver
+						from sl_subscribe SUB2
+						where SUB2.sub_set = p_new_set_id))
+	then
+		raise exception 'Slony-I: subscriber lists of set % and % are different',
+				v_old_set_id, p_new_set_id;
+	end if;
+
+	-- ----
+	-- Change the set the table belongs to
+	-- ----
+	perform createEvent('_schemadoc', 'SYNC', NULL);
+	perform setMoveTable_int(p_tab_id, p_new_set_id);
+	return  createEvent('_schemadoc', 'SET_MOVE_TABLE', 
+			p_tab_id, p_new_set_id);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

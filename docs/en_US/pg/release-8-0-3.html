@@ -1,0 +1,120 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.14. Release 8.0.3</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0-4.html" title="E.13. Release 8.0.4">
+<link rel="next" href="release-8-0-2.html" title="E.15. Release 8.0.2">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0-3"></a>E.14. Release 8.0.3</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-05-09</p>
+</div>
+<p>    This release contains a variety of fixes from 8.0.2, including several
+    security-related issues.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2850864"></a>E.14.1. Migration to version 8.0.3</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.X.  However,
+     it is one possible way of handling two significant security problems
+     that have been found in the initial contents of 8.0.X system
+     catalogs.  A dump/initdb/reload sequence using 8.0.3's initdb will
+     automatically correct these problems.
+    </p>
+<p>     The larger security problem is that the built-in character set encoding
+     conversion functions can be invoked from SQL commands by unprivileged
+     users, but the functions were not designed for such use and are not
+     secure against malicious choices of arguments.  The fix involves changing
+     the declared parameter list of these functions so that they can no longer
+     be invoked from SQL commands.  (This does not affect their normal use
+     by the encoding conversion machinery.)
+    </p>
+<p>     The lesser problem is that the <code class="filename">contrib/tsearch2</code> module
+     creates several functions that are improperly declared to return
+     <code class="type">internal</code> when they do not accept <code class="type">internal</code> arguments.
+     This breaks type safety for all functions using <code class="type">internal</code>
+     arguments.
+    </p>
+<p>     It is strongly recommended that all installations repair these errors,
+     either by initdb or by following the manual repair procedure given
+     below.  The errors at least allow unprivileged database users to crash
+     their server process, and may allow unprivileged users to gain the
+     privileges of a database superuser.
+    </p>
+<p>     If you wish not to do an initdb, perform the same manual repair
+     procedures shown in the <a href="release-7-4-8.html" title="E.24. Release 7.4.8">7.4.8 release
+     notes</a>.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2850930"></a>E.14.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Change encoding function signature to prevent
+misuse</p></li>
+<li><p>Change <code class="filename">contrib/tsearch2</code> to avoid unsafe use of
+<code class="type">INTERNAL</code> function results</p></li>
+<li><p>Guard against incorrect second parameter to
+<code class="function">record_out</code></p></li>
+<li>
+<p>Repair ancient race condition that allowed a transaction to be
+seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
+than for other purposes</p>
+<p>This is an extremely serious bug since it could lead to apparent
+data inconsistencies being briefly visible to applications.</p>
+</li>
+<li>
+<p>Repair race condition between relation extension and
+VACUUM</p>
+<p>This could theoretically have caused loss of a page's worth of
+freshly-inserted data, although the scenario seems of very low probability.
+There are no known cases of it having caused more than an Assert failure.</p>
+</li>
+<li>
+<p>Fix comparisons of <code class="type">TIME WITH TIME ZONE</code> values</p>
+<p>The comparison code was wrong in the case where the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.
+NOTE: if you have an index on a <code class="type">TIME WITH TIME ZONE</code> column,
+it will need to be <code class="command">REINDEX</code>ed after installing this update, because
+the fix corrects the sort order of column values.</p>
+</li>
+<li><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
+<code class="type">TIME WITH TIME ZONE</code> values</p></li>
+<li>
+<p>Fix mis-display of negative fractional seconds in
+<code class="type">INTERVAL</code> values</p>
+<p>This error only occurred when the
+<code class="literal">--enable-integer-datetimes</code> configuration switch had been used.</p>
+</li>
+<li><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
+correctly (Neil)</p></li>
+<li><p>Still more 64-bit fixes for
+<code class="filename">contrib/intagg</code></p></li>
+<li><p>Prevent incorrect optimization of functions returning
+<code class="type">RECORD</code></p></li>
+<li><p>Prevent crash on <code class="literal">COALESCE(NULL,NULL)</code></p></li>
+<li><p>Fix Borland makefile for libpq</p></li>
+<li><p>Fix <code class="filename">contrib/btree_gist</code> for <code class="type">timetz</code> type
+(Teodor)</p></li>
+<li><p>Make <code class="command">pg_ctl</code> check the PID found in
+<code class="filename">postmaster.pid</code> to see if it is still a live
+process</p></li>
+<li><p>Fix <code class="command">pg_dump</code>/<code class="command">pg_restore</code> problems caused
+by addition of dump timestamps</p></li>
+<li><p>Fix interaction between materializing holdable cursors and
+firing deferred triggers during transaction commit</p></li>
+<li><p>Fix memory leak in SQL functions returning pass-by-reference
+data types</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

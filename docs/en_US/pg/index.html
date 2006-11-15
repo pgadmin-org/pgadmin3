@@ -1,0 +1,2473 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>PostgreSQL 8.2beta3 Documentation</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="next" href="preface.html" title="Preface">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en" id="postgres">
+<div class="titlepage">
+<div>
+<div><h1 class="title">
+<a name="postgres"></a>PostgreSQL 8.2beta3 Documentation</h1></div>
+<div><h3 class="corpauthor">The PostgreSQL Global Development Group</h3></div>
+<div><p class="copyright">Copyright © 1996-2006 The PostgreSQL Global Development Group</p></div>
+<div><a href="ln-legalnotice.html">Legal Notice</a></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="preface"><a href="preface.html">1. Preface</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="preface.html#intro-whatis">1.1.  What is <span class="productname">PostgreSQL</span>?</a></span></dt>
+<dt><span class="sect1"><a href="history.html">1.2. A Brief History of <span class="productname">PostgreSQL</span></a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="history.html#history-berkeley">1.2.1. The Berkeley <span class="productname">POSTGRES</span> Project</a></span></dt>
+<dt><span class="sect2"><a href="history.html#history-postgres95">1.2.2. <span class="productname">Postgres95</span></a></span></dt>
+<dt><span class="sect2"><a href="history.html#id2501663">1.2.3. <span class="productname">PostgreSQL</span></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="notation.html">1.3. Conventions</a></span></dt>
+<dt><span class="sect1"><a href="resources.html">1.4. Further Information</a></span></dt>
+<dt><span class="sect1"><a href="bug-reporting.html">1.5. Bug Reporting Guidelines</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="bug-reporting.html#id2499462">1.5.1. Identifying Bugs</a></span></dt>
+<dt><span class="sect2"><a href="bug-reporting.html#id2499537">1.5.2. What to report</a></span></dt>
+<dt><span class="sect2"><a href="bug-reporting.html#id2500030">1.5.3. Where to report bugs</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="tutorial.html">I. Tutorial</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="tutorial-start.html">1. Getting Started</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="tutorial-start.html#tutorial-install">1.1. Installation</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-arch.html">1.2. Architectural Fundamentals</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-createdb.html">1.3. Creating a Database</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-accessdb.html">1.4. Accessing a Database</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="tutorial-sql.html">2. The <acronym class="acronym">SQL</acronym> Language</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="tutorial-sql.html#tutorial-sql-intro">2.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-concepts.html">2.2. Concepts</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-table.html">2.3. Creating a New Table</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-populate.html">2.4. Populating a Table With Rows</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-select.html">2.5. Querying a Table</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-join.html">2.6. Joins Between Tables</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-agg.html">2.7. Aggregate Functions</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-update.html">2.8. Updates</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-delete.html">2.9. Deletions</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="tutorial-advanced.html">3. Advanced Features</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="tutorial-advanced.html#tutorial-advanced-intro">3.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-views.html">3.2. Views</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-fk.html">3.3. Foreign Keys</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-transactions.html">3.4. Transactions</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-inheritance.html">3.5. Inheritance</a></span></dt>
+<dt><span class="sect1"><a href="tutorial-conclusion.html">3.6. Conclusion</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="sql.html">II. The SQL Language</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="sql-syntax.html">4. SQL Syntax</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="sql-syntax.html#sql-syntax-lexical">4.1. Lexical Structure</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-identifiers">4.1.1. Identifiers and Key Words</a></span></dt>
+<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-constants">4.1.2. Constants</a></span></dt>
+<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-operators">4.1.3. Operators</a></span></dt>
+<dt><span class="sect2"><a href="sql-syntax.html#id2552882">4.1.4. Special Characters</a></span></dt>
+<dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-comments">4.1.5. Comments</a></span></dt>
+<dt><span class="sect2"><a href="sql-syntax.html#sql-precedence">4.1.6. Lexical Precedence</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="sql-expressions.html">4.2. Value Expressions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="sql-expressions.html#id2553636">4.2.1. Column References</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2553707">4.2.2. Positional Parameters</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2553766">4.2.3. Subscripts</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2553848">4.2.4. Field Selection</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2553890">4.2.5. Operator Invocations</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2553993">4.2.6. Function Calls</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#syntax-aggregates">4.2.7. Aggregate Expressions</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-type-casts">4.2.8. Type Casts</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-scalar-subqueries">4.2.9. Scalar Subqueries</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-array-constructors">4.2.10. Array Constructors</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-row-constructors">4.2.11. Row Constructors</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#syntax-express-eval">4.2.12. Expression Evaluation Rules</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="ddl.html">5. Data Definition</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="ddl.html#ddl-basics">5.1. Table Basics</a></span></dt>
+<dt><span class="sect1"><a href="ddl-default.html">5.2. Default Values</a></span></dt>
+<dt><span class="sect1"><a href="ddl-constraints.html">5.3. Constraints</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2555513">5.3.1. Check Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2555708">5.3.2. Not-Null Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2555838">5.3.3. Unique Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2555940">5.3.4. Primary Keys</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#ddl-constraints-fk">5.3.5. Foreign Keys</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ddl-system-columns.html">5.4. System Columns</a></span></dt>
+<dt><span class="sect1"><a href="ddl-alter.html">5.5. Modifying Tables</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ddl-alter.html#id2556746">5.5.1. Adding a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2556826">5.5.2. Removing a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2556879">5.5.3. Adding a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2556920">5.5.4. Removing a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2556993">5.5.5. Changing a Column's Default Value</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2557036">5.5.6. Changing a Column's Data Type</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2557083">5.5.7. Renaming a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2557104">5.5.8. Renaming a Table</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ddl-priv.html">5.6. Privileges</a></span></dt>
+<dt><span class="sect1"><a href="ddl-schemas.html">5.7. Schemas</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-create">5.7.1. Creating a Schema</a></span></dt>
+<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-public">5.7.2. The Public Schema</a></span></dt>
+<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-path">5.7.3. The Schema Search Path</a></span></dt>
+<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-priv">5.7.4. Schemas and Privileges</a></span></dt>
+<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-catalog">5.7.5. The System Catalog Schema</a></span></dt>
+<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-patterns">5.7.6. Usage Patterns</a></span></dt>
+<dt><span class="sect2"><a href="ddl-schemas.html#ddl-schemas-portability">5.7.7. Portability</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ddl-inherit.html">5.8. Inheritance</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="ddl-inherit.html#ddl-inherit-caveats">5.8.1. Caveats</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="ddl-partitioning.html">5.9. Partitioning</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ddl-partitioning.html#ddl-partitioning-overview">5.9.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="ddl-partitioning.html#ddl-partitioning-implementation">5.9.2. Implementing Partitioning</a></span></dt>
+<dt><span class="sect2"><a href="ddl-partitioning.html#ddl-partitioning-managing-partitions">5.9.3. Managing Partitions</a></span></dt>
+<dt><span class="sect2"><a href="ddl-partitioning.html#ddl-partitioning-caveats">5.9.4. Caveats</a></span></dt>
+<dt><span class="sect2"><a href="ddl-partitioning.html#ddl-partitioning-constraint-exclusion">5.9.5. Partitioning and Constraint Exclusion</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ddl-others.html">5.10. Other Database Objects</a></span></dt>
+<dt><span class="sect1"><a href="ddl-depend.html">5.11. Dependency Tracking</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="dml.html">6. Data Manipulation</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="dml.html#dml-insert">6.1. Inserting Data</a></span></dt>
+<dt><span class="sect1"><a href="dml-update.html">6.2. Updating Data</a></span></dt>
+<dt><span class="sect1"><a href="dml-delete.html">6.3. Deleting Data</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="queries.html">7. Queries</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="queries.html#queries-overview">7.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="queries-table-expressions.html">7.2. Table Expressions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="queries-table-expressions.html#queries-from">7.2.1. The <code class="literal">FROM</code> Clause</a></span></dt>
+<dt><span class="sect2"><a href="queries-table-expressions.html#queries-where">7.2.2. The <code class="literal">WHERE</code> Clause</a></span></dt>
+<dt><span class="sect2"><a href="queries-table-expressions.html#queries-group">7.2.3. The <code class="literal">GROUP BY</code> and <code class="literal">HAVING</code> Clauses</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="queries-select-lists.html">7.3. Select Lists</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="queries-select-lists.html#queries-select-list-items">7.3.1. Select-List Items</a></span></dt>
+<dt><span class="sect2"><a href="queries-select-lists.html#queries-column-labels">7.3.2. Column Labels</a></span></dt>
+<dt><span class="sect2"><a href="queries-select-lists.html#queries-distinct">7.3.3. <code class="literal">DISTINCT</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="queries-union.html">7.4. Combining Queries</a></span></dt>
+<dt><span class="sect1"><a href="queries-order.html">7.5. Sorting Rows</a></span></dt>
+<dt><span class="sect1"><a href="queries-limit.html">7.6. <code class="literal">LIMIT</code> and <code class="literal">OFFSET</code></a></span></dt>
+<dt><span class="sect1"><a href="queries-values.html">7.7. <code class="literal">VALUES</code> Lists</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="datatype.html">8. Data Types</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="datatype.html#datatype-numeric">8.1. Numeric Types</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="datatype.html#datatype-int">8.1.1. Integer Types</a></span></dt>
+<dt><span class="sect2"><a href="datatype.html#datatype-numeric-decimal">8.1.2. Arbitrary Precision Numbers</a></span></dt>
+<dt><span class="sect2"><a href="datatype.html#datatype-float">8.1.3. Floating-Point Types</a></span></dt>
+<dt><span class="sect2"><a href="datatype.html#datatype-serial">8.1.4. Serial Types</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="datatype-money.html">8.2. Monetary Types</a></span></dt>
+<dt><span class="sect1"><a href="datatype-character.html">8.3. Character Types</a></span></dt>
+<dt><span class="sect1"><a href="datatype-binary.html">8.4. Binary Data Types</a></span></dt>
+<dt><span class="sect1"><a href="datatype-datetime.html">8.5. Date/Time Types</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-input">8.5.1. Date/Time Input</a></span></dt>
+<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-output">8.5.2. Date/Time Output</a></span></dt>
+<dt><span class="sect2"><a href="datatype-datetime.html#datatype-timezones">8.5.3. Time Zones</a></span></dt>
+<dt><span class="sect2"><a href="datatype-datetime.html#datatype-datetime-internals">8.5.4. Internals</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="datatype-boolean.html">8.6. Boolean Type</a></span></dt>
+<dt><span class="sect1"><a href="datatype-geometric.html">8.7. Geometric Types</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2569873">8.7.1. Points</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2569916">8.7.2. Line Segments</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2570014">8.7.3. Boxes</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2570115">8.7.4. Paths</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2570236">8.7.5. Polygons</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2570323">8.7.6. Circles</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="datatype-net-types.html">8.8. Network Address Types</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="datatype-net-types.html#datatype-inet">8.8.1. <code class="type">inet</code></a></span></dt>
+<dt><span class="sect2"><a href="datatype-net-types.html#datatype-cidr">8.8.2. <code class="type">cidr</code></a></span></dt>
+<dt><span class="sect2"><a href="datatype-net-types.html#datatype-inet-vs-cidr">8.8.3. <code class="type">inet</code> vs. <code class="type">cidr</code></a></span></dt>
+<dt><span class="sect2"><a href="datatype-net-types.html#datatype-macaddr">8.8.4. <code class="type">macaddr</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="datatype-bit.html">8.9. Bit String Types</a></span></dt>
+<dt><span class="sect1"><a href="arrays.html">8.10. Arrays</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="arrays.html#id2571149">8.10.1. Declaration of Array Types</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2571256">8.10.2. Array Value Input</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2571471">8.10.3. Accessing Arrays</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2571669">8.10.4. Modifying Arrays</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2571892">8.10.5. Searching in Arrays</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2571943">8.10.6. Array Input and Output Syntax</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="rowtypes.html">8.11. Composite Types</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="rowtypes.html#id2572251">8.11.1. Declaration of Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2572349">8.11.2. Composite Value Input</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2572467">8.11.3. Accessing Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2572540">8.11.4. Modifying Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2572600">8.11.5. Composite Type Input and Output Syntax</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="datatype-oid.html">8.12. Object Identifier Types</a></span></dt>
+<dt><span class="sect1"><a href="datatype-pseudo.html">8.13. Pseudo-Types</a></span></dt>
+<dt><span class="sect1"><a href="datatype-xml.html">8.14. <acronym class="acronym">XML</acronym> Document Support</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="functions.html">9. Functions and Operators</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="functions.html#functions-logical">9.1. Logical Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-comparison.html">9.2. Comparison Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-math.html">9.3. Mathematical Functions and Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-string.html">9.4. String Functions and Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-binarystring.html">9.5. Binary String Functions and Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-bitstring.html">9.6. Bit String Functions and Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-matching.html">9.7. Pattern Matching</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="functions-matching.html#functions-like">9.7.1. <code class="function">LIKE</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-matching.html#functions-similarto-regexp">9.7.2. <code class="function">SIMILAR TO</code> Regular Expressions</a></span></dt>
+<dt><span class="sect2"><a href="functions-matching.html#functions-posix-regexp">9.7.3. <acronym class="acronym">POSIX</acronym> Regular Expressions</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="functions-formatting.html">9.8. Data Type Formatting Functions</a></span></dt>
+<dt><span class="sect1"><a href="functions-datetime.html">9.9. Date/Time Functions and Operators</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-extract">9.9.1. <code class="function">EXTRACT</code>, <code class="function">date_part</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-trunc">9.9.2. <code class="function">date_trunc</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-zoneconvert">9.9.3. <code class="literal">AT TIME ZONE</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-current">9.9.4. Current Date/Time</a></span></dt>
+<dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-delay">9.9.5. Delaying Execution</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="functions-geometry.html">9.10. Geometric Functions and Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-net.html">9.11. Network Address Functions and Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-sequence.html">9.12. Sequence Manipulation Functions</a></span></dt>
+<dt><span class="sect1"><a href="functions-conditional.html">9.13. Conditional Expressions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="functions-conditional.html#id2596198">9.13.1. <code class="literal">CASE</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2596409">9.13.2. <code class="literal">COALESCE</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2596496">9.13.3. <code class="literal">NULLIF</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2596576">9.13.4. <code class="literal">GREATEST</code> and <code class="literal">LEAST</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="functions-array.html">9.14. Array Functions and Operators</a></span></dt>
+<dt><span class="sect1"><a href="functions-aggregate.html">9.15. Aggregate Functions</a></span></dt>
+<dt><span class="sect1"><a href="functions-subquery.html">9.16. Subquery Expressions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="functions-subquery.html#id2599128">9.16.1. <code class="literal">EXISTS</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2599241">9.16.2. <code class="literal">IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2599351">9.16.3. <code class="literal">NOT IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2599461">9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2599631">9.16.5. <code class="literal">ALL</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2599758">9.16.6. Row-wise Comparison</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="functions-comparisons.html">9.17. Row and Array Comparisons</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2599891">9.17.1. <code class="literal">IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2599951">9.17.2. <code class="literal">NOT IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2600038">9.17.3. <code class="literal">ANY</code>/<code class="literal">SOME</code> (array)</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2600130">9.17.4. <code class="literal">ALL</code> (array)</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#row-wise-comparison">9.17.5. Row-wise Comparison</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="functions-srf.html">9.18. Set Returning Functions</a></span></dt>
+<dt><span class="sect1"><a href="functions-info.html">9.19. System Information Functions</a></span></dt>
+<dt><span class="sect1"><a href="functions-admin.html">9.20. System Administration Functions</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="typeconv.html">10. Type Conversion</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="typeconv.html#typeconv-overview">10.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-oper.html">10.2. Operators</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-func.html">10.3. Functions</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-query.html">10.4. Value Storage</a></span></dt>
+<dt><span class="sect1"><a href="typeconv-union-case.html">10.5. <code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="indexes.html">11. Indexes</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="indexes.html#indexes-intro">11.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="indexes-types.html">11.2. Index Types</a></span></dt>
+<dt><span class="sect1"><a href="indexes-multicolumn.html">11.3. Multicolumn Indexes</a></span></dt>
+<dt><span class="sect1"><a href="indexes-bitmap-scans.html">11.4. Combining Multiple Indexes</a></span></dt>
+<dt><span class="sect1"><a href="indexes-unique.html">11.5. Unique Indexes</a></span></dt>
+<dt><span class="sect1"><a href="indexes-expressional.html">11.6. Indexes on Expressions</a></span></dt>
+<dt><span class="sect1"><a href="indexes-partial.html">11.7. Partial Indexes</a></span></dt>
+<dt><span class="sect1"><a href="indexes-opclass.html">11.8. Operator Classes</a></span></dt>
+<dt><span class="sect1"><a href="indexes-examine.html">11.9. Examining Index Usage</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="mvcc.html">12. Concurrency Control</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="mvcc.html#mvcc-intro">12.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="transaction-iso.html">12.2. Transaction Isolation</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="transaction-iso.html#xact-read-committed">12.2.1. Read Committed Isolation Level</a></span></dt>
+<dt><span class="sect2"><a href="transaction-iso.html#xact-serializable">12.2.2. Serializable Isolation Level</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="explicit-locking.html">12.3. Explicit Locking</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="explicit-locking.html#locking-tables">12.3.1. Table-Level Locks</a></span></dt>
+<dt><span class="sect2"><a href="explicit-locking.html#locking-rows">12.3.2. Row-Level Locks</a></span></dt>
+<dt><span class="sect2"><a href="explicit-locking.html#locking-deadlocks">12.3.3. Deadlocks</a></span></dt>
+<dt><span class="sect2"><a href="explicit-locking.html#advisory-locks">12.3.4. Advisory Locks</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="applevel-consistency.html">12.4. Data Consistency Checks at the Application Level</a></span></dt>
+<dt><span class="sect1"><a href="locking-indexes.html">12.5. Locking and Indexes</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="performance-tips.html">13. Performance Tips</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="performance-tips.html#using-explain">13.1. Using <code class="command">EXPLAIN</code></a></span></dt>
+<dt><span class="sect1"><a href="planner-stats.html">13.2. Statistics Used by the Planner</a></span></dt>
+<dt><span class="sect1"><a href="explicit-joins.html">13.3. Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses</a></span></dt>
+<dt><span class="sect1"><a href="populate.html">13.4. Populating a Database</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="populate.html#disable-autocommit">13.4.1. Disable Autocommit</a></span></dt>
+<dt><span class="sect2"><a href="populate.html#populate-copy-from">13.4.2. Use <code class="command">COPY</code></a></span></dt>
+<dt><span class="sect2"><a href="populate.html#populate-rm-indexes">13.4.3. Remove Indexes</a></span></dt>
+<dt><span class="sect2"><a href="populate.html#populate-rm-fkeys">13.4.4. Remove Foreign Key Constraints</a></span></dt>
+<dt><span class="sect2"><a href="populate.html#populate-work-mem">13.4.5. Increase <code class="varname">maintenance_work_mem</code></a></span></dt>
+<dt><span class="sect2"><a href="populate.html#populate-checkpoint-segments">13.4.6. Increase <code class="varname">checkpoint_segments</code></a></span></dt>
+<dt><span class="sect2"><a href="populate.html#populate-analyze">13.4.7. Run <code class="command">ANALYZE</code> Afterwards</a></span></dt>
+<dt><span class="sect2"><a href="populate.html#populate-pg-dump">13.4.8. Some Notes About <span class="application">pg_dump</span></a></span></dt>
+</dl></dd>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="admin.html">III. Server Administration</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="installation.html">14.   Installation Instructions</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="installation.html#install-short">14.1. Short Version</a></span></dt>
+<dt><span class="sect1"><a href="install-requirements.html">14.2. Requirements</a></span></dt>
+<dt><span class="sect1"><a href="install-getsource.html">14.3. Getting The Source</a></span></dt>
+<dt><span class="sect1"><a href="install-upgrading.html">14.4. If You Are Upgrading</a></span></dt>
+<dt><span class="sect1"><a href="install-procedure.html">14.5. Installation Procedure</a></span></dt>
+<dt><span class="sect1"><a href="install-post.html">14.6. Post-Installation Setup</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="install-post.html#id2616784">14.6.1. Shared Libraries</a></span></dt>
+<dt><span class="sect2"><a href="install-post.html#id2617126">14.6.2. Environment Variables</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="supported-platforms.html">14.7. Supported Platforms</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="install-win32.html">15. Client-Only Installation on <span class="productname">Windows</span></a></span></dt>
+<dt><span class="chapter"><a href="runtime.html">16. Operating System Environment</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="runtime.html#postgres-user">16.1. The <span class="productname">PostgreSQL</span> User Account</a></span></dt>
+<dt><span class="sect1"><a href="creating-cluster.html">16.2. Creating a Database Cluster</a></span></dt>
+<dt><span class="sect1"><a href="server-start.html">16.3. Starting the Database Server</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="server-start.html#server-start-failures">16.3.1. Server Start-up Failures</a></span></dt>
+<dt><span class="sect2"><a href="server-start.html#client-connection-problems">16.3.2. Client Connection Problems</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="kernel-resources.html">16.4. Managing Kernel Resources</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="kernel-resources.html#sysvipc">16.4.1. Shared Memory and Semaphores</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id2622639">16.4.2. Resource Limits</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id2622818">16.4.3. Linux Memory Overcommit</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="server-shutdown.html">16.5. Shutting Down the Server</a></span></dt>
+<dt><span class="sect1"><a href="encryption-options.html">16.6. Encryption Options</a></span></dt>
+<dt><span class="sect1"><a href="ssl-tcp.html">16.7. Secure TCP/IP Connections with SSL</a></span></dt>
+<dt><span class="sect1"><a href="ssh-tunnels.html">16.8. Secure TCP/IP Connections with <span class="application">SSH</span> Tunnels</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="runtime-config.html">17. Server Configuration</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="runtime-config.html#config-setting">17.1. Setting Parameters</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-file-locations.html">17.2. File Locations</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-connection.html">17.3. Connections and Authentication</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-connection.html#runtime-config-connection-settings">17.3.1. Connection Settings</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-connection.html#runtime-config-connection-security">17.3.2. Security and Authentication</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-resource.html">17.4. Resource Consumption</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-memory">17.4.1. Memory</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-fsm">17.4.2. Free Space Map</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-kernel">17.4.3. Kernel Resource Usage</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost">17.4.4.        Cost-Based Vacuum Delay
+     </a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-resource.html#runtime-config-resource-background-writer">17.4.5. Background Writer</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-wal.html">17.5. Write Ahead Log</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-wal.html#runtime-config-wal-settings">17.5.1. Settings</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-wal.html#runtime-config-wal-checkpoints">17.5.2. Checkpoints</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-wal.html#runtime-config-wal-archiving">17.5.3. Archiving</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-query.html">17.6. Query Planning</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-enable">17.6.1. Planner Method Configuration</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-constants">17.6.2.       Planner Cost Constants
+     </a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-geqo">17.6.3. Genetic Query Optimizer</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-query.html#runtime-config-query-other">17.6.4. Other Planner Options</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-logging.html">17.7. Error Reporting and Logging</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-where">17.7.1. Where To Log</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-when">17.7.2. When To Log</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-logging.html#runtime-config-logging-what">17.7.3. What To Log</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-statistics.html">17.8. Run-Time Statistics</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-statistics.html#runtime-config-statistics-collector">17.8.1. Query and Index Statistics Collector</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-statistics.html#runtime-config-statistics-monitor">17.8.2. Statistics Monitoring</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-autovacuum.html">17.9. Automatic Vacuuming</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-client.html">17.10. Client Connection Defaults</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-client.html#runtime-config-client-statement">17.10.1. Statement Behavior</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-client.html#runtime-config-client-format">17.10.2. Locale and Formatting</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-client.html#runtime-config-client-other">17.10.3. Other Defaults</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-locks.html">17.11. Lock Management</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-compatible.html">17.12. Version and Platform Compatibility</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="runtime-config-compatible.html#runtime-config-compatible-version">17.12.1. Previous PostgreSQL Versions</a></span></dt>
+<dt><span class="sect2"><a href="runtime-config-compatible.html#runtime-config-compatible-clients">17.12.2. Platform and Client Compatibility</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="runtime-config-preset.html">17.13. Preset Options</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-custom.html">17.14. Customized Options</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-developer.html">17.15. Developer Options</a></span></dt>
+<dt><span class="sect1"><a href="runtime-config-short.html">17.16. Short Options</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="user-manag.html">18. Database Roles and Privileges</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="user-manag.html#database-roles">18.1. Database Roles</a></span></dt>
+<dt><span class="sect1"><a href="role-attributes.html">18.2. Role Attributes</a></span></dt>
+<dt><span class="sect1"><a href="privileges.html">18.3. Privileges</a></span></dt>
+<dt><span class="sect1"><a href="role-membership.html">18.4. Role Membership</a></span></dt>
+<dt><span class="sect1"><a href="perm-functions.html">18.5. Functions and Triggers</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="managing-databases.html">19. Managing Databases</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="managing-databases.html#manage-ag-overview">19.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="manage-ag-createdb.html">19.2. Creating a Database</a></span></dt>
+<dt><span class="sect1"><a href="manage-ag-templatedbs.html">19.3. Template Databases</a></span></dt>
+<dt><span class="sect1"><a href="manage-ag-config.html">19.4. Database Configuration</a></span></dt>
+<dt><span class="sect1"><a href="manage-ag-dropdb.html">19.5. Destroying a Database</a></span></dt>
+<dt><span class="sect1"><a href="manage-ag-tablespaces.html">19.6. Tablespaces</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="client-authentication.html">20. Client Authentication</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="client-authentication.html#auth-pg-hba-conf">20.1. The <code class="filename">pg_hba.conf</code> file</a></span></dt>
+<dt><span class="sect1"><a href="auth-methods.html">20.2. Authentication methods</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="auth-methods.html#auth-trust">20.2.1. Trust authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-password">20.2.2. Password authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#kerberos-auth">20.2.3. Kerberos authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-ident">20.2.4. Ident-based authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-ldap">20.2.5. LDAP authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-pam">20.2.6. PAM authentication</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="client-authentication-problems.html">20.3. Authentication problems</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="charset.html">21. Localization</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="charset.html#locale">21.1. Locale Support</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="charset.html#id2641367">21.1.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2641690">21.1.2. Behavior</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2641852">21.1.3. Problems</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="multibyte.html">21.2. Character Set Support</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="multibyte.html#multibyte-charset-supported">21.2.1. Supported Character Sets</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2642995">21.2.2. Setting the Character Set</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2643186">21.2.3. Automatic Character Set Conversion Between Server and Client</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2644388">21.2.4. Further Reading</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="maintenance.html">22. Routine Database Maintenance Tasks</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="maintenance.html#routine-vacuuming">22.1. Routine Vacuuming</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="maintenance.html#vacuum-for-space-recovery">22.1.1. Recovering disk space</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#vacuum-for-statistics">22.1.2. Updating planner statistics</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#vacuum-for-wraparound">22.1.3. Preventing transaction ID wraparound failures</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#autovacuum">22.1.4. The auto-vacuum daemon</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="routine-reindex.html">22.2. Routine Reindexing</a></span></dt>
+<dt><span class="sect1"><a href="logfile-maintenance.html">22.3. Log File Maintenance</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="backup.html">23. Backup and Restore</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="backup.html#backup-dump">23.1. <acronym class="acronym">SQL</acronym> Dump</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="backup.html#backup-dump-restore">23.1.1. Restoring the dump</a></span></dt>
+<dt><span class="sect2"><a href="backup.html#backup-dump-all">23.1.2. Using <span class="application">pg_dumpall</span></a></span></dt>
+<dt><span class="sect2"><a href="backup.html#backup-dump-large">23.1.3. Handling large databases</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="backup-file.html">23.2. File system level backup</a></span></dt>
+<dt><span class="sect1"><a href="continuous-archiving.html">23.3. Continuous Archiving and Point-In-Time Recovery (PITR)</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-archiving-wal">23.3.1. Setting up WAL archiving</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-base-backup">23.3.2. Making a Base Backup</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-pitr-recovery">23.3.3. Recovering using a Continuous Archive Backup</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-timelines">23.3.4. Timelines</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#backup-incremental-updated">23.3.5. Incrementally Updated Backups</a></span></dt>
+<dt><span class="sect2"><a href="continuous-archiving.html#continuous-archiving-caveats">23.3.6. Caveats</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="warm-standby.html">23.4. Warm Standby Servers for High Availability</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-planning">23.4.1. Planning</a></span></dt>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-config">23.4.2. Implementation</a></span></dt>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-failover">23.4.3. Failover</a></span></dt>
+<dt><span class="sect2"><a href="warm-standby.html#warm-standby-record">23.4.4. Implementing Record-based Log Shipping</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="migration.html">23.5. Migration Between Releases</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="failover.html">24. Failover, Replication, Load Balancing, and Clustering Options</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="failover.html#shared-disk-failover">24.1. Shared Disk Failover</a></span></dt>
+<dt><span class="sect1"><a href="warm-standby-using-point-in-time-recovery.html">24.2. Warm Standby Using Point-In-Time Recovery</a></span></dt>
+<dt><span class="sect1"><a href="continuously-running-replication-server.html">24.3. Continuously Running Replication Server</a></span></dt>
+<dt><span class="sect1"><a href="data-partitioning.html">24.4. Data Partitioning</a></span></dt>
+<dt><span class="sect1"><a href="query-broadcast-load-balancing.html">24.5. Query Broadcast Load Balancing</a></span></dt>
+<dt><span class="sect1"><a href="clustering-for-load-balancing.html">24.6. Clustering For Load Balancing</a></span></dt>
+<dt><span class="sect1"><a href="clustering-for-parallel-query-execution.html">24.7. Clustering For Parallel Query Execution</a></span></dt>
+<dt><span class="sect1"><a href="commercial-solutions.html">24.8. Commercial Solutions</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="monitoring.html">25. Monitoring Database Activity</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="monitoring.html#monitoring-ps">25.1. Standard Unix Tools</a></span></dt>
+<dt><span class="sect1"><a href="monitoring-stats.html">25.2. The Statistics Collector</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="monitoring-stats.html#monitoring-stats-setup">25.2.1. Statistics Collection Configuration</a></span></dt>
+<dt><span class="sect2"><a href="monitoring-stats.html#monitoring-stats-views">25.2.2. Viewing Collected Statistics</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="monitoring-locks.html">25.3. Viewing Locks</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="diskusage.html">26. Monitoring Disk Usage</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="diskusage.html#disk-usage">26.1. Determining Disk Usage</a></span></dt>
+<dt><span class="sect1"><a href="disk-full.html">26.2. Disk Full Failure</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="wal.html">27. Reliability and the Write-Ahead Log</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="wal.html#wal-reliability">27.1. Reliability</a></span></dt>
+<dt><span class="sect1"><a href="wal-intro.html">27.2. Write-Ahead Logging (<acronym class="acronym">WAL</acronym>)</a></span></dt>
+<dt><span class="sect1"><a href="wal-configuration.html">27.3. <acronym class="acronym">WAL</acronym> Configuration</a></span></dt>
+<dt><span class="sect1"><a href="wal-internals.html">27.4. WAL Internals</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="regress.html">28. Regression Tests</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="regress.html#regress-run">28.1. Running the Tests</a></span></dt>
+<dt><span class="sect1"><a href="regress-evaluation.html">28.2. Test Evaluation</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653456">28.2.1. Error message differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653479">28.2.2. Locale differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653491">28.2.3. Date and time differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653519">28.2.4. Floating-point differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653589">28.2.5. Row ordering differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653661">28.2.6. Insufficient stack depth</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2653700">28.2.7. The &#8220;<span class="quote">random</span>&#8221; test</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="regress-variant.html">28.3. Variant Comparison Files</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="client-interfaces.html">IV. Client Interfaces</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="libpq.html">29. <span class="application">libpq</span> - C Library</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="libpq.html#libpq-connect">29.1. Database Connection Control Functions</a></span></dt>
+<dt><span class="sect1"><a href="libpq-status.html">29.2. Connection Status Functions</a></span></dt>
+<dt><span class="sect1"><a href="libpq-exec.html">29.3. Command Execution Functions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="libpq-exec.html#libpq-exec-main">29.3.1. Main Functions</a></span></dt>
+<dt><span class="sect2"><a href="libpq-exec.html#libpq-exec-select-info">29.3.2. Retrieving Query Result Information</a></span></dt>
+<dt><span class="sect2"><a href="libpq-exec.html#libpq-exec-nonselect">29.3.3. Retrieving Result Information for Other Commands</a></span></dt>
+<dt><span class="sect2"><a href="libpq-exec.html#libpq-exec-escape-string">29.3.4. Escaping Strings for Inclusion in SQL Commands</a></span></dt>
+<dt><span class="sect2"><a href="libpq-exec.html#libpq-exec-escape-bytea">29.3.5. Escaping Binary Strings for Inclusion in SQL Commands</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="libpq-async.html">29.4. Asynchronous Command Processing</a></span></dt>
+<dt><span class="sect1"><a href="libpq-cancel.html">29.5. Cancelling Queries in Progress</a></span></dt>
+<dt><span class="sect1"><a href="libpq-fastpath.html">29.6. The Fast-Path Interface</a></span></dt>
+<dt><span class="sect1"><a href="libpq-notify.html">29.7. Asynchronous Notification</a></span></dt>
+<dt><span class="sect1"><a href="libpq-copy.html">29.8. Functions Associated with the <code class="command">COPY</code> Command</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-send">29.8.1. Functions for Sending <code class="command">COPY</code> Data</a></span></dt>
+<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-receive">29.8.2. Functions for Receiving <code class="command">COPY</code> Data</a></span></dt>
+<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-deprecated">29.8.3. Obsolete Functions for <code class="command">COPY</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="libpq-control.html">29.9. Control Functions</a></span></dt>
+<dt><span class="sect1"><a href="libpq-misc.html">29.10. Miscellaneous Functions</a></span></dt>
+<dt><span class="sect1"><a href="libpq-notice-processing.html">29.11. Notice Processing</a></span></dt>
+<dt><span class="sect1"><a href="libpq-envars.html">29.12. Environment Variables</a></span></dt>
+<dt><span class="sect1"><a href="libpq-pgpass.html">29.13. The Password File</a></span></dt>
+<dt><span class="sect1"><a href="libpq-pgservice.html">29.14. The Connection Service File</a></span></dt>
+<dt><span class="sect1"><a href="libpq-ldap.html">29.15. LDAP Lookup of Connection Parameters</a></span></dt>
+<dt><span class="sect1"><a href="libpq-ssl.html">29.16. SSL Support</a></span></dt>
+<dt><span class="sect1"><a href="libpq-threading.html">29.17. Behavior in Threaded Programs</a></span></dt>
+<dt><span class="sect1"><a href="libpq-build.html">29.18. Building <span class="application">libpq</span> Programs</a></span></dt>
+<dt><span class="sect1"><a href="libpq-example.html">29.19. Example Programs</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="largeobjects.html">30. Large Objects</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="largeobjects.html#lo-intro">30.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="lo-implementation.html">30.2. Implementation Features</a></span></dt>
+<dt><span class="sect1"><a href="lo-interfaces.html">30.3. Client Interfaces</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666106">30.3.1. Creating a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666263">30.3.2. Importing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666299">30.3.3. Exporting a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666336">30.3.4. Opening an Existing Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666501">30.3.5. Writing Data to a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666554">30.3.6. Reading Data from a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666606">30.3.7. Seeking in a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666661">30.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666683">30.3.9. Closing a Large Object Descriptor</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2666727">30.3.10. Removing a Large Object</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="lo-funcs.html">30.4. Server-Side Functions</a></span></dt>
+<dt><span class="sect1"><a href="lo-examplesect.html">30.5. Example Program</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ecpg.html">31. <span class="application">ECPG</span> - Embedded <acronym class="acronym">SQL</acronym> in C</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="ecpg.html#ecpg-concept">31.1. The Concept</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-connect.html">31.2. Connecting to the Database Server</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-disconnect.html">31.3. Closing a Connection</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-commands.html">31.4. Running SQL Commands</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-set-connection.html">31.5. Choosing a Connection</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-variables.html">31.6. Using Host Variables</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2667782">31.6.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2667816">31.6.2. Declare Sections</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2667881">31.6.3. Different types of host variables</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2668037">31.6.4. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2668140">31.6.5. Indicators</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ecpg-dynamic.html">31.7. Dynamic SQL</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-pgtypes.html">31.8. pgtypes library</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2668340">31.8.1. The numeric type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2669088">31.8.2. The date type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2670279">31.8.3. The timestamp type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2671481">31.8.4. The interval type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2671670">31.8.5. The decimal type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2671745">31.8.6. errno values of pgtypeslib </a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2671886">31.8.7. Special constants of pgtypeslib </a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ecpg-informix-compat.html">31.9. <span class="productname">Informix</span> compatibility mode</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2672076">31.9.1. Additional embedded SQL statements</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2672109">31.9.2. Additional functions</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2674354">31.9.3. Additional constants</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ecpg-descriptors.html">31.10. Using SQL Descriptor Areas</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-errors.html">31.11. Error Handling</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2674984">31.11.1. Setting Callbacks</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2675255">31.11.2. sqlca</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2675501">31.11.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ecpg-preproc.html">31.12. Preprocessor directives</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2676080">31.12.1. Including files</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2676144">31.12.2. The #define and #undef directives</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2676251">31.12.3. ifdef, ifndef, else, elif and endif directives</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ecpg-process.html">31.13. Processing Embedded SQL Programs</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-library.html">31.14. Library Functions</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-develop.html">31.15. Internals</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="information-schema.html">32. The Information Schema</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="information-schema.html#infoschema-schema">32.1. The Schema</a></span></dt>
+<dt><span class="sect1"><a href="infoschema-datatypes.html">32.2. Data Types</a></span></dt>
+<dt><span class="sect1"><a href="infoschema-information-schema-catalog-name.html">32.3. <code class="literal">information_schema_catalog_name</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-administrable-role-authorizations.html">32.4. <code class="literal">administrable_role_authorizations</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-applicable-roles.html">32.5. <code class="literal">applicable_roles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-attributes.html">32.6. <code class="literal">attributes</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-check-constraint-routine-usage.html">32.7. <code class="literal">check_constraint_routine_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-check-constraints.html">32.8. <code class="literal">check_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-domain-usage.html">32.9. <code class="literal">column_domain_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-privileges.html">32.10. <code class="literal">column_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-udt-usage.html">32.11. <code class="literal">column_udt_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-columns.html">32.12. <code class="literal">columns</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-constraint-column-usage.html">32.13. <code class="literal">constraint_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-constraint-table-usage.html">32.14. <code class="literal">constraint_table_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-data-type-privileges.html">32.15. <code class="literal">data_type_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domain-constraints.html">32.16. <code class="literal">domain_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domain-udt-usage.html">32.17. <code class="literal">domain_udt_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domains.html">32.18. <code class="literal">domains</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-element-types.html">32.19. <code class="literal">element_types</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-enabled-roles.html">32.20. <code class="literal">enabled_roles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-key-column-usage.html">32.21. <code class="literal">key_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-parameters.html">32.22. <code class="literal">parameters</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-referential-constraints.html">32.23. <code class="literal">referential_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-column-grants.html">32.24. <code class="literal">role_column_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-routine-grants.html">32.25. <code class="literal">role_routine_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-table-grants.html">32.26. <code class="literal">role_table_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-usage-grants.html">32.27. <code class="literal">role_usage_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-routine-privileges.html">32.28. <code class="literal">routine_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-routines.html">32.29. <code class="literal">routines</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-schemata.html">32.30. <code class="literal">schemata</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sequences.html">32.31. <code class="literal">sequences</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-features.html">32.32. <code class="literal">sql_features</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-implementation-info.html">32.33. <code class="literal">sql_implementation_info</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-languages.html">32.34. <code class="literal">sql_languages</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-packages.html">32.35. <code class="literal">sql_packages</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-parts.html">32.36. <code class="literal">sql_parts</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-sizing.html">32.37. <code class="literal">sql_sizing</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-sizing-profiles.html">32.38. <code class="literal">sql_sizing_profiles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-table-constraints.html">32.39. <code class="literal">table_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-table-privileges.html">32.40. <code class="literal">table_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-tables.html">32.41. <code class="literal">tables</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-triggers.html">32.42. <code class="literal">triggers</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-usage-privileges.html">32.43. <code class="literal">usage_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-column-usage.html">32.44. <code class="literal">view_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-routine-usage.html">32.45. <code class="literal">view_routine_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-table-usage.html">32.46. <code class="literal">view_table_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-views.html">32.47. <code class="literal">views</code></a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="server-programming.html">V. Server Programming</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="extend.html">33. Extending <acronym class="acronym">SQL</acronym></a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="extend.html#extend-how">33.1. How Extensibility Works</a></span></dt>
+<dt><span class="sect1"><a href="extend-type-system.html">33.2. The <span class="productname">PostgreSQL</span> Type System</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="extend-type-system.html#id2689176">33.2.1. Base Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id2689205">33.2.2. Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id2689241">33.2.3. Domains</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#id2689271">33.2.4. Pseudo-Types</a></span></dt>
+<dt><span class="sect2"><a href="extend-type-system.html#extend-types-polymorphic">33.2.5. Polymorphic Types</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xfunc.html">33.3. User-Defined Functions</a></span></dt>
+<dt><span class="sect1"><a href="xfunc-sql.html">33.4. Query Language (<acronym class="acronym">SQL</acronym>) Functions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-base-functions">33.4.1. <acronym class="acronym">SQL</acronym> Functions on Base Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id2689973">33.4.2. <acronym class="acronym">SQL</acronym> Functions on Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-output-parameters">33.4.3. Functions with Output Parameters</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#xfunc-sql-table-functions">33.4.4. <acronym class="acronym">SQL</acronym> Functions as Table Sources</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id2690473">33.4.5. <acronym class="acronym">SQL</acronym> Functions Returning Sets</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-sql.html#id2690585">33.4.6. Polymorphic <acronym class="acronym">SQL</acronym> Functions</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xfunc-overload.html">33.5. Function Overloading</a></span></dt>
+<dt><span class="sect1"><a href="xfunc-volatility.html">33.6. Function Volatility Categories</a></span></dt>
+<dt><span class="sect1"><a href="xfunc-pl.html">33.7. Procedural Language Functions</a></span></dt>
+<dt><span class="sect1"><a href="xfunc-internal.html">33.8. Internal Functions</a></span></dt>
+<dt><span class="sect1"><a href="xfunc-c.html">33.9. C-Language Functions</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-dynload">33.9.1. Dynamic Loading</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-basetype">33.9.2. Base Types in C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id2692564">33.9.3. Calling Conventions Version 0 for C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id2692779">33.9.4. Calling Conventions Version 1 for C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id2693163">33.9.5. Writing Code</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#dfunc">33.9.6. Compiling and Linking Dynamically-Loaded Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-pgxs">33.9.7. Extension Building Infrastructure</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id2694562">33.9.8. Composite-Type Arguments in C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id2694715">33.9.9. Returning Rows (Composite Types) from C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#xfunc-c-return-set">33.9.10. Returning Sets from C-Language Functions</a></span></dt>
+<dt><span class="sect2"><a href="xfunc-c.html#id2695501">33.9.11. Polymorphic Arguments and Return Types</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xaggr.html">33.10. User-Defined Aggregates</a></span></dt>
+<dt><span class="sect1"><a href="xtypes.html">33.11. User-Defined Types</a></span></dt>
+<dt><span class="sect1"><a href="xoper.html">33.12. User-Defined Operators</a></span></dt>
+<dt><span class="sect1"><a href="xoper-optimization.html">33.13. Operator Optimization Information</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xoper-optimization.html#id2696560">33.13.1. <code class="literal">COMMUTATOR</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id2696764">33.13.2. <code class="literal">NEGATOR</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id2696849">33.13.3. <code class="literal">RESTRICT</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id2697132">33.13.4. <code class="literal">JOIN</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id2697277">33.13.5. <code class="literal">HASHES</code></a></span></dt>
+<dt><span class="sect2"><a href="xoper-optimization.html#id2697396">33.13.6. <code class="literal">MERGES</code> (<code class="literal">SORT1</code>, <code class="literal">SORT2</code>, <code class="literal">LTCMP</code>, <code class="literal">GTCMP</code>)</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="xindex.html">33.14. Interfacing Extensions To Indexes</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="xindex.html#xindex-im">33.14.1. Index Methods and Operator Classes</a></span></dt>
+<dt><span class="sect2"><a href="xindex.html#xindex-strategies">33.14.2. Index Method Strategies</a></span></dt>
+<dt><span class="sect2"><a href="xindex.html#xindex-support">33.14.3. Index Method Support Routines</a></span></dt>
+<dt><span class="sect2"><a href="xindex.html#xindex-example">33.14.4. An Example</a></span></dt>
+<dt><span class="sect2"><a href="xindex.html#xindex-opclass-crosstype">33.14.5. Cross-Data-Type Operator Classes</a></span></dt>
+<dt><span class="sect2"><a href="xindex.html#xindex-opclass-dependencies">33.14.6. System Dependencies on Operator Classes</a></span></dt>
+<dt><span class="sect2"><a href="xindex.html#xindex-opclass-features">33.14.7. Special Features of Operator Classes</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="triggers.html">34. Triggers</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="triggers.html#trigger-definition">34.1. Overview of Trigger Behavior</a></span></dt>
+<dt><span class="sect1"><a href="trigger-datachanges.html">34.2. Visibility of Data Changes</a></span></dt>
+<dt><span class="sect1"><a href="trigger-interface.html">34.3. Writing Trigger Functions in C</a></span></dt>
+<dt><span class="sect1"><a href="trigger-example.html">34.4. A Complete Example</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="rules.html">35. The Rule System</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="rules.html#querytree">35.1. The Query Tree</a></span></dt>
+<dt><span class="sect1"><a href="rules-views.html">35.2. Views and the Rule System</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="rules-views.html#rules-select">35.2.1. How <code class="command">SELECT</code> Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2701662">35.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2701960">35.2.3. The Power of Views in <span class="productname">PostgreSQL</span></a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#rules-views-update">35.2.4. Updating a View</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="rules-update.html">35.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="rules-update.html#id2702189">35.3.1. How Update Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#rules-update-views">35.3.2. Cooperation with Views</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="rules-privileges.html">35.4. Rules and Privileges</a></span></dt>
+<dt><span class="sect1"><a href="rules-status.html">35.5. Rules and Command Status</a></span></dt>
+<dt><span class="sect1"><a href="rules-triggers.html">35.6. Rules versus Triggers</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="xplang.html">36. Procedural Languages</a></span></dt>
+<dd><dl><dt><span class="sect1"><a href="xplang.html#xplang-install">36.1. Installing Procedural Languages</a></span></dt></dl></dd>
+<dt><span class="chapter"><a href="plpgsql.html">37. <span class="application">PL/pgSQL</span> - <acronym class="acronym">SQL</acronym> Procedural Language</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="plpgsql.html#plpgsql-overview">37.1. Overview</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql.html#plpgsql-advantages">37.1.1. Advantages of Using <span class="application">PL/pgSQL</span></a></span></dt>
+<dt><span class="sect2"><a href="plpgsql.html#plpgsql-args-results">37.1.2. Supported Argument and Result Data Types</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-development-tips.html">37.2. Tips for Developing in <span class="application">PL/pgSQL</span></a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="plpgsql-development-tips.html#plpgsql-quote-tips">37.2.1. Handling of Quotation Marks</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="plpgsql-structure.html">37.3. Structure of <span class="application">PL/pgSQL</span></a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-declarations.html">37.4. Declarations</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-aliases">37.4.1. Aliases for Function Parameters</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-type">37.4.2. Copying Types</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-rowtypes">37.4.3. Row Types</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-records">37.4.4. Record Types</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-declarations.html#plpgsql-declaration-renaming-vars">37.4.5. <code class="literal">RENAME</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-expressions.html">37.5. Expressions</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-statements.html">37.6. Basic Statements</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-assignment">37.6.1. Assignment</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-sql-noresult">37.6.2. Executing a Query With No Result</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-sql-onerow">37.6.3. Executing a Query with a Single-Row Result</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-null">37.6.4. Doing Nothing At All</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-executing-dyn">37.6.5. Executing Dynamic Commands</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-statements.html#plpgsql-statements-diagnostics">37.6.6. Obtaining the Result Status</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-control-structures.html">37.7. Control Structures</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-statements-returning">37.7.1. Returning From a Function</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-conditionals">37.7.2. Conditionals</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-control-structures-loops">37.7.3. Simple Loops</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-records-iterating">37.7.4. Looping Through Query Results</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-control-structures.html#plpgsql-error-trapping">37.7.5. Trapping Errors</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-cursors.html">37.8. Cursors</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-cursors.html#plpgsql-cursor-declarations">37.8.1. Declaring Cursor Variables</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-cursors.html#plpgsql-cursor-opening">37.8.2. Opening Cursors</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-cursors.html#plpgsql-cursor-using">37.8.3. Using Cursors</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="plpgsql-errors-and-messages.html">37.9. Errors and Messages</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-trigger.html">37.10. Trigger Procedures</a></span></dt>
+<dt><span class="sect1"><a href="plpgsql-porting.html">37.11. Porting from <span class="productname">Oracle</span> PL/SQL</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="plpgsql-porting.html#id2712486">37.11.1. Porting Examples</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-other">37.11.2. Other Things to Watch For</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-appendix">37.11.3. Appendix</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="pltcl.html">38. PL/Tcl - Tcl Procedural Language</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="pltcl.html#pltcl-overview">38.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-functions.html">38.2. PL/Tcl Functions and Arguments</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-data.html">38.3. Data Values in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-global.html">38.4. Global Data in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-dbaccess.html">38.5. Database Access from PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-trigger.html">38.6. Trigger Procedures in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-unknown.html">38.7. Modules and the <code class="function">unknown</code> command</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-procnames.html">38.8. Tcl Procedure Names</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="plperl.html">39. PL/Perl - Perl Procedural Language</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="plperl.html#plperl-funcs">39.1. PL/Perl Functions and Arguments</a></span></dt>
+<dt><span class="sect1"><a href="plperl-database.html">39.2. Database Access from PL/Perl</a></span></dt>
+<dt><span class="sect1"><a href="plperl-data.html">39.3. Data Values in PL/Perl</a></span></dt>
+<dt><span class="sect1"><a href="plperl-global.html">39.4. Global Values in PL/Perl</a></span></dt>
+<dt><span class="sect1"><a href="plperl-trusted.html">39.5. Trusted and Untrusted PL/Perl</a></span></dt>
+<dt><span class="sect1"><a href="plperl-triggers.html">39.6. PL/Perl Triggers</a></span></dt>
+<dt><span class="sect1"><a href="plperl-missing.html">39.7. Limitations and Missing Features</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="plpython.html">40. PL/Python - Python Procedural Language</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="plpython.html#plpython-funcs">40.1. PL/Python Functions</a></span></dt>
+<dt><span class="sect1"><a href="plpython-trigger.html">40.2. Trigger Functions</a></span></dt>
+<dt><span class="sect1"><a href="plpython-database.html">40.3. Database Access</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="spi.html">41. Server Programming Interface</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="spi.html#spi-interface">41.1. Interface Functions</a></span></dt>
+<dt><span class="sect1"><a href="spi-interface-support.html">41.2. Interface Support Functions</a></span></dt>
+<dt><span class="sect1"><a href="spi-memory.html">41.3. Memory Management</a></span></dt>
+<dt><span class="sect1"><a href="spi-visibility.html">41.4. Visibility of Data Changes</a></span></dt>
+<dt><span class="sect1"><a href="spi-examples.html">41.5. Examples</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="reference.html">VI. Reference</a></span></dt>
+<dd><dl>
+<dt><span class="reference"><a href="sql-commands.html">I. SQL Commands</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="sql-abort.html">ABORT</a></span><span class="refpurpose"> &#8212; abort the current transaction</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alteraggregate.html">ALTER AGGREGATE</a></span><span class="refpurpose"> &#8212; change the definition of an aggregate function</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterconversion.html">ALTER CONVERSION</a></span><span class="refpurpose"> &#8212; change the definition of a conversion</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterdatabase.html">ALTER DATABASE</a></span><span class="refpurpose"> &#8212; change a database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterdomain.html">ALTER DOMAIN</a></span><span class="refpurpose"> &#8212;    change the definition of a domain
+  </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterfunction.html">ALTER FUNCTION</a></span><span class="refpurpose"> &#8212; change the definition of a function</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-altergroup.html">ALTER GROUP</a></span><span class="refpurpose"> &#8212; change role name or membership</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterindex.html">ALTER INDEX</a></span><span class="refpurpose"> &#8212; change the definition of an index</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterlanguage.html">ALTER LANGUAGE</a></span><span class="refpurpose"> &#8212; change the definition of a procedural language</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alteroperator.html">ALTER OPERATOR</a></span><span class="refpurpose"> &#8212; change the definition of an operator</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alteropclass.html">ALTER OPERATOR CLASS</a></span><span class="refpurpose"> &#8212; change the definition of an operator class</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterrole.html">ALTER ROLE</a></span><span class="refpurpose"> &#8212; change a database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alterschema.html">ALTER SCHEMA</a></span><span class="refpurpose"> &#8212; change the definition of a schema</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-altersequence.html">ALTER SEQUENCE</a></span><span class="refpurpose"> &#8212;    change the definition of a sequence generator
+  </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-altertable.html">ALTER TABLE</a></span><span class="refpurpose"> &#8212; change the definition of a table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-altertablespace.html">ALTER TABLESPACE</a></span><span class="refpurpose"> &#8212; change the definition of a tablespace</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-altertrigger.html">ALTER TRIGGER</a></span><span class="refpurpose"> &#8212; change the definition of a trigger</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-altertype.html">ALTER TYPE</a></span><span class="refpurpose"> &#8212;    change the definition of a type
+  </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-alteruser.html">ALTER USER</a></span><span class="refpurpose"> &#8212; change a database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-analyze.html">ANALYZE</a></span><span class="refpurpose"> &#8212; collect statistics about a database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-begin.html">BEGIN</a></span><span class="refpurpose"> &#8212; start a transaction block</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-checkpoint.html">CHECKPOINT</a></span><span class="refpurpose"> &#8212; force a transaction log checkpoint</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-close.html">CLOSE</a></span><span class="refpurpose"> &#8212; close a cursor</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-cluster.html">CLUSTER</a></span><span class="refpurpose"> &#8212; cluster a table according to an index</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-comment.html">COMMENT</a></span><span class="refpurpose"> &#8212; define or change the comment of an object</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-commit.html">COMMIT</a></span><span class="refpurpose"> &#8212; commit the current transaction</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-commit-prepared.html">COMMIT PREPARED</a></span><span class="refpurpose"> &#8212; commit a transaction that was earlier prepared for two-phase commit</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-copy.html">COPY</a></span><span class="refpurpose"> &#8212; copy data between a file and a table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createaggregate.html">CREATE AGGREGATE</a></span><span class="refpurpose"> &#8212; define a new aggregate function</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createcast.html">CREATE CAST</a></span><span class="refpurpose"> &#8212; define a new cast</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createconstraint.html">CREATE CONSTRAINT TRIGGER</a></span><span class="refpurpose"> &#8212; define a new constraint trigger</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createconversion.html">CREATE CONVERSION</a></span><span class="refpurpose"> &#8212; define a new encoding conversion</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createdatabase.html">CREATE DATABASE</a></span><span class="refpurpose"> &#8212; create a new database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createdomain.html">CREATE DOMAIN</a></span><span class="refpurpose"> &#8212; define a new domain</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createfunction.html">CREATE FUNCTION</a></span><span class="refpurpose"> &#8212; define a new function</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-creategroup.html">CREATE GROUP</a></span><span class="refpurpose"> &#8212; define a new database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createindex.html">CREATE INDEX</a></span><span class="refpurpose"> &#8212; define a new index</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createlanguage.html">CREATE LANGUAGE</a></span><span class="refpurpose"> &#8212; define a new procedural language</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createoperator.html">CREATE OPERATOR</a></span><span class="refpurpose"> &#8212; define a new operator</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createopclass.html">CREATE OPERATOR CLASS</a></span><span class="refpurpose"> &#8212; define a new operator class</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createrole.html">CREATE ROLE</a></span><span class="refpurpose"> &#8212; define a new database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createrule.html">CREATE RULE</a></span><span class="refpurpose"> &#8212; define a new rewrite rule</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createschema.html">CREATE SCHEMA</a></span><span class="refpurpose"> &#8212; define a new schema</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createsequence.html">CREATE SEQUENCE</a></span><span class="refpurpose"> &#8212; define a new sequence generator</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createtable.html">CREATE TABLE</a></span><span class="refpurpose"> &#8212; define a new table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createtableas.html">CREATE TABLE AS</a></span><span class="refpurpose"> &#8212; define a new table from the results of a query</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createtablespace.html">CREATE TABLESPACE</a></span><span class="refpurpose"> &#8212; define a new tablespace</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createtrigger.html">CREATE TRIGGER</a></span><span class="refpurpose"> &#8212; define a new trigger</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createtype.html">CREATE TYPE</a></span><span class="refpurpose"> &#8212; define a new data type</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createuser.html">CREATE USER</a></span><span class="refpurpose"> &#8212; define a new database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-createview.html">CREATE VIEW</a></span><span class="refpurpose"> &#8212; define a new view</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-deallocate.html">DEALLOCATE</a></span><span class="refpurpose"> &#8212; deallocate a prepared statement</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-declare.html">DECLARE</a></span><span class="refpurpose"> &#8212; define a cursor</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-delete.html">DELETE</a></span><span class="refpurpose"> &#8212; delete rows of a table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropaggregate.html">DROP AGGREGATE</a></span><span class="refpurpose"> &#8212; remove an aggregate function</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropcast.html">DROP CAST</a></span><span class="refpurpose"> &#8212; remove a cast</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropconversion.html">DROP CONVERSION</a></span><span class="refpurpose"> &#8212; remove a conversion</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropdatabase.html">DROP DATABASE</a></span><span class="refpurpose"> &#8212; remove a database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropdomain.html">DROP DOMAIN</a></span><span class="refpurpose"> &#8212; remove a domain</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropfunction.html">DROP FUNCTION</a></span><span class="refpurpose"> &#8212; remove a function</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropgroup.html">DROP GROUP</a></span><span class="refpurpose"> &#8212; remove a database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropindex.html">DROP INDEX</a></span><span class="refpurpose"> &#8212; remove an index</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-droplanguage.html">DROP LANGUAGE</a></span><span class="refpurpose"> &#8212; remove a procedural language</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropoperator.html">DROP OPERATOR</a></span><span class="refpurpose"> &#8212; remove an operator</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropopclass.html">DROP OPERATOR CLASS</a></span><span class="refpurpose"> &#8212; remove an operator class</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-drop-owned.html">DROP OWNED</a></span><span class="refpurpose"> &#8212; remove database objects owned by a database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-droprole.html">DROP ROLE</a></span><span class="refpurpose"> &#8212; remove a database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-droprule.html">DROP RULE</a></span><span class="refpurpose"> &#8212; remove a rewrite rule</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropschema.html">DROP SCHEMA</a></span><span class="refpurpose"> &#8212; remove a schema</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropsequence.html">DROP SEQUENCE</a></span><span class="refpurpose"> &#8212; remove a sequence</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-droptable.html">DROP TABLE</a></span><span class="refpurpose"> &#8212; remove a table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-droptablespace.html">DROP TABLESPACE</a></span><span class="refpurpose"> &#8212; remove a tablespace</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-droptrigger.html">DROP TRIGGER</a></span><span class="refpurpose"> &#8212; remove a trigger</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-droptype.html">DROP TYPE</a></span><span class="refpurpose"> &#8212; remove a data type</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropuser.html">DROP USER</a></span><span class="refpurpose"> &#8212; remove a database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-dropview.html">DROP VIEW</a></span><span class="refpurpose"> &#8212; remove a view</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-end.html">END</a></span><span class="refpurpose"> &#8212; commit the current transaction</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-execute.html">EXECUTE</a></span><span class="refpurpose"> &#8212; execute a prepared statement</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-explain.html">EXPLAIN</a></span><span class="refpurpose"> &#8212; show the execution plan of a statement</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-fetch.html">FETCH</a></span><span class="refpurpose"> &#8212; retrieve rows from a query using a cursor</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-grant.html">GRANT</a></span><span class="refpurpose"> &#8212; define access privileges</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-insert.html">INSERT</a></span><span class="refpurpose"> &#8212; create new rows in a table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-listen.html">LISTEN</a></span><span class="refpurpose"> &#8212; listen for a notification</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-load.html">LOAD</a></span><span class="refpurpose"> &#8212; load or reload a shared library file</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-lock.html">LOCK</a></span><span class="refpurpose"> &#8212; lock a table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-move.html">MOVE</a></span><span class="refpurpose"> &#8212; position a cursor</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-notify.html">NOTIFY</a></span><span class="refpurpose"> &#8212; generate a notification</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-prepare.html">PREPARE</a></span><span class="refpurpose"> &#8212; prepare a statement for execution</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a></span><span class="refpurpose"> &#8212; prepare the current transaction for two-phase commit</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-reassign-owned.html">REASSIGN OWNED</a></span><span class="refpurpose"> &#8212; change the ownership of database objects owned by a database role</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-reindex.html">REINDEX</a></span><span class="refpurpose"> &#8212; rebuild indexes</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a></span><span class="refpurpose"> &#8212; destroy a previously defined savepoint</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-reset.html">RESET</a></span><span class="refpurpose"> &#8212; restore the value of a run-time parameter to the default value</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-revoke.html">REVOKE</a></span><span class="refpurpose"> &#8212; remove access privileges</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-rollback.html">ROLLBACK</a></span><span class="refpurpose"> &#8212; abort the current transaction</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-rollback-prepared.html">ROLLBACK PREPARED</a></span><span class="refpurpose"> &#8212; cancel a transaction that was earlier prepared for two-phase commit</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-rollback-to.html">ROLLBACK TO SAVEPOINT</a></span><span class="refpurpose"> &#8212; roll back to a savepoint</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-savepoint.html">SAVEPOINT</a></span><span class="refpurpose"> &#8212; define a new savepoint within the current transaction</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-select.html">SELECT</a></span><span class="refpurpose"> &#8212; retrieve rows from a table or view</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-selectinto.html">SELECT INTO</a></span><span class="refpurpose"> &#8212; define a new table from the results of a query</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-set.html">SET</a></span><span class="refpurpose"> &#8212; change a run-time parameter</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-set-constraints.html">SET CONSTRAINTS</a></span><span class="refpurpose"> &#8212; set constraint checking modes for the current transaction</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-set-role.html">SET ROLE</a></span><span class="refpurpose"> &#8212; set the current user identifier of the current session</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-set-session-authorization.html">SET SESSION AUTHORIZATION</a></span><span class="refpurpose"> &#8212; set the session user identifier and the current user identifier of the current session</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-set-transaction.html">SET TRANSACTION</a></span><span class="refpurpose"> &#8212; set the characteristics of the current transaction</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-show.html">SHOW</a></span><span class="refpurpose"> &#8212; show the value of a run-time parameter</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-start-transaction.html">START TRANSACTION</a></span><span class="refpurpose"> &#8212; start a transaction block</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-truncate.html">TRUNCATE</a></span><span class="refpurpose"> &#8212; empty a table or set of tables</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-unlisten.html">UNLISTEN</a></span><span class="refpurpose"> &#8212; stop listening for a notification</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-update.html">UPDATE</a></span><span class="refpurpose"> &#8212; update rows of a table</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-vacuum.html">VACUUM</a></span><span class="refpurpose"> &#8212; garbage-collect and optionally analyze a database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="sql-values.html">VALUES</a></span><span class="refpurpose"> &#8212; compute a set of rows</span>
+</dt>
+</dl></dd>
+<dt><span class="reference"><a href="reference-client.html">II. PostgreSQL Client Applications</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="app-clusterdb.html"><span class="application">clusterdb</span></a></span><span class="refpurpose"> &#8212; cluster a <span class="productname">PostgreSQL</span> database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-createdb.html"><span class="application">createdb</span></a></span><span class="refpurpose"> &#8212; create a new <span class="productname">PostgreSQL</span> database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-createlang.html"><span class="application">createlang</span></a></span><span class="refpurpose"> &#8212; define a new <span class="productname">PostgreSQL</span> procedural language</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-createuser.html"><span class="application">createuser</span></a></span><span class="refpurpose"> &#8212; define a new <span class="productname">PostgreSQL</span> user account</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-dropdb.html"><span class="application">dropdb</span></a></span><span class="refpurpose"> &#8212; remove a <span class="productname">PostgreSQL</span> database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-droplang.html"><span class="application">droplang</span></a></span><span class="refpurpose"> &#8212; remove a <span class="productname">PostgreSQL</span> procedural language</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-dropuser.html"><span class="application">dropuser</span></a></span><span class="refpurpose"> &#8212; remove a <span class="productname">PostgreSQL</span> user account</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-ecpg.html"><span class="application">ecpg</span></a></span><span class="refpurpose"> &#8212; embedded SQL C preprocessor</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-pgconfig.html">pg_config</a></span><span class="refpurpose"> &#8212; retrieve information about the installed version of <span class="productname">PostgreSQL</span></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-pgdump.html">pg_dump</a></span><span class="refpurpose"> &#8212;    extract a <span class="productname">PostgreSQL</span> database into a script file or other archive file
+  </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-pg-dumpall.html"><span class="application">pg_dumpall</span></a></span><span class="refpurpose"> &#8212; extract a <span class="productname">PostgreSQL</span> database cluster into a script file</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-pgrestore.html">pg_restore</a></span><span class="refpurpose"> &#8212;    restore a <span class="productname">PostgreSQL</span> database from an archive file created by pg_dump
+  </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-psql.html"><span class="application">psql</span></a></span><span class="refpurpose"> &#8212;       <span class="productname">PostgreSQL</span> interactive terminal
+    </span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-reindexdb.html"><span class="application">reindexdb</span></a></span><span class="refpurpose"> &#8212; reindex a <span class="productname">PostgreSQL</span> database</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-vacuumdb.html"><span class="application">vacuumdb</span></a></span><span class="refpurpose"> &#8212; garbage-collect and analyze a <span class="productname">PostgreSQL</span> database</span>
+</dt>
+</dl></dd>
+<dt><span class="reference"><a href="reference-server.html">III. PostgreSQL Server Applications</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="app-initdb.html">initdb</a></span><span class="refpurpose"> &#8212; create a new <span class="productname">PostgreSQL</span> database cluster</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-ipcclean.html"><span class="application">ipcclean</span></a></span><span class="refpurpose"> &#8212; remove shared memory and semaphores from a failed <span class="productname">PostgreSQL</span> server</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-pgcontroldata.html"><span class="application">pg_controldata</span></a></span><span class="refpurpose"> &#8212; display control information of a <span class="productname">PostgreSQL</span> database cluster</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-pg-ctl.html"><span class="application">pg_ctl</span></a></span><span class="refpurpose"> &#8212; start, stop, or restart a <span class="productname">PostgreSQL</span> server</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-pgresetxlog.html"><span class="application">pg_resetxlog</span></a></span><span class="refpurpose"> &#8212; reset the write-ahead log and other control information of a <span class="productname">PostgreSQL</span> database cluster</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-postgres.html"><span class="application">postgres</span></a></span><span class="refpurpose"> &#8212; <span class="productname">PostgreSQL</span> database server</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="app-postmaster.html"><span class="application">postmaster</span></a></span><span class="refpurpose"> &#8212; <span class="productname">PostgreSQL</span> database server</span>
+</dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="internals.html">VII. Internals</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="overview.html">42. Overview of PostgreSQL Internals</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="overview.html#query-path">42.1. The Path of a Query</a></span></dt>
+<dt><span class="sect1"><a href="connect-estab.html">42.2. How Connections are Established</a></span></dt>
+<dt><span class="sect1"><a href="parser-stage.html">42.3. The Parser Stage</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="parser-stage.html#id2796446">42.3.1. Parser</a></span></dt>
+<dt><span class="sect2"><a href="parser-stage.html#id2796631">42.3.2. Transformation Process</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="rule-system.html">42.4. The <span class="productname">PostgreSQL</span> Rule System</a></span></dt>
+<dt><span class="sect1"><a href="planner-optimizer.html">42.5. Planner/Optimizer</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="planner-optimizer.html#id2796885">42.5.1. Generating Possible Plans</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="executor.html">42.6. Executor</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="catalogs.html">43. System Catalogs</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="catalogs.html#catalogs-overview">43.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-aggregate.html">43.2. <code class="structname">pg_aggregate</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-am.html">43.3. <code class="structname">pg_am</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-amop.html">43.4. <code class="structname">pg_amop</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-amproc.html">43.5. <code class="structname">pg_amproc</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-attrdef.html">43.6. <code class="structname">pg_attrdef</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-attribute.html">43.7. <code class="structname">pg_attribute</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-authid.html">43.8. <code class="structname">pg_authid</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-auth-members.html">43.9. <code class="structname">pg_auth_members</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-autovacuum.html">43.10. <code class="structname">pg_autovacuum</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-cast.html">43.11. <code class="structname">pg_cast</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-class.html">43.12. <code class="structname">pg_class</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-constraint.html">43.13. <code class="structname">pg_constraint</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-conversion.html">43.14. <code class="structname">pg_conversion</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-database.html">43.15. <code class="structname">pg_database</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-depend.html">43.16. <code class="structname">pg_depend</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-description.html">43.17. <code class="structname">pg_description</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-index.html">43.18. <code class="structname">pg_index</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-inherits.html">43.19. <code class="structname">pg_inherits</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-language.html">43.20. <code class="structname">pg_language</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-largeobject.html">43.21. <code class="structname">pg_largeobject</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-listener.html">43.22. <code class="structname">pg_listener</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-namespace.html">43.23. <code class="structname">pg_namespace</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-opclass.html">43.24. <code class="structname">pg_opclass</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-operator.html">43.25. <code class="structname">pg_operator</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-pltemplate.html">43.26. <code class="structname">pg_pltemplate</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-proc.html">43.27. <code class="structname">pg_proc</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-rewrite.html">43.28. <code class="structname">pg_rewrite</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-shdepend.html">43.29. <code class="structname">pg_shdepend</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-shdescription.html">43.30. <code class="structname">pg_shdescription</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-statistic.html">43.31. <code class="structname">pg_statistic</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-tablespace.html">43.32. <code class="structname">pg_tablespace</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-trigger.html">43.33. <code class="structname">pg_trigger</code></a></span></dt>
+<dt><span class="sect1"><a href="catalog-pg-type.html">43.34. <code class="structname">pg_type</code></a></span></dt>
+<dt><span class="sect1"><a href="views-overview.html">43.35. System Views</a></span></dt>
+<dt><span class="sect1"><a href="view-pg-cursors.html">43.36. <code class="structname">pg_cursors</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-group.html">43.37. <code class="structname">pg_group</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-indexes.html">43.38. <code class="structname">pg_indexes</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-locks.html">43.39. <code class="structname">pg_locks</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-prepared-statements.html">43.40. <code class="structname">pg_prepared_statements</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-prepared-xacts.html">43.41. <code class="structname">pg_prepared_xacts</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-roles.html">43.42. <code class="structname">pg_roles</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-rules.html">43.43. <code class="structname">pg_rules</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-settings.html">43.44. <code class="structname">pg_settings</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-shadow.html">43.45. <code class="structname">pg_shadow</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-stats.html">43.46. <code class="structname">pg_stats</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-tables.html">43.47. <code class="structname">pg_tables</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-timezone-abbrevs.html">43.48. <code class="structname">pg_timezone_abbrevs</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-timezone-names.html">43.49. <code class="structname">pg_timezone_names</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-user.html">43.50. <code class="structname">pg_user</code></a></span></dt>
+<dt><span class="sect1"><a href="view-pg-views.html">43.51. <code class="structname">pg_views</code></a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="protocol.html">44. Frontend/Backend Protocol</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="protocol.html#protocol-overview">44.1. Overview</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="protocol.html#protocol-message-concepts">44.1.1. Messaging Overview</a></span></dt>
+<dt><span class="sect2"><a href="protocol.html#protocol-query-concepts">44.1.2. Extended Query Overview</a></span></dt>
+<dt><span class="sect2"><a href="protocol.html#protocol-format-codes">44.1.3. Formats and Format Codes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="protocol-flow.html">44.2. Message Flow</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="protocol-flow.html#id2810855">44.2.1. Start-Up</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2811082">44.2.2. Simple Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#protocol-flow-ext-query">44.2.3. Extended Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2811670">44.2.4. Function Call</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#protocol-copy">44.2.5. COPY Operations</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#protocol-async">44.2.6. Asynchronous Operations</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2812086">44.2.7. Cancelling Requests in Progress</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2812147">44.2.8. Termination</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2812203">44.2.9. <acronym class="acronym">SSL</acronym> Session Encryption</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="protocol-message-types.html">44.3. Message Data Types</a></span></dt>
+<dt><span class="sect1"><a href="protocol-message-formats.html">44.4. Message Formats</a></span></dt>
+<dt><span class="sect1"><a href="protocol-error-fields.html">44.5. Error and Notice Message Fields</a></span></dt>
+<dt><span class="sect1"><a href="protocol-changes.html">44.6. Summary of Changes since Protocol 2.0</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="source.html">45. PostgreSQL Coding Conventions</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="source.html#source-format">45.1. Formatting</a></span></dt>
+<dt><span class="sect1"><a href="error-message-reporting.html">45.2. Reporting Errors Within the Server</a></span></dt>
+<dt><span class="sect1"><a href="error-style-guide.html">45.3. Error Message Style Guide</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="nls.html">46. Native Language Support</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="nls.html#nls-translator">46.1. For the Translator</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="nls.html#id2816317">46.1.1. Requirements</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2816385">46.1.2. Concepts</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2816518">46.1.3. Creating and maintaining message catalogs</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2816697">46.1.4. Editing the PO files</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="nls-programmer.html">46.2. For the Programmer</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="nls-programmer.html#nls-mechanics">46.2.1. Mechanics</a></span></dt>
+<dt><span class="sect2"><a href="nls-programmer.html#nls-guidelines">46.2.2. Message-writing guidelines</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="plhandler.html">47. Writing A Procedural Language Handler</a></span></dt>
+<dt><span class="chapter"><a href="geqo.html">48. Genetic Query Optimizer</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="geqo.html#geqo-intro">48.1. Query Handling as a Complex Optimization Problem</a></span></dt>
+<dt><span class="sect1"><a href="geqo-intro2.html">48.2. Genetic Algorithms</a></span></dt>
+<dt><span class="sect1"><a href="geqo-pg-intro.html">48.3. Genetic Query Optimization (<acronym class="acronym">GEQO</acronym>) in PostgreSQL</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="geqo-pg-intro.html#geqo-future">48.3.1. Future Implementation Tasks for
+    <span class="productname">PostgreSQL</span> <acronym class="acronym">GEQO</acronym></a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="geqo-biblio.html">48.4. Further Reading</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="indexam.html">49. Index Access Method Interface Definition</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="indexam.html#index-catalog">49.1. Catalog Entries for Indexes</a></span></dt>
+<dt><span class="sect1"><a href="index-functions.html">49.2. Index Access Method Functions</a></span></dt>
+<dt><span class="sect1"><a href="index-scanning.html">49.3. Index Scanning</a></span></dt>
+<dt><span class="sect1"><a href="index-locking.html">49.4. Index Locking Considerations</a></span></dt>
+<dt><span class="sect1"><a href="index-unique-checks.html">49.5. Index Uniqueness Checks</a></span></dt>
+<dt><span class="sect1"><a href="index-cost-estimation.html">49.6. Index Cost Estimation Functions</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="gist.html">50. GiST Indexes</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="gist.html#gist-intro">50.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="gist-extensibility.html">50.2. Extensibility</a></span></dt>
+<dt><span class="sect1"><a href="gist-implementation.html">50.3. Implementation</a></span></dt>
+<dt><span class="sect1"><a href="gist-examples.html">50.4. Examples</a></span></dt>
+<dt><span class="sect1"><a href="gist-recovery.html">50.5. Crash Recovery</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="gin.html">51. GIN Indexes</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="gin.html#gin-intro">51.1. Introduction</a></span></dt>
+<dt><span class="sect1"><a href="gin-extensibility.html">51.2. Extensibility</a></span></dt>
+<dt><span class="sect1"><a href="gin-implementation.html">51.3. Implementation</a></span></dt>
+<dt><span class="sect1"><a href="gin-tips.html">51.4. GIN tips and trics</a></span></dt>
+<dt><span class="sect1"><a href="gin-limit.html">51.5. Limitations</a></span></dt>
+<dt><span class="sect1"><a href="gin-examples.html">51.6. Examples</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="storage.html">52. Database Physical Storage</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="storage.html#storage-file-layout">52.1. Database File Layout</a></span></dt>
+<dt><span class="sect1"><a href="storage-toast.html">52.2. TOAST</a></span></dt>
+<dt><span class="sect1"><a href="storage-page-layout.html">52.3. Database Page Layout</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="bki.html">53. <acronym class="acronym">BKI</acronym> Backend Interface</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="bki.html#bki-format">53.1. <acronym class="acronym">BKI</acronym> File Format</a></span></dt>
+<dt><span class="sect1"><a href="bki-commands.html">53.2. <acronym class="acronym">BKI</acronym> Commands</a></span></dt>
+<dt><span class="sect1"><a href="bki-structure.html">53.3. Structure of the Bootstrap <acronym class="acronym">BKI</acronym> File</a></span></dt>
+<dt><span class="sect1"><a href="bki-example.html">53.4. Example</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="planner-stats-details.html">54. How the Planner Uses Statistics</a></span></dt>
+<dd><dl><dt><span class="sect1"><a href="planner-stats-details.html#row-estimation-examples">54.1. Row Estimation Examples</a></span></dt></dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="appendixes.html">VIII. Appendixes</a></span></dt>
+<dd><dl>
+<dt><span class="appendix"><a href="errcodes-appendix.html">A. <span class="productname">PostgreSQL</span> Error Codes</a></span></dt>
+<dt><span class="appendix"><a href="datetime-appendix.html">B. Date/Time Support</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="datetime-appendix.html#id2826466">B.1. Date/Time Input Interpretation</a></span></dt>
+<dt><span class="sect1"><a href="datetime-keywords.html">B.2. Date/Time Key Words</a></span></dt>
+<dt><span class="sect1"><a href="datetime-config-files.html">B.3. Date/Time Configuration Files</a></span></dt>
+<dt><span class="sect1"><a href="datetime-units-history.html">B.4. History of Units</a></span></dt>
+</dl></dd>
+<dt><span class="appendix"><a href="sql-keywords-appendix.html">C. <acronym class="acronym">SQL</acronym> Key Words</a></span></dt>
+<dt><span class="appendix"><a href="features.html">D. SQL Conformance</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="features.html#features-sql-standard">D.1. Supported Features</a></span></dt>
+<dt><span class="sect1"><a href="unsupported-features-sql-standard.html">D.2. Unsupported Features</a></span></dt>
+</dl></dd>
+<dt><span class="appendix"><a href="release.html">E. Release Notes</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="release.html#release-8-2">E.1. Release 8.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release.html#id2839690">E.1.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release.html#id2839833">E.1.2. Migration to version 8.2</a></span></dt>
+<dt><span class="sect2"><a href="release.html#id2840469">E.1.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-5.html">E.2. Release 8.1.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-5.html#id2844327">E.2.1. Migration to version 8.1.5</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-5.html#id2844336">E.2.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-4.html">E.3. Release 8.1.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-4.html#id2844561">E.3.1. Migration to version 8.1.4</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-4.html#id2844597">E.3.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-3.html">E.4. Release 8.1.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-3.html#id2844956">E.4.1. Migration to version 8.1.3</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-3.html#id2844965">E.4.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-2.html">E.5. Release 8.1.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-2.html#id2845292">E.5.1. Migration to version 8.1.2</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-2.html#id2845314">E.5.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1-1.html">E.6. Release 8.1.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1-1.html#id2845528">E.6.1. Migration to version 8.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-1.html#id2845536">E.6.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-1.html">E.7. Release 8.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-1.html#id2845730">E.7.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1.html#id2846055">E.7.2. Migration to version 8.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1.html#id2846754">E.7.3. Additional Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-9.html">E.8. Release 8.0.9</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-9.html#id2849532">E.8.1. Migration to version 8.0.9</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-9.html#id2849541">E.8.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-8.html">E.9. Release 8.0.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-8.html#id2849679">E.9.1. Migration to version 8.0.8</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-8.html#id2849715">E.9.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-7.html">E.10. Release 8.0.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-7.html#id2849958">E.10.1. Migration to version 8.0.7</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-7.html#id2849967">E.10.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-6.html">E.11. Release 8.0.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-6.html#id2850211">E.11.1. Migration to version 8.0.6</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-6.html#id2850234">E.11.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-5.html">E.12. Release 8.0.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-5.html#id2850387">E.12.1. Migration to version 8.0.5</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-5.html#id2850396">E.12.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-4.html">E.13. Release 8.0.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-4.html#id2850535">E.13.1. Migration to version 8.0.4</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-4.html#id2850544">E.13.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-3.html">E.14. Release 8.0.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-3.html#id2850864">E.14.1. Migration to version 8.0.3</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-3.html#id2850930">E.14.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-2.html">E.15. Release 8.0.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-2.html#id2851153">E.15.1. Migration to version 8.0.2</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-2.html#id2851169">E.15.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0-1.html">E.16. Release 8.0.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0-1.html#id2851679">E.16.1. Migration to version 8.0.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-1.html#id2851686">E.16.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-8-0.html">E.17. Release 8.0</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-8-0.html#id2851804">E.17.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2852048">E.17.2. Migration to version 8.0</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2852482">E.17.3. Deprecated Features</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2852570">E.17.4. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-14.html">E.18. Release 7.4.14</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-14.html#id2855670">E.18.1. Migration to version 7.4.14</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-14.html#id2855679">E.18.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-13.html">E.19. Release 7.4.13</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-13.html#id2855753">E.19.1. Migration to version 7.4.13</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-13.html#id2855789">E.19.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-12.html">E.20. Release 7.4.12</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-12.html#id2856010">E.20.1. Migration to version 7.4.12</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-12.html#id2856019">E.20.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-11.html">E.21. Release 7.4.11</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-11.html#id2856112">E.21.1. Migration to version 7.4.11</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-11.html#id2856135">E.21.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-10.html">E.22. Release 7.4.10</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-10.html#id2856250">E.22.1. Migration to version 7.4.10</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-10.html#id2856259">E.22.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-9.html">E.23. Release 7.4.9</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-9.html#id2856328">E.23.1. Migration to version 7.4.9</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-9.html#id2856337">E.23.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-8.html">E.24. Release 7.4.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-8.html#id2856523">E.24.1. Migration to version 7.4.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-8.html#id2856681">E.24.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-7.html">E.25. Release 7.4.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-7.html#id2856943">E.25.1. Migration to version 7.4.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-7.html#id2856950">E.25.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-6.html">E.26. Release 7.4.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-6.html#id2857038">E.26.1. Migration to version 7.4.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-6.html#id2857045">E.26.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-5.html">E.27. Release 7.4.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-5.html#id2857184">E.27.1. Migration to version 7.4.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-5.html#id2857192">E.27.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-4.html">E.28. Release 7.4.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-4.html#id2857224">E.28.1. Migration to version 7.4.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-4.html#id2857231">E.28.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-3.html">E.29. Release 7.4.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-3.html#id2857325">E.29.1. Migration to version 7.4.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-3.html#id2857332">E.29.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-2.html">E.30. Release 7.4.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-2.html#id2857456">E.30.1. Migration to version 7.4.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-2.html#id2857629">E.30.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4-1.html">E.31. Release 7.4.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4-1.html#id2857792">E.31.1. Migration to version 7.4.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-1.html#id2857837">E.31.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-4.html">E.32. Release 7.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-4.html#id2858104">E.32.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4.html#id2858445">E.32.2. Migration to version 7.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4.html#id2858750">E.32.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-16.html">E.33. Release 7.3.16</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-16.html#id2861802">E.33.1. Migration to version 7.3.16</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-16.html#id2861811">E.33.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-15.html">E.34. Release 7.3.15</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-15.html#id2861871">E.34.1. Migration to version 7.3.15</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-15.html#id2861906">E.34.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-14.html">E.35. Release 7.3.14</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-14.html#id2862095">E.35.1. Migration to version 7.3.14</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-14.html#id2862104">E.35.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-13.html">E.36. Release 7.3.13</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-13.html#id2862181">E.36.1. Migration to version 7.3.13</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-13.html#id2862204">E.36.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-12.html">E.37. Release 7.3.12</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-12.html#id2862314">E.37.1. Migration to version 7.3.12</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-12.html#id2862323">E.37.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-11.html">E.38. Release 7.3.11</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-11.html#id2862383">E.38.1. Migration to version 7.3.11</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-11.html#id2862392">E.38.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-10.html">E.39. Release 7.3.10</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-10.html#id2862500">E.39.1. Migration to version 7.3.10</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-10.html#id2862601">E.39.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-9.html">E.40. Release 7.3.9</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-9.html#id2862758">E.40.1. Migration to version 7.3.9</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-9.html#id2862765">E.40.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-8.html">E.41. Release 7.3.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-8.html#id2862848">E.41.1. Migration to version 7.3.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-8.html#id2862855">E.41.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-7.html">E.42. Release 7.3.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-7.html#id2862914">E.42.1. Migration to version 7.3.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-7.html#id2862921">E.42.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-6.html">E.43. Release 7.3.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-6.html#id2862969">E.43.1. Migration to version 7.3.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-6.html#id2862979">E.43.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-5.html">E.44. Release 7.3.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-5.html#id2863066">E.44.1. Migration to version 7.3.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-5.html#id2863077">E.44.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-4.html">E.45. Release 7.3.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-4.html#id2863185">E.45.1. Migration to version 7.3.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-4.html#id2863196">E.45.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-3.html">E.46. Release 7.3.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-3.html#id2863256">E.46.1. Migration to version 7.3.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-3.html#id2863266">E.46.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-2.html">E.47. Release 7.3.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-2.html#id2863858">E.47.1. Migration to version 7.3.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-2.html#id2863868">E.47.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3-1.html">E.48. Release 7.3.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3-1.html#id2864030">E.48.1. Migration to version 7.3.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-1.html#id2864050">E.48.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-3.html">E.49. Release 7.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-3.html#id2864139">E.49.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3.html#id2864326">E.49.2. Migration to version 7.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3.html#id2864506">E.49.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-8.html">E.50. Release 7.2.8</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-8.html#id2865900">E.50.1. Migration to version 7.2.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-8.html#id2865907">E.50.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-7.html">E.51. Release 7.2.7</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-7.html#id2865998">E.51.1. Migration to version 7.2.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-7.html#id2866005">E.51.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-6.html">E.52. Release 7.2.6</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-6.html#id2866071">E.52.1. Migration to version 7.2.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-6.html#id2866078">E.52.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-5.html">E.53. Release 7.2.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-5.html#id2866141">E.53.1. Migration to version 7.2.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-5.html#id2866148">E.53.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-4.html">E.54. Release 7.2.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-4.html#id2866230">E.54.1. Migration to version 7.2.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-4.html#id2866241">E.54.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-3.html">E.55. Release 7.2.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-3.html#id2866299">E.55.1. Migration to version 7.2.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-3.html#id2866309">E.55.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-2.html">E.56. Release 7.2.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-2.html#id2866362">E.56.1. Migration to version 7.2.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-2.html#id2866373">E.56.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2-1.html">E.57. Release 7.2.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2-1.html#id2866456">E.57.1. Migration to version 7.2.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-1.html#id2866466">E.57.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-2.html">E.58. Release 7.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-2.html#id2866552">E.58.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2.html#id2866646">E.58.2. Migration to version 7.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2.html#id2866802">E.58.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1-3.html">E.59. Release 7.1.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1-3.html#id2867983">E.59.1. Migration to version 7.1.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-3.html#id2867994">E.59.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1-2.html">E.60. Release 7.1.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1-2.html#id2868027">E.60.1. Migration to version 7.1.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-2.html#id2868038">E.60.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1-1.html">E.61. Release 7.1.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1-1.html#id2868068">E.61.1. Migration to version 7.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-1.html#id2868079">E.61.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-1.html">E.62. Release 7.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-1.html#id2868191">E.62.1. Migration to version 7.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1.html#id2868199">E.62.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0-3.html">E.63. Release 7.0.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0-3.html#id2868443">E.63.1. Migration to version 7.0.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-3.html#id2868453">E.63.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0-2.html">E.64. Release 7.0.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0-2.html#id2868543">E.64.1. Migration to version 7.0.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-2.html#id2868553">E.64.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0-1.html">E.65. Release 7.0.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0-1.html#id2868582">E.65.1. Migration to version 7.0.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-1.html#id2868592">E.65.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-7-0.html">E.66. Release 7.0</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-7-0.html#id2868770">E.66.1. Migration to version 7.0</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0.html#id2868881">E.66.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5-3.html">E.67. Release 6.5.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5-3.html#id2869504">E.67.1. Migration to version 6.5.3</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-3.html#id2869515">E.67.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5-2.html">E.68. Release 6.5.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5-2.html#id2869545">E.68.1. Migration to version 6.5.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-2.html#id2869556">E.68.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5-1.html">E.69. Release 6.5.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5-1.html#id2869616">E.69.1. Migration to version 6.5.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-1.html#id2869626">E.69.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-5.html">E.70. Release 6.5</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-5.html#id2869890">E.70.1. Migration to version 6.5</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5.html#id2870033">E.70.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-4-2.html">E.71. Release 6.4.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-4-2.html#id2870243">E.71.1. Migration to version 6.4.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-2.html#id2870253">E.71.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-4-1.html">E.72. Release 6.4.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-4-1.html#id2870280">E.72.1. Migration to version 6.4.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-1.html#id2870290">E.72.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-4.html">E.73. Release 6.4</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-4.html#id2870445">E.73.1. Migration to version 6.4</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4.html#id2870470">E.73.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-3-2.html">E.74. Release 6.3.2</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-6-3-2.html#id2870803">E.74.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-6-3-1.html">E.75. Release 6.3.1</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-6-3-1.html#id2870893">E.75.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-6-3.html">E.76. Release 6.3</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-3.html#id2871150">E.76.1. Migration to version 6.3</a></span></dt>
+<dt><span class="sect2"><a href="release-6-3.html#id2871176">E.76.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-2-1.html">E.77. Release 6.2.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-2-1.html#id2871458">E.77.1. Migration from version 6.2 to version 6.2.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2-1.html#id2871492">E.77.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-2.html">E.78. Release 6.2</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-2.html#id2871536">E.78.1. Migration from version 6.1 to version 6.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2.html#id2871559">E.78.2. Migration from version 1.<em class="replaceable"><code>x</code></em> to version 6.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2.html#id2871571">E.78.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-1-1.html">E.79. Release 6.1.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-1-1.html#id2871722">E.79.1. Migration from version 6.1 to version 6.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-1-1.html#id2871731">E.79.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-1.html">E.80. Release 6.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-1.html#id2871893">E.80.1. Migration to version 6.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-1.html#id2871905">E.80.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-0.html">E.81. Release 6.0</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-0.html#id2872044">E.81.1. Migration from version 1.09 to version 6.0</a></span></dt>
+<dt><span class="sect2"><a href="release-6-0.html#id2872052">E.81.2. Migration from pre-1.09 to version 6.0</a></span></dt>
+<dt><span class="sect2"><a href="release-6-0.html#id2872060">E.81.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-09.html">E.82. Release 1.09</a></span></dt>
+<dt><span class="sect1"><a href="release-1-02.html">E.83. Release 1.02</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-1-02.html#id2872294">E.83.1. Migration from version 1.02 to version 1.02.1</a></span></dt>
+<dt><span class="sect2"><a href="release-1-02.html#id2872390">E.83.2. Dump/Reload Procedure</a></span></dt>
+<dt><span class="sect2"><a href="release-1-02.html#id2872442">E.83.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-01.html">E.84. Release 1.01</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-1-01.html#id2872478">E.84.1. Migration from version 1.0 to version 1.01</a></span></dt>
+<dt><span class="sect2"><a href="release-1-01.html#id2872762">E.84.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-0.html">E.85. Release 1.0</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-1-0.html#id2872812">E.85.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-03.html">E.86. <span class="productname">Postgres95</span> Release 0.03</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-0-03.html#id2872898">E.86.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-02.html">E.87. <span class="productname">Postgres95</span> Release 0.02</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-0-02.html#id2873083">E.87.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-01.html">E.88. <span class="productname">Postgres95</span> Release 0.01</a></span></dt>
+</dl></dd>
+<dt><span class="appendix"><a href="cvs.html">F. The <span class="productname">CVS</span> Repository</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="cvs.html#anoncvs">F.1. Getting The Source Via Anonymous <span class="productname">CVS</span></a></span></dt>
+<dt><span class="sect1"><a href="cvs-tree.html">F.2. <span class="productname">CVS</span> Tree Organization</a></span></dt>
+<dt><span class="sect1"><a href="cvsup.html">F.3. Getting The Source Via <span class="productname">CVSup</span></a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="cvsup.html#id2873784">F.3.1. Preparing A <span class="productname">CVSup</span> Client System</a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id2873916">F.3.2. Running a <span class="productname">CVSup</span> Client</a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id2874118">F.3.3. Installing <span class="productname">CVSup</span></a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id2874312">F.3.4. Installation from Sources</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="appendix"><a href="docguide.html">G. Documentation</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="docguide.html#docguide-docbook">G.1. DocBook</a></span></dt>
+<dt><span class="sect1"><a href="docguide-toolsets.html">G.2. Tool Sets</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="docguide-toolsets.html#id2874789">G.2.1. <span class="productname">Linux</span> <acronym class="acronym">RPM</acronym> Installation</a></span></dt>
+<dt><span class="sect2"><a href="docguide-toolsets.html#id2874848">G.2.2. FreeBSD Installation</a></span></dt>
+<dt><span class="sect2"><a href="docguide-toolsets.html#id2874951">G.2.3. Debian Packages</a></span></dt>
+<dt><span class="sect2"><a href="docguide-toolsets.html#id2874972">G.2.4. Manual Installation from Source</a></span></dt>
+<dt><span class="sect2"><a href="docguide-toolsets.html#docguide-toolsets-configure">G.2.5. Detection by <code class="command">configure</code></a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="docguide-build.html">G.3. Building The Documentation</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="docguide-build.html#id2875737">G.3.1. HTML</a></span></dt>
+<dt><span class="sect2"><a href="docguide-build.html#id2875800">G.3.2. Manpages</a></span></dt>
+<dt><span class="sect2"><a href="docguide-build.html#id2875847">G.3.3. Print Output via <span class="application">JadeTex</span></a></span></dt>
+<dt><span class="sect2"><a href="docguide-build.html#id2875941">G.3.4. Print Output via <acronym class="acronym">RTF</acronym></a></span></dt>
+<dt><span class="sect2"><a href="docguide-build.html#id2876430">G.3.5. Plain Text Files</a></span></dt>
+<dt><span class="sect2"><a href="docguide-build.html#id2876529">G.3.6. Syntax Check</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="docguide-authoring.html">G.4. Documentation Authoring</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="docguide-authoring.html#id2876588">G.4.1. Emacs/PSGML</a></span></dt>
+<dt><span class="sect2"><a href="docguide-authoring.html#id2876764">G.4.2. Other Emacs modes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="docguide-style.html">G.5. Style Guide</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="docguide-style.html#id2876808">G.5.1. Reference Pages</a></span></dt></dl></dd>
+</dl></dd>
+<dt><span class="appendix"><a href="external-projects.html">H. PgFoundry and External Projects</a></span></dt>
+<dd><dl>
+<dt><span class="sect1"><a href="external-projects.html#external-interfaces">H.1. Externally Developed Interfaces</a></span></dt>
+<dt><span class="sect1"><a href="external-extensions.html">H.2. Extensions</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="bibliography"><a href="biblio.html">Bibliography</a></span></dt>
+<dt><span class="index"><a href="ix01.html">Index</a></span></dt>
+</dl>
+</div>
+<div class="list-of-figures">
+<p><b>List of Figures</b></p>
+<dl><dt>48.1. <a href="geqo-intro2.html#geqo-diagram">Structured Diagram of a Genetic Algorithm</a>
+</dt></dl>
+</div>
+<div class="list-of-tables">
+<p><b>List of Tables</b></p>
+<dl>
+<dt>4.1. <a href="sql-syntax.html#sql-precedence-table">Operator Precedence (decreasing)</a>
+</dt>
+<dt>8.1. <a href="datatype.html#datatype-table">Data Types</a>
+</dt>
+<dt>8.2. <a href="datatype.html#datatype-numeric-table">Numeric Types</a>
+</dt>
+<dt>8.3. <a href="datatype-money.html#datatype-money-table">Monetary Types</a>
+</dt>
+<dt>8.4. <a href="datatype-character.html#datatype-character-table">Character Types</a>
+</dt>
+<dt>8.5. <a href="datatype-character.html#datatype-character-special-table">Special Character Types</a>
+</dt>
+<dt>8.6. <a href="datatype-binary.html#datatype-binary-table">Binary Data Types</a>
+</dt>
+<dt>8.7. <a href="datatype-binary.html#datatype-binary-sqlesc"><code class="type">bytea</code> Literal Escaped Octets</a>
+</dt>
+<dt>8.8. <a href="datatype-binary.html#datatype-binary-resesc"><code class="type">bytea</code> Output Escaped Octets</a>
+</dt>
+<dt>8.9. <a href="datatype-datetime.html#datatype-datetime-table">Date/Time Types</a>
+</dt>
+<dt>8.10. <a href="datatype-datetime.html#datatype-datetime-date-table">Date Input</a>
+</dt>
+<dt>8.11. <a href="datatype-datetime.html#datatype-datetime-time-table">Time Input</a>
+</dt>
+<dt>8.12. <a href="datatype-datetime.html#datatype-timezone-table">Time Zone Input</a>
+</dt>
+<dt>8.13. <a href="datatype-datetime.html#datatype-datetime-special-table">Special Date/Time Inputs</a>
+</dt>
+<dt>8.14. <a href="datatype-datetime.html#datatype-datetime-output-table">Date/Time Output Styles</a>
+</dt>
+<dt>8.15. <a href="datatype-datetime.html#datatype-datetime-output2-table">Date Order Conventions</a>
+</dt>
+<dt>8.16. <a href="datatype-geometric.html#datatype-geo-table">Geometric Types</a>
+</dt>
+<dt>8.17. <a href="datatype-net-types.html#datatype-net-types-table">Network Address Types</a>
+</dt>
+<dt>8.18. <a href="datatype-net-types.html#datatype-net-cidr-table"><code class="type">cidr</code> Type Input Examples</a>
+</dt>
+<dt>8.19. <a href="datatype-oid.html#datatype-oid-table">Object Identifier Types</a>
+</dt>
+<dt>8.20. <a href="datatype-pseudo.html#datatype-pseudotypes-table">Pseudo-Types</a>
+</dt>
+<dt>9.1. <a href="functions-comparison.html#functions-comparison-table">Comparison Operators</a>
+</dt>
+<dt>9.2. <a href="functions-math.html#functions-math-op-table">Mathematical Operators</a>
+</dt>
+<dt>9.3. <a href="functions-math.html#functions-math-func-table">Mathematical Functions</a>
+</dt>
+<dt>9.4. <a href="functions-math.html#functions-math-trig-table">Trigonometric Functions</a>
+</dt>
+<dt>9.5. <a href="functions-string.html#functions-string-sql"><acronym class="acronym">SQL</acronym> String Functions and Operators</a>
+</dt>
+<dt>9.6. <a href="functions-string.html#functions-string-other">Other String Functions</a>
+</dt>
+<dt>9.7. <a href="functions-string.html#conversion-names">Built-in Conversions</a>
+</dt>
+<dt>9.8. <a href="functions-binarystring.html#functions-binarystring-sql"><acronym class="acronym">SQL</acronym> Binary String Functions and Operators</a>
+</dt>
+<dt>9.9. <a href="functions-binarystring.html#functions-binarystring-other">Other Binary String Functions</a>
+</dt>
+<dt>9.10. <a href="functions-bitstring.html#functions-bit-string-op-table">Bit String Operators</a>
+</dt>
+<dt>9.11. <a href="functions-matching.html#functions-posix-table">Regular Expression Match Operators</a>
+</dt>
+<dt>9.12. <a href="functions-matching.html#posix-atoms-table">Regular Expression Atoms</a>
+</dt>
+<dt>9.13. <a href="functions-matching.html#posix-quantifiers-table">Regular Expression Quantifiers</a>
+</dt>
+<dt>9.14. <a href="functions-matching.html#posix-constraints-table">Regular Expression Constraints</a>
+</dt>
+<dt>9.15. <a href="functions-matching.html#posix-character-entry-escapes-table">Regular Expression Character-Entry Escapes</a>
+</dt>
+<dt>9.16. <a href="functions-matching.html#posix-class-shorthand-escapes-table">Regular Expression Class-Shorthand Escapes</a>
+</dt>
+<dt>9.17. <a href="functions-matching.html#posix-constraint-escapes-table">Regular Expression Constraint Escapes</a>
+</dt>
+<dt>9.18. <a href="functions-matching.html#posix-constraint-backref-table">Regular Expression Back References</a>
+</dt>
+<dt>9.19. <a href="functions-matching.html#posix-embedded-options-table">ARE Embedded-Option Letters</a>
+</dt>
+<dt>9.20. <a href="functions-formatting.html#functions-formatting-table">Formatting Functions</a>
+</dt>
+<dt>9.21. <a href="functions-formatting.html#functions-formatting-datetime-table">Template Patterns for Date/Time Formatting</a>
+</dt>
+<dt>9.22. <a href="functions-formatting.html#functions-formatting-datetimemod-table">Template Pattern Modifiers for Date/Time Formatting</a>
+</dt>
+<dt>9.23. <a href="functions-formatting.html#functions-formatting-numeric-table">Template Patterns for Numeric Formatting</a>
+</dt>
+<dt>9.24. <a href="functions-formatting.html#functions-formatting-examples-table"><code class="function">to_char</code> Examples</a>
+</dt>
+<dt>9.25. <a href="functions-datetime.html#operators-datetime-table">Date/Time Operators</a>
+</dt>
+<dt>9.26. <a href="functions-datetime.html#functions-datetime-table">Date/Time Functions</a>
+</dt>
+<dt>9.27. <a href="functions-datetime.html#functions-datetime-zoneconvert-table"><code class="literal">AT TIME ZONE</code> Variants</a>
+</dt>
+<dt>9.28. <a href="functions-geometry.html#functions-geometry-op-table">Geometric Operators</a>
+</dt>
+<dt>9.29. <a href="functions-geometry.html#functions-geometry-func-table">Geometric Functions</a>
+</dt>
+<dt>9.30. <a href="functions-geometry.html#functions-geometry-conv-table">Geometric Type Conversion Functions</a>
+</dt>
+<dt>9.31. <a href="functions-net.html#cidr-inet-operators-table"><code class="type">cidr</code> and <code class="type">inet</code> Operators</a>
+</dt>
+<dt>9.32. <a href="functions-net.html#cidr-inet-functions-table"><code class="type">cidr</code> and <code class="type">inet</code> Functions</a>
+</dt>
+<dt>9.33. <a href="functions-net.html#macaddr-functions-table"><code class="type">macaddr</code> Functions</a>
+</dt>
+<dt>9.34. <a href="functions-sequence.html#functions-sequence-table">Sequence Functions</a>
+</dt>
+<dt>9.35. <a href="functions-array.html#array-operators-table"><code class="type">array</code> Operators</a>
+</dt>
+<dt>9.36. <a href="functions-array.html#array-functions-table"><code class="type">array</code> Functions</a>
+</dt>
+<dt>9.37. <a href="functions-aggregate.html#functions-aggregate-table">General-Purpose Aggregate Functions</a>
+</dt>
+<dt>9.38. <a href="functions-aggregate.html#functions-aggregate-statistics-table">Aggregate Functions for Statistics</a>
+</dt>
+<dt>9.39. <a href="functions-srf.html#functions-srf-series">Series Generating Functions</a>
+</dt>
+<dt>9.40. <a href="functions-info.html#functions-info-session-table">Session Information Functions</a>
+</dt>
+<dt>9.41. <a href="functions-info.html#functions-info-access-table">Access Privilege Inquiry Functions</a>
+</dt>
+<dt>9.42. <a href="functions-info.html#functions-info-schema-table">Schema Visibility Inquiry Functions</a>
+</dt>
+<dt>9.43. <a href="functions-info.html#functions-info-catalog-table">System Catalog Information Functions</a>
+</dt>
+<dt>9.44. <a href="functions-info.html#functions-info-comment-table">Comment Information Functions</a>
+</dt>
+<dt>9.45. <a href="functions-admin.html#functions-admin-set-table">Configuration Settings Functions</a>
+</dt>
+<dt>9.46. <a href="functions-admin.html#functions-admin-signal-table">Server Signalling Functions</a>
+</dt>
+<dt>9.47. <a href="functions-admin.html#functions-admin-backup-table">Backup Control Functions</a>
+</dt>
+<dt>9.48. <a href="functions-admin.html#functions-admin-dbsize">Database Object Size Functions</a>
+</dt>
+<dt>9.49. <a href="functions-admin.html#functions-admin-genfile">Generic File Access Functions</a>
+</dt>
+<dt>9.50. <a href="functions-admin.html#functions-advisory-locks">Advisory Lock Functions</a>
+</dt>
+<dt>12.1. <a href="transaction-iso.html#mvcc-isolevel-table"><acronym class="acronym">SQL</acronym> Transaction Isolation Levels</a>
+</dt>
+<dt>16.1. <a href="kernel-resources.html#sysvipc-parameters"><span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters</a>
+</dt>
+<dt>16.2. <a href="kernel-resources.html#shared-memory-parameters">Configuration parameters affecting
+    <span class="productname">PostgreSQL</span>'s shared memory usage</a>
+</dt>
+<dt>17.1. <a href="runtime-config-short.html#runtime-config-short-table">Short option key</a>
+</dt>
+<dt>21.1. <a href="multibyte.html#charset-table"><span class="productname">PostgreSQL</span> Character Sets</a>
+</dt>
+<dt>21.2. <a href="multibyte.html#multibyte-translation-table">Client/Server Character Set Conversions</a>
+</dt>
+<dt>25.1. <a href="monitoring-stats.html#monitoring-stats-views-table">Standard Statistics Views</a>
+</dt>
+<dt>25.2. <a href="monitoring-stats.html#monitoring-stats-funcs-table">Statistics Access Functions</a>
+</dt>
+<dt>31.1. <a href="ecpg-pgtypes.html#id2669195">Valid input formats for <code class="function">PGTYPESdate_from_asc</code></a>
+</dt>
+<dt>31.2. <a href="ecpg-pgtypes.html#id2669768">Valid input formats for <code class="function">PGTYPESdate_fmt_asc</code></a>
+</dt>
+<dt>31.3. <a href="ecpg-pgtypes.html#id2670016">Valid input formats for <code class="function">rdefmtdate</code></a>
+</dt>
+<dt>31.4. <a href="ecpg-pgtypes.html#id2670398">Valid input formats for <code class="function">PGTYPEStimestamp_from_asc</code></a>
+</dt>
+<dt>32.1. <a href="infoschema-information-schema-catalog-name.html#id2677218"><code class="literal">information_schema_catalog_name</code> Columns</a>
+</dt>
+<dt>32.2. <a href="infoschema-administrable-role-authorizations.html#id2677277"><code class="literal">administrable_role_authorizations</code> Columns</a>
+</dt>
+<dt>32.3. <a href="infoschema-applicable-roles.html#id2677386"><code class="literal">applicable_roles</code> Columns</a>
+</dt>
+<dt>32.4. <a href="infoschema-attributes.html#id2677485"><code class="literal">attributes</code> Columns</a>
+</dt>
+<dt>32.5. <a href="infoschema-check-constraint-routine-usage.html#id2678035"><code class="literal">check_constraint_routine_usage</code> Columns</a>
+</dt>
+<dt>32.6. <a href="infoschema-check-constraints.html#id2678187"><code class="literal">check_constraints</code> Columns</a>
+</dt>
+<dt>32.7. <a href="infoschema-column-domain-usage.html#id2678295"><code class="literal">column_domain_usage</code> Columns</a>
+</dt>
+<dt>32.8. <a href="infoschema-column-privileges.html#id2678486"><code class="literal">column_privileges</code> Columns</a>
+</dt>
+<dt>32.9. <a href="infoschema-column-udt-usage.html#id2678685"><code class="literal">column_udt_usage</code> Columns</a>
+</dt>
+<dt>32.10. <a href="infoschema-columns.html#id2678833"><code class="literal">columns</code> Columns</a>
+</dt>
+<dt>32.11. <a href="infoschema-constraint-column-usage.html#id2679826"><code class="literal">constraint_column_usage</code> Columns</a>
+</dt>
+<dt>32.12. <a href="infoschema-constraint-table-usage.html#id2679983"><code class="literal">constraint_table_usage</code> Columns</a>
+</dt>
+<dt>32.13. <a href="infoschema-data-type-privileges.html#id2680122"><code class="literal">data_type_privileges</code> Columns</a>
+</dt>
+<dt>32.14. <a href="infoschema-domain-constraints.html#id2680257"><code class="literal">domain_constraints</code> Columns</a>
+</dt>
+<dt>32.15. <a href="infoschema-domain-udt-usage.html#id2680436"><code class="literal">domain_udt_usage</code> Columns</a>
+</dt>
+<dt>32.16. <a href="infoschema-domains.html#id2680559"><code class="literal">domains</code> Columns</a>
+</dt>
+<dt>32.17. <a href="infoschema-element-types.html#id2681133"><code class="literal">element_types</code> Columns</a>
+</dt>
+<dt>32.18. <a href="infoschema-enabled-roles.html#id2681746"><code class="literal">enabled_roles</code> Columns</a>
+</dt>
+<dt>32.19. <a href="infoschema-key-column-usage.html#id2681806"><code class="literal">key_column_usage</code> Columns</a>
+</dt>
+<dt>32.20. <a href="infoschema-parameters.html#id2681979"><code class="literal">parameters</code> Columns</a>
+</dt>
+<dt>32.21. <a href="infoschema-referential-constraints.html#id2682604"><code class="literal">referential_constraints</code> Columns</a>
+</dt>
+<dt>32.22. <a href="infoschema-role-column-grants.html#id2682880"><code class="literal">role_column_grants</code> Columns</a>
+</dt>
+<dt>32.23. <a href="infoschema-role-routine-grants.html#id2683073"><code class="literal">role_routine_grants</code> Columns</a>
+</dt>
+<dt>32.24. <a href="infoschema-role-table-grants.html#id2683286"><code class="literal">role_table_grants</code> Columns</a>
+</dt>
+<dt>32.25. <a href="infoschema-role-usage-grants.html#id2683514"><code class="literal">role_usage_grants</code> Columns</a>
+</dt>
+<dt>32.26. <a href="infoschema-routine-privileges.html#id2683682"><code class="literal">routine_privileges</code> Columns</a>
+</dt>
+<dt>32.27. <a href="infoschema-routines.html#id2683888"><code class="literal">routines</code> Columns</a>
+</dt>
+<dt>32.28. <a href="infoschema-schemata.html#id2685504"><code class="literal">schemata</code> Columns</a>
+</dt>
+<dt>32.29. <a href="infoschema-sequences.html#id2685663"><code class="literal">sequences</code> Columns</a>
+</dt>
+<dt>32.30. <a href="infoschema-sql-features.html#id2685915"><code class="literal">sql_features</code> Columns</a>
+</dt>
+<dt>32.31. <a href="infoschema-sql-implementation-info.html#id2686085"><code class="literal">sql_implementation_info</code> Columns</a>
+</dt>
+<dt>32.32. <a href="infoschema-sql-languages.html#id2686224"><code class="literal">sql_languages</code> Columns</a>
+</dt>
+<dt>32.33. <a href="infoschema-sql-packages.html#id2686426"><code class="literal">sql_packages</code> Columns</a>
+</dt>
+<dt>32.34. <a href="infoschema-sql-parts.html#id2686567"><code class="literal">sql_parts</code> Columns</a>
+</dt>
+<dt>32.35. <a href="infoschema-sql-sizing.html#id2686714"><code class="literal">sql_sizing</code> Columns</a>
+</dt>
+<dt>32.36. <a href="infoschema-sql-sizing-profiles.html#id2686825"><code class="literal">sql_sizing_profiles</code> Columns</a>
+</dt>
+<dt>32.37. <a href="infoschema-table-constraints.html#id2686940"><code class="literal">table_constraints</code> Columns</a>
+</dt>
+<dt>32.38. <a href="infoschema-table-privileges.html#id2687150"><code class="literal">table_privileges</code> Columns</a>
+</dt>
+<dt>32.39. <a href="infoschema-tables.html#id2687352"><code class="literal">tables</code> Columns</a>
+</dt>
+<dt>32.40. <a href="infoschema-triggers.html#id2687632"><code class="literal">triggers</code> Columns</a>
+</dt>
+<dt>32.41. <a href="infoschema-usage-privileges.html#id2688098"><code class="literal">usage_privileges</code> Columns</a>
+</dt>
+<dt>32.42. <a href="infoschema-view-column-usage.html#id2688279"><code class="literal">view_column_usage</code> Columns</a>
+</dt>
+<dt>32.43. <a href="infoschema-view-routine-usage.html#id2688428"><code class="literal">view_routine_usage</code> Columns</a>
+</dt>
+<dt>32.44. <a href="infoschema-view-table-usage.html#id2688589"><code class="literal">view_table_usage</code> Columns</a>
+</dt>
+<dt>32.45. <a href="infoschema-views.html#id2688715"><code class="literal">views</code> Columns</a>
+</dt>
+<dt>33.1. <a href="xfunc-c.html#xfunc-c-type-table">Equivalent C Types for Built-In SQL Types</a>
+</dt>
+<dt>33.2. <a href="xindex.html#xindex-btree-strat-table">B-tree Strategies</a>
+</dt>
+<dt>33.3. <a href="xindex.html#xindex-hash-strat-table">Hash Strategies</a>
+</dt>
+<dt>33.4. <a href="xindex.html#xindex-rtree-strat-table">GiST Two-Dimensional &#8220;<span class="quote">R-tree</span>&#8221; Strategies</a>
+</dt>
+<dt>33.5. <a href="xindex.html#xindex-gin-array-strat-table">GIN Array's Strategies</a>
+</dt>
+<dt>33.6. <a href="xindex.html#xindex-btree-support-table">B-tree Support Functions</a>
+</dt>
+<dt>33.7. <a href="xindex.html#xindex-hash-support-table">Hash Support Functions</a>
+</dt>
+<dt>33.8. <a href="xindex.html#xindex-gist-support-table">GiST Support Functions</a>
+</dt>
+<dt>33.9. <a href="xindex.html#xindex-gin-support-table">GIN Support Functions</a>
+</dt>
+<dt>43.1. <a href="catalogs.html#catalog-table">System Catalogs</a>
+</dt>
+<dt>43.2. <a href="catalog-pg-aggregate.html#id2797813"><code class="structname">pg_aggregate</code> Columns</a>
+</dt>
+<dt>43.3. <a href="catalog-pg-am.html#id2798022"><code class="structname">pg_am</code> Columns</a>
+</dt>
+<dt>43.4. <a href="catalog-pg-amop.html#id2798530"><code class="structname">pg_amop</code> Columns</a>
+</dt>
+<dt>43.5. <a href="catalog-pg-amproc.html#id2798672"><code class="structname">pg_amproc</code> Columns</a>
+</dt>
+<dt>43.6. <a href="catalog-pg-attrdef.html#id2798807"><code class="structname">pg_attrdef</code> Columns</a>
+</dt>
+<dt>43.7. <a href="catalog-pg-attribute.html#id2798960"><code class="structname">pg_attribute</code> Columns</a>
+</dt>
+<dt>43.8. <a href="catalog-pg-authid.html#id2799424"><code class="structname">pg_authid</code> Columns</a>
+</dt>
+<dt>43.9. <a href="catalog-pg-auth-members.html#id2799622"><code class="structname">pg_auth_members</code> Columns</a>
+</dt>
+<dt>43.10. <a href="catalog-pg-autovacuum.html#id2799785"><code class="structname">pg_autovacuum</code> Columns</a>
+</dt>
+<dt>43.11. <a href="catalog-pg-cast.html#id2800105"><code class="structfield">pg_cast</code> Columns</a>
+</dt>
+<dt>43.12. <a href="catalog-pg-class.html#id2800353"><code class="structname">pg_class</code> Columns</a>
+</dt>
+<dt>43.13. <a href="catalog-pg-constraint.html#id2801011"><code class="structname">pg_constraint</code> Columns</a>
+</dt>
+<dt>43.14. <a href="catalog-pg-conversion.html#id2801372"><code class="structname">pg_conversion</code> Columns</a>
+</dt>
+<dt>43.15. <a href="catalog-pg-database.html#id2801563"><code class="structname">pg_database</code> Columns</a>
+</dt>
+<dt>43.16. <a href="catalog-pg-depend.html#id2801884"><code class="structname">pg_depend</code> Columns</a>
+</dt>
+<dt>43.17. <a href="catalog-pg-description.html#id2802249"><code class="structname">pg_description</code> Columns</a>
+</dt>
+<dt>43.18. <a href="catalog-pg-index.html#id2802370"><code class="structname">pg_index</code> Columns</a>
+</dt>
+<dt>43.19. <a href="catalog-pg-inherits.html#id2802660"><code class="structname">pg_inherits</code> Columns</a>
+</dt>
+<dt>43.20. <a href="catalog-pg-language.html#id2802785"><code class="structname">pg_language</code> Columns</a>
+</dt>
+<dt>43.21. <a href="catalog-pg-largeobject.html#id2802994"><code class="structname">pg_largeobject</code> Columns</a>
+</dt>
+<dt>43.22. <a href="catalog-pg-listener.html#id2803134"><code class="structname">pg_listener</code> Columns</a>
+</dt>
+<dt>43.23. <a href="catalog-pg-namespace.html#id2803227"><code class="structname">pg_namespace</code> Columns</a>
+</dt>
+<dt>43.24. <a href="catalog-pg-opclass.html#id2803351"><code class="structname">pg_opclass</code> Columns</a>
+</dt>
+<dt>43.25. <a href="catalog-pg-operator.html#id2803585"><code class="structname">pg_operator</code> Columns</a>
+</dt>
+<dt>43.26. <a href="catalog-pg-pltemplate.html#id2804085"><code class="structname">pg_pltemplate</code> Columns</a>
+</dt>
+<dt>43.27. <a href="catalog-pg-proc.html#id2804272"><code class="structname">pg_proc</code> Columns</a>
+</dt>
+<dt>43.28. <a href="catalog-pg-rewrite.html#id2804792"><code class="structname">pg_rewrite</code> Columns</a>
+</dt>
+<dt>43.29. <a href="catalog-pg-shdepend.html#id2805021"><code class="structname">pg_shdepend</code> Columns</a>
+</dt>
+<dt>43.30. <a href="catalog-pg-shdescription.html#id2805310"><code class="structname">pg_shdescription</code> Columns</a>
+</dt>
+<dt>43.31. <a href="catalog-pg-statistic.html#id2805483"><code class="structname">pg_statistic</code> Columns</a>
+</dt>
+<dt>43.32. <a href="catalog-pg-tablespace.html#id2805756"><code class="structname">pg_tablespace</code> Columns</a>
+</dt>
+<dt>43.33. <a href="catalog-pg-trigger.html#id2805890"><code class="structname">pg_trigger</code> Columns</a>
+</dt>
+<dt>43.34. <a href="catalog-pg-type.html#id2806166"><code class="structname">pg_type</code> Columns</a>
+</dt>
+<dt>43.35. <a href="views-overview.html#view-table">System Views</a>
+</dt>
+<dt>43.36. <a href="view-pg-cursors.html#id2807363"><code class="structname">pg_cursors</code> Columns</a>
+</dt>
+<dt>43.37. <a href="view-pg-group.html#id2807545"><code class="structname">pg_group</code> Columns</a>
+</dt>
+<dt>43.38. <a href="view-pg-indexes.html#id2807661"><code class="structname">pg_indexes</code> Columns</a>
+</dt>
+<dt>43.39. <a href="view-pg-locks.html#id2807849"><code class="structname">pg_locks</code> Columns</a>
+</dt>
+<dt>43.40. <a href="view-pg-prepared-statements.html#id2808335"><code class="structname">pg_prepared_statements</code> Columns</a>
+</dt>
+<dt>43.41. <a href="view-pg-prepared-xacts.html#id2808514"><code class="structname">pg_prepared_xacts</code> Columns</a>
+</dt>
+<dt>43.42. <a href="view-pg-roles.html#id2808672"><code class="structname">pg_roles</code> Columns</a>
+</dt>
+<dt>43.43. <a href="view-pg-rules.html#id2808883"><code class="structname">pg_rules</code> Columns</a>
+</dt>
+<dt>43.44. <a href="view-pg-settings.html#id2809044"><code class="structname">pg_settings</code> Columns</a>
+</dt>
+<dt>43.45. <a href="view-pg-shadow.html#id2809332"><code class="structname">pg_shadow</code> Columns</a>
+</dt>
+<dt>43.46. <a href="view-pg-stats.html#id2809527"><code class="structname">pg_stats</code> Columns</a>
+</dt>
+<dt>43.47. <a href="view-pg-tables.html#id2809805"><code class="structname">pg_tables</code> Columns</a>
+</dt>
+<dt>43.48. <a href="view-pg-timezone-abbrevs.html#id2810026"><code class="structname">pg_timezone_abbrevs</code> Columns</a>
+</dt>
+<dt>43.49. <a href="view-pg-timezone-names.html#id2810131"><code class="structname">pg_timezone_names</code> Columns</a>
+</dt>
+<dt>43.50. <a href="view-pg-user.html#id2810228"><code class="structname">pg_user</code> Columns</a>
+</dt>
+<dt>43.51. <a href="view-pg-views.html#id2810377"><code class="structname">pg_views</code> Columns</a>
+</dt>
+<dt>52.1. <a href="storage.html#pgdata-contents-table">Contents of <code class="varname">PGDATA</code></a>
+</dt>
+<dt>52.2. <a href="storage-page-layout.html#page-table">Page Layout</a>
+</dt>
+<dt>52.3. <a href="storage-page-layout.html#pageheaderdata-table">PageHeaderData Layout</a>
+</dt>
+<dt>52.4. <a href="storage-page-layout.html#heaptupleheaderdata-table">HeapTupleHeaderData Layout</a>
+</dt>
+<dt>A.1. <a href="errcodes-appendix.html#errcodes-table"><span class="productname">PostgreSQL</span> Error Codes</a>
+</dt>
+<dt>B.1. <a href="datetime-keywords.html#datetime-month-table">Month Names</a>
+</dt>
+<dt>B.2. <a href="datetime-keywords.html#datetime-dow-table">Day of the Week Names</a>
+</dt>
+<dt>B.3. <a href="datetime-keywords.html#datetime-mod-table">Date/Time Field Modifiers</a>
+</dt>
+<dt>C.1. <a href="sql-keywords-appendix.html#keywords-table"><acronym class="acronym">SQL</acronym> Key Words</a>
+</dt>
+</dl>
+</div>
+<div class="list-of-examples">
+<p><b>List of Examples</b></p>
+<dl>
+<dt>8.1. <a href="datatype-character.html#id2566261">Using the character types</a>
+</dt>
+<dt>8.2. <a href="datatype-boolean.html#datatype-boolean-example">Using the <code class="type">boolean</code> type</a>
+</dt>
+<dt>8.3. <a href="datatype-bit.html#id2571101">Using the bit string types</a>
+</dt>
+<dt>10.1. <a href="typeconv-oper.html#id2606444">Exponentiation Operator Type Resolution</a>
+</dt>
+<dt>10.2. <a href="typeconv-oper.html#id2606474">String Concatenation Operator Type Resolution</a>
+</dt>
+<dt>10.3. <a href="typeconv-oper.html#id2606528">Absolute-Value and Negation Operator Type Resolution</a>
+</dt>
+<dt>10.4. <a href="typeconv-func.html#id2606801">Rounding Function Argument Type Resolution</a>
+</dt>
+<dt>10.5. <a href="typeconv-func.html#id2606858">Substring Function Type Resolution</a>
+</dt>
+<dt>10.6. <a href="typeconv-query.html#id2607036"><code class="type">character</code> Storage Type Conversion</a>
+</dt>
+<dt>10.7. <a href="typeconv-union-case.html#id2607320">Type Resolution with Underspecified Types in a Union</a>
+</dt>
+<dt>10.8. <a href="typeconv-union-case.html#id2607342">Type Resolution in a Simple Union</a>
+</dt>
+<dt>10.9. <a href="typeconv-union-case.html#id2607379">Type Resolution in a Transposed Union</a>
+</dt>
+<dt>11.1. <a href="indexes-partial.html#indexes-partial-ex1">Setting up a Partial Index to Exclude Common Values</a>
+</dt>
+<dt>11.2. <a href="indexes-partial.html#indexes-partial-ex2">Setting up a Partial Index to Exclude Uninteresting Values</a>
+</dt>
+<dt>11.3. <a href="indexes-partial.html#indexes-partial-ex3">Setting up a Partial Unique Index</a>
+</dt>
+<dt>20.1. <a href="client-authentication.html#example-pg-hba.conf">Example <code class="filename">pg_hba.conf</code> entries</a>
+</dt>
+<dt>20.2. <a href="auth-methods.html#example-pg-ident.conf">An example <code class="filename">pg_ident.conf</code> file</a>
+</dt>
+<dt>29.1. <a href="libpq-example.html#libpq-example-1"><span class="application">libpq</span> Example Program 1</a>
+</dt>
+<dt>29.2. <a href="libpq-example.html#libpq-example-2"><span class="application">libpq</span> Example Program 2</a>
+</dt>
+<dt>29.3. <a href="libpq-example.html#libpq-example-3"><span class="application">libpq</span> Example Program 3</a>
+</dt>
+<dt>30.1. <a href="lo-examplesect.html#lo-example">Large Objects with <span class="application">libpq</span> Example Program</a>
+</dt>
+<dt>36.1. <a href="xplang.html#xplang-install-example">Manual Installation of <span class="application">PL/pgSQL</span></a>
+</dt>
+<dt>37.1. <a href="plpgsql-control-structures.html#plpgsql-upsert-example">Exceptions with <code class="command">UPDATE</code>/<code class="command">INSERT</code></a>
+</dt>
+<dt>37.2. <a href="plpgsql-trigger.html#plpgsql-trigger-example">A <span class="application">PL/pgSQL</span> Trigger Procedure</a>
+</dt>
+<dt>37.3. <a href="plpgsql-trigger.html#plpgsql-trigger-audit-example">A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing</a>
+</dt>
+<dt>37.4. <a href="plpgsql-trigger.html#plpgsql-trigger-summary-example">A <span class="application">PL/pgSQL</span> Trigger Procedure For Maintaining A Summary Table</a>
+</dt>
+<dt>37.5. <a href="plpgsql-porting.html#pgsql-porting-ex1">Porting a Simple Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span></a>
+</dt>
+<dt>37.6. <a href="plpgsql-porting.html#plpgsql-porting-ex2">Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span></a>
+</dt>
+<dt>37.7. <a href="plpgsql-porting.html#plpgsql-porting-ex3">Porting a Procedure With String Manipulation and
+    <code class="literal">OUT</code> Parameters from <span class="application">PL/SQL</span> to
+    <span class="application">PL/pgSQL</span></a>
+</dt>
+<dt>37.8. <a href="plpgsql-porting.html#plpgsql-porting-ex4">Porting a Procedure from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span></a>
+</dt>
+</dl>
+</div>
+</div></body>
+</html>

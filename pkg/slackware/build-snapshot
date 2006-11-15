@@ -1,0 +1,76 @@
+#! /bin/sh
+
+#######################################################################
+#
+# pgAdmin III - PostgreSQL Tools
+# $Id$
+# Copyright (C) 2002 - 2006, The pgAdmin Development Team
+# This software is released under the Artistic Licence
+#
+# build-snapshot - Build a Slackware package from CVS Tip
+#
+#######################################################################
+
+# Setup the build environment
+PATH=$PATH:/usr/local/bin
+PGDIR=/usr/local/pgsql
+WXDIR=/usr/local/
+export PATH PGDIR WXDIR
+
+# Cleanup
+cd /usr/local/src/pgadmin3
+rm -rf ./slackpack
+rm -rf ./doc
+rm -rf ./i18n
+rm -rf ./pkg
+rm -rf ./src
+
+# SVN update
+/usr/local/bin/svn update 
+
+# Bootstrap
+/bin/sh bootstrap
+
+# Configure for the local OS
+./configure --prefix=/usr/local/src/pgadmin3/slackpack/usr \
+	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug \
+	--datadir=/usr/share
+
+# Now make the binary build
+make all
+/usr/bin/strip src/pgadmin3
+/usr/bin/strip xtra/pgagent/pgagent
+
+# Build a clean distro
+if [ -x src/pgadmin3 ]; then
+
+	# Use the build system
+	make install
+	
+	# And tweak for Slackware
+	mkdir -p ./slackpack/opt/kde/share/applnk/Development
+	mkdir -p ./slackpack/usr/share
+	mkdir -p ./slackpack/install
+	mv /usr/share/pgadmin3 ./slackpack/usr/share/
+	cp ./pkg/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
+	cp ./src/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: pgAdmin III - PostgreSQL Tools" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: pgAdmin III is the most popular Open Source mamangement tool for" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: the PostgreSQL Object Relational Database Management System." >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: http://www.pgadmin.org/" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: http://www.postgresql.org/" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
+
+	# Build the snapshot and file it.
+	cd slackpack
+        /usr/bin/strip usr/bin/pgadmin3
+	/sbin/makepkg --chown y pgadmin3.tgz 
+	if [ -e pgadmin3.tgz ]; then
+		mv pgadmin3.tgz /var/www/developer.pgadmin.org/snapshots/linux/slackware/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
+	fi
+fi

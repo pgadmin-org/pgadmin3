@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Sugerencias de Gurú</title>
+</head>
+
+<body>
+<h3>Índice que cubre una clave ajena (foreign key)</h3>
+<p>
+Una clave ajena es usada para unir dos tablas en un modo lógico, y restringir los cambios que pueden ser aplicados a ellas. 
+</p>
+<p>
+Todo comienza con una tabla maestra, la cual será la tabla referenciada. Necesita tener una clave primaria (bien, realmente las  
+columnas referenciadas solo necesitan ser no nulas y cubiertas por un índice único, pero es realmente un buen consejo tener una 
+clave primaria). La tabla esclava depende de la tabla maestra, en el sentido que las columnas sobre las cuales
+se crea la clave ajena deben coincidir con la tabla maestra para todas las claves insertadas o actualizadas. La tabla esclava es la tabla referenciante de la clave ajena.
+</p>
+<p>
+La clave ajena no solo restringe a la tabla referenciante, sino también a la referenciada; el tipo de restricción puede ser 
+RESTRICT, CASCADE o SET NULL. Esto siginifica, que si una fila de la tabla maestra/referenciada es cambiada (actualizada 
+o eliminada), todas las tablas referenciantes son verificadas para ver si la operación es válida, y si hay alguna acción adicional a ejecutar; 
+vea la documentación de PostgreSQL acreca de claves ajenas (foreign keys) para mayores detalles.
+</p>
+<p>
+Esto significa que a cada acceso de actualización a una fila específica de la tabla referenciada, una correspondiente lectura es ejecutada en cada una de las
+tablas referenciantes, usando las columnas de la clave ajena como clave de acceso. Consecuentemente, todas las reglas de diseño que deberían ser tomadas
+en cuenta para buenas prestaciones de lectura usualmente también se aplican a las columnas en una tabla referenciante. Para buena prestación,
+un índice es aconsejable en la mayoría de los casos. PostgreSQL no obliga a ello de ninguna forma, así que depende del diseñador de la base de datos el proveer un índice.
+</p>
+<p>
+Como un conveniencia, pgAdmin III provee una simple casilla de verificación cuando se crea una clave ajena, que verificará automáticamente  
+la presencia de un índice usable, y creará uno por usted si no se encuentra uno. Como con todos los índices, hay casos raros donde tal índice degrada un poco sus prestaciones totales, pero en general la falta de índices degrada más las prestaciones que tener demasiados.
+</p>
+</body>
+
+</html>

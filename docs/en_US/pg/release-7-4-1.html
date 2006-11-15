@@ -1,0 +1,108 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.31. Release 7.4.1</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4-2.html" title="E.30. Release 7.4.2">
+<link rel="next" href="release-7-4.html" title="E.32. Release 7.4">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-4-1"></a>E.31. Release 7.4.1</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2003-12-22</p>
+</div>
+<p>    This release contains a variety of fixes from 7.4.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2857792"></a>E.31.1. Migration to version 7.4.1</h3></div></div></div>
+<p>     A dump/restore is <span class="emphasis"><em>not</em></span> required for those
+     running 7.4.
+    </p>
+<p>     If you want to install the fixes in the information schema
+     you need to reload it into the database.
+     This is either accomplished by initializing a new cluster
+     by running <code class="command">initdb</code>, or by running the following
+     sequence of SQL commands in each database (ideally including
+     <code class="literal">template1</code>) as a superuser in
+     <span class="application">psql</span>, after installing the new release:
+</p>
+<pre class="programlisting">DROP SCHEMA information_schema CASCADE;
+\i /usr/local/pgsql/share/information_schema.sql</pre>
+<p>
+     Substitute your installation path in the second command.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2857837"></a>E.31.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Fixed bug in <code class="command">CREATE SCHEMA</code> parsing in ECPG (Michael)</p></li>
+<li><p>Fix compile error when <code class="option">--enable-thread-safety</code> and <code class="option">--with-perl</code> are used together (Peter)</p></li>
+<li>
+<p>Fix for subqueries that used hash joins (Tom)</p>
+<p>    Certain subqueries that used hash joins would crash because of
+    improperly shared structures.</p>
+</li>
+<li>
+<p>Fix free space map compaction bug (Tom)</p>
+<p>    This fixes a bug where compaction of the free space map could lead
+    to a database server shutdown.</p>
+</li>
+<li><p>Fix for Borland compiler build of libpq (Bruce)</p></li>
+<li>
+<p>Fix <code class="function">netmask()</code> and <code class="function">hostmask()</code> to return the maximum-length masklen (Tom)</p>
+<p>    Fix these functions to return values consistent with pre-7.4
+    releases.</p>
+</li>
+<li>
+<p>Several <code class="filename">contrib/pg_autovacuum</code> fixes</p>
+<p>    Fixes include improper variable initialization, missing vacuum after
+    <code class="command">TRUNCATE</code>, and duration computation overflow for long vacuums.</p>
+</li>
+<li><p>Allow compile of <code class="filename">contrib/cube</code> under Cygwin (Jason Tishler)</p></li>
+<li>
+<p>Fix Solaris use of password file when no passwords are defined (Tom)</p>
+<p>    Fix crash on Solaris caused by use of any type of password
+    authentication when no passwords were defined.</p>
+</li>
+<li><p>JDBC fix for thread problems, other fixes</p></li>
+<li><p>Fix for <code class="type">bytea</code> index lookups (Joe)</p></li>
+<li><p>Fix information schema for bit data types (Peter)</p></li>
+<li><p>Force zero_damaged_pages to be on during recovery from WAL</p></li>
+<li><p>Prevent some obscure cases of &#8220;<span class="quote">variable not in subplan target lists</span>&#8221;</p></li>
+<li><p>Make <code class="function">PQescapeBytea</code> and <code class="function">byteaout</code> consistent with each other (Joe)</p></li>
+<li>
+<p>Escape <code class="type">bytea</code> output for bytes &gt; 0x7e(Joe)</p>
+<p>  If different client encodings are used for <code class="type">bytea</code> output and input, it
+  is possible for <code class="type">bytea</code> values to be corrupted by the differing
+  encodings.  This fix escapes all bytes that might be affected.</p>
+</li>
+<li><p>Added missing <code class="function">SPI_finish()</code> calls to dblink's <code class="function">get_tuple_of_interest()</code> (Joe)</p></li>
+<li><p>New Czech FAQ</p></li>
+<li><p>Fix information schema view <code class="literal">constraint_column_usage</code> for foreign keys (Peter)</p></li>
+<li><p>ECPG fixes (Michael)</p></li>
+<li><p>Fix bug with multiple <code class="literal">IN</code> subqueries and joins in the subqueries (Tom)</p></li>
+<li><p>Allow <code class="literal">COUNT('x')</code> to work (Tom)</p></li>
+<li>
+<p>Install ECPG include files for Informix compatibility into separate directory (Peter)</p>
+<p>  Some names of ECPG include files for Informix compatibility conflicted with operating system include files.
+  By installing them in their own directory, name conflicts have been reduced.</p>
+</li>
+<li>
+<p>Fix SSL memory leak (Neil)</p>
+<p>  This release fixes a bug in 7.4 where SSL didn't free all memory it allocated.</p>
+</li>
+<li><p>Prevent <code class="filename">pg_service.conf</code> from using service name as default dbname (Bruce)</p></li>
+<li><p>Fix local ident authentication on FreeBSD (Tom)</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,47 @@
+.TH pgagent 1  "December 26, 2005" 
+.SH NAME
+pgAgent \- a job scheduler for PostgreSQL.
+.SH SYNOPSIS
+\fBpgagent\fR [\-f | \-t \fBseconds\fR | \-r \fBseconds\fR | \-l \fBnumber\fR] {<connect string>}
+.SH DESCRIPTION
+Introduced in pgAdmin III v1.4, pgAgent is a job scheduling agent
+for PostgreSQL, capable of running multi\-step batch/shell and SQL tasks on
+complex schedules.
+.PP
+Full documentation of pgAgent is available in pgAdmin III's online
+help. Launch pgAdmin III (simply type pgadmin3 at command prompt) and
+select "Help..." from the "Help" menu. Browse through the pgAdmin III
+documentation until you find "pgAgent". Both database setup and system
+part of the installation are detailed. You will also find instructions
+to create jobs and schedules.
+.SH OPTIONS
+.TP 
+\fB\-f\fR
+run in the foreground (do not detach from the
+terminal)
+.TP 
+\fB\-t\fR \fIseconds\fR
+poll time interval in seconds (default 10)
+.TP 
+\fB\-r\fR \fIseconds\fR
+retry period after connection abort in seconds (>=10,
+default 30)
+.TP 
+\fB\-l\fR \fIverbosity\fR
+logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default
+0)
+.TP 
+\fI<connect string>\fR
+The connect string required is a standard PostgreSQL libpq
+connection string (see the PostgreSQL documentation for further
+details). For example, the following command line will run pgAgent
+against a server listening on the localhost, using a database called
+\&'pgadmin', connecting as the user 'postgres': /usr/bin/pgagent
+hostaddr=127.0.0.1 dbname=pgadmin user=postgres
+.SH "SEE ALSO"
+\fBpgadmin3\fR(1)
+.SH AUTHORS
+The content of this manual page was mostly ripped from documentation 
+written by the pgAdmin development team. It was built by Rapha\(:el Enrici 
+<blacknoz@club\-internet.fr> for the Debian project (but may be used
+by others).

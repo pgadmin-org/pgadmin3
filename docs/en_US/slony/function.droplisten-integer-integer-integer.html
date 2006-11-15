@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.47.  droplisten( integer, integer, integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.disablenode-int-integer.html" title="1.46.  disablenode_int( integer )">
+<link rel="next" href="function.droplisten-int-integer-integer-integer.html" title="1.48.  droplisten_int( integer, integer, integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.droplisten-integer-integer-integer"></a>1.47.        droplisten( integer, integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       dropListen (li_origin, li_provider, li_receiver)
+
+Generate the DROP_LISTEN event.
+        </p>
+<pre class="programlisting">declare
+	p_li_origin		alias for $1;
+	p_li_provider	alias for $2;
+	p_li_receiver	alias for $3;
+begin
+	perform dropListen_int(p_li_origin, 
+			p_li_provider, p_li_receiver);
+	
+	return  createEvent ('_schemadoc', 'DROP_LISTEN',
+			p_li_origin, p_li_provider, p_li_receiver);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

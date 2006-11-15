@@ -1,0 +1,225 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>43.39. pg_locks</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="view-pg-indexes.html" title="43.38. pg_indexes">
+<link rel="next" href="view-pg-prepared-statements.html" title="43.40. pg_prepared_statements">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-locks"></a>43.39. <code class="structname">pg_locks</code></h2></div></div></div>
+<a name="id2807799"></a><p>   The view <code class="structname">pg_locks</code> provides access to
+   information about the locks held by open transactions within the
+   database server.  See <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more discussion
+   of locking.
+  </p>
+<p>   <code class="structname">pg_locks</code> contains one row per active lockable
+   object, requested lock mode, and relevant transaction.  Thus, the same
+   lockable object may
+   appear many times, if multiple transactions are holding or waiting
+   for locks on it.  However, an object that currently has no locks on it
+   will not appear at all.
+  </p>
+<p>   There are several distinct types of lockable objects:
+   whole relations (e.g., tables), individual pages of relations,
+   individual tuples of relations,
+   transaction IDs,
+   and general database objects (identified by class OID and object OID,
+   in the same way as in <code class="structname">pg_description</code> or
+   <code class="structname">pg_depend</code>).  Also, the right to extend a
+   relation is represented as a separate lockable object.
+  </p>
+<div class="table">
+<a name="id2807849"></a><p class="title"><b>Table 43.39. <code class="structname">pg_locks</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_locks Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">locktype</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>       type of the lockable object:
+       <code class="literal">relation</code>,
+       <code class="literal">extend</code>,
+       <code class="literal">page</code>,
+       <code class="literal">tuple</code>,
+       <code class="literal">transactionid</code>,
+       <code class="literal">object</code>,
+       <code class="literal">userlock</code>, or
+       <code class="literal">advisory</code>
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">database</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-database.html" title="43.15. pg_database"><code class="structname">pg_database</code></a>.oid</code></td>
+<td>       OID of the database in which the object exists, or
+       zero if the object is a shared object, or
+       NULL if the object is a transaction ID
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">relation</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>       OID of the relation, or NULL if the object is not
+       a relation or part of a relation
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">page</code></td>
+<td><code class="type">integer</code></td>
+<td> </td>
+<td>       page number within the relation, or NULL if the object
+       is not a tuple or relation page
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">tuple</code></td>
+<td><code class="type">smallint</code></td>
+<td> </td>
+<td>       tuple number within the page, or NULL if the object is not a tuple
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">transactionid</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       ID of a transaction, or NULL if the object is not a transaction ID
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">classid</code></td>
+<td><code class="type">oid</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td>       OID of the system catalog containing the object, or NULL if the
+       object is not a general database object
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">objid</code></td>
+<td><code class="type">oid</code></td>
+<td>any OID column</td>
+<td>       OID of the object within its system catalog, or NULL if the
+       object is not a general database object
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">objsubid</code></td>
+<td><code class="type">smallint</code></td>
+<td> </td>
+<td>       For a table column, this is the column number (the
+       <code class="structfield">classid</code> and <code class="structfield">objid</code> refer to the
+       table itself).  For all other object types, this column is
+       zero.  NULL if the object is not a general database object
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">transaction</code></td>
+<td><code class="type">xid</code></td>
+<td> </td>
+<td>       ID of the transaction that is holding or awaiting this lock
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">pid</code></td>
+<td><code class="type">integer</code></td>
+<td> </td>
+<td>       Process ID of the server process holding or awaiting this
+       lock.  NULL if the lock is held by a prepared transaction.
+      </td>
+</tr>
+<tr>
+<td><code class="structfield">mode</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>name of the lock mode held or desired by this process (see <a href="explicit-locking.html#locking-tables" title="12.3.1. Table-Level Locks">Section 12.3.1, &#8220;Table-Level Locks&#8221;</a>)</td>
+</tr>
+<tr>
+<td><code class="structfield">granted</code></td>
+<td><code class="type">boolean</code></td>
+<td> </td>
+<td>true if lock is held, false if lock is awaited</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>   <code class="structfield">granted</code> is true in a row representing a lock
+   held by the indicated transaction.  False indicates that this transaction is
+   currently waiting to acquire this lock, which implies that some other
+   transaction is holding a conflicting lock mode on the same lockable object.
+   The waiting transaction will sleep until the other lock is released (or a
+   deadlock situation is detected). A single transaction can be waiting to
+   acquire at most one lock at a time.
+  </p>
+<p>   Every transaction holds an exclusive lock on its transaction ID for its
+   entire duration. If one transaction finds it necessary to wait specifically
+   for another transaction, it does so by attempting to acquire share lock on
+   the other transaction ID. That will succeed only when the other transaction
+   terminates and releases its locks. 
+  </p>
+<p>   Although tuples are a lockable type of object,
+   information about row-level locks is stored on disk, not in memory,
+   and therefore row-level locks normally do not appear in this view.
+   If a transaction is waiting for a
+   row-level lock, it will usually appear in the view as waiting for the
+   transaction ID of the current holder of that row lock.
+  </p>
+<p>   Advisory locks can be acquired on keys consisting of either a single
+   <code class="type">bigint</code> value or two integer values.  A <code class="type">bigint</code> key is displayed with its
+   high-order half in the <code class="structfield">classid</code> column, its low-order half
+   in the <code class="structfield">objid</code> column, and <code class="structfield">objsubid</code> equal
+   to 1.  Integer keys are displayed with the first key in the
+   <code class="structfield">classid</code> column, the second key in the <code class="structfield">objid</code>
+   column, and <code class="structfield">objsubid</code> equal to 2.  The actual meaning of
+   the keys is up to the user.  Advisory locks are local to each database,
+   so the <code class="structfield">database</code> column is meaningful for an advisory lock.
+  </p>
+<p>   When the <code class="structname">pg_locks</code> view is accessed, the
+   internal lock manager data structures are momentarily locked, and
+   a copy is made for the view to display.  This ensures that the
+   view produces a consistent set of results, while not blocking
+   normal lock manager operations longer than necessary.  Nonetheless
+   there could be some impact on database performance if this view is
+   read often.
+  </p>
+<p>   <code class="structname">pg_locks</code> provides a global view of all locks
+   in the database cluster, not only those relevant to the current database.
+   Although its <code class="structfield">relation</code> column can be joined
+   against <code class="structname">pg_class</code>.<code class="structfield">oid</code> to identify locked
+   relations, this will only work correctly for relations in the current
+   database (those for which the <code class="structfield">database</code> column
+   is either the current database's OID or zero).
+  </p>
+<p>   If you have enabled the statistics collector, the
+   <code class="structfield">pid</code> column can be joined to the
+   <code class="structfield">procpid</code> column of the
+   <code class="structname">pg_stat_activity</code> view to get more
+   information on the session holding or waiting to hold the lock.
+   Also, if you are using prepared transactions, the
+   <code class="structfield">transaction</code> column can be joined to the
+   <code class="structfield">transaction</code> column of the
+   <code class="structname">pg_prepared_xacts</code> view to get more
+   information on prepared transactions that hold locks.
+   (A prepared transaction can never be waiting for a lock,
+   but it continues to hold the locks it acquired while running.)
+  </p>
+</div></body>
+</html>

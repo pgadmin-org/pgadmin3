@@ -1,0 +1,124 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ANALYZE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-alteruser.html" title="ALTER USER">
+<link rel="next" href="sql-begin.html" title="BEGIN">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-analyze"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ANALYZE &#8212; collect statistics about a database</p>
+</div>
+<a name="id2731591"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ANALYZE [ VERBOSE ] [ <em class="replaceable"><code>table</code></em> [ (<em class="replaceable"><code>column</code></em> [, ...] ) ] ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2731618"></a><h2>Description</h2>
+<p>   <code class="command">ANALYZE</code> collects statistics about the contents
+   of tables in the database, and stores the results in the system
+   table <code class="literal">pg_statistic</code>.  Subsequently, the query
+   planner uses these statistics to help determine the most efficient
+   execution plans for queries.
+  </p>
+<p>   With no parameter, <code class="command">ANALYZE</code> examines every table in the
+   current database.  With a parameter, <code class="command">ANALYZE</code> examines
+   only that table.  It is further possible to give a list of column names,
+   in which case only the statistics for those columns are collected.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2731658"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">VERBOSE</code></span></dt>
+<dd><p>      Enables display of progress messages.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
+<dd><p>      The name (possibly schema-qualified) of a specific table to
+      analyze. Defaults to all tables in the current database.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>column</code></em></span></dt>
+<dd><p>      The name of a specific column to analyze. Defaults to all columns.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2731697"></a><h2>Outputs</h2>
+<p>    When <code class="literal">VERBOSE</code> is specified, <code class="command">ANALYZE</code> emits
+    progress messages to indicate which table is currently being
+    processed.  Various statistics about the tables are printed as well.
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2731718"></a><h2>Notes</h2>
+<p>   It is a good idea to run <code class="command">ANALYZE</code> periodically, or
+   just after making major changes in the contents of a table.  Accurate
+   statistics will help the planner to choose the most appropriate query
+   plan, and thereby improve the speed of query processing.  A common
+   strategy is to run <a href="sql-vacuum.html">VACUUM</a>
+   and <code class="command">ANALYZE</code> once a day during a low-usage time of day.
+  </p>
+<p>   Unlike <code class="command">VACUUM FULL</code>, <code class="command">ANALYZE</code>
+   requires only a read lock on the target table, so it can run in
+   parallel with other activity on the table.
+  </p>
+<p>   The statistics collected by <code class="command">ANALYZE</code> usually
+   include a list of some of the most common values in each column and
+   a histogram showing the approximate data distribution in each
+   column.  One or both of these may be omitted if
+   <code class="command">ANALYZE</code> deems them uninteresting (for example,
+   in a unique-key column, there are no common values) or if the
+   column data type does not support the appropriate operators.  There
+   is more information about the statistics in <a href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">Chapter 22, <i>Routine Database Maintenance Tasks</i></a>.
+  </p>
+<p>   For large tables, <code class="command">ANALYZE</code> takes a random sample
+   of the table contents, rather than examining every row.  This
+   allows even very large tables to be analyzed in a small amount of
+   time.  Note, however, that the statistics are only approximate, and
+   will change slightly each time <code class="command">ANALYZE</code> is run,
+   even if the actual table contents did not change.  This may result
+   in small changes in the planner's estimated costs shown by
+   <code class="command">EXPLAIN</code>. In rare situations, this
+   non-determinism will cause the query optimizer to choose a
+   different query plan between runs of <code class="command">ANALYZE</code>. To
+   avoid this, raise the amount of statistics collected by
+   <code class="command">ANALYZE</code>, as described below.
+  </p>
+<p>   The extent of analysis can be controlled by adjusting the
+   <a href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a> configuration variable, or
+   on a column-by-column basis by setting the per-column statistics
+   target with <code class="command">ALTER TABLE ... ALTER COLUMN ... SET
+   STATISTICS</code> (see <a href="sql-altertable.html">ALTER TABLE</a>).  The target value sets the
+   maximum number of entries in the most-common-value list and the
+   maximum number of bins in the histogram.  The default target value
+   is 10, but this can be adjusted up or down to trade off accuracy of
+   planner estimates against the time taken for
+   <code class="command">ANALYZE</code> and the amount of space occupied in
+   <code class="literal">pg_statistic</code>.  In particular, setting the
+   statistics target to zero disables collection of statistics for
+   that column.  It may be useful to do that for columns that are
+   never used as part of the <code class="literal">WHERE</code>, <code class="literal">GROUP BY</code>,
+   or <code class="literal">ORDER BY</code> clauses of queries, since the planner will
+   have no use for statistics on such columns.
+  </p>
+<p>   The largest statistics target among the columns being analyzed determines
+   the number of table rows sampled to prepare the statistics.  Increasing
+   the target causes a proportional increase in the time and space needed
+   to do <code class="command">ANALYZE</code>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2731916"></a><h2>Compatibility</h2>
+<p>   There is no <code class="command">ANALYZE</code> statement in the SQL standard.
+  </p>
+</div>
+</div></body>
+</html>

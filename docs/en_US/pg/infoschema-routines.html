@@ -1,0 +1,567 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.29. routines</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-routine-privileges.html" title="32.28. routine_privileges">
+<link rel="next" href="infoschema-schemata.html" title="32.30. schemata">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-routines"></a>32.29. <code class="literal">routines</code></h2></div></div></div>
+<p>   The view <code class="literal">routines</code> contains all functions in the
+   current database.  Only those functions are shown that the current
+   user has access to (by way of being the owner or having some
+   privilege).
+  </p>
+<div class="table">
+<a name="id2683888"></a><p class="title"><b>Table 32.27. <code class="literal">routines</code> Columns</b></p>
+<div class="table-contents"><table summary="routines Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">specific_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the function (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">specific_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the function</td>
+</tr>
+<tr>
+<td><code class="literal">specific_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       The &#8220;<span class="quote">specific name</span>&#8221; of the function.  This is a
+       name that uniquely identifies the function in the schema, even
+       if the real name of the function is overloaded.  The format of
+       the specific name is not defined, it should only be used to
+       compare it to other instances of specific routine names.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">routine_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database containing the function (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">routine_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema containing the function</td>
+</tr>
+<tr>
+<td><code class="literal">routine_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the function (may be duplicated in case of overloading)</td>
+</tr>
+<tr>
+<td><code class="literal">routine_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Always <code class="literal">FUNCTION</code> (In the future there might
+       be other types of routines.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">module_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">module_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">module_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">data_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Return data type of the function, if it is a built-in type, or
+       <code class="literal">ARRAY</code> if it is some array (in that case, see
+       the view <code class="literal">element_types</code>), else
+       <code class="literal">USER-DEFINED</code> (in that case, the type is
+       identified in <code class="literal">type_udt_name</code> and associated
+       columns).
+      </td>
+</tr>
+<tr>
+<td><code class="literal">character_maximum_length</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">character_octet_length</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">character_set_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">character_set_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">character_set_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">collation_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">collation_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">collation_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">numeric_precision_radix</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">numeric_scale</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">datetime_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">interval_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">interval_precision</code></td>
+<td><code class="type">character_data</code></td>
+<td>Always null, since this information is not applied to return data types in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">type_udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the database that the return data type of the function
+       is defined in (always the current database)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">type_udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the schema that the return data type of the function is
+       defined in
+      </td>
+</tr>
+<tr>
+<td><code class="literal">type_udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       Name of the return data type of the function
+      </td>
+</tr>
+<tr>
+<td><code class="literal">scope_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">scope_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">scope_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">maximum_cardinality</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Always null, because arrays always have unlimited maximum cardinality in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">dtd_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>       An identifier of the data type descriptor of the return data
+       type of this function, unique among the data type descriptors
+       pertaining to the function.  This is mainly useful for joining
+       with other instances of such identifiers.  (The specific format
+       of the identifier is not defined and not guaranteed to remain
+       the same in future versions.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">routine_body</code></td>
+<td><code class="type">character_data</code></td>
+<td>       If the function is an SQL function, then
+       <code class="literal">SQL</code>, else <code class="literal">EXTERNAL</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">routine_definition</code></td>
+<td><code class="type">character_data</code></td>
+<td>       The source text of the function (null if the function is not
+       owned by a currently enabled role).  (According to the SQL
+       standard, this column is only applicable if
+       <code class="literal">routine_body</code> is <code class="literal">SQL</code>, but
+       in <span class="productname">PostgreSQL</span> it will contain
+       whatever source text was specified when the function was
+       created.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">external_name</code></td>
+<td><code class="type">character_data</code></td>
+<td>       If this function is a C function, then the external name (link
+       symbol) of the function; else null.  (This works out to be the
+       same value that is shown in
+       <code class="literal">routine_definition</code>.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">external_language</code></td>
+<td><code class="type">character_data</code></td>
+<td>The language the function is written in</td>
+</tr>
+<tr>
+<td><code class="literal">parameter_style</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Always <code class="literal">GENERAL</code> (The SQL standard defines
+       other parameter styles, which are not available in <span class="productname">PostgreSQL</span>.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_deterministic</code></td>
+<td><code class="type">character_data</code></td>
+<td>       If the function is declared immutable (called deterministic in
+       the SQL standard), then <code class="literal">YES</code>, else
+       <code class="literal">NO</code>.  (You cannot query the other volatility
+       levels available in <span class="productname">PostgreSQL</span> through the information schema.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">sql_data_access</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Always <code class="literal">MODIFIES</code>, meaning that the function
+       possibly modifies SQL data.  This information is not useful for
+       <span class="productname">PostgreSQL</span>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_null_call</code></td>
+<td><code class="type">character_data</code></td>
+<td>       If the function automatically returns null if any of its
+       arguments are null, then <code class="literal">YES</code>, else
+       <code class="literal">NO</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">sql_path</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">schema_level_routine</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Always <code class="literal">YES</code> (The opposite would be a method
+       of a user-defined type, which is a feature not available in
+       <span class="productname">PostgreSQL</span>.)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">max_dynamic_result_sets</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">is_user_defined_cast</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">is_implicitly_invocable</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">security_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       If the function runs with the privileges of the current user,
+       then <code class="literal">INVOKER</code>, if the function runs with the
+       privileges of the user who defined it, then
+       <code class="literal">DEFINER</code>.
+      </td>
+</tr>
+<tr>
+<td><code class="literal">to_sql_specific_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">to_sql_specific_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">to_sql_specific_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">as_locator</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">created</code></td>
+<td><code class="type">time_stamp</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">last_altered</code></td>
+<td><code class="type">time_stamp</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">new_savepoint_level</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">is_udt_dependent</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_from_data_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_as_locator</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_char_max_length</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_char_octet_length</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_char_set_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_char_set_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_char_set_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_collation_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_collation_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_collation_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_numeric_precision</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_numeric_precision_radix</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_numeric_scale</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_datetime_precision</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_interval_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_interval_precision</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_type_udt_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_type_udt_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_type_udt_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_scope_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_scope_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_scope_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_maximum_cardinality</code></td>
+<td><code class="type">cardinal_number</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">result_cast_dtd_identifier</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

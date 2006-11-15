@@ -1,0 +1,247 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>8.8. Network Address Types</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
+<link rel="prev" href="datatype-geometric.html" title="8.7. Geometric Types">
+<link rel="next" href="datatype-bit.html" title="8.9. Bit String Types">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datatype-net-types"></a>8.8. Network Address Types</h2></div></div></div>
+<a name="id2570414"></a><p>    <span class="productname">PostgreSQL</span> offers data types to store IPv4, IPv6, and MAC
+    addresses, as shown in <a href="datatype-net-types.html#datatype-net-types-table" title="Table 8.17. Network Address Types">Table 8.17, &#8220;Network Address Types&#8221;</a>.  It
+    is preferable to use these types instead of plain text types to store
+    network addresses, because
+    these types offer input error checking and several specialized
+    operators and functions (see <a href="functions-net.html" title="9.11. Network Address Functions and Operators">Section 9.11, &#8220;Network Address Functions and Operators&#8221;</a>).
+   </p>
+<div class="table">
+<a name="datatype-net-types-table"></a><p class="title"><b>Table 8.17. Network Address Types</b></p>
+<div class="table-contents"><table summary="Network Address Types" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Storage Size</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="type">cidr</code></td>
+<td>12 or 24 bytes</td>
+<td>IPv4 and IPv6 networks</td>
+</tr>
+<tr>
+<td><code class="type">inet</code></td>
+<td>12 or 24 bytes</td>
+<td>IPv4 and IPv6 hosts and networks</td>
+</tr>
+<tr>
+<td><code class="type">macaddr</code></td>
+<td>6 bytes</td>
+<td>MAC addresses</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    When sorting <code class="type">inet</code> or <code class="type">cidr</code> data types,
+    IPv4 addresses will always sort before IPv6 addresses, including
+    IPv4 addresses encapsulated or mapped into IPv6 addresses, such as
+    ::10.2.3.4 or ::ffff::10.4.3.2.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="datatype-inet"></a>8.8.1. <code class="type">inet</code></h3></div></div></div>
+<a name="id2570527"></a><p>     The <code class="type">inet</code> type holds an IPv4 or IPv6 host address, and
+     optionally the identity of the subnet it is in, all in one field.
+     The subnet identity is represented by stating how many bits of
+     the host address represent the network address (the
+     &#8220;<span class="quote">netmask</span>&#8221;).  If the netmask is 32 and the address is IPv4,
+     then the value does not indicate a subnet, only a single host.
+     In IPv6, the address length is 128 bits, so 128 bits specify a
+     unique host address.  Note that if you
+     want to accept networks only, you should use the
+     <code class="type">cidr</code> type rather than <code class="type">inet</code>.
+    </p>
+<p>      The input format for this type is
+      <em class="replaceable"><code>address/y</code></em>
+      where
+      <em class="replaceable"><code>address</code></em>
+      is an IPv4 or IPv6 address and
+      <em class="replaceable"><code>y</code></em>
+      is the number of bits in the netmask.  If the
+      <em class="replaceable"><code>/y</code></em>
+      part is left off, then the
+      netmask is 32 for IPv4 and 128 for IPv6, so the value represents
+      just a single host.  On display, the
+      <em class="replaceable"><code>/y</code></em>
+      portion is suppressed if the netmask specifies a single host.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="datatype-cidr"></a>8.8.2. <code class="type">cidr</code></h3></div></div></div>
+<a name="id2570605"></a><p>     The <code class="type">cidr</code> type holds an IPv4 or IPv6 network specification.
+     Input and output formats follow Classless Internet Domain Routing
+     conventions.
+     The format for specifying networks is <em class="replaceable"><code>address/y</code></em> where <em class="replaceable"><code>address</code></em> is the network represented as an
+     IPv4 or IPv6 address, and <em class="replaceable"><code>y</code></em> is the number of bits in the netmask.  If
+     <em class="replaceable"><code>y</code></em> is omitted, it is calculated
+     using assumptions from the older classful network numbering system, except
+     that it will be at least large enough to include all of the octets
+     written in the input.  It is an error to specify a network address
+     that has bits set to the right of the specified netmask.
+    </p>
+<p>     <a href="datatype-net-types.html#datatype-net-cidr-table" title="Table 8.18. cidr Type Input Examples">Table 8.18, &#8220;<code class="type">cidr</code> Type Input Examples&#8221;</a> shows some examples.
+    </p>
+<div class="table">
+<a name="datatype-net-cidr-table"></a><p class="title"><b>Table 8.18. <code class="type">cidr</code> Type Input Examples</b></p>
+<div class="table-contents"><table summary="cidr Type Input Examples" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+<code class="type">cidr</code> Input</th>
+<th>
+<code class="type">cidr</code> Output</th>
+<th><code class="literal"><code class="function">abbrev</code>(<code class="type">cidr</code>)</code></th>
+</tr></thead>
+<tbody>
+<tr>
+<td>192.168.100.128/25</td>
+<td>192.168.100.128/25</td>
+<td>192.168.100.128/25</td>
+</tr>
+<tr>
+<td>192.168/24</td>
+<td>192.168.0.0/24</td>
+<td>192.168.0/24</td>
+</tr>
+<tr>
+<td>192.168/25</td>
+<td>192.168.0.0/25</td>
+<td>192.168.0.0/25</td>
+</tr>
+<tr>
+<td>192.168.1</td>
+<td>192.168.1.0/24</td>
+<td>192.168.1/24</td>
+</tr>
+<tr>
+<td>192.168</td>
+<td>192.168.0.0/24</td>
+<td>192.168.0/24</td>
+</tr>
+<tr>
+<td>128.1</td>
+<td>128.1.0.0/16</td>
+<td>128.1/16</td>
+</tr>
+<tr>
+<td>128</td>
+<td>128.0.0.0/16</td>
+<td>128.0/16</td>
+</tr>
+<tr>
+<td>128.1.2</td>
+<td>128.1.2.0/24</td>
+<td>128.1.2/24</td>
+</tr>
+<tr>
+<td>10.1.2</td>
+<td>10.1.2.0/24</td>
+<td>10.1.2/24</td>
+</tr>
+<tr>
+<td>10.1</td>
+<td>10.1.0.0/16</td>
+<td>10.1/16</td>
+</tr>
+<tr>
+<td>10</td>
+<td>10.0.0.0/8</td>
+<td>10/8</td>
+</tr>
+<tr>
+<td>10.1.2.3/32</td>
+<td>10.1.2.3/32</td>
+<td>10.1.2.3/32</td>
+</tr>
+<tr>
+<td>2001:4f8:3:ba::/64</td>
+<td>2001:4f8:3:ba::/64</td>
+<td>2001:4f8:3:ba::/64</td>
+</tr>
+<tr>
+<td>2001:4f8:3:ba:2e0:81ff:fe22:d1f1/128</td>
+<td>2001:4f8:3:ba:2e0:81ff:fe22:d1f1/128</td>
+<td>2001:4f8:3:ba:2e0:81ff:fe22:d1f1</td>
+</tr>
+<tr>
+<td>::ffff:1.2.3.0/120</td>
+<td>::ffff:1.2.3.0/120</td>
+<td>::ffff:1.2.3/120</td>
+</tr>
+<tr>
+<td>::ffff:1.2.3.0/128</td>
+<td>::ffff:1.2.3.0/128</td>
+<td>::ffff:1.2.3.0/128</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="datatype-inet-vs-cidr"></a>8.8.3. <code class="type">inet</code> vs. <code class="type">cidr</code></h3></div></div></div>
+<p>    The essential difference between <code class="type">inet</code> and <code class="type">cidr</code>
+    data types is that <code class="type">inet</code> accepts values with nonzero bits to
+    the right of the netmask, whereas <code class="type">cidr</code> does not.
+    </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>        If you do not like the output format for <code class="type">inet</code> or
+        <code class="type">cidr</code> values, try the functions <code class="function">host</code>,
+        <code class="function">text</code>, and <code class="function">abbrev</code>.
+        </p>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="datatype-macaddr"></a>8.8.4. <code class="type">macaddr</code></h3></div></div></div>
+<a name="id2570906"></a><a name="id2570911"></a><p>     The <code class="type">macaddr</code> type stores MAC addresses, i.e., Ethernet
+     card hardware addresses (although MAC addresses are used for
+     other purposes as well).  Input is accepted in various customary
+     formats, including
+
+     </p>
+<table class="simplelist" border="0" summary="Simple list">
+<tr><td><code class="literal">'08002b:010203'</code></td></tr>
+<tr><td><code class="literal">'08002b-010203'</code></td></tr>
+<tr><td><code class="literal">'0800.2b01.0203'</code></td></tr>
+<tr><td><code class="literal">'08-00-2b-01-02-03'</code></td></tr>
+<tr><td><code class="literal">'08:00:2b:01:02:03'</code></td></tr>
+</table>
+<p>
+
+     which would all specify the same
+     address.  Upper and lower case is accepted for the digits
+     <code class="literal">a</code> through <code class="literal">f</code>.  Output is always in the
+     last of the forms shown.
+    </p>
+</div>
+</div></body>
+</html>

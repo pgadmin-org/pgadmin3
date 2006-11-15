@@ -1,0 +1,91 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.128.  unlockset( integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.uninstallnode.html" title="1.127.  uninstallnode( )">
+<link rel="next" href="function.unsubscribeset-integer-integer.html" title="1.129.  unsubscribeset( integer, integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.unlockset-integer"></a>1.128.        unlockset( integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       Remove the special trigger from all tables of a set that disables access to it.
+        </p>
+<pre class="programlisting">declare
+	p_set_id			alias for $1;
+	v_local_node_id		int4;
+	v_set_row			record;
+	v_tab_row			record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- Check that the set exists and that we are the origin
+	-- and that it is not already locked.
+	-- ----
+	v_local_node_id := getLocalNodeId('_schemadoc');
+	select * into v_set_row from sl_set
+			where set_id = p_set_id
+			for update;
+	if not found then
+		raise exception 'Slony-I: set % not found', p_set_id;
+	end if;
+	if v_set_row.set_origin &lt;&gt; v_local_node_id then
+		raise exception 'Slony-I: set % does not originate on local node',
+				p_set_id;
+	end if;
+	if v_set_row.set_locked isnull then
+		raise exception 'Slony-I: set % is not locked', p_set_id;
+	end if;
+
+	-- ----
+	-- Drop the lockedSet trigger from all tables in the set.
+	-- ----
+	for v_tab_row in select T.tab_id,
+			slon_quote_brute(PGN.nspname) || '.' ||
+			slon_quote_brute(PGC.relname) as tab_fqname
+			from sl_table T,
+				"pg_catalog".pg_class PGC, "pg_catalog".pg_namespace PGN
+			where T.tab_set = p_set_id
+				and T.tab_reloid = PGC.oid
+				and PGC.relnamespace = PGN.oid
+			order by tab_id
+	loop
+		execute 'drop trigger "_schemadoc_lockedset_' || 
+				v_tab_row.tab_id || '" on ' || v_tab_row.tab_fqname;
+	end loop;
+
+	-- ----
+	-- Clear out the set_locked field
+	-- ----
+	update sl_set
+			set set_locked = NULL
+			where set_id = p_set_id;
+
+	return p_set_id;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

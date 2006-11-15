@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>43.51. pg_views</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
+<link rel="prev" href="view-pg-user.html" title="43.50. pg_user">
+<link rel="next" href="protocol.html" title="Chapter 44. Frontend/Backend Protocol">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="view-pg-views"></a>43.51. <code class="structname">pg_views</code></h2></div></div></div>
+<a name="id2810360"></a><p>   The view <code class="structname">pg_views</code> provides access to
+   useful information about each view in the database.
+  </p>
+<div class="table">
+<a name="id2810377"></a><p class="title"><b>Table 43.51. <code class="structname">pg_views</code> Columns</b></p>
+<div class="table-contents"><table summary="pg_views Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="structfield">schemaname</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-namespace.html" title="43.23. pg_namespace"><code class="structname">pg_namespace</code></a>.nspname</code></td>
+<td>name of schema containing view</td>
+</tr>
+<tr>
+<td><code class="structfield">viewname</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.relname</code></td>
+<td>name of view</td>
+</tr>
+<tr>
+<td><code class="structfield">viewowner</code></td>
+<td><code class="type">name</code></td>
+<td><code class="literal"><a href="catalog-pg-authid.html" title="43.8. pg_authid"><code class="structname">pg_authid</code></a>.rolname</code></td>
+<td>name of view's owner</td>
+</tr>
+<tr>
+<td><code class="structfield">definition</code></td>
+<td><code class="type">text</code></td>
+<td> </td>
+<td>view definition (a reconstructed <code class="command">SELECT</code> query)</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

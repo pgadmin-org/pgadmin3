@@ -1,0 +1,83 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.47. views</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-view-table-usage.html" title="32.46. view_table_usage">
+<link rel="next" href="server-programming.html" title="Part V. Server Programming">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-views"></a>32.47. <code class="literal">views</code></h2></div></div></div>
+<p>   The view <code class="literal">views</code> contains all views defined in the
+   current database.  Only those views are shown that the current user
+   has access to (by way of being the owner or having some privilege).
+  </p>
+<div class="table">
+<a name="id2688715"></a><p class="title"><b>Table 32.45. <code class="literal">views</code> Columns</b></p>
+<div class="table-contents"><table summary="views Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database that contains the view (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema that contains the view</td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the view</td>
+</tr>
+<tr>
+<td><code class="literal">view_definition</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Query expression defining the view (null if the view is not
+       owned by a currently enabled role)
+      </td>
+</tr>
+<tr>
+<td><code class="literal">check_option</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+<tr>
+<td><code class="literal">is_updatable</code></td>
+<td><code class="type">character_data</code></td>
+<td>       <code class="literal">YES</code> if the view is updatable (allows
+       <code class="command">UPDATE</code> and <code class="command">DELETE</code>),
+       <code class="literal">NO</code> if not
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_insertable_into</code></td>
+<td><code class="type">character_data</code></td>
+<td>       <code class="literal">YES</code> if the view is insertable into (allows
+       <code class="command">INSERT</code>), <code class="literal">NO</code> if not
+      </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

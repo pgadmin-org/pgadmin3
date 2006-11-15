@@ -1,0 +1,242 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>UPDATE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-unlisten.html" title="UNLISTEN">
+<link rel="next" href="sql-vacuum.html" title="VACUUM">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-update"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>UPDATE &#8212; update rows of a table</p>
+</div>
+<a name="id2772961"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">UPDATE [ ONLY ] <em class="replaceable"><code>table</code></em> [ [ AS ] <em class="replaceable"><code>alias</code></em> ]
+    SET { <em class="replaceable"><code>column</code></em> = { <em class="replaceable"><code>expression</code></em> | DEFAULT } |
+          ( <em class="replaceable"><code>column</code></em> [, ...] ) = ( { <em class="replaceable"><code>expression</code></em> | DEFAULT } [, ...] ) } [, ...]
+    [ FROM <em class="replaceable"><code>fromlist</code></em> ]
+    [ WHERE <em class="replaceable"><code>condition</code></em> ]
+    [ RETURNING * | <em class="replaceable"><code>output_expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...] ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2773037"></a><h2>Description</h2>
+<p>   <code class="command">UPDATE</code> changes the values of the specified
+   columns in all rows that satisfy the condition. Only the columns to
+   be modified need be mentioned in the <code class="literal">SET</code> clause;
+   columns not explicitly modified retain their previous values.
+  </p>
+<p>   By default, <code class="command">UPDATE</code> will update rows in the
+   specified table and all its subtables. If you wish to only update
+   the specific table mentioned, you must use the <code class="literal">ONLY</code>
+   clause.
+  </p>
+<p>   There are two ways to modify a table using information contained in
+   other tables in the database: using sub-selects, or specifying
+   additional tables in the <code class="literal">FROM</code> clause. Which
+   technique is more appropriate depends on the specific
+   circumstances.
+  </p>
+<p>   The optional <code class="literal">RETURNING</code> clause causes <code class="command">UPDATE</code>
+   to compute and return value(s) based on each row actually updated.
+   Any expression using the table's columns, and/or columns of other
+   tables mentioned in <code class="literal">FROM</code>, can be computed.
+   The new (post-update) values of the table's columns are used.
+   The syntax of the <code class="literal">RETURNING</code> list is identical to that of the
+   output list of <code class="command">SELECT</code>.
+  </p>
+<p>   You must have the <code class="literal">UPDATE</code> privilege on the table
+   to update it, as well as the <code class="literal">SELECT</code>
+   privilege to any table whose values are read in the
+   <em class="replaceable"><code>expressions</code></em> or
+   <em class="replaceable"><code>condition</code></em>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2773154"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><em class="replaceable"><code>table</code></em></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table to update.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>alias</code></em></span></dt>
+<dd><p>      A substitute name for the target table. When an alias is
+      provided, it completely hides the actual name of the table.  For
+      example, given <code class="literal">UPDATE foo AS f</code>, the remainder of the
+      <code class="command">UPDATE</code> statement must refer to this table as
+      <code class="literal">f</code> not <code class="literal">foo</code>.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>column</code></em></span></dt>
+<dd><p>      The name of a column in <em class="replaceable"><code>table</code></em>.
+      The column name can be qualified with a subfield name or array
+      subscript, if needed.  Do not include the table's name in the
+      specification of a target column &#8212; for example,
+      <code class="literal">UPDATE tab SET tab.col = 1</code> is invalid.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>expression</code></em></span></dt>
+<dd><p>      An expression to assign to the column.  The expression may use the
+      old values of this and other columns in the table.
+     </p></dd>
+<dt><span class="term"><code class="literal">DEFAULT</code></span></dt>
+<dd><p>      Set the column to its default value (which will be NULL if no
+      specific default expression has been assigned to it).
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>fromlist</code></em></span></dt>
+<dd><p>      A list of table expressions, allowing columns from other tables
+      to appear in the <code class="literal">WHERE</code> condition and the update
+      expressions. This is similar to the list of tables that can be
+      specified in the <a href="sql-select.html#sql-from"><code class="literal">FROM</code> Clause</a> of a <code class="command">SELECT</code>
+      statement.  Note that the target table must not appear in the
+      <em class="replaceable"><code>fromlist</code></em>, unless you intend a self-join (in which
+      case it must appear with an alias in the <em class="replaceable"><code>fromlist</code></em>).
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>condition</code></em></span></dt>
+<dd><p>      An expression that returns a value of type <code class="type">boolean</code>.
+      Only rows for which this expression returns <code class="literal">true</code>
+      will be updated.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>output_expression</code></em></span></dt>
+<dd><p>      An expression to be computed and returned by the <code class="command">UPDATE</code>
+      command after each row is updated.  The expression may use any
+      column names of the <em class="replaceable"><code>table</code></em>
+      or table(s) listed in <code class="literal">FROM</code>.
+      Write <code class="literal">*</code> to return all columns.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>output_name</code></em></span></dt>
+<dd><p>      A name to use for a returned column.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2773373"></a><h2>Outputs</h2>
+<p>   On successful completion, an <code class="command">UPDATE</code> command returns a command
+   tag of the form
+</p>
+<pre class="screen">UPDATE <em class="replaceable"><code>count</code></em></pre>
+<p>
+   The <em class="replaceable"><code>count</code></em> is the number
+   of rows updated.  If <em class="replaceable"><code>count</code></em> is
+   0, no rows matched the <em class="replaceable"><code>condition</code></em> (this is not considered
+   an error).
+  </p>
+<p>   If the <code class="command">UPDATE</code> command contains a <code class="literal">RETURNING</code>
+   clause, the result will be similar to that of a <code class="command">SELECT</code>
+   statement containing the columns and values defined in the
+   <code class="literal">RETURNING</code> list, computed over the row(s) updated by the
+   command.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2773445"></a><h2>Notes</h2>
+<p>   When a <code class="literal">FROM</code> clause is present, what essentially happens
+   is that the target table is joined to the tables mentioned in the
+   <em class="replaceable"><code>fromlist</code></em>, and each output row of the join
+   represents an update operation for the target table.  When using
+   <code class="literal">FROM</code> you should ensure that the join
+   produces at most one output row for each row to be modified.  In
+   other words, a target row shouldn't join to more than one row from
+   the other table(s).  If it does, then only one of the join rows
+   will be used to update the target row, but which one will be used
+   is not readily predictable.
+  </p>
+<p>   Because of this indeterminacy, referencing other tables only within
+   sub-selects is safer, though often harder to read and slower than
+   using a join.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2773481"></a><h2>Examples</h2>
+<p>   Change the word <code class="literal">Drama</code> to <code class="literal">Dramatic</code> in the
+   column <code class="structfield">kind</code> of the table <code class="structname">films</code>:
+
+</p>
+<pre class="programlisting">UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';</pre>
+<p>
+  </p>
+<p>   Adjust temperature entries and reset precipitation to its default
+   value in one row of the table <code class="structname">weather</code>:
+
+</p>
+<pre class="programlisting">UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
+  WHERE city = 'San Francisco' AND date = '2003-07-03';</pre>
+<p>
+  </p>
+<p>   Perform the same operation and return the updated entries:
+
+</p>
+<pre class="programlisting">UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
+  WHERE city = 'San Francisco' AND date = '2003-07-03'
+  RETURNING temp_lo, temp_hi, prcp;</pre>
+<p>
+  </p>
+<p>   Use the alternative column-list syntax to do the same update:
+</p>
+<pre class="programlisting">UPDATE weather SET (temp_lo, temp_hi, prcp) = (temp_lo+1, temp_lo+15, DEFAULT)
+  WHERE city = 'San Francisco' AND date = '2003-07-03';</pre>
+<p>
+  </p>
+<p>   Increment the sales count of the salesperson who manages the
+   account for Acme Corporation, using the <code class="literal">FROM</code>
+   clause syntax:
+</p>
+<pre class="programlisting">UPDATE employees SET sales_count = sales_count + 1 FROM accounts
+  WHERE accounts.name = 'Acme Corporation'
+  AND employees.id = accounts.sales_person;</pre>
+<p>
+  </p>
+<p>   Perform the same operation, using a sub-select in the
+   <code class="literal">WHERE</code> clause:
+</p>
+<pre class="programlisting">UPDATE employees SET sales_count = sales_count + 1 WHERE id =
+  (SELECT sales_person FROM accounts WHERE name = 'Acme Corporation');</pre>
+<p>
+  </p>
+<p>   Attempt to insert a new stock item along with the quantity of stock. If
+   the item already exists, instead update the stock count of the existing
+   item. To do this without failing the entire transaction, use savepoints.
+</p>
+<pre class="programlisting">BEGIN;
+-- other operations
+SAVEPOINT sp1;
+INSERT INTO wines VALUES('Chateau Lafite 2003', '24');
+-- Assume the above fails because of a unique key violation,
+-- so now we issue these commands:
+ROLLBACK TO sp1;
+UPDATE wines SET stock = stock + 24 WHERE winename = 'Chateau Lafite 2003';
+-- continue with other operations, and eventually
+COMMIT;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2773605"></a><h2>Compatibility</h2>
+<p>   This command conforms to the <acronym class="acronym">SQL</acronym> standard, except
+   that the <code class="literal">FROM</code> and <code class="literal">RETURNING</code> clauses
+   are <span class="productname">PostgreSQL</span> extensions.
+  </p>
+<p>   According to the standard, the column-list syntax should allow a list
+   of columns to be assigned from a single row-valued expression, such
+   as a sub-select:
+</p>
+<pre class="programlisting">UPDATE accounts SET (contact_last_name, contact_first_name) =
+    (SELECT last_name, first_name FROM salesmen
+     WHERE salesmen.id = accounts.sales_id);</pre>
+<p>
+   This is not currently implemented &#8212; the source must be a list
+   of independent expressions.
+  </p>
+<p>   Some other database systems offer a <code class="literal">FROM</code> option in which
+   the target table is supposed to be listed again within <code class="literal">FROM</code>.
+   That is not how <span class="productname">PostgreSQL</span> interprets
+   <code class="literal">FROM</code>.  Be careful when porting applications that use this
+   extension.
+  </p>
+</div>
+</div></body>
+</html>

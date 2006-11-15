@@ -1,0 +1,356 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>17.10. Client Connection Defaults</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
+<link rel="prev" href="runtime-config-autovacuum.html" title="17.9. Automatic Vacuuming">
+<link rel="next" href="runtime-config-locks.html" title="17.11. Lock Management">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="runtime-config-client"></a>17.10. Client Connection Defaults</h2></div></div></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-client-statement"></a>17.10.1. Statement Behavior</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-search-path"></a><span class="term"><code class="varname">search_path</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        This variable specifies the order in which schemas are searched
+        when an object (table, data type, function, etc.) is referenced by a
+        simple name with no schema component.  When there are objects of
+        identical names in different schemas, the one found first
+        in the search path is used.  An object that is not in any of the
+        schemas in the search path can only be referenced by specifying
+        its containing schema with a qualified (dotted) name.
+       </p>
+<p>        The value for <code class="varname">search_path</code> has to be a comma-separated
+        list of schema names.  If one of the list items is
+        the special value <code class="literal">$user</code>, then the schema
+        having the name returned by <code class="function">SESSION_USER</code> is substituted, if there
+        is such a schema.  (If not, <code class="literal">$user</code> is ignored.)
+       </p>
+<p>        The system catalog schema, <code class="literal">pg_catalog</code>, is always
+        searched, whether it is mentioned in the path or not.  If it is
+        mentioned in the path then it will be searched in the specified
+        order.  If <code class="literal">pg_catalog</code> is not in the path then it will
+        be searched <span class="emphasis"><em>before</em></span> searching any of the path items.
+        It should also be noted that the temporary-table schema,
+        <code class="literal">pg_temp_<em class="replaceable"><code>nnn</code></em></code>, is implicitly searched before any of
+        these.
+       </p>
+<p>        When objects are created without specifying a particular target
+        schema, they will be placed in the first schema listed
+        in the search path.  An error is reported if the search path is
+        empty.
+       </p>
+<p>        The default value for this parameter is
+        <code class="literal">'"$user", public'</code> (where the second part will be
+        ignored if there is no schema named <code class="literal">public</code>).
+        This supports shared use of a database (where no users
+        have private schemas, and all share use of <code class="literal">public</code>),
+        private per-user schemas, and combinations of these.  Other
+        effects can be obtained by altering the default search path
+        setting, either globally or per-user.
+       </p>
+<p>        The current effective value of the search path can be examined
+        via the <acronym class="acronym">SQL</acronym> function
+        <code class="function">current_schemas()</code>.  This is not quite the same as
+        examining the value of <code class="varname">search_path</code>, since
+        <code class="function">current_schemas()</code> shows how the requests
+        appearing in <code class="varname">search_path</code> were resolved.
+       </p>
+<p>        For more information on schema handling, see <a href="ddl-schemas.html" title="5.7. Schemas">Section 5.7, &#8220;Schemas&#8221;</a>.
+       </p>
+</dd>
+<dt>
+<a name="guc-default-tablespace"></a><span class="term"><code class="varname">default_tablespace</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        This variable specifies the default tablespace in which to create
+        objects (tables and indexes) when a <code class="command">CREATE</code> command does
+        not explicitly specify a tablespace.
+       </p>
+<p>        The value is either the name of a tablespace, or an empty string
+        to specify using the default tablespace of the current database.
+        If the value does not match the name of any existing tablespace,
+        <span class="productname">PostgreSQL</span> will automatically use the default
+        tablespace of the current database.
+       </p>
+<p>        For more information on tablespaces,
+        see <a href="manage-ag-tablespaces.html" title="19.6. Tablespaces">Section 19.6, &#8220;Tablespaces&#8221;</a>.
+       </p>
+</dd>
+<dt>
+<a name="guc-check-function-bodies"></a><span class="term"><code class="varname">check_function_bodies</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        This parameter is normally on. When set to <code class="literal">off</code>, it
+        disables validation of the function body string during <a href="sql-createfunction.html">CREATE FUNCTION</a>. Disabling validation is
+        occasionally useful to avoid problems such as forward references
+        when restoring function definitions from a dump.
+       </p></dd>
+<dt>
+<a name="guc-default-transaction-isolation"></a><span class="term"><code class="varname">default_transaction_isolation</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        Each SQL transaction has an isolation level, which can be
+        either &#8220;<span class="quote">read uncommitted</span>&#8221;, &#8220;<span class="quote">read
+        committed</span>&#8221;, &#8220;<span class="quote">repeatable read</span>&#8221;, or
+        &#8220;<span class="quote">serializable</span>&#8221;.  This parameter controls the
+        default isolation level of each new transaction. The default
+        is &#8220;<span class="quote">read committed</span>&#8221;.
+       </p>
+<p>        Consult <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> and <a href="sql-set-transaction.html">SET TRANSACTION</a> for more information.
+       </p>
+</dd>
+<dt>
+<a name="guc-default-transaction-read-only"></a><span class="term"><code class="varname">default_transaction_read_only</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd>
+<p>        A read-only SQL transaction cannot alter non-temporary tables.
+        This parameter controls the default read-only status of each new
+        transaction. The default is <code class="literal">off</code> (read/write).
+       </p>
+<p>        Consult <a href="sql-set-transaction.html">SET TRANSACTION</a> for more information.
+       </p>
+</dd>
+<dt>
+<a name="guc-statement-timeout"></a><span class="term"><code class="varname">statement_timeout</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Abort any statement that takes over the specified number of
+        milliseconds, starting from the time the command arrives at the server
+        from the client.  If <code class="varname">log_min_error_statement</code> is set to
+        <code class="literal">ERROR</code> or lower, the statement that timed out will also be
+        logged.  A value of zero (the default) turns off the 
+        limitation.
+       </p></dd>
+<dt>
+<a name="guc-vacuum-freeze-min-age"></a><span class="term"><code class="varname">vacuum_freeze_min_age</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Specifies the cutoff age (in transactions) that <code class="command">VACUUM</code>
+        should use to decide whether to replace transaction IDs with
+        <code class="literal">FrozenXID</code> while scanning a table.
+        The default is 100000000 (100 million).  Although users can set this
+        value anywhere from zero to 1000000000, <code class="command">VACUUM</code> will
+        silently limit the effective value to half the value of <a href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a>, so that there is not an
+        unreasonably short time between forced autovacuums.
+        For more information see <a href="maintenance.html#vacuum-for-wraparound" title="22.1.3. Preventing transaction ID wraparound failures">Section 22.1.3, &#8220;Preventing transaction ID wraparound failures&#8221;</a>.
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-client-format"></a>17.10.2. Locale and Formatting</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-datestyle"></a><span class="term"><code class="varname">DateStyle</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Sets the display format for date and time values, as well as the
+        rules for interpreting ambiguous date input values. For
+        historical reasons, this variable contains two independent
+        components: the output format specification (<code class="literal">ISO</code>,
+        <code class="literal">Postgres</code>, <code class="literal">SQL</code>, or <code class="literal">German</code>)
+        and the input/output specification for year/month/day ordering
+        (<code class="literal">DMY</code>, <code class="literal">MDY</code>, or <code class="literal">YMD</code>). These
+        can be set separately or together. The keywords <code class="literal">Euro</code>
+        and <code class="literal">European</code> are synonyms for <code class="literal">DMY</code>; the
+        keywords <code class="literal">US</code>, <code class="literal">NonEuro</code>, and
+        <code class="literal">NonEuropean</code> are synonyms for <code class="literal">MDY</code>. See
+        <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information. The
+        built-in default is <code class="literal">ISO, MDY</code>, but
+        <span class="application">initdb</span> will initialize the
+        configuration file with a setting that corresponds to the
+        behavior of the chosen <code class="varname">lc_time</code> locale.
+       </p></dd>
+<dt>
+<a name="guc-timezone"></a><span class="term"><code class="varname">timezone</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Sets the time zone for displaying and interpreting time
+        stamps.  The default is 'unknown', which means to use whatever 
+        the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
+       </p></dd>
+<dt>
+<a name="guc-timezone-abbreviations"></a><span class="term"><code class="varname">timezone_abbreviations</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Sets the collection of time zone abbreviations that will be accepted
+        by the server for datetime input.  The default is 'Default',
+        which is a collection that works in most of the world; there are
+        also 'Australia' and 'India', and other collections can be defined
+        for a particular installation.  See <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for more information.
+       </p></dd>
+<dt>
+<a name="guc-extra-float-digits"></a><span class="term"><code class="varname">extra_float_digits</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        This parameter adjusts the number of digits displayed for
+        floating-point values, including <code class="type">float4</code>, <code class="type">float8</code>,
+        and geometric data types.  The parameter value is added to the
+        standard number of digits (<code class="literal">FLT_DIG</code> or <code class="literal">DBL_DIG</code>
+        as appropriate).  The value can be set as high as 2, to include
+        partially-significant digits; this is especially useful for dumping
+        float data that needs to be restored exactly.  Or it can be set
+        negative to suppress unwanted digits.
+       </p></dd>
+<dt>
+<a name="guc-client-encoding"></a><span class="term"><code class="varname">client_encoding</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Sets the client-side encoding (character set).
+        The default is to use the database encoding.
+       </p></dd>
+<dt>
+<a name="guc-lc-messages"></a><span class="term"><code class="varname">lc_messages</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        Sets the language in which messages are displayed.  Acceptable
+        values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for
+        more information.  If this variable is set to the empty string
+        (which is the default) then the value is inherited from the
+        execution environment of the server in a system-dependent way.
+       </p>
+<p>        On some systems, this locale category does not exist.  Setting
+        this variable will still work, but there will be no effect.
+        Also, there is a chance that no translated messages for the
+        desired language exist.  In that case you will continue to see
+        the English messages.
+       </p>
+<p>        Only superusers can change this setting, because it affects the
+        messages sent to the server log as well as to the client.
+       </p>
+</dd>
+<dt>
+<a name="guc-lc-monetary"></a><span class="term"><code class="varname">lc_monetary</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Sets the locale to use for formatting monetary amounts, for
+        example with the <code class="function">to_char</code> family of
+        functions.  Acceptable values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        set to the empty string (which is the default) then the value
+        is inherited from the execution environment of the server in a
+        system-dependent way.
+       </p></dd>
+<dt>
+<a name="guc-lc-numeric"></a><span class="term"><code class="varname">lc_numeric</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Sets the locale to use for formatting numbers, for example
+        with the <code class="function">to_char</code> family of
+        functions. Acceptable values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        set to the empty string (which is the default) then the value
+        is inherited from the execution environment of the server in a
+        system-dependent way.
+       </p></dd>
+<dt>
+<a name="guc-lc-time"></a><span class="term"><code class="varname">lc_time</code> (<code class="type">string</code>)</span>
+</dt>
+<dd><p>        Sets the locale to use for formatting date and time values.
+        (Currently, this setting does nothing, but it may in the
+        future.)  Acceptable values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        set to the empty string (which is the default) then the value
+        is inherited from the execution environment of the server in a
+        system-dependent way.
+       </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="runtime-config-client-other"></a>17.10.3. Other Defaults</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt>
+<a name="guc-explain-pretty-print"></a><span class="term"><code class="varname">explain_pretty_print</code> (<code class="type">boolean</code>)</span>
+</dt>
+<dd><p>        Determines whether <code class="command">EXPLAIN VERBOSE</code> uses the
+        indented or non-indented format for displaying detailed
+        query-tree dumps. The default is <code class="literal">on</code>.
+       </p></dd>
+<dt>
+<a name="guc-dynamic-library-path"></a><span class="term"><code class="varname">dynamic_library_path</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        If a dynamically loadable module needs to be opened and the
+        file name specified in the <code class="command">CREATE FUNCTION</code> or
+        <code class="command">LOAD</code> command
+        does not have a directory component (i.e. the
+        name does not contain a slash), the system will search this
+        path for the required file.
+       </p>
+<p>        The value for <code class="varname">dynamic_library_path</code> has to be a
+        list of absolute directory paths separated by colons (or semi-colons
+        on Windows).  If a list element starts
+        with the special string <code class="literal">$libdir</code>, the
+        compiled-in <span class="productname">PostgreSQL</span> package
+        library directory is substituted for <code class="literal">$libdir</code>. This
+        is where the modules provided by the standard
+        <span class="productname">PostgreSQL</span> distribution are installed.
+        (Use <code class="literal">pg_config --pkglibdir</code> to find out the name of
+        this directory.) For example:
+</p>
+<pre class="programlisting">dynamic_library_path = '/usr/local/lib/postgresql:/home/my_project/lib:$libdir'</pre>
+<p>
+        or, in a Windows environment:
+</p>
+<pre class="programlisting">dynamic_library_path = 'C:\tools\postgresql;H:\my_project\lib;$libdir'</pre>
+<p>
+       </p>
+<p>        The default value for this parameter is
+        <code class="literal">'$libdir'</code>. If the value is set to an empty
+        string, the automatic path search is turned off.
+       </p>
+<p>        This parameter can be changed at run time by superusers, but a
+        setting done that way will only persist until the end of the
+        client connection, so this method should be reserved for
+        development purposes. The recommended way to set this parameter
+        is in the <code class="filename">postgresql.conf</code> configuration
+        file.
+       </p>
+</dd>
+<dt>
+<a name="guc-gin-fuzzy-search-limit"></a><span class="term"><code class="varname">gin_fuzzy_search_limit</code> (<code class="type">integer</code>)</span>
+</dt>
+<dd><p>        Soft upper limit of the size of the set returned by GIN index. For more
+        information see <a href="gin-tips.html" title="51.4. GIN tips and trics">Section 51.4, &#8220;GIN tips and trics&#8221;</a>.
+       </p></dd>
+<dt>
+<a name="guc-local-preload-libraries"></a><span class="term"><code class="varname">local_preload_libraries</code> (<code class="type">string</code>)</span>
+</dt>
+<dd>
+<p>        This variable specifies one or more shared libraries that are
+        to be preloaded at connection start.  If more than one library
+        is to be loaded, separate their names with commas.
+        This parameter cannot be changed after the start of a particular
+        session.
+       </p>
+<p>        Because this is not a superuser-only option, the libraries
+        that can be loaded are restricted to those appearing in the
+        <code class="filename">plugins</code> subdirectory of the installation's
+        standard library directory.  (It is the database administrator's
+        responsibility to ensure that only &#8220;<span class="quote">safe</span>&#8221; libraries
+        are installed there.)  Entries in <code class="varname">local_preload_libraries</code>
+        can specify this directory explicitly, for example
+        <code class="literal">$libdir/plugins/mylib</code>, or just specify
+        the library name &#8212; <code class="literal">mylib</code> would have
+        the same effect as <code class="literal">$libdir/plugins/mylib</code>.
+       </p>
+<p>        There is no performance advantage to loading a library at session
+        start rather than when it is first used.  Rather, the intent of
+        this feature is to allow debugging or performance-measurement
+        libraries to be loaded into specific sessions without an explicit
+        <code class="command">LOAD</code> command being given.  For example, debugging could
+        be enabled for all sessions under a given user name by setting
+        this parameter with <code class="command">ALTER USER SET</code>.
+       </p>
+<p>        If a specified library is not found,
+        the connection attempt will fail.
+       </p>
+<p>        Every  PostgreSQL-supported library has a &#8220;<span class="quote">magic
+        block</span>&#8221; that is checked to guarantee compatibility.  
+        For this reason, non-PostgreSQL libraries cannot be 
+        loaded in this way.
+       </p>
+</dd>
+</dl></div>
+</div>
+</div></body>
+</html>

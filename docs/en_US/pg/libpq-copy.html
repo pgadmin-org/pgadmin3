@@ -1,0 +1,318 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>29.8. Functions Associated with the COPY Command</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 29. libpq - C Library">
+<link rel="prev" href="libpq-notify.html" title="29.7. Asynchronous Notification">
+<link rel="next" href="libpq-control.html" title="29.9. Control Functions">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="libpq-copy"></a>29.8. Functions Associated with the <code class="command">COPY</code> Command</h2></div></div></div>
+<a name="id2662022"></a><p> The <code class="command">COPY</code> command in <span class="productname">PostgreSQL</span>
+ has options to read from or write to the network connection used by
+ <span class="application">libpq</span>.  The functions described in this section
+ allow applications to take advantage of this capability by supplying or
+ consuming copied data.</p>
+<p> The overall process is that the application first issues the SQL
+ <code class="command">COPY</code> command via <code class="function">PQexec</code> or one
+ of the equivalent functions.  The response to this (if there is no error
+ in the command) will be a <code class="structname">PGresult</code> object bearing a status
+ code of <code class="literal">PGRES_COPY_OUT</code> or <code class="literal">PGRES_COPY_IN</code>
+ (depending on the specified copy direction).  The application should then
+ use the functions of this section to receive or transmit data rows.
+ When the data transfer is complete, another <code class="structname">PGresult</code> object
+ is returned to indicate success or failure of the transfer.  Its status
+ will be <code class="literal">PGRES_COMMAND_OK</code> for success or
+ <code class="literal">PGRES_FATAL_ERROR</code> if some problem was encountered.
+ At this point further SQL commands may be issued via
+ <code class="function">PQexec</code>.  (It is not possible to execute other SQL
+ commands using the same connection while the <code class="command">COPY</code>
+ operation is in progress.)</p>
+<p> If a <code class="command">COPY</code> command is issued via
+ <code class="function">PQexec</code> in a string that could contain additional
+ commands, the application must continue fetching results via
+ <code class="function">PQgetResult</code> after completing the <code class="command">COPY</code>
+ sequence.  Only when <code class="function">PQgetResult</code> returns <code class="symbol">NULL</code> is it certain
+ that the <code class="function">PQexec</code> command string is done and it is
+ safe to issue more commands.</p>
+<p> The functions of this section should be executed only after obtaining a
+ result status of <code class="literal">PGRES_COPY_OUT</code> or
+ <code class="literal">PGRES_COPY_IN</code> from <code class="function">PQexec</code> or
+ <code class="function">PQgetResult</code>.</p>
+<p> A <code class="structname">PGresult</code> object bearing one of these status values
+ carries some additional data about the <code class="command">COPY</code> operation that
+ is starting.  This additional data is available using functions that are
+ also used in connection with query results:
+
+</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="function">PQnfields</code><a name="id2662224"></a></span></dt>
+<dd><p>          Returns the number of columns (fields) to be copied.</p></dd>
+<dt><span class="term"><code class="function">PQbinaryTuples</code><a name="id2662243"></a></span></dt>
+<dd><p>                0 indicates the overall copy format is textual (rows
+                separated by newlines, columns separated by separator
+                characters, etc).
+                1 indicates the overall copy format is binary.
+                See <a href="sql-copy.html">COPY</a>
+                for more information.</p></dd>
+<dt><span class="term"><code class="function">PQfformat</code><a name="id2662275"></a></span></dt>
+<dd><p>          Returns the format code (0 for text, 1 for binary) associated
+          with each column of the copy operation.  The per-column format
+          codes will always be zero when the overall copy format is textual,
+          but the binary format can support both text and binary columns.
+          (However, as of the current implementation of <code class="command">COPY</code>,
+          only binary columns appear in a binary copy; so the per-column
+          formats always match the overall format at present.)</p></dd>
+</dl></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>These additional data values are only available when using protocol 3.0.
+When using protocol 2.0, all these functions will return 0.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="libpq-copy-send"></a>29.8.1. Functions for Sending <code class="command">COPY</code> Data</h3></div></div></div>
+<p> These functions are used to send data during <code class="literal">COPY FROM STDIN</code>.
+ They will fail if called when the connection is not in <code class="literal">COPY_IN</code>
+ state.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="function">PQputCopyData</code><a name="id2662344"></a></span></dt>
+<dd>
+<p> Sends data to the server during <code class="literal">COPY_IN</code> state.
+</p>
+<pre class="synopsis">int PQputCopyData(PGconn *conn,
+                  const char *buffer,
+                  int nbytes);</pre>
+<p>Transmits the <code class="command">COPY</code> data in the specified <em class="parameter"><code>buffer</code></em>, of length
+<em class="parameter"><code>nbytes</code></em>, to the server.  The result is 1 if the data was sent,
+zero if it was not sent because the attempt would block (this case is only
+possible if the connection is in nonblocking mode), or -1 if an error occurred.
+(Use <code class="function">PQerrorMessage</code> to retrieve details if the return
+value is -1.  If the value is zero, wait for write-ready and try again.)</p>
+<p>The application may divide the <code class="command">COPY</code> data stream into buffer loads of any
+convenient size.  Buffer-load boundaries have no semantic significance when
+sending.  The contents of the data stream must match the data format expected
+by the <code class="command">COPY</code> command; see
+<a href="sql-copy.html">COPY</a> for details.</p>
+</dd>
+<dt><span class="term"><code class="function">PQputCopyEnd</code><a name="id2662433"></a></span></dt>
+<dd>
+<p> Sends end-of-data indication to the server during <code class="literal">COPY_IN</code> state.
+</p>
+<pre class="synopsis">int PQputCopyEnd(PGconn *conn,
+                 const char *errormsg);</pre>
+<p>Ends the <code class="literal">COPY_IN</code> operation successfully if <em class="parameter"><code>errormsg</code></em>
+is <code class="symbol">NULL</code>.  If <em class="parameter"><code>errormsg</code></em> is not <code class="symbol">NULL</code> then the <code class="command">COPY</code>
+is forced to fail, with the string pointed to by <em class="parameter"><code>errormsg</code></em>
+used as the error message.  (One should not assume that this exact error
+message will come back from the server, however, as the server might have
+already failed the <code class="command">COPY</code> for its own reasons.  Also note that the
+option to force failure does not work when using pre-3.0-protocol connections.)</p>
+<p>The result is 1 if the termination data was sent,
+zero if it was not sent because the attempt would block (this case is only
+possible if the connection is in nonblocking mode), or -1 if an error occurred.
+(Use <code class="function">PQerrorMessage</code> to retrieve details if the return
+value is -1.  If the value is zero, wait for write-ready and try again.)</p>
+<p>After successfully calling <code class="function">PQputCopyEnd</code>, call
+<code class="function">PQgetResult</code> to obtain the final result status of the
+<code class="command">COPY</code> command.  One may wait for
+this result to be available in the usual way.  Then return to normal
+operation.</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="libpq-copy-receive"></a>29.8.2. Functions for Receiving <code class="command">COPY</code> Data</h3></div></div></div>
+<p> These functions are used to receive data during <code class="literal">COPY TO STDOUT</code>.
+ They will fail if called when the connection is not in <code class="literal">COPY_OUT</code>
+ state.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="function">PQgetCopyData</code><a name="id2662580"></a></span></dt>
+<dd>
+<p> Receives data from the server during <code class="literal">COPY_OUT</code> state.
+</p>
+<pre class="synopsis">int PQgetCopyData(PGconn *conn,
+                  char **buffer,
+                  int async);</pre>
+<p>Attempts to obtain another row of data from the server during a <code class="command">COPY</code>.
+Data is always returned one data row at a time; if only a partial row
+is available, it is not returned.  Successful return of a data row
+involves allocating a chunk of memory to hold the data.  The
+<em class="parameter"><code>buffer</code></em> parameter must be non-<code class="symbol">NULL</code>.  <em class="parameter"><code>*buffer</code></em>
+is set to point to the allocated memory, or to <code class="symbol">NULL</code> in cases where no
+buffer is returned.  A non-<code class="symbol">NULL</code> result buffer must be freed using
+<code class="function">PQfreemem</code> when no longer needed.</p>
+<p>When a row is successfully returned, the return value is the number of
+data bytes in the row (this will always be greater than zero).  The
+returned string is always null-terminated, though this is probably only
+useful for textual <code class="command">COPY</code>.  A result of zero indicates that the <code class="command">COPY</code> is
+still in progress, but no row is yet available (this is only possible
+when <em class="parameter"><code>async</code></em> is true).  A
+result of -1 indicates that the <code class="command">COPY</code> is done.
+A result of -2 indicates that an error occurred (consult
+<code class="function">PQerrorMessage</code> for the reason).</p>
+<p>When <em class="parameter"><code>async</code></em> is true (not zero), <code class="function">PQgetCopyData</code>
+will not block waiting for input; it will return zero if the <code class="command">COPY</code> is still
+in progress but no complete row is available.  (In this case wait for
+read-ready and then call <code class="function">PQconsumeInput</code> before calling
+<code class="function">PQgetCopyData</code> again.)  When <em class="parameter"><code>async</code></em> is
+false (zero), <code class="function">PQgetCopyData</code> will block until data is available
+or the operation completes.</p>
+<p>After <code class="function">PQgetCopyData</code> returns -1, call
+<code class="function">PQgetResult</code> to obtain the final result status of the
+<code class="command">COPY</code> command.  One may wait for
+this result to be available in the usual way.  Then return to normal
+operation.</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="libpq-copy-deprecated"></a>29.8.3. Obsolete Functions for <code class="command">COPY</code></h3></div></div></div>
+<p> These functions represent older methods of handling <code class="command">COPY</code>.
+ Although they still work, they are deprecated due to poor error handling,
+ inconvenient methods of detecting end-of-data, and lack of support for binary
+ or nonblocking transfers.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="function">PQgetline</code><a name="id2662791"></a></span></dt>
+<dd>
+<p>          Reads  a  newline-terminated  line  of  characters
+          (transmitted  by the server) into a buffer
+          string of size <em class="parameter"><code>length</code></em>.
+</p>
+<pre class="synopsis">int PQgetline(PGconn *conn,
+              char *buffer,
+              int length);</pre>
+<p>This function copies up to <em class="parameter"><code>length</code></em>-1 characters
+into the buffer and converts
+the terminating newline into a zero byte.
+<code class="function">PQgetline</code> returns <code class="symbol">EOF</code> at the end of input, 0 if the
+entire line has been read, and 1 if the buffer is full but the
+terminating newline has not yet been read.</p>
+<p>Note that the application must check to see if a
+new line consists of  the  two characters  <code class="literal">\.</code>,
+which  indicates  that the server has finished sending
+the results  of  the <code class="command">COPY</code> command.
+If  the  application might
+receive lines that are more than <em class="parameter"><code>length</code></em>-1  characters  long,
+care is needed to be sure it recognizes the <code class="literal">\.</code> line correctly
+(and does not, for example, mistake the end of a long data line
+for a terminator line).</p>
+</dd>
+<dt><span class="term"><code class="function">PQgetlineAsync</code><a name="id2662875"></a></span></dt>
+<dd>
+<p>          Reads a row of <code class="command">COPY</code> data
+          (transmitted  by the server) into a buffer
+          without blocking.
+</p>
+<pre class="synopsis">int PQgetlineAsync(PGconn *conn,
+                   char *buffer,
+                   int bufsize);</pre>
+<p>This function is similar to <code class="function">PQgetline</code>, but it can be used
+by applications
+that must read <code class="command">COPY</code> data asynchronously, that is, without blocking.
+Having issued the <code class="command">COPY</code> command and gotten a <code class="literal">PGRES_COPY_OUT</code>
+response, the
+application should call <code class="function">PQconsumeInput</code> and
+<code class="function">PQgetlineAsync</code> until the
+end-of-data signal is detected.</p>
+<p>Unlike <code class="function">PQgetline</code>, this function takes
+responsibility for detecting end-of-data.</p>
+<p>On each call, <code class="function">PQgetlineAsync</code> will return data if a
+complete data row is available in <span class="application">libpq</span>'s input buffer.
+Otherwise, no data is returned until the rest of the row arrives.
+The function returns -1 if the end-of-copy-data marker has been recognized,
+or 0 if no data is available, or a positive number giving the number of
+bytes of data returned.  If -1 is returned, the caller must next call
+<code class="function">PQendcopy</code>, and then return to normal processing.</p>
+<p>The data returned will not extend beyond a data-row boundary.  If possible
+a whole row will be returned at one time.  But if the buffer offered by
+the caller is too small to hold a row sent by the server, then a partial
+data row will be returned.  With textual data this can be detected by testing
+whether the last returned byte is <code class="literal">\n</code> or not.  (In a binary
+<code class="command">COPY</code>, actual parsing of the <code class="command">COPY</code> data format will be needed to make the
+equivalent determination.)
+The returned string is not null-terminated.  (If you want to add a
+terminating null, be sure to pass a <em class="parameter"><code>bufsize</code></em> one smaller
+than the room actually available.)</p>
+</dd>
+<dt><span class="term"><code class="function">PQputline</code><a name="id2663019"></a></span></dt>
+<dd>
+<p>Sends  a  null-terminated  string  to  the server.
+Returns 0 if OK and <code class="symbol">EOF</code> if unable to send the string.
+</p>
+<pre class="synopsis">int PQputline(PGconn *conn,
+              const char *string);</pre>
+<p>The <code class="command">COPY</code> data stream sent by a series of calls to
+<code class="function">PQputline</code> has the same format as that returned by
+<code class="function">PQgetlineAsync</code>, except that applications are not
+obliged to send exactly one data row per <code class="function">PQputline</code>
+call; it is okay to send a partial line or multiple lines per call.</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>Before <span class="productname">PostgreSQL</span> protocol 3.0, it was necessary
+for the application to explicitly send the two characters
+<code class="literal">\.</code> as a final line to indicate to the server that it had
+finished sending <code class="command">COPY</code> data.  While this still works, it is deprecated and the
+special meaning of <code class="literal">\.</code> can be expected to be removed in a
+future release.  It is sufficient to call <code class="function">PQendcopy</code> after
+having sent the actual data.</p>
+</div>
+</dd>
+<dt><span class="term"><code class="function">PQputnbytes</code><a name="id2663114"></a></span></dt>
+<dd>
+<p>Sends  a  non-null-terminated  string  to  the server.
+Returns 0 if OK and <code class="symbol">EOF</code> if unable to send the string.
+</p>
+<pre class="synopsis">int PQputnbytes(PGconn *conn,
+                const char *buffer,
+                int nbytes);</pre>
+<p>This is exactly like <code class="function">PQputline</code>, except that the data
+buffer need not be null-terminated since the number of bytes to send is
+specified directly.  Use this procedure when sending binary data.</p>
+</dd>
+<dt><span class="term"><code class="function">PQendcopy</code><a name="id2663152"></a></span></dt>
+<dd>
+<p> Synchronizes with the server.
+</p>
+<pre class="synopsis">int PQendcopy(PGconn *conn);</pre>
+<p>
+ This function waits until
+ the  server  has  finished  the copying.  It should
+ either be issued when the  last  string  has  been
+ sent  to  the  server using <code class="function">PQputline</code> or when the
+ last string has been  received  from  the  server
+ using <code class="function">PGgetline</code>.  It must be issued or the server
+ will get &#8220;<span class="quote">out of sync</span>&#8221; with  the client.   Upon
+ return from this function, the server is ready to
+ receive the next SQL command.
+ The return value is 0  on  successful  completion,
+ nonzero otherwise.  (Use <code class="function">PQerrorMessage</code> to retrieve
+ details if the return value is nonzero.)</p>
+<p>When using <code class="function">PQgetResult</code>, the application should respond to
+a <code class="literal">PGRES_COPY_OUT</code> result by executing <code class="function">PQgetline</code>
+repeatedly, followed by <code class="function">PQendcopy</code> after the terminator line is seen.
+It should then return to the <code class="function">PQgetResult</code> loop until
+<code class="function">PQgetResult</code> returns a null pointer. Similarly a <code class="literal">PGRES_COPY_IN</code>
+result is processed by a series of <code class="function">PQputline</code> calls followed by
+<code class="function">PQendcopy</code>, then return to the <code class="function">PQgetResult</code> loop.
+This arrangement will ensure that
+a <code class="command">COPY</code> command embedded in a series of <acronym class="acronym">SQL</acronym> commands
+will be executed correctly.</p>
+<p>Older applications are likely to submit a <code class="command">COPY</code>
+via <code class="function">PQexec</code> and assume that the transaction is done after
+<code class="function">PQendcopy</code>.
+This will work correctly only if the <code class="command">COPY</code> is the only
+<acronym class="acronym">SQL</acronym> command in the command string.</p>
+</dd>
+</dl></div>
+</div>
+</div></body>
+</html>

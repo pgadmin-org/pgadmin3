@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 38. PL/Tcl - Tcl Procedural Language</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="prev" href="plpgsql-porting.html" title="37.11. Porting from Oracle PL/SQL">
+<link rel="next" href="pltcl-functions.html" title="38.2. PL/Tcl Functions and Arguments">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="pltcl">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="pltcl"></a>Chapter 38. PL/Tcl - Tcl Procedural Language</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="pltcl.html#pltcl-overview">38.1. Overview</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-functions.html">38.2. PL/Tcl Functions and Arguments</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-data.html">38.3. Data Values in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-global.html">38.4. Global Data in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-dbaccess.html">38.5. Database Access from PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-trigger.html">38.6. Trigger Procedures in PL/Tcl</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-unknown.html">38.7. Modules and the <code class="function">unknown</code> command</a></span></dt>
+<dt><span class="sect1"><a href="pltcl-procnames.html">38.8. Tcl Procedure Names</a></span></dt>
+</dl>
+</div>
+<a name="id2713611"></a><a name="id2713619"></a><p>   PL/Tcl is a loadable procedural language for the
+   <span class="productname">PostgreSQL</span> database system
+   that enables the <a href="http://www.tcl.tk/" target="_top">   Tcl language</a> to be used to write functions and
+   trigger procedures.
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="pltcl-overview"></a>38.1. Overview</h2></div></div></div>
+<p>    PL/Tcl offers most of the capabilities a function writer has in
+    the C language, with a few restrictions, and with the addition of
+    the powerful string processing libraries that are available for
+    Tcl.
+   </p>
+<p>    One compelling <span class="emphasis"><em>good</em></span> restriction is that
+    everything is executed from within the safety of the context of a
+    Tcl interpreter.  In addition to the limited command set of safe
+    Tcl, only a few commands are available to access the database via
+    SPI and to raise messages via <code class="function">elog()</code>.  PL/Tcl
+    provides no way to access internals of the database server or to
+    gain OS-level access under the permissions of the
+    <span class="productname">PostgreSQL</span> server process, as a C
+    function can do.  Thus, unprivileged database users may be trusted
+    to use this language; it does not give them unlimited authority.
+   </p>
+<p>    The other notable implementation restriction is that Tcl functions
+    may not be used to create input/output functions for new data
+    types.
+   </p>
+<p>    Sometimes it is desirable to write Tcl functions that are not restricted
+    to safe Tcl.  For example, one might want a Tcl function that sends
+    email.  To handle these cases, there is a variant of <span class="application">PL/Tcl</span> called <code class="literal">PL/TclU</code>
+    (for untrusted Tcl).  This is the exact same language except that a full
+    Tcl interpreter is used.  <span class="emphasis"><em>If <span class="application">PL/TclU</span> is used, it must be
+    installed as an untrusted procedural language</em></span> so that only
+    database superusers can create functions in it.  The writer of a <span class="application">PL/TclU</span>
+    function must take care that the function cannot be used to do anything
+    unwanted, since it will be able to do anything that could be done by
+    a user logged in as the database administrator.
+   </p>
+<p>    The shared object code for the <span class="application">PL/Tcl</span> and
+    <span class="application">PL/TclU</span> call handlers is automatically built and
+    installed in the <span class="productname">PostgreSQL</span> library
+    directory if Tcl support is specified in the configuration step of
+    the installation procedure.  To install <span class="application">PL/Tcl</span>
+    and/or <span class="application">PL/TclU</span> in a particular database, use the
+    <code class="command">createlang</code> program, for example
+    <code class="literal">createlang pltcl <em class="replaceable"><code>dbname</code></em></code> or
+    <code class="literal">createlang pltclu <em class="replaceable"><code>dbname</code></em></code>.
+   </p>
+</div>
+</div></body>
+</html>

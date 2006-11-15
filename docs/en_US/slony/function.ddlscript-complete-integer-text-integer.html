@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.36.  ddlscript_complete( integer, text, integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.createevent-name-text-text-text-text-text-text-text-text-text.html" title="1.35.  createevent( name, text, text, text, text, text, text, text, text, text )">
+<link rel="next" href="function.ddlscript-complete-int-integer-integer.html" title="1.37.  ddlscript_complete_int( integer, integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.ddlscript-complete-integer-text-integer"></a>1.36.        ddlscript_complete( integer, text, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>integer</div>
+</div>
+</div>
+<p>
+ 
+       ddlScript_complete(set_id, script, only_on_node)
+
+After script has run on origin, this fixes up relnames, restores
+triggers, and generates a DDL_SCRIPT event to request it to be run on
+replicated slaves.
+        </p>
+<pre class="programlisting">declare
+	p_set_id			alias for $1;
+	p_script			alias for $2;
+	p_only_on_node		alias for $3;
+	v_set_origin		int4;
+begin
+	perform updateRelname(p_set_id, p_only_on_node);
+	return  createEvent('_schemadoc', 'DDL_SCRIPT', 
+			p_set_id, p_script, p_only_on_node);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>16.5. Shutting Down the Server</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
+<link rel="prev" href="kernel-resources.html" title="16.4. Managing Kernel Resources">
+<link rel="next" href="encryption-options.html" title="16.6. Encryption Options">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="server-shutdown"></a>16.5. Shutting Down the Server</h2></div></div></div>
+<a name="id2622975"></a><p>   There are several ways to shut down the database server. You control
+   the type of shutdown by sending different signals to the master
+   <code class="command">postgres</code> process.
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2623004"></a></span></dt>
+<dd><p>       After receiving <span class="systemitem">SIGTERM</span>, the server
+       disallows new connections, but lets existing sessions end their
+       work normally. It shuts down only after all of the sessions
+       terminate normally. This is the <em class="firstterm">Smart
+       Shutdown</em>.
+      </p></dd>
+<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2623033"></a></span></dt>
+<dd><p>       The server disallows new connections and sends all existing
+       server processes <span class="systemitem">SIGTERM</span>, which will cause them
+       to abort their current transactions and exit promptly. It then
+       waits for the server processes to exit and finally shuts down. This is the
+       <em class="firstterm">Fast Shutdown</em>.
+      </p></dd>
+<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2623063"></a></span></dt>
+<dd><p>      This is the <em class="firstterm">Immediate Shutdown</em>, which
+      will cause the master <code class="command">postgres</code> process to send a
+      <span class="systemitem">SIGQUIT</span> to all child processes and exit
+      immediately, without properly shutting itself down. The child processes
+      likewise exit immediately upon receiving
+      <span class="systemitem">SIGQUIT</span>. This will lead to recovery (by
+      replaying the WAL log) upon next start-up. This is recommended
+      only in emergencies.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   The <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a> program provides a convenient
+   interface for sending these signals to shut down the server.
+  </p>
+<p>   Alternatively, you can send the signal directly using <code class="command">kill</code>.
+   The <acronym class="acronym">PID</acronym> of the <code class="command">postgres</code> process can be
+   found using the <code class="command">ps</code> program, or from the file
+   <code class="filename">postmaster.pid</code> in the data directory. For
+   example, to do a fast shutdown:
+</p>
+<pre class="screen">$ <strong class="userinput"><code>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</code></strong></pre>
+<p>
+  </p>
+<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Important</h3>
+<p>     It is best not to use <span class="systemitem">SIGKILL</span> to shut down
+     the server.  Doing so will prevent the server from releasing
+     shared memory and semaphores, which may then have to be done
+     manually before a new server can be started.  Furthermore,
+     <span class="systemitem">SIGKILL</span> kills the <code class="command">postgres</code>
+     process without letting it relay the signal to its subprocesses,
+     so it will be necessary to kill the individual subprocesses by hand as
+     well.
+    </p>
+</div>
+</div></body>
+</html>

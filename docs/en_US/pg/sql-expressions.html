@@ -1,0 +1,592 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>4.2. Value Expressions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
+<link rel="prev" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
+<link rel="next" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="sql-expressions"></a>4.2. Value Expressions</h2></div></div></div>
+<a name="id2553472"></a><a name="id2553485"></a><a name="id2553494"></a><p>   Value expressions are used in a variety of contexts, such
+   as in the target list of the <code class="command">SELECT</code> command, as
+   new column values in <code class="command">INSERT</code> or
+   <code class="command">UPDATE</code>, or in search conditions in a number of
+   commands.  The result of a value expression is sometimes called a
+   <em class="firstterm">scalar</em>, to distinguish it from the result of
+   a table expression (which is a table).  Value expressions are
+   therefore also called <em class="firstterm">scalar expressions</em> (or
+   even simply <em class="firstterm">expressions</em>).  The expression
+   syntax allows the calculation of values from primitive parts using
+   arithmetic, logical, set, and other operations.
+  </p>
+<p>   A value expression is one of the following:
+
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      A constant or literal value.
+     </p></li>
+<li><p>      A column reference.
+     </p></li>
+<li><p>      A positional parameter reference, in the body of a function definition
+      or prepared statement.
+     </p></li>
+<li><p>      A subscripted expression.
+     </p></li>
+<li><p>      A field selection expression.
+     </p></li>
+<li><p>      An operator invocation.
+     </p></li>
+<li><p>      A function call.
+     </p></li>
+<li><p>      An aggregate expression.
+     </p></li>
+<li><p>      A type cast.
+     </p></li>
+<li><p>      A scalar subquery.
+     </p></li>
+<li><p>      An array constructor.
+     </p></li>
+<li><p>      A row constructor.
+     </p></li>
+<li><p>      Another value expression in parentheses, useful to group
+      subexpressions and override
+      precedence.<a name="id2553598"></a>
+     </p></li>
+</ul></div>
+<p>
+  </p>
+<p>   In addition to this list, there are a number of constructs that can
+   be classified as an expression but do not follow any general syntax
+   rules.  These generally have the semantics of a function or
+   operator and are explained in the appropriate location in <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>.  An example is the <code class="literal">IS NULL</code>
+   clause.
+  </p>
+<p>   We have already discussed constants in <a href="sql-syntax.html#sql-syntax-constants" title="4.1.2. Constants">Section 4.1.2, &#8220;Constants&#8221;</a>.  The following sections discuss
+   the remaining options.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2553636"></a>4.2.1. Column References</h3></div></div></div>
+<a name="id2553639"></a><p>    A column can be referenced in the form
+</p>
+<pre class="synopsis"><em class="replaceable"><code>correlation</code></em>.<em class="replaceable"><code>columnname</code></em></pre>
+<p>
+   </p>
+<p>    <em class="replaceable"><code>correlation</code></em> is the name of a
+    table (possibly qualified with a schema name), or an alias for a table
+    defined by means of a <code class="literal">FROM</code> clause, or one of
+    the key words <code class="literal">NEW</code> or <code class="literal">OLD</code>.
+    (<code class="literal">NEW</code> and <code class="literal">OLD</code> can only appear in rewrite rules,
+    while other correlation names can be used in any SQL statement.)
+    The correlation name and separating dot may be omitted if the column name
+    is unique across all the tables being used in the current query.  (See also <a href="queries.html" title="Chapter 7. Queries">Chapter 7, <i>Queries</i></a>.)
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2553707"></a>4.2.2. Positional Parameters</h3></div></div></div>
+<a name="id2553710"></a><a name="id2553718"></a><p>    A positional parameter reference is used to indicate a value
+    that is supplied externally to an SQL statement.  Parameters are
+    used in SQL function definitions and in prepared queries.  Some
+    client libraries also support specifying data values separately
+    from the SQL command string, in which case parameters are used to
+    refer to the out-of-line data values.
+    The form of a parameter reference is:
+</p>
+<pre class="synopsis">$<em class="replaceable"><code>number</code></em></pre>
+<p>
+   </p>
+<p>    For example, consider the definition of a function,
+    <code class="function">dept</code>, as
+
+</p>
+<pre class="programlisting">CREATE FUNCTION dept(text) RETURNS dept
+    AS $$ SELECT * FROM dept WHERE name = $1 $$
+    LANGUAGE SQL;</pre>
+<p>
+
+    Here the <code class="literal">$1</code> references the value of the first
+    function argument whenever the function is invoked.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2553766"></a>4.2.3. Subscripts</h3></div></div></div>
+<a name="id2553769"></a><p>    If an expression yields a value of an array type, then a specific
+    element of the array value can be extracted by writing
+</p>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em>[<em class="replaceable"><code>subscript</code></em>]</pre>
+<p>
+    or multiple adjacent elements (an &#8220;<span class="quote">array slice</span>&#8221;) can be extracted
+    by writing
+</p>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em>[<em class="replaceable"><code>lower_subscript</code></em>:<em class="replaceable"><code>upper_subscript</code></em>]</pre>
+<p>
+    (Here, the brackets <code class="literal">[ ]</code> are meant to appear literally.)
+    Each <em class="replaceable"><code>subscript</code></em> is itself an expression,
+    which must yield an integer value.
+   </p>
+<p>    In general the array <em class="replaceable"><code>expression</code></em> must be
+    parenthesized, but the parentheses may be omitted when the expression
+    to be subscripted is just a column reference or positional parameter.
+    Also, multiple subscripts can be concatenated when the original array
+    is multidimensional.
+    For example,
+
+</p>
+<pre class="programlisting">mytable.arraycolumn[4]
+mytable.two_d_column[17][34]
+$1[10:42]
+(arrayfunction(a,b))[42]</pre>
+<p>
+
+    The parentheses in the last example are required.
+    See <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a> for more about arrays.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2553848"></a>4.2.4. Field Selection</h3></div></div></div>
+<a name="id2553851"></a><p>    If an expression yields a value of a composite type (row type), then a
+    specific field of the row can be extracted by writing
+</p>
+<pre class="synopsis"><em class="replaceable"><code>expression</code></em>.<em class="replaceable"><code>fieldname</code></em></pre>
+<p>
+   </p>
+<p>    In general the row <em class="replaceable"><code>expression</code></em> must be
+    parenthesized, but the parentheses may be omitted when the expression
+    to be selected from is just a table reference or positional parameter.
+    For example,
+
+</p>
+<pre class="programlisting">mytable.mycolumn
+$1.somecolumn
+(rowfunction(a,b)).col3</pre>
+<p>
+
+    (Thus, a qualified column reference is actually just a special case
+    of the field selection syntax.)
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2553890"></a>4.2.5. Operator Invocations</h3></div></div></div>
+<a name="id2553893"></a><p>    There are three possible syntaxes for an operator invocation:
+    </p>
+<table class="simplelist" border="0" summary="Simple list">
+<tr><td>
+<em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> <em class="replaceable"><code>expression</code></em> (binary infix operator)</td></tr>
+<tr><td>
+<em class="replaceable"><code>operator</code></em> <em class="replaceable"><code>expression</code></em> (unary prefix operator)</td></tr>
+<tr><td>
+<em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> (unary postfix operator)</td></tr>
+</table>
+<p>
+    where the <em class="replaceable"><code>operator</code></em> token follows the syntax
+    rules of <a href="sql-syntax.html#sql-syntax-operators" title="4.1.3. Operators">Section 4.1.3, &#8220;Operators&#8221;</a>, or is one of the
+    key words <code class="token">AND</code>, <code class="token">OR</code>, and
+    <code class="token">NOT</code>, or is a qualified operator name in the form
+</p>
+<pre class="synopsis"><code class="literal">OPERATOR(</code><em class="replaceable"><code>schema</code></em><code class="literal">.</code><em class="replaceable"><code>operatorname</code></em><code class="literal">)</code></pre>
+<p>
+    Which particular operators exist and whether
+    they are unary or binary depends on what operators have been
+    defined by the system or the user.  <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
+    describes the built-in operators.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2553993"></a>4.2.6. Function Calls</h3></div></div></div>
+<a name="id2553997"></a><p>    The syntax for a function call is the name of a function
+    (possibly qualified with a schema name), followed by its argument list
+    enclosed in parentheses:
+
+</p>
+<pre class="synopsis"><em class="replaceable"><code>function</code></em> ([<span class="optional"><em class="replaceable"><code>expression</code></em> [<span class="optional">, <em class="replaceable"><code>expression</code></em> ... </span>]</span>] )</pre>
+<p>
+   </p>
+<p>    For example, the following computes the square root of 2:
+</p>
+<pre class="programlisting">sqrt(2)</pre>
+<p>
+   </p>
+<p>    The list of built-in functions is in <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>.
+    Other functions may be added by the user.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="syntax-aggregates"></a>4.2.7. Aggregate Expressions</h3></div></div></div>
+<a name="id2554056"></a><p>    An <em class="firstterm">aggregate expression</em> represents the
+    application of an aggregate function across the rows selected by a
+    query.  An aggregate function reduces multiple inputs to a single
+    output value, such as the sum or average of the inputs.  The
+    syntax of an aggregate expression is one of the following:
+
+</p>
+<pre class="synopsis"><em class="replaceable"><code>aggregate_name</code></em> (<em class="replaceable"><code>expression</code></em> [ , ... ] )
+<em class="replaceable"><code>aggregate_name</code></em> (ALL <em class="replaceable"><code>expression</code></em> [ , ... ] )
+<em class="replaceable"><code>aggregate_name</code></em> (DISTINCT <em class="replaceable"><code>expression</code></em> [ , ... ] )
+<em class="replaceable"><code>aggregate_name</code></em> ( * )</pre>
+<p>
+
+    where <em class="replaceable"><code>aggregate_name</code></em> is a previously
+    defined aggregate (possibly qualified with a schema name), and
+    <em class="replaceable"><code>expression</code></em> is 
+    any value expression that does not itself contain an aggregate
+    expression.
+   </p>
+<p>    The first form of aggregate expression invokes the aggregate
+    across all input rows for which the given expression(s) yield
+    non-null values.  (Actually, it is up to the aggregate function
+    whether to ignore null values or not &#8212; but all the standard ones do.)
+    The second form is the same as the first, since
+    <code class="literal">ALL</code> is the default.  The third form invokes the
+    aggregate for all distinct non-null values of the expressions found
+    in the input rows.  The last form invokes the aggregate once for
+    each input row regardless of null or non-null values; since no
+    particular input value is specified, it is generally only useful
+    for the <code class="function">count(*)</code> aggregate function.
+   </p>
+<p>    For example, <code class="literal">count(*)</code> yields the total number
+    of input rows; <code class="literal">count(f1)</code> yields the number of
+    input rows in which <code class="literal">f1</code> is non-null;
+    <code class="literal">count(distinct f1)</code> yields the number of
+    distinct non-null values of <code class="literal">f1</code>.
+   </p>
+<p>    The predefined aggregate functions are described in <a href="functions-aggregate.html" title="9.15. Aggregate Functions">Section 9.15, &#8220;Aggregate Functions&#8221;</a>.  Other aggregate functions may be added
+    by the user. 
+   </p>
+<p>    An aggregate expression may only appear in the result list or
+    <code class="literal">HAVING</code> clause of a <code class="command">SELECT</code> command.
+    It is forbidden in other clauses, such as <code class="literal">WHERE</code>,
+    because those clauses are logically evaluated before the results
+    of aggregates are formed.
+   </p>
+<p>    When an aggregate expression appears in a subquery (see
+    <a href="sql-expressions.html#sql-syntax-scalar-subqueries" title="4.2.9. Scalar Subqueries">Section 4.2.9, &#8220;Scalar Subqueries&#8221;</a> and
+    <a href="functions-subquery.html" title="9.16. Subquery Expressions">Section 9.16, &#8220;Subquery Expressions&#8221;</a>), the aggregate is normally
+    evaluated over the rows of the subquery.  But an exception occurs
+    if the aggregate's arguments contain only outer-level variables:
+    the aggregate then belongs to the nearest such outer level, and is
+    evaluated over the rows of that query.  The aggregate expression
+    as a whole is then an outer reference for the subquery it appears in,
+    and acts as a constant over any one evaluation of that subquery.
+    The restriction about
+    appearing only in the result list or <code class="literal">HAVING</code> clause
+    applies with respect to the query level that the aggregate belongs to.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     <span class="productname">PostgreSQL</span> currently does not support
+     <code class="literal">DISTINCT</code> with more than one input expression.
+    </p>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="sql-syntax-type-casts"></a>4.2.8. Type Casts</h3></div></div></div>
+<a name="id2554273"></a><a name="id2554281"></a><p>    A type cast specifies a conversion from one data type to another.
+    <span class="productname">PostgreSQL</span> accepts two equivalent syntaxes
+    for type casts:
+</p>
+<pre class="synopsis">CAST ( <em class="replaceable"><code>expression</code></em> AS <em class="replaceable"><code>type</code></em> )
+<em class="replaceable"><code>expression</code></em>::<em class="replaceable"><code>type</code></em></pre>
+<p>
+    The <code class="literal">CAST</code> syntax conforms to SQL; the syntax with
+    <code class="literal">::</code> is historical <span class="productname">PostgreSQL</span>
+    usage.
+   </p>
+<p>    When a cast is applied to a value expression of a known type, it
+    represents a run-time type conversion.  The cast will succeed only
+    if a suitable type conversion operation has been defined.  Notice that this
+    is subtly different from the use of casts with constants, as shown in
+    <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  A cast applied to an
+    unadorned string literal represents the initial assignment of a type
+    to a literal constant value, and so it will succeed for any type
+    (if the contents of the string literal are acceptable input syntax for the
+    data type).
+   </p>
+<p>    An explicit type cast may usually be omitted if there is no ambiguity as
+    to the type that a value expression must produce (for example, when it is
+    assigned to a table column); the system will automatically apply a
+    type cast in such cases.  However, automatic casting is only done for
+    casts that are marked &#8220;<span class="quote">OK to apply implicitly</span>&#8221;
+    in the system catalogs.  Other casts must be invoked with
+    explicit casting syntax.  This restriction is intended to prevent
+    surprising conversions from being applied silently.
+   </p>
+<p>    It is also possible to specify a type cast using a function-like
+    syntax:
+</p>
+<pre class="synopsis"><em class="replaceable"><code>typename</code></em> ( <em class="replaceable"><code>expression</code></em> )</pre>
+<p>
+    However, this only works for types whose names are also valid as
+    function names.  For example, <code class="literal">double precision</code>
+    can't be used this way, but the equivalent <code class="literal">float8</code>
+    can.  Also, the names <code class="literal">interval</code>, <code class="literal">time</code>, and
+    <code class="literal">timestamp</code> can only be used in this fashion if they are
+    double-quoted, because of syntactic conflicts.  Therefore, the use of
+    the function-like cast syntax leads to inconsistencies and should
+    probably be avoided in new applications.
+
+    (The function-like syntax is in fact just a function call.  When
+    one of the two standard cast syntaxes is used to do a run-time
+    conversion, it will internally invoke a registered function to
+    perform the conversion.  By convention, these conversion functions
+    have the same name as their output type, and thus the &#8220;<span class="quote">function-like
+    syntax</span>&#8221; is nothing more than a direct invocation of the underlying
+    conversion function.  Obviously, this is not something that a portable
+    application should rely on.)
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="sql-syntax-scalar-subqueries"></a>4.2.9. Scalar Subqueries</h3></div></div></div>
+<a name="id2554440"></a><p>    A scalar subquery is an ordinary
+    <code class="command">SELECT</code> query in parentheses that returns exactly one
+    row with one column.  (See <a href="queries.html" title="Chapter 7. Queries">Chapter 7, <i>Queries</i></a> for information about writing queries.)
+    The <code class="command">SELECT</code> query is executed
+    and the single returned value is used in the surrounding value expression.
+    It is an error to use a query that
+    returns more than one row or more than one column as a scalar subquery.
+    (But if, during a particular execution, the subquery returns no rows,
+    there is no error; the scalar result is taken to be null.)
+    The subquery can refer to variables from the surrounding query,
+    which will act as constants during any one evaluation of the subquery.
+    See also <a href="functions-subquery.html" title="9.16. Subquery Expressions">Section 9.16, &#8220;Subquery Expressions&#8221;</a> for other expressions involving subqueries.
+   </p>
+<p>    For example, the following finds the largest city population in each
+    state:
+</p>
+<pre class="programlisting">SELECT name, (SELECT max(pop) FROM cities WHERE cities.state = states.name)
+    FROM states;</pre>
+<p>
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="sql-syntax-array-constructors"></a>4.2.10. Array Constructors</h3></div></div></div>
+<a name="id2554502"></a><a name="id2554510"></a><p>    An array constructor is an expression that builds an
+    array value from values for its member elements.  A simple array
+    constructor 
+    consists of the key word <code class="literal">ARRAY</code>, a left square bracket
+    <code class="literal">[</code>, one or more expressions (separated by commas) for the
+    array element values, and finally a right square bracket <code class="literal">]</code>.
+    For example,
+</p>
+<pre class="programlisting">SELECT ARRAY[1,2,3+4];
+  array
+---------
+ {1,2,7}
+(1 row)</pre>
+<p>
+    The array element type is the common type of the member expressions,
+    determined using the same rules as for <code class="literal">UNION</code> or
+    <code class="literal">CASE</code> constructs (see <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and Related Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs&#8221;</a>). 
+   </p>
+<p>    Multidimensional array values can be built by nesting array
+    constructors.
+    In the inner constructors, the key word <code class="literal">ARRAY</code> may
+    be omitted.  For example, these produce the same result:
+
+</p>
+<pre class="programlisting">SELECT ARRAY[ARRAY[1,2], ARRAY[3,4]];
+     array
+---------------
+ {{1,2},{3,4}}
+(1 row)
+
+SELECT ARRAY[[1,2],[3,4]];
+     array
+---------------
+ {{1,2},{3,4}}
+(1 row)</pre>
+<p>
+
+    Since multidimensional arrays must be rectangular, inner constructors
+    at the same level must produce sub-arrays of identical dimensions.
+  </p>
+<p>    Multidimensional array constructor elements can be anything yielding
+    an array of the proper kind, not only a sub-<code class="literal">ARRAY</code> construct.
+    For example:
+</p>
+<pre class="programlisting">CREATE TABLE arr(f1 int[], f2 int[]);
+
+INSERT INTO arr VALUES (ARRAY[[1,2],[3,4]], ARRAY[[5,6],[7,8]]);
+
+SELECT ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] FROM arr;
+                     array
+------------------------------------------------
+ {{{1,2},{3,4}},{{5,6},{7,8}},{{9,10},{11,12}}}
+(1 row)</pre>
+<p>
+  </p>
+<p>   It is also possible to construct an array from the results of a
+   subquery.  In this form, the array constructor is written with the
+   key word <code class="literal">ARRAY</code> followed by a parenthesized (not
+   bracketed) subquery. For example:
+</p>
+<pre class="programlisting">SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
+                          ?column?
+-------------------------------------------------------------
+ {2011,1954,1948,1952,1951,1244,1950,2005,1949,1953,2006,31}
+(1 row)</pre>
+<p>
+   The subquery must return a single column. The resulting
+   one-dimensional array will have an element for each row in the
+   subquery result, with an element type matching that of the
+   subquery's output column.
+  </p>
+<p>   The subscripts of an array value built with <code class="literal">ARRAY</code>
+   always begin with one.  For more information about arrays, see
+   <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a>.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="sql-syntax-row-constructors"></a>4.2.11. Row Constructors</h3></div></div></div>
+<a name="id2554661"></a><a name="id2554669"></a><a name="id2554678"></a><p>    A row constructor is an expression that builds a row value (also
+    called a composite value) from values
+    for its member fields.  A row constructor consists of the key word
+    <code class="literal">ROW</code>, a left parenthesis, zero or more
+    expressions (separated by commas) for the row field values, and finally
+    a right parenthesis.  For example,
+</p>
+<pre class="programlisting">SELECT ROW(1,2.5,'this is a test');</pre>
+<p>
+    The key word <code class="literal">ROW</code> is optional when there is more than one
+    expression in the list.
+   </p>
+<p>    A row constructor can include the syntax
+    <em class="replaceable"><code>rowvalue</code></em><code class="literal">.*</code>,
+    which will be expanded to a list of the elements of the row value,
+    just as occurs when the <code class="literal">.*</code> syntax is used at the top level
+    of a <code class="command">SELECT</code> list.  For example, if table <code class="literal">t</code> has
+    columns <code class="literal">f1</code> and <code class="literal">f2</code>, these are the same:
+</p>
+<pre class="programlisting">SELECT ROW(t.*, 42) FROM t;
+SELECT ROW(t.f1, t.f2, 42) FROM t;</pre>
+<p>
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Before <span class="productname">PostgreSQL</span> 8.2, the
+     <code class="literal">.*</code> syntax was not expanded, so that writing
+     <code class="literal">ROW(t.*, 42)</code> created a two-field row whose first field
+     was another row value.  The new behavior is usually more useful.
+     If you need the old behavior of nested row values, write the inner
+     row value without <code class="literal">.*</code>, for instance
+     <code class="literal">ROW(t, 42)</code>.
+    </p>
+</div>
+<p>    By default, the value created by a <code class="literal">ROW</code> expression is of
+    an anonymous record type.  If necessary, it can be cast to a named
+    composite type &#8212; either the row type of a table, or a composite type
+    created with <code class="command">CREATE TYPE AS</code>.  An explicit cast may be needed
+    to avoid ambiguity.  For example:
+</p>
+<pre class="programlisting">CREATE TABLE mytable(f1 int, f2 float, f3 text);
+
+CREATE FUNCTION getf1(mytable) RETURNS int AS 'SELECT $1.f1' LANGUAGE SQL;
+
+-- No cast needed since only one getf1() exists
+SELECT getf1(ROW(1,2.5,'this is a test'));
+ getf1
+-------
+     1
+(1 row)
+
+CREATE TYPE myrowtype AS (f1 int, f2 text, f3 numeric);
+
+CREATE FUNCTION getf1(myrowtype) RETURNS int AS 'SELECT $1.f1' LANGUAGE SQL;
+
+-- Now we need a cast to indicate which function to call:
+SELECT getf1(ROW(1,2.5,'this is a test'));
+ERROR:  function getf1(record) is not unique
+
+SELECT getf1(ROW(1,2.5,'this is a test')::mytable);
+ getf1
+-------
+     1
+(1 row)
+
+SELECT getf1(CAST(ROW(11,'this is a test',2.5) AS myrowtype));
+ getf1
+-------
+    11
+(1 row)</pre>
+<p>
+  </p>
+<p>   Row constructors can be used to build composite values to be stored
+   in a composite-type table column, or to be passed to a function that
+   accepts a composite parameter.  Also,
+   it is possible to compare two row values or test a row with
+   <code class="literal">IS NULL</code> or <code class="literal">IS NOT NULL</code>, for example
+</p>
+<pre class="programlisting">SELECT ROW(1,2.5,'this is a test') = ROW(1, 3, 'not the same');
+
+SELECT ROW(table.*) IS NULL FROM table;  -- detect all-null rows</pre>
+<p>
+   For more detail see <a href="functions-comparisons.html" title="9.17. Row and Array Comparisons">Section 9.17, &#8220;Row and Array Comparisons&#8221;</a>.
+   Row constructors can also be used in connection with subqueries,
+   as discussed in <a href="functions-subquery.html" title="9.16. Subquery Expressions">Section 9.16, &#8220;Subquery Expressions&#8221;</a>.
+  </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="syntax-express-eval"></a>4.2.12. Expression Evaluation Rules</h3></div></div></div>
+<a name="id2554884"></a><p>    The order of evaluation of subexpressions is not defined.  In
+    particular, the inputs of an operator or function are not necessarily
+    evaluated left-to-right or in any other fixed order.
+   </p>
+<p>    Furthermore, if the result of an expression can be determined by
+    evaluating only some parts of it, then other subexpressions
+    might not be evaluated at all.  For instance, if one wrote
+</p>
+<pre class="programlisting">SELECT true OR somefunc();</pre>
+<p>
+    then <code class="literal">somefunc()</code> would (probably) not be called
+    at all. The same would be the case if one wrote
+</p>
+<pre class="programlisting">SELECT somefunc() OR true;</pre>
+<p>
+    Note that this is not the same as the left-to-right
+    &#8220;<span class="quote">short-circuiting</span>&#8221; of Boolean operators that is found
+    in some programming languages.
+   </p>
+<p>    As a consequence, it is unwise to use functions with side effects
+    as part of complex expressions.  It is particularly dangerous to
+    rely on side effects or evaluation order in <code class="literal">WHERE</code> and <code class="literal">HAVING</code> clauses,
+    since those clauses are extensively reprocessed as part of
+    developing an execution plan.  Boolean
+    expressions (<code class="literal">AND</code>/<code class="literal">OR</code>/<code class="literal">NOT</code> combinations) in those clauses may be reorganized
+    in any manner allowed by the laws of Boolean algebra.
+   </p>
+<p>    When it is essential to force evaluation order, a <code class="literal">CASE</code>
+    construct (see <a href="functions-conditional.html" title="9.13. Conditional Expressions">Section 9.13, &#8220;Conditional Expressions&#8221;</a>) may be
+    used.  For example, this is an untrustworthy way of trying to
+    avoid division by zero in a <code class="literal">WHERE</code> clause:
+</p>
+<pre class="programlisting">SELECT ... WHERE x &lt;&gt; 0 AND y/x &gt; 1.5;</pre>
+<p>
+    But this is safe:
+</p>
+<pre class="programlisting">SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</pre>
+<p>
+    A <code class="literal">CASE</code> construct used in this fashion will defeat optimization
+    attempts, so it should only be done when necessary.  (In this particular
+    example, it would doubtless be best to sidestep the problem by writing
+    <code class="literal">y &gt; 1.5*x</code> instead.)
+   </p>
+</div>
+</div></body>
+</html>

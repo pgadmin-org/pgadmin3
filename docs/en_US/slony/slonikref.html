@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Slonik Command Summary</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
+<link rel="prev" href="slonik.html" title="slonik">
+<link rel="next" href="metacmds.html" title="Slonik Meta Commands">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" lang="en" id="slonikref">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="slonikref"></a>Slonik Command Summary</h2></div></div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="slonikref.html#id2573118">1. Introduction</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="slonikref.html#outline">1.1. General outline</a></span></dt></dl></dd>
+</dl>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="id2573118"></a>1. Introduction</h2></div></div></div>
+<p>     <span class="application">Slonik</span> is a command line utility designed
+     specifically to setup and modify configurations of the
+     <span class="productname">Slony-I</span> replication system.
+    </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="outline"></a>1.1. General outline</h3></div></div></div>
+<p>     The <span class="application">slonik</span> commandline utility is
+     supposed to be used embedded into shell scripts and reads
+     commands from files or stdin (via here documents for
+     example). Nearly all of the <span class="emphasis"><em>real</em></span>
+     configuration work is done by calling stored procedures after
+     loading the <span class="productname">Slony-I</span> support base into
+     a database.  You may find documentation for those procedures in
+     the <a href="schemadoc" target="_top"><span class="productname">Slony-I</span>
+     Schema Documentation</a>, as well as in comments associated
+     with them in the database.
+    </p>
+<p>     <span class="application">Slonik</span> was created because:
+     </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>The stored procedures have special requirements
+	as to on which particular node in the replication system they
+	are called,</p></li>
+<li><p>The lack of named parameters for stored
+	procedures makes it rather difficult to do this from the
+	<span class="application">psql</span> prompt, and</p></li>
+<li><p><span class="application">psql</span>lacks the ability
+	to maintain multiple connections with open
+	transactions.</p></li>
+</ul></div>
+<p>
+    </p>
+<p>     
+    </p>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2573218"></a>1.1.1. Commands</h4></div></div></div>
+<p>      The slonik command language is format free. Commands begin with
+      keywords and are terminated with a semicolon. Most commands have
+      a list of parameters, some of which have default values and are
+      therefore optional. The parameters of commands are enclosed in
+      parentheses. Each option consists of one or more keywords,
+      followed by an equal sign, followed by a value. Multiple options
+      inside the parentheses are separated by commas. All keywords are
+      case insensitive.  The language should remind the reader of SQL.
+     </p>
+<p>      Option values may be:
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>integer values</p></li>
+<li><p>string literals enclosed in single quotes</p></li>
+<li><p>boolean values {TRUE|ON|YES} or {FALSE|OFF|NO}</p></li>
+<li><p>keywords for special cases</p></li>
+</ul></div>
+<p>
+     </p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2573254"></a>1.1.2. Comments</h4></div></div></div>
+<p>      Comments begin at a hash sign (#) and extend to the end of the line.
+     </p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2573261"></a>1.1.3. Command groups</h4></div></div></div>
+<p>      Commands can be combined into groups of commands with optional
+      <code class="command">on error</code> and <code class="command">on success</code> conditionals.
+      The syntax for this is:
+      </p>
+<pre class="programlisting">       try {
+       commands;
+       } 
+       [on error { commands; }
+       [on success { commands; }
+      </pre>
+<p> Those commands are grouped together into one transaction
+      per participating node. </p>
+</div>
+</div>
+</div>
+</div></body>
+</html>

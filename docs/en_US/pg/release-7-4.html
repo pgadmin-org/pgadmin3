@@ -1,0 +1,1192 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.32. Release 7.4</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4-1.html" title="E.31. Release 7.4.1">
+<link rel="next" href="release-7-3-16.html" title="E.33. Release 7.3.16">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-4"></a>E.32. Release 7.4</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2003-11-17</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2858104"></a>E.32.1. Overview</h3></div></div></div>
+<p>    Major changes in this release:
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term">      <code class="literal">IN</code> / <code class="literal">NOT IN</code> subqueries are
+      now much more efficient
+     </span></dt>
+<dd><p>       In previous releases, <code class="literal">IN</code>/<code class="literal">NOT
+       IN</code> subqueries were joined to the upper query by
+       sequentially scanning the subquery looking for a match.  The
+       7.4 code uses the same sophisticated techniques used by
+       ordinary joins and so is much faster.  An
+       <code class="literal">IN</code> will now usually be as fast as or faster
+       than an equivalent <code class="literal">EXISTS</code> subquery; this
+       reverses the conventional wisdom that applied to previous
+       releases.
+      </p></dd>
+<dt><span class="term">      Improved <code class="literal">GROUP BY</code> processing by using hash buckets
+     </span></dt>
+<dd><p>       In previous releases, rows to be grouped had to be sorted
+       first.  The 7.4 code can do <code class="literal">GROUP BY</code>
+       without sorting, by accumulating results into a hash table
+       with one entry per group.  It will still use the sort
+       technique, however, if the hash table is estimated to be too
+       large to fit in <code class="varname">sort_mem</code>.
+      </p></dd>
+<dt><span class="term">      New multikey hash join capability
+     </span></dt>
+<dd><p>       In previous releases, hash joins could only occur on single
+       keys.  This release allows multicolumn hash joins.
+      </p></dd>
+<dt><span class="term">      Queries using the explicit <code class="literal">JOIN</code> syntax are
+      now better optimized
+     </span></dt>
+<dd><p>       Prior releases evaluated queries using the explicit
+       <code class="literal">JOIN</code> syntax only in the order implied by
+       the syntax. 7.4 allows full optimization of these queries,
+       meaning the optimizer considers all possible join orderings
+       and chooses the most efficient.  Outer joins, however, must
+       still follow the declared ordering.
+      </p></dd>
+<dt><span class="term">      Faster and more powerful regular expression code
+     </span></dt>
+<dd><p>       The entire regular expression module has been replaced with a
+       new version by Henry Spencer, originally written for Tcl.  The
+       code greatly improves performance and supports several flavors
+       of regular expressions.
+      </p></dd>
+<dt><span class="term">      Function-inlining for simple SQL functions
+     </span></dt>
+<dd><p>       Simple SQL functions can now be inlined by including their SQL
+       in the main query.  This improves performance by eliminating
+       per-call overhead.  That means simple SQL functions now
+       behave like macros.
+      </p></dd>
+<dt><span class="term">      Full support for IPv6 connections and IPv6 address data types
+     </span></dt>
+<dd><p>       Previous releases allowed only IPv4 connections, and the IP
+       data types only supported IPv4 addresses. This release adds
+       full IPv6 support in both of these areas.
+      </p></dd>
+<dt><span class="term">      Major improvements in SSL performance and reliability
+     </span></dt>
+<dd><p>       Several people very familiar with the SSL API have overhauled
+       our SSL code to improve SSL key negotiation and error
+       recovery.
+      </p></dd>
+<dt><span class="term">      Make free space map efficiently reuse empty index pages,
+      and other free space management improvements
+     </span></dt>
+<dd><p>       In previous releases, B-tree index pages that were left empty
+       because of deleted rows could only be reused by rows with
+       index values similar to the rows originally indexed on that
+       page. In 7.4, <code class="command">VACUUM</code> records empty index
+       pages and allows them to be reused for any future index rows.
+      </p></dd>
+<dt><span class="term">      SQL-standard information schema
+     </span></dt>
+<dd><p>       The information schema provides a standardized and stable way
+       to access information about the schema objects defined in a
+       database.
+      </p></dd>
+<dt><span class="term">      Cursors conform more closely to the SQL standard
+     </span></dt>
+<dd><p>       The commands <code class="command">FETCH</code> and
+       <code class="command">MOVE</code> have been overhauled to conform more
+       closely to the SQL standard.
+      </p></dd>
+<dt><span class="term">      Cursors can exist outside transactions
+     </span></dt>
+<dd><p>       These cursors are also called holdable cursors.
+      </p></dd>
+<dt><span class="term">      New client-to-server protocol
+     </span></dt>
+<dd><p>       The new protocol adds error codes, more status information,
+       faster startup, better support for binary data transmission,
+       parameter values separated from SQL commands, prepared
+       statements available at the protocol level, and cleaner
+       recovery from <code class="command">COPY</code> failures.  The older
+       protocol is still supported by both server and clients.
+      </p></dd>
+<dt><span class="term">      <span class="application">libpq</span> and
+      <span class="application">ECPG</span> applications are now fully
+      thread-safe
+     </span></dt>
+<dd><p>       While previous <span class="application">libpq</span> releases
+       already supported threads, this release improves thread safety
+       by fixing some non-thread-safe code that was used during
+       database connection startup.  The <code class="command">configure</code>
+       option <code class="option">--enable-thread-safety</code> must be used to
+       enable this feature.
+      </p></dd>
+<dt><span class="term">      New version of full-text indexing
+     </span></dt>
+<dd><p>       A new full-text indexing suite is available in
+       <code class="filename">contrib/tsearch2</code>.
+      </p></dd>
+<dt><span class="term">      New autovacuum tool
+     </span></dt>
+<dd><p>       The new autovacuum tool in
+       <code class="filename">contrib/autovacuum</code> monitors the database
+       statistics tables for
+       <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code>
+       activity and automatically vacuums tables when needed.
+      </p></dd>
+<dt><span class="term">      Array handling has been improved and moved into the server core
+     </span></dt>
+<dd><p>       Many array limitations have been removed, and arrays behave
+       more like fully-supported data types.
+      </p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2858445"></a>E.32.2. Migration to version 7.4</h3></div></div></div>
+<p>    A dump/restore using <span class="application">pg_dump</span> is
+    required for those wishing to migrate data from any previous
+    release.
+   </p>
+<p>    Observe the following incompatibilities:
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      The server-side autocommit setting was removed and
+      reimplemented in client applications and languages.
+      Server-side autocommit was causing too many problems with
+      languages and applications that wanted to control their own
+      autocommit behavior, so autocommit was removed from the server
+      and added to individual client APIs as appropriate.
+     </p></li>
+<li><p>      Error message wording has changed substantially in this
+      release.  Significant effort was invested to make the messages
+      more consistent and user-oriented.  If your applications try to
+      detect different error conditions by parsing the error message,
+      you are strongly encouraged to use the new error code facility instead.
+     </p></li>
+<li><p>      Inner joins using the explicit <code class="literal">JOIN</code> syntax
+      may behave differently because they are now better
+      optimized.
+     </p></li>
+<li><p>      A number of server configuration parameters have been renamed
+      for clarity, primarily those related to
+      logging.
+     </p></li>
+<li><p>      <code class="literal">FETCH 0</code> or <code class="literal">MOVE 0</code> now
+      does nothing.  In prior releases, <code class="literal">FETCH 0</code>
+      would fetch all remaining rows, and <code class="literal">MOVE 0</code>
+      would move to the end of the cursor.
+     </p></li>
+<li><p>      <code class="command">FETCH</code> and <code class="command">MOVE</code> now return
+      the actual number of rows fetched/moved, or zero if at the
+      beginning/end of the cursor.  Prior releases would return the
+      row count passed to the command, not the number of rows
+      actually fetched or moved.
+     </p></li>
+<li><p>      <code class="command">COPY</code> now can process files that use
+      carriage-return or carriage-return/line-feed end-of-line
+      sequences. Literal carriage-returns and line-feeds are no
+      longer accepted in data values; use <code class="literal">\r</code> and
+      <code class="literal">\n</code> instead.
+     </p></li>
+<li><p>      Trailing spaces are now trimmed when converting from type
+      <code class="type">char(<em class="replaceable"><code>n</code></em>)</code> to
+      <code class="type">varchar(<em class="replaceable"><code>n</code></em>)</code> or <code class="type">text</code>.
+      This is what most people always expected to happen anyway.
+     </p></li>
+<li><p>      The data type <code class="type">float(<em class="replaceable"><code>p</code></em>)</code> now
+      measures <em class="replaceable"><code>p</code></em> in binary digits, not decimal
+      digits.  The new behavior follows the SQL standard.
+     </p></li>
+<li><p>      Ambiguous date values now must match the ordering specified by
+      the <code class="varname">datestyle</code> setting.  In prior releases, a
+      date specification of <code class="literal">10/20/03</code> was interpreted as a
+      date in October even if <code class="varname">datestyle</code> specified that
+      the day should be first.  7.4 will throw an error if a date
+      specification is invalid for the current setting of
+      <code class="varname">datestyle</code>.
+     </p></li>
+<li><p>      The functions <code class="function">oidrand</code>,
+      <code class="function">oidsrand</code>, and
+      <code class="function">userfntest</code> have been removed.  These
+      functions were determined to be no longer useful.
+     </p></li>
+<li>
+<p>      String literals specifying time-varying date/time values, such
+      as <code class="literal">'now'</code> or <code class="literal">'today'</code> will
+      no longer work as expected in column default expressions; they
+      now cause the time of the table creation to be the default, not
+      the time of the insertion.  Functions such as
+      <code class="function">now()</code>, <code class="function">current_timestamp</code>, or
+      <code class="function">current_date</code> should be used instead.
+     </p>
+<p>      In previous releases, there was special code so that strings
+      such as <code class="literal">'now'</code> were interpreted at
+      <code class="command">INSERT</code> time and not at table creation time, but
+      this work around didn't cover all cases.  Release 7.4 now
+      requires that defaults be defined properly using functions such
+      as <code class="function">now()</code> or <code class="function">current_timestamp</code>. These
+      will work in all situations.
+     </p>
+</li>
+<li><p>      The dollar sign (<code class="literal">$</code>) is no longer allowed in
+      operator names.  It can instead be a non-first character in
+      identifiers.  This was done to improve compatibility with other
+      database systems, and to avoid syntax problems when parameter
+      placeholders (<code class="literal">$<em class="replaceable"><code>n</code></em></code>) are written
+      adjacent to operators.
+     </p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2858750"></a>E.32.3. Changes</h3></div></div></div>
+<p>    Below you will find a detailed account of the changes between
+    release 7.4 and the previous major release.
+   </p>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2858758"></a>E.32.3.1. Server Operation Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      Allow IPv6 server connections (Nigel Kukard, Johan Jordaan,
+      Bruce, Tom, Kurt Roeckx, Andrew Dunstan)
+     </p></li>
+<li>
+<p>      Fix SSL to handle errors cleanly (Nathan Mueller)
+     </p>
+<p>      In prior releases, certain SSL API error reports were not
+      handled correctly.  This release fixes those problems.
+     </p>
+</li>
+<li>
+<p>      SSL protocol security and performance improvements (Sean Chittenden)
+     </p>
+<p>      SSL key renegotiation was happening too frequently, causing poor
+      SSL performance.  Also, initial key handling was improved.
+     </p>
+</li>
+<li>
+<p>      Print lock information when a deadlock is detected (Tom)
+     </p>
+<p>      This allows easier debugging of deadlock situations.
+     </p>
+</li>
+<li>
+<p>      Update <code class="filename">/tmp</code> socket modification times
+      regularly to avoid their removal (Tom)
+     </p>
+<p>      This should help prevent <code class="filename">/tmp</code> directory
+      cleaner administration scripts from removing server socket
+      files.
+     </p>
+</li>
+<li><p>Enable PAM for Mac OS X (Aaron Hillegass)</p></li>
+<li>
+<p>Make B-tree indexes fully WAL-safe (Tom)</p>
+<p>      In prior releases, under certain rare cases, a server crash
+      could cause B-tree indexes to become corrupt. This release
+      removes those last few rare cases.
+     </p>
+</li>
+<li><p>Allow B-tree index compaction and empty page reuse (Tom)</p></li>
+<li>
+<p>      Fix inconsistent index lookups during split of first root page (Tom)
+     </p>
+<p>      In prior releases, when a single-page index split into two
+      pages, there was a brief period when another database session
+      could miss seeing an index entry.  This release fixes that rare
+      failure case.
+     </p>
+</li>
+<li><p>Improve free space map allocation logic (Tom)</p></li>
+<li>
+<p>Preserve free space information between server restarts (Tom)</p>
+<p>      In prior releases, the free space map was not saved when the
+      postmaster was stopped, so newly started servers had no free
+      space information. This release saves the free space map, and
+      reloads it when the server is restarted.
+     </p>
+</li>
+<li><p>Add start time to <code class="literal">pg_stat_activity</code> (Neil)</p></li>
+<li><p>New code to detect corrupt disk pages; erase with <code class="varname">zero_damaged_pages</code> (Tom)</p></li>
+<li><p>New client/server protocol: faster, no username length limit, allow clean exit from <code class="command">COPY</code> (Tom)</p></li>
+<li><p>Add transaction status, table ID, column ID to client/server protocol (Tom)</p></li>
+<li><p>Add binary I/O to client/server protocol (Tom)</p></li>
+<li><p>Remove autocommit server setting; move to client applications (Tom)</p></li>
+<li><p>New error message wording, error codes, and three levels of error detail (Tom, Joe, Peter)</p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2858905"></a>E.32.3.2. Performance Improvements</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Add hashing for <code class="literal">GROUP BY</code> aggregates (Tom)</p></li>
+<li><p>Make nested-loop joins be smarter about multicolumn indexes (Tom)</p></li>
+<li><p>Allow multikey hash joins (Tom)</p></li>
+<li><p>Improve constant folding (Tom)</p></li>
+<li><p>Add ability to inline simple SQL functions (Tom)</p></li>
+<li>
+<p>Reduce memory usage for queries using complex functions (Tom)</p>
+<p>      In prior releases, functions returning allocated memory would
+      not free it until the query completed. This release allows the
+      freeing of function-allocated memory when the function call
+      completes, reducing the total memory used by functions.
+     </p>
+</li>
+<li>
+<p>Improve GEQO optimizer performance (Tom)</p>
+<p>      This release fixes several inefficiencies in the way the GEQO optimizer
+      manages potential query paths.
+     </p>
+</li>
+<li><p>      Allow <code class="literal">IN</code>/<code class="literal">NOT IN</code> to be handled via hash
+      tables (Tom)
+     </p></li>
+<li><p>      Improve <code class="literal">NOT IN (<em class="replaceable"><code>subquery</code></em>)</code>
+      performance (Tom)
+     </p></li>
+<li><p>      Allow most <code class="literal">IN</code> subqueries to be processed as
+      joins (Tom)
+     </p></li>
+<li>
+<p>      Pattern matching operations can use indexes regardless of
+      locale (Peter)
+     </p>
+<p>      There is no way for non-ASCII locales to use the standard
+      indexes for <code class="literal">LIKE</code> comparisons. This release
+      adds a way to create a special index for
+      <code class="literal">LIKE</code>.
+     </p>
+</li>
+<li>
+<p>Allow the postmaster to preload libraries using <code class="varname">preload_libraries</code> (Joe)</p>
+<p>      For shared libraries that require a long time to load, this
+      option is available so the library can be preloaded in the
+      postmaster and inherited by all database sessions.
+     </p>
+</li>
+<li><p>      Improve optimizer cost computations, particularly for subqueries (Tom)
+     </p></li>
+<li><p>      Avoid sort when subquery <code class="literal">ORDER BY</code> matches upper query (Tom)
+     </p></li>
+<li><p>      Deduce that <code class="literal">WHERE a.x = b.y AND b.y = 42</code> also
+      means <code class="literal">a.x = 42</code> (Tom)
+     </p></li>
+<li><p>      Allow hash/merge joins on complex joins (Tom)
+     </p></li>
+<li><p>      Allow hash joins for more data types (Tom)
+     </p></li>
+<li><p>      Allow join optimization of explicit inner joins, disable with
+      <code class="varname">join_collapse_limit</code> (Tom)
+     </p></li>
+<li><p>      Add parameter <code class="varname">from_collapse_limit</code> to control
+      conversion of subqueries to joins (Tom)
+     </p></li>
+<li><p>      Use faster and more powerful regular expression code from Tcl
+      (Henry Spencer, Tom)
+     </p></li>
+<li><p>      Use bit-mapped relation sets in the optimizer (Tom)
+     </p></li>
+<li>
+<p>Improve connection startup time (Tom)</p>
+<p>      The new client/server protocol requires fewer network packets to
+      start a database session.
+     </p>
+</li>
+<li><p>      Improve trigger/constraint performance (Stephan)
+     </p></li>
+<li><p>      Improve speed of <code class="literal">col IN (const, const, const, ...)</code> (Tom)
+     </p></li>
+<li><p>      Fix hash indexes which were broken in rare cases (Tom)
+     </p></li>
+<li>
+<p>Improve hash index concurrency and speed (Tom)</p>
+<p>      Prior releases suffered from poor hash index performance,
+      particularly for high concurrency situations. This release fixes
+      that, and the development group is interested in reports
+      comparing B-tree and hash index performance.
+     </p>
+</li>
+<li>
+<p>Align shared buffers on 32-byte boundary for copy speed improvement (Manfred Spraul)</p>
+<p>      Certain CPU's perform faster data copies when addresses are
+      32-byte aligned.
+     </p>
+</li>
+<li>
+<p>Data type <code class="type">numeric</code> reimplemented for better performance (Tom)</p>
+<p>      <code class="type">numeric</code> used to be stored in base 100. The new code
+      uses base 10000, for significantly better performance.
+     </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2859158"></a>E.32.3.3. Server Configuration Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Rename server parameter <code class="varname">server_min_messages</code> to <code class="varname">log_min_messages</code> (Bruce)</p>
+<p>      This was done so most parameters that control the server logs
+      begin with <code class="literal">log_</code>.
+     </p>
+</li>
+<li><p>Rename <code class="varname">show_*_stats</code> to <code class="varname">log_*_stats</code> (Bruce)</p></li>
+<li><p>Rename <code class="varname">show_source_port</code> to <code class="varname">log_source_port</code> (Bruce)</p></li>
+<li><p>Rename <code class="varname">hostname_lookup</code> to <code class="varname">log_hostname</code> (Bruce)</p></li>
+<li>
+<p>Add <code class="varname">checkpoint_warning</code> to warn of excessive checkpointing (Bruce)</p>
+<p>      In prior releases, it was difficult to determine if checkpoint
+      was happening too frequently. This feature adds a warning to the
+      server logs when excessive checkpointing happens.
+     </p>
+</li>
+<li><p>New read-only server parameters for localization (Tom)</p></li>
+<li><p>      Change debug server log messages to output as <code class="literal">DEBUG</code>
+      rather than <code class="literal">LOG</code> (Bruce)
+     </p></li>
+<li>
+<p>Prevent server log variables from being turned off by non-superusers (Bruce)</p>
+<p>      This is a security feature so non-superusers cannot disable
+      logging that was enabled by the administrator.
+     </p>
+</li>
+<li>
+<p>      <code class="varname">log_min_messages</code>/<code class="varname">client_min_messages</code> now
+      controls <code class="varname">debug_*</code> output (Bruce)
+     </p>
+<p>      This centralizes client debug information so all debug output
+      can be sent to either the client or server logs.
+     </p>
+</li>
+<li>
+<p>Add Mac OS X Rendezvous server support (Chris Campbell)</p>
+<p>      This allows Mac OS X hosts to query the network for available
+      <span class="productname">PostgreSQL</span> servers.
+     </p>
+</li>
+<li>
+<p>      Add ability to print only slow statements using
+      <code class="varname">log_min_duration_statement</code>
+      (Christopher)
+     </p>
+<p>      This is an often requested debugging feature that allows
+      administrators to see only slow queries in their server logs.
+     </p>
+</li>
+<li>
+<p>Allow <code class="filename">pg_hba.conf</code> to accept netmasks in CIDR format (Andrew Dunstan)</p>
+<p>      This allows administrators to merge the host IP address and
+      netmask fields into a single CIDR field in <code class="filename">pg_hba.conf</code>.
+     </p>
+</li>
+<li><p>New read-only parameter <code class="varname">is_superuser</code> (Tom)</p></li>
+<li>
+<p>New parameter <code class="varname">log_error_verbosity</code> to control error detail (Tom)</p>
+<p>      This works with the new error reporting feature to supply
+      additional error information like hints, file names and line
+      numbers.
+     </p>
+</li>
+<li>
+<p><code class="literal">postgres --describe-config</code> now dumps server config variables (Aizaz Ahmed, Peter)</p>
+<p>      This option is useful for administration tools that need to know
+      the configuration variable names and their minimums, maximums,
+      defaults, and descriptions.
+     </p>
+</li>
+<li><p>      Add new columns in <code class="literal">pg_settings</code>:
+      <code class="literal">context</code>, <code class="literal">type</code>, <code class="literal">source</code>,
+      <code class="literal">min_val</code>, <code class="literal">max_val</code> (Joe)
+     </p></li>
+<li>
+<p>      Make default <code class="varname">shared_buffers</code> 1000 and
+      <code class="varname">max_connections</code> 100, if possible (Tom)
+     </p>
+<p>      Prior versions defaulted to 64 shared buffers so <span class="productname">PostgreSQL</span>
+      would start on even very old systems. This release tests the
+      amount of shared memory allowed by the platform and selects more
+      reasonable default values if possible.  Of course, users are
+      still encouraged to evaluate their resource load and size
+      <code class="varname">shared_buffers</code> accordingly.
+     </p>
+</li>
+<li>
+<p>      New <code class="filename">pg_hba.conf</code> record type
+      <code class="literal">hostnossl</code> to prevent SSL connections (Jon
+      Jensen)
+     </p>
+<p>      In prior releases, there was no way to prevent SSL connections
+      if both the client and server supported SSL. This option allows
+      that capability.
+     </p>
+</li>
+<li><p>      Remove parameter <code class="varname">geqo_random_seed</code>
+      (Tom)
+     </p></li>
+<li><p>      Add server parameter <code class="varname">regex_flavor</code> to control regular expression processing (Tom)
+     </p></li>
+<li><p>      Make <code class="command">pg_ctl</code> better handle nonstandard ports (Greg)
+     </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2859478"></a>E.32.3.4. Query Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>New SQL-standard information schema (Peter)</p></li>
+<li><p>Add read-only transactions (Peter)</p></li>
+<li><p>Print key name and value in foreign-key violation messages (Dmitry Tkach)</p></li>
+<li>
+<p>Allow users to see their own queries in <code class="literal">pg_stat_activity</code> (Kevin Brown)</p>
+<p>      In prior releases, only the superuser could see query strings
+      using <code class="literal">pg_stat_activity</code>. Now ordinary users
+      can see their own query strings.
+     </p>
+</li>
+<li>
+<p>Fix aggregates in subqueries to match SQL standard (Tom)</p>
+<p>      The SQL standard says that an aggregate function appearing
+      within a nested subquery belongs to the outer query if its
+      argument contains only outer-query variables.  Prior
+      <span class="productname">PostgreSQL</span> releases did not handle
+      this fine point correctly.
+     </p>
+</li>
+<li>
+<p>Add option to prevent auto-addition of tables referenced in query (Nigel J. Andrews)</p>
+<p>      By default, tables mentioned in the query are automatically
+      added to the <code class="literal">FROM</code> clause if they are not already
+      there.  This is compatible with historic
+      <span class="productname">POSTGRES</span> behavior but is contrary to
+      the SQL standard.  This option allows selecting
+      standard-compatible behavior.
+     </p>
+</li>
+<li>
+<p>Allow <code class="literal">UPDATE ... SET col = DEFAULT</code> (Rod)</p>
+<p>      This allows <code class="command">UPDATE</code> to set a column to its
+      declared default value.
+     </p>
+</li>
+<li>
+<p>Allow expressions to be used in <code class="literal">LIMIT</code>/<code class="literal">OFFSET</code> (Tom)</p>
+<p>      In prior releases, <code class="literal">LIMIT</code>/<code class="literal">OFFSET</code> could
+      only use constants, not expressions.
+     </p>
+</li>
+<li><p>Implement <code class="literal">CREATE TABLE AS EXECUTE</code> (Neil, Peter)</p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2859617"></a>E.32.3.5. Object Manipulation Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Make <code class="command">CREATE SEQUENCE</code> grammar more conforming to SQL:2003 (Neil)</p></li>
+<li>
+<p>Add statement-level triggers (Neil)</p>
+<p>      While this allows a trigger to fire at the end of a statement,
+      it does not allow the trigger to access all rows modified by the
+      statement.  This capability is planned for a future release.
+     </p>
+</li>
+<li>
+<p>Add check constraints for domains (Rod)</p>
+<p>      This greatly increases the usefulness of domains by allowing
+      them to use check constraints.
+     </p>
+</li>
+<li>
+<p>Add <code class="command">ALTER DOMAIN</code> (Rod)</p>
+<p>      This allows manipulation of existing domains.
+     </p>
+</li>
+<li>
+<p>Fix several zero-column table bugs (Tom)</p>
+<p>      <span class="productname">PostgreSQL</span> supports zero-column tables. This fixes various bugs
+      that occur when using such tables.
+     </p>
+</li>
+<li>
+<p>Have <code class="literal">ALTER TABLE ... ADD PRIMARY KEY</code> add not-null constraint (Rod)</p>
+<p>      In prior releases, <code class="literal">ALTER TABLE ... ADD
+      PRIMARY</code> would add a unique index, but not a not-null
+      constraint.  That is fixed in this release.
+     </p>
+</li>
+<li>
+<p>Add <code class="literal">ALTER TABLE ... WITHOUT OIDS</code> (Rod)</p>
+<p>      This allows control over whether new and updated rows will have
+      an OID column.  This is most useful for saving storage space.
+     </p>
+</li>
+<li><p>      Add <code class="literal">ALTER SEQUENCE</code> to modify minimum, maximum,
+      increment, cache, cycle values (Rod)
+     </p></li>
+<li>
+<p>Add <code class="literal">ALTER TABLE ... CLUSTER ON</code> (Alvaro Herrera)</p>
+<p>      This command is used by <code class="command">pg_dump</code> to record the
+      cluster column for each table previously clustered. This
+      information is used by database-wide cluster to cluster all
+      previously clustered tables.
+     </p>
+</li>
+<li><p>Improve automatic type casting for domains (Rod, Tom)</p></li>
+<li><p>Allow dollar signs in identifiers, except as first character (Tom)</p></li>
+<li><p>Disallow dollar signs in operator names, so <code class="literal">x=$1</code> works (Tom)</p></li>
+<li><p>      Allow copying table schema using <code class="literal">LIKE
+      <em class="replaceable"><code>subtable</code></em></code>, also SQL:2003
+      feature <code class="literal">INCLUDING DEFAULTS</code> (Rod)
+     </p></li>
+<li>
+<p>      Add <code class="literal">WITH GRANT OPTION</code> clause to
+      <code class="command">GRANT</code> (Peter)
+     </p>
+<p>      This enabled <code class="command">GRANT</code> to give other users the
+      ability to grant privileges on a object.
+     </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2859808"></a>E.32.3.6. Utility Command Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Add <code class="literal">ON COMMIT</code> clause to <code class="command">CREATE TABLE</code> for temporary tables (Gavin)</p>
+<p>      This adds the ability for a table to be dropped or all rows
+      deleted on transaction commit.
+     </p>
+</li>
+<li>
+<p>Allow cursors outside transactions using <code class="literal">WITH HOLD</code> (Neil)</p>
+<p>      In previous releases, cursors were removed at the end of the
+      transaction that created them. Cursors can now be created with
+      the <code class="literal">WITH HOLD</code> option, which allows them to
+      continue to be accessed after the creating transaction has
+      committed.
+     </p>
+</li>
+<li>
+<p><code class="literal">FETCH 0</code> and <code class="literal">MOVE 0 </code> now do nothing (Bruce)</p>
+<p>      In previous releases, <code class="literal">FETCH 0</code> fetched all
+      remaining rows, and <code class="literal">MOVE 0</code> moved to the end
+      of the cursor.
+     </p>
+</li>
+<li>
+<p>      Cause <code class="command">FETCH</code> and <code class="command">MOVE</code> to
+      return the number of rows fetched/moved, or zero if at the
+      beginning/end of cursor, per SQL standard (Bruce)
+     </p>
+<p>      In prior releases, the row count returned by
+      <code class="command">FETCH</code> and <code class="command">MOVE</code> did not
+      accurately reflect the number of rows processed.
+     </p>
+</li>
+<li>
+<p>Properly handle <code class="literal">SCROLL</code> with cursors, or
+     report an error (Neil)</p>
+<p>      Allowing random access (both forward and backward scrolling) to
+      some kinds of queries cannot be done without some additional
+      work. If <code class="literal">SCROLL</code> is specified when the cursor
+      is created, this additional work will be performed. Furthermore,
+      if the cursor has been created with <code class="literal">NO SCROLL</code>,
+      no random access is allowed.
+     </p>
+</li>
+<li><p>      Implement SQL-compatible options <code class="literal">FIRST</code>,
+      <code class="literal">LAST</code>, <code class="literal">ABSOLUTE <em class="replaceable"><code>n</code></em></code>,
+      <code class="literal">RELATIVE <em class="replaceable"><code>n</code></em></code> for
+      <code class="command">FETCH</code> and <code class="command">MOVE</code> (Tom)
+     </p></li>
+<li><p>Allow <code class="command">EXPLAIN</code> on <code class="command">DECLARE CURSOR</code> (Tom)</p></li>
+<li><p>Allow <code class="command">CLUSTER</code> to use index marked as pre-clustered by default (Alvaro Herrera)</p></li>
+<li>
+<p>Allow <code class="command">CLUSTER</code> to cluster all tables (Alvaro Herrera)</p>
+<p>      This allows all previously clustered tables in a database to be
+      reclustered with a single command.
+     </p>
+</li>
+<li><p>Prevent <code class="command">CLUSTER</code> on partial indexes (Tom)</p></li>
+<li><p>Allow DOS and Mac line-endings in <code class="command">COPY</code> files (Bruce)</p></li>
+<li><p>      Disallow literal carriage return as a data value,
+      backslash-carriage-return and <code class="literal">\r</code> are still allowed
+      (Bruce)
+     </p></li>
+<li><p><code class="command">COPY</code> changes (binary, <code class="literal">\.</code>) (Tom)</p></li>
+<li><p>Recover from <code class="command">COPY</code> failure cleanly (Tom)</p></li>
+<li><p>Prevent possible memory leaks in <code class="command">COPY</code> (Tom)</p></li>
+<li>
+<p>Make <code class="command">TRUNCATE</code> transaction-safe (Rod)</p>
+<p>      <code class="command">TRUNCATE</code> can now be used inside a
+      transaction. If the transaction aborts, the changes made by the
+      <code class="command">TRUNCATE</code> are automatically rolled back.
+     </p>
+</li>
+<li><p>      Allow prepare/bind of utility commands like
+      <code class="command">FETCH</code> and <code class="command">EXPLAIN</code> (Tom)
+     </p></li>
+<li><p>Add <code class="command">EXPLAIN EXECUTE</code> (Neil)</p></li>
+<li><p>Improve <code class="command">VACUUM</code> performance on indexes by reducing WAL traffic (Tom)</p></li>
+<li>
+<p>Functional indexes have been generalized into indexes on expressions (Tom)</p>
+<p>      In prior releases, functional indexes only supported a simple
+      function applied to one or more column names.  This release
+      allows any type of scalar expression.
+     </p>
+</li>
+<li><p>      Have <code class="command">SHOW TRANSACTION ISOLATION</code> match input
+      to <code class="command">SET TRANSACTION ISOLATION</code>
+      (Tom)
+     </p></li>
+<li>
+<p>       Have <code class="command">COMMENT ON DATABASE</code> on nonlocal
+       database generate a warning, rather than an error (Rod)
+      </p>
+<p>      Database comments are stored in database-local tables so
+      comments on a database have to be stored in each database.
+     </p>
+</li>
+<li><p>      Improve reliability of <code class="command">LISTEN</code>/<code class="command">NOTIFY</code> (Tom)
+     </p></li>
+<li>
+<p>Allow <code class="command">REINDEX</code> to reliably reindex nonshared system catalog indexes (Tom)</p>
+<p>      This allows system tables to be reindexed without the
+      requirement of a standalone session, which was necessary in
+      previous releases. The only tables that now require a standalone
+      session for reindexing are the global system tables
+      <code class="literal">pg_database</code>, <code class="literal">pg_shadow</code>, and
+      <code class="literal">pg_group</code>.
+     </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2860253"></a>E.32.3.7. Data Type and Function Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      New server parameter <code class="varname">extra_float_digits</code> to
+      control precision display of floating-point numbers (Pedro
+      Ferreira, Tom)
+     </p>
+<p>      This controls output precision which was causing regression
+      testing problems.
+     </p>
+</li>
+<li><p>Allow <code class="literal">+1300</code> as a numeric time-zone specifier, for FJST (Tom)</p></li>
+<li><p>      Remove rarely used functions <code class="function">oidrand</code>,
+      <code class="function">oidsrand</code>, and <code class="function">userfntest</code> functions
+      (Neil)
+     </p></li>
+<li>
+<p>Add <code class="function">md5()</code> function to main server, already in <code class="filename">contrib/pgcrypto</code> (Joe)</p>
+<p>      An MD5 function was frequently requested. For more complex
+      encryption capabilities, use
+      <code class="filename">contrib/pgcrypto</code>.
+     </p>
+</li>
+<li><p>Increase date range of <code class="type">timestamp</code> (John Cochran)</p></li>
+<li><p>      Change <code class="literal">EXTRACT(EPOCH FROM timestamp)</code> so
+      <code class="type">timestamp without time zone</code> is assumed to be in
+      local time, not GMT (Tom)
+     </p></li>
+<li><p>Trap division by zero in case the operating system doesn't prevent it (Tom)</p></li>
+<li><p>Change the <code class="type">numeric</code> data type internally to base 10000 (Tom)</p></li>
+<li><p>New <code class="function">hostmask()</code> function (Greg Wickham)</p></li>
+<li><p>Fixes for <code class="function">to_char()</code> and <code class="function">to_timestamp()</code> (Karel)</p></li>
+<li>
+<p>      Allow functions that can take any argument data type and return
+      any data type, using <code class="type">anyelement</code> and
+      <code class="type">anyarray</code> (Joe)
+     </p>
+<p>      This allows the creation of functions that can work with any
+      data type.
+     </p>
+</li>
+<li><p>      Arrays may now be specified as <code class="literal">ARRAY[1,2,3]</code>,
+      <code class="literal">ARRAY[['a','b'],['c','d']]</code>, or
+      <code class="literal">ARRAY[ARRAY[ARRAY[2]]]</code> (Joe)
+     </p></li>
+<li><p>      Allow proper comparisons for arrays, including <code class="literal">ORDER
+      BY</code> and <code class="literal">DISTINCT</code> support
+      (Joe)
+     </p></li>
+<li><p>Allow indexes on array columns (Joe)</p></li>
+<li><p>Allow array concatenation with <code class="literal">||</code> (Joe)</p></li>
+<li>
+<p>      Allow <code class="literal">WHERE</code> qualification
+      <code class="literal"><em class="replaceable"><code>expr</code></em> <em class="replaceable"><code>op</code></em> ANY/SOME/ALL
+      (<em class="replaceable"><code>array_expr</code></em>)</code> (Joe)
+     </p>
+<p>      This allows arrays to behave like a list of values, for purposes
+      like <code class="literal">SELECT * FROM tab WHERE col IN
+      (array_val)</code>.
+     </p>
+</li>
+<li><p>      New array functions <code class="function">array_append</code>,
+      <code class="function">array_cat</code>, <code class="function">array_lower</code>,
+      <code class="function">array_prepend</code>, <code class="function">array_to_string</code>,
+      <code class="function">array_upper</code>, <code class="function">string_to_array</code> (Joe)
+     </p></li>
+<li><p>Allow user defined aggregates to use polymorphic functions (Joe)</p></li>
+<li><p>Allow assignments to empty arrays (Joe)</p></li>
+<li>
+<p>      Allow 60 in seconds fields of <code class="type">time</code>,
+      <code class="type">timestamp</code>, and <code class="type">interval</code> input values
+      (Tom)
+     </p>
+<p>      Sixty-second values are needed for leap seconds.
+     </p>
+</li>
+<li><p>Allow <code class="type">cidr</code> data type to be cast to <code class="type">text</code> (Tom)</p></li>
+<li><p>Disallow invalid time zone names in SET TIMEZONE</p></li>
+<li><p>      Trim trailing spaces when <code class="type">char</code> is cast to
+      <code class="type">varchar</code> or <code class="type">text</code> (Tom)
+     </p></li>
+<li><p>      Make <code class="type">float(<em class="replaceable"><code>p</code></em>)</code> measure the precision
+      <em class="replaceable"><code>p</code></em> in binary digits, not decimal digits
+      (Tom)
+     </p></li>
+<li><p>Add IPv6 support to the <code class="type">inet</code> and <code class="type">cidr</code> data types (Michael Graff)</p></li>
+<li><p>Add <code class="function">family()</code> function to report whether address is IPv4 or IPv6 (Michael Graff)</p></li>
+<li><p>      Have <code class="literal">SHOW datestyle</code> generate output similar
+      to that used by <code class="literal">SET datestyle</code> (Tom)
+     </p></li>
+<li><p>      Make <code class="literal">EXTRACT(TIMEZONE)</code> and <code class="literal">SET/SHOW
+      TIME ZONE</code> follow the SQL convention for the sign of
+      time zone offsets, i.e., positive is east from UTC (Tom)
+     </p></li>
+<li>
+<p>Fix <code class="literal">date_trunc('quarter', ...)</code> (Böjthe Zoltán)</p>
+<p>      Prior releases returned an incorrect value for this function call.
+     </p>
+</li>
+<li>
+<p>Make <code class="function">initcap()</code> more compatible with Oracle (Mike Nolan)</p>
+<p>      <code class="function">initcap()</code> now uppercases a letter appearing
+      after any non-alphanumeric character, rather than only after
+      whitespace.
+     </p>
+</li>
+<li><p>Allow only <code class="varname">datestyle</code> field order for date values not in ISO-8601 format (Greg)</p></li>
+<li><p>      Add new <code class="varname">datestyle</code> values <code class="literal">MDY</code>,
+      <code class="literal">DMY</code>, and <code class="literal">YMD</code> to set input field order;
+      honor <code class="literal">US</code> and <code class="literal">European</code> for backward
+      compatibility (Tom)
+     </p></li>
+<li><p>      String literals like <code class="literal">'now'</code> or
+      <code class="literal">'today'</code> will no longer work as a column
+      default. Use functions such as <code class="function">now()</code>,
+      <code class="function">current_timestamp</code> instead.  (change
+      required for prepared statements) (Tom)
+     </p></li>
+<li>
+<p>Treat NaN as larger than any other value in <code class="function">min()</code>/<code class="function">max()</code> (Tom)</p>
+<p>      NaN was already sorted after ordinary numeric values for most
+      purposes, but <code class="function">min()</code> and <code class="function">max()</code> didn't
+      get this right.
+     </p>
+</li>
+<li><p>Prevent interval from suppressing <code class="literal">:00</code>
+     seconds display</p></li>
+<li><p>      New functions <code class="function">pg_get_triggerdef(prettyprint)</code>
+      and <code class="function">pg_conversion_is_visible()</code> (Christopher)
+     </p></li>
+<li><p>Allow time to be specified as <code class="literal">040506</code> or <code class="literal">0405</code> (Tom)</p></li>
+<li><p>      Input date order must now be <code class="literal">YYYY-MM-DD</code> (with 4-digit year) or
+      match <code class="varname">datestyle</code>
+     </p></li>
+<li><p>      Make <code class="function">pg_get_constraintdef</code> support
+      unique, primary-key, and check constraints (Christopher)
+     </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2860878"></a>E.32.3.8. Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      Prevent PL/pgSQL crash when <code class="literal">RETURN NEXT</code> is
+      used on a zero-row record variable (Tom)
+     </p></li>
+<li><p>      Make PL/Python's <code class="function">spi_execute</code> interface
+      handle null values properly (Andrew Bosma)
+     </p></li>
+<li><p>Allow PL/pgSQL to declare variables of composite types without <code class="literal">%ROWTYPE</code> (Tom)</p></li>
+<li><p>Fix PL/Python's <code class="function">_quote()</code> function to handle big integers</p></li>
+<li>
+<p>Make PL/Python an untrusted language, now called <code class="literal">plpythonu</code> (Kevin Jacobs, Tom)</p>
+<p>      The Python language no longer supports a restricted execution
+      environment, so the trusted version of PL/Python was removed. If
+      this situation changes, a version of PL/Python that can be used
+      by non-superusers will be readded.
+     </p>
+</li>
+<li><p>Allow polymorphic PL/pgSQL functions (Joe, Tom)</p></li>
+<li><p>Allow polymorphic SQL functions (Joe)</p></li>
+<li><p>      Improved compiled function caching mechanism in PL/pgSQL with
+      full support for polymorphism (Joe)
+     </p></li>
+<li><p>      Add new parameter <code class="literal">$0</code> in PL/pgSQL representing the
+      function's actual return type (Joe)
+     </p></li>
+<li><p>      Allow PL/Tcl and PL/Python to use the same trigger on multiple tables (Tom)
+     </p></li>
+<li><p>      Fixed PL/Tcl's <code class="function">spi_prepare</code> to accept fully
+      qualified type names in the parameter type list
+      (Jan)
+     </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2860981"></a>E.32.3.9. psql Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Add <code class="literal">\pset pager always</code> to always use pager (Greg)</p>
+<p>      This forces the pager to be used even if the number of rows is
+      less than the screen height.  This is valuable for rows that
+      wrap across several screen rows.
+     </p>
+</li>
+<li><p>Improve tab completion (Rod, Ross Reedstrom, Ian Barwick)</p></li>
+<li><p>Reorder <code class="literal">\?</code> help into groupings (Harald Armin Massa, Bruce)</p></li>
+<li><p>Add backslash commands for listing schemas, casts, and conversions (Christopher)</p></li>
+<li>
+<p>      <code class="command">\encoding</code> now changes based on the server parameter
+      <code class="varname">client_encoding</code> (Tom)
+     </p>
+<p>      In previous versions, <code class="command">\encoding</code> was not aware
+      of encoding changes made using <code class="literal">SET
+      client_encoding</code>.
+     </p>
+</li>
+<li>
+<p>Save editor buffer into readline history (Ross)</p>
+<p>      When <code class="command">\e</code> is used to edit a query, the result is saved
+      in the readline history for retrieval using the up arrow.
+     </p>
+</li>
+<li><p>Improve <code class="command">\d</code> display (Christopher)</p></li>
+<li><p>Enhance HTML mode to be more standards-conforming (Greg)</p></li>
+<li>
+<p>New <code class="command">\set AUTOCOMMIT off</code> capability (Tom)</p>
+<p>      This takes the place of the removed server parameter <code class="varname">autocommit</code>.
+     </p>
+</li>
+<li>
+<p>New <code class="command">\set VERBOSITY</code> to control error detail (Tom)</p>
+<p>      This controls the new error reporting details.
+     </p>
+</li>
+<li><p>New prompt escape sequence <code class="literal">%x</code> to show transaction status (Tom)</p></li>
+<li><p>Long options for <span class="application">psql</span> are now available on all platforms</p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2861127"></a>E.32.3.10. pg_dump Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Multiple pg_dump fixes, including tar format and large objects</p></li>
+<li><p>Allow pg_dump to dump specific schemas (Neil)</p></li>
+<li>
+<p>Make pg_dump preserve column storage characteristics (Christopher)</p>
+<p>      This preserves <code class="literal">ALTER TABLE ... SET STORAGE</code> information.
+     </p>
+</li>
+<li><p>Make pg_dump preserve <code class="command">CLUSTER</code> characteristics (Christopher)</p></li>
+<li><p>      Have pg_dumpall use <code class="command">GRANT</code>/<code class="command">REVOKE</code> to dump database-level privileges (Tom)
+     </p></li>
+<li><p>      Allow pg_dumpall to support the options <code class="option">-a</code>,
+      <code class="option">-s</code>, <code class="option">-x</code> of pg_dump (Tom)
+     </p></li>
+<li><p>Prevent pg_dump from lowercasing identifiers specified on the command line (Tom)</p></li>
+<li>
+<p>      pg_dump options <code class="option">--use-set-session-authorization</code>
+      and <code class="option">--no-reconnect</code> now do nothing, all dumps
+      use <code class="command">SET SESSION AUTHORIZATION</code>
+     </p>
+<p>      pg_dump no longer reconnects to switch users, but instead always
+      uses <code class="command">SET SESSION AUTHORIZATION</code>. This will
+      reduce password prompting during restores.
+     </p>
+</li>
+<li>
+<p>Long options for <span class="application">pg_dump</span> are now available on all platforms</p>
+<p>      <span class="productname">PostgreSQL</span> now includes its own
+      long-option processing routines.
+     </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2861248"></a>E.32.3.11. libpq Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Add function <code class="function">PQfreemem</code> for freeing memory on
+      Windows, suggested for <code class="command">NOTIFY</code> (Bruce)
+     </p>
+<p>      Windows requires that memory allocated in a library be freed by
+      a function in the same library, hence
+      <code class="function">free()</code> doesn't work for freeing memory
+      allocated by libpq. <code class="function">PQfreemem</code> is the proper
+      way to free libpq memory, especially on Windows, and is
+      recommended for other platforms as well.
+     </p>
+</li>
+<li>
+<p>Document service capability, and add sample file (Bruce)</p>
+<p>      This allows clients to look up connection information in a
+      central file on the client machine.
+     </p>
+</li>
+<li><p>      Make <code class="function">PQsetdbLogin</code> have the same defaults as
+      <code class="function">PQconnectdb</code> (Tom)
+     </p></li>
+<li><p>Allow libpq to cleanly fail when result sets are too large (Tom)</p></li>
+<li><p>      Improve performance of function <code class="function">PQunescapeBytea</code> (Ben Lamb)
+     </p></li>
+<li><p>      Allow thread-safe libpq with <code class="filename">configure</code>
+      option <code class="option">--enable-thread-safety</code> (Lee Kindness,
+      Philip Yarra)
+     </p></li>
+<li><p>      Allow function <code class="function">pqInternalNotice</code> to accept a
+      format string and arguments instead of just a preformatted
+      message (Tom, Sean Chittenden)
+     </p></li>
+<li><p>      Control SSL negotiation with <code class="literal">sslmode</code> values
+      <code class="literal">disable</code>, <code class="literal">allow</code>,
+      <code class="literal">prefer</code>, and <code class="literal">require</code> (Jon
+      Jensen)
+     </p></li>
+<li><p>Allow new error codes and levels of text (Tom)</p></li>
+<li>
+<p>Allow access to the underlying table and column of a query result (Tom)</p>
+<p>      This is helpful for query-builder applications that want to know
+      the underlying table and column names associated with a specific
+      result set.
+     </p>
+</li>
+<li><p>Allow access to the current transaction status (Tom)</p></li>
+<li><p>Add ability to pass binary data directly to the server (Tom)</p></li>
+<li><p>      Add function <code class="function">PQexecPrepared</code> and
+      <code class="function">PQsendQueryPrepared</code> functions which perform
+      bind/execute of previously prepared statements (Tom)
+      </p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2861427"></a>E.32.3.12. JDBC Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Allow <code class="function">setNull</code> on updateable result sets</p></li>
+<li><p>Allow <code class="function">executeBatch</code> on a prepared statement (Barry)</p></li>
+<li><p>Support SSL connections (Barry)</p></li>
+<li><p>Handle schema names in result sets (Paul Sorenson)</p></li>
+<li><p>Add refcursor support (Nic Ferrier)</p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2861463"></a>E.32.3.13. Miscellaneous Interface Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Prevent possible memory leak or core dump during libpgtcl shutdown (Tom)</p></li>
+<li>
+<p>Add Informix compatibility to ECPG (Michael)</p>
+<p>      This allows ECPG to process embedded C programs that were
+      written using certain Informix extensions.
+     </p>
+</li>
+<li><p>Add type <code class="type">decimal</code> to ECPG that is fixed length, for Informix (Michael)</p></li>
+<li>
+<p>      Allow thread-safe embedded SQL programs with
+      <code class="filename">configure</code> option
+      <code class="option">--enable-thread-safety</code> (Lee Kindness, Bruce)
+     </p>
+<p>      This allows multiple threads to access the database at the same
+      time.
+     </p>
+</li>
+<li><p>Moved Python client PyGreSQL to <a href="http://www.pygresql.org" target="_top">http://www.pygresql.org</a> (Marc)</p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2861516"></a>E.32.3.14. Source Code Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Prevent need for separate platform geometry regression result files (Tom)</p></li>
+<li><p>Improved PPC locking primitive (Reinhard Max)</p></li>
+<li><p>New function <code class="function">palloc0</code> to allocate and clear memory (Bruce)</p></li>
+<li><p>Fix locking code for s390x CPU (64-bit) (Tom)</p></li>
+<li><p>Allow OpenBSD to use local ident credentials (William Ahern)</p></li>
+<li><p>Make query plan trees read-only to executor (Tom)</p></li>
+<li><p>Add Darwin startup scripts (David Wheeler)</p></li>
+<li><p>Allow libpq to compile with Borland C++ compiler (Lester Godwin, Karl Waclawek)</p></li>
+<li><p>Use our own version of <code class="function">getopt_long()</code> if needed (Peter)</p></li>
+<li><p>Convert administration scripts to C (Peter)</p></li>
+<li><p> Bison &gt;= 1.85 is now required to build the <span class="productname">PostgreSQL</span> grammar, if building from CVS</p></li>
+<li><p>Merge documentation into one book (Peter)</p></li>
+<li><p>Add Windows compatibility functions (Bruce)</p></li>
+<li><p>Allow client interfaces to compile under MinGW (Bruce)</p></li>
+<li><p>New <code class="function">ereport()</code> function for error reporting (Tom)</p></li>
+<li><p>Support Intel compiler on Linux (Peter)</p></li>
+<li><p>Improve Linux startup scripts (Slawomir Sudnik, Darko Prenosil)</p></li>
+<li><p>Add support for AMD Opteron and Itanium (Jeffrey W. Baker, Bruce)</p></li>
+<li>
+<p>Remove <code class="option">--enable-recode</code> option from <code class="command">configure</code></p>
+<p>      This was no longer needed now that we have <code class="command">CREATE CONVERSION</code>.
+     </p>
+</li>
+<li>
+<p>Generate a compile error if spinlock code is not found (Bruce)</p>
+<p>      Platforms without spinlock code will now fail to compile, rather
+      than silently using semaphores. This failure can be disabled
+      with a new <code class="command">configure</code> option.
+     </p>
+</li>
+</ul></div>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2861658"></a>E.32.3.15. Contrib Changes</h4></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Change dbmirror license to BSD</p></li>
+<li><p>Improve earthdistance (Bruno Wolff III)</p></li>
+<li><p>Portability improvements to pgcrypto (Marko Kreen)</p></li>
+<li><p>Prevent crash in xml (John Gray, Michael Richards)</p></li>
+<li><p>Update oracle</p></li>
+<li><p>Update mysql</p></li>
+<li><p>Update cube (Bruno Wolff III)</p></li>
+<li><p>Update earthdistance to use cube (Bruno Wolff III)</p></li>
+<li><p>Update btree_gist (Oleg)</p></li>
+<li><p>New tsearch2 full-text search module (Oleg, Teodor)</p></li>
+<li><p>Add hash-based crosstab function to tablefuncs (Joe)</p></li>
+<li><p>Add serial column to order <code class="function">connectby()</code> siblings in tablefuncs (Nabil Sayegh,Joe)</p></li>
+<li><p>Add named persistent connections to dblink (Shridhar Daithanka)</p></li>
+<li><p>New pg_autovacuum allows automatic <code class="command">VACUUM</code> (Matthew T. O'Connor)</p></li>
+<li><p>Make pgbench honor environment variables <code class="envar">PGHOST</code>, <code class="envar">PGPORT</code>, <code class="envar">PGUSER</code> (Tatsuo)</p></li>
+<li><p>Improve intarray (Teodor Sigaev)</p></li>
+<li><p>Improve pgstattuple (Rod)</p></li>
+<li><p>Fix bug in <code class="function">metaphone()</code> in fuzzystrmatch</p></li>
+<li><p>Improve adddepend (Rod)</p></li>
+<li><p>Update spi/timetravel (Böjthe Zoltán)</p></li>
+<li><p>Fix dbase <code class="option">-s</code> option and improve non-ASCII handling (Thomas Behr, Márcio Smiderle)</p></li>
+<li><p>Remove array module because features now included by default (Joe)</p></li>
+</ul></div>
+</div>
+</div>
+</div></body>
+</html>

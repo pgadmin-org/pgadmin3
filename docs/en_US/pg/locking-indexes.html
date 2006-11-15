@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>12.5. Locking and Indexes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
+<link rel="prev" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
+<link rel="next" href="performance-tips.html" title="Chapter 13. Performance Tips">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="locking-indexes"></a>12.5. Locking and Indexes</h2></div></div></div>
+<a name="id2611578"></a><p>    Though <span class="productname">PostgreSQL</span>
+    provides nonblocking read/write access to table
+    data, nonblocking read/write access is not currently offered for every
+    index access method implemented
+    in <span class="productname">PostgreSQL</span>.
+    The various index types are handled as follows:
+
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term">       B-tree and <acronym class="acronym">GiST</acronym> indexes
+      </span></dt>
+<dd><p>        Short-term share/exclusive page-level locks are used for
+        read/write access. Locks are released immediately after each
+        index row is fetched or inserted.  These index types provide
+        the highest concurrency without deadlock conditions.
+       </p></dd>
+<dt><span class="term">       Hash indexes
+      </span></dt>
+<dd><p>        Share/exclusive hash-bucket-level locks are used for read/write
+        access.  Locks are released after the whole bucket is processed.
+        Bucket-level locks provide better concurrency than index-level
+        ones, but deadlock is possible since the locks are held longer
+        than one index operation.
+       </p></dd>
+<dt><span class="term">       <acronym class="acronym">GIN</acronym> indexes
+      </span></dt>
+<dd><p>        Short-term share/exclusive page-level locks are used for
+        read/write access. Locks are released immediately after each
+        index row is fetched or inserted. But note that a GIN-indexed
+        value insertion usually produces several index key insertions
+        per row, so GIN may do substantial work for a single value's
+        insertion.
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+<p>    Currently, B-tree indexes offer the best performance for concurrent
+    applications; since they also have more features than hash
+    indexes, they are the recommended index type for concurrent
+    applications that need to index scalar data. When dealing with
+    non-scalar data, B-trees are not useful, and GiST or GIN indexes should
+    be used instead.
+   </p>
+</div></body>
+</html>

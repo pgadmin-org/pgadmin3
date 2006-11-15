@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.40. Release 7.3.9</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-3-10.html" title="E.39. Release 7.3.10">
+<link rel="next" href="release-7-3-8.html" title="E.41. Release 7.3.8">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-7-3-9"></a>E.40. Release 7.3.9</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2005-01-31</p>
+</div>
+<p>    This release contains a variety of fixes from 7.3.8, including several
+    security-related issues.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2862758"></a>E.40.1. Migration to version 7.3.9</h3></div></div></div>
+<p>     A dump/restore is not required for those running 7.3.X.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2862765"></a>E.40.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>Disallow <code class="command">LOAD</code> to non-superusers</p>
+<p>On platforms that will automatically execute initialization functions of a
+shared library (this includes at least Windows and ELF-based Unixen),
+<code class="command">LOAD</code> can be used to make the server execute arbitrary code.
+Thanks to NGS Software for reporting this.</p>
+</li>
+<li>
+<p>Check that creator of an aggregate function has the right to
+execute the specified transition functions</p>
+<p>This oversight made it possible to bypass denial of EXECUTE
+permission on a function.</p>
+</li>
+<li><p>Fix security and 64-bit issues in
+contrib/intagg</p></li>
+<li><p>Add needed STRICT marking to some contrib functions (Kris
+Jurka)</p></li>
+<li><p>Avoid buffer overrun when plpgsql cursor declaration has too
+many parameters (Neil)</p></li>
+<li>
+<p>Fix planning error for FULL and RIGHT outer joins</p>
+<p>The result of the join was mistakenly supposed to be sorted the same as the
+left input.  This could not only deliver mis-sorted output to the user, but
+in case of nested merge joins could give outright wrong answers.</p>
+</li>
+<li><p>Fix plperl for quote marks in tuple fields</p></li>
+<li><p>Fix display of negative intervals in SQL and GERMAN
+datestyles</p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

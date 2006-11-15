@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+<h3>Foreign key covering indexes</h3>
+<p>
+A foreign key is used to couple two tables in a logical way, and restrict the changes that can be applied to them. 
+</p>
+<p>
+It all starts with a master table, which will be the referenced table. It needs to have a primary key (well, actually the 
+referenced columns only need to be not null and covered by a unique index, but it's really good advice to have a 
+primary key). The slave table depends on the master table, in the sense that the columns on which 
+the foreign key is created must match the master table for any key inserted or updated. The slave table is the referencing
+table of the foreign key.
+</p>
+<p>
+The foreign key not only restricts the referencing table, but also the referenced table; the flavour of restriction can be 
+RESTRICT, CASCADE or SET NULL. This means, that if a row in the master/referenced table is changed (updated 
+or deleted), all referencing tables are checked if the operation is valid, and if there's some additional action to perform; 
+see the PostgreSQL documentation on foreign keys for further details.
+</p>
+<p>
+This means that on change access to a specific row in the referenced table, a corresponding read is performed on all
+referencing tables, using the foreign key columns as access key. Consequently, all design rules which should be taken 
+into account for good read performance usually also apply to columns in a referencing table. For good performance,
+an index is advisable in most cases. PostgreSQL does not enforce this in any way, so it's up to the database designer
+to provide an index.
+</p>
+<p>
+For convenience, pgAdmin III provides a simple checkbox when creating a foreign key, which will automatically check 
+for the presence of a usable index, and will create one for you if none is found. As with all indexes, there are rare cases when such an index degrades your
+overall performance a little, but in general having one index too few is much more performance degrading than having one
+index too much.
+</p>
+</body>
+
+</html>

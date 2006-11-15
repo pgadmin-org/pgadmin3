@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ABORT</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-commands.html" title="SQL Commands">
+<link rel="next" href="sql-alteraggregate.html" title="ALTER AGGREGATE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-abort"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ABORT &#8212; abort the current transaction</p>
+</div>
+<a name="id2724270"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ABORT [ WORK | TRANSACTION ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2724286"></a><h2>Description</h2>
+<p>   <code class="command">ABORT</code> rolls back the current transaction and causes
+   all the updates made by the transaction to be discarded. 
+   This command is identical
+   in behavior to the standard <acronym class="acronym">SQL</acronym> command
+   <a href="sql-rollback.html">ROLLBACK</a>,
+   and is present only for historical reasons.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2724317"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WORK</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">TRANSACTION</code></span>
+</dt>
+<dd><p>      Optional key words. They have no effect.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2724338"></a><h2>Notes</h2>
+<p>   Use <a href="sql-commit.html">COMMIT</a> to
+   successfully terminate a transaction.
+  </p>
+<p>   Issuing <code class="command">ABORT</code> when not inside a transaction does
+   no harm, but it will provoke a warning message.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2724366"></a><h2>Examples</h2>
+<p>   To abort all changes:
+</p>
+<pre class="programlisting">ABORT;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2724378"></a><h2>Compatibility</h2>
+<p>   This command is a <span class="productname">PostgreSQL</span> extension
+   present for historical reasons. <code class="command">ROLLBACK</code> is the
+   equivalent standard SQL command.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2724397"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a></span>
+</div>
+</div></body>
+</html>

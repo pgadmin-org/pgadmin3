@@ -1,0 +1,121 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>5. Slony-I Concepts</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="slonyintro.html" title="Slony-I Introduction">
+<link rel="prev" href="installation.html" title="4. Slony-I Installation">
+<link rel="next" href="cluster.html" title="6. Defining Slony-I Clusters">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="concepts"></a>5. <span class="productname">Slony-I</span> Concepts</h2></div></div></div>
+<a name="id2548461"></a><p>In order to set up a set of <span class="productname">Slony-I</span> replicas, it is necessary
+to understand the following major abstractions that it uses:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>Cluster</p></li>
+<li><p>Node</p></li>
+<li><p>Replication Set</p></li>
+<li><p>Origin, Providers and Subscribers</p></li>
+<li><p>slon daemons</p></li>
+<li><p>slonik configuration processor</p></li>
+</ul></div>
+<p> It is also worth knowing the meanings of certain Russian words:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>slon is Russian for &#8220;<span class="quote">elephant</span>&#8221;</p></li>
+<li><p>slony is the plural of slon, and therefore refers to a group of elephants</p></li>
+<li><p>slonik is Russian for &#8220;<span class="quote">little elephant</span>&#8221;</p></li>
+</ul></div>
+<p> The use of these terms in <span class="productname">Slony-I</span> is a &#8220;<span class="quote">tip of the
+hat</span>&#8221; to Vadim Mikheev, who was responsible for the
+<span class="application">rserv</span> prototype which inspired some of the
+algorithms used in <span class="productname">Slony-I</span>.</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2548547"></a>5.1. Cluster</h3></div></div></div>
+<a name="id2548551"></a><p>In <span class="productname">Slony-I</span> terms, a &#8220;<span class="quote">cluster</span>&#8221; is a named set of
+<span class="productname">PostgreSQL</span> database instances; replication takes place between those
+databases.</p>
+<p>The cluster name is specified in each and every Slonik script via the directive:</p>
+<pre class="programlisting">cluster name = 'something';</pre>
+<p>If the Cluster name is <code class="envar">something</code>, then <span class="productname">Slony-I</span>
+will create, in each database instance in the cluster, the
+namespace/schema <code class="envar">_something.</code></p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2548600"></a>5.2. Node</h3></div></div></div>
+<a name="id2548604"></a><p>A <span class="productname">Slony-I</span> Node is a named <span class="productname">PostgreSQL</span> database that will be
+participating in replication.</p>
+<p>It is defined, near the beginning of each Slonik script, using the directive:</p>
+<pre class="programlisting"> NODE 1 ADMIN CONNINFO = 'dbname=testdb host=server1 user=slony';</pre>
+<p>The <a href="admconninfo.html" title="ADMIN CONNINFO"><span class="refentrytitle">ADMIN CONNINFO</span></a> information indicates database
+connection information that will ultimately be passed to the
+<code class="function">PQconnectdb()</code> libpq function.</p>
+<p>Thus, a <span class="productname">Slony-I</span> cluster consists of:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> A cluster name</p></li>
+<li><p> A set of <span class="productname">Slony-I</span> nodes, each of which has a namespace based on that cluster name</p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2548674"></a>5.3.  Replication Set</h3></div></div></div>
+<a name="id2548678"></a><p>A replication set is defined as a set of tables and sequences
+that are to be replicated between nodes in a <span class="productname">Slony-I</span> cluster.</p>
+<p>You may have several sets, and the &#8220;<span class="quote">flow</span>&#8221; of
+replication does not need to be identical between those sets.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2548701"></a>5.4.  Origin, Providers and Subscribers</h3></div></div></div>
+<a name="id2548705"></a><a name="id2548711"></a><p>Each replication set has some origin node, which is the
+<span class="emphasis"><em>only</em></span> place where user applications are permitted
+to modify data in the tables that are being replicated.  This might
+also be termed the &#8220;<span class="quote">master provider</span>&#8221;; it is the main
+place from which data is provided.</p>
+<a name="id2548730"></a><p>Other nodes in the cluster subscribe to the replication set,
+indicating that they want to receive the data.</p>
+<p>The origin node will never be considered a
+&#8220;<span class="quote">subscriber.</span>&#8221; (Ignoring the case where the cluster is
+reshaped, and the origin is expressly shifted to another node.)  But
+<span class="productname">Slony-I</span> supports the notion of cascaded subscriptions, that is, a
+node that is subscribed to some set may also behave as a
+&#8220;<span class="quote">provider</span>&#8221; to other nodes in the cluster for that
+replication set.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2548761"></a>5.5. slon Daemon</h3></div></div></div>
+<a name="id2548764"></a><p>For each node in the cluster, there will be a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> process to manage replication activity for that node.</p>
+<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is a program implemented in C that
+processes replication events.  There are two main sorts of events:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Configuration events</p>
+<p> These normally occur when a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script is
+run, and submit updates to the configuration of the cluster. </p>
+</li>
+<li>
+<p> <code class="command">SYNC</code> events </p>
+<p> Updates to the tables that are replicated are grouped together
+into <code class="command">SYNC</code>s; these groups of transactions are
+applied together to the subscriber nodes.  </p>
+</li>
+</ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2548823"></a>5.6. slonik Configuration Processor</h3></div></div></div>
+<a name="id2548827"></a><p> The <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command processor processes scripts
+in a &#8220;<span class="quote">little language</span>&#8221; that are used to submit events to
+update the configuration of a <span class="productname">Slony-I</span> cluster.  This includes such
+things as adding and removing nodes, modifying communications paths,
+adding or removing subscriptions.</p>
+</div>
+</div></body>
+</html>

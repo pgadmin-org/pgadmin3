@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.51.  droppath( integer, integer )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.dropnode-int-integer.html" title="1.50.  dropnode_int( integer )">
+<link rel="next" href="function.droppath-int-integer-integer.html" title="1.52.  droppath_int( integer, integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.droppath-integer-integer"></a>1.51.        droppath( integer, integer )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       Generate DROP_PATH event to drop path from pa_server to pa_client
+        </p>
+<pre class="programlisting">declare
+	p_pa_server		alias for $1;
+	p_pa_client		alias for $2;
+	v_row			record;
+begin
+	-- ----
+	-- Grab the central configuration lock
+	-- ----
+	lock table sl_config_lock;
+
+	-- ----
+	-- There should be no existing subscriptions. Auto unsubscribing
+	-- is considered too dangerous. 
+	-- ----
+	for v_row in select sub_set, sub_provider, sub_receiver
+			from sl_subscribe
+			where sub_provider = p_pa_server
+			and sub_receiver = p_pa_client
+	loop
+		raise exception 
+			'Slony-I: Path cannot be dropped, subscription of set % needs it',
+			v_row.sub_set;
+	end loop;
+
+	-- ----
+	-- Drop all sl_listen entries that depend on this path
+	-- ----
+	for v_row in select li_origin, li_provider, li_receiver
+			from sl_listen
+			where li_provider = p_pa_server
+			and li_receiver = p_pa_client
+	loop
+		perform dropListen(
+				v_row.li_origin, v_row.li_provider, v_row.li_receiver);
+	end loop;
+
+	-- ----
+	-- Now drop the path and create the event
+	-- ----
+	perform dropPath_int(p_pa_server, p_pa_client);
+
+	-- Rewrite sl_listen table
+	perform RebuildListenEntries();
+
+	return  createEvent ('_schemadoc', 'DROP_PATH',
+			p_pa_server, p_pa_client);
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

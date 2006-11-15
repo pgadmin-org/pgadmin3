@@ -1,0 +1,56 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAgent - PostgreSQL Tools
+// $Id$
+// Copyright (C) 2002 - 2006 The pgAdmin Development Team
+// This software is released under the Artistic Licence
+//
+// pgaevent.rc - win32 Resources
+//
+//////////////////////////////////////////////////////////////////////////
+
+LANGUAGE 0x9,0x1
+1 11 MSG00001.bin
+
+#include <winver.h>
+#include "../../../src/include/version.h"
+#include "../../../src/include/copyright.h"
+
+// Icon (Don't remove the aaa prefix - it makes it the default icon)
+aaaPGAEVENT      ICON    DISCARDABLE     "../../../src/include/images/pgAdmin3.ico"
+
+
+VS_VERSION_INFO VERSIONINFO 
+FILEVERSION    VERSION_NUM
+PRODUCTVERSION VERSION_NUM
+FILEFLAGSMASK  VER_DEBUG|VER_PRERELEASE
+FILEFLAGS      VER_DEBUG|VER_PRERELEASE
+FILEOS         VOS__WINDOWS32
+FILETYPE       VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN 
+            VALUE "FileVersion",     VERSION_STR, "\0"
+            VALUE "File Version",    VERSION_STR, "\0"
+            VALUE "FileDescription", "pgaevent - pgAgent Event Log Message DLL", "\0"
+            VALUE "LegalCopyright",  COPYRIGHT_WIN32, "\0"
+            VALUE "LegalTrademarks", LICENSE, "\0"
+            VALUE "InternalName",    "pgaevent", "\0"
+            VALUE "OriginalFilename","pgaevent.dll", "\0"
+            VALUE "ProductName",     APPNAME_L, "\0"
+            VALUE "ProductVersion",  VERSION_STR, "\0"
+#ifdef BUILD
+            VALUE "Build",           BUILD, "\0"
+#endif
+        END 
+    END
+    BLOCK "VarFileInfo" 
+    BEGIN 
+        VALUE "Translation", 0x0409, 0x04E4
+    END 
+END 
+
+
+

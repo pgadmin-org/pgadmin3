@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DEFINE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="metacmds.html" title="Slonik Meta Commands">
+<link rel="prev" href="stmtinclude.html" title="INCLUDE">
+<link rel="next" href="hdrcmds.html" title="Slonik Preamble Commands">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtdefine"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DEFINE &#8212;  Defining a named symbol </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">define </code> [<em class="replaceable"><code> name </code></em>] [<em class="replaceable"><code> value </code></em>]</p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2573442"></a><h2>Description</h2>
+<p>      This defines a named symbol.  Symbol names must follow the
+      slonik rules for constructing identifiers, by starting with a
+      letter, followed by letters, numbers, and underscores.
+    </p>
+<p>      Symbol values may contain spaces and may recursively contain
+      symbol references.
+    </p>
+<p>      Symbols are referenced by using a &#8220;<span class="quote">@</span>&#8221; followed by
+      the symbol name.  Note that symbol referencing is suppressed
+      inside string literals.
+    </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2573463"></a><h2>Example</h2>
+<pre class="programlisting">define    cluster movies;
+define    sakai   1;
+define    chen    2;
+define    fqn     fully qualified name;
+
+cluster name = @cluster;
+node @sakai admin conninfo = 'service=sakai-replication';
+node @chen  admin conninfo = 'service=chen-replication';
+define setMovies    id = 1;
+define sakaiMovies  @setMovies, origin = @sakai;
+
+create set ( @sakaiMovies, comment = 'movies' );
+
+set add table( set @sakaiMovies, id = 1, @fqn = 'public.customers', 
+               comment = 'sakai customers' );
+set add table( set @sakaiMovies, id = 2, @fqn = 'public.tapes',     
+               comment = 'sakai tapes' );
+echo 'But @sakaiMovies will display as a string, and is not expanded';
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2573483"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.1 </p>
+</div>
+</div></body>
+</html>

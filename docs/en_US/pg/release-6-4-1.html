@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.72. Release 6.4.1</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-6-4-2.html" title="E.71. Release 6.4.2">
+<link rel="next" href="release-6-4.html" title="E.73. Release 6.4">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-6-4-1"></a>E.72. Release 6.4.1</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>1998-12-18</p>
+</div>
+<p>This is basically a cleanup release for 6.4.  We have fixed a variety of
+problems reported by 6.4 users.</p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2870280"></a>E.72.1. Migration to version 6.4.1</h3></div></div></div>
+<p>A dump/restore is <span class="emphasis"><em>not</em></span> required for those running
+6.4.</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2870290"></a>E.72.2. Changes</h3></div></div></div>
+<pre class="programlisting">Add pg_dump -N flag to force double quotes around identifiers.  This is
+        the default(Thomas)
+Fix for NOT in where clause causing crash(Bruce)
+EXPLAIN VERBOSE coredump fix(Vadim)
+Fix shared-library problems on Linux
+Fix test for table existence to allow mixed-case and whitespace in
+        the table name(Thomas)
+Fix a couple of pg_dump bugs
+Configure matches template/.similar entries better(Tom)
+Change builtin function names from SPI_* to spi_*
+OR WHERE clause fix(Vadim)
+Fixes for mixed-case table names(Billy)
+contrib/linux/postgres.init.csh/sh fix(Thomas)
+libpq memory overrun fix
+SunOS fixes(Tom)
+Change exp() behavior to generate error on underflow(Thomas)
+pg_dump fixes for memory leak, inheritance constraints, layout change
+update pgaccess to 0.93
+Fix prototype for 64-bit platforms
+Multibyte fixes(Tatsuo)
+New ecpg man page
+Fix memory overruns(Tatsuo)
+Fix for lo_import() crash(Bruce)
+Better search for install program(Tom)
+Timezone fixes(Tom)
+HP-UX fixes(Tom)
+Use implicit type coercion for matching DEFAULT values(Thomas)
+Add routines to help with single-byte (internal) character type(Thomas)
+Compilation of libpq for Windows fixes(Magnus)
+Upgrade to PyGreSQL 2.2(D'Arcy)</pre>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,102 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.123.  tableaddkey( text )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.subscribeset-int-integer-integer-integer-boolean.html" title="1.122.  subscribeset_int( integer, integer, integer, boolean )">
+<link rel="next" href="function.tabledropkey-integer.html" title="1.124.  tabledropkey( integer )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="function.tableaddkey-text"></a>1.123.        tableaddkey( text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>text</div>
+</div>
+</div>
+<p>
+ 
+       tableAddKey (tab_fqname) - if the table has not got a column of the
+form _Slony-I_&lt;clustername&gt;_rowID, then add it as a bigint, defaulted
+to nextval() for a sequence created for the cluster.
+        </p>
+<pre class="programlisting">declare
+	p_tab_fqname	alias for $1;
+	v_tab_fqname_quoted	text default '';
+	v_attkind		text default '';
+	v_attrow		record;
+	v_have_serial	bool default 'f';
+begin
+	v_tab_fqname_quoted := slon_quote_input(p_tab_fqname);
+	--
+	-- Loop over the attributes of this relation
+	-- and add a "v" for every user column, and a "k"
+	-- if we find the Slony-I special serial column.
+	--
+	for v_attrow in select PGA.attnum, PGA.attname
+			from "pg_catalog".pg_class PGC,
+			    "pg_catalog".pg_namespace PGN,
+				"pg_catalog".pg_attribute PGA
+			where slon_quote_brute(PGN.nspname) || '.' ||
+			    slon_quote_brute(PGC.relname) = v_tab_fqname_quoted
+				and PGN.oid = PGC.relnamespace
+				and PGA.attrelid = PGC.oid
+				and not PGA.attisdropped
+				and PGA.attnum &gt; 0
+			order by attnum
+	loop
+		if v_attrow.attname = '_Slony-I_schemadoc_rowID' then
+		    v_attkind := v_attkind || 'k';
+			v_have_serial := 't';
+		else
+			v_attkind := v_attkind || 'v';
+		end if;
+	end loop;
+	
+	--
+	-- A table must have at least one attribute, so not finding
+	-- anything means the table does not exist.
+	--
+	if not found then
+		raise exception 'Slony-I: tableAddKey(): table % not found', v_tab_fqname_quoted;
+	end if;
+
+	--
+	-- If it does not have the special serial column, we
+	-- have to add it. This will be only half way done.
+	-- The function to add the table to the set must finish
+	-- these definitions with NOT NULL and UNIQUE after
+	-- updating all existing rows.
+	--
+	if not v_have_serial then
+		execute 'lock table ' || v_tab_fqname_quoted ||
+			' in access exclusive mode';
+		execute 'alter table only ' || v_tab_fqname_quoted ||
+			' add column "_Slony-I_schemadoc_rowID" bigint;';
+		execute 'alter table only ' || v_tab_fqname_quoted ||
+			' alter column "_Slony-I_schemadoc_rowID" ' ||
+			' set default "pg_catalog".nextval(''sl_rowid_seq'');';
+
+		v_attkind := v_attkind || 'k';
+	end if;
+
+	--
+	-- Return the resulting Slony-I attkind
+	--
+	return v_attkind;
+end;</pre>
+<p>
+      </p>
+</div></body>
+</html>

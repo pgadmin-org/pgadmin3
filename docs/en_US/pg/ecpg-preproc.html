@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>31.12. Preprocessor directives</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C">
+<link rel="prev" href="ecpg-errors.html" title="31.11. Error Handling">
+<link rel="next" href="ecpg-process.html" title="31.13. Processing Embedded SQL Programs">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ecpg-preproc"></a>31.12. Preprocessor directives</h2></div></div></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2676080"></a>31.12.1. Including files</h3></div></div></div>
+<p>    To include an external file into your embedded SQL program, use:
+</p>
+<pre class="programlisting">EXEC SQL INCLUDE <em class="replaceable"><code>filename</code></em>;</pre>
+<p>
+    The embedded SQL preprocessor will look for a file named
+    <code class="literal"><em class="replaceable"><code>filename</code></em>.h</code>,
+    preprocess it, and include it in the resulting C output.  Thus,
+    embedded SQL statements in the included file are handled correctly.
+   </p>
+<p>    Note that this is <span class="emphasis"><em>not</em></span> the same as
+</p>
+<pre class="programlisting">#include &lt;<em class="replaceable"><code>filename</code></em>.h&gt;</pre>
+<p>
+    because this file would not be subject to SQL command preprocessing.
+    Naturally, you can continue to use the C
+    <code class="literal">#include</code> directive to include other header
+    files.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     The include file name is case-sensitive, even though the rest of
+     the <code class="literal">EXEC SQL INCLUDE</code> command follows the normal
+     SQL case-sensitivity rules.
+    </p>
+</div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2676144"></a>31.12.2. The #define and #undef directives</h3></div></div></div>
+<p>    Similar to the directive <code class="literal">#define</code> that is known from C,
+    embedded SQL has a similar concept:
+</p>
+<pre class="programlisting">EXEC SQL DEFINE <em class="replaceable"><code>name</code></em>;
+EXEC SQL DEFINE <em class="replaceable"><code>name</code></em> <em class="replaceable"><code>value</code></em>;</pre>
+<p>
+    So you can define a name:
+</p>
+<pre class="programlisting">EXEC SQL DEFINE HAVE_FEATURE;</pre>
+<p>
+    And you can also define constants:
+</p>
+<pre class="programlisting">EXEC SQL DEFINE MYNUMBER 12;
+EXEC SQL DEFINE MYSTRING 'abc';</pre>
+<p>
+    Use <code class="literal">undef</code> to remove a previous definition:
+</p>
+<pre class="programlisting">EXEC SQL UNDEF MYNUMBER;</pre>
+<p>
+   </p>
+<p>    Of course you can continue to use the C versions <code class="literal">#define</code>
+    and <code class="literal">#undef</code> in your embedded SQL program. The difference
+    is where your defined values get evaluated. If you use <code class="literal">EXEC SQL
+    DEFINE</code> then the ecpg preprocessor evaluates the defines and substitutes
+    the values. For example if you write:
+</p>
+<pre class="programlisting">EXEC SQL DEFINE MYNUMBER 12;
+...
+EXEC SQL UPDATE Tbl SET col = MYNUMBER;</pre>
+<p>
+    then ecpg will already do the substitution and your C compiler will never
+    see any name or identifier <code class="literal">MYNUMBER</code>. Note that you can not use
+    <code class="literal">#define</code> for a constant that you are going to use in an
+    embedded SQL query because in this case the embedded SQL precompiler is not
+    able to see this declaration.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2676251"></a>31.12.3. ifdef, ifndef, else, elif and endif directives</h3></div></div></div>
+<p>   You can use the following directives to compile code sections conditionally:
+
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">EXEC SQL ifdef <em class="replaceable"><code>name</code></em>;</code></span></dt>
+<dd><p>      Checks a <em class="replaceable"><code>name</code></em> and processes subsequent lines if
+      <em class="replaceable"><code>name</code></em> has been created with <code class="literal">EXEC SQL define
+      <em class="replaceable"><code>name</code></em></code>.
+     </p></dd>
+<dt><span class="term"><code class="literal">EXEC SQL ifndef <em class="replaceable"><code>name</code></em>;</code></span></dt>
+<dd><p>      Checks a <em class="replaceable"><code>name</code></em> and processes subsequent lines if
+      <em class="replaceable"><code>name</code></em> has <span class="emphasis"><em>not</em></span> been created with
+      <code class="literal">EXEC SQL define <em class="replaceable"><code>name</code></em></code>.
+     </p></dd>
+<dt><span class="term"><code class="literal">EXEC SQL else;</code></span></dt>
+<dd><p>      Starts processing an alternative section to a section introduced by
+      either <code class="literal">EXEC SQL ifdef <em class="replaceable"><code>name</code></em></code> or
+      <code class="literal">EXEC SQL ifndef <em class="replaceable"><code>name</code></em></code>.
+     </p></dd>
+<dt><span class="term"><code class="literal">EXEC SQL elif <em class="replaceable"><code>name</code></em>;</code></span></dt>
+<dd><p>      Checks <em class="replaceable"><code>name</code></em> and starts an alternative section if
+      <em class="replaceable"><code>name</code></em> has been created with <code class="literal">EXEC SQL define
+      <em class="replaceable"><code>name</code></em></code>.
+     </p></dd>
+<dt><span class="term"><code class="literal">EXEC SQL endif;</code></span></dt>
+<dd><p>      Ends an alternative section.
+     </p></dd>
+</dl></div>
+<p>
+   </p>
+<p>    Example:
+</p>
+<pre class="programlisting">   exec sql ifndef TZVAR;
+   exec sql SET TIMEZONE TO 'GMT';
+   exec sql elif TZNAME;
+   exec sql SET TIMEZONE TO TZNAME;
+   exec sql else;
+   exec sql SET TIMEZONE TO TZVAR;
+   exec sql endif;</pre>
+<p>
+   </p>
+</div>
+</div></body>
+</html>

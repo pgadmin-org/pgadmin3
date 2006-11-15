@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>4. Subscribing Nodes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="slonstart.html" title="3. Slon daemons">
+<link rel="next" href="monitoring.html" title="5. Monitoring">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="subscribenodes"></a>4. Subscribing Nodes</h2></div></div></div>
+<a name="id2552294"></a><p>Before you subscribe a node to a set, be sure that you have
+<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes running for both the provider and the
+new subscribing node. If you don't have slons running, nothing will
+happen, and you'll beat your head against a wall trying to figure out
+what is going on.</p>
+<p>Subscribing a node to a set is done by issuing the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>. It may
+seem tempting to try to subscribe several nodes to a set within a
+single try block like this:
+
+</p>
+<pre class="programlisting">try {
+  echo 'Subscribing sets';
+  subscribe set (id = 1, provider=1, receiver=2, forward=yes);
+  subscribe set (id = 1, provider=1, receiver=3, forward=yes);
+  subscribe set (id = 1, provider=1, receiver=4, forward=yes);
+} on error {
+  echo 'Could not subscribe the sets!';
+  exit -1;
+}</pre>
+<p> But you are just asking for trouble if you try to subscribe
+sets in that fashion. The proper procedure is to subscribe one node at
+a time, and to check the logs and databases before you move onto
+subscribing the next node to the set. It is also worth noting that the
+&#8220;<span class="quote">success</span>&#8221; within the above <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> try
+block does not imply that nodes 2, 3, and 4 have all been successfully
+subscribed. It merely indicates that the slonik commands were
+successfully received by the <span class="application">slon</span> running
+on the origin node.</p>
+<p>A typical sort of problem that will arise is that a cascaded
+subscriber is looking for a provider that is not ready yet.  In that
+failure case, that subscriber node will <span class="emphasis"><em>never</em></span>
+pick up the subscriber.  It will get &#8220;<span class="quote">stuck</span>&#8221; waiting for
+a past event to take place.  The other nodes will be convinced that it
+is successfully subscribed (because no error report ever made it back
+to them); a request to unsubscribe the node will be
+&#8220;<span class="quote">blocked</span>&#8221; because the node is stuck on the attempt to
+subscribe it.</p>
+<p>When you subscribe a node to a set, you should see something
+like this in your <span class="application">slon</span> logs for the
+provider node:
+
+</p>
+<pre class="screen">DEBUG2 remoteWorkerThread_3: Received event 3,1059 SUBSCRIBE_SET</pre>
+<p>You should also start seeing log entries like this in the
+<span class="application">slon</span> logs for the subscribing node:
+
+</p>
+<pre class="screen">DEBUG2 remoteWorkerThread_1: copy table public.my_table</pre>
+<p>It may take some time for larger tables to be copied from the
+provider node to the new subscriber. If you check the pg_stat_activity
+table on the provider node, you should see a query that is copying the
+table to stdout.</p>
+<p>The table <code class="envar">sl_subscribe</code> on both the provider, and the new
+subscriber should contain entries for the new subscription:
+
+</p>
+<pre class="screen"> sub_set | sub_provider | sub_receiver | sub_forward | sub_active
+---------+--------------+--------------+-------------+------------
+      1  |            1 |            2 |           t |         t</pre>
+<p>A final test is to insert a row into one of the replicated
+tables on the origin node, and verify that the row is copied to the
+new subscriber.</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p> If you create and subscribe a set that does not
+contain any tables, that can lead to a problem that will stop
+replication from proceeding. </p>
+<p> Note that this bug is addressed as of <span class="productname">Slony-I</span> 1.1.5 </p>
+<p> If a particular subscriber is only being fed sequences by one
+of its providers, the query that collects <code class="command">SYNC</code>
+event data will not be constructed correctly, and you will see error
+messages similar to the following:</p>
+<pre class="screen">2005-04-13 07:11:28 PDT ERROR remoteWorkerThread_11: "declare LOG
+cursor for select log_origin, log_xid, log_tableid, log_actionseq,
+log_cmdtype, log_cmddata from "_T1".sl_log_1 where log_origin = 11 and
+( order by log_actionseq; " PGRES_FATAL_ERROR ERROR: syntax error at
+or near "order" at character 162</pre>
+<p> The function <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a> will
+generate a warning if given a replication set that lacks any tables to
+replicate, as shown in the following example.</p>
+<pre class="screen">cbbrowne@dba2:/tmp&gt; cat create_empty_set.slonik
+cluster name = T1;
+node 11 admin conninfo = 'dbname=slony_test1';
+node 22 admin conninfo = 'dbname=slony_test2';
+
+create set (id = 255, origin = 11, comment='blank empty set');
+subscribe set (id=255, provider = 11, receiver = 22, forward = false);</pre>
+<p> This leads to the following warning message: </p>
+<pre class="screen">bbrowne@dba2:/tmp&gt; slonik create_empty_set.slonik
+create_empty_set.slonik:6: NOTICE:  subscribeSet:: set 255 has no tables
+- risk of problems - see bug 1226
+create_empty_set.slonik:6: NOTICE: 
+http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226
+cbbrowne@dba2:/tmp&gt;</pre>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,31 @@
+Here is an abstract from the pgAdmin III documentation detailing steps
+to get pgAgent up and running:
+
+pgAgent stores its configuration in the "postgres" database in your
+cluster.  This database exists by default in PostgreSQL 8.1 versions;
+for earlier versions you need to create the database yourself.  The
+database must have the PL/pgSQL procedural language installed --
+PostgreSQL's 'createlang' program can do this if required. 
+
+On Debian you can create the postgres database like this:
+
+    Connect as the 'postgres' operating system user and execute the
+    following commands in a shell:
+
+    postgres@anaconda:~$ createdb postgres
+    postgres@anaconda:~$ createlang plpgsql postgres
+
+Once created, connect to the new database and load the
+/usr/share/pgadmin3/pgagent.sql file to the database.  You can do this
+with psql if you don't have pgAdmin III installed:
+
+    postgres@anaconda:~$ psql postgres
+
+    Launch the following command at the psql prompt:
+
+    \i /usr/share/pgadmin3/pgagent.sql
+
+For more information, install pgadmin3 package and take a look at the
+pgAdmin III online documentation.
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Fri, 14 Jul 2006 14:51:09 +0000

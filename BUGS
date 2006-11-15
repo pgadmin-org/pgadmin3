@@ -1,0 +1,65 @@
+Known issues
+============
+
+pgAdmin III
+-----------
+
+[DLG] Working with property dialog after the corresponding node is 
+      refreshed crashes
+
+[FRM] Editing very large columns freezes (might be restricted to bytea) the
+      edit grid
+
+wxWidgets
+---------
+
+[STC] ASSERT when typing a multibyte char [wx patch 1072408]
+
+[GTK] Scrollbar doesn't scroll page by page in the browser tree.
+
+[STC] Lexer doesn't know about escaping quotes
+
+[GTK] FindFocus reports bogus controls. Symptom: select a menu or toolbar, 
+      but nothing happens.
+
+[GTK] combobox positioning when height is not specified; current workaround: 
+      fixed 12d height
+
+[GTK] Crash with some themes; probably gtk issue.
+
+[MAC] wxComboBox::GetInsertionPoint() always returns 0 which prevents auto
+      complete working correctly in combo boxes such as the data type 
+      selectors. wxWidgets bug ref 1584384, applies to wx2.6.3 and 2.7.0.
+        
+[MAC] wxProcess::IsInputAvailable()/IsErrorAvailable() crash in wx2.7.0, 
+      which prevents messages from pg_dump/pg_restore being displayed.
+	    To avoid the crash, on Mac the streams aren't checked until the 
+	    process ends. See ExternProcessDialog::Execute().
+      wxWidgets bug ref 1584387.
+        
+[STC] On wxMSW 2.6.3 with Num Lock turned off, the control functions 
+      (arrows, insert/delete etc) of the numeric keypad do not work.
+      wxWidgets bug ref 1529525.
+        
+[AUI] If a pane with a minimum size set is docked next to the center pane, it
+      is possible to drag either side such that the panes size is less than 
+      the minimum. In addition, the minimum size doesn't appear to be honoured
+      at all by the center pane. wxWidgets bug ref: 1578958
+      
+[MSW] In 2.7/2.7.1 on wxMSW, it seems that the return key is acting like tab 
+      normally does in dialogues - ie. where the control doesn't catch the 
+      keypress, the focus moves to the next control in the tab order. Default 
+      buttons on the dialogue don't get activated. wxWidgets bug ref: 1582051.
+      
+[MAC] wxWindow::SetFont() is broken on wxMac - changing the applicaiton font 
+      has no effect. wxWidgets bug ref: 1584926
+
+[MAC] An About menu item is automatically added to frmQuery and frmEditGrid
+      by wxWidgets(?). Currently this does nothing - add supporting code to
+      display the About box?
+
+Known issues, that might stay unfixed
+-------------------------------------
+
+[FRM] MS Context menu key doesn't work in Windows (wxWidgets bug?).
+

@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>8.13. Pseudo-Types</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="datatype.html" title="Chapter 8. Data Types">
+<link rel="prev" href="datatype-oid.html" title="8.12. Object Identifier Types">
+<link rel="next" href="datatype-xml.html" title="8.14. XML Document Support">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="datatype-pseudo"></a>8.13. Pseudo-Types</h2></div></div></div>
+<a name="id2573285"></a><a name="id2573296"></a><a name="id2573305"></a><a name="id2573314"></a><a name="id2573323"></a><a name="id2573332"></a><a name="id2573342"></a><a name="id2573351"></a><a name="id2573360"></a><a name="id2573369"></a><p>    The <span class="productname">PostgreSQL</span> type system contains a
+    number of special-purpose entries that are collectively called
+    <em class="firstterm">pseudo-types</em>.  A pseudo-type cannot be used as a
+    column data type, but it can be used to declare a function's
+    argument or result type.  Each of the available pseudo-types is
+    useful in situations where a function's behavior does not
+    correspond to simply taking or returning a value of a specific
+    <acronym class="acronym">SQL</acronym> data type.  <a href="datatype-pseudo.html#datatype-pseudotypes-table" title="Table 8.20. Pseudo-Types">Table 8.20, &#8220;Pseudo-Types&#8221;</a> lists the existing
+    pseudo-types.
+   </p>
+<div class="table">
+<a name="datatype-pseudotypes-table"></a><p class="title"><b>Table 8.20. Pseudo-Types</b></p>
+<div class="table-contents"><table summary="Pseudo-Types" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="type">any</code></td>
+<td>Indicates that a function accepts any input data type whatever.</td>
+</tr>
+<tr>
+<td><code class="type">anyarray</code></td>
+<td>Indicates that a function accepts any array data type
+        (see <a href="extend-type-system.html#extend-types-polymorphic" title="33.2.5. Polymorphic Types">Section 33.2.5, &#8220;Polymorphic Types&#8221;</a>).</td>
+</tr>
+<tr>
+<td><code class="type">anyelement</code></td>
+<td>Indicates that a function accepts any data type
+        (see <a href="extend-type-system.html#extend-types-polymorphic" title="33.2.5. Polymorphic Types">Section 33.2.5, &#8220;Polymorphic Types&#8221;</a>).</td>
+</tr>
+<tr>
+<td><code class="type">cstring</code></td>
+<td>Indicates that a function accepts or returns a null-terminated C string.</td>
+</tr>
+<tr>
+<td><code class="type">internal</code></td>
+<td>Indicates that a function accepts or returns a server-internal
+        data type.</td>
+</tr>
+<tr>
+<td><code class="type">language_handler</code></td>
+<td>A procedural language call handler is declared to return <code class="type">language_handler</code>.</td>
+</tr>
+<tr>
+<td><code class="type">record</code></td>
+<td>Identifies a function returning an unspecified row type.</td>
+</tr>
+<tr>
+<td><code class="type">trigger</code></td>
+<td>A trigger function is declared to return <code class="type">trigger.</code>
+</td>
+</tr>
+<tr>
+<td><code class="type">void</code></td>
+<td>Indicates that a function returns no value.</td>
+</tr>
+<tr>
+<td><code class="type">opaque</code></td>
+<td>An obsolete type name that formerly served all the above purposes.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>    Functions coded in C (whether built-in or dynamically loaded) may be
+    declared to accept or return any of these pseudo data types.  It is up to
+    the function author to ensure that the function will behave safely
+    when a pseudo-type is used as an argument type.
+   </p>
+<p>    Functions coded in procedural languages may use pseudo-types only as
+    allowed by their implementation languages.  At present the procedural
+    languages all forbid use of a pseudo-type as argument type, and allow
+    only <code class="type">void</code> and <code class="type">record</code> as a result type (plus
+    <code class="type">trigger</code> when the function is used as a trigger).  Some also
+    support polymorphic functions using the types <code class="type">anyarray</code> and
+    <code class="type">anyelement</code>.
+   </p>
+<p>    The <code class="type">internal</code> pseudo-type is used to declare functions
+    that are meant only to be called internally by the database
+    system, and not by direct invocation in a <acronym class="acronym">SQL</acronym>
+    query.  If a function has at least one <code class="type">internal</code>-type
+    argument then it cannot be called from <acronym class="acronym">SQL</acronym>.  To
+    preserve the type safety of this restriction it is important to
+    follow this coding rule: do not create any function that is
+    declared to return <code class="type">internal</code> unless it has at least one
+    <code class="type">internal</code> argument.
+   </p>
+</div></body>
+</html>

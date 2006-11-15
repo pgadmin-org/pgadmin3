@@ -1,0 +1,83 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP ROLE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="prev" href="sql-drop-owned.html" title="DROP OWNED">
+<link rel="next" href="sql-droprule.html" title="DROP RULE">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-droprole"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP ROLE &#8212; remove a database role</p>
+</div>
+<a name="id2755574"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP ROLE [ IF EXISTS ] <em class="replaceable"><code>name</code></em> [, ...]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755595"></a><h2>Description</h2>
+<p>   <code class="command">DROP ROLE</code> removes the specified role(s).
+   To drop a superuser role, you must be a superuser yourself;
+   to drop non-superuser roles, you must have <code class="literal">CREATEROLE</code>
+   privilege.
+  </p>
+<p>   A role cannot be removed if it is still referenced in any database
+   of the cluster; an error will be raised if so.  Before dropping the role,
+   you must drop all the objects it owns (or reassign their ownership)
+   and revoke any privileges the role has been granted. The <a href="sql-reassign-owned.html">REASSIGN OWNED</a>
+   and <a href="sql-drop-owned.html">DROP OWNED</a>
+   commands can be useful for this purpose.
+  </p>
+<p>   However, it is not necessary to remove role memberships involving
+   the role; <code class="command">DROP ROLE</code> automatically revokes any memberships
+   of the target role in other roles, and of other roles in the target role.
+   The other roles are not dropped nor otherwise affected.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755656"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">IF EXISTS</code></span></dt>
+<dd><p>      Do not throw an error if the role does not exist. A notice is issued 
+      in this case.
+     </p></dd>
+<dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
+<dd><p>      The name of the role to remove.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755683"></a><h2>Notes</h2>
+<p>   <span class="productname">PostgreSQL</span> includes a program <a href="app-dropuser.html"><span class="application">dropuser</span></a> that has the
+   same functionality as this command (in fact, it calls this command)
+   but can be run from the command shell.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755707"></a><h2>Examples</h2>
+<p>   To drop a role:
+</p>
+<pre class="programlisting">DROP ROLE jonathan;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755719"></a><h2>Compatibility</h2>
+<p>   The SQL standard defines <code class="command">DROP ROLE</code>, but it allows
+   only one role to be dropped at a time, and it specifies different
+   privilege requirements than <span class="productname">PostgreSQL</span> uses.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2755739"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createrole.html">CREATE ROLE</a>, <a href="sql-alterrole.html">ALTER ROLE</a>, <a href="sql-set-role.html">SET ROLE</a></span>
+</div>
+</div></body>
+</html>

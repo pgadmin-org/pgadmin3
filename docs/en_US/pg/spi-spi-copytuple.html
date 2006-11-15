@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_copytuple</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="spi-memory.html" title="41.3. Memory Management">
+<link rel="prev" href="spi-spi-pfree.html" title="SPI_pfree">
+<link rel="next" href="spi-spi-returntuple.html" title="SPI_returntuple">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-copytuple"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_copytuple &#8212; make a copy of a row in the upper executor context</p>
+</div>
+<a name="id2723188"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">HeapTuple SPI_copytuple(HeapTuple <em class="parameter"><code>row</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2723206"></a><h2>Description</h2>
+<p>   <code class="function">SPI_copytuple</code> makes a copy of a row in the
+   upper executor context.  This is normally used to return a modified
+   row from a trigger.  In a function declared to return a composite
+   type, use <code class="function">SPI_returntuple</code> instead.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2723226"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
+<dd><p>      row to be copied
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2723246"></a><h2>Return Value</h2>
+<p>   the copied row; <code class="symbol">NULL</code> only if
+   <em class="parameter"><code>tuple</code></em> is <code class="symbol">NULL</code>
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>32.26. role_table_grants</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="information-schema.html" title="Chapter 32. The Information Schema">
+<link rel="prev" href="infoschema-role-routine-grants.html" title="32.25. role_routine_grants">
+<link rel="next" href="infoschema-role-usage-grants.html" title="32.27. role_usage_grants">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="infoschema-role-table-grants"></a>32.26. <code class="literal">role_table_grants</code></h2></div></div></div>
+<p>   The view <code class="literal">role_table_grants</code> identifies all
+   privileges granted on tables or views where the grantor or grantee
+   is a currently enabled role.  Further information can be found
+   under <code class="literal">table_privileges</code>.
+  </p>
+<div class="table">
+<a name="id2683286"></a><p class="title"><b>Table 32.24. <code class="literal">role_table_grants</code> Columns</b></p>
+<div class="table-contents"><table summary="role_table_grants Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code class="literal">grantor</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the role that granted the privilege</td>
+</tr>
+<tr>
+<td><code class="literal">grantee</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the role that the privilege was granted to</td>
+</tr>
+<tr>
+<td><code class="literal">table_catalog</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the database that contains the table (always the current database)</td>
+</tr>
+<tr>
+<td><code class="literal">table_schema</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the schema that contains the table</td>
+</tr>
+<tr>
+<td><code class="literal">table_name</code></td>
+<td><code class="type">sql_identifier</code></td>
+<td>Name of the table</td>
+</tr>
+<tr>
+<td><code class="literal">privilege_type</code></td>
+<td><code class="type">character_data</code></td>
+<td>       Type of the privilege: <code class="literal">SELECT</code>,
+       <code class="literal">DELETE</code>, <code class="literal">INSERT</code>,
+       <code class="literal">UPDATE</code>, <code class="literal">REFERENCES</code>,
+       or <code class="literal">TRIGGER</code>
+      </td>
+</tr>
+<tr>
+<td><code class="literal">is_grantable</code></td>
+<td><code class="type">character_data</code></td>
+<td>
+<code class="literal">YES</code> if the privilege is grantable, <code class="literal">NO</code> if not</td>
+</tr>
+<tr>
+<td><code class="literal">with_hierarchy</code></td>
+<td><code class="type">character_data</code></td>
+<td>Applies to a feature not available in <span class="productname">PostgreSQL</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div></body>
+</html>

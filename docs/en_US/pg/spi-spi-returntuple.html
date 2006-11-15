@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_returntuple</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="up" href="spi-memory.html" title="41.3. Memory Management">
+<link rel="prev" href="spi-spi-copytuple.html" title="SPI_copytuple">
+<link rel="next" href="spi-spi-modifytuple.html" title="SPI_modifytuple">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-returntuple"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_returntuple &#8212; prepare to return a tuple as a Datum</p>
+</div>
+<a name="id2723281"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">HeapTupleHeader SPI_returntuple(HeapTuple <em class="parameter"><code>row</code></em>, TupleDesc <em class="parameter"><code>rowdesc</code></em>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2723305"></a><h2>Description</h2>
+<p>   <code class="function">SPI_returntuple</code> makes a copy of a row in
+   the upper executor context, returning it in the form of a row type <code class="type">Datum</code>.
+   The returned pointer need only be converted to <code class="type">Datum</code> via <code class="function">PointerGetDatum</code>
+   before returning.
+  </p>
+<p>   Note that this should be used for functions that are declared to return
+   composite types.  It is not used for triggers; use
+   <code class="function">SPI_copytuple</code> for returning a modified row in a trigger.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2723344"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
+<dd><p>      row to be copied
+     </p></dd>
+<dt><span class="term"><code class="literal">TupleDesc <em class="parameter"><code>rowdesc</code></em></code></span></dt>
+<dd><p>      descriptor for row (pass the same descriptor each time for most
+      effective caching)
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2723380"></a><h2>Return Value</h2>
+<p>   <code class="type">HeapTupleHeader</code> pointing to copied row;
+   <code class="symbol">NULL</code> only if
+   <em class="parameter"><code>row</code></em> or <em class="parameter"><code>rowdesc</code></em> is
+   <code class="symbol">NULL</code>
+  </p>
+</div>
+</div></body>
+</html>
