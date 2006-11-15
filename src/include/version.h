@@ -11,11 +11,11 @@
 
 
 // Application Versions
-#define VERSION_STR     wxT("1.6.0")
-#define VERSION_NUM     1,6,0,99
-#define VERSION_PACKAGE 1.6.0
+#define VERSION_STR     wxT("1.7.0")
+#define VERSION_NUM     1,7,0,01
+#define VERSION_PACKAGE 1.7.0
 
-#define PRERELEASE 0
+#define PRERELEASE 1
 // #define BUILD "..."
 
 #ifdef RC_INVOKED
