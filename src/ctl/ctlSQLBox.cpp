@@ -131,8 +131,6 @@ void ctlSQLBox::SetDatabase(pgConn *db)
 
 void ctlSQLBox::OnSearchReplace(wxCommandEvent& ev)
 {
-    lastFindString = wxEmptyString;
-    lastFindPos = 0;
     if (!m_dlgFindReplace)
     {
         m_dlgFindReplace = new dlgFindReplace(this);
@@ -147,25 +145,34 @@ void ctlSQLBox::OnSearchReplace(wxCommandEvent& ev)
     }
 }
 
-void ctlSQLBox::Find(const wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
+bool ctlSQLBox::Find(const wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
 {
     if (!DoFind(find, wxString(wxEmptyString), false, wholeWord, matchCase, useRegexps, startAtTop, reverse))
-         wxMessageBox(_("Reached the end of the document"), _("Find text"), wxICON_EXCLAMATION | wxOK, this);
+    {
+        wxMessageBox(_("Reached the end of the document"), _("Find text"), wxICON_EXCLAMATION | wxOK, this);
+        return false;
+    }
+    return true;
 }
 
-void ctlSQLBox::Replace(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
+bool ctlSQLBox::Replace(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
 {
     if (!DoFind(find, replace, true, wholeWord, matchCase, useRegexps, startAtTop, reverse))
-         wxMessageBox(_("Reached the end of the document"), _("Replace text"), wxICON_EXCLAMATION | wxOK, this);
+    {
+        wxMessageBox(_("Reached the end of the document"), _("Replace text"), wxICON_EXCLAMATION | wxOK, this);
+        return false;
+    }
+    return true;
 }
 
-void ctlSQLBox::ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps)
+bool ctlSQLBox::ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps)
 {
     // Use DoFind to repeatedly replace text
     int count = 0;
     int initialPos = GetCurrentPos();
+    GotoPos(0);
 
-    while(DoFind(find, replace, true, wholeWord, matchCase, useRegexps, true, false))
+    while(DoFind(find, replace, true, wholeWord, matchCase, useRegexps, false, false))
         count++;
 
     GotoPos(initialPos);
@@ -173,6 +180,11 @@ void ctlSQLBox::ReplaceAll(const wxString &find, const wxString &replace, bool w
     wxString msg;
     msg.Printf(_("%d replacements made."), count);
     wxMessageBox(msg, _("Replace all"));
+
+    if (count)
+        return true;
+    else
+        return false;
 }
 
 bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
@@ -198,39 +210,47 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
             if (re->IsValid() && re->Matches(current))
             {
                 ReplaceSelection(replace);
-                SetSelectionStart(startPos);
-                SetSelectionEnd(startPos + replace.Length());
+                SetSelection(startPos, startPos + replace.Length());
+                SetCurrentPos(startPos + replace.Length());
             }
         }
         else if ((matchCase && current == find) || (!matchCase && current.Upper() == find.Upper()))
         {
             ReplaceSelection(replace);
-            SetSelectionStart(startPos);
-            SetSelectionEnd(startPos + replace.Length());
+            if (!reverse)
+            {
+                SetSelection(startPos, startPos + replace.Length());
+                SetCurrentPos(startPos + replace.Length());
+            }
+            else
+            {
+                SetSelection(startPos + replace.Length(), startPos);
+                SetCurrentPos(startPos);
+            }
         }
     }
 
-    // Now do the next search
+    ////////////////////////////////////////////////////////////////////////
+    // Figure out the starting position for the next search
+    ////////////////////////////////////////////////////////////////////////
+
     if (startAtTop)
     {
-        if (!lastFindString.IsEmpty() && lastFindString == find)
-            startPos = lastFindPos+1;
+        startPos = 0;
+        endPos = GetTextLength();
+    }
+    else
+    {
+        if (reverse)
+        {
+            endPos = 0;
+            startPos = GetCurrentPos();
+        }
         else
-            startPos = 0;
-    }
-    else
-        startPos += 1;
-    
-    if (!reverse)
-    {
-        if (!doReplace)
-            startPos += 1;
-    }
-    else
-    {
-        endPos = 0;
-        if (!doReplace)
-            startPos -= 1;
+        {
+            endPos = GetTextLength();
+            startPos = GetCurrentPos();
+        }
     }
 
     size_t selStart = 0, selEnd = 0;
@@ -259,19 +279,21 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
 
     if (selStart >= 0 && selStart != (unsigned int)(-1))
     {
-        SetSelectionStart(selStart);
-        SetSelectionEnd(selEnd);
-        lastFindString = find;
-        lastFindPos = selStart;
+        if (reverse)
+        {
+            SetCurrentPos(selStart);
+            SetSelection(selEnd, selStart);
+        }
+        else
+        {
+            SetCurrentPos(selEnd);
+            SetSelection(selStart, selEnd);
+        }
         EnsureCaretVisible();
         return true;
     }
     else
-    {
-        lastFindString = wxEmptyString;
-        lastFindPos = 0;
         return false;
-    }
 }
 
 void ctlSQLBox::OnKeyDown(wxKeyEvent& event)

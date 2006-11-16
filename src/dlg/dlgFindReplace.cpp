@@ -209,7 +209,16 @@ void dlgFindReplace::OnFind(wxCommandEvent& ev)
     if (chkOptionsUseRegexps->GetValue() == true)
         useRegexps = true;
 
-    sqlbox->Find(txtFind->GetValue(), wholeWord, matchCase, useRegexps, startAtTop, reverse);
+    if (sqlbox->Find(txtFind->GetValue(), wholeWord, matchCase, useRegexps, startAtTop, reverse))
+    {
+        if (startAtTop)
+        {
+            rdOriginTop->SetValue(false);
+            rdOriginCursor->SetValue(true);
+            wxCommandEvent nullEvent;
+            OnChange(nullEvent);
+        }
+    }
 }
 
 void dlgFindReplace::OnReplace(wxCommandEvent& ev)
@@ -238,7 +247,16 @@ void dlgFindReplace::OnReplace(wxCommandEvent& ev)
     if (chkOptionsUseRegexps->GetValue() == true)
         useRegexps = true;
 
-    sqlbox->Replace(txtFind->GetValue(), txtReplace->GetValue(), wholeWord, matchCase, useRegexps, startAtTop, reverse);
+    if (sqlbox->Replace(txtFind->GetValue(), txtReplace->GetValue(), wholeWord, matchCase, useRegexps, startAtTop, reverse))
+    {
+        if (startAtTop)
+        {
+            rdOriginTop->SetValue(false);
+            rdOriginCursor->SetValue(true);
+            wxCommandEvent nullEvent;
+            OnChange(nullEvent);
+        }
+    }
 }
 
 void dlgFindReplace::OnReplaceAll(wxCommandEvent& ev)
