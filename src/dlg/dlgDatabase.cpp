@@ -272,7 +272,8 @@ void dlgDatabase::CheckChange()
     {
         enable = txtSchemaRestr->GetValue() != database->GetSchemaRestriction()
                || txtComment->GetValue() != database->GetComment()
-			   || txtName->GetValue() != database->GetName();
+			   || txtName->GetValue() != database->GetName()
+               || cbOwner->GetValue() != database->GetOwner();
     }
 
     CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
