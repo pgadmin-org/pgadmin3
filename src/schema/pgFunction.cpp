@@ -321,6 +321,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                             mode = wxT("IN");
 
                         function->iAddArgMode(mode);
+                        if (isProcedure)
+                            argTypes += mode + wxT(" ");
                         argTypeNames += mode + wxT(" ");
                     }
                     if (!name.IsNull())
