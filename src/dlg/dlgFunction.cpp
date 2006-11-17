@@ -219,7 +219,13 @@ int dlgFunction::Go(bool modal)
                 {
                     wxString colname;
                     if (isProcedure && cnt < function->GetArgModes().GetCount())
+                    {
                         colname = function->GetArgModes().Item(cnt) + wxT(" ");
+
+                        // Strip the IN/OUT/INOUT if required
+                        if (str.StartsWith(function->GetArgModes().Item(cnt) + wxT(" ")))
+                            str = str.Mid(function->GetArgModes().Item(cnt).Length() + 1);
+                    }
 
                     if (cnt < function->GetArgNames().GetCount())
                         colname += function->GetArgNames().Item(cnt);
