@@ -23,7 +23,6 @@
 // Must be last for reasons I haven't fully grokked...
 #include <wx/regex.h>
 
-
 wxString ctlSQLBox::sqlKeywords;
 
 
@@ -206,8 +205,8 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
     {
         if (useRegexps)
         {
-            wxRegEx *re = new wxRegEx(find);
-            if (re->IsValid() && re->Matches(current))
+            CharacterRange cr = RegexFindText(GetSelectionStart(), GetSelectionEnd(), find);
+            if (GetSelectionStart() == cr.cpMin && GetSelectionEnd())
             {
                 ReplaceSelection(replace);
                 SetSelection(startPos, startPos + replace.Length());
@@ -257,19 +256,9 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
     
     if (useRegexps)
     {
-        wxRegEx *re = new wxRegEx(find);
-        wxString section = GetText().Mid(startPos, startPos + endPos);
-        if (!re->IsValid() || !re->Matches(section))
-        {
-            selStart = (unsigned int)(-1);
-            selEnd = 0;
-        }
-        else
-        {
-            re->GetMatch(&selStart, &selEnd);
-            selStart += startPos;
-            selEnd += selStart;
-        }
+        CharacterRange cr = RegexFindText(startPos, endPos, find);
+        selStart = cr.cpMin;
+        selEnd = cr.cpMax;
     }
     else
     {
@@ -441,4 +430,24 @@ char *pg_query_to_single_ordered_string(char *query, void *dbptr)
 	    ret += wxT(" ");
 
 	return strdup(ret.mb_str(wxConvUTF8));
+}
+
+
+
+// Find some text in the document.
+CharacterRange ctlSQLBox::RegexFindText(int minPos, int maxPos, const wxString& text) 
+{
+    TextToFind  ft;
+    ft.chrg.cpMin = minPos;
+    ft.chrg.cpMax = maxPos;
+    wxWX2MBbuf buf = (wxWX2MBbuf)wx2stc(text);
+    ft.lpstrText = (char*)(const char*)buf;
+
+    if (SendMsg(2150, wxSTC_FIND_REGEXP, (long)&ft) == -1)
+    {
+        ft.chrgText.cpMin = -1;
+        ft.chrgText.cpMax = -1;
+    }
+    
+    return ft.chrgText;
 }
