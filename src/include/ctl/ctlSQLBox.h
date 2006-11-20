@@ -20,6 +20,18 @@
 #include "pgConn.h"
 #include "dlgFindReplace.h"
 
+// These structs are from Scintilla.h which isn't easily #included :-(
+struct CharacterRange {
+	long cpMin;
+	long cpMax;
+};
+
+struct TextToFind {
+	struct CharacterRange chrg;
+	char *lpstrText;
+	struct CharacterRange chrgText;
+};
+
 // Class declarations
 class ctlSQLBox : public wxStyledTextCtrl
 {
@@ -44,6 +56,8 @@ public:
     bool ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
     bool DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
     
+    CharacterRange RegexFindText(int minPos, int maxPos, const wxString& text);
+
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
     DECLARE_EVENT_TABLE()
 		
