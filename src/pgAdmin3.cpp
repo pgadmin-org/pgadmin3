@@ -254,6 +254,15 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("Compiled with dynamically linked SSL support"));
 #endif
 
+    // Log the path info
+    wxLogInfo(wxT("i18n path: %s"), i18nPath);
+    wxLogInfo(wxT("UI path  : %s"), uiPath);
+    wxLogInfo(wxT("Doc path : %s"), docPath);
+
+    wxLogInfo(wxT("Executable search directories:"));
+    for (unsigned int x=0; x<path.Count(); x++)
+        wxLogInfo(wxT("    %s"), path[x]);
+
 #if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
 	static pgRendererNative *renderer=new pgRendererNative();
