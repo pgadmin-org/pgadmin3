@@ -210,7 +210,7 @@ int dlgProperty::Go(bool modal)
         Move(pos);
 
     wxSize size = GetSize();
-    CheckOnScreen(pos, size, origSize.GetWidth(), origSize.GetHeight());
+    CheckOnScreen(this, pos, size, origSize.GetWidth(), origSize.GetHeight());
         Move(pos);
 
     ctlComboBoxFix *cbowner = (ctlComboBoxFix*)cbOwner;
