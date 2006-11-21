@@ -255,13 +255,13 @@ bool pgAdmin3::OnInit()
 #endif
 
     // Log the path info
-    wxLogInfo(wxT("i18n path: %s"), i18nPath);
-    wxLogInfo(wxT("UI path  : %s"), uiPath);
-    wxLogInfo(wxT("Doc path : %s"), docPath);
+    wxLogInfo(wxT("i18n path: %s"), i18nPath.c_str());
+    wxLogInfo(wxT("UI path  : %s"), uiPath.c_str());
+    wxLogInfo(wxT("Doc path : %s"), docPath.c_str());
 
     wxLogInfo(wxT("Executable search directories:"));
     for (unsigned int x=0; x<path.Count(); x++)
-        wxLogInfo(wxT("    %s"), path[x]);
+        wxLogInfo(wxT("    %s"), path[x].c_str());
 
 #if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
