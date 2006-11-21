@@ -32,8 +32,8 @@ Run "build-wxmsw.bat" to from a Visual Studio 2005 commandprompt to build the
 required parts of wxWidgets in both release and debug builds (unicode, non-DLL).
 
 
-Additional tips 
----------------
+Additional tips - VC++
+----------------------
 
 To view wxString and other objects in the VC++ debugger:
 
@@ -73,4 +73,36 @@ Note that the function name match is a regexp, hence the escaping of the colons.
 Originally from: 
   http://www.litwindow.com/Knowhow/wxHowto/wxhowto.html
   http://lists.wxwidgets.org/archive/wx-users/msg16845.html
+
+
+Additional tips - Xcode
+-----------------------
+
+To debug on Mac OSX, Xcode can be used in place of of plain old gdb even though
+pgAdmin is not built using Xcode. Here's how:
+
+1) Create a new, empty project in XCode.
+2) Select Project->New Custom Executable...
+3) Select pgAdmin3-debug.app (the debug bundle created by 
+   pkg/mac/debug-bundle.sh), and set the working directory
+   to the top of the source tree.
+4) Debug using Debug->Debug Executable.
+
+In order to view wxString's in the watch window, you'll need to add the 
+following XML to:
+
+~/Library/Application Support/Apple/Developer Tools/CustomDataViews/CustomDataViews.plist
+
+ 	<key>wxFileName</key>
+ 	<dict>
+ 		<key>ValueString</key>
+ 		<string>%m_name%:s.%m_ext%:s</string>
+ 	</dict>
+ 	<key>wxString</key>
+ 	<dict>
+ 		<key>SummaryString</key>
+ 		<string>{(char *)$VAR.mb_str( wxConvUTF8 )}:s</string>
+ 		<key>ValueString</key>
+ 		<string>len={(int)$VAR.Length()} {(char *)$VAR.mb_str( wxConvUTF8 )}:s</string>
+ 	</dict>
 
