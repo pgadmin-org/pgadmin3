@@ -11,6 +11,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/display.h>
 #include <wx/xrc/xmlres.h>
 
 
@@ -178,11 +179,24 @@ wxDateTime StrToDateTime(const wxString &value)
 }
 
 
-void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
+void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0, const int h0)
 {
-    wxSize screenSize = wxGetDisplaySize();
-    int scrW = screenSize.x;
-    int scrH = screenSize.y;
+    wxRect rect;
+    int scrH, scrW;
+
+    int dispNum = wxDisplay::GetFromWindow(win);
+    if (dispNum >  -1)
+    {
+        rect = wxDisplay(dispNum).GetGeometry();
+        scrW = rect.GetWidth();
+        scrH = rect.GetHeight();
+    }
+    else
+    {
+        wxSize screenSize = wxGetDisplaySize();
+        scrW = screenSize.x;
+        scrH = screenSize.y;
+    }
 
     if (pos.x < 0)
         pos.x = 0;

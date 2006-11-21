@@ -139,7 +139,7 @@ void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int def
 
     bool posDefault = (pos.x == -1 && pos.y == -1);
 
-    CheckOnScreen(pos, size, minW, minH);
+    CheckOnScreen(this, pos, size, minW, minH);
     SetSize(pos.x, pos.y, size.x, size.y);
     if (posDefault)
         CenterOnParent();
@@ -332,7 +332,7 @@ void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defa
 
     bool posDefault = (pos.x == -1 && pos.y == -1);
 
-    CheckOnScreen(pos, size, minW, minH);
+    CheckOnScreen(this, pos, size, minW, minH);
     SetSize(pos.x, pos.y, size.x, size.y);
     if (posDefault)
         CenterOnParent();
