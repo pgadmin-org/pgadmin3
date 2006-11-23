@@ -32,7 +32,7 @@ public:
     void XmlAddSectionTableFromListView(const int section, ctlListView *list);
     void XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid);
     void XmlSetSectionTableInfo(const int section, const wxString &info) { sectionTableInfo[section-1] = info; };
-    void XmlSetSectionSql(int section, const wxString &sql) { sectionSql[section-1] = HtmlEntities(sql); };
+    void XmlSetSectionSql(int section, const wxString &sql);
     void XmlAddSectionValue(const int section, const wxString &name, const wxString &value);
 
 private:

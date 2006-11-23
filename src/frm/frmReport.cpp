@@ -167,6 +167,7 @@ frmReport::frmReport(wxWindow *p)
 
     settings->Read(wxT("Reports/IncludeSQL"), &bVal, true);
     chkSql->SetValue(bVal);
+    chkSql->Disable();
 
     wxCommandEvent ev;
     OnChange(ev);
@@ -957,6 +958,16 @@ void frmReport::XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid
         sectionTableRows[section-1] += data;
     }
 #endif
+}
+
+void frmReport::XmlSetSectionSql(int section, const wxString &sql)
+{ 
+    sectionSql[section-1] = HtmlEntities(sql);
+
+    if (!sectionSql[section-1].IsEmpty())
+        chkSql->Enable();
+    else
+        chkSql->Disable();
 }
 
 void frmReport::XmlAddSectionValue(const int section, const wxString &name, const wxString &value)
