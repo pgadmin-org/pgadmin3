@@ -595,7 +595,8 @@ wxString HtmlEntities(const wxString &str)
 
     for (unsigned int x=0; x < str.Length(); x++)
     {
-        ret += GetHtmlEntity(str[x]);
+       if (str[x] != 13)
+           ret += GetHtmlEntity(str[x]);
     }
 
     return ret;
