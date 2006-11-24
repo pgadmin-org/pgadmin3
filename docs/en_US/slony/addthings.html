@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="locking.html" title="11. Locking Issues">
 <link rel="next" href="dropthings.html" title="13. Dropping things from Slony-I Replication">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="addthings"></a>12. A Task-Oriented View of <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id2555885"></a><p>You may discover that you have missed replicating things that
+<a name="id2555922"></a><p>You may discover that you have missed replicating things that
 you wish you were replicating.</p>
 <p>This can generally be fairly easily remedied.  This section
 attempts to provide a &#8220;<span class="quote">task-oriented</span>&#8221; view of how to use
@@ -35,7 +35,13 @@ if <a href="stmtmergeset.html" title="MERGE
      SET</span></a> is issued while other
 subscription-related events are pending, it is possible for things to
 get pretty confused on the nodes where other things were pending.
-This problem was resolved in 1.0.5.</p>
+This problem was resolved in 1.0.5.  Up until 1.2.1, there was still a
+problem where <a href="stmtmergeset.html" title="MERGE
+     SET"><span class="refentrytitle">MERGE
+     SET</span></a> could be requested before
+all the subscriptions were complete, which would &#8220;<span class="quote">muss things
+up</span>&#8221; on nodes where subscription activity was still under
+way. </p>
 <p> Note that if you add nodes, you will need to add both <a href="stmtstorepath.html" title="STORE
      PATH"><span class="refentrytitle">STORE
      PATH</span></a> statements to indicate how nodes communicate
@@ -61,7 +67,7 @@ the interaction of five things that have all broken.</p>
 sorts of modifications to replication configuration:</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556046"></a>12.1.  Adding a table to replication </h3></div></div></div>
+<a name="id2556095"></a>12.1.  Adding a table to replication </h3></div></div></div>
 <p> <span class="productname">Slony-I</span> does not allow you to add a table to a replication set
 that is already being replicated. In principle, it would certainly be
 <span class="emphasis"><em>possible;</em></span> what would happen is that the
@@ -87,23 +93,41 @@ have to interrupt normal activity to introduce replication.</span>&#8221;</p>
 <li><p> Create a new replication set <a href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a></p></li>
 <li><p> 
 Add the table to the new set <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> </p></li>
-<li><p> 
-Request subscription <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> for this new set. If there are several nodes, you will need to <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> once for each node that should subscribe.</p></li>
-<li><p> 
-Once the subscriptions have all been set up so that the new set has an identical set of subscriptions to the old set, you can merge the new set in alongside the old one via <a href="stmtmergeset.html" title="MERGE
+<li><p> Request subscription <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> for this new set. If there are several
+nodes, you will need to <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> once for
+each node that should subscribe.  </p></li>
+<li>
+<p> If you wish to know, deterministically, that each
+subscription has completed, you'll need to submit the following sort
+of slonik script for each subscription:
+
+</p>
+<pre class="screen">SUBSCRIBE SET (ID=1, PROVIDER=1, RECEIVER=2);
+WAIT FOR EVENT (ORIGIN=2, CONFIRMED = 1);
+SYNC(ID = 1);
+WAIT FOR EVENT (ORIGIN=1, CONFIRMED=2);</pre>
+</li>
+<li><p> Once the subscriptions have all been set up so that
+the new set has an identical set of subscriptions to the old set, you
+can merge the new set in alongside the old one via <a href="stmtmergeset.html" title="MERGE
      SET"><span class="refentrytitle">MERGE
-     SET</span></a></p></li>
+     SET</span></a> </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556172"></a>12.2.  How to add columns to a replicated table </h3></div></div></div>
+<a name="id2556236"></a>12.2.  How to add columns to a replicated table </h3></div></div></div>
 <p> This also answers the question &#8220;<span class="quote">How do I rename columns
 on a replicated table?</span>&#8221;, and, more generally, other questions
 to the effect of &#8220;<span class="quote">How do I modify the definitions of replicated
 tables?</span>&#8221;</p>
-<p>If you change the &#8220;<span class="quote">shape</span>&#8221; of a replicated table, this needs to take place at exactly the same point in all of the &#8220;<span class="quote">transaction streams</span>&#8221; on all nodes that are subscribed to the set containing the table.</p>
-<p> Thus, the way to do this is to construct an SQL script consisting of the DDL changes, and then submit that script to all of the nodes via the Slonik command <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>.</p>
+<p>If you change the &#8220;<span class="quote">shape</span>&#8221; of a replicated table,
+this needs to take place at exactly the same point in all of the
+&#8220;<span class="quote">transaction streams</span>&#8221; on all nodes that are subscribed to
+the set containing the table.</p>
+<p> Thus, the way to do this is to construct an SQL script
+consisting of the DDL changes, and then submit that script to all of
+the nodes via the Slonik command <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>.</p>
 <p> There are a number of &#8220;<span class="quote">sharp edges</span>&#8221; to note...</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> You absolutely <span class="emphasis"><em>must not</em></span> include
@@ -133,7 +157,7 @@ alter column c1 set not null; </code>.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556310"></a>12.3.  How to remove replication for a node</h3></div></div></div>
+<a name="id2556374"></a>12.3.  How to remove replication for a node</h3></div></div></div>
 <p> You will want to remove the various <span class="productname">Slony-I</span> components
 connected to the database(s).</p>
 <p> We will just consider, for now, doing this to one node. If you
@@ -182,7 +206,7 @@ previously added in using <a href="stmttableaddkey.html" title="TABLE ADD KEY"><
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556466"></a>12.4.  Adding A Node To Replication</h3></div></div></div>
+<a name="id2556529"></a>12.4.  Adding A Node To Replication</h3></div></div></div>
 <p>Things are not fundamentally different whether you are adding a
 brand new, fresh node, or if you had previously dropped a node and are
 recreating it. In either case, you are adding a node to
@@ -196,7 +220,7 @@ create the database; add the table definitions for the tables that are
 to be replicated, as <span class="productname">Slony-I</span> does not automatically propagate that
 information.</p>
 <p> If you do not have a perfectly clean SQL script to add in the
-tables, then run the tool <a href="altperl.html#extractschema" title="19.29.  slony1_extract_schema.sh"> <code class="command">slony1_extract_schema.sh</code> </a> from the
+tables, then run the tool <a href="adminscripts.html#extractschema" title="19.4.  slony1_extract_schema.sh"> <code class="command">slony1_extract_schema.sh</code> </a> from the
 <code class="filename">tools</code> directory to get the user schema from the
 origin node with all <span class="productname">Slony-I</span> &#8220;<span class="quote">cruft</span>&#8221; removed.  </p>
 </li>
@@ -232,7 +256,7 @@ some replication set.</p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556650"></a>12.5.  How do I reshape subscriptions?</h3></div></div></div>
+<a name="id2556713"></a>12.5.  How do I reshape subscriptions?</h3></div></div></div>
 <p> For instance, I want subscriber node 3 to draw data from node
 1, when it is presently drawing data from node 2. </p>
 <p> This isn't a case for <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; we're not
@@ -243,12 +267,12 @@ they will merely be reconfigured.  </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556681"></a>12.6.  How do I use <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> </h3></div></div></div>
-<p> Discussed in the <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> section... </p>
+<a name="id2556744"></a>12.6.  How do I use <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Log Shipping?</a> </h3></div></div></div>
+<p> Discussed in the <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files"> Log Shipping </a> section... </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556698"></a>12.7.  How do I know replication is working?</h3></div></div></div>
+<a name="id2556764"></a>12.7.  How do I know replication is working?</h3></div></div></div>
 <p> The ultimate proof is in looking at whether data added at the
 origin makes it to the subscribers.  That's a &#8220;<span class="quote">simply matter of
 querying</span>&#8221;.</p>
@@ -280,18 +304,18 @@ node. </p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556769"></a>12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </h3></div></div></div>
+<a name="id2556835"></a>12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </h3></div></div></div>
 <p> Discussed  <a href="slonyupgrade.html" title="20.  Slony-I Upgrade"> here </a> </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556789"></a>12.9.  What happens when I fail over?</h3></div></div></div>
+<a name="id2556856"></a>12.9.  What happens when I fail over?</h3></div></div></div>
 <p> Some of this is described under <a href="failover.html" title="8. Doing switchover and failover with Slony-I">Section 8, &#8220;Doing switchover and failover with <span class="productname">Slony-I</span>&#8221;</a> but
 more of a procedure should be written...</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556802"></a>12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </h3></div></div></div>
+<a name="id2556868"></a>12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </h3></div></div></div>
 <p> You must first pick a node that is connected to the former
 origin (otherwise it is not straightforward to reverse connections in
 the move to keep everything connected). </p>
@@ -305,6 +329,31 @@ It's perfectly reasonable to submit both requests in the same
 <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script.  Now, the origin gets switched over to the new
 origin node.  If the new node is a few events behind, it may take a
 little while for this to take place. </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2556920"></a>12.11.  How Do I Do A &#8220;<span class="quote">Full Sync</span>&#8221; On A Table? </h3></div></div></div>
+<p> The <span class="productname">Slony-I</span> notion of a <code class="command">SYNC</code> is actually
+always an <span class="emphasis"><em>incremental</em></span> thing; a
+<code class="command">SYNC</code> represents the set of updates that were
+committed during the scope of a particular <code class="command">SYNC</code>
+event on the origin node.  If a set of updates that altered the entire
+contents of a table were committed in a single
+<code class="command">SYNC</code>, that would affect the entire contents of the
+table.  But as far as <span class="productname">Slony-I</span> is concerned, this change is
+&#8220;<span class="quote">incremental</span>&#8221; even though the increment happened to be
+&#8220;<span class="quote">the whole table.</span>&#8221; </p>
+<p> The only time that <span class="productname">Slony-I</span> &#8220;<span class="quote">synchronizes</span>&#8221; the
+contents of a table is at the time the subscription is set up, at
+which time it uses <code class="command">COPY</code> to draw in the entire
+contents from the provider node.</p>
+<p> Since subscriber tables are protected against modification by
+anything other than <span class="productname">Slony-I</span>, there should be no way (aside from
+horrible bugs) for tables to fall out of synchronization.  If they do,
+there is some rather serious problem with <span class="productname">Slony-I</span>. </p>
+<p> If some such severe corruption takes place, the answer is to
+drop the table from replication, then create a new replication set and
+add it back. </p>
 </div>
 </div></body>
 </html>

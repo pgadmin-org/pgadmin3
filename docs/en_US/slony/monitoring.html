@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="subscribenodes.html" title="4. Subscribing Nodes">
 <link rel="next" href="maintenance.html" title="6. Slony-I Maintenance">
@@ -79,8 +79,8 @@ Options[db_replication_lagtime]: gauge,nopercent,growright</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="testslonystate"></a>5.3.  test_slony_state</h3></div></div></div>
-<a name="id2552804"></a><p> This script is in preliminary stages, and may be used to do
-some analysis of the state of a <span class="productname">Slony-I</span> cluster.</p>
+<a name="id2552804"></a><p> This script does various sorts of analysis of the state of a
+<span class="productname">Slony-I</span> cluster.</p>
 <p> You specify arguments including <code class="option">database</code>,
 <code class="option">host</code>, <code class="option">user</code>,
 <code class="option">cluster</code>, <code class="option">password</code>, and
@@ -125,6 +125,21 @@ FAQ</a>.</p>
 </ul></div>
 <p> The script does some diagnosis work based on parameters in the
 script; if you don't like the values, pick your favorites!</p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="search-logs"></a>5.4.  <code class="command">search-logs.sh</code> </h3></div></div></div>
+<p> This script is constructed to search for <span class="productname">Slony-I</span> log files at
+a given path (<code class="envar">LOGHOME</code>), based both on the naming
+conventions used by the <a href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh ">Section 19.3, &#8220; launch_clusters.sh &#8221;</a> and <a href="adminscripts.html#slonwatchdog" title="19.1.20. slon_watchdog">Section 19.1.20, &#8220;slon_watchdog&#8221;</a> systems used for launching <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.
+</p>
+<p> Errors, if found, are listed, by log file, and emailed to the
+specified user (<code class="envar">LOGRECIPIENT</code>); if no email address is
+specified, output goes to standard output. </p>
+<p> <code class="envar">LOGTIMESTAMP</code> allows overriding what hour to
+evaluate (rather than the last hour). </p>
+<p> An administrator might run this script once an hour to monitor
+for replication problems. </p>
 </div>
 </div></body>
 </html>

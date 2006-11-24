@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
-<link rel="up" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
+<link rel="up" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="prev" href="definingsets.html" title="7. Defining Slony-I Replication Sets">
 <link rel="next" href="firstdb.html" title="2. Replicating Your First Database">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
@@ -40,112 +40,91 @@
 <dt><span class="sect2"><a href="monitoring.html#id2552540">5.1.  <span class="productname">Nagios</span> Replication Checks </a></span></dt>
 <dt><span class="sect2"><a href="monitoring.html#slonymrtg">5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </a></span></dt>
 <dt><span class="sect2"><a href="monitoring.html#testslonystate">5.3.  test_slony_state</a></span></dt>
+<dt><span class="sect2"><a href="monitoring.html#search-logs">5.4.  <code class="command">search-logs.sh</code> </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="maintenance.html">6. <span class="productname">Slony-I</span> Maintenance</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="maintenance.html#id2553164">6.1.  Watchdogs: Keeping Slons Running</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553228">6.1.  Watchdogs: Keeping Slons Running</a></span></dt>
 <dt><span class="sect2"><a href="maintenance.html#gensync">6.2. Parallel to Watchdog: generate_syncs.sh</a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2553344">6.3. Testing <span class="productname">Slony-I</span> State </a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2553432">6.4. Replication Test Scripts </a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2553623">6.5.  Other Replication Tests </a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2553704">6.6.  Log Files</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553408">6.3. Testing <span class="productname">Slony-I</span> State </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553496">6.4. Replication Test Scripts </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553687">6.5.  Other Replication Tests </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2553768">6.6.  Log Files</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="reshape.html">7. Reshaping a Cluster</a></span></dt>
 <dt><span class="sect1"><a href="failover.html">8. Doing switchover and failover with <span class="productname">Slony-I</span></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="failover.html#id2553930">8.1. Foreword</a></span></dt>
-<dt><span class="sect2"><a href="failover.html#id2553989">8.2.  Controlled Switchover</a></span></dt>
-<dt><span class="sect2"><a href="failover.html#id2554106">8.3.  Failover</a></span></dt>
-<dt><span class="sect2"><a href="failover.html#id2554309">8.4.  Automating <code class="command"> FAIL OVER </code> </a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2553994">8.1. Foreword</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2554053">8.2.  Controlled Switchover</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2554170">8.3.  Failover</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2554373">8.4.  Automating <code class="command"> FAIL OVER </code> </a></span></dt>
 <dt><span class="sect2"><a href="failover.html#rebuildnode1">8.5. After Failover, Reconfiguring
 Former Origin</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="listenpaths.html">9. <span class="productname">Slony-I</span> listen paths</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="listenpaths.html#id2554684">9.1. How listening can break</a></span></dt>
-<dt><span class="sect2"><a href="listenpaths.html#id2554761">9.2. How the listen configuration should look</a></span></dt>
+<dt><span class="sect2"><a href="listenpaths.html#id2554748">9.1. How listening can break</a></span></dt>
+<dt><span class="sect2"><a href="listenpaths.html#id2554825">9.2. How the listen configuration should look</a></span></dt>
 <dt><span class="sect2"><a href="listenpaths.html#autolisten">9.3. Automated Listen Path Generation</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="plainpaths.html">10.  <span class="productname">Slony-I</span> Path Communications</a></span></dt>
 <dt><span class="sect1"><a href="locking.html">11. Locking Issues</a></span></dt>
 <dt><span class="sect1"><a href="addthings.html">12. A Task-Oriented View of <span class="productname">Slony-I</span></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="addthings.html#id2556046">12.1.  Adding a table to replication </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556172">12.2.  How to add columns to a replicated table </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556310">12.3.  How to remove replication for a node</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556466">12.4.  Adding A Node To Replication</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556650">12.5.  How do I reshape subscriptions?</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556681">12.6.  How do I use Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221; </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556698">12.7.  How do I know replication is working?</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556769">12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556789">12.9.  What happens when I fail over?</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2556802">12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556095">12.1.  Adding a table to replication </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556236">12.2.  How to add columns to a replicated table </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556374">12.3.  How to remove replication for a node</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556529">12.4.  Adding A Node To Replication</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556713">12.5.  How do I reshape subscriptions?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556744">12.6.  How do I use Log Shipping? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556764">12.7.  How do I know replication is working?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556835">12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556856">12.9.  What happens when I fail over?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556868">12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2556920">12.11.  How Do I Do A &#8220;<span class="quote">Full Sync</span>&#8221; On A Table? </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="dropthings.html">13. Dropping things from <span class="productname">Slony-I</span> Replication</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="dropthings.html#id2556883">13.1. Dropping A Whole Node</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2556967">13.2. Dropping An Entire Set</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2557062">13.3. Unsubscribing One Node From One Set</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2557134">13.4.  Dropping A Table From Replication</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2557228">13.5. Dropping A Sequence From Replication</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557054">13.1. Dropping A Whole Node</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557139">13.2. Dropping An Entire Set</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557233">13.3. Unsubscribing One Node From One Set</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557305">13.4.  Dropping A Table From Replication</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2557400">13.5. Dropping A Sequence From Replication</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="logshipping.html">14. Log Shipping - <span class="productname">Slony-I</span> with Files</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="logshipping.html#id2557887">14.1.  Usage Hints </a></span></dt></dl></dd>
+<dd><dl><dt><span class="sect2"><a href="logshipping.html#id2558059">14.1.  Usage Hints </a></span></dt></dl></dd>
 <dt><span class="sect1"><a href="ddlchanges.html">15. Database Schema Changes (DDL)</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddlchanges.html#id2558606">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<dt><span class="sect2"><a href="ddlchanges.html#id2558778">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></a></span></dt>
-<dt><span class="sect2"><a href="ddlchanges.html#id2558783">15.2.  Testing DDL Changes </a></span></dt>
+<dt><span class="sect2"><a href="ddlchanges.html#id2558955">15.2.  Testing DDL Changes </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="usingslonik.html">16. Using Slonik</a></span></dt>
 <dt><span class="sect1"><a href="slonikshell.html">17.  Embedding Slonik in Shell Scripts </a></span></dt>
 <dt><span class="sect1"><a href="noslonik.html">18.  Not Using Slonik - Bare Metal <span class="productname">Slony-I</span>
 Functions </a></span></dt>
-<dt><span class="sect1"><a href="altperl.html">19. <span class="productname">Slony-I</span> Administration Scripts</a></span></dt>
+<dt><span class="sect1"><a href="adminscripts.html">19. <span class="productname">Slony-I</span> Administration Scripts</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="altperl.html#id2559842">19.1. Node/Cluster Configuration - cluster.nodes</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2559973">19.2. Set configuration - cluster.set1, cluster.set2</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560084">19.3. slonik_build_env</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560128">19.4. slonik_print_preamble</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560144">19.5. slonik_create_set</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560166">19.6. slonik_drop_node</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560178">19.7. slonik_drop_set</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560195">19.8. slonik_drop_table</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560207">19.9. slonik_execute_script</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560214">19.10. slonik_failover</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560222">19.11. slonik_init_cluster</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560236">19.12. slonik_merge_sets</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560242">19.13. slonik_move_set</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560250">19.14. replication_test</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560262">19.15. slonik_restart_node</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560271">19.16. slonik_restart_nodes</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560278">19.17. slony_show_configuration</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560289">19.18. slon_kill</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560297">19.19. slon_start</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560305">19.20. slon_watchdog</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560317">19.21. slon_watchdog2</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560335">19.22. slonik_store_node</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560342">19.23. slonik_subscribe_set</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560349">19.24. slonik_uninstall_nodes</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560367">19.25. slonik_unsubscribe_set</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560374">19.26. slonik_update_nodes</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#mkslonconf">19.27. mkslonconf.sh</a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#launchclusters">19.28.  launch_clusters.sh </a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#extractschema">19.29.  <code class="filename"> slony1_extract_schema.sh </code> </a></span></dt>
-<dt><span class="sect2"><a href="altperl.html#id2560948">19.30.  slony-cluster-analysis </a></span></dt>
+<dt><span class="sect2"><a href="adminscripts.html#altperl">19.1. altperl Scripts</a></span></dt>
+<dt><span class="sect2"><a href="adminscripts.html#mkslonconf">19.2. mkslonconf.sh</a></span></dt>
+<dt><span class="sect2"><a href="adminscripts.html#launchclusters">19.3.  launch_clusters.sh </a></span></dt>
+<dt><span class="sect2"><a href="adminscripts.html#extractschema">19.4.  <code class="filename"> slony1_extract_schema.sh </code> </a></span></dt>
+<dt><span class="sect2"><a href="adminscripts.html#id2561039">19.5.  slony-cluster-analysis </a></span></dt>
+<dt><span class="sect2"><a href="adminscripts.html#configurereplication">19.6.  Generating slonik scripts
+using <code class="filename">configure-replication.sh</code> </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="slonyupgrade.html">20.  <span class="productname">Slony-I</span> Upgrade </a></span></dt>
 <dt><span class="sect1"><a href="versionupgrade.html">21. Using <span class="productname">Slony-I</span> for <span class="productname">PostgreSQL</span> Upgrades</a></span></dt>
 <dt><span class="sect1"><a href="testbed.html">22.  <span class="productname">Slony-I</span> Test Bed Framework </a></span></dt>
 <dt><span class="sect1"><a href="loganalysis.html">23. Log Analysis</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="loganalysis.html#id2562235">23.1. CONFIG notices</a></span></dt>
-<dt><span class="sect2"><a href="loganalysis.html#id2562258">23.2. DEBUG Notices</a></span></dt>
-<dt><span class="sect2"><a href="loganalysis.html#id2562310">23.3.  How to read <span class="productname">Slony-I</span> logs </a></span></dt>
-<dt><span class="sect2"><a href="loganalysis.html#id2562564">23.4.  Log Messages and Implications </a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2562892">23.1. CONFIG notices</a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2562915">23.2. DEBUG Notices</a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2562966">23.3.  How to read <span class="productname">Slony-I</span> logs </a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2563221">23.4.  Log Messages and Implications </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="help.html">24. More <span class="productname">Slony-I</span> Help</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="help.html#id2565283">24.1.  Other Information Sources</a></span></dt></dl></dd>
+<dd><dl><dt><span class="sect2"><a href="help.html#id2566067">24.1.  Other Information Sources</a></span></dt></dl></dd>
 </dl>
 </div>
 <div class="sect1" lang="en">

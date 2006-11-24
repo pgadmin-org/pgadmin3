@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SYNC</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
+<link rel="up" href="cmds.html" title="Configuration and Action commmands">
+<link rel="prev" href="stmtrepairconfig.html" title="REPAIR CONFIG">
+<link rel="next" href="stmtsleep.html" title="SLEEP">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="stmtsync"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SYNC &#8212;  Generate an ordinary SYNC event </p>
+</div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><code class="command">SYNC (options);</code></p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2580169"></a><h2>Description</h2>
+<p> Generates a SYNC event on a specified node.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
+<dd><p> The node on which to generate the SYNC event.</p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2580187"></a><h2>Example</h2>
+<pre class="programlisting">     SUBSCRIBE SET (ID = 10, PROVIDER = 1, RECEIVER = 2);
+     WAIT FOR EVENT (ORIGIN = 2, CONFIRMED = 1);
+     SYNC (ID = 1);
+     WAIT FOR EVENT (ORIGIN = 1, CONFIRMED = 2);
+    </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2580198"></a><h2> Locking Behaviour </h2>
+<p> No application-visible locking should take place. </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2580205"></a><h2> Version Information </h2>
+<p> This command was introduced in <span class="productname">Slony-I</span> 1.1.6 / 1.2.1 </p>
+</div>
+</div></body>
+</html>
