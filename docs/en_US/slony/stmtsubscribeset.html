@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtdroptrigger.html" title="DROP TRIGGER">
 <link rel="next" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET">
@@ -22,7 +22,7 @@
 <div class="cmdsynopsis"><p><code class="command">SUBSCRIBE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577234"></a><h2>Description</h2>
+<a name="id2578214"></a><h2>Description</h2>
 <p> This performs one of two actions: </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -105,7 +105,7 @@
 <p> This uses <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577445"></a><h2>Example</h2>
+<a name="id2578426"></a><h2>Example</h2>
 <pre class="programlisting">SUBSCRIBE SET (
    ID = 1,
    PROVIDER = 1,
@@ -115,7 +115,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577455"></a><h2> Forwarding Behaviour </h2>
+<a name="id2578435"></a><h2> Forwarding Behaviour </h2>
 <p> The <code class="command">FORWARD=boolean</code> flag indicates
     whether the subscriber will store log information in tables
     <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a>.  Several implications fall from
@@ -150,7 +150,37 @@
     on. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577555"></a><h2> Locking Behaviour </h2>
+<a name="id2578535"></a><h2> Dangerous/Unintuitive Behaviour </h2>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> The fact that the request returns immediately
+     even though the subscription may take considerable time to
+     complete may be a bit surprising. </p>
+<p> Processing of the subscription involves
+     <span class="emphasis"><em>two</em></span> events; the
+     <code class="command">SUBSCRIBE_SET</code>, initiated from the provider
+     node, and an <code class="command">ENABLE_SUBSCRIPTION</code>, which is
+     initiated on the subscriber node.  This means that <a href="stmtwaitevent.html" title="WAIT FOR EVENT"><span class="refentrytitle">WAIT FOR EVENT</span></a> cannot directly wait for completion of a
+     subscription.  If you need to wait for completion of a
+     subscription, then what you need to do instead is to submit a
+     <a href="stmtsync.html" title="SYNC"><span class="refentrytitle">SYNC</span></a> request, and wait for
+     <span class="emphasis"><em>that</em></span> event.</p>
+</li>
+<li><p> This command has <span class="emphasis"><em>two</em></span>
+     purposes; setting up subscriptions (which should be unsurprising)
+     and <span class="emphasis"><em>revising subscriptions</em></span>, which isn't so
+     obvious to intuition. </p></li>
+<li><p> New subscriptions are set up by using
+     <code class="command">DELETE</code> or <code class="command">TRUNCATE</code> to
+     empty the table on a subscriber.  If you created a new node by
+     copying data from an existing node, it might &#8220;<span class="quote">seem
+     intuitive</span>&#8221; that that data should be kept; that is not the
+     case - the former contents are discarded and the node is
+     populated <span class="emphasis"><em>from scratch</em></span>.</p></li>
+</ul></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2578626"></a><h2> Locking Behaviour </h2>
 <p> This operation does <span class="emphasis"><em>not</em></span> require
     acquiring any locks on the provider node.</p>
 <p> On the subscriber node, it will have the effect of locking
@@ -162,7 +192,7 @@
     </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577574"></a><h2> Version Information </h2>
+<a name="id2578645"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

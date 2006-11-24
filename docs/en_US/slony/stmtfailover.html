@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtmoveset.html" title="MOVE SET">
 <link rel="next" href="stmtddlscript.html" title="EXECUTE SCRIPT">
@@ -23,7 +23,7 @@
 <div class="cmdsynopsis"><p><code class="command">FAILOVER (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578150"></a><h2>Description</h2>
+<a name="id2579223"></a><h2>Description</h2>
 <p>     The <code class="command">FAILOVER</code> command causes the backup node to take over all sets
      that currently originate on the failed
      node. <span class="application">slonik</span> will contact all other
@@ -39,15 +39,6 @@
      failed node is abandoned, and can and should be removed from the
      configuration with <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>.
     </p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>
-<p> This command will abandon the status of the failed
-    node.  There is no possibility to let the failed node join the
-    cluster again without rebuilding it from scratch as a slave.  If
-    at all possible, you would likely prefer to use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> instead, as that does
-    <span class="emphasis"><em>not</em></span> abandon the failed node.
-    </p>
-</div>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal"> ID = ival </code></span></dt>
 <dd><p> ID of the failed node</p></dd>
@@ -58,7 +49,7 @@
 <p> This uses <a href="function.failednode-integer-integer.html">schemadocfailednode( integer, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578238"></a><h2>Example</h2>
+<a name="id2579294"></a><h2>Example</h2>
 <pre class="programlisting">FAILOVER (
    ID = 1,
    BACKUP NODE = 2
@@ -66,7 +57,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578247"></a><h2> Locking Behaviour </h2>
+<a name="id2579303"></a><h2> Locking Behaviour </h2>
 <p> Exclusive locks on each replicated table will be taken out
     on both the new origin node as replication triggers are changed.
     If the new origin was not completely up to date, and replication
@@ -75,7 +66,16 @@
     complete. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578259"></a><h2> Version Information </h2>
+<a name="id2579315"></a><h2> Dangerous/Unintuitive Behaviour </h2>
+<p> This command will abandon the status of the failed
+    node.  There is no possibility to let the failed node join the
+    cluster again without rebuilding it from scratch as a slave.  If
+    at all possible, you would likely prefer to use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> instead, as that does
+    <span class="emphasis"><em>not</em></span> abandon the failed node.
+    </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2579334"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

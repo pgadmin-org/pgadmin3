@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="addthings.html" title="12. A Task-Oriented View of Slony-I">
 <link rel="next" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">
@@ -14,12 +14,12 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dropthings"></a>13. Dropping things from <span class="productname">Slony-I</span> Replication</h2></div></div></div>
-<a name="id2556867"></a><p>There are several things you might want to do involving dropping
+<a name="id2557038"></a><p>There are several things you might want to do involving dropping
 things from <span class="productname">Slony-I</span> replication.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556883"></a>13.1. Dropping A Whole Node</h3></div></div></div>
-<a name="id2556886"></a><p>If you wish to drop an entire node from replication, the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> should do the
+<a name="id2557054"></a>13.1. Dropping A Whole Node</h3></div></div></div>
+<a name="id2557058"></a><p>If you wish to drop an entire node from replication, the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a> should do the
 trick.</p>
 <p>This will lead to <span class="productname">Slony-I</span> dropping the triggers (generally that
 deny the ability to update data), restoring the &#8220;<span class="quote">native</span>&#8221;
@@ -38,8 +38,8 @@ prior to 1.0.5.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2556967"></a>13.2. Dropping An Entire Set</h3></div></div></div>
-<a name="id2556971"></a><p>If you wish to stop replicating a particular replication set,
+<a name="id2557139"></a>13.2. Dropping An Entire Set</h3></div></div></div>
+<a name="id2557143"></a><p>If you wish to stop replicating a particular replication set,
 the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtdropset.html" title="DROP SET"><span class="refentrytitle">DROP SET</span></a> is
 what you need to use.</p>
 <p>Much as with <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>, this leads to
@@ -56,8 +56,8 @@ there isn't anything to prevent potentially career-limiting
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557062"></a>13.3. Unsubscribing One Node From One Set</h3></div></div></div>
-<a name="id2557065"></a><p>The <a href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET"><span class="refentrytitle">UNSUBSCRIBE SET</span></a> operation is a little
+<a name="id2557233"></a>13.3. Unsubscribing One Node From One Set</h3></div></div></div>
+<a name="id2557237"></a><p>The <a href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET"><span class="refentrytitle">UNSUBSCRIBE SET</span></a> operation is a little
 less invasive than either <a href="stmtdropset.html" title="DROP SET"><span class="refentrytitle">DROP SET</span></a> or <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>; it involves dropping <span class="productname">Slony-I</span> triggers and
 restoring &#8220;<span class="quote">native</span>&#8221; triggers on one node, for one
 replication set.</p>
@@ -76,8 +76,8 @@ fact that the data was recently being replicated isn't good enough;
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557134"></a>13.4.  Dropping A Table From Replication</h3></div></div></div>
-<a name="id2557137"></a><p>In <span class="productname">Slony-I</span> 1.0.5 and above, there is a Slonik command <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a> that allows dropping a single table from
+<a name="id2557305"></a>13.4.  Dropping A Table From Replication</h3></div></div></div>
+<a name="id2557309"></a><p>In <span class="productname">Slony-I</span> 1.0.5 and above, there is a Slonik command <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a> that allows dropping a single table from
 replication without forcing the user to drop the entire replication
 set.</p>
 <p>If you are running an earlier version, there is a &#8220;<span class="quote">hack</span>&#8221;
@@ -102,8 +102,8 @@ to connect to each database and submit the queries by hand.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2557228"></a>13.5. Dropping A Sequence From Replication</h3></div></div></div>
-<a name="id2557232"></a><p>Just as with <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>, version 1.0.5
+<a name="id2557400"></a>13.5. Dropping A Sequence From Replication</h3></div></div></div>
+<a name="id2557404"></a><p>Just as with <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>, version 1.0.5
 introduces the operation <a href="stmtsetdropsequence.html" title="SET DROP SEQUENCE"><span class="refentrytitle">SET DROP SEQUENCE</span></a>.</p>
 <p>If you are running an earlier version, here are instructions as
 to how to drop sequences:</p>

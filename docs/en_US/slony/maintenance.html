@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="monitoring.html" title="5. Monitoring">
 <link rel="next" href="reshape.html" title="7. Reshaping a Cluster">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="maintenance"></a>6. <span class="productname">Slony-I</span> Maintenance</h2></div></div></div>
-<a name="id2552979"></a><p><span class="productname">Slony-I</span> actually does a lot of its necessary maintenance
+<a name="id2553043"></a><p><span class="productname">Slony-I</span> actually does a lot of its necessary maintenance
 itself, in a &#8220;<span class="quote">cleanup</span>&#8221; thread:
 
 </p>
@@ -64,14 +64,14 @@ incapable of shrinking back down </p>
 </ul></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2553164"></a>6.1.  Watchdogs: Keeping Slons Running</h3></div></div></div>
-<a name="id2553168"></a><p>There are a couple of &#8220;<span class="quote">watchdog</span>&#8221; scripts available
+<a name="id2553228"></a>6.1.  Watchdogs: Keeping Slons Running</h3></div></div></div>
+<a name="id2553232"></a><p>There are a couple of &#8220;<span class="quote">watchdog</span>&#8221; scripts available
 that monitor things, and restart the <span class="application">slon</span>
 processes should they happen to die for some reason, such as a network
 &#8220;<span class="quote">glitch</span>&#8221; that causes loss of connectivity.</p>
 <p>You might want to run them...</p>
-<p> The &#8220;<span class="quote">best new way</span>&#8221; of managing <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes is via the combination of <a href="altperl.html#mkslonconf" title="19.27. mkslonconf.sh">Section 19.27, &#8220;mkslonconf.sh&#8221;</a>, which creates a configuration file for each
-node in a cluster, and <a href="altperl.html#launchclusters" title="19.28.  launch_clusters.sh ">Section 19.28, &#8220; launch_clusters.sh &#8221;</a>, which uses
+<p> The &#8220;<span class="quote">best new way</span>&#8221; of managing <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes is via the combination of <a href="adminscripts.html#mkslonconf" title="19.2. mkslonconf.sh">Section 19.2, &#8220;mkslonconf.sh&#8221;</a>, which creates a configuration file for each
+node in a cluster, and <a href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh ">Section 19.3, &#8220; launch_clusters.sh &#8221;</a>, which uses
 those configuration files.</p>
 <p> This approach is preferable to elder &#8220;<span class="quote">watchdog</span>&#8221;
 systems in that you can very precisely &#8220;<span class="quote">nail down,</span>&#8221; in
@@ -109,8 +109,8 @@ regularly, this script won't bother doing anything.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2553344"></a>6.3. Testing <span class="productname">Slony-I</span> State </h3></div></div></div>
-<a name="id2553353"></a><p> In the <code class="filename">tools</code> directory, you may find
+<a name="id2553408"></a>6.3. Testing <span class="productname">Slony-I</span> State </h3></div></div></div>
+<a name="id2553417"></a><p> In the <code class="filename">tools</code> directory, you may find
 scripts called <code class="filename">test_slony_state.pl</code> and
 <code class="filename">test_slony_state-dbi.pl</code>.  One uses the Perl/DBI
 interface; the other uses the Pg interface.</p>
@@ -138,7 +138,7 @@ degradation. </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2553432"></a>6.4. Replication Test Scripts </h3></div></div></div>
+<a name="id2553496"></a>6.4. Replication Test Scripts </h3></div></div></div>
 <p> In the directory <code class="filename">tools</code> may be found four
 scripts that may be used to do monitoring of <span class="productname">Slony-I</span> instances:
 
@@ -196,7 +196,7 @@ again.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2553623"></a>6.5.  Other Replication Tests </h3></div></div></div>
+<a name="id2553687"></a>6.5.  Other Replication Tests </h3></div></div></div>
 <p> The methodology of the previous section is designed with a view
 to minimizing the cost of submitting replication test queries; on a
 busy cluster, supporting hundreds of users, the cost associated with
@@ -235,8 +235,8 @@ discussion. </p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2553704"></a>6.6.  Log Files</h3></div></div></div>
-<a name="id2553707"></a><p><a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons generate some more-or-less verbose
+<a name="id2553768"></a>6.6.  Log Files</h3></div></div></div>
+<a name="id2553771"></a><p><a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons generate some more-or-less verbose
 log files, depending on what debugging level is turned on.  You might
 assortedly wish to:
 

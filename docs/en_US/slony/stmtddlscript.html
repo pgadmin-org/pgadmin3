@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.0 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtfailover.html" title="FAILOVER">
 <link rel="next" href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS">
@@ -22,7 +22,7 @@
 <div class="cmdsynopsis"><p><code class="command">EXECUTE SCRIPT (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578296"></a><h2>Description</h2>
+<a name="id2579372"></a><h2>Description</h2>
 <p> Executes a script containing arbitrary SQL statements on
      all nodes that are subscribed to a set at a common controlled
      point within the replication transaction stream.</p>
@@ -81,7 +81,7 @@
 <p> This uses <a href="function.ddlscript-complete-integer-text-integer.html">schemadocddlscript_complete( integer, text, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578496"></a><h2>Example</h2>
+<a name="id2579572"></a><h2>Example</h2>
 <pre class="programlisting">EXECUTE SCRIPT (
    SET ID = 1,
    FILENAME = '/tmp/changes_2004-05-01.sql',
@@ -90,7 +90,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578505"></a><h2> Locking Behaviour </h2>
+<a name="id2579581"></a><h2> Locking Behaviour </h2>
 <p> Each replicated table receives an exclusive lock, on the
     origin node, in order to remove the replication triggers; after
     the DDL script completes, those locks will be cleared. </p>
@@ -101,7 +101,7 @@
     turn. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578521"></a><h2> Version Information </h2>
+<a name="id2579597"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0. </p>
 <p> Before <span class="productname">Slony-I</span> version 1.2, the entire DDL script was
     submitted as one <code class="function">PQexec()</code> request, with the
