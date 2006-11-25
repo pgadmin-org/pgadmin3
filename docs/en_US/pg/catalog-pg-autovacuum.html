@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-auth-members.html" title="43.9. pg_auth_members">
 <link rel="next" href="catalog-pg-cast.html" title="43.11. pg_cast">
@@ -14,14 +14,15 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-autovacuum"></a>43.10. <code class="structname">pg_autovacuum</code></h2></div></div></div>
-<a name="id2799743"></a><a name="id2799753"></a><p>   The catalog <code class="structname">pg_autovacuum</code> stores optional
-   per-relation configuration parameters for <a href="maintenance.html#autovacuum">The auto-vacuum daemon</a>.
+<a name="id2799872"></a><a name="id2799882"></a><p>   The catalog <code class="structname">pg_autovacuum</code> stores optional
+   per-relation configuration parameters for the autovacuum daemon.
    If there is an entry here for a particular relation, the given
    parameters will be used for autovacuuming that table.  If no entry
-   is present, the system-wide defaults will be used.
+   is present, the system-wide defaults will be used. For more information
+   about the autovacuum daemon, see <a href="maintenance.html#autovacuum" title="22.1.4. The auto-vacuum daemon">Section 22.1.4, &#8220;The auto-vacuum daemon&#8221;</a>.
   </p>
 <div class="table">
-<a name="id2799785"></a><p class="title"><b>Table 43.10. <code class="structname">pg_autovacuum</code> Columns</b></p>
+<a name="id2799912"></a><p class="title"><b>Table 43.10. <code class="structname">pg_autovacuum</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_autovacuum Columns" border="1">
 <colgroup>
 <col>
@@ -127,13 +128,13 @@
    any negative value) to indicate that the system-wide default should
    be used for this particular value.  Observe that the
    <code class="structfield">vac_cost_delay</code> variable inherits its default value from the
-   <code class="varname">autovacuum_vacuum_cost_delay</code> configuration parameter,
+   <a href="runtime-config-autovacuum.html#guc-autovacuum-vacuum-cost-delay">autovacuum_vacuum_cost_delay</a> configuration parameter,
    or from <code class="varname">vacuum_cost_delay</code> if the former is set to a negative
    value.  The same applies to <code class="structfield">vac_cost_limit</code>.
    Also, autovacuum will ignore attempts to set a per-table
-   freeze_max_age larger than the system-wide setting (it can only be set
-   smaller), and the freeze_min_age value will be limited to half the
-   system-wide <code class="varname">autovacuum_freeze_max_age</code> setting.
+   <code class="structfield">freeze_max_age</code> larger than the system-wide setting (it can only be set
+   smaller), and the <code class="structfield">freeze_min_age value</code> will be limited to half the
+   system-wide <a href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a> setting.
   </p>
 </div></body>
 </html>

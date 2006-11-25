@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="prev" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="next" href="explicit-locking.html" title="12.3. Explicit Locking">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="transaction-iso"></a>12.2. Transaction Isolation</h2></div></div></div>
-<a name="id2609636"></a><p>    The <acronym class="acronym">SQL</acronym> standard defines four levels of
+<a name="id2609639"></a><p>    The <acronym class="acronym">SQL</acronym> standard defines four levels of
     transaction isolation in terms of three phenomena that must be
     prevented between concurrent transactions.  These undesirable
     phenomena are:
@@ -22,19 +22,19 @@
     </p>
 <div class="variablelist"><dl>
 <dt><span class="term">       dirty read
-       <a name="id2609656"></a>
+       <a name="id2609659"></a>
       </span></dt>
 <dd><p>        A transaction reads data written by a concurrent uncommitted transaction.
        </p></dd>
 <dt><span class="term">       nonrepeatable read
-       <a name="id2609672"></a>
+       <a name="id2609674"></a>
       </span></dt>
 <dd><p>        A transaction re-reads data it has previously read and finds that data
         has been modified by another transaction (that committed since the
         initial read).
        </p></dd>
 <dt><span class="term">       phantom read
-       <a name="id2609688"></a>
+       <a name="id2609691"></a>
       </span></dt>
 <dd><p>        A transaction re-executes a query returning a set of rows that satisfy a
         search condition and finds that the set of rows satisfying the condition
@@ -43,7 +43,7 @@
 </dl></div>
 <p>
    </p>
-<p>    <a name="id2609706"></a>
+<p>    <a name="id2609709"></a>
     The four transaction isolation levels and the corresponding
     behaviors are described in <a href="transaction-iso.html#mvcc-isolevel-table" title="Table 12.1. SQL Transaction Isolation Levels">Table 12.1, &#8220;<acronym class="acronym">SQL</acronym> Transaction Isolation Levels&#8221;</a>.
    </p>
@@ -131,7 +131,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xact-read-committed"></a>12.2.1. Read Committed Isolation Level</h3></div></div></div>
-<a name="id2609852"></a><p>    <em class="firstterm">Read Committed</em>
+<a name="id2609855"></a><p>    <em class="firstterm">Read Committed</em>
     is the default isolation level in <span class="productname">PostgreSQL</span>. 
     When a transaction runs on this isolation level,
     a <code class="command">SELECT</code> query sees only data committed before the
@@ -206,7 +206,7 @@ COMMIT;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xact-serializable"></a>12.2.2. Serializable Isolation Level</h3></div></div></div>
-<a name="id2610052"></a><p>    The level <em class="firstterm">Serializable</em> provides the strictest transaction
+<a name="id2610041"></a><p>    The level <em class="firstterm">Serializable</em> provides the strictest transaction
     isolation.  This level emulates serial transaction execution,
     as if transactions had been executed one after another, serially,
     rather than concurrently.  However, applications using this level must
@@ -272,7 +272,7 @@ COMMIT;</pre>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="mvcc-serializability"></a>12.2.2.1. Serializable Isolation versus True Serializability</h4></div></div></div>
-<a name="id2610200"></a><a name="id2610205"></a><p>    The intuitive meaning (and mathematical definition) of
+<a name="id2610189"></a><a name="id2610195"></a><p>    The intuitive meaning (and mathematical definition) of
     &#8220;<span class="quote">serializable</span>&#8221; execution is that any two successfully committed
     concurrent transactions will appear to have executed strictly serially,
     one after the other &#8212; although which one appeared to occur first may
@@ -316,7 +316,7 @@ COMMIT;</pre>
     <code class="literal">SELECT ... WHERE class = 1</code>, a predicate-locking system
     would forbid transaction B from inserting any new row with class 1
     until A has committed.
-     <sup>[<a name="id2610313" href="#ftn.id2610313">6</a>]</sup>
+     <sup>[<a name="id2610302" href="#ftn.id2610302">6</a>]</sup>
     Such a locking system is complex to
     implement and extremely expensive in execution, since every session must
     be aware of the details of every query executed by every concurrent
@@ -336,7 +336,7 @@ COMMIT;</pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2610313" href="#id2610313">6</a>] </sup>       Essentially, a predicate-locking system prevents phantom reads
+<div class="footnote"><p><sup>[<a name="ftn.id2610302" href="#id2610302">6</a>] </sup>       Essentially, a predicate-locking system prevents phantom reads
        by restricting what is written, whereas MVCC prevents them by
        restricting what is read.
       </p></div>

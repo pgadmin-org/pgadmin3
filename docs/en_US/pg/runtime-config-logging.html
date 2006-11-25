@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-query.html" title="17.6. Query Planning">
 <link rel="next" href="runtime-config-statistics.html" title="17.8. Run-Time Statistics">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-logging"></a>17.7. Error Reporting and Logging</h2></div></div></div>
-<a name="id2629073"></a><div class="sect2" lang="en">
+<a name="id2629057"></a><div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-logging-where"></a>17.7.1. Where To Log</h3></div></div></div>
-<a name="id2629092"></a><div class="variablelist"><dl>
+<a name="id2629077"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
@@ -202,20 +202,19 @@
 <a name="guc-log-min-error-statement"></a><span class="term"><code class="varname">log_min_error_statement</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Controls whether or not the SQL statement that causes an error
-        condition will also be recorded in the server log. All SQL
-        statements that cause an error of the specified level or
-        higher are logged.  The default is
-        <code class="literal">PANIC</code> (effectively turning this feature
-        off for normal use). Valid values are <code class="literal">DEBUG5</code>,
+        condition will be recorded in the server log.  The current
+        SQL statement is included in the log entry for any message of
+        the specified severity or higher.
+        Valid values are <code class="literal">DEBUG5</code>,
         <code class="literal">DEBUG4</code>, <code class="literal">DEBUG3</code>,
         <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
         <code class="literal">INFO</code>, <code class="literal">NOTICE</code>,
         <code class="literal">WARNING</code>, <code class="literal">ERROR</code>,
-        <code class="literal">FATAL</code>, and <code class="literal">PANIC</code>.  For
-        example, if you set this to <code class="literal">ERROR</code> then all
-        SQL statements causing errors, fatal errors, or panics will be
-        logged. Enabling this parameter can be helpful in tracking down
-        the source of any errors that appear in the server log.
+        <code class="literal">FATAL</code>, and <code class="literal">PANIC</code>.
+        The default is <code class="literal">ERROR</code>, which means statements
+        causing errors, fatal errors, or panics will be logged.
+        To effectively turn off logging of failing statements,
+        set this parameter to <code class="literal">PANIC</code>.
         Only superusers can change this setting.
        </p></dd>
 <dt>
@@ -510,7 +509,7 @@
          query protocol, this setting likewise does not log statements that
          fail before the Execute phase (i.e., during parse analysis or
          planning).  Set <code class="varname">log_min_error_statement</code> to
-         <code class="literal">error</code> to log such statements.      
+         <code class="literal">ERROR</code> (or lower) to log such statements.      
         </p>
 </div>
 </dd>

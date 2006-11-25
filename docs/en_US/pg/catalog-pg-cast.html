@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-autovacuum.html" title="43.10. pg_autovacuum">
 <link rel="next" href="catalog-pg-class.html" title="43.12. pg_class">
@@ -14,11 +14,12 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-cast"></a>43.11. <code class="structname">pg_cast</code></h2></div></div></div>
-<a name="id2800083"></a><p>   The catalog <code class="structname">pg_cast</code> stores data type conversion paths,
-   both built-in paths and those defined with <code class="command">CREATE CAST</code>.
+<a name="id2800222"></a><p>   The catalog <code class="structname">pg_cast</code> stores data type conversion paths,
+   both built-in paths and those defined with
+   <a href="sql-createcast.html">CREATE CAST</a>.
   </p>
 <div class="table">
-<a name="id2800105"></a><p class="title"><b>Table 43.11. <code class="structfield">pg_cast</code> Columns</b></p>
+<a name="id2800249"></a><p class="title"><b>Table 43.11. <code class="structfield">pg_cast</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_cast Columns" border="1">
 <colgroup>
 <col>
@@ -51,7 +52,7 @@
 <td><code class="literal"><a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>       The OID of the function to use to perform this cast.  Zero is
        stored if the data types are binary compatible (that is, no
-       run-time operation is needed to perform the cast).
+       run-time operation is needed to perform the cast)
       </td>
 </tr>
 <tr>
@@ -64,7 +65,7 @@
        <code class="literal">a</code> means implicitly in assignment
        to a target column, as well as explicitly.
        <code class="literal">i</code> means implicitly in expressions, as well as the
-       other cases.
+       other cases
       </td>
 </tr>
 </tbody>

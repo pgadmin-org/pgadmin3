@@ -1,11 +1,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>51.4. GIN tips and trics</title>
+<title>51.4. GIN tips and tricks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="gin.html" title="Chapter 51. GIN Indexes">
 <link rel="prev" href="gin-implementation.html" title="51.3. Implementation">
 <link rel="next" href="gin-limit.html" title="51.5. Limitations">
@@ -13,10 +13,10 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="gin-tips"></a>51.4. GIN tips and trics</h2></div></div></div>
+<a name="gin-tips"></a>51.4. GIN tips and tricks</h2></div></div></div>
 <div class="variablelist"><dl>
 <dt><span class="term">Create vs insert</span></dt>
-<dd><p>	 In most cases, insertion into <acronym class="acronym">GIN</acronym> index is slow
+<dd><p>	 In most cases, insertion into a <acronym class="acronym">GIN</acronym> index is slow
 	 due to the likelihood of many keys being inserted for each value.
 	 So, for bulk insertions into a table it is advisable to to drop the GIN 
 	 index and recreate it after finishing bulk insertion.
@@ -41,9 +41,9 @@
 <p>	 If a non-zero search limit is set, then the returned set is a subset of 
 	 the whole result set, chosen at random.
 	</p>
-<p>	 "Soft" means that the actual number of returned results could slightly 
-	 differ from the specified limit, depending on the query and the quality 
-	 of the system's random number generator.
+<p>	 &#8220;<span class="quote">Soft</span>&#8221; means that the actual number of returned results
+	 could slightly differ from the specified limit, depending on the query
+	 and the quality of the system's random number generator.
 	</p>
 </dd>
 </dl></div>

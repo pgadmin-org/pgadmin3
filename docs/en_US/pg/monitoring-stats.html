@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
 <link rel="prev" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
 <link rel="next" href="monitoring-locks.html" title="25.3. Viewing Locks">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-stats"></a>25.2. The Statistics Collector</h2></div></div></div>
-<a name="id2650545"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
+<a name="id2650648"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
    is a subsystem that supports collection and reporting of information about
    server activity.  Presently, the collector can count accesses to tables
    and indexes in both disk-block and individual-row terms.
@@ -144,14 +144,16 @@
 <tr>
 <td><code class="structname">pg_stat_all_tables</code></td>
 <td>For each table in the current database (including TOAST tables),
-      the table OID, schema and table name, the last time the table was
-      vacuumed by the user and the autovacuum daemon, the last time the table
-      was analyzed by the user and the autovacuum daemon, number of sequential
+      the table OID, schema and table name, number of sequential
       scans initiated, number of live rows fetched by sequential
       scans, number of index scans initiated (over all indexes
       belonging to the table), number of live rows fetched by index
-      scans,
-      and numbers of row insertions, updates, and deletions.</td>
+      scans, numbers of row insertions, updates, and deletions,
+      the last time the table was vacuumed manually,
+      the last time it was vacuumed by the autovacuum daemon,
+      the last time it was analyzed manually,
+      and the last time it was analyzed by the autovacuum daemon.
+      </td>
 </tr>
 <tr>
 <td><code class="structname">pg_stat_sys_tables</code></td>

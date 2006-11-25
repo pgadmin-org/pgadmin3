@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-character.html" title="8.3. Character Types">
 <link rel="next" href="datatype-datetime.html" title="8.5. Date/Time Types">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="datatype-binary"></a>8.4. Binary Data Types</h2></div></div></div>
-<a name="id2566417"></a><a name="id2566427"></a><p>    The <code class="type">bytea</code> data type allows storage of binary strings;
+<a name="id2566423"></a><a name="id2566433"></a><p>    The <code class="type">bytea</code> data type allows storage of binary strings;
     see <a href="datatype-binary.html#datatype-binary-table" title="Table 8.6. Binary Data Types">Table 8.6, &#8220;Binary Data Types&#8221;</a>.
    </p>
 <div class="table">
@@ -51,15 +51,17 @@
     programmer thinks of as &#8220;<span class="quote">raw bytes</span>&#8221;, whereas character
     strings are appropriate for storing text.
    </p>
-<p>    When entering <code class="type">bytea</code> values, octets of certain values
-    <span class="emphasis"><em>must</em></span> be escaped (but all octet values
-    <span class="emphasis"><em>can</em></span> be escaped) when used as part of a string
-    literal in an <acronym class="acronym">SQL</acronym> statement. In general, to
-    escape an octet, it is converted into the three-digit octal number
-    equivalent of its decimal octet value, and preceded by two
-    backslashes. <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;<code class="type">bytea</code> Literal Escaped Octets&#8221;</a> shows the
-    characters that must be escaped, and gives the alternate escape
-    sequences where applicable.
+<p>    When entering <code class="type">bytea</code> values, octets of certain
+    values <span class="emphasis"><em>must</em></span> be escaped (but all octet
+    values <span class="emphasis"><em>can</em></span> be escaped) when used as part
+    of a string literal in an <acronym class="acronym">SQL</acronym> statement. In
+    general, to escape an octet, it is converted into the three-digit
+    octal number equivalent of its decimal octet value, and preceded
+    by two backslashes (or one backslash if
+    <code class="varname">standard_conforming_strings</code> is <code class="literal">off</code>).
+    <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;<code class="type">bytea</code> Literal Escaped Octets&#8221;</a> shows the characters
+    that must be escaped, and gives the alternate escape sequences
+    where applicable.
    </p>
 <div class="table">
 <a name="datatype-binary-sqlesc"></a><p class="title"><b>Table 8.7. <code class="type">bytea</code> Literal Escaped Octets</b></p>
@@ -122,23 +124,25 @@
     length, even though the output representation of the zero octet and
     backslash are more than one character.
    </p>
-<p>    The reason that you have to write so many backslashes, as shown in
-    <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;<code class="type">bytea</code> Literal Escaped Octets&#8221;</a>, is that an input string
-    written as a string literal must pass through two parse phases in
-    the <span class="productname">PostgreSQL</span> server.  The first
-    backslash of each pair is interpreted as an escape character by
-    the string-literal parser and is therefore consumed, leaving the
-    second backslash of the pair.  The remaining backslash is then
-    recognized by the <code class="type">bytea</code> input function as starting
-    either a three digit octal value or escaping another backslash.
-    For example, a string literal passed to the server as
-    <code class="literal">'\\001'</code> becomes <code class="literal">\001</code> after
-    passing through the string-literal parser. The
-    <code class="literal">\001</code> is then sent to the <code class="type">bytea</code>
-    input function, where it is converted to a single octet with a
-    decimal value of 1.  Note that the apostrophe character is not
-    treated specially by <code class="type">bytea</code>, so it follows the normal
-    rules for string literals.  (See also <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>.)
+<p>    The reason that you have to write so many backslashes, as shown
+    in <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;<code class="type">bytea</code> Literal Escaped Octets&#8221;</a>, is that an input
+    string written as a string literal must pass through two parse
+    phases in the <span class="productname">PostgreSQL</span> server.
+    The first backslash of each pair is interpreted as an escape
+    character by the string-literal parser (assuming
+    <code class="varname">standard_conforming_strings</code> is <code class="literal">off</code>)
+    and is therefore consumed, leaving the second backslash of the
+    pair.  The remaining backslash is then recognized by the
+    <code class="type">bytea</code> input function as starting either a three
+    digit octal value or escaping another backslash.  For example,
+    a string literal passed to the server as <code class="literal">'\\001'</code>
+    becomes <code class="literal">\001</code> after passing through the
+    string-literal parser. The <code class="literal">\001</code> is then sent
+    to the <code class="type">bytea</code> input function, where it is converted
+    to a single octet with a decimal value of 1.  Note that the
+    apostrophe character is not treated specially by <code class="type">bytea</code>,
+    so it follows the normal rules for string literals.  (See also
+    <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>.)
    </p>
 <p>    <code class="type">Bytea</code> octets are also escaped in the output. In general, each
     &#8220;<span class="quote">non-printable</span>&#8221; octet is converted into

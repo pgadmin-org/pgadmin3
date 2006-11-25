@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="view-pg-group.html" title="43.37. pg_group">
 <link rel="next" href="view-pg-locks.html" title="43.39. pg_locks">
@@ -14,11 +14,11 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="view-pg-indexes"></a>43.38. <code class="structname">pg_indexes</code></h2></div></div></div>
-<a name="id2807645"></a><p>   The view <code class="structname">pg_indexes</code> provides access to
+<a name="id2807797"></a><p>   The view <code class="structname">pg_indexes</code> provides access to
    useful information about each index in the database.
   </p>
 <div class="table">
-<a name="id2807661"></a><p class="title"><b>Table 43.38. <code class="structname">pg_indexes</code> Columns</b></p>
+<a name="id2807813"></a><p class="title"><b>Table 43.38. <code class="structname">pg_indexes</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_indexes Columns" border="1">
 <colgroup>
 <col>
@@ -37,31 +37,32 @@
 <td><code class="structfield">schemaname</code></td>
 <td><code class="type">name</code></td>
 <td><code class="literal"><a href="catalog-pg-namespace.html" title="43.23. pg_namespace"><code class="structname">pg_namespace</code></a>.nspname</code></td>
-<td>name of schema containing table and index</td>
+<td>Name of schema containing table and index</td>
 </tr>
 <tr>
 <td><code class="structfield">tablename</code></td>
 <td><code class="type">name</code></td>
 <td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.relname</code></td>
-<td>name of table the index is for</td>
+<td>Name of table the index is for</td>
 </tr>
 <tr>
 <td><code class="structfield">indexname</code></td>
 <td><code class="type">name</code></td>
 <td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.relname</code></td>
-<td>name of index</td>
+<td>Name of index</td>
 </tr>
 <tr>
 <td><code class="structfield">tablespace</code></td>
 <td><code class="type">name</code></td>
 <td><code class="literal"><a href="catalog-pg-tablespace.html" title="43.32. pg_tablespace"><code class="structname">pg_tablespace</code></a>.spcname</code></td>
-<td>name of tablespace containing index (NULL if default for database)</td>
+<td>Name of tablespace containing index (NULL if default for database)</td>
 </tr>
 <tr>
 <td><code class="structfield">indexdef</code></td>
 <td><code class="type">text</code></td>
 <td> </td>
-<td>index definition (a reconstructed creation command)</td>
+<td>Index definition (a reconstructed <code class="command">CREATE INDEX</code>
+      command)</td>
 </tr>
 </tbody>
 </table></div>

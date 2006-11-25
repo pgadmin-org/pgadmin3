@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-largeobject.html" title="43.21. pg_largeobject">
 <link rel="next" href="catalog-pg-namespace.html" title="43.23. pg_namespace">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-listener"></a>43.22. <code class="structname">pg_listener</code></h2></div></div></div>
-<a name="id2803088"></a><p>   The catalog <code class="structname">pg_listener</code> supports the
+<a name="id2803258"></a><p>   The catalog <code class="structname">pg_listener</code> supports the
    <a href="sql-listen.html">LISTEN</a> and
    <a href="sql-notify.html">NOTIFY</a>
    commands.  A listener creates an entry in
@@ -25,7 +25,7 @@
    to awaken the listener from sleep.
   </p>
 <div class="table">
-<a name="id2803134"></a><p class="title"><b>Table 43.22. <code class="structname">pg_listener</code> Columns</b></p>
+<a name="id2803304"></a><p class="title"><b>Table 43.22. <code class="structname">pg_listener</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_listener Columns" border="1">
 <colgroup>
 <col>
@@ -43,24 +43,24 @@
 <tr>
 <td><code class="structfield">relname</code></td>
 <td><code class="type">name</code></td>
-<td> </td>
-<td>Notify condition name.  (The name need not match any actual
-      relation in the database; the name <code class="structfield">relname</code> is historical.)
+<td>       Notify condition name.  (The name need not match any actual
+       relation in the database; the name <code class="structfield">relname</code> is historical.)
       </td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">listenerpid</code></td>
 <td><code class="type">int4</code></td>
-<td> </td>
 <td>PID of the server process that created this entry</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">notification</code></td>
 <td><code class="type">int4</code></td>
-<td> </td>
 <td>       Zero if no event is pending for this listener.  If an event is
-       pending, the PID of the server process that sent the notification.
+       pending, the PID of the server process that sent the notification
       </td>
+<td class="auto-generated"> </td>
 </tr>
 </tbody>
 </table></div>

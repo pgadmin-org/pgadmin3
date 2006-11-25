@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-srf.html" title="9.18. Set Returning Functions">
 <link rel="next" href="functions-admin.html" title="9.20. System Administration Functions">
@@ -106,7 +106,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2600983"></a><a name="id2600995"></a><a name="id2601007"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
+<br class="table-break"><a name="id2601008"></a><a name="id2601020"></a><a name="id2601032"></a><p>    The <code class="function">session_user</code> is normally the user who initiated
     the current database connection; but superusers can change this setting
     with <a href="sql-set-session-authorization.html">SET SESSION AUTHORIZATION</a>.
     The <code class="function">current_user</code> is the user identifier
@@ -142,7 +142,7 @@
 <p>
     </p>
 </div>
-<a name="id2601153"></a><a name="id2601162"></a><a name="id2601171"></a><a name="id2601181"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
+<a name="id2601178"></a><a name="id2601187"></a><a name="id2601196"></a><a name="id2601206"></a><p>     <code class="function">inet_client_addr</code> returns the IP address of the
      current client, and <code class="function">inet_client_port</code> returns the
      port number.
      <code class="function">inet_server_addr</code> returns the IP address on which
@@ -151,7 +151,7 @@
      All these functions return NULL if the current connection is via a
      Unix-domain socket.
    </p>
-<a name="id2601221"></a><a name="id2601231"></a><p>    <code class="function">pg_my_temp_schema</code> returns the OID of the current
+<a name="id2601246"></a><a name="id2601256"></a><p>    <code class="function">pg_my_temp_schema</code> returns the OID of the current
     session's temporary schema, or 0 if it has none (because it has not
     created any temporary tables).
     <code class="function">pg_is_other_temp_schema</code> returns true if the
@@ -159,14 +159,14 @@
     (This can be useful, for example, to exclude other sessions' temporary
     tables from a catalog display.)
    </p>
-<a name="id2601260"></a><p>     <code class="function">pg_postmaster_start_time</code> returns the
+<a name="id2601285"></a><p>     <code class="function">pg_postmaster_start_time</code> returns the
      <code class="type">timestamp with time zone</code> when the
      server started.
    </p>
-<a name="id2601282"></a><p>    <code class="function">version</code> returns a string describing the
+<a name="id2601308"></a><p>    <code class="function">version</code> returns a string describing the
     <span class="productname">PostgreSQL</span> server's version.
    </p>
-<a name="id2601307"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.41. Access Privilege Inquiry Functions">Table 9.41, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
+<a name="id2601332"></a><p>   <a href="functions-info.html#functions-info-access-table" title="Table 9.41. Access Privilege Inquiry Functions">Table 9.41, &#8220;Access Privilege Inquiry Functions&#8221;</a> lists functions that
    allow the user to query object access privileges programmatically.
    See <a href="ddl-priv.html" title="5.6. Privileges">Section 5.6, &#8220;Privileges&#8221;</a> for more information about
    privileges.
@@ -307,7 +307,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2601836"></a><a name="id2601845"></a><a name="id2601855"></a><a name="id2601864"></a><a name="id2601874"></a><a name="id2601883"></a><a name="id2601893"></a><p>    <code class="function">has_database_privilege</code> checks whether a user
+<br class="table-break"><a name="id2601861"></a><a name="id2601871"></a><a name="id2601880"></a><a name="id2601890"></a><a name="id2601899"></a><a name="id2601908"></a><a name="id2601918"></a><p>    <code class="function">has_database_privilege</code> checks whether a user
     can access a database in a particular way.  The possibilities for its
     arguments are analogous to <code class="function">has_table_privilege</code>.
     The desired access privilege type must evaluate to
@@ -456,7 +456,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2602420"></a><a name="id2602430"></a><a name="id2602440"></a><a name="id2602449"></a><a name="id2602459"></a><a name="id2602468"></a><p>    <code class="function">pg_conversion_is_visible</code>,
+<br class="table-break"><a name="id2602439"></a><a name="id2602449"></a><a name="id2602459"></a><a name="id2602468"></a><a name="id2602478"></a><a name="id2602487"></a><p>    <code class="function">pg_conversion_is_visible</code>,
     <code class="function">pg_function_is_visible</code>,
     <code class="function">pg_operator_is_visible</code>,
     <code class="function">pg_opclass_is_visible</code>,
@@ -480,7 +480,7 @@
     Note that it would not make much sense to test an unqualified name in
     this way &#8212; if the name can be recognized at all, it must be visible.
    </p>
-<a name="id2586551"></a><a name="id2602579"></a><a name="id2602588"></a><a name="id2602597"></a><a name="id2602606"></a><a name="id2602616"></a><a name="id2602626"></a><a name="id2602635"></a><a name="id2602644"></a><a name="id2602654"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.43. System Catalog Information Functions">Table 9.43, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
+<a name="id2586560"></a><a name="id2602598"></a><a name="id2602607"></a><a name="id2602616"></a><a name="id2602625"></a><a name="id2602635"></a><a name="id2602644"></a><a name="id2602654"></a><a name="id2602663"></a><a name="id2602672"></a><p>   <a href="functions-info.html#functions-info-catalog-table" title="Table 9.43. System Catalog Information Functions">Table 9.43, &#8220;System Catalog Information Functions&#8221;</a> lists functions that
    extract information from the system catalogs.
   </p>
 <div class="table">
@@ -633,7 +633,7 @@
    <code class="function">pg_tablespace_databases</code> and query their
    <code class="structname">pg_class</code> catalogs.
   </p>
-<a name="id2603389"></a><a name="id2603398"></a><a name="id2603408"></a><a name="id2603417"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.44. Comment Information Functions">Table 9.44, &#8220;Comment Information Functions&#8221;</a>
+<a name="id2603408"></a><a name="id2603417"></a><a name="id2603427"></a><a name="id2603436"></a><p>    The functions shown in <a href="functions-info.html#functions-info-comment-table" title="Table 9.44. Comment Information Functions">Table 9.44, &#8220;Comment Information Functions&#8221;</a>
     extract comments previously stored with the <a href="sql-comment.html">COMMENT</a> command.  A null value is returned if no
     comment could be found matching the specified parameters.
    </p>

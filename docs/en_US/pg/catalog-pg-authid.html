@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-attribute.html" title="43.7. pg_attribute">
 <link rel="next" href="catalog-pg-auth-members.html" title="43.9. pg_auth_members">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-authid"></a>43.8. <code class="structname">pg_authid</code></h2></div></div></div>
-<a name="id2799342"></a><p>   The catalog <code class="structname">pg_authid</code> contains information about
+<a name="id2799485"></a><p>   The catalog <code class="structname">pg_authid</code> contains information about
    database authorization identifiers (roles).  A role subsumes the concepts
    of &#8220;<span class="quote">users</span>&#8221; and &#8220;<span class="quote">groups</span>&#8221;.  A user is essentially just a
    role with the <code class="structfield">rolcanlogin</code> flag set.  Any role (with or
@@ -36,7 +36,7 @@
    one per database.
   </p>
 <div class="table">
-<a name="id2799424"></a><p class="title"><b>Table 43.8. <code class="structname">pg_authid</code> Columns</b></p>
+<a name="id2799567"></a><p class="title"><b>Table 43.8. <code class="structname">pg_authid</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_authid Columns" border="1">
 <colgroup>
 <col>
@@ -47,83 +47,83 @@
 <thead><tr>
 <th>Name</th>
 <th>Type</th>
-<th>References</th>
 <th>Description</th>
+<td class="auto-generated"> </td>
 </tr></thead>
 <tbody>
 <tr>
 <td><code class="structfield">rolname</code></td>
 <td><code class="type">name</code></td>
-<td> </td>
 <td>Role name</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolsuper</code></td>
 <td><code class="type">bool</code></td>
-<td> </td>
 <td>Role has superuser privileges</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolinherit</code></td>
 <td><code class="type">bool</code></td>
-<td> </td>
 <td>Role automatically inherits privileges of roles it is a
        member of</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolcreaterole</code></td>
 <td><code class="type">bool</code></td>
-<td> </td>
 <td>Role may create more roles</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolcreatedb</code></td>
 <td><code class="type">bool</code></td>
-<td> </td>
 <td>Role may create databases</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolcatupdate</code></td>
 <td><code class="type">bool</code></td>
-<td> </td>
 <td>       Role may update system catalogs directly.  (Even a superuser may not do
-       this unless this column is true.)
+       this unless this column is true)
       </td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolcanlogin</code></td>
 <td><code class="type">bool</code></td>
-<td> </td>
 <td>       Role may log in. That is, this role can be given as the initial
-       session authorization identifier.
+       session authorization identifier
       </td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolconnlimit</code></td>
 <td><code class="type">int4</code></td>
-<td> </td>
 <td>       For roles that can log in, this sets maximum number of concurrent 
-       connections this role can make.  -1 means no limit.
+       connections this role can make.  -1 means no limit
       </td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolpassword</code></td>
 <td><code class="type">text</code></td>
-<td> </td>
 <td>Password (possibly encrypted); NULL if none</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolvaliduntil</code></td>
 <td><code class="type">timestamptz</code></td>
-<td> </td>
 <td>Password expiry time (only used for password authentication);
        NULL if no expiration</td>
+<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td><code class="structfield">rolconfig</code></td>
 <td><code class="type">text[]</code></td>
-<td> </td>
 <td>Session defaults for run-time configuration variables</td>
+<td class="auto-generated"> </td>
 </tr>
 </tbody>
 </table></div>
