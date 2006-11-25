@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-pltemplate.html" title="43.26. pg_pltemplate">
 <link rel="next" href="catalog-pg-rewrite.html" title="43.28. pg_rewrite">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-proc"></a>43.27. <code class="structname">pg_proc</code></h2></div></div></div>
-<a name="id2804228"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
+<a name="id2804386"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
    See <a href="sql-createfunction.html">CREATE FUNCTION</a>
    and <a href="xfunc.html" title="33.3. User-Defined Functions">Section 33.3, &#8220;User-Defined Functions&#8221;</a> for more information.
   </p>
@@ -23,7 +23,7 @@
    row in <code class="structfield">pg_aggregate</code>.
   </p>
 <div class="table">
-<a name="id2804272"></a><p class="title"><b>Table 43.27. <code class="structname">pg_proc</code> Columns</b></p>
+<a name="id2804429"></a><p class="title"><b>Table 43.27. <code class="structname">pg_proc</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_proc Columns" border="1">
 <colgroup>
 <col>
@@ -83,7 +83,7 @@
 <td>       Function returns null if any call argument is null.  In that
        case the function won't actually be called at all.  Functions
        that are not &#8220;<span class="quote">strict</span>&#8221; must be prepared to handle
-       null inputs.
+       null inputs
       </td>
 </tr>
 <tr>
@@ -128,7 +128,7 @@
 <td><code class="literal"><a href="catalog-pg-type.html" title="43.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>       An array with the data types of the function arguments.  This includes
        only input arguments (including <code class="literal">INOUT</code> arguments), and thus represents
-       the call signature of the function.
+       the call signature of the function
       </td>
 </tr>
 <tr>
@@ -139,7 +139,7 @@
        all arguments (including <code class="literal">OUT</code> and <code class="literal">INOUT</code> arguments); however, if all the
        arguments are IN arguments, this field will be null.
        Note that subscripting is 1-based, whereas for historical reasons
-       <code class="structfield">proargtypes</code> is subscripted from 0.
+       <code class="structfield">proargtypes</code> is subscripted from 0
       </td>
 </tr>
 <tr>
@@ -152,7 +152,7 @@
         <code class="literal">b</code> for <code class="literal">INOUT</code> arguments.
         If all the arguments are <code class="literal">IN</code> arguments, this field will be null.
         Note that subscripts correspond to positions of
-        <code class="structfield">proallargtypes</code> not <code class="structfield">proargtypes</code>.
+        <code class="structfield">proallargtypes</code> not <code class="structfield">proargtypes</code>
       </td>
 </tr>
 <tr>
@@ -163,7 +163,7 @@
         Arguments without a name are set to empty strings in the array.
         If none of the arguments have a name, this field will be null.
         Note that subscripts correspond to positions of
-        <code class="structfield">proallargtypes</code> not <code class="structfield">proargtypes</code>.
+        <code class="structfield">proallargtypes</code> not <code class="structfield">proargtypes</code>
       </td>
 </tr>
 <tr>
@@ -173,15 +173,15 @@
 <td>       This tells the function handler how to invoke the function.  It
        might be the actual source code of the function for interpreted
        languages, a link symbol, a file name, or just about anything
-       else, depending on the implementation language/call convention.
+       else, depending on the implementation language/call convention
       </td>
 </tr>
 <tr>
 <td><code class="structfield">probin</code></td>
 <td><code class="type">bytea</code></td>
 <td> </td>
-<td>Additional information about how to invoke the function.
-      Again, the interpretation is language-specific.
+<td>       Additional information about how to invoke the function.
+       Again, the interpretation is language-specific
       </td>
 </tr>
 <tr>

@@ -1,98 +1,154 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Appendix H. PgFoundry and External Projects</title>
+<title>Appendix H. External Projects</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
 <link rel="prev" href="docguide-style.html" title="G.5. Style Guide">
-<link rel="next" href="external-extensions.html" title="H.2. Extensions">
+<link rel="next" href="external-pl.html" title="H.2. Procedural Languages">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="external-projects">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="external-projects"></a>Appendix H. PgFoundry and External Projects</h2></div></div></div>
+<a name="external-projects"></a>Appendix H. External Projects</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="external-projects.html#external-interfaces">H.1. Externally Developed Interfaces</a></span></dt>
-<dt><span class="sect1"><a href="external-extensions.html">H.2. Extensions</a></span></dt>
+<dt><span class="sect1"><a href="external-projects.html#external-interfaces">H.1. Client Interfaces</a></span></dt>
+<dt><span class="sect1"><a href="external-pl.html">H.2. Procedural Languages</a></span></dt>
+<dt><span class="sect1"><a href="external-extensions.html">H.3. Extensions</a></span></dt>
 </dl>
 </div>
 <p>   <span class="productname">PostgreSQL</span> is a complex software project,
    and managing the project is difficult. We have found that many
    enhancements to <span class="productname">PostgreSQL</span> can be more
-   efficiently developed separately from the core project. 
+   efficiently developed separately from the core project.
   </p>
-<p>   To help our community with the development of their external projects,
-   we have created the <a href="http://www.pgfoundry.org/" target="_top">PgFoundry</a>.
-   <a href="http://www.pgfoundry.org/" target="_top">PgFoundry</a> is built using the
-   GForge software project and is similar to SourceForge in its feature set. If
-   you have a PostgreSQL related Open Source project that you would like to 
-   develop and need project management resources such as mailing lists, forums,
-   bug tracking, and CVS, please feel free to create a new project.   
+<p>   To help our community with the development of their external projects, we
+   have created <a href="http://www.pgfoundry.org/" target="_top">PgFoundry</a>, a
+   website that provides hosting for <span class="productname">PostgreSQL</span>-related
+   projects that are maintained outside the core <span class="productname">PostgreSQL</span>
+   distribution. PgFoundry is built using the GForge software project and is
+   similar to <a href="http://sourceforge.net" target="_top">SourceForge.net</a> in its
+   feature set, providing mailing lists, forums, bug tracking, CVS, and web
+   hosting. If you have a <span class="productname">PostgreSQL</span>-related open source
+   project that you would like to have hosted at PgFoundy, please feel free
+   to create a new project.
   </p>
-<p>   Secondly, many <span class="productname">PostgreSQL</span>-related projects are
-   still hosted at <a href="http://gborg.postgresql.org/" target="_top"><span class="productname">GBorg</span></a>. 
-   GBorg is the original external community developer site, and while it is 
-   currently closed to new projects in favor of PgFoundry, it still contains 
-   many active and relevant projects. There are other popular <span class="productname">PostgreSQL</span> 
-   related projects that are hosted independently as well at other community 
-   sites such as <a href="http://www.sf.net/" target="_top">SourceForge</a>. You should 
-   search the web if you don't find the project you are looking for.
-  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    Many <span class="productname">PostgreSQL</span>-related projects are still
+    hosted at <a href="http://gborg.postgresql.org/" target="_top">GBorg</a>.  GBorg is
+    the original external community developer site, and while it is
+    currently closed to new projects in favor of PgFoundry, it still
+    contains many active and relevant projects. Other popular
+    <span class="productname">PostgreSQL</span>-related projects are hosted
+    independently, or on other project-hosting sites such such as <a href="http://sourceforge.net/" target="_top">SourceForge.net</a>. You should search
+    the web if you don't find the project you are looking for.
+   </p>
+</div>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="external-interfaces"></a>H.1. Externally Developed Interfaces</h2></div></div></div>
-<a name="id2877098"></a><p>   <span class="productname">PostgreSQL</span> includes very few interfaces
-   with the base distribution. <span class="application">libpq</span> is packaged because
-   it is the primary <span class="application">C</span> interface and many other interfaces
-   are build on top of it.  <span class="application">ecpg</span> is also packaged because it is
-   tied to the server-side grammar so is very dependent on the database
-   version. All the other interfaces, such as ODBC, Java, Perl, Python, and
-   others, are external projects and must be installed separately.
-  </p>
-<p>   Some of the more popular interfaces are:
-
+<a name="external-interfaces"></a>H.1. Client Interfaces</h2></div></div></div>
+<a name="id2876915"></a><p>   There are only two client interfaces included in the base
+   <span class="productname">PostgreSQL</span> distribution:
    </p>
-<div class="variablelist"><dl>
-<dt><span class="term">psqlODBC</span></dt>
-<dd><p>       This is the most common interface for <span class="application">Windows</span>
-       applications. <a href="http://odbc.postgresql.org/" target="_top">Website.</a>
-      </p></dd>
-<dt><span class="term">ODBCng</span></dt>
-<dd><p>       Another ODBC driver for PostgreSQL. 
-       <a href="http://projects.commandprompt.com/public/odbcng/" target="_top">Website.</a>
-      </p></dd>
-<dt><span class="term">PostgreSQL JDBC Driver</span></dt>
-<dd><p>       A <span class="application">JDBC</span> interface.
-       <a href="http://jdbc.postgresql.org/" target="_top">Website.</a>
-      </p></dd>
-<dt><span class="term">Npgsql</span></dt>
-<dd><p>       <span class="application">.Net</span> data provider for <span class="application">C#</span> applications.
-       <a href="http://pgfoundry.org/projects/npgsql/" target="_top">Website.</a>
-      </p></dd>
-<dt><span class="term">libpqxx</span></dt>
-<dd><p>       A <span class="application">C++</span> interface.
-       <a href="http://thaiopensource.org/development/libpqxx/" target="_top">Website.</a>
-      </p></dd>
-<dt><span class="term">DBD::Pg</span></dt>
-<dd><p>       A <span class="application">Perl</span> DBI driver for PostgreSQL.
-       <a href="http://search.cpan.org/dist/DBD-Pg/" target="_top">Website.</a>
-      </p></dd>
-<dt><span class="term">pgtclng</span></dt>
-<dd><p>       A <span class="application">Tcl</span> interface.
-       <a href="http://gborg.postgresql.org/project/pgtclng/projdisplay.php" target="_top">Website.</a>
-      </p></dd>
-<dt><span class="term">pyscopg</span></dt>
-<dd><p>       A <span class="application">Python</span> interface library that is DB API 2.0 compliant.
-       <a href="http://www.initd.org/" target="_top">Website.</a>
-      </p></dd>
-</dl></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      <a href="libpq.html" title="Chapter 29. libpq - C Library">libpq</a> is included because it is the
+      primary C language interface, and because many other client interfaces
+      are built on top of it.
+     </p></li>
+<li><p>      <a href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C">ecpg</a> is included because it depends on the
+      server-side SQL grammar, and is therefore sensitive to changes in
+      <span class="productname">PostgreSQL</span> itself.
+     </p></li>
+</ul></div>
 <p>
-   </p>
+
+   All other language interfaces are external projects and are distributed
+   separately. <a href="external-projects.html#language-interface-table" title="Table H.1. Externally Maintained Client Interfaces">Table H.1, &#8220;Externally Maintained Client Interfaces&#8221;</a> includes a list of
+   some of these projects. Note that some of these packages may not be
+   released under the same license as <span class="productname">PostgreSQL</span>. For more
+   information on each language interface, including licensing terms, refer to
+   its website and documentation.
+  </p>
+<div class="table">
+<a name="language-interface-table"></a><p class="title"><b>Table H.1. Externally Maintained Client Interfaces</b></p>
+<div class="table-contents"><table summary="Externally Maintained Client Interfaces" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Language</th>
+<th>Comments</th>
+<th>Website</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>DBD::Pg</td>
+<td>Perl</td>
+<td>Perl DBI driver</td>
+<td><a href="http://search.cpan.org/dist/DBD-Pg/" target="_top">http://search.cpan.org/dist/DBD-Pg/</a></td>
+</tr>
+<tr>
+<td>JDBC</td>
+<td>JDBC</td>
+<td>Type 4 JDBC driver</td>
+<td><a href="http://jdbc.postgresql.org/" target="_top">http://jdbc.postgresql.org/</a></td>
+</tr>
+<tr>
+<td>libpqxx</td>
+<td>C++</td>
+<td>New-style C++ interface</td>
+<td><a href="http://thaiopensource.org/development/libpqxx/" target="_top">http://thaiopensource.org/development/libpqxx/</a></td>
+</tr>
+<tr>
+<td>libpq++</td>
+<td>C++</td>
+<td>Old-style C++ interface</td>
+<td><a href="http://gborg.postgresql.org/project/libpqpp/" target="_top">http://gborg.postgresql.org/project/libpqpp/</a></td>
+</tr>
+<tr>
+<td>Npgsql</td>
+<td>.NET</td>
+<td>.NET data provider</td>
+<td><a href="http://pgfoundry.org/projects/npgsql/" target="_top">http://pgfoundry.org/projects/npgsql/</a></td>
+</tr>
+<tr>
+<td>ODBCng</td>
+<td>ODBC</td>
+<td>An alternative ODBC driver</td>
+<td><a href="http://projects.commandprompt.com/public/odbcng/" target="_top">http://projects.commandprompt.com/public/odbcng/</a></td>
+</tr>
+<tr>
+<td>pgtclng</td>
+<td>Tcl</td>
+<td> </td>
+<td><a href="http://pgfoundry.org/projects/pgtclng/" target="_top">http://pgfoundry.org/projects/pgtclng/</a></td>
+</tr>
+<tr>
+<td>psqlODBC</td>
+<td>ODBC</td>
+<td>The most commonly-used ODBC driver</td>
+<td><a href="http://odbc.postgresql.org/" target="_top">http://odbc.postgresql.org/</a></td>
+</tr>
+<tr>
+<td>psycopg</td>
+<td>Python</td>
+<td>DB API 2.0-compliant</td>
+<td><a href="http://www.initd.org/" target="_top">http://www.initd.org/</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
 </div>
 </div></body>
 </html>

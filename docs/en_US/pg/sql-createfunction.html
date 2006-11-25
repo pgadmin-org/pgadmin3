@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createdomain.html" title="CREATE DOMAIN">
 <link rel="next" href="sql-creategroup.html" title="CREATE GROUP">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE FUNCTION &#8212; define a new function</p>
 </div>
-<a name="id2738625"></a><div class="refsynopsisdiv">
+<a name="id2738711"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ OR REPLACE ] FUNCTION
     <em class="replaceable"><code>name</code></em> ( [ [ <em class="replaceable"><code>argmode</code></em> ] [ <em class="replaceable"><code>argname</code></em> ] <em class="replaceable"><code>argtype</code></em> [, ...] ] )
@@ -64,7 +64,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2738790"></a><h2>Parameters</h2>
+<a name="id2738876"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>       The name (optionally schema-qualified) of the function to create.
@@ -133,21 +133,22 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">IMMUTABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">STABLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">VOLATILE</code></span>
 </dt>
 <dd>
-<p>       These attributes inform the system whether it is safe to
-       replace multiple evaluations of the function with a single
-       evaluation, for run-time optimization.  At most one choice
+<p>       These attributes inform the query optimizer about the behavior
+       of the function.  At most one choice
        may be specified.  If none of these appear,
        <code class="literal">VOLATILE</code> is the default assumption.
       </p>
-<p>       <code class="literal">IMMUTABLE</code> indicates that the function always
+<p>       <code class="literal">IMMUTABLE</code> indicates that the function
+       cannot modify the database and always
        returns the same result when given the same argument values; that
        is, it does not do database lookups or otherwise use information not
        directly present in its argument list.  If this option is given,
        any call of the function with all-constant arguments can be
        immediately replaced with the function value.
       </p>
-<p>       <code class="literal">STABLE</code> indicates that within a single table scan
-       the function will consistently
+<p>       <code class="literal">STABLE</code> indicates that the function
+       cannot modify the database,
+       and that within a single table scan it will consistently
        return the same result for the same argument values, but that its
        result could change across SQL statements.  This is the appropriate
        selection for functions whose results depend on database lookups,
@@ -341,7 +342,7 @@ SELECT * FROM dup(42);</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2739601"></a><h2>See Also</h2>
+<a name="id2739687"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-alterfunction.html">ALTER FUNCTION</a>, <a href="sql-dropfunction.html">DROP FUNCTION</a>, <a href="sql-grant.html">GRANT</a>, <a href="sql-load.html">LOAD</a>, <a href="sql-revoke.html">REVOKE</a>, <a href="app-createlang.html"><span class="application">createlang</span></a></span>
 </div>
 </div></body>

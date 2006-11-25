@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
 <link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
@@ -236,24 +236,22 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <dt>
 <a name="guc-archive-timeout"></a><span class="term"><code class="varname">archive_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        The <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> is only invoked on completed 
-        WAL segments. Hence,
-        if your server generates only little WAL traffic (or has slack periods 
-        where it does so), there could be a long delay between the completion
-        of a transaction and its safe recording in archive storage.  To put
-        a limit on how old unarchived data can be, you can set
-        <code class="varname">archive_timeout</code> to force the server to switch
-        to a new WAL segment file periodically.  When this parameter is
-        greater than zero, the server will switch to a new segment file
-        whenever this many seconds elapse since the last segment file switch.
-        Note that archived
-        files that are closed early due to a forced switch are still the same
-        length as completely full files.  It is therefore unwise to set a very
-        short <code class="varname">archive_timeout</code> &#8212; it will bloat your archive
+<dd><p>        The <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> is only invoked on
+        completed WAL segments. Hence, if your server generates little WAL
+        traffic (or has slack periods where it does so), there could be a
+        long delay between the completion of a transaction and its safe
+        recording in archive storage.  To put a limit on how old unarchived
+        data can be, you can set <code class="varname">archive_timeout</code> to force the
+        server to switch to a new WAL segment file periodically.  When this
+        parameter is greater than zero, the server will switch to a new
+        segment file whenever this many seconds have elapsed since the last
+        segment file switch.  Note that archived files that are closed early
+        due to a forced switch are still the same length as completely full
+        files.  Therefore, it is unwise to use a very short
+        <code class="varname">archive_timeout</code> &#8212; it will bloat your archive
         storage.  <code class="varname">archive_timeout</code> settings of a minute or so are
-        usually reasonable.
-        This parameter can only be set in the <code class="filename">postgresql.conf</code>
-        file or on the server command line.
+        usually reasonable.  This parameter can only be set in the
+        <code class="filename">postgresql.conf</code> file or on the server command line.
        </p></dd>
 </dl></div>
 </div>

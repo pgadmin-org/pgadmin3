@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-conversion.html" title="43.14. pg_conversion">
 <link rel="next" href="catalog-pg-depend.html" title="43.16. pg_depend">
@@ -14,11 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-database"></a>43.15. <code class="structname">pg_database</code></h2></div></div></div>
-<a name="id2801521"></a><p>   The catalog <code class="structname">pg_database</code> stores information
-   about the available databases.  Databases are created with the
-   <code class="command">CREATE DATABASE</code> command.  Consult
-   <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for details about the meaning of some of the
-   parameters.
+<a name="id2801676"></a><p>   The catalog <code class="structname">pg_database</code> stores information about
+   the available databases.  Databases are created with the <a href="sql-createdatabase.html">CREATE DATABASE</a> command.
+   Consult <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for details about the meaning
+   of some of the parameters.
   </p>
 <p>   Unlike most system catalogs, <code class="structname">pg_database</code>
    is shared across all databases of a cluster: there is only one
@@ -26,7 +25,7 @@
    one per database.
   </p>
 <div class="table">
-<a name="id2801563"></a><p class="title"><b>Table 43.15. <code class="structname">pg_database</code> Columns</b></p>
+<a name="id2801722"></a><p class="title"><b>Table 43.15. <code class="structname">pg_database</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_database Columns" border="1">
 <colgroup>
 <col>
@@ -68,7 +67,7 @@
 <td>       If true then this database can be used in the
        <code class="literal">TEMPLATE</code> clause of <code class="command">CREATE
        DATABASE</code> to create a new database as a clone of
-       this one.
+       this one
       </td>
 </tr>
 <tr>
@@ -76,7 +75,7 @@
 <td><code class="type">bool</code></td>
 <td> </td>
 <td>       If false then no one can connect to this database.  This is
-       used to protect the <code class="literal">template0</code> database from being altered.
+       used to protect the <code class="literal">template0</code> database from being altered
       </td>
 </tr>
 <tr>
@@ -84,7 +83,7 @@
 <td><code class="type">int4</code></td>
 <td> </td>
 <td>       Sets maximum number of concurrent connections that can be made 
-       to this database.  -1 means no limit.
+       to this database.  -1 means no limit
       </td>
 </tr>
 <tr>
@@ -104,7 +103,7 @@
        track whether the database needs to be vacuumed in order to prevent
        transaction ID wraparound or to allow <code class="literal">pg_clog</code> to be shrunk.
        It is the minimum of the per-table
-       <code class="structname">pg_class</code>.<code class="structfield">relfrozenxid</code> values.
+       <code class="structname">pg_class</code>.<code class="structfield">relfrozenxid</code> values
       </td>
 </tr>
 <tr>
@@ -115,7 +114,7 @@
        Within this database, all tables for which
        <code class="structname">pg_class</code>.<code class="structfield">reltablespace</code> is zero
        will be stored in this tablespace; in particular, all the non-shared
-       system catalogs will be there.
+       system catalogs will be there
       </td>
 </tr>
 <tr>

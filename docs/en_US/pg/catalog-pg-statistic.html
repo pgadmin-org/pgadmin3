@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-shdescription.html" title="43.30. pg_shdescription">
 <link rel="next" href="catalog-pg-tablespace.html" title="43.32. pg_tablespace">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-statistic"></a>43.31. <code class="structname">pg_statistic</code></h2></div></div></div>
-<a name="id2805390"></a><p>   The catalog <code class="structname">pg_statistic</code> stores statistical data
+<a name="id2805550"></a><p>   The catalog <code class="structname">pg_statistic</code> stores statistical data
    about the contents of the database.  Entries are created by
    <code class="command">ANALYZE</code> and subsequently used by the query planner.
    There is one entry for each table column that has been analyzed.
@@ -48,7 +48,7 @@
    about those tables that are readable by the current user.
   </p>
 <div class="table">
-<a name="id2805483"></a><p class="title"><b>Table 43.31. <code class="structname">pg_statistic</code> Columns</b></p>
+<a name="id2805643"></a><p class="title"><b>Table 43.31. <code class="structname">pg_statistic</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_statistic Columns" border="1">
 <colgroup>
 <col>
@@ -96,7 +96,7 @@
       A value less than zero is the negative of a fraction of the number
       of rows in the table (for example, a column in which values appear about
       twice on the average could be represented by <code class="structfield">stadistinct</code> = -0.5).
-      A zero value means the number of distinct values is unknown.
+      A zero value means the number of distinct values is unknown
       </td>
 </tr>
 <tr>
@@ -105,7 +105,7 @@
 <td> </td>
 <td>       A code number indicating the kind of statistics stored in the
        <em class="replaceable"><code>N</code></em>th &#8220;<span class="quote">slot</span>&#8221; of the
-       <code class="structname">pg_statistic</code> row.
+       <code class="structname">pg_statistic</code> row
       </td>
 </tr>
 <tr>
@@ -115,7 +115,7 @@
 <td>       An operator used to derive the statistics stored in the
        <em class="replaceable"><code>N</code></em>th &#8220;<span class="quote">slot</span>&#8221;.  For example, a
        histogram slot would show the <code class="literal">&lt;</code> operator
-       that defines the sort order of the data.
+       that defines the sort order of the data
       </td>
 </tr>
 <tr>
@@ -136,7 +136,7 @@
        kind does not store any data values.  Each array's element
        values are actually of the specific column's data type, so there
        is no way to define these columns' type more specifically than
-       <code class="type">anyarray</code>.
+       <code class="type">anyarray</code>
       </td>
 </tr>
 </tbody>

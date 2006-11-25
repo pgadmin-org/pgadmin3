@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="source.html" title="Chapter 45. PostgreSQL Coding Conventions">
 <link rel="prev" href="source.html" title="Chapter 45. PostgreSQL Coding Conventions">
 <link rel="next" href="error-style-guide.html" title="45.3. Error Message Style Guide">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="error-message-reporting"></a>45.2. Reporting Errors Within the Server</h2></div></div></div>
-<a name="id2815237"></a><a name="id2815242"></a><p>    Error, warning, and log messages generated within the server code
+<a name="id2815394"></a><a name="id2815400"></a><p>    Error, warning, and log messages generated within the server code
     should be created using <code class="function">ereport</code>, or its older cousin
     <code class="function">elog</code>.  The use of this function is complex enough to
     require some explanation.
@@ -77,7 +77,7 @@
      the standard format codes accepted by <code class="function">sprintf</code>, the format
      code <code class="literal">%m</code> can be used to insert the error message returned
      by <code class="function">strerror</code> for the current value of <code class="literal">errno</code>.
-     <sup>[<a name="id2815492" href="#ftn.id2815492">9</a>]</sup>
+     <sup>[<a name="id2815649" href="#ftn.id2815649">9</a>]</sup>
      <code class="literal">%m</code> does not require any
      corresponding entry in the parameter list for <code class="function">errmsg</code>.
      Note that the message string will be run through <code class="function">gettext</code>
@@ -154,7 +154,7 @@
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2815492" href="#id2815492">9</a>] </sup>       That is, the value that was current when the <code class="function">ereport</code> call
+<div class="footnote"><p><sup>[<a name="ftn.id2815649" href="#id2815649">9</a>] </sup>       That is, the value that was current when the <code class="function">ereport</code> call
        was reached; changes of <code class="literal">errno</code> within the auxiliary reporting
        routines will not affect it.  That would not be true if you were to
        write <code class="literal">strerror(errno)</code> explicitly in <code class="function">errmsg</code>'s

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="view-pg-shadow.html" title="43.45. pg_shadow">
 <link rel="next" href="view-pg-tables.html" title="43.47. pg_tables">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="view-pg-stats"></a>43.46. <code class="structname">pg_stats</code></h2></div></div></div>
-<a name="id2809482"></a><p>   The view <code class="structname">pg_stats</code> provides access to
+<a name="id2809623"></a><p>   The view <code class="structname">pg_stats</code> provides access to
    the information stored in the <a href="catalog-pg-statistic.html" title="43.31. pg_statistic"><code class="structname">pg_statistic</code></a>
    catalog.  This view allows access only to rows of
    <code class="structname">pg_statistic</code> that correspond to tables the
@@ -27,7 +27,7 @@
    are defined for <code class="structname">pg_statistic</code>.
   </p>
 <div class="table">
-<a name="id2809527"></a><p class="title"><b>Table 43.46. <code class="structname">pg_stats</code> Columns</b></p>
+<a name="id2809668"></a><p class="title"><b>Table 43.46. <code class="structname">pg_stats</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_stats Columns" border="1">
 <colgroup>
 <col>
@@ -46,86 +46,86 @@
 <td><code class="structfield">schemaname</code></td>
 <td><code class="type">name</code></td>
 <td><code class="literal"><a href="catalog-pg-namespace.html" title="43.23. pg_namespace"><code class="structname">pg_namespace</code></a>.nspname</code></td>
-<td>name of schema containing table</td>
+<td>Name of schema containing table</td>
 </tr>
 <tr>
 <td><code class="structfield">tablename</code></td>
 <td><code class="type">name</code></td>
 <td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.relname</code></td>
-<td>name of table</td>
+<td>Name of table</td>
 </tr>
 <tr>
 <td><code class="structfield">attname</code></td>
 <td><code class="type">name</code></td>
 <td><code class="literal"><a href="catalog-pg-attribute.html" title="43.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attname</code></td>
-<td>name of the column described by this row</td>
+<td>Name of the column described by this row</td>
 </tr>
 <tr>
 <td><code class="structfield">null_frac</code></td>
 <td><code class="type">real</code></td>
 <td> </td>
-<td>fraction of column entries that are null</td>
+<td>Fraction of column entries that are null</td>
 </tr>
 <tr>
 <td><code class="structfield">avg_width</code></td>
 <td><code class="type">integer</code></td>
 <td> </td>
-<td>average width in bytes of column's entries</td>
+<td>Average width in bytes of column's entries</td>
 </tr>
 <tr>
 <td><code class="structfield">n_distinct</code></td>
 <td><code class="type">real</code></td>
 <td> </td>
-<td>If greater than zero, the estimated number of distinct values
-      in the column.  If less than zero, the negative of the number of
-      distinct values divided by the number of rows.  (The negated form
-      is used when <code class="command">ANALYZE</code> believes that the number of distinct
-      values
-      is likely to increase as the table grows; the positive form is used
-      when the column seems to have a fixed number of possible values.)
-      For example, -1 indicates a unique column in which the number of
-      distinct values is the same as the number of rows.
+<td>       If greater than zero, the estimated number of distinct values in the
+       column.  If less than zero, the negative of the number of distinct
+       values divided by the number of rows.  (The negated form is used when
+       <code class="command">ANALYZE</code> believes that the number of distinct values is
+       likely to increase as the table grows; the positive form is used when
+       the column seems to have a fixed number of possible values.)  For
+       example, -1 indicates a unique column in which the number of distinct
+       values is the same as the number of rows
       </td>
 </tr>
 <tr>
 <td><code class="structfield">most_common_vals</code></td>
 <td><code class="type">anyarray</code></td>
 <td> </td>
-<td>A list of the most common values in the column. (NULL if
-      no values seem to be more common than any others.)</td>
+<td>       A list of the most common values in the column. (NULL if
+       no values seem to be more common than any others.)
+      </td>
 </tr>
 <tr>
 <td><code class="structfield">most_common_freqs</code></td>
 <td><code class="type">real[]</code></td>
 <td> </td>
-<td>A list of the frequencies of the most common values,
-      i.e., number of occurrences of each divided by total number of rows.
-      (NULL when <code class="structfield">most_common_vals</code> is.)
+<td>       A list of the frequencies of the most common values,
+       i.e., number of occurrences of each divided by total number of rows.
+       (NULL when <code class="structfield">most_common_vals</code> is.)
      </td>
 </tr>
 <tr>
 <td><code class="structfield">histogram_bounds</code></td>
 <td><code class="type">anyarray</code></td>
 <td> </td>
-<td>A list of values that divide the column's values into
-      groups of approximately equal population.  The values in
-      <code class="structfield">most_common_vals</code>, if present, are omitted from this
-      histogram calculation.  (This column is NULL if the column data type
-      does not have a <code class="literal">&lt;</code> operator or if the
-      <code class="structfield">most_common_vals</code> list accounts for the entire
-      population.)
+<td>       A list of values that divide the column's values into groups of
+       approximately equal population.  The values in
+       <code class="structfield">most_common_vals</code>, if present, are omitted from this
+       histogram calculation.  (This column is NULL if the column data type
+       does not have a <code class="literal">&lt;</code> operator or if the
+       <code class="structfield">most_common_vals</code> list accounts for the entire
+       population.)
       </td>
 </tr>
 <tr>
 <td><code class="structfield">correlation</code></td>
 <td><code class="type">real</code></td>
 <td> </td>
-<td>Statistical correlation between physical row ordering and
-      logical ordering of the column values.  This ranges from -1 to +1.
-      When the value is near -1 or +1, an index scan on the column will
-      be estimated to be cheaper than when it is near zero, due to reduction
-      of random access to the disk.  (This column is NULL if the column data
-      type does not have a <code class="literal">&lt;</code> operator.)
+<td>       Statistical correlation between physical row ordering and
+       logical ordering of the column values.  This ranges from -1 to +1.
+       When the value is near -1 or +1, an index scan on the column will
+       be estimated to be cheaper than when it is near zero, due to reduction
+       of random access to the disk.  (This column is NULL if the column data
+       type does not have a <code class="literal">&lt;</code> operator.)
       </td>
 </tr>
 </tbody>

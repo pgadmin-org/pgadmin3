@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-description.html" title="43.17. pg_description">
 <link rel="next" href="catalog-pg-inherits.html" title="43.19. pg_inherits">
@@ -14,12 +14,12 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-index"></a>43.18. <code class="structname">pg_index</code></h2></div></div></div>
-<a name="id2802350"></a><p>   The catalog <code class="structname">pg_index</code> contains part of the information
+<a name="id2802511"></a><p>   The catalog <code class="structname">pg_index</code> contains part of the information
    about indexes.  The rest is mostly in
    <code class="structname">pg_class</code>.
   </p>
 <div class="table">
-<a name="id2802370"></a><p class="title"><b>Table 43.18. <code class="structname">pg_index</code> Columns</b></p>
+<a name="id2802531"></a><p class="title"><b>Table 43.18. <code class="structname">pg_index</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_index Columns" border="1">
 <colgroup>
 <col>
@@ -76,11 +76,12 @@
 <td><code class="structfield">indisvalid</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>If true, the index is currently valid for queries.
-       False means the index is possibly incomplete: it must still be
-       inserted into by INSERT/UPDATE operations, but it cannot safely be
-       used for queries, and if it is unique, the uniqueness shouldn't be
-       relied on either.</td>
+<td>       If true, the index is currently valid for queries.  False means the
+       index is possibly incomplete: it must still be modified by
+       <code class="command">INSERT</code>/<code class="command">UPDATE</code> operations, but it cannot safely
+       be used for queries. If it is unique, the uniqueness property is not
+       true either
+      </td>
 </tr>
 <tr>
 <td><code class="structfield">indkey</code></td>
@@ -100,7 +101,7 @@
 <td><code class="literal"><a href="catalog-pg-opclass.html" title="43.24. pg_opclass"><code class="structname">pg_opclass</code></a>.oid</code></td>
 <td>       For each column in the index key this contains the OID of
        the operator class to use.  See
-       <code class="structname">pg_opclass</code> for details.
+       <a href="catalog-pg-opclass.html" title="43.24. pg_opclass"><code class="structname">pg_opclass</code></a> for details
       </td>
 </tr>
 <tr>
@@ -110,14 +111,14 @@
 <td>Expression trees (in <code class="function">nodeToString()</code> representation)
       for index attributes that are not simple column references.  This is a
       list with one element for each zero entry in <code class="structfield">indkey</code>.
-      NULL if all index attributes are simple references.</td>
+      NULL if all index attributes are simple references</td>
 </tr>
 <tr>
 <td><code class="structfield">indpred</code></td>
 <td><code class="type">text</code></td>
 <td> </td>
 <td>Expression tree (in <code class="function">nodeToString()</code> representation)
-      for partial index predicate.  NULL if not a partial index.</td>
+      for partial index predicate.  NULL if not a partial index</td>
 </tr>
 </tbody>
 </table></div>

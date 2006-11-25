@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
 <link rel="prev" href="release-0-01.html" title="E.88. Postgres95 Release 0.01">
 <link rel="next" href="cvs-tree.html" title="F.2. CVS Tree Organization">
@@ -34,15 +34,13 @@
 <dt><span class="sect1"><a href="cvs-tree.html">F.2. <span class="productname">CVS</span> Tree Organization</a></span></dt>
 <dt><span class="sect1"><a href="cvsup.html">F.3. Getting The Source Via <span class="productname">CVSup</span></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="cvsup.html#id2873784">F.3.1. Preparing A <span class="productname">CVSup</span> Client System</a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id2873916">F.3.2. Running a <span class="productname">CVSup</span> Client</a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id2874118">F.3.3. Installing <span class="productname">CVSup</span></a></span></dt>
-<dt><span class="sect2"><a href="cvsup.html#id2874312">F.3.4. Installation from Sources</a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id2873933">F.3.1. Preparing A <span class="productname">CVSup</span> Client System</a></span></dt>
+<dt><span class="sect2"><a href="cvsup.html#id2874065">F.3.2. Running a <span class="productname">CVSup</span> Client</a></span></dt>
 </dl></dd>
 </dl>
 </div>
 <p>  The <span class="productname">PostgreSQL</span> source code is stored and managed using the
-  <span class="productname">CVS</span> code management system.
+  <span class="productname">CVS</span> version control system.
  </p>
 <p>  At least two methods,
   anonymous CVS and <span class="productname">CVSup</span>,
@@ -58,14 +56,13 @@
    retrieve updates from time to time.
   </p>
 <div class="procedure">
-<a name="id2873238"></a><p class="title"><b>Anonymous CVS</b></p>
+<a name="id2873413"></a><p class="title"><b>Anonymous CVS</b></p>
 <ol type="1">
 <li><p>     You will need a local copy of <span class="productname">CVS</span>
      (Concurrent Version Control System), which you can get from
-     <a href="http://www.nongnu.org/cvs/" target="_top">http://www.nongnu.org/cvs/</a>
-     (the official site with the latest version) or any GNU software
-     archive site (often somewhat outdated). We recommend version 1.10
-     or newer. Many systems have a recent version of
+     <a href="http://www.nongnu.org/cvs/" target="_top">http://www.nongnu.org/cvs/</a> (the official
+     site with the latest version) or any GNU software archive site
+     (often somewhat outdated). Many systems have a recent version of
      <span class="application">cvs</span> installed by default.
     </p></li>
 <li>
@@ -79,7 +76,7 @@
      an empty string.
     </p>
 <p>     You should only need to do this once, since the password will be
-     saved in <code class="literal">.cvspass</code> in your home directory.
+     saved in <code class="filename">.cvspass</code> in your home directory.
     </p>
 </li>
 <li>
@@ -144,27 +141,12 @@ update -d -P</pre>
 </li>
 </ol>
 </div>
-<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Caution</h3>
-<p>    Some older versions of <span class="productname">CVS</span> have a bug that
-    causes all checked-out files to be stored world-writable in your
-    directory.  If you see that this has happened, you can do something like
-</p>
-<pre class="programlisting">chmod -R go-w pgsql</pre>
-<p>
-    to set the permissions properly.
-    This bug is fixed as of
-    <span class="productname">CVS</span> version 1.9.28.
-   </p>
-</div>
-<p>   <span class="productname">CVS</span> can do a lot of other things,
-   such as fetching prior revisions
-   of the <span class="productname">PostgreSQL</span> sources
-   rather than the latest development version.
-   For more info consult the manual that comes with
-   <span class="productname">CVS</span>, or see the online
-   documentation at
-   <a href="http://www.nongnu.org/cvs/" target="_top">http://www.nongnu.org/cvs/</a>.
+<p>   <span class="productname">CVS</span> can do a lot of other things, such
+   as fetching prior revisions of the
+   <span class="productname">PostgreSQL</span> sources rather than the
+   latest development version.  For more info consult the manual that
+   comes with <span class="productname">CVS</span>, or see the online
+   documentation at <a href="http://www.nongnu.org/cvs/" target="_top">http://www.nongnu.org/cvs/</a>.
   </p>
 </div>
 </div></body>

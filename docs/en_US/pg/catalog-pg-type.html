@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2beta3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-trigger.html" title="43.33. pg_trigger">
 <link rel="next" href="views-overview.html" title="43.35. System Views">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="catalog-pg-type"></a>43.34. <code class="structname">pg_type</code></h2></div></div></div>
-<a name="id2806121"></a><p>   The catalog <code class="structname">pg_type</code> stores information about data
+<a name="id2806281"></a><p>   The catalog <code class="structname">pg_type</code> stores information about data
    types.  Base types (scalar types) are created with
    <a href="sql-createtype.html">CREATE TYPE</a>, and
    domains with
@@ -24,7 +24,7 @@
    composite types with <code class="command">CREATE TYPE AS</code>.
   </p>
 <div class="table">
-<a name="id2806166"></a><p class="title"><b>Table 43.34. <code class="structname">pg_type</code> Columns</b></p>
+<a name="id2806327"></a><p class="title"><b>Table 43.34. <code class="structname">pg_type</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_type Columns" border="1">
 <colgroup>
 <col>
@@ -81,7 +81,7 @@
        Variable-length types are always passed by reference. Note that
        <code class="structfield">typbyval</code> can be false even if the
        length would allow pass-by-value; this is currently true for
-       type <code class="type">float4</code>, for example.
+       type <code class="type">float4</code>, for example
       </td>
 </tr>
 <tr>
@@ -93,7 +93,7 @@
        table's row type), <code class="literal">d</code> for a domain, or
        <code class="literal">p</code> for a pseudo-type.  See also
        <code class="structfield">typrelid</code> and
-       <code class="structfield">typbasetype</code>.
+       <code class="structfield">typbasetype</code>
       </td>
 </tr>
 <tr>
@@ -103,16 +103,17 @@
 <td>       True if the type is defined, false if this is a placeholder
        entry for a not-yet-defined type.  When
        <code class="structfield">typisdefined</code> is false, nothing
-       except the type name, namespace, and OID can be relied on.
+       except the type name, namespace, and OID can be relied on
       </td>
 </tr>
 <tr>
 <td><code class="structfield">typdelim</code></td>
 <td><code class="type">char</code></td>
 <td> </td>
-<td>Character that separates two values of this type when parsing
-      array input.  Note that the delimiter is associated with the array
-      element data type, not the array data type.</td>
+<td>       Character that separates two values of this type when parsing
+       array input.  Note that the delimiter is associated with the array
+       element data type, not the array data type
+      </td>
 </tr>
 <tr>
 <td><code class="structfield">typrelid</code></td>
@@ -125,7 +126,7 @@
        <code class="structname">pg_class</code> entry doesn't really represent
        a table, but it is needed anyway for the type's
        <code class="structname">pg_attribute</code> entries to link to.)
-       Zero for non-composite types.
+       Zero for non-composite types
       </td>
 </tr>
 <tr>
@@ -145,7 +146,7 @@
        its internal representation must be some number of values of the
        <code class="structfield">typelem</code> data type with no other data.
        Variable-length array types have a header defined by the array
-       subroutines.
+       subroutines
       </td>
 </tr>
 <tr>
@@ -246,16 +247,16 @@
 <td><code class="type">bool</code></td>
 <td> </td>
 <td><p>       <code class="structfield">typnotnull</code> represents a not-null
-       constraint on a type.  Used for domains only.
+       constraint on a type.  Used for domains only
       </p></td>
 </tr>
 <tr>
 <td><code class="structfield">typbasetype</code></td>
 <td><code class="type">oid</code></td>
 <td><code class="literal"><a href="catalog-pg-type.html" title="43.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
-<td><p>       If this is a domain (see <code class="structfield">typtype</code>),
-       then <code class="structfield">typbasetype</code> identifies
-       the type that this one is based on.  Zero if not a domain.
+<td><p>       If this is a domain (see <code class="structfield">typtype</code>), then
+       <code class="structfield">typbasetype</code> identifies the type that this
+       one is based on.  Zero if this type is not a domain
       </p></td>
 </tr>
 <tr>
@@ -264,7 +265,7 @@
 <td> </td>
 <td><p>       Domains use <code class="structfield">typtypmod</code> to record the <code class="literal">typmod</code>
        to be applied to their base type (-1 if base type does not use a
-       <code class="literal">typmod</code>).  -1 if this type is not a domain.
+       <code class="literal">typmod</code>).  -1 if this type is not a domain
       </p></td>
 </tr>
 <tr>
@@ -274,7 +275,7 @@
 <td><p>       <code class="structfield">typndims</code> is the number of array dimensions
        for a domain that is an array (that is, <code class="structfield">typbasetype</code> is an array type;
        the domain's <code class="structfield">typelem</code> will match the base type's <code class="structfield">typelem</code>).
-       Zero for types other than array domains.
+       Zero for types other than array domains
        </p></td>
 </tr>
 <tr>
@@ -283,7 +284,7 @@
 <td> </td>
 <td><p>       If <code class="structfield">typdefaultbin</code> is not null, it is the <code class="function">nodeToString()</code>
        representation of a default expression for the type.  This is
-       only used for domains.
+       only used for domains
       </p></td>
 </tr>
 <tr>
@@ -297,7 +298,7 @@
        <code class="structfield">typdefaultbin</code> is null and <code class="structfield">typdefault</code> is
        not, then <code class="structfield">typdefault</code> is the external representation of
        the type's default value, which may be fed to the type's input
-       converter to produce a constant.
+       converter to produce a constant
       </p></td>
 </tr>
 </tbody>
