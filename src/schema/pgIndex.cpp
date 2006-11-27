@@ -51,7 +51,6 @@ wxString pgIndexBase::GetCreate()
         str += GetQuotedColumns();
     else
     {
-//        str += GetQuotedSchemaPrefix(GetProcNamespace()) + qtIdent(GetProcName())+wxT("(")+GetQuotedTypedColumns()+wxT(")");
         str += GetQuotedSchemaPrefix(GetProcNamespace()) + qtIdent(GetProcName())+wxT("(")+GetQuotedColumns()+wxT(")");
         if (!this->GetOperatorClasses().IsNull())
             str += wxT(" ") + GetOperatorClasses();
@@ -107,7 +106,7 @@ void pgIndexBase::ReadColumnDetails()
 
                 wxString str=ExecuteScalar(
                     wxT("SELECT\n")
-                    wxT("  CASE WHEN (o.opcdefault = FALSE AND o.opcintype != a.atttypid) THEN\n")
+                    wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
                     wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
                     wxT("  ELSE\n") +
                     wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
