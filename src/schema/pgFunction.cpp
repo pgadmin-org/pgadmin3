@@ -328,7 +328,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                     if (!name.IsNull())
                     {
                         function->iAddArgName(name);
-                        argTypeNames += name + wxT(" ");
+                        argTypeNames += qtIdent(name) + wxT(" ");
                     }
 
     				argTypeNames += types->GetVal(wxT("typname"));
