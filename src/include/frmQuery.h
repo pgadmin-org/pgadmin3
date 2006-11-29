@@ -62,6 +62,8 @@ private:
 
     pgConn *conn;
     wxLongLong elapsedQuery, elapsedRetrieve;
+
+    bool closing;
     
     void OnEraseBackground(wxEraseEvent& event);
     void OnSize(wxSizeEvent& event);
@@ -76,12 +78,13 @@ private:
     void OnExecute(wxCommandEvent& event);
     void OnExecFile(wxCommandEvent& event);
     void OnExplain(wxCommandEvent& event);
-	void OnExplainText(wxCommandEvent& event);
-	void OnNew(wxCommandEvent& event);
+    void OnExplainText(wxCommandEvent& event);
+    void OnNew(wxCommandEvent& event);
     void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
     void OnExport(wxCommandEvent& event);
+    void OnExit(wxCommandEvent& event);
     void OnCut(wxCommandEvent& event);
     void OnCopy(wxCommandEvent& event);
     void OnPaste(wxCommandEvent& event);
@@ -94,14 +97,14 @@ private:
     void OnClearHistory(wxCommandEvent& event);
     void OnActivate(wxActivateEvent& event);
     void OnFocus(wxFocusEvent& event);
-	void OnSelectAll(wxCommandEvent& event);
-	void OnAddFavourite(wxCommandEvent& event);
-	void OnManageFavourites(wxCommandEvent& event);
-	void OnSelectFavourite(wxCommandEvent& event);
-	void OnQuickReport(wxCommandEvent& event);
-	void OnWordWrap(wxCommandEvent& event);
-	void OnShowWhitespace(wxCommandEvent& event);
-	void OnShowLineEnds(wxCommandEvent& event);
+    void OnSelectAll(wxCommandEvent& event);
+    void OnAddFavourite(wxCommandEvent& event);
+    void OnManageFavourites(wxCommandEvent& event);
+    void OnSelectFavourite(wxCommandEvent& event);
+    void OnQuickReport(wxCommandEvent& event);
+    void OnWordWrap(wxCommandEvent& event);
+    void OnShowWhitespace(wxCommandEvent& event);
+    void OnShowLineEnds(wxCommandEvent& event);
 
     void OnToggleScratchPad(wxCommandEvent& event);
     void OnToggleDatabaseBar(wxCommandEvent& event);
@@ -117,14 +120,14 @@ private:
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
-	void UpdateFavouritesList();
+    void UpdateFavouritesList();
     wxWindow *currentControl();
     wxMenu *queryMenu;
-	wxMenu *favouritesMenu;
+    wxMenu *favouritesMenu;
     wxString title;
     wxString lastFilename, lastDir;
 
-	queryFavouriteFolder *favourites;
+    queryFavouriteFolder *favourites;
 
     bool aborted;
     bool lastFileFormat;
@@ -157,7 +160,7 @@ enum
 class queryToolBaseFactory : public actionFactory
 {
 protected:
-	queryToolBaseFactory(menuFactoryList *list) : actionFactory(list) {}
+    queryToolBaseFactory(menuFactoryList *list) : actionFactory(list) {}
     wxWindow *StartDialogSql(frmMain *form, pgObject *obj, const wxString &sql);
 public:
     bool CheckEnable(pgObject *obj);
@@ -166,7 +169,7 @@ public:
 class queryToolDataFactory : public queryToolBaseFactory
 {
 protected:
-	queryToolDataFactory(menuFactoryList *list) : queryToolBaseFactory(list) {}
+    queryToolDataFactory(menuFactoryList *list) : queryToolBaseFactory(list) {}
 public:
     bool CheckEnable(pgObject *obj);
 };
@@ -180,7 +183,7 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
-	
+    
 class queryToolSqlFactory : public queryToolBaseFactory
 {
 public:

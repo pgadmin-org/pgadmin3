@@ -65,11 +65,12 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_COMBOBOX(CTRLID_CONNECTION, frmQuery::OnChangeConnection)
     EVT_CLOSE(                      frmQuery::OnClose)
     EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
-	EVT_MENU(MNU_NEW,				frmQuery::OnNew)
+    EVT_MENU(MNU_NEW,                frmQuery::OnNew)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
     EVT_MENU(MNU_EXPORT,            frmQuery::OnExport)
+    EVT_MENU(MNU_EXIT,              frmQuery::OnExit)
     EVT_MENU(MNU_CUT,               frmQuery::OnCut)
     EVT_MENU(MNU_COPY,              frmQuery::OnCopy)
     EVT_MENU(MNU_PASTE,             frmQuery::OnPaste)
@@ -86,19 +87,19 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
-	EVT_MENU(MNU_SELECTALL,		    frmQuery::OnSelectAll)
+    EVT_MENU(MNU_SELECTALL,            frmQuery::OnSelectAll)
     EVT_MENU(MNU_QUICKREPORT,       frmQuery::OnQuickReport)
-	EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
-	EVT_MENU(MNU_SHOWWHITESPACE,    frmQuery::OnShowWhitespace)
-	EVT_MENU(MNU_SHOWLINEENDS,      frmQuery::OnShowLineEnds)
-	EVT_MENU(MNU_FAVOURITES_ADD,	frmQuery::OnAddFavourite)
-	EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
+    EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
+    EVT_MENU(MNU_SHOWWHITESPACE,    frmQuery::OnShowWhitespace)
+    EVT_MENU(MNU_SHOWLINEENDS,      frmQuery::OnShowLineEnds)
+    EVT_MENU(MNU_FAVOURITES_ADD,    frmQuery::OnAddFavourite)
+    EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
     EVT_MENU(MNU_DATABASEBAR,       frmQuery::OnToggleDatabaseBar)
     EVT_MENU(MNU_TOOLBAR,           frmQuery::OnToggleToolBar)
     EVT_MENU(MNU_SCRATCHPAD,        frmQuery::OnToggleScratchPad)
     EVT_MENU(MNU_OUTPUTPANE,        frmQuery::OnToggleOutputPane)
     EVT_MENU(MNU_DEFAULTVIEW,       frmQuery::OnDefaultView)
-	EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
+    EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
     EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
@@ -110,6 +111,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 {
     mainForm=form;
     conn=_conn;
+
+    closing = false;
 
     dlgName = wxT("frmQuery");
     recentKey = wxT("RecentFiles");
@@ -128,7 +131,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     fileMenu = new wxMenu();
     recentFileMenu = new wxMenu();
-	fileMenu->Append(MNU_NEW, _("&New window\tCtrl-N"), _("Open a new query window"));
+    fileMenu->Append(MNU_NEW, _("&New window\tCtrl-N"), _("Open a new query window"));
     fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
     fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
     fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
@@ -151,10 +154,10 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->Append(MNU_CLEAR, _("C&lear window"), _("Clear edit window"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
     editMenu->Append(MNU_FIND, _("&Find and Replace\tCtrl-F"), _("Find and replace text"), wxITEM_NORMAL);
-	editMenu->AppendSeparator();
-	editMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
+    editMenu->AppendSeparator();
+    editMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
     editMenu->Append(MNU_SHOWWHITESPACE, _("&Show whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
-	editMenu->Append(MNU_SHOWLINEENDS, _("&Show line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
+    editMenu->Append(MNU_SHOWLINEENDS, _("&Show line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
     menuBar->Append(editMenu, _("&Edit"));
 
     // View menu
@@ -182,13 +185,13 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
 
-	favouritesMenu = new wxMenu();
-	favouritesMenu->Append(MNU_FAVOURITES_ADD, _("Add favourite..."), _("Add current query to favourites"));
-	favouritesMenu->Append(MNU_FAVOURITES_MANAGE, _("Manage favourites..."), _("Edit and delete favourites"));
-	favouritesMenu->AppendSeparator();
-	favourites = queryFavouriteFileProvider::LoadFavourites(true);
-	UpdateFavouritesList();
-	menuBar->Append(favouritesMenu, _("&Favourites"));
+    favouritesMenu = new wxMenu();
+    favouritesMenu->Append(MNU_FAVOURITES_ADD, _("Add favourite..."), _("Add current query to favourites"));
+    favouritesMenu->Append(MNU_FAVOURITES_MANAGE, _("Manage favourites..."), _("Edit and delete favourites"));
+    favouritesMenu->AppendSeparator();
+    favourites = queryFavouriteFileProvider::LoadFavourites(true);
+    UpdateFavouritesList();
+    menuBar->Append(favouritesMenu, _("&Favourites"));
 
     wxMenu *helpMenu=new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the pgAdmin III helpfile."));
@@ -213,9 +216,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     entries[5].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
     entries[6].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
     entries[7].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
-	entries[8].Set(wxACCEL_CTRL,				(int)'A',	   MNU_SELECTALL);
+    entries[8].Set(wxACCEL_CTRL,                (int)'A',       MNU_SELECTALL);
     entries[9].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
-	entries[10].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
+    entries[10].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
 
     wxAcceleratorTable accel(11, entries);
     SetAcceleratorTable(accel);
@@ -232,7 +235,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-	toolBar->AddTool(MNU_NEW, _("New"), wxBitmap(file_new_xpm), _("New window"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_NEW, _("New"), wxBitmap(file_new_xpm), _("New window"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
     toolBar->AddSeparator();
@@ -263,7 +266,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Query box
     sqlQuery = new ctlSQLBox(this, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
-	sqlQuery->SetDatabase(conn);
+    sqlQuery->SetDatabase(conn);
     sqlQuery->SetMarginWidth(1, 16);
 
     // Results pane
@@ -319,26 +322,26 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Word wrap
     settings->Read(wxT("frmQuery/WordWrap"), &bVal, false);
-	editMenu->Check(MNU_WORDWRAP, bVal);
+    editMenu->Check(MNU_WORDWRAP, bVal);
     if (bVal)
-		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
-	else
+        sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
+    else
         sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
 
-	// Whitespace
+    // Whitespace
     settings->Read(wxT("frmQuery/ShowWhitespace"), &bVal, false);
-	editMenu->Check(MNU_SHOWWHITESPACE, bVal);
+    editMenu->Check(MNU_SHOWWHITESPACE, bVal);
     if (bVal)
-		sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
-	else
+        sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
+    else
         sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE); 
 
-	// Line ends
+    // Line ends
     settings->Read(wxT("frmQuery/ShowLineEnds"), &bVal, false);
-	editMenu->Check(MNU_SHOWLINEENDS, bVal);
+    editMenu->Check(MNU_SHOWLINEENDS, bVal);
     if (bVal)
-		sqlQuery->SetViewEOL(1);
-	else
+        sqlQuery->SetViewEOL(1);
+    else
         sqlQuery->SetViewEOL(0);
 
     sqlQuery->SetText(query);
@@ -367,8 +370,8 @@ frmQuery::~frmQuery()
     msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgHistory->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 
-	if (mainForm)
-		mainForm->RemoveFrame(this);
+    if (mainForm)
+        mainForm->RemoveFrame(this);
 
     settings->Write(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
@@ -384,8 +387,14 @@ frmQuery::~frmQuery()
         cbConnection->Delete(0);
     }
 
-	if (favourites)
-		delete favourites;
+    if (favourites)
+        delete favourites;
+}
+
+void frmQuery::OnExit(wxCommandEvent& event)
+{
+    closing = true;
+    Close();
 }
 
 void frmQuery::OnEraseBackground(wxEraseEvent& event)
@@ -477,46 +486,46 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
 
 void frmQuery::OnWordWrap(wxCommandEvent &event)
 {
-	editMenu->Check(MNU_WORDWRAP, event.IsChecked());
+    editMenu->Check(MNU_WORDWRAP, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/WordWrap"), editMenu->IsChecked(MNU_WORDWRAP));
-	
-	if (editMenu->IsChecked(MNU_WORDWRAP))
-		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
-	else
-		sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
+    settings->Write(wxT("frmQuery/WordWrap"), editMenu->IsChecked(MNU_WORDWRAP));
+    
+    if (editMenu->IsChecked(MNU_WORDWRAP))
+        sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
+    else
+        sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
 }
 
 void frmQuery::OnShowWhitespace(wxCommandEvent& event)
 {
-	editMenu->Check(MNU_SHOWWHITESPACE, event.IsChecked());
+    editMenu->Check(MNU_SHOWWHITESPACE, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/ShowWhitespace"), editMenu->IsChecked(MNU_SHOWWHITESPACE));
-	
-	if (editMenu->IsChecked(MNU_SHOWWHITESPACE))
-		sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
-	else
-		sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE);
+    settings->Write(wxT("frmQuery/ShowWhitespace"), editMenu->IsChecked(MNU_SHOWWHITESPACE));
+    
+    if (editMenu->IsChecked(MNU_SHOWWHITESPACE))
+        sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
+    else
+        sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE);
 }
 
 void frmQuery::OnShowLineEnds(wxCommandEvent& event)
 {
-	editMenu->Check(MNU_SHOWLINEENDS, event.IsChecked());
+    editMenu->Check(MNU_SHOWLINEENDS, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/ShowLineEnds"), editMenu->IsChecked(MNU_SHOWLINEENDS));
-	
-	if (editMenu->IsChecked(MNU_SHOWLINEENDS))
-		sqlQuery->SetViewEOL(1);
-	else
-		sqlQuery->SetViewEOL(0);
+    settings->Write(wxT("frmQuery/ShowLineEnds"), editMenu->IsChecked(MNU_SHOWLINEENDS));
+    
+    if (editMenu->IsChecked(MNU_SHOWLINEENDS))
+        sqlQuery->SetViewEOL(1);
+    else
+        sqlQuery->SetViewEOL(0);
 }
 
 
 void frmQuery::OnActivate(wxActivateEvent& event)
 {
-    if (event.GetActive())
+    if (event.GetActive() && !closing)
         updateMenu();
-	event.Skip();
+    event.Skip();
 }
 
 
@@ -631,12 +640,12 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         int rc=dlg.Go(conn, cbConnection);
         if (rc == wxID_OK)
         {
-			conn = dlg.CreateConn();
-			if (conn)
+            conn = dlg.CreateConn();
+            if (conn)
             {
-				cbConnection->Insert(conn->GetName(), sel, (void*)conn);
-				cbConnection->SetSelection(sel);
-				OnChangeConnection(ev);
+                cbConnection->Insert(conn->GetName(), sel, (void*)conn);
+                cbConnection->SetSelection(sel);
+                OnChangeConnection(ev);
             }
             else
                 rc = wxID_CANCEL;
@@ -675,8 +684,8 @@ void frmQuery::OnHelp(wxCommandEvent& event)
 
     if (!query.IsEmpty())
     {
-	    wxStringTokenizer tokens(query);
-	    query=tokens.GetNextToken();
+        wxStringTokenizer tokens(query);
+        query=tokens.GetNextToken();
 
         if (query.IsSameAs(wxT("PREPARE"), false))
         {
@@ -694,45 +703,45 @@ void frmQuery::OnHelp(wxCommandEvent& event)
         }
         else
         {
-	        SqlTokenHelp *sth=sqlTokenHelp;
-	        while (sth->token)
-	        {
-	            if (sth->type < 10 && query.IsSameAs(sth->token, false))
-	            {
-		            if (sth->page)
-		                page = sth->page;
-		            else
-		                page = wxT("pg/sql-") + query.Lower();
+            SqlTokenHelp *sth=sqlTokenHelp;
+            while (sth->token)
+            {
+                if (sth->type < 10 && query.IsSameAs(sth->token, false))
+                {
+                    if (sth->page)
+                        page = sth->page;
+                    else
+                        page = wxT("pg/sql-") + query.Lower();
 
                     if (sth->type)
-		            {
-		                int type=sth->type+10;
+                    {
+                        int type=sth->type+10;
 
-		                query=tokens.GetNextToken();
-		                sth=sqlTokenHelp;
-		                while (sth->token)
-		                {
-			                if (sth->type >= type && query.IsSameAs(sth->token, false))
-			                {
-			                    if (sth->page)
-				                    page += sth->page;
-			                    else
-				                    page += query.Lower();
-			                    break;
-			                }
-			                sth++;
-		                }
-		                if (!sth->token)
-			                page=wxT("pg/sql-commands");
-		            }
-		            break;
-	            }
-	            sth++;
-	        }
+                        query=tokens.GetNextToken();
+                        sth=sqlTokenHelp;
+                        while (sth->token)
+                        {
+                            if (sth->type >= type && query.IsSameAs(sth->token, false))
+                            {
+                                if (sth->page)
+                                    page += sth->page;
+                                else
+                                    page += query.Lower();
+                                break;
+                            }
+                            sth++;
+                        }
+                        if (!sth->token)
+                            page=wxT("pg/sql-commands");
+                    }
+                    break;
+                }
+                sth++;
+            }
         }
     }
     if (page.IsEmpty())
-    	page=wxT("pg/sql-commands");
+        page=wxT("pg/sql-commands");
 
     DisplaySqlHelp(this, page);
 }
@@ -756,8 +765,8 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
 
 void frmQuery::OnSetFocus(wxFocusEvent& event)
 {
-	sqlQuery->SetFocus();
-	event.Skip();
+    sqlQuery->SetFocus();
+    event.Skip();
 }
 
 
@@ -848,7 +857,7 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
     }
 #else
     else 
-	{
+    {
         wxWindow *obj = wnd;
 
         while (obj != NULL) {
@@ -865,10 +874,10 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
 
 void frmQuery::OnPaste(wxCommandEvent& ev)
 {
-	if (currentControl() == sqlQuery)
-	  sqlQuery->Paste();
+    if (currentControl() == sqlQuery)
+      sqlQuery->Paste();
     else if (currentControl() == scratchPad)
-	  scratchPad->Paste();
+      scratchPad->Paste();
 }
 
 void frmQuery::OnClear(wxCommandEvent& ev)
@@ -887,18 +896,18 @@ void frmQuery::OnClear(wxCommandEvent& ev)
 
 void frmQuery::OnSelectAll(wxCommandEvent& ev)
 {
-	wxWindow *wnd=currentControl();
+    wxWindow *wnd=currentControl();
 
-	if (wnd == sqlQuery)
-		sqlQuery->SelectAll();
-	else if (wnd == msgResult)
-		msgResult->SelectAll();
-	else if (wnd == msgHistory)
-		msgHistory->SelectAll();
-	else if (wnd == sqlResult)
-		sqlResult->SelectAll();
-	else if (wnd == scratchPad)
-		scratchPad->SelectAll();
+    if (wnd == sqlQuery)
+        sqlQuery->SelectAll();
+    else if (wnd == msgResult)
+        msgResult->SelectAll();
+    else if (wnd == msgHistory)
+        msgHistory->SelectAll();
+    else if (wnd == sqlResult)
+        sqlResult->SelectAll();
+    else if (wnd == scratchPad)
+        scratchPad->SelectAll();
     else if (wnd->GetParent() == sqlResult)
         sqlResult->SelectAll();
 }
@@ -941,7 +950,7 @@ void frmQuery::updateMenu(wxObject *obj)
     bool canRedo=false;
     bool canClear=false;
     bool canFind=false;
-	bool canAddFavourite=false;
+    bool canAddFavourite=false;
 
     wxFloatingPane *fp = wxDynamicCastThis(wxFloatingPane);
     if (fp)
@@ -957,7 +966,7 @@ void frmQuery::updateMenu(wxObject *obj)
         canClear = true;
         canFind = true;
 
-		canAddFavourite = (sqlQuery->GetLength() > 0);
+        canAddFavourite = (sqlQuery->GetLength() > 0);
     }
     else if (obj == msgResult || obj == msgHistory)
     {
@@ -983,71 +992,71 @@ void frmQuery::updateMenu(wxObject *obj)
     toolBar->EnableTool(MNU_FIND, canFind);
     editMenu->Enable(MNU_FIND, canFind);
 
-	favouritesMenu->Enable(MNU_FAVOURITES_ADD, canAddFavourite);
+    favouritesMenu->Enable(MNU_FAVOURITES_ADD, canAddFavourite);
 }
 
 void frmQuery::UpdateFavouritesList()
 {
-	while (favouritesMenu->GetMenuItemCount() > 3)
-	{
-		favouritesMenu->Destroy(favouritesMenu->GetMenuItems()[3]);
-	}
+    while (favouritesMenu->GetMenuItemCount() > 3)
+    {
+        favouritesMenu->Destroy(favouritesMenu->GetMenuItems()[3]);
+    }
 
-	favourites->AppendAllToMenu(favouritesMenu, MNU_FAVOURITES_MANAGE+1);
+    favourites->AppendAllToMenu(favouritesMenu, MNU_FAVOURITES_MANAGE+1);
 }
 
 void frmQuery::OnAddFavourite(wxCommandEvent &event)
 {
-	if (sqlQuery->GetText().Trim().IsEmpty())
-		return;
-	if (dlgAddFavourite(this,favourites).AddFavourite(sqlQuery->GetText()))
-	{
-		/* Added a favourite, so save */
-		queryFavouriteFileProvider::SaveFavourites(favourites);
-		UpdateFavouritesList();
-	}
+    if (sqlQuery->GetText().Trim().IsEmpty())
+        return;
+    if (dlgAddFavourite(this,favourites).AddFavourite(sqlQuery->GetText()))
+    {
+        /* Added a favourite, so save */
+        queryFavouriteFileProvider::SaveFavourites(favourites);
+        UpdateFavouritesList();
+    }
 }
 
 void frmQuery::OnManageFavourites(wxCommandEvent &event)
 {
-	int r = dlgManageFavourites(this,favourites).ManageFavourites();
-	if (r == 1)
-	{
-		/* Changed something, so save */
-		queryFavouriteFileProvider::SaveFavourites(favourites);
-		UpdateFavouritesList();
-	}
-	else if (r == -1)
-	{
-		/* Changed something requiring rollback */
-		delete favourites;
-		favourites = queryFavouriteFileProvider::LoadFavourites(true);
-		UpdateFavouritesList();
-	}
+    int r = dlgManageFavourites(this,favourites).ManageFavourites();
+    if (r == 1)
+    {
+        /* Changed something, so save */
+        queryFavouriteFileProvider::SaveFavourites(favourites);
+        UpdateFavouritesList();
+    }
+    else if (r == -1)
+    {
+        /* Changed something requiring rollback */
+        delete favourites;
+        favourites = queryFavouriteFileProvider::LoadFavourites(true);
+        UpdateFavouritesList();
+    }
 }
 
 void frmQuery::OnSelectFavourite(wxCommandEvent &event)
 {
-	queryFavouriteItem *fav;
+    queryFavouriteItem *fav;
 
-	fav = favourites->FindFavourite(event.GetId());
-	if (!fav)
-		return;
+    fav = favourites->FindFavourite(event.GetId());
+    if (!fav)
+        return;
 
-	if (!sqlQuery->GetText().Trim().IsEmpty())
-	{
-		int r = wxMessageDialog(this, _("Replace current query?"), _("Confirm replace"), wxYES_NO | wxCANCEL | wxICON_QUESTION).ShowModal();
-		if (r == wxID_CANCEL)
-			return;
-		else if (r == wxID_YES)
-			sqlQuery->ClearAll();
-		else
-		{
-			if (sqlQuery->GetText().Last() != '\n')
-				sqlQuery->AddText(wxT("\n")); // Add a newline after the last query
-		}
-	}
-	sqlQuery->AddText(fav->GetContents());
+    if (!sqlQuery->GetText().Trim().IsEmpty())
+    {
+        int r = wxMessageDialog(this, _("Replace current query?"), _("Confirm replace"), wxYES_NO | wxCANCEL | wxICON_QUESTION).ShowModal();
+        if (r == wxID_CANCEL)
+            return;
+        else if (r == wxID_YES)
+            sqlQuery->ClearAll();
+        else
+        {
+            if (sqlQuery->GetText().Last() != '\n')
+                sqlQuery->AddText(wxT("\n")); // Add a newline after the last query
+        }
+    }
+    sqlQuery->AddText(fav->GetContents());
 }
 
 
@@ -1062,7 +1071,7 @@ bool frmQuery::CheckChanged(bool canVeto)
                     wxYES_NO|wxICON_EXCLAMATION|
                     (canVeto ? wxCANCEL : 0));
 
-    	wxCommandEvent noEvent;
+        wxCommandEvent noEvent;
         switch (msg.ShowModal())
         {
             case wxID_YES:
@@ -1153,10 +1162,10 @@ void frmQuery::OpenLastFile()
         
 void frmQuery::OnNew(wxCommandEvent& event)
 {
-	frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn->Duplicate(), wxEmptyString);
-	if (mainForm)
-		mainForm->AddFrame(fq);
-	fq->Go();
+    frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn->Duplicate(), wxEmptyString);
+    if (mainForm)
+        mainForm->AddFrame(fq);
+    fq->Go();
 }
 
 void frmQuery::OnOpen(wxCommandEvent& event)
@@ -1210,8 +1219,8 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
             case 0: 
                 lastFileFormat = false;
 #ifdef __WXMAC__
-		if (!lastPath.Contains(wxT(".")))
-			lastPath += wxT(".sql");
+        if (!lastPath.Contains(wxT(".")))
+            lastPath += wxT(".sql");
 #endif
                 break;
             case 1:
@@ -1428,10 +1437,10 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
     bool wasChanged = changed;
 
-	// Clear markers and indicators
+    // Clear markers and indicators
     sqlQuery->MarkerDeleteAll(0);
-	sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
-	sqlQuery->SetStyling(sqlQuery->GetText().Length(), 0);
+    sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
+    sqlQuery->SetStyling(sqlQuery->GetText().Length(), 0);
 
     if (!wasChanged)
     {
@@ -1461,7 +1470,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         {
             elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
-			wxTheApp->Yield(true);
+            wxTheApp->Yield(true);
             if (elapsedQuery < 200)
                 wxMilliSleep(10);
             else
@@ -1528,17 +1537,17 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
                     errPos -= queryOffset;  // do not count EXPLAIN or similar
 
-					// Set an indicator on the error word (break on any kind of bracket, a space or full stop)
-					int sPos = errPos + selStart - 1, wEnd = 1;
-					sqlQuery->StartStyling(sPos, wxSTC_INDICS_MASK);
-					while(sqlQuery->GetCharAt(sPos + wEnd) != ' ' && 
-						  sqlQuery->GetCharAt(sPos + wEnd) != '(' && 
-						  sqlQuery->GetCharAt(sPos + wEnd) != '{' && 
-						  sqlQuery->GetCharAt(sPos + wEnd) != '[' && 
-						  sqlQuery->GetCharAt(sPos + wEnd) != '.' &&
-						  (unsigned int)(sPos + wEnd) < sqlQuery->GetText().Length())
-						wEnd++;
-					sqlQuery->SetStyling(wEnd, wxSTC_INDIC0_MASK);
+                    // Set an indicator on the error word (break on any kind of bracket, a space or full stop)
+                    int sPos = errPos + selStart - 1, wEnd = 1;
+                    sqlQuery->StartStyling(sPos, wxSTC_INDICS_MASK);
+                    while(sqlQuery->GetCharAt(sPos + wEnd) != ' ' && 
+                          sqlQuery->GetCharAt(sPos + wEnd) != '(' && 
+                          sqlQuery->GetCharAt(sPos + wEnd) != '{' && 
+                          sqlQuery->GetCharAt(sPos + wEnd) != '[' && 
+                          sqlQuery->GetCharAt(sPos + wEnd) != '.' &&
+                          (unsigned int)(sPos + wEnd) < sqlQuery->GetText().Length())
+                        wEnd++;
+                    sqlQuery->SetStyling(wEnd, wxSTC_INDIC0_MASK);
 
                     int line=0, maxLine = sqlQuery->GetLineCount();
                     while (line < maxLine && sqlQuery->GetLineEndPosition(line) < errPos + selStart+1)
@@ -1588,7 +1597,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             {
                 if (singleResult)
                 {
-					sqlResult->DisplayData(true);
+                    sqlResult->DisplayData(true);
 
                     showMessage(wxString::Format(_("%d rows retrieved."), sqlResult->NumRows()), _("OK."));
                 }
@@ -1597,7 +1606,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                     SetStatusText(wxString::Format(_("Retrieving data: %d rows."), rowsTotal), STATUSPOS_MSGS);
                     wxTheApp->Yield(true);
 
-					sqlResult->DisplayData();
+                    sqlResult->DisplayData();
 
 
 
@@ -1684,7 +1693,7 @@ bool queryToolBaseFactory::CheckEnable(pgObject *obj)
 bool queryToolDataFactory::CheckEnable(pgObject *obj)
 {
     return queryToolBaseFactory::CheckEnable(obj) && !obj->IsCollection() &&
-		(obj->IsCreatedBy(tableFactory) || obj->IsCreatedBy(viewFactory));
+        (obj->IsCreatedBy(tableFactory) || obj->IsCreatedBy(viewFactory));
 }
 
 
@@ -1701,21 +1710,21 @@ wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
     wxString qry;
     if (settings->GetStickySql()) 
         qry = obj->GetSql(form->GetBrowser());
-	return StartDialogSql(form, obj, qry);
+    return StartDialogSql(form, obj, qry);
 }
 
 
 queryToolSqlFactory::queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolBaseFactory(list)
 {
     mnu->Append(id, _("CREATE script"), _("Start Query tool with CREATE script."));
-	if (toolbar)
-		toolbar->AddTool(id, _("CREATE script"), wxBitmap(sql_xpm), _("Start query tool with CREATE script."), wxITEM_NORMAL);
+    if (toolbar)
+        toolbar->AddTool(id, _("CREATE script"), wxBitmap(sql_xpm), _("Start query tool with CREATE script."), wxITEM_NORMAL);
 }
 
 
 wxWindow *queryToolSqlFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	return StartDialogSql(form, obj, obj->GetSql(form->GetBrowser()));
+    return StartDialogSql(form, obj, obj->GetSql(form->GetBrowser()));
 }
 
 bool queryToolSqlFactory::CheckEnable(pgObject *obj)
@@ -1734,13 +1743,13 @@ wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     if (obj->IsCreatedBy(tableFactory))
     {
-		pgTable *table = (pgTable*)obj;
-		return StartDialogSql(form, obj, table->GetSelectSql(form->GetBrowser()));
+        pgTable *table = (pgTable*)obj;
+        return StartDialogSql(form, obj, table->GetSelectSql(form->GetBrowser()));
     }
     else if (obj->IsCreatedBy(viewFactory))
     {
-		pgView *view = (pgView*)obj;
-		return StartDialogSql(form, obj, view->GetSelectSql(form->GetBrowser()));
+        pgView *view = (pgView*)obj;
+        return StartDialogSql(form, obj, view->GetSelectSql(form->GetBrowser()));
     }
     return 0;
 }
@@ -1756,26 +1765,26 @@ wxWindow *queryToolUpdateFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     if (obj->IsCreatedBy(tableFactory))
     {
-		pgTable *table = (pgTable*)obj;
-		return StartDialogSql(form, obj, table->GetUpdateSql(form->GetBrowser()));
+        pgTable *table = (pgTable*)obj;
+        return StartDialogSql(form, obj, table->GetUpdateSql(form->GetBrowser()));
     }
     else if (obj->IsCreatedBy(viewFactory))
     {
-		pgView *view = (pgView*)obj;
-		return StartDialogSql(form, obj, view->GetUpdateSql(form->GetBrowser()));
+        pgView *view = (pgView*)obj;
+        return StartDialogSql(form, obj, view->GetUpdateSql(form->GetBrowser()));
     }
     return 0;
 }
 
 bool queryToolUpdateFactory::CheckEnable(pgObject *obj)
 {
-	if (!queryToolDataFactory::CheckEnable(obj))
-		return false;
-	if (obj->IsCreatedBy(tableFactory))
-		return true;
-	pgView *view=(pgView*)obj;
+    if (!queryToolDataFactory::CheckEnable(obj))
+        return false;
+    if (obj->IsCreatedBy(tableFactory))
+        return true;
+    pgView *view=(pgView*)obj;
 
-	return view->HasUpdateRule();
+    return view->HasUpdateRule();
 }
 
 
@@ -1790,24 +1799,24 @@ wxWindow *queryToolInsertFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     if (obj->IsCreatedBy(tableFactory))
     {
-		pgTable *table = (pgTable*)obj;
-		return StartDialogSql(form, obj, table->GetInsertSql(form->GetBrowser()));
+        pgTable *table = (pgTable*)obj;
+        return StartDialogSql(form, obj, table->GetInsertSql(form->GetBrowser()));
     }
     else if (obj->IsCreatedBy(viewFactory))
     {
-		pgView *view = (pgView*)obj;
-		return StartDialogSql(form, obj, view->GetInsertSql(form->GetBrowser()));
+        pgView *view = (pgView*)obj;
+        return StartDialogSql(form, obj, view->GetInsertSql(form->GetBrowser()));
     }
     return 0;
 }
 
 bool queryToolInsertFactory::CheckEnable(pgObject *obj)
 {
-	if (!queryToolDataFactory::CheckEnable(obj))
-		return false;
-	if (obj->IsCreatedBy(tableFactory))
-		return true;
-	pgView *view=(pgView*)obj;
+    if (!queryToolDataFactory::CheckEnable(obj))
+        return false;
+    if (obj->IsCreatedBy(tableFactory))
+        return true;
+    pgView *view=(pgView*)obj;
 
-	return view->HasInsertRule();
+    return view->HasInsertRule();
 }
