@@ -876,6 +876,10 @@ void frmEditGrid::Go()
         SetLimit(templong);
     }
 
+    // Check we have access
+    if (connection->ExecuteScalar(wxT("SELECT 1 FROM ") + tableName) != wxT("1"))
+        return;
+
     SetStatusText(_("Refreshing data, please wait."), 0);
 
     toolBar->EnableTool(MNU_REFRESH, false);
@@ -2355,6 +2359,9 @@ bool sqlTable::Paste()
     wxArrayString data;
     wxString text, quoteChar, colSep;
     bool inQuotes, inData, skipSerial;
+
+    if (!this)
+        return false;
 
     if (wxTheClipboard->Open())
     {
