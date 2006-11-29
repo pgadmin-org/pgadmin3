@@ -15,7 +15,7 @@
 
 AC_DEFUN([CHECK_CPP_COMPILER],
 [
-	if test "$ac_cv_prog_cxx_g" == no; then
+	if test "$ac_cv_prog_cxx_g" = no; then
 		AC_MSG_ERROR([could not find a suitable C++ compiler to build pgAdmin])
 	fi
 ])
@@ -27,7 +27,7 @@ AC_DEFUN([SET_WX_VERSION],
 [
 	AC_ARG_WITH(wx-version, [  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.8)],
 	[
-		if test "$withval" == yes; then
+		if test "$withval" = yes; then
 			AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
 		else
 			if test -z "$withval"; then
@@ -429,7 +429,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 		WX_OLD_LDFLAGS="$LDFLAGS"
 		WX_OLD_CPPFLAGS="$CPPFLAGS"
 	
-		if test "$BUILD_DEBUG" == yes
+		if test "$BUILD_DEBUG" = yes
 		then
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
@@ -548,7 +548,7 @@ AC_DEFUN([SUMMARY],
 	echo "PostgreSQL directory:			$PG_HOME"
 	echo "PostgreSQL pg_config binary:		$PG_CONFIG"
 	echo "PostgreSQL version:			$PG_VERSION"
-        if test "$PG_SSL" == yes
+        if test "$PG_SSL" = yes
         then
                 echo "PostgreSQL SSL support:                 Present"
         else
@@ -559,25 +559,25 @@ AC_DEFUN([SUMMARY],
 	echo "wxWidgets wx-config binary:		$WX_CONFIG"
 	echo "wxWidgets version:			wxWidgets "`$WX_CONFIG --version --version=$WX_VERSION`
 	echo
-	if test "$BUILD_DEBUG" == yes
+	if test "$BUILD_DEBUG" = yes
 	then
 		echo "Building a debug version of pgAdmin:	Yes"
 	else
 		echo "Building a debug version of pgAdmin:	No"
 	fi
-	if test "$BUILD_STATIC" == yes
+	if test "$BUILD_STATIC" = yes
 	then
 		echo "Statically linking pgAdmin:		Yes"
 	else
 		echo "Statically linking pgAdmin:		No"
 	fi
-	if test "$BUILD_APPBUNDLE" == yes
+	if test "$BUILD_APPBUNDLE" = yes
 	then
 		echo "Building a Mac OS X appbundle:		Yes"
 	else
 		echo "Building a Mac OS X appbundle:		No"
 	fi
-	if test "$INSTALL_DOCS" == yes
+	if test "$INSTALL_DOCS" = yes
 	then
 		echo "Include documentation:			Yes"
 	else
