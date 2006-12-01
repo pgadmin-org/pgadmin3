@@ -50,20 +50,24 @@
 #define cbConstrType    CTRL_COMBOBOX("cbConstrType")
 #define btnRemoveConstr CTRL_BUTTON("btnRemoveConstr")
 
-#define chkCustomVac    CTRL_CHECKBOX("chkCustomVac")
-#define chkVacEnabled   CTRL_CHECKBOX("chkVacEnabled")
-#define txtBaseVac      CTRL_TEXT("txtBaseVac")
-#define stBaseVacCurr   CTRL_STATIC("stBaseVacCurr")
-#define txtBaseAn       CTRL_TEXT("txtBaseAn")
-#define stBaseAnCurr    CTRL_STATIC("stBaseAnCurr")
-#define txtFactorVac    CTRL_TEXT("txtFactorVac")
-#define stFactorVacCurr CTRL_STATIC("stFactorVacCurr")
-#define txtFactorAn     CTRL_TEXT("txtFactorAn")
-#define stFactorAnCurr  CTRL_STATIC("stFactorAnCurr")
-#define txtVacDelay     CTRL_TEXT("txtVacDelay")
-#define stVacDelayCurr  CTRL_STATIC("stVacDelayCurr")
-#define txtVacLimit     CTRL_TEXT("txtVacLimit")
-#define stVacLimitCurr  CTRL_STATIC("stVacLimitCurr")
+#define chkCustomVac        CTRL_CHECKBOX("chkCustomVac")
+#define chkVacEnabled       CTRL_CHECKBOX("chkVacEnabled")
+#define txtBaseVac          CTRL_TEXT("txtBaseVac")
+#define stBaseVacCurr       CTRL_STATIC("stBaseVacCurr")
+#define txtBaseAn           CTRL_TEXT("txtBaseAn")
+#define stBaseAnCurr        CTRL_STATIC("stBaseAnCurr")
+#define txtFactorVac        CTRL_TEXT("txtFactorVac")
+#define stFactorVacCurr     CTRL_STATIC("stFactorVacCurr")
+#define txtFactorAn         CTRL_TEXT("txtFactorAn")
+#define stFactorAnCurr      CTRL_STATIC("stFactorAnCurr")
+#define txtVacDelay         CTRL_TEXT("txtVacDelay")
+#define stVacDelayCurr      CTRL_STATIC("stVacDelayCurr")
+#define txtVacLimit         CTRL_TEXT("txtVacLimit")
+#define stVacLimitCurr      CTRL_STATIC("stVacLimitCurr")
+#define txtFreezeMinAge     CTRL_TEXT("txtFreezeMinAge")
+#define stFreezeMinAgeCurr  CTRL_STATIC("stFreezeMinAgeCurr")
+#define txtFreezeMaxAge     CTRL_TEXT("txtFreezeMaxAge")
+#define stFreezeMaxAgeCurr  CTRL_STATIC("stFreezeMaxAgeCurr")
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
@@ -92,6 +96,8 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtFactorAn"),                  dlgTable::OnChangeVacuum)
     EVT_TEXT(XRCID("txtVacDelay"),                  dlgTable::OnChangeVacuum)
     EVT_TEXT(XRCID("txtVacLimit"),                  dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtFreezeMinAge"),              dlgTable::OnChangeVacuum)
+    EVT_TEXT(XRCID("txtFreezeMaxAge"),              dlgTable::OnChangeVacuum)
 
     EVT_BUTTON(wxID_OK,                             dlgTable::OnOK)
 END_EVENT_TABLE();
@@ -312,6 +318,8 @@ int dlgTable::Go(bool modal)
         txtFactorAn->SetValidator(numericValidator);
         txtVacDelay->SetValidator(numericValidator);
         txtVacLimit->SetValidator(numericValidator);
+        txtFreezeMinAge->SetValidator(numericValidator);
+        txtFreezeMaxAge->SetValidator(numericValidator);
 
         pgSetIterator avSet(connection,
             wxT("SELECT name, setting FROM pg_settings WHERE name like '%vacuum%' ORDER BY name"));
@@ -342,7 +350,20 @@ int dlgTable::Go(bool modal)
                 settingVacBaseThr = StrToLong(setting);
             else if (name == wxT("autovacuum_analyze_threshold"))
                 settingAnlBaseThr = StrToLong(setting);
+            else if (name == wxT("vacuum_freeze_min_age"))
+                settingFreezeMinAge = StrToLong(setting);
+            else if (name == wxT("autovacuum_freeze_max_age"))
+                settingFreezeMaxAge = StrToLong(setting);
         }
+
+        tableVacBaseThr = -1;
+        tableAnlBaseThr = -1;
+        tableCostDelay = -1;
+        tableCostLimit = -1;
+        tableFreezeMinAge = -1;
+        tableFreezeMaxAge = -1;
+        tableVacFactor = -1;
+        tableAnlFactor = -1;
 
         pgSetIterator set(connection, wxT("SELECT * FROM pg_autovacuum WHERE vacrelid=") + table->GetOidStr());
         if (set.RowsLeft())
@@ -358,6 +379,12 @@ int dlgTable::Go(bool modal)
             tableCostLimit=set.GetLong(wxT("vac_cost_limit"));
             tableVacFactor=set.GetDouble(wxT("vac_scale_factor"));
             tableAnlFactor=set.GetDouble(wxT("anl_scale_factor"));
+
+            if (connection->BackendMinimumVersion(8, 2))
+            {
+                tableFreezeMinAge=set.GetLong(wxT("freeze_min_age"));
+                tableFreezeMaxAge=set.GetLong(wxT("freeze_max_age"));
+            }
 
             if (tableVacBaseThr >= 0)
                 txtBaseVac->SetValue(NumToStr(tableVacBaseThr));
@@ -388,6 +415,19 @@ int dlgTable::Go(bool modal)
                 txtVacLimit->SetValue(NumToStr(tableCostLimit));
             else
                 txtVacLimit->SetValue(wxEmptyString);
+
+            if (connection->BackendMinimumVersion(8, 2))
+            {
+                if (tableFreezeMinAge >= 0)
+                    txtFreezeMinAge->SetValue(NumToStr(tableFreezeMinAge));
+                else
+                    txtFreezeMinAge->SetValue(wxEmptyString);
+
+                if (tableFreezeMaxAge >= 0)
+                    txtFreezeMaxAge->SetValue(NumToStr(tableFreezeMaxAge));
+                else
+                    txtFreezeMaxAge->SetValue(wxEmptyString);
+            }
         }
         else
         {
@@ -560,29 +600,66 @@ wxString dlgTable::GetSql()
                 bool changed = (chkVacEnabled->GetValue() != tableVacEnabled);
                 if (!hasVacuum)
                 {
-                    vacStr = wxT("INSERT INTO pg_autovacuum(vacrelid, enabled, vac_base_thresh, anl_base_thresh, vac_scale_factor, anl_scale_factor, vac_cost_delay, vac_cost_limit)")
-                             wxT("\n   VALUES(") 
-                           + table->GetOidStr() + wxT(", ")
-                           + BoolToStr(chkVacEnabled->GetValue()) + wxT(", ")
-                           + AppendNum(changed, txtBaseVac, tableVacBaseThr) + wxT(", ")
-                           + AppendNum(changed, txtBaseAn, tableAnlBaseThr) + wxT(", ")
-                           + AppendNum(changed, txtFactorVac, tableVacFactor) + wxT(", ")
-                           + AppendNum(changed, txtFactorAn, tableAnlFactor) + wxT(", ")
-                           + AppendNum(changed, txtVacDelay, tableCostDelay) + wxT(", ")
-                           + AppendNum(changed, txtVacLimit, tableCostLimit) + wxT(");\n");
+                    if (connection->BackendMinimumVersion(8, 2))
+                    {
+                        vacStr = wxT("INSERT INTO pg_autovacuum(vacrelid, enabled, vac_base_thresh, anl_base_thresh, vac_scale_factor, anl_scale_factor, vac_cost_delay, vac_cost_limit, freeze_min_age, freeze_max_age)")
+                                 wxT("\n   VALUES(") 
+                               + table->GetOidStr() + wxT(", ")
+                               + BoolToStr(chkVacEnabled->GetValue()) + wxT(", ")
+                               + AppendNum(changed, txtBaseVac, tableVacBaseThr) + wxT(", ")
+                               + AppendNum(changed, txtBaseAn, tableAnlBaseThr) + wxT(", ")
+                               + AppendNum(changed, txtFactorVac, tableVacFactor) + wxT(", ")
+                               + AppendNum(changed, txtFactorAn, tableAnlFactor) + wxT(", ")
+                               + AppendNum(changed, txtVacDelay, tableCostDelay) + wxT(", ")
+                               + AppendNum(changed, txtVacLimit, tableCostLimit) + wxT(", ")
+                               + AppendNum(changed, txtFreezeMinAge, tableFreezeMinAge) + wxT(", ")
+                               + AppendNum(changed, txtFreezeMaxAge, tableFreezeMaxAge) + wxT(");\n");
+                    }
+                    else
+                    {
+                        vacStr = wxT("INSERT INTO pg_autovacuum(vacrelid, enabled, vac_base_thresh, anl_base_thresh, vac_scale_factor, anl_scale_factor, vac_cost_delay, vac_cost_limit)")
+                                 wxT("\n   VALUES(") 
+                               + table->GetOidStr() + wxT(", ")
+                               + BoolToStr(chkVacEnabled->GetValue()) + wxT(", ")
+                               + AppendNum(changed, txtBaseVac, tableVacBaseThr) + wxT(", ")
+                               + AppendNum(changed, txtBaseAn, tableAnlBaseThr) + wxT(", ")
+                               + AppendNum(changed, txtFactorVac, tableVacFactor) + wxT(", ")
+                               + AppendNum(changed, txtFactorAn, tableAnlFactor) + wxT(", ")
+                               + AppendNum(changed, txtVacDelay, tableCostDelay) + wxT(", ")
+                               + AppendNum(changed, txtVacLimit, tableCostLimit) + wxT(");\n");
+                    }
                 }
                 else
                 {
-                    vacStr = wxT("UPDATE pg_autovacuum\n")
-                             wxT("   SET enabled=")
-                           + BoolToStr(chkVacEnabled->GetValue())
-                           + wxT(", vac_base_thresh = ") + AppendNum(changed, txtBaseVac, tableVacBaseThr) 
-                           + wxT(", anl_base_thresh = ") + AppendNum(changed, txtBaseAn, tableAnlBaseThr) 
-                           + wxT(", vac_scale_factor = ") + AppendNum(changed, txtFactorVac, tableVacFactor)
-                           + wxT(", anl_scale_factor = ") + AppendNum(changed, txtFactorAn, tableAnlFactor)
-                           + wxT(", vac_cost_delay = ") + AppendNum(changed, txtVacDelay, tableCostDelay)
-                           + wxT(", vac_cost_limit = ") + AppendNum(changed, txtVacLimit, tableCostLimit)
-                           + wxT("\n WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
+                    if (connection->BackendMinimumVersion(8, 2))
+                    {
+                        vacStr = wxT("UPDATE pg_autovacuum\n")
+                                 wxT("   SET enabled=")
+                               + BoolToStr(chkVacEnabled->GetValue())
+                               + wxT(", vac_base_thresh = ") + AppendNum(changed, txtBaseVac, tableVacBaseThr) 
+                               + wxT(", anl_base_thresh = ") + AppendNum(changed, txtBaseAn, tableAnlBaseThr) 
+                               + wxT(", vac_scale_factor = ") + AppendNum(changed, txtFactorVac, tableVacFactor)
+                               + wxT(", anl_scale_factor = ") + AppendNum(changed, txtFactorAn, tableAnlFactor)
+                               + wxT(", vac_cost_delay = ") + AppendNum(changed, txtVacDelay, tableCostDelay)
+                               + wxT(", vac_cost_limit = ") + AppendNum(changed, txtVacLimit, tableCostLimit)
+                               + wxT(", freeze_min_age = ") + AppendNum(changed, txtFreezeMinAge, tableFreezeMinAge)
+                               + wxT(", freeze_max_age = ") + AppendNum(changed, txtFreezeMaxAge, tableFreezeMaxAge)
+                               + wxT("\n WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
+                    }
+                    else
+                    {
+                        vacStr = wxT("UPDATE pg_autovacuum\n")
+                                 wxT("   SET enabled=")
+                               + BoolToStr(chkVacEnabled->GetValue())
+                               + wxT(", vac_base_thresh = ") + AppendNum(changed, txtBaseVac, tableVacBaseThr) 
+                               + wxT(", anl_base_thresh = ") + AppendNum(changed, txtBaseAn, tableAnlBaseThr) 
+                               + wxT(", vac_scale_factor = ") + AppendNum(changed, txtFactorVac, tableVacFactor)
+                               + wxT(", anl_scale_factor = ") + AppendNum(changed, txtFactorAn, tableAnlFactor)
+                               + wxT(", vac_cost_delay = ") + AppendNum(changed, txtVacDelay, tableCostDelay)
+                               + wxT(", vac_cost_limit = ") + AppendNum(changed, txtVacLimit, tableCostLimit)
+                               + wxT("\n WHERE vacrelid=") + table->GetOidStr() + wxT(";\n");
+                    }
+
                 }
                 if (changed)
                     sql += vacStr;
@@ -765,12 +842,29 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
         txtVacDelay->Enable(vacEn);
         txtVacLimit->Enable(vacEn);
 
-        stBaseVacCurr->SetLabel(GetNumString(txtBaseVac, vacEn, NumToStr(settingVacBaseThr)));
-        stBaseAnCurr->SetLabel(GetNumString(txtBaseAn, vacEn, NumToStr(settingAnlBaseThr)));
-        stFactorVacCurr->SetLabel(GetNumString(txtFactorVac, vacEn, NumToStr(settingVacFactor)));
-        stFactorAnCurr->SetLabel(GetNumString(txtFactorAn, vacEn, NumToStr(settingAnlFactor)));
-        stVacDelayCurr->SetLabel(GetNumString(txtVacDelay, vacEn, NumToStr(settingCostDelay)));
-        stVacLimitCurr->SetLabel(GetNumString(txtVacLimit, vacEn, NumToStr(settingCostLimit)));
+        if (connection->BackendMinimumVersion(8, 2))
+        {
+            txtFreezeMinAge->Enable(vacEn);
+            txtFreezeMaxAge->Enable(vacEn);
+        }
+        else
+        {
+            txtFreezeMinAge->Enable(false);
+            txtFreezeMaxAge->Enable(false);
+        }
+
+        stBaseVacCurr->SetLabel(NumToStr((tableVacBaseThr == -1) ? settingVacBaseThr : tableVacBaseThr));
+        stBaseAnCurr->SetLabel(NumToStr((tableAnlBaseThr == -1) ? settingAnlBaseThr : tableAnlBaseThr));
+        stFactorVacCurr->SetLabel(NumToStr((tableVacFactor == -1) ? settingVacFactor : tableVacFactor));
+        stFactorAnCurr->SetLabel(NumToStr((tableAnlFactor == -1) ? settingAnlFactor : tableAnlFactor));
+        stVacDelayCurr->SetLabel(NumToStr((tableCostDelay == -1) ? settingCostDelay : tableCostDelay));
+        stVacLimitCurr->SetLabel(NumToStr((tableCostLimit == -1) ? settingCostLimit : tableCostLimit));
+
+        if (connection->BackendMinimumVersion(8, 2))
+        {
+            stFreezeMinAgeCurr->SetLabel(NumToStr((tableFreezeMinAge == -1) ? settingFreezeMinAge : tableFreezeMinAge));
+            stFreezeMaxAgeCurr->SetLabel(NumToStr((tableFreezeMaxAge == -1) ? settingFreezeMaxAge : tableFreezeMaxAge));
+        }
     }
     OnChange(ev);
 }
