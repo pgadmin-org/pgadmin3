@@ -884,6 +884,8 @@ void frmEditGrid::Go()
 
     toolBar->EnableTool(MNU_REFRESH, false);
     viewMenu->Enable(MNU_REFRESH, false);
+    toolBar->EnableTool(MNU_OPTIONS, false);
+    viewMenu->Enable(MNU_OPTIONS, false);
 
     wxString qry=wxT("SELECT ");
     if (hasOids)
@@ -906,6 +908,8 @@ void frmEditGrid::Go()
         Abort();
         toolBar->EnableTool(MNU_REFRESH, true);
         viewMenu->Enable(MNU_REFRESH, true);
+        toolBar->EnableTool(MNU_OPTIONS, true);
+        viewMenu->Enable(MNU_OPTIONS, true);
         return;
     }
 
@@ -920,6 +924,8 @@ void frmEditGrid::Go()
     {
         toolBar->EnableTool(MNU_REFRESH, true);
         viewMenu->Enable(MNU_REFRESH, true);
+        toolBar->EnableTool(MNU_OPTIONS, true);
+        viewMenu->Enable(MNU_OPTIONS, true);
         return;
     }
 
@@ -928,6 +934,8 @@ void frmEditGrid::Go()
         Abort();
         toolBar->EnableTool(MNU_REFRESH, true);
         viewMenu->Enable(MNU_REFRESH, true);
+        toolBar->EnableTool(MNU_OPTIONS, true);
+        viewMenu->Enable(MNU_OPTIONS, true);
         return;
     }
     SetStatusText(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()), 0);
@@ -944,6 +952,8 @@ void frmEditGrid::Go()
 
     toolBar->EnableTool(MNU_REFRESH, true);
     viewMenu->Enable(MNU_REFRESH, true);
+    toolBar->EnableTool(MNU_OPTIONS, true);
+    viewMenu->Enable(MNU_OPTIONS, true);
 
     manager.Update();
 
