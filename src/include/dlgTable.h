@@ -65,8 +65,8 @@ private:
     wxString AppendNum(bool &changed, wxTextCtrl *ctl, double val);
 
     bool tableVacEnabled, hasVacuum;
-    long settingVacBaseThr, settingAnlBaseThr, settingCostDelay, settingCostLimit;
-    long tableVacBaseThr, tableAnlBaseThr, tableCostDelay, tableCostLimit;
+    long settingVacBaseThr, settingAnlBaseThr, settingCostDelay, settingCostLimit, settingFreezeMinAge, settingFreezeMaxAge;
+    long tableVacBaseThr, tableAnlBaseThr, tableCostDelay, tableCostLimit, tableFreezeMinAge, tableFreezeMaxAge;
     double settingVacFactor, settingAnlFactor;
     double tableVacFactor, tableAnlFactor;
 
