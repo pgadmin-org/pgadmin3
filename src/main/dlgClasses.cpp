@@ -22,7 +22,7 @@
 #include "pgObject.h"
 #include "sysProcess.h"
 #include "menu.h"
-
+#include "pgQueryThread.h"
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(windowList);

@@ -13,8 +13,8 @@
 
 // App headers
 #include "ctl/ctlComboBox.h"
-#include "base/pgConnBase.h"
-#include "base/pgSetBase.h"
+#include "pgConn.h"
+#include "pgSet.h"
 
 
 class StringClientData : public wxClientData
@@ -45,7 +45,7 @@ int ctlComboBoxFix::Append(const wxString& item, OID oid)
 }
 
 
-int ctlComboBoxFix::FillLongKey(pgConnBase *conn, const wxChar *qry)
+int ctlComboBoxFix::FillLongKey(pgConn *conn, const wxChar *qry)
 {
     int cnt=0;
     pgSetIterator set(conn->ExecuteSet(qry));
@@ -60,7 +60,7 @@ int ctlComboBoxFix::FillLongKey(pgConnBase *conn, const wxChar *qry)
 }
 
 
-int ctlComboBoxFix::FillOidKey(pgConnBase *conn, const wxChar *qry)
+int ctlComboBoxFix::FillOidKey(pgConn *conn, const wxChar *qry)
 {
     int cnt=0;
     pgSetIterator set(conn->ExecuteSet(qry));
@@ -75,7 +75,7 @@ int ctlComboBoxFix::FillOidKey(pgConnBase *conn, const wxChar *qry)
 }
 
 
-int ctlComboBoxFix::FillStringKey(pgConnBase *conn, const wxChar *qry)
+int ctlComboBoxFix::FillStringKey(pgConn *conn, const wxChar *qry)
 {
     int cnt=0;
     pgSetIterator set(conn->ExecuteSet(qry));

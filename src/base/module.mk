@@ -14,7 +14,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/base/appbase.cpp \
 	$(srcdir)/base/sysLogger.cpp \
 	$(srcdir)/base/pgConnBase.cpp \
-	$(srcdir)/base/pgSetBase.cpp \
 	$(srcdir)/base/factory.cpp 
 
 EXTRA_DIST += \

@@ -22,7 +22,7 @@
 #include "copyright.h"
 #include "base/base.h"
 #include "base/appbase.h"
-#include "base/pgConnBase.h"
+#include "pgConn.h"
 #include "base/sysLogger.h"
 
 wxPathList path;                // The search path
@@ -206,7 +206,7 @@ void pgAppBase::InitNetwork()
 #endif
     wxSocketBase::Initialize();
 
-    pgConnBase::ExamineLibpqVersion();
+    pgConn::ExamineLibpqVersion();
 }
 
 

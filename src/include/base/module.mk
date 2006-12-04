@@ -13,9 +13,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/base/appbase.h \
 	$(srcdir)/include/base/base.h \
 	$(srcdir)/include/base/factory.h \
-	$(srcdir)/include/base/pgConnBase.h \
 	$(srcdir)/include/base/pgDefs.h \
-	$(srcdir)/include/base/pgSetBase.h \
 	$(srcdir)/include/base/sysLogger.h
 
 EXTRA_DIST += \

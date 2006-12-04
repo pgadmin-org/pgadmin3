@@ -24,6 +24,7 @@
 #include "pgDefs.h"
 #include "frmMain.h"
 #include "menu.h"
+#include "pgQueryThread.h"
 
 #include <wx/generic/gridctrl.h>
 #include <wx/clipbrd.h>

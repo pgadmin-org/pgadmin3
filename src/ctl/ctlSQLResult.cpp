@@ -14,6 +14,7 @@
 #include <wx/clipbrd.h>
 
 #include "pgConn.h"
+#include "pgQueryThread.h"
 #include "ctl/ctlSQLResult.h"
 #include "sysSettings.h"
 #include "frmExport.h"

@@ -12,7 +12,8 @@
 pgadmin3_SOURCES += \
 	$(srcdir)/db/keywords.c \
 	$(srcdir)/db/pgConn.cpp \
-	$(srcdir)/db/pgSet.cpp
+	$(srcdir)/db/pgSet.cpp \
+	$(srcdir)/db/pgQueryThread.cpp
 
 EXTRA_DIST += \
         $(srcdir)/db/module.mk

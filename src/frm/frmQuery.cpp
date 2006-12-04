@@ -22,7 +22,7 @@
 #include "frmHelp.h"
 #include "menu.h"
 #include "explainCanvas.h"
-#include "base/pgConnBase.h"
+#include "pgConn.h"
 
 #include "ctl/ctlSQLResult.h"
 #include "pgDatabase.h"

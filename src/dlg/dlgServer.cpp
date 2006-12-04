@@ -200,7 +200,7 @@ int dlgServer::Go(bool modal)
     cbSSL->Append(_("require"));
     cbSSL->Append(_("prefer"));
 
-    if (pgConnBase::GetLibpqVersion() > 7.3)
+    if (pgConn::GetLibpqVersion() > 7.3)
     {
         cbSSL->Append(_("allow"));
         cbSSL->Append(_("disable"));

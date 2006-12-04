@@ -97,6 +97,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/pgObject.h \
 	$(srcdir)/include/pgOperator.h \
 	$(srcdir)/include/pgOperatorClass.h \
+	$(srcdir)/include/pgQueryThread.h \
 	$(srcdir)/include/pgRole.h \
 	$(srcdir)/include/pgRule.h \
 	$(srcdir)/include/pgSchema.h \
