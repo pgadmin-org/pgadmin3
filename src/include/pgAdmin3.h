@@ -38,6 +38,11 @@
 #undef VERSION
 #endif
 
+// Check the wxWidgets config
+#if !wxUSE_UNICODE
+#error wxWidgets must be compiled with Unicode support to build pgAdmin.
+#endif
+
 #ifdef __WXMSW__
 #if !wxCHECK_VERSION(2, 7, 1)
 #error wxMSW 2.7.1 or higher is required to compile this version of pgAdmin.

@@ -16,11 +16,6 @@ wxMBConvUTF16LE wxConvUTF16LE;
 extern wxMBConvUTF32BE wxConvUTF32BE;
 extern wxMBConvUTF32LE wxConvUTF32LE;
 
-#if !wxUSE_UNICODE
-#error utffile.cpp is implemented for unicode only.
-#endif
-
-
 // these are the magic characters identifying an Unicode file
 #define BOM_UTF8    "\357\273\277"
 #define BOM_UTF16LE "\377\376"

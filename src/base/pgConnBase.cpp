@@ -176,7 +176,6 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
     cleanConnStr.Replace(qtConnString(password), wxT("'XXXXXX'"));
     wxLogInfo(wxT("Opening connection with connection string: %s"), cleanConnStr.c_str());
 
-#if wxUSE_UNICODE
     wxCharBuffer cstrUTF=connstr.mb_str(wxConvUTF8);
     conn = PQconnectdb(cstrUTF);
     if (PQstatus(conn) == CONNECTION_OK)
@@ -190,9 +189,6 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
             conn = PQconnectdb(cstrLibc);
         }
     }
-#else
-    conn = PQconnectdb(connstr.ToAscii());
-#endif
 
     dbHost = server;
 
@@ -230,7 +226,6 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
             dbOid = set->GetOid(wxT("oid"));
             wxString encoding = set->GetVal(wxT("encoding"));
 
-#if wxUSE_UNICODE
             if (encoding != wxT("SQL_ASCII") && encoding != wxT("MULE_INTERNAL"))
             {
                 encoding = wxT("UNICODE");
@@ -238,7 +233,6 @@ pgConnBase::pgConnBase(const wxString& server, const wxString& database, const w
             }
             else
                 conv = &wxConvLibc;
-#endif
 
             wxLogInfo(wxT("Setting client_encoding to '%s'"), encoding.c_str());
             if (PQsetClientEncoding(conn, encoding.ToAscii()))

@@ -440,21 +440,19 @@ bool pgServer::GetPasswordIsStored()
         wxString seekStr= GetName() + wxT(":") 
                         + NumToStr((long)GetPort()) + wxT(":*:") 
                         + username + wxT(":") ;
-#if wxUSE_UNICODE
+
         wxString seekStr2= wxString(GetName().mb_str(wxConvUTF8), wxConvLibc) + wxT(":") 
                         + NumToStr((long)GetPort()) + wxT(":*:") 
                         + wxString(username.mb_str(wxConvUTF8), wxConvLibc) + wxT(":") ;
-#endif
 
         while (lines.HasMoreTokens())
         {
             wxString str=lines.GetNextToken();
             if (str.Left(seekStr.Length()) == seekStr)
                 return true;
-#if wxUSE_UNICODE
+
             if (str.Left(seekStr2.Length()) == seekStr2)
                 return true;
-#endif
         }
     }
     
@@ -490,7 +488,6 @@ void pgServer::StorePassword()
         wxString passwd;
         wxString seekStr;
         
-#if wxUSE_UNICODE
         if (GetConnection()->GetNeedUtfConnectString())
         {
             passwd = wxString(password.mb_str(wxConvUTF8), wxConvLibc);
@@ -499,7 +496,6 @@ void pgServer::StorePassword()
                     + wxString(username.mb_str(wxConvUTF8), wxConvLibc) + wxT(":") ;
         }
         else
-#endif
         {
             passwd = password;
             seekStr = GetName() + wxT(":") 
